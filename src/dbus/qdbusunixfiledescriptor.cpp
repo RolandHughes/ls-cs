@@ -103,7 +103,7 @@ void QDBusUnixFileDescriptor::setFileDescriptor( int fileDescriptor )
 {
     if ( fileDescriptor != -1 )
     {
-        giveFileDescriptor( qt_safe_dup( fileDescriptor ) );
+        giveFileDescriptor( lscs_safe_dup( fileDescriptor ) );
     }
 }
 
@@ -122,7 +122,7 @@ void QDBusUnixFileDescriptor::giveFileDescriptor( int fileDescriptor )
 
     if ( d->fd != -1 )
     {
-        qt_safe_close( d->fd );
+        lscs_safe_close( d->fd );
     }
 
     if ( fileDescriptor != -1 )
@@ -153,7 +153,7 @@ QDBusUnixFileDescriptorPrivate::~QDBusUnixFileDescriptorPrivate()
 {
     if ( fd != -1 )
     {
-        qt_safe_close( fd );
+        lscs_safe_close( fd );
     }
 }
 
@@ -182,4 +182,4 @@ QDBusUnixFileDescriptorPrivate::~QDBusUnixFileDescriptorPrivate()
 
 #endif
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

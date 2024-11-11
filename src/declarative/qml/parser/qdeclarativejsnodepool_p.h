@@ -29,7 +29,7 @@
 #include <QtCore/QHash>
 #include <QtCore/QString>
 
-QT_QML_BEGIN_NAMESPACE
+LSCS_QML_BEGIN_NAMESPACE
 
 namespace QDeclarativeJS
 {
@@ -115,6 +115,6 @@ private:
 
 } // namespace QDeclarativeJS
 
-QT_QML_END_NAMESPACE
+LSCS_QML_END_NAMESPACE
 
 #endif

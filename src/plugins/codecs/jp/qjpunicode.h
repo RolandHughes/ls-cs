@@ -55,7 +55,7 @@
 
 #include <qglobal.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QJpUnicodeConv
 {
@@ -167,6 +167,6 @@ private:
     int rule;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QJPUNICODE_H

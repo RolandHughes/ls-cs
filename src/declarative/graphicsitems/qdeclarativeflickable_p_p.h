@@ -33,7 +33,7 @@
 #include <qdatetime.h>
 #include <qplatformdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 // Really slow flicks can be annoying
 #ifndef QML_FLICK_MINVELOCITY
@@ -218,7 +218,7 @@ private:
     qreal m_heightRatio;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeFlickableVisibleArea )
 

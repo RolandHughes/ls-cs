@@ -386,12 +386,12 @@ public:
 
             case PdmDpiX:
             case PdmPhysicalDpiX:
-                val = qt_defaultDpiX();
+                val = lscs_defaultDpiX();
                 break;
 
             case PdmDpiY:
             case PdmPhysicalDpiY:
-                val = qt_defaultDpiY();
+                val = lscs_defaultDpiY();
                 break;
 
             case PdmNumColors:
@@ -490,7 +490,7 @@ void QStaticTextPrivate::paintText( const QPointF &topLeftPosition, QPainter *p 
     {
         QTextDocument document;
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
         QColor color = p->pen().color();
         document.setDefaultStyleSheet( QString::fromLatin1( "body { color: #%1%2%3 }" )
                                        .formatArg( QString::number( color.red(), 16 ),   2, QLatin1Char( '0' ) )
@@ -499,7 +499,7 @@ void QStaticTextPrivate::paintText( const QPointF &topLeftPosition, QPainter *p 
 #endif
         document.setDefaultFont( font );
         document.setDocumentMargin( 0.0 );
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
         document.setHtml( text );
 #else
         document.setPlainText( text );

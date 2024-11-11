@@ -29,7 +29,7 @@
 
 Q_DECLARE_METATYPE( QScriptDebuggerValue )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerEventPrivate
 {
@@ -317,4 +317,4 @@ QDataStream &operator>>( QDataStream &in, QScriptDebuggerEvent &event )
     return in;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

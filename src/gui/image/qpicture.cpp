@@ -24,7 +24,7 @@
 #include <qpicture.h>
 #include <qpicture_p.h>
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
 
 #include <qalgorithms.h>
 #include <qdatastream.h>
@@ -38,7 +38,7 @@
 #include <qpixmap.h>
 #include <qregion.h>
 
-#ifndef QT_NO_PICTUREIO
+#ifndef LSCS_NO_PICTUREIO
 #include <qpictureformatplugin.h>
 #include <qregularexpression.h>
 #endif
@@ -49,10 +49,10 @@
 
 #include <algorithm>
 
-void qt_format_text( const QFont &fnt, const QRectF &_r, int tf, const QTextOption *opt,
+void lscs_format_text( const QFont &fnt, const QRectF &_r, int tf, const QTextOption *opt,
                      const QString &str, QRectF *brect, int tabstops, int *, int tabarraylen, QPainter *painter );
 
-const char *qt_mfhdr_tag = "QPIC";               // header tag
+const char *lscs_mfhdr_tag = "QPIC";               // header tag
 
 static constexpr const quint16 mfhdr_maj = 11;   // major version #
 static constexpr const quint16 mfhdr_min = 0;    // minor version #
@@ -149,7 +149,7 @@ bool QPicture::load( QIODevice *dev, const QString &format )
     if ( ! format.isEmpty() )
     {
 
-#ifndef QT_NO_PICTUREIO
+#ifndef LSCS_NO_PICTUREIO
         QPictureIO io( dev, format );
 
         if ( io.read() )
@@ -183,7 +183,7 @@ bool QPicture::save( const QString &fileName, const QString &format )
     if ( ! format.isEmpty() )
     {
 
-#ifndef QT_NO_PICTUREIO
+#ifndef LSCS_NO_PICTUREIO
         QPictureIO io( fileName, format );
         bool result = io.write();
 
@@ -227,7 +227,7 @@ bool QPicture::save( QIODevice *dev, const QString &format )
     if ( ! format.isEmpty() )
     {
 
-#ifndef QT_NO_PICTUREIO
+#ifndef LSCS_NO_PICTUREIO
         QPictureIO io( dev, format );
         bool result = io.write();
 
@@ -327,8 +327,8 @@ class QFakeDevice : public QPaintDevice
 public:
     QFakeDevice()
     {
-        dpi_x = qt_defaultDpiX();
-        dpi_y = qt_defaultDpiY();
+        dpi_x = lscs_defaultDpiX();
+        dpi_y = lscs_defaultDpiY();
     }
 
     void setDpiX( int dpi )
@@ -402,8 +402,8 @@ bool QPicture::exec( QPainter *painter, QDataStream &s, int nrecords )
     QTransform  matrix;
 
     QTransform worldMatrix = painter->transform();
-    worldMatrix.scale( qreal( painter->device()->logicalDpiX() ) / qreal( qt_defaultDpiX() ),
-                       qreal( painter->device()->logicalDpiY() ) / qreal( qt_defaultDpiY() ) );
+    worldMatrix.scale( qreal( painter->device()->logicalDpiX() ) / qreal( lscs_defaultDpiX() ),
+                       qreal( painter->device()->logicalDpiY() ) / qreal( lscs_defaultDpiY() ) );
     painter->setTransform( worldMatrix );
 
     while ( nrecords-- && !s.atEnd() )
@@ -655,8 +655,8 @@ bool QPicture::exec( QPainter *painter, QDataStream &s, int nrecords )
                     if ( dbl != 1.0 )
                     {
                         QFakeDevice fake;
-                        fake.setDpiX( qRound( dbl * qt_defaultDpiX() ) );
-                        fake.setDpiY( qRound( dbl * qt_defaultDpiY() ) );
+                        fake.setDpiX( qRound( dbl * lscs_defaultDpiX() ) );
+                        fake.setDpiY( qRound( dbl * lscs_defaultDpiY() ) );
                         fnt = QFont( font, &fake );
                     }
 
@@ -676,13 +676,13 @@ bool QPicture::exec( QPainter *painter, QDataStream &s, int nrecords )
 
                     QFontMetrics fm( fnt );
                     QPointF pt( p.x(), p.y() - fm.ascent() );
-                    qt_format_text( fnt, QRectF( pt, size ), flags, nullptr,
+                    lscs_format_text( fnt, QRectF( pt, size ), flags, nullptr,
                                     str, nullptr, 0, nullptr, 0, painter );
 
                 }
                 else
                 {
-                    qt_format_text( font, QRectF( p, QSizeF( 1, 1 ) ), Qt::TextSingleLine | Qt::TextDontClip, nullptr,
+                    lscs_format_text( font, QRectF( p, QSizeF( 1, 1 ) ), Qt::TextSingleLine | Qt::TextDontClip, nullptr,
                                     str, nullptr, 0, nullptr, 0, painter );
                 }
 
@@ -1014,21 +1014,21 @@ int QPicture::metric( PaintDeviceMetric m ) const
             break;
 
         case PdmWidthMM:
-            val = int( 25.4 / qt_defaultDpiX() * brect.width() );
+            val = int( 25.4 / lscs_defaultDpiX() * brect.width() );
             break;
 
         case PdmHeightMM:
-            val = int( 25.4 / qt_defaultDpiY() * brect.height() );
+            val = int( 25.4 / lscs_defaultDpiY() * brect.height() );
             break;
 
         case PdmDpiX:
         case PdmPhysicalDpiX:
-            val = qt_defaultDpiX();
+            val = lscs_defaultDpiX();
             break;
 
         case PdmDpiY:
         case PdmPhysicalDpiY:
-            val = qt_defaultDpiY();
+            val = lscs_defaultDpiY();
             break;
 
         case PdmNumColors:
@@ -1103,7 +1103,7 @@ bool QPicturePrivate::checkFormat()
     char mf_id[4];                                // picture header tag
     s.readRawData( mf_id, 4 );                    // read actual tag
 
-    if ( memcmp( mf_id, qt_mfhdr_tag, 4 ) != 0 )
+    if ( memcmp( mf_id, lscs_mfhdr_tag, 4 ) != 0 )
     {
         // wrong header id
         qWarning( "QPicturePaintEngine::checkFormat() Incorrect header" );
@@ -1181,7 +1181,7 @@ QPaintEngine *QPicture::paintEngine() const
     return d_func()->paintEngine.data();
 }
 
-#ifndef QT_NO_DATASTREAM
+#ifndef LSCS_NO_DATASTREAM
 
 QDataStream &operator<<( QDataStream &s, const QPicture &r )
 {
@@ -1225,7 +1225,7 @@ QDataStream &operator>>( QDataStream &s, QPicture &r )
 #endif
 
 
-#ifndef QT_NO_PICTUREIO
+#ifndef LSCS_NO_PICTUREIO
 
 QString QPicture::pictureFormat( const QString &fileName )
 {
@@ -1357,7 +1357,7 @@ static QPHList *pictureHandlers()
     return &retval;
 }
 
-void qt_init_picture_plugins()
+void lscs_init_picture_plugins()
 {
     static QMutex mutex;
     QMutexLocker locker( &mutex );
@@ -1384,7 +1384,7 @@ static void cleanup()
     }
 }
 
-void qt_init_picture_handlers()
+void lscs_init_picture_handlers()
 {
     // initialize picture handlers
     static QAtomicInt done = 0;
@@ -1400,8 +1400,8 @@ void qt_init_picture_handlers()
 static QPictureHandler *get_picture_handler( const QString &format )
 {
     // get pointer to handler
-    qt_init_picture_handlers();
-    qt_init_picture_plugins();
+    lscs_init_picture_handlers();
+    lscs_init_picture_plugins();
 
     if ( QPHList *list = pictureHandlers() )
     {
@@ -1420,7 +1420,7 @@ static QPictureHandler *get_picture_handler( const QString &format )
 void QPictureIO::defineIOHandler( const QString &format, const QString &header, const char *flags,
                                   picture_io_handler readPicture, picture_io_handler writePicture )
 {
-    qt_init_picture_handlers();
+    lscs_init_picture_handlers();
 
     if ( QPHList *list = pictureHandlers() )
     {
@@ -1548,8 +1548,8 @@ QString QPictureIO::pictureFormat( QIODevice *d )
 
     char buf[buflen];
     char buf2[buflen];
-    qt_init_picture_handlers();
-    qt_init_picture_plugins();
+    lscs_init_picture_handlers();
+    lscs_init_picture_plugins();
     int pos = d->pos();                      // save position
     int rdlen = d->read( buf, buflen );      // read a few bytes
 
@@ -1600,8 +1600,8 @@ QStringList QPictureIO::inputFormats()
 {
     QStringList result;
 
-    qt_init_picture_handlers();
-    qt_init_picture_plugins();
+    lscs_init_picture_handlers();
+    lscs_init_picture_plugins();
 
     if ( QPHList *list = pictureHandlers() )
     {
@@ -1623,8 +1623,8 @@ QStringList QPictureIO::inputFormats()
 
 QStringList QPictureIO::outputFormats()
 {
-    qt_init_picture_handlers();
-    qt_init_picture_plugins();
+    lscs_init_picture_handlers();
+    lscs_init_picture_plugins();
 
     QStringList result;
 
@@ -1774,7 +1774,7 @@ bool QPictureIO::write()
 
     return d->iostat == 0;                   // picture successfully written?
 }
-#endif // QT_NO_PICTUREIO
+#endif // LSCS_NO_PICTUREIO
 
-#endif // QT_NO_PICTURE
+#endif // LSCS_NO_PICTURE
 

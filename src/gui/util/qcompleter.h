@@ -32,7 +32,7 @@
 #include <qscopedpointer.h>
 #include <qstring.h>
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
 class QAbstractItemView;
 class QAbstractProxyModel;
@@ -85,7 +85,7 @@ public:
     QCompleter( QObject *parent = nullptr );
     QCompleter( QAbstractItemModel *model, QObject *parent = nullptr );
 
-#ifndef QT_NO_STRINGLISTMODEL
+#ifndef LSCS_NO_STRINGLISTMODEL
     QCompleter( const QStringList &list, QObject *parent = nullptr );
 #endif
 
@@ -181,6 +181,6 @@ private:
     GUI_LSCS_SLOT_2( _q_fileSystemModelDirectoryLoaded )
 };
 
-#endif // QT_NO_COMPLETER
+#endif // LSCS_NO_COMPLETER
 
 #endif // QCOMPLETER_H

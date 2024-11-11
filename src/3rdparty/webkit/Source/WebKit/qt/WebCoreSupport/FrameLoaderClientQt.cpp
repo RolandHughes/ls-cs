@@ -1796,7 +1796,7 @@ private:
     }
 };
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 class QtPluginGraphicsWidget: public Widget
 {
 public:
@@ -1857,7 +1857,7 @@ private:
 
     QGraphicsWidget *graphicsWidget;
 };
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 PassRefPtr<Widget> FrameLoaderClientQt::createPlugin( const IntSize &pluginSize, HTMLPlugInElement *element, const KURL &url,
         const Vector<String> &paramNames,
@@ -1898,7 +1898,7 @@ PassRefPtr<Widget> FrameLoaderClientQt::createPlugin( const IntSize &pluginSize,
     if ( mimeType == "application/x-qt-plugin" || mimeType == "application/x-qt-styled-widget" )
     {
         object = m_webFrame->page()->createPlugin( classid, qurl, params, values );
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
         QWidget *widget = qobject_cast<QWidget *>( object );
 
         if ( widget && mimeType == "application/x-qt-styled-widget" )
@@ -1924,7 +1924,7 @@ PassRefPtr<Widget> FrameLoaderClientQt::createPlugin( const IntSize &pluginSize,
             widget->setStyleSheet( styleSheet );
         }
 
-#endif // QT_NO_STYLE_STYLESHEET
+#endif // LSCS_NO_STYLE_STYLESHEET
     }
 
     if ( !object )
@@ -1963,7 +1963,7 @@ PassRefPtr<Widget> FrameLoaderClientQt::createPlugin( const IntSize &pluginSize,
             return w;
         }
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
         QGraphicsWidget *graphicsWidget = qobject_cast<QGraphicsWidget *>( object );
 
         if ( graphicsWidget )
@@ -1988,7 +1988,7 @@ PassRefPtr<Widget> FrameLoaderClientQt::createPlugin( const IntSize &pluginSize,
             return w;
         }
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
         // FIXME: Make things work for widgetless plugins as well.
         delete object;

@@ -23,7 +23,7 @@
 
 #include <qsvgrenderer.h>
 
-#ifndef QT_NO_SVGRENDERER
+#ifndef LSCS_NO_SVGRENDERER
 
 #include <qbytearray.h>
 #include <qdebug.h>
@@ -330,4 +330,4 @@ QMatrix QSvgRenderer::matrixForElement( const QString &id ) const
     return mat;
 }
 
-#endif // QT_NO_SVGRENDERER
+#endif // LSCS_NO_SVGRENDERER

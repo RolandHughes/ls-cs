@@ -23,7 +23,7 @@
 
 #include <qsplashscreen.h>
 
-#ifndef QT_NO_SPLASHSCREEN
+#ifndef LSCS_NO_SPLASHSCREEN
 
 #include <qapplication.h>
 #include <qdebug.h>
@@ -37,7 +37,7 @@
 
 #include <qwidget_p.h>
 #ifdef Q_OS_WIN
-#  include <qt_windows.h>
+#  include <lscs_windows.h>
 #else
 #  include <time.h>
 #endif
@@ -193,7 +193,7 @@ void QSplashScreen::drawContents( QPainter *painter )
     if ( Qt::mightBeRichText( d->currStatus ) )
     {
         QTextDocument doc;
-#ifdef QT_NO_TEXTHTMLPARSER
+#ifdef LSCS_NO_TEXTHTMLPARSER
         doc.setPlainText( d->currStatus );
 #else
         doc.setHtml( d->currStatus );
@@ -232,4 +232,4 @@ bool QSplashScreen::event( QEvent *e )
 
     return QWidget::event( e );
 }
-#endif //QT_NO_SPLASHSCREEN
+#endif //LSCS_NO_SPLASHSCREEN

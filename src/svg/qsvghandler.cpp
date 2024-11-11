@@ -208,14 +208,14 @@ struct QSvgAttributes
     QStringView stopColor;
     QStringView stopOpacity;
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     QVector<QSvgCssAttribute> m_cssAttributes;
 #endif
 };
 
 QSvgAttributes::QSvgAttributes( const QXmlStreamAttributes &xmlAttributes, QSvgHandler *handler )
 {
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     QStringView style = xmlAttributes.value( "style" );
 
     if ( ! style.isEmpty() )
@@ -400,7 +400,7 @@ QSvgAttributes::QSvgAttributes( const QXmlStreamAttributes &xmlAttributes, QSvgH
         }
     }
 
-#endif // QT_NO_CSSPARSER
+#endif // LSCS_NO_CSSPARSER
 
     for ( int i = 0; i < xmlAttributes.count(); ++i )
     {
@@ -617,7 +617,7 @@ static const char *QSvgStyleSelector_nodeString[] =
     "video"
 };
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 class QSvgStyleSelector : public QCss::StyleSelector
 {
 public:
@@ -788,7 +788,7 @@ public:
     }
 };
 
-#endif // QT_NO_CSSPARSER
+#endif // LSCS_NO_CSSPARSER
 
 // '0' is 0x30 and '9' is 0x39
 static inline bool isDigit( ushort ch )
@@ -2636,7 +2636,7 @@ static bool parsePathDataFast( QStringView dataStr, QPainterPath &path )
 static bool parseStyle( QSvgNode *node, const QXmlStreamAttributes &attributes, QSvgHandler * );
 static bool parseStyle( QSvgNode *node, const QSvgAttributes &attributes, QSvgHandler * );
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 
 static void parseCSStoXMLAttrs( const QVector<QCss::Declaration> &declarations, QXmlStreamAttributes &attributes )
 {
@@ -2801,7 +2801,7 @@ static void cssStyleLookup( QSvgNode *node, QSvgHandler *handler, QSvgStyleSelec
     parseStyle( node, attributes, handler );
 }
 
-#endif // QT_NO_CSSPARSER
+#endif // LSCS_NO_CSSPARSER
 static inline QStringList stringToList( const QString &str )
 {
     QStringList lst = str.split( QChar( ',' ), QStringParser::SkipEmptyParts );
@@ -4179,7 +4179,7 @@ static bool parseStopNode( QSvgStyleProperty *parent, const QXmlStreamAttributes
 
     QXmlStreamAttributes xmlAttr = attributes;
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     QCss::StyleSelector::NodePtr cssNode;
     cssNode.ptr = &anim;
     QVector<QCss::Declaration> decls = handler->selector()->declarationsForNode( cssNode );
@@ -4275,7 +4275,7 @@ static bool parseStyleNode( QSvgNode *parent, const QXmlStreamAttributes &attrib
 {
     ( void ) parent;
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     QString type = attributes.value( "type" );
     type = type.toLower();
 
@@ -4970,7 +4970,7 @@ void QSvgHandler::parse()
 {
     xml->setNamespaceProcessing( false );
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     m_selector = new QSvgStyleSelector;
     m_inStyle  = false;
 #endif
@@ -5101,7 +5101,7 @@ bool QSvgHandler::startElement( const QString &localName, const QXmlStreamAttrib
 
         parseCoreNode( node, attributes );
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
         cssStyleLookup( node, this, m_selector );
 #endif
 
@@ -5153,7 +5153,7 @@ bool QSvgHandler::startElement( const QString &localName, const QXmlStreamAttrib
             if ( node )
             {
                 parseCoreNode( node, attributes );
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
                 cssStyleLookup( node, this, m_selector );
 #endif
                 parseStyle( node, attributes, this );
@@ -5239,7 +5239,7 @@ bool QSvgHandler::endElement( QStringView localName )
         return true;
     }
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 
     if ( m_inStyle && localName == "style" )
     {
@@ -5318,7 +5318,7 @@ void QSvgHandler::resolveGradients( QSvgNode *node )
 
 bool QSvgHandler::characters( QStringView str )
 {
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 
     if ( m_inStyle )
     {
@@ -5408,7 +5408,7 @@ QColor QSvgHandler::currentColor() const
     }
 }
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 
 void QSvgHandler::setInStyle( bool b )
 {
@@ -5425,10 +5425,10 @@ QSvgStyleSelector *QSvgHandler::selector() const
     return m_selector;
 }
 
-#endif // QT_NO_CSSPARSER
+#endif // LSCS_NO_CSSPARSER
 bool QSvgHandler::processingInstruction( const QString &target, const QString &data )
 {
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 
     if ( target == "xml-stylesheet" )
     {
@@ -5497,7 +5497,7 @@ int QSvgHandler::animationDuration() const
 
 QSvgHandler::~QSvgHandler()
 {
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     delete m_selector;
     m_selector = nullptr;
 #endif

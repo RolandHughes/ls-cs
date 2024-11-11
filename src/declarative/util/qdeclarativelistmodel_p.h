@@ -34,7 +34,7 @@
 #include <qlistmodelinterface_p.h>
 #include <QtScript/qscriptvalue.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class FlatListModel;
 class NestedListModel;
@@ -157,7 +157,7 @@ private:
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeListModel )
 QML_DECLARE_TYPE( QDeclarativeListElement )

@@ -49,7 +49,7 @@ Cursor::Cursor( const Cursor &other )
     : m_type( other.m_type )
     , m_image( other.m_image )
     , m_hotSpot( other.m_hotSpot )
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     , m_platformCursor( other.m_platformCursor ? new QCursor( *other.m_platformCursor )  : 0 )
 #endif
 {
@@ -57,7 +57,7 @@ Cursor::Cursor( const Cursor &other )
 
 Cursor::~Cursor()
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     delete m_platformCursor;
 #endif
 }
@@ -67,13 +67,13 @@ Cursor &Cursor::operator=( const Cursor &other )
     m_type = other.m_type;
     m_image = other.m_image;
     m_hotSpot = other.m_hotSpot;
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     m_platformCursor = other.m_platformCursor ? new QCursor( *other.m_platformCursor )  : 0;
 #endif
     return *this;
 }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 static QCursor *createCustomCursor( Image *image, const IntPoint &hotSpot )
 {
     IntPoint effectiveHotSpot = determineHotSpot( image, hotSpot );
@@ -83,7 +83,7 @@ static QCursor *createCustomCursor( Image *image, const IntPoint &hotSpot )
 
 void Cursor::ensurePlatformCursor() const
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( m_platformCursor )
     {

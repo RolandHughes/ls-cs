@@ -38,7 +38,7 @@
 #include <qtimezone.h>
 
 #if defined Q_OS_WIN
-# include <qt_windows.h>
+# include <lscs_windows.h>
 #else
 # include <unistd.h>
 #endif

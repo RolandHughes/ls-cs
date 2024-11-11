@@ -23,7 +23,7 @@
 
 #include <qabstractstate.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 #include <qstate.h>
 #include <qstatemachine.h>

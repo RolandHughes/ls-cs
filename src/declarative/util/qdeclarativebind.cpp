@@ -33,7 +33,7 @@
 #include <QtScript/qscriptcontext.h>
 #include <QtScript/qscriptengine.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeBindPrivate
 {
@@ -191,4 +191,4 @@ void QDeclarativeBind::eval()
     prop.write( d->value.value );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

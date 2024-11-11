@@ -31,7 +31,7 @@
 
 #include <qsharedmemory_p.h>
 
-#if ! (defined(QT_NO_SHAREDMEMORY) && defined(QT_NO_SYSTEMSEMAPHORE))
+#if ! (defined(LSCS_NO_SHAREDMEMORY) && defined(LSCS_NO_SYSTEMSEMAPHORE))
 
 QString QSharedMemoryPrivate::makePlatformSafeKey( const QString &key, const QString &prefix )
 {
@@ -53,7 +53,7 @@ QString QSharedMemoryPrivate::makePlatformSafeKey( const QString &key, const QSt
 #ifdef Q_OS_WIN
     return result;
 
-#elif defined(QT_POSIX_IPC)
+#elif defined(LSCS_POSIX_IPC)
     return '/' + result;
 
 #else
@@ -62,9 +62,9 @@ QString QSharedMemoryPrivate::makePlatformSafeKey( const QString &key, const QSt
 #endif
 
 }
-#endif // QT_NO_SHAREDMEMORY && QT_NO_SHAREDMEMORY
+#endif // LSCS_NO_SHAREDMEMORY && LSCS_NO_SHAREDMEMORY
 
-#ifndef QT_NO_SHAREDMEMORY
+#ifndef LSCS_NO_SHAREDMEMORY
 
 QSharedMemory::QSharedMemory( QObject *parent )
     : QObject( parent ), d_ptr( new QSharedMemoryPrivate )
@@ -126,7 +126,7 @@ bool QSharedMemoryPrivate::initKey()
 {
     cleanHandle();
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
     systemSemaphore.setKey( QString(), 1 );
     systemSemaphore.setKey( key, 1 );
 
@@ -201,7 +201,7 @@ bool QSharedMemory::create( int size, AccessMode mode )
         return false;
     }
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
 
 #ifndef Q_OS_WIN
     // Take ownership and force set initialValue because the semaphore
@@ -241,7 +241,7 @@ bool QSharedMemory::attach( AccessMode mode )
         return false;
     }
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
     QSharedMemoryLocker lock( this );
 
     if ( ! d->key.isEmpty() && !d->tryLocker( &lock, "QSharedMemory::attach" ) )
@@ -273,7 +273,7 @@ bool QSharedMemory::detach()
         return false;
     }
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
     QSharedMemoryLocker lock( this );
 
     if ( ! d->key.isEmpty() && !d->tryLocker( &lock, "QSharedMemory::detach" ) )
@@ -303,7 +303,7 @@ const void *QSharedMemory::data() const
     return d->memory;
 }
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
 
 bool QSharedMemory::lock()
 {
@@ -350,7 +350,7 @@ bool QSharedMemory::unlock()
 
     return false;
 }
-#endif // QT_NO_SYSTEMSEMAPHORE
+#endif // LSCS_NO_SYSTEMSEMAPHORE
 
 QSharedMemory::SharedMemoryError QSharedMemory::error() const
 {
@@ -364,4 +364,4 @@ QString QSharedMemory::errorString() const
     return d->errorString;
 }
 
-#endif // QT_NO_SHAREDMEMORY
+#endif // LSCS_NO_SHAREDMEMORY

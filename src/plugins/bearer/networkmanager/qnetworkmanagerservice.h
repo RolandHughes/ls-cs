@@ -37,7 +37,7 @@
 #include <QMap>
 #include <qnmdbushelper.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
 #ifndef NETWORK_MANAGER_H
 typedef enum NMDeviceType
@@ -94,17 +94,17 @@ typedef enum
 #define NM_802_11_AP_FLAGS_PRIVACY          0x00000001
 #endif
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 typedef QMap< QString, QMap<QString,QVariant> > QNmSettingsMap;
 typedef QList<quint32> ServerThing;
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-Q_DECLARE_METATYPE( QT_PREPEND_NAMESPACE( QNmSettingsMap ) )
-Q_DECLARE_METATYPE( QT_PREPEND_NAMESPACE( ServerThing ) )
+Q_DECLARE_METATYPE( LSCS_PREPEND_NAMESPACE( QNmSettingsMap ) )
+Q_DECLARE_METATYPE( LSCS_PREPEND_NAMESPACE( ServerThing ) )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QNetworkManagerInterfacePrivate;
 class QNetworkManagerInterface : public QObject
@@ -420,7 +420,7 @@ private:
     QNetworkManagerIp4ConfigPrivate *d;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif //QNETWORKMANAGERSERVICE_H

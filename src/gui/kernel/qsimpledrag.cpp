@@ -45,7 +45,7 @@
 #include <qhighdpiscaling_p.h>
 #include <qshapedpixmapdndwindow_p.h>
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 static QWindow *topLevelAt( const QPoint &pos )
 {
@@ -171,7 +171,7 @@ Qt::DropAction QBasicDrag::drag( QDrag *o )
     m_can_drop = false;
     m_restoreCursor = true;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     qApp->setOverrideCursor( Qt::DragCopyCursor );
     updateCursor( m_executed_drop_action );
 #endif
@@ -191,7 +191,7 @@ void QBasicDrag::restoreCursor()
 {
     if ( m_restoreCursor )
     {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
         QGuiApplication::restoreOverrideCursor();
 #endif
         m_restoreCursor = false;
@@ -202,7 +202,7 @@ void QBasicDrag::startDrag()
 {
     QPoint pos;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     pos = QCursor::pos();
 
     if ( pos.x() == int( std::numeric_limits<double>::infinity() ) )
@@ -267,7 +267,7 @@ void  QBasicDrag::exitDndEventLoop()
 
 void QBasicDrag::updateCursor( Qt::DropAction action )
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     Qt::CursorShape cursorShape = Qt::ForbiddenCursor;
 
     if ( canDrop() )
@@ -376,11 +376,11 @@ void QSimpleDrag::move( const QPoint &globalPos )
     }
 
     const QPoint pos = globalPos - window->geometry().topLeft();
-    const QPlatformDragQtResponse qt_response =
+    const QPlatformDragQtResponse lscs_response =
         QWindowSystemInterface::handleDrag( window, drag()->mimeData(), pos, drag()->supportedActions() );
 
-    updateCursor( qt_response.acceptedAction() );
-    setCanDrop( qt_response.isAccepted() );
+    updateCursor( lscs_response.acceptedAction() );
+    setCanDrop( lscs_response.isAccepted() );
 }
 
 void QSimpleDrag::drop( const QPoint &globalPos )
@@ -409,6 +409,6 @@ void QSimpleDrag::drop( const QPoint &globalPos )
     }
 }
 
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 

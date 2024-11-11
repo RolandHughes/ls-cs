@@ -26,7 +26,7 @@
 
 #include <qdeclarativeitem.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeDrag : public QObject
 {
@@ -249,7 +249,7 @@ protected:
     void hoverMoveEvent( QGraphicsSceneHoverEvent *event );
     void hoverLeaveEvent( QGraphicsSceneHoverEvent *event );
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QGraphicsSceneContextMenuEvent *event );
 #endif
 
@@ -270,7 +270,7 @@ private:
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeMouseArea )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeDrag )
 QML_DECLARE_TYPE( QDeclarativeMouseArea )

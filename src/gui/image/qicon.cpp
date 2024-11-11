@@ -42,10 +42,10 @@
 #include <qfactoryloader_p.h>
 #include <qiconloader_p.h>
 
-#ifndef QT_NO_ICON
+#ifndef LSCS_NO_ICON
 
 static QAtomicInt serialNumCounter = QAtomicInt { 1 };
-static void qt_cleanup_icon_cache();
+static void lscs_cleanup_icon_cache();
 
 namespace
 {
@@ -55,7 +55,7 @@ struct IconCache : public QCache<QString, QIcon>
     IconCache()
     {
         // will not re-add if QApplication is re-created
-        qAddPostRoutine( qt_cleanup_icon_cache );
+        qAddPostRoutine( lscs_cleanup_icon_cache );
     }
 };
 
@@ -67,12 +67,12 @@ static IconCache *qtIconCache()
     return &retval;
 }
 
-static void qt_cleanup_icon_cache()
+static void lscs_cleanup_icon_cache()
 {
     qtIconCache()->clear();
 }
 
-static qreal qt_effective_device_pixel_ratio( QWindow *window = nullptr )
+static qreal lscs_effective_device_pixel_ratio( QWindow *window = nullptr )
 {
     if ( !qApp->testAttribute( Qt::AA_UseHighDpiPixmaps ) )
     {
@@ -116,7 +116,7 @@ QPixmapIconEngine::~QPixmapIconEngine()
 
 void QPixmapIconEngine::paint( QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state )
 {
-    QSize pixmapSize = rect.size() * qt_effective_device_pixel_ratio( nullptr );
+    QSize pixmapSize = rect.size() * lscs_effective_device_pixel_ratio( nullptr );
     QPixmap px = pixmap( pixmapSize, mode, state );
     painter->drawPixmap( rect, px );
 }
@@ -792,7 +792,7 @@ QPixmap QIcon::pixmap( QWindow *window, const QSize &size, Mode mode, State stat
         return QPixmap();
     }
 
-    qreal devicePixelRatio = qt_effective_device_pixel_ratio( window );
+    qreal devicePixelRatio = lscs_effective_device_pixel_ratio( window );
 
     if ( !( devicePixelRatio > 1.0 ) )
     {
@@ -814,7 +814,7 @@ QSize QIcon::actualSize( QWindow *window, const QSize &size, Mode mode, State st
         return QSize();
     }
 
-    qreal devicePixelRatio = qt_effective_device_pixel_ratio( window );
+    qreal devicePixelRatio = lscs_effective_device_pixel_ratio( window );
 
     if ( !( devicePixelRatio > 1.0 ) )
     {
@@ -980,7 +980,7 @@ void QIcon::addFile( const QString &fileName, const QSize &size, Mode mode, Stat
     }
 
     d->engine->addFile( fileName, size, mode, state );
-    QString atNxFileName = qt_findAtNxFile( fileName, qApp->devicePixelRatio() );
+    QString atNxFileName = lscs_findAtNxFile( fileName, qApp->devicePixelRatio() );
 
     if ( atNxFileName != fileName )
     {
@@ -1150,7 +1150,7 @@ QDataStream &operator>>( QDataStream &s, QIcon &icon )
     return s;
 }
 
-QString qt_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRatio,
+QString lscs_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRatio,
                          qreal *sourceDevicePixelRatio )
 {
     if ( targetDevicePixelRatio <= 1.0 )
@@ -1158,7 +1158,7 @@ QString qt_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRat
         return baseFileName;
     }
 
-    static bool disableNxImageLoading = ! qgetenv( "QT_HIGHDPI_DISABLE_2X_IMAGE_LOADING" ).isEmpty();
+    static bool disableNxImageLoading = ! qgetenv( "LSCS_HIGHDPI_DISABLE_2X_IMAGE_LOADING" ).isEmpty();
 
     if ( disableNxImageLoading )
     {
@@ -1195,4 +1195,4 @@ QString qt_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRat
     return baseFileName;
 }
 
-#endif //QT_NO_ICON
+#endif //LSCS_NO_ICON

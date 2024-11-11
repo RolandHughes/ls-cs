@@ -28,7 +28,7 @@
 #include <QtCore/qobject.h>
 #include <QtGui/qevent.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeKeyEvent : public QObject
 {
@@ -166,7 +166,7 @@ private:
     bool _accepted;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeKeyEvent )
 QML_DECLARE_TYPE( QDeclarativeMouseEvent )

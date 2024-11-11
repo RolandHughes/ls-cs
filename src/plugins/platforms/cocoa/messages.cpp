@@ -43,7 +43,7 @@ static const char *application_menu_strings[] =
     lscs_mark_tr( "MAC_APPLICATION_MENU", "About %1" )
 };
 
-QString qt_mac_applicationmenu_string( int type )
+QString lscs_mac_applicationmenu_string( int type )
 {
     QString menuString = QString::fromLatin1( application_menu_strings[type] );
     const QString translated = QCoreApplication::translate( "QMenuBar", application_menu_strings[type] );

@@ -1134,7 +1134,7 @@ void QTextEngine::bidiReorder( int numItems, const quint8 *levels, int *visualOr
     }
 }
 
-static inline void qt_getDefaultJustificationOpportunities( QStringView str,
+static inline void lscs_getDefaultJustificationOpportunities( QStringView str,
         QGlyphLayout glyphs, const ushort *logClusters, int spaceAs )
 {
     auto iter  = str.begin();
@@ -1177,7 +1177,7 @@ static inline void qt_getDefaultJustificationOpportunities( QStringView str,
     }
 }
 
-static inline void qt_getJustificationOpportunities( QStringView str, const QScriptItem &si, QGlyphLayout g,
+static inline void lscs_getJustificationOpportunities( QStringView str, const QScriptItem &si, QGlyphLayout g,
         ushort *log_clusters )
 {
     Q_ASSERT( ! str.empty() && g.numGlyphs > 0 );
@@ -1217,7 +1217,7 @@ static inline void qt_getJustificationOpportunities( QStringView str, const QScr
             break;
     }
 
-    qt_getDefaultJustificationOpportunities( str, g, log_clusters, spaceAs );
+    lscs_getDefaultJustificationOpportunities( str, g, log_clusters, spaceAs );
 }
 
 // shape all the items that intersect with the line, taking tab widths into account to find out what
@@ -1393,7 +1393,7 @@ void QTextEngine::shapeText( int item ) const
 
         if ( letterSpacingIsAbsolute && letterSpacing.value() )
         {
-            letterSpacing *= font.d->dpi / qt_defaultDpiY();
+            letterSpacing *= font.d->dpi / lscs_defaultDpiY();
         }
     }
 
@@ -1408,7 +1408,7 @@ void QTextEngine::shapeText( int item ) const
     layoutData->used += si.num_glyphs;
 
     QGlyphLayout glyphs = shapedGlyphs( &si );
-    qt_getJustificationOpportunities( str, si, glyphs, logClusters( &si ) );
+    lscs_getJustificationOpportunities( str, si, glyphs, logClusters( &si ) );
 
     if ( letterSpacing != 0 )
     {
@@ -3784,13 +3784,13 @@ QFixed QTextEngine::calculateTabWidth( int item, QFixed x ) const
 
         if ( pdev )
         {
-            dpiScale = QFixed::fromReal( pdev->logicalDpiY() / qreal( qt_defaultDpiY() ) );
+            dpiScale = QFixed::fromReal( pdev->logicalDpiY() / qreal( lscs_defaultDpiY() ) );
         }
 
     }
     else
     {
-        dpiScale = QFixed::fromReal( fnt.d->dpi / qreal( qt_defaultDpiY() ) );
+        dpiScale = QFixed::fromReal( fnt.d->dpi / qreal( lscs_defaultDpiY() ) );
     }
 
     QList<QTextOption::Tab> tabArray = option.tabs();
@@ -4664,7 +4664,7 @@ QTextItemInt QTextItemInt::midItem( QFontEngine *fontEngine, int firstGlyphIndex
     return ti;
 }
 
-QTransform qt_true_matrix( qreal w, qreal h, QTransform x )
+QTransform lscs_true_matrix( qreal w, qreal h, QTransform x )
 {
     QRectF rect = x.mapRect( QRectF( 0, 0, w, h ) );
     return x * QTransform::fromTranslate( -rect.x(), -rect.y() );
@@ -4681,7 +4681,7 @@ glyph_metrics_t glyph_metrics_t::transformed( const QTransform &matrix ) const
 
     qreal w = width.toReal();
     qreal h = height.toReal();
-    QTransform xform = qt_true_matrix( w, h, matrix );
+    QTransform xform = lscs_true_matrix( w, h, matrix );
 
     QRectF rect( 0, 0, w, h );
     rect = xform.mapRect( rect );

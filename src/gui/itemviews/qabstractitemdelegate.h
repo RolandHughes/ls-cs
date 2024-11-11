@@ -27,7 +27,7 @@
 #include <qobject.h>
 #include <qstyleoption.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 class QPainter;
 class QModelIndex;
@@ -104,7 +104,7 @@ private:
     GUI_LSCS_SLOT_2( _q_commitDataAndCloseEditor )
 };
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
 
 #endif // QABSTRACTITEMDELEGATE_H

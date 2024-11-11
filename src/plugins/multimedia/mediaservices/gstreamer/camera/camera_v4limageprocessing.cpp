@@ -125,12 +125,12 @@ QVariant CameraBinV4LImageProcessing::parameter(
     }
 
     const QString deviceName = m_session->device();
-    const int fd = qt_safe_open( deviceName.toLocal8Bit().constData(), O_RDONLY );
+    const int fd = lscs_safe_open( deviceName.toLocal8Bit().constData(), O_RDONLY );
 
     if ( fd == -1 )
     {
         qWarning() << "Unable to open the camera" << deviceName
-                   << "for read to get the parameter value:" << qt_error_string( errno );
+                   << "for read to get the parameter value:" << lscs_error_string( errno );
         return QVariant();
     }
 
@@ -142,11 +142,11 @@ QVariant CameraBinV4LImageProcessing::parameter(
 
     const bool ret = ( ::ioctl( fd, VIDIOC_G_CTRL, &control ) == 0 );
 
-    qt_safe_close( fd );
+    lscs_safe_close( fd );
 
     if ( !ret )
     {
-        qWarning() << "Unable to get the parameter value:" << qt_error_string( errno );
+        qWarning() << "Unable to get the parameter value:" << lscs_error_string( errno );
         return QVariant();
     }
 
@@ -188,12 +188,12 @@ void CameraBinV4LImageProcessing::setParameter(
     }
 
     const QString deviceName = m_session->device();
-    const int fd = qt_safe_open( deviceName.toLocal8Bit().constData(), O_WRONLY );
+    const int fd = lscs_safe_open( deviceName.toLocal8Bit().constData(), O_WRONLY );
 
     if ( fd == -1 )
     {
         qWarning() << "Unable to open the camera" << deviceName
-                   << "for write to set the parameter value:" << qt_error_string( errno );
+                   << "for write to set the parameter value:" << lscs_error_string( errno );
         return;
     }
 
@@ -214,7 +214,7 @@ void CameraBinV4LImageProcessing::setParameter(
             if ( m != QCameraImageProcessing::WhiteBalanceAuto
                     && m != QCameraImageProcessing::WhiteBalanceManual )
             {
-                qt_safe_close( fd );
+                lscs_safe_close( fd );
                 return;
             }
 
@@ -235,16 +235,16 @@ void CameraBinV4LImageProcessing::setParameter(
             break;
 
         default:
-            qt_safe_close( fd );
+            lscs_safe_close( fd );
             return;
     }
 
     if ( ::ioctl( fd, VIDIOC_S_CTRL, &control ) != 0 )
     {
-        qWarning() << "Unable to set the parameter value:" << qt_error_string( errno );
+        qWarning() << "Unable to set the parameter value:" << lscs_error_string( errno );
     }
 
-    qt_safe_close( fd );
+    lscs_safe_close( fd );
 }
 
 void CameraBinV4LImageProcessing::updateParametersInfo(
@@ -257,12 +257,12 @@ void CameraBinV4LImageProcessing::updateParametersInfo(
     else if ( cameraStatus == QCamera::LoadedStatus )
     {
         const QString deviceName = m_session->device();
-        const int fd = qt_safe_open( deviceName.toLocal8Bit().constData(), O_RDONLY );
+        const int fd = lscs_safe_open( deviceName.toLocal8Bit().constData(), O_RDONLY );
 
         if ( fd == -1 )
         {
             qWarning() << "Unable to open the camera" << deviceName
-                       << "for read to query the parameter info:" << qt_error_string( errno );
+                       << "for read to query the parameter info:" << lscs_error_string( errno );
             return;
         }
 
@@ -288,7 +288,7 @@ void CameraBinV4LImageProcessing::updateParametersInfo(
 
             if ( ::ioctl( fd, VIDIOC_QUERYCTRL, &queryControl ) != 0 )
             {
-                qWarning() << "Unable to query the parameter info:" << qt_error_string( errno );
+                qWarning() << "Unable to query the parameter info:" << lscs_error_string( errno );
                 continue;
             }
 
@@ -301,7 +301,7 @@ void CameraBinV4LImageProcessing::updateParametersInfo(
             m_parametersInfo.insert( supportedParametersEntries[i].parameter, sourceValueInfo );
         }
 
-        qt_safe_close( fd );
+        lscs_safe_close( fd );
     }
 }
 

@@ -36,12 +36,12 @@
 @class QCocoaMenuLoader;
 
 @interface NSApplication ( QApplicationIntegration )
-- ( void ) qt_setDockMenu: ( NSMenu * )newMenu;
-- ( QCocoaMenuLoader * )qt_qcocoamenuLoader;
-- ( int ) qt_validModesForFontPanel: ( NSFontPanel * )fontPanel;
+- ( void ) lscs_setDockMenu: ( NSMenu * )newMenu;
+- ( QCocoaMenuLoader * )lscs_qcocoamenuLoader;
+- ( int ) lscs_validModesForFontPanel: ( NSFontPanel * )fontPanel;
 
-- ( void ) qt_sendPostedMessage: ( NSEvent * )event;
-- ( BOOL ) qt_filterEvent: ( NSEvent * )event;
+- ( void ) lscs_sendPostedMessage: ( NSEvent * )event;
+- ( BOOL ) lscs_filterEvent: ( NSEvent * )event;
 @end
 
 @interface QNSApplication : NSApplication
@@ -49,6 +49,6 @@
 }
 @end
 
-void qt_redirectNSApplicationSendEvent();
-void qt_resetNSApplicationSendEvent();
+void lscs_redirectNSApplicationSendEvent();
+void lscs_resetNSApplicationSendEvent();
 

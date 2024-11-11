@@ -21,8 +21,8 @@
 *
 ***********************************************************************/
 
-#ifndef BINDINGS_QT_RUNTIME_H_
-#define BINDINGS_QT_RUNTIME_H_
+#ifndef BINDINGS_LSCS_RUNTIME_H_
+#define BINDINGS_LSCS_RUNTIME_H_
 
 #include "BridgeJSC.h"
 #include "Completion.h"

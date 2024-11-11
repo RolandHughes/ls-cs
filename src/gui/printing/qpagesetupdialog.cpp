@@ -26,7 +26,7 @@
 
 #include <qprinter.h>
 
-#ifndef QT_NO_PRINTDIALOG
+#ifndef LSCS_NO_PRINTDIALOG
 
 QPageSetupDialogPrivate::QPageSetupDialogPrivate( QPrinter *prntr )
     : printer( nullptr ), ownsPrinter( false )

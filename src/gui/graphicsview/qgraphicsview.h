@@ -28,7 +28,7 @@
 #include <qscrollarea.h>
 #include <qgraphicsscene.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 class QGraphicsItem;
 class QPainterPath;
@@ -82,7 +82,7 @@ class Q_GUI_EXPORT QGraphicsView : public QAbstractScrollArea
     GUI_LSCS_PROPERTY_READ( viewportUpdateMode, viewportUpdateMode )
     GUI_LSCS_PROPERTY_WRITE( viewportUpdateMode, setViewportUpdateMode )
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
     GUI_LSCS_PROPERTY_READ( rubberBandSelectionMode, rubberBandSelectionMode )
     GUI_LSCS_PROPERTY_WRITE( rubberBandSelectionMode, setRubberBandSelectionMode )
 #endif
@@ -173,7 +173,7 @@ public:
     DragMode dragMode() const;
     void setDragMode( DragMode mode );
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
     Qt::ItemSelectionMode rubberBandSelectionMode() const;
     void setRubberBandSelectionMode( Qt::ItemSelectionMode mode );
     QRect rubberBandRect() const;
@@ -268,7 +268,7 @@ public:
     GUI_LSCS_SLOT_1( Public, void updateSceneRect( const QRectF &rect ) )
     GUI_LSCS_SLOT_2( updateSceneRect )
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
     GUI_LSCS_SIGNAL_1( Public, void rubberBandChanged( QRect viewportRect, QPointF fromScenePoint, QPointF toScenePoint ) )
     GUI_LSCS_SIGNAL_2( rubberBandChanged, viewportRect, fromScenePoint, toScenePoint )
 #endif
@@ -281,7 +281,7 @@ protected:
     bool event( QEvent *event ) override;
     bool viewportEvent( QEvent *event ) override;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 
@@ -299,7 +299,7 @@ protected:
     void mouseMoveEvent( QMouseEvent *event ) override;
     void mouseReleaseEvent( QMouseEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 
@@ -316,7 +316,7 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QGraphicsView )
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     GUI_LSCS_SLOT_1( Private, void _q_setViewportCursor( const QCursor &cursor ) )
     GUI_LSCS_SLOT_2( _q_setViewportCursor )
 
@@ -393,7 +393,7 @@ inline QPolygon QGraphicsView::mapFromScene( qreal x, qreal y, qreal width, qrea
     return mapFromScene( QRectF( x, y, width, height ) );
 }
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 
 #endif

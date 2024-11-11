@@ -27,7 +27,7 @@
 #include <qnetworkconfiguration.h>
 #include <qobject.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 class QNetworkConfigurationManagerPrivate;
 
@@ -87,6 +87,6 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS( QNetworkConfigurationManager::Capabilities )
 
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 #endif // QNETWORKCONFIGURATIONMANAGER_H

@@ -26,7 +26,7 @@
 
 #include <qabstractscrollarea.h>
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 
 class QScrollAreaPrivate;
 
@@ -77,6 +77,6 @@ private:
     Q_DECLARE_PRIVATE( QScrollArea )
 };
 
-#endif // QT_NO_SCROLLAREA
+#endif // LSCS_NO_SCROLLAREA
 
 #endif

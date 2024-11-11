@@ -52,7 +52,7 @@ extern uint qGlobalPostedEventsCount();
 #  define WM_TOUCH 0x0240
 #endif
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 #ifndef WM_GESTURE
 #  define WM_GESTURE 0x0119
@@ -62,7 +62,7 @@ extern uint qGlobalPostedEventsCount();
 #  define WM_GESTURENOTIFY 0x011A
 #endif
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
 static constexpr UINT_PTR WM_LSCS_SOCKET_NOTIFIER    = WM_USER;
 static constexpr UINT_PTR WM_LSCS_SENDPOSTED_EVENTS  = WM_USER + 1;
@@ -81,7 +81,7 @@ using ptimeKillEvent = MMRESULT( WINAPI * )( UINT );
 static ptimeSetEvent qtimeSetEvent   = nullptr;
 static ptimeKillEvent qtimeKillEvent = nullptr;
 
-LRESULT QT_WIN_CALLBACK qt_internal_proc( HWND hwnd, UINT message, WPARAM wp, LPARAM lp );
+LRESULT LSCS_WIN_CALLBACK lscs_internal_proc( HWND hwnd, UINT message, WPARAM wp, LPARAM lp );
 
 static void resolveTimerAPI()
 {
@@ -127,7 +127,7 @@ void QEventDispatcherWin32Private::activateEventNotifier( QWinEventNotifier *wen
 }
 
 // called by a workerthread
-void WINAPI QT_WIN_CALLBACK qt_fast_timer_proc( uint timerId, uint, DWORD_PTR user, DWORD_PTR, DWORD_PTR )
+void WINAPI LSCS_WIN_CALLBACK lscs_fast_timer_proc( uint timerId, uint, DWORD_PTR user, DWORD_PTR, DWORD_PTR )
 {
     if ( ! timerId )
     {
@@ -141,7 +141,7 @@ void WINAPI QT_WIN_CALLBACK qt_fast_timer_proc( uint timerId, uint, DWORD_PTR us
     QCoreApplication::postEvent( t->dispatcher, new QTimerEvent( t->timerId ) );
 }
 
-LRESULT QT_WIN_CALLBACK qt_internal_proc( HWND hwnd, UINT message, WPARAM wp, LPARAM lp )
+LRESULT LSCS_WIN_CALLBACK lscs_internal_proc( HWND hwnd, UINT message, WPARAM wp, LPARAM lp )
 {
     if ( message == WM_NCCREATE )
     {
@@ -318,7 +318,7 @@ static inline UINT inputTimerMask()
     return result;
 }
 
-LRESULT QT_WIN_CALLBACK qt_GetMessageHook( int code, WPARAM wp, LPARAM lp )
+LRESULT LSCS_WIN_CALLBACK lscs_GetMessageHook( int code, WPARAM wp, LPARAM lp )
 {
     QEventDispatcherWin32 *q = qobject_cast<QEventDispatcherWin32 *>( QAbstractEventDispatcher::instance() );
     Q_ASSERT( q != nullptr );
@@ -385,11 +385,11 @@ QWindowsMessageWindowClassContext::QWindowsMessageWindowClassContext()
     : atom( 0 )
 {
     // make sure that multiple instances can coexist in the same process
-    const QString classStr = "QEventDispatcherWin32_Internal_Widget" + QString::number( quintptr( qt_internal_proc ) );
+    const QString classStr = "QEventDispatcherWin32_Internal_Widget" + QString::number( quintptr( lscs_internal_proc ) );
 
     WNDCLASS wc;
     wc.style         = 0;
-    wc.lpfnWndProc   = qt_internal_proc;
+    wc.lpfnWndProc   = lscs_internal_proc;
     wc.cbClsExtra    = 0;
     wc.cbWndExtra    = 0;
     wc.hInstance     = qWinAppInst();
@@ -424,7 +424,7 @@ static QWindowsMessageWindowClassContext *qWindowsMessageWindowClassContext()
     return &retval;
 }
 
-static HWND qt_create_internal_window( const QEventDispatcherWin32 *eventDispatcher )
+static HWND lscs_create_internal_window( const QEventDispatcherWin32 *eventDispatcher )
 {
     QWindowsMessageWindowClassContext *ctx = qWindowsMessageWindowClassContext();
 
@@ -478,7 +478,7 @@ void QEventDispatcherWin32Private::registerTimer( WinTimerInfo *t )
     Q_Q( QEventDispatcherWin32 );
 
     int ok = 0;
-    calculateNextTimeout( t, qt_msectime() );
+    calculateNextTimeout( t, lscs_msectime() );
     uint interval = t->interval;
 
     if ( interval == 0u )
@@ -490,7 +490,7 @@ void QEventDispatcherWin32Private::registerTimer( WinTimerInfo *t )
     }
     else if ( ( interval < 20u || t->timerType == Qt::PreciseTimer ) && qtimeSetEvent )
     {
-        ok = t->fastTimerId = qtimeSetEvent( interval, 1, qt_fast_timer_proc, ( DWORD_PTR )t,
+        ok = t->fastTimerId = qtimeSetEvent( interval, 1, lscs_fast_timer_proc, ( DWORD_PTR )t,
                                              TIME_CALLBACK_FUNCTION | TIME_PERIODIC | TIME_KILL_SYNCHRONOUS );
     }
 
@@ -537,7 +537,7 @@ void QEventDispatcherWin32Private::sendTimerEvent( int timerId )
         t->inTimerEvent = true;
 
         // recalculate next emission
-        calculateNextTimeout( t, qt_msectime() );
+        calculateNextTimeout( t, lscs_msectime() );
         QTimerEvent e( t->timerId );
         QCoreApplication::sendEvent( t->obj, &e );
 
@@ -578,7 +578,7 @@ void QEventDispatcherWin32::createInternalHwnd()
         return;
     }
 
-    d->internalHwnd = qt_create_internal_window( this );
+    d->internalHwnd = lscs_create_internal_window( this );
     installMessageHook();
 
     // start all normal timers
@@ -598,14 +598,14 @@ void QEventDispatcherWin32::installMessageHook()
     }
 
     // setup GetMessage hook needed to drive our posted events
-    d->getMessageHook = SetWindowsHookEx( WH_GETMESSAGE, ( HOOKPROC ) qt_GetMessageHook, nullptr, GetCurrentThreadId() );
+    d->getMessageHook = SetWindowsHookEx( WH_GETMESSAGE, ( HOOKPROC ) lscs_GetMessageHook, nullptr, GetCurrentThreadId() );
 
     if ( ! d->getMessageHook )
     {
         int errorCode = GetLastError();
 
         qFatal( "INTERNAL ERROR: failed to install GetMessage hook: %d, %s",
-                errorCode, lscsPrintable( qt_error_string( errorCode ) ) );
+                errorCode, lscsPrintable( lscs_error_string( errorCode ) ) );
     }
 }
 
@@ -650,8 +650,8 @@ bool QEventDispatcherWin32::processEvents( QEventLoop::ProcessEventsFlags flags 
 
     bool canWait;
     bool retVal = false;
-    bool seenWM_QT_SENDPOSTEDEVENTS = false;
-    bool needWM_QT_SENDPOSTEDEVENTS = false;
+    bool seenWM_LSCS_SENDPOSTEDEVENTS = false;
+    bool needWM_LSCS_SENDPOSTEDEVENTS = false;
 
     do
     {
@@ -694,7 +694,7 @@ bool QEventDispatcherWin32::processEvents( QEventLoop::ProcessEventsFlags flags 
                                  || msg.message == WM_MOUSEHWHEEL
                                  || msg.message == WM_TOUCH
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
                                  || msg.message == WM_GESTURE
                                  || msg.message == WM_GESTURENOTIFY
 #endif
@@ -739,19 +739,19 @@ bool QEventDispatcherWin32::processEvents( QEventLoop::ProcessEventsFlags flags 
             {
                 if ( ! d->getMessageHook )
                 {
-                    ( void ) qt_GetMessageHook( 0, PM_REMOVE, ( LPARAM ) &msg );
+                    ( void ) lscs_GetMessageHook( 0, PM_REMOVE, ( LPARAM ) &msg );
                 }
 
                 if ( d->internalHwnd == msg.hwnd && msg.message == WM_LSCS_SENDPOSTED_EVENTS )
                 {
-                    if ( seenWM_QT_SENDPOSTEDEVENTS )
+                    if ( seenWM_LSCS_SENDPOSTEDEVENTS )
                     {
                         // when calling processEvents() "manually", we only want to send posted events once
-                        needWM_QT_SENDPOSTEDEVENTS = true;
+                        needWM_LSCS_SENDPOSTEDEVENTS = true;
                         continue;
                     }
 
-                    seenWM_QT_SENDPOSTEDEVENTS = true;
+                    seenWM_LSCS_SENDPOSTEDEVENTS = true;
 
                 }
                 else if ( msg.message == WM_TIMER )
@@ -831,13 +831,13 @@ bool QEventDispatcherWin32::processEvents( QEventLoop::ProcessEventsFlags flags 
     }
     while ( canWait );
 
-    if ( ! seenWM_QT_SENDPOSTEDEVENTS && ( flags & QEventLoop::EventLoopExec ) == 0 )
+    if ( ! seenWM_LSCS_SENDPOSTEDEVENTS && ( flags & QEventLoop::EventLoopExec ) == 0 )
     {
         // when called "manually", always send posted events
         sendPostedEvents();
     }
 
-    if ( needWM_QT_SENDPOSTEDEVENTS )
+    if ( needWM_LSCS_SENDPOSTEDEVENTS )
     {
         PostMessage( d->internalHwnd, WM_LSCS_SENDPOSTED_EVENTS, 0, 0 );
     }
@@ -1255,7 +1255,7 @@ int QEventDispatcherWin32::remainingTime( int timerId )
         return -1;
     }
 
-    quint64 currentTime = qt_msectime();
+    quint64 currentTime = lscs_msectime();
 
     WinTimerInfo *t;
 

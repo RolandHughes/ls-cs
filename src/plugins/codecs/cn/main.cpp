@@ -27,9 +27,9 @@
 
 #include "qgb18030codec.h"
 
-#ifndef QT_NO_TEXTCODECPLUGIN
+#ifndef LSCS_NO_TEXTCODECPLUGIN
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class CNTextCodecs : public QTextCodecPlugin
 {
@@ -154,6 +154,6 @@ QTextCodec *CNTextCodecs::createForName( const QByteArray &name )
 Q_EXPORT_STATIC_PLUGIN( CNTextCodecs )
 Q_EXPORT_PLUGIN2( qcncodecs, CNTextCodecs )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_TEXTCODECPLUGIN
+#endif // LSCS_NO_TEXTCODECPLUGIN

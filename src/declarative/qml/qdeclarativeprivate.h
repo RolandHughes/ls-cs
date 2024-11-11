@@ -32,7 +32,7 @@
 #include <QtDeclarative/QDeclarativePropertyValueSource>
 #include <QtDeclarative/QDeclarativePropertyValueInterceptor>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 typedef QObject *( *QDeclarativeAttachedPropertiesFunc )( QObject * );
 
@@ -326,6 +326,6 @@ int qmlRegisterUncreatableType( const char *uri, int versionMajor, int versionMi
 
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEPRIVATE_H

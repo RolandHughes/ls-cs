@@ -24,7 +24,7 @@
 #ifndef QDECLARATIVENULLABLEVALUE_P_P_H
 #define QDECLARATIVENULLABLEVALUE_P_P_H
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 template<typename T>
 struct QDeclarativeNullableValue
@@ -64,6 +64,6 @@ struct QDeclarativeNullableValue
     T value;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVENULLABLEVALUE_P_H

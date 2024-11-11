@@ -33,7 +33,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QString>
 
-QT_BEGIN_NAMESPACE QDeclarativeDomDocumentPrivate::QDeclarativeDomDocumentPrivate()
+LSCS_BEGIN_NAMESPACE QDeclarativeDomDocumentPrivate::QDeclarativeDomDocumentPrivate()
     : root( 0 )
 {
 }
@@ -2037,4 +2037,4 @@ QString QDeclarativeDomImport::qualifier() const
     return d->qualifier;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

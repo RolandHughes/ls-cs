@@ -26,13 +26,13 @@
 
 #include <QtCore/qobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QAction;
 class QScriptEngine;
 class QWidget;
 
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
 class QMainWindow;
 #endif
 
@@ -93,7 +93,7 @@ public:
     bool autoShowStandardWindow() const;
     void setAutoShowStandardWindow( bool autoShow );
 
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
     QMainWindow *standardWindow() const;
 #endif
     QToolBar *createStandardToolBar( QWidget *parent = nullptr );
@@ -118,6 +118,6 @@ private:
     LSCS_SLOT_2( _q_showStandardWindow )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

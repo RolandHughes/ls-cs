@@ -39,7 +39,7 @@
 #include <qpalette.h>
 #include <qpixmapcache.h>
 #include <qsysinfo.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qtextstream.h>
 #include <qvariant.h>
 #include <qwin_context.h>
@@ -563,7 +563,7 @@ void QWindowsTheme::refreshIconPixmapSizes()
 }
 
 // Defined in qpixmap_win.cpp
-Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON( HICON icon );
+Q_GUI_EXPORT QPixmap lscs_pixmapFromWinHICON( HICON icon );
 
 static QPixmap loadIconFromShell32( int resourceId, QSizeF size )
 {
@@ -576,7 +576,7 @@ static QPixmap loadIconFromShell32( int resourceId, QSizeF size )
 
         if ( iconHandle )
         {
-            QPixmap iconpixmap = qt_pixmapFromWinHICON( iconHandle );
+            QPixmap iconpixmap = lscs_pixmapFromWinHICON( iconHandle );
             DestroyIcon( iconHandle );
             return iconpixmap;
         }
@@ -677,7 +677,7 @@ QPixmap QWindowsTheme::standardPixmap( StandardPixmap sp, const QSizeF &pixmapSi
 
                 if ( QWindowsContext::shell32dll.sHGetStockIconInfo( SIID_SHIELD, SHGFI_ICON | iconSize, &iconInfo ) == S_OK )
                 {
-                    pixmap = qt_pixmapFromWinHICON( iconInfo.hIcon );
+                    pixmap = lscs_pixmapFromWinHICON( iconInfo.hIcon );
                     DestroyIcon( iconInfo.hIcon );
                     return pixmap;
                 }
@@ -709,7 +709,7 @@ QPixmap QWindowsTheme::standardPixmap( StandardPixmap sp, const QSizeF &pixmapSi
     if ( iconName )
     {
         HICON iconHandle = LoadIcon( nullptr, iconName );
-        QPixmap pixmap = qt_pixmapFromWinHICON( iconHandle );
+        QPixmap pixmap = lscs_pixmapFromWinHICON( iconHandle );
         DestroyIcon( iconHandle );
 
         if ( !pixmap.isNull() )
@@ -723,7 +723,7 @@ QPixmap QWindowsTheme::standardPixmap( StandardPixmap sp, const QSizeF &pixmapSi
 
 static QString dirIconPixmapCacheKey( int iIcon, int iconSize, int imageListSize )
 {
-    QString key = "qt_dir_" + QString::number( iIcon );
+    QString key = "lscs_dir_" + QString::number( iIcon );
 
     if ( iconSize == SHGFI_LARGEICON )
     {
@@ -796,7 +796,7 @@ static QPixmap pixmapFromShellImageList( int iImageList, const SHFILEINFO &info 
 
     if ( hr == S_OK )
     {
-        result = qt_pixmapFromWinHICON( hIcon );
+        result = lscs_pixmapFromWinHICON( hIcon );
         DestroyIcon( hIcon );
     }
 
@@ -904,7 +904,7 @@ QPixmap QWindowsTheme::fileIconPixmap( const QFileInfo &fileInfo, const QSizeF &
 
             if ( pixmap.isNull() )
             {
-                pixmap = qt_pixmapFromWinHICON( info.hIcon );
+                pixmap = lscs_pixmapFromWinHICON( info.hIcon );
             }
 
             if ( !pixmap.isNull() )

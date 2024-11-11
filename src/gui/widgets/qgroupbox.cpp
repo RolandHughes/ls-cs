@@ -23,7 +23,7 @@
 
 #include <qgroupbox.h>
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
 
 #include <qapplication.h>
 #include <qbitmap.h>
@@ -35,7 +35,7 @@
 #include <qstyleoption.h>
 #include <qstylepainter.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -53,7 +53,7 @@ public:
     QString title;
     int align;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     int shortcutId;
 #endif
 
@@ -160,7 +160,7 @@ void QGroupBoxPrivate::init()
 {
     Q_Q( QGroupBox );
     align = Qt::AlignLeft;
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     shortcutId = 0;
 #endif
     flat = false;
@@ -184,7 +184,7 @@ void QGroupBox::setTitle( const QString &title )
     }
 
     d->title = title;
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     releaseShortcut( d->shortcutId );
     d->shortcutId = grabShortcut( QKeySequence::mnemonic( title ) );
 #endif
@@ -193,7 +193,7 @@ void QGroupBox::setTitle( const QString &title )
     update();
     updateGeometry();
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleEvent event( this, QAccessible::NameChanged );
     QAccessible::updateAccessibility( &event );
 #endif
@@ -236,7 +236,7 @@ bool QGroupBox::event( QEvent *e )
 {
     Q_D( QGroupBox );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( e->type() == QEvent::Shortcut )
     {
@@ -550,7 +550,7 @@ void QGroupBox::setChecked( bool b )
         d->checked = b;
         d->_q_setChildrenEnabled( b );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
         QAccessible::State st;
         st.checked = true;
         QAccessibleStateChangeEvent e( this, st );
@@ -704,4 +704,4 @@ void QGroupBox::_q_setChildrenEnabled( bool b )
     d->_q_setChildrenEnabled( b );
 }
 
-#endif //QT_NO_GROUPBOX
+#endif //LSCS_NO_GROUPBOX

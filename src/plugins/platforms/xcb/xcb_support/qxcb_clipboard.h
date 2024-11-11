@@ -30,7 +30,7 @@
 #include <xcb/xcb.h>
 #include <xcb/xfixes.h>
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
 class QXcbConnection;
 class QXcbScreen;
@@ -103,6 +103,6 @@ private:
     xcb_timestamp_t m_incr_receive_time;
 };
 
-#endif // QT_NO_CLIPBOARD
+#endif // LSCS_NO_CLIPBOARD
 
 #endif // QXCBCLIPBOARD_H

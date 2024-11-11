@@ -38,12 +38,12 @@
 
 #include <qmediaserviceprovider_p.h>
 
-static constexpr bool qt_sizeLessThan( const QSize &s1, const QSize &s2 )
+static constexpr bool lscs_sizeLessThan( const QSize &s1, const QSize &s2 )
 {
     return ( s1.width() * s1.height() ) < ( s2.width() * s2.height() );
 }
 
-static constexpr bool qt_frameRateRangeLessThan( const QCamera::FrameRateRange &s1, const QCamera::FrameRateRange &s2 )
+static constexpr bool lscs_frameRateRangeLessThan( const QCamera::FrameRateRange &s1, const QCamera::FrameRateRange &s2 )
 {
     return qFuzzyCompare( s1.maximumFrameRate, s2.maximumFrameRate ) ? ( s1.minimumFrameRate < s2.minimumFrameRate )
            : ( s1.maximumFrameRate < s2.maximumFrameRate );
@@ -660,7 +660,7 @@ QList<QSize> QCamera::supportedViewfinderResolutions( const QCameraViewfinderSet
         }
     }
 
-    std::sort( resolutions.begin(), resolutions.end(), qt_sizeLessThan );
+    std::sort( resolutions.begin(), resolutions.end(), lscs_sizeLessThan );
 
     return resolutions;
 }
@@ -680,7 +680,7 @@ QList<QCamera::FrameRateRange> QCamera::supportedViewfinderFrameRateRanges( cons
         }
     }
 
-    std::sort( frameRateRanges.begin(), frameRateRanges.end(), qt_frameRateRangeLessThan );
+    std::sort( frameRateRanges.begin(), frameRateRanges.end(), lscs_frameRateRangeLessThan );
 
     return frameRateRanges;
 }

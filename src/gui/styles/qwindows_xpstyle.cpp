@@ -23,7 +23,7 @@
 
 #include <qwindows_xpstyle_p.h>
 
-#if ! defined(QT_NO_STYLE_WINDOWSXP) || defined(QT_PLUGIN)
+#if ! defined(LSCS_NO_STYLE_WINDOWSXP) || defined(LSCS_PLUGIN)
 
 #include <qapplication.h>
 #include <qbackingstore.h>
@@ -157,8 +157,8 @@ static constexpr const int windowsArrowHMargin =  6; // arrow horizontal margin
 static constexpr const int windowsRightBorder  = 12; // right border on windows
 
 // External function calls
-extern Q_GUI_EXPORT HDC qt_win_display_dc();
-extern QRegion qt_region_from_HRGN( HRGN rgn );
+extern Q_GUI_EXPORT HDC lscs_win_display_dc();
+extern QRegion lscs_region_from_HRGN( HRGN rgn );
 
 // Theme names matching the QWindowsXPStylePrivate::Theme enumeration
 static const wchar_t *themeNames[QWindowsXPStylePrivate::NThemes] =
@@ -266,7 +266,7 @@ bool QWindowsXPStylePrivate::use_xp = false;
 
 QAtomicInt QWindowsXPStylePrivate::ref{-1};     // -1 based refcounting
 
-static void qt_add_rect( HRGN &winRegion, QRect r )
+static void lscs_add_rect( HRGN &winRegion, QRect r )
 {
     HRGN rgn = CreateRectRgn( r.left(), r.top(), r.x() + r.width(), r.y() + r.height() );
 
@@ -285,19 +285,19 @@ static void qt_add_rect( HRGN &winRegion, QRect r )
     }
 }
 
-static HRGN qt_hrgn_from_qregion( const QRegion &region )
+static HRGN lscs_hrgn_from_qregion( const QRegion &region )
 {
     HRGN hRegion = CreateRectRgn( 0, 0, 0, 0 );
 
     if ( region.rectCount() == 1 )
     {
-        qt_add_rect( hRegion, region.boundingRect() );
+        lscs_add_rect( hRegion, region.boundingRect() );
         return hRegion;
     }
 
     for ( const QRect &rect : region.rects() )
     {
-        qt_add_rect( hRegion, rect );
+        lscs_add_rect( hRegion, rect );
     }
 
     return hRegion;
@@ -509,7 +509,7 @@ bool QWindowsXPStylePrivate::isLineEditBaseColorSet( const QStyleOption *option,
         // the parent, as while the color is always correct on the palette supplied by panel,
         // the mask can still be empty. If either mask specifies custom base color, use that.
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
         if ( const QAbstractSpinBox *spinbox = qobject_cast<QAbstractSpinBox *>( widget->parentWidget() ) )
         {
             resolveMask |= spinbox->palette().resolve();
@@ -665,7 +665,7 @@ HBITMAP QWindowsXPStylePrivate::buffer( int w, int h )
 
     if ( !bufferDC )
     {
-        bufferDC = CreateCompatibleDC( qt_win_display_dc() );
+        bufferDC = CreateCompatibleDC( lscs_win_display_dc() );
     }
 
     // Define the header
@@ -1040,7 +1040,7 @@ bool QWindowsXPStylePrivate::drawBackgroundDirectly( HDC dc, XPThemeData &themeD
         sysRgn &= scaleRegion( painter->clipRegion(), additionalDevicePixelRatio ).translated( redirectionDelta.toPoint() );
     }
 
-    HRGN hrgn = qt_hrgn_from_qregion( sysRgn );
+    HRGN hrgn = lscs_hrgn_from_qregion( sysRgn );
     SelectClipRgn( dc, hrgn );
 
     RECT drawRECT = themeData.toRECT( area );
@@ -1094,7 +1094,7 @@ bool QWindowsXPStylePrivate::drawBackgroundDirectly( HDC dc, XPThemeData &themeD
             if ( themeData.noBorder || themeData.noContent )
             {
                 DeleteObject( hrgn );
-                hrgn = qt_hrgn_from_qregion( extraClip );
+                hrgn = lscs_hrgn_from_qregion( extraClip );
                 SelectClipRgn( dc, hrgn );
             }
         }
@@ -1136,7 +1136,7 @@ bool QWindowsXPStylePrivate::drawBackgroundThruNativeBuffer( XPThemeData &themeD
 
     bool potentialInvalidAlpha;
 
-    QString pixmapCacheKey = "$qt_xp_";
+    QString pixmapCacheKey = "$lscs_xp_";
 
     pixmapCacheKey.append( themeName( themeData.theme ) );
     pixmapCacheKey.append( QLatin1Char( 'p' ) );
@@ -1287,7 +1287,7 @@ bool QWindowsXPStylePrivate::drawBackgroundThruNativeBuffer( XPThemeData &themeD
             // Set the clip region, if used
             if ( addBorderContentClipping )
             {
-                HRGN hrgn = qt_hrgn_from_qregion( extraClip );
+                HRGN hrgn = lscs_hrgn_from_qregion( extraClip );
                 SelectClipRgn( dc, hrgn );
 
                 // Compensate for the noBorder area difference (noContent has the same area)
@@ -1501,7 +1501,7 @@ void QWindowsXPStyle::polish( QWidget *widget )
             || qobject_cast<QToolButton *>( widget )
             || qobject_cast<QTabBar *>( widget )
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
             || qobject_cast<QComboBox *>( widget )
 #endif
 
@@ -1509,7 +1509,7 @@ void QWindowsXPStyle::polish( QWidget *widget )
             || qobject_cast<QSlider *>( widget )
             || qobject_cast<QHeaderView *>( widget )
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
             || qobject_cast<QAbstractSpinBox *>( widget )
             || qobject_cast<QSpinBox *>( widget )
 #endif
@@ -1518,7 +1518,7 @@ void QWindowsXPStyle::polish( QWidget *widget )
         widget->setAttribute( Qt::WA_Hover );
     }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     if ( qobject_cast<QRubberBand *>( widget ) )
     {
@@ -1562,7 +1562,7 @@ void QWindowsXPStyle::polish( QPalette &pal )
 
 void QWindowsXPStyle::unpolish( QWidget *widget )
 {
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     if ( qobject_cast<QRubberBand *>( widget ) )
     {
@@ -1598,7 +1598,7 @@ void QWindowsXPStyle::unpolish( QWidget *widget )
             || qobject_cast<QToolButton *>( widget )
             || qobject_cast<QTabBar *>( widget )
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
             || qobject_cast<QComboBox *>( widget )
 #endif
 
@@ -1606,7 +1606,7 @@ void QWindowsXPStyle::unpolish( QWidget *widget )
             || qobject_cast<QSlider *>( widget )
             || qobject_cast<QHeaderView *>( widget )
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
             || qobject_cast<QAbstractSpinBox *>( widget )
             || qobject_cast<QSpinBox *>( widget )
 #endif
@@ -3147,7 +3147,7 @@ void QWindowsXPStyle::drawControl( ControlElement element, const QStyleOption *o
 
             return;
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
         case CE_DockWidgetTitle:
             if ( const QStyleOptionDockWidget *dwOpt = qstyleoption_cast<const QStyleOptionDockWidget *>( option ) )
@@ -3319,9 +3319,9 @@ void QWindowsXPStyle::drawControl( ControlElement element, const QStyleOption *o
             }
 
             break;
-#endif // QT_NO_DOCKWIDGET
+#endif // LSCS_NO_DOCKWIDGET
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
         case CE_RubberBand:
             if ( qstyleoption_cast<const QStyleOptionRubberBand *>( option ) )
@@ -3421,7 +3421,7 @@ void QWindowsXPStyle::drawComplexControl( ComplexControl cc, const QStyleOptionC
 
     switch ( cc )
     {
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case CC_SpinBox:
             if ( const QStyleOptionSpinBox *sb = qstyleoption_cast<const QStyleOptionSpinBox *>( option ) )
@@ -3509,7 +3509,7 @@ void QWindowsXPStyle::drawComplexControl( ComplexControl cc, const QStyleOptionC
             break;
 #endif
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CC_ComboBox:
             if ( const QStyleOptionComboBox *cmb = qstyleoption_cast<const QStyleOptionComboBox *>( option ) )
@@ -3777,7 +3777,7 @@ void QWindowsXPStyle::drawComplexControl( ComplexControl cc, const QStyleOptionC
 
             break;
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
         case CC_Slider:
             if ( const QStyleOptionSlider *slider = qstyleoption_cast<const QStyleOptionSlider *>( option ) )
@@ -3999,7 +3999,7 @@ void QWindowsXPStyle::drawComplexControl( ComplexControl cc, const QStyleOptionC
             break;
 #endif
 
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 
         case CC_ToolButton:
             if ( const QStyleOptionToolButton *toolbutton = qstyleoption_cast<const QStyleOptionToolButton *>( option ) )
@@ -4540,7 +4540,7 @@ void QWindowsXPStyle::drawComplexControl( ComplexControl cc, const QStyleOptionC
         }
         break;
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
 
         case CC_MdiControls:
         {
@@ -4649,7 +4649,7 @@ void QWindowsXPStyle::drawComplexControl( ComplexControl cc, const QStyleOptionC
         break;
 #endif
 
-#ifndef QT_NO_DIAL
+#ifndef LSCS_NO_DIAL
 
         case CC_Dial:
             if ( const QStyleOptionSlider *dial = qstyleoption_cast<const QStyleOptionSlider *>( option ) )
@@ -4784,7 +4784,7 @@ int QWindowsXPStyle::pixelMetric( PixelMetric pm, const QStyleOption *option, co
             res = 160;
             break;
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
         case PM_ToolBarHandleExtent:
             res = int( QStyleHelper::dpiScaled( 8. ) );
@@ -5133,7 +5133,7 @@ QRect QWindowsXPStyle::subControlRect( ComplexControl cc, const QStyleOptionComp
 
             break;
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
 
         case CC_MdiControls:
         {
@@ -5265,7 +5265,7 @@ QSize QWindowsXPStyle::sizeFromContents( ContentsType ct, const QStyleOption *op
             sz += QSize( 1, 0 );
             break;
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
         case CT_MenuBarItem:
             if ( ! sz.isEmpty() )
@@ -5406,7 +5406,7 @@ int QWindowsXPStyle::styleHint( StyleHint hint, const QStyleOption *option, cons
         }
         break;
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
         case SH_RubberBand_Mask:
             if ( qstyleoption_cast<const QStyleOptionRubberBand *>( option ) )
@@ -5638,4 +5638,4 @@ QWindowsXPStyle::QWindowsXPStyle( QWindowsXPStylePrivate &dd ) : QWindowsStyle( 
 {
 }
 
-#endif   // QT_NO_WINDOWSXP
+#endif   // LSCS_NO_WINDOWSXP

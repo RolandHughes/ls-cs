@@ -223,7 +223,7 @@ QNetworkRequest QNetworkAccessBackend::request() const
     return reply->request;
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 QList<QNetworkProxy> QNetworkAccessBackend::proxyList() const
 {
     return reply->proxyList;
@@ -343,7 +343,7 @@ void QNetworkAccessBackend::error( QNetworkReply::NetworkError errorCode, const 
     reply->error( errorCode, errorMsg );
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 void QNetworkAccessBackend::proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator )
 {
     manager->proxyAuthenticationRequired( QUrl(), proxy, synchronous, authenticator, &reply->lastProxyAuthentication );
@@ -367,14 +367,14 @@ void QNetworkAccessBackend::redirectionRequested( const QUrl &target )
 
 void QNetworkAccessBackend::encrypted()
 {
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     reply->encrypted();
 #endif
 }
 
 void QNetworkAccessBackend::sslErrors( const QList<QSslError> &errors )
 {
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     reply->sslErrors( errors );
 #else
     ( void ) errors;
@@ -383,7 +383,7 @@ void QNetworkAccessBackend::sslErrors( const QList<QSslError> &errors )
 
 bool QNetworkAccessBackend::start()
 {
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     // For bearer, check if session start is required
     QSharedPointer<QNetworkSession> networkSession( manager->getNetworkSession() );
 
@@ -420,9 +420,9 @@ bool QNetworkAccessBackend::start()
 
 #endif
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     // Get the proxy settings from the network session (in the case of service networks,
     // the proxy settings change depending which AP was activated)
     QNetworkSession *session = networkSession.data();

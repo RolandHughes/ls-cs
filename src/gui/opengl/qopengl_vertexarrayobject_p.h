@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qopengl.h>
 
@@ -78,17 +78,17 @@ private:
     friend void Q_GUI_EXPORT qtInitializeVertexArrayObjectHelper( QOpenGLVertexArrayObjectHelper *helper, QOpenGLContext *context );
 
     // Function signatures are equivalent between desktop core, ARB, APPLE, ES 3 and ES 2 extensions
-    typedef void ( QOPENGLF_APIENTRYP qt_GenVertexArrays_t )( GLsizei n, GLuint *arrays );
-    typedef void ( QOPENGLF_APIENTRYP qt_DeleteVertexArrays_t )( GLsizei n, const GLuint *arrays );
-    typedef void ( QOPENGLF_APIENTRYP qt_BindVertexArray_t )( GLuint array );
-    typedef GLboolean ( QOPENGLF_APIENTRYP qt_IsVertexArray_t )( GLuint array );
+    typedef void ( QOPENGLF_APIENTRYP lscs_GenVertexArrays_t )( GLsizei n, GLuint *arrays );
+    typedef void ( QOPENGLF_APIENTRYP lscs_DeleteVertexArrays_t )( GLsizei n, const GLuint *arrays );
+    typedef void ( QOPENGLF_APIENTRYP lscs_BindVertexArray_t )( GLuint array );
+    typedef GLboolean ( QOPENGLF_APIENTRYP lscs_IsVertexArray_t )( GLuint array );
 
-    qt_GenVertexArrays_t GenVertexArrays;
-    qt_DeleteVertexArrays_t DeleteVertexArrays;
-    qt_BindVertexArray_t BindVertexArray;
-    qt_IsVertexArray_t IsVertexArray;
+    lscs_GenVertexArrays_t GenVertexArrays;
+    lscs_DeleteVertexArrays_t DeleteVertexArrays;
+    lscs_BindVertexArray_t BindVertexArray;
+    lscs_IsVertexArray_t IsVertexArray;
 };
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qgraphics_layout_p.h>
 
@@ -239,4 +239,4 @@ void QGraphicsLayoutPrivate::activateRecursive( QGraphicsLayoutItem *item )
     }
 }
 
-#endif //QT_NO_GRAPHICSVIEW
+#endif //LSCS_NO_GRAPHICSVIEW

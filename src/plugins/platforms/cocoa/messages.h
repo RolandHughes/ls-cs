@@ -28,7 +28,7 @@
 #include <qplatform_menu.h>
 
 QString msgAboutCs();
-QString qt_mac_applicationmenu_string( int type );
+QString lscs_mac_applicationmenu_string( int type );
 QPlatformMenuItem::MenuRole detectMenuRole( const QString &caption );
 QString msgDialogButtonDiscard();
 

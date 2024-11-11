@@ -576,12 +576,12 @@ bool QFileSystemEngine::fillMetaData( const QFileSystemEntry &entry, QFileSystem
 
     bool entryExists = true;
 
-    QT_STATBUF statBuffer;
+    LSCS_STATBUF statBuffer;
     bool statBufferValid = false;
 
     if ( what & QFileSystemMetaData::LinkType )
     {
-        if ( QT_LSTAT( nativeFilePath.constData(), &statBuffer ) == 0 )
+        if ( LSCS_LSTAT( nativeFilePath.constData(), &statBuffer ) == 0 )
         {
 
             if ( S_ISLNK( statBuffer.st_mode ) )
@@ -607,7 +607,7 @@ bool QFileSystemEngine::fillMetaData( const QFileSystemEntry &entry, QFileSystem
     {
         if ( entryExists && ! statBufferValid )
         {
-            statBufferValid = ( QT_STAT( nativeFilePath.constData(), &statBuffer ) == 0 );
+            statBufferValid = ( LSCS_STAT( nativeFilePath.constData(), &statBuffer ) == 0 );
         }
 
         if ( statBufferValid )
@@ -651,7 +651,7 @@ bool QFileSystemEngine::fillMetaData( const QFileSystemEntry &entry, QFileSystem
         {
             if ( what & QFileSystemMetaData::UserReadPermission )
             {
-                if ( QT_ACCESS( nativeFilePath.constData(), R_OK ) == 0 )
+                if ( LSCS_ACCESS( nativeFilePath.constData(), R_OK ) == 0 )
                 {
                     data.entryFlags |= QFileSystemMetaData::UserReadPermission;
                 }
@@ -659,7 +659,7 @@ bool QFileSystemEngine::fillMetaData( const QFileSystemEntry &entry, QFileSystem
 
             if ( what & QFileSystemMetaData::UserWritePermission )
             {
-                if ( QT_ACCESS( nativeFilePath.constData(), W_OK ) == 0 )
+                if ( LSCS_ACCESS( nativeFilePath.constData(), W_OK ) == 0 )
                 {
                     data.entryFlags |= QFileSystemMetaData::UserWritePermission;
                 }
@@ -667,7 +667,7 @@ bool QFileSystemEngine::fillMetaData( const QFileSystemEntry &entry, QFileSystem
 
             if ( what & QFileSystemMetaData::UserExecutePermission )
             {
-                if ( QT_ACCESS( nativeFilePath.constData(), X_OK ) == 0 )
+                if ( LSCS_ACCESS( nativeFilePath.constData(), X_OK ) == 0 )
                 {
                     data.entryFlags |= QFileSystemMetaData::UserExecutePermission;
                 }
@@ -723,15 +723,15 @@ static bool pathIsDir( const QByteArray &nativeName )
     // fail if the dir already exists (it may have been created by another
     // thread or another process)
 
-    QT_STATBUF st;
-    return QT_STAT( nativeName.constData(), &st ) == 0 && ( st.st_mode & S_IFMT ) == S_IFDIR;
+    LSCS_STATBUF st;
+    return LSCS_STAT( nativeName.constData(), &st ) == 0 && ( st.st_mode & S_IFMT ) == S_IFDIR;
 }
 
 static bool createDirectoryWithParents( const QByteArray &nativeName, bool shouldMkdirFirst = true )
 {
     // if shouldMkdirFirst is false, assume the caller tried to mkdir before calling this function
 
-    if ( shouldMkdirFirst && QT_MKDIR( nativeName.constData(), 0777 ) == 0 )
+    if ( shouldMkdirFirst && LSCS_MKDIR( nativeName.constData(), 0777 ) == 0 )
     {
         return true;
     }
@@ -762,7 +762,7 @@ static bool createDirectoryWithParents( const QByteArray &nativeName, bool shoul
     }
 
     // try again
-    if ( QT_MKDIR( nativeName.constData(), 0777 ) == 0 )
+    if ( LSCS_MKDIR( nativeName.constData(), 0777 ) == 0 )
     {
         return true;
     }
@@ -783,7 +783,7 @@ bool QFileSystemEngine::createDirectory( const QFileSystemEntry &entry, bool cre
     // try to mkdir this directory
     QByteArray nativeName = QFile::encodeName( dirName );
 
-    if ( QT_MKDIR( nativeName.constData(), 0777 ) == 0 )
+    if ( LSCS_MKDIR( nativeName.constData(), 0777 ) == 0 )
     {
         return true;
     }
@@ -820,9 +820,9 @@ bool QFileSystemEngine::removeDirectory( const QFileSystemEntry &entry, bool rem
         for ( int oldslash = 0, slash = dirName.length(); slash > 0; oldslash = slash )
         {
             const QByteArray chunk = QFile::encodeName( dirName.left( slash ) );
-            QT_STATBUF st;
+            LSCS_STATBUF st;
 
-            if ( QT_STAT( chunk.constData(), &st ) != -1 )
+            if ( LSCS_STAT( chunk.constData(), &st ) != -1 )
             {
                 if ( ( st.st_mode & S_IFMT ) != S_IFDIR )
                 {
@@ -981,8 +981,8 @@ QString QFileSystemEngine::rootPath()
 QString QFileSystemEngine::tempPath()
 {
 
-#ifdef QT_UNIX_TEMP_PATH_OVERRIDE
-    return QT_UNIX_TEMP_PATH_OVERRIDE;
+#ifdef LSCS_UNIX_TEMP_PATH_OVERRIDE
+    return LSCS_UNIX_TEMP_PATH_OVERRIDE;
 
 #else
     QString tmp = QFile::decodeName( qgetenv( "TMPDIR" ) );
@@ -1016,7 +1016,7 @@ QString QFileSystemEngine::tempPath()
 bool QFileSystemEngine::setCurrentPath( const QFileSystemEntry &path )
 {
     int r;
-    r = QT_CHDIR( path.nativeFilePath().constData() );
+    r = LSCS_CHDIR( path.nativeFilePath().constData() );
     return r >= 0;
 }
 

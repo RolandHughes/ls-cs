@@ -45,7 +45,7 @@ struct BeginPaintInfo
     uint backingStoreRecreated : 1;
 };
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 class QPlatformTextureListWatcher : public QObject
 {
     GUI_LSCS_OBJECT( QPlatformTextureListWatcher )
@@ -136,7 +136,7 @@ private:
 
     void sendUpdateRequest( QWidget *widget, UpdateTime updateTime );
 
-    static void qt_flush( QWidget *widget, const QRegion &region, QBackingStore *backingStore,
+    static void lscs_flush( QWidget *widget, const QRegion &region, QBackingStore *backingStore,
                           QWidget *tlw, const QPoint &tlwOffset, QPlatformTextureList *widgetTextures,
                           QWidgetBackingStore *widgetBackingStore );
 
@@ -166,7 +166,7 @@ private:
         {
             QWidgetPrivate *widgetPrivate = widget->d_func();
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
             if ( widgetPrivate->graphicsEffect )
             {
@@ -345,7 +345,7 @@ private:
 #endif
     }
 
-    friend QRegion qt_dirtyRegion( QWidget * );
+    friend QRegion lscs_dirtyRegion( QWidget * );
     friend class QWidgetPrivate;
     friend class QWidget;
     friend class QBackingStore;

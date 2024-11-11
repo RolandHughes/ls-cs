@@ -170,7 +170,7 @@ WebWheelEvent WebEventFactory::createWebWheelEvent( QGraphicsSceneWheelEvent *e 
     // Use the same single scroll step as QTextEdit
     // (in QTextEditPrivate::init [h,v]bar->setSingleStep)
     static const float cDefaultQtScrollStep = 20.f;
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     deltaX *= ( fullTick ) ? QApplication::wheelScrollLines() * cDefaultQtScrollStep : 1;
     deltaY *= ( fullTick ) ? QApplication::wheelScrollLines() * cDefaultQtScrollStep : 1;
 #endif

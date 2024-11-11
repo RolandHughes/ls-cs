@@ -32,7 +32,7 @@
 #include <QtCore/qvariant.h>
 #include <QtCore/qtextstream.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
 //#define QDBUS_PARSER_DEBUG
 #ifdef QDBUS_PARSER_DEBUG
@@ -41,7 +41,7 @@
 # define qDBusParserError if (true) {} else qDebug
 #endif
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 static QDBusIntrospection::Annotations parseAnnotations( const QDomElement &elem )
 {
@@ -433,6 +433,6 @@ QSharedDataPointer<QDBusIntrospection::ObjectTree> QDBusXmlParser::objectTree() 
     return QSharedDataPointer<QDBusIntrospection::ObjectTree>( retval );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

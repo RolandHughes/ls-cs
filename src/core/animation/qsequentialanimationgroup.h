@@ -26,7 +26,7 @@
 
 #include <qanimationgroup.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QPauseAnimation;
 class QSequentialAnimationGroupPrivate;
@@ -70,6 +70,6 @@ private:
     void _q_uncontrolledAnimationFinished() override;
 };
 
-#endif // QT_NO_ANIMATION
+#endif // LSCS_NO_ANIMATION
 
 #endif

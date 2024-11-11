@@ -1231,7 +1231,7 @@ QPolygon QTransform::map( const QPolygon &a ) const
     return p;
 }
 
-extern QPainterPath qt_regionToPath( const QRegion &region );
+extern QPainterPath lscs_regionToPath( const QRegion &region );
 
 QRegion QTransform::map( const QRegion &r ) const
 {
@@ -1254,7 +1254,7 @@ QRegion QTransform::map( const QRegion &r ) const
         return QRegion( mapRect( r.boundingRect() ) );
     }
 
-    QPainterPath p = map( qt_regionToPath( r ) );
+    QPainterPath p = map( lscs_regionToPath( r ) );
     return p.toFillPolygon( QTransform() ).toPolygon();
 }
 
@@ -1336,7 +1336,7 @@ static inline bool lineTo_clipped( QPainterPath &path, const QTransform &transfo
     return true;
 }
 
-Q_GUI_EXPORT bool qt_scaleForTransform( const QTransform &transform, qreal *scale );
+Q_GUI_EXPORT bool lscs_scaleForTransform( const QTransform &transform, qreal *scale );
 
 static inline bool cubicTo_clipped( QPainterPath &path, const QTransform &transform, const QPointF &a, const QPointF &b,
                                     const QPointF &c, const QPointF &d, bool needsMoveTo )
@@ -1345,7 +1345,7 @@ static inline bool cubicTo_clipped( QPainterPath &path, const QTransform &transf
     // segments so they can be transformed more accurately
 
     qreal scale;
-    qt_scaleForTransform( transform, &scale );
+    lscs_scaleForTransform( transform, &scale );
 
     qreal curveThreshold = scale == 0 ? qreal( 0.25 ) : ( qreal( 0.25 ) / scale );
 
@@ -1860,7 +1860,7 @@ QTransform::operator QVariant() const
 // (same scale in x and y direction)
 // scale is set to the max of x and y scaling factors
 
-Q_GUI_EXPORT bool qt_scaleForTransform( const QTransform &transform, qreal *scale )
+Q_GUI_EXPORT bool lscs_scaleForTransform( const QTransform &transform, qreal *scale )
 {
     const QTransform::TransformationType type = transform.type();
 

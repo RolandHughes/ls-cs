@@ -347,7 +347,7 @@ bool QRawFont::supportsCharacter( quint32 ucs4 ) const
 }
 
 // qfontdatabase.cpp
-extern int qt_script_for_writing_system( QFontDatabase::WritingSystem writingSystem );
+extern int lscs_script_for_writing_system( QFontDatabase::WritingSystem writingSystem );
 
 
 QRawFont QRawFont::fromFont( const QFont &font, QFontDatabase::WritingSystem writingSystem )
@@ -355,7 +355,7 @@ QRawFont QRawFont::fromFont( const QFont &font, QFontDatabase::WritingSystem wri
     QRawFont rawFont;
 
     QFontPrivate *font_d = QFontPrivate::get( font );
-    int script = qt_script_for_writing_system( writingSystem );
+    int script = lscs_script_for_writing_system( writingSystem );
 
     QFontEngine *fe = font_d->engineForScript( script );
 

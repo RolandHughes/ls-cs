@@ -47,9 +47,9 @@ static const Qt::KeyboardModifiers ModsTbl[] = {
    Qt::MetaModifier | Qt::AltModifier | Qt::ShiftModifier | Qt::ControlModifier,  // 15
 };
 
-bool qt_mac_eat_unicode_key = false;
+bool lscs_mac_eat_unicode_key = false;
 
-void qt_mac_secure_keyboard(bool b)
+void lscs_mac_secure_keyboard(bool b)
 {
    static bool secure = false;
    if (b != secure) {
@@ -59,43 +59,43 @@ void qt_mac_secure_keyboard(bool b)
 }
 
 /* key maps */
-struct qt_mac_enum_mapper {
+struct lscs_mac_enum_mapper {
    int mac_code;
-   int qt_code;
+   int lscs_code;
 
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-#   define QT_MAC_MAP_ENUM(x) x, #x
+#   define LSCS_MAC_MAP_ENUM(x) x, #x
     const char *desc;
 #else
-#   define QT_MAC_MAP_ENUM(x) x
+#   define LSCS_MAC_MAP_ENUM(x) x
 #endif
 
 };
 
 //modifiers
-static qt_mac_enum_mapper qt_mac_modifier_symbols[] = {
-   { shiftKey, QT_MAC_MAP_ENUM(Qt::ShiftModifier) },
-   { rightShiftKey, QT_MAC_MAP_ENUM(Qt::ShiftModifier) },
-   { controlKey, QT_MAC_MAP_ENUM(Qt::MetaModifier) },
-   { rightControlKey, QT_MAC_MAP_ENUM(Qt::MetaModifier) },
-   { cmdKey, QT_MAC_MAP_ENUM(Qt::ControlModifier) },
-   { optionKey, QT_MAC_MAP_ENUM(Qt::AltModifier) },
-   { rightOptionKey, QT_MAC_MAP_ENUM(Qt::AltModifier) },
-   { kEventKeyModifierNumLockMask, QT_MAC_MAP_ENUM(Qt::KeypadModifier) },
-   { 0, QT_MAC_MAP_ENUM(0) }
+static lscs_mac_enum_mapper lscs_mac_modifier_symbols[] = {
+   { shiftKey, LSCS_MAC_MAP_ENUM(Qt::ShiftModifier) },
+   { rightShiftKey, LSCS_MAC_MAP_ENUM(Qt::ShiftModifier) },
+   { controlKey, LSCS_MAC_MAP_ENUM(Qt::MetaModifier) },
+   { rightControlKey, LSCS_MAC_MAP_ENUM(Qt::MetaModifier) },
+   { cmdKey, LSCS_MAC_MAP_ENUM(Qt::ControlModifier) },
+   { optionKey, LSCS_MAC_MAP_ENUM(Qt::AltModifier) },
+   { rightOptionKey, LSCS_MAC_MAP_ENUM(Qt::AltModifier) },
+   { kEventKeyModifierNumLockMask, LSCS_MAC_MAP_ENUM(Qt::KeypadModifier) },
+   { 0, LSCS_MAC_MAP_ENUM(0) }
 };
 
-Qt::KeyboardModifiers qt_mac_get_modifiers(int keys)
+Qt::KeyboardModifiers lscs_mac_get_modifiers(int keys)
 {
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-   qDebug("qt_mac_get_modifiers() Mapping modifiers = %d (0x%04x)", keys, keys);
+   qDebug("lscs_mac_get_modifiers() Mapping modifiers = %d (0x%04x)", keys, keys);
 #endif
 
    Qt::KeyboardModifiers ret = Qt::NoModifier;
 
-   for (int i = 0; qt_mac_modifier_symbols[i].qt_code; i++) {
-      if (keys & qt_mac_modifier_symbols[i].mac_code) {
-         ret |= Qt::KeyboardModifier(qt_mac_modifier_symbols[i].qt_code);
+   for (int i = 0; lscs_mac_modifier_symbols[i].lscs_code; i++) {
+      if (keys & lscs_mac_modifier_symbols[i].mac_code) {
+         ret |= Qt::KeyboardModifier(lscs_mac_modifier_symbols[i].lscs_code);
       }
    }
 
@@ -115,17 +115,17 @@ Qt::KeyboardModifiers qt_mac_get_modifiers(int keys)
    return ret;
 }
 
-static int qt_mac_get_mac_modifiers(Qt::KeyboardModifiers keys)
+static int lscs_mac_get_mac_modifiers(Qt::KeyboardModifiers keys)
 {
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-   qDebug("qt_mac_get_mac_modifiers() Mapping modifiers = %d (0x%04x)", (int)keys, (int)keys);
+   qDebug("lscs_mac_get_mac_modifiers() Mapping modifiers = %d (0x%04x)", (int)keys, (int)keys);
 #endif
 
    int ret = 0;
 
-   for (int i = 0; qt_mac_modifier_symbols[i].qt_code; i++) {
-      if (keys & qt_mac_modifier_symbols[i].qt_code) {
-         ret |= qt_mac_modifier_symbols[i].mac_code;
+   for (int i = 0; lscs_mac_modifier_symbols[i].lscs_code; i++) {
+      if (keys & lscs_mac_modifier_symbols[i].lscs_code) {
+         ret |= lscs_mac_modifier_symbols[i].mac_code;
       }
    }
 
@@ -145,119 +145,119 @@ static int qt_mac_get_mac_modifiers(Qt::KeyboardModifiers keys)
 }
 
 //keyboard keys (non-modifiers)
-static qt_mac_enum_mapper qt_mac_keyboard_symbols[] = {
-   { kHomeCharCode, QT_MAC_MAP_ENUM(Qt::Key_Home) },
-   { kEnterCharCode, QT_MAC_MAP_ENUM(Qt::Key_Enter) },
-   { kEndCharCode, QT_MAC_MAP_ENUM(Qt::Key_End) },
-   { kBackspaceCharCode, QT_MAC_MAP_ENUM(Qt::Key_Backspace) },
-   { kTabCharCode, QT_MAC_MAP_ENUM(Qt::Key_Tab) },
-   { kPageUpCharCode, QT_MAC_MAP_ENUM(Qt::Key_PageUp) },
-   { kPageDownCharCode, QT_MAC_MAP_ENUM(Qt::Key_PageDown) },
-   { kReturnCharCode, QT_MAC_MAP_ENUM(Qt::Key_Return) },
-   { kEscapeCharCode, QT_MAC_MAP_ENUM(Qt::Key_Escape) },
-   { kLeftArrowCharCode, QT_MAC_MAP_ENUM(Qt::Key_Left) },
-   { kRightArrowCharCode, QT_MAC_MAP_ENUM(Qt::Key_Right) },
-   { kUpArrowCharCode, QT_MAC_MAP_ENUM(Qt::Key_Up) },
-   { kDownArrowCharCode, QT_MAC_MAP_ENUM(Qt::Key_Down) },
-   { kHelpCharCode, QT_MAC_MAP_ENUM(Qt::Key_Help) },
-   { kDeleteCharCode, QT_MAC_MAP_ENUM(Qt::Key_Delete) },
+static lscs_mac_enum_mapper lscs_mac_keyboard_symbols[] = {
+   { kHomeCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_Home) },
+   { kEnterCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_Enter) },
+   { kEndCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_End) },
+   { kBackspaceCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_Backspace) },
+   { kTabCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_Tab) },
+   { kPageUpCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_PageUp) },
+   { kPageDownCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_PageDown) },
+   { kReturnCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_Return) },
+   { kEscapeCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_Escape) },
+   { kLeftArrowCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_Left) },
+   { kRightArrowCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_Right) },
+   { kUpArrowCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_Up) },
+   { kDownArrowCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_Down) },
+   { kHelpCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_Help) },
+   { kDeleteCharCode, LSCS_MAC_MAP_ENUM(Qt::Key_Delete) },
    //ascii maps, for debug
-   { ':', QT_MAC_MAP_ENUM(Qt::Key_Colon) },
-   { ';', QT_MAC_MAP_ENUM(Qt::Key_Semicolon) },
-   { '<', QT_MAC_MAP_ENUM(Qt::Key_Less) },
-   { '=', QT_MAC_MAP_ENUM(Qt::Key_Equal) },
-   { '>', QT_MAC_MAP_ENUM(Qt::Key_Greater) },
-   { '?', QT_MAC_MAP_ENUM(Qt::Key_Question) },
-   { '@', QT_MAC_MAP_ENUM(Qt::Key_At) },
-   { ' ', QT_MAC_MAP_ENUM(Qt::Key_Space) },
-   { '!', QT_MAC_MAP_ENUM(Qt::Key_Exclam) },
-   { '"', QT_MAC_MAP_ENUM(Qt::Key_QuoteDbl) },
-   { '#', QT_MAC_MAP_ENUM(Qt::Key_NumberSign) },
-   { '$', QT_MAC_MAP_ENUM(Qt::Key_Dollar) },
-   { '%', QT_MAC_MAP_ENUM(Qt::Key_Percent) },
-   { '&', QT_MAC_MAP_ENUM(Qt::Key_Ampersand) },
-   { '\'', QT_MAC_MAP_ENUM(Qt::Key_Apostrophe) },
-   { '(', QT_MAC_MAP_ENUM(Qt::Key_ParenLeft) },
-   { ')', QT_MAC_MAP_ENUM(Qt::Key_ParenRight) },
-   { '*', QT_MAC_MAP_ENUM(Qt::Key_Asterisk) },
-   { '+', QT_MAC_MAP_ENUM(Qt::Key_Plus) },
-   { ',', QT_MAC_MAP_ENUM(Qt::Key_Comma) },
-   { '-', QT_MAC_MAP_ENUM(Qt::Key_Minus) },
-   { '.', QT_MAC_MAP_ENUM(Qt::Key_Period) },
-   { '/', QT_MAC_MAP_ENUM(Qt::Key_Slash) },
-   { '[', QT_MAC_MAP_ENUM(Qt::Key_BracketLeft) },
-   { ']', QT_MAC_MAP_ENUM(Qt::Key_BracketRight) },
-   { '\\', QT_MAC_MAP_ENUM(Qt::Key_Backslash) },
-   { '_', QT_MAC_MAP_ENUM(Qt::Key_Underscore) },
-   { '`', QT_MAC_MAP_ENUM(Qt::Key_QuoteLeft) },
-   { '{', QT_MAC_MAP_ENUM(Qt::Key_BraceLeft) },
-   { '}', QT_MAC_MAP_ENUM(Qt::Key_BraceRight) },
-   { '|', QT_MAC_MAP_ENUM(Qt::Key_Bar) },
-   { '~', QT_MAC_MAP_ENUM(Qt::Key_AsciiTilde) },
-   { '^', QT_MAC_MAP_ENUM(Qt::Key_AsciiCircum) },
-   {   0, QT_MAC_MAP_ENUM(0) }
+   { ':', LSCS_MAC_MAP_ENUM(Qt::Key_Colon) },
+   { ';', LSCS_MAC_MAP_ENUM(Qt::Key_Semicolon) },
+   { '<', LSCS_MAC_MAP_ENUM(Qt::Key_Less) },
+   { '=', LSCS_MAC_MAP_ENUM(Qt::Key_Equal) },
+   { '>', LSCS_MAC_MAP_ENUM(Qt::Key_Greater) },
+   { '?', LSCS_MAC_MAP_ENUM(Qt::Key_Question) },
+   { '@', LSCS_MAC_MAP_ENUM(Qt::Key_At) },
+   { ' ', LSCS_MAC_MAP_ENUM(Qt::Key_Space) },
+   { '!', LSCS_MAC_MAP_ENUM(Qt::Key_Exclam) },
+   { '"', LSCS_MAC_MAP_ENUM(Qt::Key_QuoteDbl) },
+   { '#', LSCS_MAC_MAP_ENUM(Qt::Key_NumberSign) },
+   { '$', LSCS_MAC_MAP_ENUM(Qt::Key_Dollar) },
+   { '%', LSCS_MAC_MAP_ENUM(Qt::Key_Percent) },
+   { '&', LSCS_MAC_MAP_ENUM(Qt::Key_Ampersand) },
+   { '\'', LSCS_MAC_MAP_ENUM(Qt::Key_Apostrophe) },
+   { '(', LSCS_MAC_MAP_ENUM(Qt::Key_ParenLeft) },
+   { ')', LSCS_MAC_MAP_ENUM(Qt::Key_ParenRight) },
+   { '*', LSCS_MAC_MAP_ENUM(Qt::Key_Asterisk) },
+   { '+', LSCS_MAC_MAP_ENUM(Qt::Key_Plus) },
+   { ',', LSCS_MAC_MAP_ENUM(Qt::Key_Comma) },
+   { '-', LSCS_MAC_MAP_ENUM(Qt::Key_Minus) },
+   { '.', LSCS_MAC_MAP_ENUM(Qt::Key_Period) },
+   { '/', LSCS_MAC_MAP_ENUM(Qt::Key_Slash) },
+   { '[', LSCS_MAC_MAP_ENUM(Qt::Key_BracketLeft) },
+   { ']', LSCS_MAC_MAP_ENUM(Qt::Key_BracketRight) },
+   { '\\', LSCS_MAC_MAP_ENUM(Qt::Key_Backslash) },
+   { '_', LSCS_MAC_MAP_ENUM(Qt::Key_Underscore) },
+   { '`', LSCS_MAC_MAP_ENUM(Qt::Key_QuoteLeft) },
+   { '{', LSCS_MAC_MAP_ENUM(Qt::Key_BraceLeft) },
+   { '}', LSCS_MAC_MAP_ENUM(Qt::Key_BraceRight) },
+   { '|', LSCS_MAC_MAP_ENUM(Qt::Key_Bar) },
+   { '~', LSCS_MAC_MAP_ENUM(Qt::Key_AsciiTilde) },
+   { '^', LSCS_MAC_MAP_ENUM(Qt::Key_AsciiCircum) },
+   {   0, LSCS_MAC_MAP_ENUM(0) }
 };
 
-static qt_mac_enum_mapper qt_mac_keyvkey_symbols[] = { //real scan codes
-   { kVK_F1, QT_MAC_MAP_ENUM(Qt::Key_F1) },
-   { kVK_F2, QT_MAC_MAP_ENUM(Qt::Key_F2) },
-   { kVK_F3, QT_MAC_MAP_ENUM(Qt::Key_F3) },
-   { kVK_F4, QT_MAC_MAP_ENUM(Qt::Key_F4) },
-   { kVK_F5, QT_MAC_MAP_ENUM(Qt::Key_F5) },
-   { kVK_F6, QT_MAC_MAP_ENUM(Qt::Key_F6) },
-   { kVK_F7, QT_MAC_MAP_ENUM(Qt::Key_F7) },
-   { kVK_F8, QT_MAC_MAP_ENUM(Qt::Key_F8) },
-   { kVK_F9, QT_MAC_MAP_ENUM(Qt::Key_F9) },
-   { kVK_F10, QT_MAC_MAP_ENUM(Qt::Key_F10) },
-   { kVK_F11, QT_MAC_MAP_ENUM(Qt::Key_F11) },
-   { kVK_F12, QT_MAC_MAP_ENUM(Qt::Key_F12) },
-   { kVK_F13, QT_MAC_MAP_ENUM(Qt::Key_F13) },
-   { kVK_F14, QT_MAC_MAP_ENUM(Qt::Key_F14) },
-   { kVK_F15, QT_MAC_MAP_ENUM(Qt::Key_F15) },
-   { kVK_F16, QT_MAC_MAP_ENUM(Qt::Key_F16) },
-   { kVK_Return, QT_MAC_MAP_ENUM(Qt::Key_Return) },
-   { kVK_Tab, QT_MAC_MAP_ENUM(Qt::Key_Tab) },
-   { kVK_Escape, QT_MAC_MAP_ENUM(Qt::Key_Escape) },
-   { kVK_Help, QT_MAC_MAP_ENUM(Qt::Key_Help) },
-   { kVK_UpArrow, QT_MAC_MAP_ENUM(Qt::Key_Up) },
-   { kVK_DownArrow, QT_MAC_MAP_ENUM(Qt::Key_Down) },
-   { kVK_LeftArrow, QT_MAC_MAP_ENUM(Qt::Key_Left) },
-   { kVK_RightArrow, QT_MAC_MAP_ENUM(Qt::Key_Right) },
-   { kVK_PageUp, QT_MAC_MAP_ENUM(Qt::Key_PageUp) },
-   { kVK_PageDown, QT_MAC_MAP_ENUM(Qt::Key_PageDown) },
-   {   0, QT_MAC_MAP_ENUM(0) }
+static lscs_mac_enum_mapper lscs_mac_keyvkey_symbols[] = { //real scan codes
+   { kVK_F1, LSCS_MAC_MAP_ENUM(Qt::Key_F1) },
+   { kVK_F2, LSCS_MAC_MAP_ENUM(Qt::Key_F2) },
+   { kVK_F3, LSCS_MAC_MAP_ENUM(Qt::Key_F3) },
+   { kVK_F4, LSCS_MAC_MAP_ENUM(Qt::Key_F4) },
+   { kVK_F5, LSCS_MAC_MAP_ENUM(Qt::Key_F5) },
+   { kVK_F6, LSCS_MAC_MAP_ENUM(Qt::Key_F6) },
+   { kVK_F7, LSCS_MAC_MAP_ENUM(Qt::Key_F7) },
+   { kVK_F8, LSCS_MAC_MAP_ENUM(Qt::Key_F8) },
+   { kVK_F9, LSCS_MAC_MAP_ENUM(Qt::Key_F9) },
+   { kVK_F10, LSCS_MAC_MAP_ENUM(Qt::Key_F10) },
+   { kVK_F11, LSCS_MAC_MAP_ENUM(Qt::Key_F11) },
+   { kVK_F12, LSCS_MAC_MAP_ENUM(Qt::Key_F12) },
+   { kVK_F13, LSCS_MAC_MAP_ENUM(Qt::Key_F13) },
+   { kVK_F14, LSCS_MAC_MAP_ENUM(Qt::Key_F14) },
+   { kVK_F15, LSCS_MAC_MAP_ENUM(Qt::Key_F15) },
+   { kVK_F16, LSCS_MAC_MAP_ENUM(Qt::Key_F16) },
+   { kVK_Return, LSCS_MAC_MAP_ENUM(Qt::Key_Return) },
+   { kVK_Tab, LSCS_MAC_MAP_ENUM(Qt::Key_Tab) },
+   { kVK_Escape, LSCS_MAC_MAP_ENUM(Qt::Key_Escape) },
+   { kVK_Help, LSCS_MAC_MAP_ENUM(Qt::Key_Help) },
+   { kVK_UpArrow, LSCS_MAC_MAP_ENUM(Qt::Key_Up) },
+   { kVK_DownArrow, LSCS_MAC_MAP_ENUM(Qt::Key_Down) },
+   { kVK_LeftArrow, LSCS_MAC_MAP_ENUM(Qt::Key_Left) },
+   { kVK_RightArrow, LSCS_MAC_MAP_ENUM(Qt::Key_Right) },
+   { kVK_PageUp, LSCS_MAC_MAP_ENUM(Qt::Key_PageUp) },
+   { kVK_PageDown, LSCS_MAC_MAP_ENUM(Qt::Key_PageDown) },
+   {   0, LSCS_MAC_MAP_ENUM(0) }
 };
 
-static qt_mac_enum_mapper qt_mac_private_unicode[] = {
-   { 0xF700, QT_MAC_MAP_ENUM(Qt::Key_Up) },            //NSUpArrowFunctionKey
-   { 0xF701, QT_MAC_MAP_ENUM(Qt::Key_Down) },          //NSDownArrowFunctionKey
-   { 0xF702, QT_MAC_MAP_ENUM(Qt::Key_Left) },          //NSLeftArrowFunctionKey
-   { 0xF703, QT_MAC_MAP_ENUM(Qt::Key_Right) },         //NSRightArrowFunctionKey
-   { 0xF727, QT_MAC_MAP_ENUM(Qt::Key_Insert) },        //NSInsertFunctionKey
-   { 0xF728, QT_MAC_MAP_ENUM(Qt::Key_Delete) },        //NSDeleteFunctionKey
-   { 0xF729, QT_MAC_MAP_ENUM(Qt::Key_Home) },          //NSHomeFunctionKey
-   { 0xF72B, QT_MAC_MAP_ENUM(Qt::Key_End) },           //NSEndFunctionKey
-   { 0xF72C, QT_MAC_MAP_ENUM(Qt::Key_PageUp) },        //NSPageUpFunctionKey
-   { 0xF72D, QT_MAC_MAP_ENUM(Qt::Key_PageDown) },      //NSPageDownFunctionKey
-   { 0xF72F, QT_MAC_MAP_ENUM(Qt::Key_ScrollLock) },    //NSScrollLockFunctionKey
-   { 0xF730, QT_MAC_MAP_ENUM(Qt::Key_Pause) },         //NSPauseFunctionKey
-   { 0xF731, QT_MAC_MAP_ENUM(Qt::Key_SysReq) },        //NSSysReqFunctionKey
-   { 0xF735, QT_MAC_MAP_ENUM(Qt::Key_Menu) },          //NSMenuFunctionKey
-   { 0xF738, QT_MAC_MAP_ENUM(Qt::Key_Print) },         //NSPrintFunctionKey
-   { 0xF73A, QT_MAC_MAP_ENUM(Qt::Key_Clear) },         //NSClearDisplayFunctionKey
-   { 0xF73D, QT_MAC_MAP_ENUM(Qt::Key_Insert) },        //NSInsertCharFunctionKey
-   { 0xF73E, QT_MAC_MAP_ENUM(Qt::Key_Delete) },        //NSDeleteCharFunctionKey
-   { 0xF741, QT_MAC_MAP_ENUM(Qt::Key_Select) },        //NSSelectFunctionKey
-   { 0xF742, QT_MAC_MAP_ENUM(Qt::Key_Execute) },       //NSExecuteFunctionKey
-   { 0xF746, QT_MAC_MAP_ENUM(Qt::Key_Help) },          //NSHelpFunctionKey
-   { 0xF747, QT_MAC_MAP_ENUM(Qt::Key_Mode_switch) },   //NSModeSwitchFunctionKey
-   {   0,    QT_MAC_MAP_ENUM(0) }
+static lscs_mac_enum_mapper lscs_mac_private_unicode[] = {
+   { 0xF700, LSCS_MAC_MAP_ENUM(Qt::Key_Up) },            //NSUpArrowFunctionKey
+   { 0xF701, LSCS_MAC_MAP_ENUM(Qt::Key_Down) },          //NSDownArrowFunctionKey
+   { 0xF702, LSCS_MAC_MAP_ENUM(Qt::Key_Left) },          //NSLeftArrowFunctionKey
+   { 0xF703, LSCS_MAC_MAP_ENUM(Qt::Key_Right) },         //NSRightArrowFunctionKey
+   { 0xF727, LSCS_MAC_MAP_ENUM(Qt::Key_Insert) },        //NSInsertFunctionKey
+   { 0xF728, LSCS_MAC_MAP_ENUM(Qt::Key_Delete) },        //NSDeleteFunctionKey
+   { 0xF729, LSCS_MAC_MAP_ENUM(Qt::Key_Home) },          //NSHomeFunctionKey
+   { 0xF72B, LSCS_MAC_MAP_ENUM(Qt::Key_End) },           //NSEndFunctionKey
+   { 0xF72C, LSCS_MAC_MAP_ENUM(Qt::Key_PageUp) },        //NSPageUpFunctionKey
+   { 0xF72D, LSCS_MAC_MAP_ENUM(Qt::Key_PageDown) },      //NSPageDownFunctionKey
+   { 0xF72F, LSCS_MAC_MAP_ENUM(Qt::Key_ScrollLock) },    //NSScrollLockFunctionKey
+   { 0xF730, LSCS_MAC_MAP_ENUM(Qt::Key_Pause) },         //NSPauseFunctionKey
+   { 0xF731, LSCS_MAC_MAP_ENUM(Qt::Key_SysReq) },        //NSSysReqFunctionKey
+   { 0xF735, LSCS_MAC_MAP_ENUM(Qt::Key_Menu) },          //NSMenuFunctionKey
+   { 0xF738, LSCS_MAC_MAP_ENUM(Qt::Key_Print) },         //NSPrintFunctionKey
+   { 0xF73A, LSCS_MAC_MAP_ENUM(Qt::Key_Clear) },         //NSClearDisplayFunctionKey
+   { 0xF73D, LSCS_MAC_MAP_ENUM(Qt::Key_Insert) },        //NSInsertCharFunctionKey
+   { 0xF73E, LSCS_MAC_MAP_ENUM(Qt::Key_Delete) },        //NSDeleteCharFunctionKey
+   { 0xF741, LSCS_MAC_MAP_ENUM(Qt::Key_Select) },        //NSSelectFunctionKey
+   { 0xF742, LSCS_MAC_MAP_ENUM(Qt::Key_Execute) },       //NSExecuteFunctionKey
+   { 0xF746, LSCS_MAC_MAP_ENUM(Qt::Key_Help) },          //NSHelpFunctionKey
+   { 0xF747, LSCS_MAC_MAP_ENUM(Qt::Key_Mode_switch) },   //NSModeSwitchFunctionKey
+   {   0,    LSCS_MAC_MAP_ENUM(0) }
 };
 
-static int qt_mac_get_key(int modif, const QChar &key, int virtualKey)
+static int lscs_mac_get_key(int modif, const QChar &key, int virtualKey)
 {
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-   qDebug("qt_mac_get_key() Mapping key = %d (0x%04x) - %d (0x%04x)",
+   qDebug("lscs_mac_get_key() Mapping key = %d (0x%04x) - %d (0x%04x)",
          key.unicode(), key.unicode(), virtualKey, virtualKey);
 #endif
 
@@ -267,7 +267,7 @@ static int qt_mac_get_key(int modif, const QChar &key, int virtualKey)
 
    if (key.isDigit()) {
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-      qDebug("qt_mac_get_key() digit key = %d", key.digitValue());
+      qDebug("lscs_mac_get_key() digit key = %d", key.digitValue());
 #endif
 
       return key.digitValue() + Qt::Key_0;
@@ -275,7 +275,7 @@ static int qt_mac_get_key(int modif, const QChar &key, int virtualKey)
 
    if (key.isLetter()) {
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-      qDebug("qt_mac_get_key() letter key = %d", key.toUpper()[0].unicode() - 'A');
+      qDebug("lscs_mac_get_key() letter key = %d", key.toUpper()[0].unicode() - 'A');
 #endif
 
       return (key.toUpper()[0].unicode() - 'A') + Qt::Key_A;
@@ -283,39 +283,39 @@ static int qt_mac_get_key(int modif, const QChar &key, int virtualKey)
 
    if (key.isSymbol()) {
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-      qDebug("qt_mac_get_key() symbol key = %d", key.unicode());
+      qDebug("lscs_mac_get_key() symbol key = %d", key.unicode());
 #endif
       return key.unicode();
    }
 
-   for (int i = 0; qt_mac_keyboard_symbols[i].qt_code; i++) {
-      if (qt_mac_keyboard_symbols[i].mac_code == key) {
+   for (int i = 0; lscs_mac_keyboard_symbols[i].lscs_code; i++) {
+      if (lscs_mac_keyboard_symbols[i].mac_code == key) {
 
          // To work like X11 we issue Backtab when Shift + Tab are pressed
-         if (qt_mac_keyboard_symbols[i].qt_code == Qt::Key_Tab && (modif & Qt::ShiftModifier)) {
+         if (lscs_mac_keyboard_symbols[i].lscs_code == Qt::Key_Tab && (modif & Qt::ShiftModifier)) {
 
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-            qDebug("qt_mac_get_key() key = Qt::Key_Backtab");
+            qDebug("lscs_mac_get_key() key = Qt::Key_Backtab");
 #endif
             return Qt::Key_Backtab;
          }
 
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-         qDebug("qt_mac_get_key() symbol key = %s", qt_mac_keyboard_symbols[i].desc);
+         qDebug("lscs_mac_get_key() symbol key = %s", lscs_mac_keyboard_symbols[i].desc);
 #endif
-         return qt_mac_keyboard_symbols[i].qt_code;
+         return lscs_mac_keyboard_symbols[i].lscs_code;
       }
    }
 
    // last ditch try to match the scan code
-   for (int i = 0; qt_mac_keyvkey_symbols[i].qt_code; i++) {
-      if (qt_mac_keyvkey_symbols[i].mac_code == virtualKey) {
+   for (int i = 0; lscs_mac_keyvkey_symbols[i].lscs_code; i++) {
+      if (lscs_mac_keyvkey_symbols[i].mac_code == virtualKey) {
 
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-         qDebug("qt_mac_get_key() symbol key = %s", qt_mac_keyvkey_symbols[i].desc);
+         qDebug("lscs_mac_get_key() symbol key = %s", lscs_mac_keyvkey_symbols[i].desc);
 #endif
 
-         return qt_mac_keyvkey_symbols[i].qt_code;
+         return lscs_mac_keyvkey_symbols[i].lscs_code;
       }
    }
 
@@ -325,16 +325,16 @@ static int qt_mac_get_key(int modif, const QChar &key, int virtualKey)
          return Qt::Key_F1 + (key.unicode() - 0xf704) ;
       }
 
-      for (int i = 0; qt_mac_private_unicode[i].qt_code; i++) {
-         if (qt_mac_private_unicode[i].mac_code == key) {
-            return qt_mac_private_unicode[i].qt_code;
+      for (int i = 0; lscs_mac_private_unicode[i].lscs_code; i++) {
+         if (lscs_mac_private_unicode[i].mac_code == key) {
+            return lscs_mac_private_unicode[i].lscs_code;
          }
       }
 
    }
 
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-   qDebug("qt_mac_get_key() key = %d,  latin1 = %d, virtual key = %d", key.unicode(), key.toLatin1(), virtualKey);
+   qDebug("lscs_mac_get_key() key = %d,  latin1 = %d, virtual key = %d", key.unicode(), key.toLatin1(), virtualKey);
 #endif
 
    return Qt::Key_unknown;
@@ -354,7 +354,7 @@ QCocoaKeyMapper::~QCocoaKeyMapper()
 
 Qt::KeyboardModifiers QCocoaKeyMapper::queryKeyboardModifiers()
 {
-   return qt_mac_get_modifiers(GetCurrentEventKeyModifiers());
+   return lscs_mac_get_modifiers(GetCurrentEventKeyModifiers());
 }
 
 bool QCocoaKeyMapper::updateKeyboard()
@@ -428,19 +428,19 @@ void QCocoaKeyMapper::updateKeyMap(unsigned short macVirtualKey, QChar unicodeKe
       UniCharCount out_buffer_size = 0;
       keyLayout[macVirtualKey]->qtKey[i] = 0;
 
-      const UInt32 keyModifier = ((qt_mac_get_mac_modifiers(ModsTbl[i]) >> 8) & 0xFF);
+      const UInt32 keyModifier = ((lscs_mac_get_mac_modifiers(ModsTbl[i]) >> 8) & 0xFF);
       OSStatus err = UCKeyTranslate(keyboard_layout_format.unicode, macVirtualKey, kUCKeyActionDown, keyModifier,
             keyboard_kind, 0, &keyboard_dead, buffer_size, &out_buffer_size, buffer);
       if (err == noErr && out_buffer_size) {
          const QChar unicode(buffer[0]);
-         int qtkey = qt_mac_get_key(keyModifier, unicode, macVirtualKey);
+         int qtkey = lscs_mac_get_key(keyModifier, unicode, macVirtualKey);
          if (qtkey == Qt::Key_unknown) {
             qtkey = unicode.unicode();
          }
          keyLayout[macVirtualKey]->qtKey[i] = qtkey;
 
       } else {
-         int qtkey = qt_mac_get_key(keyModifier, unicodeKey, macVirtualKey);
+         int qtkey = lscs_mac_get_key(keyModifier, unicodeKey, macVirtualKey);
          if (qtkey == Qt::Key_unknown) {
             qtkey = unicodeKey.unicode();
          }

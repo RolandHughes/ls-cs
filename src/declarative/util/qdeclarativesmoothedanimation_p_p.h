@@ -30,7 +30,7 @@
 #include <qparallelanimationgroup.h>
 #include <QTimer>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QSmoothedAnimation : public QAbstractAnimation
 {
@@ -97,6 +97,6 @@ public:
     QHash<QDeclarativeProperty, QSmoothedAnimation *> activeAnimations;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVESMOOTHEDANIMATION_P_H

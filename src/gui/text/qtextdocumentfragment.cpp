@@ -404,7 +404,7 @@ QString QTextDocumentFragment::toPlainText() const
     return d->doc->toPlainText();
 }
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
 QString QTextDocumentFragment::toHtml( const QByteArray &encoding ) const
 {
@@ -443,7 +443,7 @@ static QTextListFormat::Style nextListStyle( QTextListFormat::Style style )
     return style;
 }
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
 QTextHtmlImporter::QTextHtmlImporter( QTextDocument *_doc, const QString &_html, ImportMode mode,
                                       const QTextDocument *resourceProvider )
@@ -1469,9 +1469,9 @@ void QTextHtmlImporter::appendBlock( const QTextBlockFormat &format, QTextCharFo
     }
 }
 
-#endif // QT_NO_TEXTHTMLPARSER
+#endif // LSCS_NO_TEXTHTMLPARSER
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
 QTextDocumentFragment QTextDocumentFragment::fromHtml( const QString &html )
 {
@@ -1488,4 +1488,4 @@ QTextDocumentFragment QTextDocumentFragment::fromHtml( const QString &html, cons
     return res;
 }
 
-#endif // QT_NO_TEXTHTMLPARSER
+#endif // LSCS_NO_TEXTHTMLPARSER

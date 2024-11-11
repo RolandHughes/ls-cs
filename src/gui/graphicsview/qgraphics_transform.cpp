@@ -29,7 +29,7 @@
 #include <qgraphics_item_p.h>
 #include <qgraphics_transform_p.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 QGraphicsTransformPrivate::~QGraphicsTransformPrivate()
 {
@@ -312,4 +312,4 @@ void QGraphicsRotation::applyTo( QMatrix4x4 *matrix ) const
     matrix->translate( -d->origin );
 }
 
-#endif //QT_NO_GRAPHICSVIEW
+#endif //LSCS_NO_GRAPHICSVIEW

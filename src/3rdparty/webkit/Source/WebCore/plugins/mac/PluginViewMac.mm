@@ -81,7 +81,7 @@ using JSC::UString;
 
 #include "QWebPageClient.h"
 
-CGContextRef qt_mac_cg_context(QPaintDevice *pdev)
+CGContextRef lscs_mac_cg_context(QPaintDevice *pdev)
 {
    // from plugins/platforms/cocoa
 
@@ -164,7 +164,7 @@ static inline CGContextRef cgHandleFor(PlatformWidget widget)
 {
 #if PLATFORM(QT)
     if (widget)
-        return (CGContextRef)qt_mac_cg_context(widget);
+        return (CGContextRef)lscs_mac_cg_context(widget);
 #endif
 
 #if PLATFORM(WX)
@@ -516,7 +516,7 @@ void PluginView::updatePluginWidget()
                m_contextRef = nullptr;
 
             } else {
-               m_contextRef = qt_mac_cg_context(&m_pixmap);
+               m_contextRef = lscs_mac_cg_context(&m_pixmap);
             }
 #endif
         }

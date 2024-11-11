@@ -26,7 +26,7 @@
 
 #include <QtCore/qobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerFrontend;
 class QScriptDebuggerConsoleWidgetInterface;
@@ -43,7 +43,7 @@ class QAction;
 class QEvent;
 class QMenu;
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 class QToolBar;
 #endif
 
@@ -147,7 +147,7 @@ public:
 
     QMenu *createStandardMenu( QWidget *widgetParent, QObject *actionParent );
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
     QToolBar *createStandardToolBar( QWidget *widgetParent, QObject *actionParent );
 #endif
 
@@ -232,6 +232,6 @@ private:
 
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

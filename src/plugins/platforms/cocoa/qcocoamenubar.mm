@@ -36,7 +36,7 @@ static QList<QCocoaMenuBar *> static_menubars;
 
 static inline QCocoaMenuLoader *getMenuLoader()
 {
-   return [NSApp qt_qcocoamenuLoader];
+   return [NSApp lscs_qcocoamenuLoader];
 }
 
 QCocoaMenuBar::QCocoaMenuBar()
@@ -46,14 +46,14 @@ QCocoaMenuBar::QCocoaMenuBar()
 
    m_nativeMenu = [[NSMenu alloc] init];
 
-#ifdef QT_COCOA_ENABLE_MENU_DEBUG
+#ifdef LSCS_COCOA_ENABLE_MENU_DEBUG
    qDebug() << "Construct QCocoaMenuBar" << this << m_nativeMenu;
 #endif
 }
 
 QCocoaMenuBar::~QCocoaMenuBar()
 {
-#ifdef QT_COCOA_ENABLE_MENU_DEBUG
+#ifdef LSCS_COCOA_ENABLE_MENU_DEBUG
    qDebug() << "~QCocoaMenuBar" << this;
 #endif
 
@@ -116,7 +116,7 @@ void QCocoaMenuBar::insertMenu(QPlatformMenu *platformMenu, QPlatformMenu *befor
    QCocoaMenu *menu       = static_cast<QCocoaMenu *>(platformMenu);
    QCocoaMenu *beforeMenu = static_cast<QCocoaMenu *>(before);
 
-#ifdef QT_COCOA_ENABLE_MENU_DEBUG
+#ifdef LSCS_COCOA_ENABLE_MENU_DEBUG
    qDebug() << "QCocoaMenuBar::insertMenu()" << menu << "before" << before;
 #endif
 
@@ -220,7 +220,7 @@ NSMenuItem *QCocoaMenuBar::nativeItemForMenu(QCocoaMenu *menu) const
 
 void QCocoaMenuBar::handleReparent(QWindow *newParentWindow)
 {
-#ifdef QT_COCOA_ENABLE_MENU_DEBUG
+#ifdef LSCS_COCOA_ENABLE_MENU_DEBUG
    qDebug() << "QCocoaMenuBar::handleReparent()" << newParentWindow;
 #endif
 
@@ -363,7 +363,7 @@ void QCocoaMenuBar::updateMenuBarImmediately()
       return;
    }
 
-#ifdef QT_COCOA_ENABLE_MENU_DEBUG
+#ifdef LSCS_COCOA_ENABLE_MENU_DEBUG
    qDebug() << "QCocoaMenuBar::updateMenuBarImmediately" << cw << ", number of menus" << mb->m_menus.size();
 #endif
 
@@ -383,7 +383,7 @@ void QCocoaMenuBar::updateMenuBarImmediately()
       menu->propagateEnabledState(! disableForModal);
    }
 
-#ifdef QT_COCOA_ENABLE_MENU_DEBUG
+#ifdef LSCS_COCOA_ENABLE_MENU_DEBUG
    qDebug() << "Updated menus\n" << mb->m_nativeMenu;
 #endif
 

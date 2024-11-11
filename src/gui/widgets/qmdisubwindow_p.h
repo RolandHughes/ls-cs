@@ -26,7 +26,7 @@
 
 #include <qmdisubwindow.h>
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
 
 #include <qstyle.h>
 #include <qstyleoptiontitlebar.h>
@@ -54,7 +54,7 @@ public:
         mdiChild = child;
     }
 
-    void *qt_metacast( const char *classname )
+    void *lscs_metacast( const char *classname )
     {
         if ( classname != nullptr && ( strcmp( classname, "ControlElement" ) == 0 ) )
         {
@@ -73,7 +73,7 @@ public:
     ControlContainer( QMdiSubWindow *mdiChild );
     ~ControlContainer();
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     void showButtonsInMenuBar( QMenuBar *menuBar );
     void removeButtonsFromMenuBar( QMenuBar *menuBar = nullptr );
 
@@ -98,7 +98,7 @@ private:
     QPointer<QWidget> previousLeft;
     QPointer<QWidget> previousRight;
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     QPointer<QMenuBar> m_menuBar;
 #endif
 
@@ -170,11 +170,11 @@ public:
     QPointer<QWidget> restoreFocusWidget;
     QPointer<QMdi::ControlContainer> controlContainer;
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     QPointer<QSizeGrip> sizeGrip;
 #endif
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
     QRubberBand *rubberBand;
 #endif
 
@@ -187,7 +187,7 @@ public:
     bool moveEnabled;
     bool isInInteractiveMode;
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
     bool isInRubberBandMode;
 #endif
 
@@ -210,7 +210,7 @@ public:
     OperationInfoMap operationMap;
     QPointer<QMenu> systemMenu;
 
-#ifndef QT_NO_ACTIONS
+#ifndef LSCS_NO_ACTIONS
     QPointer<QAction> actions[NumWindowStateActions];
 #endif
 
@@ -231,7 +231,7 @@ public:
     void removeBaseWidget();
     void initOperationMap();
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     void createSystemMenu();
 #endif
 
@@ -253,7 +253,7 @@ public:
     void sizeParameters( int *margin, int *minWidth ) const;
     bool drawTitleBarWhenMaximized() const;
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     QMenuBar *menuBar() const;
     void showButtonsInMenuBar( QMenuBar *menuBar );
     void removeButtonsFromMenuBar();
@@ -261,7 +261,7 @@ public:
 
     void updateWindowTitle( bool requestFromChild );
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
     void enterRubberBandMode();
     void leaveRubberBandMode();
 #endif
@@ -276,10 +276,10 @@ public:
     void setWindowFlags( Qt::WindowFlags flags ) override;
     void setVisible( WindowStateAction, bool visible = true );
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     void setEnabled( WindowStateAction, bool enable = true );
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     void addToSystemMenu( WindowStateAction, const QString &text, const QString &slot );
 #endif
 
@@ -287,7 +287,7 @@ public:
 
     QSize iconSize() const;
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     void setSizeGrip( QSizeGrip *sizeGrip );
     void setSizeGripVisible( bool visible = true ) const;
 #endif
@@ -331,7 +331,7 @@ public:
 
         geometry->setSize( geometry->size().expandedTo( internalMinimumSize ) );
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
         if ( isInRubberBandMode )
         {
@@ -368,6 +368,6 @@ private:
     Q_DECLARE_PUBLIC( QMdiSubWindow )
 };
 
-#endif // QT_NO_MDIAREA
+#endif // LSCS_NO_MDIAREA
 
 #endif

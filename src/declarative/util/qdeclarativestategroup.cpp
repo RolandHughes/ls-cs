@@ -30,7 +30,7 @@
 #include <QtCore/qdebug.h>
 #include <qdeclarativeinfo.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 DEFINE_BOOL_CONFIG_OPTION( stateChangeDebug, STATECHANGE_DEBUG );
 
@@ -584,6 +584,6 @@ void QDeclarativeStateGroup::removeState( QDeclarativeState *state )
     d->states.removeOne( state );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 

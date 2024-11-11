@@ -25,7 +25,7 @@
 
 #include <wtf/Platform.h>
 
-#if ! defined(QT_BUILD_SCRIPT_LIB) && OS(WINDOWS) && COMPILER(MSVC)
+#if ! defined(LSCS_BUILD_SCRIPT_LIB) && OS(WINDOWS) && COMPILER(MSVC)
 
 #if defined(BUILDING_JavaScriptCore) || defined(BUILDING_WTF)
 #define JS_EXPORTDATA

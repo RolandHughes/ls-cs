@@ -25,7 +25,7 @@
 #define QWINDOWSPIPEREADER_P_H
 
 #include <qobject.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <qringbuffer_p.h>
 

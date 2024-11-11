@@ -316,7 +316,7 @@ doWarn:
 
     // Try to detect the correct language in the following order
     // 1. Look for the language attribute in the ts if that fails
-    // 2. Guestimate the language from the filename  (expecting the qt_{en,de}.ts convention)
+    // 2. Guestimate the language from the filename  (expecting the lscs_{en,de}.ts convention)
     //   if that fails
     // 3. Retrieve the locale from the system.
 

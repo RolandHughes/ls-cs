@@ -30,7 +30,7 @@
 #include <qlist.h>
 #include <qhash.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 typedef QHash<QString, QString> PrinterOptions;
 
@@ -58,6 +58,6 @@ protected:
     static QPageSize createPageSize( const QString &id, QSize size, const QString &localizedName );
 };
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 #endif // QPLATFORMPRINTERSUPPORT_H

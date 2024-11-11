@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#if !defined(QT_NO_STYLE_GTK)
+#if !defined(LSCS_NO_STYLE_GTK)
 
 #include <qgtkpainter_p.h>
 
@@ -89,6 +89,6 @@ private:
     GtkWidget *m_window;
 };
 
-#endif //!defined(QT_NO_STYLE_QGTK)
+#endif //!defined(LSCS_NO_STYLE_QGTK)
 
 #endif // QGTK2PAINTER_P_H

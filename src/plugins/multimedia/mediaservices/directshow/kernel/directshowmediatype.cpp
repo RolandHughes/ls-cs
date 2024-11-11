@@ -31,7 +31,7 @@ struct TypeLookup
     GUID mediaType;
 };
 
-static const TypeLookup qt_typeLookup[] =
+static const TypeLookup lscs_typeLookup[] =
 {
     { QVideoFrame::Format_RGB32,   /*MEDIASUBTYPE_RGB32*/  {0xe436eb7e, 0x524f, 0x11ce, {0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70}} },
     { QVideoFrame::Format_BGR24,   /*MEDIASUBTYPE_RGB24*/  {0xe436eb7d, 0x524f, 0x11ce, {0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70}} },
@@ -95,12 +95,12 @@ GUID DirectShowMediaType::convertPixelFormat( QVideoFrame::PixelFormat format )
         0xe436eb8e, 0x524f, 0x11ce, {0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70}
     };
 
-    const int count = sizeof( qt_typeLookup ) / sizeof( TypeLookup );
+    const int count = sizeof( lscs_typeLookup ) / sizeof( TypeLookup );
 
     for ( int i = 0; i < count; ++i )
-        if ( qt_typeLookup[i].pixelFormat == format )
+        if ( lscs_typeLookup[i].pixelFormat == format )
         {
-            return qt_typeLookup[i].mediaType;
+            return lscs_typeLookup[i].mediaType;
         }
 
     return none;
@@ -108,11 +108,11 @@ GUID DirectShowMediaType::convertPixelFormat( QVideoFrame::PixelFormat format )
 
 QVideoSurfaceFormat DirectShowMediaType::formatFromType( const AM_MEDIA_TYPE &type )
 {
-    const int count = sizeof( qt_typeLookup ) / sizeof( TypeLookup );
+    const int count = sizeof( lscs_typeLookup ) / sizeof( TypeLookup );
 
     for ( int i = 0; i < count; ++i )
     {
-        if ( IsEqualGUID( qt_typeLookup[i].mediaType, type.subtype ) && type.cbFormat > 0 )
+        if ( IsEqualGUID( lscs_typeLookup[i].mediaType, type.subtype ) && type.cbFormat > 0 )
         {
             if ( IsEqualGUID( type.formattype, FORMAT_VideoInfo ) )
             {
@@ -120,7 +120,7 @@ QVideoSurfaceFormat DirectShowMediaType::formatFromType( const AM_MEDIA_TYPE &ty
 
                 QVideoSurfaceFormat format(
                     QSize( header->bmiHeader.biWidth, qAbs( header->bmiHeader.biHeight ) ),
-                    qt_typeLookup[i].pixelFormat );
+                    lscs_typeLookup[i].pixelFormat );
 
                 if ( header->AvgTimePerFrame > 0 )
                 {
@@ -137,7 +137,7 @@ QVideoSurfaceFormat DirectShowMediaType::formatFromType( const AM_MEDIA_TYPE &ty
 
                 QVideoSurfaceFormat format(
                     QSize( header->bmiHeader.biWidth, qAbs( header->bmiHeader.biHeight ) ),
-                    qt_typeLookup[i].pixelFormat );
+                    lscs_typeLookup[i].pixelFormat );
 
                 if ( header->AvgTimePerFrame > 0 )
                 {

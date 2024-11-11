@@ -28,7 +28,7 @@
 #include <QGraphicsView>
 #include <QDesktopWidget>
 
-#ifdef QT_OPENGL_LIB
+#ifdef LSCS_OPENGL_LIB
 #include "opengl/TextureMapperGL.h"
 #include <QGLWidget>
 #endif
@@ -135,7 +135,7 @@ private:
     QWidget *m_widget;
 };
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 class PlatformLayerProxyQGraphicsObject : public PlatformLayerProxyQt
 {
 public:
@@ -148,7 +148,7 @@ public:
             return;
         }
 
-#ifdef QT_OPENGL_LIB
+#ifdef LSCS_OPENGL_LIB
         QGraphicsView *view = object->scene()->views()[0];
 
         if ( view && view->viewport() && view->viewport()->inherits( "QGLWidget" ) )
@@ -180,7 +180,7 @@ public:
 private:
     QGraphicsItem *m_graphicsItem;
 };
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 void PageClientQWidget::setRootGraphicsLayer( TextureMapperPlatformLayer *layer )
 {
@@ -237,7 +237,7 @@ PageClientQWidget::~PageClientQWidget()
 #endif
 }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 QCursor PageClientQWidget::cursor() const
 {
     return view->cursor();
@@ -288,7 +288,7 @@ QRectF PageClientQWidget::windowRect() const
     return QRectF( view->window()->geometry() );
 }
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 PageClientQGraphicsWidget::~PageClientQGraphicsWidget()
 {
     delete overlay;
@@ -452,7 +452,7 @@ void PageClientQGraphicsWidget::setInputMethodHints( Qt::InputMethodHints hints 
     view->setInputMethodHints( hints );
 }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 QCursor PageClientQGraphicsWidget::cursor() const
 {
     return view->cursor();
@@ -559,6 +559,6 @@ QRectF PageClientQGraphicsWidget::windowRect() const
     // The sceneRect is a good approximation of the size of the application, independent of the view.
     return view->scene()->sceneRect();
 }
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 } // namespace WebCore

@@ -72,7 +72,7 @@ public:
         return mFileInfo == fileInfo.mFileInfo && displayType == fileInfo.displayType && permissions() == fileInfo.permissions();
     }
 
-#ifndef QT_NO_FSFILEENGINE
+#ifndef LSCS_NO_FSFILEENGINE
     bool isCaseSensitive() const
     {
         return QFileSystemEngine::isCaseSensitive();
@@ -161,7 +161,7 @@ private :
     QFileInfo mFileInfo;
 };
 
-#ifndef QT_NO_FILESYSTEMMODEL
+#ifndef LSCS_NO_FILESYSTEMMODEL
 
 class QFileInfoGatherer : public QThread
 {
@@ -218,7 +218,7 @@ private:
     QStack<QString> path;
     QStack<QStringList> files;
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
     QFileSystemWatcher *watcher;
 #endif
 
@@ -229,7 +229,7 @@ private:
     QFileIconProvider *m_iconProvider;
     QFileIconProvider defaultProvider;
 };
-#endif // QT_NO_FILESYSTEMMODEL
+#endif // LSCS_NO_FILESYSTEMMODEL
 
 
 

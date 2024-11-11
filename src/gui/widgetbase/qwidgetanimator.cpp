@@ -35,7 +35,7 @@ QWidgetAnimator::QWidgetAnimator( QMainWindowLayout *layout )
 
 void QWidgetAnimator::abort( QWidget *w )
 {
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
     AnimationMap::iterator it = m_animation_map.find( w );
 
@@ -52,14 +52,14 @@ void QWidgetAnimator::abort( QWidget *w )
         anim->stop();
     }
 
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
     m_mainWindowLayout->animationFinished( w );
 #endif
 
 #endif
 }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 void QWidgetAnimator::animationFinished()
 {
     QPropertyAnimation *anim = qobject_cast<QPropertyAnimation *>( sender() );
@@ -86,7 +86,7 @@ void QWidgetAnimator::animate( QWidget *widget, const QRect &end_geometry, bool 
         final_geometry = QRect( QPoint( -500 - widget->width(), -500 - widget->height() ), widget->size() );
     }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
     if ( widget->style()->styleHint( QStyle::SH_Widget_Animate, nullptr, widget ) )
     {
@@ -115,7 +115,7 @@ void QWidgetAnimator::animate( QWidget *widget, const QRect &end_geometry, bool 
         // do this in one shot
         widget->setGeometry( final_geometry );
 
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
         m_mainWindowLayout->animationFinished( widget );
 #endif
     }

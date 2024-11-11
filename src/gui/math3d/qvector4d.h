@@ -31,7 +31,7 @@ class QMatrix4x4;
 class QVector2D;
 class QVector3D;
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
 
 class Q_GUI_EXPORT QVector4D
 {
@@ -42,12 +42,12 @@ public:
     explicit QVector4D( const QPoint &point );
     explicit QVector4D( const QPointF &point );
 
-#ifndef QT_NO_VECTOR2D
+#ifndef LSCS_NO_VECTOR2D
     QVector4D( const QVector2D &vector );
     QVector4D( const QVector2D &vector, qreal zpos, qreal wpos );
 #endif
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
     QVector4D( const QVector3D &vector );
     QVector4D( const QVector3D &vector, qreal wpos );
 #endif
@@ -90,12 +90,12 @@ public:
 
     friend inline bool qFuzzyCompare( const QVector4D &v1, const QVector4D &v2 );
 
-#ifndef QT_NO_VECTOR2D
+#ifndef LSCS_NO_VECTOR2D
     QVector2D toVector2D() const;
     QVector2D toVector2DAffine() const;
 #endif
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
     QVector3D toVector3D() const;
     QVector3D toVector3DAffine() const;
 #endif
@@ -113,7 +113,7 @@ private:
     friend class QVector2D;
     friend class QVector3D;
 
-#ifndef QT_NO_MATRIX4X4
+#ifndef LSCS_NO_MATRIX4X4
     friend QVector4D operator*( const QVector4D &vector, const QMatrix4x4 &matrix );
     friend QVector4D operator*( const QMatrix4x4 &matrix, const QVector4D &vector );
 #endif

@@ -25,12 +25,12 @@
 #include <qglobal.h>
 
 class EditCommandQt
-#ifndef QT_NO_UNDOCOMMAND
+#ifndef LSCS_NO_UNDOCOMMAND
     : public QUndoCommand
 #endif
 {
 public:
-#ifndef QT_NO_UNDOCOMMAND
+#ifndef LSCS_NO_UNDOCOMMAND
     EditCommandQt( WTF::RefPtr<WebCore::EditCommand> cmd, QUndoCommand *parent = 0 );
 #else
     EditCommandQt( WTF::RefPtr<WebCore::EditCommand> cmd );

@@ -24,7 +24,7 @@
 #ifndef QCommonStylePixmaps_P_H
 #define QCommonStylePixmaps_P_H
 
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
 
 static const char *const check_list_controller_xpm[] =
 {
@@ -305,7 +305,7 @@ static const char *const lscs_menu_xpm[] =
     "n.n.n.n.n.V V Z Z Z C n.n.n.n.n."
 };
 
-static const char *const qt_close_xpm[] =
+static const char *const lscs_close_xpm[] =
 {
     "10 10 2 1",
     "# c #000000",
@@ -322,7 +322,7 @@ static const char *const qt_close_xpm[] =
     ".........."
 };
 
-static const char *const qt_maximize_xpm[] =
+static const char *const lscs_maximize_xpm[] =
 {
     "10 10 2 1",
     "# c #000000",
@@ -339,7 +339,7 @@ static const char *const qt_maximize_xpm[] =
     ".........."
 };
 
-static const char *const qt_minimize_xpm[] =
+static const char *const lscs_minimize_xpm[] =
 {
     "10 10 2 1",
     "# c #000000",
@@ -356,7 +356,7 @@ static const char *const qt_minimize_xpm[] =
     ".........."
 };
 
-static const char *const qt_normalizeup_xpm[] =
+static const char *const lscs_normalizeup_xpm[] =
 {
     "10 10 2 1",
     "# c #000000",
@@ -373,7 +373,7 @@ static const char *const qt_normalizeup_xpm[] =
     ".........."
 };
 
-static const char *const qt_help_xpm[] =
+static const char *const lscs_help_xpm[] =
 {
     "10 10 2 1",
     ". c None",
@@ -390,7 +390,7 @@ static const char *const qt_help_xpm[] =
     ".........."
 };
 
-static const char *const qt_shade_xpm[] =
+static const char *const lscs_shade_xpm[] =
 {
     "10 10 2 1",
     "# c #000000",
@@ -407,7 +407,7 @@ static const char *const qt_shade_xpm[] =
     ".........."
 };
 
-static const char *const qt_unshade_xpm[] =
+static const char *const lscs_unshade_xpm[] =
 {
     "10 10 2 1",
     "# c #000000",
@@ -609,6 +609,6 @@ static const char *const question_xpm[] =
     "...................**..........."
 };
 
-#endif //QT_NO_IMAGEFORMAT_XPM
+#endif //LSCS_NO_IMAGEFORMAT_XPM
 
 #endif

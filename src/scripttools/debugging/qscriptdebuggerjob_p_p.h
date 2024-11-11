@@ -26,7 +26,7 @@
 
 #include <QtCore/qobjectdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerJobSchedulerInterface;
 class QScriptDebuggerJob;
@@ -45,6 +45,6 @@ public:
     QScriptDebuggerJob *q_ptr;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

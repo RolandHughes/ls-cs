@@ -27,7 +27,7 @@
 #include <qaction.h>
 #include <qwidget.h>
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 class QToolBarPrivate;
 class QIcon;
@@ -220,6 +220,6 @@ QAction *QToolBar::actionAt( int x, int y ) const
     return actionAt( QPoint( x, y ) );
 }
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 
 #endif

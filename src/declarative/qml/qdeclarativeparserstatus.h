@@ -26,7 +26,7 @@
 
 #include <QtCore/qobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_EXPORT QDeclarativeParserStatus
 {
@@ -46,6 +46,6 @@ private:
 };
 LSCS_DECLARE_INTERFACE( QDeclarativeParserStatus, "com.copperspice.qml.QDeclarativeParserStatus" )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEPARSERSTATUS_H

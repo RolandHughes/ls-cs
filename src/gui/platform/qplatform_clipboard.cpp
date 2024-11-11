@@ -23,7 +23,7 @@
 
 #include <qplatform_clipboard.h>
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
 #include <qmimedata.h>
 #include <qapplication_p.h>
@@ -110,4 +110,4 @@ void QPlatformClipboard::emitChanged( QClipboard::Mode mode )
     }
 }
 
-#endif //QT_NO_CLIPBOARD
+#endif //LSCS_NO_CLIPBOARD

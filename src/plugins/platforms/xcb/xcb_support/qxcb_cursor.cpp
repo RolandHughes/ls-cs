@@ -328,7 +328,7 @@ static const char *const cursorNames[] =
     "link"
 };
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
 QXcbCursorCacheKey::QXcbCursorCacheKey( const QCursor &c )
     : shape( c.shape() ), bitmapCacheKey( 0 ), maskCacheKey( 0 )
@@ -412,7 +412,7 @@ QXcbCursor::~QXcbCursor()
         xcb_close_font( conn, cursorFont );
     }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     for ( xcb_cursor_t cursor : m_cursorHash )
     {
@@ -422,7 +422,7 @@ QXcbCursor::~QXcbCursor()
 #endif
 }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 void QXcbCursor::changeCursor( QCursor *cursor, QWindow *widget )
 {
     QXcbWindow *w = nullptr;
@@ -621,8 +621,8 @@ xcb_cursor_t QXcbCursor::createNonStandardCursor( int cshape )
 
         if ( !image.isNull() )
         {
-            xcb_pixmap_t pm = qt_xcb_XPixmapFromBitmap( m_screen, image );
-            xcb_pixmap_t pmm = qt_xcb_XPixmapFromBitmap( m_screen, image.createAlphaMask() );
+            xcb_pixmap_t pm = lscs_xcb_XPixmapFromBitmap( m_screen, image );
+            xcb_pixmap_t pmm = lscs_xcb_XPixmapFromBitmap( m_screen, image.createAlphaMask() );
             cursor = xcb_generate_id( conn );
             xcb_create_cursor( conn, cursor, pm, pmm, 0, 0, 0, 0xFFFF, 0xFFFF, 0xFFFF, 8, 8 );
             xcb_free_pixmap( conn, pm );
@@ -775,13 +775,13 @@ xcb_cursor_t QXcbCursor::createBitmapCursor( QCursor *cursor )
 
     if ( cursor->pixmap().depth() > 1 )
     {
-        c = qt_xcb_createCursorXRender( m_screen, cursor->pixmap().toImage(), spot );
+        c = lscs_xcb_createCursorXRender( m_screen, cursor->pixmap().toImage(), spot );
     }
 
     if ( !c )
     {
-        xcb_pixmap_t cp = qt_xcb_XPixmapFromBitmap( m_screen, cursor->bitmap()->toImage() );
-        xcb_pixmap_t mp = qt_xcb_XPixmapFromBitmap( m_screen, cursor->mask()->toImage() );
+        xcb_pixmap_t cp = lscs_xcb_XPixmapFromBitmap( m_screen, cursor->bitmap()->toImage() );
+        xcb_pixmap_t mp = lscs_xcb_XPixmapFromBitmap( m_screen, cursor->mask()->toImage() );
         c = xcb_generate_id( conn );
 
         xcb_create_cursor( conn, c, cp, mp, 0, 0, 0, 0xFFFF, 0xFFFF, 0xFFFF, spot.x(), spot.y() );

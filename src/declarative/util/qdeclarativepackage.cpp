@@ -24,7 +24,7 @@
 #include "private/qdeclarativepackage_p.h"
 #include <private/qdeclarativeguard_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \qmlclass Package QDeclarativePackage
@@ -203,4 +203,4 @@ QDeclarativePackageAttached *QDeclarativePackage::qmlAttachedProperties( QObject
 
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

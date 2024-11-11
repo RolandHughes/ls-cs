@@ -27,7 +27,7 @@
 
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 void QDeclarativeCompiledData::dump( QDeclarativeInstruction *instr, int idx )
 {
@@ -293,4 +293,4 @@ void QDeclarativeCompiledData::dump( QDeclarativeInstruction *instr, int idx )
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

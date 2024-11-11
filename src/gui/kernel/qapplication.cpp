@@ -100,7 +100,7 @@
 #include <qwindow_p.h>
 #include <qwidgetwindow_p.h>
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 #include <qplatform_cursor.h>
 #endif
 
@@ -108,7 +108,7 @@
 #include <qcore_mac_p.h>
 
 #elif defined(Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #endif
 
@@ -166,15 +166,15 @@ QPlatformTheme         *QApplicationPrivate::platform_theme       = nullptr;
 QStyleHints            *QApplicationPrivate::styleHints           = nullptr;
 QTouchDevice           *QApplicationPrivate::m_fakeTouchDevice    = nullptr;
 
-#ifndef QT_NO_CLIPBOARD
-QClipboard *QApplicationPrivate::qt_clipboard = nullptr;
+#ifndef LSCS_NO_CLIPBOARD
+QClipboard *QApplicationPrivate::lscs_clipboard = nullptr;
 #endif
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
 bool QApplicationPrivate::is_fallback_session_management_enabled = true;
 #endif
 
-QDesktopWidget *qt_desktopWidget  = nullptr;       // root window widgets
+QDesktopWidget *lscs_desktopWidget  = nullptr;       // root window widgets
 
 enum ApplicationResourceFlags
 {
@@ -199,14 +199,14 @@ static qreal fontSmoothingGamma          = 1.7;
 static QMutex applicationFontMutex;
 static Qt::LayoutDirection layout_direction = Qt::LayoutDirectionAuto;
 
-void qt_init( QApplicationPrivate *priv, int type );
-void qt_init_tooltip_palette();
-void qt_cleanupFontDatabase();
-void qt_cleanup();
+void lscs_init( QApplicationPrivate *priv, int type );
+void lscs_init_tooltip_palette();
+void lscs_cleanupFontDatabase();
+void lscs_cleanup();
 
-Q_CORE_EXPORT void qt_call_post_routines();
+Q_CORE_EXPORT void lscs_call_post_routines();
 
-#if ! defined(QT_NO_STATEMACHINE)
+#if ! defined(LSCS_NO_STATEMACHINE)
 int qRegisterGuiStateMachine();
 int qUnregisterGuiStateMachine();
 #endif
@@ -217,10 +217,10 @@ FontHash *lscs_app_fonts_hash();
 // set up for variant system, animations
 void lscs_addGuiFormulas();
 
-static bool qt_detectRTLLanguage()
+static bool lscs_detectRTLLanguage()
 {
     return force_reverse ^
-           ( QApplication::tr( "QT_LAYOUT_DIRECTION",
+           ( QApplication::tr( "LSCS_LAYOUT_DIRECTION",
                                "Translate this string to the string 'LTR' in left-to-right"
                                " languages or to 'RTL' in right-to-left languages (such as Hebrew"
                                " and Arabic) to get proper widget layout." ) == "RTL" );
@@ -327,7 +327,7 @@ static QString nativeStyleClassName()
 
 static void updateBlockedStatusRecursion( QWindow *window, bool shouldBeBlocked )
 {
-    QWindowPrivate *p = qt_window_private( window );
+    QWindowPrivate *p = lscs_window_private( window );
 
     if ( p->blockedByModalWindow != shouldBeBlocked )
     {
@@ -510,7 +510,7 @@ QApplication::~QApplication()
     Q_D( QGuiApplication );
 
     //### this should probable be done even later
-    qt_call_post_routines();
+    lscs_call_post_routines();
 
     // kill timers before closing down the dispatcher
     d->toolTipWakeUp.stop();
@@ -542,8 +542,8 @@ QApplication::~QApplication()
         delete mySet;
     }
 
-    delete qt_desktopWidget;
-    qt_desktopWidget = nullptr;
+    delete lscs_desktopWidget;
+    lscs_desktopWidget = nullptr;
 
     delete QApplicationPrivate::app_palette;
     QApplicationPrivate::app_palette = nullptr;
@@ -563,7 +563,7 @@ QApplication::~QApplication()
     delete QApplicationPrivate::app_style;
     QApplicationPrivate::app_style = nullptr;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( lscs_isRealGuiApp() )
     {
@@ -573,14 +573,14 @@ QApplication::~QApplication()
 #endif
 
     d->cleanupMultitouch();
-    qt_cleanup();
+    lscs_cleanup();
 
     QApplicationPrivate::obey_desktop_settings = true;
 
     QApplicationPrivate::app_strut = QSize( 0, 0 );
     QApplicationPrivate::enabledAnimations = QPlatformTheme::GeneralUiEffect;
 
-#if ! defined(QT_NO_STATEMACHINE)
+#if ! defined(LSCS_NO_STATEMACHINE)
     // trigger unregistering of QStateMachine's GUI types
     qUnregisterGuiStateMachine();
 #endif
@@ -588,12 +588,12 @@ QApplication::~QApplication()
     d->eventDispatcher->closingDown();
     d->eventDispatcher = nullptr;
 
-#ifndef QT_NO_CLIPBOARD
-    delete QGuiApplicationPrivate::qt_clipboard;
-    QGuiApplicationPrivate::qt_clipboard = nullptr;
+#ifndef LSCS_NO_CLIPBOARD
+    delete QGuiApplicationPrivate::lscs_clipboard;
+    QGuiApplicationPrivate::lscs_clipboard = nullptr;
 #endif
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
     delete d->session_manager;
     d->session_manager = nullptr;
 #endif
@@ -601,7 +601,7 @@ QApplication::~QApplication()
     clearPalette();
     QFontDatabase::removeAllApplicationFonts();
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     d->cursor_list.clear();
 #endif
 
@@ -638,13 +638,13 @@ QDesktopWidget *QApplication::desktop()
     CHECK_QAPP_INSTANCE( nullptr )
 
     // may not be created yet
-    if ( ! qt_desktopWidget || !( qt_desktopWidget->windowType() == Qt::Desktop ) )
+    if ( ! lscs_desktopWidget || !( lscs_desktopWidget->windowType() == Qt::Desktop ) )
     {
         // reparented away
-        qt_desktopWidget = new QDesktopWidget();
+        lscs_desktopWidget = new QDesktopWidget();
     }
 
-    return qt_desktopWidget;
+    return lscs_desktopWidget;
 }
 
 QWindow *QApplication::modalWindow()
@@ -680,7 +680,7 @@ QApplicationPrivate::~QApplicationPrivate()
 
     QFont::cleanup();
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QCursorData::cleanup();
 #endif
 
@@ -691,16 +691,16 @@ QApplicationPrivate::~QApplicationPrivate()
 
     delete inputMethod;
 
-    qt_cleanupFontDatabase();
+    lscs_cleanupFontDatabase();
 
     QPixmapCache::clear();
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
     if ( ownGlobalShareContext )
     {
-        delete qt_gl_global_share_context();
-        qt_gl_set_global_share_context( nullptr );
+        delete lscs_gl_global_share_context();
+        lscs_gl_set_global_share_context( nullptr );
     }
 
 #endif
@@ -956,7 +956,7 @@ bool QApplication::event( QEvent *e )
             d->toolTipFallAsleep.stop();
         }
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     }
     else if ( e->type() == QEvent::EnterWhatsThisMode )
     {
@@ -982,7 +982,7 @@ bool QApplication::event( QEvent *e )
 
     if ( e->type() == QEvent::LanguageChange )
     {
-        setLayoutDirection( qt_detectRTLLanguage() ? Qt::RightToLeft : Qt::LeftToRight );
+        setLayoutDirection( lscs_detectRTLLanguage() ? Qt::RightToLeft : Qt::LeftToRight );
     }
 
     return QCoreApplication::event( e );
@@ -1090,7 +1090,7 @@ static void init_platform( const QString &pluginArgument, const QString &platfor
     }
 
     // Many platforms have created QScreens at this point. Finish initializing QHighDpiScaling
-    // to be prepared for early calls to qt_defaultDpi().
+    // to be prepared for early calls to lscs_defaultDpi().
     if ( QGuiApplication::primaryScreen() )
     {
         QGuiApplicationPrivate::highDpiScalingUpdated = true;
@@ -1145,7 +1145,7 @@ static void init_platform( const QString &pluginArgument, const QString &platfor
         QGuiApplicationPrivate::platform_theme = new QPlatformTheme;
     }
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     // Set arguments as dynamic properties on the native interface as
     // boolean 'foo' or strings: 'foo=bar'
 
@@ -1226,15 +1226,15 @@ void QGuiApplicationPrivate::createPlatformIntegration()
 #endif
 
     // allow the plugin name to be changed
-    QString platformNameEnv = QString::fromUtf8( qgetenv( "QT_QPA_PLATFORM" ) );
+    QString platformNameEnv = QString::fromUtf8( qgetenv( "LSCS_QPA_PLATFORM" ) );
 
     if ( ! platformNameEnv.isEmpty() )
     {
         platformName = platformNameEnv;
     }
 
-    QString platformPluginPath = QString::fromUtf8( qgetenv( "QT_QPA_PLATFORM_PLUGIN_PATH" ) );
-    QString platformThemeName  = QString::fromUtf8( qgetenv( "QT_QPA_PLATFORMTHEME" ) );
+    QString platformPluginPath = QString::fromUtf8( qgetenv( "LSCS_QPA_PLATFORM_PLUGIN_PATH" ) );
+    QString platformThemeName  = QString::fromUtf8( qgetenv( "LSCS_QPA_PLATFORMTHEME" ) );
 
     // Get command line parameters
     QString icon;
@@ -1372,7 +1372,7 @@ void QGuiApplicationPrivate::init()
     QList<QString> pluginList;
 
     // Get command line params
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
     QString session_id;
     QString session_key;
 
@@ -1447,7 +1447,7 @@ void QGuiApplicationPrivate::init()
 
 #endif
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
         }
         else if ( arg == "-session" && i < argc - 1 )
         {
@@ -1499,7 +1499,7 @@ void QGuiApplicationPrivate::init()
     }
 
     // Load environment exported generic plugins
-    QByteArray envPlugins = qgetenv( "QT_QPA_GENERIC_PLUGINS" );
+    QByteArray envPlugins = qgetenv( "LSCS_QPA_GENERIC_PLUGINS" );
 
     if ( ! envPlugins.isEmpty() )
     {
@@ -1519,7 +1519,7 @@ void QGuiApplicationPrivate::init()
 
     mouse_double_click_distance = platformTheme()->themeHint( QPlatformTheme::MouseDoubleClickDistance ).toInt();
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QCursorData::initialize();
 #endif
 
@@ -1531,15 +1531,15 @@ void QGuiApplicationPrivate::init()
     lscs_addGuiFormulas();
 
 // set a global share context when enabled unless there is already one
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
-    if ( qApp->testAttribute( Qt::AA_ShareOpenGLContexts ) && ! qt_gl_global_share_context() )
+    if ( qApp->testAttribute( Qt::AA_ShareOpenGLContexts ) && ! lscs_gl_global_share_context() )
     {
         QOpenGLContext *ctx = new QOpenGLContext;
         ctx->setFormat( QSurfaceFormat::defaultFormat() );
         ctx->create();
 
-        qt_gl_set_global_share_context( ctx );
+        lscs_gl_set_global_share_context( ctx );
         ownGlobalShareContext = true;
     }
 
@@ -1551,7 +1551,7 @@ void QGuiApplicationPrivate::init()
     init_plugins( pluginList );
     QWindowSystemInterface::flushWindowSystemEvents();
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
     Q_Q( QGuiApplication );
 
     // connect to the session manager
@@ -1560,20 +1560,20 @@ void QGuiApplicationPrivate::init()
 
     if ( layout_direction == Qt::LayoutDirectionAuto || force_reverse )
     {
-        QGuiApplication::setLayoutDirection( qt_detectRTLLanguage() ? Qt::RightToLeft : Qt::LeftToRight );
+        QGuiApplication::setLayoutDirection( lscs_detectRTLLanguage() ? Qt::RightToLeft : Qt::LeftToRight );
     }
 
-    scrollNoPhaseAllowed = ! qgetenv( "QT_ENABLE_MOUSE_WHEEL_TRACKING" ).isEmpty();
+    scrollNoPhaseAllowed = ! qgetenv( "LSCS_ENABLE_MOUSE_WHEEL_TRACKING" ).isEmpty();
 
     initResources();
     process_cmdline();
 
     // must be called before initialize()
-    qt_init( this, application_type );
+    lscs_init( this, application_type );
     initialize();
     eventDispatcher->startingUp();
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     // factory for accessible interfaces for widgets shipped with Qt
     QAccessible::installFactory( &qAccessibleFactory );
 #endif
@@ -1619,7 +1619,7 @@ QApplication::FP_Void QApplication::platformFunction( const QByteArray &function
 
 int QApplication::exec()
 {
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessible::setRootObject( qApp );
 #endif
     return QCoreApplication::exec();
@@ -1766,7 +1766,7 @@ void QGuiApplicationPrivate::processWindowSystemEvent( QWindowSystemInterfacePri
                 static_cast<QWindowSystemInterfacePrivate::TabletLeaveProximityEvent *>( e ) );
             break;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
         case QWindowSystemInterfacePrivate::Gesture:
             QGuiApplicationPrivate::processGestureEvent(
@@ -1784,7 +1784,7 @@ void QGuiApplicationPrivate::processWindowSystemEvent( QWindowSystemInterfacePri
                 static_cast<QWindowSystemInterfacePrivate::FileOpenEvent *>( e ) );
             break;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
         case QWindowSystemInterfacePrivate::ContextMenu:
             QGuiApplicationPrivate::processContextMenuEvent(
@@ -1920,7 +1920,7 @@ void QGuiApplicationPrivate::processMouseEvent( QWindowSystemInterfacePrivate::M
         return;
     }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( !e->synthetic() )
     {
@@ -2020,7 +2020,7 @@ void QGuiApplicationPrivate::processMouseEvent( QWindowSystemInterfacePrivate::M
 
 void QGuiApplicationPrivate::processWheelEvent( QWindowSystemInterfacePrivate::WheelEvent *e )
 {
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     QWindow *window = e->window.data();
     QPointF globalPoint = e->globalPos;
     QPointF localPoint = e->localPos;
@@ -2416,7 +2416,7 @@ void QGuiApplicationPrivate::processFileOpenEvent( QWindowSystemInterfacePrivate
 
 void QGuiApplicationPrivate::processTabletEvent( QWindowSystemInterfacePrivate::TabletEvent *e )
 {
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
     QEvent::Type type = QEvent::TabletMove;
 
     if ( e->buttons != tabletState )
@@ -2503,7 +2503,7 @@ void QGuiApplicationPrivate::processTabletEvent( QWindowSystemInterfacePrivate::
 
 void QGuiApplicationPrivate::processTabletEnterProximityEvent( QWindowSystemInterfacePrivate::TabletEnterProximityEvent *e )
 {
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
     QTabletEvent ev( QEvent::TabletEnterProximity, QPointF(), QPointF(),
                      e->device, e->pointerType, 0, 0, 0, 0, 0, 0, Qt::NoModifier, e->uid, Qt::NoButton, tabletState );
 
@@ -2517,7 +2517,7 @@ void QGuiApplicationPrivate::processTabletEnterProximityEvent( QWindowSystemInte
 
 void QGuiApplicationPrivate::processTabletLeaveProximityEvent( QWindowSystemInterfacePrivate::TabletLeaveProximityEvent *e )
 {
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
     QTabletEvent ev( QEvent::TabletLeaveProximity, QPointF(), QPointF(),
                      e->device, e->pointerType, 0, 0, 0, 0, 0, 0, Qt::NoModifier, e->uid, Qt::NoButton, tabletState );
 
@@ -2529,7 +2529,7 @@ void QGuiApplicationPrivate::processTabletLeaveProximityEvent( QWindowSystemInte
 #endif
 }
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 void QGuiApplicationPrivate::processGestureEvent( QWindowSystemInterfacePrivate::GestureEvent *e )
 {
     if ( e->window.isNull() )
@@ -2541,7 +2541,7 @@ void QGuiApplicationPrivate::processGestureEvent( QWindowSystemInterfacePrivate:
     ev.setTimestamp( e->timestamp );
     QGuiApplication::sendSpontaneousEvent( e->window, &ev );
 }
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
 void QGuiApplicationPrivate::processPlatformPanelEvent( QWindowSystemInterfacePrivate::PlatformPanelEvent *e )
 {
@@ -2560,7 +2560,7 @@ void QGuiApplicationPrivate::processPlatformPanelEvent( QWindowSystemInterfacePr
     QGuiApplication::sendSpontaneousEvent( e->window.data(), &ev );
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 void QGuiApplicationPrivate::processContextMenuEvent( QWindowSystemInterfacePrivate::ContextMenuEvent *e )
 {
     // Widgets do not care about mouse triggered context menu events. Also, do not forward event
@@ -3091,7 +3091,7 @@ void QGuiApplicationPrivate::processExposeEvent( QWindowSystemInterfacePrivate::
         return;
     }
 
-    QWindowPrivate *p = qt_window_private( window );
+    QWindowPrivate *p = lscs_window_private( window );
 
     if ( !p->receivedExpose )
     {
@@ -3114,7 +3114,7 @@ void QGuiApplicationPrivate::processExposeEvent( QWindowSystemInterfacePrivate::
     QCoreApplication::sendSpontaneousEvent( window, &exposeEvent );
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 QPlatformDragQtResponse QGuiApplicationPrivate::processDrag( QWindow *w, const QMimeData *dropData, const QPoint &p,
         Qt::DropActions supportedActions )
@@ -3190,13 +3190,13 @@ QPlatformDropQtResponse QGuiApplicationPrivate::processDrop( QWindow *w, const Q
     return response;
 }
 
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
 QClipboard *QApplication::clipboard()
 {
-    if ( QGuiApplicationPrivate::qt_clipboard == nullptr )
+    if ( QGuiApplicationPrivate::lscs_clipboard == nullptr )
     {
         if ( ! qApp )
         {
@@ -3204,10 +3204,10 @@ QClipboard *QApplication::clipboard()
             return nullptr;
         }
 
-        QGuiApplicationPrivate::qt_clipboard = new QClipboard( nullptr );
+        QGuiApplicationPrivate::lscs_clipboard = new QClipboard( nullptr );
     }
 
-    return QGuiApplicationPrivate::qt_clipboard;
+    return QGuiApplicationPrivate::lscs_clipboard;
 }
 #endif
 
@@ -3362,7 +3362,7 @@ void QGuiApplicationPrivate::setApplicationState( Qt::ApplicationState state, bo
     emit qApp->applicationStateChanged( applicationState );
 }
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
 
 bool QApplication::isFallbackSessionManagementEnabled()
 {
@@ -3422,7 +3422,7 @@ void QGuiApplicationPrivate::saveState()
     emit q->saveStateRequest( session_manager );
     is_saving_session = false;
 }
-#endif //QT_NO_SESSIONMANAGER
+#endif //LSCS_NO_SESSIONMANAGER
 
 
 void QApplication::sync()
@@ -3463,7 +3463,7 @@ Qt::LayoutDirection QApplication::layoutDirection()
 }
 
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 QCursor *QApplication::overrideCursor()
 {
     CHECK_QAPP_INSTANCE( nullptr )
@@ -3485,7 +3485,7 @@ void QApplication::changeOverrideCursor( const QCursor &cursor )
 #endif
 
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 static inline void applyCursor( QWindow *w, QCursor c )
 {
     if ( const QScreen *screen = w->screen() )
@@ -3529,7 +3529,7 @@ static inline void applyWindowCursor( const QList<QWindow *> &l )
 
         if ( w->handle() && w->type() != Qt::Desktop )
         {
-            if ( qt_window_private( w )->hasCursor )
+            if ( lscs_window_private( w )->hasCursor )
             {
                 applyCursor( w, w->cursor() );
             }
@@ -3569,7 +3569,7 @@ void QApplication::restoreOverrideCursor()
         applyWindowCursor( QGuiApplicationPrivate::window_list );
     }
 }
-#endif// QT_NO_CURSOR
+#endif// LSCS_NO_CURSOR
 
 QStyleHints *QApplication::styleHints()
 {
@@ -3666,7 +3666,7 @@ QStyle *QApplication::style()
         QApplication::setPalette( *QApplicationPrivate::set_palette );
     }
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
 
     if ( ! QApplicationPrivate::styleSheet.isEmpty() )
     {
@@ -3725,7 +3725,7 @@ void QApplication::setStyle( QStyle *style )
     QStyle *old = QApplicationPrivate::app_style;
     QApplicationPrivate::overrides_native_style = ( nativeStyleClassName() == style->metaObject()->className() );
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
 
     if ( ! QApplicationPrivate::styleSheet.isEmpty() && !qobject_cast<QStyleSheetStyle *>( style ) )
     {
@@ -3787,7 +3787,7 @@ void QApplication::setStyle( QStyle *style )
                     QApplicationPrivate::app_style->polish( w ); // repolish
                 }
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
                 else
                 {
                     w->setStyleSheet( w->styleSheet() );         // touch
@@ -3810,7 +3810,7 @@ void QApplication::setStyle( QStyle *style )
         }
     }
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
 
     if ( QStyleSheetStyle *oldProxy = qobject_cast<QStyleSheetStyle *>( old ) )
     {
@@ -3857,7 +3857,7 @@ void QGuiApplicationPrivate::notifyThemeChanged()
 
     clearSystemPalette();
     initSystemPalette();
-    qt_init_tooltip_palette();
+    lscs_init_tooltip_palette();
 }
 
 void QApplicationPrivate::setPalette_helper( const QPalette &palette, const QString &className, bool clearWidgetPaletteHash )
@@ -3924,7 +3924,7 @@ void QApplicationPrivate::setPalette_helper( const QPalette &palette, const QStr
         }
 
         // Send to all scenes as well
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
         QList<QGraphicsScene *> &scenes = qApp->d_func()->scene_list;
 
         for ( QList<QGraphicsScene *>::const_iterator it = scenes.constBegin(); it != scenes.constEnd(); ++it )
@@ -4005,7 +4005,7 @@ void QApplication::setFont( const QFont &font, const QString &className )
             }
         }
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
         // Send to all scenes as well.
         QList<QGraphicsScene *> &scenes = qApp->d_func()->scene_list;
 

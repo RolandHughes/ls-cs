@@ -1,5 +1,5 @@
-#ifndef QT_SQL_H
-#define QT_SQL_H
+#ifndef LSCS_SQL_H
+#define LSCS_SQL_H
 
 #include <qtcore.h>
 

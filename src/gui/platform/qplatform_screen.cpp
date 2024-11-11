@@ -339,7 +339,7 @@ QPlatformScreen::SubpixelAntialiasingType QPlatformScreen::subpixelAntialiasingT
 
     if ( type == -1 )
     {
-        QByteArray env = qgetenv( "QT_SUBPIXEL_AA_TYPE" );
+        QByteArray env = qgetenv( "LSCS_SUBPIXEL_AA_TYPE" );
 
         if ( env == "RGB" )
         {

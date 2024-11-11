@@ -274,8 +274,8 @@ public:
     void rasterizeLine_dashed( QLineF line, qreal width,
                                int *dashIndex, qreal *dashOffset, bool *inDash );
 
-    void rasterize( QT_FT_Outline *outline, ProcessSpans callback, QSpanData *spanData, QRasterBuffer *rasterBuffer );
-    void rasterize( QT_FT_Outline *outline, ProcessSpans callback, void *userData, QRasterBuffer *rasterBuffer );
+    void rasterize( LSCS_FT_Outline *outline, ProcessSpans callback, QSpanData *spanData, QRasterBuffer *rasterBuffer );
+    void rasterize( LSCS_FT_Outline *outline, ProcessSpans callback, void *userData, QRasterBuffer *rasterBuffer );
     void updateMatrixData( QSpanData *spanData, const QBrush &brush, const QTransform &brushMatrix );
 
     void systemStateChanged() override;
@@ -320,7 +320,7 @@ public:
     QStroker basicStroker;
     QScopedPointer<QDashStroker> dashStroker;
 
-    QScopedPointer<QT_FT_Raster> grayRaster;
+    QScopedPointer<LSCS_FT_Raster> grayRaster;
 
     QVector<QLineF> cachedLines;
     QSpanData image_filler;

@@ -24,7 +24,7 @@
 #include <qfusionstyle_p.h>
 #include <qfusionstyle_p_p.h>
 
-#if ! defined(QT_NO_STYLE_FUSION) || defined(QT_PLUGIN)
+#if ! defined(LSCS_NO_STYLE_FUSION) || defined(LSCS_PLUGIN)
 
 #include <qapplication.h>
 #include <qcombobox.h>
@@ -148,7 +148,7 @@ static const char *const workspace_minimize[] =
 };
 
 
-static const char *const qt_titlebar_context_help[] =
+static const char *const lscs_titlebar_context_help[] =
 {
     "10 10 3 1",
     "  c None",
@@ -179,7 +179,7 @@ static QColor mergedColors( const QColor &colorA, const QColor &colorB, int fact
 
 static QPixmap colorizedImage( const QString &fileName, const QColor &color, int rotation = 0 )
 {
-    QString pixmapName = "$qt_ia-" + fileName + HexString<uint>( color.rgba() ) + QString::number( rotation );
+    QString pixmapName = "$lscs_ia-" + fileName + HexString<uint>( color.rgba() ) + QString::number( rotation );
     QPixmap pixmap;
 
     if ( ! QPixmapCache::find( pixmapName, pixmap ) )
@@ -208,10 +208,10 @@ static QPixmap colorizedImage( const QString &fileName, const QColor &color, int
                 QRgb col = data[x];
                 unsigned int colorDiff = ( qBlue( col ) - qRed( col ) );
                 unsigned char gray = qGreen( col );
-                unsigned char red = gray + qt_div_255( sourceRed * colorDiff );
-                unsigned char green = gray + qt_div_255( sourceGreen * colorDiff );
-                unsigned char blue = gray + qt_div_255( sourceBlue * colorDiff );
-                unsigned char alpha = qt_div_255( qAlpha( col ) * qAlpha( source ) );
+                unsigned char red = gray + lscs_div_255( sourceRed * colorDiff );
+                unsigned char green = gray + lscs_div_255( sourceGreen * colorDiff );
+                unsigned char blue = gray + lscs_div_255( sourceBlue * colorDiff );
+                unsigned char alpha = lscs_div_255( qAlpha( col ) * qAlpha( source ) );
                 data[x] = qRgba( ( std::min )( alpha, red ), ( std::min )( alpha, green ), ( std::min )( alpha, blue ), alpha );
             }
         }
@@ -233,7 +233,7 @@ static QPixmap colorizedImage( const QString &fileName, const QColor &color, int
 }
 
 // The default button and handle gradient
-static QLinearGradient qt_fusion_gradient( const QRect &rect, const QBrush &baseColor, Direction direction = TopDown )
+static QLinearGradient lscs_fusion_gradient( const QRect &rect, const QBrush &baseColor, Direction direction = TopDown )
 {
     int x = rect.center().x();
     int y = rect.center().y();
@@ -279,7 +279,7 @@ static QLinearGradient qt_fusion_gradient( const QRect &rect, const QBrush &base
     return gradient;
 }
 
-static void qt_fusion_draw_mdibutton( QPainter *painter, const QStyleOptionTitleBar *option,
+static void lscs_fusion_draw_mdibutton( QPainter *painter, const QStyleOptionTitleBar *option,
                                       const QRect &tmp, bool hover, bool sunken )
 {
     QColor dark;
@@ -1030,7 +1030,7 @@ void QFusionStyle::drawPrimitive( PrimitiveElement elem, const QStyleOption *opt
             p->setRenderHint( QPainter::Antialiasing, true );
             p->translate( 0.5, -0.5 );
 
-            QLinearGradient gradient = qt_fusion_gradient( rect, ( isEnabled &&
+            QLinearGradient gradient = lscs_fusion_gradient( rect, ( isEnabled &&
                                        option->state & State_MouseOver ) ? buttonColor : buttonColor.darker( 104 ) );
             p->setPen( Qt::transparent );
             p->setBrush( isDown ? QBrush( buttonColor.darker( 110 ) ) : gradient );
@@ -1659,7 +1659,7 @@ void QFusionStyle::drawControl( ControlElement element, const QStyleOption *opti
                     if ( ! indeterminate )
                     {
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
                         ( const_cast<QFusionStylePrivate *>( d ) )->stopAnimation( option->styleObject );
 #endif
 
@@ -1670,7 +1670,7 @@ void QFusionStyle::drawControl( ControlElement element, const QStyleOption *opti
                         painter->setPen( QPen( highlightedGradientStartColor, 9.0 ) );
                         painter->setClipRect( progressBar.adjusted( 1, 1, -1, -1 ) );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
                         QProgressStyleAnimation *animation = dynamic_cast<QProgressStyleAnimation *>( d->animationValue( option->styleObject ) );
 
                         if ( animation )
@@ -2327,11 +2327,11 @@ void QFusionStyle::drawControl( ControlElement element, const QStyleOption *opti
     }
 }
 
-extern QPalette qt_fusionPalette();
+extern QPalette lscs_fusionPalette();
 
 QPalette QFusionStyle::standardPalette () const
 {
-    return qt_fusionPalette();
+    return lscs_fusionPalette();
 }
 
 void QFusionStyle::drawComplexControl( ComplexControl control, const QStyleOptionComplex *option,
@@ -2465,7 +2465,7 @@ void QFusionStyle::drawComplexControl( ComplexControl control, const QStyleOptio
                         // Draw button gradient
                         QColor buttonColor = d->buttonColor( option->palette );
                         QRect updownRect = upRect.adjusted( 0, -2, 0, downRect.height() + 2 );
-                        QLinearGradient gradient = qt_fusion_gradient( updownRect, ( isEnabled &&
+                        QLinearGradient gradient = lscs_fusion_gradient( updownRect, ( isEnabled &&
                                                    option->state & State_MouseOver ) ? buttonColor : buttonColor.darker( 104 ) );
 
                         // Draw button gradient
@@ -2686,7 +2686,7 @@ void QFusionStyle::drawComplexControl( ComplexControl control, const QStyleOptio
                     {
                         bool hover = ( titleBar->activeSubControls & SC_TitleBarMinButton ) && ( titleBar->state & State_MouseOver );
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarMinButton ) && ( titleBar->state & State_Sunken );
-                        qt_fusion_draw_mdibutton( painter, titleBar, minButtonRect, hover, sunken );
+                        lscs_fusion_draw_mdibutton( painter, titleBar, minButtonRect, hover, sunken );
                         QRect minButtonIconRect = minButtonRect.adjusted( buttonMargin, buttonMargin, -buttonMargin, -buttonMargin );
                         painter->setPen( textColor );
                         painter->drawLine( minButtonIconRect.center().x() - 2, minButtonIconRect.center().y() + 3,
@@ -2711,7 +2711,7 @@ void QFusionStyle::drawComplexControl( ComplexControl control, const QStyleOptio
                     {
                         bool hover = ( titleBar->activeSubControls & SC_TitleBarMaxButton ) && ( titleBar->state & State_MouseOver );
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarMaxButton ) && ( titleBar->state & State_Sunken );
-                        qt_fusion_draw_mdibutton( painter, titleBar, maxButtonRect, hover, sunken );
+                        lscs_fusion_draw_mdibutton( painter, titleBar, maxButtonRect, hover, sunken );
 
                         QRect maxButtonIconRect = maxButtonRect.adjusted( buttonMargin, buttonMargin, -buttonMargin, -buttonMargin );
 
@@ -2740,7 +2740,7 @@ void QFusionStyle::drawComplexControl( ComplexControl control, const QStyleOptio
                     {
                         bool hover = ( titleBar->activeSubControls & SC_TitleBarCloseButton ) && ( titleBar->state & State_MouseOver );
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarCloseButton ) && ( titleBar->state & State_Sunken );
-                        qt_fusion_draw_mdibutton( painter, titleBar, closeButtonRect, hover, sunken );
+                        lscs_fusion_draw_mdibutton( painter, titleBar, closeButtonRect, hover, sunken );
                         QRect closeIconRect = closeButtonRect.adjusted( buttonMargin, buttonMargin, -buttonMargin, -buttonMargin );
                         painter->setPen( textAlphaColor );
                         const QLine lines[4] =
@@ -2787,7 +2787,7 @@ void QFusionStyle::drawComplexControl( ComplexControl control, const QStyleOptio
                         bool hover = ( titleBar->activeSubControls & SC_TitleBarNormalButton ) && ( titleBar->state & State_MouseOver );
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarNormalButton ) && ( titleBar->state & State_Sunken );
                         QRect normalButtonIconRect = normalButtonRect.adjusted( buttonMargin, buttonMargin, -buttonMargin, -buttonMargin );
-                        qt_fusion_draw_mdibutton( painter, titleBar, normalButtonRect, hover, sunken );
+                        lscs_fusion_draw_mdibutton( painter, titleBar, normalButtonRect, hover, sunken );
 
                         QRect frontWindowRect = normalButtonIconRect.adjusted( 0, 3, -3, 0 );
                         painter->setPen( textColor );
@@ -2836,8 +2836,8 @@ void QFusionStyle::drawComplexControl( ComplexControl control, const QStyleOptio
                     {
                         bool hover = ( titleBar->activeSubControls & SC_TitleBarContextHelpButton ) && ( titleBar->state & State_MouseOver );
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarContextHelpButton ) && ( titleBar->state & State_Sunken );
-                        qt_fusion_draw_mdibutton( painter, titleBar, contextHelpButtonRect, hover, sunken );
-                        QImage image( qt_titlebar_context_help );
+                        lscs_fusion_draw_mdibutton( painter, titleBar, contextHelpButtonRect, hover, sunken );
+                        QImage image( lscs_titlebar_context_help );
                         QColor alpha = textColor;
                         alpha.setAlpha( 128 );
                         image.setColor( 1, textColor.rgba() );
@@ -2856,7 +2856,7 @@ void QFusionStyle::drawComplexControl( ComplexControl control, const QStyleOptio
                     {
                         bool hover = ( titleBar->activeSubControls & SC_TitleBarShadeButton ) && ( titleBar->state & State_MouseOver );
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarShadeButton ) && ( titleBar->state & State_Sunken );
-                        qt_fusion_draw_mdibutton( painter, titleBar, shadeButtonRect, hover, sunken );
+                        lscs_fusion_draw_mdibutton( painter, titleBar, shadeButtonRect, hover, sunken );
                         QPixmap arrow = colorizedImage( ":/copperspice.org/styles/commonstyle/images/fusion_arrow.png", textColor );
                         painter->drawPixmap( shadeButtonRect.adjusted( 5, 7, -5, -7 ), arrow );
                     }
@@ -2871,7 +2871,7 @@ void QFusionStyle::drawComplexControl( ComplexControl control, const QStyleOptio
                     {
                         bool hover = ( titleBar->activeSubControls & SC_TitleBarUnshadeButton ) && ( titleBar->state & State_MouseOver );
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarUnshadeButton ) && ( titleBar->state & State_Sunken );
-                        qt_fusion_draw_mdibutton( painter, titleBar, unshadeButtonRect, hover, sunken );
+                        lscs_fusion_draw_mdibutton( painter, titleBar, unshadeButtonRect, hover, sunken );
                         QPixmap arrow = colorizedImage( ":LsCs/styles/commonstyle/images/fusion_arrow.png", textColor, 180 );
                         painter->drawPixmap( unshadeButtonRect.adjusted( 5, 7, -5, -7 ), arrow );
                     }
@@ -2950,7 +2950,7 @@ void QFusionStyle::drawComplexControl( ComplexControl control, const QStyleOptio
                         styleObject->setProperty( "_q_stylestate",    static_cast<int>( scrollBar->state ) );
                         styleObject->setProperty( "_q_stylecontrols", static_cast<uint>( scrollBar->activeSubControls ) );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
                         QScrollbarStyleAnimation *anim  = dynamic_cast<QScrollbarStyleAnimation *>( d->animationValue( styleObject ) );
 
                         if ( transient )
@@ -2977,7 +2977,7 @@ void QFusionStyle::drawComplexControl( ComplexControl control, const QStyleOptio
 #endif
                     }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
                     QScrollbarStyleAnimation *anim = dynamic_cast<QScrollbarStyleAnimation *>( d->animationValue( styleObject ) );
 
                     if ( anim && anim->mode() == QScrollbarStyleAnimation::Deactivating )
@@ -3685,7 +3685,7 @@ void QFusionStyle::drawComplexControl( ComplexControl control, const QStyleOptio
 
                         // gradient fill
                         QRect r = pixmapRect.adjusted( 1, 1, -2, -2 );
-                        QLinearGradient gradient = qt_fusion_gradient( gradRect, d->buttonColor( option->palette ), horizontal ? TopDown : FromLeft );
+                        QLinearGradient gradient = lscs_fusion_gradient( gradRect, d->buttonColor( option->palette ), horizontal ? TopDown : FromLeft );
 
                         handlePainter.setRenderHint( QPainter::Antialiasing, true );
                         handlePainter.translate( 0.5, 0.5 );
@@ -4598,7 +4598,7 @@ int QFusionStyle::styleHint( StyleHint hint, const QStyleOption *option, const Q
         case SH_MessageBox_TextInteractionFlags:
             return Qt::TextSelectableByMouse | Qt::LinksAccessibleByMouse;
 
-#ifndef QT_NO_WIZARD
+#ifndef LSCS_NO_WIZARD
 
         case SH_WizardStyle:
             return QWizard::ClassicStyle;
@@ -4687,7 +4687,7 @@ QIcon QFusionStyle::standardIcon( StandardPixmap standardIcon, const QStyleOptio
 
 QPixmap QFusionStyle::standardPixmap( StandardPixmap standardPixmap, const QStyleOption *opt, const QWidget *widget ) const
 {
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
 
     switch ( standardPixmap )
     {

@@ -374,7 +374,7 @@ void CameraBinFocus::_q_handleCameraStatusChange( QCamera::Status status )
     {
         if ( GstPad *pad = gst_element_get_static_pad( m_session->cameraSource(), "vfsrc" ) )
         {
-            if ( GstCaps *caps = qt_gst_pad_get_current_caps( pad ) )
+            if ( GstCaps *caps = lscs_gst_pad_get_current_caps( pad ) )
             {
                 if ( GstStructure *structure = gst_caps_get_structure( caps, 0 ) )
                 {

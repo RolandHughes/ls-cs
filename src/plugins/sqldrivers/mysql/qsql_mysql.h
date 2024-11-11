@@ -28,12 +28,12 @@
 #include <qsqlresult.h>
 
 #if defined (Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #endif
 
 #include <mysql.h>
 
-#ifdef QT_PLUGIN
+#ifdef LSCS_PLUGIN
 #define Q_EXPORT_SQLDRIVER_MYSQL
 #else
 #define Q_EXPORT_SQLDRIVER_MYSQL Q_SQL_EXPORT

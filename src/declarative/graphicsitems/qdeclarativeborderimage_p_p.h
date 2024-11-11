@@ -27,7 +27,7 @@
 #include <qdeclarativeimagebase_p_p.h>
 #include <qdeclarativescalegrid_p_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QNetworkReply;
 class QDeclarativeBorderImagePrivate : public QDeclarativeImageBasePrivate
@@ -82,6 +82,6 @@ public:
     int redirectCount;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEBORDERIMAGE_P_H

@@ -85,7 +85,7 @@ private:
     QThreadStorage<QOpenGLMultiGroupSharedResource *> m_storage;
 };
 
-static QGLShaderStorage *qt_shader_storage()
+static QGLShaderStorage *lscs_shader_storage()
 {
     static QGLShaderStorage retval;
     return &retval;
@@ -93,7 +93,7 @@ static QGLShaderStorage *qt_shader_storage()
 
 QGLEngineSharedShaders *QGLEngineSharedShaders::shadersForContext( const QGLContext *context )
 {
-    return qt_shader_storage()->shadersForThread( context );
+    return lscs_shader_storage()->shadersForThread( context );
 }
 
 QStringList QGLEngineSharedShaders::qShaderSnippets;
@@ -226,10 +226,10 @@ QGLEngineSharedShaders::QGLEngineSharedShaders( const QGLContext *context )
         simpleShaderProg->addShader( vertexShader );
         simpleShaderProg->addShader( fragShader );
 
-        simpleShaderProg->bindAttributeLocation( "vertexCoordsArray", QT_VERTEX_COORDS_ATTR );
-        simpleShaderProg->bindAttributeLocation( "pmvMatrix1", QT_PMV_MATRIX_1_ATTR );
-        simpleShaderProg->bindAttributeLocation( "pmvMatrix2", QT_PMV_MATRIX_2_ATTR );
-        simpleShaderProg->bindAttributeLocation( "pmvMatrix3", QT_PMV_MATRIX_3_ATTR );
+        simpleShaderProg->bindAttributeLocation( "vertexCoordsArray", LSCS_VERTEX_COORDS_ATTR );
+        simpleShaderProg->bindAttributeLocation( "pmvMatrix1", LSCS_PMV_MATRIX_1_ATTR );
+        simpleShaderProg->bindAttributeLocation( "pmvMatrix2", LSCS_PMV_MATRIX_2_ATTR );
+        simpleShaderProg->bindAttributeLocation( "pmvMatrix3", LSCS_PMV_MATRIX_3_ATTR );
     }
 
     simpleShaderProg->link();
@@ -283,8 +283,8 @@ QGLEngineSharedShaders::QGLEngineSharedShaders( const QGLContext *context )
         blitShaderProg->addShader( vertexShader );
         blitShaderProg->addShader( fragShader );
 
-        blitShaderProg->bindAttributeLocation( "textureCoordArray", QT_TEXTURE_COORDS_ATTR );
-        blitShaderProg->bindAttributeLocation( "vertexCoordsArray", QT_VERTEX_COORDS_ATTR );
+        blitShaderProg->bindAttributeLocation( "textureCoordArray", LSCS_TEXTURE_COORDS_ATTR );
+        blitShaderProg->bindAttributeLocation( "vertexCoordsArray", LSCS_VERTEX_COORDS_ATTR );
     }
 
     blitShaderProg->link();
@@ -450,23 +450,23 @@ QGLEngineShaderProg *QGLEngineSharedShaders::findProgramInCache( const QGLEngine
             shaderProgram->addShader( fragShader.take() );
 
             // We have to bind the vertex attribute names before the program is linked:
-            shaderProgram->bindAttributeLocation( "vertexCoordsArray", QT_VERTEX_COORDS_ATTR );
+            shaderProgram->bindAttributeLocation( "vertexCoordsArray", LSCS_VERTEX_COORDS_ATTR );
 
             if ( prog.useTextureCoords )
             {
-                shaderProgram->bindAttributeLocation( "textureCoordArray", QT_TEXTURE_COORDS_ATTR );
+                shaderProgram->bindAttributeLocation( "textureCoordArray", LSCS_TEXTURE_COORDS_ATTR );
             }
 
             if ( prog.useOpacityAttribute )
             {
-                shaderProgram->bindAttributeLocation( "opacityArray", QT_OPACITY_ATTR );
+                shaderProgram->bindAttributeLocation( "opacityArray", LSCS_OPACITY_ATTR );
             }
 
             if ( prog.usePmvMatrixAttribute )
             {
-                shaderProgram->bindAttributeLocation( "pmvMatrix1", QT_PMV_MATRIX_1_ATTR );
-                shaderProgram->bindAttributeLocation( "pmvMatrix2", QT_PMV_MATRIX_2_ATTR );
-                shaderProgram->bindAttributeLocation( "pmvMatrix3", QT_PMV_MATRIX_3_ATTR );
+                shaderProgram->bindAttributeLocation( "pmvMatrix1", LSCS_PMV_MATRIX_1_ATTR );
+                shaderProgram->bindAttributeLocation( "pmvMatrix2", LSCS_PMV_MATRIX_2_ATTR );
+                shaderProgram->bindAttributeLocation( "pmvMatrix3", LSCS_PMV_MATRIX_3_ATTR );
             }
         }
 
@@ -509,7 +509,7 @@ QGLEngineShaderProg *QGLEngineSharedShaders::findProgramInCache( const QGLEngine
         if ( newProg->maskFragShader != QGLEngineSharedShaders::NoMaskFragmentShader )
         {
             GLuint location = newProg->program->uniformLocation( "maskTexture" );
-            newProg->program->setUniformValue( location, QT_MASK_TEXTURE_UNIT );
+            newProg->program->setUniformValue( location, LSCS_MASK_TEXTURE_UNIT );
         }
 
         if ( cachedPrograms.count() > 30 )
@@ -713,9 +713,9 @@ void QGLEngineShaderManager::useSimpleProgram()
 {
     sharedShaders->simpleProgram()->bind();
     QGLContextPrivate *ctx_d = ctx->d_func();
-    ctx_d->setVertexAttribArrayEnabled( QT_VERTEX_COORDS_ATTR, true );
-    ctx_d->setVertexAttribArrayEnabled( QT_TEXTURE_COORDS_ATTR, false );
-    ctx_d->setVertexAttribArrayEnabled( QT_OPACITY_ATTR, false );
+    ctx_d->setVertexAttribArrayEnabled( LSCS_VERTEX_COORDS_ATTR, true );
+    ctx_d->setVertexAttribArrayEnabled( LSCS_TEXTURE_COORDS_ATTR, false );
+    ctx_d->setVertexAttribArrayEnabled( LSCS_OPACITY_ATTR, false );
     shaderProgNeedsChanging = true;
 }
 
@@ -723,9 +723,9 @@ void QGLEngineShaderManager::useBlitProgram()
 {
     sharedShaders->blitProgram()->bind();
     QGLContextPrivate *ctx_d = ctx->d_func();
-    ctx_d->setVertexAttribArrayEnabled( QT_VERTEX_COORDS_ATTR, true );
-    ctx_d->setVertexAttribArrayEnabled( QT_TEXTURE_COORDS_ATTR, true );
-    ctx_d->setVertexAttribArrayEnabled( QT_OPACITY_ATTR, false );
+    ctx_d->setVertexAttribArrayEnabled( LSCS_VERTEX_COORDS_ATTR, true );
+    ctx_d->setVertexAttribArrayEnabled( LSCS_TEXTURE_COORDS_ATTR, true );
+    ctx_d->setVertexAttribArrayEnabled( LSCS_OPACITY_ATTR, false );
     shaderProgNeedsChanging = true;
 }
 
@@ -1037,9 +1037,9 @@ bool QGLEngineShaderManager::useCorrectShaderProg()
     // Make sure all the vertex attribute arrays the program uses are enabled (and the ones it
     // doesn't use are disabled)
     QGLContextPrivate *ctx_d = ctx->d_func();
-    ctx_d->setVertexAttribArrayEnabled( QT_VERTEX_COORDS_ATTR, true );
-    ctx_d->setVertexAttribArrayEnabled( QT_TEXTURE_COORDS_ATTR, currentShaderProg && currentShaderProg->useTextureCoords );
-    ctx_d->setVertexAttribArrayEnabled( QT_OPACITY_ATTR, currentShaderProg && currentShaderProg->useOpacityAttribute );
+    ctx_d->setVertexAttribArrayEnabled( LSCS_VERTEX_COORDS_ATTR, true );
+    ctx_d->setVertexAttribArrayEnabled( LSCS_TEXTURE_COORDS_ATTR, currentShaderProg && currentShaderProg->useTextureCoords );
+    ctx_d->setVertexAttribArrayEnabled( LSCS_OPACITY_ATTR, currentShaderProg && currentShaderProg->useOpacityAttribute );
 
     shaderProgNeedsChanging = false;
     return true;

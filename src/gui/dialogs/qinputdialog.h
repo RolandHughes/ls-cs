@@ -28,7 +28,7 @@
 #include <qlineedit.h>
 #include <qstring.h>
 
-#ifndef QT_NO_INPUTDIALOG
+#ifndef LSCS_NO_INPUTDIALOG
 
 class QInputDialogPrivate;
 
@@ -227,6 +227,6 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QInputDialog::InputDialogOptions )
 
-#endif // QT_NO_INPUTDIALOG
+#endif // LSCS_NO_INPUTDIALOG
 
 #endif

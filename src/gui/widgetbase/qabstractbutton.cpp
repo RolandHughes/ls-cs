@@ -34,7 +34,7 @@
 #include <qabstractbutton_p.h>
 #include <qbuttongroup_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -43,18 +43,18 @@
 #define AUTO_REPEAT_DELAY  300
 #define AUTO_REPEAT_INTERVAL 100
 
-Q_GUI_EXPORT extern bool qt_tab_all_widgets();
+Q_GUI_EXPORT extern bool lscs_tab_all_widgets();
 
 QAbstractButtonPrivate::QAbstractButtonPrivate( QSizePolicy::ControlType type )
     :
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     shortcutId( 0 ),
 #endif
 
     checkable( false ), checked( false ), autoRepeat( false ), autoExclusive( false ),
     down( false ), blockRefresh( false ), pressed( false ),
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
     group( nullptr ),
 #endif
 
@@ -67,7 +67,7 @@ QList<QAbstractButton *>QAbstractButtonPrivate::queryButtonList() const
 {
     Q_Q( const QAbstractButton );
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
 
     if ( group )
     {
@@ -93,7 +93,7 @@ QList<QAbstractButton *>QAbstractButtonPrivate::queryButtonList() const
         {
             QAbstractButton *candidate = retval.at( i );
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
 
             if ( ! candidate->autoExclusive() || candidate->group() )
             {
@@ -114,7 +114,7 @@ QList<QAbstractButton *>QAbstractButtonPrivate::queryButtonList() const
 
 QAbstractButton *QAbstractButtonPrivate::queryCheckedButton() const
 {
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
 
     if ( group )
     {
@@ -147,7 +147,7 @@ QAbstractButton *QAbstractButtonPrivate::queryCheckedButton() const
 
 void QAbstractButtonPrivate::notifyChecked()
 {
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
     Q_Q( QAbstractButton );
 
     if ( group )
@@ -176,7 +176,7 @@ void QAbstractButtonPrivate::moveFocus( int key )
 {
     QList<QAbstractButton *> buttonList = queryButtonList();
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
     bool exclusive = group ? group->d_func()->exclusive : autoExclusive;
 #else
     bool exclusive = autoExclusive;
@@ -196,7 +196,7 @@ void QAbstractButtonPrivate::moveFocus( int key )
     QRect target = f->rect().translated( f->mapToGlobal( QPoint( 0, 0 ) ) );
     QPoint goal  = target.center();
 
-    uint focus_flag = qt_tab_all_widgets() ? Qt::TabFocus : Qt::StrongFocus;
+    uint focus_flag = lscs_tab_all_widgets() ? Qt::TabFocus : Qt::StrongFocus;
 
     for ( int i = 0; i < buttonList.count(); ++i )
     {
@@ -280,7 +280,7 @@ void QAbstractButtonPrivate::moveFocus( int key )
 
     if ( exclusive
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
             && ! QApplication::keypadNavigationEnabled()
 #endif
             && candidate && fb->d_func()->checked && candidate->d_func()->checkable )
@@ -305,7 +305,7 @@ void QAbstractButtonPrivate::fixFocusPolicy()
 {
     Q_Q( QAbstractButton );
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
 
     if ( ! group && ! autoExclusive )
     {
@@ -369,7 +369,7 @@ void QAbstractButtonPrivate::click()
     {
         // the checked button of an exclusive or autoexclusive group cannot be unchecked
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
         if ( group ? group->d_func()->exclusive : autoExclusive )
         {
 #else
@@ -416,7 +416,7 @@ void QAbstractButtonPrivate::emitClicked()
     QPointer<QAbstractButton> guard( q );
     emit q->clicked( checked );
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
 
     if ( guard && group )
     {
@@ -437,7 +437,7 @@ void QAbstractButtonPrivate::emitPressed()
     QPointer<QAbstractButton> guard( q );
     emit q->pressed();
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
 
     if ( guard && group )
     {
@@ -458,7 +458,7 @@ void QAbstractButtonPrivate::emitReleased()
     QPointer<QAbstractButton> guard( q );
     emit q->released();
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
 
     if ( guard && group )
     {
@@ -479,7 +479,7 @@ void QAbstractButtonPrivate::emitToggled( bool checked )
 
     emit q->toggled( checked );
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
 
     if ( guard && group )
     {
@@ -503,7 +503,7 @@ QAbstractButton::QAbstractButton( QWidget *parent )
 
 QAbstractButton::~QAbstractButton()
 {
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
     Q_D( QAbstractButton );
 
     if ( d->group )
@@ -532,7 +532,7 @@ void QAbstractButton::setText( const QString &text )
 
     d->text = text;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     QKeySequence newMnemonic = QKeySequence::mnemonic( text );
     setShortcut( newMnemonic );
 #endif
@@ -541,7 +541,7 @@ void QAbstractButton::setText( const QString &text )
     update();
     updateGeometry();
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleEvent event( this, QAccessible::NameChanged );
     QAccessible::updateAccessibility( &event );
 #endif
@@ -569,7 +569,7 @@ QIcon QAbstractButton::icon() const
     return d->icon;
 }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
 void QAbstractButton::setShortcut( const QKeySequence &key )
 {
@@ -589,7 +589,7 @@ QKeySequence QAbstractButton::shortcut() const
     Q_D( const QAbstractButton );
     return d->shortcut;
 }
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
 void QAbstractButton::setCheckable( bool checkable )
 {
@@ -628,7 +628,7 @@ void QAbstractButton::setChecked( bool checked )
     {
         // the checked button of an exclusive or autoexclusive group can not be  unchecked
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
         if ( d->group ? d->group->d_func()->exclusive : d->autoExclusive )
         {
             return;
@@ -670,7 +670,7 @@ void QAbstractButton::setChecked( bool checked )
         d->emitToggled( checked );
     }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessible::State s;
     s.checked = true;
     QAccessibleStateChangeEvent event( this, s );
@@ -775,7 +775,7 @@ bool QAbstractButton::autoExclusive() const
     return d->autoExclusive;
 }
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
 
 QButtonGroup *QAbstractButton::group() const
 {
@@ -882,7 +882,7 @@ bool QAbstractButton::event( QEvent *e )
             case QEvent::HoverEnter:
             case QEvent::HoverLeave:
             case QEvent::ContextMenu:
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
             case QEvent::Wheel:
 #endif
                 return true;
@@ -892,7 +892,7 @@ bool QAbstractButton::event( QEvent *e )
         }
     }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( e->type() == QEvent::Shortcut )
     {
@@ -1051,7 +1051,7 @@ void QAbstractButton::keyPressEvent( QKeyEvent *e )
         case Qt::Key_Down:
         {
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
             if ( ( QApplication::keypadNavigationEnabled() && ( e->key() == Qt::Key_Left || e->key() == Qt::Key_Right ) )
                     || ( ! QApplication::navigationMode() == Qt::NavigationModeKeypadDirectional
@@ -1066,11 +1066,11 @@ void QAbstractButton::keyPressEvent( QKeyEvent *e )
 
             if ( d->autoExclusive
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
                     || d->group
 #endif
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
                     || ( pw && qobject_cast<QAbstractItemView *>( pw->parentWidget() ) )
 #endif
                )
@@ -1181,7 +1181,7 @@ void QAbstractButton::focusInEvent( QFocusEvent *e )
 {
     Q_D( QAbstractButton );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( ! QApplication::keypadNavigationEnabled() )
     {

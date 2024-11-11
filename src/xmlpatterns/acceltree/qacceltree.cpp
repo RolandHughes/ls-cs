@@ -72,7 +72,7 @@ void AccelTree::printStats( const NamePool::Ptr &np ) const
 {
     Q_ASSERT( np );
 
-#if defined(QT_DEBUG)
+#if defined(LSCS_DEBUG)
 
     const int len = basicData.count();
 

@@ -29,7 +29,7 @@
 #include "qscriptdebuggerconsolecommandmanager_p.h"
 #include <QtScript/qscriptengine.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerConsoleGlobalObjectPrivate
 {
@@ -440,4 +440,4 @@ void QScriptDebuggerConsoleGlobalObject::setEvaluateAction( int action )
     d->console->setEvaluateAction( action );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

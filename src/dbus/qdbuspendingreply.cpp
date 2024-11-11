@@ -25,7 +25,7 @@
 #include "qdbuspendingcall_p.h"
 #include "qdbusmetatype.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
 /*!
     \class QDBusPendingReply
@@ -262,4 +262,4 @@ void QDBusPendingReplyData::setMetaTypes( int count, const int *types )
     d->checkReceivedSignature();
 }
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

@@ -26,9 +26,9 @@
 
 #include <qdeclarativeimage_p_p.h>
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QMovie;
 class QNetworkReply;
@@ -51,8 +51,8 @@ public:
     int redirectCount;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_MOVIE
+#endif // LSCS_NO_MOVIE
 
 #endif // QDECLARATIVEANIMATEDIMAGE_P_H

@@ -128,7 +128,7 @@ void QWKPagePrivate::init( QGraphicsItem *view, QGraphicsWKView::BackingStoreTyp
 
 void QWKPagePrivate::setCursor( const WebCore::Cursor &cursor )
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     emit q->cursorChanged( *cursor.platformCursor() );
 #endif
 }
@@ -376,7 +376,7 @@ void QWKPagePrivate::wheelEvent( QGraphicsSceneWheelEvent *ev )
 
 void QWKPagePrivate::updateAction( QWKPage::WebAction action )
 {
-#ifdef QT_NO_ACTION
+#ifdef LSCS_NO_ACTION
     Q_UNUSED( action )
 #else
     QAction *a = actions[action];
@@ -425,7 +425,7 @@ void QWKPagePrivate::updateAction( QWKPage::WebAction action )
         a->setChecked( checked );
     }
 
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 }
 
 void QWKPagePrivate::updateNavigationActions()
@@ -436,7 +436,7 @@ void QWKPagePrivate::updateNavigationActions()
     updateAction( QWKPage::Reload );
 }
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 void QWKPagePrivate::_q_webActionTriggered( bool checked )
 {
     QAction *a = qobject_cast<QAction *>( q->sender() );
@@ -449,7 +449,7 @@ void QWKPagePrivate::_q_webActionTriggered( bool checked )
     QWKPage::WebAction action = static_cast<QWKPage::WebAction>( a->data().toInt() );
     q->triggerAction( action, checked );
 }
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
 void QWKPagePrivate::touchEvent( QTouchEvent *event )
 {
@@ -487,27 +487,27 @@ QWKPage::QWKPage( QWKContext *context )
     {
         0,      /* version */
         this,   /* clientInfo */
-        qt_wk_didStartProvisionalLoadForFrame,
-        qt_wk_didReceiveServerRedirectForProvisionalLoadForFrame,
-        qt_wk_didFailProvisionalLoadWithErrorForFrame,
-        qt_wk_didCommitLoadForFrame,
-        qt_wk_didFinishDocumentLoadForFrame,
-        qt_wk_didFinishLoadForFrame,
-        qt_wk_didFailLoadWithErrorForFrame,
-        qt_wk_didSameDocumentNavigationForFrame,
-        qt_wk_didReceiveTitleForFrame,
-        qt_wk_didFirstLayoutForFrame,
-        qt_wk_didFirstVisuallyNonEmptyLayoutForFrame,
-        qt_wk_didRemoveFrameFromHierarchy,
+        lscs_wk_didStartProvisionalLoadForFrame,
+        lscs_wk_didReceiveServerRedirectForProvisionalLoadForFrame,
+        lscs_wk_didFailProvisionalLoadWithErrorForFrame,
+        lscs_wk_didCommitLoadForFrame,
+        lscs_wk_didFinishDocumentLoadForFrame,
+        lscs_wk_didFinishLoadForFrame,
+        lscs_wk_didFailLoadWithErrorForFrame,
+        lscs_wk_didSameDocumentNavigationForFrame,
+        lscs_wk_didReceiveTitleForFrame,
+        lscs_wk_didFirstLayoutForFrame,
+        lscs_wk_didFirstVisuallyNonEmptyLayoutForFrame,
+        lscs_wk_didRemoveFrameFromHierarchy,
         0, /* didDisplayInsecureContentForFrame */
         0, /* didRunInsecureContentForFrame */
         0, /* canAuthenticateAgainstProtectionSpaceInFrame */
         0, /* didReceiveAuthenticationChallengeInFrame */
-        qt_wk_didStartProgress,
-        qt_wk_didChangeProgress,
-        qt_wk_didFinishProgress,
-        qt_wk_didBecomeUnresponsive,
-        qt_wk_didBecomeResponsive,
+        lscs_wk_didStartProgress,
+        lscs_wk_didChangeProgress,
+        lscs_wk_didFinishProgress,
+        lscs_wk_didBecomeUnresponsive,
+        lscs_wk_didBecomeResponsive,
         0,  /* processDidCrash */
         0,  /* didChangeBackForwardList */
         0,  /* shouldGoToBackForwardListItem */
@@ -519,16 +519,16 @@ QWKPage::QWKPage( QWKContext *context )
     {
         0,      /* version */
         this,   /* clientInfo */
-        qt_wk_createNewPage,
-        qt_wk_showPage,
-        qt_wk_close,
-        qt_wk_takeFocus,
+        lscs_wk_createNewPage,
+        lscs_wk_showPage,
+        lscs_wk_close,
+        lscs_wk_takeFocus,
         0,  /* focus */
         0,  /* unfocus */
-        qt_wk_runJavaScriptAlert,
+        lscs_wk_runJavaScriptAlert,
         0,  /* runJavaScriptConfirm */
         0,  /* runJavaScriptPrompt */
-        qt_wk_setStatusText,
+        lscs_wk_setStatusText,
         0,  /* mouseDidMoveOverElement */
         0,  /* missingPluginButtonClicked */
         0,  /* didNotHandleKeyEvent */
@@ -775,7 +775,7 @@ void QWKPage::setResizesToContentsUsingLayoutSize( const QSize &targetLayoutSize
 #endif
 }
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 void QWKPage::triggerAction( WebAction webAction, bool )
 {
     switch ( webAction )
@@ -805,9 +805,9 @@ void QWKPage::triggerAction( WebAction webAction, bool )
             qtAction->isEnabled(), qtAction->isChecked() );
     d->page->contextMenuItemSelected( menuItemData );
 }
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 QAction *QWKPage::action( WebAction action ) const
 {
     if ( action == QWKPage::NoWebAction || action >= WebActionCount )
@@ -901,7 +901,7 @@ QAction *QWKPage::action( WebAction action ) const
     d->updateAction( action );
     return a;
 }
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
 void QWKPage::findZoomableAreaForPoint( const QPoint &point )
 {

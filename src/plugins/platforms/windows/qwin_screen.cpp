@@ -140,7 +140,7 @@ static bool monitorData( HMONITOR hMonitor, QWindowsScreenData *data )
 }
 
 // from QDesktopWidget, taking WindowsScreenDataList as LPARAM
-BOOL QT_WIN_CALLBACK monitorEnumCallback( HMONITOR hMonitor, HDC, LPRECT, LPARAM p )
+BOOL LSCS_WIN_CALLBACK monitorEnumCallback( HMONITOR hMonitor, HDC, LPRECT, LPARAM p )
 {
     QWindowsScreenData data;
 
@@ -214,13 +214,13 @@ static QDebug operator<<( QDebug debug, const QWindowsScreenData &d )
 QWindowsScreen::QWindowsScreen( const QWindowsScreenData &data )
     : m_data( data )
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     , m_cursor( new QWindowsCursor( this ) )
 #endif
 {
 }
 
-Q_GUI_EXPORT QPixmap qt_pixmapFromWinHBITMAP( HBITMAP bitmap, int hbitmapFormat = 0 );
+Q_GUI_EXPORT QPixmap lscs_pixmapFromWinHBITMAP( HBITMAP bitmap, int hbitmapFormat = 0 );
 
 QPixmap QWindowsScreen::grabWindow( WId window, int x, int y, int width, int height ) const
 {
@@ -253,7 +253,7 @@ QPixmap QWindowsScreen::grabWindow( WId window, int x, int y, int width, int hei
     SelectObject( bitmap_dc, null_bitmap );
     DeleteDC( bitmap_dc );
 
-    const QPixmap pixmap = qt_pixmapFromWinHBITMAP( bitmap );
+    const QPixmap pixmap = lscs_pixmapFromWinHBITMAP( bitmap );
 
     DeleteObject( bitmap );
     ReleaseDC( nullptr, display_dc );

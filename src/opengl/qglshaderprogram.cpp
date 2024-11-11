@@ -149,7 +149,7 @@ bool QGLShaderPrivate::create()
             shader = glfuncs->glCreateShader( GL_VERTEX_SHADER );
         }
 
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
         else if ( shaderType == QGLShader::Geometry && ! context->contextHandle()->isOpenGLES() )
         {
             shader = glfuncs->glCreateShader( GL_GEOMETRY_SHADER_EXT );
@@ -294,7 +294,7 @@ QGLShader::ShaderType QGLShader::shaderType() const
 // but usually not present on desktop systems.  Define the
 // keywords to empty strings on desktop systems.
 
-#if ! defined(QT_OPENGL_ES) || defined(QT_OPENGL_FORCE_SHADER_DEFINES)
+#if ! defined(LSCS_OPENGL_ES) || defined(LSCS_OPENGL_FORCE_SHADER_DEFINES)
 
 #define QGL_DEFINE_QUALIFIERS 1
 static const char qualifierDefines[] =
@@ -789,7 +789,7 @@ bool QGLShaderProgram::link()
         }
     }
 
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
 
     // Set up the geometry shader parameters
     if ( ! QOpenGLContext::currentContext()->isOpenGLES() && d->glfuncs->glProgramParameteri )
@@ -2031,7 +2031,7 @@ int QGLShaderProgram::maxGeometryOutputVertices() const
 {
     GLint n = 0;
 
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
     Q_D( const QGLShaderProgram );
 
     if ( ! QOpenGLContext::currentContext()->isOpenGLES() )
@@ -2086,7 +2086,7 @@ GLenum QGLShaderProgram::geometryOutputType() const
 
 bool QGLShaderProgram::hasOpenGLShaderPrograms( const QGLContext *context )
 {
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
 
     if ( ! context )
     {

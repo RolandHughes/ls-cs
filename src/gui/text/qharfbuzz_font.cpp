@@ -132,7 +132,7 @@ static hb_position_t lscs_font_get_glyph_h_kerning( hb_font_t *font, void *font_
 
 static hb_position_t lscs_font_get_glyph_v_kerning( hb_font_t *, void *, hb_codepoint_t, hb_codepoint_t, void * )
 {
-    qCritical( "hb_qt_get_glyph_v_kerning: vertical writing is not supported" );
+    qCritical( "hb_lscs_get_glyph_v_kerning: vertical writing is not supported" );
     return 0;
 }
 

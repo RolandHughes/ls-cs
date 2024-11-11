@@ -33,10 +33,10 @@
 #include <qtoolbarlayout_p.h>
 #include <qtoolbar_p.h>
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 // qmainwindow.cpp
-extern QMainWindowLayout *qt_mainwindow_layout( const QMainWindow *mainWindow );
+extern QMainWindowLayout *lscs_mainwindow_layout( const QMainWindow *mainWindow );
 
 QSize QToolBarAreaLayoutItem::minimumSize() const
 {
@@ -1087,7 +1087,7 @@ void QToolBarAreaLayout::insertItem( QToolBar *before, QLayoutItem *item )
 
 void QToolBarAreaLayout::apply( bool animate )
 {
-    QMainWindowLayout *layout = qt_mainwindow_layout( mainWindow );
+    QMainWindowLayout *layout = lscs_mainwindow_layout( mainWindow );
     Q_ASSERT( layout != nullptr );
 
     Qt::LayoutDirection dir = mainWindow->layoutDirection();
@@ -1758,4 +1758,4 @@ bool QToolBarAreaLayout::isEmpty() const
     return true;
 }
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR

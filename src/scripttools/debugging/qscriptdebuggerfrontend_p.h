@@ -29,7 +29,7 @@
 #include <QtCore/qstring.h>
 #include <qscriptdebuggercommandschedulerinterface_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerEventHandlerInterface;
 class QScriptDebuggerCommand;
@@ -66,6 +66,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerFrontend )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

@@ -128,7 +128,7 @@ QVariant QMimeDataPrivate::retrieveTypedData( const QString &format, QVariant::T
         switch ( type )
         {
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
             case QVariant::String:
             {

@@ -497,7 +497,7 @@ void addSegmentsToPath( Segment *segment, QPainterPath &path )
 
 }  // close namespace
 
-QPainterPath qt_regionToPath( const QRegion &region )
+QPainterPath lscs_regionToPath( const QRegion &region )
 {
     QPainterPath result;
 
@@ -754,7 +754,7 @@ bool QRegionPrivate::mergeFromAbove( QRect *bottom, const QRect *top,
     return false;
 }
 
-static inline QRect qt_rect_intersect_normalized( const QRect &r1, const QRect &r2 )
+static inline QRect lscs_rect_intersect_normalized( const QRect &r1, const QRect &r2 )
 {
     QRect r;
     r.setLeft( qMax( r1.left(), r2.left() ) );
@@ -786,7 +786,7 @@ void QRegionPrivate::intersect( const QRect &rect )
 
     while ( n-- )
     {
-        *dest = qt_rect_intersect_normalized( *src++, r );
+        *dest = lscs_rect_intersect_normalized( *src++, r );
 
         if ( dest->isEmpty() )
         {
@@ -3684,7 +3684,7 @@ static QRegionPrivate *PolygonRegion( const QPoint *Pts, int Count, int rule )
 }
 // END OF PolyReg.c extract
 
-QRegionPrivate *qt_bitmapToRegion( const QBitmap &bitmap )
+QRegionPrivate *lscs_bitmapToRegion( const QBitmap &bitmap )
 {
     const QImage image = bitmap.toImage();
 
@@ -3816,7 +3816,7 @@ QRegion::QRegion( const QRect &r, RegionType t )
 
         if ( t == Rectangle )
         {
-            d->qt_rgn = new QRegionPrivate( r );
+            d->lscs_rgn = new QRegionPrivate( r );
 
         }
         else if ( t == Ellipse )
@@ -3824,7 +3824,7 @@ QRegion::QRegion( const QRect &r, RegionType t )
             QPainterPath path;
             path.addEllipse( r.x(), r.y(), r.width(), r.height() );
             QPolygon a = path.toSubpathPolygons().at( 0 ).toPolygon();
-            d->qt_rgn = PolygonRegion( a.constData(), a.size(), EvenOddRule );
+            d->lscs_rgn = PolygonRegion( a.constData(), a.size(), EvenOddRule );
         }
     }
 }
@@ -3833,16 +3833,16 @@ QRegion::QRegion( const QPolygon &a, Qt::FillRule fillRule )
 {
     if ( a.count() > 2 )
     {
-        QRegionPrivate *qt_rgn = PolygonRegion( a.constData(), a.size(),
+        QRegionPrivate *lscs_rgn = PolygonRegion( a.constData(), a.size(),
                                                 fillRule == Qt::WindingFill ? WindingRule : EvenOddRule );
 
-        if ( qt_rgn )
+        if ( lscs_rgn )
         {
             d =  new QRegionData;
             d->ref.initializeOwned();
 
 
-            d->qt_rgn = qt_rgn;
+            d->lscs_rgn = lscs_rgn;
 
         }
         else
@@ -3875,13 +3875,13 @@ QRegion::QRegion( const QBitmap &bm )
         d->ref.initializeOwned();
 
 
-        d->qt_rgn = qt_bitmapToRegion( bm );
+        d->lscs_rgn = lscs_bitmapToRegion( bm );
     }
 }
 
 void QRegion::cleanUp( QRegion::QRegionData *x )
 {
-    delete x->qt_rgn;
+    delete x->lscs_rgn;
     delete x;
 }
 
@@ -3917,13 +3917,13 @@ QRegion QRegion::copy() const
     x->ref.initializeOwned();
 
 
-    if ( d->qt_rgn )
+    if ( d->lscs_rgn )
     {
-        x->qt_rgn = new QRegionPrivate( *d->qt_rgn );
+        x->lscs_rgn = new QRegionPrivate( *d->lscs_rgn );
     }
     else
     {
-        x->qt_rgn = new QRegionPrivate;
+        x->lscs_rgn = new QRegionPrivate;
     }
 
     if ( !r.d->ref.deref() )
@@ -3937,43 +3937,43 @@ QRegion QRegion::copy() const
 
 bool QRegion::isEmpty() const
 {
-    return d == &shared_empty || d->qt_rgn->numRects == 0;
+    return d == &shared_empty || d->lscs_rgn->numRects == 0;
 }
 
 bool QRegion::isNull() const
 {
-    return d == &shared_empty || d->qt_rgn->numRects == 0;
+    return d == &shared_empty || d->lscs_rgn->numRects == 0;
 }
 
 bool QRegion::contains( const QPoint &p ) const
 {
-    return PointInRegion( d->qt_rgn, p.x(), p.y() );
+    return PointInRegion( d->lscs_rgn, p.x(), p.y() );
 }
 
 bool QRegion::contains( const QRect &r ) const
 {
-    return RectInRegion( d->qt_rgn, r.left(), r.top(), r.width(), r.height() );
+    return RectInRegion( d->lscs_rgn, r.left(), r.top(), r.width(), r.height() );
 }
 
 void QRegion::translate( int dx, int dy )
 {
-    if ( ( dx == 0 && dy == 0 ) || isEmptyHelper( d->qt_rgn ) )
+    if ( ( dx == 0 && dy == 0 ) || isEmptyHelper( d->lscs_rgn ) )
     {
         return;
     }
 
     detach();
-    OffsetRegion( *d->qt_rgn, dx, dy );
+    OffsetRegion( *d->lscs_rgn, dx, dy );
 }
 
 QRegion QRegion::united( const QRegion &r ) const
 {
-    if ( isEmptyHelper( d->qt_rgn ) )
+    if ( isEmptyHelper( d->lscs_rgn ) )
     {
         return r;
     }
 
-    if ( isEmptyHelper( r.d->qt_rgn ) )
+    if ( isEmptyHelper( r.d->lscs_rgn ) )
     {
         return *this;
     }
@@ -3983,33 +3983,33 @@ QRegion QRegion::united( const QRegion &r ) const
         return *this;
     }
 
-    if ( d->qt_rgn->contains( *r.d->qt_rgn ) )
+    if ( d->lscs_rgn->contains( *r.d->lscs_rgn ) )
     {
         return *this;
 
     }
-    else if ( r.d->qt_rgn->contains( *d->qt_rgn ) )
+    else if ( r.d->lscs_rgn->contains( *d->lscs_rgn ) )
     {
         return r;
 
     }
-    else if ( d->qt_rgn->canAppend( r.d->qt_rgn ) )
+    else if ( d->lscs_rgn->canAppend( r.d->lscs_rgn ) )
     {
         QRegion result( *this );
         result.detach();
-        result.d->qt_rgn->append( r.d->qt_rgn );
+        result.d->lscs_rgn->append( r.d->lscs_rgn );
         return result;
 
     }
-    else if ( d->qt_rgn->canPrepend( r.d->qt_rgn ) )
+    else if ( d->lscs_rgn->canPrepend( r.d->lscs_rgn ) )
     {
         QRegion result( *this );
         result.detach();
-        result.d->qt_rgn->prepend( r.d->qt_rgn );
+        result.d->lscs_rgn->prepend( r.d->lscs_rgn );
         return result;
 
     }
-    else if ( EqualRegion( d->qt_rgn, r.d->qt_rgn ) )
+    else if ( EqualRegion( d->lscs_rgn, r.d->lscs_rgn ) )
     {
         return *this;
 
@@ -4018,19 +4018,19 @@ QRegion QRegion::united( const QRegion &r ) const
     {
         QRegion result;
         result.detach();
-        UnionRegion( d->qt_rgn, r.d->qt_rgn, *result.d->qt_rgn );
+        UnionRegion( d->lscs_rgn, r.d->lscs_rgn, *result.d->lscs_rgn );
         return result;
     }
 }
 
 QRegion &QRegion::operator+=( const QRegion &r )
 {
-    if ( isEmptyHelper( d->qt_rgn ) )
+    if ( isEmptyHelper( d->lscs_rgn ) )
     {
         return *this = r;
     }
 
-    if ( isEmptyHelper( r.d->qt_rgn ) )
+    if ( isEmptyHelper( r.d->lscs_rgn ) )
     {
         return *this;
     }
@@ -4040,31 +4040,31 @@ QRegion &QRegion::operator+=( const QRegion &r )
         return *this;
     }
 
-    if ( d->qt_rgn->contains( *r.d->qt_rgn ) )
+    if ( d->lscs_rgn->contains( *r.d->lscs_rgn ) )
     {
         return *this;
 
     }
-    else if ( r.d->qt_rgn->contains( *d->qt_rgn ) )
+    else if ( r.d->lscs_rgn->contains( *d->lscs_rgn ) )
     {
         return *this = r;
 
     }
-    else if ( d->qt_rgn->canAppend( r.d->qt_rgn ) )
+    else if ( d->lscs_rgn->canAppend( r.d->lscs_rgn ) )
     {
         detach();
-        d->qt_rgn->append( r.d->qt_rgn );
+        d->lscs_rgn->append( r.d->lscs_rgn );
         return *this;
 
     }
-    else if ( d->qt_rgn->canPrepend( r.d->qt_rgn ) )
+    else if ( d->lscs_rgn->canPrepend( r.d->lscs_rgn ) )
     {
         detach();
-        d->qt_rgn->prepend( r.d->qt_rgn );
+        d->lscs_rgn->prepend( r.d->lscs_rgn );
         return *this;
 
     }
-    else if ( EqualRegion( d->qt_rgn, r.d->qt_rgn ) )
+    else if ( EqualRegion( d->lscs_rgn, r.d->lscs_rgn ) )
     {
         return *this;
 
@@ -4072,14 +4072,14 @@ QRegion &QRegion::operator+=( const QRegion &r )
     else
     {
         detach();
-        UnionRegion( d->qt_rgn, r.d->qt_rgn, *d->qt_rgn );
+        UnionRegion( d->lscs_rgn, r.d->lscs_rgn, *d->lscs_rgn );
         return *this;
     }
 }
 
 QRegion QRegion::united( const QRect &r ) const
 {
-    if ( isEmptyHelper( d->qt_rgn ) )
+    if ( isEmptyHelper( d->lscs_rgn ) )
     {
         return r;
     }
@@ -4089,34 +4089,34 @@ QRegion QRegion::united( const QRect &r ) const
         return *this;
     }
 
-    if ( d->qt_rgn->contains( r ) )
+    if ( d->lscs_rgn->contains( r ) )
     {
         return *this;
 
     }
-    else if ( d->qt_rgn->within( r ) )
+    else if ( d->lscs_rgn->within( r ) )
     {
         return r;
 
     }
-    else if ( d->qt_rgn->numRects == 1 && d->qt_rgn->extents == r )
+    else if ( d->lscs_rgn->numRects == 1 && d->lscs_rgn->extents == r )
     {
         return *this;
 
     }
-    else if ( d->qt_rgn->canAppend( &r ) )
+    else if ( d->lscs_rgn->canAppend( &r ) )
     {
         QRegion result( *this );
         result.detach();
-        result.d->qt_rgn->append( &r );
+        result.d->lscs_rgn->append( &r );
         return result;
 
     }
-    else if ( d->qt_rgn->canPrepend( &r ) )
+    else if ( d->lscs_rgn->canPrepend( &r ) )
     {
         QRegion result( *this );
         result.detach();
-        result.d->qt_rgn->prepend( &r );
+        result.d->lscs_rgn->prepend( &r );
         return result;
 
     }
@@ -4125,14 +4125,14 @@ QRegion QRegion::united( const QRect &r ) const
         QRegion result;
         result.detach();
         QRegionPrivate rp( r );
-        UnionRegion( d->qt_rgn, &rp, *result.d->qt_rgn );
+        UnionRegion( d->lscs_rgn, &rp, *result.d->lscs_rgn );
         return result;
     }
 }
 
 QRegion &QRegion::operator+=( const QRect &r )
 {
-    if ( isEmptyHelper( d->qt_rgn ) )
+    if ( isEmptyHelper( d->lscs_rgn ) )
     {
         return *this = r;
     }
@@ -4142,31 +4142,31 @@ QRegion &QRegion::operator+=( const QRect &r )
         return *this;
     }
 
-    if ( d->qt_rgn->contains( r ) )
+    if ( d->lscs_rgn->contains( r ) )
     {
         return *this;
 
     }
-    else if ( d->qt_rgn->within( r ) )
+    else if ( d->lscs_rgn->within( r ) )
     {
         return *this = r;
 
     }
-    else if ( d->qt_rgn->canAppend( &r ) )
+    else if ( d->lscs_rgn->canAppend( &r ) )
     {
         detach();
-        d->qt_rgn->append( &r );
+        d->lscs_rgn->append( &r );
         return *this;
 
     }
-    else if ( d->qt_rgn->canPrepend( &r ) )
+    else if ( d->lscs_rgn->canPrepend( &r ) )
     {
         detach();
-        d->qt_rgn->prepend( &r );
+        d->lscs_rgn->prepend( &r );
         return *this;
 
     }
-    else if ( d->qt_rgn->numRects == 1 && d->qt_rgn->extents == r )
+    else if ( d->lscs_rgn->numRects == 1 && d->lscs_rgn->extents == r )
     {
         return *this;
 
@@ -4175,56 +4175,56 @@ QRegion &QRegion::operator+=( const QRect &r )
     {
         detach();
         QRegionPrivate p( r );
-        UnionRegion( d->qt_rgn, &p, *d->qt_rgn );
+        UnionRegion( d->lscs_rgn, &p, *d->lscs_rgn );
         return *this;
     }
 }
 
 QRegion QRegion::intersected( const QRegion &r ) const
 {
-    if ( isEmptyHelper( d->qt_rgn ) || isEmptyHelper( r.d->qt_rgn )
-            || ! EXTENTCHECK( &d->qt_rgn->extents, &r.d->qt_rgn->extents ) )
+    if ( isEmptyHelper( d->lscs_rgn ) || isEmptyHelper( r.d->lscs_rgn )
+            || ! EXTENTCHECK( &d->lscs_rgn->extents, &r.d->lscs_rgn->extents ) )
     {
         return QRegion();
     }
 
     /* this is fully contained in r */
-    if ( r.d->qt_rgn->contains( *d->qt_rgn ) )
+    if ( r.d->lscs_rgn->contains( *d->lscs_rgn ) )
     {
         return *this;
     }
 
     /* r is fully contained in this */
-    if ( d->qt_rgn->contains( *r.d->qt_rgn ) )
+    if ( d->lscs_rgn->contains( *r.d->lscs_rgn ) )
     {
         return r;
     }
 
-    if ( r.d->qt_rgn->numRects == 1 && d->qt_rgn->numRects == 1 )
+    if ( r.d->lscs_rgn->numRects == 1 && d->lscs_rgn->numRects == 1 )
     {
-        const QRect rect = qt_rect_intersect_normalized( r.d->qt_rgn->extents, d->qt_rgn->extents );
+        const QRect rect = lscs_rect_intersect_normalized( r.d->lscs_rgn->extents, d->lscs_rgn->extents );
         return QRegion( rect );
 
     }
-    else if ( r.d->qt_rgn->numRects == 1 )
+    else if ( r.d->lscs_rgn->numRects == 1 )
     {
         QRegion result( *this );
         result.detach();
-        result.d->qt_rgn->intersect( r.d->qt_rgn->extents );
+        result.d->lscs_rgn->intersect( r.d->lscs_rgn->extents );
         return result;
 
     }
-    else if ( d->qt_rgn->numRects == 1 )
+    else if ( d->lscs_rgn->numRects == 1 )
     {
         QRegion result( r );
         result.detach();
-        result.d->qt_rgn->intersect( d->qt_rgn->extents );
+        result.d->lscs_rgn->intersect( d->lscs_rgn->extents );
         return result;
     }
 
     QRegion result;
     result.detach();
-    miRegionOp( *result.d->qt_rgn, d->qt_rgn, r.d->qt_rgn, miIntersectO, nullptr, nullptr );
+    miRegionOp( *result.d->lscs_rgn, d->lscs_rgn, r.d->lscs_rgn, miIntersectO, nullptr, nullptr );
 
     /*
      * Can not alter dest's extents before we call miRegionOp because
@@ -4233,76 +4233,76 @@ QRegion QRegion::intersected( const QRegion &r ) const
      * way there's no checking against rectangles that will be nuked
      * due to coalescing, so we have to examine fewer rectangles.
      */
-    miSetExtents( *result.d->qt_rgn );
+    miSetExtents( *result.d->lscs_rgn );
 
     return result;
 }
 
 QRegion QRegion::intersected( const QRect &r ) const
 {
-    if ( isEmptyHelper( d->qt_rgn ) || r.isEmpty() || ! EXTENTCHECK( &d->qt_rgn->extents, &r ) )
+    if ( isEmptyHelper( d->lscs_rgn ) || r.isEmpty() || ! EXTENTCHECK( &d->lscs_rgn->extents, &r ) )
     {
         return QRegion();
     }
 
     /* this is fully contained in r */
-    if ( d->qt_rgn->within( r ) )
+    if ( d->lscs_rgn->within( r ) )
     {
         return *this;
     }
 
     /* r is fully contained in this */
-    if ( d->qt_rgn->contains( r ) )
+    if ( d->lscs_rgn->contains( r ) )
     {
         return r;
     }
 
-    if ( d->qt_rgn->numRects == 1 )
+    if ( d->lscs_rgn->numRects == 1 )
     {
-        const QRect rect = qt_rect_intersect_normalized( d->qt_rgn->extents, r.normalized() );
+        const QRect rect = lscs_rect_intersect_normalized( d->lscs_rgn->extents, r.normalized() );
         return QRegion( rect );
     }
 
     QRegion result( *this );
     result.detach();
-    result.d->qt_rgn->intersect( r );
+    result.d->lscs_rgn->intersect( r );
 
     return result;
 }
 
 QRegion QRegion::subtracted( const QRegion &r ) const
 {
-    if ( isEmptyHelper( d->qt_rgn ) || isEmptyHelper( r.d->qt_rgn ) )
+    if ( isEmptyHelper( d->lscs_rgn ) || isEmptyHelper( r.d->lscs_rgn ) )
     {
         return *this;
     }
 
-    if ( r.d->qt_rgn->contains( *d->qt_rgn ) )
+    if ( r.d->lscs_rgn->contains( *d->lscs_rgn ) )
     {
         return QRegion();
     }
 
-    if ( !EXTENTCHECK( &d->qt_rgn->extents, &r.d->qt_rgn->extents ) )
+    if ( !EXTENTCHECK( &d->lscs_rgn->extents, &r.d->lscs_rgn->extents ) )
     {
         return *this;
     }
 
-    if ( d == r.d || EqualRegion( d->qt_rgn, r.d->qt_rgn ) )
+    if ( d == r.d || EqualRegion( d->lscs_rgn, r.d->lscs_rgn ) )
     {
         return QRegion();
     }
 
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
-    d->qt_rgn->selfTest();
-    r.d->qt_rgn->selfTest();
+    d->lscs_rgn->selfTest();
+    r.d->lscs_rgn->selfTest();
 #endif
 
     QRegion result;
     result.detach();
-    SubtractRegion( d->qt_rgn, r.d->qt_rgn, *result.d->qt_rgn );
+    SubtractRegion( d->lscs_rgn, r.d->lscs_rgn, *result.d->lscs_rgn );
 
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
-    result.d->qt_rgn->selfTest();
+    result.d->lscs_rgn->selfTest();
 #endif
 
     return result;
@@ -4310,22 +4310,22 @@ QRegion QRegion::subtracted( const QRegion &r ) const
 
 QRegion QRegion::xored( const QRegion &r ) const
 {
-    if ( isEmptyHelper( d->qt_rgn ) )
+    if ( isEmptyHelper( d->lscs_rgn ) )
     {
         return r;
 
     }
-    else if ( isEmptyHelper( r.d->qt_rgn ) )
+    else if ( isEmptyHelper( r.d->lscs_rgn ) )
     {
         return *this;
 
     }
-    else if ( !EXTENTCHECK( &d->qt_rgn->extents, &r.d->qt_rgn->extents ) )
+    else if ( !EXTENTCHECK( &d->lscs_rgn->extents, &r.d->lscs_rgn->extents ) )
     {
         return ( *this + r );
 
     }
-    else if ( d == r.d || EqualRegion( d->qt_rgn, r.d->qt_rgn ) )
+    else if ( d == r.d || EqualRegion( d->lscs_rgn, r.d->lscs_rgn ) )
     {
         return QRegion();
 
@@ -4334,7 +4334,7 @@ QRegion QRegion::xored( const QRegion &r ) const
     {
         QRegion result;
         result.detach();
-        XorRegion( d->qt_rgn, r.d->qt_rgn, *result.d->qt_rgn );
+        XorRegion( d->lscs_rgn, r.d->lscs_rgn, *result.d->lscs_rgn );
         return result;
     }
 }
@@ -4346,30 +4346,30 @@ QRect QRegion::boundingRect() const
         return QRect();
     }
 
-    return d->qt_rgn->extents;
+    return d->lscs_rgn->extents;
 }
 
-bool qt_region_strictContains( const QRegion &region, const QRect &rect )
+bool lscs_region_strictContains( const QRegion &region, const QRect &rect )
 {
-    if ( isEmptyHelper( region.d->qt_rgn ) || !rect.isValid() )
+    if ( isEmptyHelper( region.d->lscs_rgn ) || !rect.isValid() )
     {
         return false;
     }
 
 
-    const QRect r1 = region.d->qt_rgn->innerRect;
+    const QRect r1 = region.d->lscs_rgn->innerRect;
     return ( rect.left() >= r1.left() && rect.right() <= r1.right()
              && rect.top() >= r1.top() && rect.bottom() <= r1.bottom() );
 }
 
 QVector<QRect> QRegion::rects() const
 {
-    if ( d->qt_rgn )
+    if ( d->lscs_rgn )
     {
-        d->qt_rgn->vectorize();
-        d->qt_rgn->rects.resize( d->qt_rgn->numRects );
+        d->lscs_rgn->vectorize();
+        d->lscs_rgn->rects.resize( d->lscs_rgn->numRects );
 
-        return d->qt_rgn->rects;
+        return d->lscs_rgn->rects;
 
     }
     else
@@ -4389,17 +4389,17 @@ void QRegion::setRects( const QRect *rectPtr, int num )
 
     detach();
 
-    d->qt_rgn->numRects = num;
+    d->lscs_rgn->numRects = num;
 
     if ( num == 1 )
     {
-        d->qt_rgn->extents   = *rectPtr;
-        d->qt_rgn->innerRect = *rectPtr;
+        d->lscs_rgn->extents   = *rectPtr;
+        d->lscs_rgn->innerRect = *rectPtr;
 
     }
     else
     {
-        d->qt_rgn->rects.resize( num );
+        d->lscs_rgn->rects.resize( num );
 
         int left   = INT_MAX,
             right  = INT_MIN,
@@ -4409,33 +4409,33 @@ void QRegion::setRects( const QRect *rectPtr, int num )
         for ( int i = 0; i < num; ++i )
         {
             const QRect &rect  = rectPtr[i];
-            d->qt_rgn->rects[i] = rect;
+            d->lscs_rgn->rects[i] = rect;
 
             left   = qMin( rect.left(), left );
             right  = qMax( rect.right(), right );
             top    = qMin( rect.top(), top );
             bottom = qMax( rect.bottom(), bottom );
 
-            d->qt_rgn->updateInnerRect( rect );
+            d->lscs_rgn->updateInnerRect( rect );
         }
 
-        d->qt_rgn->extents = QRect( QPoint( left, top ), QPoint( right, bottom ) );
+        d->lscs_rgn->extents = QRect( QPoint( left, top ), QPoint( right, bottom ) );
     }
 }
 
 int QRegion::rectCount() const
 {
-    return ( d->qt_rgn ? d->qt_rgn->numRects : 0 );
+    return ( d->lscs_rgn ? d->lscs_rgn->numRects : 0 );
 }
 
 bool QRegion::operator==( const QRegion &r ) const
 {
-    if ( ! d->qt_rgn )
+    if ( ! d->lscs_rgn )
     {
         return r.isEmpty();
     }
 
-    if ( ! r.d->qt_rgn )
+    if ( ! r.d->lscs_rgn )
     {
         return isEmpty();
     }
@@ -4446,25 +4446,25 @@ bool QRegion::operator==( const QRegion &r ) const
     }
     else
     {
-        return EqualRegion( d->qt_rgn, r.d->qt_rgn );
+        return EqualRegion( d->lscs_rgn, r.d->lscs_rgn );
     }
 }
 
 bool QRegion::intersects( const QRect &rect ) const
 {
-    if ( isEmptyHelper( d->qt_rgn ) || rect.isNull() )
+    if ( isEmptyHelper( d->lscs_rgn ) || rect.isNull() )
     {
         return false;
     }
 
     const QRect r = rect.normalized();
 
-    if ( !rect_intersects( d->qt_rgn->extents, r ) )
+    if ( !rect_intersects( d->lscs_rgn->extents, r ) )
     {
         return false;
     }
 
-    if ( d->qt_rgn->numRects == 1 )
+    if ( d->lscs_rgn->numRects == 1 )
     {
         return true;
     }

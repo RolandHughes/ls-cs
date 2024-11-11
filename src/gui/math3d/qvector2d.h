@@ -30,7 +30,7 @@ class QVariant;
 class QVector3D;
 class QVector4D;
 
-#ifndef QT_NO_VECTOR2D
+#ifndef LSCS_NO_VECTOR2D
 
 class Q_GUI_EXPORT QVector2D
 {
@@ -40,11 +40,11 @@ public:
     explicit QVector2D( const QPoint &point );
     explicit QVector2D( const QPointF &point );
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
     explicit QVector2D( const QVector3D &vector );
 #endif
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
     explicit QVector2D( const QVector4D &vector );
 #endif
 
@@ -82,11 +82,11 @@ public:
 
     friend inline bool qFuzzyCompare( const QVector2D &v1, const QVector2D &v2 );
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
     QVector3D toVector3D() const;
 #endif
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
     QVector4D toVector4D() const;
 #endif
 

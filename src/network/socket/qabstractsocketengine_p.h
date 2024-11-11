@@ -69,7 +69,7 @@ public:
     virtual void exceptionNotification()  = 0;
     virtual void connectionNotification() = 0;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     virtual void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) = 0;
 #endif
 
@@ -142,8 +142,8 @@ public:
     virtual qint64 read( char *data, qint64 maxlen ) = 0;
     virtual qint64 write( const char *data, qint64 len ) = 0;
 
-#ifndef QT_NO_UDPSOCKET
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_UDPSOCKET
+#ifndef LSCS_NO_NETWORKINTERFACE
     virtual bool joinMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &iface ) = 0;
     virtual bool leaveMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &iface ) = 0;
 
@@ -204,7 +204,7 @@ public:
     NET_LSCS_SLOT_1( Public, void connectionNotification() )
     NET_LSCS_SLOT_2( connectionNotification )
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     NET_LSCS_SLOT_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
     NET_LSCS_SLOT_2( proxyAuthenticationRequired )
 #endif

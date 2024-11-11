@@ -28,7 +28,7 @@
 #include <QtCore/qurl.h>
 #include <QtDeclarative/qdeclarativeerror.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeInfoPrivate;
 class Q_DECLARATIVE_EXPORT QDeclarativeInfo : public QDebug
@@ -163,6 +163,6 @@ Q_DECLARATIVE_EXPORT QDeclarativeInfo qmlInfo( const QObject *me );
 Q_DECLARATIVE_EXPORT QDeclarativeInfo qmlInfo( const QObject *me, const QDeclarativeError &error );
 Q_DECLARATIVE_EXPORT QDeclarativeInfo qmlInfo( const QObject *me, const QList<QDeclarativeError> &errors );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEINFO_H

@@ -1118,13 +1118,13 @@ void QGridLayoutPrivate::setupSpacings( QVector<QLayoutStruct> &chain, QGridBox 
     }
 }
 
-//#define QT_LAYOUT_DISABLE_CACHING
+//#define LSCS_LAYOUT_DISABLE_CACHING
 
 void QGridLayoutPrivate::setupLayoutData( int hSpacing, int vSpacing )
 {
     Q_Q( QGridLayout );
 
-#ifndef QT_LAYOUT_DISABLE_CACHING
+#ifndef LSCS_LAYOUT_DISABLE_CACHING
 
     if ( !needRecalc )
     {

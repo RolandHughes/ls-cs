@@ -27,7 +27,7 @@
 #include <qdeclarativedebugservice_p.h>
 #include <qelapsedtimer.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct QDeclarativeDebugData
 {
@@ -126,7 +126,7 @@ private:
     QList<QDeclarativeDebugData> m_data;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEDEBUGTRACE_P_H
 

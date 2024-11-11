@@ -217,7 +217,7 @@ public :
     WEB_LSCS_SLOT_1( Public, QVariant evaluateJavaScript( const QString &scriptSource ) )
     WEB_LSCS_SLOT_2( evaluateJavaScript )
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
     WEB_LSCS_SLOT_1( Public, void print( QPrinter *printer ) )
     WEB_LSCS_SLOT_2( print )
 #endif

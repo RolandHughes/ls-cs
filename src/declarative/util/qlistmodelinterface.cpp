@@ -23,7 +23,7 @@
 
 #include "private/qlistmodelinterface_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -22,7 +22,7 @@
 ***********************************************************************/
 
 #include "config.h"
-#include "qt_runtime.h"
+#include "lscs_runtime.h"
 
 #include "BooleanObject.h"
 #include "DateInstance.h"
@@ -50,8 +50,8 @@
 #include "qmetaobject.h"
 #include "qobject.h"
 #include "qstringlist.h"
-#include "qt_instance.h"
-#include "qt_pixmapruntime.h"
+#include "lscs_instance.h"
+#include "lscs_pixmapruntime.h"
 #include "qvarlengtharray.h"
 #include "qwebelement.h"
 #include <limits.h>
@@ -2541,17 +2541,17 @@ void QtConnectionObject::execute( void **argv )
                             }
                         }
 
-                        // Stuff in the __qt_sender property, if we can
+                        // Stuff in the __lscs_sender property, if we can
                         ScopeChainNode* oldsc = 0;
                         JSFunction* fimp = 0;
 
                         if (m_funcObject->inherits(&JSFunction::s_info)) {
                             fimp = static_cast<JSFunction*>(m_funcObject.get());
 
-                            JSObject* qt_sender = QtInstance::getQtInstance(sender(), ro, QScriptEngine::QtOwnership)->createRuntimeObject(exec);
+                            JSObject* lscs_sender = QtInstance::getQtInstance(sender(), ro, QScriptEngine::QtOwnership)->createRuntimeObject(exec);
                             JSObject* wrapper = constructEmptyObject(exec, createEmptyObjectStructure(exec->globalData(), jsNull()));
                             PutPropertySlot slot;
-                            wrapper->put(exec, Identifier(exec, "__qt_sender__"), qt_sender, slot);
+                            wrapper->put(exec, Identifier(exec, "__lscs_sender__"), lscs_sender, slot);
                             oldsc = fimp->scope();
                             fimp->setScope(exec->globalData(), oldsc->push(wrapper));
                         }

@@ -23,7 +23,7 @@
 
 #include <qgraphicsshadereffect_p.h>
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
 #include <qglshaderprogram.h>
 #include <qgraphicsitem.h>

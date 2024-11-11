@@ -23,7 +23,7 @@
 
 #include <qstatusbar.h>
 
-#ifndef QT_NO_STATUSBAR
+#ifndef LSCS_NO_STATUSBAR
 
 #include <qlist.h>
 #include <qdebug.h>
@@ -36,7 +36,7 @@
 #include <qsizegrip.h>
 #include <qmainwindow.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -65,7 +65,7 @@ public:
     QBoxLayout *box;
     QTimer *timer;
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     QSizeGrip *resizer;
     bool showSizeGrip;
 #endif
@@ -90,7 +90,7 @@ public:
         return i;
     }
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     void tryToShowSizeGrip()
     {
         if ( !showSizeGrip )
@@ -123,7 +123,7 @@ QRect QStatusBarPrivate::messageRect() const
     int left = 6;
     int right = q->width() - 12;
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
     if ( resizer && resizer->isVisible() )
     {
@@ -177,7 +177,7 @@ QStatusBar::QStatusBar( QWidget *parent )
     d->box   = nullptr;
     d->timer = nullptr;
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     d->resizer = nullptr;
     setSizeGripEnabled( true );  // causes reformat()
 #else
@@ -326,7 +326,7 @@ void QStatusBar::removeWidget( QWidget *widget )
 
 bool QStatusBar::isSizeGripEnabled() const
 {
-#ifdef QT_NO_SIZEGRIP
+#ifdef LSCS_NO_SIZEGRIP
     return false;
 #else
     Q_D( const QStatusBar );
@@ -336,7 +336,7 @@ bool QStatusBar::isSizeGripEnabled() const
 
 void QStatusBar::setSizeGripEnabled( bool enabled )
 {
-#ifdef QT_NO_SIZEGRIP
+#ifdef LSCS_NO_SIZEGRIP
     // nothing
 #else
     Q_D( QStatusBar );
@@ -380,7 +380,7 @@ void QStatusBar::reformat()
 
     QBoxLayout *vbox;
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
     if ( d->resizer )
     {
@@ -437,7 +437,7 @@ void QStatusBar::reformat()
         maxH = qMax( maxH, itemH );
     }
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
     if ( d->resizer )
     {
@@ -541,7 +541,7 @@ void QStatusBar::hideOrShow()
 
     emit messageChanged( d->tempItem );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( QAccessible::isActive() )
     {
@@ -556,7 +556,7 @@ void QStatusBar::hideOrShow()
 
 void QStatusBar::showEvent( QShowEvent * )
 {
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     Q_D( QStatusBar );
 
     if ( d->resizer && d->showSizeGrip )
@@ -632,7 +632,7 @@ bool QStatusBar::event( QEvent *e )
             maxH = qMax( maxH, itemH );
         }
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
         if ( d->resizer )
         {

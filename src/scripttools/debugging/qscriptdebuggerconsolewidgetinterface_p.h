@@ -27,7 +27,7 @@
 #include <QtGui/qwidget.h>
 #include <qscriptmessagehandlerinterface_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerConsoleHistorianInterface;
 class QScriptCompletionProviderInterface;
@@ -68,6 +68,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerConsoleWidgetInterface )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

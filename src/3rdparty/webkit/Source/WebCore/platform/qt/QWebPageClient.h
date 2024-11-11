@@ -26,7 +26,7 @@
 #ifndef QWebPageClient_h
 #define QWebPageClient_h
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 #include <QCursor>
 #endif
 
@@ -68,7 +68,7 @@ public:
 
     virtual void setInputMethodHints( Qt::InputMethodHints hint ) = 0;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     inline void resetCursor()
     {
         if ( !cursor().bitmap() && cursor().shape() == m_lastCursor.shape() )
@@ -111,13 +111,13 @@ public:
     virtual QRectF windowRect() const = 0;
 
 protected:
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     virtual QCursor cursor() const = 0;
     virtual void updateCursor( const QCursor &cursor ) = 0;
 #endif
 
 private:
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QCursor m_lastCursor;
 #endif
 };

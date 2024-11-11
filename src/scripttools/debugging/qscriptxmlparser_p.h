@@ -29,7 +29,7 @@
 #include <QtCore/qset.h>
 #include <QtCore/qstring.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptXmlParser
 {
@@ -46,6 +46,6 @@ public:
     static Result parse( const QString &xml );
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

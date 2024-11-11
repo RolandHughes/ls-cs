@@ -48,7 +48,7 @@
 #include <qimagepixmapcleanuphooks_p.h>
 #include <qpixmap_raster_p.h>
 
-static bool qt_pixmap_thread_test()
+static bool lscs_pixmap_thread_test()
 {
     if ( ! qApp )
     {
@@ -91,14 +91,14 @@ void QPixmap::doInit( int w, int h, int type )
 QPixmap::QPixmap()
     : QPaintDevice()
 {
-    ( void ) qt_pixmap_thread_test();
+    ( void ) lscs_pixmap_thread_test();
     doInit( 0, 0, QPlatformPixmap::PixmapType );
 }
 
 QPixmap::QPixmap( int w, int h )
     : QPaintDevice()
 {
-    if ( !qt_pixmap_thread_test() )
+    if ( !lscs_pixmap_thread_test() )
     {
         doInit( 0, 0, QPlatformPixmap::PixmapType );
     }
@@ -111,7 +111,7 @@ QPixmap::QPixmap( int w, int h )
 QPixmap::QPixmap( const QSize &size )
     : QPaintDevice()
 {
-    if ( !qt_pixmap_thread_test() )
+    if ( !lscs_pixmap_thread_test() )
     {
         doInit( 0, 0, QPlatformPixmap::PixmapType );
     }
@@ -124,7 +124,7 @@ QPixmap::QPixmap( const QSize &size )
 // internal
 QPixmap::QPixmap( const QSize &s, int type )
 {
-    if ( ! qt_pixmap_thread_test() )
+    if ( ! lscs_pixmap_thread_test() )
     {
         doInit( 0, 0, static_cast<QPlatformPixmap::PixelType>( type ) );
     }
@@ -145,7 +145,7 @@ QPixmap::QPixmap( const QString &fileName, const QString &format, Qt::ImageConve
 {
     doInit( 0, 0, QPlatformPixmap::PixmapType );
 
-    if ( ! qt_pixmap_thread_test() )
+    if ( ! lscs_pixmap_thread_test() )
     {
         return;
     }
@@ -156,7 +156,7 @@ QPixmap::QPixmap( const QString &fileName, const QString &format, Qt::ImageConve
 QPixmap::QPixmap( const QPixmap &pixmap )
     : QPaintDevice()
 {
-    if ( ! qt_pixmap_thread_test() )
+    if ( ! lscs_pixmap_thread_test() )
     {
         doInit( 0, 0, QPlatformPixmap::PixmapType );
         return;
@@ -172,7 +172,7 @@ QPixmap::QPixmap( const QPixmap &pixmap )
     }
 }
 
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
 
 QPixmap::QPixmap( const char *const xpm[] )
     : QPaintDevice()
@@ -469,7 +469,7 @@ void QPixmap::setDevicePixelRatio( qreal scaleFactor )
     data->setDevicePixelRatio( scaleFactor );
 }
 
-#ifndef QT_NO_IMAGE_HEURISTIC_MASK
+#ifndef LSCS_NO_IMAGE_HEURISTIC_MASK
 QBitmap QPixmap::createHeuristicMask( bool clipTight ) const
 {
     QBitmap m = QBitmap::fromImage( toImage().createHeuristicMask( clipTight ) );
@@ -494,7 +494,7 @@ bool QPixmap::load( const QString &fileName, const QString &format, Qt::ImageCon
         if ( info.completeSuffix().isEmpty() || info.exists() )
         {
 
-            QString key = "qt_pixmap" + info.absoluteFilePath()
+            QString key = "lscs_pixmap" + info.absoluteFilePath()
                           + HexString<uint>( info.lastModified().toTime_t() )
                           + HexString<quint64>( info.size() )
                           + HexString<uint>( data ? data->pixelType() : QPlatformPixmap::PixmapType );

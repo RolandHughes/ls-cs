@@ -48,7 +48,7 @@
 
 #include <limits.h>
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
 static inline bool shouldEnableInputMethod( QPlainTextEdit *plaintextedit )
 {
@@ -461,7 +461,7 @@ void QPlainTextEditPrivate::_q_cursorPositionChanged()
 
     Q_Q( QPlainTextEdit );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleTextCursorEvent ev( q, q->textCursor().position() );
     QAccessible::updateAccessibility( &ev );
 #endif
@@ -934,7 +934,7 @@ void QPlainTextEditPrivate::init( const QString &txt )
     q->setAttribute( Qt::WA_InputMethodEnabled );
     q->setInputMethodHints( Qt::ImhMultiLine );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     viewport->setCursor( Qt::IBeamCursor );
 #endif
 
@@ -1122,7 +1122,7 @@ void QPlainTextEditPrivate::pageUpDown( QTextCursor::MoveOperation op, QTextCurs
     }
 }
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
 void QPlainTextEditPrivate::_q_adjustScrollbars()
 {
@@ -1370,7 +1370,7 @@ void QPlainTextEdit::redo()
 }
 
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 void QPlainTextEdit::cut()
 {
     Q_D( QPlainTextEdit );
@@ -1410,7 +1410,7 @@ bool QPlainTextEdit::event( QEvent *e )
 {
     Q_D( QPlainTextEdit );
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
     if ( e->type() == QEvent::ContextMenu
             && static_cast<QContextMenuEvent *>( e )->reason() == QContextMenuEvent::Keyboard )
@@ -1432,7 +1432,7 @@ bool QPlainTextEdit::event( QEvent *e )
         d->sendControlEvent( e );
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     else if ( e->type() == QEvent::EnterEditFocus || e->type() == QEvent::LeaveEditFocus )
     {
         if ( QApplication::keypadNavigationEnabled() )
@@ -1443,7 +1443,7 @@ bool QPlainTextEdit::event( QEvent *e )
 
 #endif
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     else if ( e->type() == QEvent::Gesture )
     {
         QGestureEvent *ge = static_cast<QGestureEvent *>( e );
@@ -1539,7 +1539,7 @@ void QPlainTextEdit::timerEvent( QTimerEvent *e )
         }
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     else if ( e->timerId() == d->deleteAllTimer.timerId() )
     {
         d->deleteAllTimer.stop();
@@ -1559,7 +1559,7 @@ void QPlainTextEdit::keyPressEvent( QKeyEvent *e )
 {
     Q_D( QPlainTextEdit );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     switch ( e->key() )
     {
@@ -1625,7 +1625,7 @@ void QPlainTextEdit::keyPressEvent( QKeyEvent *e )
 
 #endif
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     Qt::TextInteractionFlags tif = d->control->textInteractionFlags();
 
@@ -1705,11 +1705,11 @@ void QPlainTextEdit::keyPressEvent( QKeyEvent *e )
         return;
     }
 
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
     d->sendControlEvent( e );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( !e->isAccepted() )
     {
@@ -1774,7 +1774,7 @@ void QPlainTextEdit::keyPressEvent( QKeyEvent *e )
 
 void QPlainTextEdit::keyReleaseEvent( QKeyEvent *e )
 {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     Q_D( QPlainTextEdit );
 
     if ( QApplication::keypadNavigationEnabled() )
@@ -2062,7 +2062,7 @@ void QPlainTextEdit::mousePressEvent( QMouseEvent *e )
 {
     Q_D( QPlainTextEdit );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
     {
@@ -2138,15 +2138,15 @@ bool QPlainTextEdit::focusNextPrevChild( bool next )
     return QAbstractScrollArea::focusNextPrevChild( next );
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 void QPlainTextEdit::contextMenuEvent( QContextMenuEvent *e )
 {
     Q_D( QPlainTextEdit );
     d->sendControlEvent( e );
 }
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 void QPlainTextEdit::dragEnterEvent( QDragEnterEvent *e )
 {
@@ -2184,13 +2184,13 @@ void QPlainTextEdit::dropEvent( QDropEvent *e )
     d->sendControlEvent( e );
 }
 
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 void QPlainTextEdit::inputMethodEvent( QInputMethodEvent *e )
 {
     Q_D( QPlainTextEdit );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( d->control->textInteractionFlags() & Qt::TextEditable
             && QApplication::keypadNavigationEnabled() && ! hasEditFocus() )
@@ -2315,7 +2315,7 @@ void QPlainTextEdit::changeEvent( QEvent *e )
     }
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 void QPlainTextEdit::wheelEvent( QWheelEvent *e )
 {
     Q_D( QPlainTextEdit );
@@ -2364,7 +2364,7 @@ void QPlainTextEdit::zoomInF( float range )
     setFont( f );
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
 QMenu *QPlainTextEdit::createStandardContextMenu()
 {
@@ -2556,7 +2556,7 @@ bool QPlainTextEdit::canPaste() const
     return d->control->canPaste();
 }
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 void QPlainTextEdit::print( QPagedPaintDevice *printer ) const
 {
     Q_D( const QPlainTextEdit );
@@ -2850,4 +2850,4 @@ void QPlainTextEdit::_q_cursorPositionChanged()
     d->_q_cursorPositionChanged();
 }
 
-#endif // QT_NO_TEXTEDIT
+#endif // LSCS_NO_TEXTEDIT

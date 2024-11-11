@@ -24,7 +24,7 @@
 #include <qlocalsocket.h>
 #include <qlocalsocket_p.h>
 
-#ifndef QT_NO_LOCALSOCKET
+#ifndef LSCS_NO_LOCALSOCKET
 
 QLocalSocket::QLocalSocket( QObject *parent )
     : QIODevice( *new QLocalSocketPrivate, parent )
@@ -40,7 +40,7 @@ QLocalSocket::~QLocalSocket()
 {
     close();
 
-#if !defined(Q_OS_WIN) && ! defined(QT_LOCALSOCKET_TCP)
+#if !defined(Q_OS_WIN) && ! defined(LSCS_LOCALSOCKET_TCP)
     Q_D( QLocalSocket );
     d->unixSocket.setParent( nullptr );
 #endif
@@ -186,7 +186,7 @@ QDebug operator<<( QDebug debug, QLocalSocket::LocalSocketState state )
     return debug;
 }
 
-#if defined(QT_LOCALSOCKET_TCP)
+#if defined(LSCS_LOCALSOCKET_TCP)
 
 void QLocalSocket::_q_stateChanged( QAbstractSocket::SocketState socketState )
 {

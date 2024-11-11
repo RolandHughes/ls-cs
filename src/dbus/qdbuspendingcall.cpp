@@ -29,7 +29,7 @@
 #include "qcoreevent.h"
 #include <qobject_p.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
 /*!
     \class QDBusPendingCall
@@ -590,4 +590,4 @@ void QDBusPendingCallWatcher::_q_finished()
 }
 
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

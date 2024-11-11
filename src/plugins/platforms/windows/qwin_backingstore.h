@@ -49,7 +49,7 @@ public:
 
     HDC getDC() const;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     QImage toImage() const override;
 #endif
 

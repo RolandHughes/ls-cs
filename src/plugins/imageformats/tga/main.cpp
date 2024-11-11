@@ -24,10 +24,10 @@
 #include <QImageIOHandler>
 #include <QDebug>
 
-#ifndef QT_NO_IMAGEFORMATPLUGIN
+#ifndef LSCS_NO_IMAGEFORMATPLUGIN
 
-#ifdef QT_NO_IMAGEFORMAT_TGA
-#undef QT_NO_IMAGEFORMAT_TGA
+#ifdef LSCS_NO_IMAGEFORMAT_TGA
+#undef LSCS_NO_IMAGEFORMAT_TGA
 #endif
 
 #include "qtgahandler.h"

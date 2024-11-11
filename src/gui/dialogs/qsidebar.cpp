@@ -23,7 +23,7 @@
 
 #include <qsidebar_p.h>
 
-#ifndef QT_NO_FILEDIALOG
+#ifndef LSCS_NO_FILEDIALOG
 
 #include <qaction.h>
 #include <qdebug.h>
@@ -96,7 +96,7 @@ QMimeData *QUrlModel::mimeData( const QModelIndexList &indexes ) const
     return data;
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 bool QUrlModel::canDrop( QDragEnterEvent *event )
 {
     if ( ! event->mimeData()->formats().contains( mimeTypes().first() ) )
@@ -433,7 +433,7 @@ void QSidebar::setModelAndUrls( QFileSystemModel *model, const QList<QUrl> &newU
 
     connect( selectionModel(), &QItemSelectionModel::currentChanged, this, &QSidebar::clicked );
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     setDragDropMode( QAbstractItemView::DragDrop );
 #endif
 
@@ -447,7 +447,7 @@ QSidebar::~QSidebar()
 {
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 void QSidebar::dragEnterEvent( QDragEnterEvent *event )
 {
     if ( urlModel->canDrop( event ) )
@@ -489,7 +489,7 @@ void QSidebar::selectUrl( const QUrl &url )
     connect( selectionModel(), &QItemSelectionModel::currentChanged, this, &QSidebar::clicked );
 }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 // internal
 void QSidebar::showContextMenu( const QPoint &position )
 {

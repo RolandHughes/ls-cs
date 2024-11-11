@@ -85,7 +85,7 @@
     possibly with a different version of OpenSSL.
 */
 
-#ifndef QT_LINKED_OPENSSL
+#ifndef LSCS_LINKED_OPENSSL
 
 namespace
 {
@@ -606,7 +606,7 @@ DEFINEFUNC( void, PKCS12_free, PKCS12 *pkcs12, pkcs12, return, DUMMYARG )
         && !(_q_##func = _q_PTR_##func(libs.second->resolve(#funcname)))) \
         qsslSocketCannotResolveSymbolWarning(#funcname);
 
-#if ! defined QT_LINKED_OPENSSL
+#if ! defined LSCS_LINKED_OPENSSL
 
 
 #ifdef Q_OS_UNIX
@@ -947,7 +947,7 @@ bool q_resolveOpenSslSymbols()
     static bool symbolsResolved       = false;
     static bool triedToResolveSymbols = false;
 
-#ifndef QT_NO_THREAD
+#ifndef LSCS_NO_THREAD
 
 #if OPENSSL_VERSION_NUMBER < 0x10100000L
     QRecursiveMutexLocker locker( QMutexPool::globalInstanceGet( ( void * )&q_SSL_library_init ) );
@@ -1386,11 +1386,11 @@ bool q_resolveOpenSslSymbols()
 }
 
 
-#else // ! defined QT_LINKED_OPENSSL
+#else // ! defined LSCS_LINKED_OPENSSL
 
 bool q_resolveOpenSslSymbols()
 {
-#if ! defined(QT_OPENSSL)
+#if ! defined(LSCS_OPENSSL)
     return false;
 #endif
     return true;

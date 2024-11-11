@@ -333,7 +333,7 @@ __attribute__((weak)) QDebug operator<<(QDebug debug, CGColorRef ref)
    return debug;
 }
 
-QAppleOperatingSystemVersion qt_apple_os_version()
+QAppleOperatingSystemVersion lscs_apple_os_version()
 {
    QAppleOperatingSystemVersion v = {0, 0, 0};
 
@@ -481,7 +481,7 @@ static const KeyPair entries[NumEntries] = {
 
 static constexpr const KeyPair *const end = entries + NumEntries;
 
-QChar qt_mac_qtKey2CocoaKey(Qt::Key key)
+QChar lscs_mac_qtKey2CocoaKey(Qt::Key key)
 {
    // first time this function is called create a lookup table sorted on our Key rather than Cocoa key
    static QVector<KeyPair> rev_entries(NumEntries);
@@ -506,7 +506,7 @@ QChar qt_mac_qtKey2CocoaKey(Qt::Key key)
    return i->cocoaKey;
 }
 
-Qt::Key qt_mac_cocoaKey2QtKey(QChar keyCode)
+Qt::Key lscs_mac_cocoaKey2QtKey(QChar keyCode)
 {
    const KeyPair *i = std::lower_bound(entries, end, keyCode);
 

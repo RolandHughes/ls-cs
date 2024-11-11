@@ -1,0 +1,19 @@
+# LsCs library configuration
+@LSCS_INST_LIB@
+@LSCS_INST_LIB@/plugins
+@LSCS_INST_LIB@/plugins/iconengines
+@LSCS_INST_LIB@/plugins/imageformats
+@LSCS_INST_LIB@/plugins/mediaservices
+@LSCS_INST_LIB@/plugins/pictureformats
+@LSCS_INST_LIB@/plugins/playlistformats
+@LSCS_INST_LIB@/plugins/printerdrivers
+@LSCS_INST_LIB@/plugins/sqldrivers
+# these two go away once GLFW is our only graphics layer
+@LSCS_INST_LIB@/plugins/platforms
+@LSCS_INST_LIB@/plugins/xcbglintegrations
+
+
+
+
+
+

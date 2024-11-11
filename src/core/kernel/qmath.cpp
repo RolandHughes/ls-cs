@@ -23,7 +23,7 @@
 
 #include <qmath.h>
 
-const qreal qt_sine_table[QT_SINE_TABLE_SIZE] =
+const qreal lscs_sine_table[LSCS_SINE_TABLE_SIZE] =
 {
     qreal( 0.0 ),
     qreal( 0.024541228522912288 ),

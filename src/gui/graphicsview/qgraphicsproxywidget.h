@@ -26,7 +26,7 @@
 
 #include <qgraphicswidget.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 class QGraphicsProxyWidgetPrivate;
 
@@ -65,11 +65,11 @@ protected:
     void showEvent( QShowEvent *event ) override;
     void hideEvent( QHideEvent *event ) override;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QGraphicsSceneContextMenuEvent *event ) override;
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void dragEnterEvent( QGraphicsSceneDragDropEvent *event ) override;
     void dragLeaveEvent( QGraphicsSceneDragDropEvent *event ) override;
     void dragMoveEvent( QGraphicsSceneDragDropEvent *event )  override;
@@ -87,7 +87,7 @@ protected:
     void mouseReleaseEvent( QGraphicsSceneMouseEvent *event ) override;
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QGraphicsSceneWheelEvent *event ) override;
 #endif
 

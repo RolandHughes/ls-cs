@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_COLUMNVIEW
+#ifndef LSCS_NO_COLUMNVIEW
 
 #include <qcolumnview.h>
 #include <qcolumnview_p.h>
@@ -56,7 +56,7 @@ void QColumnViewPrivate::initialize()
     Q_Q( QColumnView );
     q->setTextElideMode( Qt::ElideMiddle );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     QObject::connect( &currentAnimation, &QPropertyAnimation::finished, q, &QColumnView::_q_changeCurrentColumn );
 
     currentAnimation.setDuration( ANIMATION_DURATION_MSEC );
@@ -229,7 +229,7 @@ void QColumnView::scrollTo( const QModelIndex &index, ScrollHint hint )
         return;
     }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
     if ( d->currentAnimation.state() == QPropertyAnimation::Running )
     {
@@ -322,7 +322,7 @@ void QColumnView::scrollTo( const QModelIndex &index, ScrollHint hint )
         }
     }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
     if ( style()->styleHint( QStyle::SH_Widget_Animate, nullptr, this ) )
     {
@@ -418,7 +418,7 @@ void QColumnViewPrivate::updateScrollbars()
 {
     Q_Q( QColumnView );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
     if ( currentAnimation.state() == QPropertyAnimation::Running )
     {
@@ -842,7 +842,7 @@ void QColumnView::initializeColumn( QAbstractItemView *column ) const
     column->setMinimumWidth( 100 );
     column->setAttribute( Qt::WA_MacShowFocusRect, false );
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     column->setDragDropMode( dragDropMode() );
     column->setDragDropOverwriteMode( dragDropOverwriteMode() );
     column->setDropIndicatorShown( showDropIndicator() );
@@ -1293,4 +1293,4 @@ void QColumnView::_q_clicked( const QModelIndex &index )
     d->_q_clicked( index );
 }
 
-#endif // QT_NO_COLUMNVIEW
+#endif // LSCS_NO_COLUMNVIEW

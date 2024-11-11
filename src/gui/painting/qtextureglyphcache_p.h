@@ -31,8 +31,8 @@
 
 #include <qfontengineglyphcache_p.h>
 
-#ifndef QT_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH
-#define QT_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH 256
+#ifndef LSCS_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH
+#define LSCS_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH 256
 #endif
 
 struct glyph_metrics_t;
@@ -121,7 +121,7 @@ public:
 
     virtual int maxTextureWidth() const
     {
-        return QT_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH;
+        return LSCS_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH;
     }
 
     virtual int maxTextureHeight() const

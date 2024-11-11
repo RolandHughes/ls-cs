@@ -514,7 +514,7 @@ get_dqt (j_decompress_ptr cinfo)
     TRACEMS2(cinfo, 1, JTRC_DQT, n, prec);
 
     if (n >= NUM_QUANT_TBLS)
-      ERREXIT1(cinfo, JERR_DQT_INDEX, n);
+      ERREXIT1(cinfo, JERR_DLSCS_INDEX, n);
       
     if (cinfo->quant_tbl_ptrs[n] == NULL)
       cinfo->quant_tbl_ptrs[n] = jpeg_alloc_quant_table((j_common_ptr) cinfo);

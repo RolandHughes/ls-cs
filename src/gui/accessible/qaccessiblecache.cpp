@@ -23,7 +23,7 @@
 
 #include <qaccessiblecache_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 static QAccessibleCache *qAccessibleCache()
 {

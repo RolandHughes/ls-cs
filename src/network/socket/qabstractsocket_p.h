@@ -67,7 +67,7 @@ public:
 
     void connectionNotification() override;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) override
     {
         Q_Q( QAbstractSocket );
@@ -114,7 +114,7 @@ public:
     QAbstractSocketEngine *socketEngine;
     qintptr cachedSocketDescriptor;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QNetworkProxy proxy;
     QNetworkProxy proxyInUse;
     void resolveProxy( const QString &hostName, quint16 port );

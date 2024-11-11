@@ -26,7 +26,7 @@
 
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE QScriptDebuggerConsoleCommandJobPrivate::QScriptDebuggerConsoleCommandJobPrivate()
+LSCS_BEGIN_NAMESPACE QScriptDebuggerConsoleCommandJobPrivate::QScriptDebuggerConsoleCommandJobPrivate()
 {
 }
 
@@ -62,4 +62,4 @@ QScriptDebuggerConsoleCommandJob::QScriptDebuggerConsoleCommandJob(
     d->messageHandler = messageHandler;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -53,7 +53,7 @@ public:
         , blockedByModalWindow( false ), updateRequestPending( false ), updateTimer( 0 ), transientParent( nullptr ),
           topLevelScreen( nullptr )
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
         , cursor( Qt::ArrowCursor )
         , hasCursor( false )
 #endif
@@ -70,7 +70,7 @@ public:
 
     void maybeQuitOnLastWindowClosed();
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     void setCursor( const QCursor *c = nullptr );
     bool applyCursor();
 #endif
@@ -159,7 +159,7 @@ public:
     QPointer<QWindow> transientParent;
     QPointer<QScreen> topLevelScreen;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QCursor cursor;
     bool hasCursor;
 #endif

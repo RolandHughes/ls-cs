@@ -180,7 +180,7 @@ private:
 
 // Get the context that resources for "ctx" will transfer to once
 // "ctx" is destroyed.  Returns null if nothing is sharing with ctx.
-const QGLContext *qt_gl_transfer_context( const QGLContext * );
+const QGLContext *lscs_gl_transfer_context( const QGLContext * );
 
 /*
     QGLTemporaryContext - the main objective of this class is to have a way of
@@ -207,7 +207,7 @@ private:
 
 // This probably needs to grow to GL_MAX_VERTEX_ATTRIBS, but 3 is ok for now as that's
 // all the GL2 engine uses:
-#define QT_GL_VERTEX_ARRAY_TRACKED_COUNT 3
+#define LSCS_GL_VERTEX_ARRAY_TRACKED_COUNT 3
 
 class QGLContextPrivate
 {
@@ -279,7 +279,7 @@ public:
     QGLTextureDestroyer *texture_destroyer;
 
     QGLFunctions *functions;
-    bool vertexAttributeArraysEnabledState[QT_GL_VERTEX_ARRAY_TRACKED_COUNT];
+    bool vertexAttributeArraysEnabledState[LSCS_GL_VERTEX_ARRAY_TRACKED_COUNT];
 
     static inline QGLContextGroup *contextGroup( const QGLContext *ctx )
     {
@@ -476,7 +476,7 @@ QGLTexture *QGLTextureCache::getTexture( QGLContext *ctx, qint64 key )
     return m_cache.object( cacheKey );
 }
 
-extern Q_OPENGL_EXPORT QPaintEngine *qt_qgl_paint_engine();
+extern Q_OPENGL_EXPORT QPaintEngine *lscs_qgl_paint_engine();
 
 QOpenGLExtensions *qgl_extensions();
 

@@ -31,7 +31,7 @@
 
 #include <qabstractanimation_p.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QVariantAnimationPrivate : public QAbstractAnimationPrivate
 {
@@ -90,6 +90,6 @@ QVariant lscs_variantFormula( const QVariant &from, const QVariant &to, double p
     return lscs_genericFormula( from.getData<T>(), to.getData<T>(), progress );
 }
 
-#endif // QT_NO_ANIMATION
+#endif // LSCS_NO_ANIMATION
 
 #endif

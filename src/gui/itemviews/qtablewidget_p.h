@@ -32,7 +32,7 @@
 #include <qtableview_p.h>
 #include <qwidgetitemdata_p.h>
 
-#ifndef QT_NO_TABLEWIDGET
+#ifndef LSCS_NO_TABLEWIDGET
 
 // workaround for VC++ 6.0 linker bug
 typedef bool( *LessThan )( const QPair<QTableWidgetItem *, int> &, const QPair<QTableWidgetItem *, int> & );
@@ -204,6 +204,6 @@ public:
     int id;
 };
 
-#endif // QT_NO_TABLEWIDGET
+#endif // LSCS_NO_TABLEWIDGET
 
 #endif // QTABLEWIDGET_P_H

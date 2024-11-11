@@ -31,7 +31,7 @@ AVFMediaPlayerControl::AVFMediaPlayerControl(QObject *parent)
 
 AVFMediaPlayerControl::~AVFMediaPlayerControl()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
 }

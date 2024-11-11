@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
 #include <qlineedit.h>
 #include <qtextlayout.h>
@@ -205,7 +205,7 @@ public:
         return m_text.length();
     }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     void copy( QClipboard::Mode mode = QClipboard::Clipboard ) const;
     void paste( QClipboard::Mode mode = QClipboard::Clipboard );
 #endif
@@ -314,7 +314,7 @@ public:
 
     void setText( const QString &txt )
     {
-#ifndef QT_NO_IM
+#ifndef LSCS_NO_IM
 
         if ( composeMode() )
         {
@@ -389,7 +389,7 @@ public:
         setText( m_text );
     }
 
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
     const QValidator *validator() const
     {
         return m_validator;
@@ -401,7 +401,7 @@ public:
     }
 #endif
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     QCompleter *completer() const
     {
         return m_completer;
@@ -465,7 +465,7 @@ public:
     }
 
     // input methods
-#ifndef QT_NO_IM
+#ifndef LSCS_NO_IM
     bool composeMode() const
     {
         return !m_textLayout.preeditAreaText().isEmpty();
@@ -596,7 +596,7 @@ public:
     };
     void draw( QPainter *, const QPoint &, const QRect &, int flags = DrawAll );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     void processShortcutOverrideEvent( QKeyEvent *ke );
 #endif
 
@@ -636,7 +636,7 @@ public:
     GUI_LSCS_SIGNAL_1( Public, void updateNeeded( const QRect &rect ) )
     GUI_LSCS_SIGNAL_2( updateNeeded, rect )
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     GUI_LSCS_SIGNAL_1( Public, void editFocusChange( bool isFocusChanged ) )
     GUI_LSCS_SIGNAL_2( editFocusChange, isFocusChanged )
 #endif
@@ -699,13 +699,13 @@ private:
 
     bool finishChange( int validateFromState = -1, bool update = false, bool edited = true );
 
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
     QPointer<QValidator> m_validator;
 #endif
 
     QPointer<QCompleter> m_completer;
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     bool advanceToEnabledItem( int dir );
 #endif
 
@@ -785,6 +785,6 @@ private:
     friend class QLineEdit;
 };
 
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT
 
 #endif

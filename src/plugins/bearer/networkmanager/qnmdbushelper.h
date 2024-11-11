@@ -28,9 +28,9 @@
 #include <QDBusContext>
 #include <QMap>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QNmDBusHelper: public QObject, protected QDBusContext
 {
@@ -54,8 +54,8 @@ Q_SIGNALS:
     void pathForSettingsRemoved( const QString & );
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 
 #endif// QNMDBUSHELPERPRIVATE_H

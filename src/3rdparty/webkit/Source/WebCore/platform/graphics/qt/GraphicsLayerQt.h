@@ -23,7 +23,7 @@
 #include "GraphicsLayer.h"
 #include "GraphicsLayerClient.h"
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 
 namespace WebCore
 {
@@ -66,7 +66,7 @@ public:
     virtual void setBackfaceVisibility( bool b );
     virtual void setOpacity( float opacity );
     virtual void setContentsRect( const IntRect &r );
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     virtual bool addAnimation( const KeyframeValueList &, const IntSize &boxSize, const Animation *, const String &keyframesName,
                                double timeOffset );
     virtual void removeAnimationsForProperty( AnimatedPropertyID );
@@ -74,7 +74,7 @@ public:
     virtual void pauseAnimation( const String &keyframesName, double timeOffset );
     virtual void suspendAnimations( double time );
     virtual void resumeAnimations();
-#endif // QT_NO_ANIMATION
+#endif // LSCS_NO_ANIMATION
     virtual void setContentsToImage( Image * );
     virtual void setContentsNeedsDisplay();
     virtual void setContentsToMedia( PlatformLayer * );

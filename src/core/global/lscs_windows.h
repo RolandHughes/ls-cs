@@ -21,8 +21,8 @@
 *
 ***********************************************************************/
 
-#ifndef QT_WINDOWS_H
-#define QT_WINDOWS_H
+#ifndef LSCS_WINDOWS_H
+#define LSCS_WINDOWS_H
 
 #if defined(Q_CC_MINGW)
 

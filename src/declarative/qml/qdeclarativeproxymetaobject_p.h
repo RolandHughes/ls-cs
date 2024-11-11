@@ -29,7 +29,7 @@
 #include <QtCore/QMetaObject>
 #include <QtCore/QObject>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeProxyMetaObject : public QAbstractDynamicMetaObject
 {
@@ -57,7 +57,7 @@ private:
     QObject *object;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEPROXYMETAOBJECT_P_H
 

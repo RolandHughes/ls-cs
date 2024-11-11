@@ -43,14 +43,14 @@ QThreadStorage<bool *> *lscs_DnsLookupSeedStorage()
     return &retval;
 }
 
-static bool qt_qdnsmailexchangerecord_less_than( const QDnsMailExchangeRecord &r1,
+static bool lscs_qdnsmailexchangerecord_less_than( const QDnsMailExchangeRecord &r1,
         const QDnsMailExchangeRecord &r2 )
 {
     // Lower numbers are more preferred than higher ones.
     return r1.preference() < r2.preference();
 }
 
-static void qt_qdnsmailexchangerecord_sort( QList<QDnsMailExchangeRecord> &records )
+static void lscs_qdnsmailexchangerecord_sort( QList<QDnsMailExchangeRecord> &records )
 {
     // If we have no more than one result, we are done.
     if ( records.size() <= 1 )
@@ -59,7 +59,7 @@ static void qt_qdnsmailexchangerecord_sort( QList<QDnsMailExchangeRecord> &recor
     }
 
     // Order the records by preference.
-    std::sort( records.begin(), records.end(), qt_qdnsmailexchangerecord_less_than );
+    std::sort( records.begin(), records.end(), lscs_qdnsmailexchangerecord_less_than );
 
     int i = 0;
 
@@ -89,7 +89,7 @@ static void qt_qdnsmailexchangerecord_sort( QList<QDnsMailExchangeRecord> &recor
     }
 }
 
-static bool qt_qdnsservicerecord_less_than( const QDnsServiceRecord &r1, const QDnsServiceRecord &r2 )
+static bool lscs_qdnsservicerecord_less_than( const QDnsServiceRecord &r1, const QDnsServiceRecord &r2 )
 {
     // Order by priority, or if the priorities are equal,
     // put zero weight records first.
@@ -98,7 +98,7 @@ static bool qt_qdnsservicerecord_less_than( const QDnsServiceRecord &r1, const Q
                 && r1.weight() == 0 && r2.weight() > 0 );
 }
 
-static void qt_qdnsservicerecord_sort( QList<QDnsServiceRecord> &records )
+static void lscs_qdnsservicerecord_sort( QList<QDnsServiceRecord> &records )
 {
     // If we have no more than one result, we are done.
     if ( records.size() <= 1 )
@@ -108,7 +108,7 @@ static void qt_qdnsservicerecord_sort( QList<QDnsServiceRecord> &records )
 
     // Order the records by priority, and for records with an equal
     // priority, put records with a zero weight first.
-    std::sort( records.begin(), records.end(), qt_qdnsservicerecord_less_than );
+    std::sort( records.begin(), records.end(), lscs_qdnsservicerecord_less_than );
 
     int i = 0;
 
@@ -132,7 +132,7 @@ static void qt_qdnsservicerecord_sort( QList<QDnsServiceRecord> &records )
         }
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
-        qDebug( "qt_qdnsservicerecord_sort() Priority %i (size: %lli, total weight: %i)",
+        qDebug( "lscs_qdnsservicerecord_sort() Priority %i (size: %lli, total weight: %i)",
                 slicePriority, slice.size(), sliceWeight );
 #endif
 
@@ -150,7 +150,7 @@ static void qt_qdnsservicerecord_sort( QList<QDnsServiceRecord> &records )
                 {
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
-                    qDebug( "qt_qdnsservicerecord_sort() Adding %s %i (weight: %i)",
+                    qDebug( "lscs_qdnsservicerecord_sort() Adding %s %i (weight: %i)",
                             lscsPrintable( slice[j].target() ), slice[j].port(), slice[j].weight() );
 #endif
 
@@ -563,8 +563,8 @@ void QDnsLookupRunnable::run()
         lscs_DnsLookupSeedStorage()->setLocalData( new bool( true ) );
     }
 
-    qt_qdnsmailexchangerecord_sort( reply.mailExchangeRecords );
-    qt_qdnsservicerecord_sort( reply.serviceRecords );
+    lscs_qdnsmailexchangerecord_sort( reply.mailExchangeRecords );
+    lscs_qdnsservicerecord_sort( reply.serviceRecords );
 
     emit finished( reply );
 }

@@ -7,7 +7,7 @@ list(APPEND CONSOLE-HELLO_SOURCES
 
 )
 
-add_executable(console-hello ${CONSOLE-HELLO_SOURCES})
+add_executable(console-hello ${CONSOLE-HELLO_SOURCES} ${CONSOLE-HELLO_INCLUDES})
 
 target_include_directories(console-hello
    PRIVATE

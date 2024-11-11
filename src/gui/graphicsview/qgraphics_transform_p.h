@@ -24,7 +24,7 @@
 #ifndef QGRAPHICS_TRANSFORM_P_H
 #define QGRAPHICS_TRANSFORM_P_H
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 class QGraphicsItem;
 
@@ -51,6 +51,6 @@ protected:
 
 };
 
-#endif //QT_NO_GRAPHCISVIEW
+#endif //LSCS_NO_GRAPHCISVIEW
 
 #endif // QGRAPHICSTRANSFORM_P_H

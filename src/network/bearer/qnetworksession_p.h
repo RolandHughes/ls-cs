@@ -30,7 +30,7 @@
 
 #include <qnetworkconfiguration_p.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 class Q_NETWORK_EXPORT QNetworkSessionPrivate : public QObject
 {
@@ -54,7 +54,7 @@ public:
     //notification hooks to discover future state changes.
     virtual void syncStateWithInterface() = 0;
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
     virtual QNetworkInterface currentInterface() const = 0;
 #endif
 
@@ -136,6 +136,6 @@ protected:
     QRecursiveMutex mutex;
 };
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 #endif // QNETWORKSESSIONPRIVATE_H

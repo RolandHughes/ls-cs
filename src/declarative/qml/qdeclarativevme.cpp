@@ -53,7 +53,7 @@
 #include <QtCore/qcoreapplication.h>
 #include <QtCore/qdatetime.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 // A simple stack wrapper around QVarLengthArray
 template<typename T>
@@ -938,7 +938,7 @@ QObject *QDeclarativeVME::run( QDeclarativeVMEObjectStack &stack,
 
                 if ( iid )
                 {
-                    ptr = assign->qt_metacast( iid );
+                    ptr = assign->lscs_metacast( iid );
                 }
 
                 if ( !ptr )
@@ -978,7 +978,7 @@ QObject *QDeclarativeVME::run( QDeclarativeVMEObjectStack &stack,
 
                 if ( iid )
                 {
-                    void *ptr = assign->qt_metacast( iid );
+                    void *ptr = assign->lscs_metacast( iid );
 
                     if ( ptr )
                     {
@@ -1256,4 +1256,4 @@ const T &QDeclarativeVMEStack<T>::at( int index ) const
     return VLA::data()[index];
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -40,7 +40,7 @@
 // no location information, but typically reside at opposite ends of the file).
 #define MAGIC_OBSOLETE_REFERENCE "Obsolete_PO_entries"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /**
  * Implementation of XLIFF file format for Linguist
@@ -1196,4 +1196,4 @@ int initXLIFF()
 
 Q_CONSTRUCTOR_FUNCTION( initXLIFF )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

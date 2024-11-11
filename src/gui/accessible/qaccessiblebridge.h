@@ -27,7 +27,7 @@
 #include <qplugin.h>
 #include <qfactoryinterface.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 class QAccessibleInterface;
 class QAccessibleEvent;

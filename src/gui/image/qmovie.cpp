@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
 
 #include <qmovie.h>
 #include <qimage.h>
@@ -809,4 +809,4 @@ void QMovie::_q_loadNextFrame()
     d->_q_loadNextFrame();
 }
 
-#endif // QT_NO_MOVIE
+#endif // LSCS_NO_MOVIE

@@ -24,11 +24,11 @@
 #include <qprinterinfo.h>
 
 #include <qstringlist.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <qprinterinfo_p.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 extern QPrinter::PaperSize mapDevmodePaperSize( int s );
 
@@ -60,7 +60,7 @@ extern QPrinter::PaperSize mapDevmodePaperSize( int s );
 
 //QPrinterInfo QPrinterInfo::defaultPrinter()
 //{
-//    QString noPrinters(QLatin1String("qt_no_printers"));
+//    QString noPrinters(QLatin1String("lscs_no_printers"));
 //    wchar_t buffer[256];
 //    GetProfileString(L"windows", L"device", (wchar_t*)noPrinters.utf16(), buffer, 256);
 //    QString output = QString::fromWCharArray(buffer);
@@ -99,4 +99,4 @@ extern QPrinter::PaperSize mapDevmodePaperSize( int s );
 
 #endif
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -37,7 +37,7 @@
 
 #import <qnsview.h>
 
-NSString *qt_mac_removePrivateUnicode(NSString *string)
+NSString *lscs_mac_removePrivateUnicode(NSString *string)
 {
    int len = [string length];
 
@@ -66,7 +66,7 @@ NSString *qt_mac_removePrivateUnicode(NSString *string)
 
 static inline QCocoaMenuLoader *getMenuLoader()
 {
-   return [NSApp qt_qcocoamenuLoader];
+   return [NSApp lscs_qcocoamenuLoader];
 }
 
 @interface QCocoaMenuDelegate : NSObject <NSMenuDelegate>
@@ -171,7 +171,7 @@ static inline QCocoaMenuLoader *getMenuLoader()
    */
 
    // Change the private unicode keys to the ones used in setting the "Key Equivalents"
-   NSString *characters = qt_mac_removePrivateUnicode([event characters]);
+   NSString *characters = lscs_mac_removePrivateUnicode([event characters]);
 
    // Interested only in Shift, Cmd, Ctrl & Alt Keys, so ignoring masks like, Caps lock, Num Lock
    const NSUInteger mask = NSEventModifierFlagShift | NSEventModifierFlagControl | NSEventModifierFlagCommand | NSEventModifierFlagOption;
@@ -206,7 +206,7 @@ static inline QCocoaMenuLoader *getMenuLoader()
             } else {
                ch = QChar([charactersIgnoringModifiers characterAtIndex: 0]);
             }
-            keyCode = qt_mac_cocoaKey2QtKey(ch);
+            keyCode = lscs_mac_cocoaKey2QtKey(ch);
 
          } else {
             // might be a dead key
@@ -283,7 +283,7 @@ void QCocoaMenu::setText(const QString &text)
 {
    QMacAutoReleasePool pool;
 
-   QString stripped = qt_mac_removeAmpersandEscapes(text);
+   QString stripped = lscs_mac_removeAmpersandEscapes(text);
    [m_nativeMenu setTitle: QCFString::toNSString(stripped)];
 }
 

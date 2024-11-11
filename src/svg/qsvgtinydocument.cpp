@@ -34,7 +34,7 @@
 #include <qsvgfont_p.h>
 #include <qsvghandler_p.h>
 
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 #include <zlib.h>
 #endif
 
@@ -48,10 +48,10 @@ QSvgTinyDocument::~QSvgTinyDocument()
 {
 }
 
-#ifndef QT_NO_COMPRESS
-static QByteArray qt_inflateGZipDataFrom( QIODevice *device );
+#ifndef LSCS_NO_COMPRESS
+static QByteArray lscs_inflateGZipDataFrom( QIODevice *device );
 
-QByteArray qt_inflateGZipDataFrom( QIODevice *device )
+QByteArray lscs_inflateGZipDataFrom( QIODevice *device )
 {
     if ( !device )
     {
@@ -168,12 +168,12 @@ QSvgTinyDocument *QSvgTinyDocument::load( const QString &fileName )
         return nullptr;
     }
 
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 
     if ( fileName.endsWith( QLatin1String( ".svgz" ), Qt::CaseInsensitive )
             || fileName.endsWith( QLatin1String( ".svg.gz" ), Qt::CaseInsensitive ) )
     {
-        return load( qt_inflateGZipDataFrom( &file ) );
+        return load( lscs_inflateGZipDataFrom( &file ) );
     }
 
 #endif
@@ -197,13 +197,13 @@ QSvgTinyDocument *QSvgTinyDocument::load( const QString &fileName )
 
 QSvgTinyDocument *QSvgTinyDocument::load( const QByteArray &contents )
 {
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 
     // Check for gzip magic number and inflate if appropriate
     if ( contents.startsWith( "\x1f\x8b" ) )
     {
         QBuffer buffer( const_cast<QByteArray *>( &contents ) );
-        return load( qt_inflateGZipDataFrom( &buffer ) );
+        return load( lscs_inflateGZipDataFrom( &buffer ) );
     }
 
 #endif

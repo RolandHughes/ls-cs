@@ -23,7 +23,7 @@
 
 #include <qfiledialog.h>
 
-#ifndef QT_NO_FILEDIALOG
+#ifndef LSCS_NO_FILEDIALOG
 
 #include <qaction.h>
 #include <qheaderview.h>
@@ -41,14 +41,16 @@
 #include <unistd.h>        // for pathconf() on OS X
 
 #elif defined(Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #endif
+
+#include <lscsioutils.h>
 
 QUrl *lscs_internal_lastVisitedDir();
 
 QFileDialogPrivate::QFileDialogPrivate()
     :
-#ifndef QT_NO_PROXYMODEL
+#ifndef LSCS_NO_PROXYMODEL
     proxyModel( nullptr ),
 #endif
     model( nullptr ), currentHistoryLocation( -1 ), renameAction( nullptr ), deleteAction( nullptr ), showHiddenAction( nullptr ),
@@ -249,7 +251,7 @@ void QFileDialogPrivate::retranslateStrings()
     QList<QAction *> newActions = qFileDialogUi->treeView->header()->actions();
     QAbstractItemModel *abstractModel = model;
 
-#ifndef QT_NO_PROXYMODEL
+#ifndef LSCS_NO_PROXYMODEL
 
     if ( proxyModel )
     {
@@ -330,70 +332,6 @@ void QFileDialogPrivate::_q_goToUrl( const QUrl &url )
     _q_enterDirectory( idx );
 }
 
-#ifdef Q_OS_UNIX
-QString lscs_tildeExpansion( const QString &path, bool *expanded = nullptr )
-{
-    if ( expanded != nullptr )
-    {
-        *expanded = false;
-    }
-
-    if ( ! path.startsWith( '~' ) )
-    {
-        return path;
-    }
-
-    QString retval = path;
-
-    QStringList tokens = retval.split( QDir::separator() );
-
-    if ( tokens.first() == "~" )
-    {
-        retval.replace( 0, 1, QDir::homePath() );
-
-    }
-    else
-    {
-        QString userName = tokens.first();
-        userName.remove( 0, 1 );
-
-#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && ! defined(Q_OS_OPENBSD)
-        passwd pw;
-        passwd *tmpPw;
-        char buf[200];
-
-        const int bufSize = sizeof( buf );
-        int err = getpwnam_r( userName.constData(), &pw, buf, bufSize, &tmpPw );
-
-        if ( err || ! tmpPw )
-        {
-            return retval;
-        }
-
-        const QString homePath = QString::fromUtf8( pw.pw_dir );
-
-#else
-        passwd *pw = getpwnam( userName.constData() );
-
-        if ( ! pw )
-        {
-            return ret;
-        }
-
-        const QString homePath = QString::frommUtf8( pw->pw_dir );
-#endif
-
-        retval.replace( 0, tokens.first().length(), homePath );
-    }
-
-    if ( expanded != nullptr )
-    {
-        *expanded = true;
-    }
-
-    return retval;
-}
-#endif
 
 QStringList QFileDialogPrivate::typedFiles() const
 {
@@ -672,7 +610,7 @@ void QFileDialogPrivate::setLabelTextControl( QFileDialog::DialogLabel label, co
     }
 }
 
-static inline QUrl _qt_get_directory( const QUrl &url )
+static inline QUrl _lscs_get_directory( const QUrl &url )
 {
     if ( url.isLocalFile() )
     {
@@ -704,7 +642,7 @@ QUrl QFileDialogPrivate::workingDirectory( const QUrl &url )
     if ( ! url.isEmpty() )
     {
 
-        QUrl directory = _qt_get_directory( url );
+        QUrl directory = _lscs_get_directory( url );
 
         if ( !directory.isEmpty() )
         {
@@ -712,7 +650,7 @@ QUrl QFileDialogPrivate::workingDirectory( const QUrl &url )
         }
     }
 
-    QUrl directory = _qt_get_directory( *lscs_internal_lastVisitedDir() );
+    QUrl directory = _lscs_get_directory( *lscs_internal_lastVisitedDir() );
 
     if ( !directory.isEmpty() )
     {
@@ -747,7 +685,7 @@ QString QFileDialogPrivate::initialSelection( const QUrl &url )
     return url.fileName();
 }
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
 void QFileDialogPrivate::saveSettings()
 {
     Q_Q( QFileDialog );
@@ -821,7 +759,7 @@ bool QFileDialogPrivate::restoreFromSettings()
 
     return restoreWidgetState( history, settings.value( "sidebarWidth", -1 ).toInt() );
 }
-#endif // QT_NO_SETTINGS
+#endif // LSCS_NO_SETTINGS
 
 bool QFileDialogPrivate::restoreWidgetState( QStringList &history, int splitterPosition )
 {
@@ -874,7 +812,7 @@ bool QFileDialogPrivate::restoreWidgetState( QStringList &history, int splitterP
     QList<QAction *> newActions = headerView->actions();
     QAbstractItemModel *abstractModel = model;
 
-#ifndef QT_NO_PROXYMODEL
+#ifndef LSCS_NO_PROXYMODEL
 
     if ( proxyModel )
     {
@@ -922,7 +860,7 @@ void QFileDialogPrivate::init( const QUrl &directory, const QString &nameFilter,
     q->setDirectoryUrl( workingDirectory( directory ) );
     q->selectFile( initialSelection( directory ) );
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
 
     if ( ! restoreFromSettings() )
     {
@@ -954,7 +892,7 @@ void QFileDialogPrivate::createWidgets()
 
     model = new QFileSystemModel( q );
     model->setFilter( options->filter() );
-    model->setObjectName( "qt_filesystem_model" );
+    model->setObjectName( "lscs_filesystem_model" );
 
     if ( QPlatformFileDialogHelper *helper = platformFileDialogHelper() )
     {
@@ -999,11 +937,11 @@ void QFileDialogPrivate::createWidgets()
     // filename
     qFileDialogUi->fileNameEdit->setFileDialogPrivate( this );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     qFileDialogUi->fileNameLabel->setBuddy( qFileDialogUi->fileNameEdit );
 #endif
 
-#ifndef QT_NO_FSCOMPLETER
+#ifndef LSCS_NO_FSCOMPLETER
     completer = new QFSCompleter( model, q );
     qFileDialogUi->fileNameEdit->setCompleter( completer );
 #endif
@@ -1027,7 +965,7 @@ void QFileDialogPrivate::createWidgets()
     QObject::connect( qFileDialogUi->listView, &QListView::activated,                  q, &QFileDialog::_q_enterDirectory );
     QObject::connect( qFileDialogUi->listView, &QListView::customContextMenuRequested, q, &QFileDialog::_q_showContextMenu );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     QShortcut *shortcut = new QShortcut( qFileDialogUi->listView );
     shortcut->setKey( QKeySequence( "Delete" ) );
     QObject::connect( shortcut, &QShortcut::activated, q, &QFileDialog::_q_deleteCurrent );
@@ -1051,7 +989,7 @@ void QFileDialogPrivate::createWidgets()
 
     QAbstractItemModel *abstractModel = model;
 
-#ifndef QT_NO_PROXYMODEL
+#ifndef LSCS_NO_PROXYMODEL
 
     if ( proxyModel )
     {
@@ -1074,7 +1012,7 @@ void QFileDialogPrivate::createWidgets()
     QObject::connect( qFileDialogUi->treeView, &QTreeView::activated,                  q, &QFileDialog::_q_enterDirectory );
     QObject::connect( qFileDialogUi->treeView, &QTreeView::customContextMenuRequested, q, &QFileDialog::_q_showContextMenu );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     shortcut = new QShortcut( qFileDialogUi->treeView );
     shortcut->setKey( QKeySequence( "Delete" ) );
     QObject::connect( shortcut, &QShortcut::activated, q, &QFileDialog::_q_deleteCurrent );
@@ -1091,7 +1029,7 @@ void QFileDialogPrivate::createWidgets()
     createToolButtons();
     createMenuActions();
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
 
     // Try to restore from the FileDialog settings group,
     // if it fails, fall back to the older QByteArray serialized settings
@@ -1116,7 +1054,7 @@ void QFileDialogPrivate::createWidgets()
 
     q->setDirectoryUrl( options->initialDirectory() );
 
-#ifndef QT_NO_MIMETYPE
+#ifndef LSCS_NO_MIMETYPE
 
     if ( ! options->mimeTypeFilters().isEmpty() )
     {
@@ -1132,7 +1070,7 @@ void QFileDialogPrivate::createWidgets()
             q->setNameFilters( options->nameFilters() );
         }
 
-#ifndef QT_NO_MIMETYPE
+#ifndef LSCS_NO_MIMETYPE
     }
 
 #endif
@@ -1216,7 +1154,7 @@ void QFileDialogPrivate::createMenuActions()
 
     QAction *goHomeAction = new QAction( q );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     goHomeAction->setShortcut( Qt::ControlModifier + Qt::Key_H + Qt::ShiftModifier );
 #endif
 
@@ -1226,9 +1164,9 @@ void QFileDialogPrivate::createMenuActions()
     // ### TODO add Desktop & Computer actions
 
     QAction *goToParent = new QAction( q );
-    goToParent->setObjectName( "qt_goto_parent_action" );
+    goToParent->setObjectName( "lscs_goto_parent_action" );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     goToParent->setShortcut( Qt::ControlModifier + Qt::UpArrow );
 #endif
 
@@ -1237,18 +1175,18 @@ void QFileDialogPrivate::createMenuActions()
 
     renameAction = new QAction( q );
     renameAction->setEnabled( false );
-    renameAction->setObjectName( "qt_rename_action" );
+    renameAction->setObjectName( "lscs_rename_action" );
 
     deleteAction = new QAction( q );
     deleteAction->setEnabled( false );
-    deleteAction->setObjectName( "qt_delete_action" );
+    deleteAction->setObjectName( "lscs_delete_action" );
 
     showHiddenAction = new QAction( q );
-    showHiddenAction->setObjectName( "qt_show_hidden_action" );
+    showHiddenAction->setObjectName( "lscs_show_hidden_action" );
     showHiddenAction->setCheckable( true );
 
     newFolderAction = new QAction( q );
-    newFolderAction->setObjectName( "qt_new_folder_action" );
+    newFolderAction->setObjectName( "lscs_new_folder_action" );
 
     QObject::connect( renameAction,     &QAction::triggered, q, &QFileDialog::_q_renameCurrent );
     QObject::connect( deleteAction,     &QAction::triggered, q, &QFileDialog::_q_deleteCurrent );
@@ -1388,7 +1326,7 @@ void QFileDialogPrivate::_q_showDetailsView()
 
 void QFileDialogPrivate::_q_showContextMenu( const QPoint &position )
 {
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     Q_Q( QFileDialog );
 
@@ -1431,7 +1369,7 @@ void QFileDialogPrivate::_q_showContextMenu( const QPoint &position )
     }
 
     menu.exec( view->viewport()->mapToGlobal( position ) );
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 }
 
 /*!
@@ -1490,7 +1428,7 @@ void QFileDialogPrivate::_q_deleteCurrent()
 
         QFile::Permissions p( index.parent().data( QFileSystemModel::FilePermissions ).toInt() );
 
-#ifndef QT_NO_MESSAGEBOX
+#ifndef LSCS_NO_MESSAGEBOX
         Q_Q( QFileDialog );
 
         if ( !( p & QFile::WriteUser ) && ( QMessageBox::warning( q_func(), QFileDialog::tr( "Delete" ),
@@ -1515,7 +1453,7 @@ void QFileDialogPrivate::_q_deleteCurrent()
             return;
         }
 
-#endif // QT_NO_MESSAGEBOX
+#endif // LSCS_NO_MESSAGEBOX
 
         // the event loop has run, we can NOT reuse index because the model might have removed it.
         if ( isDir )
@@ -1523,7 +1461,7 @@ void QFileDialogPrivate::_q_deleteCurrent()
             if ( !removeDirectory( filePath ) )
             {
 
-#ifndef QT_NO_MESSAGEBOX
+#ifndef LSCS_NO_MESSAGEBOX
                 QMessageBox::warning( q, q->windowTitle(),
                                       QFileDialog::tr( "Could not delete directory." ) );
 #endif
@@ -1771,7 +1709,7 @@ void QFileDialogPrivate::_q_enterDirectory( const QModelIndex &index )
 void QFileDialogPrivate::_q_goToDirectory( const QString &path )
 {
 
-#ifndef QT_NO_MESSAGEBOX
+#ifndef LSCS_NO_MESSAGEBOX
     Q_Q( QFileDialog );
 #endif
 
@@ -1800,14 +1738,14 @@ void QFileDialogPrivate::_q_goToDirectory( const QString &path )
     if ( dir.exists() || path2.isEmpty() || path2 == model->myComputer().toString() )
     {
         _q_enterDirectory( index );
-#ifndef QT_NO_MESSAGEBOX
+#ifndef LSCS_NO_MESSAGEBOX
     }
     else
     {
         QString message = QFileDialog::tr( "%1\nDirectory not found.\nPlease verify the "
                                            "correct directory name was given." );
         QMessageBox::warning( q, q->windowTitle(), message.formatArg( path2 ) );
-#endif // QT_NO_MESSAGEBOX
+#endif // LSCS_NO_MESSAGEBOX
     }
 }
 
@@ -2001,4 +1939,4 @@ void QFileDialogPrivate::_q_nativeEnterDirectory( const QUrl &directory )
     }
 }
 
-#endif // QT_NO_FILEDIALOG
+#endif // LSCS_NO_FILEDIALOG

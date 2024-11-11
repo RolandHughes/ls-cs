@@ -24,7 +24,7 @@
 #include "qscriptdebugoutputwidgetinterface_p.h"
 #include "qscriptdebugoutputwidgetinterface_p_p.h"
 
-QT_BEGIN_NAMESPACE QScriptDebugOutputWidgetInterfacePrivate::QScriptDebugOutputWidgetInterfacePrivate()
+LSCS_BEGIN_NAMESPACE QScriptDebugOutputWidgetInterfacePrivate::QScriptDebugOutputWidgetInterfacePrivate()
 {
 }
 
@@ -43,4 +43,4 @@ QScriptDebugOutputWidgetInterface::QScriptDebugOutputWidgetInterface(
 {
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

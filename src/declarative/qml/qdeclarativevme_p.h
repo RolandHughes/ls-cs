@@ -30,7 +30,7 @@
 #include <QtCore/QStack>
 #include <QtCore/QVarLengthArray>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QObject;
 class QDeclarativeInstruction;
@@ -60,6 +60,6 @@ private:
     QList<QDeclarativeError> vmeErrors;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEVME_P_H

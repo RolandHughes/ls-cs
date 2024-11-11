@@ -27,7 +27,7 @@
 #include <qdebug.h>
 #include <qendian.h>
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
 
 QNetworkInterfaceManager *lscs_Manager()
 {
@@ -403,4 +403,4 @@ QDebug operator<<( QDebug debug, const QNetworkInterface &networkInterface )
     return debug;
 }
 
-#endif // QT_NO_NETWORKINTERFACE
+#endif // LSCS_NO_NETWORKINTERFACE

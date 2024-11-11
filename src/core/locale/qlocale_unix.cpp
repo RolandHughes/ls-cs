@@ -32,7 +32,7 @@ static QByteArray getSystemLocale()
     return qgetenv( "LC_ALL" );
 }
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 struct QSystemLocaleData
 {
     QSystemLocaleData()
@@ -104,7 +104,7 @@ static QSystemLocaleData *qSystemLocaleData()
 
 #endif
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 QLocale QSystemLocale::fallbackUiLocale() const
 {
 
@@ -270,7 +270,7 @@ QVariant QSystemLocale::query( QueryType type, QVariant in ) const
                     const QString &name = lst.at( i );
                     QString lang, script, cntry;
 
-                    if ( name.isEmpty() || !qt_splitLocaleName( name, lang, script, cntry ) )
+                    if ( name.isEmpty() || !lscs_splitLocaleName( name, lang, script, cntry ) )
                     {
                         lst.removeAt( i );
                     }
@@ -287,7 +287,7 @@ QVariant QSystemLocale::query( QueryType type, QVariant in ) const
             {
                 QString lang, script, cntry;
 
-                if ( qt_splitLocaleName( QString::fromLatin1( d->lc_messages_var.constData(), d->lc_messages_var.size() ),
+                if ( lscs_splitLocaleName( QString::fromLatin1( d->lc_messages_var.constData(), d->lc_messages_var.size() ),
                                          lang, script, cntry ) )
                 {
                     if ( !cntry.length() && lang.length() )
@@ -321,4 +321,4 @@ QVariant QSystemLocale::query( QueryType type, QVariant in ) const
 
     return QVariant();
 }
-#endif // QT_NO_SYSTEMLOCALE
+#endif // LSCS_NO_SYSTEMLOCALE

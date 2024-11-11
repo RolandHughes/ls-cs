@@ -45,7 +45,7 @@
 #include <qmetaobjectbuilder_p.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 QHash<QObject *, QDeclarativeVisualItemModelAttached *> QDeclarativeVisualItemModelAttached::attachedProperties;
 
@@ -1816,7 +1816,7 @@ void QDeclarativeVisualDataModel::_q_destroyingPackage( QDeclarativePackage *pac
     emit destroyingItem( qobject_cast<QDeclarativeItem *>( package->part( d->m_part ) ) );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QListModelInterface )
 

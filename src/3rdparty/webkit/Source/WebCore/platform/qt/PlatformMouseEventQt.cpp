@@ -35,7 +35,7 @@
 namespace WebCore
 {
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 PlatformMouseEvent::PlatformMouseEvent( QGraphicsSceneMouseEvent *event, int clickCount )
 {
     m_timestamp = WTF::currentTime();
@@ -82,7 +82,7 @@ PlatformMouseEvent::PlatformMouseEvent( QGraphicsSceneMouseEvent *event, int cli
     m_altKey =  ( event->modifiers() & Qt::AltModifier );
     m_metaKey = ( event->modifiers() & Qt::MetaModifier );
 }
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 PlatformMouseEvent::PlatformMouseEvent( QInputEvent *event, int clickCount )
 {
@@ -107,7 +107,7 @@ PlatformMouseEvent::PlatformMouseEvent( QInputEvent *event, int clickCount )
             m_eventType = MouseEventReleased;
             me = static_cast<QMouseEvent *>( event );
             break;
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
         case QEvent::ContextMenu:
         {
@@ -119,7 +119,7 @@ PlatformMouseEvent::PlatformMouseEvent( QInputEvent *event, int clickCount )
             break;
         }
 
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
         default:
             m_eventType = MouseEventMoved;

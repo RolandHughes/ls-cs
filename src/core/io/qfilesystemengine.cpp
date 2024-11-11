@@ -153,7 +153,7 @@ static bool _q_resolveEntryAndCreateLegacyEngine_recursive( QFileSystemEntry &en
 {
     QString const &filePath = entry.filePath();
 
-    if ( ( engine = qt_custom_file_engine_handler_create( filePath ) ) )
+    if ( ( engine = lscs_custom_file_engine_handler_create( filePath ) ) )
     {
         return _q_checkEntry( engine, resolvingEntry );
     }
@@ -234,9 +234,9 @@ bool QFileSystemEngine::fillMetaData( int fd, QFileSystemMetaData &data )
     data.entryFlags &= ~QFileSystemMetaData::PosixStatFlags;
     data.knownFlagsMask |= QFileSystemMetaData::PosixStatFlags;
 
-    QT_STATBUF statBuffer;
+    LSCS_STATBUF statBuffer;
 
-    if ( QT_FSTAT( fd, &statBuffer ) == 0 )
+    if ( LSCS_FSTAT( fd, &statBuffer ) == 0 )
     {
         data.fillFromStatBuf( statBuffer );
         return true;
@@ -245,7 +245,7 @@ bool QFileSystemEngine::fillMetaData( int fd, QFileSystemMetaData &data )
     return false;
 }
 
-void QFileSystemMetaData::fillFromStatBuf( const QT_STATBUF &statBuffer )
+void QFileSystemMetaData::fillFromStatBuf( const LSCS_STATBUF &statBuffer )
 {
     // Permissions
     if ( statBuffer.st_mode & S_IRUSR )
@@ -329,7 +329,7 @@ void QFileSystemMetaData::fillFromStatBuf( const QT_STATBUF &statBuffer )
     groupId_ = statBuffer.st_gid;
 }
 
-void QFileSystemMetaData::fillFromDirEnt( const QT_DIRENT &entry )
+void QFileSystemMetaData::fillFromDirEnt( const LSCS_DIRENT &entry )
 {
 
 #if defined(_DIRENT_HAVE_D_TYPE) || defined(Q_OS_BSD4)

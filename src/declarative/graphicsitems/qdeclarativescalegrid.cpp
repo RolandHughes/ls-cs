@@ -28,7 +28,7 @@
 #include <QBuffer>
 #include <QDebug>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 /*!
     \internal
     \class QDeclarativeScaleGrid
@@ -231,4 +231,4 @@ QString QDeclarativeGridScaledImage::pixmapUrl() const
     return _pix;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

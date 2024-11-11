@@ -23,7 +23,7 @@
 
 #include <qcocoafontdialoghelper.h>
 
-#ifndef QT_NO_FONTDIALOG
+#ifndef LSCS_NO_FONTDIALOG
 
 #include <qtimer.h>
 #include <qfontdatabase.h>
@@ -61,7 +61,7 @@ static NSButton *macCreateButton(const char *text, NSView *superview)
    [button setButtonType: NSMomentaryLightButton];
    [button setBezelStyle: NSRoundedBezelStyle];
 
-   QCFString tmp = qt_mac_removeMnemonics(QCoreApplication::translate("QDialogButtonBox", text));
+   QCFString tmp = lscs_mac_removeMnemonics(QCoreApplication::translate("QDialogButtonBox", text));
    [button setTitle: (NSString *) tmp.toCFStringRef()];
 
    [[button cell] setFont: [NSFont systemFontOfSize: [NSFont systemFontSizeForControlSize: NSControlSizeRegular]]];

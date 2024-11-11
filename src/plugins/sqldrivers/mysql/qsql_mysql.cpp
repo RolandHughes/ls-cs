@@ -65,7 +65,7 @@ public:
     QMYSQLDriverPrivate()
         : QSqlDriverPrivate(), mysql( nullptr ),
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
           tc( QTextCodec::codecForLocale() ),
 #else
           tc( 0 ),
@@ -84,7 +84,7 @@ public:
 
 static inline QString toUnicode( QTextCodec *tc, const char *str )
 {
-#ifdef QT_NO_TEXTCODEC
+#ifdef LSCS_NO_TEXTCODEC
     return QString::fromLatin1( str );
 #else
     return tc->toUnicode( str );
@@ -93,7 +93,7 @@ static inline QString toUnicode( QTextCodec *tc, const char *str )
 
 static inline QString toUnicode( QTextCodec *tc, const char *str, int length )
 {
-#ifdef QT_NO_TEXTCODEC
+#ifdef LSCS_NO_TEXTCODEC
     return QString::fromLatin1( str, length );
 #else
     return tc->toUnicode( str, length );
@@ -102,7 +102,7 @@ static inline QString toUnicode( QTextCodec *tc, const char *str, int length )
 
 static inline QByteArray fromUnicode( QTextCodec *tc, const QString &str )
 {
-#ifdef QT_NO_TEXTCODEC
+#ifdef LSCS_NO_TEXTCODEC
     return str.toLatin1();
 #else
     return tc->fromUnicode( str );
@@ -202,7 +202,7 @@ private:
 
 };
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 static QTextCodec *codec( MYSQL *mysql )
 {
     QTextCodec *heuristicCodec = QTextCodec::codecForName( mysql_character_set_name( mysql ) );
@@ -1461,7 +1461,7 @@ QMYSQLDriver::QMYSQLDriver( MYSQL *con, QObject *parent )
     {
         d->mysql = ( MYSQL * ) con;
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
         d->tc = codec( con );
 #endif
 
@@ -1777,7 +1777,7 @@ bool QMYSQLDriver::open( const QString &db, const QString &user, const QString &
     // force the communication to be utf8
     mysql_set_character_set( d->mysql, "utf8" );
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     d->tc = codec( d->mysql );
 #endif
 

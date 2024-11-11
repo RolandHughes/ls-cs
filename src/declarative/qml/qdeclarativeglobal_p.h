@@ -27,7 +27,7 @@
 #include <QtCore/qglobal.h>
 #include <QtCore/QObject>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 #define DEFINE_BOOL_CONFIG_OPTION(name, var) \
     static bool name() \
@@ -82,7 +82,7 @@ inline void QDeclarative_setParent_noEvent( QObject *object, QObject *parent )
     static_cast<QDeclarativeGraphics_DerivedObject *>( object )->setParent_noEvent( parent );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEGLOBAL_H
 

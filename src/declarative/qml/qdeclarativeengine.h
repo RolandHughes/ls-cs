@@ -32,7 +32,7 @@
 #include <QtDeclarative/qdeclarativedebug.h>
 #include <QScopedPointer>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeComponent;
 class QDeclarativeEnginePrivate;
@@ -112,6 +112,6 @@ protected:
 
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEENGINE_H

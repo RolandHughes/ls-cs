@@ -49,7 +49,7 @@ QTcpServerPrivate::~QTcpServerPrivate()
 {
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
 QNetworkProxy QTcpServerPrivate::resolveProxy( const QHostAddress &address, quint16 port )
 {
@@ -196,7 +196,7 @@ bool QTcpServer::listen( const QHostAddress &address, quint16 port )
     QAbstractSocket::NetworkLayerProtocol proto = address.protocol();
     QHostAddress addr = address;
 
-#ifdef QT_NO_NETWORKPROXY
+#ifdef LSCS_NO_NETWORKPROXY
     static const QNetworkProxy &proxy = *( QNetworkProxy * )0;
 #else
     QNetworkProxy proxy = d->resolveProxy( addr, port );
@@ -212,7 +212,7 @@ bool QTcpServer::listen( const QHostAddress &address, quint16 port )
         return false;
     }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     //copy network session down to the socket engine (if it has been set)
     d->socketEngine->setProperty( "_q_networksession", property( "_q_networksession" ) );
 #endif
@@ -326,7 +326,7 @@ bool QTcpServer::setSocketDescriptor( qintptr socketDescriptor )
         return false;
     }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     //copy network session down to the socket engine (if it has been set)
     d->socketEngine->setProperty( "_q_networksession", property( "_q_networksession" ) );
 #endif
@@ -467,7 +467,7 @@ void QTcpServer::resumeAccepting()
     d_func()->socketEngine->setReadNotificationEnabled( true );
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
 void QTcpServer::setProxy( const QNetworkProxy &networkProxy )
 {

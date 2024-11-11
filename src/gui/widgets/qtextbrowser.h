@@ -27,7 +27,7 @@
 #include <qtextedit.h>
 #include <qurl.h>
 
-#ifndef QT_NO_TEXTBROWSER
+#ifndef LSCS_NO_TEXTBROWSER
 
 class QTextBrowserPrivate;
 
@@ -145,7 +145,7 @@ private:
     GUI_LSCS_SLOT_2( _q_highlightLink )
 };
 
-#endif // QT_NO_TEXTBROWSER
+#endif // LSCS_NO_TEXTBROWSER
 
 
 #endif

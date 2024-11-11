@@ -29,8 +29,8 @@
 
 #include <qfilesystemiterator_p.h>
 
-#ifndef QT_NO_FSFILEENGINE
-#ifndef QT_NO_FILESYSTEMITERATOR
+#ifndef LSCS_NO_FSFILEENGINE
+#ifndef LSCS_NO_FILESYSTEMITERATOR
 
 class QFSFileEngineIteratorPrivate;
 class QFSFileEngineIteratorPlatformSpecificData;
@@ -55,7 +55,7 @@ private:
     mutable bool done;
 };
 
-#endif // QT_NO_FILESYSTEMITERATOR
-#endif // QT_NO_FSFILEENGINE
+#endif // LSCS_NO_FILESYSTEMITERATOR
+#endif // LSCS_NO_FSFILEENGINE
 
 #endif

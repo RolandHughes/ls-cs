@@ -23,7 +23,7 @@
 
 #include <qbearerengine_p.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 QBearerEngine::QBearerEngine( QObject *parent )
     : QObject( parent )
@@ -104,4 +104,4 @@ bool QBearerEngine::configurationsInUse() const
     return false;
 }
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT

@@ -23,7 +23,7 @@
 
 #include <qabstractitemdelegate.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 #include <qabstractitemmodel.h>
 #include <qabstractitemview.h>
@@ -124,7 +124,7 @@ bool QAbstractItemDelegate::helpEvent( QHelpEvent *event, QAbstractItemView *vie
     switch ( event->type() )
     {
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
         case QEvent::ToolTip:
         {
@@ -143,7 +143,7 @@ bool QAbstractItemDelegate::helpEvent( QHelpEvent *event, QAbstractItemView *vie
 
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
         case QEvent::QueryWhatsThis:
         {
@@ -190,7 +190,7 @@ QAbstractItemDelegatePrivate::QAbstractItemDelegatePrivate()
 
 static bool editorHandlesKeyEvent( QWidget *editor, const QKeyEvent *event )
 {
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
     if ( qobject_cast<QTextEdit *>( editor ) || qobject_cast<QPlainTextEdit *>( editor ) )
     {
@@ -207,7 +207,7 @@ static bool editorHandlesKeyEvent( QWidget *editor, const QKeyEvent *event )
         }
     }
 
-#endif // QT_NO_TEXTEDIT
+#endif // LSCS_NO_TEXTEDIT
 
     return false;
 }
@@ -294,7 +294,7 @@ bool QAbstractItemDelegatePrivate::editorEventFilter( QObject *object, QEvent *e
                 w = w->parentWidget();
             }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
             // The window may lose focus during an drag operation.
             // i.e when dragging involves the taskbar on Windows.
             QPlatformDrag *platformDrag = QGuiApplicationPrivate::instance()->platformIntegration()->drag();
@@ -328,7 +328,7 @@ bool QAbstractItemDelegatePrivate::editorEventFilter( QObject *object, QEvent *e
 
 bool QAbstractItemDelegatePrivate::tryFixup( QWidget *editor )
 {
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
     if ( QLineEdit *e = qobject_cast<QLineEdit *>( editor ) )
     {
@@ -345,7 +345,7 @@ bool QAbstractItemDelegatePrivate::tryFixup( QWidget *editor )
         }
     }
 
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT
 
     return true;
 }
@@ -418,4 +418,4 @@ void QAbstractItemDelegate::_q_commitDataAndCloseEditor( QWidget *editor )
     d->_q_commitDataAndCloseEditor( editor );
 }
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS

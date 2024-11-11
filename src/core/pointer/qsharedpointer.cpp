@@ -84,10 +84,10 @@ QWeakPointer<QObject> QtSharedPointer::weakPointerFromVariant_internal( const QV
     return variant.getData<QWeakPointer<QObject>>();
 }
 
-//#  define QT_SHARED_POINTER_BACKTRACE_SUPPORT
-#ifdef QT_SHARED_POINTER_BACKTRACE_SUPPORT
+//#  define LSCS_SHARED_POINTER_BACKTRACE_SUPPORT
+#ifdef LSCS_SHARED_POINTER_BACKTRACE_SUPPORT
 
-#if defined(__GLIBC__) && (__GLIBC__ >= 2) && ! defined(__UCLIBC__) && ! defined(QT_LINUXBASE)
+#if defined(__GLIBC__) && (__GLIBC__ >= 2) && ! defined(__UCLIBC__) && ! defined(LSCS_LINUXBASE)
 #      define BACKTRACE_SUPPORTED
 
 #elif defined(Q_OS_DARWIN)
@@ -260,7 +260,7 @@ void QtSharedPointer::internalSafetyCheckRemove( const void *d_ptr )
     if ( it == kp->dPointers.end() )
     {
         qFatal( "QSharedPointer: internal self check inconsistency: Pointer %p was not valid. "
-                "To use QT_SHAREDPOINTER_TRACK_POINTERS enable it in your application", d_ptr );
+                "To use LSCS_SHAREDPOINTER_TRACK_POINTERS enable it in your application", d_ptr );
     }
 
     QHash<const volatile void *, const void *>::iterator it2 = kp->dataPointers.find( it->pointer );

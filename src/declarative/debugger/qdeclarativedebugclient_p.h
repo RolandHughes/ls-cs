@@ -28,7 +28,7 @@
 #include <qdeclarativeglobal_p.h>
 #include <QScopedPointer>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeDebugConnectionPrivate;
 
@@ -79,6 +79,6 @@ private:
     friend class QDeclarativeDebugConnectionPrivate;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEDEBUGCLIENT_H

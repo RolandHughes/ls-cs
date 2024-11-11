@@ -27,7 +27,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <float.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 static const int PressAndHoldDelay = 800;
 
 QDeclarativeDrag::QDeclarativeDrag( QObject *parent )
@@ -729,7 +729,7 @@ void QDeclarativeMouseArea::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
     }
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 void QDeclarativeMouseArea::contextMenuEvent( QGraphicsSceneContextMenuEvent *event )
 {
     bool acceptsContextMenuButton;
@@ -745,7 +745,7 @@ void QDeclarativeMouseArea::contextMenuEvent( QGraphicsSceneContextMenuEvent *ev
 
     QDeclarativeItem::contextMenuEvent( event );
 }
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
 bool QDeclarativeMouseArea::sceneEvent( QEvent *event )
 {
@@ -1135,4 +1135,4 @@ QDeclarativeDrag *QDeclarativeMouseArea::drag()
 
 */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

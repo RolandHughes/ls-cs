@@ -29,7 +29,7 @@
 #include <qpixmap.h>
 #include <qvariant.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 class QItemDelegatePrivate;
 class QItemEditorFactory;
@@ -99,6 +99,6 @@ private:
     Q_DECLARE_PRIVATE( QItemDelegate )
 };
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
 #endif

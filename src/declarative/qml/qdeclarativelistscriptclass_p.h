@@ -27,7 +27,7 @@
 #include <qscriptdeclarativeclass_p.h>
 #include <qdeclarativelist.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 class QDeclarativeListScriptClass : public QScriptDeclarativeClass
@@ -52,7 +52,7 @@ private:
     quint32 lastIndex;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVELISTSCRIPTCLASS_P_H
 

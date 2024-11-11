@@ -59,7 +59,7 @@
 #include <qdebug.h>
 #include <qdatetime.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 DEFINE_BOOL_CONFIG_OPTION( compilerDump, QML_COMPILER_DUMP );
 DEFINE_BOOL_CONFIG_OPTION( compilerStatDump, QML_COMPILER_STATS );
@@ -284,7 +284,7 @@ bool QDeclarativeCompiler::testLiteralAssignment( const QMetaProperty &prop,
             }
         }
         break;
-#ifndef QT_NO_DATESTRING
+#ifndef LSCS_NO_DATESTRING
 
         case QVariant::Date:
         {
@@ -321,7 +321,7 @@ bool QDeclarativeCompiler::testLiteralAssignment( const QMetaProperty &prop,
             }
         }
         break;
-#endif // QT_NO_DATESTRING
+#endif // LSCS_NO_DATESTRING
 
         case QVariant::Point:
         case QVariant::PointF:
@@ -537,7 +537,7 @@ void QDeclarativeCompiler::genLiteralAssignment( const QMetaProperty &prop,
             instr.storeColor.value = c.rgba();
         }
         break;
-#ifndef QT_NO_DATESTRING
+#ifndef LSCS_NO_DATESTRING
 
         case QVariant::Date:
         {
@@ -576,7 +576,7 @@ void QDeclarativeCompiler::genLiteralAssignment( const QMetaProperty &prop,
             instr.storeDateTime.valueIndex = index;
         }
         break;
-#endif // QT_NO_DATESTRING
+#endif // LSCS_NO_DATESTRING
 
         case QVariant::Point:
         case QVariant::PointF:
@@ -4079,4 +4079,4 @@ int QDeclarativeCompiler::indexOfProperty( QDeclarativeParser::Object *object, c
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

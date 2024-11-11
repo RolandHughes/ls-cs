@@ -29,12 +29,12 @@
 
 #include <qsystemsemaphore_p.h>
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
 
 #include <sys/types.h>
 #include <sys/ipc.h>
 
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
 #include <sys/sem.h>
 #endif
 
@@ -49,7 +49,7 @@
 #define EIDRM EINVAL
 #endif
 
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
 QSystemSemaphorePrivate::QSystemSemaphorePrivate()
     : unix_key( -1 ), semaphore( -1 ), createdFile( false ), createdSemaphore( false ),
       error( QSystemSemaphore::NoError )
@@ -107,7 +107,7 @@ void QSystemSemaphorePrivate::setErrorString( const QString &function )
     }
 }
 
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
 
 key_t QSystemSemaphorePrivate::handle( QSystemSemaphore::AccessMode mode )
 {
@@ -179,7 +179,7 @@ key_t QSystemSemaphorePrivate::handle( QSystemSemaphore::AccessMode mode )
     // Created semaphore so initialize its value.
     if ( createdSemaphore && initialValue >= 0 )
     {
-        qt_semun init_op;
+        lscs_semun init_op;
         init_op.val = initialValue;
 
         if ( -1 == semctl( semaphore, 0, SETVAL, init_op ) )
@@ -260,11 +260,11 @@ bool QSystemSemaphorePrivate::handle( QSystemSemaphore::AccessMode mode )
     createdSemaphore = ( oflag & O_EXCL ) != 0;
     return true;
 }
-#endif // QT_POSIX_IPC
+#endif // LSCS_POSIX_IPC
 
 void QSystemSemaphorePrivate::cleanHandle()
 {
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
     unix_key = -1;
 
     // remove the file if we made it
@@ -323,12 +323,12 @@ void QSystemSemaphorePrivate::cleanHandle()
         createdSemaphore = false;
     }
 
-#endif // QT_POSIX_IPC
+#endif // LSCS_POSIX_IPC
 }
 
 bool QSystemSemaphorePrivate::modifySemaphore( int count )
 {
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
 
     if ( -1 == handle() )
     {
@@ -427,9 +427,9 @@ bool QSystemSemaphorePrivate::modifySemaphore( int count )
         }
     }
 
-#endif // QT_POSIX_IPC
+#endif // LSCS_POSIX_IPC
 
     return true;
 }
 
-#endif // QT_NO_SYSTEMSEMAPHORE
+#endif // LSCS_NO_SYSTEMSEMAPHORE

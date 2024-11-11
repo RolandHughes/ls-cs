@@ -57,7 +57,7 @@ static const int uuidVersionIdentifierIndex = 14;
 
 String createCanonicalUUIDString()
 {
-#if PLATFORM(QT) && !defined(QT_NO_QUUID_STRING)
+#if PLATFORM(QT) && !defined(LSCS_NO_QUUID_STRING)
     QUuid uuid = QUuid::createUuid();
     String canonicalUuidStr = uuid.toString().mid( 1, 36 ).toLower(); // remove opening and closing bracket and make it lower.
     ASSERT( canonicalUuidStr[uuidVersionIdentifierIndex] == uuidVersionRequired );

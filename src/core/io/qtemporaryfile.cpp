@@ -23,7 +23,7 @@
 
 #include <qtemporaryfile.h>
 
-#ifndef QT_NO_TEMPORARYFILE
+#ifndef LSCS_NO_TEMPORARYFILE
 
 #include <qcoreapplication.h>
 #include <qplatformdefs.h>
@@ -34,7 +34,7 @@
 #include <qsystemerror_p.h>
 
 #if ! defined(Q_OS_WIN)
-#include <qcore_unix_p.h>       // overrides QT_OPEN
+#include <qcore_unix_p.h>       // overrides LSCS_OPEN
 #include <errno.h>
 #endif
 
@@ -120,7 +120,7 @@ static bool createFileFromTemplate( NativeFileHandle &fHandle, QString &fName,
         }
 
 #else
-        fHandle = QT_OPEN( fName.constData(), QT_OPEN_CREAT | O_EXCL | QT_OPEN_RDWR | QT_OPEN_LARGEFILE,
+        fHandle = LSCS_OPEN( fName.constData(), LSCS_OPEN_CREAT | O_EXCL | LSCS_OPEN_RDWR | LSCS_OPEN_LARGEFILE,
                            static_cast<mode_t>( mode ) );
 
         if ( fHandle != -1 )
@@ -528,4 +528,4 @@ bool QTemporaryFile::open( OpenMode flags )
     return false;
 }
 
-#endif // QT_NO_TEMPORARYFILE
+#endif // LSCS_NO_TEMPORARYFILE

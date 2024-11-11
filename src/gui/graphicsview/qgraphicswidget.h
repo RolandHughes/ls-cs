@@ -38,7 +38,7 @@ class QGraphicsSceneResizeEvent;
 class QStyle;
 class QStyleOption;
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 class QGraphicsWidgetPrivate;
 
@@ -178,14 +178,14 @@ public:
     static void setTabOrder( QGraphicsWidget *first, QGraphicsWidget *second );
     QGraphicsWidget *focusWidget() const;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     int grabShortcut( const QKeySequence &sequence, Qt::ShortcutContext context = Qt::WindowShortcut );
     void releaseShortcut( int id );
     void setShortcutEnabled( int id, bool enabled = true );
     void setShortcutAutoRepeat( int id, bool enabled = true );
 #endif
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     void addAction( QAction *action );
     void addActions( const QList<QAction *> &actions );
     void insertAction( QAction *before, QAction *action );

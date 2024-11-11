@@ -41,7 +41,7 @@ public:
     {
         MIME_DND             = 0x01,
         MIME_CLIP            = 0x02,
-        MIME_QT_CONVERTOR    = 0x04,
+        MIME_LSCS_CONVERTOR    = 0x04,
         MIME_QT3_CONVERTOR   = 0x08,
         MIME_ALL             = MIME_DND | MIME_CLIP
     };
@@ -66,10 +66,10 @@ public:
     virtual int count( QMimeData *mimeData );
 };
 
-void qt_mac_addToGlobalMimeList( QMacInternalPasteboardMime *macMime );
-void qt_mac_removeFromGlobalMimeList( QMacInternalPasteboardMime *macMime );
-void qt_mac_registerDraggedTypes( const QStringList &types );
-const QStringList &qt_mac_enabledDraggedTypes();
+void lscs_mac_addToGlobalMimeList( QMacInternalPasteboardMime *macMime );
+void lscs_mac_removeFromGlobalMimeList( QMacInternalPasteboardMime *macMime );
+void lscs_mac_registerDraggedTypes( const QStringList &types );
+const QStringList &lscs_mac_enabledDraggedTypes();
 
 #endif
 

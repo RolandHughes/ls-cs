@@ -27,7 +27,7 @@
 #include <qglobal.h>
 
 #ifdef Q_OS_WIN
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qstring.h>
 
 class QSystemLibrary

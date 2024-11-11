@@ -26,7 +26,7 @@
 
 #include <QtGui/qwidget.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QAbstractItemModel;
 class QScriptDebuggerStackWidgetInterfacePrivate;
@@ -57,6 +57,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerStackWidgetInterface )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

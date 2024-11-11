@@ -29,7 +29,7 @@
 #include <qsharedpointer.h>
 #include <qpaintdevice.h>
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
 
 class QPicturePrivate;
 
@@ -110,7 +110,7 @@ private:
     friend class QPreviewPaintEngine;
 };
 
-#ifndef QT_NO_PICTUREIO
+#ifndef LSCS_NO_PICTUREIO
 
 class QIODevice;
 class QPictureIO;
@@ -168,11 +168,11 @@ private:
     QPictureIOData *d;
 };
 
-#endif // QT_NO_PICTUREIO
+#endif // LSCS_NO_PICTUREIO
 
 Q_GUI_EXPORT QDataStream &operator<<( QDataStream &stream, const QPicture &picture );
 Q_GUI_EXPORT QDataStream &operator>>( QDataStream &stream, QPicture &picture );
 
-#endif // QT_NO_PICTURE
+#endif // LSCS_NO_PICTURE
 
 #endif

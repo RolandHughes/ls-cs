@@ -29,7 +29,7 @@
 #include <qdnd_p.h>
 #include <qguiapplication_p.h>
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 QDrag::QDrag( QObject *dragSource )
     : QObject( dragSource ), d_ptr( new QDragPrivate )
@@ -241,4 +241,4 @@ Qt::DropAction QDrag::defaultAction() const
 }
 
 
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP

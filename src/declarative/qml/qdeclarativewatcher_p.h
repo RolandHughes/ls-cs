@@ -31,7 +31,7 @@
 #include <QtCore/qset.h>
 #include <QtCore/qpointer.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeWatchProxy;
 class QDeclarativeExpression;
@@ -61,6 +61,6 @@ private:
     QHash<int, QList<QPointer<QDeclarativeWatchProxy> > > m_proxies;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEWATCHER_P_H

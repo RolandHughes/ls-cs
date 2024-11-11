@@ -30,7 +30,7 @@
 #include <QMutex>
 #include <QWaitCondition>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeListModel;
 class FlatListScriptClass;
@@ -150,7 +150,7 @@ private:
     QWaitCondition syncDone;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QDeclarativeListModelWorkerAgent::VariantRef )
 

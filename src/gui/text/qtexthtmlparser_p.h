@@ -34,7 +34,7 @@
 #include <qtextdocument_p.h>
 #include <qcssparser_p.h>
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
 enum QTextHTMLElements
 {
@@ -243,7 +243,7 @@ struct QTextHtmlParserNode
 
     void parseStyleAttribute( const QString &value, const QTextDocument *resourceProvider );
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     void applyCssDeclarations( const QVector<QCss::Declaration> &declarations, const QTextDocument *resourceProvider );
 
     void setListStyle( const QVector<QCss::Value> &cssValues );
@@ -349,7 +349,7 @@ protected:
     bool nodeIsChildOf( int i, QTextHTMLElements id ) const;
 
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     QVector<QCss::Declaration> declarationsForNode( int node ) const;
     void resolveStyleSheetImports( const QCss::StyleSheet &sheet );
     void importStyleSheet( const QString &href );
@@ -370,6 +370,6 @@ protected:
 };
 
 
-#endif // QT_NO_TEXTHTMLPARSER
+#endif // LSCS_NO_TEXTHTMLPARSER
 
 #endif // QTEXTHTMLPARSER_P_H

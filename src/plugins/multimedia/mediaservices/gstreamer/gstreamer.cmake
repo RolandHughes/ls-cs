@@ -75,7 +75,11 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
    add_library(LsCsMultimedia_gst_audiodecoder MODULE "")
    add_library(LsCs::LsCsMultimedia_gst_audiodecoder ALIAS LsCsMultimedia_gst_audiodecoder)
 
-   set_target_properties(LsCsMultimedia_gst_audiodecoder PROPERTIES OUTPUT_NAME LsCsMultimedia_gst_audiodecoder${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsMultimedia_gst_audiodecoder PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    target_sources(LsCsMultimedia_gst_audiodecoder
       PRIVATE
@@ -131,14 +135,18 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
 
    target_compile_definitions(LsCsMultimedia_gst_audiodecoder
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
    # plugin 2
    add_library(LsCsMultimedia_gst_camerabin MODULE "")
    add_library(LsCs::LsCsMultimedia_gst_camerabin ALIAS LsCsMultimedia_gst_camerabin)
 
-   set_target_properties(LsCsMultimedia_gst_camerabin PROPERTIES OUTPUT_NAME LsCsMultimedia_gst_camerabin${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsMultimedia_gst_camerabin PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    target_sources(LsCsMultimedia_gst_camerabin
       PRIVATE
@@ -209,14 +217,18 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
 
    target_compile_definitions(LsCsMultimedia_gst_camerabin
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
    # plugin 3
    add_library(LsCsMultimedia_gst_mediaplayer MODULE "")
    add_library(LsCs::LsCsMultimedia_gst_mediaplayer ALIAS LsCsMultimedia_gst_mediaplayer)
 
-   set_target_properties(LsCsMultimedia_gst_mediaplayer PROPERTIES OUTPUT_NAME LsCsMultimedia_gst_mediaplayer${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsMultimedia_gst_mediaplayer PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    target_sources(LsCsMultimedia_gst_mediaplayer
       PRIVATE
@@ -277,12 +289,24 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
    target_compile_definitions(LsCsMultimedia_gst_mediaplayer
       PRIVATE
       -DIN_TRUE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
-   set_target_properties(LsCsMultimedia_gst_audiodecoder PROPERTIES PREFIX "")
-   set_target_properties(LsCsMultimedia_gst_camerabin    PROPERTIES PREFIX "")
-   set_target_properties(LsCsMultimedia_gst_mediaplayer  PROPERTIES PREFIX "")
+   set_target_properties(LsCsMultimedia_gst_audiodecoder PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
+   set_target_properties(LsCsMultimedia_gst_camerabin    PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
+   set_target_properties(LsCsMultimedia_gst_mediaplayer  PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)
       install(TARGETS LsCsMultimedia_gst_audiodecoder DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/mediaservices)

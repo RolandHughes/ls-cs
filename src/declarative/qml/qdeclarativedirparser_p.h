@@ -27,7 +27,7 @@
 #include <QtCore/QUrl>
 #include <QtCore/QHash>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeError;
 class QDeclarativeDirParser
@@ -83,7 +83,7 @@ public:
     QList<Component> components() const;
     QList<Plugin> plugins() const;
 
-#ifdef QT_CREATOR
+#ifdef LSCS_CREATOR
     struct TypeInfo
     {
         TypeInfo() {}
@@ -106,7 +106,7 @@ private:
     QString _filePathSouce;
     QList<Component> _components;
     QList<Plugin> _plugins;
-#ifdef QT_CREATOR
+#ifdef LSCS_CREATOR
     QList<TypeInfo> _typeInfos;
 #endif
     unsigned _isParsed: 1;
@@ -115,6 +115,6 @@ private:
 typedef QList<QDeclarativeDirParser::Component> QDeclarativeDirComponents;
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEDIRPARSER_P_H

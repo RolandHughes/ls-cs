@@ -40,13 +40,13 @@
 #include <qmacgesturerecognizer_p.h>
 #endif
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 #if ! defined(Q_OS_DARWIN)
 static inline int panTouchPoints()
 {
     // Override by environment variable for testing.
-    static const char panTouchPointVariable[] = "QT_PAN_TOUCHPOINTS";
+    static const char panTouchPointVariable[] = "LSCS_PAN_TOUCHPOINTS";
 
     if ( ! qgetenv( panTouchPointVariable ).isEmpty() )
     {
@@ -226,7 +226,7 @@ QGesture *QGestureManager::getState( QObject *object, QGestureRecognizer *recogn
     {
         return g;
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
     }
     else
     {
@@ -667,7 +667,7 @@ bool QGestureManager::filterEvent( QWidget *receiver, QEvent *event )
     return contexts.isEmpty() ? false : filterEventThroughContexts( contexts, event );
 }
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 bool QGestureManager::filterEvent( QGraphicsObject *receiver, QEvent *event )
 {
     QMap<Qt::GestureType, int> types;
@@ -978,4 +978,4 @@ bool QGestureManager::gesturePending( QObject *o )
     return gm && gm->m_gestureOwners.key( o );
 }
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES

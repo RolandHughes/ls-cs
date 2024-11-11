@@ -28,7 +28,7 @@
 #include <qnetwork_request.h>
 #include <qshareddata.h>
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
 class QNetworkConfiguration;
 class QNetworkProxyPrivate;
@@ -54,7 +54,7 @@ public:
     explicit QNetworkProxyQuery( quint16 bindPort, const QString &protocolTag = QString(),
                                  QueryType queryType = TcpServer );
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     QNetworkProxyQuery( const QNetworkConfiguration &networkConfiguration,
                         const QUrl &requestUrl, QueryType queryType = UrlRequest );
 
@@ -103,7 +103,7 @@ public:
     QUrl url() const;
     void setUrl( const QUrl &url );
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     QNetworkConfiguration networkConfiguration() const;
     void setNetworkConfiguration( const QNetworkConfiguration &networkConfiguration );
 #endif

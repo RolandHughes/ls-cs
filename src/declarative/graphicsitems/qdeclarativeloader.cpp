@@ -27,7 +27,7 @@
 #include <qdeclarativeengine_p.h>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE QDeclarativeLoaderPrivate::QDeclarativeLoaderPrivate()
+LSCS_BEGIN_NAMESPACE QDeclarativeLoaderPrivate::QDeclarativeLoaderPrivate()
     : item( 0 ), component( 0 ), ownComponent( false ), updatingSize( false ),
       itemWidthValid( false ), itemHeightValid( false )
 {
@@ -704,4 +704,4 @@ void QDeclarativeLoader::_q_updateSize()
 }
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

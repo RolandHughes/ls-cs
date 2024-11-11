@@ -27,7 +27,7 @@
 
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
   \class QScriptDebuggerJob
@@ -87,4 +87,4 @@ void QScriptDebuggerJob::evaluateFinished( const QScriptDebuggerValue & )
                 "implement if hibernateUntilEvaluateFinished() is called" );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

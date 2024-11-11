@@ -137,7 +137,7 @@ private:
     struct QRegionData
     {
         QtPrivate::RefCount ref;
-        QRegionPrivate *qt_rgn;
+        QRegionPrivate *lscs_rgn;
 
     };
 
@@ -145,7 +145,7 @@ private:
     static const struct QRegionData shared_empty;
     static void cleanUp( QRegionData *x );
 
-    friend bool qt_region_strictContains( const QRegion &region, const QRect &rect );
+    friend bool lscs_region_strictContains( const QRegion &region, const QRect &rect );
     friend struct QRegionPrivate;
 
 };

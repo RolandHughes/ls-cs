@@ -417,7 +417,7 @@ static inline QString recodeFromUser( const QString &input, const ushort *action
     QString::const_iterator begin = input.begin() + from;
     QString::const_iterator end   = input.begin() + to;
 
-    if ( qt_urlRecode( output, begin, end, Qt::EmptyFlag, actions ) )
+    if ( lscs_urlRecode( output, begin, end, Qt::EmptyFlag, actions ) )
     {
         return output;
     }
@@ -436,7 +436,7 @@ static inline void appendToUser( QString &appendTo, const QString &value, QUrl::
         return;
     }
 
-    if ( ! qt_urlRecode( appendTo, value.constBegin(), value.constEnd(), options, actions ) )
+    if ( ! lscs_urlRecode( appendTo, value.constBegin(), value.constEnd(), options, actions ) )
     {
         appendTo += value;
     }
@@ -506,7 +506,7 @@ inline void QUrlPrivate::appendUserInfo( QString &appendTo, QUrl::FormattingOpti
         }
     }
 
-    if ( ! qt_urlRecode( appendTo, userName.constBegin(), userName.constEnd(), options, userNameActions ) )
+    if ( ! lscs_urlRecode( appendTo, userName.constBegin(), userName.constEnd(), options, userNameActions ) )
     {
         appendTo += userName;
     }
@@ -520,7 +520,7 @@ inline void QUrlPrivate::appendUserInfo( QString &appendTo, QUrl::FormattingOpti
     {
         appendTo += QLatin1Char( ':' );
 
-        if ( ! qt_urlRecode( appendTo, password.constBegin(), password.constEnd(), options, passwordActions ) )
+        if ( ! lscs_urlRecode( appendTo, password.constBegin(), password.constEnd(), options, passwordActions ) )
         {
             appendTo += password;
         }
@@ -871,7 +871,7 @@ inline void QUrlPrivate::appendHost( QString &appendTo, QUrl::FormattingOptions 
         // if it is a reg-name, it is already stored in Unicode form
         if ( options & QUrl::EncodeUnicode && !( options & 0x4000000 ) )
         {
-            appendTo += qt_ACE_do( host, ToAceOnly, AllowLeadingDot );
+            appendTo += lscs_ACE_do( host, ToAceOnly, AllowLeadingDot );
         }
         else
         {
@@ -916,7 +916,7 @@ static QString::const_iterator parseIpFuture( QString &host, QString::const_iter
 
         QString decoded;
 
-        if ( mode == QUrl::TolerantMode && qt_urlRecode( decoded, begin, end, QUrl::FullyDecoded, nullptr ) )
+        if ( mode == QUrl::TolerantMode && lscs_urlRecode( decoded, begin, end, QUrl::FullyDecoded, nullptr ) )
         {
             begin = decoded.constBegin();
             end   = decoded.constEnd();
@@ -973,9 +973,9 @@ static QString::const_iterator parseIp6( QString &host, QString::const_iterator 
         // IPv6 failed parsing, check if it was a percent-encoded character in the middle and try again
         QString decoded;
 
-        if ( mode == QUrl::TolerantMode && qt_urlRecode( decoded, begin, end, Qt::EmptyFlag, decodeColon ) )
+        if ( mode == QUrl::TolerantMode && lscs_urlRecode( decoded, begin, end, Qt::EmptyFlag, decodeColon ) )
         {
-            // recurse if the parsing fails again, the qt_urlRecode above will return end
+            // recurse if the parsing fails again, the lscs_urlRecode above will return end
             return parseIp6( host, decoded.constBegin(), decoded.constEnd(), mode );
         }
 
@@ -1079,14 +1079,14 @@ inline bool QUrlPrivate::setHost( const QString &value, int xfrom, int xend, QUr
     //  Unicode encoding (some non-ASCII characters case-fold to digits
     //                    when nameprepping is done)
     //
-    // The qt_ACE_do function below applies nameprepping and the STD3 check.
+    // The lscs_ACE_do function below applies nameprepping and the STD3 check.
     // That means a Unicode string may become an IPv4 address, but it cannot
     // produce a '[' or a '%'.
 
     // check for percent-encoding first
     QString s;
 
-    if ( mode == QUrl::TolerantMode && qt_urlRecode( s, begin, end, Qt::EmptyFlag, nullptr ) )
+    if ( mode == QUrl::TolerantMode && lscs_urlRecode( s, begin, end, Qt::EmptyFlag, nullptr ) )
     {
         // something was decoded, anything encoded left?
         int pos = s.indexOf( '%' ); // '%'
@@ -1101,7 +1101,7 @@ inline bool QUrlPrivate::setHost( const QString &value, int xfrom, int xend, QUr
         return setHost( s, 0, s.length(), QUrl::StrictMode );
     }
 
-    s = qt_ACE_do( QStringView( begin, end ), NormalizeAce, ForbidLeadingDot );
+    s = lscs_ACE_do( QStringView( begin, end ), NormalizeAce, ForbidLeadingDot );
 
     if ( s.isEmpty() )
     {
@@ -2154,7 +2154,7 @@ QString QUrl::topLevelDomain( FormattingOptions options ) const
 
     if ( options & EncodeUnicode )
     {
-        return qt_ACE_do( tld, ToAceOnly, AllowLeadingDot );
+        return lscs_ACE_do( tld, ToAceOnly, AllowLeadingDot );
     }
 
     return tld;
@@ -2448,23 +2448,23 @@ QByteArray QUrl::toPercentEncoding( const QString &input, const QByteArray &excl
 
 QString QUrl::fromEncodedComponent_helper( const QByteArray &ba )
 {
-    return qt_urlRecodeByteArray( ba );
+    return lscs_urlRecodeByteArray( ba );
 }
 
 QString QUrl::fromAce( const QString &domain )
 {
-    return qt_ACE_do( domain, NormalizeAce, ForbidLeadingDot /*FIXME: make configurable*/ );
+    return lscs_ACE_do( domain, NormalizeAce, ForbidLeadingDot /*FIXME: make configurable*/ );
 }
 
 QString QUrl::fromAce( const QByteArray &domain )
 {
     QString str = QString::fromLatin1( domain );
-    return qt_ACE_do( str, NormalizeAce, ForbidLeadingDot /*FIXME: make configurable*/ );
+    return lscs_ACE_do( str, NormalizeAce, ForbidLeadingDot /*FIXME: make configurable*/ );
 }
 
 QByteArray QUrl::toAce( const QString &domain )
 {
-    QString result = qt_ACE_do( domain, ToAceOnly, ForbidLeadingDot /*FIXME: make configurable*/ );
+    QString result = lscs_ACE_do( domain, ToAceOnly, ForbidLeadingDot /*FIXME: make configurable*/ );
     return result.toLatin1();
 }
 

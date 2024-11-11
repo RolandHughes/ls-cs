@@ -159,7 +159,7 @@ QVariant QMacPasteboardMimeTiff::convertToMime(const QString &mime, QList<QByteA
    image = CGImageSourceCreateImageAtIndex(imageSource, 0, nullptr);
 
    if (image != nullptr) {
-      ret = QVariant(qt_mac_toQImage(image));
+      ret = QVariant(lscs_mac_toQImage(image));
    }
 
    return ret;
@@ -174,7 +174,7 @@ QList<QByteArray> QMacPasteboardMimeTiff::convertFromMime(const QString &mime, Q
    }
 
    QImage img = variant.value<QImage>();
-   QCFType<CGImageRef> cgimage = qt_mac_toCGImage(img);
+   QCFType<CGImageRef> cgimage = lscs_mac_toCGImage(img);
 
    QCFType<CFMutableDataRef> data = CFDataCreateMutable(nullptr, 0);
    QCFType<CGImageDestinationRef> imageDestination = CGImageDestinationCreateWithData(data, kUTTypeTIFF, 1, nullptr);

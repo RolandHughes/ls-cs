@@ -34,7 +34,7 @@
 
 #include <qabstractitemview_p.h>
 
-#ifndef QT_NO_TABLEVIEW
+#ifndef LSCS_NO_TABLEVIEW
 
 class QSpanCollection
 {
@@ -122,7 +122,7 @@ public:
     {
         wrapItemText = true;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
         overwrite = true;
 #endif
 
@@ -272,6 +272,6 @@ public:
     void _q_updateSpanRemovedColumns( const QModelIndex &parent, int start, int end );
 };
 
-#endif // QT_NO_TABLEVIEW
+#endif // LSCS_NO_TABLEVIEW
 
 #endif // QTABLEVIEW_P_H

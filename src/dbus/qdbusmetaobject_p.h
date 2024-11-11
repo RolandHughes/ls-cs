@@ -39,7 +39,7 @@
 #include <QtCore/qmetaobject.h>
 #include <qdbusmacros.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusError;
 
@@ -71,6 +71,6 @@ private:
     QDBusMetaObject();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

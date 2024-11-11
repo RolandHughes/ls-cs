@@ -31,13 +31,13 @@
 #include <qnoncontiguousbytedevice_p.h>
 #include <qspdyprotocolhandler_p.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 #include <qsslcipher.h>
 #include <qsslconfiguration.h>
 #include <qsslkey.h>
 #endif
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 #include <qnetworksession_p.h>
 #endif
 
@@ -52,7 +52,7 @@ QHttpNetworkConnectionChannel::QHttpNetworkConnectionChannel()
       proxyAuthMethod( QAuthenticatorPrivate::None ), authenticationCredentialsSent( false ),
       proxyCredentialsSent( false ), protocolHandler( nullptr ),
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
       ignoreAllSslErrors( false ),
 #endif
 
@@ -64,7 +64,7 @@ QHttpNetworkConnectionChannel::QHttpNetworkConnectionChannel()
 
 void QHttpNetworkConnectionChannel::init()
 {
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
     if ( connection->d_func()->encrypt )
     {
@@ -79,7 +79,7 @@ void QHttpNetworkConnectionChannel::init()
     socket = new QTcpSocket;
 #endif
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
     //push session down to socket
     if ( networkSession )
@@ -89,7 +89,7 @@ void QHttpNetworkConnectionChannel::init()
 
 #endif
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     // Set by QNAM anyway, but let's be safe here
     socket->setProxy( QNetworkProxy::NoProxy );
 #endif
@@ -113,13 +113,13 @@ void QHttpNetworkConnectionChannel::init()
                       Qt::QueuedConnection );
     QObject::connect( socket, &QTcpSocket::error,        this, &QHttpNetworkConnectionChannel::_q_error, Qt::QueuedConnection );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QObject::connect( socket, &QTcpSocket::proxyAuthenticationRequired, this,
                       &QHttpNetworkConnectionChannel::_q_proxyAuthenticationRequired,
                       Qt::DirectConnection );
 #endif
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     QSslSocket *sslSocket = dynamic_cast<QSslSocket *>( socket );
 
     if ( sslSocket )
@@ -154,12 +154,12 @@ void QHttpNetworkConnectionChannel::init()
 #endif
 
         protocolHandler.reset( new QHttpProtocolHandler( this ) );
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     }
 
 #endif
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
     if ( proxy.type() != QNetworkProxy::NoProxy )
     {
@@ -340,7 +340,7 @@ bool QHttpNetworkConnectionChannel::ensureConnection()
         QString connectHost = connection->d_func()->hostName;
         quint16 connectPort = connection->d_func()->port;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
         // HTTPS always use transparent proxy.
         if ( connection->d_func()->networkProxy.type() != QNetworkProxy::NoProxy && !ssl )
@@ -376,7 +376,7 @@ bool QHttpNetworkConnectionChannel::ensureConnection()
 
         if ( ssl )
         {
-#ifdef QT_SSL
+#ifdef LSCS_SSL
             QSslSocket *sslSocket = dynamic_cast<QSslSocket *>( socket );
 
             if ( !connection->sslContext().isNull() )
@@ -411,7 +411,7 @@ bool QHttpNetworkConnectionChannel::ensureConnection()
         else
         {
             // In case of no proxy we can use the Unbuffered QTcpSocket
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
             if ( connection->d_func()->networkProxy.type() == QNetworkProxy::NoProxy
                     && connection->cacheProxy().type() == QNetworkProxy::NoProxy
                     && connection->transparentProxy().type() == QNetworkProxy::NoProxy )
@@ -421,7 +421,7 @@ bool QHttpNetworkConnectionChannel::ensureConnection()
                 // For an Unbuffered QTcpSocket, the read buffer size has a special meaning.
                 socket->setReadBufferSize( 1 * 1024 );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
             }
             else
             {
@@ -723,7 +723,7 @@ bool QHttpNetworkConnectionChannel::resetUploadData()
     }
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
 void QHttpNetworkConnectionChannel::setProxy( const QNetworkProxy &networkProxy )
 {
@@ -736,7 +736,7 @@ void QHttpNetworkConnectionChannel::setProxy( const QNetworkProxy &networkProxy 
 }
 #endif
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 void QHttpNetworkConnectionChannel::ignoreSslErrors()
 {
     if ( socket )
@@ -780,7 +780,7 @@ void QHttpNetworkConnectionChannel::pipelineInto( HttpMessagePair &pair )
     reply->d_func()->autoDecompress = request.d->autoDecompress;
     reply->d_func()->pipeliningUsed = true;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     pipeline.append( QHttpNetworkRequestPrivate::header( request,
                      ( connection->d_func()->networkProxy.type() != QNetworkProxy::NoProxy ) ) );
 #else
@@ -978,7 +978,7 @@ void QHttpNetworkConnectionChannel::_q_connected()
     {
         // FIXME: Didn't work properly with pendingEncrypt only, we should refactor this into an EncrypingState
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
         if ( connection->sslContext().isNull() )
         {
             // this socket is making the 1st handshake for this connection,
@@ -1183,7 +1183,7 @@ void QHttpNetworkConnectionChannel::_q_error( QAbstractSocket::SocketError socke
     while ( !connection->d_func()->highPriorityQueue.isEmpty()
             || !connection->d_func()->lowPriorityQueue.isEmpty() );
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
     if ( connection->connectionType() == QHttpNetworkConnection::ConnectionTypeSPDY )
     {
@@ -1221,11 +1221,11 @@ void QHttpNetworkConnectionChannel::_q_error( QAbstractSocket::SocketError socke
     }
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 void QHttpNetworkConnectionChannel::_q_proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth )
 {
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
     if ( connection->connectionType() == QHttpNetworkConnection::ConnectionTypeSPDY )
     {
@@ -1246,7 +1246,7 @@ void QHttpNetworkConnectionChannel::_q_proxyAuthenticationRequired( const QNetwo
             connection->d_func()->emitProxyAuthenticationRequired( this, proxy, auth );
         }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     }
 
 #endif
@@ -1261,7 +1261,7 @@ void QHttpNetworkConnectionChannel::_q_uploadDataReadyRead()
     }
 }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 void QHttpNetworkConnectionChannel::_q_encrypted()
 {
     QSslSocket *sslSocket = dynamic_cast<QSslSocket *>( socket );
@@ -1400,7 +1400,7 @@ void QHttpNetworkConnectionChannel::_q_sslErrors( const QList<QSslError> &errors
         }
     }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     else
     {
         // SPDY

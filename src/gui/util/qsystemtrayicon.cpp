@@ -23,7 +23,7 @@
 
 #include <qsystemtrayicon.h>
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
 
 #include <qapplication.h>
 #include <qbitmap.h>
@@ -60,7 +60,7 @@ QSystemTrayIcon::~QSystemTrayIcon()
     d->remove_sys();
 }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 void QSystemTrayIcon::setContextMenu( QMenu *menu )
 {
     Q_D( QSystemTrayIcon );
@@ -600,4 +600,4 @@ void QSystemTrayIcon::_q_emitActivated( QPlatformSystemTrayIcon::ActivationReaso
     d->_q_emitActivated( data );
 }
 
-#endif // QT_NO_SYSTEMTRAYICON
+#endif // LSCS_NO_SYSTEMTRAYICON

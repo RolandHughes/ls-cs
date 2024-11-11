@@ -30,9 +30,9 @@
 #include <qabstractitemview.h>
 #include <qheaderview.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 class QAccessibleTableCell;
 class QAccessibleTableHeaderCell;
@@ -320,6 +320,6 @@ private:
 
 #endif
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
 #endif

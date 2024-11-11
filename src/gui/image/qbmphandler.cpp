@@ -23,7 +23,7 @@
 
 #include <qbmphandler_p.h>
 
-#ifndef QT_NO_IMAGEFORMAT_BMP
+#ifndef LSCS_NO_IMAGEFORMAT_BMP
 
 #include <qimage.h>
 #include <qvariant.h>
@@ -791,7 +791,7 @@ static bool read_dib_body( QDataStream &s, const BMP_INFOHDR &bi, int offset, in
 }
 
 // this is also used in qmime_win.cpp
-bool qt_write_dib( QDataStream &s, QImage image )
+bool lscs_write_dib( QDataStream &s, QImage image )
 {
     int nbits;
     int bpl_bmp;
@@ -940,7 +940,7 @@ bool qt_write_dib( QDataStream &s, QImage image )
 }
 
 // this is also used in qmime_win.cpp
-bool qt_read_dib( QDataStream &s, QImage &image )
+bool lscs_read_dib( QDataStream &s, QImage &image )
 {
     BMP_INFOHDR bi;
 
@@ -1069,7 +1069,7 @@ bool QBmpHandler::write( const QImage &img )
     {
         QDataStream dibStream( device() );
         dibStream.setByteOrder( QDataStream::LittleEndian ); // Intel byte order
-        return qt_write_dib( dibStream, img );
+        return lscs_write_dib( dibStream, img );
     }
 
     QImage image;
@@ -1109,7 +1109,7 @@ bool QBmpHandler::write( const QImage &img )
     int bpl_bmp;
     int bpl = image.bytesPerLine();
 
-    // Code partially repeated in qt_write_dib
+    // Code partially repeated in lscs_write_dib
     if ( image.depth() == 8 && image.colorCount() <= 16 )
     {
         bpl_bmp = ( ( ( bpl + 1 ) / 2 + 3 ) / 4 ) * 4;
@@ -1137,7 +1137,7 @@ bool QBmpHandler::write( const QImage &img )
     s << bf;
 
     // write image
-    return qt_write_dib( s, image );
+    return lscs_write_dib( s, image );
 }
 
 bool QBmpHandler::supportsOption( ImageOption option ) const
@@ -1210,4 +1210,4 @@ QString QBmpHandler::name() const
     return formatName();
 }
 
-#endif // QT_NO_IMAGEFORMAT_BMP
+#endif // LSCS_NO_IMAGEFORMAT_BMP

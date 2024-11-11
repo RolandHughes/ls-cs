@@ -30,7 +30,7 @@
 
 #include <qanimationgroup_p.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QParallelAnimationGroupPrivate : public QAnimationGroupPrivate
 {
@@ -57,6 +57,6 @@ public:
     int lastCurrentTime;
 };
 
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION
 
 #endif

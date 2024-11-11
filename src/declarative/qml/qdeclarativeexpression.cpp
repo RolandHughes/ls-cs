@@ -35,7 +35,7 @@
 
 #include <private/qscriptdeclarativeclass_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 bool QDeclarativeDelayedError::addError( QDeclarativeEnginePrivate *e )
 {
@@ -1020,4 +1020,4 @@ void QDeclarativeExpression_q_notify()
 }
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

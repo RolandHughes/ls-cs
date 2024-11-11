@@ -23,7 +23,7 @@
 
 #include <qaccessiblebridge.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 QAccessibleBridgePlugin::QAccessibleBridgePlugin( QObject *parent )
     : QObject( parent )

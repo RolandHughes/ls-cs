@@ -26,7 +26,7 @@
 
 #include <QGraphicsEffect>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class ShaderEffectSource;
 
@@ -54,6 +54,6 @@ private:
 
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // SHADEREFFECT_H

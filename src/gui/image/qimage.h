@@ -101,7 +101,7 @@ public:
 
     explicit QImage( const QString &fileName, const QString &format = QString() );
 
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
     explicit QImage( const char *const xpm[] );
 #endif
 
@@ -228,7 +228,7 @@ public:
     QImage alphaChannel() const;
     QImage createAlphaMask( Qt::ImageConversionFlags flags = Qt::AutoColor ) const;
 
-#ifndef QT_NO_IMAGE_HEURISTIC_MASK
+#ifndef LSCS_NO_IMAGE_HEURISTIC_MASK
     QImage createHeuristicMask( bool clipTight = true ) const;
 #endif
 

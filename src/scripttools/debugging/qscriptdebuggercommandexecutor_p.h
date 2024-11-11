@@ -27,7 +27,7 @@
 #include <QtCore/qobjectdefs.h>
 #include <QtCore/qscopedpointer.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerBackend;
 class QScriptDebuggerCommand;
@@ -53,6 +53,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerCommandExecutor )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

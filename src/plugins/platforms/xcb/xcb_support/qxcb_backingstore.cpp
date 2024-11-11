@@ -226,7 +226,7 @@ QXcbShmImage::QXcbShmImage( QXcbScreen *screen, const QSize &size, uint depth, Q
 
     if ( ! m_hasAlpha )
     {
-        format = qt_maybeAlphaVersionWithSameDepth( format );
+        format = lscs_maybeAlphaVersionWithSameDepth( format );
     }
 
     m_qimage = QImage( ( uchar * ) m_xcb_image->data, m_xcb_image->width, m_xcb_image->height, m_xcb_image->stride, format );
@@ -442,7 +442,7 @@ void QXcbBackingStore::endPaint()
     }
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 QImage QXcbBackingStore::toImage() const
 {
     return m_image && m_image->image() ? *m_image->image() : QImage();
@@ -504,7 +504,7 @@ void QXcbBackingStore::flush( QWindow *window, const QRegion &region, const QPoi
     }
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 void QXcbBackingStore::composeAndFlush( QWindow *window, const QRegion &region, const QPoint &offset,
                                         QPlatformTextureList *textures, QOpenGLContext *context,
                                         bool translucentBackground )
@@ -524,7 +524,7 @@ void QXcbBackingStore::composeAndFlush( QWindow *window, const QRegion &region, 
         xcb_flush( xcb_connection() );
     }
 }
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 void QXcbBackingStore::resize( const QSize &size, const QRegion & )
 {
@@ -569,7 +569,7 @@ void QXcbBackingStore::resize( const QSize &size, const QRegion & )
     Q_XCB_NOOP( connection() );
 }
 
-extern void qt_scrollRectInImage( QImage &img, const QRect &rect, const QPoint &offset );
+extern void lscs_scrollRectInImage( QImage &img, const QRect &rect, const QPoint &offset );
 
 bool QXcbBackingStore::scroll( const QRegion &area, int dx, int dy )
 {
@@ -585,7 +585,7 @@ bool QXcbBackingStore::scroll( const QRegion &area, int dx, int dy )
 
     for ( int i = 0; i < rects.size(); ++i )
     {
-        qt_scrollRectInImage( *m_image->image(), rects.at( i ), delta );
+        lscs_scrollRectInImage( *m_image->image(), rects.at( i ), delta );
     }
 
     return true;

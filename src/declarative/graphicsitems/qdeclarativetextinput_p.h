@@ -29,9 +29,9 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QIntValidator>
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeTextInputPrivate;
 class QValidator;
@@ -87,7 +87,7 @@ class QDeclarativeTextInput : public QDeclarativeImplicitSizePaintedItem
     DECL_LSCS_PROPERTY_READ( maximumLength, maxLength )
     DECL_LSCS_PROPERTY_WRITE( maximumLength, setMaxLength )
     DECL_LSCS_PROPERTY_NOTIFY( maximumLength, maximumLengthChanged )
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
     DECL_LSCS_PROPERTY_READ( validator, validator )
     DECL_LSCS_PROPERTY_WRITE( validator, setValidator )
     DECL_LSCS_PROPERTY_NOTIFY( validator, validatorChanged )
@@ -222,7 +222,7 @@ public:
     int maxLength() const;
     void setMaxLength( int ml );
 
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
     QValidator *validator() const;
     void setValidator( QValidator *v );
 #endif
@@ -347,7 +347,7 @@ public :
     DECL_LSCS_SLOT_2( isRightToLeft )
     LSCS_REVISION( isRightToLeft, 1 )
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     DECL_LSCS_SLOT_1( Public, void cut() )
     DECL_LSCS_SLOT_2( cut )
     DECL_LSCS_SLOT_1( Public, void copy() )
@@ -391,16 +391,16 @@ private:
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeTextInput )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeTextInput )
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
 QML_DECLARE_TYPE( QValidator )
 QML_DECLARE_TYPE( QIntValidator )
 QML_DECLARE_TYPE( QDoubleValidator )
 QML_DECLARE_TYPE( QRegExpValidator )
 #endif
 
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT
 
 #endif // QDECLARATIVETEXTINPUT_H

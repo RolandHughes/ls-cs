@@ -39,7 +39,7 @@ static void initScriptEngineDebuggerResources()
     Q_INIT_RESOURCE( scripttools_debugging );
 }
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QtScriptDebuggerResourceInitializer
 {
@@ -233,7 +233,7 @@ public:
 
     QScriptDebugger *debugger;
     QScriptEngineDebuggerFrontend *frontend;
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
     QMainWindow *standardWindow;
 #endif
     bool autoShow;
@@ -286,7 +286,7 @@ QScriptEngineDebuggerPrivate::QScriptEngineDebuggerPrivate()
 {
     debugger = 0;
     frontend = 0;
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
     standardWindow = 0;
 #endif
     autoShow = true;
@@ -296,7 +296,7 @@ QScriptEngineDebuggerPrivate::~QScriptEngineDebuggerPrivate()
 {
     delete debugger;
     delete frontend;
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
 
     if ( standardWindow )
     {
@@ -315,7 +315,7 @@ QScriptEngineDebuggerPrivate::~QScriptEngineDebuggerPrivate()
 #endif
 }
 
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
 void QScriptEngineDebuggerPrivate::_q_showStandardWindow()
 {
     Q_Q( QScriptEngineDebugger );
@@ -525,7 +525,7 @@ void QScriptEngineDebugger::setAutoShowStandardWindow( bool autoShow )
 
   \sa createStandardMenu(), createStandardToolBar()
 */
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
 QMainWindow *QScriptEngineDebugger::standardWindow() const
 {
     Q_D( const QScriptEngineDebugger );
@@ -590,7 +590,7 @@ QMainWindow *QScriptEngineDebugger::standardWindow() const
 
     win->addToolBar( Qt::TopToolBarArea, that->createStandardToolBar() );
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     win->menuBar()->addMenu( that->createStandardMenu( win ) );
 
     QMenu *editMenu = win->menuBar()->addMenu( tr( "Search" ) );
@@ -642,7 +642,7 @@ QMainWindow *QScriptEngineDebugger::standardWindow() const
     const_cast<QScriptEngineDebuggerPrivate *>( d )->standardWindow = win;
     return win;
 }
-#endif // QT_NO_MAINWINDOW
+#endif // LSCS_NO_MAINWINDOW
 
 QMenu *QScriptEngineDebugger::createStandardMenu( QWidget *parent )
 {
@@ -651,7 +651,7 @@ QMenu *QScriptEngineDebugger::createStandardMenu( QWidget *parent )
     return d->debugger->createStandardMenu( parent, this );
 }
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 QToolBar *QScriptEngineDebugger::createStandardToolBar( QWidget *parent )
 {
     Q_D( QScriptEngineDebugger );
@@ -666,4 +666,4 @@ void QScriptEngineDebugger::_q_showStandardWindow()
     d->_q_showStandardWindow();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

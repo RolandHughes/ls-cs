@@ -26,7 +26,7 @@
 
 #include <qpaintengine_raster_p.h>
 
-#ifndef QT_NO_BLITTABLE
+#ifndef LSCS_NO_BLITTABLE
 
 
 class QBlitterPaintEnginePrivate;
@@ -94,6 +94,6 @@ public:
 };
 
 
-#endif // QT_NO_BLITTABLE
+#endif // LSCS_NO_BLITTABLE
 #endif // QPAINTENGINE_BLITTER_P_H
 

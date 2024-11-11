@@ -33,6 +33,7 @@ list(APPEND CORE_PUBLIC_INCLUDES
 )
 
 list(APPEND CORE_INCLUDES
+   ${CMAKE_CURRENT_SOURCE_DIR}/io/lscsioutils.h
    ${CMAKE_CURRENT_SOURCE_DIR}/io/qabstractfileengine.h
    ${CMAKE_CURRENT_SOURCE_DIR}/io/qabstractfileenginehandler.h
    ${CMAKE_CURRENT_SOURCE_DIR}/io/qabstractfileengineiterator.h
@@ -106,6 +107,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
 
 target_sources(LsCsCore
    PRIVATE
+   ${CMAKE_CURRENT_SOURCE_DIR}/io/lscsioutils.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/io/qabstractfileengine.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/io/qbuffer.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/io/qdatastream.cpp

@@ -27,9 +27,9 @@
 #include <qsharedmemory.h>
 #include <qstringparser.h>
 
-#ifdef QT_NO_SHAREDMEMORY
+#ifdef LSCS_NO_SHAREDMEMORY
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
 
 namespace QSharedMemoryPrivate
 {
@@ -46,12 +46,12 @@ QString makePlatformSafeKey( const QString &key, const QString &prefix = QString
 #include <qsystemsemaphore.h>
 
 #ifdef Q_OS_WIN
-#  include <qt_windows.h>
+#  include <lscs_windows.h>
 #else
 #  include <sys/types.h>
 #endif
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
 
 class QSharedMemoryLocker
 {
@@ -83,7 +83,7 @@ public:
 private:
     QSharedMemory *q_sm;
 };
-#endif // QT_NO_SYSTEMSEMAPHORE
+#endif // LSCS_NO_SYSTEMSEMAPHORE
 
 class QSharedMemoryPrivate
 {
@@ -100,7 +100,7 @@ public:
     QSharedMemory::SharedMemoryError error;
     QString errorString;
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
     QSystemSemaphore systemSemaphore;
     bool lockedByMe;
 #endif
@@ -110,7 +110,7 @@ public:
 
 #ifdef Q_OS_WIN
     HANDLE handle();
-#elif defined(QT_POSIX_IPC)
+#elif defined(LSCS_POSIX_IPC)
     int handle();
 #else
     key_t handle();
@@ -124,7 +124,7 @@ public:
 
     void setErrorString( const QString &function );
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
     bool tryLocker( QSharedMemoryLocker *locker, const QString &function )
     {
 
@@ -145,7 +145,7 @@ protected:
 private:
 #ifdef Q_OS_WIN
     HANDLE hand;
-#elif defined(QT_POSIX_IPC)
+#elif defined(LSCS_POSIX_IPC)
     int hand;
 #else
     key_t unix_key;
@@ -153,6 +153,6 @@ private:
 
 };
 
-#endif // QT_NO_SHAREDMEMORY
+#endif // LSCS_NO_SHAREDMEMORY
 
 #endif

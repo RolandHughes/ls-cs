@@ -33,7 +33,7 @@
 #include <qopengl_paintengine_p.h>
 #include <qopenglcontext_p.h>
 
-// for qt_defaultDpiX/Y
+// for lscs_defaultDpiX/Y
 #include <qfont_p.h>
 
 QOpenGLPaintDevice::QOpenGLPaintDevice()
@@ -62,8 +62,8 @@ QOpenGLPaintDevice::~QOpenGLPaintDevice()
 }
 
 QOpenGLPaintDevicePrivate::QOpenGLPaintDevicePrivate( const QSize &sz )
-    : size( sz ), ctx( QOpenGLContext::currentContext() ), dpmx( qt_defaultDpiX() * 100. / 2.54 ),
-      dpmy( qt_defaultDpiY() * 100. / 2.54 ), devicePixelRatio( 1.0 ), flipped( false ), engine( nullptr )
+    : size( sz ), ctx( QOpenGLContext::currentContext() ), dpmx( lscs_defaultDpiX() * 100. / 2.54 ),
+      dpmy( lscs_defaultDpiY() * 100. / 2.54 ), devicePixelRatio( 1.0 ), flipped( false ), engine( nullptr )
 {
 }
 
@@ -90,7 +90,7 @@ private:
     QThreadStorage<QPaintEngine *> storage;
 };
 
-static QOpenGLEngineThreadStorage *qt_opengl_engine()
+static QOpenGLEngineThreadStorage *lscs_opengl_engine()
 {
     static QOpenGLEngineThreadStorage retval;
     return &retval;
@@ -103,7 +103,7 @@ QPaintEngine *QOpenGLPaintDevice::paintEngine() const
         return d_ptr->engine;
     }
 
-    QPaintEngine *engine = qt_opengl_engine()->engine();
+    QPaintEngine *engine = lscs_opengl_engine()->engine();
 
     if ( engine->isActive() && engine->paintDevice() != this )
     {

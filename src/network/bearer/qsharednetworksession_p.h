@@ -31,7 +31,7 @@
 #include <qsharedpointer.h>
 #include <qweakpointer.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 uint qHash( const QNetworkConfiguration &config );
 
@@ -45,7 +45,7 @@ private:
     QHash<QNetworkConfiguration, QWeakPointer<QNetworkSession> > sessions;
 };
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 #endif
 

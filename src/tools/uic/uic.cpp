@@ -33,12 +33,12 @@
 #include <ui4.h>
 #include <validator.h>
 
-#ifdef QT_UIC_CPP_GENERATOR
+#ifdef LSCS_UIC_CPP_GENERATOR
 #include <write_declaration.h>
 #include <write_includes.h>
 #endif
 
-#ifdef QT_UIC_JAVA_GENERATOR
+#ifdef LSCS_UIC_JAVA_GENERATOR
 #include <javawritedeclaration.h>
 #include <javawriteincludes.h>
 #endif
@@ -217,7 +217,7 @@ bool Uic::write( QIODevice *in )
     if ( option().generator == Option::JavaGenerator )
     {
 
-#ifdef QT_UIC_JAVA_GENERATOR
+#ifdef LSCS_UIC_JAVA_GENERATOR
 
         if ( language.toLower() != "jambi" )
         {
@@ -234,7 +234,7 @@ bool Uic::write( QIODevice *in )
     else
     {
 
-#ifdef QT_UIC_CPP_GENERATOR
+#ifdef LSCS_UIC_CPP_GENERATOR
 
         if ( ! language.isEmpty() && language.toLower() != "c++" )
         {
@@ -253,7 +253,7 @@ bool Uic::write( QIODevice *in )
     return rtn;
 }
 
-#ifdef QT_UIC_CPP_GENERATOR
+#ifdef LSCS_UIC_CPP_GENERATOR
 bool Uic::write( DomUI *ui )
 {
     using namespace CPP;
@@ -300,7 +300,7 @@ bool Uic::write( DomUI *ui )
 }
 #endif
 
-#ifdef QT_UIC_JAVA_GENERATOR
+#ifdef LSCS_UIC_JAVA_GENERATOR
 bool Uic::jwrite( DomUI *ui )
 {
     using namespace Java;
@@ -335,7 +335,7 @@ bool Uic::jwrite( DomUI *ui )
 }
 #endif
 
-#ifdef QT_UIC_CPP_GENERATOR
+#ifdef LSCS_UIC_CPP_GENERATOR
 
 void Uic::writeHeaderProtectionStart()
 {

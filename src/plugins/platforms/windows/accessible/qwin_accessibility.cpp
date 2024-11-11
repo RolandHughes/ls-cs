@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 #include <qwin_accessibility.h>
 
@@ -116,7 +116,7 @@ void QWindowsAccessibility::notifyAccessibilityUpdate( QAccessibleEvent *event )
     if ( ! soundName.isEmpty() )
     {
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
         QSettings settings( "HKEY_CURRENT_USER\\AppEvents\\Schemes\\Apps\\.Default\\" + soundName, QSettings::NativeFormat );
         QString file = settings.value( ".Current/." ).toString();
 #else
@@ -270,4 +270,4 @@ bool QWindowsAccessibility::handleAccessibleObjectFromWindowRequest( HWND hwnd, 
     return false;
 }
 
-#endif //QT_NO_ACCESSIBILITY
+#endif //LSCS_NO_ACCESSIBILITY

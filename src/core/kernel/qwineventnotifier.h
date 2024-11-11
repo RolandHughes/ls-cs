@@ -25,7 +25,7 @@
 #define QWINEVENTNOTIFIER_H
 
 #include <qobject.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #ifdef Q_OS_WIN
 

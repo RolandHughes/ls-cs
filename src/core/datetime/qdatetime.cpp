@@ -35,7 +35,7 @@
 #include <qtimezone_p.h>
 
 #ifdef Q_OS_WIN
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #else
 #include <locale.h>
 #endif
@@ -122,16 +122,16 @@ static ParsedDate getDateFromJulianDay( qint64 julianDay )
     return result;
 }
 
-static const QString qt_shortMonthNames[] =
+static const QString lscs_shortMonthNames[] =
 {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
 
-static int qt_monthNumberFromShortName( QStringView shortName )
+static int lscs_monthNumberFromShortName( QStringView shortName )
 {
-    for ( unsigned int i = 0; i < sizeof( qt_shortMonthNames ) / sizeof( qt_shortMonthNames[0] ); ++i )
+    for ( unsigned int i = 0; i < sizeof( lscs_shortMonthNames ) / sizeof( lscs_shortMonthNames[0] ); ++i )
     {
-        if ( shortName == qt_shortMonthNames[i] )
+        if ( shortName == lscs_shortMonthNames[i] )
         {
             return i + 1;
         }
@@ -143,7 +143,7 @@ static int qt_monthNumberFromShortName( QStringView shortName )
 static int fromShortMonthName( QStringView monthName )
 {
     // Assume English monthnames are the default
-    int month = qt_monthNumberFromShortName( monthName );
+    int month = lscs_monthNumberFromShortName( monthName );
 
     if ( month != -1 )
     {
@@ -182,7 +182,7 @@ static ParsedRfcDateTime rfcDateImpl( const QString &s )
     if ( match.hasMatch() && match.capturedStart() == s.begin() )
     {
         const QStringList cap = match.capturedTexts();
-        result.date = QDate( cap[3].toInteger<int>(), qt_monthNumberFromShortName( cap[2] ), cap[1].toInteger<int>() );
+        result.date = QDate( cap[3].toInteger<int>(), lscs_monthNumberFromShortName( cap[2] ), cap[1].toInteger<int>() );
 
         if ( ! cap[4].isEmpty() )
         {
@@ -207,7 +207,7 @@ static ParsedRfcDateTime rfcDateImpl( const QString &s )
         {
             const QStringList cap = match.capturedTexts();
 
-            result.date = QDate( cap[6].toInteger<int>(), qt_monthNumberFromShortName( cap[1] ), cap[2].toInteger<int>() );
+            result.date = QDate( cap[6].toInteger<int>(), lscs_monthNumberFromShortName( cap[1] ), cap[2].toInteger<int>() );
 
             if ( ! cap[3].isEmpty() )
             {
@@ -1268,7 +1268,7 @@ int QTime::elapsed() const
     return n;
 }
 
-static void qt_tzset()
+static void lscs_tzset()
 {
 #if defined(Q_OS_WIN)
     _tzset();
@@ -1280,7 +1280,7 @@ static void qt_tzset()
 
 // Returns the platform timezone which is the standard time offset
 // Relies on tzset, mktime, or localtime having been called to populate timezone
-static int qt_timezone()
+static int lscs_timezone()
 {
 #if defined(Q_CC_MSVC)
     long offset;
@@ -1302,7 +1302,7 @@ static int qt_timezone()
 }
 
 // Returns the tzname, assume tzset has been called already
-static QString qt_tzname( QDateTimePrivate::DaylightStatus daylightStatus )
+static QString lscs_tzname( QDateTimePrivate::DaylightStatus daylightStatus )
 {
     int isDst = ( daylightStatus == QDateTimePrivate::DaylightTime ) ? 1 : 0;
 
@@ -1331,7 +1331,7 @@ static QString qt_tzname( QDateTimePrivate::DaylightStatus daylightStatus )
 // then null date/time will be returned and you should adjust the date first if
 // you need a guaranteed result.
 
-static qint64 qt_mktime( QDate *date, QTime *time, QDateTimePrivate::DaylightStatus *daylightStatus,
+static qint64 lscs_mktime( QDate *date, QTime *time, QDateTimePrivate::DaylightStatus *daylightStatus,
                          QString *abbreviation, bool *ok = nullptr )
 {
     const qint64 msec = time->msec();
@@ -1399,7 +1399,7 @@ static qint64 qt_mktime( QDate *date, QTime *time, QDateTimePrivate::DaylightSta
 
             if ( abbreviation != nullptr )
             {
-                *abbreviation = qt_tzname( QDateTimePrivate::DaylightTime );
+                *abbreviation = lscs_tzname( QDateTimePrivate::DaylightTime );
             }
 
         }
@@ -1412,7 +1412,7 @@ static qint64 qt_mktime( QDate *date, QTime *time, QDateTimePrivate::DaylightSta
 
             if ( abbreviation != nullptr )
             {
-                *abbreviation = qt_tzname( QDateTimePrivate::StandardTime );
+                *abbreviation = lscs_tzname( QDateTimePrivate::StandardTime );
             }
 
         }
@@ -1425,7 +1425,7 @@ static qint64 qt_mktime( QDate *date, QTime *time, QDateTimePrivate::DaylightSta
 
             if ( abbreviation != nullptr )
             {
-                *abbreviation = qt_tzname( QDateTimePrivate::StandardTime );
+                *abbreviation = lscs_tzname( QDateTimePrivate::StandardTime );
             }
         }
 
@@ -1461,7 +1461,7 @@ static qint64 qt_mktime( QDate *date, QTime *time, QDateTimePrivate::DaylightSta
 
 // Calls the platform variant of localtime for the given msecs, and updates
 // the date, time, and DST status with the returned values.
-static bool qt_localtime( qint64 msecsSinceEpoch, QDate *localDate, QTime *localTime,
+static bool lscs_localtime( qint64 msecsSinceEpoch, QDate *localDate, QTime *localTime,
                           QDateTimePrivate::DaylightStatus *daylightStatus )
 {
     const time_t secsSinceEpoch = msecsSinceEpoch / MSECS_PER_SEC;
@@ -1470,10 +1470,10 @@ static bool qt_localtime( qint64 msecsSinceEpoch, QDate *localDate, QTime *local
     tm local;
     bool valid = false;
 
-#if ! defined(QT_NO_THREAD) && defined(_POSIX_THREAD_SAFE_FUNCTIONS)
+#if ! defined(LSCS_NO_THREAD) && defined(_POSIX_THREAD_SAFE_FUNCTIONS)
     // localtime() is required to work as if tzset() was called before it.
     // localtime_r() does not have this requirement, so make an explicit call.
-    qt_tzset();
+    lscs_tzset();
 
     // Use the reentrant version of localtime() where available
     // as is thread-safe and doesn't use a shared static data area
@@ -1595,8 +1595,8 @@ static bool epochMSecsToLocalTime( qint64 msecs, QDate *localDate, QTime *localT
         // any LocalTime before 1970-01-01 will *not* have any Daylight Time applied
         // use the standard offset from UTC to convert to UTC time
 
-        qt_tzset();
-        msecsToTime( msecs - qt_timezone() * MSECS_PER_SEC, localDate, localTime );
+        lscs_tzset();
+        msecsToTime( msecs - lscs_timezone() * MSECS_PER_SEC, localDate, localTime );
 
         if ( daylightStatus )
         {
@@ -1632,7 +1632,7 @@ static bool epochMSecsToLocalTime( qint64 msecs, QDate *localDate, QTime *localT
                 QDate fakeDate( 2037, month, day );
                 qint64 fakeMsecs = QDateTime( fakeDate, utcTime, QTimeZone::utc() ).toMSecsSinceEpoch();
 
-                bool retval = qt_localtime( fakeMsecs, localDate, localTime, daylightStatus );
+                bool retval = lscs_localtime( fakeMsecs, localDate, localTime, daylightStatus );
                 *localDate = localDate->addDays( fakeDate.daysTo( utcDate ) );
 
                 return retval;
@@ -1640,7 +1640,7 @@ static bool epochMSecsToLocalTime( qint64 msecs, QDate *localDate, QTime *localT
         }
 
         // value of msecs fits in the data type time_t
-        return qt_localtime( msecs, localDate, localTime, daylightStatus );
+        return lscs_localtime( msecs, localDate, localTime, daylightStatus );
     }
 }
 
@@ -1666,7 +1666,7 @@ static qint64 localMSecsToEpochMSecs( qint64 localMsecs, QDateTimePrivate::Dayli
         if ( localMsecs >= ( 0 - MSECS_PER_DAY ) )
         {
             bool valid;
-            qint64 utcMsecs = qt_mktime( &dt, &tm, daylightStatus, abbreviation, &valid );
+            qint64 utcMsecs = lscs_mktime( &dt, &tm, daylightStatus, abbreviation, &valid );
 
             if ( valid && utcMsecs >= 0 )
             {
@@ -1688,11 +1688,11 @@ static qint64 localMSecsToEpochMSecs( qint64 localMsecs, QDateTimePrivate::Dayli
         else
         {
             // If we do not call mktime then need to call tzset to get offset
-            qt_tzset();
+            lscs_tzset();
         }
 
         // Time is before 1970-01-01, use standard offset to convert
-        qint64 utcMsecs = localMsecs + qt_timezone() * MSECS_PER_SEC;
+        qint64 utcMsecs = localMsecs + lscs_timezone() * MSECS_PER_SEC;
 
         if ( localDate || localTime )
         {
@@ -1706,7 +1706,7 @@ static qint64 localMSecsToEpochMSecs( qint64 localMsecs, QDateTimePrivate::Dayli
 
         if ( abbreviation != nullptr )
         {
-            *abbreviation = qt_tzname( QDateTimePrivate::StandardTime );
+            *abbreviation = lscs_tzname( QDateTimePrivate::StandardTime );
         }
 
         return utcMsecs;
@@ -1731,7 +1731,7 @@ static qint64 localMSecsToEpochMSecs( qint64 localMsecs, QDateTimePrivate::Dayli
                 if ( localMsecs <= msecsMax + MSECS_PER_DAY )
                 {
                     bool valid;
-                    qint64 utcMsecs = qt_mktime( &dt, &tm, daylightStatus, abbreviation, &valid );
+                    qint64 utcMsecs = lscs_mktime( &dt, &tm, daylightStatus, abbreviation, &valid );
 
                     if ( valid && utcMsecs <= msecsMax )
                     {
@@ -1761,7 +1761,7 @@ static qint64 localMSecsToEpochMSecs( qint64 localMsecs, QDateTimePrivate::Dayli
 
                 QDate fakeDate( 2037, month, day );
                 qint64 fakeDiff = fakeDate.daysTo( dt );
-                qint64 utcMsecs = qt_mktime( &fakeDate, &tm, daylightStatus, abbreviation );
+                qint64 utcMsecs = lscs_mktime( &fakeDate, &tm, daylightStatus, abbreviation );
 
                 if ( localDate )
                 {
@@ -1785,7 +1785,7 @@ static qint64 localMSecsToEpochMSecs( qint64 localMsecs, QDateTimePrivate::Dayli
         }
 
         // inside 1970-2037 suported range
-        qint64 utcMsecs = qt_mktime( &dt, &tm, daylightStatus, abbreviation );
+        qint64 utcMsecs = lscs_mktime( &dt, &tm, daylightStatus, abbreviation );
 
         if ( localDate )
         {

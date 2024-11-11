@@ -26,7 +26,7 @@
 
 #include <qabstractitemview_p.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 #include <qapplication.h>
 #include <qbitarray.h>
@@ -416,6 +416,6 @@ public:
     bool read( QDataStream &in );
 };
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
 #endif // QHEADERVIEW_P_H

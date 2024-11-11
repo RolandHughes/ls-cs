@@ -28,7 +28,7 @@
 #include <qkeysequence.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
 class QShortcutPrivate;
 
@@ -94,7 +94,7 @@ protected:
 
 };
 
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
 
 #endif

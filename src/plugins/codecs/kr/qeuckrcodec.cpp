@@ -52,12 +52,12 @@
 #include "qeuckrcodec.h"
 #include "cp949codetbl.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
-#ifndef QT_NO_TEXTCODEC
-unsigned int qt_Ksc5601ToUnicode( unsigned int code );
+#ifndef LSCS_NO_TEXTCODEC
+unsigned int lscs_Ksc5601ToUnicode( unsigned int code );
 
-unsigned int qt_UnicodeToKsc5601( unsigned int unicode );
+unsigned int lscs_UnicodeToKsc5601( unsigned int unicode );
 
 #define        IsEucChar(c)        (((c) >= 0xa1) && ((c) <= 0xfe))
 #define        IsCP949Char(c)      (((c) >= 0x81) && ((c) <= 0xa0))
@@ -96,7 +96,7 @@ QByteArray QEucKrCodec::convertFromUnicode( const QChar *uc, int len, ConverterS
             // ASCII
             *cursor++ = ch;
         }
-        else if ( ( j = qt_UnicodeToKsc5601( ch ) ) )
+        else if ( ( j = lscs_UnicodeToKsc5601( ch ) ) )
         {
             // KSC 5601
             *cursor++ = ( j >> 8 )   | 0x80;
@@ -179,7 +179,7 @@ QString QEucKrCodec::convertToUnicode( const char *chars, int len, ConverterStat
                 // KSC 5601
                 if ( IsEucChar( ch ) )
                 {
-                    uint u = qt_Ksc5601ToUnicode( ( buf[0] << 8 ) |  ch );
+                    uint u = lscs_Ksc5601ToUnicode( ( buf[0] << 8 ) |  ch );
                     result += QValidChar( u );
                 }
                 else
@@ -249,7 +249,7 @@ QByteArray QFontKsc5601Codec::convertFromUnicode( const QChar *uc, int len,  Con
     for ( int i = 0; i < len; i++ )
     {
         QChar ch( *ucp++ );
-        ch = qt_UnicodeToKsc5601( ch.unicode() );
+        ch = lscs_UnicodeToKsc5601( ch.unicode() );
 
         if ( ! ch.isNull() )
         {
@@ -274,19 +274,19 @@ static unsigned short ksc2unicode ( unsigned short code );
 
 static unsigned short unicode2ksc ( unsigned short code );
 
-unsigned int qt_Ksc5601ToUnicode( unsigned int code )
+unsigned int lscs_Ksc5601ToUnicode( unsigned int code )
 {
 #if 0
-    printf( "qt_Ksc5601ToUnicode : code = %x, unicode = %x\n",
+    printf( "lscs_Ksc5601ToUnicode : code = %x, unicode = %x\n",
             code, ksc2unicode( ( unsigned short )code ) );
 #endif
     return ksc2unicode( ( unsigned short )code );
 }
 
-unsigned int qt_UnicodeToKsc5601( unsigned int unicode )
+unsigned int lscs_UnicodeToKsc5601( unsigned int unicode )
 {
 #if 0
-    printf( "qt_UnicodeToKsc5601 : unicode = %x, %x\n",
+    printf( "lscs_UnicodeToKsc5601 : unicode = %x, %x\n",
             unicode, unicode2ksc( ( unsigned short )unicode ) );
 #endif
     return unicode2ksc( ( unsigned short )unicode );
@@ -3498,7 +3498,7 @@ QByteArray QCP949Codec::convertFromUnicode( const QChar *uc, int len, ConverterS
             *cursor++ = ch;
 
         }
-        else if ( ( j = qt_UnicodeToKsc5601( ch ) ) )
+        else if ( ( j = lscs_UnicodeToKsc5601( ch ) ) )
         {
             // KSC 5601
             *cursor++ = ( j >> 8 )   | 0x80;
@@ -3642,7 +3642,7 @@ QString QCP949Codec::convertToUnicode( const char *chars, int len, ConverterStat
                 // KSC 5601
                 if ( IsEucChar( ch ) && !IsCP949Char( buf[0] ) )
                 {
-                    uint u = qt_Ksc5601ToUnicode( ( buf[0] << 8 ) |  ch );
+                    uint u = lscs_Ksc5601ToUnicode( ( buf[0] << 8 ) |  ch );
                     result += QValidChar( u );
                 }
                 else
@@ -3711,6 +3711,6 @@ QString QCP949Codec::convertToUnicode( const char *chars, int len, ConverterStat
     return result;
 }
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

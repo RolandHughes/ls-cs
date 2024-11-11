@@ -148,8 +148,8 @@ public:
         if ( m_curve_index >= 0 )
         {
             QStrokerOps::Element e = { QPainterPath::LineToElement,
-                                       qt_real_to_fixed( m_curve.at( m_curve_index ).x() ),
-                                       qt_real_to_fixed( m_curve.at( m_curve_index ).y() )
+                                       lscs_real_to_fixed( m_curve.at( m_curve_index ).x() ),
+                                       lscs_real_to_fixed( m_curve.at( m_curve_index ).y() )
                                      };
 
             ++m_curve_index;
@@ -169,11 +169,11 @@ public:
             Q_ASSERT( m_pos > 0 );
             Q_ASSERT( m_pos < m_path->size() );
 
-            m_curve = QBezier::fromPoints( QPointF( qt_fixed_to_real( m_path->at( m_pos - 1 ).x ),
-                                                    qt_fixed_to_real( m_path->at( m_pos - 1 ).y ) ), QPointF( qt_fixed_to_real( e.x ),
-                                                            qt_fixed_to_real( e.y ) ), QPointF( qt_fixed_to_real( m_path->at( m_pos + 1 ).x ),
-                                                                    qt_fixed_to_real( m_path->at( m_pos + 1 ).y ) ), QPointF( qt_fixed_to_real( m_path->at( m_pos + 2 ).x ),
-                                                                            qt_fixed_to_real( m_path->at( m_pos + 2 ).y ) ) ).toPolygon( m_curve_threshold );
+            m_curve = QBezier::fromPoints( QPointF( lscs_fixed_to_real( m_path->at( m_pos - 1 ).x ),
+                                                    lscs_fixed_to_real( m_path->at( m_pos - 1 ).y ) ), QPointF( lscs_fixed_to_real( e.x ),
+                                                            lscs_fixed_to_real( e.y ) ), QPointF( lscs_fixed_to_real( m_path->at( m_pos + 1 ).x ),
+                                                                    lscs_fixed_to_real( m_path->at( m_pos + 1 ).y ) ), QPointF( lscs_fixed_to_real( m_path->at( m_pos + 2 ).x ),
+                                                                            lscs_fixed_to_real( m_path->at( m_pos + 2 ).y ) ) ).toPolygon( m_curve_threshold );
 
             m_curve_index = 1;
             e.type = QPainterPath::LineToElement;
@@ -197,7 +197,7 @@ private:
 };
 
 template <class Iterator>
-bool qt_stroke_side( Iterator *it, QStroker *stroker, bool capFirst, QLineF *startTangent );
+bool lscs_stroke_side( Iterator *it, QStroker *stroker, bool capFirst, QLineF *startTangent );
 
 static inline qreal adapted_angle_on_x( const QLineF &line )
 {
@@ -212,7 +212,7 @@ static inline qreal adapted_angle_on_x( const QLineF &line )
 }
 
 QStrokerOps::QStrokerOps()
-    : m_curveThreshold( qt_real_to_fixed( 0.25 ) ), m_dashThreshold( qt_real_to_fixed( 0.25 ) ),
+    : m_curveThreshold( lscs_real_to_fixed( 0.25 ) ), m_dashThreshold( lscs_real_to_fixed( 0.25 ) ),
       m_customData( nullptr ), m_moveTo( nullptr ), m_lineTo( nullptr ), m_cubicTo( nullptr )
 {
 }
@@ -257,20 +257,20 @@ void QStrokerOps::strokePath( const QPainterPath &path, void *customData, const 
             switch ( e.type )
             {
                 case QPainterPath::MoveToElement:
-                    moveTo( qt_real_to_fixed( e.x ), qt_real_to_fixed( e.y ) );
+                    moveTo( lscs_real_to_fixed( e.x ), lscs_real_to_fixed( e.y ) );
                     break;
 
                 case QPainterPath::LineToElement:
-                    lineTo( qt_real_to_fixed( e.x ), qt_real_to_fixed( e.y ) );
+                    lineTo( lscs_real_to_fixed( e.x ), lscs_real_to_fixed( e.y ) );
                     break;
 
                 case QPainterPath::CurveToElement:
                 {
                     const QPainterPath::Element &cp2 = path.elementAt( ++i );
                     const QPainterPath::Element &ep = path.elementAt( ++i );
-                    cubicTo( qt_real_to_fixed( e.x ), qt_real_to_fixed( e.y ),
-                             qt_real_to_fixed( cp2.x ), qt_real_to_fixed( cp2.y ),
-                             qt_real_to_fixed( ep.x ), qt_real_to_fixed( ep.y ) );
+                    cubicTo( lscs_real_to_fixed( e.x ), lscs_real_to_fixed( e.y ),
+                             lscs_real_to_fixed( cp2.x ), lscs_real_to_fixed( cp2.y ),
+                             lscs_real_to_fixed( ep.x ), lscs_real_to_fixed( ep.y ) );
                 }
                 break;
 
@@ -290,20 +290,20 @@ void QStrokerOps::strokePath( const QPainterPath &path, void *customData, const 
             switch ( e.type )
             {
                 case QPainterPath::MoveToElement:
-                    moveTo( qt_real_to_fixed( pt.x() ), qt_real_to_fixed( pt.y() ) );
+                    moveTo( lscs_real_to_fixed( pt.x() ), lscs_real_to_fixed( pt.y() ) );
                     break;
 
                 case QPainterPath::LineToElement:
-                    lineTo( qt_real_to_fixed( pt.x() ), qt_real_to_fixed( pt.y() ) );
+                    lineTo( lscs_real_to_fixed( pt.x() ), lscs_real_to_fixed( pt.y() ) );
                     break;
 
                 case QPainterPath::CurveToElement:
                 {
                     QPointF cp2 = ( ( QPointF ) path.elementAt( ++i ) ) * matrix;
                     QPointF ep = ( ( QPointF ) path.elementAt( ++i ) ) * matrix;
-                    cubicTo( qt_real_to_fixed( pt.x() ), qt_real_to_fixed( pt.y() ),
-                             qt_real_to_fixed( cp2.x() ), qt_real_to_fixed( cp2.y() ),
-                             qt_real_to_fixed( ep.x() ), qt_real_to_fixed( ep.y() ) );
+                    cubicTo( lscs_real_to_fixed( pt.x() ), lscs_real_to_fixed( pt.y() ),
+                             lscs_real_to_fixed( cp2.x() ), lscs_real_to_fixed( cp2.y() ),
+                             lscs_real_to_fixed( ep.x() ), lscs_real_to_fixed( ep.y() ) );
                 }
                 break;
 
@@ -329,33 +329,33 @@ void QStrokerOps::strokePolygon( const QPointF *points, int pointCount, bool imp
 
     if ( matrix.isIdentity() )
     {
-        moveTo( qt_real_to_fixed( points[0].x() ), qt_real_to_fixed( points[0].y() ) );
+        moveTo( lscs_real_to_fixed( points[0].x() ), lscs_real_to_fixed( points[0].y() ) );
 
         for ( int i = 1; i < pointCount; ++i )
         {
-            lineTo( qt_real_to_fixed( points[i].x() ), qt_real_to_fixed( points[i].y() ) );
+            lineTo( lscs_real_to_fixed( points[i].x() ), lscs_real_to_fixed( points[i].y() ) );
         }
 
         if ( implicit_close )
         {
-            lineTo( qt_real_to_fixed( points[0].x() ), qt_real_to_fixed( points[0].y() ) );
+            lineTo( lscs_real_to_fixed( points[0].x() ), lscs_real_to_fixed( points[0].y() ) );
         }
 
     }
     else
     {
         QPointF start = points[0] * matrix;
-        moveTo( qt_real_to_fixed( start.x() ), qt_real_to_fixed( start.y() ) );
+        moveTo( lscs_real_to_fixed( start.x() ), lscs_real_to_fixed( start.y() ) );
 
         for ( int i = 1; i < pointCount; ++i )
         {
             QPointF pt = points[i] * matrix;
-            lineTo( qt_real_to_fixed( pt.x() ), qt_real_to_fixed( pt.y() ) );
+            lineTo( lscs_real_to_fixed( pt.x() ), lscs_real_to_fixed( pt.y() ) );
         }
 
         if ( implicit_close )
         {
-            lineTo( qt_real_to_fixed( start.x() ), qt_real_to_fixed( start.y() ) );
+            lineTo( lscs_real_to_fixed( start.x() ), lscs_real_to_fixed( start.y() ) );
         }
     }
 
@@ -366,7 +366,7 @@ void QStrokerOps::strokeEllipse( const QRectF &rect, void *data, const QTransfor
 {
     int count = 0;
     QPointF pts[12];
-    QPointF start = qt_curves_for_arc( rect, 0, -360, pts, &count );
+    QPointF start = lscs_curves_for_arc( rect, 0, -360, pts, &count );
     Q_ASSERT( count == 12 ); // a perfect circle..
 
     if ( ! matrix.isIdentity() )
@@ -381,13 +381,13 @@ void QStrokerOps::strokeEllipse( const QRectF &rect, void *data, const QTransfor
 
     setCurveThresholdFromTransform( QTransform() );
     begin( data );
-    moveTo( qt_real_to_fixed( start.x() ), qt_real_to_fixed( start.y() ) );
+    moveTo( lscs_real_to_fixed( start.x() ), lscs_real_to_fixed( start.y() ) );
 
     for ( int i = 0; i < 12; i += 3 )
     {
-        cubicTo( qt_real_to_fixed( pts[i].x() ), qt_real_to_fixed( pts[i].y() ),
-                 qt_real_to_fixed( pts[i + 1].x() ), qt_real_to_fixed( pts[i + 1].y() ),
-                 qt_real_to_fixed( pts[i + 2].x() ), qt_real_to_fixed( pts[i + 2].y() ) );
+        cubicTo( lscs_real_to_fixed( pts[i].x() ), lscs_real_to_fixed( pts[i].y() ),
+                 lscs_real_to_fixed( pts[i + 1].x() ), lscs_real_to_fixed( pts[i + 1].y() ),
+                 lscs_real_to_fixed( pts[i + 2].x() ), lscs_real_to_fixed( pts[i + 2].y() ) );
     }
 
     end();
@@ -396,8 +396,8 @@ void QStrokerOps::strokeEllipse( const QRectF &rect, void *data, const QTransfor
 QStroker::QStroker()
     : m_capStyle( SquareJoin ), m_joinStyle( FlatJoin ), m_back1X( 0 ), m_back1Y( 0 ), m_back2X( 0 ), m_back2Y( 0 )
 {
-    m_strokeWidth = qt_real_to_fixed( 1 );
-    m_miterLimit = qt_real_to_fixed( 2 );
+    m_strokeWidth = lscs_real_to_fixed( 1 );
+    m_miterLimit = lscs_real_to_fixed( 2 );
 }
 
 QStroker::~QStroker()
@@ -497,8 +497,8 @@ void QStroker::processCurrentSubpath()
 
     QLineF fwStartTangent, bwStartTangent;
 
-    bool fwclosed = qt_stroke_side( &fwit, this, false, &fwStartTangent );
-    bool bwclosed = qt_stroke_side( &bwit, this, ! fwclosed, &bwStartTangent );
+    bool fwclosed = lscs_stroke_side( &fwit, this, false, &fwStartTangent );
+    bool bwclosed = lscs_stroke_side( &bwit, this, ! fwclosed, &bwStartTangent );
 
     if ( ! bwclosed && ! fwStartTangent.isNull() )
     {
@@ -518,7 +518,7 @@ void QStroker::joinPoints( qfixed focal_x, qfixed focal_y, const QLineF &nextLin
 
 #else
 
-    if ( m_back1X == qt_real_to_fixed( nextLine.x1() ) && m_back1Y == qt_real_to_fixed( nextLine.y1() ) )
+    if ( m_back1X == lscs_real_to_fixed( nextLine.x1() ) && m_back1Y == lscs_real_to_fixed( nextLine.y1() ) )
     {
         return;
     }
@@ -527,8 +527,8 @@ void QStroker::joinPoints( qfixed focal_x, qfixed focal_y, const QLineF &nextLin
 
     if ( join == FlatJoin )
     {
-        QLineF prevLine( qt_fixed_to_real( m_back2X ), qt_fixed_to_real( m_back2Y ),
-                         qt_fixed_to_real( m_back1X ), qt_fixed_to_real( m_back1Y ) );
+        QLineF prevLine( lscs_fixed_to_real( m_back2X ), lscs_fixed_to_real( m_back2Y ),
+                         lscs_fixed_to_real( m_back1X ), lscs_fixed_to_real( m_back1Y ) );
 
         QPointF isect;
         QLineF::IntersectType type = prevLine.intersect( nextLine, &isect );
@@ -538,24 +538,24 @@ void QStroker::joinPoints( qfixed focal_x, qfixed focal_y, const QLineF &nextLin
         if ( type == QLineF::BoundedIntersection || ( angle > 90 && !qFuzzyCompare( angle, ( qreal )90 ) ) )
         {
             emitLineTo( focal_x, focal_y );
-            emitLineTo( qt_real_to_fixed( nextLine.x1() ), qt_real_to_fixed( nextLine.y1() ) );
+            emitLineTo( lscs_real_to_fixed( nextLine.x1() ), lscs_real_to_fixed( nextLine.y1() ) );
             return;
         }
 
-        emitLineTo( qt_real_to_fixed( nextLine.x1() ), qt_real_to_fixed( nextLine.y1() ) );
+        emitLineTo( lscs_real_to_fixed( nextLine.x1() ), lscs_real_to_fixed( nextLine.y1() ) );
 
     }
     else
     {
-        QLineF prevLine( qt_fixed_to_real( m_back2X ), qt_fixed_to_real( m_back2Y ),
-                         qt_fixed_to_real( m_back1X ), qt_fixed_to_real( m_back1Y ) );
+        QLineF prevLine( lscs_fixed_to_real( m_back2X ), lscs_fixed_to_real( m_back2Y ),
+                         lscs_fixed_to_real( m_back1X ), lscs_fixed_to_real( m_back1Y ) );
 
         QPointF isect;
         QLineF::IntersectType type = prevLine.intersect( nextLine, &isect );
 
         if ( join == MiterJoin )
         {
-            qreal appliedMiterLimit = qt_fixed_to_real( m_strokeWidth * m_miterLimit );
+            qreal appliedMiterLimit = lscs_fixed_to_real( m_strokeWidth * m_miterLimit );
 
             // If we are on the inside, do the short cut...
             QLineF shortCut( prevLine.p2(), nextLine.p1() );
@@ -564,11 +564,11 @@ void QStroker::joinPoints( qfixed focal_x, qfixed focal_y, const QLineF &nextLin
             if ( type == QLineF::BoundedIntersection || ( angle > 90 && !qFuzzyCompare( angle, ( qreal )90 ) ) )
             {
                 emitLineTo( focal_x, focal_y );
-                emitLineTo( qt_real_to_fixed( nextLine.x1() ), qt_real_to_fixed( nextLine.y1() ) );
+                emitLineTo( lscs_real_to_fixed( nextLine.x1() ), lscs_real_to_fixed( nextLine.y1() ) );
                 return;
             }
 
-            QLineF miterLine( QPointF( qt_fixed_to_real( m_back1X ), qt_fixed_to_real( m_back1Y ) ), isect );
+            QLineF miterLine( QPointF( lscs_fixed_to_real( m_back1X ), lscs_fixed_to_real( m_back1Y ) ), isect );
 
             if ( type == QLineF::NoIntersection || miterLine.length() > appliedMiterLimit )
             {
@@ -580,15 +580,15 @@ void QStroker::joinPoints( qfixed focal_x, qfixed focal_y, const QLineF &nextLin
                 l2.setLength( appliedMiterLimit );
                 l2.translate( -l2.dx(), -l2.dy() );
 
-                emitLineTo( qt_real_to_fixed( l1.x2() ), qt_real_to_fixed( l1.y2() ) );
-                emitLineTo( qt_real_to_fixed( l2.x1() ), qt_real_to_fixed( l2.y1() ) );
-                emitLineTo( qt_real_to_fixed( nextLine.x1() ), qt_real_to_fixed( nextLine.y1() ) );
+                emitLineTo( lscs_real_to_fixed( l1.x2() ), lscs_real_to_fixed( l1.y2() ) );
+                emitLineTo( lscs_real_to_fixed( l2.x1() ), lscs_real_to_fixed( l2.y1() ) );
+                emitLineTo( lscs_real_to_fixed( nextLine.x1() ), lscs_real_to_fixed( nextLine.y1() ) );
 
             }
             else
             {
-                emitLineTo( qt_real_to_fixed( isect.x() ), qt_real_to_fixed( isect.y() ) );
-                emitLineTo( qt_real_to_fixed( nextLine.x1() ), qt_real_to_fixed( nextLine.y1() ) );
+                emitLineTo( lscs_real_to_fixed( isect.x() ), lscs_real_to_fixed( isect.y() ) );
+                emitLineTo( lscs_real_to_fixed( nextLine.x1() ), lscs_real_to_fixed( nextLine.y1() ) );
             }
 
         }
@@ -598,15 +598,15 @@ void QStroker::joinPoints( qfixed focal_x, qfixed focal_y, const QLineF &nextLin
 
             QLineF l1( prevLine );
             l1.translate( l1.dx(), l1.dy() );
-            l1.setLength( qt_fixed_to_real( offset ) );
+            l1.setLength( lscs_fixed_to_real( offset ) );
 
             QLineF l2( nextLine.p2(), nextLine.p1() );
             l2.translate( l2.dx(), l2.dy() );
-            l2.setLength( qt_fixed_to_real( offset ) );
+            l2.setLength( lscs_fixed_to_real( offset ) );
 
-            emitLineTo( qt_real_to_fixed( l1.x2() ), qt_real_to_fixed( l1.y2() ) );
-            emitLineTo( qt_real_to_fixed( l2.x2() ), qt_real_to_fixed( l2.y2() ) );
-            emitLineTo( qt_real_to_fixed( l2.x1() ), qt_real_to_fixed( l2.y1() ) );
+            emitLineTo( lscs_real_to_fixed( l1.x2() ), lscs_real_to_fixed( l1.y2() ) );
+            emitLineTo( lscs_real_to_fixed( l2.x2() ), lscs_real_to_fixed( l2.y2() ) );
+            emitLineTo( lscs_real_to_fixed( l2.x1() ), lscs_real_to_fixed( l2.y1() ) );
 
         }
         else if ( join == RoundJoin )
@@ -619,7 +619,7 @@ void QStroker::joinPoints( qfixed focal_x, qfixed focal_y, const QLineF &nextLin
             if ( type == QLineF::BoundedIntersection || ( angle > 90 && !qFuzzyCompare( angle, ( qreal )90 ) ) )
             {
                 emitLineTo( focal_x, focal_y );
-                emitLineTo( qt_real_to_fixed( nextLine.x1() ), qt_real_to_fixed( nextLine.y1() ) );
+                emitLineTo( lscs_real_to_fixed( nextLine.x1() ), lscs_real_to_fixed( nextLine.y1() ) );
                 return;
             }
 
@@ -631,27 +631,27 @@ void QStroker::joinPoints( qfixed focal_x, qfixed focal_y, const QLineF &nextLin
             int point_count;
             QPointF curves[15];
 
-            QPointF curve_start = qt_curves_for_arc( QRectF( qt_fixed_to_real( focal_x - offset ),
-                                  qt_fixed_to_real( focal_y - offset ), qt_fixed_to_real( offset * 2 ),
-                                  qt_fixed_to_real( offset * 2 ) ), l1_on_x + 90, -sweepLength, curves, &point_count );
+            QPointF curve_start = lscs_curves_for_arc( QRectF( lscs_fixed_to_real( focal_x - offset ),
+                                  lscs_fixed_to_real( focal_y - offset ), lscs_fixed_to_real( offset * 2 ),
+                                  lscs_fixed_to_real( offset * 2 ) ), l1_on_x + 90, -sweepLength, curves, &point_count );
 
             // line to the beginning of the arc segment, (should not be needed).
-            // emitLineTo(qt_real_to_fixed(curve_start.x()), qt_real_to_fixed(curve_start.y()));
+            // emitLineTo(lscs_real_to_fixed(curve_start.x()), lscs_real_to_fixed(curve_start.y()));
 
             ( void ) curve_start;
 
             for ( int i = 0; i < point_count; i += 3 )
             {
-                emitCubicTo( qt_real_to_fixed( curves[i].x() ),
-                             qt_real_to_fixed( curves[i].y() ),
-                             qt_real_to_fixed( curves[i + 1].x() ),
-                             qt_real_to_fixed( curves[i + 1].y() ),
-                             qt_real_to_fixed( curves[i + 2].x() ),
-                             qt_real_to_fixed( curves[i + 2].y() ) );
+                emitCubicTo( lscs_real_to_fixed( curves[i].x() ),
+                             lscs_real_to_fixed( curves[i].y() ),
+                             lscs_real_to_fixed( curves[i + 1].x() ),
+                             lscs_real_to_fixed( curves[i + 1].y() ),
+                             lscs_real_to_fixed( curves[i + 2].x() ),
+                             lscs_real_to_fixed( curves[i + 2].y() ) );
             }
 
             // line to the end of the arc segment, (should also not be needed).
-            emitLineTo( qt_real_to_fixed( nextLine.x1() ), qt_real_to_fixed( nextLine.y1() ) );
+            emitLineTo( lscs_real_to_fixed( nextLine.x1() ), lscs_real_to_fixed( nextLine.y1() ) );
 
             // Same as round join except we know its 180 degrees. Can also optimize this
             // later based on the addEllipse logic
@@ -664,20 +664,20 @@ void QStroker::joinPoints( qfixed focal_x, qfixed focal_y, const QLineF &nextLin
             // first control line
             QLineF l1 = prevLine;
             l1.translate( l1.dx(), l1.dy() );
-            l1.setLength( QT_PATH_KAPPA * offset );
+            l1.setLength( LSCS_PATH_KAPPA * offset );
 
             // second control line, find through normal between prevLine and focal.
-            QLineF l2( qt_fixed_to_real( focal_x ), qt_fixed_to_real( focal_y ), prevLine.x2(), prevLine.y2() );
+            QLineF l2( lscs_fixed_to_real( focal_x ), lscs_fixed_to_real( focal_y ), prevLine.x2(), prevLine.y2() );
 
             l2.translate( -l2.dy(), l2.dx() );
-            l2.setLength( QT_PATH_KAPPA * offset );
+            l2.setLength( LSCS_PATH_KAPPA * offset );
 
-            emitCubicTo( qt_real_to_fixed( l1.x2() ),
-                         qt_real_to_fixed( l1.y2() ),
-                         qt_real_to_fixed( l2.x2() ),
-                         qt_real_to_fixed( l2.y2() ),
-                         qt_real_to_fixed( l2.x1() ),
-                         qt_real_to_fixed( l2.y1() ) );
+            emitCubicTo( lscs_real_to_fixed( l1.x2() ),
+                         lscs_real_to_fixed( l1.y2() ),
+                         lscs_real_to_fixed( l2.x2() ),
+                         lscs_real_to_fixed( l2.y2() ),
+                         lscs_real_to_fixed( l2.x1() ),
+                         lscs_real_to_fixed( l2.y1() ) );
 
             // move so that it matches
             l2 = QLineF( l2.x1(), l2.y1(), l2.x1() - l2.dx(), l2.y1() - l2.dy() );
@@ -685,12 +685,12 @@ void QStroker::joinPoints( qfixed focal_x, qfixed focal_y, const QLineF &nextLin
             // last line is parallel to l1 so just shift it down.
             l1.translate( nextLine.x1() - l1.x1(), nextLine.y1() - l1.y1() );
 
-            emitCubicTo( qt_real_to_fixed( l2.x2() ),
-                         qt_real_to_fixed( l2.y2() ),
-                         qt_real_to_fixed( l1.x2() ),
-                         qt_real_to_fixed( l1.y2() ),
-                         qt_real_to_fixed( l1.x1() ),
-                         qt_real_to_fixed( l1.y1() ) );
+            emitCubicTo( lscs_real_to_fixed( l2.x2() ),
+                         lscs_real_to_fixed( l2.y2() ),
+                         lscs_real_to_fixed( l1.x2() ),
+                         lscs_real_to_fixed( l1.y2() ),
+                         lscs_real_to_fixed( l1.x1() ),
+                         lscs_real_to_fixed( l1.y1() ) );
 
         }
         else if ( join == SvgMiterJoin )
@@ -701,21 +701,21 @@ void QStroker::joinPoints( qfixed focal_x, qfixed focal_y, const QLineF &nextLin
             if ( type == QLineF::BoundedIntersection || ( angle > 90 && !qFuzzyCompare( angle, ( qreal )90 ) ) )
             {
                 emitLineTo( focal_x, focal_y );
-                emitLineTo( qt_real_to_fixed( nextLine.x1() ), qt_real_to_fixed( nextLine.y1() ) );
+                emitLineTo( lscs_real_to_fixed( nextLine.x1() ), lscs_real_to_fixed( nextLine.y1() ) );
                 return;
             }
 
-            QLineF miterLine( QPointF( qt_fixed_to_real( focal_x ), qt_fixed_to_real( focal_y ) ), isect );
+            QLineF miterLine( QPointF( lscs_fixed_to_real( focal_x ), lscs_fixed_to_real( focal_y ) ), isect );
 
-            if ( type == QLineF::NoIntersection || miterLine.length() > qt_fixed_to_real( m_strokeWidth * m_miterLimit ) / 2 )
+            if ( type == QLineF::NoIntersection || miterLine.length() > lscs_fixed_to_real( m_strokeWidth * m_miterLimit ) / 2 )
             {
-                emitLineTo( qt_real_to_fixed( nextLine.x1() ), qt_real_to_fixed( nextLine.y1() ) );
+                emitLineTo( lscs_real_to_fixed( nextLine.x1() ), lscs_real_to_fixed( nextLine.y1() ) );
 
             }
             else
             {
-                emitLineTo( qt_real_to_fixed( isect.x() ), qt_real_to_fixed( isect.y() ) );
-                emitLineTo( qt_real_to_fixed( nextLine.x1() ), qt_real_to_fixed( nextLine.y1() ) );
+                emitLineTo( lscs_real_to_fixed( isect.x() ), lscs_real_to_fixed( isect.y() ) );
+                emitLineTo( lscs_real_to_fixed( nextLine.x1() ), lscs_real_to_fixed( nextLine.y1() ) );
             }
 
         }
@@ -727,7 +727,7 @@ void QStroker::joinPoints( qfixed focal_x, qfixed focal_y, const QLineF &nextLin
 }
 
 template <class Iterator>
-bool qt_stroke_side( Iterator *it, QStroker *stroker, bool capFirst, QLineF *startTangent )
+bool lscs_stroke_side( Iterator *it, QStroker *stroker, bool capFirst, QLineF *startTangent )
 {
     // Used in CurveToElement section below.
     const int MAX_OFFSET = 16;
@@ -752,8 +752,8 @@ bool qt_stroke_side( Iterator *it, QStroker *stroker, bool capFirst, QLineF *sta
         // LineToElement
         if ( e.isLineTo() )
         {
-            QLineF line( qt_fixed_to_real( prev.x ), qt_fixed_to_real( prev.y ),
-                         qt_fixed_to_real( e.x ), qt_fixed_to_real( e.y ) );
+            QLineF line( lscs_fixed_to_real( prev.x ), lscs_fixed_to_real( prev.y ),
+                         lscs_fixed_to_real( e.x ), lscs_fixed_to_real( e.y ) );
 
             if ( line.p1() != line.p2() )
             {
@@ -770,7 +770,7 @@ bool qt_stroke_side( Iterator *it, QStroker *stroker, bool capFirst, QLineF *sta
                     }
                     else
                     {
-                        stroker->emitMoveTo( qt_real_to_fixed( line.x1() ), qt_real_to_fixed( line.y1() ) );
+                        stroker->emitMoveTo( lscs_real_to_fixed( line.x1() ), lscs_real_to_fixed( line.y1() ) );
                     }
 
                     *startTangent = line;
@@ -782,7 +782,7 @@ bool qt_stroke_side( Iterator *it, QStroker *stroker, bool capFirst, QLineF *sta
                 }
 
                 // Add the stroke for this line
-                stroker->emitLineTo( qt_real_to_fixed( line.x2() ), qt_real_to_fixed( line.y2() ) );
+                stroker->emitLineTo( lscs_real_to_fixed( line.x2() ), lscs_real_to_fixed( line.y2() ) );
                 prev = e;
             }
 
@@ -794,10 +794,10 @@ bool qt_stroke_side( Iterator *it, QStroker *stroker, bool capFirst, QLineF *sta
             QStrokerOps::Element cp2 = it->next();    // control point 2
             QStrokerOps::Element ep = it->next();     // end point
 
-            QBezier bezier = QBezier::fromPoints( QPointF( qt_fixed_to_real( prev.x ), qt_fixed_to_real( prev.y ) ),
-                                                  QPointF( qt_fixed_to_real( e.x ), qt_fixed_to_real( e.y ) ),
-                                                  QPointF( qt_fixed_to_real( cp2.x ), qt_fixed_to_real( cp2.y ) ),
-                                                  QPointF( qt_fixed_to_real( ep.x ), qt_fixed_to_real( ep.y ) ) );
+            QBezier bezier = QBezier::fromPoints( QPointF( lscs_fixed_to_real( prev.x ), lscs_fixed_to_real( prev.y ) ),
+                                                  QPointF( lscs_fixed_to_real( e.x ), lscs_fixed_to_real( e.y ) ),
+                                                  QPointF( lscs_fixed_to_real( cp2.x ), lscs_fixed_to_real( cp2.y ) ),
+                                                  QPointF( lscs_fixed_to_real( ep.x ), lscs_fixed_to_real( ep.y ) ) );
 
             int count = bezier.shifted( offsetCurves, MAX_OFFSET, offset, stroker->curveThreshold() );
 
@@ -817,7 +817,7 @@ bool qt_stroke_side( Iterator *it, QStroker *stroker, bool capFirst, QLineF *sta
                     }
                     else
                     {
-                        stroker->emitMoveTo( qt_real_to_fixed( pt.x() ), qt_real_to_fixed( pt.y() ) );
+                        stroker->emitMoveTo( lscs_real_to_fixed( pt.x() ), lscs_real_to_fixed( pt.y() ) );
                     }
 
                     *startTangent = tangent;
@@ -835,9 +835,9 @@ bool qt_stroke_side( Iterator *it, QStroker *stroker, bool capFirst, QLineF *sta
                     QPointF cp1 = offsetCurves[i].pt2();
                     QPointF cp2 = offsetCurves[i].pt3();
                     QPointF ep = offsetCurves[i].pt4();
-                    stroker->emitCubicTo( qt_real_to_fixed( cp1.x() ), qt_real_to_fixed( cp1.y() ),
-                                          qt_real_to_fixed( cp2.x() ), qt_real_to_fixed( cp2.y() ),
-                                          qt_real_to_fixed( ep.x() ), qt_real_to_fixed( ep.y() ) );
+                    stroker->emitCubicTo( lscs_real_to_fixed( cp1.x() ), lscs_real_to_fixed( cp1.y() ),
+                                          lscs_real_to_fixed( cp2.x() ), lscs_real_to_fixed( cp2.y() ),
+                                          lscs_real_to_fixed( ep.x() ), lscs_real_to_fixed( ep.y() ) );
                 }
             }
 
@@ -889,7 +889,7 @@ bool qt_stroke_side( Iterator *it, QStroker *stroker, bool capFirst, QLineF *sta
     etc.
 */
 
-qreal qt_t_for_arc_angle( qreal angle )
+qreal lscs_t_for_arc_angle( qreal angle )
 {
     if ( qFuzzyIsNull( angle ) )
     {
@@ -910,21 +910,21 @@ qreal qt_t_for_arc_angle( qreal angle )
 
     // do some iterations of newton's method to approximate cosAngle
     // finds the zero of the function b.pointAt(tc).x() - cosAngle
-    tc -= ( ( ( ( 2 - 3 * QT_PATH_KAPPA ) * tc + 3 * ( QT_PATH_KAPPA - 1 ) ) * tc ) * tc + 1 - cosAngle ) // value
-          / ( ( ( 6 - 9 * QT_PATH_KAPPA ) * tc + 6 * ( QT_PATH_KAPPA - 1 ) ) * tc ); // derivative
-    tc -= ( ( ( ( 2 - 3 * QT_PATH_KAPPA ) * tc + 3 * ( QT_PATH_KAPPA - 1 ) ) * tc ) * tc + 1 - cosAngle ) // value
-          / ( ( ( 6 - 9 * QT_PATH_KAPPA ) * tc + 6 * ( QT_PATH_KAPPA - 1 ) ) * tc ); // derivative
+    tc -= ( ( ( ( 2 - 3 * LSCS_PATH_KAPPA ) * tc + 3 * ( LSCS_PATH_KAPPA - 1 ) ) * tc ) * tc + 1 - cosAngle ) // value
+          / ( ( ( 6 - 9 * LSCS_PATH_KAPPA ) * tc + 6 * ( LSCS_PATH_KAPPA - 1 ) ) * tc ); // derivative
+    tc -= ( ( ( ( 2 - 3 * LSCS_PATH_KAPPA ) * tc + 3 * ( LSCS_PATH_KAPPA - 1 ) ) * tc ) * tc + 1 - cosAngle ) // value
+          / ( ( ( 6 - 9 * LSCS_PATH_KAPPA ) * tc + 6 * ( LSCS_PATH_KAPPA - 1 ) ) * tc ); // derivative
 
     // initial guess
     qreal ts = tc;
 
     // do some iterations of newton's method to approximate sinAngle
     // finds the zero of the function b.pointAt(tc).y() - sinAngle
-    ts -= ( ( ( ( 3 * QT_PATH_KAPPA - 2 ) * ts -  6 * QT_PATH_KAPPA + 3 ) * ts + 3 * QT_PATH_KAPPA ) * ts - sinAngle )
-          / ( ( ( 9 * QT_PATH_KAPPA - 6 ) * ts + 12 * QT_PATH_KAPPA - 6 ) * ts + 3 * QT_PATH_KAPPA );
+    ts -= ( ( ( ( 3 * LSCS_PATH_KAPPA - 2 ) * ts -  6 * LSCS_PATH_KAPPA + 3 ) * ts + 3 * LSCS_PATH_KAPPA ) * ts - sinAngle )
+          / ( ( ( 9 * LSCS_PATH_KAPPA - 6 ) * ts + 12 * LSCS_PATH_KAPPA - 6 ) * ts + 3 * LSCS_PATH_KAPPA );
 
-    ts -= ( ( ( ( 3 * QT_PATH_KAPPA - 2 ) * ts -  6 * QT_PATH_KAPPA + 3 ) * ts + 3 * QT_PATH_KAPPA ) * ts - sinAngle )
-          / ( ( ( 9 * QT_PATH_KAPPA - 6 ) * ts + 12 * QT_PATH_KAPPA - 6 ) * ts + 3 * QT_PATH_KAPPA );
+    ts -= ( ( ( ( 3 * LSCS_PATH_KAPPA - 2 ) * ts -  6 * LSCS_PATH_KAPPA + 3 ) * ts + 3 * LSCS_PATH_KAPPA ) * ts - sinAngle )
+          / ( ( ( 9 * LSCS_PATH_KAPPA - 6 ) * ts + 12 * LSCS_PATH_KAPPA - 6 ) * ts + 3 * LSCS_PATH_KAPPA );
 
     // use the average of the t that best approximates cosAngle
     // and the t that best approximates sinAngle
@@ -933,10 +933,10 @@ qreal qt_t_for_arc_angle( qreal angle )
     return t;
 }
 
-Q_GUI_EXPORT void qt_find_ellipse_coords( const QRectF &r, qreal angle, qreal length,
+Q_GUI_EXPORT void lscs_find_ellipse_coords( const QRectF &r, qreal angle, qreal length,
         QPointF *startPoint, QPointF *endPoint );
 
-QPointF qt_curves_for_arc( const QRectF &rect, qreal startAngle, qreal sweepLength,
+QPointF lscs_curves_for_arc( const QRectF &rect, qreal startAngle, qreal sweepLength,
                            QPointF *curves, int *point_count )
 {
     Q_ASSERT( point_count );
@@ -944,8 +944,8 @@ QPointF qt_curves_for_arc( const QRectF &rect, qreal startAngle, qreal sweepLeng
 
     *point_count = 0;
 
-    if ( qt_is_nan( rect.x() ) || qt_is_nan( rect.y() ) || qt_is_nan( rect.width() ) || qt_is_nan( rect.height() )
-            || qt_is_nan( startAngle ) || qt_is_nan( sweepLength ) )
+    if ( lscs_is_nan( rect.x() ) || lscs_is_nan( rect.y() ) || lscs_is_nan( rect.width() ) || lscs_is_nan( rect.height() )
+            || lscs_is_nan( startAngle ) || lscs_is_nan( sweepLength ) )
     {
         qWarning( "QPainterPath::arcTo() Value for arc is invalid" );
 
@@ -962,11 +962,11 @@ QPointF qt_curves_for_arc( const QRectF &rect, qreal startAngle, qreal sweepLeng
 
     qreal w = rect.width();
     qreal w2 = rect.width() / 2;
-    qreal w2k = w2 * QT_PATH_KAPPA;
+    qreal w2k = w2 * LSCS_PATH_KAPPA;
 
     qreal h = rect.height();
     qreal h2 = rect.height() / 2;
-    qreal h2k = h2 * QT_PATH_KAPPA;
+    qreal h2k = h2 * LSCS_PATH_KAPPA;
 
     QPointF points[16] =
     {
@@ -1054,8 +1054,8 @@ QPointF qt_curves_for_arc( const QRectF &rect, qreal startAngle, qreal sweepLeng
         endSegment -= delta;
     }
 
-    startT = qt_t_for_arc_angle( startT * 90 );
-    endT = qt_t_for_arc_angle( endT * 90 );
+    startT = lscs_t_for_arc_angle( startT * 90 );
+    endT = lscs_t_for_arc_angle( endT * 90 );
 
     const bool splitAtStart = !qFuzzyIsNull( startT );
     const bool splitAtEnd = !qFuzzyIsNull( endT - qreal( 1 ) );
@@ -1071,7 +1071,7 @@ QPointF qt_curves_for_arc( const QRectF &rect, qreal startAngle, qreal sweepLeng
     }
 
     QPointF startPoint, endPoint;
-    qt_find_ellipse_coords( rect, startAngle, sweepLength, &startPoint, &endPoint );
+    lscs_find_ellipse_coords( rect, startAngle, sweepLength, &startPoint, &endPoint );
 
     for ( int i = startSegment; i != end; i += delta )
     {
@@ -1320,14 +1320,14 @@ void QDashStroker::processCurrentSubpath()
     qfixed2d line_to_pos;
 
     // Pad to avoid clipping the borders of thick pens.
-    qfixed padding = qt_real_to_fixed( qMax( m_stroke_width, m_miter_limit ) * longestLength );
+    qfixed padding = lscs_real_to_fixed( qMax( m_stroke_width, m_miter_limit ) * longestLength );
 
-    qfixed2d clip_tl = { qt_real_to_fixed( m_clip_rect.left() ) - padding,
-                         qt_real_to_fixed( m_clip_rect.top() ) - padding
+    qfixed2d clip_tl = { lscs_real_to_fixed( m_clip_rect.left() ) - padding,
+                         lscs_real_to_fixed( m_clip_rect.top() ) - padding
                        };
 
-    qfixed2d clip_br = { qt_real_to_fixed( m_clip_rect.right() ) + padding,
-                         qt_real_to_fixed( m_clip_rect.bottom() ) + padding
+    qfixed2d clip_br = { lscs_real_to_fixed( m_clip_rect.right() ) + padding,
+                         lscs_real_to_fixed( m_clip_rect.bottom() ) + padding
                        };
 
     bool hasMoveTo = false;
@@ -1338,8 +1338,8 @@ void QDashStroker::processCurrentSubpath()
 
         Q_ASSERT( e.isLineTo() );
 
-        cline = QLineF( qt_fixed_to_real( prev.x ), qt_fixed_to_real( prev.y ),
-                        qt_fixed_to_real( e.x ), qt_fixed_to_real( e.y ) );
+        cline = QLineF( lscs_fixed_to_real( prev.x ), lscs_fixed_to_real( prev.y ),
+                        lscs_fixed_to_real( e.x ), lscs_fixed_to_real( e.y ) );
 
         elen  = cline.length();
         estop = estart + elen;
@@ -1421,8 +1421,8 @@ void QDashStroker::processCurrentSubpath()
 
             if ( evenDash )
             {
-                line_to_pos.x = qt_real_to_fixed( p2.x() );
-                line_to_pos.y = qt_real_to_fixed( p2.y() );
+                line_to_pos.x = lscs_real_to_fixed( p2.x() );
+                line_to_pos.y = lscs_real_to_fixed( p2.y() );
 
                 if ( ! clipping || lineRectIntersectsRect( move_to_pos, line_to_pos, clip_tl, clip_br ) )
                 {
@@ -1446,8 +1446,8 @@ void QDashStroker::processCurrentSubpath()
             }
             else
             {
-                move_to_pos.x = qt_real_to_fixed( p2.x() );
-                move_to_pos.y = qt_real_to_fixed( p2.y() );
+                move_to_pos.x = lscs_real_to_fixed( p2.x() );
+                move_to_pos.y = lscs_real_to_fixed( p2.y() );
             }
         }
 

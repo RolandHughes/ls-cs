@@ -53,7 +53,7 @@ AVFMediaPlayerService::AVFMediaPlayerService(QObject *parent)
 
 AVFMediaPlayerService::~AVFMediaPlayerService()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
    delete m_session;
@@ -61,7 +61,7 @@ AVFMediaPlayerService::~AVFMediaPlayerService()
 
 QMediaControl *AVFMediaPlayerService::requestControl(const QString &name)
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << name;
 #endif
 
@@ -105,7 +105,7 @@ QMediaControl *AVFMediaPlayerService::requestControl(const QString &name)
 
 void AVFMediaPlayerService::releaseControl(QMediaControl *control)
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << control;
 #endif
 

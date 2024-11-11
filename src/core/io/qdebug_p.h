@@ -64,8 +64,8 @@ static inline void formatQEnum( QDebug &debug, QEnum value )
 {
     /* emerald - enum meta object lookup
 
-    const QMetaObject *metaObject = qt_getEnumMetaObject(value);
-    const QMetaEnum me = metaObject->enumerator(metaObject->indexOfEnumerator(qt_getEnumName(value)));
+    const QMetaObject *metaObject = lscs_getEnumMetaObject(value);
+    const QMetaEnum me = metaObject->enumerator(metaObject->indexOfEnumerator(lscs_getEnumName(value)));
 
      if (const char *key = me.valueToKey(value))
          debug << key;
@@ -91,8 +91,8 @@ static inline void formatQFlags( QDebug &debug, const QFlags<Enum> &value )
 {
     /* emerald - enum meta object lookup
 
-     const QMetaObject *metaObject = qt_getEnumMetaObject(Enum());
-     const QMetaEnum me = metaObject->enumerator(metaObject->indexOfEnumerator(qt_getEnumName(Enum())));
+     const QMetaObject *metaObject = lscs_getEnumMetaObject(Enum());
+     const QMetaEnum me = metaObject->enumerator(metaObject->indexOfEnumerator(lscs_getEnumName(Enum())));
      const QDebugStateSaver saver(debug);
      debug.noquote();
      debug << me.valueToKeys(value);

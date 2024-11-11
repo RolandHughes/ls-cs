@@ -29,7 +29,7 @@
 #include <QtCore/QObject>
 #include <QtGui/QPainterPath>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativePathElement : public QObject
 {
@@ -295,7 +295,7 @@ private :
     Q_DECLARE_PRIVATE( QDeclarativePath )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativePathElement )
 QML_DECLARE_TYPE( QDeclarativePathAttribute )

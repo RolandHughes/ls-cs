@@ -100,11 +100,11 @@ public:
 
     bool write( QIODevice *in );
 
-#ifdef QT_UIC_JAVA_GENERATOR
+#ifdef LSCS_UIC_JAVA_GENERATOR
     bool jwrite( DomUI *ui );
 #endif
 
-#ifdef QT_UIC_CPP_GENERATOR
+#ifdef LSCS_UIC_CPP_GENERATOR
     bool write( DomUI *ui );
 #endif
 
@@ -122,7 +122,7 @@ private:
     void writeCopyrightHeader( DomUI *ui );
     DomUI *parseUiFile( QXmlStreamReader &reader );
 
-#ifdef QT_UIC_CPP_GENERATOR
+#ifdef LSCS_UIC_CPP_GENERATOR
     // header protection
     void writeHeaderProtectionStart();
     void writeHeaderProtectionEnd();

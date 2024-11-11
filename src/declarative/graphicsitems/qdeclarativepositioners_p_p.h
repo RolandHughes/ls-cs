@@ -34,7 +34,7 @@
 #include <QtCore/QTimer>
 #include <QDebug>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 class QDeclarativeBasePositionerPrivate : public QDeclarativeImplicitSizeItemPrivate,
     public QDeclarativeItemChangeListener
 {
@@ -156,5 +156,5 @@ public:
     }
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 #endif

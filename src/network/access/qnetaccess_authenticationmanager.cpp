@@ -99,7 +99,7 @@ public:
     }
 };
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 static QByteArray proxyAuthenticationKey( const QNetworkProxy &proxy, const QString &realm )
 {
     QUrl key;
@@ -150,7 +150,7 @@ static inline QByteArray authenticationKey( const QUrl &url, const QString &real
 }
 
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 void QNetworkAccessAuthenticationManager::cacheProxyCredentials( const QNetworkProxy &p,
         const QAuthenticator *authenticator )
 {

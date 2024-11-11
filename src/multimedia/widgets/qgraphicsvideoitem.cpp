@@ -32,7 +32,7 @@
 
 #include <qpaintervideosurface_p.h>
 
-#if ! defined(QT_NO_OPENGL) && ! defined(QT_OPENGL_ES_1_CL) && ! defined(QT_OPENGL_ES_1)
+#if ! defined(LSCS_NO_OPENGL) && ! defined(LSCS_OPENGL_ES_1_CL) && ! defined(LSCS_OPENGL_ES_1)
 #include <qgl.h>
 #endif
 
@@ -304,7 +304,7 @@ void QGraphicsVideoItem::paint( QPainter *painter, const QStyleOptionGraphicsIte
     {
         d->updatePaintDevice = false;
 
-#if ! defined(QT_NO_OPENGL) && !defined(QT_OPENGL_ES_1_CL) && ! defined(QT_OPENGL_ES_1)
+#if ! defined(LSCS_NO_OPENGL) && !defined(LSCS_OPENGL_ES_1_CL) && ! defined(LSCS_OPENGL_ES_1)
 
         if ( widget )
         {

@@ -29,7 +29,7 @@
 #include <qlist.h>
 #include <qplugin.h>
 
-#ifndef QT_NO_TEXTCODECPLUGIN
+#ifndef LSCS_NO_TEXTCODECPLUGIN
 
 class QTextCodec;
 
@@ -63,6 +63,6 @@ private:
     QTextCodec *create( const QString &name ) override;
 };
 
-#endif // QT_NO_TEXTCODECPLUGIN
+#endif // LSCS_NO_TEXTCODECPLUGIN
 
 #endif // QTEXTCODECPLUGIN_H

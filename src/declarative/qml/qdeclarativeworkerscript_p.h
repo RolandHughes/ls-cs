@@ -30,7 +30,7 @@
 #include <QtScript/qscriptvalue.h>
 #include <QtCore/qurl.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeWorkerScript;
 class QDeclarativeWorkerScriptEnginePrivate;
@@ -91,7 +91,7 @@ private:
     bool m_componentComplete;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeWorkerScript )
 

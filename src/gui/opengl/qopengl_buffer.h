@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qscopedpointer.h>
 #include <qopengl.h>
@@ -123,6 +123,6 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QOpenGLBuffer::RangeAccessFlags )
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

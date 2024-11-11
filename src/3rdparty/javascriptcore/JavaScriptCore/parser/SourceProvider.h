@@ -91,7 +91,7 @@ public:
         return m_source.size();
     }
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 protected:
 #else
 private:

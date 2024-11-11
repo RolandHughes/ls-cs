@@ -23,7 +23,7 @@
 
 #include <qsignalmapper.h>
 
-#ifndef QT_NO_SIGNALMAPPER
+#ifndef LSCS_NO_SIGNALMAPPER
 
 #include <qhash.h>
 

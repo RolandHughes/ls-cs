@@ -53,7 +53,7 @@ public:
         return b->d_func();
     }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     QPoint adjustedMenuPosition();
 #endif
 

@@ -23,9 +23,9 @@
 
 #include "qdbusvirtualobject.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE QDBusVirtualObject::QDBusVirtualObject( QObject *parent ) :
+LSCS_BEGIN_NAMESPACE QDBusVirtualObject::QDBusVirtualObject( QObject *parent ) :
     QObject( parent )
 {
 }
@@ -34,7 +34,7 @@ QDBusVirtualObject::~QDBusVirtualObject()
 {
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 
 /*!
@@ -74,4 +74,4 @@ QT_END_NAMESPACE
     Otherwise QDBus handles the introspection of the child nodes.
 */
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

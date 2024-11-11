@@ -23,7 +23,7 @@
 
 #include <qmultimediautils_p.h>
 
-void qt_real_to_fraction( qreal value, int *numerator, int *denominator )
+void lscs_real_to_fraction( qreal value, int *numerator, int *denominator )
 {
     if ( !numerator || !denominator )
     {

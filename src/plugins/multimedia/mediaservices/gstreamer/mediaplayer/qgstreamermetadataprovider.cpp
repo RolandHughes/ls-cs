@@ -32,7 +32,7 @@
 using QGstreamerMetaDataKeyLookup = QMap<QByteArray, QString>;
 static QGstreamerMetaDataKeyLookup metadataKeys;
 
-static const QGstreamerMetaDataKeyLookup *qt_gstreamerMetaDataKeys()
+static const QGstreamerMetaDataKeyLookup *lscs_gstreamerMetaDataKeys()
 {
     if ( metadataKeys.isEmpty() )
     {
@@ -151,7 +151,7 @@ void QGstreamerMetaDataProvider::updateTags()
     for ( auto iter = tagMap.begin(); iter != tagMap.end(); ++iter )
     {
         // use gstreamer native keys for elements not in our key map
-        QString keyData = qt_gstreamerMetaDataKeys()->value( iter.key(), iter.key() );
+        QString keyData = lscs_gstreamerMetaDataKeys()->value( iter.key(), iter.key() );
 
         m_tags.insert( keyData, iter.value() );
 

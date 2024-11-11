@@ -470,7 +470,7 @@ QString QWebView::selectedHtml() const
     return QString();
 }
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 /*!
     Returns a pointer to a QAction that encapsulates the specified web action \a action.
 */
@@ -695,7 +695,7 @@ bool QWebView::event( QEvent *e )
 {
     if ( d->page )
     {
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
         if ( e->type() == QEvent::ContextMenu )
         {
@@ -715,11 +715,11 @@ bool QWebView::event( QEvent *e )
             d->page->updatePositionDependentActions( event->pos() );
         }
         else
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
             if ( e->type() == QEvent::ShortcutOverride )
             {
                 d->page->event( e );
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
             }
             else if ( e->type() == QEvent::CursorChange )
             {
@@ -763,7 +763,7 @@ bool QWebView::event( QEvent *e )
 */
 void QWebView::print( QPrinter *printer )
 {
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
     page()->mainFrame()->print( printer );
 #endif
 }
@@ -906,7 +906,7 @@ void QWebView::mouseReleaseEvent( QMouseEvent *ev )
     }
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 /*! \reimp
 */
 void QWebView::contextMenuEvent( QContextMenuEvent *ev )
@@ -918,9 +918,9 @@ void QWebView::contextMenuEvent( QContextMenuEvent *ev )
         ev->setAccepted( accepted );
     }
 }
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 /*! \reimp
 */
 void QWebView::wheelEvent( QWheelEvent *ev )
@@ -932,7 +932,7 @@ void QWebView::wheelEvent( QWheelEvent *ev )
         ev->setAccepted( accepted );
     }
 }
-#endif // QT_NO_WHEELEVENT
+#endif // LSCS_NO_WHEELEVENT
 
 /*! \reimp
 */
@@ -996,7 +996,7 @@ void QWebView::focusOutEvent( QFocusEvent *ev )
 */
 void QWebView::dragEnterEvent( QDragEnterEvent *ev )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( d->page )
     {
@@ -1010,7 +1010,7 @@ void QWebView::dragEnterEvent( QDragEnterEvent *ev )
 */
 void QWebView::dragLeaveEvent( QDragLeaveEvent *ev )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( d->page )
     {
@@ -1024,7 +1024,7 @@ void QWebView::dragLeaveEvent( QDragLeaveEvent *ev )
 */
 void QWebView::dragMoveEvent( QDragMoveEvent *ev )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( d->page )
     {
@@ -1038,7 +1038,7 @@ void QWebView::dragMoveEvent( QDragMoveEvent *ev )
 */
 void QWebView::dropEvent( QDropEvent *ev )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( d->page )
     {

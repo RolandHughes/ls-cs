@@ -39,7 +39,7 @@
 
 #include <algorithm>
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
 // see also tst_qtextdocumentfragment.cpp
 #define MAX_ENTITY 258
@@ -695,7 +695,7 @@ void QTextHtmlParser::parseTag()
     {
         if ( nodes.last().id == Html_style )
         {
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
             QCss::Parser parser( nodes.last().text );
             QCss::StyleSheet sheet;
             sheet.origin = QCss::StyleSheetOrigin_Author;
@@ -748,7 +748,7 @@ void QTextHtmlParser::parseTag()
     resolveNode();
 
     const int nodeIndex = nodes.count() - 1; // this new node is always the last
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     node->applyCssDeclarations( declarationsForNode( nodeIndex ), resourceProvider );
 #endif
     applyAttributes( node->attributes );
@@ -1340,7 +1340,7 @@ void QTextHtmlParserNode::initializeProperties( const QTextHtmlParserNode *paren
     }
 }
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 void QTextHtmlParserNode::setListStyle( const QVector<QCss::Value> &cssValues )
 {
     for ( int i = 0; i < cssValues.count(); ++i )
@@ -1739,7 +1739,7 @@ void QTextHtmlParserNode::applyCssDeclarations( const QVector<QCss::Declaration>
     }
 }
 
-#endif // QT_NO_CSSPARSER
+#endif // LSCS_NO_CSSPARSER
 
 void QTextHtmlParserNode::applyBackgroundImage( const QString &url, const QTextDocument *resourceProvider )
 {
@@ -1857,7 +1857,7 @@ static void setWidthAttribute( QTextLength *width, QString value )
     }
 }
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 void QTextHtmlParserNode::parseStyleAttribute( const QString &value, const QTextDocument *resourceProvider )
 {
     QString css = value;
@@ -2197,7 +2197,7 @@ void QTextHtmlParser::applyAttributes( const QStringList &attributes )
 
         if ( key == QLatin1String( "style" ) )
         {
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
             node->parseStyleAttribute( value, resourceProvider );
 #endif
         }
@@ -2294,7 +2294,7 @@ void QTextHtmlParser::applyAttributes( const QStringList &attributes )
         }
     }
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 
     if ( resourceProvider && !linkHref.isEmpty() && linkType == QLatin1String( "text/css" ) )
     {
@@ -2304,7 +2304,7 @@ void QTextHtmlParser::applyAttributes( const QStringList &attributes )
 #endif
 }
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 class QTextHtmlStyleSelector : public QCss::StyleSelector
 {
 public:
@@ -2332,7 +2332,7 @@ QStringList QTextHtmlStyleSelector::nodeNames( NodePtr node ) const
     return QStringList( parser->at( node.id ).tag.toLower() );
 }
 
-#endif // QT_NO_CSSPARSER
+#endif // LSCS_NO_CSSPARSER
 
 static inline int findAttribute( const QStringList &attributes, const QString &name )
 {
@@ -2347,7 +2347,7 @@ static inline int findAttribute( const QStringList &attributes, const QString &n
     return idx;
 }
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 
 QString QTextHtmlStyleSelector::attribute( NodePtr node, const QString &name ) const
 {
@@ -2796,6 +2796,6 @@ bool QTextHtmlParser::nodeIsChildOf( int i, QTextHTMLElements id ) const
     return false;
 }
 
-#endif // QT_NO_CSSPARSER
+#endif // LSCS_NO_CSSPARSER
 
-#endif // QT_NO_TEXTHTMLPARSER
+#endif // LSCS_NO_TEXTHTMLPARSER

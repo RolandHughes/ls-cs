@@ -21,7 +21,7 @@
 *
 ***********************************************************************/
 
-#ifndef QT_NO_PRINTDIALOG
+#ifndef LSCS_NO_PRINTDIALOG
 
 #include <qprintdialog.h>
 #include <qwidget.h>
@@ -40,7 +40,7 @@
 #define START_PAGE_GENERAL  0XFFFFFFFF
 #endif
 
-extern void qt_win_eatMouseMove();
+extern void lscs_win_eatMouseMove();
 
 class QPrintDialogPrivate : public QAbstractPrintDialogPrivate
 {
@@ -58,7 +58,7 @@ public:
     QWin32PrintEnginePrivate *ep;
 };
 
-static void qt_win_setup_PRINTDLGEX( PRINTDLGEX *pd, QWidget *parent,
+static void lscs_win_setup_PRINTDLGEX( PRINTDLGEX *pd, QWidget *parent,
                                      QPrintDialog *pdlg, QPrintDialogPrivate *d, HGLOBAL *tempDevNames )
 {
     DEVMODE *devMode = d->ep->devMode;
@@ -153,7 +153,7 @@ static void qt_win_setup_PRINTDLGEX( PRINTDLGEX *pd, QWidget *parent,
     pd->nCopies = d->printer->copyCount();
 }
 
-static void qt_win_read_back_PRINTDLGEX( PRINTDLGEX *pd, QPrintDialog *pdlg, QPrintDialogPrivate *d )
+static void lscs_win_read_back_PRINTDLGEX( PRINTDLGEX *pd, QPrintDialog *pdlg, QPrintDialogPrivate *d )
 {
     if ( pd->Flags & PD_SELECTION )
     {
@@ -287,7 +287,7 @@ int QPrintDialogPrivate::openWindowsPrintDialogModally()
     memset( &pd, 0, sizeof( PRINTDLGEX ) );
     pd.lStructSize = sizeof( PRINTDLGEX );
     pd.lpPageRanges = &pageRange;
-    qt_win_setup_PRINTDLGEX( &pd, parent, q, this, tempDevNames );
+    lscs_win_setup_PRINTDLGEX( &pd, parent, q, this, tempDevNames );
 
     do
     {
@@ -330,7 +330,7 @@ int QPrintDialogPrivate::openWindowsPrintDialogModally()
     if ( result && ( pd.dwResultAction == PD_RESULT_PRINT
                      || pd.dwResultAction == PD_RESULT_APPLY ) )
     {
-        qt_win_read_back_PRINTDLGEX( &pd, q, this );
+        lscs_win_read_back_PRINTDLGEX( &pd, q, this );
 
         // update printer validity
         printer->d_func()->validPrinter = !printer->printerName().isEmpty();

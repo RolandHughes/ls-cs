@@ -24,7 +24,7 @@
 #include <qlatincodec_p.h>
 #include <qlist.h>
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 QLatin1Codec::~QLatin1Codec()
 {
@@ -300,4 +300,4 @@ int QLatin15Codec::mibEnum() const
     return 111;
 }
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC

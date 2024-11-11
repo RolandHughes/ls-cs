@@ -23,7 +23,7 @@
 
 #include <qapplication.h>
 
-#ifndef QT_NO_EFFECTS
+#ifndef LSCS_NO_EFFECTS
 
 #include <qdesktopwidget.h>
 #include <qevent.h>
@@ -652,4 +652,4 @@ void qFadeEffect( QWidget *w, int time )
     q_blend->run( time );
 }
 
-#endif //QT_NO_EFFECTS
+#endif //LSCS_NO_EFFECTS

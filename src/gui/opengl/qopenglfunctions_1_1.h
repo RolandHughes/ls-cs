@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#if ! defined(QT_NO_OPENGL) && ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_NO_OPENGL) && ! defined(LSCS_OPENGL_ES_2)
 
 #include <qopengl_versionfunctions.h>
 #include <qopenglcontext.h>
@@ -2107,6 +2107,6 @@ inline void QOpenGLFunctions_1_1::glArrayElement( GLint i )
     d_1_1_Deprecated->ArrayElement( i );
 }
 
-#endif // QT_NO_OPENGL && !QT_OPENGL_ES_2
+#endif // LSCS_NO_OPENGL && !LSCS_OPENGL_ES_2
 
 #endif

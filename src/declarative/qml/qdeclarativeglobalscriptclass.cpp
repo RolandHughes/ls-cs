@@ -31,7 +31,7 @@
 
 #include <private/qscriptdeclarativeclass_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*
     Used to prevent any writes to the global object.
@@ -133,5 +133,5 @@ void QDeclarativeGlobalScriptClass::explicitSetProperty( const QStringList &name
     engine()->setGlobalObject( v );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

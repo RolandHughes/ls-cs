@@ -29,7 +29,7 @@
 #include <qstring.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
 
 #include <ctype.h>
 
@@ -132,7 +132,7 @@ public:
     QString organizationName() const;
     QString applicationName() const;
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     void setIniCodec( QTextCodec *codec );
     void setIniCodec( const char *codecName );
     QTextCodec *iniCodec() const;
@@ -159,6 +159,6 @@ private:
     Q_DECLARE_PRIVATE( QSettings )
 };
 
-#endif // QT_NO_SETTINGS
+#endif // LSCS_NO_SETTINGS
 
 #endif

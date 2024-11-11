@@ -46,11 +46,11 @@
 #define PIPE_REJECT_REMOTE_CLIENTS 0x08
 #endif
 
-#ifndef QT_NO_PROCESS
+#ifndef LSCS_NO_PROCESS
 
 #define NOTIFYTIMEOUT 100
 
-static void qt_create_pipe( Q_PIPE *pipe, bool isInputPipe )
+static void lscs_create_pipe( Q_PIPE *pipe, bool isInputPipe )
 {
     // Open the pipes.  Make non-inheritable copies of input write and output
     // read handles to avoid non-closable handles (this is done by the
@@ -158,7 +158,7 @@ bool QProcessPrivate::openChannel( Channel &channel )
         {
             if ( inputChannelMode != QProcess::ForwardedInputChannel )
             {
-                qt_create_pipe( channel.pipe, true );
+                lscs_create_pipe( channel.pipe, true );
 
             }
             else
@@ -214,7 +214,7 @@ bool QProcessPrivate::openChannel( Channel &channel )
 
             if ( channel.reader )
             {
-                qt_create_pipe( channel.pipe, false );
+                lscs_create_pipe( channel.pipe, false );
                 channel.reader->setHandle( channel.pipe[0] );
                 channel.reader->startAsyncRead();
             }
@@ -302,7 +302,7 @@ bool QProcessPrivate::openChannel( Channel &channel )
             Q_ASSERT( source == &stdoutChannel );
             Q_ASSERT( sink->process == this && sink->type == Channel::PipeSink );
 
-            qt_create_pipe( source->pipe, false ); // source is stdout
+            lscs_create_pipe( source->pipe, false ); // source is stdout
             sink->pipe[0]   = source->pipe[0];
             source->pipe[0] = INVALID_Q_PIPE;
 
@@ -333,7 +333,7 @@ bool QProcessPrivate::openChannel( Channel &channel )
             Q_ASSERT( sink == &stdinChannel );
             Q_ASSERT( source->process == this && source->type == Channel::PipeSource );
 
-            qt_create_pipe( sink->pipe, /* in = */ true ); // sink is stdin
+            lscs_create_pipe( sink->pipe, /* in = */ true ); // sink is stdin
             source->pipe[1] = sink->pipe[1];
             sink->pipe[1]   = INVALID_Q_PIPE;
 
@@ -375,7 +375,7 @@ void QProcessPrivate::closeChannel( Channel *channel )
     destroyPipe( channel->pipe );
 }
 
-static QString qt_create_commandline( const QString &program, const QStringList &arguments )
+static QString lscs_create_commandline( const QString &program, const QStringList &arguments )
 {
     QString args;
 
@@ -456,7 +456,7 @@ QProcessEnvironment QProcessEnvironment::systemEnvironment()
     return env;
 }
 
-static QByteArray qt_create_environment( const QHash<QProcEnvKey, QProcEnvValue> &environment )
+static QByteArray lscs_create_environment( const QHash<QProcEnvKey, QProcEnvValue> &environment )
 {
     QByteArray envlist;
 
@@ -562,12 +562,12 @@ void QProcessPrivate::startProcess()
         return;
     }
 
-    QString args = qt_create_commandline( program, arguments );
+    QString args = lscs_create_commandline( program, arguments );
     QByteArray envlist;
 
     if ( environment.d.constData() )
     {
-        envlist = qt_create_environment( environment.d.constData()->hash );
+        envlist = lscs_create_environment( environment.d.constData()->hash );
     }
 
     if ( ! nativeArguments.isEmpty() )
@@ -605,7 +605,7 @@ void QProcessPrivate::startProcess()
     if ( ! success )
     {
         // Capture the error string before we do CloseHandle below
-        errorString = QProcess::tr( "Process failed to start: %1" ).formatArg( qt_error_string() );
+        errorString = QProcess::tr( "Process failed to start: %1" ).formatArg( lscs_error_string() );
     }
 
     if ( stdinChannel.pipe[0] != INVALID_Q_PIPE )
@@ -682,7 +682,7 @@ qint64 QProcessPrivate::readFromChannel( const Channel *channel, char *data, qin
     return channel->reader->read( data, maxlen );
 }
 
-static BOOL QT_WIN_CALLBACK qt_terminateApp( HWND hwnd, LPARAM procId )
+static BOOL LSCS_WIN_CALLBACK lscs_terminateApp( HWND hwnd, LPARAM procId )
 {
     DWORD currentProcId = 0;
     GetWindowThreadProcessId( hwnd, &currentProcId );
@@ -699,7 +699,7 @@ void QProcessPrivate::terminateProcess()
 {
     if ( pid )
     {
-        EnumWindows( qt_terminateApp, ( LPARAM )pid->dwProcessId );
+        EnumWindows( lscs_terminateApp, ( LPARAM )pid->dwProcessId );
         PostThreadMessage( pid->dwThreadId, WM_CLOSE, 0, 0 );
     }
 }
@@ -1040,7 +1040,7 @@ static bool startDetachedUacPrompt( const QString &programIn, const QStringList 
         return false;
     }
 
-    const QString args = qt_create_commandline( QString(), arguments ); // needs arguments only
+    const QString args = lscs_create_commandline( QString(), arguments ); // needs arguments only
     SHELLEXECUTEINFOW shellExecuteExInfo;
     memset( &shellExecuteExInfo, 0, sizeof( SHELLEXECUTEINFOW ) );
 
@@ -1090,7 +1090,7 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
 {
     static const DWORD errorElevationRequired = 740;
 
-    QString args = qt_create_commandline( program, arguments );
+    QString args = lscs_create_commandline( program, arguments );
     bool success = false;
 
     PROCESS_INFORMATION pinfo;
@@ -1123,4 +1123,4 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
     return success;
 }
 
-#endif // QT_NO_PROCESS
+#endif // LSCS_NO_PROCESS

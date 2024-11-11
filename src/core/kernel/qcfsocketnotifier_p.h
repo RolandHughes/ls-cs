@@ -75,7 +75,7 @@ private:
     MaybeCancelWaitForMoreEventsFn maybeCancelWaitForMoreEvents;
     CFRunLoopObserverRef enableNotifiersObserver;
 
-    friend void qt_mac_socket_callback( CFSocketRef, CFSocketCallBackType, CFDataRef, const void *, void * );
+    friend void lscs_mac_socket_callback( CFSocketRef, CFSocketCallBackType, CFDataRef, const void *, void * );
 };
 
 #endif

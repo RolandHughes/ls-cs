@@ -28,9 +28,9 @@
 #include "qdbuscontext.h"
 #include "qdbuscontext_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 QDBusContextPrivate *QDBusContextPrivate::set( QObject *obj, QDBusContextPrivate *newContext )
 {
@@ -42,7 +42,7 @@ QDBusContextPrivate *QDBusContextPrivate::set( QObject *obj, QDBusContextPrivate
 
     Q_ASSERT( obj );
 
-    void *ptr = obj->qt_metacast( "QDBusContext" );
+    void *ptr = obj->lscs_metacast( "QDBusContext" );
     QDBusContext *q_ptr = reinterpret_cast<QDBusContext *>( ptr );
 
     if ( q_ptr )
@@ -189,6 +189,6 @@ void QDBusContext::sendErrorReply( QDBusError::ErrorType type, const QString &ms
     connection().send( message().createErrorReply( type, msg ) );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

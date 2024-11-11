@@ -29,7 +29,7 @@
 #include "shadereffectsource.h"
 #include "scenegraph/qsggeometry.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class ShaderEffectItem : public QDeclarativeItem
 {
@@ -140,6 +140,6 @@ private:
     bool m_defaultVertexShader : 1;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // SHADEREFFECTITEM_H

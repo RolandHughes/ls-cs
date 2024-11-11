@@ -137,7 +137,7 @@ QLineF::IntersectType QLineF::intersect( const QLineF &l, QPointF *intersectionP
 
     const qreal denominator = a.y() * b.x() - a.x() * b.y();
 
-    if ( denominator == 0 || !qt_is_finite( denominator ) )
+    if ( denominator == 0 || !lscs_is_finite( denominator ) )
     {
         return NoIntersection;
     }

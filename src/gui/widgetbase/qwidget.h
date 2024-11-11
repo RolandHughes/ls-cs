@@ -185,7 +185,7 @@ class Q_GUI_EXPORT QWidget : public QObject, public QPaintDevice
     GUI_LSCS_PROPERTY_READ( font, font )
     GUI_LSCS_PROPERTY_WRITE( font, setFont )
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     GUI_LSCS_PROPERTY_READ( cursor, cursor )
     GUI_LSCS_PROPERTY_WRITE( cursor, setCursor )
     GUI_LSCS_PROPERTY_RESET( cursor, unsetCursor )
@@ -240,7 +240,7 @@ class Q_GUI_EXPORT QWidget : public QObject, public QPaintDevice
     GUI_LSCS_PROPERTY_WRITE( windowModified, setWindowModified )
     GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( windowModified, isWindow() )
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     GUI_LSCS_PROPERTY_READ( accessibleName, accessibleName )
     GUI_LSCS_PROPERTY_WRITE( accessibleName, setAccessibleName )
 
@@ -248,17 +248,17 @@ class Q_GUI_EXPORT QWidget : public QObject, public QPaintDevice
     GUI_LSCS_PROPERTY_WRITE( accessibleDescription, setAccessibleDescription )
 #endif
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
     GUI_LSCS_PROPERTY_READ( statusTip, statusTip )
     GUI_LSCS_PROPERTY_WRITE( statusTip, setStatusTip )
 #endif
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
     GUI_LSCS_PROPERTY_READ( styleSheet, styleSheet )
     GUI_LSCS_PROPERTY_WRITE( styleSheet, setStyleSheet )
 #endif
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     GUI_LSCS_PROPERTY_READ( toolTip, toolTip )
     GUI_LSCS_PROPERTY_WRITE( toolTip, setToolTip )
 
@@ -267,7 +267,7 @@ class Q_GUI_EXPORT QWidget : public QObject, public QPaintDevice
 
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     GUI_LSCS_PROPERTY_READ( whatsThis, whatsThis )
     GUI_LSCS_PROPERTY_WRITE( whatsThis, setWhatsThis )
 #endif
@@ -437,7 +437,7 @@ public:
     QFontMetrics fontMetrics() const;
     QFontInfo fontInfo() const;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QCursor cursor() const;
     void setCursor( const QCursor &cursor );
     void unsetCursor();
@@ -462,12 +462,12 @@ public:
 
     QPixmap grab( const QRect &rectangle = QRect( QPoint( 0, 0 ), QSize( -1, -1 ) ) );
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
     QGraphicsEffect *graphicsEffect() const;
     void setGraphicsEffect( QGraphicsEffect *effect );
 #endif
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     void grabGesture( Qt::GestureType gestureType, Qt::GestureFlags flags = Qt::GestureFlags() );
     void ungrabGesture( Qt::GestureType gestureType );
 #endif
@@ -475,12 +475,12 @@ public:
     GUI_LSCS_SLOT_1( Public, void setWindowTitle( const QString &title ) )
     GUI_LSCS_SLOT_2( setWindowTitle )
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
     GUI_LSCS_SLOT_1( Public, void setStyleSheet( const QString &styleSheet ) )
     GUI_LSCS_SLOT_2( setStyleSheet )
 #endif
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
     QString styleSheet() const;
 #endif
 
@@ -503,7 +503,7 @@ public:
 
     bool isWindowModified() const;
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     void setToolTip( const QString &data );
     QString toolTip() const;
 
@@ -511,17 +511,17 @@ public:
     int toolTipDuration() const;
 #endif
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
     void setStatusTip( const QString &data );
     QString statusTip() const;
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     void setWhatsThis( const QString &str );
     QString whatsThis() const;
 #endif
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QString accessibleName() const;
     void setAccessibleName( const QString &name );
     QString accessibleDescription() const;
@@ -570,7 +570,7 @@ public:
     // Grab functions
     void grabMouse();
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     void grabMouse( const QCursor &cursor );
 #endif
 
@@ -578,7 +578,7 @@ public:
     void grabKeyboard();
     void releaseKeyboard();
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     int grabShortcut( const QKeySequence &key, Qt::ShortcutContext context = Qt::WindowShortcut );
     void releaseShortcut( int id );
     void setShortcutEnabled( int id, bool enable = true );
@@ -592,7 +592,7 @@ public:
     inline bool updatesEnabled() const;
     void setUpdatesEnabled( bool enable );
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
     QGraphicsProxyWidget *graphicsProxyWidget() const;
 #endif
 
@@ -722,7 +722,7 @@ public:
     bool acceptDrops() const;
     void setAcceptDrops( bool on );
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     void addAction( QAction *action );
     void addActions( const QList<QAction *> &actions );
     void insertAction( QAction *before, QAction *action );
@@ -753,7 +753,7 @@ public:
 
     bool isAncestorOf( const QWidget *child ) const;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     bool hasEditFocus() const;
     void setEditFocus( bool enable );
 #endif
@@ -790,7 +790,7 @@ protected:
     virtual void mouseDoubleClickEvent( QMouseEvent *event );
     virtual void mouseMoveEvent( QMouseEvent *event );
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     virtual void wheelEvent( QWheelEvent *event );
 #endif
 
@@ -805,19 +805,19 @@ protected:
     virtual void resizeEvent( QResizeEvent *event );
     virtual void closeEvent( QCloseEvent *event );
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     virtual void contextMenuEvent( QContextMenuEvent *event );
 #endif
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
     virtual void tabletEvent( QTabletEvent *event );
 #endif
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     virtual void actionEvent( QActionEvent *event );
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     virtual void dragEnterEvent( QDragEnterEvent *event );
     virtual void dragMoveEvent( QDragMoveEvent *event );
     virtual void dragLeaveEvent( QDragLeaveEvent *event );
@@ -910,17 +910,17 @@ private:
 
     friend struct QWidgetExceptionCleaner;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     friend class QGestureManager;
     friend class QWinNativePanGestureRecognizer;
 #endif
 
 #ifdef Q_OS_DARWIN
-    friend bool qt_mac_is_metal( const QWidget *w );
+    friend bool lscs_mac_is_metal( const QWidget *w );
 #endif
 
-    friend Q_GUI_EXPORT QWidgetData *qt_qwidget_data( QWidget *widget );
-    friend Q_GUI_EXPORT QWidgetPrivate *qt_widget_private( QWidget *widget );
+    friend Q_GUI_EXPORT QWidgetData *lscs_qwidget_data( QWidget *widget );
+    friend Q_GUI_EXPORT QWidgetPrivate *lscs_widget_private( QWidget *widget );
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QWidget::RenderFlags )

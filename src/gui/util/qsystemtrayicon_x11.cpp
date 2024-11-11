@@ -45,7 +45,7 @@
 #include <qapplication_p.h>
 #include <qsystemtrayicon_p.h>
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
 
 static inline unsigned long locateSystemTray()
 {
@@ -181,7 +181,7 @@ void QSystemTrayIconSys::mousePressEvent( QMouseEvent *ev )
 {
     QPoint globalPos = ev->globalPos();
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
     if ( ev->button() == Qt::RightButton && q->contextMenu() )
     {
@@ -228,7 +228,7 @@ bool QSystemTrayIconSys::event( QEvent *e )
             QApplication::sendEvent( q, e );
             break;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 
         case QEvent::Wheel:
             return QApplication::sendEvent( q, e );
@@ -393,7 +393,7 @@ void QSystemTrayIconPrivate::updateToolTip_sys()
         return;
     }
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     sys->setToolTip( toolTip );
 #endif
 }
@@ -448,4 +448,4 @@ void QSystemTrayIconPrivate::showMessage_sys( const QString &title, const QStrin
                               sys->globalGeometry().center(), msecs );
 }
 
-#endif //QT_NO_SYSTEMTRAYICON
+#endif //LSCS_NO_SYSTEMTRAYICON

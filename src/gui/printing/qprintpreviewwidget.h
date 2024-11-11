@@ -27,7 +27,7 @@
 #include <qwidget.h>
 #include <qprinter.h>
 
-#ifndef QT_NO_PRINTPREVIEWWIDGET
+#ifndef LSCS_NO_PRINTPREVIEWWIDGET
 
 class QPrintPreviewWidgetPrivate;
 
@@ -127,6 +127,6 @@ private:
     GUI_LSCS_SLOT_2( _q_updateCurrentPage )
 };
 
-#endif // QT_NO_PRINTPREVIEWWIDGET
+#endif // LSCS_NO_PRINTPREVIEWWIDGET
 
 #endif // QPRINTPREVIEWWIDGET_H

@@ -28,7 +28,7 @@
 #include <qcoreevent.h>
 #include <qdebug.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 QAnimationGroup::QAnimationGroup( QObject *parent )
     : QAbstractAnimation( *new QAnimationGroupPrivate, parent )
@@ -193,4 +193,4 @@ void QAnimationGroupPrivate::animationRemoved( int index, QAbstractAnimation * )
     }
 }
 
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION

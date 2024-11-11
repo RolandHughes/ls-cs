@@ -30,7 +30,7 @@
 #include <qlist.h>
 #include <qstringlist.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerConsoleCommandManagerPrivate
 {
@@ -257,4 +257,4 @@ QStringList QScriptDebuggerConsoleCommandManager::completions( const QString &pr
     return result;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

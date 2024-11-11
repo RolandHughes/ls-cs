@@ -29,7 +29,7 @@
 
 
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 class QMouseEvent;
 class QWindow;
@@ -132,6 +132,6 @@ private:
     QWindow *m_current_window;
 };
 
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 #endif

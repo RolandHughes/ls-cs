@@ -35,7 +35,7 @@
 #include <QKeyEvent>
 #include <qplatformdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 #ifndef QML_FLICK_SNAPONETHRESHOLD
 #define QML_FLICK_SNAPONETHRESHOLD 30
@@ -5158,4 +5158,4 @@ QDeclarativeListViewAttached *QDeclarativeListView::qmlAttachedProperties( QObje
     return new QDeclarativeListViewAttached( obj );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

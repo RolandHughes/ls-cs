@@ -45,7 +45,7 @@ Q_DECLARE_METATYPE( QScriptDebuggerValueProperty )
 Q_DECLARE_METATYPE( QScriptDebuggerValuePropertyList )
 Q_DECLARE_METATYPE( QScriptDebuggerObjectSnapshotDelta )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
   \since 4.5
@@ -698,4 +698,4 @@ QScriptDebuggerResponse QScriptDebuggerCommandExecutor::execute(
     return response;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

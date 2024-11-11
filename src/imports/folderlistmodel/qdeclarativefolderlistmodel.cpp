@@ -27,9 +27,9 @@
 #include <QDebug>
 #include <qdeclarativecontext.h>
 
-#ifndef QT_NO_DIRMODEL
+#ifndef LSCS_NO_DIRMODEL
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeFolderListModelPrivate
 {
@@ -538,6 +538,6 @@ void QDeclarativeFolderListModel::setShowOnlyReadable( bool on )
 }
 
 //![code]
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DIRMODEL
+#endif // LSCS_NO_DIRMODEL

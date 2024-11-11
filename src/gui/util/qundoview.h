@@ -27,7 +27,7 @@
 #include <qlistview.h>
 #include <qstring.h>
 
-#ifndef QT_NO_UNDOVIEW
+#ifndef LSCS_NO_UNDOVIEW
 
 class QIcon;
 class QUndoGroup;
@@ -47,7 +47,7 @@ public:
     explicit QUndoView( QWidget *parent = nullptr );
     explicit QUndoView( QUndoStack *stack, QWidget *parent = nullptr );
 
-#ifndef QT_NO_UNDOGROUP
+#ifndef LSCS_NO_UNDOGROUP
     explicit QUndoView( QUndoGroup *group, QWidget *parent = nullptr );
 #endif
 
@@ -58,7 +58,7 @@ public:
 
     QUndoStack *stack() const;
 
-#ifndef QT_NO_UNDOGROUP
+#ifndef LSCS_NO_UNDOGROUP
     QUndoGroup *group() const;
 #endif
 
@@ -71,7 +71,7 @@ public:
     GUI_LSCS_SLOT_1( Public, void setStack( QUndoStack *stack ) )
     GUI_LSCS_SLOT_2( setStack )
 
-#ifndef QT_NO_UNDOGROUP
+#ifndef LSCS_NO_UNDOGROUP
     GUI_LSCS_SLOT_1( Public, void setGroup( QUndoGroup *group ) )
     GUI_LSCS_SLOT_2( setGroup )
 #endif
@@ -80,5 +80,5 @@ private:
     Q_DECLARE_PRIVATE( QUndoView )
 };
 
-#endif // QT_NO_UNDOVIEW
+#endif // LSCS_NO_UNDOVIEW
 #endif // QUNDOVIEW_H

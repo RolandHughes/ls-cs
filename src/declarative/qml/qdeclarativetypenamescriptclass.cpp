@@ -25,7 +25,7 @@
 #include <qdeclarativeengine_p.h>
 #include <qdeclarativetypenamecache_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct TypeNameData : public QScriptDeclarativeClass::Object
 {
@@ -182,5 +182,5 @@ void QDeclarativeTypeNameScriptClass::setProperty( Object *, const Identifier &n
     ep->objectClass->setProperty( object, n, v, context() );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

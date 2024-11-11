@@ -1,11 +1,14 @@
 add_library(LsCsVulkan SHARED "")
 add_library(LsCs::LsCsVulkan ALIAS LsCsVulkan)
 
-set_target_properties(LsCsVulkan PROPERTIES OUTPUT_NAME LsCsVulkan${BUILD_ABI})
+set_target_properties(LsCsVulkan PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 target_compile_definitions(LsCsVulkan
    PRIVATE
-   -DQT_BUILD_VULKAN_LIB
+   -DLSCS_BUILD_VULKAN_LIB
 )
 
 set(EXTRA_VULKAN_CXXFLAGS)

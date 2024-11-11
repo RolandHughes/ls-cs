@@ -30,7 +30,7 @@
 #include <QtCore/qcoreapplication.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 void QDeclarativeListModelWorkerAgent::Data::clearChange()
 {
@@ -290,5 +290,5 @@ bool QDeclarativeListModelWorkerAgent::event( QEvent *e )
     return QObject::event( e );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

@@ -53,7 +53,7 @@
 #include <qdeclarativeinfo.h>
 #include <qdeclarativetypenotavailable_p.h>
 
-#ifndef QT_NO_XMLPATTERNS
+#ifndef LSCS_NO_XMLPATTERNS
 #include <qdeclarativexmllistmodel_p.h>
 #endif
 
@@ -101,7 +101,7 @@ void QDeclarativeUtilModule::defineModule()
     qmlRegisterType<QDeclarativeState>( "QtQuick", 1, 0, "State" );
     qmlRegisterType<QDeclarativeStateChangeScript>( "QtQuick", 1, 0, "StateChangeScript" );
     qmlRegisterType<QDeclarativeListElement>( "QtQuick", 1, 0, "ListElement" );
-#ifdef QT_NO_XMLPATTERNS
+#ifdef LSCS_NO_XMLPATTERNS
     qmlRegisterTypeNotAvailable( "QtQuick", 1, 0, "XmlListModel",
                                  qApp->translate( "QDeclarativeXmlListModel", "Qt was built without support for xmlpatterns" ) );
     qmlRegisterTypeNotAvailable( "QtQuick", 1, 0, "XmlRole",
@@ -118,7 +118,7 @@ void QDeclarativeUtilModule::defineModule()
 
 void QDeclarativeUtilModule::defineModuleCompat()
 {
-#ifndef QT_NO_IMPORT_QT47_QML
+#ifndef LSCS_NO_IMPORT_QT47_QML
 
     if ( QApplication::type() != QApplication::Tty )
     {
@@ -156,7 +156,7 @@ void QDeclarativeUtilModule::defineModuleCompat()
     qmlRegisterType<QDeclarativeStateChangeScript>( "Qt", 4, 7, "StateChangeScript" );
     qmlRegisterType<QDeclarativeListElement>( "Qt", 4, 7, "ListElement" );
 
-#ifdef QT_NO_XMLPATTERNS
+#ifdef LSCS_NO_XMLPATTERNS
     qmlRegisterTypeNotAvailable( "Qt", 4, 7, "XmlListModel",
                                  qApp->translate( "QDeclarativeXmlListModel", "Qt was built without support for xmlpatterns" ) );
     qmlRegisterTypeNotAvailable( "Qt", 4, 7, "XmlRole",

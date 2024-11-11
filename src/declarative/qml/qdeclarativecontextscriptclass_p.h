@@ -27,7 +27,7 @@
 #include <qdeclarativetypenamecache_p.h>
 #include <qscriptdeclarativeclass_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 class QDeclarativeContext;
@@ -72,7 +72,7 @@ private:
     uint m_id;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVECONTEXTSCRIPTCLASS_P_H
 

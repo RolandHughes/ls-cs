@@ -23,7 +23,7 @@
 
 #include <qcompleter_p.h>
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
 #include <qapplication.h>
 #include <qdesktopwidget.h>
@@ -477,11 +477,11 @@ QMatchData QCompletionEngine::filterHistory()
     bool isDirModel = false;
     bool isFsModel  = false;
 
-#ifndef QT_NO_DIRMODEL
+#ifndef LSCS_NO_DIRMODEL
     isDirModel = ( qobject_cast<QDirModel *>( source ) != nullptr );
 #endif
 
-#ifndef QT_NO_FILESYSTEMMODEL
+#ifndef LSCS_NO_FILESYSTEMMODEL
     isFsModel = ( qobject_cast<QFileSystemModel *>( source ) != nullptr );
 
 #endif
@@ -963,7 +963,7 @@ void QCompleterPrivate::init( QAbstractItemModel *obj )
     QObject::connect( proxy, &QCompletionModel::rowsAdded, q, &QCompleter::_q_autoResizePopup );
     q->setModel( obj );
 
-#ifdef QT_NO_LISTVIEW
+#ifdef LSCS_NO_LISTVIEW
     q->setCompletionMode( QCompleter::InlineCompletion );
 #else
     q->setCompletionMode( QCompleter::PopupCompletion );
@@ -1043,7 +1043,7 @@ void QCompleterPrivate::_q_complete( QModelIndex index, bool highlighted )
         si = si.sibling( si.row(), column ); // for clicked()
         completion = q->pathFromIndex( si );
 
-#ifndef QT_NO_DIRMODEL
+#ifndef LSCS_NO_DIRMODEL
 
         // add a trailing separator in inline
         if ( mode == QCompleter::InlineCompletion )
@@ -1056,7 +1056,7 @@ void QCompleterPrivate::_q_complete( QModelIndex index, bool highlighted )
 
 #endif
 
-#ifndef QT_NO_FILESYSTEMMODEL
+#ifndef LSCS_NO_FILESYSTEMMODEL
 
         // add a trailing separator in inline
         if ( mode == QCompleter::InlineCompletion )
@@ -1193,7 +1193,7 @@ QCompleter::QCompleter( QAbstractItemModel *model, QObject *parent )
     d->init( model );
 }
 
-#ifndef QT_NO_STRINGLISTMODEL
+#ifndef LSCS_NO_STRINGLISTMODEL
 
 QCompleter::QCompleter( const QStringList &list, QObject *parent )
     : QObject( parent ), d_ptr( new QCompleterPrivate )
@@ -1249,7 +1249,7 @@ void QCompleter::setModel( QAbstractItemModel *model )
 
     QAbstractItemModel *oldModel = d->proxy->sourceModel();
 
-#ifndef QT_NO_FILESYSTEMMODEL
+#ifndef LSCS_NO_FILESYSTEMMODEL
 
     if ( dynamic_cast<const QFileSystemModel *>( oldModel ) )
     {
@@ -1270,7 +1270,7 @@ void QCompleter::setModel( QAbstractItemModel *model )
         delete oldModel;
     }
 
-#ifndef QT_NO_DIRMODEL
+#ifndef LSCS_NO_DIRMODEL
 
     if ( dynamic_cast<QDirModel *>( model ) )
     {
@@ -1283,7 +1283,7 @@ void QCompleter::setModel( QAbstractItemModel *model )
 
 #endif
 
-#ifndef QT_NO_FILESYSTEMMODEL
+#ifndef LSCS_NO_FILESYSTEMMODEL
     QFileSystemModel *fsModel = qobject_cast<QFileSystemModel *>( model );
 
     if ( fsModel )
@@ -1413,7 +1413,7 @@ void QCompleter::setPopup( QAbstractItemView *popup )
     popup->installEventFilter( this );
     popup->setItemDelegate( new QCompleterItemDelegate( popup ) );
 
-#ifndef QT_NO_LISTVIEW
+#ifndef LSCS_NO_LISTVIEW
 
     if ( QListView *listView = qobject_cast<QListView *>( popup ) )
     {
@@ -1434,7 +1434,7 @@ QAbstractItemView *QCompleter::popup() const
 {
     Q_D( const QCompleter );
 
-#ifndef QT_NO_LISTVIEW
+#ifndef LSCS_NO_LISTVIEW
 
     if ( ! d->popup && completionMode() != QCompleter::InlineCompletion )
     {
@@ -1566,7 +1566,7 @@ bool QCompleter::eventFilter( QObject *o, QEvent *e )
             {
                 // widget lost focus, hide the popup
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
                 if ( d->widget && ( !d->widget->hasFocus()
                                     || ( QApplication::keypadNavigationEnabled() && ! d->widget->hasEditFocus() ) ) )
                 {
@@ -1596,7 +1596,7 @@ bool QCompleter::eventFilter( QObject *o, QEvent *e )
             switch ( key )
             {
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
                 case Qt::Key_Select:
                     if ( !QApplication::keypadNavigationEnabled() )
@@ -1637,7 +1637,7 @@ bool QCompleter::eventFilter( QObject *o, QEvent *e )
             return true;
         }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         case QEvent::KeyRelease:
         {
@@ -1663,7 +1663,7 @@ bool QCompleter::eventFilter( QObject *o, QEvent *e )
 
         case QEvent::MouseButtonPress:
         {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
             if ( QApplication::keypadNavigationEnabled() )
             {
@@ -1798,7 +1798,7 @@ void QCompleter::setCompletionColumn( int column )
         return;
     }
 
-#ifndef QT_NO_LISTVIEW
+#ifndef LSCS_NO_LISTVIEW
 
     if ( QListView *listView = qobject_cast<QListView *>( d->popup ) )
     {
@@ -1943,11 +1943,11 @@ QString QCompleter::pathFromIndex( const QModelIndex &index ) const
     bool isDirModel = false;
     bool isFsModel = false;
 
-#ifndef QT_NO_DIRMODEL
+#ifndef LSCS_NO_DIRMODEL
     isDirModel = qobject_cast<QDirModel *>( d->proxy->sourceModel() ) != nullptr;
 #endif
 
-#ifndef QT_NO_FILESYSTEMMODEL
+#ifndef LSCS_NO_FILESYSTEMMODEL
     isFsModel = qobject_cast<QFileSystemModel *>( d->proxy->sourceModel() ) != nullptr;
 #endif
 
@@ -1968,7 +1968,7 @@ QString QCompleter::pathFromIndex( const QModelIndex &index ) const
             t = sourceModel->data( idx, Qt::EditRole ).toString();
         }
 
-#ifndef QT_NO_FILESYSTEMMODEL
+#ifndef LSCS_NO_FILESYSTEMMODEL
         else
         {
             t = sourceModel->data( idx, QFileSystemModel::FileNameRole ).toString();
@@ -2001,14 +2001,14 @@ QStringList QCompleter::splitPath( const QString &path ) const
     bool isDirModel = false;
     bool isFsModel  = false;
 
-#ifndef QT_NO_DIRMODEL
+#ifndef LSCS_NO_DIRMODEL
     Q_D( const QCompleter );
     isDirModel = qobject_cast<QDirModel *>( d->proxy->sourceModel() ) != nullptr;
 #endif
 
-#ifndef QT_NO_FILESYSTEMMODEL
+#ifndef LSCS_NO_FILESYSTEMMODEL
 
-#ifdef QT_NO_DIRMODEL
+#ifdef LSCS_NO_DIRMODEL
     Q_D( const QCompleter );
 #endif
 
@@ -2090,4 +2090,4 @@ void QCompleter::_q_fileSystemModelDirectoryLoaded( const QString &path )
     d->_q_fileSystemModelDirectoryLoaded( path );
 }
 
-#endif // QT_NO_COMPLETER
+#endif // LSCS_NO_COMPLETER

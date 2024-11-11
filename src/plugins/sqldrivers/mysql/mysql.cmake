@@ -14,7 +14,11 @@ if(WITH_MYSQL_PLUGIN AND MySQL_FOUND)
    add_library(LsCsSqlMySql MODULE "")
    add_library(LsCs::LsCsSqlMySql ALIAS LsCsSqlMySql)
 
-   set_target_properties(LsCsSqlMySql PROPERTIES OUTPUT_NAME LsCsSqlMySql${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsSqlMySql PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    include_directories(${MySQL_INCLUDE_DIRS})
 
@@ -39,7 +43,7 @@ if(WITH_MYSQL_PLUGIN AND MySQL_FOUND)
    target_compile_definitions(LsCsSqlMySql
       PRIVATE
       -DIN_TRUE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)

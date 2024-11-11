@@ -28,7 +28,7 @@
 #include <qplatform_window.h>
 #include <qsurfaceformat.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 #include <qplatform_openglcontext.h>
 #include <qopenglcontext.h>
 #endif
@@ -43,7 +43,7 @@
 #include <qhighdpiscaling_p.h>
 #include <qevent_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #  include <qaccessible.h>
 #endif
 
@@ -404,7 +404,7 @@ void QWindow::setVisible( bool visible )
         }
     }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( visible && ( d->hasCursor || QGuiApplication::overrideCursor() ) )
     {
@@ -1513,7 +1513,7 @@ bool QWindow::event( QEvent *ev )
         case QEvent::FocusIn:
         {
             focusInEvent( static_cast<QFocusEvent *>( ev ) );
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
             QAccessible::State state;
             state.active = true;
             QAccessibleStateChangeEvent event( this, state );
@@ -1525,7 +1525,7 @@ bool QWindow::event( QEvent *ev )
         case QEvent::FocusOut:
         {
             focusOutEvent( static_cast<QFocusEvent *>( ev ) );
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
             QAccessible::State state;
             state.active = true;
             QAccessibleStateChangeEvent event( this, state );
@@ -1534,7 +1534,7 @@ bool QWindow::event( QEvent *ev )
             break;
         }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 
         case QEvent::Wheel:
             wheelEvent( static_cast<QWheelEvent *>( ev ) );
@@ -1573,7 +1573,7 @@ bool QWindow::event( QEvent *ev )
             break;
         }
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 
         case QEvent::TabletPress:
         case QEvent::TabletMove:
@@ -1605,7 +1605,7 @@ bool QWindow::event( QEvent *ev )
         {
             if ( ( static_cast<QPlatformSurfaceEvent *>( ev ) )->surfaceEventType() == QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed )
             {
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
                 QOpenGLContext *context = QOpenGLContext::currentContext();
 
                 if ( context && context->surface() == static_cast<QSurface *>( this ) )
@@ -1690,7 +1690,7 @@ void QWindow::mouseMoveEvent( QMouseEvent *ev )
     ev->ignore();
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 
 void QWindow::wheelEvent( QWheelEvent *ev )
 {
@@ -1703,7 +1703,7 @@ void QWindow::touchEvent( QTouchEvent *ev )
     ev->ignore();
 }
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 
 void QWindow::tabletEvent( QTabletEvent *ev )
 {
@@ -1751,7 +1751,7 @@ QPoint QWindow::mapFromGlobal( const QPoint &pos ) const
 }
 
 
-Q_GUI_EXPORT QWindowPrivate *qt_window_private( QWindow *window )
+Q_GUI_EXPORT QWindowPrivate *lscs_window_private( QWindow *window )
 {
     return window->d_func();
 }
@@ -1868,7 +1868,7 @@ void QWindowPrivate::_q_clearAlert()
     }
 }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
 void QWindow::setCursor( const QCursor &cursor )
 {
@@ -1952,7 +1952,7 @@ bool QWindowPrivate::applyCursor()
 
     return false;
 }
-#endif // QT_NO_CURSOR
+#endif // LSCS_NO_CURSOR
 
 QVulkanInstance *QWindow::vulkanInstance() const
 {

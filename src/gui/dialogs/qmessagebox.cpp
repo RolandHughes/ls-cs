@@ -23,7 +23,7 @@
 
 #include <qmessagebox.h>
 
-#ifndef QT_NO_MESSAGEBOX
+#ifndef LSCS_NO_MESSAGEBOX
 
 #include <qaccessible.h>
 #include <qapplication.h>
@@ -50,12 +50,12 @@
 #include <qlabel_p.h>
 
 #ifdef Q_OS_WIN
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qplatform_nativeinterface.h>
 #endif
 
 #if defined(Q_OS_WIN)
-HMENU qt_getWindowsSystemMenu( const QWidget *w )
+HMENU lscs_getWindowsSystemMenu( const QWidget *w )
 {
     if ( QWindow *window = QApplicationPrivate::windowForWidget( w ) )
         if ( void *handle = QGuiApplication::platformNativeInterface()->nativeResourceForWindow( "handle", window ) )
@@ -121,7 +121,7 @@ void lscs_require_version( int argc, char *argv[], const char *str )
     }
 }
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
 class QMessageBoxDetailsText : public QWidget
 {
@@ -136,7 +136,7 @@ public:
         void contextMenuEvent( QContextMenuEvent *e )  override
         {
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
             QMenu *menu = createStandardContextMenu();
             menu->setAttribute( Qt::WA_DeleteOnClose );
             menu->popup( e->globalPos() );
@@ -179,7 +179,7 @@ public:
 
     bool copy()
     {
-#ifdef QT_NO_CLIPBOARD
+#ifdef LSCS_NO_CLIPBOARD
         return false;
 #else
 
@@ -208,7 +208,7 @@ private:
     bool copyAvailable;
     TextEdit *textEdit;
 };
-#endif // QT_NO_TEXTEDIT
+#endif // LSCS_NO_TEXTEDIT
 
 class DetailButton : public QPushButton
 {
@@ -254,7 +254,7 @@ public:
     QMessageBoxPrivate()
         : escapeButton( nullptr ), defaultButton( nullptr ), checkbox( nullptr ),
           clickedButton( nullptr ), detailsButton( nullptr ),
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
           detailsText( nullptr ),
 #endif
           compatMode( false ), autoAddOkButton( true ), detectedEscapeButton( nullptr ), informativeLabel( nullptr ),
@@ -302,7 +302,7 @@ public:
     QAbstractButton *clickedButton;
     DetailButton *detailsButton;
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
     QMessageBoxDetailsText *detailsText;
 #endif
 
@@ -327,7 +327,7 @@ void QMessageBoxPrivate::init( const QString &title, const QString &text )
     Q_Q( QMessageBox );
 
     label = new QLabel;
-    label->setObjectName( "qt_msgbox_label" );
+    label->setObjectName( "lscs_msgbox_label" );
     label->setTextInteractionFlags( Qt::TextInteractionFlags( q->style()->styleHint( QStyle::SH_MessageBox_TextInteractionFlags,
                                     nullptr, q ) ) );
 
@@ -335,11 +335,11 @@ void QMessageBoxPrivate::init( const QString &title, const QString &text )
     label->setOpenExternalLinks( true );
 
     iconLabel = new QLabel( q );
-    iconLabel->setObjectName( "qt_msgboxex_icon_label" );
+    iconLabel->setObjectName( "lscs_msgboxex_icon_label" );
     iconLabel->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
 
     buttonBox = new QDialogButtonBox;
-    buttonBox->setObjectName( "qt_msgbox_buttonbox" );
+    buttonBox->setObjectName( "lscs_msgbox_buttonbox" );
     buttonBox->setCenterButtons( q->style()->styleHint( QStyle::SH_MessageBox_CenterButtons, nullptr, q ) );
 
     QObject::connect( buttonBox, &QDialogButtonBox::clicked, q, &QMessageBox::_q_buttonClicked );
@@ -594,7 +594,7 @@ void QMessageBoxPrivate::_q_buttonClicked( QAbstractButton *button )
 {
     Q_Q( QMessageBox );
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
     if ( detailsButton && detailsText && button == detailsButton )
     {
@@ -1115,8 +1115,8 @@ void QMessageBox::keyPressEvent( QKeyEvent *e )
         return;
     }
 
-#if !defined(QT_NO_CLIPBOARD) && !defined(QT_NO_SHORTCUT)
-#if !defined(QT_NO_TEXTEDIT)
+#if !defined(LSCS_NO_CLIPBOARD) && !defined(LSCS_NO_SHORTCUT)
+#if !defined(LSCS_NO_TEXTEDIT)
 
     if ( e == QKeySequence::Copy )
     {
@@ -1133,7 +1133,7 @@ void QMessageBox::keyPressEvent( QKeyEvent *e )
         return;
     }
 
-#endif // !QT_NO_TEXTEDIT
+#endif // !LSCS_NO_TEXTEDIT
 #if defined(Q_OS_WIN)
 
     if ( e == QKeySequence::Copy )
@@ -1160,7 +1160,7 @@ void QMessageBox::keyPressEvent( QKeyEvent *e )
 
         textToCopy += buttonTexts + separator;
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
         if ( d->detailsText )
         {
@@ -1175,8 +1175,8 @@ void QMessageBox::keyPressEvent( QKeyEvent *e )
 
 #endif
 
-#endif // !QT_NO_CLIPBOARD && !QT_NO_SHORTCUT
-#ifndef QT_NO_SHORTCUT
+#endif // !LSCS_NO_CLIPBOARD && !LSCS_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( !( e->modifiers() & ( Qt::AltModifier | Qt::ControlModifier | Qt::MetaModifier ) ) )
     {
@@ -1249,14 +1249,14 @@ void QMessageBox::showEvent( QShowEvent *e )
     d->detectEscapeButton();
     d->updateSize();
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleEvent event( this, QAccessible::Alert );
     QAccessible::updateAccessibility( &event );
 #endif
 
 #ifdef Q_OS_WIN
 
-    if ( const HMENU systemMenu = qt_getWindowsSystemMenu( this ) )
+    if ( const HMENU systemMenu = lscs_getWindowsSystemMenu( this ) )
     {
         EnableMenuItem( systemMenu, SC_CLOSE, d->detectedEscapeButton ?
                         MF_BYCOMMAND | MF_ENABLED : MF_BYCOMMAND | MF_GRAYED );
@@ -1588,7 +1588,7 @@ int QMessageBoxPrivate::showOldMessageBox( QWidget *parent, QMessageBox::Icon ic
 
 void QMessageBoxPrivate::retranslateStrings()
 {
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
     if ( detailsButton )
     {
@@ -1675,7 +1675,7 @@ int QMessageBox::critical( QWidget *parent, const QString &title, const QString 
             button0Text, button1Text, button2Text, defaultButtonNumber, escapeButtonNumber );
 }
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
 QString QMessageBox::detailedText() const
 {
@@ -1730,7 +1730,7 @@ void QMessageBox::setDetailedText( const QString &text )
 
     d->setupLayout();
 }
-#endif // QT_NO_TEXTEDIT
+#endif // LSCS_NO_TEXTEDIT
 
 QString QMessageBox::informativeText() const
 {
@@ -1758,7 +1758,7 @@ void QMessageBox::setInformativeText( const QString &text )
         if ( !d->informativeLabel )
         {
             QLabel *label = new QLabel;
-            label->setObjectName( "qt_msgbox_informativelabel" );
+            label->setObjectName( "lscs_msgbox_informativelabel" );
             label->setTextInteractionFlags( Qt::TextInteractionFlags( style()->styleHint( QStyle::SH_MessageBox_TextInteractionFlags, nullptr,
                                             this ) ) );
             label->setAlignment( Qt::AlignTop | Qt::AlignLeft );
@@ -1921,4 +1921,4 @@ QPixmap QMessageBox::standardIcon( Icon icon )
     return QMessageBoxPrivate::standardIcon( icon, nullptr );
 }
 
-#endif // QT_NO_MESSAGEBOX
+#endif // LSCS_NO_MESSAGEBOX

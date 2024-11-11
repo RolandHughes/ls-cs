@@ -23,7 +23,7 @@
 
 #include <qgraphicssceneevent.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qgesture.h>
 #include <qgraphicsitem.h>
@@ -931,4 +931,4 @@ void QGraphicsSceneMoveEvent::setNewPos( const QPointF &pos )
     d->newPos = pos;
 }
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW

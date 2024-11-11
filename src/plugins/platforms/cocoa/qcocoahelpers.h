@@ -24,7 +24,7 @@
 #ifndef QCOCOAHELPERS_H
 #define QCOCOAHELPERS_H
 
-#include <qt_mac_p.h>
+#include <lscs_mac_p.h>
 #include <qapplication_p.h>
 #include <qscreen.h>
 #include <qstring.h>
@@ -32,63 +32,63 @@
 class QPixmap;
 
 // Conversion functions
-QStringList qt_mac_NSArrayToQStringList( void *nsarray );
-void *qt_mac_QStringListToNSMutableArrayVoid( const QStringList &list );
+QStringList lscs_mac_NSArrayToQStringList( void *nsarray );
+void *lscs_mac_QStringListToNSMutableArrayVoid( const QStringList &list );
 
-inline NSMutableArray *qt_mac_QStringListToNSMutableArray( const QStringList &qstrlist )
+inline NSMutableArray *lscs_mac_QStringListToNSMutableArray( const QStringList &qstrlist )
 {
-    return reinterpret_cast<NSMutableArray *>( qt_mac_QStringListToNSMutableArrayVoid( qstrlist ) );
+    return reinterpret_cast<NSMutableArray *>( lscs_mac_QStringListToNSMutableArrayVoid( qstrlist ) );
 }
 
-NSImage *qt_mac_cgimage_to_nsimage( CGImageRef iamge );
-NSImage *qt_mac_create_nsimage( const QPixmap &pm );
-NSImage *qt_mac_create_nsimage( const QIcon &icon, int defaultSize = 0 );
-CGImageRef qt_mac_toCGImage( const QImage &qImage );
-CGImageRef qt_mac_toCGImageMask( const QImage &qImage );
-QImage qt_mac_toQImage( CGImageRef image );
+NSImage *lscs_mac_cgimage_to_nsimage( CGImageRef iamge );
+NSImage *lscs_mac_create_nsimage( const QPixmap &pm );
+NSImage *lscs_mac_create_nsimage( const QIcon &icon, int defaultSize = 0 );
+CGImageRef lscs_mac_toCGImage( const QImage &qImage );
+CGImageRef lscs_mac_toCGImageMask( const QImage &qImage );
+QImage lscs_mac_toQImage( CGImageRef image );
 
-NSSize qt_mac_toNSSize( const QSize &qtSize );
-NSRect qt_mac_toNSRect( const QRect &rect );
-QRect qt_mac_toQRect( const NSRect &rect );
+NSSize lscs_mac_toNSSize( const QSize &qtSize );
+NSRect lscs_mac_toNSRect( const QRect &rect );
+QRect lscs_mac_toQRect( const NSRect &rect );
 
-QColor qt_mac_toQColor( const NSColor *color );
-QColor qt_mac_toQColor( CGColorRef color );
+QColor lscs_mac_toQColor( const NSColor *color );
+QColor lscs_mac_toQColor( CGColorRef color );
 
 
 // Creates a mutable shape, it's the caller's responsibility to release.
-HIMutableShapeRef qt_mac_QRegionToHIMutableShape( const QRegion &region );
+HIMutableShapeRef lscs_mac_QRegionToHIMutableShape( const QRegion &region );
 
-void qt_mac_drawCGImage( CGContextRef inContext, const CGRect *inBounds, CGImageRef inImage );
+void lscs_mac_drawCGImage( CGContextRef inContext, const CGRect *inBounds, CGImageRef inImage );
 
-NSDragOperation qt_mac_mapDropAction( Qt::DropAction action );
-NSDragOperation qt_mac_mapDropActions( Qt::DropActions actions );
-Qt::DropAction qt_mac_mapNSDragOperation( NSDragOperation nsActions );
-Qt::DropActions qt_mac_mapNSDragOperations( NSDragOperation nsActions );
+NSDragOperation lscs_mac_mapDropAction( Qt::DropAction action );
+NSDragOperation lscs_mac_mapDropActions( Qt::DropActions actions );
+Qt::DropAction lscs_mac_mapNSDragOperation( NSDragOperation nsActions );
+Qt::DropActions lscs_mac_mapNSDragOperations( NSDragOperation nsActions );
 
 // Misc
-void qt_mac_transformProccessToForegroundApplication();
-QString qt_mac_removeMnemonics( const QString &original );
-CGColorSpaceRef qt_mac_genericColorSpace();
-CGColorSpaceRef qt_mac_displayColorSpace( const QWidget *widget );
-QString qt_mac_applicationName();
+void lscs_mac_transformProccessToForegroundApplication();
+QString lscs_mac_removeMnemonics( const QString &original );
+CGColorSpaceRef lscs_mac_genericColorSpace();
+CGColorSpaceRef lscs_mac_displayColorSpace( const QWidget *widget );
+QString lscs_mac_applicationName();
 
-int qt_mac_flipYCoordinate( int y );
-qreal qt_mac_flipYCoordinate( qreal y );
-QPointF qt_mac_flipPoint( const NSPoint &p );
-NSPoint qt_mac_flipPoint( const QPoint &p );
-NSPoint qt_mac_flipPoint( const QPointF &p );
+int lscs_mac_flipYCoordinate( int y );
+qreal lscs_mac_flipYCoordinate( qreal y );
+QPointF lscs_mac_flipPoint( const NSPoint &p );
+NSPoint lscs_mac_flipPoint( const QPoint &p );
+NSPoint lscs_mac_flipPoint( const QPointF &p );
 
-NSRect qt_mac_flipRect( const QRect &rect );
+NSRect lscs_mac_flipRect( const QRect &rect );
 
 Qt::MouseButton cocoaButton2QtButton( NSInteger buttonNum );
 
-bool qt_mac_execute_apple_script( const char *script, long script_len, AEDesc *ret );
-bool qt_mac_execute_apple_script( const char *script, AEDesc *ret );
-bool qt_mac_execute_apple_script( const QString &script, AEDesc *ret );
+bool lscs_mac_execute_apple_script( const char *script, long script_len, AEDesc *ret );
+bool lscs_mac_execute_apple_script( const char *script, AEDesc *ret );
+bool lscs_mac_execute_apple_script( const QString &script, AEDesc *ret );
 
 // strip out '&' characters, and convert "&&" to a single '&', in menu
 // text - since menu text is sometimes decorated with these for Windows accelerators.
-QString qt_mac_removeAmpersandEscapes( QString s );
+QString lscs_mac_removeAmpersandEscapes( QString s );
 
 static constexpr const auto QtCocoaEventSubTypeWakeup      = SHRT_MAX;
 static constexpr const auto QtCocoaEventSubTypePostMessage = SHRT_MAX - 1;
@@ -118,10 +118,10 @@ public:
     }
 };
 
-CGContextRef qt_mac_cg_context( QPaintDevice *pdev );
+CGContextRef lscs_mac_cg_context( QPaintDevice *pdev );
 
 template<typename T>
-T qt_mac_resolveOption( const T &fallback, const QByteArray &environment )
+T lscs_mac_resolveOption( const T &fallback, const QByteArray &environment )
 {
     // check for environment variable
     if ( ! environment.isEmpty() )
@@ -138,7 +138,7 @@ T qt_mac_resolveOption( const T &fallback, const QByteArray &environment )
 }
 
 template<typename T>
-T qt_mac_resolveOption( const T &fallback, QWindow *window, const QByteArray &property, const QByteArray &environment )
+T lscs_mac_resolveOption( const T &fallback, QWindow *window, const QByteArray &property, const QByteArray &environment )
 {
     // check for environment variable
     if ( ! environment.isEmpty() )

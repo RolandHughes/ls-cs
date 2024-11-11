@@ -26,7 +26,7 @@
 
 #include <qframe.h>
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
 
 class QGroupBoxPrivate;
 class QStyleOptionGroupBox;
@@ -105,6 +105,6 @@ private:
     GUI_LSCS_SLOT_2( _q_setChildrenEnabled )
 };
 
-#endif // QT_NO_GROUPBOX
+#endif // LSCS_NO_GROUPBOX
 
 #endif

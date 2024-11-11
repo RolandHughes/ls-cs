@@ -2,8 +2,7 @@
 
 class QLabel;
 class QVBoxLayout;
-class QPushButton;
-class QPlainTextEdit;
+class QTextEdit;
 
 class MainWindow : public QMainWindow
 {
@@ -12,14 +11,12 @@ public:
     MainWindow( QWidget *parent=0 );
     ~MainWindow();
 
-    void printSomething();
-
 private:
+    void populateTextEdit();
 
     QLabel         *m_hello;
     QVBoxLayout    *m_layout;
     QWidget        *m_widget;
-    QPushButton    *m_printBtn;
-    QPlainTextEdit *m_textEdit;
+    QTextEdit *m_textEdit;
 
 };

@@ -2913,7 +2913,7 @@ bool QScriptParser::parse()
                 {
                     QString name = sym( 1 ).toString();
 
-                    if ( ( name == QLatin1String( "qsTranslate" ) ) || ( name == "QT_TRANSLATE_NOOP" ) )
+                    if ( ( name == QLatin1String( "qsTranslate" ) ) || ( name == "LSCS_TRANSLATE_NOOP" ) )
                     {
                         if ( !sourcetext.isEmpty() )
                         {
@@ -2950,7 +2950,7 @@ bool QScriptParser::parse()
                         msgid.clear();
                         extra.clear();
                     }
-                    else if ( ( name == QLatin1String( "qsTr" ) ) || ( name == QLatin1String( "QT_TR_NOOP" ) ) )
+                    else if ( ( name == QLatin1String( "qsTr" ) ) || ( name == QLatin1String( "LSCS_TR_NOOP" ) ) )
                     {
                         if ( !sourcetext.isEmpty() )
                         {
@@ -2984,7 +2984,7 @@ bool QScriptParser::parse()
                         msgid.clear();
                         extra.clear();
                     }
-                    else if ( ( name == QLatin1String( "qsTrId" ) ) || ( name == QLatin1String( "QT_TRID_NOOP" ) ) )
+                    else if ( ( name == QLatin1String( "qsTrId" ) ) || ( name == QLatin1String( "LSCS_TRID_NOOP" ) ) )
                     {
                         if ( !msgid.isEmpty() )
                         {

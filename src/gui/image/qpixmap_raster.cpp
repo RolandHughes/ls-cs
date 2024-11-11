@@ -38,7 +38,7 @@
 #include <qwidget_p.h>
 #include <qdrawhelper_p.h>
 
-QPixmap qt_toRasterPixmap( const QImage &image )
+QPixmap lscs_toRasterPixmap( const QImage &image )
 {
     QPlatformPixmap *data =
         new QRasterPlatformPixmap( image.depth() == 1
@@ -49,7 +49,7 @@ QPixmap qt_toRasterPixmap( const QImage &image )
     return QPixmap( data );
 }
 
-QPixmap qt_toRasterPixmap( const QPixmap &pixmap )
+QPixmap lscs_toRasterPixmap( const QPixmap &pixmap )
 {
     if ( pixmap.isNull() )
     {
@@ -61,7 +61,7 @@ QPixmap qt_toRasterPixmap( const QPixmap &pixmap )
         return pixmap;
     }
 
-    return qt_toRasterPixmap( pixmap.toImage() );
+    return lscs_toRasterPixmap( pixmap.toImage() );
 }
 
 QRasterPlatformPixmap::QRasterPlatformPixmap( PixelType type )
@@ -151,7 +151,7 @@ void QRasterPlatformPixmap::fromImageReader( QImageReader *imageReader, Qt::Imag
 }
 
 // from qwindowsurface.cpp
-extern void qt_scrollRectInImage( QImage &img, const QRect &rect, const QPoint &offset );
+extern void lscs_scrollRectInImage( QImage &img, const QRect &rect, const QPoint &offset );
 
 void QRasterPlatformPixmap::copy( const QPlatformPixmap *data, const QRect &rect )
 {
@@ -162,7 +162,7 @@ bool QRasterPlatformPixmap::scroll( int dx, int dy, const QRect &rect )
 {
     if ( !image.isNull() )
     {
-        qt_scrollRectInImage( image, rect, QPoint( dx, dy ) );
+        lscs_scrollRectInImage( image, rect, QPoint( dx, dy ) );
     }
 
     return true;
@@ -195,9 +195,9 @@ void QRasterPlatformPixmap::fill( const QColor &color )
         {
             if ( ! image.hasAlphaChannel() )
             {
-                QImage::Format toFormat = qt_alphaVersionForPainting( image.format() );
+                QImage::Format toFormat = lscs_alphaVersionForPainting( image.format() );
 
-                if ( !image.isNull() && qt_depthForFormat( image.format() ) == qt_depthForFormat( toFormat ) )
+                if ( !image.isNull() && lscs_depthForFormat( image.format() ) == lscs_depthForFormat( toFormat ) )
                 {
                     image.detach();
                     image.d->format = toFormat;
@@ -303,10 +303,10 @@ int QRasterPlatformPixmap::metric( QPaintDevice::PaintDeviceMetric metric ) cons
             return h;
 
         case QPaintDevice::PdmWidthMM:
-            return qRound( d->width * 25.4 / qt_defaultDpiX() );
+            return qRound( d->width * 25.4 / lscs_defaultDpiX() );
 
         case QPaintDevice::PdmHeightMM:
-            return qRound( d->height * 25.4 / qt_defaultDpiY() );
+            return qRound( d->height * 25.4 / lscs_defaultDpiY() );
 
         case QPaintDevice::PdmNumColors:
             return d->colortable.size();
@@ -315,16 +315,16 @@ int QRasterPlatformPixmap::metric( QPaintDevice::PaintDeviceMetric metric ) cons
             return this->d;
 
         case QPaintDevice::PdmDpiX:
-            return qt_defaultDpiX();
+            return lscs_defaultDpiX();
 
         case QPaintDevice::PdmPhysicalDpiX:
-            return qt_defaultDpiX();
+            return lscs_defaultDpiX();
 
         case QPaintDevice::PdmDpiY:
-            return qt_defaultDpiX();
+            return lscs_defaultDpiX();
 
         case QPaintDevice::PdmPhysicalDpiY:
-            return qt_defaultDpiY();
+            return lscs_defaultDpiY();
 
         case QPaintDevice::PdmDevicePixelRatio:
             return image.devicePixelRatio();
@@ -366,7 +366,7 @@ void QRasterPlatformPixmap::createPixmapForImage( QImage &sourceImage, Qt::Image
             else
             {
                 QImage::Format opaqueFormat = QNativeImage::systemFormat();
-                QImage::Format alphaFormat = qt_alphaVersionForPainting( opaqueFormat );
+                QImage::Format alphaFormat = lscs_alphaVersionForPainting( opaqueFormat );
 
                 if ( ! sourceImage.hasAlphaChannel() )
                 {

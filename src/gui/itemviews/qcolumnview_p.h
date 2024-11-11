@@ -26,7 +26,7 @@
 
 #include <qcolumnview.h>
 
-#ifndef QT_NO_QCOLUMNVIEW
+#ifndef LSCS_NO_QCOLUMNVIEW
 
 #include <qabstractitemview_p.h>
 
@@ -156,7 +156,7 @@ public:
     bool showResizeGrips;
     int offset;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     QPropertyAnimation currentAnimation;
 #endif
 
@@ -172,7 +172,7 @@ public:
 
     void paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const override;
 };
-#endif // QT_NO_QCOLUMNVIEW
+#endif // LSCS_NO_QCOLUMNVIEW
 
 #endif //QCOLUMNVIEW_P_H
 

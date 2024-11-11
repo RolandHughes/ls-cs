@@ -29,7 +29,7 @@
 #include <qplatform_theme.h>
 #include <qguiapplication_p.h>
 
-#ifndef QT_NO_STYLE_FUSION
+#ifndef LSCS_NO_STYLE_FUSION
 
 class QFusionStylePrivate : public QCommonStylePrivate
 {
@@ -152,6 +152,6 @@ public:
 };
 
 
-#endif // QT_NO_STYLE_FUSION
+#endif // LSCS_NO_STYLE_FUSION
 
 #endif //QFUSIONSTYLE_P_P_H

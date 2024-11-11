@@ -57,9 +57,9 @@
 #include <qtextcodec.h>
 #include <qlist.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 class QEucJpCodec : public QTextCodec
 {
@@ -94,8 +94,8 @@ protected:
     const QJpUnicodeConv *conv;
 };
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QEUCJPCODEC_H

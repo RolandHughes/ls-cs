@@ -1691,7 +1691,7 @@ bool QScriptEnginePrivate::convertToNativeQObject( JSC::ExecState *exec, JSC::JS
         ( void ) result;
 
         /*  emerald (script, hold)
-           if (void *instance = qobject->qt_metacast(className)) {
+           if (void *instance = qobject->lscs_metacast(className)) {
               *result = instance;
               return true;
             }
@@ -2063,7 +2063,7 @@ JSC::JSValue QScriptEnginePrivate::propertyHelper( JSC::ExecState *exec, JSC::JS
     if ( !result && ( resolveMode & QScriptValue::ResolveScope ) )
     {
         // ### check if it's a function object and look in the scope chain
-        JSC::JSValue scope = property( exec, value, "__qt_scope__", QScriptValue::ResolveLocal );
+        JSC::JSValue scope = property( exec, value, "__lscs_scope__", QScriptValue::ResolveLocal );
 
         if ( isObject( scope ) )
         {
@@ -3249,7 +3249,7 @@ QVariant QScriptEnginePrivate::convertValue( JSC::ExecState *exec, JSC::JSValue 
 
                     /*  emerald (script, hold)
                            if (QObject *qobject = toQObject(exec, proto)) {
-                             canCast = qobject->qt_metacast(name) != 0;
+                             canCast = qobject->lscs_metacast(name) != 0;
                            }
                     */
                 }
@@ -3562,15 +3562,15 @@ void QScriptEngine::installTranslatorFunctions( const QScriptValue &object )
     JSC::asObject( jscObject )->putDirectFunction( exec, new ( exec )JSC::NativeFunctionWrapper( exec,
             glob->prototypeFunctionStructure(), 5, JSC::Identifier( exec, "qsTranslate" ), QScript::functionQsTranslate ) );
     JSC::asObject( jscObject )->putDirectFunction( exec, new ( exec )JSC::NativeFunctionWrapper( exec,
-            glob->prototypeFunctionStructure(), 2, JSC::Identifier( exec, "QT_TRANSLATE_NOOP" ), QScript::functionQsTranslateNoOp ) );
+            glob->prototypeFunctionStructure(), 2, JSC::Identifier( exec, "LSCS_TRANSLATE_NOOP" ), QScript::functionQsTranslateNoOp ) );
     JSC::asObject( jscObject )->putDirectFunction( exec, new ( exec )JSC::NativeFunctionWrapper( exec,
             glob->prototypeFunctionStructure(), 3, JSC::Identifier( exec, "qsTr" ), QScript::functionQsTr ) );
     JSC::asObject( jscObject )->putDirectFunction( exec, new ( exec )JSC::NativeFunctionWrapper( exec,
-            glob->prototypeFunctionStructure(), 1, JSC::Identifier( exec, "QT_TR_NOOP" ), QScript::functionQsTrNoOp ) );
+            glob->prototypeFunctionStructure(), 1, JSC::Identifier( exec, "LSCS_TR_NOOP" ), QScript::functionQsTrNoOp ) );
     JSC::asObject( jscObject )->putDirectFunction( exec, new ( exec )JSC::NativeFunctionWrapper( exec,
             glob->prototypeFunctionStructure(), 1, JSC::Identifier( exec, "qsTrId" ), QScript::functionQsTrId ) );
     JSC::asObject( jscObject )->putDirectFunction( exec, new ( exec )JSC::NativeFunctionWrapper( exec,
-            glob->prototypeFunctionStructure(), 1, JSC::Identifier( exec, "QT_TRID_NOOP" ), QScript::functionQsTrIdNoOp ) );
+            glob->prototypeFunctionStructure(), 1, JSC::Identifier( exec, "LSCS_TRID_NOOP" ), QScript::functionQsTrIdNoOp ) );
 
     glob->stringPrototype()->putDirectFunction( exec, new ( exec )JSC::NativeFunctionWrapper( exec,
             glob->prototypeFunctionStructure(), 1, JSC::Identifier( exec, "arg" ), QScript::stringProtoFuncArg ) );
@@ -3579,7 +3579,7 @@ void QScriptEngine::installTranslatorFunctions( const QScriptValue &object )
 QScriptValue QScriptEngine::importExtension( const QString &extension )
 {
 
-#if defined(QT_NO_SETTINGS)
+#if defined(LSCS_NO_SETTINGS)
     Q_UNUSED( extension );
 #else
     Q_D( QScriptEngine );
@@ -3809,7 +3809,7 @@ QScriptValue QScriptEngine::importExtension( const QString &extension )
 
 QStringList QScriptEngine::availableExtensions() const
 {
-#if defined(QT_NO_SETTINGS)
+#if defined(LSCS_NO_SETTINGS)
     return QStringList();
 #else
     QCoreApplication *app = QCoreApplication::instance();

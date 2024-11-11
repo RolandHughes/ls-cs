@@ -31,7 +31,7 @@
 #include <QtCore/qvariant.h>
 #include <QtCore/qdatetime.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 static uchar fromHex( const uchar c, const uchar c2 )
 {
@@ -138,7 +138,7 @@ QVariant QDeclarativeStringConverters::variantFromString( const QString &s, int 
 
         case QMetaType::QColor:
             return QVariant::fromValue( colorFromString( s, ok ) );
-#ifndef QT_NO_DATESTRING
+#ifndef LSCS_NO_DATESTRING
 
         case QMetaType::QDate:
             return QVariant::fromValue( dateFromString( s, ok ) );
@@ -148,7 +148,7 @@ QVariant QDeclarativeStringConverters::variantFromString( const QString &s, int 
 
         case QMetaType::QDateTime:
             return QVariant::fromValue( dateTimeFromString( s, ok ) );
-#endif // QT_NO_DATESTRING
+#endif // LSCS_NO_DATESTRING
 
         case QMetaType::QPointF:
             return QVariant::fromValue( pointFFromString( s, ok ) );
@@ -210,7 +210,7 @@ QColor QDeclarativeStringConverters::colorFromString( const QString &s, bool *ok
     }
 }
 
-#ifndef QT_NO_DATESTRING
+#ifndef LSCS_NO_DATESTRING
 QDate QDeclarativeStringConverters::dateFromString( const QString &s, bool *ok )
 {
     QDate d = QDate::fromString( s, Qt::ISODate );
@@ -246,7 +246,7 @@ QDateTime QDeclarativeStringConverters::dateTimeFromString( const QString &s, bo
 
     return d;
 }
-#endif // QT_NO_DATESTRING
+#endif // LSCS_NO_DATESTRING
 
 //expects input of "x,y"
 QPointF QDeclarativeStringConverters::pointFFromString( const QString &s, bool *ok )
@@ -398,4 +398,4 @@ QVector3D QDeclarativeStringConverters::vector3DFromString( const QString &s, bo
     return QVector3D( xCoord, yCoord, zCoord );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

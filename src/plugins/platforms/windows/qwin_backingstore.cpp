@@ -137,7 +137,7 @@ void QWindowsBackingStore::resize( const QSize &size, const QRegion &region )
         else
         {
             // upgrade but here we know app painting does not rely on alpha hence no need to fill
-            format = qt_maybeAlphaVersionWithSameDepth( format );
+            format = lscs_maybeAlphaVersionWithSameDepth( format );
         }
 
         QWindowsNativeImage *oldwni = m_image.data();
@@ -165,7 +165,7 @@ void QWindowsBackingStore::resize( const QSize &size, const QRegion &region )
     }
 }
 
-Q_GUI_EXPORT void qt_scrollRectInImage( QImage &img, const QRect &rect, const QPoint &offset );
+Q_GUI_EXPORT void lscs_scrollRectInImage( QImage &img, const QRect &rect, const QPoint &offset );
 
 bool QWindowsBackingStore::scroll( const QRegion &area, int dx, int dy )
 {
@@ -179,7 +179,7 @@ bool QWindowsBackingStore::scroll( const QRegion &area, int dx, int dy )
 
     for ( int i = 0; i < rects.size(); ++i )
     {
-        qt_scrollRectInImage( m_image->image(), rects.at( i ), offset );
+        lscs_scrollRectInImage( m_image->image(), rects.at( i ), offset );
     }
 
     return true;
@@ -210,7 +210,7 @@ HDC QWindowsBackingStore::getDC() const
     return nullptr;
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 QImage QWindowsBackingStore::toImage() const
 {
     if ( m_image.isNull() )

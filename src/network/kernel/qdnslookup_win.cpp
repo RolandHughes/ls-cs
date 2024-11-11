@@ -33,7 +33,7 @@
 #include <windns.h>
 
 // order dependent, must be after winsock2.h
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 void QDnsLookupRunnable::query( const int requestType, const QByteArray &name,
                                 const QHostAddress &nameserver, QDnsLookupReply *reply )

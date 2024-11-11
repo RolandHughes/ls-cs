@@ -34,7 +34,7 @@
 
 namespace {
 
-bool qt_camera_service_isValid(AVFCameraService *service)
+bool lscs_camera_service_isValid(AVFCameraService *service)
 {
     if (!service || !service->session())
         return false;
@@ -98,7 +98,7 @@ enum WriterState
 {
     Q_ASSERT(fileURL);
 
-    if (!qt_camera_service_isValid(service)) {
+    if (!lscs_camera_service_isValid(service)) {
         qDebugCamera() << Q_FUNC_INFO << "invalid camera service";
         return false;
     }

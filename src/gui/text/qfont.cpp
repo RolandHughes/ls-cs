@@ -135,7 +135,7 @@ bool QFontDef::exactMatch( const QFontDef &other ) const
              && ( this_foundry.isEmpty() || other_foundry.isEmpty() || this_foundry == other_foundry ) );
 }
 
-Q_GUI_EXPORT int qt_defaultDpiX()
+Q_GUI_EXPORT int lscs_defaultDpiX()
 {
     if ( QCoreApplication::instance()->testAttribute( Qt::AA_Use96Dpi ) )
     {
@@ -156,7 +156,7 @@ Q_GUI_EXPORT int qt_defaultDpiX()
     return 100;
 }
 
-Q_GUI_EXPORT int qt_defaultDpiY()
+Q_GUI_EXPORT int lscs_defaultDpiY()
 {
     if ( QCoreApplication::instance()->testAttribute( Qt::AA_Use96Dpi ) )
     {
@@ -177,13 +177,13 @@ Q_GUI_EXPORT int qt_defaultDpiY()
     return 100;
 }
 
-Q_GUI_EXPORT int qt_defaultDpi()
+Q_GUI_EXPORT int lscs_defaultDpi()
 {
-    return qt_defaultDpiY();
+    return lscs_defaultDpiY();
 }
 
 QFontPrivate::QFontPrivate()
-    : engineData( nullptr ), dpi( qt_defaultDpi() ), screen( 0 ),
+    : engineData( nullptr ), dpi( lscs_defaultDpi() ), screen( 0 ),
       underline( false ), overline( false ), strikeOut( false ), kerning( true ),
       capital( 0 ), letterSpacingIsAbsolute( false ), scFont( nullptr )
 {
@@ -219,13 +219,13 @@ QFontPrivate::~QFontPrivate()
     scFont = nullptr;
 }
 
-extern QRecursiveMutex *qt_fontdatabase_mutex();
+extern QRecursiveMutex *lscs_fontdatabase_mutex();
 
-#define QT_FONT_ENGINE_FROM_DATA(data, script) data->engines[script]
+#define LSCS_FONT_ENGINE_FROM_DATA(data, script) data->engines[script]
 
 QFontEngine *QFontPrivate::engineForScript( int script ) const
 {
-    QRecursiveMutexLocker locker( qt_fontdatabase_mutex() );
+    QRecursiveMutexLocker locker( lscs_fontdatabase_mutex() );
 
     if ( script <= QChar::Script_Latin )
     {
@@ -243,12 +243,12 @@ QFontEngine *QFontPrivate::engineForScript( int script ) const
         engineData = nullptr;
     }
 
-    if ( ! engineData || ! QT_FONT_ENGINE_FROM_DATA( engineData, script ) )
+    if ( ! engineData || ! LSCS_FONT_ENGINE_FROM_DATA( engineData, script ) )
     {
         QFontDatabase::load( this, script );
     }
 
-    return QT_FONT_ENGINE_FROM_DATA( engineData, script );
+    return LSCS_FONT_ENGINE_FROM_DATA( engineData, script );
 }
 
 void QFontPrivate::alterCharForCapitalization( QChar &c ) const
@@ -1363,11 +1363,11 @@ QString QFont::lastResortFamily() const
     return QString( "helvetica" );
 }
 
-extern QStringList qt_fallbacksForFamily( const QString &family, QFont::Style style,
+extern QStringList lscs_fallbacksForFamily( const QString &family, QFont::Style style,
         QFont::StyleHint styleHint, QChar::Script script );
 QString QFont::defaultFamily() const
 {
-    const QStringList fallbacks = qt_fallbacksForFamily( QString(), QFont::StyleNormal,
+    const QStringList fallbacks = lscs_fallbacksForFamily( QString(), QFont::StyleNormal,
                                   QFont::StyleHint( d->request.styleHint ), QChar::Script_Common );
 
     if ( ! fallbacks.isEmpty() )

@@ -28,7 +28,7 @@
 #include <qpalette.h>
 #include <qplatform_theme.h>
 
-QPalette *qt_mac_createSystemPalette();
-QHash<QPlatformTheme::Palette, QPalette *> qt_mac_createRolePalettes();
+QPalette *lscs_mac_createSystemPalette();
+QHash<QPlatformTheme::Palette, QPalette *> lscs_mac_createRolePalettes();
 
 #endif

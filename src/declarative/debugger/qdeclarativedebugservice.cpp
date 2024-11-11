@@ -27,7 +27,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QStringList>
 
-QT_BEGIN_NAMESPACE QDeclarativeDebugServicePrivate::QDeclarativeDebugServicePrivate()
+LSCS_BEGIN_NAMESPACE QDeclarativeDebugServicePrivate::QDeclarativeDebugServicePrivate()
     : server( 0 )
 {
 }
@@ -237,4 +237,4 @@ void QDeclarativeDebugService::messageReceived( const QByteArray & )
 {
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

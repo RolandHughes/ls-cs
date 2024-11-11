@@ -27,7 +27,7 @@
 #include <qopengl_framebufferobject.h>
 #include <qwindow.h>
 
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
 #include <qdebug.h>
 #endif
 
@@ -44,7 +44,7 @@ AVFVideoFrameRenderer::AVFVideoFrameRenderer(QAbstractVideoSurface *surface, QOb
 
 AVFVideoFrameRenderer::~AVFVideoFrameRenderer()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
 
@@ -132,7 +132,7 @@ QOpenGLFramebufferObject *AVFVideoFrameRenderer::initRenderer(AVPlayerLayer *lay
          m_glContext->setShareContext(shareContext);
          m_isContextShared = true;
       } else {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
          qWarning("failed to get Render Thread context");
 #endif
          m_isContextShared = false;

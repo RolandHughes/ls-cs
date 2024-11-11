@@ -365,7 +365,7 @@ public:
     }
     UString paramString() const;
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
     UString parameterName( int i ) const
     {
         return ( *m_parameters )[i].ustring();

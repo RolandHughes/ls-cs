@@ -27,16 +27,16 @@
 #include <QtScript/qscriptengine.h>
 #include <QtCore/qglobal.h>
 
-#ifndef QT_NO_XMLSTREAMREADER
+#ifndef LSCS_NO_XMLSTREAMREADER
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptEngine;
-void qt_add_qmlxmlhttprequest( QScriptEngine *engine );
+void lscs_add_qmlxmlhttprequest( QScriptEngine *engine );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_XMLSTREAMREADER
+#endif // LSCS_NO_XMLSTREAMREADER
 
 #endif // QDECLARATIVEXMLHTTPREQUEST_P_H
 

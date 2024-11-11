@@ -27,7 +27,7 @@
 #include <QtCore/qobjectdefs.h>
 #include <QtCore/qscopedpointer.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerJobSchedulerInterface;
 class QScriptDebuggerValue;
@@ -55,6 +55,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerJob )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

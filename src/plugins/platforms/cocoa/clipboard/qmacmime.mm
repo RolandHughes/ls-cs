@@ -53,7 +53,7 @@ QStringList &globalDraggedTypesList()
    return retval;
 }
 
-void qt_mac_addToGlobalMimeList(QMacInternalPasteboardMime *macMime)
+void lscs_mac_addToGlobalMimeList(QMacInternalPasteboardMime *macMime)
 {
    // globalMimeList is in decreasing priority order. Recently added converters
    // take prioity over previously added converters: prepend to the list
@@ -61,31 +61,31 @@ void qt_mac_addToGlobalMimeList(QMacInternalPasteboardMime *macMime)
    globalMimeList().prepend(macMime);
 }
 
-void qt_mac_removeFromGlobalMimeList(QMacInternalPasteboardMime *macMime)
+void lscs_mac_removeFromGlobalMimeList(QMacInternalPasteboardMime *macMime)
 {
    if (! QApplication::closingDown()) {
       globalMimeList().removeAll(macMime);
    }
 }
 
-void qt_mac_registerDraggedTypes(const QStringList &types)
+void lscs_mac_registerDraggedTypes(const QStringList &types)
 {
    globalDraggedTypesList().append(types);
 }
 
-const QStringList &qt_mac_enabledDraggedTypes()
+const QStringList &lscs_mac_enabledDraggedTypes()
 {
    return globalDraggedTypesList();
 }
 
 QMacInternalPasteboardMime::QMacInternalPasteboardMime(char t) : type(t)
 {
-   qt_mac_addToGlobalMimeList(this);
+   lscs_mac_addToGlobalMimeList(this);
 }
 
 QMacInternalPasteboardMime::~QMacInternalPasteboardMime()
 {
-   qt_mac_removeFromGlobalMimeList(this);
+   lscs_mac_removeFromGlobalMimeList(this);
 }
 
 int QMacInternalPasteboardMime::count(QMimeData *mimeData)
@@ -97,7 +97,7 @@ class QMacPasteboardMimeAny : public QMacInternalPasteboardMime
 {
 
  public:
-   QMacPasteboardMimeAny() : QMacInternalPasteboardMime(MIME_QT_CONVERTOR | MIME_ALL)
+   QMacPasteboardMimeAny() : QMacInternalPasteboardMime(MIME_LSCS_CONVERTOR | MIME_ALL)
    { }
 
    ~QMacPasteboardMimeAny() { }
@@ -173,7 +173,7 @@ class QMacPasteboardMimeTypeName : public QMacInternalPasteboardMime
 {
 
  public:
-   QMacPasteboardMimeTypeName() : QMacInternalPasteboardMime(MIME_QT_CONVERTOR | MIME_ALL) {
+   QMacPasteboardMimeTypeName() : QMacInternalPasteboardMime(MIME_LSCS_CONVERTOR | MIME_ALL) {
    }
    ~QMacPasteboardMimeTypeName() {
    }

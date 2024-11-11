@@ -28,7 +28,7 @@
 #include <QtCore/qhash.h>
 #include <QtCore/qset.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptEditExtraArea;
 
@@ -103,6 +103,6 @@ private:
     friend class QScriptEditExtraArea;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

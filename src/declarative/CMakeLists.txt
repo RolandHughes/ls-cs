@@ -1,10 +1,13 @@
 add_library(LsCsDeclarative SHARED "")
 add_library(LsCs::LsCsDeclarative ALIAS LsCsDeclarative)
 
-set_target_properties(LsCsDeclarative PROPERTIES OUTPUT_NAME LsCsDeclarative${BUILD_ABI})
+set_target_properties(LsCsDeclarative PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 target_add_definitions(LsCsDeclarative
-   -DQT_BUILD_DECLARATIVE_LIB
+   -DLSCS_BUILD_DECLARATIVE_LIB
 )
 
 set(EXTRA_DECLARATIVE_LIBS)

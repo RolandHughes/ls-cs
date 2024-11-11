@@ -27,7 +27,7 @@
 #include <qobject.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_SHAREDMEMORY
+#ifndef LSCS_NO_SHAREDMEMORY
 
 class QSharedMemoryPrivate;
 
@@ -80,7 +80,7 @@ public:
     const void *constData() const;
     const void *data() const;
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
     bool lock();
     bool unlock();
 #endif
@@ -92,7 +92,7 @@ protected:
     QScopedPointer<QSharedMemoryPrivate> d_ptr;
 };
 
-#endif // QT_NO_SHAREDMEMORY
+#endif // LSCS_NO_SHAREDMEMORY
 
 #endif
 

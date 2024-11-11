@@ -8,7 +8,11 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
    add_library(LsCsPrinterDriverWin MODULE "")
    add_library(LsCs::LsCsPrinterDriverWin ALIAS LsCsPrinterDriverWin)
 
-   set_target_properties(LsCsPrinterDriverWin PROPERTIES OUTPUT_NAME LsCsPrinterDriverWin${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsPrinterDriverWin PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    target_sources(LsCsPrinterDriverWin
       PRIVATE
@@ -29,7 +33,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
    target_compile_definitions(LsCsPrinterDriverWin
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
    install(TARGETS LsCsPrinterDriverWin DESTINATION ${CMAKE_INSTALL_LIBDIR})

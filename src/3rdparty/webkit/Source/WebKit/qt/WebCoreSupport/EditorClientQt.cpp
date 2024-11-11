@@ -282,7 +282,7 @@ bool EditorClientQt::selectWordBeforeMenuEvent()
 
 void EditorClientQt::registerCommandForUndo( WTF::PassRefPtr<WebCore::EditCommand> cmd )
 {
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
     Frame *frame = m_page->d->page->focusController()->focusedOrMainFrame();
 
     if ( m_inUndoRedo || ( frame && !frame->editor()->lastEditCommand() /* HACK!! Don't recreate undos */ ) )
@@ -291,7 +291,7 @@ void EditorClientQt::registerCommandForUndo( WTF::PassRefPtr<WebCore::EditComman
     }
 
     m_page->undoStack()->push( new EditCommandQt( cmd ) );
-#endif // QT_NO_UNDOSTACK
+#endif // LSCS_NO_UNDOSTACK
 }
 
 void EditorClientQt::registerCommandForRedo( WTF::PassRefPtr<WebCore::EditCommand> )
@@ -300,7 +300,7 @@ void EditorClientQt::registerCommandForRedo( WTF::PassRefPtr<WebCore::EditComman
 
 void EditorClientQt::clearUndoRedoOperations()
 {
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
     return m_page->undoStack()->clear();
 #endif
 }
@@ -317,7 +317,7 @@ bool EditorClientQt::canPaste( WebCore::Frame *, bool defaultValue ) const
 
 bool EditorClientQt::canUndo() const
 {
-#ifdef QT_NO_UNDOSTACK
+#ifdef LSCS_NO_UNDOSTACK
     return false;
 #else
     return m_page->undoStack()->canUndo();
@@ -326,7 +326,7 @@ bool EditorClientQt::canUndo() const
 
 bool EditorClientQt::canRedo() const
 {
-#ifdef QT_NO_UNDOSTACK
+#ifdef LSCS_NO_UNDOSTACK
     return false;
 #else
     return m_page->undoStack()->canRedo();
@@ -335,7 +335,7 @@ bool EditorClientQt::canRedo() const
 
 void EditorClientQt::undo()
 {
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
     m_inUndoRedo = true;
     m_page->undoStack()->undo();
     m_inUndoRedo = false;
@@ -344,7 +344,7 @@ void EditorClientQt::undo()
 
 void EditorClientQt::redo()
 {
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
     m_inUndoRedo = true;
     m_page->undoStack()->redo();
     m_inUndoRedo = false;
@@ -515,7 +515,7 @@ void EditorClientQt::handleKeyboardEvent( KeyboardEvent *event )
             }
         }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         QWebPage::WebAction action = QWebPagePrivate::editorActionForKeyEvent( kevent->qtEvent() );
 
         if ( action != QWebPage::NoWebAction && !doSpatialNavigation )
@@ -536,7 +536,7 @@ void EditorClientQt::handleKeyboardEvent( KeyboardEvent *event )
             return;
         }
         else
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
         {
             String commandName = editorCommandForKeyDownEvent( event );
 
@@ -605,7 +605,7 @@ void EditorClientQt::handleKeyboardEvent( KeyboardEvent *event )
             case VK_HOME:
             case VK_END:
             {
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
                 QWebPage::WebAction action = QWebPagePrivate::editorActionForKeyEvent( kevent->qtEvent() );
                 ASSERT( action != QWebPage::NoWebAction );
                 m_page->triggerAction( action );
@@ -626,7 +626,7 @@ void EditorClientQt::handleKeyboardEvent( KeyboardEvent *event )
         }
     }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( kevent->qtEvent() == QKeySequence::Copy )
     {
@@ -635,7 +635,7 @@ void EditorClientQt::handleKeyboardEvent( KeyboardEvent *event )
         return;
     }
 
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 }
 
 void EditorClientQt::handleInputMethodKeydown( KeyboardEvent * )

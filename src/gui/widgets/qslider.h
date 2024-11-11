@@ -26,7 +26,7 @@
 
 #include <qabstractslider.h>
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
 class QSliderPrivate;
 class QStyleOptionSlider;
@@ -85,9 +85,9 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QSlider )
 
-    friend Q_GUI_EXPORT QStyleOptionSlider qt_qsliderStyleOption( QSlider *slider );
+    friend Q_GUI_EXPORT QStyleOptionSlider lscs_qsliderStyleOption( QSlider *slider );
 };
 
-#endif // QT_NO_SLIDER
+#endif // LSCS_NO_SLIDER
 
 #endif

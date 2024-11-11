@@ -27,7 +27,7 @@
 #include <qglobal.h>
 #include <qpixmap.h>
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 class QMimeData;
 class QMouseEvent;
@@ -87,6 +87,6 @@ private:
     QPlatformDragPrivate *d_ptr;
 };
 
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 #endif

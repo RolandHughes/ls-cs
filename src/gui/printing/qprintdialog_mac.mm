@@ -32,9 +32,9 @@
 #include <qapplication_p.h>
 #include <qcore_mac_p.h>
 
-#ifndef QT_NO_PRINTDIALOG
+#ifndef LSCS_NO_PRINTDIALOG
 
-extern qreal qt_pointMultiplier(QPageLayout::Unit unit);
+extern qreal lscs_pointMultiplier(QPageLayout::Unit unit);
 class QPrintDialogPrivate : public QAbstractPrintDialogPrivate
 {
    Q_DECLARE_PUBLIC(QPrintDialog)
@@ -150,12 +150,12 @@ class QPrintDialogPrivate : public QAbstractPrintDialogPrivate
             // Suspect internal storage is in rounded mm?
 
             if (QLocale().measurementSystem() == QLocale::MetricSystem) {
-                QSizeF sizef = QSizeF(width, height) / qt_pointMultiplier(QPageSize::Unit::Millimeter);
+                QSizeF sizef = QSizeF(width, height) / lscs_pointMultiplier(QPageSize::Unit::Millimeter);
                 // Round to 0 decimal places
                 pageSize = QPageSize(sizef.toSize(), QPageSize::Unit::Millimeter);
 
             } else {
-                qreal multiplier = qt_pointMultiplier(QPageSize::Unit::Inch);
+                qreal multiplier = lscs_pointMultiplier(QPageSize::Unit::Inch);
                 const int w = qRound(width * 100 / multiplier);
                 const int h = qRound(height * 100 / multiplier);
                 pageSize = QPageSize(QSizeF(w / 100.0, h / 100.0), QPageSize::Unit::Inch);
@@ -346,7 +346,7 @@ void QPrintDialog::_q_collapseOrExpandDialog()
 #endif
 
 
-#if defined(Q_OS_UNIX) && !defined (Q_OS_DARWIN) && !defined(QT_NO_MESSAGEBOX)
+#if defined(Q_OS_UNIX) && !defined (Q_OS_DARWIN) && !defined(LSCS_NO_MESSAGEBOX)
 void QPrintDialog::_q_checkFields()
 {
    Q_D(QPrintDialog);
@@ -356,4 +356,4 @@ void QPrintDialog::_q_checkFields()
 
 
 
-#endif // QT_NO_PRINTDIALOG
+#endif // LSCS_NO_PRINTDIALOG

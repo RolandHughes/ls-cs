@@ -43,11 +43,11 @@
 #include <initguid.h>
 #include <qnetwork.h>
 
-#if defined(QT_USE_WMSDK)
+#if defined(LSCS_USE_WMSDK)
 #include <wmsdk.h>
 #endif
 
-#ifndef QT_NO_SHELLITEM
+#ifndef LSCS_NO_SHELLITEM
 #include <ShlObj.h>
 #include <propkeydef.h>
 
@@ -95,7 +95,7 @@ typedef HRESULT ( WINAPI *q_SHCreateItemFromParsingName )( PCWSTR, IBindCtx *, c
 static q_SHCreateItemFromParsingName sHCreateItemFromParsingName = nullptr;
 #endif
 
-#if defined(QT_USE_WMSDK)
+#if defined(LSCS_USE_WMSDK)
 
 namespace
 {
@@ -112,7 +112,7 @@ struct QWMMetaDataKey
 using QWMMetaDataKeys = QList<QWMMetaDataKey>;
 static QWMMetaDataKeys metadataKeys;
 
-static const QWMMetaDataKeys *qt_wmMetaDataKeys()
+static const QWMMetaDataKeys *lscs_wmMetaDataKeys()
 {
     if ( metadataKeys.isEmpty() )
     {
@@ -311,7 +311,7 @@ static QVariant getValue( IWMHeaderInfo *header, const wchar_t *key )
 }
 #endif
 
-#ifndef QT_NO_SHELLITEM
+#ifndef LSCS_NO_SHELLITEM
 static QVariant convertValue( const PROPVARIANT &var )
 {
     QVariant value;
@@ -441,7 +441,7 @@ void DirectShowMetaDataControl::updateMetadata( IFilterGraph2 *graph, IBaseFilte
 {
     m_metadata.clear();
 
-#ifndef QT_NO_SHELLITEM
+#ifndef LSCS_NO_SHELLITEM
 
     if ( ! sHCreateItemFromParsingName )
     {
@@ -660,13 +660,13 @@ void DirectShowMetaDataControl::updateMetadata( IFilterGraph2 *graph, IBaseFilte
 
 #endif
 
-#if defined(QT_USE_WMSDK)
+#if defined(LSCS_USE_WMSDK)
     IWMHeaderInfo *info = com_cast<IWMHeaderInfo>( source, IID_IWMHeaderInfo );
 
     if ( info )
     {
 
-        for ( const QWMMetaDataKey &key : *qt_wmMetaDataKeys() )
+        for ( const QWMMetaDataKey &key : *lscs_wmMetaDataKeys() )
         {
             QVariant var = getValue( info, key.wmName );
 

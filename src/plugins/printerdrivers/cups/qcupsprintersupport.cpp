@@ -33,7 +33,7 @@
 #include <cups/ppd.h>
 
 // LSB merges everything into cups.h
-#ifndef QT_LINUXBASE
+#ifndef LSCS_LINUXBASE
 # include <cups/language.h>
 #endif
 

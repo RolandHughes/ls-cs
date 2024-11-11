@@ -29,7 +29,7 @@
 #include <qscopedpointer_p.h>
 #include <QtScript/qscriptvalue.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QString;
 class QScriptValuePropertyPrivate;
@@ -60,6 +60,6 @@ private:
 
 typedef QList<QScriptValueProperty> QScriptValuePropertyList;
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

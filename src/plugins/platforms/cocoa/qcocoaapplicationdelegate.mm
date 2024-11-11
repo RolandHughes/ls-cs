@@ -37,7 +37,7 @@
 #include <qdebug.h>
 #include <qapplication.h>
 #include <qapplication_p.h>
-#include "qt_mac_p.h"
+#include "lscs_mac_p.h"
 #include <qwindowsysteminterface.h>
 
 static QCocoaApplicationDelegate *sharedCocoaApplicationDelegate = nil;
@@ -253,7 +253,7 @@ static void cleanupCocoaApplicationDelegate()
 {
    inLaunch = false;
 
-   if (qgetenv("QT_MAC_DISABLE_FOREGROUND_APPLICATION_TRANSFORM").isEmpty()) {
+   if (qgetenv("LSCS_MAC_DISABLE_FOREGROUND_APPLICATION_TRANSFORM").isEmpty()) {
 
       if (QSysInfo::MacintoshVersion >= QSysInfo::MV_10_12) {
          // Move the application window to front to avoid launching behind the terminal.
@@ -320,10 +320,10 @@ static void cleanupCocoaApplicationDelegate()
            // if no grab exists (even if the grab points to this widget, it seems, ref X11)
            QPoint qlocal, qglobal;
            QWidget *widgetUnderMouse = 0;
-           qt_mac_getTargetForMouseEvent(0, QEvent::Enter, qlocal, qglobal, 0, &widgetUnderMouse);
+           lscs_mac_getTargetForMouseEvent(0, QEvent::Enter, qlocal, qglobal, 0, &widgetUnderMouse);
            QApplicationPrivate::dispatchEnterLeave(widgetUnderMouse, 0);
-           qt_last_mouse_receiver = widgetUnderMouse;
-           qt_last_native_mouse_receiver = widgetUnderMouse ?
+           lscs_last_mouse_receiver = widgetUnderMouse;
+           lscs_last_native_mouse_receiver = widgetUnderMouse ?
                (widgetUnderMouse->internalWinId() ? widgetUnderMouse : widgetUnderMouse->nativeParentWidget()) : 0;
        }
    */
@@ -341,10 +341,10 @@ static void cleanupCocoaApplicationDelegate()
        onApplicationChangedActivation(false);
 
        if (!QWidget::mouseGrabber())
-           QApplicationPrivate::dispatchEnterLeave(0, qt_last_mouse_receiver);
-       qt_last_mouse_receiver = 0;
-       qt_last_native_mouse_receiver = 0;
-       qt_button_down = 0;
+           QApplicationPrivate::dispatchEnterLeave(0, lscs_last_mouse_receiver);
+       lscs_last_mouse_receiver = 0;
+       lscs_last_native_mouse_receiver = 0;
+       lscs_button_down = 0;
    */
 }
 

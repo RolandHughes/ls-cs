@@ -26,9 +26,9 @@
 
 #include <qlineedit.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
 
 
@@ -58,8 +58,8 @@ private:
 };
 
 
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT
 
-#endif //QT_NO_ITEMVIEWS
+#endif //LSCS_NO_ITEMVIEWS
 
 #endif //QITEMEDITORFACTORY_P_H

@@ -27,7 +27,7 @@
 #include <qnumeric.h>
 #include <QHash>
 
-QT_QML_BEGIN_NAMESPACE
+LSCS_QML_BEGIN_NAMESPACE
 
 namespace QDeclarativeJS
 {
@@ -273,4 +273,4 @@ void Engine::setNodePool( NodePool *nodePool )
 
 } // end of namespace QDeclarativeJS
 
-QT_QML_END_NAMESPACE
+LSCS_QML_END_NAMESPACE

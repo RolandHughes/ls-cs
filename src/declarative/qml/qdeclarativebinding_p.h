@@ -33,7 +33,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QMetaProperty>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeAbstractBinding
 {
@@ -209,7 +209,7 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QDeclarativeBinding::EvaluateFlags )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QDeclarativeBinding * )
 

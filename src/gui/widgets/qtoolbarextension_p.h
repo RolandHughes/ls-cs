@@ -28,7 +28,7 @@
 
 
 
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 
 class QToolBarExtension : public QToolButton
 {
@@ -45,7 +45,7 @@ public:
     GUI_LSCS_SLOT_2( setOrientation )
 };
 
-#endif // QT_NO_TOOLBUTTON
+#endif // LSCS_NO_TOOLBUTTON
 
 
 

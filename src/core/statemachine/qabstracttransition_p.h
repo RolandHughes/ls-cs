@@ -55,7 +55,7 @@ public:
     QVector<QPointer<QAbstractState>> targetStates;
     QAbstractTransition::TransitionType transitionType;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     QList<QAbstractAnimation *> animations;
 #endif
 

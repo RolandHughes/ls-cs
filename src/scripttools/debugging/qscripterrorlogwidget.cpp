@@ -30,7 +30,7 @@
 #include <QtGui/qscrollbar.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 namespace
 {
@@ -115,4 +115,4 @@ void QScriptErrorLogWidget::clear()
     d->outputEdit->clear();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

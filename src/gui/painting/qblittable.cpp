@@ -23,7 +23,7 @@
 
 #include <qblittable_p.h>
 
-#ifndef QT_NO_BLITTABLE
+#ifndef LSCS_NO_BLITTABLE
 
 
 class QBlittablePrivate

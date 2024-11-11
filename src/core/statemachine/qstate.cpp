@@ -23,7 +23,7 @@
 
 #include <qstate.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 #include <qhistorystate.h>
 #include <qabstracttransition.h>
@@ -159,7 +159,7 @@ QList<QAbstractTransition *> QStatePrivate::transitions() const
     return transitionsList;
 }
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
 
 void QState::assignProperty( QObject *object, const QString &name, const QVariant &value )
 {
@@ -185,7 +185,7 @@ void QState::assignProperty( QObject *object, const QString &name, const QVarian
     d->propertyAssignments.append( QPropertyAssignment( object, name, value ) );
 }
 
-#endif // QT_NO_PROPERTIES
+#endif // LSCS_NO_PROPERTIES
 
 QAbstractState *QState::errorState() const
 {
@@ -405,4 +405,4 @@ bool QState::event( QEvent *e )
     return QAbstractState::event( e );
 }
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE

@@ -35,7 +35,7 @@
 #  include <qeventdispatcher_unix_p.h>
 #else
 
-#if ! defined(QT_NO_GLIB)
+#if ! defined(LSCS_NO_GLIB)
 #include <qeventdispatcher_glib_p.h>
 #endif
 
@@ -53,7 +53,7 @@
 #  include <CoreServices/CoreServices.h>    // emerald, may delete
 #endif
 
-#if defined(Q_OS_LINUX) && ! defined(QT_LINUXBASE)
+#if defined(Q_OS_LINUX) && ! defined(LSCS_LINUXBASE)
 #include <sys/prctl.h>
 #endif
 
@@ -64,7 +64,7 @@
 
 #if defined(Q_OS_DARWIN) || ! defined(Q_OS_OPENBSD) && defined(_POSIX_THREAD_PRIORITY_SCHEDULING) \
       && (_POSIX_THREAD_PRIORITY_SCHEDULING-0 >= 0)
-#define QT_HAS_THREAD_PRIORITY_SCHEDULING
+#define LSCS_HAS_THREAD_PRIORITY_SCHEDULING
 #endif
 
 static_assert( sizeof( pthread_t ) <= sizeof( Qt::HANDLE ), "Pthread size mismatch" );
@@ -233,7 +233,7 @@ void QThreadPrivate::createEventDispatcher( QThreadData *data )
 {
 #if defined(Q_OS_DARWIN)
     bool ok = false;
-    int value = qgetenv( "QT_EVENT_DISPATCHER_CORE_FOUNDATION" ).toInt( &ok );
+    int value = qgetenv( "LSCS_EVENT_DISPATCHER_CORE_FOUNDATION" ).toInt( &ok );
 
     if ( ok && value > 0 )
     {
@@ -244,9 +244,9 @@ void QThreadPrivate::createEventDispatcher( QThreadData *data )
         data->eventDispatcher.store( new QEventDispatcherUNIX, std::memory_order_release );
     }
 
-#elif ! defined(QT_NO_GLIB)
+#elif ! defined(LSCS_NO_GLIB)
 
-    if ( qgetenv( "QT_NO_GLIB" ).isEmpty() && qgetenv( "QT_NO_THREADED_GLIB" ).isEmpty()
+    if ( qgetenv( "LSCS_NO_GLIB" ).isEmpty() && qgetenv( "LSCS_NO_THREADED_GLIB" ).isEmpty()
             && QEventDispatcherGlib::versionSupported() )
     {
         data->eventDispatcher.store( new QEventDispatcherGlib );
@@ -268,7 +268,7 @@ static void setCurrentThreadName( pthread_t threadId, const QString &name )
 {
     ( void ) threadId;
 
-#if defined(Q_OS_LINUX) && ! defined(QT_LINUXBASE)
+#if defined(Q_OS_LINUX) && ! defined(LSCS_LINUXBASE)
     prctl( PR_SET_NAME, ( unsigned long )name.constData(), 0, 0, 0 );
 
 #elif defined(Q_OS_DARWIN)
@@ -384,7 +384,7 @@ Qt::HANDLE QThread::currentThreadId()
     return to_HANDLE( pthread_self() );
 }
 
-#if defined(QT_LINUXBASE) && !defined(_SC_NPROCESSORS_ONLN)
+#if defined(LSCS_LINUXBASE) && !defined(_SC_NPROCESSORS_ONLN)
 // LSB doesn't define _SC_NPROCESSORS_ONLN.
 #  define _SC_NPROCESSORS_ONLN 84
 #endif
@@ -474,7 +474,7 @@ void QThread::usleep( unsigned long usecs )
     thread_sleep( &ti );
 }
 
-#ifdef QT_HAS_THREAD_PRIORITY_SCHEDULING
+#ifdef LSCS_HAS_THREAD_PRIORITY_SCHEDULING
 // Does some magic and calculate the Unix scheduler priorities
 // sched_policy is IN/OUT: it must be set to a valid policy before calling this function
 // sched_priority is OUT only
@@ -545,7 +545,7 @@ void QThread::start( Priority priority )
 
     d->priority = priority;
 
-#if defined(QT_HAS_THREAD_PRIORITY_SCHEDULING)
+#if defined(LSCS_HAS_THREAD_PRIORITY_SCHEDULING)
 
     switch ( priority )
     {
@@ -593,7 +593,7 @@ void QThread::start( Priority priority )
         }
     }
 
-#endif // QT_HAS_THREAD_PRIORITY_SCHEDULING
+#endif // LSCS_HAS_THREAD_PRIORITY_SCHEDULING
 
     if ( d->stackSize > 0 )
     {
@@ -605,7 +605,7 @@ void QThread::start( Priority priority )
 
         if ( code )
         {
-            qWarning( "QThread::start() Thread stack size error: %s", lscsPrintable( qt_error_string( code ) ) );
+            qWarning( "QThread::start() Thread stack size error: %s", lscsPrintable( lscs_error_string( code ) ) );
 
             // we failed to set the stacksize, and as the documentation states,
             // the thread will fail to run...
@@ -623,7 +623,7 @@ void QThread::start( Priority priority )
         // caller does not have permission to set the scheduling
         // parameters/policy
 
-#if defined(QT_HAS_THREAD_PRIORITY_SCHEDULING)
+#if defined(LSCS_HAS_THREAD_PRIORITY_SCHEDULING)
         pthread_attr_setinheritsched( &attr, PTHREAD_INHERIT_SCHED );
 #endif
 
@@ -636,7 +636,7 @@ void QThread::start( Priority priority )
 
     if ( code )
     {
-        qWarning( "QThread::start() Thread creation error: %s", lscsPrintable( qt_error_string( code ) ) );
+        qWarning( "QThread::start() Thread creation error: %s", lscsPrintable( lscs_error_string( code ) ) );
 
         d->running = false;
         d->finished = false;
@@ -658,7 +658,7 @@ void QThread::terminate()
 
     if ( code )
     {
-        qWarning( "QThread::start() Thread termination error: %s", lscsPrintable( qt_error_string( ( code ) ) ) );
+        qWarning( "QThread::start() Thread termination error: %s", lscsPrintable( lscs_error_string( ( code ) ) ) );
     }
 }
 
@@ -710,7 +710,7 @@ void QThreadPrivate::setPriority( QThread::Priority threadPriority )
 
     // copied from start() with a few modifications:
 
-#ifdef QT_HAS_THREAD_PRIORITY_SCHEDULING
+#ifdef LSCS_HAS_THREAD_PRIORITY_SCHEDULING
     int sched_policy;
     sched_param param;
 

@@ -37,7 +37,7 @@ public:
           attachment( QOpenGLFramebufferObject::NoAttachment ),
           target( GL_TEXTURE_2D ), mipmap( false )
     {
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
         // There is nothing that says QOpenGLFramebufferObjectFormat needs a current
         // context, so we need a fallback just to be safe, even though in pratice there
         // will usually be a context current.

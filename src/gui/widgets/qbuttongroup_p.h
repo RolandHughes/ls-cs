@@ -26,7 +26,7 @@
 
 #include <qbuttongroup.h>
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
 
 #include <qlist.h>
 #include <qpointer.h>
@@ -56,6 +56,6 @@ protected:
 
 };
 
-#endif // QT_NO_BUTTONGROUP
+#endif // LSCS_NO_BUTTONGROUP
 
 #endif // QBUTTONGROUP_P_H

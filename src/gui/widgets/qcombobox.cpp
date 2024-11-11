@@ -23,7 +23,7 @@
 
 #include <qcombobox.h>
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
 #include <qstylepainter.h>
 #include <qplatform_theme.h>
@@ -53,11 +53,11 @@
 #include <qabstractitemmodel_p.h>
 #include <qabstractscrollarea_p.h>
 
-#ifndef QT_NO_EFFECTS
+#ifndef LSCS_NO_EFFECTS
 # include <qeffects_p.h>
 #endif
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -74,7 +74,7 @@ QComboBoxPrivate::QComboBoxPrivate()
     , m_platformMenu( nullptr )
 #endif
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     , completer( nullptr )
 #endif
 {
@@ -197,7 +197,7 @@ QStyleOptionMenuItem QComboMenuDelegate::getStyleOption( const QStyleOptionViewI
     return menuOption;
 }
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 void QComboBoxPrivate::_q_completerActivated( const QModelIndex &index )
 {
     Q_Q( QComboBox );
@@ -213,7 +213,7 @@ void QComboBoxPrivate::_q_completerActivated( const QModelIndex &index )
         }
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() && q->isEditable() && q->completer()
             && q->completer()->completionMode() == QCompleter::UnfilteredPopupCompletion )
@@ -557,7 +557,7 @@ QComboBoxPrivateContainer::QComboBoxPrivateContainer( QAbstractItemView *itemVie
 
 void QComboBoxPrivateContainer::scrollItemView( int action )
 {
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
     if ( view->verticalScrollBar() )
     {
@@ -569,7 +569,7 @@ void QComboBoxPrivateContainer::scrollItemView( int action )
 
 void QComboBoxPrivateContainer::updateScrollers()
 {
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
     if ( ! top || ! bottom )
     {
@@ -639,7 +639,7 @@ void QComboBoxPrivateContainer::setItemView( QAbstractItemView *itemView )
         view->removeEventFilter( this );
         view->viewport()->removeEventFilter( this );
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
         disconnect( view->verticalScrollBar(), &QScrollBar::valueChanged, this, &QComboBoxPrivateContainer::updateScrollers );
         disconnect( view->verticalScrollBar(), &QScrollBar::rangeChanged, this, &QComboBoxPrivateContainer::updateScrollers );
 #endif
@@ -663,7 +663,7 @@ void QComboBoxPrivateContainer::setItemView( QAbstractItemView *itemView )
     QStyleOptionComboBox opt = comboStyleOption();
     const bool usePopup = combo->style()->styleHint( QStyle::SH_ComboBox_Popup, &opt, combo );
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
     if ( usePopup )
     {
@@ -683,7 +683,7 @@ void QComboBoxPrivateContainer::setItemView( QAbstractItemView *itemView )
     view->setLineWidth( 0 );
     view->setEditTriggers( QAbstractItemView::NoEditTriggers );
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
     connect( view->verticalScrollBar(), &QScrollBar::valueChanged, this, &QComboBoxPrivateContainer::updateScrollers );
     connect( view->verticalScrollBar(), &QScrollBar::rangeChanged, this, &QComboBoxPrivateContainer::updateScrollers );
 #endif
@@ -698,7 +698,7 @@ int QComboBoxPrivateContainer::topMargin() const
         return lview->spacing();
     }
 
-#ifndef QT_NO_TABLEVIEW
+#ifndef LSCS_NO_TABLEVIEW
 
     if ( const QTableView *tview = qobject_cast<const QTableView *>( view ) )
     {
@@ -719,7 +719,7 @@ int QComboBoxPrivateContainer::spacing() const
         return 2 * lview->spacing(); // QListView::spacing is the padding around the item.
     }
 
-#ifndef QT_NO_TABLEVIEW
+#ifndef LSCS_NO_TABLEVIEW
     QTableView *tview = qobject_cast<QTableView *>( view );
 
     if ( tview )
@@ -794,7 +794,7 @@ bool QComboBoxPrivateContainer::eventFilter( QObject *o, QEvent *e )
                 case Qt::Key_Enter:
                 case Qt::Key_Return:
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
                 case Qt::Key_Select:
 #endif
                     if ( view->currentIndex().isValid() && ( view->currentIndex().flags() & Qt::ItemIsEnabled ) )
@@ -891,7 +891,7 @@ void QComboBoxPrivateContainer::hideEvent( QHideEvent * )
     emit resetButton();
     combo->update();
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
     // QGraphicsScenePrivate::removePopup closes the combo box popup, it hides it non-explicitly.
     // Hiding/showing the QComboBox after this will unexpectedly show the popup as well.
@@ -1060,7 +1060,7 @@ void QComboBoxPrivate::_q_dataChanged( const QModelIndex &topLeft, const QModelI
 
         q->update();
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
         QAccessibleValueChangeEvent event( q, text );
         QAccessible::updateAccessibility( &event );
 #endif
@@ -1150,7 +1150,7 @@ void QComboBoxPrivate::updateViewContainerPaletteAndOpacity()
     QStyleOptionComboBox opt;
     q->initStyleOption( &opt );
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     if ( q->style()->styleHint( QStyle::SH_ComboBox_Popup, &opt, q ) )
     {
@@ -1265,7 +1265,7 @@ Qt::MatchFlags QComboBoxPrivate::matchFlags() const
     // Base how duplicates are determined on the autocompletion case sensitivity
     Qt::MatchFlags flags = Qt::MatchFixedString;
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
     if ( ! lineEdit->completer() || lineEdit->completer()->caseSensitivity() == Qt::CaseSensitive )
 #endif
@@ -1452,7 +1452,7 @@ void QComboBoxPrivate::_q_emitCurrentIndexChanged( const QModelIndex &index )
         emit q->currentTextChanged( text );
     }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleValueChangeEvent event( q, text );
     QAccessible::updateAccessibility( &event );
 #endif
@@ -1534,7 +1534,7 @@ int QComboBox::maxCount() const
     return d->maxCount;
 }
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
 bool QComboBox::autoCompletion() const
 {
@@ -1546,7 +1546,7 @@ void QComboBox::setAutoCompletion( bool enable )
 {
     Q_D( QComboBox );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() && ! enable && isEditable() )
     {
@@ -1606,7 +1606,7 @@ void QComboBox::setAutoCompletionCaseSensitivity( Qt::CaseSensitivity sensitivit
     }
 }
 
-#endif // QT_NO_COMPLETER
+#endif // LSCS_NO_COMPLETER
 
 bool QComboBox::duplicatesEnabled() const
 {
@@ -1833,7 +1833,7 @@ void QComboBox::setLineEdit( QLineEdit *edit )
     delete d->lineEdit;
 
     d->lineEdit = edit;
-    qt_widget_private( d->lineEdit )->inheritsInputMethodHints = 1;
+    lscs_widget_private( d->lineEdit )->inheritsInputMethodHints = 1;
 
     if ( d->lineEdit->parent() != this )
     {
@@ -1853,11 +1853,11 @@ void QComboBox::setLineEdit( QLineEdit *edit )
     d->lineEdit->setFocusProxy( this );
     d->lineEdit->setAttribute( Qt::WA_MacShowFocusRect, false );
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     setAutoCompletion( d->autoCompletion );
 #endif
 
-#if defined(QT_KEYPAD_NAVIGATION) && ! defined(QT_NO_COMPLETER)
+#if defined(LSCS_KEYPAD_NAVIGATION) && ! defined(LSCS_NO_COMPLETER)
 
     if ( QApplication::keypadNavigationEnabled() )
     {
@@ -1893,7 +1893,7 @@ QLineEdit *QComboBox::lineEdit() const
     return d->lineEdit;
 }
 
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
 void QComboBox::setValidator( const QValidator *v )
 {
     Q_D( QComboBox );
@@ -1911,7 +1911,7 @@ const QValidator *QComboBox::validator() const
 }
 #endif
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 void QComboBox::setCompleter( QCompleter *c )
 {
     Q_D( QComboBox );
@@ -1982,7 +1982,7 @@ void QComboBox::setModel( QAbstractItemModel *model )
         return;
     }
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
     if ( d->lineEdit && d->lineEdit->completer() && d->lineEdit->completer() == d->completer )
     {
@@ -2123,7 +2123,7 @@ void QComboBoxPrivate::setCurrentIndex( const QModelIndex &mi )
         {
             lineEdit->setText( newText );
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
             if ( lineEdit && lineEdit->completer() )
             {
@@ -2584,7 +2584,7 @@ void QComboBox::showPopup()
 
 #endif
 
-#if defined(QT_KEYPAD_NAVIGATION) && ! defined(QT_NO_COMPLETER)
+#if defined(LSCS_KEYPAD_NAVIGATION) && ! defined(LSCS_NO_COMPLETER)
 
     if ( QApplication::keypadNavigationEnabled() && d->completer )
     {
@@ -2619,7 +2619,7 @@ void QComboBox::showPopup()
         QStack<QModelIndex> toCheck;
         toCheck.push( view()->rootIndex() );
 
-#ifndef QT_NO_TREEVIEW
+#ifndef LSCS_NO_TREEVIEW
         QTreeView *treeView = qobject_cast<QTreeView *>( view() );
 
         if ( treeView && treeView->header() && !treeView->header()->isHidden() )
@@ -2644,7 +2644,7 @@ void QComboBox::showPopup()
 
                 listHeight += view()->visualRect( idx ).height();
 
-#ifndef QT_NO_TREEVIEW
+#ifndef LSCS_NO_TREEVIEW
 
                 if ( d->model->hasChildren( idx ) && treeView && treeView->isExpanded( idx ) )
                 {
@@ -2809,7 +2809,7 @@ void QComboBox::showPopup()
     const bool updatesEnabled = container->updatesEnabled();
 #endif
 
-#if ! defined(QT_NO_EFFECTS)
+#if ! defined(LSCS_NO_EFFECTS)
     bool scrollDown = ( listRect.topLeft() == below );
 
     if ( QApplication::isEffectEnabled( Qt::UI_AnimateCombo )
@@ -2845,7 +2845,7 @@ void QComboBox::showPopup()
 
     container->update();
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() )
     {
@@ -2868,7 +2868,7 @@ void QComboBox::hidePopup()
     if ( d->container && d->container->isVisible() )
     {
 
-#if ! defined(QT_NO_EFFECTS)
+#if ! defined(LSCS_NO_EFFECTS)
         d->model->blockSignals( true );
         d->container->itemView()->blockSignals( true );
         d->container->blockSignals( true );
@@ -2922,13 +2922,13 @@ void QComboBox::hidePopup()
         d->container->blockSignals( false );
 
         if ( ! didFade )
-#endif // QT_NO_EFFECTS
+#endif // LSCS_NO_EFFECTS
 
             // Fade should implicitly hide as well ;-)
             d->container->hide();
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() && isEditable() && hasFocus() )
     {
@@ -2945,7 +2945,7 @@ void QComboBox::clear()
     Q_D( QComboBox );
     d->model->removeRows( 0, d->model->rowCount( d->root ), d->root );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleValueChangeEvent event( this, QString() );
     QAccessible::updateAccessibility( &event );
 #endif
@@ -2960,7 +2960,7 @@ void QComboBox::clearEditText()
         d->lineEdit->clear();
     }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleValueChangeEvent event( this, QString() );
     QAccessible::updateAccessibility( &event );
 #endif
@@ -2975,7 +2975,7 @@ void QComboBox::setEditText( const QString &text )
         d->lineEdit->setText( text );
     }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleValueChangeEvent event( this, text );
     QAccessible::updateAccessibility( &event );
 #endif
@@ -2990,7 +2990,7 @@ void QComboBox::focusInEvent( QFocusEvent *e )
     {
         d->lineEdit->event( e );
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
         if ( d->lineEdit->completer() )
         {
@@ -3163,7 +3163,7 @@ bool QComboBox::event( QEvent *event )
 
             break;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         case QEvent::EnterEditFocus:
             if ( !d->lineEdit )
@@ -3223,7 +3223,7 @@ void QComboBoxPrivate::showPopupFromMouseEvent( QMouseEvent *e )
             updateArrow( QStyle::State_Sunken );
         }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
         // if the container already exists then d->viewContainer() is safe to call
 
         if ( container )
@@ -3251,7 +3251,7 @@ void QComboBoxPrivate::showPopupFromMouseEvent( QMouseEvent *e )
     else
     {
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         if ( QApplication::keypadNavigationEnabled() && sc == QStyle::SC_ComboBoxEditField && lineEdit )
         {
@@ -3281,7 +3281,7 @@ void QComboBox::keyPressEvent( QKeyEvent *e )
 {
     Q_D( QComboBox );
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
     if ( d->lineEdit && d->lineEdit->completer() && d->lineEdit->completer()->popup()
             && d->lineEdit->completer()->popup()->isVisible() )
@@ -3309,7 +3309,7 @@ void QComboBox::keyPressEvent( QKeyEvent *e )
             [[fallthrough]];
 
         case Qt::Key_PageUp:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
             if ( QApplication::keypadNavigationEnabled() )
             {
                 e->ignore();
@@ -3334,7 +3334,7 @@ void QComboBox::keyPressEvent( QKeyEvent *e )
             [[fallthrough]];
 
         case Qt::Key_PageDown:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
             if ( QApplication::keypadNavigationEnabled() )
             {
                 e->ignore();
@@ -3389,7 +3389,7 @@ void QComboBox::keyPressEvent( QKeyEvent *e )
 
             break;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         case Qt::Key_Select:
             if ( QApplication::keypadNavigationEnabled()
@@ -3507,7 +3507,7 @@ void QComboBox::keyReleaseEvent( QKeyEvent *e )
     }
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 void QComboBox::wheelEvent( QWheelEvent *e )
 {
 #ifdef Q_OS_DARWIN
@@ -3555,9 +3555,9 @@ void QComboBox::wheelEvent( QWheelEvent *e )
 #endif
 }
 
-#endif      // QT_NO_WHEELEVENT
+#endif      // LSCS_NO_WHEELEVENT
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 void QComboBox::contextMenuEvent( QContextMenuEvent *e )
 {
     Q_D( QComboBox );
@@ -3665,7 +3665,7 @@ void QComboBox::setModelColumn( int visibleColumn )
         lv->setModelColumn( visibleColumn );
     }
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
     if ( d->lineEdit && d->lineEdit->completer()
             && d->lineEdit->completer() == d->completer )
@@ -3750,7 +3750,7 @@ void QComboBox::_q_modelReset()
     d->_q_modelReset();
 }
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 void QComboBox::_q_completerActivated( const QModelIndex &index )
 {
     Q_D( QComboBox );
@@ -3758,4 +3758,4 @@ void QComboBox::_q_completerActivated( const QModelIndex &index )
 }
 #endif
 
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX

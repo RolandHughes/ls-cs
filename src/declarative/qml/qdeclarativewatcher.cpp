@@ -31,7 +31,7 @@
 #include <QtCore/qmetaobject.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeWatchProxy : public QObject
 {
@@ -185,4 +185,4 @@ void QDeclarativeWatcher::addPropertyWatch( int id, QObject *object, quint32 deb
     proxy->notifyValueChanged();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

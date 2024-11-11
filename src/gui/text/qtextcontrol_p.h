@@ -52,7 +52,7 @@ class Q_GUI_EXPORT QTextControl : public QInputControl
     GUI_LSCS_OBJECT( QTextControl )
     Q_DECLARE_PRIVATE( QTextControl )
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
     GUI_LSCS_PROPERTY_READ( html, toHtml )
     GUI_LSCS_PROPERTY_WRITE( html, setHtml )
     GUI_LSCS_PROPERTY_NOTIFY( html, textChanged )
@@ -106,7 +106,7 @@ public:
     bool find( const QRegularExpression &exp, QTextDocument::FindFlags options = Qt::EmptyFlag );
     QString toPlainText() const;
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
     QString toHtml() const;
 #endif
 
@@ -114,7 +114,7 @@ public:
 
     virtual QVariant loadResource( int type, const QUrl &name );
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     QMenu *createStandardContextMenu( const QPointF &pos, QWidget *parent );
 #endif
 
@@ -138,7 +138,7 @@ public:
     bool acceptRichText() const;
     void setAcceptRichText( bool accept );
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
     void setExtraSelections( const QList<QTextEdit::ExtraSelection> &selections );
     QList<QTextEdit::ExtraSelection> extraSelections() const;
 #endif
@@ -179,7 +179,7 @@ public:
     GUI_LSCS_SLOT_1( Public, void setHtml( const QString &text ) )
     GUI_LSCS_SLOT_2( setHtml )
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     GUI_LSCS_SLOT_1( Public, void cut() )
     GUI_LSCS_SLOT_2( cut )
 
@@ -205,7 +205,7 @@ public:
     GUI_LSCS_SLOT_1( Public, void insertPlainText( const QString &text ) )
     GUI_LSCS_SLOT_2( insertPlainText )
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
     GUI_LSCS_SLOT_1( Public, void insertHtml( const QString &text ) )
     GUI_LSCS_SLOT_2( insertHtml )
 #endif
@@ -319,7 +319,7 @@ private:
     GUI_LSCS_SLOT_2( _q_contentsChanged )
 };
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 class QUnicodeControlCharacterMenu : public QMenu
 {
     GUI_LSCS_OBJECT( QUnicodeControlCharacterMenu )
@@ -333,7 +333,7 @@ private :
 
     QObject *editWidget;
 };
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
 
 // also used by QLabel

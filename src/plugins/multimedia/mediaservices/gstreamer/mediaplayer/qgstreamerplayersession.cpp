@@ -57,7 +57,7 @@ static bool usePlaybinVolume()
 
     if ( status == Unknown )
     {
-        QByteArray v = qgetenv( "QT_GSTREAMER_USE_PLAYBIN_VOLUME" );
+        QByteArray v = qgetenv( "LSCS_GSTREAMER_USE_PLAYBIN_VOLUME" );
         bool value = !v.isEmpty() && v != "0" && v != "false";
 
         if ( value )
@@ -146,7 +146,7 @@ QGstreamerPlayerSession::QGstreamerPlayerSession( QObject *parent )
 
     ( void ) result;
 
-    m_playbin = gst_element_factory_make( QT_GSTREAMER_PLAYBIN_ELEMENT_NAME, nullptr );
+    m_playbin = gst_element_factory_make( LSCS_GSTREAMER_PLAYBIN_ELEMENT_NAME, nullptr );
 
     if ( m_playbin )
     {
@@ -157,7 +157,7 @@ QGstreamerPlayerSession::QGstreamerPlayerSession( QObject *parent )
                     GST_PLAY_FLAG_NATIVE_VIDEO | GST_PLAY_FLAG_NATIVE_AUDIO;
 #else
         int flags = GST_PLAY_FLAG_VIDEO | GST_PLAY_FLAG_AUDIO;
-        QByteArray envFlags = qgetenv( "QT_GSTREAMER_PLAYBIN_FLAGS" );
+        QByteArray envFlags = qgetenv( "LSCS_GSTREAMER_PLAYBIN_FLAGS" );
 
         if ( !envFlags.isEmpty() )
         {
@@ -214,10 +214,10 @@ QGstreamerPlayerSession::QGstreamerPlayerSession( QObject *parent )
 #else
     m_videoIdentity = GST_ELEMENT( g_object_new( gst_video_connector_get_type(), nullptr ) ); // floating ref
     g_signal_connect( G_OBJECT( m_videoIdentity ), "connection-failed", G_CALLBACK( insertColorSpaceElement ), ( gpointer )this );
-    m_colorSpace = gst_element_factory_make( QT_GSTREAMER_COLORCONVERSION_ELEMENT_NAME, "ffmpegcolorspace-vo" );
+    m_colorSpace = gst_element_factory_make( LSCS_GSTREAMER_COLORCONVERSION_ELEMENT_NAME, "ffmpegcolorspace-vo" );
 
     // might not get a parent, take ownership to avoid leak
-    qt_gst_object_ref_sink( GST_OBJECT( m_colorSpace ) );
+    lscs_gst_object_ref_sink( GST_OBJECT( m_colorSpace ) );
 #endif
 
     m_nullVideoSink = gst_element_factory_make( "fakesink", nullptr );
@@ -226,7 +226,7 @@ QGstreamerPlayerSession::QGstreamerPlayerSession( QObject *parent )
 
     m_videoOutputBin = gst_bin_new( "video-output-bin" );
     // might not get a parent, take ownership to avoid leak
-    qt_gst_object_ref_sink( GST_OBJECT( m_videoOutputBin ) );
+    lscs_gst_object_ref_sink( GST_OBJECT( m_videoOutputBin ) );
     gst_bin_add_many( GST_BIN( m_videoOutputBin ), m_videoIdentity, m_nullVideoSink, nullptr );
     gst_element_link( m_videoIdentity, m_nullVideoSink );
 
@@ -404,7 +404,7 @@ qint64 QGstreamerPlayerSession::position() const
 {
     gint64      position = 0;
 
-    if ( m_playbin && qt_gst_element_query_position( m_playbin, GST_FORMAT_TIME, &position ) )
+    if ( m_playbin && lscs_gst_element_query_position( m_playbin, GST_FORMAT_TIME, &position ) )
     {
         m_lastPosition = position / 1000000;
     }
@@ -1465,7 +1465,7 @@ bool QGstreamerPlayerSession::processBusMessage( const QGstreamerMessage &messag
                 {
                     gint64      position = 0;
 
-                    if ( qt_gst_element_query_position( m_playbin, GST_FORMAT_TIME, &position ) )
+                    if ( lscs_gst_element_query_position( m_playbin, GST_FORMAT_TIME, &position ) )
                     {
                         position /= 1000000;
                         m_lastPosition = position;
@@ -1736,7 +1736,7 @@ void QGstreamerPlayerSession::updateVideoResolutionTag()
     QSize size;
     QSize aspectRatio;
     GstPad *pad = gst_element_get_static_pad( m_videoIdentity, "src" );
-    GstCaps *caps = qt_gst_pad_get_current_caps( pad );
+    GstCaps *caps = lscs_gst_pad_get_current_caps( pad );
 
     if ( caps )
     {
@@ -1794,7 +1794,7 @@ void QGstreamerPlayerSession::updateDuration()
     gint64 gstDuration = 0;
     int duration = -1;
 
-    if ( m_playbin && qt_gst_element_query_duration( m_playbin, GST_FORMAT_TIME, &gstDuration ) )
+    if ( m_playbin && lscs_gst_element_query_duration( m_playbin, GST_FORMAT_TIME, &gstDuration ) )
     {
         duration = gstDuration / 1000000;
     }
@@ -1867,7 +1867,7 @@ void QGstreamerPlayerSession::playbinNotifySource( GObject *o, GParamSpec *p, gp
     // The rest
     if ( g_object_class_find_property( G_OBJECT_GET_CLASS( source ), "extra-headers" ) != nullptr )
     {
-        GstStructure *extras = qt_gst_structure_new_empty( "extras" );
+        GstStructure *extras = lscs_gst_structure_new_empty( "extras" );
 
         for ( const QByteArray &rawHeader : self->m_request.rawHeaderList() )
         {
@@ -2029,7 +2029,7 @@ static gboolean factory_can_src_any_caps ( GstElementFactory *factory, const Gst
         {
             GstCaps *templcaps = gst_static_caps_get( &templ->static_caps );
 
-            if ( qt_gst_caps_can_intersect( caps, templcaps ) )
+            if ( lscs_gst_caps_can_intersect( caps, templcaps ) )
             {
                 gst_caps_unref( templcaps );
                 return TRUE;

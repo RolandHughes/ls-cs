@@ -31,9 +31,9 @@
 #include <qtextcodec.h>
 #include <qlist.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 class QBig5Codec : public QTextCodec
 {
@@ -146,8 +146,8 @@ public:
 };
 #endif // Q_WS_X11
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QBIG5CODEC_H

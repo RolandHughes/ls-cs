@@ -29,12 +29,12 @@
 #include <qvariant.h>
 #include <qdebug.h>
 
-static int qt_palette_count = 1;
+static int lscs_palette_count = 1;
 
 class QPalettePrivate
 {
 public:
-    QPalettePrivate() : ref( 1 ), ser_no( qt_palette_count++ ), detach_no( 0 )
+    QPalettePrivate() : ref( 1 ), ser_no( lscs_palette_count++ ), detach_no( 0 )
     { }
 
     QAtomicInt ref;
@@ -44,13 +44,13 @@ public:
     int detach_no;
 };
 
-static QColor qt_mix_colors( QColor a, QColor b )
+static QColor lscs_mix_colors( QColor a, QColor b )
 {
     return QColor( ( a.red() + b.red() ) / 2, ( a.green() + b.green() ) / 2,
                    ( a.blue() + b.blue() ) / 2, ( a.alpha() + b.alpha() ) / 2 );
 }
 
-static void qt_palette_from_color( QPalette &pal, const QColor &button )
+static void lscs_palette_from_color( QPalette &pal, const QColor &button )
 {
     int h, s, v;
     button.getHsv( &h, &s, &v );
@@ -92,7 +92,7 @@ QPalette::QPalette()
     else
     {
         init();
-        qt_palette_from_color( *this, Qt::black );
+        lscs_palette_from_color( *this, Qt::black );
         resolve_mask = 0;
     }
 }
@@ -100,13 +100,13 @@ QPalette::QPalette()
 QPalette::QPalette( const QColor &button )
 {
     init();
-    qt_palette_from_color( *this, button );
+    lscs_palette_from_color( *this, button );
 }
 
 QPalette::QPalette( Qt::GlobalColor button )
 {
     init();
-    qt_palette_from_color( *this, button );
+    lscs_palette_from_color( *this, button );
 }
 
 QPalette::QPalette( const QBrush &windowText, const QBrush &button,
@@ -440,8 +440,8 @@ void QPalette::setColorGroup( ColorGroup cg, const QBrush &windowText, const QBr
                               const QBrush &text, const QBrush &bright_text, const QBrush &base,
                               const QBrush &window )
 {
-    QBrush alt_base = QBrush( qt_mix_colors( base.color(), button.color() ) );
-    QBrush mid_light = QBrush( qt_mix_colors( button.color(), light.color() ) );
+    QBrush alt_base = QBrush( lscs_mix_colors( base.color(), button.color() ) );
+    QBrush mid_light = QBrush( lscs_mix_colors( button.color(), light.color() ) );
     QColor toolTipBase( 255, 255, 220 );
     QColor toolTipText( 0, 0, 0 );
 
@@ -507,7 +507,7 @@ void QPalette::setColorGroup( ColorGroup cg, const QBrush &foreground, const QBr
     setBrush( cg, ToolTipText, toolTipText );
 }
 
-Q_GUI_EXPORT QPalette qt_fusionPalette()
+Q_GUI_EXPORT QPalette lscs_fusionPalette()
 {
     QColor backGround( 239, 235, 231 );
     QColor light = backGround.lighter( 150 );

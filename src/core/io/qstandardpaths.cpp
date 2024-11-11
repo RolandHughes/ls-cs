@@ -30,7 +30,7 @@
 #include <qobject.h>
 #include <qstringparser.h>
 
-#ifndef QT_NO_STANDARDPATHS
+#ifndef LSCS_NO_STANDARDPATHS
 
 static bool existsAsSpecified( const QString &path, QStandardPaths::LocateOptions options )
 {
@@ -289,4 +289,4 @@ bool QStandardPaths::isTestModeEnabled()
     return qsp_testMode;
 }
 
-#endif // QT_NO_STANDARDPATHS
+#endif // LSCS_NO_STANDARDPATHS

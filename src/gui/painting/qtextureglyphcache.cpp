@@ -184,9 +184,9 @@ bool QTextureGlyphCache::populate( QFontEngine *fontEngine, int numGlyphs, const
 
     if ( m_w == 0 )
     {
-        if ( fontEngine->maxCharWidth() <= QT_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH )
+        if ( fontEngine->maxCharWidth() <= LSCS_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH )
         {
-            m_w = QT_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH;
+            m_w = LSCS_DEFAULT_TEXTURE_GLYPH_CACHE_WIDTH;
         }
         else
         {

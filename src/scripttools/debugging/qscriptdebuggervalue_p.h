@@ -28,7 +28,7 @@
 #include <qscopedpointer_p.h>
 #include <QtCore/qlist.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptValue;
 class QScriptEngine;
@@ -85,6 +85,6 @@ typedef QList<QScriptDebuggerValue> QScriptDebuggerValueList;
 QDataStream &operator<<( QDataStream &, const QScriptDebuggerValue & );
 QDataStream &operator>>( QDataStream &, QScriptDebuggerValue & );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

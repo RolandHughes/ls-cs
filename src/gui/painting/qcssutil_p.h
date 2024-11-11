@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 
 #include <qcssparser_p.h>
 #include <qsize.h>
@@ -49,6 +49,6 @@ extern void qNormalizeRadii( const QRect &br, const QSize *radii,
                              QSize *tlr, QSize *trr, QSize *blr, QSize *brr );
 
 
-#endif //QT_NO_CSSPARSER
+#endif //LSCS_NO_CSSPARSER
 
 #endif // QCSSUTIL_P_H

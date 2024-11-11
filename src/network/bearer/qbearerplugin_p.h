@@ -29,7 +29,7 @@
 #include <qplugin.h>
 #include <qfactoryinterface.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 struct Q_NETWORK_EXPORT QBearerEngineFactoryInterface : public QFactoryInterface
 {
@@ -51,6 +51,6 @@ public:
     QBearerEngine *create( const QString &key ) const override = 0;
 };
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 #endif

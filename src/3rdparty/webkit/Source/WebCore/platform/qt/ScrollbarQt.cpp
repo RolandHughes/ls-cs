@@ -50,7 +50,7 @@ namespace WebCore
 
 bool Scrollbar::contextMenu( const PlatformMouseEvent &event )
 {
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
     if ( !QApplication::style()->styleHint( QStyle::SH_ScrollBar_ContextMenu ) )
     {
@@ -118,7 +118,7 @@ bool Scrollbar::contextMenu( const PlatformMouseEvent &event )
         scrollableArea()->scroll( horizontal ? ScrollRight : ScrollDown, ScrollByLine );
     }
 
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
     return true;
 }
 

@@ -28,7 +28,7 @@
 #include <QtCore/qscopedpointer.h>
 #include <QtCore/qlist.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QString;
 class QStringList;
@@ -71,6 +71,6 @@ private:
 
 typedef QList<QScriptDebuggerConsoleCommand *> QScriptDebuggerConsoleCommandList;
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

@@ -26,7 +26,7 @@
 
 #include <QtCore/qobjectdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerEvent;
 
@@ -38,6 +38,6 @@ public:
     virtual bool debuggerEvent( const QScriptDebuggerEvent &event ) = 0;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

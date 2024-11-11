@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qgraphicswidget.h>
 #include <qgraphicslayout.h>
@@ -42,11 +42,11 @@
 #include <qgraphics_widget_p.h>
 #include <qgraphics_scene_p.h>
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 #include <qaction_p.h>
 #endif
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 #include <qshortcutmap_p.h>
 #endif
 
@@ -104,7 +104,7 @@ QGraphicsWidget::~QGraphicsWidget()
 {
     Q_D( QGraphicsWidget );
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
     // Remove all actions from this widget
     for ( int i = 0; i < d->actions.size(); ++i )
@@ -502,8 +502,8 @@ void QGraphicsWidget::initStyleOption( QStyleOption *option ) const
 
     /*
     #ifdef Q_OS_DARWIN
-    extern bool qt_mac_can_clickThrough(const QGraphicsWidget *w); //qwidget_mac.cpp
-    if (!(option->state & QStyle::State_Active) && !qt_mac_can_clickThrough(widget))
+    extern bool lscs_mac_can_clickThrough(const QGraphicsWidget *w); //qwidget_mac.cpp
+    if (!(option->state & QStyle::State_Active) && !lscs_mac_can_clickThrough(widget))
         option->state &= ~QStyle::State_Enabled;
 
     switch (QMacStyle::widgetSizePolicy(widget)) {
@@ -518,7 +518,7 @@ void QGraphicsWidget::initStyleOption( QStyleOption *option ) const
     }
     #endif
 
-    #ifdef QT_KEYPAD_NAVIGATION
+    #ifdef LSCS_KEYPAD_NAVIGATION
     if (widget->hasEditFocus())
         state |= QStyle::State_HasEditFocus;
     #endif
@@ -1393,7 +1393,7 @@ QGraphicsWidget *QGraphicsWidget::focusWidget() const
     return nullptr;
 }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
 int QGraphicsWidget::grabShortcut( const QKeySequence &sequence, Qt::ShortcutContext context )
 {
@@ -1439,7 +1439,7 @@ void QGraphicsWidget::setShortcutAutoRepeat( int id, bool enabled )
 }
 #endif
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
 void QGraphicsWidget::addAction( QAction *action )
 {
@@ -1808,4 +1808,4 @@ bool QGraphicsWidget::close()
     return true;
 }
 
-#endif //QT_NO_GRAPHICSVIEW
+#endif //LSCS_NO_GRAPHICSVIEW

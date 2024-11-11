@@ -31,7 +31,7 @@
 #include <qdeclarativeglobal_p.h>
 #include <qdeclarativedirparser_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeType;
 class QDeclarativeCustomParser;
@@ -143,7 +143,7 @@ private:
     QDeclarativeTypePrivate *d;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEMETATYPE_P_H
 

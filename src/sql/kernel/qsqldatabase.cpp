@@ -31,23 +31,23 @@
 #define _WINSCARD_H_
 #endif
 
-#ifdef QT_SQL_PSQL
+#ifdef LSCS_SQL_PSQL
 #include "../../plugins/sqldrivers/psql/qsql_psql.h"
 #endif
 
-#ifdef QT_SQL_MYSQL
+#ifdef LSCS_SQL_MYSQL
 #include "./../plugins/sqldrivers/mysql/qsql_mysql.h"
 #endif
 
-#ifdef QT_SQL_ODBC
+#ifdef LSCS_SQL_ODBC
 #include "./../plugins/sqldrivers/odbc/qsql_odbc.h"
 #endif
 
-#ifdef QT_SQL_OCI
+#ifdef LSCS_SQL_OCI
 #include "./../plugins/sqldrivers/oci/qsql_oci.h"
 #endif
 
-#ifdef QT_SQL_TDS
+#ifdef LSCS_SQL_TDS
 // conflicting RETCODE typedef between odbc and freetds
 
 #define RETCODE DBRETCODE
@@ -55,19 +55,19 @@
 #undef RETCODE
 #endif
 
-#ifdef QT_SQL_DB2
+#ifdef LSCS_SQL_DB2
 #include "./../plugins/sqldrivers/db2/qsql_db2.h"
 #endif
 
-#ifdef QT_SQL_SQLITE
+#ifdef LSCS_SQL_SQLITE
 #include "../../plugins/sqldrivers/sqlite/qsql_sqlite.h"
 #endif
 
-#ifdef QT_SQL_SQLITE2
+#ifdef LSCS_SQL_SQLITE2
 #include "./../plugins/sqldrivers/sqlite2/qsql_sqlite2.h"
 #endif
 
-#ifdef QT_SQL_IBASE
+#ifdef LSCS_SQL_IBASE
 #undef SQL_FLOAT              // avoid clash with ODBC
 #undef SQL_DOUBLE
 #undef SQL_TIMESTAMP
@@ -100,7 +100,7 @@ static QFactoryLoader *loader()
     return &retval;
 }
 
-QString QSqlDatabase::defaultConnection = "qt_sql_default_connection";
+QString QSqlDatabase::defaultConnection = "lscs_sql_default_connection";
 
 static bool s_hashCleared = true;
 
@@ -345,44 +345,44 @@ QStringList QSqlDatabase::drivers()
 {
     QStringList list;
 
-#ifdef QT_SQL_PSQL
+#ifdef LSCS_SQL_PSQL
     list << "QPSQL";
     // list << "QPSQL7";
 #endif
 
-#ifdef QT_SQL_MYSQL
+#ifdef LSCS_SQL_MYSQL
     list << "QMYSQL";
     // list << "QMYSQL3";
 #endif
 
-#ifdef QT_SQL_ODBC
+#ifdef LSCS_SQL_ODBC
     list << "QODBC"
          // list << "QODBC3";
 #endif
 
-#ifdef QT_SQL_OCI
+#ifdef LSCS_SQL_OCI
          list << "QOCI"
          // list << "QOCI8";
 #endif
 
-#ifdef QT_SQL_TDS
+#ifdef LSCS_SQL_TDS
          list << "QTDS"
          // list << "QTDS7";
 #endif
 
-#ifdef QT_SQL_DB2
+#ifdef LSCS_SQL_DB2
          list << "QDB2";
 #endif
 
-#ifdef QT_SQL_SQLITE
+#ifdef LSCS_SQL_SQLITE
     list << "QSQLITE";
 #endif
 
-#ifdef QT_SQL_SQLITE2
+#ifdef LSCS_SQL_SQLITE2
     list << "QSQLITE2";
 #endif
 
-#ifdef QT_SQL_IBASE
+#ifdef LSCS_SQL_IBASE
     list << "QIBASE";
 #endif
 
@@ -471,7 +471,7 @@ void QSqlDatabasePrivate::init( const QString &type )
     if ( ! driver )
     {
 
-#ifdef QT_SQL_PSQL
+#ifdef LSCS_SQL_PSQL
 
         if ( type == "QPSQL" )
         {
@@ -480,7 +480,7 @@ void QSqlDatabasePrivate::init( const QString &type )
 
 #endif
 
-#ifdef QT_SQL_MYSQL
+#ifdef LSCS_SQL_MYSQL
 
         if ( type == "QMYSQL" )
         {
@@ -489,7 +489,7 @@ void QSqlDatabasePrivate::init( const QString &type )
 
 #endif
 
-#ifdef QT_SQL_ODBC
+#ifdef LSCS_SQL_ODBC
 
         if ( type == "QODBC" )
         {
@@ -498,7 +498,7 @@ void QSqlDatabasePrivate::init( const QString &type )
 
 #endif
 
-#ifdef QT_SQL_OCI
+#ifdef LSCS_SQL_OCI
 
         if ( type == "QOCI" )
         {
@@ -507,7 +507,7 @@ void QSqlDatabasePrivate::init( const QString &type )
 
 #endif
 
-#ifdef QT_SQL_TDS
+#ifdef LSCS_SQL_TDS
 
         if ( type == "QTDS" )
         {
@@ -516,7 +516,7 @@ void QSqlDatabasePrivate::init( const QString &type )
 
 #endif
 
-#ifdef QT_SQL_DB2
+#ifdef LSCS_SQL_DB2
 
         if ( type == "QDB2" )
         {
@@ -525,7 +525,7 @@ void QSqlDatabasePrivate::init( const QString &type )
 
 #endif
 
-#ifdef QT_SQL_SQLITE
+#ifdef LSCS_SQL_SQLITE
 
         if ( type == "QSQLITE" )
         {
@@ -534,7 +534,7 @@ void QSqlDatabasePrivate::init( const QString &type )
 
 #endif
 
-#ifdef QT_SQL_SQLITE2
+#ifdef LSCS_SQL_SQLITE2
 
         if ( type == "QSQLITE2" )
         {
@@ -543,7 +543,7 @@ void QSqlDatabasePrivate::init( const QString &type )
 
 #endif
 
-#ifdef QT_SQL_IBASE
+#ifdef LSCS_SQL_IBASE
 
         if ( type == "QIBASE" )
         {

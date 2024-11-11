@@ -81,7 +81,7 @@ bool QPlatformGraphicsBufferHelper::lockAndBindToTexture( QPlatformGraphicsBuffe
 bool QPlatformGraphicsBufferHelper::bindSWToTexture( const QPlatformGraphicsBuffer *graphicsBuffer,
         bool *swizzleRandB, bool *premultipliedB, const QRect &subRect )
 {
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     QOpenGLContext *ctx = QOpenGLContext::currentContext();
 
     if ( !ctx )
@@ -185,7 +185,7 @@ bool QPlatformGraphicsBufferHelper::bindSWToTexture( const QPlatformGraphicsBuff
     }
     else
     {
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
 
         if ( !ctx->isOpenGLES() )
         {
@@ -241,6 +241,6 @@ bool QPlatformGraphicsBufferHelper::bindSWToTexture( const QPlatformGraphicsBuff
 
     return false;
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 }
 

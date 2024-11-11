@@ -44,12 +44,12 @@
 
 #include <qtabbar_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
-QString qt_accStripAmp( const QString &text );
-QString qt_accHotKey( const QString &text );
+QString lscs_accStripAmp( const QString &text );
+QString lscs_accHotKey( const QString &text );
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
 class QAccessibleTabButton: public QAccessibleInterface, public QAccessibleActionInterface
 {
@@ -131,10 +131,10 @@ public:
         switch ( t )
         {
             case QAccessible::Name:
-                return qt_accStripAmp( m_parent->tabText( m_index ) );
+                return lscs_accStripAmp( m_parent->tabText( m_index ) );
 
             case QAccessible::Accelerator:
-                return qt_accHotKey( m_parent->tabText( m_index ) );
+                return lscs_accHotKey( m_parent->tabText( m_index ) );
 
             case QAccessible::Description:
                 return m_parent->tabToolTip( m_index );
@@ -282,19 +282,19 @@ QString QAccessibleTabBar::text( QAccessible::Text t ) const
 {
     if ( t == QAccessible::Name )
     {
-        return qt_accStripAmp( tabBar()->tabText( tabBar()->currentIndex() ) );
+        return lscs_accStripAmp( tabBar()->tabText( tabBar()->currentIndex() ) );
     }
     else if ( t == QAccessible::Accelerator )
     {
-        return qt_accHotKey( tabBar()->tabText( tabBar()->currentIndex() ) );
+        return lscs_accHotKey( tabBar()->tabText( tabBar()->currentIndex() ) );
     }
 
     return QString();
 }
 
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 /*!
   \class QAccessibleComboBox
   \brief The QAccessibleComboBox class implements the QAccessibleInterface for editable and read-only combo boxes.
@@ -394,7 +394,7 @@ QString QAccessibleComboBox::text( QAccessible::Text t ) const
 
             break;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
         case QAccessible::Accelerator:
             str = QKeySequence( Qt::Key_Down ).toString( QKeySequence::NativeText );
@@ -448,9 +448,9 @@ QStringList QAccessibleComboBox::keyBindingsForAction( const QString & ) const
     return QStringList();
 }
 
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 
 QAccessibleAbstractScrollArea::QAccessibleAbstractScrollArea( QWidget *widget )
     : QAccessibleWidget( widget, QAccessible::Client )
@@ -565,12 +565,12 @@ QAccessibleAbstractScrollArea::AbstractScrollAreaElement QAccessibleAbstractScro
         return Viewport;
     }
 
-    if ( widget->objectName() == QLatin1String( "qt_scrollarea_hcontainer" ) )
+    if ( widget->objectName() == QLatin1String( "lscs_scrollarea_hcontainer" ) )
     {
         return HorizontalContainer;
     }
 
-    if ( widget->objectName() == QLatin1String( "qt_scrollarea_vcontainer" ) )
+    if ( widget->objectName() == QLatin1String( "lscs_scrollarea_vcontainer" ) )
     {
         return VerticalContainer;
     }
@@ -594,6 +594,6 @@ QAccessibleScrollArea::QAccessibleScrollArea( QWidget *widget )
 {
     Q_ASSERT( qobject_cast<QScrollArea *>( widget ) );
 }
-#endif // QT_NO_SCROLLAREA
+#endif // LSCS_NO_SCROLLAREA
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY

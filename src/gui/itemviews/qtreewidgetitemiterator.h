@@ -29,7 +29,7 @@
 
 #include <cstddef>
 
-#ifndef QT_NO_TREEWIDGET
+#ifndef LSCS_NO_TREEWIDGET
 
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -147,6 +147,6 @@ inline QTreeWidgetItem *QTreeWidgetItemIterator::operator*() const
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QTreeWidgetItemIterator::IteratorFlags )
 
-#endif // QT_NO_TREEWIDGET
+#endif // LSCS_NO_TREEWIDGET
 
 #endif // QTREEWIDGETITEMITERATOR_H

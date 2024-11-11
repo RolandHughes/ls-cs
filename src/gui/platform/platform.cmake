@@ -1,5 +1,5 @@
 add_definitions(
-   -DQT_USE_FREETYPE
+   -DLSCS_USE_FREETYPE
 )
 
 list(APPEND GUI_PUBLIC_INCLUDES

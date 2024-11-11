@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qdebug.h>
 #include <qnumeric.h>
@@ -867,7 +867,7 @@ void QGraphicsWidgetPrivate::windowFrameHoverMoveEvent( QGraphicsSceneHoverEvent
             event->ignore();
     }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( needsSetCursorCall )
     {
@@ -906,7 +906,7 @@ void QGraphicsWidgetPrivate::windowFrameHoverLeaveEvent( QGraphicsSceneHoverEven
     if ( hasDecoration() )
     {
         // ### restore the cursor, do not override it
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
         q->unsetCursor();
 #endif
 
@@ -1102,4 +1102,4 @@ void QGraphicsWidgetPrivate::setGeometryFromSetPos()
     inSetPos = 0 ;
 }
 
-#endif //QT_NO_GRAPHICSVIEW
+#endif //LSCS_NO_GRAPHICSVIEW

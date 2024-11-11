@@ -30,7 +30,7 @@
 #include <QtCore/qobject.h>
 #include <QtCore/qstring.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeBoundSignal;
 class QDeclarativeContext;
@@ -75,7 +75,7 @@ public:
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeConnections )
 

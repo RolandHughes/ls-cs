@@ -23,7 +23,7 @@
 
 #include <qnetworkproxy.h>
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
 #include <qauthenticator.h>
 #include <qdebug.h>
@@ -31,7 +31,7 @@
 #include <qstringlist.h>
 #include <qurl.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 #include <qnetworkconfiguration.h>
 #endif
 
@@ -50,7 +50,7 @@ public:
         : applicationLevelProxy( nullptr ), applicationLevelProxyFactory( nullptr ),
           socks5SocketEngineHandler( nullptr ), httpSocketEngineHandler( nullptr )
     {
-#ifdef QT_USE_SYSTEM_PROXIES
+#ifdef LSCS_USE_SYSTEM_PROXIES
         setApplicationProxyFactory( new QSystemConfigurationProxyFactory );
 #endif
 
@@ -472,7 +472,7 @@ public:
     int localPort;
     QNetworkProxyQuery::QueryType type;
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     QNetworkConfiguration config;
 #endif
 };
@@ -523,7 +523,7 @@ QNetworkProxyQuery::QNetworkProxyQuery( quint16 bindPort, const QString &protoco
     d->type = queryType;
 }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 QNetworkProxyQuery::QNetworkProxyQuery( const QNetworkConfiguration &networkConfiguration,
                                         const QUrl &requestUrl, QueryType queryType )
@@ -634,7 +634,7 @@ void QNetworkProxyQuery::setUrl( const QUrl &url )
     d->remote = url;
 }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 QNetworkConfiguration QNetworkProxyQuery::networkConfiguration() const
 {
@@ -750,4 +750,4 @@ QDebug operator<<( QDebug debug, const QNetworkProxy &proxy )
     return debug;
 }
 
-#endif // QT_NO_NETWORKPROXY
+#endif // LSCS_NO_NETWORKPROXY

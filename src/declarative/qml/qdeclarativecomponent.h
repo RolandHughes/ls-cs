@@ -30,7 +30,7 @@
 #include <QtCore/qstring.h>
 #include <QtScript/qscriptvalue.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeCompiledData;
 class QByteArray;
@@ -111,7 +111,7 @@ private:
     friend class QDeclarativeTypeData;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QDeclarativeComponent::Status )
 QML_DECLARE_TYPE( QDeclarativeComponent )

@@ -76,7 +76,7 @@ public:
     virtual bool inputMethodEnabled() const;
     virtual void setInputMethodHints( Qt::InputMethodHints hints );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     virtual QCursor cursor() const;
     virtual void updateCursor( const QCursor &cursor );
 #endif
@@ -124,7 +124,7 @@ public:
 #endif
 };
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 // the overlay is here for one reason only: to have the scroll-bars and other
 // extra UI elements appear on top of any QGraphicsItems created by CSS compositing layers
 class QGraphicsItemOverlay : public QGraphicsObject
@@ -198,7 +198,7 @@ public:
     virtual bool inputMethodEnabled() const;
     virtual void setInputMethodHints( Qt::InputMethodHints hints );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     virtual QCursor cursor() const;
     virtual void updateCursor( const QCursor &cursor );
 #endif
@@ -261,7 +261,7 @@ public:
     // we need to put the root graphics layer behind the overlay (which contains the scrollbar)
     enum { RootGraphicsLayerZValue, OverlayZValue };
 };
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 }
 #endif // PageClientQt

@@ -28,7 +28,7 @@
 #include <qgenericplugin.h>
 #include <qdebug.h>
 
-#if ! defined(Q_OS_WIN) || defined(QT_SHARED)
+#if ! defined(Q_OS_WIN) || defined(LSCS_SHARED)
 static QFactoryLoader *loader()
 {
     static QFactoryLoader retval( QGenericPluginInterface_ID, "/generic", Qt::CaseInsensitive );
@@ -39,7 +39,7 @@ static QFactoryLoader *loader()
 
 QObject *QGenericPluginFactory::create( const QString &key, const QString &specification )
 {
-#if (! defined(Q_OS_WIN) || defined(QT_SHARED))
+#if (! defined(Q_OS_WIN) || defined(LSCS_SHARED))
     const QString driver = key.toLower();
 
     if ( QObject *object = lscs_load_plugin<QObject, QGenericPlugin>( loader(), driver, specification ) )
@@ -56,7 +56,7 @@ QStringList QGenericPluginFactory::keys()
 {
     QStringList list;
 
-#if ! defined(Q_OS_WIN) || defined(QT_SHARED)
+#if ! defined(Q_OS_WIN) || defined(LSCS_SHARED)
     auto keySet = loader()->keySet();
     list.append( keySet.toList() );
 #endif

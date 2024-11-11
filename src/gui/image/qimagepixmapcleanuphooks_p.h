@@ -26,8 +26,8 @@
 
 #include <qpixmap.h>
 
-typedef void ( *_qt_image_cleanup_hook_64 )( qint64 );
-typedef void ( *_qt_pixmap_cleanup_hook_pmd )( QPlatformPixmap * );
+typedef void ( *_lscs_image_cleanup_hook_64 )( qint64 );
+typedef void ( *_lscs_pixmap_cleanup_hook_pmd )( QPlatformPixmap * );
 
 class QImagePixmapCleanupHooks;
 
@@ -44,26 +44,26 @@ public:
     static bool isPixmapCached( const QPixmap &pixmap );
 
     // Gets called when a pixmap data is about to be modified:
-    void addPlatformPixmapModificationHook( _qt_pixmap_cleanup_hook_pmd );
+    void addPlatformPixmapModificationHook( _lscs_pixmap_cleanup_hook_pmd );
 
     // Gets called when a pixmap data is about to be destroyed:
-    void addPlatformPixmapDestructionHook( _qt_pixmap_cleanup_hook_pmd );
+    void addPlatformPixmapDestructionHook( _lscs_pixmap_cleanup_hook_pmd );
 
     // Gets called when an image is about to be modified or destroyed:
-    void addImageHook( _qt_image_cleanup_hook_64 );
+    void addImageHook( _lscs_image_cleanup_hook_64 );
 
-    void removePlatformPixmapModificationHook( _qt_pixmap_cleanup_hook_pmd );
-    void removePlatformPixmapDestructionHook( _qt_pixmap_cleanup_hook_pmd );
-    void removeImageHook( _qt_image_cleanup_hook_64 );
+    void removePlatformPixmapModificationHook( _lscs_pixmap_cleanup_hook_pmd );
+    void removePlatformPixmapDestructionHook( _lscs_pixmap_cleanup_hook_pmd );
+    void removeImageHook( _lscs_image_cleanup_hook_64 );
 
     static void executePlatformPixmapModificationHooks( QPlatformPixmap * );
     static void executePlatformPixmapDestructionHooks( QPlatformPixmap * );
     static void executeImageHooks( qint64 key );
 
 private:
-    QList<_qt_image_cleanup_hook_64> imageHooks;
-    QList<_qt_pixmap_cleanup_hook_pmd> pixmapModificationHooks;
-    QList<_qt_pixmap_cleanup_hook_pmd> pixmapDestructionHooks;
+    QList<_lscs_image_cleanup_hook_64> imageHooks;
+    QList<_lscs_pixmap_cleanup_hook_pmd> pixmapModificationHooks;
+    QList<_lscs_pixmap_cleanup_hook_pmd> pixmapDestructionHooks;
 };
 
 #endif

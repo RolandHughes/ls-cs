@@ -136,7 +136,7 @@ inline double reinterpretIntptrToDouble( intptr_t value )
 
 class JSImmediate
 {
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 public: // QtScript needs isImmediate() and from() functions
 #else
 private:

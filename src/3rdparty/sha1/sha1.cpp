@@ -28,7 +28,7 @@
 
 #include <qendian.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 // Test Vectors (from FIPS PUB 180-1)
 //
@@ -308,4 +308,4 @@ static inline void sha1ToHash( Sha1State *state, unsigned char *buffer )
     qToBigEndian( state->h4, buffer + 16 );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

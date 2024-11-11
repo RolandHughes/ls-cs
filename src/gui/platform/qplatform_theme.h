@@ -264,7 +264,7 @@ public:
     virtual bool usePlatformNativeDialog( DialogType type ) const;
     virtual QPlatformDialogHelper *createPlatformDialogHelper( DialogType type ) const;
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
     virtual QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const;
 #endif
 

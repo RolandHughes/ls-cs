@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 #include <qlist.h>
 #include <qrect.h>
@@ -203,6 +203,6 @@ static inline bool QRectF_intersects( const QRectF &s, const QRectF &r )
 
 
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 #endif // QGRAPHICSBSPTREEINDEX_H

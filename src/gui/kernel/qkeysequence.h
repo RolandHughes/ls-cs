@@ -28,7 +28,7 @@
 #include <qstring.h>
 #include <qobject.h>
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
 class QKeySequence;
 Q_GUI_EXPORT QDataStream &operator<<( QDataStream &stream, const QKeySequence &ks );
@@ -235,6 +235,6 @@ public:
     QKeySequence( int ) {}
 };
 
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
 #endif

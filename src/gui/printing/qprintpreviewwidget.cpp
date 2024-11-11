@@ -34,7 +34,7 @@
 #include <qprinter_p.h>
 #include <qwidget_p.h>
 
-#ifndef QT_NO_PRINTPREVIEWWIDGET
+#ifndef LSCS_NO_PRINTPREVIEWWIDGET
 
 class PageItem : public QGraphicsItem
 {

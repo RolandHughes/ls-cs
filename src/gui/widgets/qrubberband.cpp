@@ -27,7 +27,7 @@
 #include <qrubberband.h>
 #include <qtimer.h>
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
 #include <qstyle.h>
 #include <qstyleoption.h>
@@ -174,4 +174,4 @@ bool QRubberBand::event( QEvent *e )
 }
 
 
-#endif // QT_NO_RUBBERBAND
+#endif // LSCS_NO_RUBBERBAND

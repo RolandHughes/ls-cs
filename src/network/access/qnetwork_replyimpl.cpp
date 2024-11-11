@@ -71,7 +71,7 @@ void QNetworkReplyImplPrivate::_q_startOperation()
         return;
     }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     Q_Q( QNetworkReplyImpl );
 
     QSharedPointer<QNetworkSession> session( manager->d_func()->getNetworkSession() );
@@ -92,7 +92,7 @@ void QNetworkReplyImplPrivate::_q_startOperation()
     if ( ! backend->start() )
     {
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
         // backend failed to start because the session state is not Connected.
         // QNetworkAccessManager will call _q_startOperation again for us when the session state changes.
         state = ReplyState::WaitingForSession;
@@ -136,7 +136,7 @@ void QNetworkReplyImplPrivate::_q_startOperation()
     else
     {
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
         if ( session )
         {
@@ -148,7 +148,7 @@ void QNetworkReplyImplPrivate::_q_startOperation()
 
     }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
     if ( session )
     {
@@ -344,7 +344,7 @@ void QNetworkReplyImplPrivate::_q_bufferOutgoingData()
     }
 }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 void QNetworkReplyImplPrivate::_q_networkSessionConnected()
 {
     Q_Q( QNetworkReplyImpl );
@@ -1008,7 +1008,7 @@ void QNetworkReplyImplPrivate::finished()
     if ( ! manager.isNull() )
     {
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
         QSharedPointer<QNetworkSession> session ( manager->d_func()->getNetworkSession() );
 
         if ( session && session->state() == QNetworkSession::Roaming &&
@@ -1137,7 +1137,7 @@ void QNetworkReplyImplPrivate::redirectionRequested( const QUrl &target )
 
 void QNetworkReplyImplPrivate::encrypted()
 {
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     Q_Q( QNetworkReplyImpl );
     emit q->encrypted();
 #endif
@@ -1145,7 +1145,7 @@ void QNetworkReplyImplPrivate::encrypted()
 
 void QNetworkReplyImplPrivate::sslErrors( const QList<QSslError> &errors )
 {
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     Q_Q( QNetworkReplyImpl );
     emit q->sslErrors( errors );
 #else
@@ -1279,7 +1279,7 @@ void QNetworkReplyImpl::setReadBufferSize( qint64 size )
     }
 }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 void QNetworkReplyImpl::sslConfigurationImplementation( QSslConfiguration &configuration ) const
 {
     Q_D( const QNetworkReplyImpl );
@@ -1421,7 +1421,7 @@ bool QNetworkReplyImplPrivate::migrateBackend()
     return true;
 }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 QDisabledNetworkReply::QDisabledNetworkReply( QObject *parent,
         const QNetworkRequest &req, QNetworkAccessManager::Operation op )
     : QNetworkReply( parent )
@@ -1473,7 +1473,7 @@ void QNetworkReplyImpl::_q_bufferOutgoingDataFinished()
     d->_q_bufferOutgoingDataFinished();
 }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 void QNetworkReplyImpl::_q_networkSessionConnected()
 {
     Q_D( QNetworkReplyImpl );

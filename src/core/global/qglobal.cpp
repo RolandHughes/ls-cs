@@ -48,7 +48,7 @@
 #endif
 
 #if defined(Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 // from <ddk/ntddk.h>
 extern "C" __declspec( dllimport ) NTSTATUS NTAPI RtlGetVersion( IN OUT PRTL_OSVERSIONINFOW lpVersionInformation );
@@ -66,7 +66,7 @@ const char *ls_csVersion()
 QSysInfo::MacVersion QSysInfo::macVersion()
 {
     // kernel/qcore_mac_objc.mm
-    const QAppleOperatingSystemVersion osVersion = qt_apple_os_version();
+    const QAppleOperatingSystemVersion osVersion = lscs_apple_os_version();
 
     QSysInfo::MacVersion retval;
 
@@ -294,7 +294,7 @@ QSysInfo::WinVersion QSysInfo::windowsVersion()
 
 #if defined(LSCS_SHOW_DEBUG_CORE)
     {
-        QByteArray forceWinVersion = qgetenv( "QT_WINVER_OVERRIDE" );
+        QByteArray forceWinVersion = qgetenv( "LSCS_WINVER_OVERRIDE" );
 
         if ( forceWinVersion.isEmpty() )
         {
@@ -492,7 +492,7 @@ QString QSysInfo::machineHostName()
 }
 
 // Q_CHECK_PTR macro calls this function if an allocation check fails
-void qt_check_pointer( const char *n, int l )
+void lscs_check_pointer( const char *n, int l )
 {
     qFatal( "In file %s, line %d: Out of memory", n, l );
 }
@@ -503,11 +503,11 @@ void qBadAlloc()
 }
 
 // Dijkstra's bisection algorithm to find the square root of an integer.
-Q_CORE_EXPORT unsigned int qt_int_sqrt( unsigned int n )
+Q_CORE_EXPORT unsigned int lscs_int_sqrt( unsigned int n )
 {
     if ( n >= ( std::numeric_limits<unsigned int>::max() >> 2 ) )
     {
-        unsigned int r  = 2 * qt_int_sqrt( n / 4 );
+        unsigned int r  = 2 * lscs_int_sqrt( n / 4 );
         unsigned int r2 = r + 1;
         return ( n >= r2 * r2 ) ? r2 : r;
     }

@@ -28,12 +28,12 @@
 #include <qmenubar.h>
 #include <qstyle.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
-QString qt_accStripAmp( const QString &text );
-QString qt_accHotKey( const QString &text );
+QString lscs_accStripAmp( const QString &text );
+QString lscs_accHotKey( const QString &text );
 
 QAccessibleInterface *getOrCreateMenu( QWidget *menu, QAction *action )
 {
@@ -143,7 +143,7 @@ int QAccessibleMenu::indexOfChild( const QAccessibleInterface *child ) const
     return -1;
 }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 QAccessibleMenuBar::QAccessibleMenuBar( QWidget *w )
     : QAccessibleWidget( w, QAccessible::MenuBar )
 {
@@ -282,7 +282,7 @@ QRect QAccessibleMenuItem::rect() const
     QRect rect;
     QWidget *own = owner();
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
     if ( QMenuBar *menuBar = qobject_cast<QMenuBar *>( own ) )
     {
@@ -330,7 +330,7 @@ QAccessible::State QAccessibleMenuItem::state() const
             s.focused = true;
         }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     }
     else if ( QMenuBar *menuBar = qobject_cast<QMenuBar *>( own ) )
     {
@@ -368,12 +368,12 @@ QString QAccessibleMenuItem::text( QAccessible::Text t ) const
     switch ( t )
     {
         case QAccessible::Name:
-            str = qt_accStripAmp( m_action->text() );
+            str = lscs_accStripAmp( m_action->text() );
             break;
 
         case QAccessible::Accelerator:
         {
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
             QKeySequence key = m_action->shortcut();
 
             if ( !key.isEmpty() )
@@ -383,7 +383,7 @@ QString QAccessibleMenuItem::text( QAccessible::Text t ) const
             else
 #endif
             {
-                str = qt_accHotKey( m_action->text() );
+                str = lscs_accHotKey( m_action->text() );
             }
 
             break;
@@ -473,7 +473,7 @@ QWidget *QAccessibleMenuItem::owner() const
     return m_owner;
 }
 
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 

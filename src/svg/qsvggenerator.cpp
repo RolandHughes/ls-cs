@@ -23,7 +23,7 @@
 
 #include <qsvggenerator.h>
 
-#ifndef QT_NO_SVGGENERATOR
+#ifndef LSCS_NO_SVGGENERATOR
 
 #include <qbuffer.h>
 #include <qdebug.h>
@@ -867,7 +867,7 @@ bool QSvgPaintEngine::end()
     *d->stream << "</defs>\n";
 
     d->stream->setDevice( d->outputDevice );
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     d->stream->setCodec( QTextCodec::codecForName( "UTF-8" ) );
 #endif
 
@@ -1147,4 +1147,4 @@ void QSvgPaintEngine::drawTextItem( const QPointF &pt, const QTextItem &textItem
 }
 
 
-#endif // QT_NO_SVGGENERATOR
+#endif // LSCS_NO_SVGGENERATOR

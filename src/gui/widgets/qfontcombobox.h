@@ -27,7 +27,7 @@
 #include <qcombobox.h>
 #include <qfontdatabase.h>
 
-#ifndef QT_NO_FONTCOMBOBOX
+#ifndef LSCS_NO_FONTCOMBOBOX
 
 class QFontComboBoxPrivate;
 
@@ -99,5 +99,5 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS( QFontComboBox::FontFilters )
 
 
-#endif // QT_NO_FONTCOMBOBOX
+#endif // LSCS_NO_FONTCOMBOBOX
 #endif

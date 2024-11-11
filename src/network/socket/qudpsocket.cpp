@@ -28,9 +28,9 @@
 
 #include <qabstractsocket_p.h>
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
 
-#define QT_CHECK_BOUND(function, a) do { \
+#define LSCS_CHECK_BOUND(function, a) do { \
     if (! isValid()) { \
         qWarning(function" called on a QUdpSocket when not in QUdpSocket::BoundState"); \
         return (a); \
@@ -96,7 +96,7 @@ QUdpSocket::~QUdpSocket()
 
 
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
 
 
 bool QUdpSocket::joinMulticastGroup( const QHostAddress &groupAddress )
@@ -109,7 +109,7 @@ bool QUdpSocket::joinMulticastGroup( const QHostAddress &groupAddress,
                                      const QNetworkInterface &iface )
 {
     Q_D( QUdpSocket );
-    QT_CHECK_BOUND( "QUdpSocket::joinMulticastGroup()", false );
+    LSCS_CHECK_BOUND( "QUdpSocket::joinMulticastGroup()", false );
     return d->socketEngine->joinMulticastGroup( groupAddress, iface );
 }
 
@@ -123,7 +123,7 @@ bool QUdpSocket::leaveMulticastGroup( const QHostAddress &groupAddress )
 bool QUdpSocket::leaveMulticastGroup( const QHostAddress &groupAddress,
                                       const QNetworkInterface &iface )
 {
-    QT_CHECK_BOUND( "QUdpSocket::leaveMulticastGroup()", false );
+    LSCS_CHECK_BOUND( "QUdpSocket::leaveMulticastGroup()", false );
     return d_func()->socketEngine->leaveMulticastGroup( groupAddress, iface );
 }
 
@@ -131,7 +131,7 @@ bool QUdpSocket::leaveMulticastGroup( const QHostAddress &groupAddress,
 QNetworkInterface QUdpSocket::multicastInterface() const
 {
     Q_D( const QUdpSocket );
-    QT_CHECK_BOUND( "QUdpSocket::multicastInterface()", QNetworkInterface() );
+    LSCS_CHECK_BOUND( "QUdpSocket::multicastInterface()", QNetworkInterface() );
     return d->socketEngine->multicastInterface();
 }
 
@@ -149,19 +149,19 @@ void QUdpSocket::setMulticastInterface( const QNetworkInterface &iface )
     d->socketEngine->setMulticastInterface( iface );
 }
 
-#endif // QT_NO_NETWORKINTERFACE
+#endif // LSCS_NO_NETWORKINTERFACE
 
 
 bool QUdpSocket::hasPendingDatagrams() const
 {
-    QT_CHECK_BOUND( "QUdpSocket::hasPendingDatagrams()", false );
+    LSCS_CHECK_BOUND( "QUdpSocket::hasPendingDatagrams()", false );
     return d_func()->socketEngine->hasPendingDatagrams();
 }
 
 
 qint64 QUdpSocket::pendingDatagramSize() const
 {
-    QT_CHECK_BOUND( "QUdpSocket::pendingDatagramSize()", -1 );
+    LSCS_CHECK_BOUND( "QUdpSocket::pendingDatagramSize()", -1 );
     return d_func()->socketEngine->pendingDatagramSize();
 }
 
@@ -210,7 +210,7 @@ qint64 QUdpSocket::readDatagram( char *data, qint64 maxSize, QHostAddress *addre
     qDebug( "QUdpSocket::readDatagram(%p, %llu, %p, %p)", data, maxSize, address, port );
 #endif
 
-    QT_CHECK_BOUND( "QUdpSocket::readDatagram()", -1 );
+    LSCS_CHECK_BOUND( "QUdpSocket::readDatagram()", -1 );
 
     qint64 readBytes;
 
@@ -245,5 +245,5 @@ qint64 QUdpSocket::readDatagram( char *data, qint64 maxSize, QHostAddress *addre
     return readBytes;
 }
 
-#endif // QT_NO_UDPSOCKET
+#endif // LSCS_NO_UDPSOCKET
 

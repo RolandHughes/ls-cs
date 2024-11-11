@@ -23,7 +23,7 @@
 
 #include <qgraphics_anchorlayout_p.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 QGraphicsAnchor::QGraphicsAnchor( QGraphicsAnchorLayout *parentLayout )
     : QObject( nullptr ), d_ptr( new QGraphicsAnchorPrivate )
@@ -279,4 +279,4 @@ QSizeF QGraphicsAnchorLayout::sizeHint( Qt::SizeHint which, const QSizeF &constr
     return engineSizeHint + QSizeF( left + right, top + bottom );
 }
 
-#endif //QT_NO_GRAPHICSVIEW
+#endif //LSCS_NO_GRAPHICSVIEW

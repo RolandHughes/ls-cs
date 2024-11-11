@@ -439,7 +439,7 @@ int QSurfaceFormat::swapInterval() const
     return d->swapInterval;
 }
 
-static QSurfaceFormat *qt_default_surface_format()
+static QSurfaceFormat *lscs_default_surface_format()
 {
     static QSurfaceFormat retval;
     return &retval;
@@ -447,7 +447,7 @@ static QSurfaceFormat *qt_default_surface_format()
 
 void QSurfaceFormat::setDefaultFormat( const QSurfaceFormat &format )
 {
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
     if ( qApp )
     {
@@ -462,12 +462,12 @@ void QSurfaceFormat::setDefaultFormat( const QSurfaceFormat &format )
 
 #endif
 
-    *qt_default_surface_format() = format;
+    *lscs_default_surface_format() = format;
 }
 
 QSurfaceFormat QSurfaceFormat::defaultFormat()
 {
-    return *qt_default_surface_format();
+    return *lscs_default_surface_format();
 }
 
 bool operator==( const QSurfaceFormat &a, const QSurfaceFormat &b )

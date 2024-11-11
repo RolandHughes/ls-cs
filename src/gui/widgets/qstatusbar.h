@@ -26,7 +26,7 @@
 
 #include <qwidget.h>
 
-#ifndef QT_NO_STATUSBAR
+#ifndef LSCS_NO_STATUSBAR
 
 class QStatusBarPrivate;
 
@@ -79,6 +79,6 @@ private:
     Q_DECLARE_PRIVATE( QStatusBar )
 };
 
-#endif // QT_NO_STATUSBAR
+#endif // LSCS_NO_STATUSBAR
 
 #endif

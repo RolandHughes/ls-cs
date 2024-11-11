@@ -75,7 +75,7 @@ static const signed char cltUnknown = 14;
 
 // sneaky way to let QDom know where the skipped entity occurred
 // this variable means the code is not reentrant
-bool qt_xml_skipped_entity_in_content;
+bool lscs_xml_skipped_entity_in_content;
 
 // character lookup table
 static const signed char charLookupTable[256] =
@@ -189,7 +189,7 @@ public:
 
     bool nextReturnedEndOfData;
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     QTextDecoder *encMapper;
 #endif
 
@@ -444,7 +444,7 @@ private:
     bool eat_ws();
     bool next_eat_ws();
 
-    void QT_FASTCALL next();
+    void LSCS_FASTCALL next();
     bool atEnd();
 
     void init( const QXmlInputSource *i );
@@ -874,7 +874,7 @@ void QXmlInputSource::init()
         d->inputStream = nullptr;
 
         setData( QString() );
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
         d->encMapper = nullptr;
 #endif
         d->nextReturnedEndOfData = true; // first call to next() will call fetchData()
@@ -911,7 +911,7 @@ QXmlInputSource::~QXmlInputSource()
 {
     // must close the input device
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     delete d->encMapper;
 #endif
 
@@ -1043,7 +1043,7 @@ void QXmlInputSource::fetchData()
     }
 }
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 static QString extractEncodingDecl( const QString &text, bool *needMoreText )
 {
     *needMoreText = false;
@@ -1106,11 +1106,11 @@ static QString extractEncodingDecl( const QString &text, bool *needMoreText )
 
     return encoding;
 }
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC
 
 QString QXmlInputSource::fromRawData( const QByteArray &data, bool beginning )
 {
-#ifdef QT_NO_TEXTCODEC
+#ifdef LSCS_NO_TEXTCODEC
     ( void ) beginning;
     return QString::fromLatin1( data.constData(), data.size() );
 
@@ -1743,7 +1743,7 @@ bool QXmlSimpleReader::parse( const QXmlInputSource *input, bool incremental )
         }
     }
 
-    qt_xml_skipped_entity_in_content = false;
+    lscs_xml_skipped_entity_in_content = false;
 
     return d->parseBeginOrContinue( 0, incremental );
 }
@@ -7879,16 +7879,16 @@ bool QXmlSimpleReaderPrivate::processReference()
 
                     if ( contentHnd )
                     {
-                        qt_xml_skipped_entity_in_content = parseReference_context == InContent;
+                        lscs_xml_skipped_entity_in_content = parseReference_context == InContent;
 
                         if ( !contentHnd->skippedEntity( reference ) )
                         {
-                            qt_xml_skipped_entity_in_content = false;
+                            lscs_xml_skipped_entity_in_content = false;
                             reportParseError( contentHnd->errorString() );
                             return false; // error
                         }
 
-                        qt_xml_skipped_entity_in_content = false;
+                        lscs_xml_skipped_entity_in_content = false;
                     }
                 }
             }
@@ -7944,16 +7944,16 @@ bool QXmlSimpleReaderPrivate::processReference()
 
                         if ( skipIt && contentHnd )
                         {
-                            qt_xml_skipped_entity_in_content = true;
+                            lscs_xml_skipped_entity_in_content = true;
 
                             if ( ! contentHnd->skippedEntity( reference ) )
                             {
-                                qt_xml_skipped_entity_in_content = false;
+                                lscs_xml_skipped_entity_in_content = false;
                                 reportParseError( contentHnd->errorString() );
                                 return false; // error
                             }
 
-                            qt_xml_skipped_entity_in_content = false;
+                            lscs_xml_skipped_entity_in_content = false;
                         }
 
                         parseReference_charDataRead = false;

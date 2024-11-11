@@ -36,7 +36,7 @@
 #include "qdeclarativecompiler_p.h"
 #include "qdeclarativecontext_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 #define QML_ALIAS_FLAG_PTR 0x00000001
 
@@ -171,6 +171,6 @@ private:
     static void list_clear( QDeclarativeListProperty<QObject> * );
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEVMEMETAOBJECT_P_H

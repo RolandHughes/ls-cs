@@ -28,7 +28,7 @@
 #include <qdeclarativeparser_p.h>
 #include <QtCore/qglobal.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeCustomParserNodePrivate
 {
@@ -53,6 +53,6 @@ public:
     QList<QVariant> values;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVECUSTOMPARSER_P_H

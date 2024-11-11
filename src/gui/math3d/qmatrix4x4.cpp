@@ -28,7 +28,7 @@
 #include <qtransform.h>
 #include <qvariant.h>
 
-#ifndef QT_NO_MATRIX4X4
+#ifndef LSCS_NO_MATRIX4X4
 
 static constexpr const qreal inv_dist_to_plane = 1.0 / 1024.0;
 
@@ -561,7 +561,7 @@ QMatrix4x4 &QMatrix4x4::operator/=( qreal divisor )
     Returns the product of \a m1 and \a m2.
 */
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
 /*!
     \fn QVector3D operator*(const QVector3D& vector, const QMatrix4x4& matrix)
@@ -581,7 +581,7 @@ QMatrix4x4 &QMatrix4x4::operator/=( qreal divisor )
 
 #endif
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
 
 /*!
     \fn QVector4D operator*(const QVector4D& vector, const QMatrix4x4& matrix)
@@ -690,7 +690,7 @@ QMatrix4x4 operator/( const QMatrix4x4 &matrix, qreal divisor )
     fuzziness factor for floating-point comparisons; false otherwise.
 */
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
 /*!
     Multiplies this matrix by another that scales coordinates by
@@ -880,7 +880,7 @@ void QMatrix4x4::scale( qreal factor )
     }
 }
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 /*!
     Multiplies this matrix by another that translates coordinates by
     the components of \a vector.
@@ -1044,7 +1044,7 @@ void QMatrix4x4::translate( qreal x, qreal y, qreal z )
     }
 }
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
 /*!
     Multiples this matrix by another that rotates coordinates through
@@ -1365,7 +1365,7 @@ void QMatrix4x4::projectedRotate( qreal angle, qreal x, qreal y, qreal z )
     }
 }
 
-#ifndef QT_NO_QUATERNION
+#ifndef LSCS_NO_QUATERNION
 
 void QMatrix4x4::rotate( const QQuaternion &quaternion )
 {
@@ -1434,7 +1434,7 @@ void QMatrix4x4::ortho( qreal left, qreal right, qreal bottom, qreal top, qreal 
     qreal invheight = top - bottom;
     qreal clip      = farPlane - nearPlane;
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
     if ( clip == 2.0f && ( nearPlane + farPlane ) == 0.0f )
     {
@@ -1563,7 +1563,7 @@ void QMatrix4x4::perspective( qreal angle, qreal aspect, qreal nearPlane, qreal 
     self *= tmp;
 }
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
 void QMatrix4x4::lookAt( const QVector3D &eye, const QVector3D &center, const QVector3D &up )
 {
@@ -1774,7 +1774,7 @@ QTransform QMatrix4x4::toTransform( qreal distanceToPlane ) const
     \sa mapRect()
 */
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
 /*!
     \fn QVector3D QMatrix4x4::map(const QVector3D& point) const
@@ -1796,7 +1796,7 @@ QTransform QMatrix4x4::toTransform( qreal distanceToPlane ) const
 
 #endif
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
 
 /*!
     \fn QVector4D QMatrix4x4::map(const QVector4D& point) const;
@@ -2087,7 +2087,7 @@ QDebug operator<<( QDebug dbg, const QMatrix4x4 &m )
     return dbg.space();
 }
 
-#ifndef QT_NO_DATASTREAM
+#ifndef LSCS_NO_DATASTREAM
 
 /*!
     \fn QDataStream &operator<<(QDataStream &stream, const QMatrix4x4 &matrix)
@@ -2137,8 +2137,8 @@ QDataStream &operator>>( QDataStream &stream, QMatrix4x4 &matrix )
     return stream;
 }
 
-#endif // QT_NO_DATASTREAM
+#endif // LSCS_NO_DATASTREAM
 
-#endif // QT_NO_MATRIX4X4
+#endif // LSCS_NO_MATRIX4X4
 
 

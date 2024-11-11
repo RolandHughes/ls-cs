@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#if ! defined(QT_NO_OPENGL) && ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_NO_OPENGL) && ! defined(LSCS_OPENGL_ES_2)
 
 #include <qopengl_versionfunctions.h>
 #include <qopenglcontext.h>
@@ -2363,6 +2363,6 @@ inline void QOpenGLFunctions_1_2::glColorTable( GLenum target, GLenum internalfo
     d_1_2_Deprecated->ColorTable( target, internalformat, width, format, type, table );
 }
 
-#endif // QT_NO_OPENGL && !QT_OPENGL_ES_2
+#endif // LSCS_NO_OPENGL && !LSCS_OPENGL_ES_2
 
 #endif

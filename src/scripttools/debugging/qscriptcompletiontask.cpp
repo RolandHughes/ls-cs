@@ -36,7 +36,7 @@
 #include <qset.h>
 #include <qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptCompletionTaskPrivate
     : public QScriptCompletionTaskInterfacePrivate
@@ -361,4 +361,4 @@ void QScriptCompletionTask::start()
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -43,7 +43,7 @@ public:
         return m_widget;
     }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleInterface *accessibleRoot() const override;
 #endif
 
@@ -62,11 +62,11 @@ protected:
     void handleMoveEvent( QMoveEvent * );
     void handleResizeEvent( QResizeEvent * );
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void handleWheelEvent( QWheelEvent * );
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void handleDragEnterMoveEvent( QDragMoveEvent * );
     void handleDragLeaveEvent( QDragLeaveEvent * );
     void handleDropEvent( QDropEvent * );
@@ -76,15 +76,15 @@ protected:
     void handleWindowStateChangedEvent( QWindowStateChangeEvent *event );
     bool nativeEvent( const QByteArray &eventType, void *message, long *result ) override;
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
     void handleTabletEvent( QTabletEvent * );
 #endif
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     void handleGestureEvent( QNativeGestureEvent * );
 #endif
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void handleContextMenuEvent( QContextMenuEvent * );
 #endif
 
@@ -105,7 +105,7 @@ private:
     QPointer<QWidget> m_widget;
     QPointer<QWidget> m_implicit_mouse_grabber;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     QPointer<QWidget> m_dragTarget;
 #endif
 

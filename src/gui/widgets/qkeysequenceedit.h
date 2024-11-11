@@ -26,7 +26,7 @@
 
 #include <qwidget.h>
 
-#ifndef QT_NO_KEYSEQUENCEEDIT
+#ifndef LSCS_NO_KEYSEQUENCEEDIT
 
 class QKeySequenceEditPrivate;
 
@@ -72,6 +72,6 @@ private:
     Q_DECLARE_PRIVATE( QKeySequenceEdit )
 };
 
-#endif // QT_NO_KEYSEQUENCEEDIT
+#endif // LSCS_NO_KEYSEQUENCEEDIT
 
 #endif

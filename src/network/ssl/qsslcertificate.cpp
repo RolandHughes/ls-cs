@@ -28,11 +28,11 @@
 #include <qfile.h>
 #include <qsslcertificate.h>
 
-#ifdef QT_OPENSSL
+#ifdef LSCS_OPENSSL
 #include <qsslsocket_openssl_symbols_p.h>
 #endif
 
-#ifdef QT_SECURETRANSPORT
+#ifdef LSCS_SECURETRANSPORT
 #include <qsslsocket_mac_p.h>
 #endif
 

@@ -34,7 +34,7 @@
 #include <qscriptdebuggervalue_p.h>
 #include <qscriptdebuggervalueproperty_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDataStream;
 class QScriptContextInfo;
@@ -107,6 +107,6 @@ private:
 QDataStream &operator<<( QDataStream &, const QScriptDebuggerResponse & );
 QDataStream &operator>>( QDataStream &, QScriptDebuggerResponse & );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

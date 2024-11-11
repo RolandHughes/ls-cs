@@ -29,9 +29,9 @@
 #include <QUrl>
 #include <QAbstractListModel>
 
-#ifndef QT_NO_DIRMODEL
+#ifndef LSCS_NO_DIRMODEL
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeContext;
 class QModelIndex;
@@ -121,10 +121,10 @@ private:
     QDeclarativeFolderListModelPrivate *d;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeFolderListModel )
 
-#endif // QT_NO_DIRMODEL
+#endif // LSCS_NO_DIRMODEL
 
 #endif // QDECLARATIVEFOLDERLISTMODEL_H

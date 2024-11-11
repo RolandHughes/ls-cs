@@ -25,7 +25,7 @@
 
 #include "private/qdeclarativejsastvisitor_p.h"
 
-QT_QML_BEGIN_NAMESPACE
+LSCS_QML_BEGIN_NAMESPACE
 
 namespace QDeclarativeJS
 {
@@ -1047,6 +1047,6 @@ void UiSourceElement::accept0( Visitor *visitor )
 }
 } // namespace QDeclarativeJS::AST
 
-QT_QML_END_NAMESPACE
+LSCS_QML_END_NAMESPACE
 
 

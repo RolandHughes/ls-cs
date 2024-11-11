@@ -28,7 +28,7 @@
 #include <qscriptdeclarativeclass_p.h>
 #include <QtScript/qscriptclass.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 class QDeclarativeType;
@@ -57,7 +57,7 @@ private:
     quint32 enumValue;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVETYPENAMESCRIPTCLASS_P_H
 

@@ -29,7 +29,7 @@
 #include <QTimer>
 #include <qplatformdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 // The maximum number of pixels a flick can overshoot
 #ifndef QML_FLICK_OVERSHOOT
@@ -2249,4 +2249,4 @@ void QDeclarativeFlickablePrivate::updateVelocity()
     emit q->verticalVelocityChanged();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

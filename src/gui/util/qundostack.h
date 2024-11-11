@@ -32,7 +32,7 @@ class QAction;
 class QUndoCommandPrivate;
 class QUndoStackPrivate;
 
-#ifndef QT_NO_UNDOCOMMAND
+#ifndef LSCS_NO_UNDOCOMMAND
 
 class Q_GUI_EXPORT QUndoCommand
 {
@@ -64,9 +64,9 @@ private:
     friend class QUndoStack;
 };
 
-#endif // QT_NO_UNDOCOMMAND
+#endif // LSCS_NO_UNDOCOMMAND
 
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
 
 class Q_GUI_EXPORT QUndoStack : public QObject
 {
@@ -98,7 +98,7 @@ public:
     int index() const;
     QString text( int idx ) const;
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     QAction *createUndoAction( QObject *parent, const QString &prefix = QString() ) const;
     QAction *createRedoAction( QObject *parent, const QString &prefix = QString() ) const;
 #endif
@@ -151,6 +151,6 @@ private:
     friend class QUndoGroup;
 };
 
-#endif // QT_NO_UNDOSTACK
+#endif // LSCS_NO_UNDOSTACK
 
 #endif // QUNDOSTACK_H

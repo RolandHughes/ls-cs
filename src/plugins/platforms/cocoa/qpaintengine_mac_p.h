@@ -30,7 +30,7 @@
 #include <qpaintengine_p.h>
 #include <qpolygonclipper_p.h>
 #include <qfont_p.h>
-#include <qt_mac_p.h>
+#include <lscs_mac_p.h>
 
 typedef struct CGColorSpace *CGColorSpaceRef;
 
@@ -182,8 +182,8 @@ public:
 
         if ( matrix )
         {
-            extern CGAffineTransform qt_mac_convert_transform_to_cg( const QTransform & );
-            xform = CGAffineTransformConcat( qt_mac_convert_transform_to_cg( *matrix ), xform );
+            extern CGAffineTransform lscs_mac_convert_transform_to_cg( const QTransform & );
+            xform = CGAffineTransformConcat( lscs_mac_convert_transform_to_cg( *matrix ), xform );
         }
 
         CGContextConcatCTM( hd, xform );

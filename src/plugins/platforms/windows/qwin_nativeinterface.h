@@ -42,7 +42,7 @@ public:
 
     void *nativeResourceForIntegration( const QByteArray &resource ) override;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     void *nativeResourceForContext( const QByteArray &resource, QOpenGLContext *context ) override;
 #endif
 

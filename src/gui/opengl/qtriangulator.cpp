@@ -272,7 +272,7 @@ static inline qint64 qPointDistanceFromLine( const QPodPoint &p, const QPodPoint
 
 static inline bool qPointIsLeftOfLine( const QPodPoint &p, const QPodPoint &v1, const QPodPoint &v2 )
 {
-    return QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( p, v1, v2 ) < 0;
+    return LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( p, v1, v2 ) < 0;
 }
 
 // ***
@@ -1368,7 +1368,7 @@ bool QTriangulator<T>::ComplexToSimple::calculateIntersection( int left, int rig
     Intersection intersection;
     intersection.leftEdge = left;
     intersection.rightEdge = right;
-    intersection.intersectionPoint = QT_PREPEND_NAMESPACE( qIntersectionPoint )( u1, u2, v1, v2 );
+    intersection.intersectionPoint = LSCS_PREPEND_NAMESPACE( qIntersectionPoint )( u1, u2, v1, v2 );
 
     if ( !intersection.intersectionPoint.isValid() )
     {
@@ -1403,12 +1403,12 @@ bool QTriangulator<T>::ComplexToSimple::edgeIsLeftOfEdge( int leftEdgeIndex, int
         return false;
     }
 
-    qint64 d = QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( upper, l, u );
+    qint64 d = LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( upper, l, u );
 
     // d < 0: left, d > 0: right, d == 0: on top
     if ( d == 0 )
     {
-        d = QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( m_parent->m_vertices.at( leftEdge.lower() ), l, u );
+        d = LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( m_parent->m_vertices.at( leftEdge.lower() ), l, u );
     }
 
     return d < 0;
@@ -1471,7 +1471,7 @@ QPair<QRBTree<int>::Node *, QRBTree<int>::Node *> QTriangulator<T>::ComplexToSim
     {
         const QPodPoint &v1 = m_parent->m_vertices.at( m_edges.at( current->data ).lower() );
         const QPodPoint &v2 = m_parent->m_vertices.at( m_edges.at( current->data ).upper() );
-        qint64 d = QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( point, v1, v2 );
+        qint64 d = LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( point, v1, v2 );
 
         if ( d == 0 )
         {
@@ -1493,7 +1493,7 @@ QPair<QRBTree<int>::Node *, QRBTree<int>::Node *> QTriangulator<T>::ComplexToSim
     {
         const QPodPoint &v1 = m_parent->m_vertices.at( m_edges.at( current->data ).lower() );
         const QPodPoint &v2 = m_parent->m_vertices.at( m_edges.at( current->data ).upper() );
-        qint64 d = QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( point, v1, v2 );
+        qint64 d = LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( point, v1, v2 );
         Q_ASSERT( d >= 0 );
 
         if ( d == 0 )
@@ -1513,7 +1513,7 @@ QPair<QRBTree<int>::Node *, QRBTree<int>::Node *> QTriangulator<T>::ComplexToSim
     {
         const QPodPoint &v1 = m_parent->m_vertices.at( m_edges.at( current->data ).lower() );
         const QPodPoint &v2 = m_parent->m_vertices.at( m_edges.at( current->data ).upper() );
-        qint64 d = QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( point, v1, v2 );
+        qint64 d = LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( point, v1, v2 );
         Q_ASSERT( d <= 0 );
 
         if ( d == 0 )
@@ -1540,7 +1540,7 @@ QPair<QRBTree<int>::Node *, QRBTree<int>::Node *> QTriangulator<T>::ComplexToSim
     {
         const QPodPoint &v1 = m_parent->m_vertices.at( m_edges.at( current->data ).lower() );
         const QPodPoint &v2 = m_parent->m_vertices.at( m_edges.at( current->data ).upper() );
-        qint64 d = QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( point, v1, v2 );
+        qint64 d = LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( point, v1, v2 );
 
         if ( d == 0 )
         {
@@ -1572,7 +1572,7 @@ QPair<QRBTree<int>::Node *, QRBTree<int>::Node *> QTriangulator<T>::ComplexToSim
     {
         const QPodPoint &v1 = m_parent->m_vertices.at( m_edges.at( current->data ).lower() );
         const QPodPoint &v2 = m_parent->m_vertices.at( m_edges.at( current->data ).upper() );
-        qint64 d = QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( point, v1, v2 );
+        qint64 d = LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( point, v1, v2 );
         Q_ASSERT( d >= 0 );
 
         if ( d == 0 )
@@ -1592,7 +1592,7 @@ QPair<QRBTree<int>::Node *, QRBTree<int>::Node *> QTriangulator<T>::ComplexToSim
     {
         const QPodPoint &v1 = m_parent->m_vertices.at( m_edges.at( current->data ).lower() );
         const QPodPoint &v2 = m_parent->m_vertices.at( m_edges.at( current->data ).upper() );
-        qint64 d = QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( point, v1, v2 );
+        qint64 d = LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( point, v1, v2 );
         Q_ASSERT( d <= 0 );
 
         if ( d == 0 )
@@ -1681,7 +1681,7 @@ void QTriangulator<T>::ComplexToSimple::reorderEdgeListRange( QRBTree<int>::Node
 template <typename T>
 void QTriangulator<T>::ComplexToSimple::sortEdgeList( const QPodPoint eventPoint )
 {
-    QIntersectionPoint eventPoint2 = QT_PREPEND_NAMESPACE( qIntersectionPoint )( eventPoint );
+    QIntersectionPoint eventPoint2 = LSCS_PREPEND_NAMESPACE( qIntersectionPoint )( eventPoint );
 
     while ( !m_topIntersection.isEmpty() && m_topIntersection.top().intersectionPoint < eventPoint2 )
     {
@@ -1802,7 +1802,7 @@ void QTriangulator<T>::ComplexToSimple::calculateIntersections()
         QPair<QRBTree<int>::Node *, QRBTree<int>::Node *> range = bounds( event.point );
         QRBTree<int>::Node *leftNode = range.first ? m_edgeList.previous( range.first ) : nullptr;
         int vertex = ( event.type == Event::Upper ? m_edges.at( event.edge ).upper() : m_edges.at( event.edge ).lower() );
-        QIntersectionPoint eventPoint = QT_PREPEND_NAMESPACE( qIntersectionPoint )( event.point );
+        QIntersectionPoint eventPoint = LSCS_PREPEND_NAMESPACE( qIntersectionPoint )( event.point );
 
         if ( range.first != nullptr )
         {
@@ -2015,7 +2015,7 @@ void QTriangulator<T>::ComplexToSimple::removeUnwantedEdgesAndConnect()
                 Q_ASSERT( current );
                 Q_ASSERT( m_edges.at( current->data ).node == current );
 
-                Q_ASSERT( QT_PREPEND_NAMESPACE( qIntersectionPoint )( event.point ).isOnLine(
+                Q_ASSERT( LSCS_PREPEND_NAMESPACE( qIntersectionPoint )( event.point ).isOnLine(
                               m_parent->m_vertices.at( m_edges.at( current->data ).from ), m_parent->m_vertices.at( m_edges.at( current->data ).to ) ) );
 
                 Q_ASSERT( m_parent->m_vertices.at( m_edges.at( current->data ).from ) ==
@@ -2499,12 +2499,12 @@ bool QTriangulator<T>::SimpleToMonotone::edgeIsLeftOfEdge( int leftEdgeIndex, in
     const QPodPoint &u = m_parent->m_vertices.at( rightEdge.upper() );
     const QPodPoint &l = m_parent->m_vertices.at( rightEdge.lower() );
 
-    qint64 d = QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( m_parent->m_vertices.at( leftEdge.upper() ), l, u );
+    qint64 d = LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( m_parent->m_vertices.at( leftEdge.upper() ), l, u );
 
     // d < 0: left, d > 0: right, d == 0: on top
     if ( d == 0 )
     {
-        d = QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( m_parent->m_vertices.at( leftEdge.lower() ), l, u );
+        d = LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( m_parent->m_vertices.at( leftEdge.lower() ), l, u );
     }
 
     return d < 0;
@@ -2544,7 +2544,7 @@ QRBTree<int>::Node *QTriangulator<T>::SimpleToMonotone::searchEdgeLeftOfPoint( i
     {
         const QPodPoint &p1 = m_parent->m_vertices.at( m_edges.at( current->data ).lower() );
         const QPodPoint &p2 = m_parent->m_vertices.at( m_edges.at( current->data ).upper() );
-        qint64 d = QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( m_parent->m_vertices.at( pointIndex ), p1, p2 );
+        qint64 d = LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( m_parent->m_vertices.at( pointIndex ), p1, p2 );
 
         if ( d <= 0 )
         {
@@ -2572,7 +2572,7 @@ void QTriangulator<T>::SimpleToMonotone::classifyVertex( int i )
     const QPodPoint &p1 = m_parent->m_vertices.at( e1.from );
     const QPodPoint &p2 = m_parent->m_vertices.at( e2.from );
     const QPodPoint &p3 = m_parent->m_vertices.at( e2.to );
-    qint64 d = QT_PREPEND_NAMESPACE( qPointDistanceFromLine )( p1, p2, p3 );
+    qint64 d = LSCS_PREPEND_NAMESPACE( qPointDistanceFromLine )( p1, p2, p3 );
     Q_ASSERT( d != 0 || ( !startOrSplit && !endOrMerge ) );
 
     e2.type = RegularVertex;

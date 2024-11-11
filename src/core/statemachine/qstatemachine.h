@@ -31,7 +31,7 @@
 #include <qset.h>
 #include <qvariant.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 class QStateMachinePrivate;
 class QAbstractAnimation;
@@ -49,7 +49,7 @@ class Q_CORE_EXPORT QStateMachine : public QState
     CORE_LSCS_PROPERTY_WRITE( running, setRunning )
     CORE_LSCS_PROPERTY_NOTIFY( running, runningChanged )
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     CORE_LSCS_PROPERTY_READ( animated, isAnimated )
     CORE_LSCS_PROPERTY_WRITE( animated, setAnimated )
 #endif
@@ -137,7 +137,7 @@ public:
 
     bool isRunning() const;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     bool isAnimated() const;
     void setAnimated( bool enabled );
 
@@ -155,7 +155,7 @@ public:
 
     QSet<QAbstractState *> configuration() const;
 
-#ifndef QT_NO_STATEMACHINE_EVENTFILTER
+#ifndef LSCS_NO_STATEMACHINE_EVENTFILTER
     bool eventFilter( QObject *watched, QEvent *event ) override;
 #endif
 
@@ -200,7 +200,7 @@ private:
     CORE_LSCS_SLOT_1( Private, void _q_process() )
     CORE_LSCS_SLOT_2( _q_process )
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     CORE_LSCS_SLOT_1( Private, void _q_animationFinished() )
     CORE_LSCS_SLOT_2( _q_animationFinished )
 #endif
@@ -212,6 +212,6 @@ private:
     CORE_LSCS_SLOT_2( _q_killDelayedEventTimer )
 };
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE
 
 #endif

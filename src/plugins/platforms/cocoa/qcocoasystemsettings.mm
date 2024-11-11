@@ -29,16 +29,16 @@
 
 #include <Carbon/Carbon.h>
 
-QColor qt_mac_colorForTheme(ThemeBrush brush)
+QColor lscs_mac_colorForTheme(ThemeBrush brush)
 {
    QMacAutoReleasePool pool;
 
    QCFType<CGColorRef> cgClr = nullptr;
    HIThemeBrushCreateCGColor(brush, &cgClr);
-   return qt_mac_toQColor(cgClr);
+   return lscs_mac_toQColor(cgClr);
 }
 
-QColor qt_mac_colorForThemeTextColor(ThemeTextColor themeColor)
+QColor lscs_mac_colorForThemeTextColor(ThemeTextColor themeColor)
 {
    // No GetThemeTextColor in 64-bit mode, use hardcoded values:
    switch (themeColor) {
@@ -70,7 +70,7 @@ QColor qt_mac_colorForThemeTextColor(ThemeTextColor themeColor)
    }
 }
 
-QPalette *qt_mac_createSystemPalette()
+QPalette *lscs_mac_createSystemPalette()
 {
    QColor qc;
 
@@ -90,14 +90,14 @@ QPalette *qt_mac_createSystemPalette()
    palette->setColor(QPalette::Inactive, QPalette::Dark, QColor(191, 191, 191));
 
    // System palette initialization:
-   palette->setBrush(QPalette::Active, QPalette::Highlight, qt_mac_colorForTheme(kThemeBrushPrimaryHighlightColor));
-   qc = qt_mac_colorForTheme(kThemeBrushSecondaryHighlightColor);
+   palette->setBrush(QPalette::Active, QPalette::Highlight, lscs_mac_colorForTheme(kThemeBrushPrimaryHighlightColor));
+   qc = lscs_mac_colorForTheme(kThemeBrushSecondaryHighlightColor);
    palette->setBrush(QPalette::Inactive, QPalette::Highlight, qc);
    palette->setBrush(QPalette::Disabled, QPalette::Highlight, qc);
 
    palette->setBrush(QPalette::Shadow, background.darker(170));
 
-   qc = qt_mac_colorForThemeTextColor(kThemeTextColorDialogActive);
+   qc = lscs_mac_colorForThemeTextColor(kThemeTextColorDialogActive);
    palette->setColor(QPalette::Active, QPalette::Text, qc);
    palette->setColor(QPalette::Active, QPalette::WindowText, qc);
    palette->setColor(QPalette::Active, QPalette::HighlightedText, qc);
@@ -105,7 +105,7 @@ QPalette *qt_mac_createSystemPalette()
    palette->setColor(QPalette::Inactive, QPalette::WindowText, qc);
    palette->setColor(QPalette::Inactive, QPalette::HighlightedText, qc);
 
-   qc = qt_mac_colorForThemeTextColor(kThemeTextColorDialogInactive);
+   qc = lscs_mac_colorForThemeTextColor(kThemeTextColorDialogInactive);
    palette->setColor(QPalette::Disabled, QPalette::Text, qc);
    palette->setColor(QPalette::Disabled, QPalette::WindowText, qc);
    palette->setColor(QPalette::Disabled, QPalette::HighlightedText, qc);
@@ -139,34 +139,34 @@ static QMacPaletteMap mac_widget_colors[] = {
    QMacPaletteMap(QPlatformTheme::NPalettes, 0, 0)
 };
 
-QHash<QPlatformTheme::Palette, QPalette *> qt_mac_createRolePalettes()
+QHash<QPlatformTheme::Palette, QPalette *> lscs_mac_createRolePalettes()
 {
    QHash<QPlatformTheme::Palette, QPalette *> palettes;
    QColor qc;
    for (int i = 0; mac_widget_colors[i].paletteRole != QPlatformTheme::NPalettes; i++) {
-      QPalette &pal = *qt_mac_createSystemPalette();
+      QPalette &pal = *lscs_mac_createSystemPalette();
       if (mac_widget_colors[i].active != 0) {
-         qc = qt_mac_colorForThemeTextColor(mac_widget_colors[i].active);
+         qc = lscs_mac_colorForThemeTextColor(mac_widget_colors[i].active);
          pal.setColor(QPalette::Active, QPalette::Text, qc);
          pal.setColor(QPalette::Inactive, QPalette::Text, qc);
          pal.setColor(QPalette::Active, QPalette::WindowText, qc);
          pal.setColor(QPalette::Inactive, QPalette::WindowText, qc);
          pal.setColor(QPalette::Active, QPalette::HighlightedText, qc);
          pal.setColor(QPalette::Inactive, QPalette::HighlightedText, qc);
-         qc = qt_mac_colorForThemeTextColor(mac_widget_colors[i].inactive);
+         qc = lscs_mac_colorForThemeTextColor(mac_widget_colors[i].inactive);
          pal.setColor(QPalette::Disabled, QPalette::Text, qc);
          pal.setColor(QPalette::Disabled, QPalette::WindowText, qc);
          pal.setColor(QPalette::Disabled, QPalette::HighlightedText, qc);
       }
       if (mac_widget_colors[i].paletteRole == QPlatformTheme::MenuPalette
          || mac_widget_colors[i].paletteRole == QPlatformTheme::MenuBarPalette) {
-         qc = qt_mac_colorForTheme(kThemeBrushMenuBackground);
+         qc = lscs_mac_colorForTheme(kThemeBrushMenuBackground);
          pal.setBrush(QPalette::Background, qc);
-         qc = qt_mac_colorForThemeTextColor(kThemeTextColorMenuItemActive);
+         qc = lscs_mac_colorForThemeTextColor(kThemeTextColorMenuItemActive);
          pal.setBrush(QPalette::ButtonText, qc);
-         qc = qt_mac_colorForThemeTextColor(kThemeTextColorMenuItemSelected);
+         qc = lscs_mac_colorForThemeTextColor(kThemeTextColorMenuItemSelected);
          pal.setBrush(QPalette::HighlightedText, qc);
-         qc = qt_mac_colorForThemeTextColor(kThemeTextColorMenuItemDisabled);
+         qc = lscs_mac_colorForThemeTextColor(kThemeTextColorMenuItemDisabled);
          pal.setBrush(QPalette::Disabled, QPalette::Text, qc);
       } else if ((mac_widget_colors[i].paletteRole == QPlatformTheme::ButtonPalette)
          || (mac_widget_colors[i].paletteRole == QPlatformTheme::HeaderPalette)) {
@@ -178,8 +178,8 @@ QHash<QPlatformTheme::Palette, QPalette *> qt_mac_createRolePalettes()
             pal.color(QPalette::Active, QPalette::Text));
       } else if (mac_widget_colors[i].paletteRole == QPlatformTheme::ItemViewPalette) {
          pal.setBrush(QPalette::Active, QPalette::Highlight,
-            qt_mac_colorForTheme(kThemeBrushAlternatePrimaryHighlightColor));
-         qc = qt_mac_colorForThemeTextColor(kThemeTextColorMenuItemSelected);
+            lscs_mac_colorForTheme(kThemeBrushAlternatePrimaryHighlightColor));
+         qc = lscs_mac_colorForThemeTextColor(kThemeTextColorMenuItemSelected);
          pal.setBrush(QPalette::Active, QPalette::HighlightedText, qc);
          pal.setBrush(QPalette::Inactive, QPalette::Text,
             pal.brush(QPalette::Active, QPalette::Text));

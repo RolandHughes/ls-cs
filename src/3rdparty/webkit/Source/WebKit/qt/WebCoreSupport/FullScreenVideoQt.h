@@ -34,7 +34,7 @@ class ChromeClientQt;
 class FullScreenVideoWidget;
 class HTMLVideoElement;
 class Node;
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
 class MediaPlayerPrivateQt;
 #endif
 #if USE(QTKIT)
@@ -64,7 +64,7 @@ private:
 };
 #endif
 
-#if defined(WTF_USE_QT_MULTIMEDIA) && WTF_USE_QT_MULTIMEDIA
+#if defined(WTF_USE_LSCS_MULTIMEDIA) && WTF_USE_LSCS_MULTIMEDIA
 class DefaultFullScreenVideoHandler : public QWebFullScreenVideoHandler
 {
     WEB_LSCS_OBJECT( DefaultFullScreenVideoHandler )
@@ -100,7 +100,7 @@ public:
     bool isValid() const;
 
 private:
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
     MediaPlayerPrivateQt *mediaPlayer();
 #endif
 
@@ -111,7 +111,7 @@ private :
 private:
     ChromeClientQt *m_chromeClient;
     HTMLVideoElement *m_videoElement;
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
     QWebFullScreenVideoHandler *m_FullScreenVideoHandler;
 #endif
 #if USE(GSTREAMER)

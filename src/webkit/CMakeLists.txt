@@ -1,7 +1,11 @@
 add_library(LsCsWebKit SHARED "")
 add_library(LsCs::LsCsWebKit ALIAS LsCsWebKit)
 
-set_target_properties(LsCsWebKit PROPERTIES OUTPUT_NAME LsCsWebKit${BUILD_ABI})
+set_target_properties(LsCsWebKit PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
+  
 
 add_definitions(
    -DWTF_CHANGES
@@ -156,12 +160,12 @@ include_directories(
 )
 
 if (SECURETRANSPORT_FOUND)
-   add_definitions(-DQT_SSL)
-   add_definitions(-DQT_SECURETRANSPORT)
+   add_definitions(-DLSCS_SSL)
+   add_definitions(-DLSCS_SECURETRANSPORT)
 
 elseif (OPENSSL_FOUND)
-   add_definitions(-DQT_SSL)
-   add_definitions(-DQT_OPENSSL)
+   add_definitions(-DLSCS_SSL)
+   add_definitions(-DLSCS_OPENSSL)
 
    include_directories(${OPENSSL_INCLUDE_DIR})
 
@@ -613,10 +617,10 @@ target_sources(LsCsWebKit
    ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/c/c_utility.cpp
    ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/jsc/BridgeJSC.cpp
    ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/npruntime.cpp
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/qt/qt_class.cpp
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/qt/qt_instance.cpp
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/qt/qt_pixmapruntime.cpp
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/qt/qt_runtime.cpp
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/qt/lscs_class.cpp
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/qt/lscs_instance.cpp
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/qt/lscs_pixmapruntime.cpp
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/qt/lscs_runtime.cpp
    ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/runtime_array.cpp
    ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/runtime_method.cpp
    ${CMAKE_SOURCE_DIR}/src/3rdparty/webkit/Source/WebCore/bridge/runtime_object.cpp

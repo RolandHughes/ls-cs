@@ -43,7 +43,7 @@
 #include "directshowevrvideowindowcontrol.h"
 #endif
 
-#if defined(QT_USE_WMSDK)
+#if defined(LSCS_USE_WMSDK)
 #include <wmsdk.h>
 #endif
 
@@ -55,14 +55,14 @@
 #include <qthread.h>
 #include <qvarlengtharray.h>
 
-static DirectShowEventLoop *qt_directShowEventLoop()
+static DirectShowEventLoop *lscs_directShowEventLoop()
 {
     static DirectShowEventLoop retval;
     return &retval;
 }
 
 // QMediaPlayer uses millisecond time units, direct show uses 100 nanosecond units.
-static const int qt_directShowTimeScale = 10000;
+static const int lscs_directShowTimeScale = 10000;
 
 class DirectShowPlayerServiceThread : public QThread
 {
@@ -89,7 +89,7 @@ DirectShowPlayerService::DirectShowPlayerService( QObject *parent )
     , m_videoWindowControl( nullptr )
     , m_audioEndpointControl( nullptr )
     , m_taskThread( nullptr )
-    , m_loop( qt_directShowEventLoop() )
+    , m_loop( lscs_directShowEventLoop() )
     , m_pendingTasks( 0 )
     , m_executingTask( 0 )
     , m_executedTasks( 0 )
@@ -650,7 +650,7 @@ void DirectShowPlayerService::doFinalizeLoad( QMutexLocker *locker )
         {
             LONGLONG duration = 0;
             seeking->GetDuration( &duration );
-            m_duration = duration / qt_directShowTimeScale;
+            m_duration = duration / lscs_directShowTimeScale;
 
             DWORD capabilities = 0;
             seeking->GetCapabilities( &capabilities );
@@ -962,7 +962,7 @@ void DirectShowPlayerService::doPause( QMutexLocker *locker )
                 seeking->GetCurrentPosition( &position );
                 seeking->Release();
 
-                m_position = position / qt_directShowTimeScale;
+                m_position = position / lscs_directShowTimeScale;
             }
             else
             {
@@ -1051,13 +1051,13 @@ void DirectShowPlayerService::doSetRate( QMutexLocker *locker )
         // possibility of a deadlock when flushing the VideoSurfaceFilter.
         LONGLONG currentPosition = 0;
         seeking->GetCurrentPosition( &currentPosition );
-        m_position = currentPosition / qt_directShowTimeScale;
+        m_position = currentPosition / lscs_directShowTimeScale;
 
         LONGLONG minimum = 0;
         LONGLONG maximum = 0;
 
         m_playbackRange = SUCCEEDED( seeking->GetAvailable( &minimum, &maximum ) )
-                          ? QMediaTimeRange( minimum / qt_directShowTimeScale, maximum / qt_directShowTimeScale )
+                          ? QMediaTimeRange( minimum / lscs_directShowTimeScale, maximum / lscs_directShowTimeScale )
                           : QMediaTimeRange();
 
         locker->unlock();
@@ -1099,7 +1099,7 @@ qint64 DirectShowPlayerService::position() const
             seeking->GetCurrentPosition( &position );
             seeking->Release();
 
-            const_cast<qint64 &>( m_position ) = position / qt_directShowTimeScale;
+            const_cast<qint64 &>( m_position ) = position / lscs_directShowTimeScale;
 
             return m_position;
         }
@@ -1159,7 +1159,7 @@ void DirectShowPlayerService::doSeek( QMutexLocker *locker )
 
     if ( IMediaSeeking *seeking = com_cast<IMediaSeeking>( m_graph, IID_IMediaSeeking ) )
     {
-        LONGLONG seekPosition = LONGLONG( m_seekPosition ) * qt_directShowTimeScale;
+        LONGLONG seekPosition = LONGLONG( m_seekPosition ) * lscs_directShowTimeScale;
 
         // Cache current values as we can't query IMediaSeeking during a seek due to the
         // possibility of a deadlock when flushing the VideoSurfaceFilter.
@@ -1168,13 +1168,13 @@ void DirectShowPlayerService::doSeek( QMutexLocker *locker )
         if ( ! m_dontCacheNextSeekResult )
         {
             seeking->GetCurrentPosition( &currentPosition );
-            m_position = currentPosition / qt_directShowTimeScale;
+            m_position = currentPosition / lscs_directShowTimeScale;
         }
 
         LONGLONG minimum = 0;
         LONGLONG maximum = 0;
         m_playbackRange = SUCCEEDED( seeking->GetAvailable( &minimum, &maximum ) )
-                          ? QMediaTimeRange( minimum / qt_directShowTimeScale, maximum / qt_directShowTimeScale ) : QMediaTimeRange();
+                          ? QMediaTimeRange( minimum / lscs_directShowTimeScale, maximum / lscs_directShowTimeScale ) : QMediaTimeRange();
 
         locker->unlock();
         seeking->SetPositions( &seekPosition, AM_SEEKING_AbsolutePositioning, nullptr, AM_SEEKING_NoPositioning );
@@ -1183,7 +1183,7 @@ void DirectShowPlayerService::doSeek( QMutexLocker *locker )
         if ( !m_dontCacheNextSeekResult )
         {
             seeking->GetCurrentPosition( &currentPosition );
-            m_position = currentPosition / qt_directShowTimeScale;
+            m_position = currentPosition / lscs_directShowTimeScale;
         }
 
         seeking->Release();
@@ -1198,7 +1198,7 @@ void DirectShowPlayerService::doSeek( QMutexLocker *locker )
 int DirectShowPlayerService::bufferStatus() const
 
 {
-#if defined(QT_USE_WMSDK)
+#if defined(LSCS_USE_WMSDK)
     QMutexLocker locker( const_cast<QMutex *>( &m_mutex ) );
 
     if ( IWMReaderAdvanced2 *reader = com_cast<IWMReaderAdvanced2>(
@@ -1544,7 +1544,7 @@ void DirectShowPlayerService::graphEvent( QMutexLocker *locker )
                         seeking->GetCurrentPosition( &position );
                         seeking->Release();
 
-                        m_position = position / qt_directShowTimeScale;
+                        m_position = position / lscs_directShowTimeScale;
                     }
 
                     QCoreApplication::postEvent( this, new QEvent( QEvent::Type( EndOfMedia ) ) );
@@ -1555,7 +1555,7 @@ void DirectShowPlayerService::graphEvent( QMutexLocker *locker )
                     {
                         LONGLONG duration = 0;
                         seeking->GetDuration( &duration );
-                        m_duration = duration / qt_directShowTimeScale;
+                        m_duration = duration / lscs_directShowTimeScale;
 
                         DWORD capabilities = 0;
                         seeking->GetCapabilities( &capabilities );

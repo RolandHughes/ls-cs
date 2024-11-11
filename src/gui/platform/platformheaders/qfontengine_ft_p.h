@@ -26,7 +26,7 @@
 
 #include <qfontengine_p.h>
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -390,8 +390,8 @@ inline QFontEngineFT::Glyph *QFontEngineFT::QGlyphSet::getGlyph( glyph_t index, 
     return glyph_data.value( GlyphAndSubPixelPosition( index, subPixelPosition ) );
 }
 
-extern FT_Library qt_getFreetype();
+extern FT_Library lscs_getFreetype();
 
-#endif // QT_USE_FREETYPE
+#endif // LSCS_USE_FREETYPE
 
 #endif

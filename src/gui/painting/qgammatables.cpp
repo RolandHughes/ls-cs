@@ -29,12 +29,12 @@ QDrawHelperGammaTables::QDrawHelperGammaTables( qreal smoothing )
 
     for ( int i=0; i<256; ++i )
     {
-        qt_pow_gamma[i] = uint( qRound( qPow( i / qreal( 255. ), gray_gamma ) * 2047 ) );
+        lscs_pow_gamma[i] = uint( qRound( qPow( i / qreal( 255. ), gray_gamma ) * 2047 ) );
     }
 
     for ( int i=0; i<2048; ++i )
     {
-        qt_pow_invgamma[i] = uchar( qRound( qPow( i / qreal( 2047.0 ), 1 / gray_gamma ) * 255 ) );
+        lscs_pow_invgamma[i] = uchar( qRound( qPow( i / qreal( 2047.0 ), 1 / gray_gamma ) * 255 ) );
     }
 
     refresh( smoothing );
@@ -44,8 +44,8 @@ void QDrawHelperGammaTables::refresh( qreal smoothing )
 {
     for ( int i=0; i<256; ++i )
     {
-        qt_pow_rgb_gamma[i] = uchar( qRound( qPow( i / qreal( 255.0 ), smoothing ) * 255 ) );
-        qt_pow_rgb_invgamma[i] = uchar( qRound( qPow( i / qreal( 255. ), 1 / smoothing ) * 255 ) );
+        lscs_pow_rgb_gamma[i] = uchar( qRound( qPow( i / qreal( 255.0 ), smoothing ) * 255 ) );
+        lscs_pow_rgb_invgamma[i] = uchar( qRound( qPow( i / qreal( 255. ), 1 / smoothing ) * 255 ) );
     }
 }
 

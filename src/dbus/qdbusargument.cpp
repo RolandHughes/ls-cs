@@ -38,9 +38,9 @@
 #include "qdbusmetatype_p.h"
 #include "qdbusutil_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE QDBusArgumentPrivate::~QDBusArgumentPrivate()
+LSCS_BEGIN_NAMESPACE QDBusArgumentPrivate::~QDBusArgumentPrivate()
 {
     if ( message )
     {
@@ -124,7 +124,7 @@ bool QDBusArgumentPrivate::checkWrite( QDBusArgumentPrivate *&d )
         return true;
     }
 
-#ifdef QT_DEBUG
+#ifdef LSCS_DEBUG
     qFatal( "QDBusArgument: write from a read-only object" );
 #else
     qWarning( "QDBusArgument: write from a read-only object" );
@@ -144,7 +144,7 @@ bool QDBusArgumentPrivate::checkRead( QDBusArgumentPrivate *d )
         return true;
     }
 
-#ifdef QT_DEBUG
+#ifdef LSCS_DEBUG
     qFatal( "QDBusArgument: read from a write-only object" );
 #else
     qWarning( "QDBusArgument: read from a write-only object" );
@@ -1269,13 +1269,13 @@ QVariant QDBusArgument::asVariant() const
     return QVariant();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 // for optimization purposes, we include the marshallers here
 #include "qdbusmarshaller.cpp"
 #include "qdbusdemarshaller.cpp"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 // QDBusArgument operators
 
@@ -1542,6 +1542,6 @@ QDBusArgument &operator<<( QDBusArgument &a, const QLineF &line )
 }
 #endif
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

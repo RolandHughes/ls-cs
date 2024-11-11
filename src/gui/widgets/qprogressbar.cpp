@@ -23,14 +23,14 @@
 
 #include <qprogressbar.h>
 
-#ifndef QT_NO_PROGRESSBAR
+#ifndef LSCS_NO_PROGRESSBAR
 #include <qevent.h>
 #include <qpainter.h>
 #include <qstylepainter.h>
 #include <qstyleoption.h>
 #include <qwidget_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -241,7 +241,7 @@ void QProgressBar::setValue( int value )
 
     emit valueChanged( value );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( isVisible() )
     {
@@ -495,4 +495,4 @@ QString QProgressBar::format() const
     return d->format;
 }
 
-#endif // QT_NO_PROGRESSBAR
+#endif // LSCS_NO_PROGRESSBAR

@@ -32,7 +32,7 @@
 #include <qsystemlibrary_p.h>
 #include <qapplication_p.h>
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA) || defined(QT_PLUGIN)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA) || defined(LSCS_PLUGIN)
 
 #define CP_READONLY   5
 
@@ -536,7 +536,7 @@ void QWindowsVistaStyle::drawPrimitive( PrimitiveElement element, const QStyleOp
 
         case PE_Frame:
         {
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
             if ( QStyleHelper::isInstanceOf( option->styleObject, QAccessible::EditableText )
                     || QStyleHelper::isInstanceOf( option->styleObject, QAccessible::StaticText ) ||
@@ -792,7 +792,7 @@ void QWindowsVistaStyle::drawPrimitive( PrimitiveElement element, const QStyleOp
                 selectionBehavior = view->selectionBehavior();
                 selectionMode = view->selectionMode();
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
             }
             else if ( !widget )
             {
@@ -963,13 +963,13 @@ void QWindowsVistaStyle::drawPrimitive( PrimitiveElement element, const QStyleOp
 
             if ( qobject_cast<const QMessageBox *> ( widget ) )
             {
-                buttonBox = widget->findChild<const QDialogButtonBox *>( "qt_msgbox_buttonbox" );
+                buttonBox = widget->findChild<const QDialogButtonBox *>( "lscs_msgbox_buttonbox" );
             }
 
-#ifndef QT_NO_INPUTDIALOG
+#ifndef LSCS_NO_INPUTDIALOG
             else if ( qobject_cast<const QInputDialog *> ( widget ) )
             {
-                buttonBox = widget->findChild<const QDialogButtonBox *>( "qt_inputdlg_buttonbox" );
+                buttonBox = widget->findChild<const QDialogButtonBox *>( "lscs_inputdlg_buttonbox" );
             }
 
 #endif
@@ -1505,7 +1505,7 @@ void QWindowsVistaStyle::drawControl( ControlElement element, const QStyleOption
         }
         break;
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
         case CE_MenuItem:
             if ( const QStyleOptionMenuItem *menuitem = qstyleoption_cast<const QStyleOptionMenuItem *>( option ) )
@@ -1715,7 +1715,7 @@ void QWindowsVistaStyle::drawControl( ControlElement element, const QStyleOption
             }
 
             break;
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 
         case CE_HeaderSection:
             if ( const QStyleOptionHeader *header = qstyleoption_cast<const QStyleOptionHeader *>( option ) )
@@ -1868,7 +1868,7 @@ void QWindowsVistaStyle::drawControl( ControlElement element, const QStyleOption
 
             break;
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
         case CE_ItemViewItem:
         {
@@ -1918,9 +1918,9 @@ void QWindowsVistaStyle::drawControl( ControlElement element, const QStyleOption
             break;
         }
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CE_ComboBoxLabel:
             QCommonStyle::drawControl( element, option, painter, widget );
@@ -2421,7 +2421,7 @@ void QWindowsVistaStyle::drawComplexControl( ComplexControl control, const QStyl
 
             break;
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case CC_SpinBox:
             if ( const QStyleOptionSpinBox *sb = qstyleoption_cast<const QStyleOptionSpinBox *>( option ) )
@@ -2513,7 +2513,7 @@ void QWindowsVistaStyle::drawComplexControl( ComplexControl control, const QStyl
 
             break;
 
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX
 
         default:
             QWindowsXPStyle::drawComplexControl( control, option, painter, widget );
@@ -2561,7 +2561,7 @@ QSize QWindowsVistaStyle::sizeFromContents( ContentsType type, const QStyleOptio
 
             return sz;
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
         case CT_MenuBarItem:
             if ( !sz.isEmpty() )
@@ -2933,7 +2933,7 @@ QRect QWindowsVistaStyle::subControlRect( ComplexControl control, const QStyleOp
     switch ( control )
     {
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CC_ComboBox:
             if ( const QStyleOptionComboBox *cb = qstyleoption_cast<const QStyleOptionComboBox *>( option ) )
@@ -3161,7 +3161,7 @@ void QWindowsVistaStyle::polish( QWidget *widget )
 {
     QWindowsXPStyle::polish( widget );
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
     if ( qobject_cast<QLineEdit *>( widget ) )
     {
@@ -3207,7 +3207,7 @@ void QWindowsVistaStyle::polish( QWidget *widget )
         else if ( qobject_cast<QMessageBox *> ( widget ) )
         {
             widget->setAttribute( Qt::WA_StyledBackground );
-            QDialogButtonBox *buttonBox = widget->findChild<QDialogButtonBox *>( "qt_msgbox_buttonbox" );
+            QDialogButtonBox *buttonBox = widget->findChild<QDialogButtonBox *>( "lscs_msgbox_buttonbox" );
 
             if ( buttonBox )
             {
@@ -3215,11 +3215,11 @@ void QWindowsVistaStyle::polish( QWidget *widget )
             }
         }
 
-#ifndef QT_NO_INPUTDIALOG
+#ifndef LSCS_NO_INPUTDIALOG
         else if ( qobject_cast<QInputDialog *> ( widget ) )
         {
             widget->setAttribute( Qt::WA_StyledBackground );
-            QDialogButtonBox *buttonBox = widget->findChild<QDialogButtonBox *>( "qt_inputdlg_buttonbox" );
+            QDialogButtonBox *buttonBox = widget->findChild<QDialogButtonBox *>( "lscs_inputdlg_buttonbox" );
 
             if ( buttonBox )
             {
@@ -3248,7 +3248,7 @@ void QWindowsVistaStyle::unpolish( QWidget *widget )
 
     d->stopAnimation( widget );
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
     if ( qobject_cast<QLineEdit *>( widget ) )
     {
@@ -3265,7 +3265,7 @@ void QWindowsVistaStyle::unpolish( QWidget *widget )
         else if ( qobject_cast<QMessageBox *> ( widget ) )
         {
             widget->setAttribute( Qt::WA_StyledBackground, false );
-            QDialogButtonBox *buttonBox = widget->findChild<QDialogButtonBox *>( "qt_msgbox_buttonbox" );
+            QDialogButtonBox *buttonBox = widget->findChild<QDialogButtonBox *>( "lscs_msgbox_buttonbox" );
 
             if ( buttonBox )
             {
@@ -3273,11 +3273,11 @@ void QWindowsVistaStyle::unpolish( QWidget *widget )
             }
         }
 
-#ifndef QT_NO_INPUTDIALOG
+#ifndef LSCS_NO_INPUTDIALOG
         else if ( qobject_cast<QInputDialog *> ( widget ) )
         {
             widget->setAttribute( Qt::WA_StyledBackground, false );
-            QDialogButtonBox *buttonBox = widget->findChild<QDialogButtonBox *>( "qt_inputdlg_buttonbox" );
+            QDialogButtonBox *buttonBox = widget->findChild<QDialogButtonBox *>( "lscs_inputdlg_buttonbox" );
 
             if ( buttonBox )
             {
@@ -3400,4 +3400,4 @@ QIcon QWindowsVistaStyle::standardIcon( StandardPixmap standardIcon, const QStyl
     return QWindowsXPStyle::standardIcon( standardIcon, option, widget );
 }
 
-#endif //QT_NO_WINDOWSVISTA
+#endif //LSCS_NO_WINDOWSVISTA

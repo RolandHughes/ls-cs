@@ -46,7 +46,7 @@ public:
     QByteArray format;
     QIODevice *device;
     bool deleteDevice;
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     QTextCodec *codec;
 #endif
 
@@ -55,7 +55,7 @@ public:
 
 QTextDocumentWriterPrivate::QTextDocumentWriterPrivate( QTextDocumentWriter *qq )
     : device( nullptr ), deleteDevice( false ),
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
       codec( QTextCodec::codecForName( "utf-8" ) ),
 #endif
       q( qq )
@@ -217,12 +217,12 @@ bool QTextDocumentWriter::write( const QTextDocument *document )
 
     QByteArray format = !d->format.isEmpty() ? d->format.toLower() : suffix;
 
-#ifndef QT_NO_TEXTODFWRITER
+#ifndef LSCS_NO_TEXTODFWRITER
 
     if ( format == "odf" || format == "opendocumentformat" || format == "odt" )
     {
         QTextOdfWriter writer( *document, d->device );
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
         writer.setCodec( d->codec );
 #endif
         return writer.writeAll();
@@ -230,7 +230,7 @@ bool QTextDocumentWriter::write( const QTextDocument *document )
 
 #endif
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
     if ( format == "html" || format == "htm" )
     {
@@ -242,7 +242,7 @@ bool QTextDocumentWriter::write( const QTextDocument *document )
 
         QTextStream ts( d->device );
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
         ts.setCodec( d->codec );
         ts << document->toHtml( d->codec->name() );
 #endif
@@ -262,7 +262,7 @@ bool QTextDocumentWriter::write( const QTextDocument *document )
 
         QTextStream ts( d->device );
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
         ts.setCodec( d->codec );
 #endif
 
@@ -302,7 +302,7 @@ bool QTextDocumentWriter::write( const QTextDocumentFragment &fragment )
     uses UTF-8.
 */
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 void QTextDocumentWriter::setCodec( QTextCodec *codec )
 {
     if ( codec == nullptr )
@@ -318,7 +318,7 @@ void QTextDocumentWriter::setCodec( QTextCodec *codec )
 /*!
     Returns the codec that is currently assigned to the writer.
 */
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 QTextCodec *QTextDocumentWriter::codec() const
 {
     return d->codec;
@@ -330,11 +330,11 @@ QList<QByteArray> QTextDocumentWriter::supportedDocumentFormats()
     QList<QByteArray> answer;
     answer << "plaintext";
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
     answer << "HTML";
 #endif
 
-#ifndef QT_NO_TEXTODFWRITER
+#ifndef LSCS_NO_TEXTODFWRITER
     answer << "ODF";
 #endif
 

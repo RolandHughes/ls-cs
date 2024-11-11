@@ -23,7 +23,7 @@
 
 #include <qpnghandler_p.h>
 
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
 
 #include <qcoreapplication.h>
 #include <qimage.h>
@@ -621,7 +621,7 @@ static void read_image_scaled( QImage *outImage, png_structp png_ptr, png_infop 
 }
 
 extern "C" {
-    static void CALLBACK_CALL_TYPE qt_png_warning( png_structp /*png_ptr*/, png_const_charp message )
+    static void CALLBACK_CALL_TYPE lscs_png_warning( png_structp /*png_ptr*/, png_const_charp message )
     {
         qWarning( "Warning: Image libpng %s", message );
     }
@@ -677,7 +677,7 @@ bool Q_INTERNAL_WIN_NO_THROW QPngHandlerPrivate::readPngHeader()
         return false;
     }
 
-    png_set_error_fn( png_ptr, nullptr, nullptr, qt_png_warning );
+    png_set_error_fn( png_ptr, nullptr, nullptr, lscs_png_warning );
 
 #if defined(PNG_SET_OPTION_SUPPORTED) && defined(PNG_MAXIMUM_INFLATE_WINDOW)
     // Trade off a little bit of memory for better compatibility with existing images
@@ -1068,7 +1068,7 @@ bool Q_INTERNAL_WIN_NO_THROW QPNGImageWriter::writeImage( const QImage &image, i
         return false;
     }
 
-    png_set_error_fn( png_ptr, nullptr, nullptr, qt_png_warning );
+    png_set_error_fn( png_ptr, nullptr, nullptr, lscs_png_warning );
 
     info_ptr = png_create_info_struct( png_ptr );
 

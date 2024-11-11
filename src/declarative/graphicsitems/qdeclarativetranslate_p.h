@@ -26,7 +26,7 @@
 
 #include <qdeclarativeitem.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeTranslatePrivate;
 
@@ -63,7 +63,7 @@ private:
     Q_DISABLE_COPY( QDeclarativeTranslate )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeTranslate )
 

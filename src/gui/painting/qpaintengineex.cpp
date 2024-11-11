@@ -33,8 +33,8 @@
 #include <qstatictext_p.h>
 #include <qstroker_p.h>
 
-#if ! defined(QT_MAX_CACHED_GLYPH_SIZE)
-#  define QT_MAX_CACHED_GLYPH_SIZE 64
+#if ! defined(LSCS_MAX_CACHED_GLYPH_SIZE)
+#  define LSCS_MAX_CACHED_GLYPH_SIZE 64
 #endif
 
 QVectorPath::~QVectorPath()
@@ -399,7 +399,7 @@ QPainterState *QPaintEngineEx::createState( QPainterState *orig ) const
     return new QPainterState( orig );
 }
 
-Q_GUI_EXPORT extern bool qt_scaleForTransform( const QTransform &transform, qreal *scale ); // qtransform.cpp
+Q_GUI_EXPORT extern bool lscs_scaleForTransform( const QTransform &transform, qreal *scale ); // qtransform.cpp
 
 void QPaintEngineEx::stroke( const QVectorPath &path, const QPen &pen )
 {
@@ -466,7 +466,7 @@ void QPaintEngineEx::stroke( const QVectorPath &path, const QPen &pen )
 
     if ( pen.style() > Qt::SolidLine )
     {
-        if ( qt_pen_is_cosmetic( pen, state()->renderHints ) )
+        if ( lscs_pen_is_cosmetic( pen, state()->renderHints ) )
         {
             d->activeStroker->setClipRect( d->exDeviceRect );
         }
@@ -500,7 +500,7 @@ void QPaintEngineEx::stroke( const QVectorPath &path, const QPen &pen )
     }
 
     // ### Perspective Xforms are currently not supported...
-    if ( !qt_pen_is_cosmetic( pen, state()->renderHints ) )
+    if ( !lscs_pen_is_cosmetic( pen, state()->renderHints ) )
     {
         // We include cosmetic pens in this case to avoid having to
         // change the current transform. Normal transformed,
@@ -951,7 +951,7 @@ void QPaintEngineEx::drawEllipse( const QRectF &r )
     x.ptr = pts;
 
     int point_count = 0;
-    x.points[0] = qt_curves_for_arc( r, 0, -360, x.points + 1, &point_count );
+    x.points[0] = lscs_curves_for_arc( r, 0, -360, x.points + 1, &point_count );
 
     if ( point_count == 0 )
     {
@@ -1168,7 +1168,7 @@ void QPaintEngineEx::updateState( const QPaintEngineState & )
     // do nothing
 }
 
-Q_GUI_EXPORT QPainterPath qt_painterPathFromVectorPath( const QVectorPath &path )
+Q_GUI_EXPORT QPainterPath lscs_painterPathFromVectorPath( const QVectorPath &path )
 {
     const qreal *points = path.points();
     const QPainterPath::ElementType *types = path.elements();
@@ -1283,5 +1283,5 @@ bool QPaintEngineEx::shouldDrawCachedGlyphs( QFontEngine *fontEngine, const QTra
 
     qreal pixelSize = fontEngine->fontDef.pixelSize;
     return ( pixelSize * pixelSize * qAbs( m.determinant() ) ) <
-           QT_MAX_CACHED_GLYPH_SIZE * QT_MAX_CACHED_GLYPH_SIZE;
+           LSCS_MAX_CACHED_GLYPH_SIZE * LSCS_MAX_CACHED_GLYPH_SIZE;
 }

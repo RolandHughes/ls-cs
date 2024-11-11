@@ -24,12 +24,12 @@
 #ifndef QWIZARD_WIN_P_H
 #define QWIZARD_WIN_P_H
 
-#ifndef QT_NO_WIZARD
-#ifndef QT_NO_STYLE_WINDOWSVISTA
+#ifndef LSCS_NO_WIZARD
+#ifndef LSCS_NO_STYLE_WINDOWSVISTA
 
 #include <qabstractbutton.h>
 #include <qobject.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qwidget.h>
 
 #include <qstylehelper_p.h>
@@ -188,7 +188,7 @@ private:
     static int m_devicePixelRatio;
 };
 
-#endif // QT_NO_STYLE_WINDOWSVISTA
-#endif // QT_NO_WIZARD
+#endif // LSCS_NO_STYLE_WINDOWSVISTA
+#endif // LSCS_NO_WIZARD
 
 #endif

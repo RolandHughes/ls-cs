@@ -26,7 +26,7 @@
 
 #include <QtOpenGL/qgl.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QSGGeometry
 {
@@ -247,6 +247,6 @@ inline const QSGGeometry::ColoredPoint2D *QSGGeometry::vertexDataAsColoredPoint2
     return ( const ColoredPoint2D * ) m_data;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QSGGEOMETRY_H

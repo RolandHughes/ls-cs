@@ -37,7 +37,7 @@
 #define WLAN_AVAILABLE_NETWORK_HAS_PROFILE 2
 #define DOT11_SSID_MAX_LENGTH 32
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct WLAN_NOTIFICATION_DATA
 {
@@ -328,6 +328,6 @@ extern WlanScanProto local_WlanScan;
 extern WlanFreeMemoryProto local_WlanFreeMemory;
 extern WlanCloseHandleProto local_WlanCloseHandle;
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // PLATFORMDEFS_H

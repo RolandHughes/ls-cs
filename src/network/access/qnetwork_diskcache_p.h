@@ -30,7 +30,7 @@
 #include <qhash.h>
 #include <qtemporaryfile.h>
 
-#ifndef QT_NO_NETWORKDISKCACHE
+#ifndef LSCS_NO_NETWORKDISKCACHE
 
 class QFile;
 
@@ -96,6 +96,6 @@ public:
     Q_DECLARE_PUBLIC( QNetworkDiskCache )
 };
 
-#endif // QT_NO_NETWORKDISKCACHE
+#endif // LSCS_NO_NETWORKDISKCACHE
 
 #endif

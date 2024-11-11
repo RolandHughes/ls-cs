@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qmath.h>
 #include <qdebug.h>
@@ -197,7 +197,7 @@ void QGraphicsSceneBspTreeIndexPrivate::climbTree( QGraphicsItem *item, int *sta
     if ( !item->d_ptr->children.isEmpty() )
     {
         QList<QGraphicsItem *> childList = item->d_ptr->children;
-        std::sort( childList.begin(), childList.end(), qt_closestLeaf );
+        std::sort( childList.begin(), childList.end(), lscs_closestLeaf );
 
         for ( int i = 0; i < childList.size(); ++i )
         {
@@ -253,7 +253,7 @@ void QGraphicsSceneBspTreeIndexPrivate::_q_updateSortCache()
         }
     }
 
-    std::sort( topLevels.begin(), topLevels.end(), qt_closestLeaf );
+    std::sort( topLevels.begin(), topLevels.end(), lscs_closestLeaf );
 
     for ( int i = 0; i < topLevels.size(); ++i )
     {
@@ -432,11 +432,11 @@ void QGraphicsSceneBspTreeIndexPrivate::sortItems( QList<QGraphicsItem *> *itemL
     {
         if ( order == Qt::DescendingOrder )
         {
-            std::sort( itemList->begin(), itemList->end(), qt_closestLeaf );
+            std::sort( itemList->begin(), itemList->end(), lscs_closestLeaf );
         }
         else if ( order == Qt::AscendingOrder )
         {
-            std::sort( itemList->begin(), itemList->end(), qt_notclosestLeaf );
+            std::sort( itemList->begin(), itemList->end(), lscs_notclosestLeaf );
         }
 
         return;
@@ -457,11 +457,11 @@ void QGraphicsSceneBspTreeIndexPrivate::sortItems( QList<QGraphicsItem *> *itemL
     {
         if ( order == Qt::DescendingOrder )
         {
-            std::sort( itemList->begin(), itemList->end(), qt_closestItemFirst );
+            std::sort( itemList->begin(), itemList->end(), lscs_closestItemFirst );
         }
         else if ( order == Qt::AscendingOrder )
         {
-            std::sort( itemList->begin(), itemList->end(), qt_closestItemLast );
+            std::sort( itemList->begin(), itemList->end(), lscs_closestItemLast );
         }
     }
 }

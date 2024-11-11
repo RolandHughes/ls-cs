@@ -76,7 +76,7 @@ void QStyleOption::initFrom( const QWidget *widget )
         state |= QStyle::State_Window;
     }
 
-#if defined(Q_OS_DARWIN) && ! defined(QT_NO_STYLE_MAC)
+#if defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)
 
     switch ( QMacStyle::widgetSizePolicy( widget ) )
     {
@@ -94,7 +94,7 @@ void QStyleOption::initFrom( const QWidget *widget )
 
 #endif
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( widget->hasEditFocus() )
     {
@@ -197,7 +197,7 @@ QStyleOptionButton::QStyleOptionButton( int version )
 {
 }
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 QStyleOptionToolBar::QStyleOptionToolBar()
     : QStyleOption( Version, SO_ToolBar ), positionOfLine( OnlyOne ), positionWithinLine( OnlyOne ),
@@ -216,7 +216,7 @@ QStyleOptionToolBar::QStyleOptionToolBar( int version )
 
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
 QStyleOptionTab::QStyleOptionTab()
     : QStyleOption( QStyleOptionTab::Version, SO_Tab ), shape( QTabBar::RoundedNorth ), row( 0 ),
@@ -235,7 +235,7 @@ QStyleOptionTab::QStyleOptionTab( int version )
 {
 }
 
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
 QStyleOptionProgressBar::QStyleOptionProgressBar()
     : QStyleOption( QStyleOptionProgressBar::Version, SO_ProgressBar ),
@@ -272,7 +272,7 @@ QStyleOptionComplex::QStyleOptionComplex( int version, int type )
 {
 }
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
 QStyleOptionSlider::QStyleOptionSlider()
     : QStyleOptionComplex( Version, SO_Slider ), orientation( Qt::Horizontal ), minimum( 0 ), maximum( 0 ),
@@ -293,9 +293,9 @@ QStyleOptionSlider::QStyleOptionSlider( int version )
 {
 }
 
-#endif // QT_NO_SLIDER
+#endif // LSCS_NO_SLIDER
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
 QStyleOptionSpinBox::QStyleOptionSpinBox()
     : QStyleOptionComplex( Version, SO_SpinBox ), buttonSymbols( QAbstractSpinBox::UpDownArrows ),
@@ -312,7 +312,7 @@ QStyleOptionSpinBox::QStyleOptionSpinBox( int version )
 {
 }
 
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX
 
 QStyleOptionDockWidget::QStyleOptionDockWidget()
     : QStyleOption( Version, SO_DockWidget ), closable( false ),
@@ -369,7 +369,7 @@ QStyleOptionToolBox::QStyleOptionToolBox( int version )
 {
 }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
 QStyleOptionRubberBand::QStyleOptionRubberBand()
     : QStyleOption( Version, SO_RubberBand ), shape( QRubberBand::Line ), opaque( false )
@@ -382,7 +382,7 @@ QStyleOptionRubberBand::QStyleOptionRubberBand( int version )
 {
 }
 
-#endif // QT_NO_RUBBERBAND
+#endif // LSCS_NO_RUBBERBAND
 
 QStyleOptionTitleBar::QStyleOptionTitleBar()
     : QStyleOptionComplex( Version, SO_TitleBar ), titleBarState( 0 ), titleBarFlags( Qt::EmptyFlag )
@@ -395,7 +395,7 @@ QStyleOptionTitleBar::QStyleOptionTitleBar( int version )
 {
 }
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 QStyleOptionViewItem::QStyleOptionViewItem()
     : QStyleOption( Version, SO_ViewItem ),
       displayAlignment( Qt::AlignLeft ), decorationAlignment( Qt::AlignLeft ),
@@ -415,8 +415,8 @@ QStyleOptionViewItem::QStyleOptionViewItem( int version )
 {
 }
 
-#endif // QT_NO_ITEMVIEWS
-#ifndef QT_NO_TABWIDGET
+#endif // LSCS_NO_ITEMVIEWS
+#ifndef LSCS_NO_TABWIDGET
 
 QStyleOptionTabWidgetFrame::QStyleOptionTabWidgetFrame()
     : QStyleOption( Version, SO_TabWidgetFrame ), lineWidth( 0 ), midLineWidth( 0 ),
@@ -431,9 +431,9 @@ QStyleOptionTabWidgetFrame::QStyleOptionTabWidgetFrame( int version )
 {
 }
 
-#endif // QT_NO_TABWIDGET
+#endif // LSCS_NO_TABWIDGET
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
 QStyleOptionTabBarBase::QStyleOptionTabBarBase()
     : QStyleOption( Version, SO_TabBarBase ), shape( QTabBar::RoundedNorth ),
@@ -448,9 +448,9 @@ QStyleOptionTabBarBase::QStyleOptionTabBarBase( int version )
 {
 }
 
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
 QStyleOptionSizeGrip::QStyleOptionSizeGrip()
     : QStyleOptionComplex( Version, Type ), corner( Qt::BottomRightCorner )
@@ -463,7 +463,7 @@ QStyleOptionSizeGrip::QStyleOptionSizeGrip( int version )
 {
 }
 
-#endif // QT_NO_SIZEGRIP
+#endif // LSCS_NO_SIZEGRIP
 
 QStyleOptionGraphicsItem::QStyleOptionGraphicsItem()
     : QStyleOption( Version, Type ), levelOfDetail( 1 )

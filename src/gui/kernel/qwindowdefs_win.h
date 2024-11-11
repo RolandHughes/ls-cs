@@ -94,6 +94,6 @@ typedef struct tagMSG MSG;
 Q_CORE_EXPORT HINSTANCE qWinAppInst();
 Q_CORE_EXPORT HINSTANCE qWinAppPrevInst();
 Q_CORE_EXPORT int       qWinAppCmdShow();
-Q_GUI_EXPORT HDC        qt_win_display_dc();
+Q_GUI_EXPORT HDC        lscs_win_display_dc();
 
 #endif

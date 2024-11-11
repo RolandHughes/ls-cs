@@ -28,7 +28,7 @@
 #include <qobject.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_DATAWIDGETMAPPER
+#ifndef LSCS_NO_DATAWIDGETMAPPER
 
 class QAbstractItemDelegate;
 class QAbstractItemModel;
@@ -139,6 +139,6 @@ private:
     GUI_LSCS_SLOT_2( _q_modelDestroyed )
 };
 
-#endif // QT_NO_DATAWIDGETMAPPER
+#endif // LSCS_NO_DATAWIDGETMAPPER
 #endif
 

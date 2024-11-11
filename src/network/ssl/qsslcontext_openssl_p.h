@@ -30,7 +30,7 @@
 
 #include <openssl/ssl.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 class QSslContextPrivate;
 

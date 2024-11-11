@@ -26,7 +26,7 @@
 
 #include <qnamespace.h>
 
-#ifndef QT_NO_EFFECTS
+#ifndef LSCS_NO_EFFECTS
 
 
 class QWidget;
@@ -49,6 +49,6 @@ extern void Q_GUI_EXPORT qFadeEffect( QWidget *, int time = -1 );
 
 
 
-#endif // QT_NO_EFFECTS
+#endif // LSCS_NO_EFFECTS
 
 #endif // QEFFECTS_P_H

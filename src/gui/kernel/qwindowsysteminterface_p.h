@@ -67,7 +67,7 @@ public:
         PlatformPanel = UserInputEvent | 0x17,
         ContextMenu = UserInputEvent | 0x18,
         EnterWhatsThisMode = UserInputEvent | 0x19,
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
         Gesture = UserInputEvent | 0x1a,
 #endif
         ApplicationStateChanged = 0x19,
@@ -478,7 +478,7 @@ public:
         QPointer<QWindow> window;
     };
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     class ContextMenuEvent : public WindowSystemEvent
     {
     public:
@@ -497,7 +497,7 @@ public:
     };
 #endif
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     class GestureEvent : public InputEvent
     {
     public:

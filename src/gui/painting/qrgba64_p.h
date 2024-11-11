@@ -54,10 +54,10 @@ inline QRgba64 multiplyAlpha65535( QRgba64 rgba64, uint alpha65535 )
     _mm_storel_epi64( ( __m128i * )&rgba64, vs );
     return rgba64;
 #else
-    return QRgba64::fromRgba64( qt_div_65535( rgba64.red()   * alpha65535 ),
-                                qt_div_65535( rgba64.green() * alpha65535 ),
-                                qt_div_65535( rgba64.blue()  * alpha65535 ),
-                                qt_div_65535( rgba64.alpha() * alpha65535 ) );
+    return QRgba64::fromRgba64( lscs_div_65535( rgba64.red()   * alpha65535 ),
+                                lscs_div_65535( rgba64.green() * alpha65535 ),
+                                lscs_div_65535( rgba64.blue()  * alpha65535 ),
+                                lscs_div_65535( rgba64.alpha() * alpha65535 ) );
 #endif
 }
 
@@ -66,10 +66,10 @@ inline QRgba64 multiplyAlpha255( QRgba64 rgba64, uint alpha255 )
 #ifdef __SSE2__
     return multiplyAlpha65535( rgba64, alpha255 * 257 );
 #else
-    return QRgba64::fromRgba64( qt_div_255( rgba64.red()   * alpha255 ),
-                                qt_div_255( rgba64.green() * alpha255 ),
-                                qt_div_255( rgba64.blue()  * alpha255 ),
-                                qt_div_255( rgba64.alpha() * alpha255 ) );
+    return QRgba64::fromRgba64( lscs_div_255( rgba64.red()   * alpha255 ),
+                                lscs_div_255( rgba64.green() * alpha255 ),
+                                lscs_div_255( rgba64.blue()  * alpha255 ),
+                                lscs_div_255( rgba64.alpha() * alpha255 ) );
 #endif
 }
 

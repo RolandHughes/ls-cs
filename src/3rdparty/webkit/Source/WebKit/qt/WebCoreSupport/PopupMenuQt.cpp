@@ -140,7 +140,7 @@ void PopupMenuQt::disconnectClient()
 
 void PopupMenuQt::show( const IntRect &rect, FrameView *view, int index )
 {
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
     if ( !m_popupClient )
     {

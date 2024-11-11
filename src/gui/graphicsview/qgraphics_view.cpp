@@ -27,7 +27,7 @@ static constexpr const int QGRAPHICSVIEW_PREALLOC_STYLE_OPTIONS = 503; // larges
 #include <qgraphicsview.h>
 #include <qgraphics_view_p.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qapplication.h>
 #include <qdatetime.h>
@@ -51,7 +51,7 @@ static constexpr const int QGRAPHICSVIEW_PREALLOC_STYLE_OPTIONS = 503; // larges
 #include <qgraphics_item_p.h>
 #include <qgraphics_scene_p.h>
 
-bool qt_sendSpontaneousEvent( QObject *receiver, QEvent *event );
+bool lscs_sendSpontaneousEvent( QObject *receiver, QEvent *event );
 
 inline int q_round_bound( qreal d ) //### (int)(qreal) INT_MAX != INT_MAX for single precision
 {
@@ -101,14 +101,14 @@ QGraphicsViewPrivate::QGraphicsViewPrivate()
       transformationAnchor( QGraphicsView::AnchorViewCenter ), resizeAnchor( QGraphicsView::NoAnchor ),
       viewportUpdateMode( QGraphicsView::MinimalViewportUpdate ), optimizationFlags( Qt::EmptyFlag ), scene( nullptr ),
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
       rubberBanding( false ), rubberBandSelectionMode( Qt::IntersectsItemShape ),
       rubberBandSelectionOperation( Qt::ReplaceSelection ),
 #endif
 
       handScrollMotions( 0 ), cacheMode( Qt::EmptyFlag ),
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
       hasStoredOriginalCursor( false ),
 #endif
 
@@ -412,7 +412,7 @@ void QGraphicsViewPrivate::mouseMoveEventHandler( QMouseEvent *event )
 {
     Q_Q( QGraphicsView );
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
     updateRubberBand( event );
 #endif
     storeMouseEvent( event );
@@ -452,7 +452,7 @@ void QGraphicsViewPrivate::mouseMoveEventHandler( QMouseEvent *event )
 
     if ( event->spontaneous() )
     {
-        qt_sendSpontaneousEvent( scene, &mouseEvent );
+        lscs_sendSpontaneousEvent( scene, &mouseEvent );
     }
     else
     {
@@ -469,7 +469,7 @@ void QGraphicsViewPrivate::mouseMoveEventHandler( QMouseEvent *event )
         return;
     }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     // If all the items ignore hover events, we don't look-up any items
     // in QGraphicsScenePrivate::dispatchHoverEvent, hence the
@@ -504,7 +504,7 @@ void QGraphicsViewPrivate::mouseMoveEventHandler( QMouseEvent *event )
 #endif
 }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 QRegion QGraphicsViewPrivate::rubberBandRegion( const QWidget *widget, const QRect &rect ) const
 {
     QStyleHintReturnMask mask;
@@ -609,7 +609,7 @@ void QGraphicsViewPrivate::updateRubberBand( const QMouseEvent *event )
 }
 #endif
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 void QGraphicsViewPrivate::_q_setViewportCursor( const QCursor &cursor )
 {
     if ( !hasStoredOriginalCursor )
@@ -622,7 +622,7 @@ void QGraphicsViewPrivate::_q_setViewportCursor( const QCursor &cursor )
 }
 #endif
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 void QGraphicsViewPrivate::_q_unsetViewportCursor()
 {
     Q_Q( QGraphicsView );
@@ -672,7 +672,7 @@ void QGraphicsViewPrivate::storeDragDropEvent( const QGraphicsSceneDragDropEvent
 void QGraphicsViewPrivate::populateSceneDragDropEvent( QGraphicsSceneDragDropEvent *dest,
         QDropEvent *source )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     Q_Q( QGraphicsView );
     dest->setScenePos( q->mapToScene( source->pos() ) );
     dest->setScreenPos( q->mapToGlobal( source->pos() ) );
@@ -1007,7 +1007,7 @@ void QGraphicsViewPrivate::freeStyleOptionsArray( QStyleOptionGraphicsItem *arra
     }
 }
 
-extern QPainterPath qt_regionToPath( const QRegion &region );
+extern QPainterPath lscs_regionToPath( const QRegion &region );
 
 /*!
     ### Adjustments in findItems: mapToScene(QRect) forces us to adjust the
@@ -1059,7 +1059,7 @@ QList<QGraphicsItem *> QGraphicsViewPrivate::findItems( const QRegion &exposedRe
         adjustedRegion += r.adjusted( -1, -1, 1, 1 );
     }
 
-    const QPainterPath exposedScenePath( q->mapToScene( qt_regionToPath( adjustedRegion ) ) );
+    const QPainterPath exposedScenePath( q->mapToScene( lscs_regionToPath( adjustedRegion ) ) );
     return scene->items( exposedScenePath, Qt::IntersectsItemBoundingRect,
                          Qt::AscendingOrder, viewTransform );
 }
@@ -1312,7 +1312,7 @@ void QGraphicsView::setDragMode( DragMode mode )
         return;
     }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( d->dragMode == ScrollHandDrag )
     {
@@ -1332,7 +1332,7 @@ void QGraphicsView::setDragMode( DragMode mode )
 
     d->dragMode = mode;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( d->dragMode == ScrollHandDrag )
     {
@@ -1344,7 +1344,7 @@ void QGraphicsView::setDragMode( DragMode mode )
 #endif
 }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
 Qt::ItemSelectionMode QGraphicsView::rubberBandSelectionMode() const
 {
@@ -2316,7 +2316,7 @@ void QGraphicsView::setupViewport( QWidget *widget )
         widget->setAttribute( Qt::WA_AcceptTouchEvents );
     }
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
     if ( d->scene )
     {
@@ -2465,7 +2465,7 @@ bool QGraphicsView::viewportEvent( QEvent *event )
             break;
         }
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
         case QEvent::ToolTip:
         {
@@ -2538,7 +2538,7 @@ bool QGraphicsView::viewportEvent( QEvent *event )
             return true;
         }
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
         case QEvent::Gesture:
         case QEvent::GestureOverride:
@@ -2567,7 +2567,7 @@ bool QGraphicsView::viewportEvent( QEvent *event )
     return QAbstractScrollArea::viewportEvent( event );
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 void QGraphicsView::contextMenuEvent( QContextMenuEvent *event )
 {
     Q_D( QGraphicsView );
@@ -2598,7 +2598,7 @@ void QGraphicsView::contextMenuEvent( QContextMenuEvent *event )
 
 void QGraphicsView::dropEvent( QDropEvent *event )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     Q_D( QGraphicsView );
 
     if ( !d->scene || !d->sceneInteractionAllowed )
@@ -2631,7 +2631,7 @@ void QGraphicsView::dropEvent( QDropEvent *event )
 
 void QGraphicsView::dragEnterEvent( QDragEnterEvent *event )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     Q_D( QGraphicsView );
 
     if ( !d->scene || !d->sceneInteractionAllowed )
@@ -2664,7 +2664,7 @@ void QGraphicsView::dragEnterEvent( QDragEnterEvent *event )
 
 void QGraphicsView::dragLeaveEvent( QDragLeaveEvent *event )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     Q_D( QGraphicsView );
 
     if ( !d->scene || !d->sceneInteractionAllowed )
@@ -2709,7 +2709,7 @@ void QGraphicsView::dragLeaveEvent( QDragLeaveEvent *event )
 
 void QGraphicsView::dragMoveEvent( QDragMoveEvent *event )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     Q_D( QGraphicsView );
 
     if ( !d->scene || !d->sceneInteractionAllowed )
@@ -2841,7 +2841,7 @@ void QGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
 
     if ( event->spontaneous() )
     {
-        qt_sendSpontaneousEvent( d->scene, &mouseEvent );
+        lscs_sendSpontaneousEvent( d->scene, &mouseEvent );
     }
     else
     {
@@ -2894,7 +2894,7 @@ void QGraphicsView::mousePressEvent( QMouseEvent *event )
 
             if ( event->spontaneous() )
             {
-                qt_sendSpontaneousEvent( d->scene, &mouseEvent );
+                lscs_sendSpontaneousEvent( d->scene, &mouseEvent );
             }
             else
             {
@@ -2915,7 +2915,7 @@ void QGraphicsView::mousePressEvent( QMouseEvent *event )
         }
     }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     if ( d->dragMode == QGraphicsView::RubberBandDrag && !d->rubberBanding )
     {
@@ -2951,7 +2951,7 @@ void QGraphicsView::mousePressEvent( QMouseEvent *event )
             event->accept();
             d->handScrolling = true;
             d->handScrollMotions = 0;
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
             viewport()->setCursor( Qt::ClosedHandCursor );
 #endif
         }
@@ -2984,7 +2984,7 @@ void QGraphicsView::mouseReleaseEvent( QMouseEvent *event )
 {
     Q_D( QGraphicsView );
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     if ( d->dragMode == QGraphicsView::RubberBandDrag && d->sceneInteractionAllowed && !event->buttons() )
     {
@@ -3017,7 +3017,7 @@ void QGraphicsView::mouseReleaseEvent( QMouseEvent *event )
 
         if ( d->dragMode == QGraphicsView::ScrollHandDrag && event->button() == Qt::LeftButton )
         {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
             // Restore the open hand cursor. ### There might be items
             // under the mouse that have a valid cursor at this time, so
             // we could repeat the steps from mouseMoveEvent().
@@ -3063,7 +3063,7 @@ void QGraphicsView::mouseReleaseEvent( QMouseEvent *event )
 
     if ( event->spontaneous() )
     {
-        qt_sendSpontaneousEvent( d->scene, &mouseEvent );
+        lscs_sendSpontaneousEvent( d->scene, &mouseEvent );
     }
     else
     {
@@ -3073,7 +3073,7 @@ void QGraphicsView::mouseReleaseEvent( QMouseEvent *event )
     // Update the last mouse event selected state.
     d->lastMouseEvent.setAccepted( mouseEvent.isAccepted() );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( mouseEvent.isAccepted() && mouseEvent.buttons() == 0 && viewport()->testAttribute( Qt::WA_SetCursor ) )
     {
@@ -3084,7 +3084,7 @@ void QGraphicsView::mouseReleaseEvent( QMouseEvent *event )
 #endif
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 void QGraphicsView::wheelEvent( QWheelEvent *event )
 {
     Q_D( QGraphicsView );
@@ -3137,7 +3137,7 @@ void QGraphicsView::paintEvent( QPaintEvent *event )
     // Set up the painter
     QPainter painter( viewport() );
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     if ( d->rubberBanding && !d->rubberBandRect.isEmpty() )
     {
@@ -3321,7 +3321,7 @@ void QGraphicsView::paintEvent( QPaintEvent *event )
     // Foreground
     drawForeground( &painter, exposedSceneRect );
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     // Rubberband
     if ( d->rubberBanding && !d->rubberBandRect.isEmpty() )
@@ -3402,7 +3402,7 @@ void QGraphicsView::scrollContentsBy( int dx, int dy )
         {
             if ( d->accelerateScrolling )
             {
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
                 // Update new and old rubberband regions
                 if ( !d->rubberBandRect.isEmpty() )
@@ -3618,7 +3618,7 @@ QRectF QGraphicsViewPrivate::mapToScene( const QRectF &rect ) const
     return poly.boundingRect();
 }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 void QGraphicsView::_q_setViewportCursor( const QCursor &cursor )
 {
     Q_D( QGraphicsView );
@@ -3632,4 +3632,4 @@ void QGraphicsView::_q_unsetViewportCursor()
 }
 #endif
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW

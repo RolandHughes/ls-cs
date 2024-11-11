@@ -31,9 +31,9 @@
 #include "qdbusmetatype.h"
 #include "qdbusutil_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 extern Q_DBUS_EXPORT QString qDBusGenerateMetaObjectXml( QString interface, const QMetaObject *mo,
         const QMetaObject *base, int flags );
@@ -398,6 +398,6 @@ QString qDBusGenerateMetaObjectXml( QString interface, const QMetaObject *mo, co
 
 #endif
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

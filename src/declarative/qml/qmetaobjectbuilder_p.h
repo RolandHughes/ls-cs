@@ -30,7 +30,7 @@
 #include <QtCore/qmap.h>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QMetaObjectBuilderPrivate;
 class QMetaMethodBuilder;
@@ -149,7 +149,7 @@ public:
     QByteArray toRelocatableData( bool * = 0 ) const;
     static void fromRelocatableData( QMetaObject *, const QMetaObject *, const QByteArray & );
 
-#ifndef QT_NO_DATASTREAM
+#ifndef LSCS_NO_DATASTREAM
     void serialize( QDataStream &stream ) const;
     void deserialize
     ( QDataStream &stream,
@@ -297,6 +297,6 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS( QMetaObjectBuilder::AddMembers )
 Q_DECLARE_OPERATORS_FOR_FLAGS( QMetaObjectBuilder::MetaObjectFlags )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

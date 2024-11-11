@@ -149,11 +149,11 @@ struct QAppleOperatingSystemVersion
     int patch;
 };
 
-QAppleOperatingSystemVersion qt_apple_os_version();
+QAppleOperatingSystemVersion lscs_apple_os_version();
 
 #if defined(Q_OS_DARWIN)
-Q_CORE_EXPORT QChar qt_mac_qtKey2CocoaKey( Qt::Key key );
-Q_CORE_EXPORT Qt::Key qt_mac_cocoaKey2QtKey( QChar keyCode );
+Q_CORE_EXPORT QChar lscs_mac_qtKey2CocoaKey( Qt::Key key );
+Q_CORE_EXPORT Qt::Key lscs_mac_cocoaKey2QtKey( QChar keyCode );
 #endif
 
 #endif

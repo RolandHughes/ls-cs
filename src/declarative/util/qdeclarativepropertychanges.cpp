@@ -38,7 +38,7 @@
 #include <qdeclarativestate_p_p.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeReplaceSignalHandler : public QDeclarativeActionEvent
 {
@@ -894,4 +894,4 @@ void QDeclarativePropertyChanges::attachToState()
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

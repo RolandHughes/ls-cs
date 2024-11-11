@@ -44,7 +44,7 @@
 
 #include <CoreServices/CoreServices.h>
 
-static SSLContextRef qt_createSecureTransportContext( QSslSocket::SslMode mode )
+static SSLContextRef lscs_createSecureTransportContext( QSslSocket::SslMode mode )
 {
     const bool isServer = mode == QSslSocket::SslServerMode;
     SSLContextRef context = nullptr;
@@ -62,7 +62,7 @@ static SSLContextRef qt_createSecureTransportContext( QSslSocket::SslMode mode )
     return context;
 }
 
-static void qt_releaseSecureTransportContext( SSLContextRef context )
+static void lscs_releaseSecureTransportContext( SSLContextRef context )
 {
     if ( ! context )
     {
@@ -72,7 +72,7 @@ static void qt_releaseSecureTransportContext( SSLContextRef context )
     CFRelease( context );
 }
 
-static bool qt_setSessionProtocol( SSLContextRef context, const QSslConfigurationPrivate &configuration, QTcpSocket *plainSocket )
+static bool lscs_setSessionProtocol( SSLContextRef context, const QSslConfigurationPrivate &configuration, QTcpSocket *plainSocket )
 {
     Q_ASSERT( context );
 
@@ -186,7 +186,7 @@ static bool qt_setSessionProtocol( SSLContextRef context, const QSslConfiguratio
 }
 
 
-static bool qt_setSessionProtocolOSX( SSLContextRef context, const QSslConfigurationPrivate &configuration,
+static bool lscs_setSessionProtocolOSX( SSLContextRef context, const QSslConfigurationPrivate &configuration,
                                       QTcpSocket *plainSocket )
 {
     // Without SSLSetProtocolVersionMin/Max functions it's quite difficult
@@ -301,7 +301,7 @@ QSecureTransportContext::QSecureTransportContext( SSLContextRef c )
 
 QSecureTransportContext::~QSecureTransportContext()
 {
-    qt_releaseSecureTransportContext( context );
+    lscs_releaseSecureTransportContext( context );
 }
 
 QSecureTransportContext::operator SSLContextRef()const
@@ -311,11 +311,11 @@ QSecureTransportContext::operator SSLContextRef()const
 
 void QSecureTransportContext::reset( SSLContextRef newContext )
 {
-    qt_releaseSecureTransportContext( context );
+    lscs_releaseSecureTransportContext( context );
     context = newContext;
 }
 
-static QRecursiveMutex *qt_securetransport_mutex()
+static QRecursiveMutex *lscs_securetransport_mutex()
 {
     static QRecursiveMutex retval;
     return &retval;
@@ -384,7 +384,7 @@ static OSStatus _q_SSLWrite( QTcpSocket *plainSocket, const char *data, size_t *
 
 void QSslSocketPrivate::ensureInitialized()
 {
-    const QRecursiveMutexLocker locker( qt_securetransport_mutex() );
+    const QRecursiveMutexLocker locker( lscs_securetransport_mutex() );
 
     if ( s_loadedCiphersAndCerts )
     {
@@ -397,7 +397,7 @@ void QSslSocketPrivate::ensureInitialized()
     // from QSslCertificatePrivate's ctor.
     s_loadedCiphersAndCerts = true;
 
-    const QSecureTransportContext context( qt_createSecureTransportContext( QSslSocket::SslClientMode ) );
+    const QSecureTransportContext context( lscs_createSecureTransportContext( QSslSocket::SslClientMode ) );
 
     if ( context )
     {
@@ -1023,7 +1023,7 @@ bool QSslSocketBackendPrivate::initSslContext()
     Q_ASSERT_X( !context, Q_FUNC_INFO, "invalid socket state, context is not null" );
     Q_ASSERT( plainSocket );
 
-    context.reset( qt_createSecureTransportContext( mode ) );
+    context.reset( lscs_createSecureTransportContext( mode ) );
 
     if ( !context )
     {
@@ -1246,7 +1246,7 @@ bool QSslSocketBackendPrivate::setSessionProtocol()
         return false;
     }
 
-    return qt_setSessionProtocol( context, configuration, plainSocket );
+    return lscs_setSessionProtocol( context, configuration, plainSocket );
 }
 
 bool QSslSocketBackendPrivate::canIgnoreTrustVerificationFailure() const

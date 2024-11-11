@@ -28,7 +28,7 @@
 
 #include <qabstractsocketengine_p.h>
 
-#ifndef QT_NO_SOCKS5
+#ifndef LSCS_NO_SOCKS5
 
 class QSocks5SocketEnginePrivate;
 
@@ -67,9 +67,9 @@ public:
     qint64 read( char *data, qint64 maxlen ) override;
     qint64 write( const char *data, qint64 len ) override;
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
     bool joinMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &interface ) override;
     bool leaveMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &interface ) override;
     QNetworkInterface multicastInterface() const override;
@@ -113,7 +113,7 @@ private:
     NET_LSCS_SLOT_1( Private, void _q_controlSocketError( QAbstractSocket::SocketError socketError ) )
     NET_LSCS_SLOT_2( _q_controlSocketError )
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
     NET_LSCS_SLOT_1( Private, void _q_udpSocketReadNotification() )
     NET_LSCS_SLOT_2( _q_udpSocketReadNotification )
 #endif
@@ -246,7 +246,7 @@ public:
     void _q_controlSocketReadNotification();
     void _q_controlSocketError( QAbstractSocket::SocketError );
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
     void checkForDatagrams() const;
     void _q_udpSocketReadNotification();
 #endif
@@ -264,7 +264,7 @@ public:
     QSocks5Data *data;
     QSocks5ConnectData *connectData;
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
     QSocks5UdpAssociateData *udpData;
 #endif
 
@@ -295,6 +295,6 @@ public:
     QAbstractSocketEngine *createSocketEngine( qintptr socketDescriptor, QObject *parent ) override;
 };
 
-#endif // QT_NO_SOCKS5
+#endif // LSCS_NO_SOCKS5
 
 #endif

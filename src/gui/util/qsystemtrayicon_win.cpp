@@ -23,7 +23,7 @@
 
 #include <qsystemtrayicon_p.h>
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
 
 #ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0600         // Windows Vista
@@ -41,7 +41,7 @@
 #include <qhash.h>
 #include <qplatform_nativeinterface.h>
 #include <qsettings.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <qsystemlibrary_p.h>
 #include <qguiapplication_p.h>
@@ -126,7 +126,7 @@ private:
 
 static bool allowsMessages()
 {
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
     const QString key = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
     const QSettings settings( key, QSettings::NativeFormat );
 
@@ -146,7 +146,7 @@ static HandleTrayIconHash *handleTrayIconHash()
     return &retval;
 }
 
-extern "C" LRESULT QT_WIN_CALLBACK qWindowsTrayconWndProc( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
+extern "C" LRESULT LSCS_WIN_CALLBACK qWindowsTrayconWndProc( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
     if ( message == MYWM_TASKBARCREATED || message == MYWM_NOTIFYICON )
     {
@@ -343,7 +343,7 @@ bool QSystemTrayIconSys::trayMessage( DWORD msg )
         return success;
     }
 }
-Q_GUI_EXPORT HICON qt_pixmapToWinHICON( const QPixmap & );
+Q_GUI_EXPORT HICON lscs_pixmapToWinHICON( const QPixmap & );
 
 HICON QSystemTrayIconSys::createIcon()
 {
@@ -368,7 +368,7 @@ HICON QSystemTrayIconSys::createIcon()
         return oldIcon;
     }
 
-    hIcon = qt_pixmapToWinHICON( pm );
+    hIcon = lscs_pixmapToWinHICON( pm );
     return oldIcon;
 }
 

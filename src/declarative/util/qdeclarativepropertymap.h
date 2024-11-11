@@ -29,7 +29,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativePropertyMapPrivate;
 
@@ -64,6 +64,6 @@ private:
     Q_DISABLE_COPY( QDeclarativePropertyMap )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

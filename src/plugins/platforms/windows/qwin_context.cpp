@@ -48,11 +48,11 @@
 #include <qsystemlibrary_p.h>
 #include <qwin_gui_eventdispatcher_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 # include <qwin_accessibility.h>
 #endif
 
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
 # include <qwin_session_manager.h>
 # include <qsessionmanager_p.h>
 #endif
@@ -106,7 +106,7 @@ static inline bool useRTL_Extensions( QSysInfo::WinVersion ver )
            || IsValidLocale( MAKELCID( MAKELANGID( LANG_FARSI, SUBLANG_DEFAULT ), SORT_DEFAULT ), LCID_INSTALLED );
 }
 
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
 static inline QWindowsSessionManager *platformSessionManager()
 {
     QApplicationPrivate *guiPrivate     = static_cast<QApplicationPrivate *>( QApplicationPrivate::instance() );
@@ -996,7 +996,7 @@ bool QWindowsContext::windowsProc( HWND hwnd, UINT message, QtWindows::WindowsEv
     switch ( et )
     {
         case QtWindows::GestureEvent:
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
             return platformSessionManager()->isInteractionBlocked() ? true :
                    d->m_mouseHandler.translateGestureEvent( platformWindow->window(), hwnd, et, msg, result );
 #else
@@ -1025,7 +1025,7 @@ bool QWindowsContext::windowsProc( HWND hwnd, UINT message, QtWindows::WindowsEv
             return false;
 
         case QtWindows::AccessibleObjectFromWindowRequest:
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
             return QWindowsAccessibility::handleAccessibleObjectFromWindowRequest( hwnd, wParam, lParam, result );
 #else
             return false;
@@ -1108,7 +1108,7 @@ bool QWindowsContext::windowsProc( HWND hwnd, UINT message, QtWindows::WindowsEv
         case QtWindows::InputMethodKeyEvent:
         case QtWindows::InputMethodKeyDownEvent:
         case QtWindows::AppCommandEvent:
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
             return platformSessionManager()->isInteractionBlocked() ? true
                    : d->m_keyMapper.translateKeyEvent( platformWindow->window(), hwnd, msg, result );
 #else
@@ -1141,7 +1141,7 @@ bool QWindowsContext::windowsProc( HWND hwnd, UINT message, QtWindows::WindowsEv
 
         case QtWindows::NonClientMouseEvent:
             if ( platformWindow->frameStrutEventsEnabled() )
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
                 return platformSessionManager()->isInteractionBlocked() ? true :
                        d->m_mouseHandler.translateMouseEvent( platformWindow->window(), hwnd, et, msg, result );
 
@@ -1151,7 +1151,7 @@ bool QWindowsContext::windowsProc( HWND hwnd, UINT message, QtWindows::WindowsEv
             break;
 
         case QtWindows::ScrollEvent:
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
             return platformSessionManager()->isInteractionBlocked() ? true :
                    d->m_mouseHandler.translateScrollEvent( platformWindow->window(), hwnd, msg, result );
 #else
@@ -1162,7 +1162,7 @@ bool QWindowsContext::windowsProc( HWND hwnd, UINT message, QtWindows::WindowsEv
         case QtWindows::MouseEvent:
         case QtWindows::LeaveEvent:
 
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
             return platformSessionManager()->isInteractionBlocked() ? true :
                    d->m_mouseHandler.translateMouseEvent( platformWindow->window(), hwnd, et, msg, result );
 #else
@@ -1170,7 +1170,7 @@ bool QWindowsContext::windowsProc( HWND hwnd, UINT message, QtWindows::WindowsEv
 #endif
 
         case QtWindows::TouchEvent:
-#if !defined(QT_NO_SESSIONMANAGER)
+#if !defined(LSCS_NO_SESSIONMANAGER)
             return platformSessionManager()->isInteractionBlocked() ? true :
                    d->m_mouseHandler.translateTouchEvent( platformWindow->window(), hwnd, et, msg, result );
 #else
@@ -1249,7 +1249,7 @@ bool QWindowsContext::windowsProc( HWND hwnd, UINT message, QtWindows::WindowsEv
 
             break;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
         case QtWindows::ContextMenu:
             return handleContextMenuEvent( platformWindow->window(), msg );
@@ -1258,14 +1258,14 @@ bool QWindowsContext::windowsProc( HWND hwnd, UINT message, QtWindows::WindowsEv
         case QtWindows::WhatsThisEvent:
         {
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
             QWindowSystemInterface::handleEnterWhatsThisEvent();
             return true;
 #endif
         }
         break;
 
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
 
         case QtWindows::QueryEndSessionApplicationEvent:
         {
@@ -1320,7 +1320,7 @@ bool QWindowsContext::windowsProc( HWND hwnd, UINT message, QtWindows::WindowsEv
             return true;
         }
 
-#endif // ! defined(QT_NO_SESSIONMANAGER)
+#endif // ! defined(LSCS_NO_SESSIONMANAGER)
 
         default:
             break;
@@ -1385,7 +1385,7 @@ void QWindowsContext::handleFocusEvent( QtWindows::WindowsEventType et,
     }
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 bool QWindowsContext::handleContextMenuEvent( QWindow *window, const MSG &msg )
 {
     bool mouseTriggered = false;
@@ -1436,7 +1436,7 @@ QTouchDevice *QWindowsContext::touchDevice() const
     return d->m_mouseHandler.touchDevice();
 }
 
-extern "C" LRESULT QT_WIN_CALLBACK qWindowsWndProc( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
+extern "C" LRESULT LSCS_WIN_CALLBACK qWindowsWndProc( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
     LRESULT result;
     const QtWindows::WindowsEventType et = windowsEventType( message, wParam, lParam );

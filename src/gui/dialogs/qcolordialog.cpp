@@ -23,7 +23,7 @@
 
 #include <qcolordialog.h>
 
-#ifndef QT_NO_COLORDIALOG
+#ifndef LSCS_NO_COLORDIALOG
 
 #include <qapplication.h>
 #include <qcursor.h>
@@ -474,7 +474,7 @@ void QWellArray::setSelected( int row, int col )
         emit selected( row, col );
     }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     if ( isVisible() && qobject_cast<QMenu *>( parentWidget() ) )
     {
@@ -619,7 +619,7 @@ protected:
     void mouseMoveEvent( QMouseEvent *e )override;
     void mouseReleaseEvent( QMouseEvent *e ) override;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void dragEnterEvent( QDragEnterEvent *e ) override;
     void dragLeaveEvent( QDragLeaveEvent *e ) override;
     void dragMoveEvent( QDragMoveEvent *e ) override;
@@ -650,7 +650,7 @@ void QColorWell::mousePressEvent( QMouseEvent *e )
 void QColorWell::mouseMoveEvent( QMouseEvent *e )
 {
     QWellArray::mouseMoveEvent( e );
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( !mousePressed )
     {
@@ -679,7 +679,7 @@ void QColorWell::mouseMoveEvent( QMouseEvent *e )
 #endif
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 void QColorWell::dragEnterEvent( QDragEnterEvent *e )
 {
     if ( ( e->mimeData()->colorData() ).value<QColor>().isValid() )
@@ -730,7 +730,7 @@ void QColorWell::dropEvent( QDropEvent *e )
     }
 }
 
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 void QColorWell::mouseReleaseEvent( QMouseEvent *e )
 {
@@ -1197,7 +1197,7 @@ protected:
     void mouseMoveEvent( QMouseEvent *e ) override;
     void mouseReleaseEvent( QMouseEvent *e ) override;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void dragEnterEvent( QDragEnterEvent *e ) override;
     void dragLeaveEvent( QDragLeaveEvent *e ) override;
     void dropEvent( QDropEvent *e ) override;
@@ -1235,7 +1235,7 @@ void QColorShowLabel::mousePressEvent( QMouseEvent *e )
 
 void QColorShowLabel::mouseMoveEvent( QMouseEvent *e )
 {
-#ifdef QT_NO_DRAGANDDROP
+#ifdef LSCS_NO_DRAGANDDROP
     ( void ) e;
 
 #else
@@ -1264,7 +1264,7 @@ void QColorShowLabel::mouseMoveEvent( QMouseEvent *e )
 #endif
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 void QColorShowLabel::dragEnterEvent( QDragEnterEvent *e )
 {
     if ( ( e->mimeData()->colorData() ).value<QColor>().isValid() )
@@ -1297,7 +1297,7 @@ void QColorShowLabel::dropEvent( QDropEvent *e )
         e->ignore();
     }
 }
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 void QColorShowLabel::mouseReleaseEvent( QMouseEvent * )
 {
@@ -1322,7 +1322,7 @@ QColorShower::QColorShower( QColorDialog *parent )
 
     lab = new QColorShowLabel( this );
 
-#ifdef QT_SMALL_COLORDIALOG
+#ifdef LSCS_SMALL_COLORDIALOG
     lab->setMinimumHeight( 60 );
 #endif
 
@@ -1332,7 +1332,7 @@ QColorShower::QColorShower( QColorDialog *parent )
     // For QVGA screens only the comboboxes and color label are visible.
     // For nHD screens only color and luminence pickers and color label are visible.
 
-#if ! defined(QT_SMALL_COLORDIALOG)
+#if ! defined(LSCS_SMALL_COLORDIALOG)
     gl->addWidget( lab, 0, 0, -1, 1 );
 
 #else
@@ -1347,13 +1347,13 @@ QColorShower::QColorShower( QColorDialog *parent )
     hEd->setRange( 0, 359 );
     lblHue = new QLabel( this );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     lblHue->setBuddy( hEd );
 #endif
 
     lblHue->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 
-#if ! defined(QT_SMALL_COLORDIALOG)
+#if ! defined(LSCS_SMALL_COLORDIALOG)
     gl->addWidget( lblHue, 0, 1 );
     gl->addWidget( hEd, 0, 2 );
 #else
@@ -1364,13 +1364,13 @@ QColorShower::QColorShower( QColorDialog *parent )
     sEd = new QColSpinBox( this );
     lblSat = new QLabel( this );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     lblSat->setBuddy( sEd );
 #endif
 
     lblSat->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 
-#if !defined(QT_SMALL_COLORDIALOG)
+#if !defined(LSCS_SMALL_COLORDIALOG)
     gl->addWidget( lblSat, 1, 1 );
     gl->addWidget( sEd, 1, 2 );
 #else
@@ -1381,13 +1381,13 @@ QColorShower::QColorShower( QColorDialog *parent )
     vEd = new QColSpinBox( this );
     lblVal = new QLabel( this );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     lblVal->setBuddy( vEd );
 #endif
 
     lblVal->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 
-#if ! defined(QT_SMALL_COLORDIALOG)
+#if ! defined(LSCS_SMALL_COLORDIALOG)
     gl->addWidget( lblVal, 2, 1 );
     gl->addWidget( vEd, 2, 2 );
 #else
@@ -1398,13 +1398,13 @@ QColorShower::QColorShower( QColorDialog *parent )
     rEd = new QColSpinBox( this );
     lblRed = new QLabel( this );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     lblRed->setBuddy( rEd );
 #endif
 
     lblRed->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 
-#if ! defined(QT_SMALL_COLORDIALOG)
+#if ! defined(LSCS_SMALL_COLORDIALOG)
     gl->addWidget( lblRed, 0, 3 );
     gl->addWidget( rEd, 0, 4 );
 #else
@@ -1417,13 +1417,13 @@ QColorShower::QColorShower( QColorDialog *parent )
     gEd = new QColSpinBox( this );
     lblGreen = new QLabel( this );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     lblGreen->setBuddy( gEd );
 #endif
 
     lblGreen->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 
-#if ! defined(QT_SMALL_COLORDIALOG)
+#if ! defined(LSCS_SMALL_COLORDIALOG)
     gl->addWidget( lblGreen, 1, 3 );
     gl->addWidget( gEd, 1, 4 );
 #else
@@ -1434,13 +1434,13 @@ QColorShower::QColorShower( QColorDialog *parent )
     bEd = new QColSpinBox( this );
     lblBlue = new QLabel( this );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     lblBlue->setBuddy( bEd );
 #endif
 
     lblBlue->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 
-#if ! defined(QT_SMALL_COLORDIALOG)
+#if ! defined(LSCS_SMALL_COLORDIALOG)
     gl->addWidget( lblBlue, 2, 3 );
     gl->addWidget( bEd, 2, 4 );
 #else
@@ -1451,13 +1451,13 @@ QColorShower::QColorShower( QColorDialog *parent )
     alphaEd = new QColSpinBox( this );
     alphaLab = new QLabel( this );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     alphaLab->setBuddy( alphaEd );
 #endif
 
     alphaLab->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 
-#if ! defined(QT_SMALL_COLORDIALOG)
+#if ! defined(LSCS_SMALL_COLORDIALOG)
     gl->addWidget( alphaLab, 3, 1, 1, 3 );
     gl->addWidget( alphaEd, 3, 4 );
 
@@ -1473,7 +1473,7 @@ QColorShower::QColorShower( QColorDialog *parent )
     lblHtml = new QLabel( this );
     htEd    = new QLineEdit( this );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     lblHtml->setBuddy( htEd );
 #endif
 
@@ -1484,7 +1484,7 @@ QColorShower::QColorShower( QColorDialog *parent )
     htEd->setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
     lblHtml->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 
-#if defined(QT_SMALL_COLORDIALOG)
+#if defined(LSCS_SMALL_COLORDIALOG)
     gl->addWidget( lblHtml, 5, 0 );
     gl->addWidget( htEd, 5, 1, 1, 2 );
 #else
@@ -1829,7 +1829,7 @@ void QColorDialogPrivate::_q_pickScreenColor()
     // If user pushes Escape, the last color before picking will be restored.
     beforeScreenColorPicking = cs->currentColor();
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     q->grabMouse( Qt::CrossCursor );
 #else
     q->grabMouse();
@@ -1916,7 +1916,7 @@ void QColorDialogPrivate::initWidgets()
 
     leftLay = nullptr;
 
-#if defined(QT_SMALL_COLORDIALOG)
+#if defined(LSCS_SMALL_COLORDIALOG)
     smallDisplay = true;
     const int lumSpace = 20;
 
@@ -1936,7 +1936,7 @@ void QColorDialogPrivate::initWidgets()
         standard       = new QColorWell( q, StandardColorRows, ColorColumns, QColorDialogOptions::standardColors() );
         lblBasicColors = new QLabel( q );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         lblBasicColors->setBuddy( standard );
 #endif
 
@@ -1944,7 +1944,7 @@ void QColorDialogPrivate::initWidgets()
         leftLay->addWidget( lblBasicColors );
         leftLay->addWidget( standard );
 
-#if ! defined(QT_SMALL_COLORDIALOG)
+#if ! defined(LSCS_SMALL_COLORDIALOG)
         // The screen color picker button
         screenColorPickerButton = new QPushButton();
         leftLay->addWidget( screenColorPickerButton );
@@ -1964,7 +1964,7 @@ void QColorDialogPrivate::initWidgets()
 
         lblCustomColors = new QLabel( q );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         lblCustomColors->setBuddy( custom );
 #endif
 
@@ -1980,7 +1980,7 @@ void QColorDialogPrivate::initWidgets()
     {
         // better color picker size for small displays
 
-#if defined(QT_SMALL_COLORDIALOG)
+#if defined(LSCS_SMALL_COLORDIALOG)
         QSize screenSize = QApplication::desktop()->availableGeometry( QCursor::pos() ).size();
         pWidth = pHeight = qMin( screenSize.width(), screenSize.height() );
         pHeight -= 20;
@@ -2010,7 +2010,7 @@ void QColorDialogPrivate::initWidgets()
 
     cp->setFrameStyle( QFrame::Panel + QFrame::Sunken );
 
-#if defined(QT_SMALL_COLORDIALOG)
+#if defined(LSCS_SMALL_COLORDIALOG)
     cp->hide();
 
 #else
@@ -2022,7 +2022,7 @@ void QColorDialogPrivate::initWidgets()
 
     lp = new QColorLuminancePicker( q );
 
-#if defined(QT_SMALL_COLORDIALOG)
+#if defined(LSCS_SMALL_COLORDIALOG)
     lp->hide();
 
 #else
@@ -2043,7 +2043,7 @@ void QColorDialogPrivate::initWidgets()
     QObject::connect( cs, &QColorShower::newCol,              q, &QColorDialog::_q_newColorTypedIn );
     QObject::connect( cs, &QColorShower::currentColorChanged, q, &QColorDialog::currentColorChanged );
 
-#if defined(QT_SMALL_COLORDIALOG)
+#if defined(LSCS_SMALL_COLORDIALOG)
     topLay->addWidget( cs );
 #else
     rightLay->addWidget( cs );
@@ -2338,7 +2338,7 @@ void QColorDialog::changeEvent( QEvent *e )
 }
 void QColorDialogPrivate::_q_updateColorPicking()
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     Q_Q( QColorDialog );
 
     static QPoint lastGlobalPos;
@@ -2478,6 +2478,6 @@ void QColorDialog::_q_updateColorPicking()
     d->_q_updateColorPicking();
 }
 
-#endif // QT_NO_COLORDIALOG
+#endif // LSCS_NO_COLORDIALOG
 
 

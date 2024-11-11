@@ -21,7 +21,7 @@
 #include "config.h"
 #include "QtFallbackWebPopup.h"
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
 #include "ChromeClientQt.h"
 #include "QWebPageClient.h"
@@ -54,7 +54,7 @@ void QtFallbackWebPopupCombo::showPopup()
 
 void QtFallbackWebPopupCombo::hidePopup()
 {
-#ifndef QT_NO_IM
+#ifndef LSCS_NO_IM
     QWidget *activeFocus = QApplication::focusWidget();
 
     if ( activeFocus && activeFocus == QComboBox::view()
@@ -183,7 +183,7 @@ void QtFallbackWebPopup::populate( const QWebSelectData &data )
             case QWebSelectData::Option:
                 m_combo->insertItem( i, data.itemText( i ) );
                 model->item( i )->setEnabled( data.itemIsEnabled( i ) );
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
                 model->item( i )->setToolTip( data.itemToolTip( i ) );
 #endif
                 model->item( i )->setBackground( data.itemBackgroundColor( i ) );
@@ -221,4 +221,4 @@ QWebPageClient *QtFallbackWebPopup::pageClient() const
 
 }
 
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX

@@ -31,7 +31,7 @@
 #include <qicon.h>
 #include <qiconengine.h>
 
-#ifndef QT_NO_ICON
+#ifndef LSCS_NO_ICON
 
 
 class QIconPrivate
@@ -115,6 +115,6 @@ private:
     friend class QIconThemeEngine;
 };
 
-#endif //QT_NO_ICON
+#endif //LSCS_NO_ICON
 
 #endif

@@ -30,7 +30,7 @@
 #include <QtCore/qmetatype.h>
 #include <QtCore/qvariant.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QString;
 class QDeclarativeEngine;
@@ -84,7 +84,7 @@ private:
     QDeclarativeContext( QDeclarativeEngine *, bool );
     Q_DISABLE_COPY( QDeclarativeContext )
 };
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QList<QObject *> )
 

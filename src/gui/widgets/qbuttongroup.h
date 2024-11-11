@@ -27,7 +27,7 @@
 #include <qobject.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
 
 class QAbstractButton;
 class QAbstractButtonPrivate;
@@ -98,6 +98,6 @@ private:
     friend class QAbstractButtonPrivate;
 };
 
-#endif // QT_NO_BUTTONGROUP
+#endif // LSCS_NO_BUTTONGROUP
 
 #endif

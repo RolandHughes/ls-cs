@@ -23,7 +23,7 @@
 
 #include <qmdiarea_p.h>
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
 
 #include <qapplication.h>
 #include <qchildevent.h>
@@ -160,7 +160,7 @@ static inline QMdiArea *mdiAreaParent( QWidget *widget )
     return nullptr;
 }
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
 static inline QTabBar::Shape tabBarShapeFrom( QTabWidget::TabShape shape, QTabWidget::TabPosition position )
 {
     const bool rounded = ( shape == QTabWidget::Rounded );
@@ -187,7 +187,7 @@ static inline QTabBar::Shape tabBarShapeFrom( QTabWidget::TabShape shape, QTabWi
 
     return QTabBar::RoundedNorth;
 }
-#endif // QT_NO_TABWIDGET
+#endif // LSCS_NO_TABWIDGET
 
 static inline QString tabTextFor( QMdiSubWindow *subWindow )
 {
@@ -524,7 +524,7 @@ QPoint MinOverlapPlacer::place( const QSize &size, const QVector<QRect> &rects,
     return findBestPlacement( domain, rects, candidates );
 }
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 class QMdiAreaTabBar : public QTabBar
 {
 public:
@@ -533,7 +533,7 @@ public:
 protected:
     void mousePressEvent( QMouseEvent *event ) override;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 
@@ -560,7 +560,7 @@ void QMdiAreaTabBar::mousePressEvent( QMouseEvent *event )
     subWindow->close();
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
 void QMdiAreaTabBar::contextMenuEvent( QContextMenuEvent *event )
 {
@@ -572,7 +572,7 @@ void QMdiAreaTabBar::contextMenuEvent( QContextMenuEvent *event )
         return;
     }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     QMdiSubWindowPrivate *subWindowPrivate = subWindow->d_func();
 
     if ( !subWindowPrivate->systemMenu )
@@ -607,10 +607,10 @@ void QMdiAreaTabBar::contextMenuEvent( QContextMenuEvent *event )
 
     // Restore action visibility.
     subWindowPrivate->updateActions();
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 }
 
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
 QMdiSubWindow *QMdiAreaTabBar::subWindowFromIndex( int index ) const
 {
@@ -630,26 +630,26 @@ QMdiSubWindow *QMdiAreaTabBar::subWindowFromIndex( int index ) const
 
     return subWindow;
 }
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
 QMdiAreaPrivate::QMdiAreaPrivate()
     : cascader( nullptr ), regularTiler( nullptr ), iconTiler( nullptr ), placer( nullptr ),
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
       rubberBand( nullptr ),
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
       tabBar( nullptr ),
 #endif
 
       activationOrder( QMdiArea::CreationOrder ), viewMode( QMdiArea::SubWindowView ),
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
       documentMode( false ), tabsClosable( false ), tabsMovable( false ),
 #endif
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
       tabShape( QTabWidget::Rounded ), tabPosition( QTabWidget::North ),
 #endif
 
@@ -769,7 +769,7 @@ void QMdiAreaPrivate::_q_processWindowStateChanged( Qt::WindowStates oldState, Q
 
 void QMdiAreaPrivate::_q_currentTabChanged( int index )
 {
-#if ! defined(QT_NO_TABBAR)
+#if ! defined(LSCS_NO_TABBAR)
 
     if ( !tabBar || index < 0 )
     {
@@ -798,7 +798,7 @@ void QMdiAreaPrivate::_q_currentTabChanged( int index )
 
 void QMdiAreaPrivate::_q_closeTab( int index )
 {
-#if ! defined(QT_NO_TABBAR)
+#if ! defined(LSCS_NO_TABBAR)
     QMdiSubWindow *subWindow = childWindows.at( index );
     Q_ASSERT( subWindow );
     subWindow->close();
@@ -807,7 +807,7 @@ void QMdiAreaPrivate::_q_closeTab( int index )
 
 void QMdiAreaPrivate::_q_moveTab( int from, int to )
 {
-#if ! defined(QT_NO_TABBAR)
+#if ! defined(LSCS_NO_TABBAR)
     childWindows.move( from, to );
 #endif
 }
@@ -859,7 +859,7 @@ void QMdiAreaPrivate::appendChild( QMdiSubWindow *child )
     indicesToActivatedChildren.prepend( childWindows.size() - 1 );
     Q_ASSERT( indicesToActivatedChildren.size() == childWindows.size() );
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
     if ( tabBar )
     {
@@ -1099,7 +1099,7 @@ void QMdiAreaPrivate::activateHighlightedWindow()
         activateWindow( childWindows.at( indexToHighlighted ) );
     }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
     hideRubberBand();
 #endif
 }
@@ -1154,7 +1154,7 @@ void QMdiAreaPrivate::emitWindowActivated( QMdiSubWindow *activeWindow )
     aboutToBecomeActive = nullptr;
     Q_ASSERT( active->d_func()->isActive );
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
     if ( tabBar && tabBar->currentIndex() != indexToActiveWindow )
     {
@@ -1207,7 +1207,7 @@ void QMdiAreaPrivate::updateActiveWindow( int removedIndex, bool activeRemoved )
 {
     Q_ASSERT( indicesToActivatedChildren.size() == childWindows.size() );
 
-#if ! defined(QT_NO_TABBAR)
+#if ! defined(LSCS_NO_TABBAR)
 
     if ( tabBar && removedIndex >= 0 )
     {
@@ -1228,7 +1228,7 @@ void QMdiAreaPrivate::updateActiveWindow( int removedIndex, bool activeRemoved )
 
     if ( indexToHighlighted >= 0 )
     {
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
         // Hide rubber band if highlighted window is removed.
         if ( indexToHighlighted == removedIndex )
@@ -1752,20 +1752,20 @@ void QMdiAreaPrivate::highlightNextSubWindow( int increaseFactor )
         return;
     }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     if ( !rubberBand )
     {
         rubberBand = new QRubberBand( QRubberBand::Rectangle, q );
         // For accessibility to identify this special widget.
-        rubberBand->setObjectName( QLatin1String( "qt_rubberband" ) );
+        rubberBand->setObjectName( QLatin1String( "lscs_rubberband" ) );
         rubberBand->setWindowFlags( rubberBand->windowFlags() | Qt::WindowStaysOnTopHint );
     }
 
 #endif
 
     // Only highlight if we're not switching back to the previously active window (Ctrl-Tab once).
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     if ( tabToPreviousTimerId == -1 )
     {
@@ -1812,7 +1812,7 @@ void QMdiAreaPrivate::setViewMode( QMdiArea::ViewMode mode )
     // Just a guard since we cannot set viewMode = mode here.
     inViewModeChange = true;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
     if ( mode == QMdiArea::TabbedView )
     {
@@ -1823,7 +1823,7 @@ void QMdiAreaPrivate::setViewMode( QMdiArea::ViewMode mode )
         tabBar->setTabsClosable( tabsClosable );
         tabBar->setMovable( tabsMovable );
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
         tabBar->setShape( tabBarShapeFrom( tabShape, tabPosition ) );
 #endif
 
@@ -1872,11 +1872,11 @@ void QMdiAreaPrivate::setViewMode( QMdiArea::ViewMode mode )
 
     }
     else
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
     {
         // SubWindowView
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
         delete tabBar;
         tabBar = nullptr;
 #endif
@@ -1897,7 +1897,7 @@ void QMdiAreaPrivate::setViewMode( QMdiArea::ViewMode mode )
     inViewModeChange = false;
 }
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
 void QMdiAreaPrivate::updateTabBarGeometry()
 {
@@ -1908,7 +1908,7 @@ void QMdiAreaPrivate::updateTabBarGeometry()
 
     Q_Q( QMdiArea );
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
     Q_ASSERT( tabBarShapeFrom( tabShape, tabPosition ) == tabBar->shape() );
 #endif
 
@@ -1929,7 +1929,7 @@ void QMdiAreaPrivate::updateTabBarGeometry()
     }
 
     QRect tabBarRect;
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
 
     switch ( tabPosition )
     {
@@ -1973,7 +1973,7 @@ void QMdiAreaPrivate::updateTabBarGeometry()
             break;
     }
 
-#endif // QT_NO_TABWIDGET
+#endif // LSCS_NO_TABWIDGET
 
     tabBar->setGeometry( QStyle::visualRect( q->layoutDirection(), q->contentsRect(), tabBarRect ) );
 }
@@ -1989,13 +1989,13 @@ void QMdiAreaPrivate::refreshTabBar()
     tabBar->setTabsClosable( tabsClosable );
     tabBar->setMovable( tabsMovable );
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
     tabBar->setShape( tabBarShapeFrom( tabShape, tabPosition ) );
 #endif
 
     updateTabBarGeometry();
 }
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
 QMdiArea::QMdiArea( QWidget *parent )
     : QAbstractScrollArea( *new QMdiAreaPrivate, parent )
@@ -2394,7 +2394,7 @@ void QMdiArea::setViewMode( ViewMode mode )
     d->setViewMode( mode );
 }
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
 bool QMdiArea::documentMode() const
 {
@@ -2453,9 +2453,9 @@ void QMdiArea::setTabsMovable( bool movable )
     d->tabsMovable = movable;
     d->refreshTabBar();
 }
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
 
 QTabWidget::TabShape QMdiArea::tabShape() const
 {
@@ -2494,7 +2494,7 @@ void QMdiArea::setTabPosition( QTabWidget::TabPosition position )
     d->tabPosition = position;
     d->refreshTabBar();
 }
-#endif // QT_NO_TABWIDGET
+#endif // LSCS_NO_TABWIDGET
 
 void QMdiArea::childEvent( QChildEvent *childEvent )
 {
@@ -2522,7 +2522,7 @@ void QMdiArea::resizeEvent( QResizeEvent *resizeEvent )
         return;
     }
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     d->updateTabBarGeometry();
 #endif
 
@@ -2593,7 +2593,7 @@ void QMdiArea::timerEvent( QTimerEvent *timerEvent )
             return;
         }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
         // We're not doing a "quick switch" ... show rubber band.
         Q_ASSERT( d->indexToHighlighted < d->childWindows.size() );
         Q_ASSERT( d->rubberBand );
@@ -2820,7 +2820,7 @@ bool QMdiArea::event( QEvent *event )
             d->setChildActivationEnabled( false );
             break;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case QEvent::LayoutDirectionChange:
             d->updateTabBarGeometry();
@@ -2895,7 +2895,7 @@ bool QMdiArea::eventFilter( QObject *object, QEvent *event )
 
                 return true;
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
             case Qt::Key_Escape:
                 area->d_func()->hideRubberBand();
@@ -2954,7 +2954,7 @@ bool QMdiArea::eventFilter( QObject *object, QEvent *event )
             break;
 
         case QEvent::Show:
-#if ! defined(QT_NO_TABBAR)
+#if ! defined(LSCS_NO_TABBAR)
             if ( d->tabBar )
             {
                 const int tabIndex = d->childWindows.indexOf( subWindow );
@@ -2972,7 +2972,7 @@ bool QMdiArea::eventFilter( QObject *object, QEvent *event )
         case QEvent::Hide:
             d->isSubWindowsTiled = false;
             break;
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
         case QEvent::Close:
             if ( d->childWindows.indexOf( subWindow ) == d->indexToHighlighted )
@@ -2983,7 +2983,7 @@ bool QMdiArea::eventFilter( QObject *object, QEvent *event )
             break;
 #endif
 
-#if ! defined(QT_NO_TABBAR)
+#if ! defined(LSCS_NO_TABBAR)
 
         case QEvent::WindowTitleChange:
         case QEvent::ModifiedChange:
@@ -3001,7 +3001,7 @@ bool QMdiArea::eventFilter( QObject *object, QEvent *event )
             }
 
             break;
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
         default:
             break;
@@ -3073,4 +3073,4 @@ void QMdiArea::_q_moveTab( int from, int to )
     d->_q_moveTab( from, to );
 }
 
-#endif // QT_NO_MDIAREA
+#endif // LSCS_NO_MDIAREA

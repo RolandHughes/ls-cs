@@ -27,7 +27,7 @@
 #include <qdir.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_TEMPORARYFILE
+#ifndef LSCS_NO_TEMPORARYFILE
 
 class QTemporaryDirPrivate;
 
@@ -55,6 +55,6 @@ private:
     QScopedPointer<QTemporaryDirPrivate> d_ptr;
 };
 
-#endif // QT_NO_TEMPORARYFILE
+#endif // LSCS_NO_TEMPORARYFILE
 
 #endif

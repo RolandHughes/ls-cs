@@ -26,7 +26,7 @@
 
 #include <qfilesystemwatcher.h>
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 
 #include <qstringlist.h>
 #include <qthread.h>
@@ -87,6 +87,6 @@ protected:
 
 };
 
-#endif // QT_NO_FILESYSTEMWATCHER
+#endif // LSCS_NO_FILESYSTEMWATCHER
 
 #endif

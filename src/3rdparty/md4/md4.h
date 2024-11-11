@@ -11,7 +11,7 @@
 
 #include <qglobal.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 #define MD4_RESULTLEN (128/8)
 
@@ -27,6 +27,6 @@ static void md4_init( struct md4_context *ctx );
 static void md4_update( struct md4_context *ctx, const unsigned char *data, size_t size );
 static void md4_final( struct md4_context *ctx, unsigned char result[MD4_RESULTLEN] );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

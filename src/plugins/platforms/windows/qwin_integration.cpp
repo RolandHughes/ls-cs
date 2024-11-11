@@ -37,30 +37,30 @@
 #include <qwin_window.h>
 #include <qwindowsysteminterface.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #  include <qwin_accessibility.h>
 #endif
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
 #  include <qwin_fontdatabase_ft.h>
 #endif
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 #  include <qwin_clipboard.h>
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 #  include <qwin_drag.h>
 #endif
 #endif
 
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
 #  include <qwin_session_manager.h>
 #endif
 
-#if defined(QT_OPENGL_ES_2) || defined(QT_OPENGL_DYNAMIC)
+#if defined(LSCS_OPENGL_ES_2) || defined(LSCS_OPENGL_DYNAMIC)
 #  include <qwin_egl_context.h>
 #endif
 
-#if ! defined(QT_NO_OPENGL) && ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_NO_OPENGL) && ! defined(LSCS_OPENGL_ES_2)
 #  include <qwin_gl_context.h>
 #endif
 
@@ -80,23 +80,23 @@ struct QWindowsIntegrationPrivate
     QWindowsContext m_context;
     QPlatformFontDatabase *m_fontDatabase;
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     QWindowsClipboard m_clipboard;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     QWindowsDrag m_drag;
 #endif
 
 #endif
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     QMutex m_staticContextLock;
     QScopedPointer<QWindowsStaticOpenGLContext> m_staticOpenGLContext;
 #endif
 
     QScopedPointer<QPlatformInputContext> m_inputContext;
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QWindowsAccessibility m_accessibility;
 #endif
 
@@ -242,7 +242,7 @@ QWindowsIntegration::QWindowsIntegration( const QStringList &paramList )
 {
     m_instance = this;
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     d->m_clipboard.registerViewer();
 #endif
 
@@ -269,7 +269,7 @@ bool QWindowsIntegration::hasCapability( QPlatformIntegration::Capability cap ) 
         case ThreadedPixmaps:
             return true;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
         case OpenGL:
             return true;
@@ -364,11 +364,11 @@ QWindowsWindow *QWindowsIntegration::createPlatformWindowHelper( QWindow *window
     return new QWindowsWindow( window, data );
 }
 
-#if ! defined(QT_NO_OPENGL)
+#if ! defined(LSCS_NO_OPENGL)
 
 QWindowsStaticOpenGLContext *QWindowsStaticOpenGLContext::doCreate()
 {
-#if defined(QT_OPENGL_DYNAMIC)
+#if defined(LSCS_OPENGL_DYNAMIC)
     QWindowsOpenGLTester::Renderer requestedRenderer = QWindowsOpenGLTester::requestedRenderer();
 
     switch ( requestedRenderer )
@@ -443,7 +443,7 @@ QWindowsStaticOpenGLContext *QWindowsStaticOpenGLContext::doCreate()
 
     return QOpenGLStaticContext::create( true );
 
-#elif defined(QT_OPENGL_ES_2)
+#elif defined(LSCS_OPENGL_ES_2)
     QWindowsOpenGLTester::Renderers glesRenderers = QWindowsOpenGLTester::requestedGlesRenderer();
 
     if ( glesRenderers == QWindowsOpenGLTester::InvalidRenderer )
@@ -483,10 +483,10 @@ QPlatformOpenGLContext *QWindowsIntegration::createPlatformOpenGLContext( QOpenG
 
 QOpenGLContext::OpenGLModuleType QWindowsIntegration::openGLModuleType()
 {
-#if defined(QT_OPENGL_ES_2)
+#if defined(LSCS_OPENGL_ES_2)
     return QOpenGLContext::LibGLES;
 
-#elif ! defined(QT_OPENGL_DYNAMIC)
+#elif ! defined(LSCS_OPENGL_DYNAMIC)
     return QOpenGLContext::LibGL;
 
 #else
@@ -520,14 +520,14 @@ QWindowsStaticOpenGLContext *QWindowsIntegration::staticOpenGLContext()
     return d->m_staticOpenGLContext.data();
 }
 
-#endif // ! QT_NO_OPENGL
+#endif // ! LSCS_NO_OPENGL
 
 QPlatformFontDatabase *QWindowsIntegration::fontDatabase() const
 {
     if ( ! d->m_fontDatabase )
     {
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
 
         if ( d->m_options & QWindowsIntegration::FontDatabaseFreeType )
         {
@@ -625,13 +625,13 @@ QList<int> QWindowsIntegration::possibleKeys( const QKeyEvent *e ) const
     return d->m_context.possibleKeys( e );
 }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 QPlatformClipboard *QWindowsIntegration::clipboard() const
 {
     return &d->m_clipboard;
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 QPlatformDrag *QWindowsIntegration::drag() const
 {
     return &d->m_drag;
@@ -645,7 +645,7 @@ QPlatformInputContext *QWindowsIntegration::inputContext() const
     return d->m_inputContext.data();
 }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 QPlatformAccessibility *QWindowsIntegration::accessibility() const
 {
     return &d->m_accessibility;
@@ -657,7 +657,7 @@ unsigned QWindowsIntegration::options() const
     return d->m_options;
 }
 
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
 QPlatformSessionManager *QWindowsIntegration::createPlatformSessionManager( const QString &id, const QString &key ) const
 {
     return new QWindowsSessionManager( id, key );

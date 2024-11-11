@@ -31,7 +31,7 @@
     support them., e.g. Mac does not support availableTimeZones() filtering by region or offset.
 
     Another data table is provided for generic UTC+00:00 format time zones to be used as a
-    fall-back if no system time zones are available (QT_NO_SYSTEMLOCALE is set) or for QDateTimes
+    fall-back if no system time zones are available (LSCS_NO_SYSTEMLOCALE is set) or for QDateTimes
     with a QT:Spec of OffsetFromUTC
 
     These tables are automatically adapted from the CLDR supplemental/windowsZones.xml data file

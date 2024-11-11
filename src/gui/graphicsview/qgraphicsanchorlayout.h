@@ -28,7 +28,7 @@
 #include <qgraphicslayout.h>
 #include <qscopedpointer.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 class QGraphicsAnchorPrivate;
 class QGraphicsAnchorLayout;

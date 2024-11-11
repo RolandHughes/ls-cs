@@ -29,7 +29,7 @@
 #include <qscriptdeclarativeclass_p.h>
 #include <QtScript/qscriptengine.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 class QScriptContext;
@@ -131,7 +131,7 @@ private:
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS( QDeclarativeObjectScriptClass::QueryHints );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEOBJECTSCRIPTCLASS_P_H
 

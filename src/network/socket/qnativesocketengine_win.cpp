@@ -239,7 +239,7 @@ void verboseWSErrorDebug( int r )
     qErrnoWarning( r, "more details" );
 }
 
-static QByteArray qt_prettyDebug( const char *data, int len, int maxLength )
+static QByteArray lscs_prettyDebug( const char *data, int len, int maxLength )
 {
     if ( ! data )
     {
@@ -300,7 +300,7 @@ static QByteArray qt_prettyDebug( const char *data, int len, int maxLength )
 #define SO_EXCLUSIVEADDRUSE ((int)(~SO_REUSEADDR))    /* disallow local address reuse */
 #endif
 
-static inline void qt_socket_getPortAndAddress( SOCKET socketDescriptor, const qt_sockaddr *sa,
+static inline void lscs_socket_getPortAndAddress( SOCKET socketDescriptor, const lscs_sockaddr *sa,
         quint16 *port, QHostAddress *address )
 {
 
@@ -460,7 +460,7 @@ static void convertToLevelAndOption( QNativeSocketEngine::SocketOption opt,
     }
 }
 
-static inline QAbstractSocket::SocketType qt_socket_getType( qintptr socketDescriptor )
+static inline QAbstractSocket::SocketType lscs_socket_getType( qintptr socketDescriptor )
 {
     int value = 0;
     int valueSize = sizeof( value );
@@ -697,7 +697,7 @@ int QNativeSocketEnginePrivate::option( QNativeSocketEngine::SocketOption opt ) 
     int n, level;
     int v = 0;                         // windows does not write to all bytes if the option type is smaller than int
 
-    QT_SOCKOPTLEN_T len = sizeof( v );
+    LSCS_SOCKOPTLEN_T len = sizeof( v );
 
     convertToLevelAndOption( opt, socketProtocol, level, n );
 
@@ -785,7 +785,7 @@ bool QNativeSocketEnginePrivate::fetchConnectionParameters()
         return false;
     }
 
-    qt_sockaddr sa;
+    lscs_sockaddr sa;
     int sockAddrSize = sizeof( sa );
 
     // Determine local address
@@ -793,7 +793,7 @@ bool QNativeSocketEnginePrivate::fetchConnectionParameters()
 
     if ( ::getsockname( socketDescriptor, &sa.a, &sockAddrSize ) == 0 )
     {
-        qt_socket_getPortAndAddress( socketDescriptor, &sa, &localPort, &localAddress );
+        lscs_socket_getPortAndAddress( socketDescriptor, &sa, &localPort, &localAddress );
 
         // Determine protocol family
         switch ( sa.a.sa_family )
@@ -826,7 +826,7 @@ bool QNativeSocketEnginePrivate::fetchConnectionParameters()
 
     // determine if local address is dual mode
     DWORD ipv6only = 0;
-    QT_SOCKOPTLEN_T optlen = sizeof( ipv6only );
+    LSCS_SOCKOPTLEN_T optlen = sizeof( ipv6only );
 
     if ( localAddress == QHostAddress::AnyIPv6 && QSysInfo::windowsVersion() >= QSysInfo::WV_6_0
             && ! getsockopt( socketDescriptor, IPPROTO_IPV6, IPV6_V6ONLY, ( char * )&ipv6only, &optlen ) )
@@ -859,14 +859,14 @@ bool QNativeSocketEnginePrivate::fetchConnectionParameters()
 
     if ( ::getpeername( socketDescriptor, &sa.a, &sockAddrSize ) == 0 )
     {
-        qt_socket_getPortAndAddress( socketDescriptor, &sa, &peerPort, &peerAddress );
+        lscs_socket_getPortAndAddress( socketDescriptor, &sa, &peerPort, &peerAddress );
     }
     else
     {
         WS_ERROR_DEBUG( WSAGetLastError() );
     }
 
-    socketType = qt_socket_getType( socketDescriptor );
+    socketType = lscs_socket_getType( socketDescriptor );
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
     QString socketProtocolStr = "UnknownProtocol";
@@ -906,7 +906,7 @@ bool QNativeSocketEnginePrivate::nativeConnect( const QHostAddress &address, qui
     qDebug( "QNativeSocketEnginePrivate::nativeConnect() to %s :: %i", address.toString().toLatin1().constData(), port );
 #endif
 
-    qt_sockaddr aa;
+    lscs_sockaddr aa;
     int sockAddrSize = 0;
 
     setPortAndAddress( port, address, &aa, &sockAddrSize );
@@ -1094,7 +1094,7 @@ bool QNativeSocketEnginePrivate::nativeBind( const QHostAddress &addr, quint16 p
         }
     }
 
-    qt_sockaddr sa_struct;
+    lscs_sockaddr sa_struct;
     int sockAddrSize = 0;
 
     setPortAndAddress( port, address, &sa_struct, &sockAddrSize );
@@ -1377,7 +1377,7 @@ QNetworkInterface QNativeSocketEnginePrivate::nativeMulticastInterface() const
     if ( socketProtocol == QAbstractSocket::IPv6Protocol || socketProtocol == QAbstractSocket::AnyIPProtocol )
     {
         uint v;
-        QT_SOCKOPTLEN_T sizeofv = sizeof( v );
+        LSCS_SOCKOPTLEN_T sizeofv = sizeof( v );
 
         if ( ::getsockopt( socketDescriptor, IPPROTO_IPV6, IPV6_MULTICAST_IF, ( char * ) &v, &sizeofv ) == -1 )
         {
@@ -1391,14 +1391,14 @@ QNetworkInterface QNativeSocketEnginePrivate::nativeMulticastInterface() const
 
     v.s_addr = 0;
 
-    QT_SOCKOPTLEN_T sizeofv = sizeof( v );
+    LSCS_SOCKOPTLEN_T sizeofv = sizeof( v );
 
     if ( ::getsockopt( socketDescriptor, IPPROTO_IP, IP_MULTICAST_IF, ( char * ) &v, &sizeofv ) == -1 )
     {
         return QNetworkInterface();
     }
 
-    if ( v.s_addr != 0 && sizeofv >= QT_SOCKOPTLEN_T( sizeof( v ) ) )
+    if ( v.s_addr != 0 && sizeofv >= LSCS_SOCKOPTLEN_T( sizeof( v ) ) )
     {
         QHostAddress ipv4( ntohl( v.s_addr ) );
         QList<QNetworkInterface> ifaces = QNetworkInterface::allInterfaces();
@@ -1511,7 +1511,7 @@ qint64 QNativeSocketEnginePrivate::nativeBytesAvailable() const
 bool QNativeSocketEnginePrivate::nativeHasPendingDatagrams() const
 {
     // Create a sockaddr struct and reset its port number.
-    qt_sockaddr storage;
+    lscs_sockaddr storage;
 
     int storageSize = sizeof( storage );
     memset( &storage, 0, storageSize );
@@ -1629,7 +1629,7 @@ qint64 QNativeSocketEnginePrivate::nativeReceiveDatagram( char *data, qint64 max
     };
     WSAMSG msg;
     WSABUF buf;
-    qt_sockaddr aa;
+    lscs_sockaddr aa;
     char c;
     memset( &msg, 0, sizeof( msg ) );
     memset( &aa, 0, sizeof( aa ) );
@@ -1704,7 +1704,7 @@ qint64 QNativeSocketEnginePrivate::nativeReceiveDatagram( char *data, qint64 max
 
         if ( options & QNativeSocketEngine::WantDatagramSender )
         {
-            qt_socket_getPortAndAddress( socketDescriptor, &aa, &header->senderPort, &header->senderAddress );
+            lscs_socket_getPortAndAddress( socketDescriptor, &aa, &header->senderPort, &header->senderAddress );
         }
     }
 
@@ -1755,7 +1755,7 @@ qint64 QNativeSocketEnginePrivate::nativeReceiveDatagram( char *data, qint64 max
     bool printSender = ( ret != -1 && ( options & QNativeSocketEngine::WantDatagramSender ) != 0 );
 
     qDebug( "QNativeSocketEnginePrivate::nativeReceiveDatagram(%p \"%s\", %lli, %s, %i) == %lli",
-            data, qt_prettyDebug( data, qMin<qint64>( ret, 16 ), ret ).data(), maxLength,
+            data, lscs_prettyDebug( data, qMin<qint64>( ret, 16 ), ret ).data(), maxLength,
             printSender ? header->senderAddress.toString().toLatin1().constData() : "(unknown)",
             printSender ? header->senderPort : 0, ret );
 #endif
@@ -1775,7 +1775,7 @@ qint64 QNativeSocketEnginePrivate::nativeSendDatagram( const char *data, qint64 
     WSACMSGHDR *cmsgptr = &align;
     WSAMSG msg;
     WSABUF buf;
-    qt_sockaddr aa;
+    lscs_sockaddr aa;
 
     memset( &msg, 0, sizeof( msg ) );
     memset( &aa, 0, sizeof( aa ) );
@@ -1891,7 +1891,7 @@ qint64 QNativeSocketEnginePrivate::nativeSendDatagram( const char *data, qint64 
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QNativeSocketEnginePrivate::nativeSendDatagram(%p \"%s\", %lli, \"%s\", %i) == %lli", data,
-            qt_prettyDebug( data, qMin<qint64>( len, 16 ), len ).data(), len,
+            lscs_prettyDebug( data, qMin<qint64>( len, 16 ), len ).data(), len,
             header.destinationAddress.toString().toLatin1().constData(),
             header.destinationPort, ret );
 #endif
@@ -1972,7 +1972,7 @@ qint64 QNativeSocketEnginePrivate::nativeWrite( const char *data, qint64 len )
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QNativeSocketEnginePrivate::nativeWrite(%p \"%s\", %i) == %i",
-            data, qt_prettyDebug( data, qMin( ( int )ret, 16 ), ( int )ret ).data(), ( int )len, ( int )ret );
+            data, lscs_prettyDebug( data, qMin( ( int )ret, 16 ), ( int )ret ).data(), ( int )len, ( int )ret );
 #endif
 
     return ret;
@@ -2031,7 +2031,7 @@ qint64 QNativeSocketEnginePrivate::nativeRead( char *data, qint64 maxLength )
     if ( ret != -2 )
     {
         qDebug( "QNativeSocketEnginePrivate::nativeRead(%p \"%s\", %i) == %i",
-                data, qt_prettyDebug( data, qMin( ( int )bytesRead, 16 ), ( int )bytesRead ).data(), ( int )maxLength, ( int )ret );
+                data, lscs_prettyDebug( data, qMin( ( int )bytesRead, 16 ), ( int )bytesRead ).data(), ( int )maxLength, ( int )ret );
     }
     else
     {

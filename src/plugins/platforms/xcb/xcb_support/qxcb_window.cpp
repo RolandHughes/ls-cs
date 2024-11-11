@@ -220,7 +220,7 @@ static inline QImage::Format imageFormatForVisual( int depth, quint32 red_mask, 
 
 static inline bool positionIncludesFrame( QWindow *w )
 {
-    return qt_window_private( w )->positionPolicy == QWindowPrivate::WindowFrameInclusive;
+    return lscs_window_private( w )->positionPolicy == QWindowPrivate::WindowFrameInclusive;
 }
 
 #ifdef XCB_USE_XLIB
@@ -671,11 +671,11 @@ void QXcbWindow::create()
     XSync( DISPLAY_FROM_XCB( platformScreen ), false );
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     connection()->drag()->dndEnable( this, true );
 #endif
 
-    const qreal opacity = qt_window_private( window() )->opacity;
+    const qreal opacity = lscs_window_private( window() )->opacity;
 
     if ( !qFuzzyCompare( opacity, qreal( 1.0 ) ) )
     {
@@ -785,7 +785,7 @@ void QXcbWindow::setGeometry( const QRect &rect )
         QWindowSystemInterface::handleWindowScreenChanged( window(), newScreen->QPlatformScreen::screen() );
     }
 
-    if ( qt_window_private( window() )->positionAutomatic )
+    if ( lscs_window_private( window() )->positionAutomatic )
     {
         const quint32 mask = XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT;
         const qint32 values[] =
@@ -2044,7 +2044,7 @@ void QXcbWindow::propagateSizeHints()
 
     QWindow *win = window();
 
-    if ( ! qt_window_private( win )->positionAutomatic )
+    if ( ! lscs_window_private( win )->positionAutomatic )
     {
         xcb_icccm_size_hints_set_position( &hints, true, xRect.x(), xRect.y() );
     }
@@ -2628,7 +2628,7 @@ void QXcbWindow::handleClientMessageEvent( const xcb_client_message_event_t *eve
                 m_syncState = SyncReceived;
             }
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
         }
         else if ( event->data.data32[0] == atom( QXcbAtom::_NET_WM_CONTEXT_HELP ) )
         {
@@ -2640,7 +2640,7 @@ void QXcbWindow::handleClientMessageEvent( const xcb_client_message_event_t *eve
             qWarning() << "QXcbWindow: Unhandled WM_PROTOCOLS message:" << connection()->atomName( event->data.data32[0] );
         }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     }
     else if ( event->type == atom( QXcbAtom::XdndEnter ) )
     {

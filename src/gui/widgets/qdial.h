@@ -26,7 +26,7 @@
 
 #include <qabstractslider.h>
 
-#ifndef QT_NO_DIAL
+#ifndef LSCS_NO_DIAL
 
 class QDialPrivate;
 class QStyleOptionSlider;
@@ -86,6 +86,6 @@ private:
     Q_DECLARE_PRIVATE( QDial )
 };
 
-#endif  // QT_NO_DIAL
+#endif  // LSCS_NO_DIAL
 
 #endif

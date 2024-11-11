@@ -124,7 +124,7 @@ class QDeclarativeWebView : public QDeclarativeItem
     WEB_LSCS_PROPERTY_READ( status, status )
     WEB_LSCS_PROPERTY_NOTIFY( status, statusChanged )
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     WEB_LSCS_PROPERTY_READ( reload, reloadAction )
     WEB_LSCS_PROPERTY_CONSTANT( reload )
     WEB_LSCS_PROPERTY_READ( back, backAction )
@@ -195,7 +195,7 @@ public:
     qreal progress() const;
     QString statusText() const;
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     QAction *reloadAction() const;
     QAction *backAction() const;
     QAction *forwardAction() const;

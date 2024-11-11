@@ -24,7 +24,7 @@
 #ifndef QACCESSIBLE_H
 #define QACCESSIBLE_H
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 #include <qcoreapplication.h>
 #include <qdebug.h>
@@ -992,6 +992,6 @@ Q_GUI_EXPORT QString qAccessibleLocalizedActionDescription( const QString &actio
 Q_GUI_EXPORT QDebug operator<<( QDebug d, const QAccessibleInterface *interfaceId );
 Q_GUI_EXPORT QDebug operator<<( QDebug d, const QAccessibleEvent &event );
 
-#endif  // QT_NO_ACCESSIBILITY
+#endif  // LSCS_NO_ACCESSIBILITY
 
 #endif

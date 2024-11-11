@@ -230,7 +230,7 @@ public:
     {
         return false;
     }
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
     virtual bool compareToObject( ExecState *, JSObject *other )
     {
         return other == this;

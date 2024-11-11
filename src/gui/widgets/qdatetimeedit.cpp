@@ -39,7 +39,7 @@
 
 #include <qlineedit_p.h>
 
-#ifndef QT_NO_DATETIMEEDIT
+#ifndef LSCS_NO_DATETIMEEDIT
 
 QDateTimeEdit::QDateTimeEdit( QWidget *parent )
     : QAbstractSpinBox( *new QDateTimeEditPrivate, parent )
@@ -325,7 +325,7 @@ QDateTimeEdit::Section QDateTimeEdit::currentSection() const
 {
     Q_D( const QDateTimeEdit );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() && d->focusOnButton )
     {
@@ -574,7 +574,7 @@ void QDateTimeEdit::setCalendarPopup( bool enable )
     setAttribute( Qt::WA_MacShowFocusRect, !enable );
     d->calendarPopup = enable;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( ! enable )
     {
@@ -707,7 +707,7 @@ void QDateTimeEdit::keyPressEvent( QKeyEvent *event )
 
     switch ( event->key() )
     {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         case Qt::Key_NumberSign:    //shortcut to popup calendar
             if ( QApplication::keypadNavigationEnabled() && d->calendarPopupEnabled() )
@@ -761,7 +761,7 @@ void QDateTimeEdit::keyPressEvent( QKeyEvent *event )
             return;
 
         default:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
             if ( QApplication::keypadNavigationEnabled() && !hasEditFocus()
                     && !event->text().isEmpty() && event->text().at( 0 ).isLetterOrNumber() )
             {
@@ -790,7 +790,7 @@ void QDateTimeEdit::keyPressEvent( QKeyEvent *event )
             if ( event->key() == Qt::Key_Left || event->key() == Qt::Key_Right )
             {
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
                 if ( QApplication::keypadNavigationEnabled() && ! hasEditFocus()
                         || ! QApplication::keypadNavigationEnabled() && ! ( event->modifiers() & Qt::ControlModifier ) )
@@ -821,7 +821,7 @@ void QDateTimeEdit::keyPressEvent( QKeyEvent *event )
             const bool forward = event->key() != Qt::Key_Left && event->key() != Qt::Key_Backtab
                                  && ( event->key() != Qt::Key_Tab || !( event->modifiers() & Qt::ShiftModifier ) );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
             int newSection = d->nextPrevSection( d->currentSectionIndex, forward );
 
             if ( QApplication::keypadNavigationEnabled() )
@@ -894,7 +894,7 @@ if ( d->specialValue() )
 }
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 void QDateTimeEdit::wheelEvent( QWheelEvent *event )
 {
     QAbstractSpinBox::wheelEvent( event );
@@ -997,7 +997,7 @@ void QDateTimeEdit::stepBy( int steps )
 {
     Q_D( QDateTimeEdit );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     // with keypad navigation and not editFocus, left right change the date/time by a fixed amount.
 
     if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
@@ -1123,7 +1123,7 @@ QDateTimeEdit::StepEnabled QDateTimeEdit::stepEnabled() const
 
     QAbstractSpinBox::StepEnabled ret = Qt::EmptyFlag;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
     {
@@ -1296,7 +1296,7 @@ QDateTimeEditPrivate::QDateTimeEditPrivate()
 
     readLocaleSettings();
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     focusOnButton = false;
 #endif
 }
@@ -1338,7 +1338,7 @@ void QDateTimeEditPrivate::updateEdit()
 
     edit->setText( newText );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( ! specialValue() && ! ( QApplication::keypadNavigationEnabled() && !edit->hasEditFocus() ) )
     {
@@ -1370,7 +1370,7 @@ void QDateTimeEditPrivate::updateEdit()
 
 void QDateTimeEditPrivate::setSelected( int sectionIndex, bool forward )
 {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( specialValue() || ( QApplication::keypadNavigationEnabled() && !edit->hasEditFocus() ) )
     {
@@ -2263,7 +2263,7 @@ void QDateTimeEditPrivate::init( const QVariant &var )
             break;
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() )
     {
@@ -2383,7 +2383,7 @@ void QDateTimeEditPrivate::initCalendarPopup( QCalendarWidget *cw )
     if ( ! monthCalendar )
     {
         monthCalendar = new QCalendarPopup( q, cw );
-        monthCalendar->setObjectName( "qt_datetimedit_calendar" );
+        monthCalendar->setObjectName( "lscs_datetimedit_calendar" );
 
         QObject::connect( monthCalendar, &QCalendarPopup::newDateSelected, q, &QDateTimeEdit::setDate );
         QObject::connect( monthCalendar, &QCalendarPopup::hidingCalendar,  q, &QDateTimeEdit::setDate );
@@ -2503,7 +2503,7 @@ QCalendarWidget *QCalendarPopup::verifyCalendarInstance()
         QCalendarWidget *cw = new QCalendarWidget( this );
         cw->setVerticalHeaderFormat( QCalendarWidget::NoVerticalHeader );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         if ( QApplication::keypadNavigationEnabled() )
         {
@@ -2629,4 +2629,4 @@ void  QDateTimeEdit::_q_resetButton()
     d->_q_resetButton();
 }
 
-#endif // QT_NO_DATETIMEEDIT
+#endif // LSCS_NO_DATETIMEEDIT

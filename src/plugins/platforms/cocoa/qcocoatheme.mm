@@ -66,13 +66,13 @@ bool QCocoaTheme::usePlatformNativeDialog(DialogType dialogType) const
       return true;
    }
 
-#ifndef QT_NO_COLORDIALOG
+#ifndef LSCS_NO_COLORDIALOG
    if (dialogType == QPlatformTheme::ColorDialog) {
       return true;
    }
 #endif
 
-#ifndef QT_NO_FONTDIALOG
+#ifndef LSCS_NO_FONTDIALOG
    if (dialogType == QPlatformTheme::FontDialog) {
       return true;
    }
@@ -87,12 +87,12 @@ QPlatformDialogHelper *QCocoaTheme::createPlatformDialogHelper(DialogType dialog
       case QPlatformTheme::FileDialog:
          return new QCocoaFileDialogHelper();
 
-#ifndef QT_NO_COLORDIALOG
+#ifndef LSCS_NO_COLORDIALOG
       case QPlatformTheme::ColorDialog:
          return new QCocoaColorDialogHelper();
 #endif
 
-#ifndef QT_NO_FONTDIALOG
+#ifndef LSCS_NO_FONTDIALOG
       case QPlatformTheme::FontDialog:
          return new QCocoaFontDialogHelper();
 #endif
@@ -102,7 +102,7 @@ QPlatformDialogHelper *QCocoaTheme::createPlatformDialogHelper(DialogType dialog
    }
 }
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
 QPlatformSystemTrayIcon *QCocoaTheme::createPlatformSystemTrayIcon() const
 {
    return new QCocoaSystemTrayIcon;
@@ -113,13 +113,13 @@ const QPalette *QCocoaTheme::palette(Palette type) const
 {
    if (type == SystemPalette) {
       if (!m_systemPalette) {
-         m_systemPalette = qt_mac_createSystemPalette();
+         m_systemPalette = lscs_mac_createSystemPalette();
       }
       return m_systemPalette;
 
    } else {
       if (m_palettes.isEmpty()) {
-         m_palettes = qt_mac_createRolePalettes();
+         m_palettes = lscs_mac_createRolePalettes();
       }
       return m_palettes.value(type, nullptr);
    }
@@ -127,7 +127,7 @@ const QPalette *QCocoaTheme::palette(Palette type) const
    return nullptr;
 }
 
-QHash<QPlatformTheme::Font, QFont *> qt_mac_createRoleFonts()
+QHash<QPlatformTheme::Font, QFont *> lscs_mac_createRoleFonts()
 {
    QCoreTextFontDatabase *ctfd = static_cast<QCoreTextFontDatabase *>(QApplicationPrivate::platformIntegration()->fontDatabase());
    return ctfd->themeFonts();
@@ -136,21 +136,21 @@ QHash<QPlatformTheme::Font, QFont *> qt_mac_createRoleFonts()
 const QFont *QCocoaTheme::font(Font type) const
 {
    if (m_fonts.isEmpty()) {
-      m_fonts = qt_mac_createRoleFonts();
+      m_fonts = lscs_mac_createRoleFonts();
    }
 
    return m_fonts.value(type, nullptr);
 }
 
 //! \internal
-QPixmap qt_mac_convert_iconref(const IconRef icon, int width, int height)
+QPixmap lscs_mac_convert_iconref(const IconRef icon, int width, int height)
 {
    QPixmap ret(width, height);
    ret.fill(QColor(0, 0, 0, 0));
 
    CGRect rect = CGRectMake(0, 0, width, height);
 
-   CGContextRef ctx = qt_mac_cg_context(&ret);
+   CGContextRef ctx = lscs_mac_cg_context(&ret);
    CGAffineTransform old_xform = CGContextGetCTM(ctx);
    CGContextConcatCTM(ctx, CGAffineTransformInvert(old_xform));
    CGContextConcatCTM(ctx, CGAffineTransformIdentity);
@@ -220,7 +220,7 @@ QPixmap QCocoaTheme::standardPixmap(StandardPixmap sp, const QSizeF &size) const
       GetIconRef(kOnSystemDisk, kSystemIconsCreator, iconType, &icon);
 
       if (icon) {
-         pixmap = qt_mac_convert_iconref(icon, size.width(), size.height());
+         pixmap = lscs_mac_convert_iconref(icon, size.width(), size.height());
          ReleaseIconRef(icon);
       }
 
@@ -245,7 +245,7 @@ QPixmap QCocoaTheme::fileIconPixmap(const QFileInfo &fileInfo, const QSizeF &siz
    pixmap.fill(Qt::transparent);
    [iconImage setSize: pixmapSize];
    NSRect iconRect = NSMakeRect(0, 0, pixmapSize.width, pixmapSize.height);
-   CGContextRef ctx = qt_mac_cg_context(&pixmap);
+   CGContextRef ctx = lscs_mac_cg_context(&pixmap);
    NSGraphicsContext *gc = [NSGraphicsContext graphicsContextWithGraphicsPort: ctx flipped: YES];
    [NSGraphicsContext saveGraphicsState];
    [NSGraphicsContext setCurrentContext: gc];

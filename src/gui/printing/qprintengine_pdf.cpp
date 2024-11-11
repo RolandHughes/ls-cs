@@ -23,7 +23,7 @@
 
 #include <qprintengine_pdf_p.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 #include <qiodevice.h>
 #include <qfile.h>
@@ -33,7 +33,7 @@
 #include <qpagelayout.h>
 
 #ifdef Q_OS_UNIX
-#include <qcore_unix_p.h>   // overrides QT_OPEN
+#include <qcore_unix_p.h>   // overrides LSCS_OPEN
 #endif
 
 #ifdef Q_OS_WIN
@@ -484,7 +484,7 @@ QPdfPrintEnginePrivate::QPdfPrintEnginePrivate( QPrinter::PrinterMode m )
     }
     else if ( m == QPrinter::ScreenResolution )
     {
-        resolution = qt_defaultDpi();
+        resolution = lscs_defaultDpi();
     }
 }
 
@@ -492,4 +492,4 @@ QPdfPrintEnginePrivate::~QPdfPrintEnginePrivate()
 {
 }
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER

@@ -30,7 +30,7 @@
 
 #include <qguiapplication_p.h>
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
 
 QSystemTrayIconPrivate::QSystemTrayIconPrivate()
     : qpa_sys( QGuiApplicationPrivate::platformTheme()->createPlatformSystemTrayIcon() ),
@@ -132,4 +132,4 @@ void QSystemTrayIconPrivate::showMessage_sys( const QString &title, const QStrin
     }
 }
 
-#endif // QT_NO_SYSTEMTRAYICON
+#endif // LSCS_NO_SYSTEMTRAYICON

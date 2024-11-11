@@ -24,17 +24,17 @@
 #ifndef QLOCALSERVER_P_H
 #define QLOCALSERVER_P_H
 
-#ifndef QT_NO_LOCALSERVER
+#ifndef LSCS_NO_LOCALSERVER
 
 #include <qlocalserver.h>
 
 #include <qqueue.h>
 
-#if defined(QT_LOCALSOCKET_TCP)
+#if defined(LSCS_LOCALSOCKET_TCP)
 #   include <qtcpserver.h>
 
 #elif defined(Q_OS_WIN)
-#   include <qt_windows.h>
+#   include <lscs_windows.h>
 #   include <qwineventnotifier.h>
 
 #else
@@ -50,7 +50,7 @@ public:
     QLocalServerPrivate()
         :
 
-#if ! defined(QT_LOCALSOCKET_TCP) && ! defined(Q_OS_WIN)
+#if ! defined(LSCS_LOCALSOCKET_TCP) && ! defined(Q_OS_WIN)
         listenSocket( -1 ), socketNotifier( nullptr ),
 #endif
 
@@ -70,7 +70,7 @@ public:
 
     void _q_onNewConnection();
 
-#if defined(QT_LOCALSOCKET_TCP)
+#if defined(LSCS_LOCALSOCKET_TCP)
     QTcpServer tcpServer;
     QMap<quintptr, QTcpSocket *> socketMap;
 
@@ -111,7 +111,7 @@ protected:
 
 
 
-#endif // QT_NO_LOCALSERVER
+#endif // LSCS_NO_LOCALSERVER
 
 #endif // QLOCALSERVER_P_H
 

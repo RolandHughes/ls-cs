@@ -52,7 +52,7 @@ void PlatformWheelEvent::applyDelta( int delta, Qt::Orientation orientation )
     m_wheelTicksX = m_deltaX;
     m_wheelTicksY = m_deltaY;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     // Use the same single scroll step as QTextEdit
     // (in QTextEditPrivate::init [h,v]bar->setSingleStep)
     static const float cDefaultQtScrollStep = 20.f;
@@ -62,7 +62,7 @@ void PlatformWheelEvent::applyDelta( int delta, Qt::Orientation orientation )
 }
 
 PlatformWheelEvent::PlatformWheelEvent( QGraphicsSceneWheelEvent *e )
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     : m_position( e->pos().toPoint() )
     , m_globalPosition( e->screenPos() )
     , m_granularity( ScrollByPixelWheelEvent )
@@ -73,7 +73,7 @@ PlatformWheelEvent::PlatformWheelEvent( QGraphicsSceneWheelEvent *e )
     , m_metaKey( e->modifiers() & Qt::MetaModifier )
 #endif
 {
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     applyDelta( e->delta(), e->orientation() );
 #else
     Q_UNUSED( e );
@@ -81,7 +81,7 @@ PlatformWheelEvent::PlatformWheelEvent( QGraphicsSceneWheelEvent *e )
 }
 
 PlatformWheelEvent::PlatformWheelEvent( QWheelEvent *e )
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     : m_position( e->pos() )
     , m_globalPosition( e->globalPos() )
     , m_granularity( ScrollByPixelWheelEvent )
@@ -92,7 +92,7 @@ PlatformWheelEvent::PlatformWheelEvent( QWheelEvent *e )
     , m_metaKey( e->modifiers() & Qt::MetaModifier )
 #endif
 {
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     applyDelta( e->delta(), e->orientation() );
 #else
     Q_UNUSED( e );

@@ -26,7 +26,7 @@
 
 #include <qabstractproxymodel.h>
 
-#ifndef QT_NO_SORTFILTERPROXYMODEL
+#ifndef LSCS_NO_SORTFILTERPROXYMODEL
 
 #include <qregularexpression.h>
 
@@ -242,6 +242,6 @@ void QSortFilterProxyModel::lscs_setFilterRegExp( const QRegularExpression &regE
     setFilterRegExp( regExp );
 }
 
-#endif // QT_NO_SORTFILTERPROXYMODEL
+#endif // LSCS_NO_SORTFILTERPROXYMODEL
 
 #endif // QSORTFILTERPROXYMODEL_H

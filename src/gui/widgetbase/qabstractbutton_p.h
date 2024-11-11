@@ -40,7 +40,7 @@ public:
     QIcon icon;
     QSize iconSize;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     QKeySequence shortcut;
     int shortcutId;
 #endif
@@ -53,7 +53,7 @@ public:
     uint blockRefresh : 1;
     uint pressed : 1;
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
     QButtonGroup *group;
 #endif
 

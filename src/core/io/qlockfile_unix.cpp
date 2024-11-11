@@ -76,14 +76,14 @@ static QByteArray localHostName()
     return hostName;
 }
 
-// ### merge into qt_safe_write?
-static qint64 qt_write_loop( int fd, const char *data, qint64 len )
+// ### merge into lscs_safe_write?
+static qint64 lscs_write_loop( int fd, const char *data, qint64 len )
 {
     qint64 pos = 0;
 
     while ( pos < len )
     {
-        const qint64 ret = qt_safe_write( fd, data + pos, len - pos );
+        const qint64 ret = lscs_safe_write( fd, data + pos, len - pos );
 
         if ( ret == -1 )
         {
@@ -99,7 +99,7 @@ static qint64 qt_write_loop( int fd, const char *data, qint64 len )
 
 int QLockFilePrivate::checkFcntlWorksAfterFlock( const QString &fn )
 {
-#ifndef QT_NO_TEMPORARYFILE
+#ifndef LSCS_NO_TEMPORARYFILE
     QTemporaryFile file( fn );
 
     if ( ! file.open() )
@@ -215,7 +215,7 @@ QLockFile::LockError QLockFilePrivate::tryLock_sys()
                           + QCoreApplication::applicationName().toUtf8() + '\n' + localHostName() + '\n';
 
     const QByteArray lockFileName = QFile::encodeName( fileName );
-    const int fd = qt_safe_open( lockFileName.constData(), O_WRONLY | O_CREAT | O_EXCL, 0666 );
+    const int fd = lscs_safe_open( lockFileName.constData(), O_WRONLY | O_CREAT | O_EXCL, 0666 );
 
     if ( fd < 0 )
     {
@@ -237,10 +237,10 @@ QLockFile::LockError QLockFilePrivate::tryLock_sys()
     if ( ! setNativeLocks( fileName, fd ) )
     {
         const int errnoSaved = errno;
-        qWarning() << "QLockFile::tryLock_sys() setNativeLocks failed, " << qt_error_string( errnoSaved );
+        qWarning() << "QLockFile::tryLock_sys() setNativeLocks failed, " << lscs_error_string( errnoSaved );
     }
 
-    if ( qt_write_loop( fd, fileData.constData(), fileData.size() ) < fileData.size() )
+    if ( lscs_write_loop( fd, fileData.constData(), fileData.size() ) < fileData.size() )
     {
         close( fd );
 
@@ -268,7 +268,7 @@ QLockFile::LockError QLockFilePrivate::tryLock_sys()
 bool QLockFilePrivate::removeStaleLock()
 {
     const QByteArray lockFileName = QFile::encodeName( fileName );
-    const int fd = qt_safe_open( lockFileName.constData(), O_WRONLY, 0666 );
+    const int fd = lscs_safe_open( lockFileName.constData(), O_WRONLY, 0666 );
 
     if ( fd < 0 )
     {

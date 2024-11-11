@@ -32,28 +32,28 @@ static const union
 {
     unsigned char c[8];
     double d;
-} qt_be_inf_bytes = { { 0x7f, 0xf0, 0, 0, 0, 0, 0, 0 } };
+} lscs_be_inf_bytes = { { 0x7f, 0xf0, 0, 0, 0, 0, 0, 0 } };
 
 static const union
 {
     unsigned char c[8];
     double d;
-} qt_le_inf_bytes = { { 0, 0, 0, 0, 0, 0, 0xf0, 0x7f } };
+} lscs_le_inf_bytes = { { 0, 0, 0, 0, 0, 0, 0xf0, 0x7f } };
 
 static const union
 {
     unsigned char c[8];
     double d;
-} qt_armfpa_inf_bytes = { { 0, 0, 0xf0, 0x7f, 0, 0, 0, 0 } };
+} lscs_armfpa_inf_bytes = { { 0, 0, 0xf0, 0x7f, 0, 0, 0, 0 } };
 
-static inline double qt_inf()
+static inline double lscs_inf()
 {
-#ifdef QT_ARMFPA
-    return qt_armfpa_inf_bytes.d;
+#ifdef LSCS_ARMFPA
+    return lscs_armfpa_inf_bytes.d;
 
 #else
     return ( QSysInfo::ByteOrder == QSysInfo::BigEndian
-             ? qt_be_inf_bytes.d : qt_le_inf_bytes.d );
+             ? lscs_be_inf_bytes.d : lscs_le_inf_bytes.d );
 #endif
 }
 
@@ -62,27 +62,27 @@ static const union
 {
     unsigned char c[8];
     double d;
-} qt_be_snan_bytes = { { 0x7f, 0xf8, 0, 0, 0, 0, 0, 0 } };
+} lscs_be_snan_bytes = { { 0x7f, 0xf8, 0, 0, 0, 0, 0, 0 } };
 
 static const union
 {
     unsigned char c[8];
     double d;
-} qt_le_snan_bytes = { { 0, 0, 0, 0, 0, 0, 0xf8, 0x7f } };
+} lscs_le_snan_bytes = { { 0, 0, 0, 0, 0, 0, 0xf8, 0x7f } };
 
 static const union
 {
     unsigned char c[8];
     double d;
-} qt_armfpa_snan_bytes = { { 0, 0, 0xf8, 0x7f, 0, 0, 0, 0 } };
+} lscs_armfpa_snan_bytes = { { 0, 0, 0xf8, 0x7f, 0, 0, 0, 0 } };
 
-static inline double qt_snan()
+static inline double lscs_snan()
 {
-#ifdef QT_ARMFPA
-    return qt_armfpa_snan_bytes.d;
+#ifdef LSCS_ARMFPA
+    return lscs_armfpa_snan_bytes.d;
 #else
     return ( QSysInfo::ByteOrder == QSysInfo::BigEndian
-             ? qt_be_snan_bytes.d : qt_le_snan_bytes.d );
+             ? lscs_be_snan_bytes.d : lscs_le_snan_bytes.d );
 #endif
 }
 
@@ -91,45 +91,45 @@ static const union
 {
     unsigned char c[8];
     double d;
-} qt_be_qnan_bytes = { { 0xff, 0xf8, 0, 0, 0, 0, 0, 0 } };
+} lscs_be_qnan_bytes = { { 0xff, 0xf8, 0, 0, 0, 0, 0, 0 } };
 
 static const union
 {
     unsigned char c[8];
     double d;
-} qt_le_qnan_bytes = { { 0, 0, 0, 0, 0, 0, 0xf8, 0xff } };
+} lscs_le_qnan_bytes = { { 0, 0, 0, 0, 0, 0, 0xf8, 0xff } };
 
 static const union
 {
     unsigned char c[8];
     double d;
-} qt_armfpa_qnan_bytes = { { 0, 0, 0xf8, 0xff, 0, 0, 0, 0 } };
+} lscs_armfpa_qnan_bytes = { { 0, 0, 0xf8, 0xff, 0, 0, 0, 0 } };
 
-static inline double qt_qnan()
+static inline double lscs_qnan()
 {
-#ifdef QT_ARMFPA
-    return qt_armfpa_qnan_bytes.d;
+#ifdef LSCS_ARMFPA
+    return lscs_armfpa_qnan_bytes.d;
 #else
     return ( QSysInfo::ByteOrder == QSysInfo::BigEndian
-             ? qt_be_qnan_bytes.d : qt_le_qnan_bytes.d );
+             ? lscs_be_qnan_bytes.d : lscs_le_qnan_bytes.d );
 #endif
 }
 
 #else // Q_CC_MIPS
 
-static const unsigned char qt_be_inf_bytes[] = { 0x7f, 0xf0, 0, 0, 0, 0, 0, 0 };
-static const unsigned char qt_le_inf_bytes[] = { 0, 0, 0, 0, 0, 0, 0xf0, 0x7f };
-static const unsigned char qt_armfpa_inf_bytes[] = { 0, 0, 0xf0, 0x7f, 0, 0, 0, 0 };
+static const unsigned char lscs_be_inf_bytes[] = { 0x7f, 0xf0, 0, 0, 0, 0, 0, 0 };
+static const unsigned char lscs_le_inf_bytes[] = { 0, 0, 0, 0, 0, 0, 0xf0, 0x7f };
+static const unsigned char lscs_armfpa_inf_bytes[] = { 0, 0, 0xf0, 0x7f, 0, 0, 0, 0 };
 
-static inline double qt_inf()
+static inline double lscs_inf()
 {
     const unsigned char *bytes;
 
-#ifdef QT_ARMFPA
-    bytes = qt_armfpa_inf_bytes;
+#ifdef LSCS_ARMFPA
+    bytes = lscs_armfpa_inf_bytes;
 #else
     bytes = ( QSysInfo::ByteOrder == QSysInfo::BigEndian
-              ? qt_be_inf_bytes : qt_le_inf_bytes );
+              ? lscs_be_inf_bytes : lscs_le_inf_bytes );
 #endif
 
     union
@@ -144,18 +144,18 @@ static inline double qt_inf()
 }
 
 // Signaling NAN
-static const unsigned char qt_be_snan_bytes[] = { 0x7f, 0xf8, 0, 0, 0, 0, 0, 0 };
-static const unsigned char qt_le_snan_bytes[] = { 0, 0, 0, 0, 0, 0, 0xf8, 0x7f };
-static const unsigned char qt_armfpa_snan_bytes[] = { 0, 0, 0xf8, 0x7f, 0, 0, 0, 0 };
+static const unsigned char lscs_be_snan_bytes[] = { 0x7f, 0xf8, 0, 0, 0, 0, 0, 0 };
+static const unsigned char lscs_le_snan_bytes[] = { 0, 0, 0, 0, 0, 0, 0xf8, 0x7f };
+static const unsigned char lscs_armfpa_snan_bytes[] = { 0, 0, 0xf8, 0x7f, 0, 0, 0, 0 };
 
-static inline double qt_snan()
+static inline double lscs_snan()
 {
     const unsigned char *bytes;
-#ifdef QT_ARMFPA
-    bytes = qt_armfpa_snan_bytes;
+#ifdef LSCS_ARMFPA
+    bytes = lscs_armfpa_snan_bytes;
 #else
     bytes = ( QSysInfo::ByteOrder == QSysInfo::BigEndian
-              ? qt_be_snan_bytes : qt_le_snan_bytes );
+              ? lscs_be_snan_bytes : lscs_le_snan_bytes );
 #endif
 
     union
@@ -170,17 +170,17 @@ static inline double qt_snan()
 }
 
 // Quiet NAN
-static const unsigned char qt_be_qnan_bytes[] = { 0xff, 0xf8, 0, 0, 0, 0, 0, 0 };
-static const unsigned char qt_le_qnan_bytes[] = { 0, 0, 0, 0, 0, 0, 0xf8, 0xff };
-static const unsigned char qt_armfpa_qnan_bytes[] = { 0, 0, 0xf8, 0xff, 0, 0, 0, 0 };
-static inline double qt_qnan()
+static const unsigned char lscs_be_qnan_bytes[] = { 0xff, 0xf8, 0, 0, 0, 0, 0, 0 };
+static const unsigned char lscs_le_qnan_bytes[] = { 0, 0, 0, 0, 0, 0, 0xf8, 0xff };
+static const unsigned char lscs_armfpa_qnan_bytes[] = { 0, 0, 0xf8, 0xff, 0, 0, 0, 0 };
+static inline double lscs_qnan()
 {
     const unsigned char *bytes;
-#ifdef QT_ARMFPA
-    bytes = qt_armfpa_qnan_bytes;
+#ifdef LSCS_ARMFPA
+    bytes = lscs_armfpa_qnan_bytes;
 #else
     bytes = ( QSysInfo::ByteOrder == QSysInfo::BigEndian
-              ? qt_be_qnan_bytes : qt_le_qnan_bytes );
+              ? lscs_be_qnan_bytes : lscs_le_qnan_bytes );
 #endif
 
     union
@@ -196,11 +196,11 @@ static inline double qt_qnan()
 
 #endif // Q_CC_MIPS
 
-static inline bool qt_is_inf( double d )
+static inline bool lscs_is_inf( double d )
 {
     uchar *ch = ( uchar * )&d;
 
-#ifdef QT_ARMFPA
+#ifdef LSCS_ARMFPA
     return ( ch[3] & 0x7f ) == 0x7f && ch[2] == 0xf0;
 #else
 
@@ -216,11 +216,11 @@ static inline bool qt_is_inf( double d )
 #endif
 }
 
-static inline bool qt_is_nan( double d )
+static inline bool lscs_is_nan( double d )
 {
     uchar *ch = ( uchar * )&d;
 
-#ifdef QT_ARMFPA
+#ifdef LSCS_ARMFPA
     return ( ch[3] & 0x7f ) == 0x7f && ch[2] > 0xf0;
 #else
 
@@ -236,11 +236,11 @@ static inline bool qt_is_nan( double d )
 #endif
 }
 
-static inline bool qt_is_finite( double d )
+static inline bool lscs_is_finite( double d )
 {
     uchar *ch = ( uchar * )&d;
 
-#ifdef QT_ARMFPA
+#ifdef LSCS_ARMFPA
     return ( ch[3] & 0x7f ) != 0x7f || ( ch[2] & 0xf0 ) != 0xf0;
 #else
 
@@ -256,7 +256,7 @@ static inline bool qt_is_finite( double d )
 #endif
 }
 
-static inline bool qt_is_inf( float d )
+static inline bool lscs_is_inf( float d )
 {
     uchar *ch = ( uchar * )&d;
 
@@ -270,7 +270,7 @@ static inline bool qt_is_inf( float d )
     }
 }
 
-static inline bool qt_is_nan( float d )
+static inline bool lscs_is_nan( float d )
 {
     uchar *ch = ( uchar * )&d;
 
@@ -284,7 +284,7 @@ static inline bool qt_is_nan( float d )
     }
 }
 
-static inline bool qt_is_finite( float d )
+static inline bool lscs_is_finite( float d )
 {
     uchar *ch = ( uchar * )&d;
 

@@ -60,7 +60,7 @@ public:
     int repeatActionTime;
     QAbstractSlider::SliderAction repeatAction;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     int origValue;
     bool isAutoRepeating;
 
@@ -76,7 +76,7 @@ public:
     int effectiveSingleStep() const
     {
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
         return singleStep * repeatMultiplier;
 #else
         return singleStep;

@@ -25,7 +25,7 @@
 
 #include "qdeclarative.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \class QDeclarativePropertyValueInterceptor
@@ -57,4 +57,4 @@ QDeclarativePropertyValueInterceptor::~QDeclarativePropertyValueInterceptor()
     This method will be called when a new \a value is assigned to the property being intercepted.
 */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

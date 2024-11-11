@@ -38,7 +38,7 @@
 #include <QtGui/qboxlayout.h>
 #include <QtGui/qcompleter.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 namespace
 {
@@ -54,7 +54,7 @@ public:
         setMargin( 2 );
         setSizePolicy( QSizePolicy::Minimum, sizePolicy().verticalPolicy() );
         setAlignment( Qt::AlignHCenter );
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
         setStyleSheet( QLatin1String( "background: white;" ) );
 #endif
     }
@@ -353,7 +353,7 @@ QScriptDebuggerConsoleWidget::QScriptDebuggerConsoleWidget( QWidget *parent )
                                          "font-family: \"Monospace\"" );
 #endif
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
     QString sheet = QString::fromLatin1( "font-size: 14px; font-family: \"Monospace\";" );
     setStyleSheet( sheet );
 #endif
@@ -510,4 +510,4 @@ void QScriptDebuggerConsoleWidget::_q_onCompletionTaskFinished()
     d->_q_onCompletionTaskFinished();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

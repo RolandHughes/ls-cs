@@ -158,7 +158,7 @@ protected:
     void keyPressEvent( QKeyEvent *event ) override;
     void timerEvent( QTimerEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 

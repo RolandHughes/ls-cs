@@ -28,7 +28,7 @@
 #include <QtCore/qobject.h>
 #include <QPalette>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeSystemPalettePrivate;
 
@@ -108,7 +108,7 @@ private:
 
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeSystemPalette )
 

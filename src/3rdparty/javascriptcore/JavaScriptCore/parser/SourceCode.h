@@ -50,7 +50,7 @@ public:
         : m_provider( provider )
         , m_startChar( 0 )
         , m_endChar( m_provider->length() )
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
         , m_firstLine( firstLine )
 #else
         , m_firstLine( std::max( firstLine, 1 ) )
@@ -62,7 +62,7 @@ public:
         : m_provider( provider )
         , m_startChar( start )
         , m_endChar( end )
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
         , m_firstLine( firstLine )
 #else
         , m_firstLine( std::max( firstLine, 1 ) )

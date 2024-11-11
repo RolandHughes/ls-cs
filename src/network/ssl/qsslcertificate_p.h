@@ -30,7 +30,7 @@
 
 #include <qsslsocket_p.h>
 
-#ifdef QT_OPENSSL
+#ifdef LSCS_OPENSSL
 #include <openssl/x509.h>
 #include <qsslsocket_openssl_symbols_p.h>
 
@@ -52,7 +52,7 @@ public:
     ~QSslCertificatePrivate()
     {
 
-#ifdef QT_OPENSSL
+#ifdef LSCS_OPENSSL
 
         if ( x509 )
         {
@@ -71,7 +71,7 @@ public:
     QDateTime notValidAfter;
     QDateTime notValidBefore;
 
-#if ! defined(QT_OPENSSL)
+#if ! defined(LSCS_OPENSSL)
     bool subjectMatchesIssuer;
     QSsl::KeyAlgorithm publicKeyAlgorithm;
     QByteArray publicKeyDerData;

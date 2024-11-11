@@ -5,6 +5,7 @@
 #include <QTemporaryDir>
 #include <QRegularExpression>
 #include <QStringList>
+#include <QLibraryInfo>
 #include "console-hello_build_info.h"
 
 class SomeClass
@@ -47,7 +48,7 @@ void Task::run()
 
     out << bold << "Hello World!" << endFormat << "\n\n";
     out << "Version:    " << versionString << endl;
-    out << "Build Date: " << "\n\n" << buildDate << endl;
+    out << "Build Date: " << buildDate << endl;
 
     out << bold << "Sizes on your machine:" << endFormat << "\n";
     out << "     unsigned char      " << sizeof( unsigned char ) << endl;
@@ -62,7 +63,8 @@ void Task::run()
     out << "     float              " << sizeof( float ) << endl;
     out << "     double             " << sizeof( double ) << endl;
     out << "     long double        " << sizeof( long double) << endl;
-
+    
+    
     out << "\n\nNext we will do some regular expression matching.\n";
     out << "This section can be useful if you want to try out some\n";
     out << "regular expressions for your own programs.\n" << endl;  // use endl to flush
@@ -70,7 +72,7 @@ void Task::run()
     out << "str1:   MOVE =fred 1234 thru 5678 TO =Ethyl 5\n";
     out << "str2:   MOVE 1:5 TO 108\n";
     out << "str3:   MOVE =JANE 543 THRU 643 TO .\n";
-    out << "\n\n\n";
+    out << "\n";
     // extra slashes due to string escape sequences
     out << "rangeExpression( \"(\\\\d+ THRU \\\\d+)|(\\\\d+:\\\\d+)\", QPatternOption::CaseInsensitiveOption )\n\n";
 
@@ -97,7 +99,7 @@ void Task::run()
 
     if ( match2.hasMatch() )
     {
-        out << "str2 matches: " << endl;
+        out << "match2: " << endl;
         for ( QString txt : match2.capturedTexts())
         {
             out << "    " << txt << endl;
@@ -106,7 +108,7 @@ void Task::run()
 
     if ( match3.hasMatch() )
     {
-        out << "str3 matches:: " << endl;
+        out << "match3: " << endl;
         for ( QString txt : match3.capturedTexts())
         {
             out << "    " << txt << endl;

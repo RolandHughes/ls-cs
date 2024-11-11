@@ -62,7 +62,7 @@ public:
     void setFlat( bool enabled );
     bool isFlat() const;
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     void setMenu( QMenu *menu );
     QMenu *menu() const;
 
@@ -83,7 +83,7 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QPushButton )
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     GUI_LSCS_SLOT_1( Private, void _q_popupPressed() )
     GUI_LSCS_SLOT_2( _q_popupPressed )
 #endif

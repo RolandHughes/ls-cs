@@ -30,7 +30,7 @@
 
 #include <cmath>
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
 class Q_CORE_EXPORT QSystemLocale
 {
@@ -430,9 +430,9 @@ inline char QLocaleData::digitToCLocale( QChar in ) const
     return 0;
 }
 
-QString qt_readEscapedFormatString( const QString &format, int *idx );
-bool qt_splitLocaleName( const QString &name, QString &lang, QString &script, QString &cntry );
-int  qt_repeatCount( const QString &s, int i );
+QString lscs_readEscapedFormatString( const QString &format, int *idx );
+bool lscs_splitLocaleName( const QString &name, QString &lang, QString &script, QString &cntry );
+int  lscs_repeatCount( const QString &s, int i );
 
 enum { AsciiSpaceMask =
            ( 1 << ( ' ' - 1 ) )  |
@@ -448,7 +448,7 @@ constexpr inline bool ascii_isspace( uchar c )
     return c >= 1U && c <= 32U && ( uint( AsciiSpaceMask ) >> uint( c - 1 ) ) & 1U;
 }
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 LSCS_DECLARE_METATYPE( QSystemLocale::CurrencyToStringArgument )
 #endif
 

@@ -37,7 +37,7 @@
 
 Q_DECLARE_METATYPE( QListModelInterface * )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 template<typename T>
 void qdeclarativelistmodel_move( int from, int to, int n, T *items )
@@ -831,7 +831,7 @@ bool QDeclarativeListModelParser::compileProperty( const QDeclarativeCustomParse
 
                     if ( v < 0 )
                     {
-                        if ( script.startsWith( "QT_TR_NOOP(\"" ) && script.endsWith( "\")" ) )
+                        if ( script.startsWith( "LSCS_TR_NOOP(\"" ) && script.endsWith( "\")" ) )
                         {
                             d[0] = char( QDeclarativeParser::Variant::String );
                             d += script.mid( 12, script.length() - 14 );
@@ -1035,7 +1035,7 @@ bool QDeclarativeListModelParser::definesEmptyList( const QString &s )
 
     The names used for roles must begin with a lower-case letter and should be
     common to all elements in a given model. Values must be simple constants; either
-    strings (quoted and optionally within a call to QT_TR_NOOP), boolean values
+    strings (quoted and optionally within a call to LSCS_TR_NOOP), boolean values
     (true, false), numbers, or enumeration values (such as AlignText.AlignHCenter).
 
     \section1 Referencing Roles
@@ -2035,4 +2035,4 @@ void ModelNodeMetaObject::propertyWritten( int index )
 }
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

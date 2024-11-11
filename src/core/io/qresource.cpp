@@ -43,10 +43,10 @@
 
 #ifdef Q_OS_UNIX
 # include <qcore_unix_p.h>
-# define QT_USE_MMAP
+# define LSCS_USE_MMAP
 #endif
 
-#if defined(QT_USE_MMAP)
+#if defined(LSCS_USE_MMAP)
 // for mmap
 
 #include <sys/mman.h>
@@ -1011,7 +1011,7 @@ public:
 
     ~QDynamicFileResourceRoot()
     {
-#if defined(QT_USE_MMAP)
+#if defined(LSCS_USE_MMAP)
 
         if ( unmapPointer )
         {
@@ -1042,7 +1042,7 @@ public:
         uchar *data = nullptr;
         unsigned int data_len = 0;
 
-#ifdef QT_USE_MMAP
+#ifdef LSCS_USE_MMAP
 
 #ifndef MAP_FILE
 #define MAP_FILE 0
@@ -1053,16 +1053,16 @@ public:
 #endif
 
 #if defined(Q_OS_WIN)
-        int fd = QT_OPEN( QFile::encodeName( f ).constData(), O_RDONLY, _S_IREAD | _S_IWRITE );
+        int fd = LSCS_OPEN( QFile::encodeName( f ).constData(), O_RDONLY, _S_IREAD | _S_IWRITE );
 #else
-        int fd = QT_OPEN( QFile::encodeName( f ).constData(), O_RDONLY, 0666 );
+        int fd = LSCS_OPEN( QFile::encodeName( f ).constData(), O_RDONLY, 0666 );
 #endif
 
         if ( fd >= 0 )
         {
-            QT_STATBUF st;
+            LSCS_STATBUF st;
 
-            if ( ! QT_FSTAT( fd, &st ) )
+            if ( ! LSCS_FSTAT( fd, &st ) )
             {
                 uchar *ptr;
                 ptr = reinterpret_cast<uchar *>( mmap( nullptr, st.st_size, PROT_READ, MAP_FILE | MAP_PRIVATE, fd, 0 ) );
@@ -1078,7 +1078,7 @@ public:
             ::close( fd );
         }
 
-#endif // QT_USE_MMAP
+#endif // LSCS_USE_MMAP
 
         if ( ! data )
         {
@@ -1126,7 +1126,7 @@ public:
     }
 };
 
-static QString qt_resource_fixResourceRoot( QString r )
+static QString lscs_resource_fixResourceRoot( QString r )
 {
     if ( ! r.isEmpty() )
     {
@@ -1146,7 +1146,7 @@ static QString qt_resource_fixResourceRoot( QString r )
 
 bool QResource::registerResource( const QString &rccFilename, const QString &resourceRoot )
 {
-    QString r = qt_resource_fixResourceRoot( resourceRoot );
+    QString r = lscs_resource_fixResourceRoot( resourceRoot );
 
     if ( ! r.isEmpty() && r[0] != '/' )
     {
@@ -1173,7 +1173,7 @@ bool QResource::registerResource( const QString &rccFilename, const QString &res
 
 bool QResource::unregisterResource( const QString &rccFilename, const QString &resourceRoot )
 {
-    QString r = qt_resource_fixResourceRoot( resourceRoot );
+    QString r = lscs_resource_fixResourceRoot( resourceRoot );
 
     QRecursiveMutexLocker lock( resourceMutex() );
     ResourceList *list = resourceList();
@@ -1206,7 +1206,7 @@ bool QResource::unregisterResource( const QString &rccFilename, const QString &r
 
 bool QResource::registerResource( const uchar *rccData, const QString &resourceRoot )
 {
-    QString r = qt_resource_fixResourceRoot( resourceRoot );
+    QString r = lscs_resource_fixResourceRoot( resourceRoot );
 
     if ( ! r.isEmpty() && r[0] != QLatin1Char( '/' ) )
     {
@@ -1232,7 +1232,7 @@ bool QResource::registerResource( const uchar *rccData, const QString &resourceR
 
 bool QResource::unregisterResource( const uchar *rccData, const QString &resourceRoot )
 {
-    QString r = qt_resource_fixResourceRoot( resourceRoot );
+    QString r = lscs_resource_fixResourceRoot( resourceRoot );
 
     QRecursiveMutexLocker lock( resourceMutex() );
     ResourceList *list = resourceList();

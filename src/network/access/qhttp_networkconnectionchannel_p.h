@@ -37,7 +37,7 @@
 #include <qhttp_networkconnection_p.h>
 #include <qabstract_protocolhandler_p.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 #   include <qsslsocket.h>
 #   include <qsslerror.h>
 #   include <qsslconfiguration.h>
@@ -87,7 +87,7 @@ public:
     bool proxyCredentialsSent;
     QScopedPointer<QAbstractProtocolHandler> protocolHandler;
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     bool ignoreAllSslErrors;
     QList<QSslError> ignoreSslErrorsList;
     QSslConfiguration sslConfiguration;
@@ -100,7 +100,7 @@ public:
     void emitFinishedWithError( QNetworkReply::NetworkError error, const char *message );
 #endif
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     QSharedPointer<QNetworkSession> networkSession;
 #endif
 
@@ -126,7 +126,7 @@ public:
     void setConnection( QHttpNetworkConnection *c );
     QPointer<QHttpNetworkConnection> connection;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QNetworkProxy proxy;
     void setProxy( const QNetworkProxy &networkProxy );
 #endif
@@ -171,7 +171,7 @@ protected :
     NET_LSCS_SLOT_1( Protected, void _q_error( QAbstractSocket::SocketError socketError ) )
     NET_LSCS_SLOT_2( _q_error ) // error from socket
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     NET_LSCS_SLOT_1( Protected, void _q_proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth ) )
     NET_LSCS_SLOT_2( _q_proxyAuthenticationRequired ) // from transparent proxy
 #endif
@@ -179,7 +179,7 @@ protected :
     NET_LSCS_SLOT_1( Protected, void _q_uploadDataReadyRead() )
     NET_LSCS_SLOT_2( _q_uploadDataReadyRead )
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     NET_LSCS_SLOT_1( Protected, void _q_encrypted() )
     NET_LSCS_SLOT_2( _q_encrypted ) // start sending request (https)
 

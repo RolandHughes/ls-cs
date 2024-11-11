@@ -23,7 +23,7 @@
 
 #include "qbuttongroup_p.h"
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
 
 #include "qabstractbutton_p.h"
 
@@ -170,4 +170,4 @@ int QButtonGroup::checkedId() const
     return d->mapping.value( d->checkedButton, -1 );
 }
 
-#endif // QT_NO_BUTTONGROUP
+#endif // LSCS_NO_BUTTONGROUP

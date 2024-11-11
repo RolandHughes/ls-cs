@@ -29,7 +29,7 @@
 #include <QtCore/qshareddata.h>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QString;
 class QByteArray;
@@ -321,6 +321,6 @@ private:
     QSharedDataPointer<QDeclarativeDomImportPrivate> d;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEDOM_P_H

@@ -1,5 +1,5 @@
-#ifndef QT_CORE_H
-#define QT_CORE_H
+#ifndef LSCS_CORE_H
+#define LSCS_CORE_H
 
 #include <qabstractanimation.h>
 #include <qabstracteventdispatcher.h>

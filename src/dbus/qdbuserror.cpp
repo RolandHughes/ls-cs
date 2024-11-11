@@ -29,9 +29,9 @@
 #include "qdbusmessage.h"
 #include "qdbusmessage_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*
  * Use the following Perl script to generate the error string index list:
@@ -298,6 +298,6 @@ QDebug operator<<( QDebug dbg, const QDBusError &msg )
     return dbg.space();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

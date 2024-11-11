@@ -28,7 +28,7 @@
 #include <qdebug.h>
 #include <qundogroup.h>
 
-#ifndef QT_NO_UNDOCOMMAND
+#ifndef LSCS_NO_UNDOCOMMAND
 
 QUndoCommand::QUndoCommand( const QString &text, QUndoCommand *parent )
 {
@@ -126,11 +126,11 @@ const QUndoCommand *QUndoCommand::child( int index ) const
     return d->child_list.at( index );
 }
 
-#endif // QT_NO_UNDOCOMMAND
+#endif // LSCS_NO_UNDOCOMMAND
 
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
 QUndoAction::QUndoAction( const QString &prefix, QObject *parent )
     : QAction( parent )
@@ -172,7 +172,7 @@ void QUndoAction::setTextFormat( const QString &textFormat, const QString &defau
     m_defaultText = defaultText;
 }
 
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
 void QUndoStackPrivate::setIndex( int idx, bool clean )
 {
@@ -239,7 +239,7 @@ QUndoStack::QUndoStack( QObject *parent )
 {
     d_ptr->q_ptr = this;
 
-#ifndef QT_NO_UNDOGROUP
+#ifndef LSCS_NO_UNDOGROUP
 
     if ( QUndoGroup *group = qobject_cast<QUndoGroup *>( parent ) )
     {
@@ -251,7 +251,7 @@ QUndoStack::QUndoStack( QObject *parent )
 
 QUndoStack::~QUndoStack()
 {
-#ifndef QT_NO_UNDOGROUP
+#ifndef LSCS_NO_UNDOGROUP
     Q_D( QUndoStack );
 
     if ( d->group != nullptr )
@@ -537,7 +537,7 @@ QString QUndoStack::redoText() const
     return QString();
 }
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 QAction *QUndoStack::createUndoAction( QObject *parent, const QString &prefix ) const
 {
     QUndoAction *result = new QUndoAction( prefix, parent );
@@ -685,7 +685,7 @@ int QUndoStack::undoLimit() const
 
 void QUndoStack::setActive( bool active )
 {
-#ifdef QT_NO_UNDOGROUP
+#ifdef LSCS_NO_UNDOGROUP
     ( void ) active;
 #else
     Q_D( QUndoStack );
@@ -707,7 +707,7 @@ void QUndoStack::setActive( bool active )
 
 bool QUndoStack::isActive() const
 {
-#ifdef QT_NO_UNDOGROUP
+#ifdef LSCS_NO_UNDOGROUP
     return true;
 #else
     Q_D( const QUndoStack );

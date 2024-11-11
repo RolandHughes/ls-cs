@@ -25,7 +25,7 @@
 #include <qstring8.h>
 
 #if defined(Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #endif
 
 #include <cstdio>
@@ -53,7 +53,7 @@ static inline QString fromstrerror_helper( const char *str, const QByteArray & )
 }
 #endif
 
-QString qt_error_string( int errorCode )
+QString lscs_error_string( int errorCode )
 {
     if ( errorCode == -1 )
     {
@@ -150,7 +150,7 @@ QtMsgHandler csInstallMsgHandler( QtMsgHandler handler )
 }
 
 // internal
-void qt_message_output( QtMsgType msgType, QStringView msg )
+void lscs_message_output( QtMsgType msgType, QStringView msg )
 {
     if ( s_handler != nullptr )
     {
@@ -166,7 +166,7 @@ void qt_message_output( QtMsgType msgType, QStringView msg )
     }
 
     // always happens
-    if ( msgType == QtFatalMsg || ( msgType == QtWarningMsg && ( ! qgetenv( "QT_FATAL_WARNINGS" ).isNull() ) ) )
+    if ( msgType == QtFatalMsg || ( msgType == QtWarningMsg && ( ! qgetenv( "LSCS_FATAL_WARNINGS" ).isNull() ) ) )
     {
 
 #if (defined(Q_OS_UNIX) || defined(Q_CC_MINGW))
@@ -190,11 +190,11 @@ static void qEmergencyOut( QtMsgType msgType, const char *msg, va_list ap )
     }
 
     QString str = QString::fromUtf8( emergency_buf );
-    qt_message_output( msgType, str );
+    lscs_message_output( msgType, str );
 }
 
 // internal
-static void qt_message( QtMsgType msgType, const char *msg, va_list ap )
+static void lscs_message( QtMsgType msgType, const char *msg, va_list ap )
 {
     if ( std::uncaught_exceptions() != 0 )
     {
@@ -236,7 +236,7 @@ static void qt_message( QtMsgType msgType, const char *msg, va_list ap )
     buffer.resize( maxSize );
 
     QString str = QString::fromUtf8( buffer );
-    qt_message_output( msgType, str );
+    lscs_message_output( msgType, str );
 }
 
 //
@@ -244,7 +244,7 @@ void qDebug( const char *msg, ... )
 {
     va_list ap;
     va_start( ap, msg ); // use variable arg list
-    qt_message( QtDebugMsg, msg, ap );
+    lscs_message( QtDebugMsg, msg, ap );
     va_end( ap );
 }
 
@@ -252,7 +252,7 @@ void qWarning( const char *msg, ... )
 {
     va_list ap;
     va_start( ap, msg ); // use variable arg list
-    qt_message( QtWarningMsg, msg, ap );
+    lscs_message( QtWarningMsg, msg, ap );
     va_end( ap );
 }
 
@@ -260,7 +260,7 @@ void qCritical( const char *msg, ... )
 {
     va_list ap;
     va_start( ap, msg ); // use variable arg list
-    qt_message( QtCriticalMsg, msg, ap );
+    lscs_message( QtCriticalMsg, msg, ap );
     va_end( ap );
 }
 
@@ -287,7 +287,7 @@ void qErrnoWarning( const char *msg, ... )
 
     va_end( ap );
 
-    qCritical( "%s (%s)", buffer.constData(), qt_error_string( -1 ).toUtf8().constData() );
+    qCritical( "%s (%s)", buffer.constData(), lscs_error_string( -1 ).toUtf8().constData() );
 }
 
 void qErrnoWarning( int code, const char *msg, ... )
@@ -312,13 +312,13 @@ void qErrnoWarning( int code, const char *msg, ... )
 
     va_end( ap );
 
-    qCritical( "%s (%s)", buffer.constData(), qt_error_string( code ).toUtf8().constData() );
+    qCritical( "%s (%s)", buffer.constData(), lscs_error_string( code ).toUtf8().constData() );
 }
 
 void qFatal( const char *msg, ... )
 {
     va_list ap;
     va_start( ap, msg );                 // use variable arg list
-    qt_message( QtFatalMsg, msg, ap );
+    lscs_message( QtFatalMsg, msg, ap );
     va_end( ap );
 }

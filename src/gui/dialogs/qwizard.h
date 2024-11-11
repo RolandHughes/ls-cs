@@ -26,7 +26,7 @@
 
 #include <qdialog.h>
 
-#ifndef QT_NO_WIZARD
+#ifndef LSCS_NO_WIZARD
 
 class QAbstractButton;
 class QWizardPage;
@@ -286,6 +286,6 @@ private:
     friend class QWizardPrivate;
 };
 
-#endif // QT_NO_WIZARD
+#endif // LSCS_NO_WIZARD
 
 #endif

@@ -27,7 +27,7 @@
 #include <qobject.h>
 #include <qcontainerfwd.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 class QGraphicsItem;
 class QMatrix;
@@ -94,6 +94,6 @@ private:
     QGraphicsItemAnimationPrivate *d;
 };
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 #endif

@@ -15,7 +15,11 @@ if (FALSE)
    add_library(LsCsSqlIBase MODULE "")
    add_library(LsCs::LsCsSqlIBase  ALIAS LsCsSqlIBase )
 
-   set_target_properties(LsCsSqlIBase  PROPERTIES OUTPUT_NAME LsCsSqlIBase ${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsSqlIBase  PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    include_directories(${IBase_INCLUDE_DIRS})
 
@@ -34,7 +38,7 @@ if (FALSE)
    target_compile_definitions(LsCsSqlIBase
       PRIVATE
       -DIN_TRUE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)

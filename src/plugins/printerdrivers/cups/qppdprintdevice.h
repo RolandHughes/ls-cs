@@ -33,7 +33,7 @@
 #include <cups/ppd.h>
 
 // emerald
-#define QT_NO_MIMETYPE
+#define LSCS_NO_MIMETYPE
 
 class QPpdPrintDevice : public QPlatformPrintDevice
 {
@@ -70,7 +70,7 @@ protected:
     void loadDuplexModes() const override;
     void loadColorModes() const override;
 
-#ifndef QT_NO_MIMETYPE
+#ifndef LSCS_NO_MIMETYPE
     void loadMimeTypes() const override;
 #endif
 

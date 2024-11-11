@@ -28,7 +28,7 @@
 #include <QtCore/QVariant>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QListModelInterface : public QObject
 {
@@ -61,6 +61,6 @@ protected:
         : QObject( parent ) {}
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif //QTREEMODELINTERFACE_H

@@ -31,7 +31,7 @@
 #include <qdeclarativepixmapcache_p.h>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeScaleGrid : public QObject
 {
@@ -127,7 +127,7 @@ private:
     QString _pix;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeScaleGrid )
 

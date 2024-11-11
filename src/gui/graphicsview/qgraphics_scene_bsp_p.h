@@ -26,7 +26,7 @@
 
 #include <qlist.h>
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 
 #include <qrect.h>
 #include <qset.h>
@@ -105,6 +105,6 @@ public:
     virtual ~QGraphicsSceneBspTreeVisitor() { }
     virtual void visit( QList<QGraphicsItem *> *items ) = 0;
 };
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 #endif // QGRAPHICSSCENEBSPTREE_P_H

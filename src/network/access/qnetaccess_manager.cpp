@@ -56,7 +56,7 @@ QNetworkAccessFileBackendFactory *lscs_FileBackend()
     return &retval;
 }
 
-#ifndef QT_NO_FTP
+#ifndef LSCS_NO_FTP
 QNetworkAccessFtpBackendFactory *lscs_FtpBackend()
 {
     static QNetworkAccessFtpBackendFactory retval;
@@ -131,7 +131,7 @@ bool getProxyAuth( const QString &proxyHostname, const QString &scheme, QString 
 static void ensureInitialized()
 {
 
-#ifndef QT_NO_FTP
+#ifndef LSCS_NO_FTP
     ( void ) lscs_FtpBackend();
 #endif
 
@@ -145,7 +145,7 @@ QNetworkAccessManager::QNetworkAccessManager( QObject *parent )
     d_ptr->q_ptr = this;
     ensureInitialized();
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     Q_D( QNetworkAccessManager );
 
     // if a session is required, we track online state through
@@ -171,7 +171,7 @@ QNetworkAccessManager::QNetworkAccessManager( QObject *parent )
 QNetworkAccessManager::~QNetworkAccessManager()
 {
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     delete d_func()->proxyFactory;
 #endif
 
@@ -187,7 +187,7 @@ QNetworkAccessManager::~QNetworkAccessManager()
     // properly watch the cache deletion, e.g. via a QWeakPointer.
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
 QNetworkProxy QNetworkAccessManager::proxy() const
 {
@@ -335,7 +335,7 @@ QNetworkReply *QNetworkAccessManager::deleteResource( const QNetworkRequest &req
     return d_func()->postProcess( createRequest( QNetworkAccessManager::DeleteOperation, request ) );
 }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 void QNetworkAccessManager::setConfiguration( const QNetworkConfiguration &config )
 {
@@ -470,10 +470,10 @@ QSharedPointer<QNetworkSession> QNetworkAccessManagerPrivate::getNetworkSession(
     return networkSessionWeakRef.toStrongRef();
 }
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 void QNetworkAccessManager::connectToHostEncrypted( const QString &hostName, quint16 port,
         const QSslConfiguration &sslConfiguration )
@@ -563,7 +563,7 @@ QNetworkReply *QNetworkAccessManager::createRequest( QNetworkAccessManager::Oper
         }
     }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
     // Return a disabled network reply if network access is disabled.
     // Except if the scheme is empty or file://.
@@ -631,7 +631,7 @@ QNetworkReply *QNetworkAccessManager::createRequest( QNetworkAccessManager::Oper
     // use the new QNetworkReplyHttpImpl
     if ( scheme == "http" || scheme == "preconnect-http"
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
             || scheme == "https" || scheme == "preconnect-https"
 #endif
 
@@ -640,7 +640,7 @@ QNetworkReply *QNetworkAccessManager::createRequest( QNetworkAccessManager::Oper
 
         QNetworkReplyHttpImpl *reply = new QNetworkReplyHttpImpl( this, request, op, outgoingData );
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
         connect( this, &QNetworkAccessManager::networkSessionConnected, reply, &QNetworkReplyHttpImpl::_q_networkSessionConnected );
 #endif
 
@@ -650,7 +650,7 @@ QNetworkReply *QNetworkAccessManager::createRequest( QNetworkAccessManager::Oper
     // first step: create the reply
     QNetworkReplyImpl *reply = new QNetworkReplyImpl( this );
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
     if ( ! isLocalFile )
     {
@@ -675,7 +675,7 @@ QNetworkReply *QNetworkAccessManager::createRequest( QNetworkAccessManager::Oper
         priv->backend->reply = priv;
     }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     reply->setSslConfiguration( request.sslConfiguration() );
 #endif
 
@@ -706,7 +706,7 @@ QStringList QNetworkAccessManager::supportedSchemesImplementation() const
     // Those ones don't exist in backends
     schemes << "http";
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
     if ( QSslSocket::supportsSsl() )
     {
@@ -735,7 +735,7 @@ void QNetworkAccessManagerPrivate::_q_replyFinished()
         emit q->finished( reply );
     }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     // If there are no active requests, release our reference to the network session.
     // It will not be destroyed immediately, but rather when the connection cache is flushed
     // after 2 minutes.
@@ -751,7 +751,7 @@ void QNetworkAccessManagerPrivate::_q_replyFinished()
 
 void QNetworkAccessManagerPrivate::_q_replyEncrypted()
 {
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     Q_Q( QNetworkAccessManager );
 
     QNetworkReply *reply = dynamic_cast<QNetworkReply *>( q->sender() );
@@ -766,7 +766,7 @@ void QNetworkAccessManagerPrivate::_q_replyEncrypted()
 
 void QNetworkAccessManagerPrivate::_q_replySslErrors( const QList<QSslError> &errorList )
 {
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     Q_Q( QNetworkAccessManager );
 
     QNetworkReply *reply = dynamic_cast<QNetworkReply *>( q->sender() );
@@ -785,7 +785,7 @@ void QNetworkAccessManagerPrivate::_q_replySslErrors( const QList<QSslError> &er
 void QNetworkAccessManagerPrivate::_q_replyPreSharedKeyAuthenticationRequired(
     QSslPreSharedKeyAuthenticator *authenticator )
 {
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     Q_Q( QNetworkAccessManager );
 
     QNetworkReply *reply = dynamic_cast<QNetworkReply *>( q->sender() );
@@ -808,7 +808,7 @@ QNetworkReply *QNetworkAccessManagerPrivate::postProcess( QNetworkReply *reply )
     QNetworkReplyPrivate::setManager( reply, q );
     q->connect( reply, &QNetworkReply::finished,   q, &QNetworkAccessManager::_q_replyFinished );
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     // In case we are compiled without SSL support, we do not have this signal and we need to
     // avoid getting a connection error.
 
@@ -819,7 +819,7 @@ QNetworkReply *QNetworkAccessManagerPrivate::postProcess( QNetworkReply *reply )
                 &QNetworkAccessManager::_q_replyPreSharedKeyAuthenticationRequired );
 #endif
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     activeReplyCount++;
 #endif
 
@@ -890,7 +890,7 @@ void QNetworkAccessManagerPrivate::authenticationRequired( QAuthenticator *authe
     }
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 void QNetworkAccessManagerPrivate::proxyAuthenticationRequired( const QUrl &url, const QNetworkProxy &proxy,
         bool synchronous, QAuthenticator *authenticator, QNetworkProxy *lastProxyAuthentication )
 {
@@ -1019,7 +1019,7 @@ QNetworkAccessManagerPrivate::~QNetworkAccessManagerPrivate()
     }
 }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 void QNetworkAccessManagerPrivate::createSession( const QNetworkConfiguration &config )
 {
     Q_Q( QNetworkAccessManager );
@@ -1279,7 +1279,7 @@ void QNetworkAccessManagerPrivate::_q_networkSessionFailed( QNetworkSession::Ses
     }
 }
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 QNetworkRequest QNetworkAccessManagerPrivate::prepareMultipart( const QNetworkRequest &request, QHttpMultiPart *multiPart )
 {
@@ -1359,7 +1359,7 @@ void QNetworkAccessManager::_q_replyEncrypted()
     d->_q_replyEncrypted();
 }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 void QNetworkAccessManager::_q_replySslErrors( const QList<QSslError> &errorList )
 {
@@ -1375,7 +1375,7 @@ void QNetworkAccessManager::_q_replyPreSharedKeyAuthenticationRequired( QSslPreS
 
 #endif
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 void QNetworkAccessManager::_q_networkSessionClosed()
 {

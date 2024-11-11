@@ -88,7 +88,7 @@ bool QVariantGui::lscs_internal_convert( uint current_userType, uint new_userTyp
             switch ( current_userType )
             {
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
                 case QVariant::KeySequence:
                     self.setValue<QString>( self.getData<QKeySequence>().toString( QKeySequence::NativeText ) );
@@ -115,7 +115,7 @@ bool QVariantGui::lscs_internal_convert( uint current_userType, uint new_userTyp
             switch ( current_userType )
             {
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
                 case QVariant::KeySequence:
                     self.setValue<QString16>( self.getData<QKeySequence>().toString( QKeySequence::NativeText ).toUtf16() );
@@ -266,7 +266,7 @@ bool QVariantGui::lscs_internal_convert( uint current_userType, uint new_userTyp
 
             break;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
         case QVariant::KeySequence:
         {
@@ -419,7 +419,7 @@ bool QVariantGui::lscs_internal_create( uint newUserType, const void *other, QVa
 
             break;
 
-#ifndef QT_NO_ICON
+#ifndef LSCS_NO_ICON
 
         case QVariant::Icon:
 
@@ -483,7 +483,7 @@ bool QVariantGui::lscs_internal_create( uint newUserType, const void *other, QVa
 
             break;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
         case QVariant::KeySequence:
             if ( other == nullptr )
@@ -522,7 +522,7 @@ bool QVariantGui::lscs_internal_create( uint newUserType, const void *other, QVa
 
             break;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
         case QVariant::Cursor:
             if ( other == nullptr )
@@ -537,7 +537,7 @@ bool QVariantGui::lscs_internal_create( uint newUserType, const void *other, QVa
             break;
 #endif
 
-#ifndef QT_NO_MATRIX4X4
+#ifndef LSCS_NO_MATRIX4X4
 
         case QVariant::Matrix4x4:
             if ( other == nullptr )
@@ -552,7 +552,7 @@ bool QVariantGui::lscs_internal_create( uint newUserType, const void *other, QVa
             break;
 #endif
 
-#ifndef QT_NO_VECTOR2D
+#ifndef LSCS_NO_VECTOR2D
 
         case QVariant::Vector2D:
             if ( other == nullptr )
@@ -567,7 +567,7 @@ bool QVariantGui::lscs_internal_create( uint newUserType, const void *other, QVa
             break;
 #endif
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
         case QVariant::Vector3D:
             if ( other == nullptr )
@@ -582,7 +582,7 @@ bool QVariantGui::lscs_internal_create( uint newUserType, const void *other, QVa
             break;
 #endif
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
 
         case QVariant::Vector4D:
             if ( other == nullptr )
@@ -597,7 +597,7 @@ bool QVariantGui::lscs_internal_create( uint newUserType, const void *other, QVa
             break;
 #endif
 
-#ifndef QT_NO_QUATERNION
+#ifndef LSCS_NO_QUATERNION
 
         case QVariant::Quaternion:
             if ( other == nullptr )

@@ -23,11 +23,11 @@
 
 #include <qsettings.h>
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
 
 #include <qdebug.h>
 #include <qmap.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qvector.h>
 
 #include <qsettings_p.h>
@@ -1089,4 +1089,4 @@ QSettingsPrivate *QSettingsPrivate::create( const QString &fileName, QSettings::
     }
 }
 
-#endif // QT_NO_SETTINGS
+#endif // LSCS_NO_SETTINGS

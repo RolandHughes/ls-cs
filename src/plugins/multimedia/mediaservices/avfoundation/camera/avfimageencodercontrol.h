@@ -60,6 +60,6 @@ private:
     friend class AVFCameraSession;
 };
 
-QSize qt_image_high_resolution( AVCaptureDeviceFormat *fomat );
+QSize lscs_image_high_resolution( AVCaptureDeviceFormat *fomat );
 
 #endif

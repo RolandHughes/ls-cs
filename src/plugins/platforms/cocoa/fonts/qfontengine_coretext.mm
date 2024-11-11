@@ -167,7 +167,7 @@ static float getTraitValue(CFDictionaryRef allTraits, CFStringRef trait)
 int QCoreTextFontEngine::antialiasingThreshold = 0;
 QFontEngine::GlyphFormat QCoreTextFontEngine::defaultGlyphFormat = QFontEngine::Format_A32;
 
-CGAffineTransform qt_transform_from_fontdef(const QFontDef &fontDef)
+CGAffineTransform lscs_transform_from_fontdef(const QFontDef &fontDef)
 {
    CGAffineTransform transform = CGAffineTransformIdentity;
    if (fontDef.stretch != 100) {
@@ -181,7 +181,7 @@ QCoreTextFontEngine::QCoreTextFontEngine(CTFontRef font, const QFontDef &def)
    : QFontEngine(Mac)
 {
    fontDef = def;
-   transform = qt_transform_from_fontdef(fontDef);
+   transform = lscs_transform_from_fontdef(fontDef);
    ctfont = font;
    CFRetain(ctfont);
    cgFont = CTFontCopyGraphicsFont(font, nullptr);
@@ -192,7 +192,7 @@ QCoreTextFontEngine::QCoreTextFontEngine(CGFontRef font, const QFontDef &def)
    : QFontEngine(Mac)
 {
    fontDef   = def;
-   transform = qt_transform_from_fontdef(fontDef);
+   transform = lscs_transform_from_fontdef(fontDef);
    cgFont    = font;
 
    // Keep reference count balanced
@@ -832,7 +832,7 @@ QFontEngine *QCoreTextFontEngine::cloneWithSize(qreal pixelSize) const
 {
    QFontDef newFontDef = fontDef;
    newFontDef.pixelSize = pixelSize;
-   newFontDef.pointSize = pixelSize * 72.0 / qt_defaultDpi();
+   newFontDef.pointSize = pixelSize * 72.0 / lscs_defaultDpi();
 
    return new QCoreTextFontEngine(cgFont, newFontDef);
 }

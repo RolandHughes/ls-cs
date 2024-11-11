@@ -58,7 +58,7 @@
 #define comp_func_Clear_impl(dest, length, const_alpha)\
 {\
     if (const_alpha == 255) {\
-        qt_memfill<quint32>(dest, 0, length); \
+        lscs_memfill<quint32>(dest, 0, length); \
     } else {\
         int ialpha = 255 - const_alpha;\
         PRELOAD_INIT(dest)\
@@ -78,7 +78,7 @@ void comp_func_solid_Clear_rgb64( QRgba64 *dest, int length, QRgba64, uint const
 {
     if ( const_alpha == 255 )
     {
-        qt_memfill64( ( quint64 * )dest, 0, length );
+        lscs_memfill64( ( quint64 * )dest, 0, length );
     }
     else
     {
@@ -100,7 +100,7 @@ void comp_func_Clear_rgb64( QRgba64 *dest, const QRgba64 *, int length, uint con
 {
     if ( const_alpha == 255 )
     {
-        qt_memfill64( ( quint64 * )dest, 0, length );
+        lscs_memfill64( ( quint64 * )dest, 0, length );
     }
     else
     {
@@ -121,7 +121,7 @@ void comp_func_solid_Source( uint *dest, int length, uint color, uint const_alph
 {
     if ( const_alpha == 255 )
     {
-        qt_memfill<quint32>( dest, color, length );
+        lscs_memfill<quint32>( dest, color, length );
 
     }
     else
@@ -142,7 +142,7 @@ void comp_func_solid_Source_rgb64( QRgba64 *dest, int length, QRgba64 color, uin
 {
     if ( const_alpha == 255 )
     {
-        qt_memfill64( ( quint64 * )dest, color, length );
+        lscs_memfill64( ( quint64 * )dest, color, length );
     }
     else
     {
@@ -218,7 +218,7 @@ void comp_func_solid_SourceOver( uint *dest, int length, uint color, uint const_
 {
     if ( ( const_alpha & qAlpha( color ) ) == 255 )
     {
-        qt_memfill<quint32>( dest, color, length );
+        lscs_memfill<quint32>( dest, color, length );
 
     }
     else
@@ -242,7 +242,7 @@ void comp_func_solid_SourceOver_rgb64( QRgba64 *dest, int length, QRgba64 color,
 {
     if ( const_alpha == 255 && color.isOpaque() )
     {
-        qt_memfill64( ( quint64 * )dest, color, length );
+        lscs_memfill64( ( quint64 * )dest, color, length );
     }
     else
     {
@@ -532,7 +532,7 @@ void comp_func_solid_DestinationIn_rgb64( QRgba64 *dest, int length, QRgba64 col
 
     if ( const_alpha != 255 )
     {
-        a = qt_div_65535( a * ca64k ) + 65535 - ca64k;
+        a = lscs_div_65535( a * ca64k ) + 65535 - ca64k;
     }
 
     for ( int i = 0; i < length; ++i )
@@ -582,7 +582,7 @@ void comp_func_DestinationIn_rgb64( QRgba64 *__restrict dest, const QRgba64 *__r
 
         for ( int i = 0; i < length; ++i )
         {
-            uint a = qt_div_65535( src[i].alpha() * ca ) + cia;
+            uint a = lscs_div_65535( src[i].alpha() * ca ) + cia;
             dest[i] = multiplyAlpha65535( dest[i], a );
         }
     }
@@ -721,7 +721,7 @@ void comp_func_solid_DestinationOut_rgb64( QRgba64 *dest, int length, QRgba64 co
 
     if ( const_alpha != 255 )
     {
-        a = qt_div_65535( a * ca64k ) + 65535 - ca64k;
+        a = lscs_div_65535( a * ca64k ) + 65535 - ca64k;
     }
 
     for ( int i = 0; i < length; ++i )
@@ -771,7 +771,7 @@ void comp_func_DestinationOut_rgb64( QRgba64 *__restrict dest, const QRgba64 *__
 
         for ( int i = 0; i < length; ++i )
         {
-            uint a = qt_div_65535( ( 65535 - src[i].alpha() ) * ca ) + cia;
+            uint a = lscs_div_65535( ( 65535 - src[i].alpha() ) * ca ) + cia;
             dest[i] = multiplyAlpha65535( dest[i], a );
         }
     }
@@ -1197,7 +1197,7 @@ void comp_func_Plus_rgb64( QRgba64 *__restrict dest, const QRgba64 *__restrict s
 */
 static inline int multiply_op( int dst, int src, int da, int sa )
 {
-    return qt_div_255( src * dst + src * ( 255 - da ) + dst * ( 255 - sa ) );
+    return lscs_div_255( src * dst + src * ( 255 - da ) + dst * ( 255 - sa ) );
 }
 
 template <typename T>
@@ -1296,7 +1296,7 @@ static inline void comp_func_solid_Screen_impl( uint *dest, int length, uint col
         uint d = dest[i];
         int da = qAlpha( d );
 
-#define OP(a, b) 255 - qt_div_255((255-a) * (255-b))
+#define OP(a, b) 255 - lscs_div_255((255-a) * (255-b))
         int r = OP(  qRed( d ), sr );
         int b = OP( qBlue( d ), sb );
         int g = OP( qGreen( d ), sg );
@@ -1368,11 +1368,11 @@ static inline int overlay_op( int dst, int src, int da, int sa )
 
     if ( 2 * dst < da )
     {
-        return qt_div_255( 2 * src * dst + temp );
+        return lscs_div_255( 2 * src * dst + temp );
     }
     else
     {
-        return qt_div_255( sa * da - 2 * ( da - dst ) * ( sa - src ) + temp );
+        return lscs_div_255( sa * da - 2 * ( da - dst ) * ( sa - src ) + temp );
     }
 }
 
@@ -1458,7 +1458,7 @@ void comp_func_Overlay( uint *__restrict dest, const uint *__restrict src, int l
 */
 static inline int darken_op( int dst, int src, int da, int sa )
 {
-    return qt_div_255( qMin( src * da, dst * sa ) + src * ( 255 - da ) + dst * ( 255 - sa ) );
+    return lscs_div_255( qMin( src * da, dst * sa ) + src * ( 255 - da ) + dst * ( 255 - sa ) );
 }
 
 template <typename T>
@@ -1543,7 +1543,7 @@ void comp_func_Darken( uint *__restrict dest, const uint *__restrict src, int le
 */
 static inline int lighten_op( int dst, int src, int da, int sa )
 {
-    return qt_div_255( qMax( src * da, dst * sa ) + src * ( 255 - da ) + dst * ( 255 - sa ) );
+    return lscs_div_255( qMax( src * da, dst * sa ) + src * ( 255 - da ) + dst * ( 255 - sa ) );
 }
 
 template <typename T>
@@ -1638,11 +1638,11 @@ static inline int color_dodge_op( int dst, int src, int da, int sa )
 
     if ( src_da + dst_sa >= sa_da )
     {
-        return qt_div_255( sa_da + temp );
+        return lscs_div_255( sa_da + temp );
     }
     else
     {
-        return qt_div_255( 255 * dst_sa / ( 255 - 255 * src / sa ) + temp );
+        return lscs_div_255( 255 * dst_sa / ( 255 - 255 * src / sa ) + temp );
     }
 }
 
@@ -1738,10 +1738,10 @@ static inline int color_burn_op( int dst, int src, int da, int sa )
 
     if ( src == 0 || src_da + dst_sa <= sa_da )
     {
-        return qt_div_255( temp );
+        return lscs_div_255( temp );
     }
 
-    return qt_div_255( sa * ( src_da + dst_sa - sa_da ) / src + temp );
+    return lscs_div_255( sa * ( src_da + dst_sa - sa_da ) / src + temp );
 }
 
 template <typename T>
@@ -1832,11 +1832,11 @@ static inline uint hardlight_op( int dst, int src, int da, int sa )
 
     if ( 2 * src < sa )
     {
-        return qt_div_255( 2 * src * dst + temp );
+        return lscs_div_255( 2 * src * dst + temp );
     }
     else
     {
-        return qt_div_255( sa * da - 2 * ( da - dst ) * ( sa - src ) + temp );
+        return lscs_div_255( sa * da - 2 * ( da - dst ) * ( sa - src ) + temp );
     }
 }
 
@@ -2027,7 +2027,7 @@ void comp_func_SoftLight( uint *__restrict dest, const uint *__restrict src, int
 */
 static inline int difference_op( int dst, int src, int da, int sa )
 {
-    return src + dst - qt_div_255( 2 * qMin( src * da, dst * sa ) );
+    return src + dst - lscs_div_255( 2 * qMin( src * da, dst * sa ) );
 }
 
 template <typename T>
@@ -2125,7 +2125,7 @@ static inline void comp_func_solid_Exclusion_impl( uint *dest, int length, uint 
         uint d = dest[i];
         int da = qAlpha( d );
 
-#define OP(a, b) (a + b - qt_div_255(2*(a*b)))
+#define OP(a, b) (a + b - lscs_div_255(2*(a*b)))
         int r =  OP(  qRed( d ), sr );
         int b =  OP( qBlue( d ), sb );
         int g =  OP( qGreen( d ), sg );
@@ -2339,7 +2339,7 @@ void rasterop_solid_NotSource( uint *dest, int length, uint color, uint const_al
 {
     ( void ) const_alpha;
 
-    qt_memfill( dest, ~color | 0xff000000, length );
+    lscs_memfill( dest, ~color | 0xff000000, length );
 }
 
 void rasterop_NotSource( uint *__restrict dest, const uint *__restrict src,
@@ -2494,7 +2494,7 @@ void rasterop_solid_NotDestination( uint *__restrict dest, int length, uint colo
     rasterop_solid_SourceXorDestination ( dest, length, 0x00ffffff, const_alpha );
 }
 
-CompositionFunctionSolid qt_functionForModeSolid_C[] =
+CompositionFunctionSolid lscs_functionForModeSolid_C[] =
 {
     comp_func_solid_SourceOver,
     comp_func_solid_DestinationOver,
@@ -2536,7 +2536,7 @@ CompositionFunctionSolid qt_functionForModeSolid_C[] =
     rasterop_solid_NotDestination
 };
 
-CompositionFunctionSolid64 qt_functionForModeSolid64_C[] =
+CompositionFunctionSolid64 lscs_functionForModeSolid64_C[] =
 {
     comp_func_solid_SourceOver_rgb64,
     comp_func_solid_DestinationOver_rgb64,
@@ -2557,7 +2557,7 @@ CompositionFunctionSolid64 qt_functionForModeSolid64_C[] =
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr
 };
 
-CompositionFunction qt_functionForMode_C[] =
+CompositionFunction lscs_functionForMode_C[] =
 {
     comp_func_SourceOver,
     comp_func_DestinationOver,
@@ -2599,7 +2599,7 @@ CompositionFunction qt_functionForMode_C[] =
     rasterop_NotDestination
 };
 
-CompositionFunction64 qt_functionForMode64_C[] =
+CompositionFunction64 lscs_functionForMode64_C[] =
 {
     comp_func_SourceOver_rgb64,
     comp_func_DestinationOver_rgb64,

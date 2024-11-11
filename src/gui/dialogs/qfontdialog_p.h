@@ -32,7 +32,7 @@
 
 #include <qdialog_p.h>
 
-#ifndef QT_NO_FONTDIALOG
+#ifndef LSCS_NO_FONTDIALOG
 
 class QBoxLayout;
 class QCheckBox;
@@ -123,6 +123,6 @@ private:
     void helperPrepareShow( QPlatformDialogHelper * ) override;
 };
 
-#endif // QT_NO_FONTDIALOG
+#endif // LSCS_NO_FONTDIALOG
 
 #endif

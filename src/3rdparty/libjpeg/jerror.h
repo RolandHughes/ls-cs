@@ -77,7 +77,7 @@ typedef enum
     JMESSAGE( JERR_DAC_INDEX, "Bogus DAC index %d" )
     JMESSAGE( JERR_DAC_VALUE, "Bogus DAC value 0x%x" )
     JMESSAGE( JERR_DHT_INDEX, "Bogus DHT index %d" )
-    JMESSAGE( JERR_DQT_INDEX, "Bogus DQT index %d" )
+    JMESSAGE( JERR_DLSCS_INDEX, "Bogus DQT index %d" )
     JMESSAGE( JERR_EMPTY_IMAGE, "Empty JPEG image (DNL not supported)" )
     JMESSAGE( JERR_EMS_READ, "Read from EMS failed" )
     JMESSAGE( JERR_EMS_WRITE, "Write to EMS failed" )

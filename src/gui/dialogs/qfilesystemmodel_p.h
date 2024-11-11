@@ -26,7 +26,7 @@
 
 #include <qfilesystemmodel.h>
 
-#ifndef QT_NO_FILESYSTEMMODEL
+#ifndef LSCS_NO_FILESYSTEMMODEL
 
 #include <qabstractitemmodel.h>
 #include <qdir.h>
@@ -479,7 +479,7 @@ public:
 
     QDir rootDir;
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
     QFileInfoGatherer fileInfoGatherer;
 #endif
 
@@ -516,7 +516,7 @@ public:
     QList<Fetching> toFetch;
 
 };
-#endif // QT_NO_FILESYSTEMMODEL
+#endif // LSCS_NO_FILESYSTEMMODEL
 
 
 

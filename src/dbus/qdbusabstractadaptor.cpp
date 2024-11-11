@@ -36,9 +36,9 @@
 #include "qdbusabstractadaptor_p.h"
 #include "qdbusmetatype_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 QDBusAdaptorConnector *qDBusFindAdaptorConnector( QObject *obj )
 {
@@ -362,7 +362,7 @@ void QDBusAdaptorConnector::relay( QObject *senderObj, int lastSignalIdx, void *
 // the relaySlot slot has local ID 0 (we use this when calling QMetaObject::connect)
 // it also gets called with the void** array
 
-static const uint qt_meta_data_QDBusAdaptorConnector[] =
+static const uint lscs_meta_data_QDBusAdaptorConnector[] =
 {
 // content:
     1,       // revision
@@ -382,7 +382,7 @@ static const uint qt_meta_data_QDBusAdaptorConnector[] =
     0        // eod
 };
 
-static const char qt_meta_stringdata_QDBusAdaptorConnector[] =
+static const char lscs_meta_stringdata_QDBusAdaptorConnector[] =
 {
     "QDBusAdaptorConnector\0\0obj,metaobject,sid,args\0"
     "relaySignal(QObject*,const QMetaObject*,int,QVariantList)\0\0relaySlot()\0"
@@ -392,8 +392,8 @@ static const char qt_meta_stringdata_QDBusAdaptorConnector[] =
 const QMetaObject QDBusAdaptorConnector::staticMetaObject =
 {
     {
-        &QObject::staticMetaObject, qt_meta_stringdata_QDBusAdaptorConnector,
-        qt_meta_data_QDBusAdaptorConnector, 0
+        &QObject::staticMetaObject, lscs_meta_stringdata_QDBusAdaptorConnector,
+        lscs_meta_data_QDBusAdaptorConnector, 0
     }
 };
 
@@ -402,24 +402,24 @@ const QMetaObject *QDBusAdaptorConnector::metaObject() const
     return &staticMetaObject;
 }
 
-void *QDBusAdaptorConnector::qt_metacast( const char *_clname )
+void *QDBusAdaptorConnector::lscs_metacast( const char *_clname )
 {
     if ( !_clname )
     {
         return 0;
     }
 
-    if ( !strcmp( _clname, qt_meta_stringdata_QDBusAdaptorConnector ) )
+    if ( !strcmp( _clname, lscs_meta_stringdata_QDBusAdaptorConnector ) )
     {
         return static_cast<void *>( const_cast<QDBusAdaptorConnector *>( this ) );
     }
 
-    return QObject::qt_metacast( _clname );
+    return QObject::lscs_metacast( _clname );
 }
 
-int QDBusAdaptorConnector::qt_metacall( QMetaObject::Call _c, int _id, void **_a )
+int QDBusAdaptorConnector::lscs_metacall( QMetaObject::Call _c, int _id, void **_a )
 {
-    _id = QObject::qt_metacall( _c, _id, _a );
+    _id = QObject::lscs_metacall( _c, _id, _a );
 
     if ( _id < 0 )
     {
@@ -457,6 +457,6 @@ void QDBusAdaptorConnector::relaySignal( QObject *_t1, const QMetaObject *_t2, i
     QMetaObject::activate( this, &staticMetaObject, 2, _a );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

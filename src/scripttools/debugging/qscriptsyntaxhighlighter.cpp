@@ -26,9 +26,9 @@
 
 #include "qscriptsyntaxhighlighter_p.h"
 
-#ifndef QT_NO_SYNTAXHIGHLIGHTER
+#ifndef LSCS_NO_SYNTAXHIGHLIGHTER
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 enum ScriptIds
 {
@@ -681,7 +681,7 @@ void QScriptSyntaxHighlighter::highlightWord( int currentPos, const QString &buf
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_SYNTAXHIGHLIGHTER
+#endif // LSCS_NO_SYNTAXHIGHLIGHTER
 

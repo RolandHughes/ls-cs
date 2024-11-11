@@ -43,7 +43,7 @@
 #include "HTMLInputElement.h"
 #include "HTMLMediaElement.h"
 #include "HTMLNames.h"
-#if USE(QT_MOBILE_THEME)
+#if USE(LSCS_MOBILE_THEME)
 #include "QtMobileWebStyle.h"
 #endif
 #if ENABLE(VIDEO)
@@ -114,7 +114,7 @@ static const float minSearchFieldResultsDecorationSize = 9;
 static const float maxSearchFieldResultsDecorationSize = 30;
 static const float defaultSearchFieldResultsButtonWidth = 18;
 
-#if USE(QT_MOBILE_THEME)
+#if USE(LSCS_MOBILE_THEME)
 namespace
 {
 float buttonPaddingLeft = 18;
@@ -207,7 +207,7 @@ RenderThemeQt::RenderThemeQt( Page *page )
     m_buttonFontPixelSize = fontInfo.pixelSize();
 #endif
 
-#if USE(QT_MOBILE_THEME)
+#if USE(LSCS_MOBILE_THEME)
     m_fallbackStyle = new QtMobileWebStyle;
 #else
     m_fallbackStyle = QStyleFactory::create( QLatin1String( "windows" ) );
@@ -217,12 +217,12 @@ RenderThemeQt::RenderThemeQt( Page *page )
 RenderThemeQt::~RenderThemeQt()
 {
     delete m_fallbackStyle;
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
     delete m_lineEdit;
 #endif
 }
 
-#if USE(QT_MOBILE_THEME)
+#if USE(LSCS_MOBILE_THEME)
 bool RenderThemeQt::isControlStyled( const RenderStyle *style, const BorderData &border, const FillLayer &fill,
                                      const Color &backgroundColor ) const
 {
@@ -279,7 +279,7 @@ QStyle *RenderThemeQt::fallbackStyle() const
 
 QStyle *RenderThemeQt::qStyle() const
 {
-#if USE(QT_MOBILE_THEME)
+#if USE(LSCS_MOBILE_THEME)
     return fallbackStyle();
 #endif
 
@@ -379,7 +379,7 @@ bool RenderThemeQt::supportsControlTints() const
 
 int RenderThemeQt::findFrameLineWidth( QStyle *style ) const
 {
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
     if ( !m_lineEdit )
     {
@@ -390,7 +390,7 @@ int RenderThemeQt::findFrameLineWidth( QStyle *style ) const
 
     QStyleOptionFrame opt;
     QWidget *widget = 0;
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
     widget = m_lineEdit;
 #endif
     return style->pixelMetric( QStyle::PM_DefaultFrameWidth, &opt, widget );
@@ -558,7 +558,7 @@ void RenderThemeQt::computeSizeBasedOnStyle( RenderStyle *renderStyle ) const
             break;
         }
 
-#if !USE(QT_MOBILE_THEME)
+#if !USE(LSCS_MOBILE_THEME)
 
         case PushButtonPart:
         case ButtonPart:
@@ -662,7 +662,7 @@ void RenderThemeQt::adjustButtonStyle( CSSStyleSelector *selector, RenderStyle *
     fontDescription.setComputedSize( style->fontSize() );
 #endif
 
-#if !USE(QT_MOBILE_THEME)
+#if !USE(LSCS_MOBILE_THEME)
     FontFamily fontFamily;
     fontFamily.setFamily( m_buttonFontFamily );
     fontDescription.setFamily( fontFamily );
@@ -679,7 +679,7 @@ void RenderThemeQt::setButtonSize( RenderStyle *style ) const
     computeSizeBasedOnStyle( style );
 }
 
-#if !USE(QT_MOBILE_THEME)
+#if !USE(LSCS_MOBILE_THEME)
 void RenderThemeQt::setButtonPadding( RenderStyle *style ) const
 {
     QStyleOptionButton styleOption;
@@ -776,7 +776,7 @@ void RenderThemeQt::adjustTextFieldStyle( CSSStyleSelector *, RenderStyle *style
     style->resetBorder();
     style->resetPadding();
     computeSizeBasedOnStyle( style );
-#if USE(QT_MOBILE_THEME)
+#if USE(LSCS_MOBILE_THEME)
     style->setPaddingLeft( Length( textFieldPadding, Fixed ) );
     style->setPaddingRight( Length( textFieldPadding, Fixed ) );
 #endif
@@ -795,7 +795,7 @@ bool RenderThemeQt::paintTextField( RenderObject *o, const PaintInfo &i, const I
     initStyleOption( p.widget, panel );
     panel.rect = r;
     panel.lineWidth = findFrameLineWidth( qStyle() );
-#if USE(QT_MOBILE_THEME)
+#if USE(LSCS_MOBILE_THEME)
 
     if ( isPressed( o ) )
     {
@@ -847,7 +847,7 @@ void RenderThemeQt::adjustMenuListStyle( CSSStyleSelector *, RenderStyle *style,
 
     // Add in the padding that we'd like to use.
     setPopupPadding( style );
-#if USE(QT_MOBILE_THEME)
+#if USE(LSCS_MOBILE_THEME)
     style->setPaddingLeft( Length( menuListPadding, Fixed ) );
 #endif
 }
@@ -907,7 +907,7 @@ bool RenderThemeQt::paintMenuList( RenderObject *o, const PaintInfo &i, const In
 
 void RenderThemeQt::adjustMenuListButtonStyle( CSSStyleSelector *, RenderStyle *style, Element * ) const
 {
-#if USE(QT_MOBILE_THEME)
+#if USE(LSCS_MOBILE_THEME)
     // Mobile theme uses border radius.
 #else
     // WORKAROUND because html.css specifies -webkit-border-radius for <select> so we override it here
@@ -1247,7 +1247,7 @@ bool RenderThemeQt::supportsFocus( ControlPart appearance ) const
 
 void RenderThemeQt::setPaletteFromPageClientIfExists( QPalette &palette ) const
 {
-#if USE(QT_MOBILE_THEME)
+#if USE(LSCS_MOBILE_THEME)
     static QPalette lightGrayPalette( Qt::lightGray );
     palette = lightGrayPalette;
     return;

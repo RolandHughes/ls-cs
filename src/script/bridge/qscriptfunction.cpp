@@ -37,8 +37,8 @@
 
 namespace JSC
 {
-ASSERT_CLASS_FITS_IN_CELL( QT_PREPEND_NAMESPACE( QScript::FunctionWrapper ) );
-ASSERT_CLASS_FITS_IN_CELL( QT_PREPEND_NAMESPACE( QScript::FunctionWithArgWrapper ) );
+ASSERT_CLASS_FITS_IN_CELL( LSCS_PREPEND_NAMESPACE( QScript::FunctionWrapper ) );
+ASSERT_CLASS_FITS_IN_CELL( LSCS_PREPEND_NAMESPACE( QScript::FunctionWithArgWrapper ) );
 }
 
 namespace QScript

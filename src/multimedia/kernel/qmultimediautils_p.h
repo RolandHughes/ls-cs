@@ -26,7 +26,7 @@
 
 #include <qmultimedia.h>
 
-Q_MULTIMEDIA_EXPORT void qt_real_to_fraction( qreal value, int *numerator, int *denominator );
+Q_MULTIMEDIA_EXPORT void lscs_real_to_fraction( qreal value, int *numerator, int *denominator );
 
 #endif
 

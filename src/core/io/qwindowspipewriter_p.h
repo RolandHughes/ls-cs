@@ -26,7 +26,7 @@
 
 #include <qelapsedtimer.h>
 #include <qmutex.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qthread.h>
 
 #define SLEEPMIN 10
@@ -144,4 +144,4 @@ private:
     bool inBytesWritten;
 };
 
-#endif // QT_NO_PROCESS
+#endif // LSCS_NO_PROCESS

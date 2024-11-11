@@ -30,7 +30,7 @@
 
 #include <QtDeclarative/QDeclarativeView>
 
-QT_BEGIN_NAMESPACE Q_GLOBAL_STATIC( QDeclarativeInspectorService, serviceInstance )
+LSCS_BEGIN_NAMESPACE Q_GLOBAL_STATIC( QDeclarativeInspectorService, serviceInstance )
 
 QDeclarativeInspectorService::QDeclarativeInspectorService()
     : QDeclarativeDebugService( QLatin1String( "QDeclarativeObserverMode" ) )
@@ -151,4 +151,4 @@ QDeclarativeInspectorInterface *QDeclarativeInspectorService::loadInspectorPlugi
     return 0;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -290,7 +290,7 @@ void ShaderEffectSource::bind()
     GLuint hwrap = ( m_wrapMode == Repeat || m_wrapMode == RepeatHorizontally ) ? GL_REPEAT : GL_CLAMP_TO_EDGE;
     GLuint vwrap = ( m_wrapMode == Repeat || m_wrapMode == RepeatVertically ) ? GL_REPEAT : GL_CLAMP_TO_EDGE;
 
-#if !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_OPENGL_ES_2)
     glEnable( GL_TEXTURE_2D );
 #endif
 

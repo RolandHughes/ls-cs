@@ -35,7 +35,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QList>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeComponent;
 class QDeclarativeEngine;
@@ -143,6 +143,6 @@ private:
     friend class QDeclarativeComponentPrivate;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVECOMPONENT_P_H

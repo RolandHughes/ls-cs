@@ -33,7 +33,7 @@
 #include <QEasingCurve>
 #include <QTime>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct Update
 {
@@ -1127,4 +1127,4 @@ QDeclarativeTimeLineObject *QDeclarativeTimeLineCallback::callbackObject() const
     return d2;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

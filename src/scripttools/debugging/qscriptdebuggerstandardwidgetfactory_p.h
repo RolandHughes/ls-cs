@@ -27,7 +27,7 @@
 #include <QtCore/qobject.h>
 #include <qscriptdebuggerwidgetfactoryinterface_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerStandardWidgetFactory : public QObject, public QScriptDebuggerWidgetFactoryInterface
 {
@@ -49,6 +49,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerStandardWidgetFactory )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

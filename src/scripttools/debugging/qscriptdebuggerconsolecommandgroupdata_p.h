@@ -28,7 +28,7 @@
 #include <qscopedpointer_p.h>
 #include <QtCore/qmap.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QString;
 
@@ -61,6 +61,6 @@ private:
 
 typedef QMap<QString, QScriptDebuggerConsoleCommandGroupData> QScriptDebuggerConsoleCommandGroupMap;
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

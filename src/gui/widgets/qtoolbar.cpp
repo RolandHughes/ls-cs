@@ -23,7 +23,7 @@
 
 #include <qtoolbar.h>
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 #include <qapplication.h>
 #include <qcombobox.h>
@@ -54,7 +54,7 @@
 #define POPUP_TIMER_INTERVAL 500
 
 // qmainwindow.cpp
-extern QMainWindowLayout *qt_mainwindow_layout( const QMainWindow *window );
+extern QMainWindowLayout *lscs_mainwindow_layout( const QMainWindow *window );
 
 void QToolBarPrivate::init()
 {
@@ -178,7 +178,7 @@ void QToolBarPrivate::initDrag( const QPoint &pos )
     QMainWindow *win = qobject_cast<QMainWindow *>( q->parent() );
     Q_ASSERT( win != nullptr );
 
-    QMainWindowLayout *layout = qt_mainwindow_layout( win );
+    QMainWindowLayout *layout = lscs_mainwindow_layout( win );
     Q_ASSERT( layout != nullptr );
 
     if ( layout->pluggingWidget != nullptr )
@@ -213,7 +213,7 @@ void QToolBarPrivate::startDrag( bool moving )
     QMainWindow *win = qobject_cast<QMainWindow *>( q->parent() );
     Q_ASSERT( win != nullptr );
 
-    QMainWindowLayout *layout = qt_mainwindow_layout( win );
+    QMainWindowLayout *layout = lscs_mainwindow_layout( win );
     Q_ASSERT( layout != nullptr );
 
     if ( !moving )
@@ -235,7 +235,7 @@ void QToolBarPrivate::endDrag()
 
     if ( state->dragging )
     {
-        QMainWindowLayout *layout = qt_mainwindow_layout( qobject_cast<QMainWindow *>( q->parentWidget() ) );
+        QMainWindowLayout *layout = lscs_mainwindow_layout( qobject_cast<QMainWindow *>( q->parentWidget() ) );
         Q_ASSERT( layout != nullptr );
 
         if ( !layout->plug( state->widgetItem ) )
@@ -362,7 +362,7 @@ bool QToolBarPrivate::mouseMoveEvent( QMouseEvent *event )
         return true;
     }
 
-    QMainWindowLayout *layout = qt_mainwindow_layout( win );
+    QMainWindowLayout *layout = lscs_mainwindow_layout( win );
     Q_ASSERT( layout != nullptr );
 
     if ( layout->pluggingWidget == nullptr
@@ -982,7 +982,7 @@ bool QToolBar::event( QEvent *event )
 
         case QEvent::HoverMove:
         {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
             QHoverEvent *e = static_cast<QHoverEvent *>( event );
             QStyleOptionToolBar opt;
             initStyleOption( &opt );
@@ -1068,7 +1068,7 @@ QWidget *QToolBar::widgetForAction( QAction *action ) const
     return d->layout->itemAt( index )->widget();
 }
 
-extern QMainWindowLayout *qt_mainwindow_layout( const QMainWindow *window );
+extern QMainWindowLayout *lscs_mainwindow_layout( const QMainWindow *window );
 
 /*!
     \internal
@@ -1105,7 +1105,7 @@ void QToolBar::initStyleOption( QStyleOptionToolBar *option ) const
         return;
     }
 
-    QMainWindowLayout *layout = qt_mainwindow_layout( mainWindow );
+    QMainWindowLayout *layout = lscs_mainwindow_layout( mainWindow );
     Q_ASSERT_X( layout != nullptr, "QToolBar::initStyleOption()",
                 "QMainWindow->layout() != QMainWindowLayout" );
 
@@ -1135,4 +1135,4 @@ bool QToolBar::lscs_isMainWindow() const
     return ( qobject_cast<QMainWindow *>( parentWidget() ) != nullptr );
 }
 
-#endif  // QT_NO_TOOLBAR
+#endif  // LSCS_NO_TOOLBAR

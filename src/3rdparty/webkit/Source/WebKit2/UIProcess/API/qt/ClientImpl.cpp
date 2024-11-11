@@ -52,7 +52,7 @@ static void loadFinished( WKFrameRef frame, const void *clientInfo, bool ok )
     QWKPagePrivate::get( toQWKPage( clientInfo ) )->updateNavigationActions();
 }
 
-void qt_wk_didStartProvisionalLoadForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
+void lscs_wk_didStartProvisionalLoadForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
 {
     if ( !WKFrameIsMainFrame( frame ) )
     {
@@ -63,18 +63,18 @@ void qt_wk_didStartProvisionalLoadForFrame( WKPageRef page, WKFrameRef frame, WK
     QWKPagePrivate::get( toQWKPage( clientInfo ) )->updateNavigationActions();
 }
 
-void qt_wk_didReceiveServerRedirectForProvisionalLoadForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData,
+void lscs_wk_didReceiveServerRedirectForProvisionalLoadForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData,
         const void *clientInfo )
 {
 }
 
-void qt_wk_didFailProvisionalLoadWithErrorForFrame( WKPageRef page, WKFrameRef frame, WKErrorRef error, WKTypeRef userData,
+void lscs_wk_didFailProvisionalLoadWithErrorForFrame( WKPageRef page, WKFrameRef frame, WKErrorRef error, WKTypeRef userData,
         const void *clientInfo )
 {
     loadFinished( frame, clientInfo, false );
 }
 
-void qt_wk_didCommitLoadForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
+void lscs_wk_didCommitLoadForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
 {
     if ( !WKFrameIsMainFrame( frame ) )
     {
@@ -88,23 +88,23 @@ void qt_wk_didCommitLoadForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef us
     QWKPagePrivate::get( toQWKPage( clientInfo ) )->updateNavigationActions();
 }
 
-void qt_wk_didFinishDocumentLoadForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
+void lscs_wk_didFinishDocumentLoadForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
 {
     // FIXME: Implement (bug #44934)
 }
 
-void qt_wk_didFinishLoadForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
+void lscs_wk_didFinishLoadForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
 {
     loadFinished( frame, clientInfo, true );
 }
 
-void qt_wk_didFailLoadWithErrorForFrame( WKPageRef page, WKFrameRef frame, WKErrorRef error, WKTypeRef userData,
+void lscs_wk_didFailLoadWithErrorForFrame( WKPageRef page, WKFrameRef frame, WKErrorRef error, WKTypeRef userData,
         const void *clientInfo )
 {
     loadFinished( frame, clientInfo, false );
 }
 
-void qt_wk_didReceiveTitleForFrame( WKPageRef page, WKStringRef title, WKFrameRef frame, WKTypeRef userData,
+void lscs_wk_didReceiveTitleForFrame( WKPageRef page, WKStringRef title, WKFrameRef frame, WKTypeRef userData,
                                     const void *clientInfo )
 {
     if ( !WKFrameIsMainFrame( frame ) )
@@ -116,7 +116,7 @@ void qt_wk_didReceiveTitleForFrame( WKPageRef page, WKStringRef title, WKFrameRe
     emit toQWKPage( clientInfo )->titleChanged( qTitle );
 }
 
-void qt_wk_didFirstLayoutForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
+void lscs_wk_didFirstLayoutForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
 {
     if ( !WKFrameIsMainFrame( frame ) )
     {
@@ -126,12 +126,12 @@ void qt_wk_didFirstLayoutForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef u
     emit toQWKPage( clientInfo )->initialLayoutCompleted();
 }
 
-void qt_wk_didRemoveFrameFromHierarchy( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
+void lscs_wk_didRemoveFrameFromHierarchy( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
 {
     // FIXME: Implement (bug #46432)
 }
 
-void qt_wk_didFirstVisuallyNonEmptyLayoutForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
+void lscs_wk_didFirstVisuallyNonEmptyLayoutForFrame( WKPageRef page, WKFrameRef frame, WKTypeRef userData, const void *clientInfo )
 {
     if ( !WKFrameIsMainFrame( frame ) )
     {
@@ -141,30 +141,30 @@ void qt_wk_didFirstVisuallyNonEmptyLayoutForFrame( WKPageRef page, WKFrameRef fr
     // FIXME: emit toWKView(clientInfo)->initialLayoutCompleted();
 }
 
-void qt_wk_didStartProgress( WKPageRef page, const void *clientInfo )
+void lscs_wk_didStartProgress( WKPageRef page, const void *clientInfo )
 {
     emit toQWKPage( clientInfo )->loadProgress( 0 );
 }
 
-void qt_wk_didChangeProgress( WKPageRef page, const void *clientInfo )
+void lscs_wk_didChangeProgress( WKPageRef page, const void *clientInfo )
 {
     emit toQWKPage( clientInfo )->loadProgress( WKPageGetEstimatedProgress( page ) * 100 );
 }
 
-void qt_wk_didFinishProgress( WKPageRef page, const void *clientInfo )
+void lscs_wk_didFinishProgress( WKPageRef page, const void *clientInfo )
 {
     emit toQWKPage( clientInfo )->loadProgress( 100 );
 }
 
-void qt_wk_didBecomeUnresponsive( WKPageRef page, const void *clientInfo )
+void lscs_wk_didBecomeUnresponsive( WKPageRef page, const void *clientInfo )
 {
 }
 
-void qt_wk_didBecomeResponsive( WKPageRef page, const void *clientInfo )
+void lscs_wk_didBecomeResponsive( WKPageRef page, const void *clientInfo )
 {
 }
 
-WKPageRef qt_wk_createNewPage( WKPageRef page, WKDictionaryRef features, WKEventModifiers modifiers,
+WKPageRef lscs_wk_createNewPage( WKPageRef page, WKDictionaryRef features, WKEventModifiers modifiers,
                                WKEventMouseButton mouseButton, const void *clientInfo )
 {
     QWKPage *wkPage = toQWKPage( clientInfo );
@@ -185,31 +185,31 @@ WKPageRef qt_wk_createNewPage( WKPageRef page, WKDictionaryRef features, WKEvent
     return 0;
 }
 
-void qt_wk_showPage( WKPageRef page, const void *clientInfo )
+void lscs_wk_showPage( WKPageRef page, const void *clientInfo )
 {
 }
 
-void qt_wk_close( WKPageRef page, const void *clientInfo )
+void lscs_wk_close( WKPageRef page, const void *clientInfo )
 {
     emit toQWKPage( clientInfo )->windowCloseRequested();
 }
 
-void qt_wk_takeFocus( WKPageRef page, WKFocusDirection direction, const void *clientInfo )
+void lscs_wk_takeFocus( WKPageRef page, WKFocusDirection direction, const void *clientInfo )
 {
     emit toQWKPage( clientInfo )->focusNextPrevChild( direction == kWKFocusDirectionForward );
 }
 
-void qt_wk_runJavaScriptAlert( WKPageRef page, WKStringRef alertText, WKFrameRef frame, const void *clientInfo )
+void lscs_wk_runJavaScriptAlert( WKPageRef page, WKStringRef alertText, WKFrameRef frame, const void *clientInfo )
 {
 }
 
-void qt_wk_setStatusText( WKPageRef page, WKStringRef text, const void *clientInfo )
+void lscs_wk_setStatusText( WKPageRef page, WKStringRef text, const void *clientInfo )
 {
     QString qText = WKStringCopyQString( text );
     emit toQWKPage( clientInfo )->statusBarMessage( qText );
 }
 
-void qt_wk_didSameDocumentNavigationForFrame( WKPageRef page, WKFrameRef frame, WKSameDocumentNavigationType type,
+void lscs_wk_didSameDocumentNavigationForFrame( WKPageRef page, WKFrameRef frame, WKSameDocumentNavigationType type,
         WKTypeRef userData, const void *clientInfo )
 {
     WebFrameProxy *wkframe = toImpl( frame );

@@ -89,6 +89,6 @@ public:
     bool sync() const;
 };
 
-QString qt_mac_get_pasteboardString( PasteboardRef paste );
+QString lscs_mac_get_pasteboardString( PasteboardRef paste );
 
 #endif

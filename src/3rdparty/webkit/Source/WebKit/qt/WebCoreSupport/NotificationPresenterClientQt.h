@@ -74,7 +74,7 @@ public :
     WEB_LSCS_SLOT_2( notificationClicked )
 
 public:
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
     OwnPtr<QSystemTrayIcon> m_notificationIcon;
 #endif
 

@@ -23,7 +23,7 @@
 
 #include <qsvgiohandler.h>
 
-#ifndef QT_NO_SVGRENDERER
+#ifndef LSCS_NO_SVGRENDERER
 
 #include <qbuffer.h>
 #include <qdebug.h>

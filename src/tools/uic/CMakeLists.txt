@@ -2,8 +2,8 @@ add_executable(uic${TOOLS_SUFFIX} "")
 add_executable(LsCs::uic ALIAS uic${TOOLS_SUFFIX})
 
 add_definitions(
-   -DQT_UIC
-   -DQT_UIC_CPP_GENERATOR
+   -DLSCS_UIC
+   -DLSCS_UIC_CPP_GENERATOR
 )
 
 set(EXTRA_UIC_LIBS
@@ -65,7 +65,11 @@ if(CMAKE_SYSTEM_NAME MATCHES "DARWIN")
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-   list(APPEND EXTRA_UIC_LDFLAGS  '-Wl,-rpath,$ORIGIN/../lib')
+  if(BUILDING_DEBIAN OR BUILDING_RPM)
+    # only use RPATH for local build.
+  else()
+    list(APPEND EXTRA_UIC_LDFLAGS  '-Wl,-rpath,$ORIGIN/../lib')
+  endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD)")

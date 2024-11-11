@@ -29,7 +29,7 @@
 #include <qwidget_p.h>
 #include <qgesturerecognizer.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 class QBasicTimer;
 class QGraphicsObject;
@@ -48,7 +48,7 @@ public:
     bool filterEvent( QWidget *receiver, QEvent *event );
     bool filterEvent( QObject *receiver, QEvent *event );
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
     bool filterEvent( QGraphicsObject *receiver, QEvent *event );
 #endif
 
@@ -121,6 +121,6 @@ private:
     void cancelGesturesForChildren( QGesture *originatingGesture );
 };
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
 #endif

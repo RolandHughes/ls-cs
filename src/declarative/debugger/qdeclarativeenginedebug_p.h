@@ -30,7 +30,7 @@
 #include <qdeclarativeglobal_p.h>
 #include <QScopedPointer>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeDebugConnection;
 class QDeclarativeDebugWatch;
@@ -367,7 +367,7 @@ private:
     QVariant m_result;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QDeclarativeDebugEngineReference )
 Q_DECLARE_METATYPE( QDeclarativeDebugObjectReference )

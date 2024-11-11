@@ -24,9 +24,9 @@
 #include "qdbusintrospection_p.h"
 #include "qdbusxmlparser_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \class QDBusIntrospection
@@ -414,6 +414,6 @@ QDBusIntrospection::ObjectTree QDBusIntrospection::parseObjectTree( const QStrin
     return *retval;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

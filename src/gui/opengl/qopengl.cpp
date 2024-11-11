@@ -39,8 +39,8 @@
 
 #include <set>
 
-#if defined(QT_OPENGL_3)
-typedef const GLubyte *( QOPENGLF_APIENTRYP qt_glGetStringi )( GLenum, GLuint );
+#if defined(LSCS_OPENGL_3)
+typedef const GLubyte *( QOPENGLF_APIENTRYP lscs_glGetStringi )( GLenum, GLuint );
 #endif
 
 QOpenGLExtensionMatcher::QOpenGLExtensionMatcher()
@@ -62,14 +62,14 @@ QOpenGLExtensionMatcher::QOpenGLExtensionMatcher()
     }
     else
     {
-#ifdef QT_OPENGL_3
+#ifdef LSCS_OPENGL_3
 
         // clear error state
         while ( funcs->glGetError() ) {}
 
         if ( ctx )
         {
-            qt_glGetStringi glGetStringi = ( qt_glGetStringi )ctx->getProcAddress( "glGetStringi" );
+            lscs_glGetStringi glGetStringi = ( lscs_glGetStringi )ctx->getProcAddress( "glGetStringi" );
 
             if ( !glGetStringi )
             {
@@ -86,7 +86,7 @@ QOpenGLExtensionMatcher::QOpenGLExtensionMatcher()
             }
         }
 
-#endif // QT_OPENGL_3
+#endif // LSCS_OPENGL_3
     }
 }
 

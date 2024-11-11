@@ -28,9 +28,9 @@
 #include <QtCore/qstring.h>
 #include <QtCore/qobject.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusMessage;
 class QDBusConnection;
@@ -52,8 +52,8 @@ private:
     Q_DISABLE_COPY( QDBusVirtualObject )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

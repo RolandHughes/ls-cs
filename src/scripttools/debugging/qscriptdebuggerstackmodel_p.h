@@ -27,7 +27,7 @@
 #include <QtCore/qabstractitemmodel.h>
 #include <QtCore/qlist.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptContextInfo;
 class QScriptDebuggerStackModelPrivate;
@@ -51,6 +51,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerStackModel )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

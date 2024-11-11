@@ -247,7 +247,7 @@ void ScrollbarThemeQt::invalidatePart( Scrollbar *scrollbar, ScrollbarPart )
 
 int ScrollbarThemeQt::scrollbarThickness( ScrollbarControlSize controlSize )
 {
-#if USE(QT_MOBILE_THEME)
+#if USE(LSCS_MOBILE_THEME)
     return 0;
 #endif
     QStyleOptionSlider o;

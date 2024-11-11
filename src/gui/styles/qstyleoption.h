@@ -35,7 +35,7 @@
 #include <qrubberband.h>
 #include <qframe.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 #   include <qabstractitemmodel.h>
 #endif
 
@@ -136,7 +136,7 @@ protected:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QStyleOptionFrame::FrameFeatures )
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
 class Q_GUI_EXPORT QStyleOptionTabWidgetFrame : public QStyleOption
 {
 public:
@@ -168,7 +168,7 @@ protected:
 
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 class Q_GUI_EXPORT QStyleOptionTabBarBase : public QStyleOption
 {
 public:
@@ -261,7 +261,7 @@ protected:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QStyleOptionButton::ButtonFeatures )
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 class Q_GUI_EXPORT QStyleOptionTab : public QStyleOption
 {
 public:
@@ -308,9 +308,9 @@ protected:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QStyleOptionTab::CornerWidgets )
 
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 class Q_GUI_EXPORT QStyleOptionToolBar : public QStyleOption
 {
@@ -343,7 +343,7 @@ protected:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QStyleOptionToolBar::ToolBarFeatures )
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 
 class Q_GUI_EXPORT QStyleOptionProgressBar : public QStyleOption
 {
@@ -435,7 +435,7 @@ protected:
     QStyleOptionDockWidget( int version );
 };
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 class Q_GUI_EXPORT QStyleOptionViewItem : public QStyleOption
 {
@@ -521,7 +521,7 @@ protected:
     QStyleOptionToolBox( int version );
 };
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 class Q_GUI_EXPORT QStyleOptionRubberBand : public QStyleOption
 {
 public:
@@ -543,7 +543,7 @@ public:
 protected:
     QStyleOptionRubberBand( int version );
 };
-#endif // QT_NO_RUBBERBAND
+#endif // LSCS_NO_RUBBERBAND
 
 // complex style options
 class Q_GUI_EXPORT QStyleOptionComplex : public QStyleOption
@@ -565,7 +565,7 @@ public:
     QStyleOptionComplex &operator=( const QStyleOptionComplex &other ) = default;
 };
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 class Q_GUI_EXPORT QStyleOptionSlider : public QStyleOptionComplex
 {
 public:
@@ -597,9 +597,9 @@ public:
 protected:
     QStyleOptionSlider( int version );
 };
-#endif // QT_NO_SLIDER
+#endif // LSCS_NO_SLIDER
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 class Q_GUI_EXPORT QStyleOptionSpinBox : public QStyleOptionComplex
 {
 public:

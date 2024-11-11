@@ -157,7 +157,7 @@ QVariantMap QWindowsNativeInterface::windowProperties( QPlatformWindow *window )
 
 void *QWindowsNativeInterface::nativeResourceForIntegration( const QByteArray &resource )
 {
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
     if ( resourceType( resource ) == GlHandleType )
     {
@@ -172,7 +172,7 @@ void *QWindowsNativeInterface::nativeResourceForIntegration( const QByteArray &r
     return nullptr;
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 void *QWindowsNativeInterface::nativeResourceForContext( const QByteArray &resource, QOpenGLContext *context )
 {
     if ( ! context || ! context->handle() )

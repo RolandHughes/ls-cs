@@ -26,7 +26,7 @@
 
 #include <qdeclarativeitem.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 //### set component root as focusscope
 class QDeclarativeFocusScope : public QDeclarativeItem
@@ -39,7 +39,7 @@ public:
     virtual ~QDeclarativeFocusScope();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeFocusScope )
 

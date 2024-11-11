@@ -221,5 +221,9 @@ int runUic( int argc, char *argv[] )
 
 int main( int argc, char *argv[] )
 {
+#if defined(LSCS_PACKAGE_BUILD)
+    QCoreApplication::setAttribute( Qt::AA_UseSystemConf, true);
+#endif
+
     return runUic( argc, argv );
 }

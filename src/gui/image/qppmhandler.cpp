@@ -23,7 +23,7 @@
 
 #include <qppmhandler_p.h>
 
-#ifndef QT_NO_IMAGEFORMAT_PPM
+#ifndef LSCS_NO_IMAGEFORMAT_PPM
 
 #include <qimage.h>
 #include <qvariant.h>
@@ -774,4 +774,4 @@ QString QPpmHandler::name() const
 }
 
 
-#endif // QT_NO_IMAGEFORMAT_PPM
+#endif // LSCS_NO_IMAGEFORMAT_PPM

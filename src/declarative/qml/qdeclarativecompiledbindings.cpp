@@ -38,7 +38,7 @@
 #include <qdeclarativefastproperties_p.h>
 #include <qdeclarativedebugtrace_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 DEFINE_BOOL_CONFIG_OPTION( qmlExperimental, QML_EXPERIMENTAL );
 DEFINE_BOOL_CONFIG_OPTION( qmlDisableOptimizer, QML_DISABLE_OPTIMIZER );
@@ -454,7 +454,7 @@ void QDeclarativeCompiledBindingsPrivate::Binding::disconnect( DisconnectMode di
     }
 }
 
-int QDeclarativeCompiledBindings::qt_metacall( QMetaObject::Call c, int id, void ** )
+int QDeclarativeCompiledBindings::lscs_metacall( QMetaObject::Call c, int id, void ** )
 {
     Q_D( QDeclarativeCompiledBindings );
 
@@ -3979,4 +3979,4 @@ QByteArray QDeclarativeBindingCompiler::program() const
 
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

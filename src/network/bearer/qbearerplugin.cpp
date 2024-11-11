@@ -23,7 +23,7 @@
 
 #include <qbearerplugin_p.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 QBearerEnginePlugin::QBearerEnginePlugin( QObject *parent )
     : QObject( parent )

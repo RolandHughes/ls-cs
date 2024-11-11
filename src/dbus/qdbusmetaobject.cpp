@@ -35,9 +35,9 @@
 #include "qdbusintrospection_p.h"
 #include "qdbusabstractinterface_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusMetaObjectGenerator
 {
@@ -157,7 +157,7 @@ QDBusMetaObjectGenerator::QDBusMetaObjectGenerator( const QString &interfaceName
     }
 }
 
-Q_DBUS_EXPORT bool qt_dbus_metaobject_skip_annotations = false;
+Q_DBUS_EXPORT bool lscs_dbus_metaobject_skip_annotations = false;
 
 QDBusMetaObjectGenerator::Type QDBusMetaObjectGenerator::findType( const QByteArray &signature,
         const QDBusIntrospection::Annotations &annotations,
@@ -168,7 +168,7 @@ QDBusMetaObjectGenerator::Type QDBusMetaObjectGenerator::findType( const QByteAr
 
     int type = QDBusMetaType::signatureToType( signature );
 
-    if ( type == QVariant::Invalid && !qt_dbus_metaobject_skip_annotations )
+    if ( type == QVariant::Invalid && !lscs_dbus_metaobject_skip_annotations )
     {
         // it's not a type normally handled by our meta type system
         // it must contain an annotation
@@ -805,6 +805,6 @@ int QDBusMetaObject::propertyMetaType( int id ) const
     return 0;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

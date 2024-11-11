@@ -72,7 +72,7 @@ inline RegExp::RegExp( JSGlobalData *globalData, const UString &pattern, const U
 {
     // NOTE: The global flag is handled on a case-by-case basis by functions like
     // String::match and RegExpObject::match.
-#ifndef QT_BUILD_SCRIPT_LIB
+#ifndef LSCS_BUILD_SCRIPT_LIB
     if ( flags.find( 'g' ) != -1 )
     {
         m_flagBits |= Global;

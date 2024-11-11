@@ -35,7 +35,7 @@
 #include <qprinter.h>
 #include <qprintengine.h>
 
-#if ! defined(QT_NO_PRINTER) && ! defined(QT_NO_CUPS)
+#if ! defined(LSCS_NO_PRINTER) && ! defined(LSCS_NO_CUPS)
 
 // internal
 QCupsJobWidget::QCupsJobWidget( QWidget *parent )
@@ -190,5 +190,5 @@ QCUPSSupport::BannerPage QCupsJobWidget::endBannerPage() const
     return m_ui.endBannerPageCombo->itemData( m_ui.endBannerPageCombo->currentIndex() ).value<QCUPSSupport::BannerPage>();
 }
 
-#endif // QT_NO_PRINTER / QT_NO_CUPS
+#endif // LSCS_NO_PRINTER / LSCS_NO_CUPS
 

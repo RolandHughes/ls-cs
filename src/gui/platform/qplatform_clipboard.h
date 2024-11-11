@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
 #include <qclipboard.h>
 
@@ -42,6 +42,6 @@ public:
     void emitChanged( QClipboard::Mode mode );
 };
 
-#endif // QT_NO_CLIPBOARD
+#endif // LSCS_NO_CLIPBOARD
 
 #endif

@@ -258,7 +258,7 @@ public:
     void getSizeHints( MINMAXINFO *mmi ) const;
     bool handleNonClientHitTest( const QPoint &globalPos, LRESULT *result ) const;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     CursorHandlePtr cursor() const
     {
         return m_cursor;
@@ -332,7 +332,7 @@ private:
     Qt::WindowState m_windowState;
     qreal m_opacity;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     CursorHandlePtr m_cursor;
 #endif
 

@@ -23,7 +23,7 @@
 
 #include <qpictureformatplugin.h>
 
-#if ! defined(QT_NO_PICTURE)
+#if ! defined(LSCS_NO_PICTURE)
 
 #include <qpicture.h>
 
@@ -55,6 +55,6 @@ bool QPictureFormatPlugin::savePicture( const QString &format, const QString &fi
     return false;
 }
 
-#endif // QT_NO_PICTURE
+#endif // LSCS_NO_PICTURE
 
 

@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 #include <qgraphicslayout.h>
 #include <qstyle.h>
@@ -135,6 +135,6 @@ public:
     bool activated;
 };
 
-#endif //QT_NO_GRAPHICSVIEW
+#endif //LSCS_NO_GRAPHICSVIEW
 
 #endif

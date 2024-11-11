@@ -46,7 +46,7 @@ Q_DECLARE_METATYPE( QScriptValue )
 # endif
 #endif
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct ObjectData : public QScriptDeclarativeClass::Object
 {
@@ -1686,5 +1686,5 @@ QDeclarativePropertyCache::Data *QDeclarativeObjectMethodScriptClass::relatedMet
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

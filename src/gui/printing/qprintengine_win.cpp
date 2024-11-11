@@ -21,7 +21,7 @@
 *
 ***********************************************************************/
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 #include <qprintengine_win_p.h>
 
@@ -31,7 +31,7 @@
 #include <qplatform_pixmap.h>
 #include <qplatform_printersupport.h>
 #include <qplatform_printplugin.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qvector.h>
 
 #include <qfont_p.h>
@@ -43,9 +43,9 @@
 
 #include <limits.h>
 
-Q_GUI_EXPORT HBITMAP qt_pixmapToWinHBITMAP( const QPixmap &p, int hbitmapFormat = 0 );
-extern QPainterPath qt_regionToPath( const QRegion &region );
-extern QMarginsF qt_convertMargins( const QMarginsF &margins, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits );
+Q_GUI_EXPORT HBITMAP lscs_pixmapToWinHBITMAP( const QPixmap &p, int hbitmapFormat = 0 );
+extern QPainterPath lscs_regionToPath( const QRegion &region );
+extern QMarginsF lscs_convertMargins( const QMarginsF &margins, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits );
 
 static void draw_text_item_win( const QPointF &_pos, const QTextItemInt &ti, HDC hdc,
                                 const QTransform &xform, const QPointF &topLeft );
@@ -452,7 +452,7 @@ void QWin32PrintEngine::updateState( const QPaintEngineState &state )
     if ( state.state() & DirtyClipRegion )
     {
         QRegion clipRegion = state.clipRegion();
-        QPainterPath clipPath = qt_regionToPath( clipRegion );
+        QPainterPath clipPath = lscs_regionToPath( clipRegion );
         updateClipPath( clipPath, state.clipOperation() );
     }
 }
@@ -495,7 +495,7 @@ void QWin32PrintEngine::updateClipPath( const QPainterPath &clipPath, Qt::ClipOp
         }
     }
 
-    QPainterPath aclip = qt_regionToPath( alphaClipping() );
+    QPainterPath aclip = lscs_regionToPath( alphaClipping() );
 
     if ( !aclip.isEmpty() )
     {
@@ -609,7 +609,7 @@ void QWin32PrintEngine::drawPixmap( const QRectF &targetRect, const QPixmap &ori
             QPainter painter( &img );
             painter.drawPixmap( 0, 0, pixmap, tileSize * x, tileSize * y, imgw, imgh );
             QPixmap p = QPixmap::fromImage( img );
-            HBITMAP hbitmap = qt_pixmapToWinHBITMAP( p, HBitmapNoAlpha );
+            HBITMAP hbitmap = lscs_pixmapToWinHBITMAP( p, HBitmapNoAlpha );
             HDC display_dc = GetDC( nullptr );
             HDC hbitmap_hdc = CreateCompatibleDC( display_dc );
             HGDIOBJ null_bitmap = SelectObject( hbitmap_hdc, hbitmap );
@@ -651,7 +651,7 @@ void QWin32PrintEngine::drawTiledPixmap( const QRectF &r, const QPixmap &pm, con
         int dc_state = SaveDC( d->hdc );
 
         HDC display_dc = GetDC( nullptr );
-        HBITMAP hbitmap = qt_pixmapToWinHBITMAP( pm, HBitmapNoAlpha );
+        HBITMAP hbitmap = lscs_pixmapToWinHBITMAP( pm, HBitmapNoAlpha );
         HDC hbitmap_hdc = CreateCompatibleDC( display_dc );
         HGDIOBJ null_bitmap = SelectObject( hbitmap_hdc, hbitmap );
 
@@ -838,7 +838,7 @@ void QWin32PrintEnginePrivate::strokePath( const QPainterPath &path, const QColo
 
     QPainterPath stroke;
     qreal width = pen.widthF();
-    bool cosmetic = qt_pen_is_cosmetic( pen, q->state->renderHints() );
+    bool cosmetic = lscs_pen_is_cosmetic( pen, q->state->renderHints() );
 
     if ( pen.style() == Qt::SolidLine && ( cosmetic || matrix.type() < QTransform::TxScale ) )
     {
@@ -1858,7 +1858,7 @@ void QWin32PrintEnginePrivate::setPageSize( const QPageSize &pageSize )
     const QPageSize usePageSize = printerPageSize.isValid() ? printerPageSize : pageSize;
 
     const QMarginsF printable = m_printDevice.printableMargins( usePageSize, m_pageLayout.orientation(), resolution );
-    m_pageLayout.setPageSize( usePageSize, qt_convertMargins( printable, QPageSize::Unit::Point, m_pageLayout.units() ) );
+    m_pageLayout.setPageSize( usePageSize, lscs_convertMargins( printable, QPageSize::Unit::Point, m_pageLayout.units() ) );
 
     // Setup if Windows custom size, i.e. not a known Windows ID
     if ( printerPageSize.isValid() )
@@ -2054,4 +2054,4 @@ static void draw_text_item_win( const QPointF &pos, const QTextItemInt &ti, HDC 
 LSCS_DECLARE_METATYPE( HFONT )
 LSCS_DECLARE_METATYPE( LOGFONT )
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER

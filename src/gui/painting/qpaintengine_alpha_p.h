@@ -24,7 +24,7 @@
 #ifndef QPAINTENGINE_ALPHA_P_H
 #define QPAINTENGINE_ALPHA_P_H
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 #include <qpaintengine_p.h>
 
@@ -108,6 +108,6 @@ public:
     void resetState( QPainter *p );
 };
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 #endif

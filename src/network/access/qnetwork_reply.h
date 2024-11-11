@@ -122,7 +122,7 @@ public:
     // attributes
     QVariant attribute( QNetworkRequest::Attribute code ) const;
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     QSslConfiguration sslConfiguration() const;
     void setSslConfiguration( const QSslConfiguration &configuration );
     void ignoreSslErrors( const QList<QSslError> &errors );
@@ -143,7 +143,7 @@ public:
     NET_LSCS_SIGNAL_1( Public, void error( QNetworkReply::NetworkError code ) )
     NET_LSCS_SIGNAL_OVERLOAD( error, ( QNetworkReply::NetworkError ), code )
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     NET_LSCS_SIGNAL_1( Public, void encrypted() )
     NET_LSCS_SIGNAL_2( encrypted )
 

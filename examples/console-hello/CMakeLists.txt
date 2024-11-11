@@ -28,7 +28,6 @@ find_package(LsCs REQUIRED)
 # line out and uncomment one or more of the lines
 # assigning a value to CMAKE_INSTALL_RPATH.
 #
-#set(CMAKE_SKIP_INSTALL_RPATH TRUE)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # file locations for installing
@@ -69,15 +68,12 @@ set(CPACK_PACKAGE_VERSION_MINOR ${BUILD_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${BUILD_MICRO})
 
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Cross platform Hello World sample")
-#set(CPACK_PACKAGE_DESCRIPTION_FILE    "${CMAKE_SOURCE_DIR}/README.md")
 
 set(CPACK_PACKAGE_INSTALL_DIRECTORY   ${CMAKE_INSTALL_PREFIX})
 set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY  OFF)
 
 # mac osx only
 set(CPACK_BUNDLE_NAME    console-hello)
-#set(CPACK_BUNDLE_ICON    "${CMAKE_SOURCE_DIR}/resources/diamond.icns")
-#set(CPACK_BUNDLE_PLIST   "${CMAKE_SOURCE_DIR}/resources/Info.plist")
 
 include(CPack)
 

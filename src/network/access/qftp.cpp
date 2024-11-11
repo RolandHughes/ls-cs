@@ -25,7 +25,7 @@
 
 #include <qabstractsocket.h>
 
-#ifndef QT_NO_FTP
+#ifndef LSCS_NO_FTP
 
 #include <qcoreapplication.h>
 #include <qfileinfo.h>
@@ -348,7 +348,7 @@ void QFtpDTP::connectToHost( const QString &host, quint16 port )
 
     socket = new QTcpSocket( this );
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     // copy network session down to the socket
     socket->setProperty( "_q_networksession", property( "_q_networksession" ) );
 #endif
@@ -367,7 +367,7 @@ void QFtpDTP::connectToHost( const QString &host, quint16 port )
 int QFtpDTP::setupListener( const QHostAddress &address )
 {
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     // copy network session down to the socket
     listener.setProperty( "_q_networksession", property( "_q_networksession" ) );
 #endif
@@ -977,7 +977,7 @@ void QFtpPI::connectToHost( const QString &host, quint16 port )
 {
     emit connectState( QFtp::HostLookup );
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     //copy network session down to the socket & DTP
     commandSocket.setProperty( "_q_networksession", property( "_q_networksession" ) );
     dtp.setProperty( "_q_networksession", property( "_q_networksession" ) );
@@ -1930,7 +1930,7 @@ void QFtpPrivate::_q_startNextCommand()
     else if ( c->command == QFtp::ConnectToHost )
     {
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
         //copy network session down to the PI
         pi.setProperty( "_q_networksession", q->property( "_q_networksession" ) );
 #endif
@@ -2177,4 +2177,4 @@ void QFtp::_q_piFtpReply( int code, const QString &textMsg )
     d->_q_piFtpReply( code, textMsg );
 }
 
-#endif // QT_NO_FTP
+#endif // LSCS_NO_FTP

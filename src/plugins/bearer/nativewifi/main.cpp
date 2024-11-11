@@ -27,9 +27,9 @@
 #include <qsystemlibrary_p.h>
 #include <qbearerplugin_p.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 static void resolveLibrary()
 {
@@ -120,6 +120,6 @@ QBearerEngine *QNativeWifiEnginePlugin::create( const QString &key ) const
 Q_EXPORT_STATIC_PLUGIN( QNativeWifiEnginePlugin )
 Q_EXPORT_PLUGIN2( qnativewifibearer, QNativeWifiEnginePlugin )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT

@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#  if defined(QT_BUILD_XCB_PLUGIN)
+#  if defined(LSCS_BUILD_XCB_PLUGIN)
 #    define Q_XCB_EXPORT Q_DECL_EXPORT
 #  else
 #    define Q_XCB_EXPORT Q_DECL_IMPORT

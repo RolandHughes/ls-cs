@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#if defined(QT_OPENGL_ES_2)
+#if defined(LSCS_OPENGL_ES_2)
 
 #include <qopengl_versionfunctions.h>
 #include <qopenglcontext.h>
@@ -930,6 +930,6 @@ inline void QOpenGLFunctions_ES2::glViewport( GLint x, GLint y, GLsizei width, G
 }
 
 
-#endif // QT_OPENGL_ES_2
+#endif // LSCS_OPENGL_ES_2
 
 #endif

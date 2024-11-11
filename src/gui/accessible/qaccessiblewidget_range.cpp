@@ -38,9 +38,9 @@
 
 #include <qaccessiblewidget_simple_p.h> // let spinbox use line edit's interface
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 QAccessibleAbstractSpinBox::QAccessibleAbstractSpinBox( QWidget *w )
     : QAccessibleWidget( w, QAccessible::SpinBox ), lineEdit( nullptr )
 {
@@ -275,10 +275,10 @@ QString QAccessibleDoubleSpinBox::text( QAccessible::Text textType ) const
     return QAccessibleWidget::text( textType );
 }
 
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX
 
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
 QAccessibleScrollBar::QAccessibleScrollBar( QWidget *w )
     : QAccessibleAbstractSlider( w, QAccessible::ScrollBar )
@@ -307,10 +307,10 @@ QString QAccessibleScrollBar::text( QAccessible::Text t ) const
     return QAccessibleAbstractSlider::text( t );
 }
 
-#endif // QT_NO_SCROLLBAR
+#endif // LSCS_NO_SCROLLBAR
 
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
 QAccessibleSlider::QAccessibleSlider( QWidget *w )
     : QAccessibleAbstractSlider( w )
@@ -385,10 +385,10 @@ QAbstractSlider *QAccessibleAbstractSlider::abstractSlider() const
     return static_cast<QAbstractSlider *>( object() );
 }
 
-#endif // QT_NO_SLIDER
+#endif // LSCS_NO_SLIDER
 
 
-#ifndef QT_NO_DIAL
+#ifndef LSCS_NO_DIAL
 
 QAccessibleDial::QAccessibleDial( QWidget *widget )
     : QAccessibleAbstractSlider( widget, QAccessible::Dial )
@@ -416,7 +416,7 @@ QDial *QAccessibleDial::dial() const
 {
     return static_cast<QDial *>( object() );
 }
-#endif // QT_NO_DIAL
+#endif // LSCS_NO_DIAL
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 

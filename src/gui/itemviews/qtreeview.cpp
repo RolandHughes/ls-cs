@@ -23,7 +23,7 @@
 
 #include <qtreeview.h>
 
-#ifndef QT_NO_TREEVIEW
+#ifndef LSCS_NO_TREEVIEW
 
 #include <qapplication.h>
 #include <qdebug.h>
@@ -38,7 +38,7 @@
 #include <qstyle.h>
 #include <qstyleoption.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -1117,7 +1117,7 @@ void QTreeView::timerEvent( QTimerEvent *event )
     QAbstractItemView::timerEvent( event );
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 void QTreeView::dragMoveEvent( QDragMoveEvent *event )
 {
     Q_D( QTreeView );
@@ -1174,7 +1174,7 @@ void QTreeView::paintEvent( QPaintEvent *event )
     d->executePostedLayout();
     QPainter painter( viewport() );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
     if ( d->isAnimating() )
     {
@@ -1188,7 +1188,7 @@ void QTreeView::paintEvent( QPaintEvent *event )
     {
         drawTree( &painter, event->region() );
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
         d->paintDropIndicator( &painter );
 #endif
     }
@@ -2389,7 +2389,7 @@ QModelIndex QTreeView::moveCursor( CursorAction cursorAction, Qt::KeyboardModifi
     {
         case MoveNext:
         case MoveDown:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
             if ( vi == d->viewItems.count() - 1 && QApplication::keypadNavigationEnabled() )
             {
                 return d->model->index( 0, current.column(), d->root );
@@ -2400,7 +2400,7 @@ QModelIndex QTreeView::moveCursor( CursorAction cursorAction, Qt::KeyboardModifi
 
         case MovePrevious:
         case MoveUp:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
             if ( vi == 0 && QApplication::keypadNavigationEnabled() )
             {
                 return d->modelIndex( d->viewItems.count() - 1, current.column() );
@@ -3379,7 +3379,7 @@ void QTreeViewPrivate::initialize()
     header->setDefaultAlignment( Qt::AlignLeft | Qt::AlignVCenter );
     q->setHeader( header );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     animationsEnabled = q->style()->styleHint( QStyle::SH_Widget_Animate, nullptr, q );
     QObject::connect( &animatedOperation, &QVariantAnimation::finished, q, &QTreeView::_q_endAnimatedOperation );
 #endif
@@ -3402,7 +3402,7 @@ void QTreeViewPrivate::expand( int item, bool emitSignal )
         return;
     }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
     if ( emitSignal && animationsEnabled )
     {
@@ -3432,7 +3432,7 @@ void QTreeViewPrivate::expand( int item, bool emitSignal )
     {
         emit q->expanded( index );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
         if ( animationsEnabled )
         {
@@ -3501,7 +3501,7 @@ void QTreeViewPrivate::collapse( int item, bool emitSignal )
         return;   // nothing to do
     }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
     if ( emitSignal && animationsEnabled )
     {
@@ -3534,7 +3534,7 @@ void QTreeViewPrivate::collapse( int item, bool emitSignal )
     {
         emit q->collapsed( modelIndex );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
         if ( animationsEnabled )
         {
@@ -3545,7 +3545,7 @@ void QTreeViewPrivate::collapse( int item, bool emitSignal )
     }
 }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 void QTreeViewPrivate::prepareAnimatedOperation( int item, QVariantAnimation::Direction direction )
 {
     animatedOperation.item = item;
@@ -3681,7 +3681,7 @@ void QTreeViewPrivate::_q_endAnimatedOperation()
     q->updateGeometries();
     viewport->update();
 }
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION
 
 void QTreeViewPrivate::_q_modelAboutToBeReset()
 {
@@ -4687,7 +4687,7 @@ void QTreeView::currentChanged( const QModelIndex &current, const QModelIndex &p
         }
     }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( QAccessible::isActive() && current.isValid() )
     {
@@ -4705,7 +4705,7 @@ void QTreeView::selectionChanged( const QItemSelection &selected, const QItemSel
 {
     QAbstractItemView::selectionChanged( selected, deselected );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( QAccessible::isActive() )
     {
@@ -4745,7 +4745,7 @@ int QTreeView::visualIndex( const QModelIndex &index ) const
     return d->viewIndex( index );
 }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 void QTreeView::_q_endAnimatedOperation()
 {
     Q_D( QTreeView );
@@ -4765,4 +4765,4 @@ void QTreeView::_q_sortIndicatorChanged( int column, Qt::SortOrder order )
     d->_q_sortIndicatorChanged( column, order );
 }
 
-#endif // QT_NO_TREEVIEW
+#endif // LSCS_NO_TREEVIEW

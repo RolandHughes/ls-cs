@@ -27,7 +27,7 @@
 #include <qvariant.h>
 #include <qprinter.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 class Q_GUI_EXPORT QPrintEngine
 {
@@ -86,7 +86,7 @@ public:
 
 };
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 
 

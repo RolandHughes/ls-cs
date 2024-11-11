@@ -130,7 +130,7 @@ GstEncodingProfile *CameraBinAudioEncoder::createProfile()
 void CameraBinAudioEncoder::applySettings( GstElement *encoder )
 {
     GObjectClass *const objectClass = G_OBJECT_GET_CLASS( encoder );
-    const char *const name = qt_gst_element_get_factory_name( encoder );
+    const char *const name = lscs_gst_element_get_factory_name( encoder );
 
     const bool isVorbis = qstrcmp( name, "vorbisenc" ) == 0;
 

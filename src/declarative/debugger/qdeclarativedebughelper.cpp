@@ -29,7 +29,7 @@
 #include <qabstractanimation_p.h>
 #include <qdeclarativeengine_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 QScriptEngine *QDeclarativeDebugHelper::getScriptEngine( QDeclarativeEngine *engine )
 {
@@ -56,4 +56,4 @@ void QDeclarativeDebugHelper::enableDebugging()
 #endif
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

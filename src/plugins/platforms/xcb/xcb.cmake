@@ -5,11 +5,31 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
    add_library(LsCsGuiXcb MODULE "")
    add_library(LsCs::LsCsGuiXcb ALIAS LsCsGuiXcb)
 
-   set_target_properties(LsCsGuiXcb PROPERTIES
-      OUTPUT_NAME   LsCsGuiXcb${BUILD_ABI} PREFIX ""
-      INSTALL_RPATH "$ORIGIN/.."
-   )
-
+   # TODO:: Need to handle Windows and MAC
+   #
+   if (BUILDING_DEBIAN)
+     set_target_properties(LsCsGuiXcb PROPERTIES
+          VERSION ${BUILD_ABI}
+          SOVERSION ${BUILD_MAJOR}
+          PREFIX ""
+        )
+   elseif (BUILDING_RPM)
+        set_target_properties(LsCsGuiXcb PROPERTIES
+          VERSION ${BUILD_ABI}
+          SOVERSION ${BUILD_MAJOR}
+          PREFIX ""
+        )
+      else()
+        #  ass-u-me local development build
+        #
+        set_target_properties(LsCsGuiXcb PROPERTIES
+          VERSION ${BUILD_ABI}
+          SOVERSION ${BUILD_MAJOR}
+          PREFIX ""
+          INSTALL_RPATH "$ORIGIN/.."
+        )
+ endif()
+ 
    target_sources(LsCsGuiXcb
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/xcb/qxcb_main.cpp
@@ -24,7 +44,7 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
 
    target_compile_definitions(LsCsGuiXcb
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
       -DXCB_USE_XINPUT2
    )
 

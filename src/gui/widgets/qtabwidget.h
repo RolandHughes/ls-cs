@@ -27,7 +27,7 @@
 #include <qwidget.h>
 #include <qicon.h>
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
 
 class QTabBar;
 class QTabWidgetPrivate;
@@ -111,12 +111,12 @@ public:
     QIcon tabIcon( int index ) const;
     void setTabIcon( int index, const QIcon &icon );
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     void setTabToolTip( int index, const QString &tip );
     QString tabToolTip( int index ) const;
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     void setTabWhatsThis( int index, const QString &text );
     QString tabWhatsThis( int index ) const;
 #endif
@@ -212,6 +212,6 @@ private:
     void setUpLayout( bool = false );
 };
 
-#endif // QT_NO_TABWIDGET
+#endif // LSCS_NO_TABWIDGET
 
 #endif // QTABWIDGET_H

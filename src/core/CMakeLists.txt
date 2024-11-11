@@ -1,11 +1,14 @@
 add_library(LsCsCore SHARED "")
 add_library(LsCs::LsCsCore ALIAS LsCsCore)
 
-set_target_properties(LsCsCore PROPERTIES OUTPUT_NAME LsCsCore${BUILD_ABI})
+set_target_properties(LsCsCore PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 target_compile_definitions(LsCsCore
    PRIVATE
-   -DQT_BUILD_CORE_LIB
+   -DLSCS_BUILD_CORE_LIB
    -DBUILDING_LIB_LSCS_SIGNAL
    -DBUILDING_LIB_LSCS_STRING
 )
@@ -18,7 +21,7 @@ if (GTK2_FOUND)
    )
 
 else()
-   add_definitions(-DQT_NO_GLIB)
+   add_definitions(-DLSCS_NO_GLIB)
 
 endif()
 

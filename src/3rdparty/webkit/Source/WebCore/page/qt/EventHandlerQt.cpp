@@ -51,7 +51,7 @@
 #include "Scrollbar.h"
 
 // from qapplication_lscs.cpp
-Q_GUI_EXPORT extern bool qt_tab_all_widgets();
+Q_GUI_EXPORT extern bool lscs_tab_all_widgets();
 
 namespace WebCore
 {
@@ -64,7 +64,7 @@ const double EventHandler::TextDragDelay = 0.0;
 
 bool EventHandler::tabsToAllFormControls( KeyboardEvent *event ) const
 {
-    return ( isKeyboardOptionTab( event ) ? ! qt_tab_all_widgets() : qt_tab_all_widgets() );
+    return ( isKeyboardOptionTab( event ) ? ! lscs_tab_all_widgets() : lscs_tab_all_widgets() );
 }
 
 void EventHandler::focusDocumentView()

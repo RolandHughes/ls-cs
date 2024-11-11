@@ -24,7 +24,7 @@
 #include <qlineedit.h>
 #include <qlineedit_p.h>
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
 #include <qaction.h>
 #include <qapplication.h>
@@ -50,14 +50,14 @@
 #include <qtextedit.h>
 #include <qtextedit_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
 #include <qabstractitemview.h>
 #include <qstylesheetstyle_p.h>
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 #include <qapplication_p.h>
 #include <qshortcutmap_p.h>
 #include <qkeysequence.h>
@@ -96,7 +96,7 @@ void QLineEdit::initStyleOption( QStyleOptionFrame *option ) const
         option->state |= QStyle::State_ReadOnly;
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( hasEditFocus() )
     {
@@ -287,7 +287,7 @@ void QLineEdit::setEchoMode( EchoMode mode )
 
 }
 
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
 
 const QValidator *QLineEdit::validator() const
 {
@@ -302,7 +302,7 @@ void QLineEdit::setValidator( const QValidator *v )
 }
 #endif
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
 void QLineEdit::setCompleter( QCompleter *c )
 {
@@ -352,7 +352,7 @@ QCompleter *QLineEdit::completer() const
     return d->control->completer();
 }
 
-#endif // QT_NO_COMPLETER
+#endif // LSCS_NO_COMPLETER
 
 
 QSize QLineEdit::sizeHint() const
@@ -688,7 +688,7 @@ void QLineEdit::setReadOnly( bool enable )
         setAttribute( Qt::WA_MacShowFocusRect, !enable );
         setAttribute( Qt::WA_InputMethodEnabled, d->shouldEnableInputMethod() );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
         setCursor( enable ? Qt::ArrowCursor : Qt::IBeamCursor );
 #endif
 
@@ -698,7 +698,7 @@ void QLineEdit::setReadOnly( bool enable )
     }
 }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 void QLineEdit::cut()
 {
     if ( hasSelectedText() )
@@ -733,7 +733,7 @@ bool QLineEdit::event( QEvent *e )
         if ( false )
         {
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
         }
         else if ( timerId == d->dndTimer.timerId() )
         {
@@ -751,7 +751,7 @@ bool QLineEdit::event( QEvent *e )
     else if ( e->type() == QEvent::ContextMenu )
     {
 
-#ifndef QT_NO_IM
+#ifndef LSCS_NO_IM
 
         if ( d->control->composeMode() )
         {
@@ -765,7 +765,7 @@ bool QLineEdit::event( QEvent *e )
     {
         QTimer::singleShot( 0, this, SLOT( _q_handleWindowActivate() ) );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     }
     else if ( e->type() == QEvent::ShortcutOverride )
     {
@@ -806,7 +806,7 @@ bool QLineEdit::event( QEvent *e )
         d->positionSideWidgets();
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() )
     {
@@ -850,7 +850,7 @@ void QLineEdit::mousePressEvent( QMouseEvent *e )
         return;
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
     {
@@ -880,7 +880,7 @@ void QLineEdit::mousePressEvent( QMouseEvent *e )
 
     int cursor = d->xToPos( e->pos().x() );
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( !mark && d->dragEnabled && d->control->echoMode() == Normal &&
             e->button() == Qt::LeftButton && d->inSelection( e->pos().x() ) )
@@ -904,7 +904,7 @@ void QLineEdit::mouseMoveEvent( QMouseEvent *e )
 
     if ( e->buttons() & Qt::LeftButton )
     {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
         if ( d->dndTimer.isActive() )
         {
@@ -923,7 +923,7 @@ void QLineEdit::mouseMoveEvent( QMouseEvent *e )
             const bool select = ( d->imHints & Qt::ImhNoPredictiveText );
 #endif
 
-#ifndef QT_NO_IM
+#ifndef LSCS_NO_IM
 
             if ( d->control->composeMode() && select )
             {
@@ -956,7 +956,7 @@ void QLineEdit::mouseReleaseEvent( QMouseEvent *e )
         return;
     }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( e->button() == Qt::LeftButton )
     {
@@ -970,7 +970,7 @@ void QLineEdit::mouseReleaseEvent( QMouseEvent *e )
 
 #endif
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( QApplication::clipboard()->supportsSelection() )
     {
@@ -1004,7 +1004,7 @@ void QLineEdit::mouseDoubleClickEvent( QMouseEvent *e )
         int position = d->xToPos( e->pos().x() );
 
         // exit composition mode
-#ifndef QT_NO_IM
+#ifndef LSCS_NO_IM
 
         if ( d->control->composeMode() )
         {
@@ -1061,7 +1061,7 @@ void QLineEdit::keyPressEvent( QKeyEvent *event )
 {
     Q_D( QLineEdit );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     bool select = false;
 
     switch ( event->key() )
@@ -1163,7 +1163,7 @@ void QLineEdit::inputMethodEvent( QInputMethodEvent *e )
         clear();
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     // Focus in if currently in navigation focus on the widget
     // Only focus in on preedits, to allow input methods to
@@ -1179,7 +1179,7 @@ void QLineEdit::inputMethodEvent( QInputMethodEvent *e )
 
     d->control->processInputMethodEvent( e );
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
     if ( !e->commitString().isEmpty() )
     {
@@ -1255,7 +1255,7 @@ void QLineEdit::focusInEvent( QFocusEvent *e )
         d->clickCausedFocus = 1;
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( ! QApplication::keypadNavigationEnabled() || ( hasEditFocus() && ( e->reason() == Qt::PopupFocusReason ) ) )
     {
@@ -1271,13 +1271,13 @@ void QLineEdit::focusInEvent( QFocusEvent *e )
             d->setCursorVisible( true );
         }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
         d->control->setCancelText( d->control->text() );
     }
 
 #endif
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
     if ( d->control->completer() )
     {
@@ -1315,7 +1315,7 @@ void QLineEdit::focusOutEvent( QFocusEvent *e )
     d->setCursorVisible( false );
     d->control->setCursorBlinkPeriod( 0 );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     // editingFinished() is already emitted on LeaveEditFocus
     if ( ! QApplication::keypadNavigationEnabled() )
@@ -1330,11 +1330,11 @@ void QLineEdit::focusOutEvent( QFocusEvent *e )
             }
         }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     d->control->setCancelText( QString() );
 #endif
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
     if ( d->control->completer() )
     {
@@ -1457,7 +1457,7 @@ void QLineEdit::paintEvent( QPaintEvent * )
     QPoint topLeft = lineRect.topLeft() - QPoint( d->hscroll, d->control->ascent() - fm.ascent() );
 
     // draw text, selections and cursors
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
 
     if ( QStyleSheetStyle *cssStyle = qobject_cast<QStyleSheetStyle *>( style() ) )
     {
@@ -1469,7 +1469,7 @@ void QLineEdit::paintEvent( QPaintEvent * )
 
     int flags = QLineControl::DrawText;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( !QApplication::keypadNavigationEnabled() || hasEditFocus() )
 #endif
@@ -1499,7 +1499,7 @@ void QLineEdit::paintEvent( QPaintEvent * )
 
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 void QLineEdit::dragMoveEvent( QDragMoveEvent *e )
 {
@@ -1581,9 +1581,9 @@ void QLineEdit::dropEvent( QDropEvent *e )
     }
 }
 
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 void QLineEdit::contextMenuEvent( QContextMenuEvent *event )
 {
     if ( QMenu *menu = createStandardContextMenu() )
@@ -1608,7 +1608,7 @@ QMenu *QLineEdit::createStandardContextMenu()
     Q_D( QLineEdit );
 
     QMenu *popup = new QMenu( this );
-    popup->setObjectName( "qt_edit_menu" );
+    popup->setObjectName( "lscs_edit_menu" );
     QAction *action = nullptr;
 
     if ( !isReadOnly() )
@@ -1627,7 +1627,7 @@ QMenu *QLineEdit::createStandardContextMenu()
         popup->addSeparator();
     }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( ! isReadOnly() )
     {
@@ -1685,7 +1685,7 @@ QMenu *QLineEdit::createStandardContextMenu()
 
     return popup;
 }
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
 void QLineEdit::changeEvent( QEvent *ev )
 {
@@ -1755,7 +1755,7 @@ void QLineEdit::_q_cursorPositionChanged( int oldValue, int newValue )
     d->_q_cursorPositionChanged( oldValue, newValue );
 }
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 void QLineEdit::_q_completionHighlighted( const QString &text )
 {
     Q_D( QLineEdit );
@@ -1763,7 +1763,7 @@ void QLineEdit::_q_completionHighlighted( const QString &text )
 }
 #endif
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 void QLineEdit::_q_editFocusChange( bool isFocusChanged )
 {
     Q_D( QLineEdit );
@@ -1795,4 +1795,4 @@ void QLineEdit::_q_clearButtonClicked()
     d->_q_clearButtonClicked();
 }
 
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT

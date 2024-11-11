@@ -35,9 +35,9 @@
 #include <QtDBus/qdbusextratypes.h>
 #include <QtDBus/qdbusmacros.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusUnixFileDescriptor;
 class QDBusArgumentPrivate;
@@ -406,9 +406,9 @@ inline QDBusArgument &operator<<( QDBusArgument &arg, const QVariantHash &map )
 }
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QDBusArgument )
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

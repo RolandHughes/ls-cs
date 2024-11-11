@@ -29,7 +29,7 @@
 #include <qpagedpaintdevice.h>
 #include <qpagelayout.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 class QPrinterPrivate;
 class QPaintEngine;
@@ -231,6 +231,6 @@ private:
     friend class QPageSetupWidget;
 };
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 #endif

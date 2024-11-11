@@ -35,7 +35,7 @@ class QAbstractTransition;
 class QHistoryState;
 class QState;
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 struct QPropertyAssignment
 {
@@ -106,6 +106,6 @@ public:
     QVector<QPropertyAssignment> propertyAssignments;
 };
 
-#endif // QT_NO_STATEMACHINE
+#endif // LSCS_NO_STATEMACHINE
 
 #endif

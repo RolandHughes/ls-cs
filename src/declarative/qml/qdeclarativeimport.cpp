@@ -34,7 +34,7 @@
 #include <private/qdeclarativetypenamecache_p.h>
 #include <private/qdeclarativeengine_p.h>
 
-QT_BEGIN_NAMESPACE DEFINE_BOOL_CONFIG_OPTION( qmlImportTrace, QML_IMPORT_TRACE )
+LSCS_BEGIN_NAMESPACE DEFINE_BOOL_CONFIG_OPTION( qmlImportTrace, QML_IMPORT_TRACE )
 DEFINE_BOOL_CONFIG_OPTION( qmlCheckTypes, QML_CHECK_TYPES )
 
 static bool greaterThan( const QString &s1, const QString &s2 )
@@ -969,11 +969,13 @@ QDeclarativeImportDatabase::QDeclarativeImportDatabase( QDeclarativeEngine *e )
 
     // Search order is applicationDirPath(), $QML_IMPORT_PATH, QLibraryInfo::ImportsPath
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
+    #if 0
     QString installImportsPath =  QLibraryInfo::location( QLibraryInfo::ImportsPath );
     addImportPath( installImportsPath );
+    #endif
 
-#endif // QT_NO_SETTINGS
+#endif // LSCS_NO_SETTINGS
 
     // env import paths
     QByteArray envImportPath = qgetenv( "QML_IMPORT_PATH" );
@@ -1125,7 +1127,7 @@ QString QDeclarativeImportDatabase::resolvePlugin( const QDir &qmldirPath, const
 #if defined(Q_OS_WIN32)
     return resolvePlugin( qmldirPath, qmldirPluginPath, baseName,
                           QStringList()
-# ifdef QT_DEBUG
+# ifdef LSCS_DEBUG
                           << QLatin1String( "d.dll" ) // try a qmake-style debug build first
 # endif
                           << QLatin1String( ".dll" ) );
@@ -1136,7 +1138,7 @@ QString QDeclarativeImportDatabase::resolvePlugin( const QDir &qmldirPath, const
 
     return resolvePlugin( qmldirPath, qmldirPluginPath, baseName,
                           QStringList()
-# ifdef QT_DEBUG
+# ifdef LSCS_DEBUG
                           << QLatin1String( "_debug.dylib" ) // try a qmake-style debug build first
                           << QLatin1String( ".dylib" )
 # else
@@ -1350,4 +1352,4 @@ bool QDeclarativeImportDatabase::importPlugin( const QString &filePath, const QS
     return true;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

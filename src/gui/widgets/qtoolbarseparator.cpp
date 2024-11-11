@@ -23,7 +23,7 @@
 
 #include <qtoolbarseparator_p.h>
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 #include <qstyle.h>
 #include <qstyleoption.h>
@@ -76,4 +76,4 @@ void QToolBarSeparator::paintEvent( QPaintEvent * )
 }
 
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR

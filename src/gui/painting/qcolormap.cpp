@@ -117,42 +117,42 @@ int QColormap::size() const
     return d->numcolors;
 }
 
-#ifndef QT_QWS_DEPTH16_RGB
-#define QT_QWS_DEPTH16_RGB 565
+#ifndef LSCS_QWS_DEPTH16_RGB
+#define LSCS_QWS_DEPTH16_RGB 565
 #endif
 
-static constexpr const int qt_rbits = ( QT_QWS_DEPTH16_RGB / 100 );
-static constexpr const int qt_gbits = ( QT_QWS_DEPTH16_RGB / 10 % 10 );
-static constexpr const int qt_bbits = ( QT_QWS_DEPTH16_RGB % 10 );
+static constexpr const int lscs_rbits = ( LSCS_QWS_DEPTH16_RGB / 100 );
+static constexpr const int lscs_gbits = ( LSCS_QWS_DEPTH16_RGB / 10 % 10 );
+static constexpr const int lscs_bbits = ( LSCS_QWS_DEPTH16_RGB % 10 );
 
-static constexpr const int qt_red_shift      = qt_bbits + qt_gbits - ( 8 - qt_rbits );
-static constexpr const int qt_green_shift    = qt_bbits - ( 8 - qt_gbits );
-static constexpr const int qt_neg_blue_shift = 8 - qt_bbits;
-static constexpr const int qt_blue_mask      = ( 1 << qt_bbits ) - 1;
-static constexpr const int qt_green_mask     = ( 1 << ( qt_gbits + qt_bbits ) ) - ( 1 << qt_bbits );
-static constexpr const int qt_red_mask       = ( 1 << ( qt_rbits + qt_gbits + qt_bbits ) ) - ( 1 << ( qt_gbits + qt_bbits ) );
+static constexpr const int lscs_red_shift      = lscs_bbits + lscs_gbits - ( 8 - lscs_rbits );
+static constexpr const int lscs_green_shift    = lscs_bbits - ( 8 - lscs_gbits );
+static constexpr const int lscs_neg_blue_shift = 8 - lscs_bbits;
+static constexpr const int lscs_blue_mask      = ( 1 << lscs_bbits ) - 1;
+static constexpr const int lscs_green_mask     = ( 1 << ( lscs_gbits + lscs_bbits ) ) - ( 1 << lscs_bbits );
+static constexpr const int lscs_red_mask       = ( 1 << ( lscs_rbits + lscs_gbits + lscs_bbits ) ) - ( 1 << ( lscs_gbits + lscs_bbits ) );
 
-static constexpr const int qt_red_rounding_shift   = qt_red_shift + qt_rbits;
-static constexpr const int qt_green_rounding_shift = qt_green_shift + qt_gbits;
-static constexpr const int qt_blue_rounding_shift  = qt_bbits - qt_neg_blue_shift;
+static constexpr const int lscs_red_rounding_shift   = lscs_red_shift + lscs_rbits;
+static constexpr const int lscs_green_rounding_shift = lscs_green_shift + lscs_gbits;
+static constexpr const int lscs_blue_rounding_shift  = lscs_bbits - lscs_neg_blue_shift;
 
-inline ushort qt_convRgbTo16( QRgb c )
+inline ushort lscs_convRgbTo16( QRgb c )
 {
-    const int tr = qRed( c ) << qt_red_shift;
-    const int tg = qGreen( c ) << qt_green_shift;
-    const int tb = qBlue( c ) >> qt_neg_blue_shift;
+    const int tr = qRed( c ) << lscs_red_shift;
+    const int tg = qGreen( c ) << lscs_green_shift;
+    const int tb = qBlue( c ) >> lscs_neg_blue_shift;
 
-    return ( tb & qt_blue_mask ) | ( tg & qt_green_mask ) | ( tr & qt_red_mask );
+    return ( tb & lscs_blue_mask ) | ( tg & lscs_green_mask ) | ( tr & lscs_red_mask );
 }
 
-inline QRgb qt_conv16ToRgb( ushort c )
+inline QRgb lscs_conv16ToRgb( ushort c )
 {
-    const int r = ( c & qt_red_mask );
-    const int g = ( c & qt_green_mask );
-    const int b = ( c & qt_blue_mask );
-    const int tr = r >> qt_red_shift | r >> qt_red_rounding_shift;
-    const int tg = g >> qt_green_shift | g >> qt_green_rounding_shift;
-    const int tb = b << qt_neg_blue_shift | b >> qt_blue_rounding_shift;
+    const int r = ( c & lscs_red_mask );
+    const int g = ( c & lscs_green_mask );
+    const int b = ( c & lscs_blue_mask );
+    const int tr = r >> lscs_red_shift | r >> lscs_red_rounding_shift;
+    const int tg = g >> lscs_green_shift | g >> lscs_green_rounding_shift;
+    const int tb = b << lscs_neg_blue_shift | b >> lscs_blue_rounding_shift;
 
     return qRgb( tr, tg, tb );
 }
@@ -166,7 +166,7 @@ uint QColormap::pixel( const QColor &color ) const
         switch ( d->depth )
         {
             case 16:
-                return qt_convRgbTo16( rgb );
+                return lscs_convRgbTo16( rgb );
 
             case 24:
             case 32:
@@ -181,9 +181,9 @@ uint QColormap::pixel( const QColor &color ) const
                 const int blue_mask  = 0x0000ff;
                 const int tg = g << green_shift;
 
-#ifdef QT_QWS_DEPTH_32_BGR
+#ifdef LSCS_QWS_DEPTH_32_BGR
 
-                if ( qt_screen->pixelType() == QScreen::BGRPixel )
+                if ( lscs_screen->pixelType() == QScreen::BGRPixel )
                 {
                     const int tb = b << red_shift;
                     return 0xff000000 | ( r & blue_mask ) | ( tg & green_mask ) | ( tb & red_mask );
@@ -205,7 +205,7 @@ const QColor QColormap::colorAt( uint pixel ) const
     {
         if ( d->depth == 16 )
         {
-            pixel = qt_conv16ToRgb( pixel );
+            pixel = lscs_conv16ToRgb( pixel );
         }
 
         const int red_shift = 16;
@@ -214,9 +214,9 @@ const QColor QColormap::colorAt( uint pixel ) const
         const int green_mask = 0x00ff00;
         const int blue_mask  = 0x0000ff;
 
-#ifdef QT_QWS_DEPTH_32_BGR
+#ifdef LSCS_QWS_DEPTH_32_BGR
 
-        if ( qt_screen->pixelType() == QScreen::BGRPixel )
+        if ( lscs_screen->pixelType() == QScreen::BGRPixel )
         {
             return QColor( ( pixel & blue_mask ),
                            ( pixel & green_mask ) >> green_shift,

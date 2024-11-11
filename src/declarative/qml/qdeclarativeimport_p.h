@@ -31,7 +31,7 @@
 #include <qdeclarativescriptparser_p.h>
 #include <qdeclarativemetatype_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeTypeNameCache;
 class QDeclarativeEngine;
@@ -109,7 +109,7 @@ private:
     QDeclarativeEngine *engine;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEIMPORT_P_H
 

@@ -31,14 +31,14 @@
 #  include <sys/types.h>
 #endif
 
-#ifndef QT_NO_FILESYSTEMMODEL
+#ifndef LSCS_NO_FILESYSTEMMODEL
 
 // Creates thread
 
 QFileInfoGatherer::QFileInfoGatherer( QObject *parent )
     : QThread( parent ), abort( false ),
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
       watcher( nullptr ),
 #endif
       m_iconProvider( &defaultProvider )
@@ -47,7 +47,7 @@ QFileInfoGatherer::QFileInfoGatherer( QObject *parent )
     m_resolveSymlinks = true;
 #endif
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
     watcher = new QFileSystemWatcher( this );
 
     connect( watcher, &QFileSystemWatcher::directoryChanged, this, &QFileInfoGatherer::list );
@@ -122,7 +122,7 @@ void QFileInfoGatherer::fetchExtendedInformation( const QString &path, const QSt
 
     condition.wakeAll();
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 
     if ( files.isEmpty() && ! path.isEmpty() && ! path.startsWith( "//" ) )
     {
@@ -150,7 +150,7 @@ void QFileInfoGatherer::updateFile( const QString &filePath )
 */
 void QFileInfoGatherer::clear()
 {
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
     QMutexLocker locker( &mutex );
     watcher->removePaths( watcher->files() );
     watcher->removePaths( watcher->directories() );
@@ -164,7 +164,7 @@ void QFileInfoGatherer::clear()
 */
 void QFileInfoGatherer::removePath( const QString &path )
 {
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
     QMutexLocker locker( &mutex );
     watcher->removePath( path );
 #endif
@@ -353,5 +353,5 @@ void QFileInfoGatherer::fetch( const QFileInfo &fileInfo, QElapsedTimer &base, b
     }
 }
 
-#endif // QT_NO_FILESYSTEMMODEL
+#endif // LSCS_NO_FILESYSTEMMODEL
 

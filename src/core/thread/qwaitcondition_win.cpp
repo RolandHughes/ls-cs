@@ -28,7 +28,7 @@
 #include <qmutex.h>
 #include <qnamespace.h>
 #include <qreadwritelock.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <qreadwritelock_p.h>
 

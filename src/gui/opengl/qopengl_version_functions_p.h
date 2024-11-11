@@ -25,7 +25,7 @@
 #ifndef QOPENGLVERSION_FUNCTION_P_H
 #define QOPENGLVERSION_FUNCTION_P_H
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qglobal.h>
 #include <qopenglcontext.h>
@@ -39,6 +39,6 @@ public:
     static QAbstractOpenGLFunctions *createNoProfile( const int major, const int minor );
 };
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

@@ -59,7 +59,7 @@
 #include "MediaPlayerPrivateQuickTimeVisualContext.h"
 #define PlatformMediaEngineClassName MediaPlayerPrivateQuickTimeVisualContext
 #elif PLATFORM(QT)
-#if USE(QT_MULTIMEDIA) && !USE(GSTREAMER)
+#if USE(LSCS_MULTIMEDIA) && !USE(GSTREAMER)
 #include "MediaPlayerPrivateQt.h"
 #define PlatformMediaEngineClassName MediaPlayerPrivateQt
 #endif

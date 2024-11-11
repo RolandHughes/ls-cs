@@ -28,7 +28,7 @@
 #include <QtCore/qscopedpointer.h>
 #include <QtCore/qmap.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDataStream;
 class QVariant;
@@ -95,6 +95,6 @@ typedef QMap<int, QScriptBreakpointData> QScriptBreakpointMap;
 QDataStream &operator<<( QDataStream &, const QScriptBreakpointData & );
 QDataStream &operator>>( QDataStream &, QScriptBreakpointData & );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

@@ -53,7 +53,7 @@ Q_DECLARE_METATYPE( QScriptDebuggerConsoleCommandList )
 Q_DECLARE_METATYPE( QScriptDebuggerConsoleCommandGroupData )
 Q_DECLARE_METATYPE( QScriptDebuggerConsoleCommandGroupMap )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 static QScriptValue debuggerResponseToScriptValue( QScriptEngine *eng, const QScriptDebuggerResponse &in )
 {
@@ -677,4 +677,4 @@ void QScriptDebuggerConsole::changeHistoryAt( int index, const QString &newHisto
     d->commandHistory[index] = newHistory;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

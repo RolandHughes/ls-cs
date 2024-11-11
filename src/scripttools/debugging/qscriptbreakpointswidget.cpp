@@ -40,7 +40,7 @@
 #include <QtGui/qevent.h>
 #include <QtScript/qscriptengine.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptNewBreakpointWidget : public QWidget
 {
@@ -320,7 +320,7 @@ QScriptBreakpointsWidget::QScriptBreakpointsWidget( QWidget *parent )
     d->deleteBreakpointAction->setEnabled( false );
     QObject::connect( d->deleteBreakpointAction, SIGNAL( triggered() ), this, SLOT( _q_deleteBreakpoint() ) );
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
     QToolBar *toolBar = new QToolBar();
     toolBar->addAction( newBreakpointAction );
     toolBar->addAction( d->deleteBreakpointAction );
@@ -328,7 +328,7 @@ QScriptBreakpointsWidget::QScriptBreakpointsWidget( QWidget *parent )
 
     QVBoxLayout *vbox = new QVBoxLayout( this );
     vbox->setMargin( 0 );
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
     vbox->addWidget( toolBar );
 #endif
     vbox->addWidget( d->newBreakpointWidget );
@@ -426,4 +426,4 @@ void QScriptBreakpointsWidget::_q_onNewBreakpointRequest( const QString &un_name
     d->_q_onNewBreakpointRequest();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

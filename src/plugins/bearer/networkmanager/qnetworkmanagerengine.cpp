@@ -37,8 +37,8 @@
 #include <QDBusMessage>
 #include <QDBusReply>
 
-#ifndef QT_NO_BEARERMANAGEMENT
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_DBUS
 
 QNetworkManagerEngine::QNetworkManagerEngine( QObject *parent )
     :   QBearerEngineImpl( parent ),
@@ -1056,5 +1056,5 @@ QNetworkConfigurationPrivatePointer QNetworkManagerEngine::defaultConfiguration(
     return QNetworkConfigurationPrivatePointer();
 }
 
-#endif // QT_NO_DBUS
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_DBUS
+#endif // LSCS_NO_BEARERMANAGEMENT

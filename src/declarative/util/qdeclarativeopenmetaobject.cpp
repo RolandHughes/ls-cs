@@ -27,7 +27,7 @@
 #include <qmetaobjectbuilder_p.h>
 #include <qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeOpenMetaObjectTypePrivate
 {
@@ -268,7 +268,7 @@ int QDeclarativeOpenMetaObject::metaCall( QMetaObject::Call c, int id, void **a 
         }
         else
         {
-            return d->object->qt_metacall( c, id, a );
+            return d->object->lscs_metacall( c, id, a );
         }
     }
 }
@@ -432,4 +432,4 @@ QObject *QDeclarativeOpenMetaObject::object() const
     return d->object;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

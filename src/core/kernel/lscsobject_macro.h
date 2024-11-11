@@ -764,7 +764,7 @@ public:
 // ** macros used when compiling
 
 // ** 1
-#if defined(QT_BUILD_CORE_LIB) || defined(Q_OS_DARWIN)
+#if defined(LSCS_BUILD_CORE_LIB) || defined(Q_OS_DARWIN)
 
 #define CORE_LSCS_OBJECT(className)                              LSCS_OBJECT(className)
 #define CORE_LSCS_OBJECT_MULTIPLE(className, parentX)            LSCS_OBJECT_MULTIPLE(className, parentX)
@@ -843,7 +843,7 @@ public:
 #endif
 
 // ** 2
-#if defined(QT_BUILD_GUI_LIB) || defined(Q_OS_DARWIN)
+#if defined(LSCS_BUILD_GUI_LIB) || defined(Q_OS_DARWIN)
 
 #define GUI_LSCS_OBJECT(className)                                  LSCS_OBJECT(className)
 #define GUI_LSCS_OBJECT_MULTIPLE(className, parentX)                LSCS_OBJECT_MULTIPLE(className, parentX)
@@ -917,7 +917,7 @@ public:
 #endif
 
 // ** 3
-#if defined(QT_BUILD_MULTIMEDIA_LIB) || defined(Q_OS_DARWIN)
+#if defined(LSCS_BUILD_MULTIMEDIA_LIB) || defined(Q_OS_DARWIN)
 
 #define MULTI_LSCS_OBJECT(className)                                LSCS_OBJECT(className)
 #define MULTI_LSCS_OBJECT_MULTIPLE(className, parentX)              LSCS_OBJECT_MULTIPLE(className, parentX)
@@ -987,7 +987,7 @@ public:
 #endif
 
 // ** 4
-#if defined(QT_BUILD_NETWORK_LIB) || defined(Q_OS_DARWIN)
+#if defined(LSCS_BUILD_NETWORK_LIB) || defined(Q_OS_DARWIN)
 
 #define NET_LSCS_OBJECT(className)                                  LSCS_OBJECT(className)
 #define NET_LSCS_OBJECT_MULTIPLE(className, parentX)                LSCS_OBJECT_MULTIPLE(className, parentX)
@@ -1061,7 +1061,7 @@ public:
 #endif
 
 // ** 5
-#if defined(QT_BUILD_OPENGL_LIB) || defined(Q_OS_DARWIN)
+#if defined(LSCS_BUILD_OPENGL_LIB) || defined(Q_OS_DARWIN)
 
 #define OPENGL_LSCS_OBJECT(className)                               LSCS_OBJECT(className)
 #define OPENGL_LSCS_OBJECT_MULTIPLE(className, parentX)             LSCS_OBJECT_MULTIPLE(className, parentX)
@@ -1091,7 +1091,7 @@ public:
 #endif
 
 // ** 6
-#if defined(QT_BUILD_SCRIPT_LIB) || defined(Q_OS_DARWIN)
+#if defined(LSCS_BUILD_SCRIPT_LIB) || defined(Q_OS_DARWIN)
 
 #define SCRIPT_LSCS_OBJECT(className)                               LSCS_OBJECT(className)
 #define SCRIPT_LSCS_OBJECT_MULTIPLE(className, parentX)             LSCS_OBJECT_MULTIPLE(className, parentX)
@@ -1122,7 +1122,7 @@ public:
 #endif
 
 // ** 7
-#if defined(QT_BUILD_SCRIPTTOOLS_LIB) || defined(Q_OS_DARWIN)
+#if defined(LSCS_BUILD_SCRIPTTOOLS_LIB) || defined(Q_OS_DARWIN)
 
 #define SCRIPT_T_LSCS_OBJECT(className)                             LSCS_OBJECT(className)
 #define SCRIPT_T_LSCS_OBJECT_MULTIPLE(className, parentX)           LSCS_OBJECT_MULTIPLE(className, parentX)
@@ -1152,7 +1152,7 @@ public:
 #endif
 
 // ** 8
-#if defined(QT_BUILD_SQL_LIB) || defined(Q_OS_DARWIN)
+#if defined(LSCS_BUILD_SQL_LIB) || defined(Q_OS_DARWIN)
 
 #define SQL_LSCS_OBJECT(className)                                  LSCS_OBJECT(className)
 #define SQL_LSCS_OBJECT_MULTIPLE(className, parentX)                LSCS_OBJECT_MULTIPLE(className, parentX)
@@ -1182,7 +1182,7 @@ public:
 #endif
 
 // ** 9
-#if defined(QT_BUILD_SVG_LIB) || defined(Q_OS_DARWIN)
+#if defined(LSCS_BUILD_SVG_LIB) || defined(Q_OS_DARWIN)
 
 #define SVG_LSCS_OBJECT(className)                                  LSCS_OBJECT(className)
 #define SVG_LSCS_OBJECT_MULTIPLE(className, parentX)                LSCS_OBJECT_MULTIPLE(className, parentX)
@@ -1246,7 +1246,7 @@ public:
 #endif
 
 // ** 10
-#if defined(QT_BUILD_VULKAN_LIB) || defined(Q_OS_DARWIN)
+#if defined(LSCS_BUILD_VULKAN_LIB) || defined(Q_OS_DARWIN)
 
 #define VULKAN_LSCS_OBJECT(className)                               LSCS_OBJECT(className)
 #define VULKAN_LSCS_OBJECT_MULTIPLE(className, parentX)             LSCS_OBJECT_MULTIPLE(className, parentX)
@@ -1266,7 +1266,7 @@ public:
 #endif
 
 // ** 11
-#if defined(QT_BUILD_XMLPATTERNS_LIB) || defined(Q_OS_DARWIN)
+#if defined(LSCS_BUILD_XMLPATTERNS_LIB) || defined(Q_OS_DARWIN)
 
 #define XMLP_LSCS_OBJECT(className)                                 LSCS_OBJECT(className)
 #define XMLP_LSCS_OBJECT_MULTIPLE(className, parentX)               LSCS_OBJECT_MULTIPLE(className, parentX)
@@ -1372,7 +1372,7 @@ public:
 #endif
 
 // ** 13
-#if defined(QT_BUILD_DECLARE_LIB) || defined(Q_OS_DARWIN)
+#if defined(LSCS_BUILD_DECLARE_LIB) || defined(Q_OS_DARWIN)
 
 #define DECL_LSCS_OBJECT(className)                                 LSCS_OBJECT(className)
 #define DECL_LSCS_OBJECT_MULTIPLE(className, parentX)               LSCS_OBJECT_MULTIPLE(className, parentX)

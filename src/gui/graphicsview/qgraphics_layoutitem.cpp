@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qgraphicslayout.h>
 #include <qgraphicsscene.h>
@@ -549,4 +549,4 @@ void QGraphicsLayoutItem::setGraphicsItem( QGraphicsItem *item )
     d_func()->graphicsItem = item;
 }
 
-#endif //QT_NO_GRAPHICSVIEW
+#endif //LSCS_NO_GRAPHICSVIEW

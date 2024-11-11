@@ -26,7 +26,7 @@
 
 #include <qfilesystemwatcher_p.h>
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 
 #include <qhash.h>
 #include <qmutex.h>
@@ -58,6 +58,6 @@ private :
     QHash<int, QString> idToPath;
 };
 
-#endif // QT_NO_FILESYSTEMWATCHER
+#endif // LSCS_NO_FILESYSTEMWATCHER
 
 #endif

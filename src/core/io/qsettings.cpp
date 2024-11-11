@@ -26,7 +26,7 @@
 #include <qdebug.h>
 #include <qplatformdefs.h>
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
 
 #include <qcache.h>
 #include <qcoreapplication.h>
@@ -43,14 +43,14 @@
 #include <qstringparser.h>
 #include <qtemporaryfile.h>
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 #  include <qtextcodec.h>
 #endif
 
 #include <qsettings_p.h>
 
 #ifdef Q_OS_WIN                        // for homedirpath reading from registry
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qsystemlibrary_p.h>
 #include <shlobj.h>
 #endif
@@ -178,7 +178,7 @@ bool QConfFile::isWritable() const
 {
     QFileInfo fileInfo( name );
 
-#ifndef QT_NO_TEMPORARYFILE
+#ifndef LSCS_NO_TEMPORARYFILE
 
     if ( fileInfo.exists() )
     {
@@ -187,7 +187,7 @@ bool QConfFile::isWritable() const
         QFile file( name );
         return file.open( QFile::ReadWrite );
 
-#ifndef QT_NO_TEMPORARYFILE
+#ifndef LSCS_NO_TEMPORARYFILE
     }
     else
     {
@@ -2521,7 +2521,7 @@ QString QSettings::applicationName() const
     return d->applicationName;
 }
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 void QSettings::setIniCodec( QTextCodec *codec )
 {
@@ -2824,7 +2824,7 @@ void QSettings::setPath( Format format, Scope scope, const QString &path )
 QSettings::Format QSettings::registerFormat( const QString &extension, ReadFunc readFunc,
         WriteFunc writeFunc, Qt::CaseSensitivity caseSensitivity )
 {
-#ifdef QT_QSETTINGS_ALWAYS_CASE_SENSITIVE_AND_FORGET_ORIGINAL_KEY_ORDER
+#ifdef LSCS_QSETTINGS_ALWAYS_CASE_SENSITIVE_AND_FORGET_ORIGINAL_KEY_ORDER
     Q_ASSERT( caseSensitivity == Qt::CaseSensitive );
 #endif
 
@@ -2849,4 +2849,4 @@ QSettings::Format QSettings::registerFormat( const QString &extension, ReadFunc 
     return QSettings::Format( ( int )QSettings::CustomFormat1 + index );
 }
 
-#endif // QT_NO_SETTINGS
+#endif // LSCS_NO_SETTINGS

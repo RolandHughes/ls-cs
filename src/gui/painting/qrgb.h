@@ -88,7 +88,7 @@ inline constexpr QRgb qPremultiply( QRgb x )
     return x | t | ( a << 24 );
 }
 
-Q_GUI_EXPORT extern const uint qt_inv_premul_factor[];
+Q_GUI_EXPORT extern const uint lscs_inv_premul_factor[];
 
 inline QRgb qUnpremultiply( QRgb p )
 {
@@ -106,7 +106,7 @@ inline QRgb qUnpremultiply( QRgb p )
     }
 
     // (p*(0x00ff00ff/alpha)) >> 16 == (p*255)/alpha for all p and alpha <= 256.
-    const uint invAlpha = qt_inv_premul_factor[alpha];
+    const uint invAlpha = lscs_inv_premul_factor[alpha];
 
     // We add 0x8000 to get even rounding. The rounding also ensures that qPremultiply(qUnpremultiply(p)) == p for all p.
     return qRgba( ( qRed( p ) * invAlpha + 0x8000 ) >> 16, ( qGreen( p ) * invAlpha + 0x8000 ) >> 16,

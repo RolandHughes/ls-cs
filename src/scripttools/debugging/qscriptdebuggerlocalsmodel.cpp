@@ -41,7 +41,7 @@
 
 Q_DECLARE_METATYPE( QScriptDebuggerObjectSnapshotDelta )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct QScriptDebuggerLocalsModelNode
 {
@@ -1218,4 +1218,4 @@ void QScriptDebuggerLocalsModel::fetchMore( const QModelIndex &parent )
     d->populateIndex( parent );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

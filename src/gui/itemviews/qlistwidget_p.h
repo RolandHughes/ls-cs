@@ -31,7 +31,7 @@
 #include <qlistview_p.h>
 #include <qwidgetitemdata_p.h>
 
-#ifndef QT_NO_LISTWIDGET
+#ifndef LSCS_NO_LISTWIDGET
 
 class QListModelLessThan
 {
@@ -96,7 +96,7 @@ public:
     QStringList mimeTypes() const override;
     QMimeData *mimeData( const QModelIndexList &indexes ) const override;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     bool dropMimeData( const QMimeData *data, Qt::DropAction action,
                        int row, int column, const QModelIndex &parent ) override;
     Qt::DropActions supportedDropActions() const override;
@@ -151,6 +151,6 @@ public:
 };
 
 
-#endif // QT_NO_LISTWIDGET
+#endif // LSCS_NO_LISTWIDGET
 
 #endif // QLISTWIDGET_P_H

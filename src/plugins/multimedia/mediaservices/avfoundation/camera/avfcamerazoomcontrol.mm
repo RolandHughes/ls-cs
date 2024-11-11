@@ -76,7 +76,7 @@ void AVFCameraZoomControl::zoomTo(qreal optical, qreal digital)
     (void) optical;
     (void) digital;
 
-#if QT_IOS_PLATFORM_SDK_EQUAL_OR_ABOVE(__IPHONE_7_0)
+#if LSCS_IOS_PLATFORM_SDK_EQUAL_OR_ABOVE(__IPHONE_7_0)
     if (QSysInfo::MacintoshVersion < QSysInfo::MV_IOS_7_0)
         return;
 
@@ -92,7 +92,7 @@ void AVFCameraZoomControl::zoomTo(qreal optical, qreal digital)
 
 void AVFCameraZoomControl::cameraStateChanged()
 {
-#if QT_IOS_PLATFORM_SDK_EQUAL_OR_ABOVE(__IPHONE_7_0)
+#if LSCS_IOS_PLATFORM_SDK_EQUAL_OR_ABOVE(__IPHONE_7_0)
     if (QSysInfo::MacintoshVersion < QSysInfo::MV_IOS_7_0)
         return;
 
@@ -129,7 +129,7 @@ void AVFCameraZoomControl::cameraStateChanged()
 
 void AVFCameraZoomControl::zoomToRequestedDigital()
 {
-#if QT_IOS_PLATFORM_SDK_EQUAL_OR_ABOVE(__IPHONE_7_0)
+#if LSCS_IOS_PLATFORM_SDK_EQUAL_OR_ABOVE(__IPHONE_7_0)
     if (QSysInfo::MacintoshVersion < QSysInfo::MV_IOS_7_0)
         return;
 

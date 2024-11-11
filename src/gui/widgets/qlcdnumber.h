@@ -26,7 +26,7 @@
 
 #include <qframe.h>
 
-#ifndef QT_NO_LCDNUMBER
+#ifndef LSCS_NO_LCDNUMBER
 
 class QLCDNumberPrivate;
 
@@ -153,6 +153,6 @@ void QLCDNumber::lscs_displayI( int num )
     display( num );
 }
 
-#endif // QT_NO_LCDNUMBER
+#endif // LSCS_NO_LCDNUMBER
 
 #endif

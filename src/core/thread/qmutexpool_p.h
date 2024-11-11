@@ -60,6 +60,6 @@ private:
     QVarLengthArray<QAtomicPointer<QRecursiveMutex>, DEFAULT_SIZE> m_mutexArray;
 };
 
-extern Q_CORE_EXPORT QMutexPool *qt_global_mutexpool;
+extern Q_CORE_EXPORT QMutexPool *lscs_global_mutexpool;
 
 #endif

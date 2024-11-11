@@ -24,7 +24,7 @@
 #ifndef QLOCALSOCKET_P_H
 #define QLOCALSOCKET_P_H
 
-#ifndef QT_NO_LOCALSOCKET
+#ifndef LSCS_NO_LOCALSOCKET
 
 #include <qlocalsocket.h>
 
@@ -32,7 +32,7 @@
 
 #include <qiodevice_p.h>
 
-#if defined(QT_LOCALSOCKET_TCP)
+#if defined(LSCS_LOCALSOCKET_TCP)
 #   include <qtcpsocket.h>
 
 #elif defined(Q_OS_WIN)
@@ -49,7 +49,7 @@
 
 #endif
 
-#if ! defined(Q_OS_WIN) || defined(QT_LOCALSOCKET_TCP)
+#if ! defined(Q_OS_WIN) || defined(LSCS_LOCALSOCKET_TCP)
 class QLocalUnixSocket : public QTcpSocket
 {
 public:
@@ -93,7 +93,7 @@ public:
     QLocalSocketPrivate();
     void init();
 
-#if defined(QT_LOCALSOCKET_TCP)
+#if defined(LSCS_LOCALSOCKET_TCP)
     QLocalUnixSocket *tcpSocket;
     bool ownsTcpSocket;
     void setSocket( QLocalUnixSocket * );
@@ -155,7 +155,7 @@ public:
     QLocalSocket::LocalSocketState state;
 };
 
-#endif // QT_NO_LOCALSOCKET
+#endif // LSCS_NO_LOCALSOCKET
 
 #endif // QLOCALSOCKET_P_H
 

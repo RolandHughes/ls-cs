@@ -35,7 +35,7 @@
 #include <QtCore/QAbstractAnimation>
 #include <QtGui/qcolor.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeAbstractAnimationPrivate;
 class QDeclarativeAnimationGroup;
@@ -571,7 +571,7 @@ protected:
     virtual QAbstractAnimation *qtAnimation();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeAbstractAnimation )
 QML_DECLARE_TYPE( QDeclarativePauseAnimation )

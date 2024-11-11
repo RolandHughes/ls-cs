@@ -333,7 +333,7 @@ static bool addFontToDatabase( const QString &faceName, const QString &fullName,
     return true;
 }
 
-static int QT_WIN_CALLBACK storeFont( const LOGFONT *logFont, const TEXTMETRIC *textmetric,  DWORD type, LPARAM )
+static int LSCS_WIN_CALLBACK storeFont( const LOGFONT *logFont, const TEXTMETRIC *textmetric,  DWORD type, LPARAM )
 {
     const ENUMLOGFONTEX *f = reinterpret_cast<const ENUMLOGFONTEX *>( logFont );
 
@@ -402,7 +402,7 @@ struct PopulateFamiliesContext
 
 // Delayed population of font families
 
-static int QT_WIN_CALLBACK populateFontFamilies( const LOGFONT *logFont, const TEXTMETRIC *textmetric,
+static int LSCS_WIN_CALLBACK populateFontFamilies( const LOGFONT *logFont, const TEXTMETRIC *textmetric,
         DWORD, LPARAM lparam )
 {
     const ENUMLOGFONTEX *f = reinterpret_cast<const ENUMLOGFONTEX *>( logFont );

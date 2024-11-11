@@ -23,7 +23,7 @@
 
 #include <qaccessiblewidget.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 #include <qaction.h>
 #include <qapplication.h>
@@ -50,11 +50,11 @@ static QList<QWidget *> childWidgets( const QWidget *widget )
 
         if ( tmpWidget && ! tmpWidget->isWindow() && ! qobject_cast<QFocusFrame *>( tmpWidget )
 
-#if ! defined(QT_NO_MENU)
+#if ! defined(LSCS_NO_MENU)
                 && ! qobject_cast<QMenu *>( tmpWidget )
 #endif
 
-                && tmpWidget->objectName() != "qt_rubberband" && tmpWidget->objectName() != "qt_spinbox_lineedit" )
+                && tmpWidget->objectName() != "lscs_rubberband" && tmpWidget->objectName() != "lscs_spinbox_lineedit" )
         {
 
             widgets.append( tmpWidget );
@@ -78,7 +78,7 @@ static QString buddyString( const QWidget *widget )
         return QString();
     }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     QObjectList ol = parent->children();
 
     for ( int i = 0; i < ol.size(); ++i )
@@ -93,7 +93,7 @@ static QString buddyString( const QWidget *widget )
 
 #endif
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
     QGroupBox *groupbox = qobject_cast<QGroupBox *>( parent );
 
     if ( groupbox )
@@ -108,9 +108,9 @@ static QString buddyString( const QWidget *widget )
 
 // returns the offset of the '&' in the text that would be preceding the accelerator character
 // if the text does not have an accelerator, -1 will be returned.
-static int qt_accAmpIndex( const QString &text )
+static int lscs_accAmpIndex( const QString &text )
 {
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( text.isEmpty() )
     {
@@ -144,10 +144,10 @@ static int qt_accAmpIndex( const QString &text )
     return -1;
 }
 
-QString qt_accStripAmp( const QString &text )
+QString lscs_accStripAmp( const QString &text )
 {
     QString newText( text );
-    int ampIndex = qt_accAmpIndex( newText );
+    int ampIndex = lscs_accAmpIndex( newText );
 
     if ( ampIndex != -1 )
     {
@@ -157,9 +157,9 @@ QString qt_accStripAmp( const QString &text )
     return newText.replace( QLatin1String( "&&" ), QLatin1String( "&" ) );
 }
 
-QString qt_accHotKey( const QString &text )
+QString lscs_accHotKey( const QString &text )
 {
-    int ampIndex = qt_accAmpIndex( text );
+    int ampIndex = lscs_accAmpIndex( text );
 
     if ( ampIndex != -1 )
     {
@@ -331,7 +331,7 @@ QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> QAccessibleWidget:
         if ( QWidget *parent = widget()->parentWidget() )
         {
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
             // first check for all siblings that are labels to us ideally
             // we would go through all objects and check, but that will be too expensive
 
@@ -350,7 +350,7 @@ QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> QAccessibleWidget:
 
 #endif
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
             QGroupBox *groupbox = qobject_cast<QGroupBox *>( parent );
 
             if ( groupbox != nullptr && ! groupbox->title().isEmpty() )
@@ -491,7 +491,7 @@ QString QAccessibleWidget::text( QAccessible::Text t ) const
             }
             else
             {
-                str = qt_accStripAmp( buddyString( widget() ) );
+                str = lscs_accStripAmp( buddyString( widget() ) );
             }
 
             break;
@@ -499,7 +499,7 @@ QString QAccessibleWidget::text( QAccessible::Text t ) const
         case QAccessible::Description:
             str = widget()->accessibleDescription();
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
             if ( str.isEmpty() )
             {
@@ -510,13 +510,13 @@ QString QAccessibleWidget::text( QAccessible::Text t ) const
             break;
 
         case QAccessible::Help:
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
             str = widget()->whatsThis();
 #endif
             break;
 
         case QAccessible::Accelerator:
-            str = qt_accHotKey( buddyString( widget() ) );
+            str = lscs_accHotKey( buddyString( widget() ) );
             break;
 
         case QAccessible::Value:
@@ -641,4 +641,4 @@ void *QAccessibleWidget::interface_cast( QAccessible::InterfaceType t )
     return nullptr;
 }
 
-#endif //QT_NO_ACCESSIBILITY
+#endif //LSCS_NO_ACCESSIBILITY

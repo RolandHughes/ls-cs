@@ -39,7 +39,7 @@
 
 using namespace QDeclarativeJS;
 
-QT_QML_BEGIN_NAMESPACE
+LSCS_QML_BEGIN_NAMESPACE
 
 void Parser::reallocateStack()
 {
@@ -2426,6 +2426,6 @@ _Lcheck_token:
     return false;
 }
 
-QT_QML_END_NAMESPACE
+LSCS_QML_END_NAMESPACE
 
 

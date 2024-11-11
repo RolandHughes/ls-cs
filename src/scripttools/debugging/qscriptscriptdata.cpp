@@ -27,7 +27,7 @@
 #include <QtCore/qstring.h>
 #include <QtCore/qstringlist.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptScriptDataPrivate
 {
@@ -225,4 +225,4 @@ QDataStream &operator>>( QDataStream &in, QScriptScriptData &data )
     return in;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

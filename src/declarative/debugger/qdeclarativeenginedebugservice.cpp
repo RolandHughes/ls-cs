@@ -38,7 +38,7 @@
 #include <QtCore/qdebug.h>
 #include <QtCore/qmetaobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 Q_GLOBAL_STATIC( QDeclarativeEngineDebugService, qmlEngineDebugService );
 
@@ -946,4 +946,4 @@ void QDeclarativeEngineDebugService::objectCreated( QDeclarativeEngine *engine, 
     sendMessage( reply );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

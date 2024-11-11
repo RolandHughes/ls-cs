@@ -211,7 +211,7 @@ void QGLTextureGlyphCache::resizeTextureData( int width, int height )
     funcs->glBindTexture( GL_TEXTURE_2D, 0 );
     funcs->glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tmp_texture, 0 );
 
-    funcs->glActiveTexture( GL_TEXTURE0 + QT_IMAGE_TEXTURE_UNIT );
+    funcs->glActiveTexture( GL_TEXTURE0 + LSCS_IMAGE_TEXTURE_UNIT );
     funcs->glBindTexture( GL_TEXTURE_2D, oldTexture );
 
     if ( pex != nullptr )
@@ -256,33 +256,33 @@ void QGLTextureGlyphCache::resizeTextureData( int width, int height )
                 m_blitProgram->addShader( fragmentShader );
             }
 
-            m_blitProgram->bindAttributeLocation( "vertexCoordsArray", QT_VERTEX_COORDS_ATTR );
-            m_blitProgram->bindAttributeLocation( "textureCoordArray", QT_TEXTURE_COORDS_ATTR );
+            m_blitProgram->bindAttributeLocation( "vertexCoordsArray", LSCS_VERTEX_COORDS_ATTR );
+            m_blitProgram->bindAttributeLocation( "textureCoordArray", LSCS_TEXTURE_COORDS_ATTR );
 
             m_blitProgram->link();
         }
 
-        funcs->glVertexAttribPointer( QT_VERTEX_COORDS_ATTR, 2, GL_FLOAT, GL_FALSE, 0, m_vertexCoordinateArray );
-        funcs->glVertexAttribPointer( QT_TEXTURE_COORDS_ATTR, 2, GL_FLOAT, GL_FALSE, 0, m_textureCoordinateArray );
+        funcs->glVertexAttribPointer( LSCS_VERTEX_COORDS_ATTR, 2, GL_FLOAT, GL_FALSE, 0, m_vertexCoordinateArray );
+        funcs->glVertexAttribPointer( LSCS_TEXTURE_COORDS_ATTR, 2, GL_FLOAT, GL_FALSE, 0, m_textureCoordinateArray );
 
         m_blitProgram->bind();
-        m_blitProgram->enableAttributeArray( int( QT_VERTEX_COORDS_ATTR ) );
-        m_blitProgram->enableAttributeArray( int( QT_TEXTURE_COORDS_ATTR ) );
-        m_blitProgram->disableAttributeArray( int( QT_OPACITY_ATTR ) );
+        m_blitProgram->enableAttributeArray( int( LSCS_VERTEX_COORDS_ATTR ) );
+        m_blitProgram->enableAttributeArray( int( LSCS_TEXTURE_COORDS_ATTR ) );
+        m_blitProgram->disableAttributeArray( int( LSCS_OPACITY_ATTR ) );
 
         blitProgram = m_blitProgram;
 
     }
     else
     {
-        pex->setVertexAttributePointer( QT_VERTEX_COORDS_ATTR, m_vertexCoordinateArray );
-        pex->setVertexAttributePointer( QT_TEXTURE_COORDS_ATTR, m_textureCoordinateArray );
+        pex->setVertexAttributePointer( LSCS_VERTEX_COORDS_ATTR, m_vertexCoordinateArray );
+        pex->setVertexAttributePointer( LSCS_TEXTURE_COORDS_ATTR, m_textureCoordinateArray );
 
         pex->shaderManager->useBlitProgram();
         blitProgram = pex->shaderManager->blitProgram();
     }
 
-    blitProgram->setUniformValue( "imageTexture", QT_IMAGE_TEXTURE_UNIT );
+    blitProgram->setUniformValue( "imageTexture", LSCS_IMAGE_TEXTURE_UNIT );
 
     funcs->glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
     funcs->glBindTexture( GL_TEXTURE_2D, m_textureResource->m_texture );
@@ -393,7 +393,7 @@ void QGLTextureGlyphCache::fillTexture( const Coord &c, glyph_t glyph, QFixed su
     {
         GLenum format = GL_RGBA;
 
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
 
         if ( !ctx->contextHandle()->isOpenGLES() )
         {

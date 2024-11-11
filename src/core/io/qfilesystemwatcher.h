@@ -27,7 +27,7 @@
 #include <qobject.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 
 class QFileSystemWatcherPrivate;
 
@@ -68,6 +68,6 @@ protected:
 
 };
 
-#endif // QT_NO_FILESYSTEMWATCHER
+#endif // LSCS_NO_FILESYSTEMWATCHER
 
 #endif

@@ -27,7 +27,7 @@
 #include <qobject.h>
 #include <qstring.h>
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
 
 class QPlatformMenu;
 class QIcon;
@@ -77,6 +77,6 @@ public:
 };
 
 
-#endif // QT_NO_SYSTEMTRAYICON
+#endif // LSCS_NO_SYSTEMTRAYICON
 
 #endif

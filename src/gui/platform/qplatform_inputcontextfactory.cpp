@@ -32,7 +32,7 @@
 
 #include <stdlib.h>
 
-#if ! defined(QT_NO_SETTINGS)
+#if ! defined(LSCS_NO_SETTINGS)
 static QFactoryLoader *loader()
 {
     static QFactoryLoader retval( QPlatformInputContextInterface_ID, "/platforminputcontexts", Qt::CaseInsensitive );
@@ -43,7 +43,7 @@ static QFactoryLoader *loader()
 QStringList QPlatformInputContextFactory::keys()
 {
 
-#if ! defined(QT_NO_SETTINGS)
+#if ! defined(LSCS_NO_SETTINGS)
     auto keySet = loader()->keySet();
     QStringList retval( keySet.toList() );
     return retval;
@@ -56,13 +56,13 @@ QStringList QPlatformInputContextFactory::keys()
 
 QString QPlatformInputContextFactory::requested()
 {
-    QByteArray env = qgetenv( "QT_IM_MODULE" );
+    QByteArray env = qgetenv( "LSCS_IM_MODULE" );
     return env.isNull() ? QString() : QString::fromUtf8( env );
 }
 
 QPlatformInputContext *QPlatformInputContextFactory::create( const QString &key )
 {
-#if ! defined(QT_NO_SETTINGS)
+#if ! defined(LSCS_NO_SETTINGS)
 
     if ( ! key.isEmpty() )
     {

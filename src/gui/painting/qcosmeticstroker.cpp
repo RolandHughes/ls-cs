@@ -212,35 +212,35 @@ static StrokeLine strokeLine( int strokeSelection )
     switch ( strokeSelection )
     {
         case Aliased|Solid|RegularDraw:
-            stroke = &QT_PREPEND_NAMESPACE( drawLine )<drawPixel, NoDasher>;
+            stroke = &LSCS_PREPEND_NAMESPACE( drawLine )<drawPixel, NoDasher>;
             break;
 
         case Aliased|Solid|FastDraw:
-            stroke = &QT_PREPEND_NAMESPACE( drawLine )<drawPixelARGB32Opaque, NoDasher>;
+            stroke = &LSCS_PREPEND_NAMESPACE( drawLine )<drawPixelARGB32Opaque, NoDasher>;
             break;
 
         case Aliased|Dashed|RegularDraw:
-            stroke = &QT_PREPEND_NAMESPACE( drawLine )<drawPixel, Dasher>;
+            stroke = &LSCS_PREPEND_NAMESPACE( drawLine )<drawPixel, Dasher>;
             break;
 
         case Aliased|Dashed|FastDraw:
-            stroke = &QT_PREPEND_NAMESPACE( drawLine )<drawPixelARGB32Opaque, Dasher>;
+            stroke = &LSCS_PREPEND_NAMESPACE( drawLine )<drawPixelARGB32Opaque, Dasher>;
             break;
 
         case AntiAliased|Solid|RegularDraw:
-            stroke = &QT_PREPEND_NAMESPACE( drawLineAA )<drawPixel, NoDasher>;
+            stroke = &LSCS_PREPEND_NAMESPACE( drawLineAA )<drawPixel, NoDasher>;
             break;
 
         case AntiAliased|Solid|FastDraw:
-            stroke = &QT_PREPEND_NAMESPACE( drawLineAA )<drawPixelARGB32, NoDasher>;
+            stroke = &LSCS_PREPEND_NAMESPACE( drawLineAA )<drawPixelARGB32, NoDasher>;
             break;
 
         case AntiAliased|Dashed|RegularDraw:
-            stroke = &QT_PREPEND_NAMESPACE( drawLineAA )<drawPixel, Dasher>;
+            stroke = &LSCS_PREPEND_NAMESPACE( drawLineAA )<drawPixel, Dasher>;
             break;
 
         case AntiAliased|Dashed|FastDraw:
-            stroke = &QT_PREPEND_NAMESPACE( drawLineAA )<drawPixelARGB32, Dasher>;
+            stroke = &LSCS_PREPEND_NAMESPACE( drawLineAA )<drawPixelARGB32, Dasher>;
             break;
 
         default:
@@ -320,7 +320,7 @@ void QCosmeticStroker::setup()
     {
         opacity = 256;
     }
-    else if ( qt_pen_is_cosmetic( state->lastPen, state->renderHints ) )
+    else if ( lscs_pen_is_cosmetic( state->lastPen, state->renderHints ) )
     {
         opacity = ( int ) 256 * width;
     }

@@ -23,7 +23,7 @@
 
 #include <qwhatsthis.h>
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 #include <qpointer.h>
 #include <qapplication.h>
 #include <qtoolbutton.h>
@@ -43,7 +43,7 @@
 #include <qguiapplication_p.h>
 #include <qtextdocumentlayout_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -108,7 +108,7 @@ QWhatsThat::QWhatsThat( const QString &txt, QWidget *parent, QWidget *showTextFo
     setMouseTracking( true );
     setFocusPolicy( Qt::StrongFocus );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     setCursor( Qt::ArrowCursor );
 #endif
 
@@ -122,7 +122,7 @@ QWhatsThat::QWhatsThat( const QString &txt, QWidget *parent, QWidget *showTextFo
         doc->setUndoRedoEnabled( false );
         doc->setDefaultFont( QApplication::font( this ) );
 
-#ifdef QT_NO_TEXTHTMLPARSER
+#ifdef LSCS_NO_TEXTHTMLPARSER
         doc->setPlainText( text );
 #else
         doc->setHtml( text );
@@ -226,7 +226,7 @@ void QWhatsThat::mouseReleaseEvent( QMouseEvent *e )
 
 void QWhatsThat::mouseMoveEvent( QMouseEvent *e )
 {
-#ifdef QT_NO_CURSOR
+#ifdef LSCS_NO_CURSOR
     ( void ) e;
 #else
 
@@ -386,7 +386,7 @@ QWhatsThisPrivate::QWhatsThisPrivate()
         QHelpEvent e( QEvent::QueryWhatsThis, w->mapFromGlobal( pos ), pos );
         bool sentEvent = QApplication::sendEvent( w, &e );
 
-#ifdef QT_NO_CURSOR
+#ifdef LSCS_NO_CURSOR
         ( void ) sentEvent;
 #else
         QApplication::setOverrideCursor( ( ! sentEvent || !e.isAccepted() ) ?
@@ -399,7 +399,7 @@ QWhatsThisPrivate::QWhatsThisPrivate()
 
     }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleEvent event( this, QAccessible::ContextHelpStart );
     QAccessible::updateAccessibility( &event );
 #endif
@@ -412,11 +412,11 @@ QWhatsThisPrivate::~QWhatsThisPrivate()
         action->setChecked( false );
     }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QApplication::restoreOverrideCursor();
 #endif
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleEvent event( this, QAccessible::ContextHelpEnd );
     QAccessible::updateAccessibility( &event );
 #endif
@@ -461,7 +461,7 @@ bool QWhatsThisPrivate::eventFilter( QObject *o, QEvent *e )
             QHelpEvent e( QEvent::QueryWhatsThis, me->pos(), me->globalPos() );
             bool sentEvent = QApplication::sendEvent( w, &e );
 
-#ifdef QT_NO_CURSOR
+#ifdef LSCS_NO_CURSOR
             ( void ) sentEvent;
 #else
             QApplication::changeOverrideCursor( ( !sentEvent || ! e.isAccepted() ) ?
@@ -534,7 +534,7 @@ private:
 
 QWhatsThisAction::QWhatsThisAction( QObject *parent ) : QAction( tr( "What's This?" ), parent )
 {
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
     QPixmap p( button_image );
     setIcon( p );
 #endif
@@ -542,7 +542,7 @@ QWhatsThisAction::QWhatsThisAction( QObject *parent ) : QAction( tr( "What's Thi
     setCheckable( true );
     connect( this, &QWhatsThisAction::triggered, this, &QWhatsThisAction::actionTriggered );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     setShortcut( Qt::ShiftModifier + Qt::Key_F1 );
 #endif
 }

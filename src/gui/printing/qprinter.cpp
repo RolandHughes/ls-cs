@@ -24,7 +24,7 @@
 #include <qprinter_p.h>
 #include <qprinter.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 #include <qcoreapplication.h>
 #include <qpicture.h>
@@ -49,11 +49,11 @@
         return retValue; \
     }
 
-extern qreal qt_pixelMultiplier( int resolution );
-extern QMarginsF qt_convertMargins( const QMarginsF &margins, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits );
+extern qreal lscs_pixelMultiplier( int resolution );
+extern QMarginsF lscs_convertMargins( const QMarginsF &margins, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits );
 
 // return the multiplier of converting from the unit value to postscript-points.
-double qt_multiplierForUnit( QPrinter::Unit unit, int resolution )
+double lscs_multiplierForUnit( QPrinter::Unit unit, int resolution )
 {
     switch ( unit )
     {
@@ -83,7 +83,7 @@ double qt_multiplierForUnit( QPrinter::Unit unit, int resolution )
 }
 
 // method used in qpagesetupdialog_unix.cpp
-QSizeF qt_printerPaperSize( QPrinter::Orientation orientation, QPageSize::PageSizeId paperSize,
+QSizeF lscs_printerPaperSize( QPrinter::Orientation orientation, QPageSize::PageSizeId paperSize,
                             QPrinter::Unit unit, int resolution )
 {
     QPageSize pageSize = QPageSize( QPageSize::PageSizeId( paperSize ) );
@@ -91,7 +91,7 @@ QSizeF qt_printerPaperSize( QPrinter::Orientation orientation, QPageSize::PageSi
 
     if ( unit == QPageSize::Unit::DevicePixel )
     {
-        sizef = pageSize.size( QPageSize::Unit::Point ) * qt_multiplierForUnit( unit, resolution );
+        sizef = pageSize.size( QPageSize::Unit::Point ) * lscs_multiplierForUnit( unit, resolution );
     }
     else
     {
@@ -198,7 +198,7 @@ void QPrinterPrivate::changeEngines( QPrinter::OutputFormat format, const QPrint
         delete oldPrintEngine;
     }
 }
-#ifndef QT_NO_PRINTPREVIEWWIDGET
+#ifndef LSCS_NO_PRINTPREVIEWWIDGET
 QList<const QPicture *> QPrinterPrivate::previewPages() const
 {
     if ( previewEngine )
@@ -233,7 +233,7 @@ void QPrinterPrivate::setPreviewMode( bool enable )
         use_default_engine = had_default_engines;
     }
 }
-#endif // QT_NO_PRINTPREVIEWWIDGET
+#endif // LSCS_NO_PRINTPREVIEWWIDGET
 
 void QPrinterPrivate::setProperty( QPrintEngine::PrintEnginePropertyKey key, const QVariant &value )
 {
@@ -342,7 +342,7 @@ QPrinter::~QPrinter()
         delete d->printEngine;
     }
 
-#ifndef QT_NO_PRINTPREVIEWWIDGET
+#ifndef LSCS_NO_PRINTPREVIEWWIDGET
     delete d->previewEngine;
 #endif
 }
@@ -543,7 +543,7 @@ void QPrinter::setPaperSize( const QSizeF &paperSize, QPageSize::Unit unit )
 {
     if ( unit == QPageSize::Unit::DevicePixel )
     {
-        setPageSize( QPageSize( paperSize * qt_pixelMultiplier( resolution() ), QPageSize::Unit::Point ) );
+        setPageSize( QPageSize( paperSize * lscs_pixelMultiplier( resolution() ), QPageSize::Unit::Point ) );
 
     }
     else
@@ -783,8 +783,8 @@ bool QPrinter::setPageMargins( const QMarginsF &margins, QPageSize::Unit unit )
 
     if ( t_unit == QPageSize::Unit::DevicePixel )
     {
-        t_margins *= qt_pixelMultiplier( resolution() );
-        t_margins  = qt_convertMargins( t_margins, QPageSize::Unit::Point, pageLayout().units() );
+        t_margins *= lscs_pixelMultiplier( resolution() );
+        t_margins  = lscs_convertMargins( t_margins, QPageSize::Unit::Point, pageLayout().units() );
 
         t_unit = pageLayout().units();
     }
@@ -949,4 +949,4 @@ QPrinter::PrintRange QPrinter::printRange() const
     return d_ptr->printRange;
 }
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER

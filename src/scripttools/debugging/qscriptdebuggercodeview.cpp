@@ -30,7 +30,7 @@
 #include <QtGui/qtextobject.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerCodeViewPrivate
     : public QScriptDebuggerCodeViewInterfacePrivate
@@ -287,4 +287,4 @@ bool QScriptDebuggerCodeView::event( QEvent *e )
     return false;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -84,7 +84,7 @@ public:
     static QWebPagePrivate *priv( QWebPage * );
 
     void createMainFrame();
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     QMenu *createContextMenu( const WebCore::ContextMenu *webcoreMenu, const QList<WebCore::ContextMenuItem> *items,
                               QBitArray *visitedWebActions );
 #endif
@@ -102,10 +102,10 @@ public:
     template<class T> void mouseDoubleClickEvent( T * );
     template<class T> void mouseTripleClickEvent( T * );
     template<class T> void mouseReleaseEvent( T * );
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( const QPoint &globalPos );
 #endif
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     template<class T> void wheelEvent( T * );
 #endif
     void keyPressEvent( QKeyEvent * );
@@ -120,7 +120,7 @@ public:
 
     void inputMethodEvent( QInputMethodEvent * );
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     void dynamicPropertyChangeEvent( QDynamicPropertyChangeEvent * );
 #endif
 
@@ -148,7 +148,7 @@ public:
     };
 
     void adjustPointForClicking( QMouseEvent * );
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
     void adjustPointForClicking( QGraphicsSceneMouseEvent * );
 #endif
 
@@ -159,7 +159,7 @@ public:
 
     WebCore::ViewportArguments viewportArguments();
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     static QWebPage::WebAction editorActionForKeyEvent( QKeyEvent *event );
 #endif
     static const char *editorCommandForWebActions( QWebPage::WebAction action );
@@ -169,7 +169,7 @@ public:
     OwnPtr<QWebPageClient> client;
     QPointer<QWebFrame> mainFrame;
 
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
     QUndoStack *undoStack;
 #endif
 
@@ -198,7 +198,7 @@ public:
 
     QWebHistory history;
     QWebHitTestResult hitTestResult;
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     QPointer<QMenu> currentContextMenu;
 #endif
     QWebSettings *settings;

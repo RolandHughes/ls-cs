@@ -23,7 +23,7 @@
 
 #include <qsizegrip.h>
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
 #include <qapplication.h>
 #include <qevent.h>
@@ -39,7 +39,7 @@
 #include <qwidget_p.h>
 #include <qabstractscrollarea.h>
 
-static QWidget *qt_sizegrip_topLevelWidget( QWidget *w )
+static QWidget *lscs_sizegrip_topLevelWidget( QWidget *w )
 {
     while ( w && !w->isWindow() && w->windowType() != Qt::SubWindow )
     {
@@ -79,7 +79,7 @@ public:
     void updateTopLevelWidget()
     {
         Q_Q( QSizeGrip );
-        QWidget *w = qt_sizegrip_topLevelWidget( q );
+        QWidget *w = lscs_sizegrip_topLevelWidget( q );
 
         if ( tlw == w )
         {
@@ -136,7 +136,7 @@ Qt::Corner QSizeGripPrivate::corner() const
 {
     Q_Q( const QSizeGrip );
 
-    QWidget *tmp = qt_sizegrip_topLevelWidget( const_cast<QSizeGrip *>( q ) );
+    QWidget *tmp = lscs_sizegrip_topLevelWidget( const_cast<QSizeGrip *>( q ) );
     const QPoint sizeGripPos = q->mapTo( tmp, QPoint( 0, 0 ) );
 
     bool isAtBottom = sizeGripPos.y() >= tmp->height() / 2;
@@ -208,7 +208,7 @@ void QSizeGrip::mousePressEvent( QMouseEvent *e )
     }
 
     Q_D( QSizeGrip );
-    QWidget *tlw = qt_sizegrip_topLevelWidget( this );
+    QWidget *tlw = lscs_sizegrip_topLevelWidget( this );
     d->p = e->globalPos();
     d->gotMousePress = true;
     d->r = tlw->geometry();
@@ -250,7 +250,7 @@ void QSizeGrip::mousePressEvent( QMouseEvent *e )
         // If that's the case tlw->parentWidget() will return the viewport
         // and tlw->parentWidget()->parentWidget() will return the scroll area.
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
         QAbstractScrollArea *scrollArea = qobject_cast<QAbstractScrollArea *>( tlwParent->parentWidget() );
 
         if ( scrollArea )
@@ -330,7 +330,7 @@ void QSizeGrip::mouseMoveEvent( QMouseEvent *e )
         return;
     }
 
-    QWidget *tlw = qt_sizegrip_topLevelWidget( this );
+    QWidget *tlw = lscs_sizegrip_topLevelWidget( this );
 
     if ( ! d->gotMousePress || tlw->testAttribute( Qt::WA_WState_ConfigPending ) )
     {
@@ -471,4 +471,4 @@ void QSizeGrip::_q_showIfNotHidden()
     d->_q_showIfNotHidden();
 }
 
-#endif //QT_NO_SIZEGRIP
+#endif //LSCS_NO_SIZEGRIP

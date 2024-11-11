@@ -78,7 +78,7 @@ void Widget::setFocus( bool focused )
 
 void Widget::setCursor( const Cursor &cursor )
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     ScrollView *view = root();
 
     if ( !view )

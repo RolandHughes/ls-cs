@@ -35,9 +35,9 @@
 
 #include <qdebug.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 static QDBusError checkIfValid( const QString &service, const QString &path,
                                 const QString &interface, bool isDynamic, bool isPeer )
@@ -262,10 +262,10 @@ QDBusAbstractInterfaceBase::QDBusAbstractInterfaceBase( QDBusAbstractInterfacePr
 {
 }
 
-int QDBusAbstractInterfaceBase::qt_metacall( QMetaObject::Call _c, int _id, void **_a )
+int QDBusAbstractInterfaceBase::lscs_metacall( QMetaObject::Call _c, int _id, void **_a )
 {
     int saved_id = _id;
-    _id = QObject::qt_metacall( _c, _id, _a );
+    _id = QObject::lscs_metacall( _c, _id, _a );
 
     if ( _id < 0 )
     {
@@ -876,6 +876,6 @@ QDBusMessage QDBusAbstractInterface::internalConstCall( QDBus::CallMode mode,
     return const_cast<QDBusAbstractInterface *>( this )->callWithArgumentList( mode, method, args );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

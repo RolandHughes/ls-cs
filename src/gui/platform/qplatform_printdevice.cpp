@@ -27,14 +27,14 @@
 #include "qprintdialog.h"
 #include <qpagelayout.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 QPlatformPrintDevice::QPlatformPrintDevice()
     : m_isRemote( false ), m_supportsMultipleCopies( false ), m_supportsCollateCopies( false ),
       m_havePageSizes( false ), m_supportsCustomPageSizes( false ), m_haveResolutions( false ),
       m_haveInputSlots( false ), m_haveOutputBins( false ), m_haveDuplexModes( false ),
       m_haveColorModes( false )
-#ifndef QT_NO_MIMETYPES
+#ifndef LSCS_NO_MIMETYPES
 // emerald    , m_haveMimeTypes(false)
 #endif
 {
@@ -45,7 +45,7 @@ QPlatformPrintDevice::QPlatformPrintDevice( const QString &id )
       m_supportsCollateCopies( false ), m_havePageSizes( false ), m_supportsCustomPageSizes( false ),
       m_haveResolutions( false ), m_haveInputSlots( false ), m_haveOutputBins( false ),
       m_haveDuplexModes( false ), m_haveColorModes( false )
-#ifndef QT_NO_MIMETYPES
+#ifndef LSCS_NO_MIMETYPES
 // emerald    , m_haveMimeTypes(false)
 #endif
 {
@@ -385,7 +385,7 @@ QList<QPrint::ColorMode> QPlatformPrintDevice::supportedColorModes() const
     return m_colorModes.toList();
 }
 
-#ifndef QT_NO_MIMETYPE
+#ifndef LSCS_NO_MIMETYPE
 
 /* emerald (mime types )
 void QPlatformPrintDevice::loadMimeTypes() const
@@ -414,5 +414,5 @@ QPageSize QPlatformPrintDevice::createPageSize( int windowsId, const QSize &size
     return QPageSize( windowsId, size, localizedName );
 }
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 

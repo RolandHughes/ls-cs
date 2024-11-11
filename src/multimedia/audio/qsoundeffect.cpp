@@ -23,7 +23,7 @@
 
 #include <qsoundeffect.h>
 
-#if defined(QT_MULTIMEDIA_PULSEAUDIO)
+#if defined(LSCS_MULTIMEDIA_PULSEAUDIO)
 #include <qsoundeffect_pulse_p.h>
 
 #else

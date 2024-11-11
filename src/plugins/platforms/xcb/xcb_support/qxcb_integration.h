@@ -43,7 +43,7 @@ public:
 
     QPlatformWindow *createPlatformWindow( QWindow *window ) const override;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     QPlatformOpenGLContext *createPlatformOpenGLContext( QOpenGLContext *context ) const override;
 #endif
 
@@ -61,17 +61,17 @@ public:
 
     QPlatformNativeInterface *nativeInterface()const override;
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     QPlatformClipboard *clipboard() const override;
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     QPlatformDrag *drag() const override;
 #endif
 
     QPlatformInputContext *inputContext() const override;
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QPlatformAccessibility *accessibility() const override;
 #endif
 
@@ -91,7 +91,7 @@ public:
 
     QByteArray wmClass() const;
 
-#if ! defined(QT_NO_SESSIONMANAGER) && defined(XCB_USE_SM)
+#if ! defined(LSCS_NO_SESSIONMANAGER) && defined(XCB_USE_SM)
     QPlatformSessionManager *createPlatformSessionManager( const QString &id, const QString &key ) const override;
 #endif
 
@@ -110,7 +110,7 @@ private:
 
     QScopedPointer<QPlatformInputContext> m_inputContext;
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     mutable QScopedPointer<QPlatformAccessibility> m_accessibility;
 #endif
 

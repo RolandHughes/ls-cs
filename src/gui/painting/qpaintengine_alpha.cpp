@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 #include <qdebug.h>
 #include <qpaintengine_alpha_p.h>
@@ -367,8 +367,8 @@ void QAlphaPaintEngine::flushAndInit( bool init )
 
         // make sure the output from QPicture is unscaled
         QTransform mtx;
-        mtx.scale( 1.0f / ( qreal( d->m_pdev->logicalDpiX() ) / qreal( qt_defaultDpiX() ) ),
-                   1.0f / ( qreal( d->m_pdev->logicalDpiY() ) / qreal( qt_defaultDpiY() ) ) );
+        mtx.scale( 1.0f / ( qreal( d->m_pdev->logicalDpiX() ) / qreal( lscs_defaultDpiX() ) ),
+                   1.0f / ( qreal( d->m_pdev->logicalDpiY() ) / qreal( lscs_defaultDpiY() ) ) );
         painter()->setTransform( mtx );
         painter()->drawPicture( 0, 0, *d->m_pic );
 
@@ -453,7 +453,7 @@ QRectF QAlphaPaintEnginePrivate::addPenWidth( const QPainterPath &path )
         return ( path.controlPointRect() * m_transform ).boundingRect();
     }
 
-    bool cosmetic = qt_pen_is_cosmetic( m_pen, q->state->renderHints() );
+    bool cosmetic = lscs_pen_is_cosmetic( m_pen, q->state->renderHints() );
 
     if ( cosmetic )
     {
@@ -576,4 +576,4 @@ void QAlphaPaintEnginePrivate::resetState( QPainter *p )
     p->setOpacity( 1.0f );
 }
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER

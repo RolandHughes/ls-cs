@@ -53,9 +53,9 @@
 
 #include <qdbusmessage.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusMessage;
 class QSocketNotifier;
@@ -378,7 +378,7 @@ extern QDBusMessage qDBusPropertySet( const QDBusConnectionPrivate::ObjectTreeNo
 extern QDBusMessage qDBusPropertyGetAll( const QDBusConnectionPrivate::ObjectTreeNode &node,
         const QDBusMessage &msg );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

@@ -38,7 +38,7 @@ void InitializeLoggingChannelsIfNecessary()
 
     haveInitializedLoggingChannels = true;
 
-    QByteArray loggingEnv = qgetenv( "QT_WEBKIT_LOG" );
+    QByteArray loggingEnv = qgetenv( "LSCS_WEBKIT_LOG" );
 
     if ( loggingEnv.isEmpty() )
     {

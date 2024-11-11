@@ -62,7 +62,7 @@ void QCocoaTouch::updateTouchData(NSTouch *nstouch, NSTouchPhase phase)
 
    if (_touchPoint.id == 0 && phase == NSTouchPhaseBegan) {
       _trackpadReferencePos = qnpos;
-      _screenReferencePos = qt_mac_flipPoint([NSEvent mouseLocation]);
+      _screenReferencePos = lscs_mac_flipPoint([NSEvent mouseLocation]);
    }
 
    QPointF screenPos = _screenReferencePos;

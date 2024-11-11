@@ -36,14 +36,14 @@
 #include <algorithm>
 #include <iterator>
 
-void qt_registerFont( const QString &familyname, const QString &stylename,
+void lscs_registerFont( const QString &familyname, const QString &stylename,
                       const QString &foundryname, int weight,
                       QFont::Style style, int stretch, bool antialiased,
                       bool scalable, int pixelSize, bool fixedPitch,
                       const QSupportedWritingSystems &writingSystems, void *hanlde );
 
-void qt_registerFontFamily( const QString &familyName );
-void qt_registerAliasToFontFamily( const QString &familyName, const QString &alias );
+void lscs_registerFontFamily( const QString &familyName );
+void lscs_registerAliasToFontFamily( const QString &familyName, const QString &alias );
 
 void QPlatformFontDatabase::registerQPF2Font( const QByteArray &dataArray, void *handle )
 {
@@ -117,14 +117,14 @@ void QPlatformFontDatabase::registerFont( const QString &familyname, const QStri
         pixelSize = 0;
     }
 
-    qt_registerFont( familyname, stylename, foundryname, weight, style,
+    lscs_registerFont( familyname, stylename, foundryname, weight, style,
                      stretch, antialiased, scalable, pixelSize,
                      fixedPitch, writingSystems, usrPtr );
 }
 
 void QPlatformFontDatabase::registerFontFamily( const QString &familyName )
 {
-    qt_registerFontFamily( familyName );
+    lscs_registerFontFamily( familyName );
 }
 
 class QWritingSystemsPrivate
@@ -316,7 +316,7 @@ void QPlatformFontDatabase::releaseHandle( void *handle )
 
 QString QPlatformFontDatabase::fontDir() const
 {
-    QString fontpath = QString::fromUtf8( qgetenv( "QT_FONTDIR" ) );
+    QString fontpath = QString::fromUtf8( qgetenv( "LSCS_FONTDIR" ) );
 
     if ( fontpath.isEmpty() )
     {
@@ -343,11 +343,11 @@ QFont QPlatformFontDatabase::defaultFont() const
     return QFont( "Helvetica" );
 }
 
-QString qt_resolveFontFamilyAlias( const QString &alias );
+QString lscs_resolveFontFamilyAlias( const QString &alias );
 
 QString QPlatformFontDatabase::resolveFontFamilyAlias( const QString &family ) const
 {
-    return qt_resolveFontFamilyAlias( family );
+    return lscs_resolveFontFamilyAlias( family );
 }
 
 bool QPlatformFontDatabase::fontsAlwaysScalable() const
@@ -602,6 +602,6 @@ QFont::Weight QPlatformFontDatabase::weightFromInteger( int weight )
 
 void QPlatformFontDatabase::registerAliasToFontFamily( const QString &familyName, const QString &alias )
 {
-    qt_registerAliasToFontFamily( familyName, alias );
+    lscs_registerAliasToFontFamily( familyName, alias );
 }
 

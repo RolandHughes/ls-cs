@@ -29,7 +29,7 @@
 #include <qstring.h>
 #include <qvariant.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 class QSslCertificateExtensionPrivate;
 

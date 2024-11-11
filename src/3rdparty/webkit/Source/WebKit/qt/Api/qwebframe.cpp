@@ -89,8 +89,8 @@
 #include "markup.h"
 
 #if USE(JSC)
-#include "qt_instance.h"
-#include "qt_runtime.h"
+#include "lscs_instance.h"
+#include "lscs_runtime.h"
 #endif
 
 #include "qwebelement.h"
@@ -125,7 +125,7 @@
 using namespace WebCore;
 
 // from text/qfont.cpp
-extern Q_GUI_EXPORT int qt_defaultDpi();
+extern Q_GUI_EXPORT int lscs_defaultDpi();
 
 bool QWEBKIT_EXPORT qtwebkit_webframe_scrollOverflow( QWebFrame *qFrame, int dx, int dy, const QPoint &pos )
 {
@@ -1650,7 +1650,7 @@ bool QWebFrame::event( QEvent *e )
     return QObject::event( e );
 }
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 /*
     Prints the frame to the given \a printer.
 
@@ -1665,8 +1665,8 @@ void QWebFrame::print( QPrinter *printer )
         return;
     }
 
-    const qreal zoomFactorX = ( qreal )printer->logicalDpiX() / qt_defaultDpi();
-    const qreal zoomFactorY = ( qreal )printer->logicalDpiY() / qt_defaultDpi();
+    const qreal zoomFactorX = ( qreal )printer->logicalDpiX() / lscs_defaultDpi();
+    const qreal zoomFactorY = ( qreal )printer->logicalDpiY() / lscs_defaultDpi();
 
     PrintContext printContext( d->frame );
     float pageHeight = 0;
@@ -1775,7 +1775,7 @@ void QWebFrame::print( QPrinter *printer )
 
     printContext.end();
 }
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 /*
     Evaluates the JavaScript defined by \a scriptSource using this frame as context

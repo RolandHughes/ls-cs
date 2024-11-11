@@ -26,7 +26,7 @@
 
 #include <QtCore/qobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeProperty;
 class Q_DECLARATIVE_EXPORT QDeclarativePropertyValueInterceptor
@@ -39,6 +39,6 @@ public:
 };
 LSCS_DECLARE_INTERFACE( QDeclarativePropertyValueInterceptor, "com.copperspice.qml.QDeclarativePropertyValueInterceptor" )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEPROPERTYVALUEINTERCEPTOR_H

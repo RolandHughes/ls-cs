@@ -30,7 +30,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeBasePositionerPrivate;
 
@@ -255,7 +255,7 @@ private:
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeColumn )
 QML_DECLARE_TYPE( QDeclarativeRow )

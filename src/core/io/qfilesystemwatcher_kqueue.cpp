@@ -28,7 +28,7 @@
 
 #include <qcore_unix_p.h>
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 
 #include <qdebug.h>
 #include <qfile.h>
@@ -108,9 +108,9 @@ QStringList QKqueueFileSystemWatcherEngine::addPaths( const QStringList &paths,
             int fd;
 
 #if defined(O_EVTONLY)
-            fd = qt_safe_open( QFile::encodeName( path ).constData(), O_EVTONLY );
+            fd = lscs_safe_open( QFile::encodeName( path ).constData(), O_EVTONLY );
 #else
-            fd = qt_safe_open( QFile::encodeName( path ).constData(), O_RDONLY );
+            fd = lscs_safe_open( QFile::encodeName( path ).constData(), O_RDONLY );
 #endif
 
             if ( fd == -1 )
@@ -132,9 +132,9 @@ QStringList QKqueueFileSystemWatcherEngine::addPaths( const QStringList &paths,
 
             fcntl( fd, F_SETFD, FD_CLOEXEC );
 
-            QT_STATBUF st;
+            LSCS_STATBUF st;
 
-            if ( QT_FSTAT( fd, &st ) == -1 )
+            if ( LSCS_FSTAT( fd, &st ) == -1 )
             {
                 perror( "QKqueueFileSystemWatcherEngine::addPaths: fstat" );
                 ::close( fd );
@@ -394,4 +394,4 @@ void QKqueueFileSystemWatcherEngine::run()
     }
 }
 
-#endif // QT_NO_FILESYSTEMWATCHER
+#endif // LSCS_NO_FILESYSTEMWATCHER

@@ -31,7 +31,7 @@
 #include "qbytearray.h"
 #include <stdlib.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 #define        USE_JISX0212
 
@@ -11166,4 +11166,4 @@ uint QJpUnicodeConv::unicodeToCp932( uint h, uint l ) const
 \internal
 */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

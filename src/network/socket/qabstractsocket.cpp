@@ -35,7 +35,7 @@
 #include <qstring.h>
 #include <qtimer.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 #include <qsslsocket.h>
 #endif
 
@@ -54,14 +54,14 @@
 #define QABSTRACTSOCKET_BUFFERSIZE 32768
 #endif
 
-#define QT_CONNECT_TIMEOUT 30000
-#define QT_TRANSFER_TIMEOUT 120000
+#define LSCS_CONNECT_TIMEOUT 30000
+#define LSCS_TRANSFER_TIMEOUT 120000
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
 
 #include <ctype.h>
 
-static QByteArray qt_prettyDebug( const char *data, int len, int maxLength )
+static QByteArray lscs_prettyDebug( const char *data, int len, int maxLength )
 {
     if ( ! data )
     {
@@ -170,7 +170,7 @@ void QAbstractSocketPrivate::resetSocketLayer()
 bool QAbstractSocketPrivate::initSocketLayer( QAbstractSocket::NetworkLayerProtocol protocol )
 {
 
-#ifdef QT_NO_NETWORKPROXY
+#ifdef LSCS_NO_NETWORKPROXY
     // here to avoid a duplication of the call to createSocketEngine below
     static constexpr const QNetworkProxy &proxyInUse = *( QNetworkProxy * )0;
 #endif
@@ -225,7 +225,7 @@ bool QAbstractSocketPrivate::initSocketLayer( QAbstractSocket::NetworkLayerProto
         return false;
     }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     // copy network session down to the socket engine (if it has been set)
     socketEngine->setProperty( "_q_networksession", q->property( "_q_networksession" ) );
 #endif
@@ -329,7 +329,7 @@ bool QAbstractSocketPrivate::canReadNotification()
     // only emit readyRead() when not recursing and only if there is data available
     bool hasData;
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
     hasData = newBytes > 0 || ( ! isBuffered && socketType != QAbstractSocket::TcpSocket &&
                                 socketEngine && socketEngine->hasPendingDatagrams() ) ||
               ( ! isBuffered && socketType == QAbstractSocket::TcpSocket && socketEngine );
@@ -555,7 +555,7 @@ bool QAbstractSocketPrivate::flush()
     return true;
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
 void QAbstractSocketPrivate::resolveProxy( const QString &hostname, quint16 port )
 {
@@ -824,7 +824,7 @@ void QAbstractSocketPrivate::_q_connectToNextAddress()
                                   q, &QAbstractSocket::_q_abortConnectionAttempt, Qt::DirectConnection );
             }
 
-            connectTimer->start( QT_CONNECT_TIMEOUT );
+            connectTimer->start( LSCS_CONNECT_TIMEOUT );
         }
 
         // Wait for a write notification that will eventually call
@@ -1270,7 +1270,7 @@ void QAbstractSocket::connectToHost( const QString &hostName, quint16 port,
         d->hostLookupId = -1;
     }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     // Get the proxy information
     d->resolveProxy( hostName, port );
 
@@ -1309,7 +1309,7 @@ void QAbstractSocket::connectToHost( const QString &hostName, quint16 port,
         info.setAddresses( QList<QHostAddress>() << temp );
         d->_q_startConnecting( info );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     }
     else if ( d->proxyInUse.capabilities() & QNetworkProxy::HostNameLookupCapability )
     {
@@ -1330,7 +1330,7 @@ void QAbstractSocket::connectToHost( const QString &hostName, quint16 port,
 
             bool immediateResultValid = false;
 
-            QHostInfo hostInfo = qt_qhostinfo_lookup( hostName, this, SLOT( _q_startConnecting( const QHostInfo & ) ),
+            QHostInfo hostInfo = lscs_qhostinfo_lookup( hostName, this, SLOT( _q_startConnecting( const QHostInfo & ) ),
                                  &immediateResultValid, &d->hostLookupId );
 
             if ( immediateResultValid )
@@ -1452,7 +1452,7 @@ bool QAbstractSocket::setSocketDescriptor( qintptr socketDescriptor, SocketState
         return false;
     }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     // copy network session down to the socket engine (if it has been set)
     d->socketEngine->setProperty( "_q_networksession", property( "_q_networksession" ) );
 #endif
@@ -1613,7 +1613,7 @@ bool QAbstractSocket::waitForConnected( int msecs )
         QHostInfo::abortHostLookup( d->hostLookupId );
         d->hostLookupId = -1;
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
         QSharedPointer<QNetworkSession> networkSession;
         QVariant v( property( "_q_networksession" ) );
 
@@ -1655,11 +1655,11 @@ bool QAbstractSocket::waitForConnected( int msecs )
 
     while ( state() == ConnectingState && ( msecs == -1 || stopWatch.elapsed() < msecs ) )
     {
-        int timeout = qt_subtract_from_timeout( msecs, stopWatch.elapsed() );
+        int timeout = lscs_subtract_from_timeout( msecs, stopWatch.elapsed() );
 
-        if ( msecs != -1 && timeout > QT_CONNECT_TIMEOUT )
+        if ( msecs != -1 && timeout > LSCS_CONNECT_TIMEOUT )
         {
-            timeout = QT_CONNECT_TIMEOUT;
+            timeout = LSCS_CONNECT_TIMEOUT;
         }
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
@@ -1751,7 +1751,7 @@ bool QAbstractSocket::waitForReadyRead( int msecs )
         bool readyToWrite = false;
 
         if ( ! d->socketEngine->waitForReadOrWrite( &readyToRead, &readyToWrite, true, !d->writeBuffer.isEmpty(),
-                qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
+                lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
         {
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
@@ -1786,7 +1786,7 @@ bool QAbstractSocket::waitForReadyRead( int msecs )
         }
 
     }
-    while ( msecs == -1 || qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) > 0 );
+    while ( msecs == -1 || lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) > 0 );
 
     return false;
 }
@@ -1829,7 +1829,7 @@ bool QAbstractSocket::waitForBytesWritten( int msecs )
         bool readyToWrite = false;
 
         if ( ! d->socketEngine->waitForReadOrWrite( &readyToRead, &readyToWrite, true, ! d->writeBuffer.isEmpty(),
-                qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
+                lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
         {
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
@@ -1908,7 +1908,7 @@ bool QAbstractSocket::waitForDisconnected( int msecs )
         bool readyToWrite = false;
 
         if ( ! d->socketEngine->waitForReadOrWrite( &readyToRead, &readyToWrite, state() == ConnectedState,
-                ! d->writeBuffer.isEmpty(), qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
+                ! d->writeBuffer.isEmpty(), lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
         {
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
@@ -1963,7 +1963,7 @@ void QAbstractSocket::abort()
         return;
     }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
     if ( QSslSocket *socket = dynamic_cast<QSslSocket *>( this ) )
     {
@@ -1998,7 +1998,7 @@ bool QAbstractSocket::flush()
 {
     Q_D( QAbstractSocket );
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
     // Manual polymorphism, flush() is not virtual, QSslSocket overloads it
     if ( QSslSocket *socket = dynamic_cast<QSslSocket *>( this ) )
@@ -2077,7 +2077,7 @@ qint64 QAbstractSocket::readData( char *data, qint64 maxSize )
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QAbstractSocket::readData(%p \"%s\", %lli) == %lld [engine]",
-            data, qt_prettyDebug( data, 32, readBytes ).data(), maxSize, readBytes );
+            data, lscs_prettyDebug( data, 32, readBytes ).data(), maxSize, readBytes );
 #endif
 
     return readBytes;
@@ -2141,7 +2141,7 @@ qint64 QAbstractSocket::writeData( const char *data, qint64 size )
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug( "QAbstractSocket::writeData(%p \"%s\", %lli) == %lli", data,
-                qt_prettyDebug( data, qMin( ( int )size, 32 ), size ).data(), size, written );
+                lscs_prettyDebug( data, qMin( ( int )size, 32 ), size ).data(), size, written );
 #endif
 
         if ( written >= 0 )
@@ -2178,7 +2178,7 @@ qint64 QAbstractSocket::writeData( const char *data, qint64 size )
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QAbstractSocket::writeData(%p \"%s\", %lli) == %lli", data,
-            qt_prettyDebug( data, qMin( ( int )size, 32 ), size ).data(), size, written );
+            lscs_prettyDebug( data, qMin( ( int )size, 32 ), size ).data(), size, written );
 #endif
 
     return written;
@@ -2431,7 +2431,7 @@ void QAbstractSocket::setSocketError( SocketError socketError )
     d_func()->socketError = socketError;
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
 void QAbstractSocket::setProxy( const QNetworkProxy &networkProxy )
 {

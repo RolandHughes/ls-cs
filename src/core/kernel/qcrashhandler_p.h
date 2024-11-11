@@ -26,13 +26,13 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_CRASHHANDLER
+#ifndef LSCS_NO_CRASHHANDLER
 
 using FP_Void = void ( * )();
 
 class Q_CORE_EXPORT QSegfaultHandler
 {
-    friend void qt_signal_handler( int );
+    friend void lscs_signal_handler( int );
     static FP_Void callback;
 
 public:

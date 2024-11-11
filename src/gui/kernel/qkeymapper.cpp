@@ -61,7 +61,7 @@ QList<int> QKeyMapper::possibleKeys( QKeyEvent *e )
 }
 
 // in qapplication_*.cpp
-extern bool qt_sendSpontaneousEvent( QObject *receiver, QEvent *event );
+extern bool lscs_sendSpontaneousEvent( QObject *receiver, QEvent *event );
 
 void QKeyMapper::changeKeyboard()
 {
@@ -76,7 +76,7 @@ void QKeyMapper::changeKeyboard()
     for ( int i = 0; i < list.size(); ++i )
     {
         QWidget *w = list.at( i );
-        qt_sendSpontaneousEvent( w, &e );
+        lscs_sendSpontaneousEvent( w, &e );
     }
 
 #endif
@@ -94,7 +94,7 @@ QKeyMapper *QKeyMapper::instance()
     return keymapper();
 }
 
-QKeyMapperPrivate *qt_keymapper_private()
+QKeyMapperPrivate *lscs_keymapper_private()
 {
     return QKeyMapper::instance()->d_func();
 }

@@ -31,9 +31,9 @@
 
 #include <qdebug.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 WlanOpenHandleProto local_WlanOpenHandle = 0;
 WlanRegisterNotificationProto local_WlanRegisterNotification = 0;
@@ -718,6 +718,6 @@ bool QNativeWifiEngine::requiresPolling() const
     return true;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT

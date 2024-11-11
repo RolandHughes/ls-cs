@@ -23,7 +23,7 @@
 
 #include <qwizard.h>
 
-#ifndef QT_NO_WIZARD
+#ifndef LSCS_NO_WIZARD
 
 #include <qabstractspinbox.h>
 #include <qalgorithms.h>
@@ -46,7 +46,7 @@
 #if defined(Q_OS_DARWIN)
 #include <qplatform_nativeinterface.h>
 
-#elif ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#elif ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
 #include <qtimer.h>
 #include <qwizard_win_p.h>
 
@@ -353,7 +353,7 @@ protected:
 
 private:
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
     bool vistaDisabled() const;
 #endif
 
@@ -399,7 +399,7 @@ QWizardHeader::QWizardHeader( QWidget *parent )
     layout->addWidget( logoLabel, 1, 5, 5, 1 );
 }
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
 bool QWizardHeader::vistaDisabled() const
 {
     bool styleDisabled = false;
@@ -423,7 +423,7 @@ void QWizardHeader::setup( const QWizardLayoutInfo &info, const QString &title,
 {
     bool modern = ( ( info.wizStyle == QWizard::ModernStyle )
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
                     || ( ( info.wizStyle == QWizard::AeroStyle && QVistaHelper::vistaState() == QVistaHelper::Classic ) || vistaDisabled() )
 #endif
 
@@ -634,7 +634,7 @@ void QWizardPagePrivate::_q_updateCachedCompleteState()
 class QWizardAntiFlickerWidget : public QWidget
 {
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
 public:
     QWizardAntiFlickerWidget( QWizard *wizard, QWizardPrivate *wizardPrivate )
         : QWidget( wizard ), wizardPrivate( wizardPrivate )
@@ -676,7 +676,7 @@ public:
           watermarkLabel( nullptr ), sideWidget( nullptr ), pageFrame( nullptr ), titleLabel( nullptr ),
           subTitleLabel( nullptr ), bottomRuler( nullptr ),
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
           vistaHelper( nullptr ), vistaInitPending( false ), vistaState( QVistaHelper::VistaState::Dirty ),
           vistaStateChanged( false ), inHandleAeroStyleChange( false ),
 #endif
@@ -684,7 +684,7 @@ public:
     {
         std::fill( btns, btns + QWizard::NButtons, static_cast<QAbstractButton *>( nullptr ) );
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
 
         if ( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based ) )
         {
@@ -715,7 +715,7 @@ public:
     bool buttonLayoutContains( QWizard::WizardButton which );
     void updatePixmap( QWizard::WizardPixmap which );
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
     bool vistaDisabled() const;
     bool isVistaThemeEnabled( QVistaHelper::VistaState state ) const;
     bool handleAeroStyleChange();
@@ -788,7 +788,7 @@ public:
     QHBoxLayout *buttonLayout;
     QGridLayout *mainLayout;
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
     QVistaHelper *vistaHelper;
     bool vistaInitPending;
     QVistaHelper::VistaState vistaState;
@@ -804,7 +804,7 @@ public:
 
 static QString buttonDefaultText( int wstyle, int which, const QWizardPrivate *wizardPrivate )
 {
-#if defined(QT_NO_STYLE_WINDOWSVISTA)
+#if defined(LSCS_NO_STYLE_WINDOWSVISTA)
     ( void ) wizardPrivate;
 
 #endif
@@ -859,7 +859,7 @@ void QWizardPrivate::init()
         opts = QWizard::HelpButtonOnRight;
     }
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
     vistaHelper = new QVistaHelper( q );
 #endif
 
@@ -1132,7 +1132,7 @@ QWizardLayoutInfo QWizardPrivate::layoutInfoForCurrentPage()
     }
 
     info.wizStyle = wizStyle;
-#if defined(QT_NO_STYLE_WINDOWSVISTA)
+#if defined(LSCS_NO_STYLE_WINDOWSVISTA)
 
     if ( info.wizStyle == QWizard::AeroStyle )
     {
@@ -1666,7 +1666,7 @@ void QWizardPrivate::updateMinMaxSizes( const QWizardLayoutInfo &info )
 
     int extraHeight = 0;
 
-#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
 
     if ( isVistaThemeEnabled() )
     {
@@ -1738,13 +1738,13 @@ static QString object_name_for_button( QWizard::WizardButton which )
     switch ( which )
     {
         case QWizard::CommitButton:
-            return QString( "qt_wizard_commit" );
+            return QString( "lscs_wizard_commit" );
 
         case QWizard::FinishButton:
-            return QString( "qt_wizard_finish" );
+            return QString( "lscs_wizard_finish" );
 
         case QWizard::CancelButton:
-            return QString( "qt_wizard_cancel" );
+            return QString( "lscs_wizard_cancel" );
 
         case QWizard::BackButton:
         case QWizard::NextButton:
@@ -1753,7 +1753,7 @@ static QString object_name_for_button( QWizard::WizardButton which )
         case QWizard::CustomButton2:
         case QWizard::CustomButton3:
             // Make navigation buttons detectable as passive interactor in designer
-            return QString( "__qt__passive_wizardbutton" ) + QString::number( which );
+            return QString( "__lscs__passive_wizardbutton" ) + QString::number( which );
 
         case QWizard::Stretch:
         case QWizard::NoButton:
@@ -1989,7 +1989,7 @@ void QWizardPrivate::updatePixmap( QWizard::WizardPixmap which )
     }
 }
 
-#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
 bool QWizardPrivate::vistaDisabled() const
 {
     Q_Q( const QWizard );
@@ -2075,7 +2075,7 @@ bool QWizardPrivate::handleAeroStyleChange()
     {
         q->setMouseTracking( true ); // ### original value possibly different
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
         q->unsetCursor();
 #endif
 
@@ -2100,7 +2100,7 @@ bool QWizardPrivate::handleAeroStyleChange()
 
 bool QWizardPrivate::isVistaThemeEnabled() const
 {
-#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
     return isVistaThemeEnabled( QVistaHelper::VistaAero )
            || isVistaThemeEnabled( QVistaHelper::VistaBasic );
 #else
@@ -2194,7 +2194,7 @@ void QWizardPrivate::_q_updateButtonStates()
         finishPush->setDefault( !canContinue && useDefault );
     }
 
-#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
 
     if ( isVistaThemeEnabled() )
     {
@@ -2296,7 +2296,7 @@ QPixmap QWizardPrivate::findDefaultBackgroundPixmap()
 
 #endif
 
-#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
 void QWizardAntiFlickerWidget::paintEvent( QPaintEvent * )
 {
     if ( wizardPrivate->isVistaThemeEnabled() )
@@ -2621,7 +2621,7 @@ void QWizard::setWizardStyle( WizardStyle style )
 
     const bool styleChange = style != d->wizStyle;
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
     const bool aeroStyleChange =
         d->vistaInitPending || d->vistaStateChanged || ( styleChange && ( style == AeroStyle || d->wizStyle == AeroStyle ) );
     d->vistaStateChanged = false;
@@ -2629,7 +2629,7 @@ void QWizard::setWizardStyle( WizardStyle style )
 #endif
 
     if ( styleChange
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
             || aeroStyleChange
 #endif
        )
@@ -2638,7 +2638,7 @@ void QWizard::setWizardStyle( WizardStyle style )
         d->wizStyle = style;
         d->updateButtonTexts();
 
-#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
 
         if ( aeroStyleChange )
         {
@@ -2654,7 +2654,7 @@ void QWizard::setWizardStyle( WizardStyle style )
         updateGeometry();
         d->enableUpdates();
 
-#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
 
         // Delay initialization when activating Aero style fails due to missing native window.
         if ( aeroStyleChange && !d->handleAeroStyleChange() && d->wizStyle == AeroStyle )
@@ -2845,7 +2845,7 @@ QAbstractButton *QWizard::button( WizardButton which ) const
 {
     Q_D( const QWizard );
 
-#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
 
     if ( d->wizStyle == AeroStyle && which == BackButton )
     {
@@ -3061,7 +3061,7 @@ bool QWizard::event( QEvent *event )
         d->updateLayout();
     }
 
-#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
 
     else if ( event->type() == QEvent::Show && d->vistaInitPending )
     {
@@ -3100,7 +3100,7 @@ void QWizard::resizeEvent( QResizeEvent *event )
     Q_D( QWizard );
     int heightOffset = 0;
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
 
     if ( d->isVistaThemeEnabled() )
     {
@@ -3116,7 +3116,7 @@ void QWizard::resizeEvent( QResizeEvent *event )
 
     d->antiFlickerWidget->resize( event->size().width(), event->size().height() - heightOffset );
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
 
     if ( d->isVistaThemeEnabled() )
     {
@@ -3145,7 +3145,7 @@ void QWizard::paintEvent( QPaintEvent *event )
         painter.drawPixmap( 0, ( height() - backgroundPixmap.height() ) / 2, backgroundPixmap );
     }
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
     else if ( d->isVistaThemeEnabled() )
     {
         if ( d->isVistaThemeEnabled( QVistaHelper::VistaBasic ) )
@@ -3167,7 +3167,7 @@ void QWizard::paintEvent( QPaintEvent *event )
 
 bool QWizard::nativeEvent( const QByteArray &eventType, void *message, long *result )
 {
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
     Q_D( QWizard );
 
     if ( d->isVistaThemeEnabled() && eventType == "windows_generic_MSG" )
@@ -3391,7 +3391,7 @@ bool QWizardPage::isComplete() const
                 return false;
             }
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
             if ( QLineEdit *lineEdit = qobject_cast<QLineEdit *>( field.object ) )
             {
@@ -3402,7 +3402,7 @@ bool QWizardPage::isComplete() const
             }
 
 #endif
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
             if ( QAbstractSpinBox *spinBox = qobject_cast<QAbstractSpinBox *>( field.object ) )
             {
@@ -3606,4 +3606,4 @@ void QWizardPage::_q_updateCachedCompleteState()
     d->_q_updateCachedCompleteState();
 }
 
-#endif // QT_NO_WIZARD
+#endif // LSCS_NO_WIZARD

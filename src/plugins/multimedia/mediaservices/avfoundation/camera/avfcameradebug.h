@@ -31,7 +31,7 @@
 #ifdef AVF_DEBUG_CAMERA
 #define qDebugCamera qDebug
 #else
-#define qDebugCamera QT_NO_QDEBUG_MACRO
+#define qDebugCamera LSCS_NO_QDEBUG_MACRO
 #endif
 
 #endif

@@ -28,7 +28,7 @@
 #include <QtCore/qstringlist.h>
 #include <qscriptdebuggervalueproperty_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDataStream;
 
@@ -43,6 +43,6 @@ public:
 QDataStream &operator<<( QDataStream &, const QScriptDebuggerObjectSnapshotDelta & );
 QDataStream &operator>>( QDataStream &, QScriptDebuggerObjectSnapshotDelta & );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

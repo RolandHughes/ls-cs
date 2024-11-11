@@ -38,7 +38,7 @@ QDebug::~QDebug()
 
         if ( m_stream->message_output )
         {
-            qt_message_output( m_stream->type, m_stream->buffer );
+            lscs_message_output( m_stream->type, m_stream->buffer );
         }
 
         delete m_stream;

@@ -28,7 +28,7 @@
 #include <QOpenGLShaderProgram>
 #include <QOffscreenSurface>
 
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
 #include <qdebug.h>
 #endif
 
@@ -48,7 +48,7 @@ AVFVideoFrameRenderer::AVFVideoFrameRenderer(QAbstractVideoSurface *surface, QOb
 
 AVFVideoFrameRenderer::~AVFVideoFrameRenderer()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
 
@@ -95,7 +95,7 @@ CVPixelBufferRef AVFVideoFrameRenderer::copyPixelBufferFromLayer(AVPlayerLayer *
 {
    //Is layer valid
    if (!layer) {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
       qWarning("copyPixelBufferFromLayer: invalid layer");
 #endif
       return 0;
@@ -118,7 +118,7 @@ CVPixelBufferRef AVFVideoFrameRenderer::copyPixelBufferFromLayer(AVPlayerLayer *
    CVPixelBufferRef pixelBuffer = [m_videoOutput copyPixelBufferForItemTime: currentCMFrameTime
                                                          itemTimeForDisplay: nil];
    if (!pixelBuffer) {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
       qWarning("copyPixelBufferForItemTime returned nil");
       CMTimeShow(currentCMFrameTime);
 #endif
@@ -149,7 +149,7 @@ CVOGLTextureRef AVFVideoFrameRenderer::createCacheTextureFromLayer(AVPlayerLayer
          &texture);
 
    if (!texture || err) {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
       qWarning("CVOGLTextureCacheCreateTextureFromImage failed (error: %d)", err);
 #endif
    }
@@ -171,7 +171,7 @@ QImage AVFVideoFrameRenderer::renderLayerToImage(AVPlayerLayer *layer)
 
    OSType pixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
    if (pixelFormat != kCVPixelFormatType_32BGRA) {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
       qWarning("CVPixelBuffer format is not BGRA32 (got: %d)", static_cast<quint32>(pixelFormat));
 #endif
       return QImage();
@@ -213,13 +213,13 @@ void AVFVideoFrameRenderer::initRenderer()
          m_glContext->setShareContext(shareContext);
          m_isContextShared = true;
       } else {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
          qWarning("failed to get Render Thread context");
 #endif
          m_isContextShared = false;
       }
       if (!m_glContext->create()) {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
          qWarning("failed to create QOpenGLContext");
 #endif
          return;
@@ -241,7 +241,7 @@ void AVFVideoFrameRenderer::initRenderer()
             [EAGLContext currentContext],
             NULL, &m_textureCache);
       if (err) {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
          qWarning("Error at CVOGLTextureCacheCreate %d", err);
 #endif
       }

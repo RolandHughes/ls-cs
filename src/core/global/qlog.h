@@ -60,8 +60,8 @@ using QtMsgHandler = void ( * )( QtMsgType, QStringView );
 Q_CORE_EXPORT QtMsgHandler csInstallMsgHandler( QtMsgHandler handler );
 Q_CORE_EXPORT QtMsgHandler qInstallMsgHandler( QtMsgHandler handler );
 
-Q_CORE_EXPORT QString      qt_error_string( int errorCode = -1 );
-Q_CORE_EXPORT void         qt_message_output( QtMsgType, QStringView str );
+Q_CORE_EXPORT QString      lscs_error_string( int errorCode = -1 );
+Q_CORE_EXPORT void         lscs_message_output( QtMsgType, QStringView str );
 Q_CORE_EXPORT void         qErrnoWarning( int code, const char *msg, ... );
 Q_CORE_EXPORT void         qErrnoWarning( const char *msg, ... );
 
@@ -75,7 +75,7 @@ inline QDebug qDebug();
 inline QDebug qCritical();
 inline QDebug qWarning();
 
-#define QT_NO_QDEBUG_MACRO   while (false) qDebug
-#define QT_NO_QWARNING_MACRO while (false) qWarning
+#define LSCS_NO_QDEBUG_MACRO   while (false) qDebug
+#define LSCS_NO_QWARNING_MACRO while (false) qWarning
 
 #endif

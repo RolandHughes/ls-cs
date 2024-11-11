@@ -34,7 +34,7 @@
 
 #include <qmenubar_p.h>
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
 namespace {
 // TODO use QtMacExtras copy of this function when available.
@@ -94,9 +94,9 @@ void QMenuPrivate::moveWidgetToPlatformItem(QWidget *widget, QPlatformMenuItem* 
     container->show();
 }
 
-#endif //QT_NO_MENU
+#endif //LSCS_NO_MENU
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
 NSMenu *QMenuBar::toNSMenu()
 {
@@ -108,7 +108,7 @@ NSMenu *QMenuBar::toNSMenu()
     }
     return nil;
 }
-#endif //QT_NO_MENUBAR
+#endif //LSCS_NO_MENUBAR
 
 
 

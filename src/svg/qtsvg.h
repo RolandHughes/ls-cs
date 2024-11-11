@@ -1,5 +1,5 @@
-#ifndef QT_SVG_H
-#define QT_SVG_H
+#ifndef LSCS_SVG_H
+#define LSCS_SVG_H
 
 #include <qtcore.h>
 #include <qtgui.h>

@@ -27,7 +27,7 @@
 #include <QtScript/qscriptclass.h>
 #include <QtCore/qset.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeGlobalScriptClass : public QScriptClass
 {
@@ -58,6 +58,6 @@ private:
     QScriptValue m_staticGlobalObject;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEGLOBALSCRIPTCLASS_P_H

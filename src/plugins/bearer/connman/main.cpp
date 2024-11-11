@@ -25,8 +25,8 @@
 #include <qbearerplugin_p.h>
 #include <qdebug.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_DBUS
 
 class QConnmanEnginePlugin : public QBearerEnginePlugin
 {
@@ -74,4 +74,4 @@ Q_EXPORT_STATIC_PLUGIN( QConnmanEnginePlugin )
 Q_EXPORT_PLUGIN2( qconnmanbearer, QConnmanEnginePlugin )
 
 #endif
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT

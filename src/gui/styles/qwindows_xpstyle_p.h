@@ -27,7 +27,7 @@
 #include <qwindows_style_p.h>
 
 #include <qmap.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <limits.h>
 #include <uxtheme.h>
@@ -43,7 +43,7 @@
 #include <commctrl.h>
 */
 
-#if ! defined(QT_NO_STYLE_WINDOWSXP)
+#if ! defined(LSCS_NO_STYLE_WINDOWSXP)
 
 class QWindowsXPStylePrivate;
 
@@ -102,7 +102,7 @@ private:
     friend class QStyleFactory;
 };
 
-#endif // QT_NO_STYLE_WINDOWSXP
+#endif // LSCS_NO_STYLE_WINDOWSXP
 
 
 // Older Platform SDKs do not have the extended DrawThemeBackgroundEx
@@ -248,7 +248,7 @@ typedef struct _DTBGOPTS
 #define CBS_INACTIVE 5
 #endif
 
-#if ! defined(QT_NO_STYLE_WINDOWSXP)
+#if ! defined(LSCS_NO_STYLE_WINDOWSXP)
 
 class XPThemeData
 {
@@ -613,6 +613,6 @@ inline QMarginsF XPThemeData::themeMargins( const QWidget *w, QPainter *p, int t
     XPThemeData theme( w, p, themeIn, part, state );
     return theme.margins( propId );
 }
-#endif // QT_NO_STYLE_WINDOWS
+#endif // LSCS_NO_STYLE_WINDOWS
 
 #endif //QWINDOWSXPSTYLE_P_H

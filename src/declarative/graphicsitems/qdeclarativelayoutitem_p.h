@@ -28,7 +28,7 @@
 #include <QGraphicsLayoutItem>
 #include <QSizeF>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeLayoutItem : public QDeclarativeItem, public QGraphicsLayoutItem
 {
@@ -111,7 +111,7 @@ private:
     QSizeF m_preferredSize;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeLayoutItem )
 

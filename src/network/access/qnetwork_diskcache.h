@@ -26,7 +26,7 @@
 
 #include <qabstract_networkcache.h>
 
-#ifndef QT_NO_NETWORKDISKCACHE
+#ifndef LSCS_NO_NETWORKDISKCACHE
 
 class QNetworkDiskCachePrivate;
 
@@ -68,6 +68,6 @@ private:
     Q_DECLARE_PRIVATE( QNetworkDiskCache )
 };
 
-#endif // QT_NO_NETWORKDISKCACHE
+#endif // LSCS_NO_NETWORKDISKCACHE
 
 #endif // QNETWORKDISKCACHE_H

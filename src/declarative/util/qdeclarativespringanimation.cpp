@@ -28,7 +28,7 @@
 #include <limits.h>
 #include <math.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeSpringAnimationPrivate : public QDeclarativePropertyAnimationPrivate
 {
@@ -541,4 +541,4 @@ QAbstractAnimation *QDeclarativeSpringAnimation::qtAnimation()
     return d->clock;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -32,10 +32,10 @@
 #include <qtimer.h>
 
 #ifdef Q_OS_WIN
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #endif
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QAbstractAnimation;
 class QAnimationGroup;
@@ -218,6 +218,6 @@ private:
     int closestPauseAnimationTimeToFinish();
 };
 
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION
 
 #endif

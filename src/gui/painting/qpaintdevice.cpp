@@ -54,7 +54,7 @@ QPainter *QPaintDevice::sharedPainter() const
     return nullptr;
 }
 
-Q_GUI_EXPORT int qt_paint_device_metric( const QPaintDevice *device, QPaintDevice::PaintDeviceMetric metric )
+Q_GUI_EXPORT int lscs_paint_device_metric( const QPaintDevice *device, QPaintDevice::PaintDeviceMetric metric )
 {
     return device->metric( metric );
 }

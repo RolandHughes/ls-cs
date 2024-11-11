@@ -23,13 +23,13 @@
 
 #include <qcocoaprintdevice.h>
 
-#if ! defined(QT_NO_MIMETYPE)
+#if ! defined(LSCS_NO_MIMETYPE)
 // emerald   #include <qmimedatabase.h>
 #endif
 
 #include <qdebug.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 static QPrint::DuplexMode macToDuplexMode(const PMDuplexMode &mode)
 {
@@ -472,7 +472,7 @@ QPrint::ColorMode QCocoaPrintDevice::defaultColorMode() const
    return QPrint::GrayScale;
 }
 
-#if ! defined(QT_NO_MIMETYPE)
+#if ! defined(LSCS_NO_MIMETYPE)
 void QCocoaPrintDevice::loadMimeTypes() const
 {
 
@@ -564,5 +564,5 @@ PMPaper QCocoaPrintDevice::macPaper(const QPageSize &pageSize) const
    return paper;
 }
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 

@@ -23,7 +23,7 @@
 
 #include <qdesktopservices.h>
 
-#ifndef QT_NO_DESKTOPSERVICES
+#ifndef LSCS_NO_DESKTOPSERVICES
 
 #include <qcoreapplication.h>
 #include <qdebug.h>
@@ -156,7 +156,7 @@ void QDesktopServices::unsetUrlHandler( const QString &scheme )
     setUrlHandler( scheme, nullptr, nullptr );
 }
 
-extern Q_CORE_EXPORT QString qt_applicationName_noFallback();
+extern Q_CORE_EXPORT QString lscs_applicationName_noFallback();
 
 QString QDesktopServices::storageLocationImpl( QStandardPaths::StandardLocation type )
 {
@@ -166,7 +166,7 @@ QString QDesktopServices::storageLocationImpl( QStandardPaths::StandardLocation 
         // QCoreApplication::applicationName() must default to empty
         // Unix data location is under the "data/" subdirectory
 
-        const QString compatAppName = qt_applicationName_noFallback();
+        const QString compatAppName = lscs_applicationName_noFallback();
         const QString baseDir       = QStandardPaths::writableLocation( QStandardPaths::GenericDataLocation );
 
 #if defined(Q_OS_WIN) || defined(Q_OS_DARWIN)

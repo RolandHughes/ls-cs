@@ -24,7 +24,7 @@
 #include <qsimplecodec_p.h>
 #include <qlist.h>
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 #define LAST_MIB 2004
 
@@ -877,4 +877,4 @@ int QSimpleTextCodec::mibEnum() const
     return unicodevalues[forwardIndex].mib;
 }
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC

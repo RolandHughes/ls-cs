@@ -26,7 +26,7 @@
 
 #include <qtextcodec_p.h>
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 #include <qcoreapplication.h>
 #include <qfile.h>
@@ -50,10 +50,10 @@
 #  include <qiconvcodec_p.h>
 #endif
 
-#ifndef QT_NO_CODECS
+#ifndef LSCS_NO_CODECS
 #  include <qisciicodec_p.h>
 
-#  if defined(QT_NO_ICONV) && ! defined(QT_CODEC_PLUGINS)
+#  if defined(LSCS_NO_ICONV) && ! defined(LSCS_CODEC_PLUGINS)
 //   no iconv(3) support, must build all codecs into the library
 
 #    include "../../plugins/codecs/cn/qgb18030codec.h"
@@ -78,7 +78,7 @@
 #include <langinfo.h>
 #endif
 
-#if ! defined(QT_NO_TEXTCODECPLUGIN)
+#if ! defined(LSCS_NO_TEXTCODECPLUGIN)
 static QFactoryLoader *loader()
 {
     static QFactoryLoader retval( QTextCodecInterface_ID, "/codecs" );
@@ -150,7 +150,7 @@ static bool nameMatch( QStringView name, QStringView test )
 static QTextCodec *createForName( QStringView name )
 {
 
-#if ! defined(QT_NO_TEXTCODECPLUGIN)
+#if ! defined(LSCS_NO_TEXTCODECPLUGIN)
     QFactoryLoader *obj  = loader();
     QSet<QString> keySet = obj->keySet();
 
@@ -173,7 +173,7 @@ static QTextCodec *createForName( QStringView name )
 static QTextCodec *createForMib( int mib )
 {
 
-#ifndef QT_NO_TEXTCODECPLUGIN
+#ifndef LSCS_NO_TEXTCODECPLUGIN
     QString name = "MIB: " + QString::number( mib );
 
     QFactoryLoader *obj  = loader();
@@ -341,7 +341,7 @@ static QTextCodec *ru_RU_hack( const char *i )
 {
     QTextCodec *ru_RU_codec = nullptr;
 
-#if ! defined(QT_NO_SETLOCALE)
+#if ! defined(LSCS_NO_SETLOCALE)
     QByteArray origlocale( setlocale( LC_CTYPE, i ) );
 #else
     QByteArray origlocale( i );
@@ -371,7 +371,7 @@ static QTextCodec *ru_RU_hack( const char *i )
         qWarning( "QTextCodec() Using KOI8-R, probe failed (%02x %02x %s)", koi8r, latin5, i );
     }
 
-#if ! defined(QT_NO_SETLOCALE)
+#if ! defined(LSCS_NO_SETLOCALE)
     setlocale( LC_CTYPE, origlocale.constData() );
 #endif
 
@@ -432,7 +432,7 @@ static void setupLocaleMapper()
         // definitely knows it, but since we cannot fully trust it, get ready
         // to fall back to environment variables.
 
-#if ! defined(QT_NO_SETLOCALE)
+#if ! defined(LSCS_NO_SETLOCALE)
         const QByteArray ctype = setlocale( LC_CTYPE, nullptr );
 #else
         const QByteArray ctype;
@@ -596,7 +596,7 @@ static void setup()
     // create the cleanup object to cleanup all codecs on exit
     ( void ) createQTextCodecCleanup();
 
-#ifndef QT_NO_CODECS
+#ifndef LSCS_NO_CODECS
 
     for ( int i = 0; i < 9; ++i )
     {
@@ -611,7 +611,7 @@ static void setup()
 #if defined(Q_WS_X11)
     ( void )new QFontLaoCodec;
 
-#if defined(QT_NO_ICONV)
+#if defined(LSCS_NO_ICONV)
     // no iconv(3) support, must build all codecs into the library
     ( void )new QFontGb2312Codec;
     ( void )new QFontGbkCodec;
@@ -625,7 +625,7 @@ static void setup()
 
 #  endif // Q_WS_X11
 
-#  if defined(QT_NO_ICONV) && ! defined(QT_CODEC_PLUGINS)
+#  if defined(LSCS_NO_ICONV) && ! defined(LSCS_CODEC_PLUGINS)
     ( void )new QGb18030Codec;
     ( void )new QGbkCodec;
     ( void )new QGb2312Codec;
@@ -638,7 +638,7 @@ static void setup()
     ( void )new QBig5hkscsCodec;
 #  endif
 
-#endif // QT_NO_CODECS
+#endif // LSCS_NO_CODECS
 
     ( void )new QUtf16Codec;
     ( void )new QUtf16BECodec;
@@ -650,7 +650,7 @@ static void setup()
     ( void )new QLatin1Codec;
     ( void )new QUtf8Codec;
 
-#if defined(Q_OS_UNIX) && ! defined(QT_NO_ICONV)
+#if defined(Q_OS_UNIX) && ! defined(LSCS_NO_ICONV)
     // QIconvCodec depends on the UTF-16 codec so it needs to be created last
     ( void ) new QIconvCodec();
 #endif
@@ -843,7 +843,7 @@ QStringList QTextCodec::availableCodecs()
 
     locker.unlock();
 
-#if ! defined(QT_NO_TEXTCODECPLUGIN)
+#if ! defined(LSCS_NO_TEXTCODECPLUGIN)
     QFactoryLoader *obj  = loader();
     QSet<QString> keySet = obj->keySet();
 
@@ -883,7 +883,7 @@ QList<int> QTextCodec::availableMibs()
 
     locker.unlock();
 
-#if ! defined(QT_NO_TEXTCODECPLUGIN)
+#if ! defined(LSCS_NO_TEXTCODECPLUGIN)
     QFactoryLoader *obj  = loader();
     QSet<QString> keySet = obj->keySet();
 
@@ -1153,4 +1153,4 @@ bool QTextDecoder::hasFailure() const
     return state.invalidChars != 0;
 }
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC

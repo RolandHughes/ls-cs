@@ -27,7 +27,7 @@
 #include <qmutex.h>
 #include <qstringlist.h>
 #include <qstring16.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qvector.h>
 
 #include <qcoreapplication_p.h>

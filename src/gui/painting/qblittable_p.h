@@ -27,7 +27,7 @@
 #include <qsize.h>
 #include <qpixmap_blitter_p.h>
 
-#ifndef QT_NO_BLITTABLE
+#ifndef LSCS_NO_BLITTABLE
 
 class QImage;
 class QBlittablePrivate;
@@ -109,5 +109,5 @@ protected:
     QBlittablePrivate *d_ptr;
 };
 
-#endif //QT_NO_BLITTABLE
+#endif //LSCS_NO_BLITTABLE
 #endif //QBLITTABLE_P_H

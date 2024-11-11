@@ -23,7 +23,7 @@
 
 #include "private/qdeclarativerefcount_p.h"
 
-QT_BEGIN_NAMESPACE QDeclarativeRefCount::QDeclarativeRefCount()
+LSCS_BEGIN_NAMESPACE QDeclarativeRefCount::QDeclarativeRefCount()
     : refCount( 1 )
 {
 }
@@ -49,5 +49,5 @@ void QDeclarativeRefCount::release()
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

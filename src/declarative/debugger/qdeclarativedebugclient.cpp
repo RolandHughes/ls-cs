@@ -26,7 +26,7 @@
 #include <QtCore/qdebug.h>
 #include <QtCore/qstringlist.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 const int protocolVersion = 1;
 const QString serverId = QLatin1String( "QDeclarativeDebugServer" );
@@ -324,4 +324,4 @@ void QDeclarativeDebugClient::messageReceived( const QByteArray & )
 {
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
