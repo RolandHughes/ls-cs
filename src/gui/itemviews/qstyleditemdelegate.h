@@ -30,7 +30,7 @@
 #include <qvariant.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 class QStyledItemDelegatePrivate;
 class QItemEditorFactory;
@@ -76,6 +76,6 @@ private:
     Q_DECLARE_PRIVATE( QStyledItemDelegate )
 };
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
 #endif

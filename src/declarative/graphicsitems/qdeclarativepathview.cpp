@@ -34,11 +34,11 @@
 #include <qmath.h>
 #include <math.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 inline qreal qmlMod( qreal x, qreal y )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -2320,5 +2320,5 @@ QDeclarativePathViewAttached *QDeclarativePathView::qmlAttachedProperties( QObje
     return new QDeclarativePathViewAttached( obj );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

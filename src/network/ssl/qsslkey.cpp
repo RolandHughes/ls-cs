@@ -246,7 +246,7 @@ QSslKey::QSslKey( Qt::HANDLE handle, QSsl::KeyType type )
     : d( new QSslKeyPrivate )
 {
 
-#ifdef QT_OPENSSL
+#ifdef LSCS_OPENSSL
     d->opaque = reinterpret_cast<EVP_PKEY *>( handle );
 #else
     d->opaque = handle;
@@ -308,7 +308,7 @@ QByteArray QSslKey::toDer( const QByteArray &passPhrase ) const
         return QByteArray();
     }
 
-#ifdef QT_OPENSSL
+#ifdef LSCS_OPENSSL
     QMap<QByteArray, QByteArray> headers;
     return d->derFromPem( toPem( passPhrase ), &headers );
 #else

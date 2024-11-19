@@ -30,7 +30,7 @@
 #include <QtCore/qlist.h>
 #include <qscriptdebuggerconsolecommandgroupdata_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerConsoleCommand;
 class QStringList;
@@ -61,6 +61,6 @@ private:
     Q_DECLARE_PRIVATE( QScriptDebuggerConsoleCommandManager )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

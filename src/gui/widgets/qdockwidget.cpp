@@ -23,7 +23,7 @@
 
 #include <qdockwidget.h>
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
 #include <qalgorithms.h>
 #include <qaction.h>
@@ -47,9 +47,9 @@
 extern QString lscs_internal_parseWindowTitle( const QString &, const QWidget * ); // qwidget.cpp
 
 // qmainwindow.cpp
-extern QMainWindowLayout *qt_mainwindow_layout( const QMainWindow *window );
+extern QMainWindowLayout *lscs_mainwindow_layout( const QMainWindow *window );
 
-static inline QMainWindowLayout *qt_mainwindow_layout_from_dock( const QDockWidget *dock )
+static inline QMainWindowLayout *lscs_mainwindow_layout_from_dock( const QDockWidget *dock )
 {
     const QWidget *p = dock->parentWidget();
 
@@ -59,7 +59,7 @@ static inline QMainWindowLayout *qt_mainwindow_layout_from_dock( const QDockWidg
 
         if ( window )
         {
-            return qt_mainwindow_layout( window );
+            return lscs_mainwindow_layout( window );
         }
 
         p = p->parentWidget();
@@ -705,17 +705,17 @@ void QDockWidgetPrivate::init()
     layout->setSizeConstraint( QLayout::SetMinAndMaxSize );
 
     QAbstractButton *button1 = new QDockWidgetTitleButton( q );
-    button1->setObjectName( "qt_dockwidget_floatbutton" );
+    button1->setObjectName( "lscs_dockwidget_floatbutton" );
     layout->setWidgetForRole( QDockWidgetLayout::FloatButton, button1 );
 
     QAbstractButton *button2 = new QDockWidgetTitleButton( q );
-    button2->setObjectName( "qt_dockwidget_closebutton" );
+    button2->setObjectName( "lscs_dockwidget_closebutton" );
     layout->setWidgetForRole( QDockWidgetLayout::CloseButton, button2 );
 
     QObject::connect( button1, &QAbstractButton::clicked, q, &QDockWidget::_q_toggleTopLevel );
     QObject::connect( button2, &QAbstractButton::clicked, q, &QDockWidget::close );
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     toggleViewAction = new QAction( q );
     toggleViewAction->setCheckable( true );
 
@@ -792,7 +792,7 @@ void QDockWidgetPrivate::updateButtons()
     button->setIcon( q->style()->standardIcon( QStyle::SP_TitleBarNormalButton, &opt, q ) );
     button->setVisible( canFloat && !hideButtons );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     //: Accessible name for button undocking a dock widget (floating state)
     button->setAccessibleName( QDockWidget::tr( "Float" ) );
     button->setAccessibleDescription( QDockWidget::tr( "Undocks and re-attaches the dock widget" ) );
@@ -802,7 +802,7 @@ void QDockWidgetPrivate::updateButtons()
     button->setIcon( q->style()->standardIcon( QStyle::SP_TitleBarCloseButton, &opt, q ) );
     button->setVisible( canClose && !hideButtons );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     //: Accessible name for button closing a dock widget
     button->setAccessibleName( QDockWidget::tr( "Close" ) );
     button->setAccessibleDescription( QDockWidget::tr( "Closes the dock widget" ) );
@@ -827,7 +827,7 @@ void QDockWidgetPrivate::initDrag( const QPoint &pos, bool nca )
         return;
     }
 
-    QMainWindowLayout *layout = qt_mainwindow_layout_from_dock( q );
+    QMainWindowLayout *layout = lscs_mainwindow_layout_from_dock( q );
     Q_ASSERT( layout != nullptr );
 
     if ( layout->pluggingWidget != nullptr )
@@ -854,7 +854,7 @@ void QDockWidgetPrivate::startDrag( bool group )
         return;
     }
 
-    QMainWindowLayout *layout = qt_mainwindow_layout_from_dock( q );
+    QMainWindowLayout *layout = lscs_mainwindow_layout_from_dock( q );
     Q_ASSERT( layout != nullptr );
 
     state->widgetItem = layout->unplug( q, group );
@@ -893,7 +893,7 @@ void QDockWidgetPrivate::endDrag( bool abort )
 
     if ( state->dragging )
     {
-        QMainWindowLayout *mwLayout = qt_mainwindow_layout_from_dock( q );
+        QMainWindowLayout *mwLayout = lscs_mainwindow_layout_from_dock( q );
         Q_ASSERT( mwLayout != nullptr );
 
         if ( abort || !mwLayout->plug( state->widgetItem ) )
@@ -962,7 +962,7 @@ bool QDockWidgetPrivate::isAnimating() const
 {
     Q_Q( const QDockWidget );
 
-    QMainWindowLayout *mainWinLayout = qt_mainwindow_layout_from_dock( q );
+    QMainWindowLayout *mainWinLayout = lscs_mainwindow_layout_from_dock( q );
 
     if ( mainWinLayout == nullptr )
     {
@@ -974,7 +974,7 @@ bool QDockWidgetPrivate::isAnimating() const
 
 bool QDockWidgetPrivate::mousePressEvent( QMouseEvent *event )
 {
-#if !defined(QT_NO_MAINWINDOW)
+#if !defined(LSCS_NO_MAINWINDOW)
     Q_Q( QDockWidget );
 
     QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>( layout );
@@ -1006,7 +1006,7 @@ bool QDockWidgetPrivate::mousePressEvent( QMouseEvent *event )
         return true;
     }
 
-#endif // !defined(QT_NO_MAINWINDOW)
+#endif // !defined(LSCS_NO_MAINWINDOW)
     return false;
 }
 
@@ -1033,7 +1033,7 @@ bool QDockWidgetPrivate::mouseMoveEvent( QMouseEvent *event )
 {
     bool ret = false;
 
-#if ! defined(QT_NO_MAINWINDOW)
+#if ! defined(LSCS_NO_MAINWINDOW)
     Q_Q( QDockWidget );
 
     if ( !state )
@@ -1042,7 +1042,7 @@ bool QDockWidgetPrivate::mouseMoveEvent( QMouseEvent *event )
     }
 
     QDockWidgetLayout *dwlayout = qobject_cast<QDockWidgetLayout *>( layout );
-    QMainWindowLayout *mwlayout = qt_mainwindow_layout_from_dock( q );
+    QMainWindowLayout *mwlayout = lscs_mainwindow_layout_from_dock( q );
 
     if ( ! dwlayout->nativeWindowDeco() )
     {
@@ -1080,14 +1080,14 @@ bool QDockWidgetPrivate::mouseMoveEvent( QMouseEvent *event )
         ret = true;
     }
 
-#endif // !defined(QT_NO_MAINWINDOW)
+#endif // !defined(LSCS_NO_MAINWINDOW)
 
     return ret;
 }
 
 bool QDockWidgetPrivate::mouseReleaseEvent( QMouseEvent *event )
 {
-#if !defined(QT_NO_MAINWINDOW)
+#if !defined(LSCS_NO_MAINWINDOW)
 
     if ( event->button() == Qt::LeftButton && state && !state->nca )
     {
@@ -1206,7 +1206,7 @@ void QDockWidgetPrivate::moveEvent( QMoveEvent *event )
         return;
     }
 
-    QMainWindowLayout *layout = qt_mainwindow_layout_from_dock( q );
+    QMainWindowLayout *layout = lscs_mainwindow_layout_from_dock( q );
     Q_ASSERT( layout != nullptr );
 
     QPoint globalMousePos = event->pos() + state->pressPos;
@@ -1240,7 +1240,7 @@ void QDockWidgetPrivate::setWindowState( bool floating, bool unplug, const QRect
 
     if ( ! floating && q->parent() )
     {
-        QMainWindowLayout *mwlayout = qt_mainwindow_layout_from_dock( q );
+        QMainWindowLayout *mwlayout = lscs_mainwindow_layout_from_dock( q );
 
         if ( mwlayout && mwlayout->dockWidgetArea( q ) == Qt::NoDockWidgetArea
                 && ! qobject_cast<QDockWidgetGroupWindow *>( q->parent() ) )
@@ -1307,7 +1307,7 @@ void QDockWidgetPrivate::setWindowState( bool floating, bool unplug, const QRect
 
         if ( ! floating && q->parent() )
         {
-            QMainWindowLayout *mwlayout = qt_mainwindow_layout_from_dock( q );
+            QMainWindowLayout *mwlayout = lscs_mainwindow_layout_from_dock( q );
 
             if ( mwlayout )
             {
@@ -1455,14 +1455,14 @@ void QDockWidget::changeEvent( QEvent *event )
         case QEvent::WindowTitleChange:
             update( layout->titleArea() );
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
             d->fixedWindowTitle = lscs_internal_parseWindowTitle( windowTitle(), this );
             d->toggleViewAction->setText( d->fixedWindowTitle );
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
             {
-                if ( QMainWindowLayout *winLayout = qt_mainwindow_layout_from_dock( this ) )
+                if ( QMainWindowLayout *winLayout = lscs_mainwindow_layout_from_dock( this ) )
                 {
                     if ( QDockAreaLayoutInfo *info = winLayout->layoutState.dockAreaLayout.info( this ) )
                     {
@@ -1528,12 +1528,12 @@ bool QDockWidget::event( QEvent *event )
     Q_D( QDockWidget );
 
     QMainWindow *win = qobject_cast<QMainWindow *>( parentWidget() );
-    QMainWindowLayout *layout = qt_mainwindow_layout_from_dock( this );
+    QMainWindowLayout *layout = lscs_mainwindow_layout_from_dock( this );
 
     switch ( event->type() )
     {
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
         case QEvent::Hide:
             if ( layout != nullptr )
@@ -1668,7 +1668,7 @@ bool QDockWidget::event( QEvent *event )
     return QWidget::event( event );
 }
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 QAction *QDockWidget::toggleViewAction() const
 {
     Q_D( const QDockWidget );

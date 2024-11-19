@@ -37,7 +37,7 @@ QSurface::QSurface( SurfaceClass type )
 
 QSurface::~QSurface()
 {
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     QOpenGLContext *context = QOpenGLContext::currentContext();
 
     if ( context && context->surface() == this )

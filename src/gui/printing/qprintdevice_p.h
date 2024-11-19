@@ -29,7 +29,7 @@
 #include <qsharedpointer.h>
 #include <qpagelayout.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 class QPlatformPrintDevice;
 class QMarginsF;
@@ -105,7 +105,7 @@ public:
     QPrint::ColorMode defaultColorMode() const;
     QList<QPrint::ColorMode> supportedColorModes() const;
 
-#ifndef QT_NO_MIMETYPE
+#ifndef LSCS_NO_MIMETYPE
     /* emerald - mimedatabase
         QList<QMimeType> supportedMimeTypes() const;
     */
@@ -123,6 +123,6 @@ private:
 
 Q_GUI_EXPORT QDebug operator<<( QDebug debug, const QPrintDevice & );
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 #endif

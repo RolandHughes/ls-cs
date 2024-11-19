@@ -26,7 +26,7 @@
 
 #include <qplatform_pixmap.h>
 
-static QImagePixmapCleanupHooks *qt_image_and_pixmap_cleanup_hooks()
+static QImagePixmapCleanupHooks *lscs_image_and_pixmap_cleanup_hooks()
 {
     static QImagePixmapCleanupHooks retval;
     return &retval;
@@ -34,43 +34,43 @@ static QImagePixmapCleanupHooks *qt_image_and_pixmap_cleanup_hooks()
 
 QImagePixmapCleanupHooks *QImagePixmapCleanupHooks::instance()
 {
-    return qt_image_and_pixmap_cleanup_hooks();
+    return lscs_image_and_pixmap_cleanup_hooks();
 }
 
-void QImagePixmapCleanupHooks::addPlatformPixmapModificationHook( _qt_pixmap_cleanup_hook_pmd hook )
+void QImagePixmapCleanupHooks::addPlatformPixmapModificationHook( _lscs_pixmap_cleanup_hook_pmd hook )
 {
     pixmapModificationHooks.append( hook );
 }
 
-void QImagePixmapCleanupHooks::addPlatformPixmapDestructionHook( _qt_pixmap_cleanup_hook_pmd hook )
+void QImagePixmapCleanupHooks::addPlatformPixmapDestructionHook( _lscs_pixmap_cleanup_hook_pmd hook )
 {
     pixmapDestructionHooks.append( hook );
 }
 
 
-void QImagePixmapCleanupHooks::addImageHook( _qt_image_cleanup_hook_64 hook )
+void QImagePixmapCleanupHooks::addImageHook( _lscs_image_cleanup_hook_64 hook )
 {
     imageHooks.append( hook );
 }
 
-void QImagePixmapCleanupHooks::removePlatformPixmapModificationHook( _qt_pixmap_cleanup_hook_pmd hook )
+void QImagePixmapCleanupHooks::removePlatformPixmapModificationHook( _lscs_pixmap_cleanup_hook_pmd hook )
 {
     pixmapModificationHooks.removeAll( hook );
 }
 
-void QImagePixmapCleanupHooks::removePlatformPixmapDestructionHook( _qt_pixmap_cleanup_hook_pmd hook )
+void QImagePixmapCleanupHooks::removePlatformPixmapDestructionHook( _lscs_pixmap_cleanup_hook_pmd hook )
 {
     pixmapDestructionHooks.removeAll( hook );
 }
 
-void QImagePixmapCleanupHooks::removeImageHook( _qt_image_cleanup_hook_64 hook )
+void QImagePixmapCleanupHooks::removeImageHook( _lscs_image_cleanup_hook_64 hook )
 {
     imageHooks.removeAll( hook );
 }
 
 void QImagePixmapCleanupHooks::executePlatformPixmapModificationHooks( QPlatformPixmap *pmd )
 {
-    QImagePixmapCleanupHooks *h = qt_image_and_pixmap_cleanup_hooks();
+    QImagePixmapCleanupHooks *h = lscs_image_and_pixmap_cleanup_hooks();
     // the global destructor for the pixmap and image hooks might have
     // been called already if the app is "leaking" global
     // pixmaps/images
@@ -88,7 +88,7 @@ void QImagePixmapCleanupHooks::executePlatformPixmapModificationHooks( QPlatform
 
 void QImagePixmapCleanupHooks::executePlatformPixmapDestructionHooks( QPlatformPixmap *pmd )
 {
-    QImagePixmapCleanupHooks *h = qt_image_and_pixmap_cleanup_hooks();
+    QImagePixmapCleanupHooks *h = lscs_image_and_pixmap_cleanup_hooks();
 
     // the global destructor for the pixmap and image hooks might have
     // been called already if the app is "leaking" global
@@ -106,7 +106,7 @@ void QImagePixmapCleanupHooks::executePlatformPixmapDestructionHooks( QPlatformP
 
 void QImagePixmapCleanupHooks::executeImageHooks( qint64 key )
 {
-    QImagePixmapCleanupHooks *h = qt_image_and_pixmap_cleanup_hooks();
+    QImagePixmapCleanupHooks *h = lscs_image_and_pixmap_cleanup_hooks();
     // the global destructor for the pixmap and image hooks might have
     // been called already if the app is "leaking" global pixmaps/images
 

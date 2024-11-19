@@ -25,7 +25,7 @@
 
 #include <qabstractanimation_p.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QPauseAnimationPrivate : public QAbstractAnimationPrivate
 {
@@ -78,4 +78,4 @@ void QPauseAnimation::updateCurrentTime( int )
 {
 }
 
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION

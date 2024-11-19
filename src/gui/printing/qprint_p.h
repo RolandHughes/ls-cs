@@ -29,11 +29,11 @@
 #include <qstring.h>
 #include <qlist.h>
 
-#if (defined Q_OS_DARWIN && ! defined Q_OS_IOS) || (defined Q_OS_UNIX && ! defined QT_NO_CUPS)
+#if (defined Q_OS_DARWIN && ! defined Q_OS_IOS) || (defined Q_OS_UNIX && ! defined LSCS_NO_CUPS)
 #include <cups/ppd.h>  // Use for type defs only, do not want to actually link in main module
 #endif
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 // From windgdi.h
 #define DMBIN_UPPER           1
@@ -247,7 +247,7 @@ public:
         return QByteArray();
     }
 
-#if (defined Q_OS_DARWIN && !defined Q_OS_IOS) || (defined Q_OS_UNIX && !defined QT_NO_CUPS)
+#if (defined Q_OS_DARWIN && !defined Q_OS_IOS) || (defined Q_OS_UNIX && !defined LSCS_NO_CUPS)
 
     // PPD utilities shared by CUPS and Mac plugins requiring CUPS headers
     // May turn into a proper internal QPpd class if enough shared between Mac and CUPS,
@@ -311,6 +311,6 @@ public:
 
 };
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 #endif // QPRINT_P_H

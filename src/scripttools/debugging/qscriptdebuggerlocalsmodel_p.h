@@ -26,7 +26,7 @@
 
 #include <QtCore/qabstractitemmodel.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerValue;
 class QScriptDebuggerJobSchedulerInterface;
@@ -70,6 +70,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerLocalsModel )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

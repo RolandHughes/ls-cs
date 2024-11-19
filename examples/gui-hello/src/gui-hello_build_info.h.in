@@ -1,24 +1,24 @@
 /**************************************************************************
 *
-* Copyright (c) 2012-2020 Barbara Geller
+* Copyright (c) 2024 Roland Hughes dba Logikal Solutions
 *
-* Diamond Editor is free software: you can redistribute it and/or
+* LsCs gui-hello example program is free software: you can redistribute it and/or
 * modify it under the terms of the GNU General Public License version 2
 * as published by the Free Software Foundation.
 *
-* Diamond is distributed in the hope that it will be useful,
+* LsCs is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 *
 ***************************************************************************/
 
-#ifndef CS_GUI_HELLO_BUILD_INFO_H_IN
-#define CS_GUI_HELLO_BUILD_INFO_H_IN
+#ifndef GUI_HELLO_BUILD_INFO_H_IN
+#define GUI_HELLO_BUILD_INFO_H_IN
 
-// Cs_GUI_Hello Version  "x.y.z"
+// GUI_Hello Version  "x.y.z"
 constexpr const char *versionString = "@PACKAGE_VERSION@";
 
-// Cs_GUI_Hello Build Date "08/17/2017"
+// GUI_Hello Build Date "08/17/2017"
 constexpr const char *buildDate = "@BUILD_DATE@";
 
 #endif

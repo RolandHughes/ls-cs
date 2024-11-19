@@ -301,10 +301,10 @@ private:
 SegmentTree::SegmentTree( QPathSegments &segments )
     : m_segments( segments )
 {
-    m_bounds.x1 = qt_inf();
-    m_bounds.y1 = qt_inf();
-    m_bounds.x2 = -qt_inf();
-    m_bounds.y2 = -qt_inf();
+    m_bounds.x1 = lscs_inf();
+    m_bounds.y1 = lscs_inf();
+    m_bounds.x2 = -lscs_inf();
+    m_bounds.y2 = -lscs_inf();
 
     m_index.resize( m_segments.segments() );
 

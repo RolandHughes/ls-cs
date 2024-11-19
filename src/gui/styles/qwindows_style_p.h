@@ -27,7 +27,7 @@
 #include <qcommonstyle.h>
 #include <qcommonstyle_p.h>
 
-#ifndef QT_NO_STYLE_WINDOWS
+#ifndef LSCS_NO_STYLE_WINDOWS
 
 #include <qlist.h>
 
@@ -137,6 +137,6 @@ private:
     static qreal appDevicePixelRatio();
 };
 
-#endif // QT_NO_STYLE_WINDOWS
+#endif // LSCS_NO_STYLE_WINDOWS
 
 #endif

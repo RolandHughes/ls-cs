@@ -28,7 +28,7 @@
 #include <qpixmap.h>
 #include <qgraphicseffect.h>
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
 class QPainter;
 class QPlatformPixmap;
@@ -160,6 +160,6 @@ public:
     }
 };
 
-#endif //QT_NO_GRAPHICSEFFECT
+#endif //LSCS_NO_GRAPHICSEFFECT
 
 #endif

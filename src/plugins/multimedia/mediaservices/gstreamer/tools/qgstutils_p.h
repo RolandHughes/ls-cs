@@ -37,17 +37,17 @@
 #include <gst/video/video.h>
 
 #if GST_CHECK_VERSION(1,0,0)
-# define QT_GSTREAMER_PLAYBIN_ELEMENT_NAME "playbin"
-# define QT_GSTREAMER_CAMERABIN_ELEMENT_NAME "camerabin"
-# define QT_GSTREAMER_COLORCONVERSION_ELEMENT_NAME "videoconvert"
-# define QT_GSTREAMER_RAW_AUDIO_MIME "audio/x-raw"
-# define QT_GSTREAMER_VIDEOOVERLAY_INTERFACE_NAME "GstVideoOverlay"
+# define LSCS_GSTREAMER_PLAYBIN_ELEMENT_NAME "playbin"
+# define LSCS_GSTREAMER_CAMERABIN_ELEMENT_NAME "camerabin"
+# define LSCS_GSTREAMER_COLORCONVERSION_ELEMENT_NAME "videoconvert"
+# define LSCS_GSTREAMER_RAW_AUDIO_MIME "audio/x-raw"
+# define LSCS_GSTREAMER_VIDEOOVERLAY_INTERFACE_NAME "GstVideoOverlay"
 #else
-# define QT_GSTREAMER_PLAYBIN_ELEMENT_NAME "playbin2"
-# define QT_GSTREAMER_CAMERABIN_ELEMENT_NAME "camerabin2"
-# define QT_GSTREAMER_COLORCONVERSION_ELEMENT_NAME "ffmpegcolorspace"
-# define QT_GSTREAMER_RAW_AUDIO_MIME "audio/x-raw-int"
-# define QT_GSTREAMER_VIDEOOVERLAY_INTERFACE_NAME "GstXOverlay"
+# define LSCS_GSTREAMER_PLAYBIN_ELEMENT_NAME "playbin2"
+# define LSCS_GSTREAMER_CAMERABIN_ELEMENT_NAME "camerabin2"
+# define LSCS_GSTREAMER_COLORCONVERSION_ELEMENT_NAME "ffmpegcolorspace"
+# define LSCS_GSTREAMER_RAW_AUDIO_MIME "audio/x-raw-int"
+# define LSCS_GSTREAMER_VIDEOOVERLAY_INTERFACE_NAME "GstXOverlay"
 #endif
 
 class QSize;
@@ -124,17 +124,17 @@ QPair<qreal, qreal> structureFrameRateRange( const GstStructure *s );
 
 }
 
-void qt_gst_object_ref_sink( gpointer object );
-GstCaps *qt_gst_pad_get_current_caps( GstPad *pad );
-GstCaps *qt_gst_pad_get_caps( GstPad *pad );
-GstStructure *qt_gst_structure_new_empty( const char *name );
-gboolean qt_gst_element_query_position( GstElement *element, GstFormat format, gint64 *cur );
-gboolean qt_gst_element_query_duration( GstElement *element, GstFormat format, gint64 *cur );
-GstCaps *qt_gst_caps_normalize( GstCaps *caps );
-const gchar *qt_gst_element_get_factory_name( GstElement *element );
-gboolean qt_gst_caps_can_intersect( const GstCaps *caps1, const GstCaps *caps2 );
-GList *qt_gst_video_sinks();
-void qt_gst_util_double_to_fraction( gdouble src, gint *dest_n, gint *dest_d );
+void lscs_gst_object_ref_sink( gpointer object );
+GstCaps *lscs_gst_pad_get_current_caps( GstPad *pad );
+GstCaps *lscs_gst_pad_get_caps( GstPad *pad );
+GstStructure *lscs_gst_structure_new_empty( const char *name );
+gboolean lscs_gst_element_query_position( GstElement *element, GstFormat format, gint64 *cur );
+gboolean lscs_gst_element_query_duration( GstElement *element, GstFormat format, gint64 *cur );
+GstCaps *lscs_gst_caps_normalize( GstCaps *caps );
+const gchar *lscs_gst_element_get_factory_name( GstElement *element );
+gboolean lscs_gst_caps_can_intersect( const GstCaps *caps1, const GstCaps *caps2 );
+GList *lscs_gst_video_sinks();
+void lscs_gst_util_double_to_fraction( gdouble src, gint *dest_n, gint *dest_d );
 
 QDebug operator <<( QDebug debug, GstCaps *caps );
 

@@ -27,7 +27,7 @@
 #include <QtCore/qfile.h>
 #include <QtCore/qstringlist.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \class QDeclarativeError
@@ -293,7 +293,7 @@ QDebug operator<<( QDebug debug, const QDeclarativeError &error )
         {
             QByteArray data = f.readAll();
             QTextStream stream( data, QIODevice::ReadOnly );
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
             stream.setCodec( "UTF-8" );
 #endif
             const QString code = stream.readAll();
@@ -336,4 +336,4 @@ QDebug operator<<( QDebug debug, const QDeclarativeError &error )
     return debug;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

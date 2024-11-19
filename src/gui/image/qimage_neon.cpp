@@ -28,7 +28,7 @@
 #if defined(__ARM_NEON__)
 
 
-Q_GUI_EXPORT void qt_convert_rgb888_to_rgb32_neon( quint32 *dst, const uchar *src, int len )
+Q_GUI_EXPORT void lscs_convert_rgb888_to_rgb32_neon( quint32 *dst, const uchar *src, int len )
 {
     if ( !len )
     {
@@ -126,7 +126,7 @@ void convert_RGB888_to_RGB32_neon( QImageData *dest, const QImageData *src, Qt::
 
     for ( int i = 0; i < src->height; ++i )
     {
-        qt_convert_rgb888_to_rgb32_neon( dest_data, src_data, src->width );
+        lscs_convert_rgb888_to_rgb32_neon( dest_data, src_data, src->width );
         src_data += src->bytes_per_line;
         dest_data = ( quint32 * )( ( uchar * )dest_data + dest->bytes_per_line );
     }

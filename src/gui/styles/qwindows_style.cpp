@@ -23,7 +23,7 @@
 
 #include <qwindows_style_p.h>
 
-#if ! defined(QT_NO_STYLE_WINDOWS) || defined(QT_PLUGIN)
+#if ! defined(LSCS_NO_STYLE_WINDOWS) || defined(LSCS_PLUGIN)
 
 #include <qapplication.h>
 #include <qbitmap.h>
@@ -59,7 +59,7 @@
 #include <qwindow.h>
 
 #if defined(Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #  ifndef COLOR_GRADIENTACTIVECAPTION
 #    define COLOR_GRADIENTACTIVECAPTION     27
@@ -86,8 +86,8 @@ typedef struct
 typedef HRESULT ( WINAPI *PtrSHGetStockIconInfo )( int siid, int uFlags, QSHSTOCKICONINFO *psii );
 static PtrSHGetStockIconInfo pSHGetStockIconInfo = nullptr;
 
-Q_GUI_EXPORT HICON qt_pixmapToWinHICON( const QPixmap & );
-Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON( HICON icon );
+Q_GUI_EXPORT HICON lscs_pixmapToWinHICON( const QPixmap & );
+Q_GUI_EXPORT QPixmap lscs_pixmapFromWinHICON( HICON icon );
 
 #endif
 
@@ -177,7 +177,7 @@ bool QWindowsStyle::eventFilter( QObject *o, QEvent *e )
                 // Update state and repaint the menu bars.
                 d->alt_down = false;
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
                 QList<QMenuBar *> l = widget->findChildren<QMenuBar *>();
 
                 for ( int i = 0; i < l.size(); ++i )
@@ -348,7 +348,7 @@ int QWindowsStylePrivate::fixedPixelMetric( QStyle::PixelMetric pm )
         case QStyle::PM_DockWidgetSeparatorExtent:
             return 4;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case QStyle::PM_TabBarTabShiftHorizontal:
             return 0;
@@ -357,13 +357,13 @@ int QWindowsStylePrivate::fixedPixelMetric( QStyle::PixelMetric pm )
             return 2;
 #endif
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
         case QStyle::PM_SliderLength:
             return 11;
 #endif
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
         case QStyle::PM_MenuBarHMargin:
         case QStyle::PM_MenuBarVMargin:
@@ -486,7 +486,7 @@ int QWindowsStyle::pixelMetric( PixelMetric pm, const QStyleOption *opt, const Q
 
             break;
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
         // Returns the number of pixels to use for the business part of the
         // slider (i.e., the non-tickmark portion). The remaining space is shared
@@ -637,7 +637,7 @@ int QWindowsStyle::styleHint( StyleHint hint, const QStyleOption *opt, const QWi
             break;
 
         case SH_ItemView_ShowDecorationSelected:
-#ifndef QT_NO_LISTVIEW
+#ifndef LSCS_NO_LISTVIEW
             if ( qobject_cast<const QListView *>( widget ) )
             {
                 ret = 1;
@@ -669,7 +669,7 @@ int QWindowsStyle::styleHint( StyleHint hint, const QStyleOption *opt, const QWi
             if ( !ret && widget && d )
             {
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
                 const QMenuBar *menuBar = qobject_cast<const QMenuBar *>( widget );
 
                 if ( !menuBar && qobject_cast<const QMenu *>( widget ) )
@@ -700,7 +700,7 @@ int QWindowsStyle::styleHint( StyleHint hint, const QStyleOption *opt, const QWi
                     }
             }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
             if ( !ret && opt && opt->type == QStyleOption::SO_MenuItem
                     && QStyleHelper::isInstanceOf( opt->styleObject, QAccessible::MenuItem )
@@ -733,7 +733,7 @@ int QWindowsStyle::styleHint( StyleHint hint, const QStyleOption *opt, const QWi
             break;
         }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
         case SH_RubberBand_Mask:
             if ( const QStyleOptionRubberBand *rbOpt = qstyleoption_cast<const QStyleOptionRubberBand *>( opt ) )
@@ -762,7 +762,7 @@ int QWindowsStyle::styleHint( StyleHint hint, const QStyleOption *opt, const QWi
             break;
 #endif
 
-#ifndef QT_NO_WIZARD
+#ifndef LSCS_NO_WIZARD
 
         case SH_WizardStyle:
             ret = QWizard::ModernStyle;
@@ -794,7 +794,7 @@ void QWindowsStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt,
 
     switch ( pe )
     {
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
         case PE_IndicatorToolBarSeparator:
         {
@@ -870,14 +870,14 @@ void QWindowsStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt,
             p->restore();
             break;
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 
         case PE_FrameButtonTool:
         case PE_PanelButtonTool:
         {
             QPen oldPen = p->pen();
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
             if ( w && w->inherits( "QDockWidgetTitleButton" ) )
             {
@@ -1228,7 +1228,7 @@ void QWindowsStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt,
             break;
         }
 
-#ifndef QT_NO_FRAME
+#ifndef LSCS_NO_FRAME
 
         case PE_Frame:
         case PE_FrameMenu:
@@ -1272,7 +1272,7 @@ void QWindowsStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt,
             }
 
             break;
-#endif // QT_NO_FRAME
+#endif // LSCS_NO_FRAME
 
         case PE_FrameButtonBevel:
         case PE_PanelButtonBevel:
@@ -1319,7 +1319,7 @@ void QWindowsStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt,
             break;
         }
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
         case PE_IndicatorDockWidgetResizeHandle:
             break;
@@ -1396,7 +1396,7 @@ void QWindowsStyle::drawControl( ControlElement ce, const QStyleOption *opt, QPa
 {
     switch ( ce )
     {
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
         case CE_RubberBand:
             if ( qstyleoption_cast<const QStyleOptionRubberBand *>( opt ) )
@@ -1428,7 +1428,7 @@ void QWindowsStyle::drawControl( ControlElement ce, const QStyleOption *opt, QPa
             break;
 #endif
 
-#if ! defined(QT_NO_MENU) && !defined(QT_NO_MAINWINDOW)
+#if ! defined(LSCS_NO_MENU) && !defined(LSCS_NO_MAINWINDOW)
 
         case CE_MenuBarEmptyArea:
             if ( widget && qobject_cast<const QMainWindow *>( widget->parentWidget() ) )
@@ -1443,7 +1443,7 @@ void QWindowsStyle::drawControl( ControlElement ce, const QStyleOption *opt, QPa
             break;
 #endif
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
         case CE_MenuItem:
             if ( const QStyleOptionMenuItem *menuitem = qstyleoption_cast<const QStyleOptionMenuItem *>( opt ) )
@@ -1638,9 +1638,9 @@ void QWindowsStyle::drawControl( ControlElement ce, const QStyleOption *opt, QPa
             }
 
             break;
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
         case CE_MenuBarItem:
             if ( const QStyleOptionMenuItem *mbi = qstyleoption_cast<const QStyleOptionMenuItem *>( opt ) )
@@ -1678,7 +1678,7 @@ void QWindowsStyle::drawControl( ControlElement ce, const QStyleOption *opt, QPa
             break;
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case CE_TabBarTabShape:
             if ( const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>( opt ) )
@@ -1934,20 +1934,20 @@ void QWindowsStyle::drawControl( ControlElement ce, const QStyleOption *opt, QPa
             }
 
             break;
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
         case CE_ToolBoxTabShape:
             qDrawShadePanel( p, opt->rect, opt->palette,
                              opt->state & ( State_Sunken | State_On ), 1,
                              &opt->palette.brush( QPalette::Button ) );
             break;
-#ifndef QT_NO_SPLITTER
+#ifndef LSCS_NO_SPLITTER
 
         case CE_Splitter:
             p->eraseRect( opt->rect );
             break;
-#endif // QT_NO_SPLITTER
-#ifndef QT_NO_SCROLLBAR
+#endif // LSCS_NO_SPLITTER
+#ifndef LSCS_NO_SCROLLBAR
 
         case CE_ScrollBarSubLine:
         case CE_ScrollBarAddLine:
@@ -2090,7 +2090,7 @@ void QWindowsStyle::drawControl( ControlElement ce, const QStyleOption *opt, QPa
             }
 
             break;
-#endif // QT_NO_SCROLLBAR
+#endif // LSCS_NO_SCROLLBAR
 
         case CE_HeaderSection:
         {
@@ -2117,7 +2117,7 @@ void QWindowsStyle::drawControl( ControlElement ce, const QStyleOption *opt, QPa
             break;
         }
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
         case CE_ToolBar:
             if ( const QStyleOptionToolBar *toolbar = qstyleoption_cast<const QStyleOptionToolBar *>( opt ) )
@@ -2246,7 +2246,7 @@ void QWindowsStyle::drawControl( ControlElement ce, const QStyleOption *opt, QPa
             break;
 
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 
         case CE_ProgressBarContents:
             if ( const QStyleOptionProgressBar *pb = qstyleoption_cast<const QStyleOptionProgressBar *>( opt ) )
@@ -2361,7 +2361,7 @@ void QWindowsStyle::drawControl( ControlElement ce, const QStyleOption *opt, QPa
 
             break;
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
         case CE_DockWidgetTitle:
 
@@ -2462,9 +2462,9 @@ void QWindowsStyle::drawControl( ControlElement ce, const QStyleOption *opt, QPa
             }
 
             return;
-#endif // QT_NO_DOCKWIDGET
+#endif // LSCS_NO_DOCKWIDGET
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CE_ComboBoxLabel:
             if ( const QStyleOptionComboBox *cb = qstyleoption_cast<const QStyleOptionComboBox *>( opt ) )
@@ -2546,7 +2546,7 @@ void QWindowsStyle::drawComplexControl( ComplexControl cc, const QStyleOptionCom
     switch ( cc )
     {
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
         case CC_Slider:
             if ( const QStyleOptionSlider *slider = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -2811,9 +2811,9 @@ void QWindowsStyle::drawComplexControl( ComplexControl cc, const QStyleOptionCom
             }
 
             break;
-#endif // QT_NO_SLIDER
+#endif // LSCS_NO_SLIDER
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
         case CC_ScrollBar:
             if ( const QStyleOptionSlider *scrollbar = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -2829,9 +2829,9 @@ void QWindowsStyle::drawComplexControl( ComplexControl cc, const QStyleOptionCom
             }
 
             break;
-#endif // QT_NO_SCROLLBAR
+#endif // LSCS_NO_SCROLLBAR
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CC_ComboBox:
             if ( const QStyleOptionComboBox *cmb = qstyleoption_cast<const QStyleOptionComboBox *>( opt ) )
@@ -2932,9 +2932,9 @@ void QWindowsStyle::drawComplexControl( ComplexControl cc, const QStyleOptionCom
             }
 
             break;
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case CC_SpinBox:
             if ( const QStyleOptionSpinBox *sb = qstyleoption_cast<const QStyleOptionSpinBox *>( opt ) )
@@ -3047,7 +3047,7 @@ void QWindowsStyle::drawComplexControl( ComplexControl cc, const QStyleOptionCom
             }
 
             break;
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX
 
         default:
             QCommonStyle::drawComplexControl( cc, opt, p, widget );
@@ -3093,7 +3093,7 @@ QSize QWindowsStyle::sizeFromContents( ContentsType ct, const QStyleOption *opt,
 
             break;
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
         case CT_MenuItem:
             if ( const QStyleOptionMenuItem *mi = qstyleoption_cast<const QStyleOptionMenuItem *>( opt ) )
@@ -3150,7 +3150,7 @@ QSize QWindowsStyle::sizeFromContents( ContentsType ct, const QStyleOption *opt,
             break;
 #endif
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
         case CT_MenuBarItem:
             if ( !sz.isEmpty() )
@@ -3185,4 +3185,4 @@ QIcon QWindowsStyle::standardIcon( StandardPixmap standardIcon, const QStyleOpti
 
 
 
-#endif // QT_NO_STYLE_WINDOWS
+#endif // LSCS_NO_STYLE_WINDOWS

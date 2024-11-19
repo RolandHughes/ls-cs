@@ -37,7 +37,7 @@
 #include <qdebug.h>
 #include <qstylesheetstyle_p.h>
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
 class QTipLabel : public QLabel
 {
@@ -74,7 +74,7 @@ private:
     QWidget *widget;
     QRect rect;
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
 public:
     // internal, Cleanup the _q_stylesheet_parent propery
     GUI_LSCS_SLOT_1( Public, void styleSheetParentDestroyed() )
@@ -90,7 +90,7 @@ QTipLabel *QTipLabel::instance = nullptr;
 
 QTipLabel::QTipLabel( const QString &text, QWidget *w, int msecDisplayTime )
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
     : QLabel( w, Qt::ToolTip | Qt::BypassGraphicsProxyWidget ), widget( nullptr ), styleSheetParent( nullptr )
 #else
     : QLabel( w, Qt::ToolTip | Qt::BypassGraphicsProxyWidget ), widget( nullptr )
@@ -128,7 +128,7 @@ void QTipLabel::restartExpireTimer( int msecDisplayTime )
 
 void QTipLabel::reuseTip( const QString &text, int msecDisplayTime )
 {
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
 
     if ( styleSheetParent )
     {
@@ -294,7 +294,7 @@ int QTipLabel::getTipScreen( const QPoint &pos, QWidget *w )
 
 void QTipLabel::placeTip( const QPoint &pos, QWidget *w )
 {
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
 
     if ( testAttribute( Qt::WA_StyleSheet ) || ( w && qobject_cast<QStyleSheetStyle *>( w->style() ) ) )
     {
@@ -419,7 +419,7 @@ void QToolTip::showText( const QPoint &pos, const QString &text, QWidget *w, con
         QTipLabel::instance->placeTip( pos, w );
         QTipLabel::instance->setObjectName( QLatin1String( "qtooltip_label" ) );
 
-#if ! defined(QT_NO_EFFECTS)
+#if ! defined(LSCS_NO_EFFECTS)
 
         if ( QApplication::isEffectEnabled( Qt::UI_FadeTooltip ) )
         {
@@ -492,7 +492,7 @@ void QToolTip::setFont( const QFont &font )
     QApplication::setFont( font, "QTipLabel" );
 }
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
 void QTipLabel::styleSheetParentDestroyed()
 {
     setProperty( "_q_stylesheet_parent", QVariant() );
@@ -500,4 +500,4 @@ void QTipLabel::styleSheetParentDestroyed()
 }
 #endif
 
-#endif // QT_NO_TOOLTIP
+#endif // LSCS_NO_TOOLTIP

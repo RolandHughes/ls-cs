@@ -41,7 +41,7 @@ static constexpr const int CacheMagic         = 0xe8;
 static constexpr const int CacheVersion       = 8;
 static constexpr const int MaxCompressionSize = ( 1024 * 1024 * 3 );
 
-#ifndef QT_NO_NETWORKDISKCACHE
+#ifndef LSCS_NO_NETWORKDISKCACHE
 
 QNetworkDiskCache::QNetworkDiskCache( QObject *parent )
     : QAbstractNetworkCache( *new QNetworkDiskCachePrivate, parent )
@@ -771,4 +771,4 @@ bool QCacheItem::read( QFile *device, bool readData )
     return metaData.isValid();
 }
 
-#endif // QT_NO_NETWORKDISKCACHE
+#endif // LSCS_NO_NETWORKDISKCACHE

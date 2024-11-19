@@ -27,7 +27,7 @@
 #include <QtGui/qwidget.h>
 #include <QtGui/qtextdocument.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerCodeFinderWidgetInterfacePrivate;
 
@@ -59,6 +59,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerCodeFinderWidgetInterface )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

@@ -26,7 +26,7 @@
 
 #include <qobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QSocketNotifier;
 struct tsdev;
@@ -50,6 +50,6 @@ private:
     bool m_rawMode;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QTSLIB_H

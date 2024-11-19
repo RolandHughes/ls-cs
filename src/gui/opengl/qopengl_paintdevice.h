@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qopengl.h>
 #include <qopenglcontext.h>
@@ -79,6 +79,6 @@ private:
     Q_DECLARE_PRIVATE( QOpenGLPaintDevice )
 };
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

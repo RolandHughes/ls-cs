@@ -32,7 +32,7 @@
 #include <QtCore/qshareddata.h>
 #include <qdbusmacros.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class Q_DBUS_EXPORT QDBusIntrospection
 {
@@ -156,6 +156,6 @@ private:
     QDBusIntrospection();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

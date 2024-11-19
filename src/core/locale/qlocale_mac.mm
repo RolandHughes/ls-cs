@@ -56,7 +56,7 @@ static QByteArray getMacLocaleName()
    QString lang, script, cntry;
 
    if (result.isEmpty() ||
-         (result != "C" && !qt_splitLocaleName(QString::fromUtf8(result), lang, script, cntry))) {
+         (result != "C" && !lscs_splitLocaleName(QString::fromUtf8(result), lang, script, cntry))) {
 
       QCFType<CFLocaleRef> l = CFLocaleCopyCurrent();
       CFStringRef locale = CFLocaleGetIdentifier(l);
@@ -167,7 +167,7 @@ static QString macToQtFormat(const QString &sys_fmt)
 
    while (i < sys_fmt.size()) {
       if (sys_fmt.at(i).unicode() == '\'') {
-         QString text = qt_readEscapedFormatString(sys_fmt, &i);
+         QString text = lscs_readEscapedFormatString(sys_fmt, &i);
 
          if (text == QLatin1String("'")) {
             result += QLatin1String("''");
@@ -179,7 +179,7 @@ static QString macToQtFormat(const QString &sys_fmt)
       }
 
       QChar c = sys_fmt.at(i);
-      int repeat = qt_repeatCount(sys_fmt, i);
+      int repeat = lscs_repeatCount(sys_fmt, i);
 
       switch (c.unicode()) {
          // unsupported options
@@ -383,7 +383,7 @@ static QString macCurrencySymbol(QLocale::CurrencySymbolFormat format)
    return QString();
 }
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 static QString macFormatCurrency(const QSystemLocale::CurrencyToStringArgument &arg)
 {
    QCFType<CFNumberRef> value;
@@ -450,9 +450,9 @@ static QVariant macQuoteString(QSystemLocale::QueryType type, QStringView str)
 
    return QVariant();
 }
-#endif //QT_NO_SYSTEMLOCALE
+#endif //LSCS_NO_SYSTEMLOCALE
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
 QLocale QSystemLocale::fallbackUiLocale() const
 {
@@ -578,4 +578,4 @@ QVariant QSystemLocale::query(QueryType type, QVariant in = QVariant()) const
    return QVariant();
 }
 
-#endif // QT_NO_SYSTEMLOCALE
+#endif // LSCS_NO_SYSTEMLOCALE

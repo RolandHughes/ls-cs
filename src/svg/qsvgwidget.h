@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_SVGWIDGET
+#ifndef LSCS_NO_SVGWIDGET
 
 #include <qwidget.h>
 
@@ -63,5 +63,5 @@ private:
     Q_DECLARE_PRIVATE( QSvgWidget )
 };
 
-#endif // QT_NO_SVGWIDGET
+#endif // LSCS_NO_SVGWIDGET
 #endif

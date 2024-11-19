@@ -28,7 +28,7 @@
 #include <qsizepolicy.h>
 #include <qcontainerfwd.h>
 
-#ifndef QT_NO_SPLITTER
+#ifndef LSCS_NO_SPLITTER
 
 class QTextStream;
 class QSplitterPrivate;
@@ -155,6 +155,6 @@ private:
     Q_DECLARE_PRIVATE( QSplitterHandle )
 };
 
-#endif // QT_NO_SPLITTER
+#endif // LSCS_NO_SPLITTER
 
 #endif

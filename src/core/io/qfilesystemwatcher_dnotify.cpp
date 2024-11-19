@@ -26,7 +26,7 @@
 
 #include <qfilesystemwatcher_dnotify_p.h>
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 
 #include <dirent.h>
 #include <qcoreapplication.h>
@@ -46,7 +46,7 @@
 #include <time.h>
 #include <unistd.h>
 
-#ifdef QT_LINUXBASE
+#ifdef LSCS_LINUXBASE
 
 /* LSB doesn't standardize these */
 #define F_NOTIFY       1026
@@ -66,7 +66,7 @@ static void ( *qfswd_old_sigio_action )( int, siginfo_t *, void * ) = nullptr;
 
 static void qfswd_sigio_monitor( int signum, siginfo_t *i, void *v )
 {
-    qt_safe_write( qfswd_fileChanged_pipe[1], reinterpret_cast<char *>( &i->si_fd ), sizeof( int ) );
+    lscs_safe_write( qfswd_fileChanged_pipe[1], reinterpret_cast<char *>( &i->si_fd ), sizeof( int ) );
 
     if ( qfswd_old_sigio_handler && qfswd_old_sigio_handler != SIG_IGN )
     {
@@ -118,7 +118,7 @@ QDnotifySignalThread::QDnotifySignalThread()
 {
     moveToThread( this );
 
-    qt_safe_pipe( qfswd_fileChanged_pipe, O_NONBLOCK );
+    lscs_safe_pipe( qfswd_fileChanged_pipe, O_NONBLOCK );
 
     struct sigaction oldAction;
     struct sigaction action;
@@ -189,7 +189,7 @@ void QDnotifySignalThread::run()
 void QDnotifySignalThread::readFromDnotify()
 {
     int fd;
-    int readrv = qt_safe_read( qfswd_fileChanged_pipe[0], reinterpret_cast<char *>( &fd ), sizeof( int ) );
+    int readrv = lscs_safe_read( qfswd_fileChanged_pipe[0], reinterpret_cast<char *>( &fd ), sizeof( int ) );
 
     // Only expect EAGAIN or EINTR.  Other errors are assumed to be impossible.
     if ( readrv != -1 )
@@ -220,11 +220,11 @@ QDnotifyFileSystemWatcherEngine::~QDnotifyFileSystemWatcherEngine()
 
     for ( auto iter = fdToDirectory.constBegin(); iter != fdToDirectory.constEnd(); ++iter )
     {
-        qt_safe_close( iter->fd );
+        lscs_safe_close( iter->fd );
 
         if ( iter->parentFd )
         {
-            qt_safe_close( iter->parentFd );
+            lscs_safe_close( iter->parentFd );
         }
     }
 }
@@ -280,37 +280,37 @@ QStringList QDnotifyFileSystemWatcherEngine::addPaths( const QStringList &paths,
         if ( fd == 0 )
         {
 
-            QT_DIR *d = QT_OPENDIR( path.toUtf8().constData() );
+            LSCS_DIR *d = LSCS_OPENDIR( path.toUtf8().constData() );
 
             if ( ! d )
             {
                 continue;   // Could not open directory
             }
 
-            QT_DIR *parent = nullptr;
+            LSCS_DIR *parent = nullptr;
 
             QDir parentDir( path );
 
             if ( ! parentDir.isRoot() )
             {
                 parentDir.cdUp();
-                parent = QT_OPENDIR( parentDir.path().toUtf8().constData() );
+                parent = LSCS_OPENDIR( parentDir.path().toUtf8().constData() );
 
                 if ( ! parent )
                 {
-                    QT_CLOSEDIR( d );
+                    LSCS_CLOSEDIR( d );
                     continue;
                 }
             }
 
-            fd = qt_safe_dup( ::dirfd( d ) );
-            int parentFd = parent ? qt_safe_dup( ::dirfd( parent ) ) : 0;
+            fd = lscs_safe_dup( ::dirfd( d ) );
+            int parentFd = parent ? lscs_safe_dup( ::dirfd( parent ) ) : 0;
 
-            QT_CLOSEDIR( d );
+            LSCS_CLOSEDIR( d );
 
             if ( parent )
             {
-                QT_CLOSEDIR( parent );
+                LSCS_CLOSEDIR( parent );
             }
 
             Q_ASSERT( fd );
@@ -412,7 +412,7 @@ QStringList QDnotifyFileSystemWatcherEngine::removePaths( const QStringList &pat
         if ( !directory.isMonitored && directory.files.isEmpty() )
         {
             // No longer needed
-            qt_safe_close( directory.fd );
+            lscs_safe_close( directory.fd );
             pathToFD.remove( directory.path );
             fdToDirectory.remove( fd );
         }
@@ -499,11 +499,11 @@ void QDnotifyFileSystemWatcherEngine::refresh( int fd )
 
     if ( !directory.isMonitored && directory.files.isEmpty() )
     {
-        qt_safe_close( directory.fd );
+        lscs_safe_close( directory.fd );
 
         if ( directory.parentFd )
         {
-            qt_safe_close( directory.parentFd );
+            lscs_safe_close( directory.parentFd );
             parentToFD.remove( directory.parentFd );
         }
 
@@ -541,4 +541,4 @@ bool QDnotifyFileSystemWatcherEngine::Directory::File::updateInfo()
     }
 }
 
-#endif // QT_NO_FILESYSTEMWATCHER
+#endif // LSCS_NO_FILESYSTEMWATCHER

@@ -31,7 +31,7 @@
 
 #include <math.h>
 
-extern void qt_format_text( const QFont &font, const QRectF &_r, int tf, const QString &text,
+extern void lscs_format_text( const QFont &font, const QRectF &_r, int tf, const QString &text,
                             QRectF *brect, int tabStops, int *tabArray, int tabArrayLen, QPainter *painter );
 
 QFontMetrics::QFontMetrics( const QFont &font )
@@ -41,7 +41,7 @@ QFontMetrics::QFontMetrics( const QFont &font )
 
 QFontMetrics::QFontMetrics( const QFont &font, QPaintDevice *paintdevice )
 {
-    int dpi = paintdevice ? paintdevice->logicalDpiY() : qt_defaultDpi();
+    int dpi = paintdevice ? paintdevice->logicalDpiY() : lscs_defaultDpi();
 
     const int screen = 0;
 
@@ -436,7 +436,7 @@ QRect QFontMetrics::boundingRect( const QRect &rect, int flags, const QString &t
 
     QRectF rb;
     QRectF rr( rect );
-    qt_format_text( QFont( d.data() ), rr, flags | Qt::TextDontPrint, text, &rb, tabStops,
+    lscs_format_text( QFont( d.data() ), rr, flags | Qt::TextDontPrint, text, &rb, tabStops,
                     tabArray, tabArrayLen, nullptr );
 
     return rb.toAlignedRect();
@@ -558,7 +558,7 @@ QFontMetricsF::QFontMetricsF( const QFont &font )
 
 QFontMetricsF::QFontMetricsF( const QFont &font, QPaintDevice *paintdevice )
 {
-    int dpi = paintdevice ? paintdevice->logicalDpiY() : qt_defaultDpi();
+    int dpi = paintdevice ? paintdevice->logicalDpiY() : lscs_defaultDpi();
 
     const int screen = 0;
 
@@ -908,7 +908,7 @@ QRectF QFontMetricsF::boundingRect( const QRectF &rect, int flags, const QString
         }
 
     QRectF rb;
-    qt_format_text( QFont( d.data() ), rect, flags | Qt::TextDontPrint, text, &rb, tabStops, tabArray, tabArrayLen, nullptr );
+    lscs_format_text( QFont( d.data() ), rect, flags | Qt::TextDontPrint, text, &rb, tabStops, tabArray, tabArrayLen, nullptr );
     return rb;
 }
 

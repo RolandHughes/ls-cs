@@ -78,7 +78,7 @@ void QtWebProcess::setupChildProcess()
 #if defined Q_OS_LINUX
 #ifndef NDEBUG
 
-    if ( getenv( "QT_WEBKIT_KEEP_ALIVE_WEB_PROCESS" ) )
+    if ( getenv( "LSCS_WEBKIT_KEEP_ALIVE_WEB_PROCESS" ) )
     {
         return;
     }

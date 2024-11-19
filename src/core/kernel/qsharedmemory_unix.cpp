@@ -30,12 +30,12 @@
 #include <qcore_unix_p.h>
 #include <qsharedmemory_p.h>
 
-#ifndef QT_NO_SHAREDMEMORY
+#ifndef LSCS_NO_SHAREDMEMORY
 
 #include <sys/types.h>
 #include <sys/ipc.h>
 
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
 #include <sys/shm.h>
 #else
 #include <sys/mman.h>
@@ -46,16 +46,16 @@
 #include <unistd.h>
 #endif
 
-#ifndef QT_NO_SHAREDMEMORY
+#ifndef LSCS_NO_SHAREDMEMORY
 
 QSharedMemoryPrivate::QSharedMemoryPrivate()
     : memory( nullptr ), size( 0 ), error( QSharedMemory::NoError ),
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
       systemSemaphore( QString() ), lockedByMe( false ),
 #endif
 
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
       unix_key( 0 )
 #else
       hand( 0 )
@@ -109,7 +109,7 @@ void QSharedMemoryPrivate::setErrorString( const QString &function )
     }
 }
 
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
 
 key_t QSharedMemoryPrivate::handle()
 {
@@ -162,16 +162,16 @@ int QSharedMemoryPrivate::handle()
 
     return 1;
 }
-#endif // QT_POSIX_IPC
+#endif // LSCS_POSIX_IPC
 
-#endif // QT_NO_SHAREDMEMORY
+#endif // LSCS_NO_SHAREDMEMORY
 
-#if ! (defined(QT_NO_SHAREDMEMORY) && defined(QT_NO_SYSTEMSEMAPHORE))
+#if ! (defined(LSCS_NO_SHAREDMEMORY) && defined(LSCS_NO_SYSTEMSEMAPHORE))
 int QSharedMemoryPrivate::createUnixKeyFile( const QString &fileName )
 {
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
 
-    int fd = qt_safe_open( QFile::encodeName( fileName ).constData(), O_EXCL | O_CREAT | O_RDWR, 0640 );
+    int fd = lscs_safe_open( QFile::encodeName( fileName ).constData(), O_EXCL | O_CREAT | O_RDWR, 0640 );
 
     if ( -1 == fd )
     {
@@ -184,7 +184,7 @@ int QSharedMemoryPrivate::createUnixKeyFile( const QString &fileName )
     }
     else
     {
-        qt_safe_close( fd );
+        lscs_safe_close( fd );
     }
 
     return 1;
@@ -197,23 +197,23 @@ int QSharedMemoryPrivate::createUnixKeyFile( const QString &fileName )
 #endif
 
 }
-#endif // QT_NO_SHAREDMEMORY && QT_NO_SYSTEMSEMAPHORE
+#endif // LSCS_NO_SHAREDMEMORY && LSCS_NO_SYSTEMSEMAPHORE
 
-#ifndef QT_NO_SHAREDMEMORY
+#ifndef LSCS_NO_SHAREDMEMORY
 
 void QSharedMemoryPrivate::cleanHandle()
 {
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
     unix_key = 0;
 #else
-    qt_safe_close( hand );
+    lscs_safe_close( hand );
     hand = 0;
 #endif
 }
 
 bool QSharedMemoryPrivate::create( int size )
 {
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
     // build file if needed
     int built = createUnixKeyFile( nativeKey );
 
@@ -299,19 +299,19 @@ bool QSharedMemoryPrivate::create( int size )
     if ( ret == -1 )
     {
         setErrorString( QLatin1String( "QSharedMemory::create (ftruncate)" ) );
-        qt_safe_close( fd );
+        lscs_safe_close( fd );
         return false;
     }
 
-    qt_safe_close( fd );
-#endif // QT_POSIX_IPC
+    lscs_safe_close( fd );
+#endif // LSCS_POSIX_IPC
 
     return true;
 }
 
 bool QSharedMemoryPrivate::attach( QSharedMemory::AccessMode mode )
 {
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
     // grab the shared memory segment id
     int id = shmget( unix_key, 0, ( mode == QSharedMemory::ReadOnly ? 0400 : 0600 ) );
 
@@ -373,9 +373,9 @@ bool QSharedMemoryPrivate::attach( QSharedMemory::AccessMode mode )
     }
 
     // grab the size
-    QT_STATBUF st;
+    LSCS_STATBUF st;
 
-    if ( QT_FSTAT( hand, &st ) == -1 )
+    if ( LSCS_FSTAT( hand, &st ) == -1 )
     {
         setErrorString( QLatin1String( "QSharedMemory::attach (fstat)" ) );
         cleanHandle();
@@ -397,14 +397,14 @@ bool QSharedMemoryPrivate::attach( QSharedMemory::AccessMode mode )
         return false;
     }
 
-#endif // QT_POSIX_IPC
+#endif // LSCS_POSIX_IPC
 
     return true;
 }
 
 bool QSharedMemoryPrivate::detach()
 {
-#ifndef QT_POSIX_IPC
+#ifndef LSCS_POSIX_IPC
 
     // detach from the memory segment
     if ( -1 == shmdt( memory ) )
@@ -485,9 +485,9 @@ bool QSharedMemoryPrivate::detach()
 
     // get the number of current attachments
     int shm_nattch = 0;
-    QT_STATBUF st;
+    LSCS_STATBUF st;
 
-    if ( QT_FSTAT( hand, &st ) == 0 )
+    if ( LSCS_FSTAT( hand, &st ) == 0 )
     {
         // subtract 2 from linkcount: one for our own open and one for the dir entry
         shm_nattch = st.st_nlink - 2;
@@ -506,9 +506,9 @@ bool QSharedMemoryPrivate::detach()
         }
     }
 
-#endif // QT_POSIX_IPC
+#endif // LSCS_POSIX_IPC
 
     return true;
 }
 
-#endif // QT_NO_SHAREDMEMORY
+#endif // LSCS_NO_SHAREDMEMORY

@@ -22,7 +22,7 @@
 ***********************************************************************/
 
 #include <qcocoaservices.h>
-#include <qt_mac_p.h>
+#include <lscs_mac_p.h>
 #include <qurl.h>
 
 #include <AppKit/NSWorkspace.h>

@@ -29,7 +29,7 @@
 #include <QtCore/QList>
 #include <QtCore/QUrl>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QByteArray;
 
@@ -115,6 +115,6 @@ public:
     QDeclarativeScriptParserJsASTData *data;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVESCRIPTPARSER_P_H

@@ -27,7 +27,7 @@
 #include <qnamespace.h>
 #include <qsessionmanager.h>
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
 
 class Q_GUI_EXPORT QPlatformSessionManager
 {
@@ -75,6 +75,6 @@ private:
     QSessionManager::RestartHint m_restartHint;
 };
 
-#endif // QT_NO_SESSIONMANAGER
+#endif // LSCS_NO_SESSIONMANAGER
 
 #endif

@@ -42,7 +42,7 @@ extern "C" {
 #undef template
 #endif
 
-QImage::Format qt_xcb_imageFormatForVisual( QXcbConnection *connection, uint8_t depth,
+QImage::Format lscs_xcb_imageFormatForVisual( QXcbConnection *connection, uint8_t depth,
         const xcb_visualtype_t *visual )
 {
     const xcb_format_t *format = connection->formatForDepth( depth );
@@ -85,7 +85,7 @@ QImage::Format qt_xcb_imageFormatForVisual( QXcbConnection *connection, uint8_t 
     return QImage::Format_Invalid;
 }
 
-QPixmap qt_xcb_pixmapFromXPixmap( QXcbConnection *connection, xcb_pixmap_t pixmap,
+QPixmap lscs_xcb_pixmapFromXPixmap( QXcbConnection *connection, xcb_pixmap_t pixmap,
                                   int width, int height, int depth, const xcb_visualtype_t *visual )
 {
     xcb_connection_t *conn = connection->xcb_connection();
@@ -105,7 +105,7 @@ QPixmap qt_xcb_pixmapFromXPixmap( QXcbConnection *connection, xcb_pixmap_t pixma
 
     QPixmap result;
 
-    QImage::Format format = qt_xcb_imageFormatForVisual( connection, depth, visual );
+    QImage::Format format = lscs_xcb_imageFormatForVisual( connection, depth, visual );
 
     if ( format != QImage::Format_Invalid )
     {
@@ -195,7 +195,7 @@ QPixmap qt_xcb_pixmapFromXPixmap( QXcbConnection *connection, xcb_pixmap_t pixma
     return result;
 }
 
-xcb_pixmap_t qt_xcb_XPixmapFromBitmap( QXcbScreen *screen, const QImage &image )
+xcb_pixmap_t lscs_xcb_XPixmapFromBitmap( QXcbScreen *screen, const QImage &image )
 {
     xcb_connection_t *conn = screen->xcb_connection();
     QImage bitmap = image.convertToFormat( QImage::Format_MonoLSB );
@@ -233,7 +233,7 @@ xcb_pixmap_t qt_xcb_XPixmapFromBitmap( QXcbScreen *screen, const QImage &image )
     return pm;
 }
 
-xcb_cursor_t qt_xcb_createCursorXRender( QXcbScreen *screen, const QImage &image, const QPoint &spot )
+xcb_cursor_t lscs_xcb_createCursorXRender( QXcbScreen *screen, const QImage &image, const QPoint &spot )
 {
 #ifdef XCB_USE_RENDER
     xcb_connection_t *conn = screen->xcb_connection();
@@ -247,7 +247,7 @@ xcb_cursor_t qt_xcb_createCursorXRender( QXcbScreen *screen, const QImage &image
 
     if ( !formatsReply || error )
     {
-        qWarning( "qt_xcb_createCursorXRender: query_pict_formats failed" );
+        qWarning( "lscs_xcb_createCursorXRender: query_pict_formats failed" );
         free( formatsReply );
         free( error );
         return XCB_NONE;
@@ -258,7 +258,7 @@ xcb_cursor_t qt_xcb_createCursorXRender( QXcbScreen *screen, const QImage &image
 
     if ( ! fmt )
     {
-        qWarning( "qt_xcb_createCursorXRender: Failed to find format PICT_STANDARD_ARGB_32" );
+        qWarning( "lscs_xcb_createCursorXRender: Failed to find format PICT_STANDARD_ARGB_32" );
         free( formatsReply );
         return XCB_NONE;
     }
@@ -271,7 +271,7 @@ xcb_cursor_t qt_xcb_createCursorXRender( QXcbScreen *screen, const QImage &image
 
     if ( ! xi )
     {
-        qWarning( "qt_xcb_createCursorXRender: xcb_image_create failed" );
+        qWarning( "lscs_xcb_createCursorXRender: xcb_image_create failed" );
         free( formatsReply );
         return XCB_NONE;
     }
@@ -280,7 +280,7 @@ xcb_cursor_t qt_xcb_createCursorXRender( QXcbScreen *screen, const QImage &image
 
     if ( ! xi->data )
     {
-        qWarning( "qt_xcb_createCursorXRender: Failed to malloc() image data" );
+        qWarning( "lscs_xcb_createCursorXRender: Failed to malloc() image data" );
         xcb_image_destroy( xi );
         free( formatsReply );
         return XCB_NONE;

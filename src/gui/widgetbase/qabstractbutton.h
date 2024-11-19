@@ -43,7 +43,7 @@ class Q_GUI_EXPORT QAbstractButton : public QWidget
     GUI_LSCS_PROPERTY_READ( iconSize, iconSize )
     GUI_LSCS_PROPERTY_WRITE( iconSize, setIconSize )
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     GUI_LSCS_PROPERTY_READ( shortcut, shortcut )
     GUI_LSCS_PROPERTY_WRITE( shortcut, setShortcut )
 #endif
@@ -89,7 +89,7 @@ public:
 
     QSize iconSize() const;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     void setShortcut( const QKeySequence &key );
     QKeySequence shortcut() const;
 #endif
@@ -114,7 +114,7 @@ public:
     void setAutoExclusive( bool enable );
     bool autoExclusive() const;
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef LSCS_NO_BUTTONGROUP
     QButtonGroup *group() const;
 #endif
 

@@ -28,7 +28,7 @@
 #include <QtCore/qvariant.h>
 #include <qdeclarativedata_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeGuardImpl
 {
@@ -214,7 +214,7 @@ void QDeclarativeGuard<T>::setObject( T *g )
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QDeclarativeGuard<QObject> )
 

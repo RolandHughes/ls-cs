@@ -26,7 +26,7 @@
 
 #include <qabstractitemmodel.h>
 
-#ifndef QT_NO_PROXYMODEL
+#ifndef LSCS_NO_PROXYMODEL
 
 class QAbstractProxyModelPrivate;
 class QItemSelection;
@@ -103,6 +103,6 @@ private:
     GUI_LSCS_SLOT_2( _q_sourceModelDestroyed )
 };
 
-#endif // QT_NO_PROXYMODEL
+#endif // LSCS_NO_PROXYMODEL
 
 #endif

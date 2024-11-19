@@ -29,7 +29,7 @@
 #include <qpainter.h>
 #include <qnetaccess_manager.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 class QWebPage;
 class QWebHistory;
@@ -151,14 +151,14 @@ protected:
     void hoverMoveEvent( QGraphicsSceneHoverEvent *event ) override;
     void hoverLeaveEvent( QGraphicsSceneHoverEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QGraphicsSceneWheelEvent *event ) override;
 #endif
 
     void keyPressEvent( QKeyEvent *event ) override;
     void keyReleaseEvent( QKeyEvent *event ) override;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QGraphicsSceneContextMenuEvent *event ) override;
 #endif
 
@@ -193,6 +193,6 @@ private:
     friend class QGraphicsWebViewPrivate;
 };
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 #endif // QGraphicsWebView_h

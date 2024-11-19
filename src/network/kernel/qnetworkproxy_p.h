@@ -24,7 +24,7 @@
 #ifndef QNETWORKPROXY_P_H
 #define QNETWORKPROXY_P_H
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
 class QSystemConfigurationProxyFactory : public QNetworkProxyFactory
 {

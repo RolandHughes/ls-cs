@@ -42,7 +42,7 @@ class QCocoaNativeInterface : public QPlatformNativeInterface
 public:
     QCocoaNativeInterface();
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     void *nativeResourceForContext( const QByteArray &resourceString, QOpenGLContext *context ) override;
 #endif
     void *nativeResourceForWindow( const QByteArray &resourceString, QWindow *window ) override;
@@ -51,7 +51,7 @@ public:
 
     void beep();
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     static void *cglContextForContext( QOpenGLContext *context );
     static void *nsOpenGLContextForContext( QOpenGLContext *context );
 #endif

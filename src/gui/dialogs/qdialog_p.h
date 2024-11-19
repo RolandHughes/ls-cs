@@ -42,7 +42,7 @@ public:
 
     QDialogPrivate()
         : mainDef( nullptr ), orientation( Qt::Horizontal ), extension( nullptr ), doShowExtension( false ),
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
           resizer( nullptr ), sizeGripEnabled( false ),
 #endif
           rescode( 0 ), resetModalityTo( -1 ), wasModalitySet( true ), eventLoop( nullptr ),
@@ -65,7 +65,7 @@ public:
     bool doShowExtension;
     QSize size, min, max;
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     QSizeGrip *resizer;
     bool sizeGripEnabled;
 #endif

@@ -67,13 +67,13 @@ QList<QSize> AVFImageEncoderControl::supportedResolutions(const QImageEncoderSet
 
 
         AVCaptureDevice *captureDevice = m_service->session()->videoCaptureDevice();
-        const QVector<AVCaptureDeviceFormat *> formats(qt_unique_device_formats(captureDevice,
+        const QVector<AVCaptureDeviceFormat *> formats(lscs_unique_device_formats(captureDevice,
                                                        m_service->session()->defaultCodec()));
 
         for (int i = 0; i < formats.size(); ++i) {
             AVCaptureDeviceFormat *format = formats[i];
 
-            const QSize res(qt_device_format_resolution(format));
+            const QSize res(lscs_device_format_resolution(format));
             if (!res.isNull() && res.isValid())
                 resolutions << res;
         }
@@ -105,7 +105,7 @@ QImageEncoderSettings AVFImageEncoderControl::imageSettings() const
             return settings;
         }
 
-        QSize res(qt_device_format_resolution(captureDevice.activeFormat));
+        QSize res(lscs_device_format_resolution(captureDevice.activeFormat));
 
         if (res.isNull() || !res.isValid()) {
             qDebugCamera() << Q_FUNC_INFO << "failed to exctract the image resolution";
@@ -169,7 +169,7 @@ bool AVFImageEncoderControl::applySettings()
     bool activeFormatChanged = false;
 
         AVCaptureDevice *captureDevice = m_service->session()->videoCaptureDevice();
-        AVCaptureDeviceFormat *match = qt_find_best_resolution_match(captureDevice, res,
+        AVCaptureDeviceFormat *match = lscs_find_best_resolution_match(captureDevice, res,
                                                                      m_service->session()->defaultCodec());
 
         if (!match) {
@@ -177,7 +177,7 @@ bool AVFImageEncoderControl::applySettings()
             return false;
         }
 
-        activeFormatChanged = qt_set_active_format(captureDevice, match, true);
+        activeFormatChanged = lscs_set_active_format(captureDevice, match, true);
 
     return activeFormatChanged;
 }

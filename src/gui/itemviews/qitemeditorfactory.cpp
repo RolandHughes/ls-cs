@@ -26,7 +26,7 @@
 #include <qitemeditorfactory.h>
 #include <qitemeditorfactory_p.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 #include <qalgorithms.h>
 #include <qapplication.h>
@@ -40,7 +40,7 @@
 #include <limits.h>
 #include <float.h>
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
 class QBooleanComboBox : public QComboBox
 {
@@ -58,7 +58,7 @@ public:
 
 #endif
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
 class QUIntSpinBox : public QSpinBox
 {
@@ -158,7 +158,7 @@ QWidget *QDefaultItemEditorFactory::createEditor( QVariant::Type type, QWidget *
 {
     switch ( type )
     {
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case QVariant::Bool:
         {
@@ -169,7 +169,7 @@ QWidget *QDefaultItemEditorFactory::createEditor( QVariant::Type type, QWidget *
 
 #endif
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case QVariant::UInt:
         {
@@ -191,7 +191,7 @@ QWidget *QDefaultItemEditorFactory::createEditor( QVariant::Type type, QWidget *
 
 #endif
 
-#ifndef QT_NO_DATETIMEEDIT
+#ifndef LSCS_NO_DATETIMEEDIT
 
         case QVariant::Date:
         {
@@ -219,7 +219,7 @@ QWidget *QDefaultItemEditorFactory::createEditor( QVariant::Type type, QWidget *
         case QVariant::Pixmap:
             return new QLabel( parent );
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case QVariant::Double:
         {
@@ -232,7 +232,7 @@ QWidget *QDefaultItemEditorFactory::createEditor( QVariant::Type type, QWidget *
 
 #endif
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
         case QVariant::String:
         default:
@@ -264,13 +264,13 @@ QString QDefaultItemEditorFactory::valuePropertyName( QVariant::Type type ) cons
     switch ( type )
     {
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case QVariant::Bool:
             return QString( "currentIndex" );
 #endif
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case QVariant::UInt:
         case QVariant::Int:
@@ -278,7 +278,7 @@ QString QDefaultItemEditorFactory::valuePropertyName( QVariant::Type type ) cons
             return QString( "value" );
 #endif
 
-#ifndef QT_NO_DATETIMEEDIT
+#ifndef LSCS_NO_DATETIMEEDIT
 
         case QVariant::Date:
             return QString( "date" );
@@ -333,7 +333,7 @@ QItemEditorCreatorBase::~QItemEditorCreatorBase()
 {
 }
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
 QExpandingLineEdit::QExpandingLineEdit( QWidget *parent )
     : QLineEdit( parent ), originalWidth( -1 ), widgetOwnsGeometry( false )
@@ -408,9 +408,9 @@ void QExpandingLineEdit::resizeToContents()
     }
 }
 
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
 QBooleanComboBox::QBooleanComboBox( QWidget *parent )
     : QComboBox( parent )
@@ -429,7 +429,7 @@ bool QBooleanComboBox::value() const
     return ( currentIndex() == 1 );
 }
 
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX
 
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS

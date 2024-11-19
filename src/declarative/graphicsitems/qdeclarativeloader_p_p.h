@@ -28,7 +28,7 @@
 #include <qdeclarativeimplicitsizeitem_p_p.h>
 #include <qdeclarativeitemchangelistener_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeContext;
 class QDeclarativeLoaderPrivate : public QDeclarativeImplicitSizeItemPrivate, public QDeclarativeItemChangeListener
@@ -56,6 +56,6 @@ public:
     void _q_updateSize( bool loaderGeometryChanged = true );
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVELOADER_P_H

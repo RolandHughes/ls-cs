@@ -30,7 +30,7 @@
 #include <qapplication_p.h>
 #include <qstyle_p.h>
 
-#if ! defined(QT_NO_STYLE_PROXY) || defined(QT_PLUGIN)
+#if ! defined(LSCS_NO_STYLE_PROXY) || defined(LSCS_PLUGIN)
 
 void QProxyStylePrivate::ensureBaseStyle() const
 {
@@ -331,4 +331,4 @@ int QProxyStyle::layoutSpacing( QSizePolicy::ControlType control1, QSizePolicy::
     return d->baseStyle->layoutSpacing( control1, control2, orientation, option, widget );
 }
 
-#endif // QT_NO_STYLE_PROXY
+#endif // LSCS_NO_STYLE_PROXY

@@ -105,7 +105,7 @@ void QWindowsClipboardRetrievalMimeData::releaseDataObject( IDataObject *dataObj
     dataObject->Release();
 }
 
-extern "C" LRESULT QT_WIN_CALLBACK qClipboardViewerWndProc( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
+extern "C" LRESULT LSCS_WIN_CALLBACK qClipboardViewerWndProc( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
     LRESULT result = 0;
 

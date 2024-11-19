@@ -38,7 +38,7 @@
 #include <QtGui/qquaternion.h>
 #include <QtGui/qfont.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeValueType : public QObject
 {
@@ -689,6 +689,6 @@ private:
     mutable QDeclarativeNullableValue<int> dpi;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif  // QDECLARATIVEVALUETYPE_P_H

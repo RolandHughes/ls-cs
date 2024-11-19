@@ -54,7 +54,7 @@
 #include <qdeclarativevisualitemmodel_p.h>
 #include <qdeclarativegraphicswidget_p.h>
 
-#ifdef QT_WEBKIT_LIB
+#ifdef LSCS_WEBKIT_LIB
 #include <qdeclarativewebview_p.h>
 #include <qdeclarativewebview_p_p.h>
 #endif
@@ -91,7 +91,7 @@ void QDeclarativeItemModule::defineModule()
 
     QDeclarativePrivate::RegisterAutoParent autoparent = { 0, &qgraphicsobject_autoParent };
     QDeclarativePrivate::qmlregister( QDeclarativePrivate::AutoParentRegistration, &autoparent );
-#ifdef QT_NO_MOVIE
+#ifdef LSCS_NO_MOVIE
     qmlRegisterTypeNotAvailable( "QtQuick", 1, 0, "AnimatedImage",
                                  qApp->translate( "QDeclarativeAnimatedImage", "Qt was built without support for QMovie" ) );
 #else
@@ -122,7 +122,7 @@ void QDeclarativeItemModule::defineModule()
     qmlRegisterType<QDeclarativePathPercent>( "QtQuick", 1, 0, "PathPercent" );
     qmlRegisterType<QDeclarativePathQuad>( "QtQuick", 1, 0, "PathQuad" );
     qmlRegisterType<QDeclarativePathView>( "QtQuick", 1, 0, "PathView" );
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
     qmlRegisterType<QIntValidator>( "QtQuick", 1, 0, "IntValidator" );
     qmlRegisterType<QDoubleValidator>( "QtQuick", 1, 0, "DoubleValidator" );
     qmlRegisterType<QRegExpValidator>( "QtQuick", 1, 0, "RegExpValidator" );
@@ -135,7 +135,7 @@ void QDeclarativeItemModule::defineModule()
     qmlRegisterType<QGraphicsScale>( "QtQuick", 1, 0, "Scale" );
     qmlRegisterType<QDeclarativeText>( "QtQuick", 1, 0, "Text" );
     qmlRegisterType<QDeclarativeTextEdit>( "QtQuick", 1, 0, "TextEdit" );
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
     qmlRegisterType<QDeclarativeTextInput>( "QtQuick", 1, 0, "TextInput" );
 #endif
     qmlRegisterType<QDeclarativeViewSection>( "QtQuick", 1, 0, "ViewSection" );
@@ -152,16 +152,16 @@ void QDeclarativeItemModule::defineModule()
     qmlRegisterType<QDeclarativePathElement>();
     qmlRegisterType<QDeclarativeCurve>();
     qmlRegisterType<QDeclarativeScaleGrid>();
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
     qmlRegisterType<QValidator>();
 #endif
     qmlRegisterType<QDeclarativeVisualModel>();
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     qmlRegisterType<QAction>();
 #endif
     qmlRegisterType<QDeclarativePen>();
     qmlRegisterType<QDeclarativeFlickableVisibleArea>();
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
     qmlRegisterType<QGraphicsEffect>();
 #endif
 
@@ -185,7 +185,7 @@ void QDeclarativeItemModule::defineModule()
     qmlRegisterType<QDeclarativeRepeater, 1>( "QtQuick", 1, 1, "Repeater" );
     qmlRegisterType<QDeclarativeText, 1>( "QtQuick", 1, 1, "Text" );
     qmlRegisterType<QDeclarativeTextEdit, 1>( "QtQuick", 1, 1, "TextEdit" );
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
     qmlRegisterType<QDeclarativeTextInput, 1>( "QtQuick", 1, 1, "TextInput" );
 #endif
     qmlRegisterRevision<QDeclarativeImageBase, 1>( "QtQuick", 1, 1 );
@@ -204,7 +204,7 @@ void QDeclarativeItemModule::defineModuleCompat()
         return;
     }
 
-#ifdef QT_NO_MOVIE
+#ifdef LSCS_NO_MOVIE
     qmlRegisterTypeNotAvailable( "Qt", 4, 7, "AnimatedImage",
                                  qApp->translate( "QDeclarativeAnimatedImage", "Qt was built without support for QMovie" ) );
 #else
@@ -235,7 +235,7 @@ void QDeclarativeItemModule::defineModuleCompat()
     qmlRegisterType<QDeclarativePathPercent>( "Qt", 4, 7, "PathPercent" );
     qmlRegisterType<QDeclarativePathQuad>( "Qt", 4, 7, "PathQuad" );
     qmlRegisterType<QDeclarativePathView>( "Qt", 4, 7, "PathView" );
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
     qmlRegisterType<QIntValidator>( "Qt", 4, 7, "IntValidator" );
     qmlRegisterType<QDoubleValidator>( "Qt", 4, 7, "DoubleValidator" );
     qmlRegisterType<QRegExpValidator>( "Qt", 4, 7, "RegExpValidator" );
@@ -248,7 +248,7 @@ void QDeclarativeItemModule::defineModuleCompat()
     qmlRegisterType<QGraphicsScale>( "Qt", 4, 7, "Scale" );
     qmlRegisterType<QDeclarativeText>( "Qt", 4, 7, "Text" );
     qmlRegisterType<QDeclarativeTextEdit>( "Qt", 4, 7, "TextEdit" );
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
     qmlRegisterType<QDeclarativeTextInput>( "Qt", 4, 7, "TextInput" );
 #endif
     qmlRegisterType<QDeclarativeViewSection>( "Qt", 4, 7, "ViewSection" );

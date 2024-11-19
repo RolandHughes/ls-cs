@@ -47,13 +47,13 @@
 #endif
 
 #if defined(Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <time.h>
 #endif
 
 #include <stdlib.h>
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
 static QSystemLocale *s_system_locale = nullptr;
 static QLocaleData *s_system_data     = nullptr;
@@ -526,7 +526,7 @@ static bool parse_locale_tag( const QString &input, int &i, QString *result, con
     return true;
 }
 
-bool qt_splitLocaleName( const QString &name, QString &lang, QString &script, QString &cntry )
+bool lscs_splitLocaleName( const QString &name, QString &lang, QString &script, QString &cntry )
 {
     const int length         = name.length();
     const QString separators = "_-.@";
@@ -618,7 +618,7 @@ void QLocalePrivate::getLangAndCountry( const QString &name, QLocale::Language &
     QString script_code;
     QString cntry_code;
 
-    if ( !qt_splitLocaleName( name, lang_code, script_code, cntry_code ) )
+    if ( !lscs_splitLocaleName( name, lang_code, script_code, cntry_code ) )
     {
         return;
     }
@@ -644,7 +644,7 @@ static const QLocaleData *findLocaleData( const QString &name )
     return QLocaleData::findLocaleData( lang, script, cntry );
 }
 
-QString qt_readEscapedFormatString( const QString &format, int *idx )
+QString lscs_readEscapedFormatString( const QString &format, int *idx )
 {
     int &i = *idx;
 
@@ -698,7 +698,7 @@ QString qt_readEscapedFormatString( const QString &format, int *idx )
     return result;
 }
 
-int qt_repeatCount( const QString &s, int i )
+int lscs_repeatCount( const QString &s, int i )
 {
     QChar c = s.at( i );
     int j = i + 1;
@@ -717,7 +717,7 @@ static QLocalePrivate *c_private()
     return &c_locale;
 }
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
 QSystemLocale::QSystemLocale()
 {
@@ -833,7 +833,7 @@ void QLocalePrivate::updateSystemPrivate()
 
 static const QLocaleData *systemData()
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     // copy the information from the fallback locale and modify
     if ( ! s_system_data || s_system_data->m_language_id == 0 )
@@ -1023,7 +1023,7 @@ QString QLocale::quoteString( const QString &str, QuotationStyle style ) const
 
 QString QLocale::quoteString( QStringView str, QuotationStyle style ) const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1060,7 +1060,7 @@ QString QLocale::quoteString( QStringView str, QuotationStyle style ) const
 
 QString QLocale::createSeparatedList( const QStringList &list ) const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1323,7 +1323,7 @@ QString QLocale::toString( const QDate &date, FormatType formatType ) const
         return QString();
     }
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1350,7 +1350,7 @@ static bool timeFormatContainsAP( const QString &format )
     {
         if ( format.at( i ).unicode() == '\'' )
         {
-            qt_readEscapedFormatString( format, &i );
+            lscs_readEscapedFormatString( format, &i );
             continue;
         }
 
@@ -1382,7 +1382,7 @@ QString QLocale::toString( const QDateTime &dateTime, FormatType formatType ) co
         return QString();
     }
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1408,7 +1408,7 @@ QString QLocale::toString( const QTime &time, FormatType formatType ) const
         return QString();
     }
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1430,7 +1430,7 @@ QString QLocale::toString( const QTime &time, FormatType formatType ) const
 
 QString QLocale::dateFormat( FormatType formatType ) const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1465,7 +1465,7 @@ QString QLocale::dateFormat( FormatType formatType ) const
 
 QString QLocale::timeFormat( FormatType formatType ) const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1501,7 +1501,7 @@ QString QLocale::timeFormat( FormatType formatType ) const
 
 QString QLocale::dateTimeFormat( FormatType formatType ) const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1719,7 +1719,7 @@ QString QLocale::monthName( int month, FormatType type ) const
         return QString();
     }
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1768,7 +1768,7 @@ QString QLocale::standaloneMonthName( int month, FormatType type ) const
         return QString();
     }
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1823,7 +1823,7 @@ QString QLocale::dayName( int day, FormatType type ) const
         return QString();
     }
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1876,7 +1876,7 @@ QString QLocale::standaloneDayName( int day, FormatType type ) const
         return QString();
     }
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1931,7 +1931,7 @@ QString QLocale::standaloneDayName( int day, FormatType type ) const
 
 Qt::DayOfWeek QLocale::firstDayOfWeek() const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1964,7 +1964,7 @@ QLocale::MeasurementSystem QLocalePrivate::measurementSystem() const
 
 QList<Qt::DayOfWeek> QLocale::weekdays() const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -1996,7 +1996,7 @@ QList<Qt::DayOfWeek> QLocale::weekdays() const
 
 QLocale::MeasurementSystem QLocale::measurementSystem() const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -2065,7 +2065,7 @@ QString QLocale::toLower( const QString &str ) const
 
 QString QLocale::amText() const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -2084,7 +2084,7 @@ QString QLocale::amText() const
 
 QString QLocale::pmText() const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -2142,12 +2142,12 @@ QString QLocalePrivate::dateTimeToString( const QString &format, const QDateTime
     {
         if ( format.at( i ).unicode() == '\'' )
         {
-            result.append( qt_readEscapedFormatString( format, &i ) );
+            result.append( lscs_readEscapedFormatString( format, &i ) );
             continue;
         }
 
         const QChar c = format.at( i );
-        int repeat = qt_repeatCount( format, i );
+        int repeat = lscs_repeatCount( format, i );
         bool used = false;
 
         if ( formatDate )
@@ -2440,14 +2440,14 @@ QString QLocaleData::doubleToString( const QChar _zero, const QChar plus, const 
     QString num_str;
 
     // Detect special numbers (nan, +/-inf)
-    if ( qt_is_inf( d ) )
+    if ( lscs_is_inf( d ) )
     {
         num_str  = QString::fromLatin1( "inf" );
         special_number = true;
         negative = d < 0;
 
     }
-    else if ( qt_is_nan( d ) )
+    else if ( lscs_is_nan( d ) )
     {
         num_str = QString::fromLatin1( "nan" );
         special_number = true;
@@ -3163,17 +3163,17 @@ double QLocaleData::bytearrayToDouble( const char *num, bool *ok, bool *overflow
 
     if ( qstrcmp( num, "nan" ) == 0 )
     {
-        return qt_snan();
+        return lscs_snan();
     }
 
     if ( qstrcmp( num, "+inf" ) == 0 || qstrcmp( num, "inf" ) == 0 )
     {
-        return qt_inf();
+        return lscs_inf();
     }
 
     if ( qstrcmp( num, "-inf" ) == 0 )
     {
-        return -qt_inf();
+        return -lscs_inf();
     }
 
     bool _ok;
@@ -3319,7 +3319,7 @@ quint64 QLocaleData::bytearrayToUnsLongLong( const char *num, int base, bool *ok
 
 QString QLocale::currencySymbol( QLocale::CurrencySymbolFormat symbolFormat ) const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -3371,7 +3371,7 @@ QString QLocale::currencySymbol( QLocale::CurrencySymbolFormat symbolFormat ) co
 QString QLocale::toCurrencyString( qint64 value, const QString &symbol ) const
 {
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -3413,7 +3413,7 @@ QString QLocale::toCurrencyString( qint64 value, const QString &symbol ) const
 
 QString QLocale::toCurrencyString( quint64 value, const QString &symbol ) const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -3448,7 +3448,7 @@ QString QLocale::toCurrencyString( quint64 value, const QString &symbol ) const
 QString QLocale::toCurrencyString( double value, const QString &symbol ) const
 {
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -3489,7 +3489,7 @@ QString QLocale::toCurrencyString( double value, const QString &symbol ) const
 
 QStringList QLocale::uiLanguages() const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -3535,7 +3535,7 @@ QStringList QLocale::uiLanguages() const
 
 QString QLocale::nativeLanguageName() const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {
@@ -3554,7 +3554,7 @@ QString QLocale::nativeLanguageName() const
 
 QString QLocale::nativeCountryName() const
 {
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
     if ( d->m_data == systemData() )
     {

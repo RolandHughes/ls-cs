@@ -48,7 +48,7 @@
 #include <qimagepixmapcleanuphooks_p.h>
 #include <qpaintengineex_opengl2_p.h>
 
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
 #include <qopenglfunctions_1_1.h>
 #endif
 
@@ -119,7 +119,7 @@ QOpenGLFunctions *qgl_functions()
     return qgl_extensions(); // QOpenGLExtensions is just a subclass of QOpenGLFunctions
 }
 
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
 QOpenGLFunctions_1_1 *qgl1_functions()
 {
     QOpenGLFunctions_1_1 *f = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_1_1>();
@@ -187,7 +187,7 @@ QGLSignalProxy *QGLSignalProxy::instance()
     return proxy;
 }
 
-#ifndef QT_OPENGL_ES
+#ifndef LSCS_OPENGL_ES
 
 static inline void transform_point( GLdouble out[4], const GLdouble m[16], const GLdouble in[4] )
 {
@@ -230,7 +230,7 @@ static inline GLint qgluProject( GLdouble objx, GLdouble objy, GLdouble objz,
     return GL_TRUE;
 }
 
-#endif // !QT_OPENGL_ES
+#endif // !LSCS_OPENGL_ES
 
 QGLFormat::QGLFormat()
 {
@@ -1070,7 +1070,7 @@ struct QGLContextGroupList
     QRecursiveMutex m_mutex;
 };
 
-static QGLContextGroupList *qt_context_groups()
+static QGLContextGroupList *lscs_context_groups()
 {
     static QGLContextGroupList retval;
     return &retval;
@@ -1079,15 +1079,15 @@ static QGLContextGroupList *qt_context_groups()
 QGLContextGroup::QGLContextGroup( const QGLContext *context )
     : m_context( context ), m_refs( 1 )
 {
-    qt_context_groups()->append( this );
+    lscs_context_groups()->append( this );
 }
 
 QGLContextGroup::~QGLContextGroup()
 {
-    qt_context_groups()->remove( this );
+    lscs_context_groups()->remove( this );
 }
 
-const QGLContext *qt_gl_transfer_context( const QGLContext *ctx )
+const QGLContext *lscs_gl_transfer_context( const QGLContext *ctx )
 {
     if ( ! ctx )
     {
@@ -1159,7 +1159,7 @@ void QGLContextPrivate::init( QPaintDevice *dev, const QGLFormat &format )
     workaround_brokenAlphaTexSubImage = false;
     workaround_brokenAlphaTexSubImage_init = false;
 
-    for ( int i = 0; i < QT_GL_VERTEX_ARRAY_TRACKED_COUNT; ++i )
+    for ( int i = 0; i < LSCS_GL_VERTEX_ARRAY_TRACKED_COUNT; ++i )
     {
         vertexAttributeArraysEnabledState[i] = false;
     }
@@ -1186,7 +1186,7 @@ QGLTemporaryContext::QGLTemporaryContext( bool, QWidget * )
     d->window->create();
 
     d->context = new QOpenGLContext;
-#if ! defined(QT_OPENGL_ES)
+#if ! defined(LSCS_OPENGL_ES)
 
     if ( QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGL )
     {
@@ -1304,7 +1304,7 @@ QImage lscs_glRead_frameBuffer( const QSize &size, bool alpha_format, bool inclu
     return img;
 }
 
-QImage qt_gl_read_texture( const QSize &size, bool alpha_format, bool include_alpha )
+QImage lscs_gl_read_texture( const QSize &size, bool alpha_format, bool include_alpha )
 {
     QImage img( size, alpha_format ? QImage::Format_ARGB32_Premultiplied : QImage::Format_RGB32 );
 
@@ -1316,7 +1316,7 @@ QImage qt_gl_read_texture( const QSize &size, bool alpha_format, bool include_al
     int w = size.width();
     int h = size.height();
 
-#ifndef QT_OPENGL_ES
+#ifndef LSCS_OPENGL_ES
 
     if ( ! QOpenGLContext::currentContext()->isOpenGLES() )
     {
@@ -1330,7 +1330,7 @@ QImage qt_gl_read_texture( const QSize &size, bool alpha_format, bool include_al
     return img;
 }
 
-static QGLTextureCache *qt_gl_texture_cache()
+static QGLTextureCache *lscs_gl_texture_cache()
 {
     static QGLTextureCache retval;
     return &retval;
@@ -1362,10 +1362,10 @@ void QGLTextureCache::remove( qint64 key )
 {
     QWriteLocker locker( &m_lock );
 
-    QRecursiveMutexLocker groupLocker( &qt_context_groups()->m_mutex );
-    QList<QGLContextGroup *>::const_iterator it = qt_context_groups()->m_list.constBegin();
+    QRecursiveMutexLocker groupLocker( &lscs_context_groups()->m_mutex );
+    QList<QGLContextGroup *>::const_iterator it = lscs_context_groups()->m_list.constBegin();
 
-    while ( it != qt_context_groups()->m_list.constEnd() )
+    while ( it != lscs_context_groups()->m_list.constEnd() )
     {
         const QGLTextureCacheKey cacheKey = {key, *it};
         m_cache.remove( cacheKey );
@@ -1411,7 +1411,7 @@ void QGLTextureCache::removeContextTextures( QGLContext *ctx )
 
 void QGLTextureCache::cleanupTexturesForCacheKey( qint64 cacheKey )
 {
-    qt_gl_texture_cache()->remove( cacheKey );
+    lscs_gl_texture_cache()->remove( cacheKey );
 }
 
 void QGLTextureCache::cleanupTexturesForPixampData( QPlatformPixmap *pmd )
@@ -1427,7 +1427,7 @@ void QGLTextureCache::cleanupBeforePixmapDestruction( QPlatformPixmap *pmd )
 
 QGLTextureCache *QGLTextureCache::instance()
 {
-    return qt_gl_texture_cache();
+    return lscs_gl_texture_cache();
 }
 
 // DDS format structure
@@ -1550,7 +1550,7 @@ void QGLContextPrivate::cleanup()
 void QGLContextPrivate::setVertexAttribArrayEnabled( int arrayIndex, bool enabled )
 {
     Q_Q( QGLContext );
-    Q_ASSERT( arrayIndex < QT_GL_VERTEX_ARRAY_TRACKED_COUNT );
+    Q_ASSERT( arrayIndex < LSCS_GL_VERTEX_ARRAY_TRACKED_COUNT );
 
 #ifdef glEnableVertexAttribArray
     Q_ASSERT( glEnableVertexAttribArray );
@@ -1576,7 +1576,7 @@ void QGLContextPrivate::syncGlState()
     Q_ASSERT( glEnableVertexAttribArray );
 #endif
 
-    for ( int i = 0; i < QT_GL_VERTEX_ARRAY_TRACKED_COUNT; ++i )
+    for ( int i = 0; i < LSCS_GL_VERTEX_ARRAY_TRACKED_COUNT; ++i )
     {
         if ( vertexAttributeArraysEnabledState[i] )
         {
@@ -1609,7 +1609,7 @@ GLuint QGLContext::bindTexture( const QString &fileName )
     return texture.id;
 }
 
-static inline QRgb qt_gl_convertToGLFormatHelper( QRgb src_pixel, GLenum texture_format )
+static inline QRgb lscs_gl_convertToGLFormatHelper( QRgb src_pixel, GLenum texture_format )
 {
     if ( texture_format == GL_BGRA )
     {
@@ -1671,7 +1671,7 @@ static void convertToGLFormatHelper( QImage &dst, const QImage &img, GLenum text
 
             for ( int x = 0; x < target_width; ++x )
             {
-                dest[x] = qt_gl_convertToGLFormatHelper( src[srcx >> 16], texture_format );
+                dest[x] = lscs_gl_convertToGLFormatHelper( src[srcx >> 16], texture_format );
                 srcx += ix;
             }
 
@@ -1893,7 +1893,7 @@ QGLTexture *QGLContextPrivate::bindTexture( const QImage &image, GLenum target, 
             && target == GL_TEXTURE_2D
             && ( options & QGLContext::MipmapBindOption ) )
     {
-#if !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_OPENGL_ES_2)
 
         if ( genMipmap )
         {
@@ -2229,7 +2229,7 @@ int QGLContextPrivate::maxTextureSize()
     QOpenGLFunctions *funcs = qgl_functions();
     funcs->glGetIntegerv( GL_MAX_TEXTURE_SIZE, &max_texture_size );
 
-#ifndef QT_OPENGL_ES
+#ifndef LSCS_OPENGL_ES
     Q_Q( QGLContext );
 
     if ( ! q->contextHandle()->isOpenGLES() )
@@ -2342,7 +2342,7 @@ void QGLContext::deleteTexture( GLuint id )
     qgl_functions()->glDeleteTextures( 1, &id );
 }
 
-void qt_add_rect_to_array( const QRectF &r, GLfloat *array )
+void lscs_add_rect_to_array( const QRectF &r, GLfloat *array )
 {
     qreal left = r.left();
     qreal right = r.right();
@@ -2359,7 +2359,7 @@ void qt_add_rect_to_array( const QRectF &r, GLfloat *array )
     array[7] = bottom;
 }
 
-void qt_add_texcoords_to_array( qreal x1, qreal y1, qreal x2, qreal y2, GLfloat *array )
+void lscs_add_texcoords_to_array( qreal x1, qreal y1, qreal x2, qreal y2, GLfloat *array )
 {
     array[0] = x1;
     array[1] = y1;
@@ -2371,7 +2371,7 @@ void qt_add_texcoords_to_array( qreal x1, qreal y1, qreal x2, qreal y2, GLfloat 
     array[7] = y2;
 }
 
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
 
 static void qDrawTextureRect( const QRectF &target, GLint textureWidth, GLint textureHeight, GLenum textureTarget )
 {
@@ -2379,7 +2379,7 @@ static void qDrawTextureRect( const QRectF &target, GLint textureWidth, GLint te
     GLfloat tx = 1.0f;
     GLfloat ty = 1.0f;
 
-#ifdef QT_OPENGL_ES
+#ifdef LSCS_OPENGL_ES
     ( void ) textureWidth;
     ( void ) textureHeight;
     ( void ) textureTarget;
@@ -2407,7 +2407,7 @@ static void qDrawTextureRect( const QRectF &target, GLint textureWidth, GLint te
     };
 
     GLfloat vertexArray[4 * 2];
-    qt_add_rect_to_array( target, vertexArray );
+    lscs_add_rect_to_array( target, vertexArray );
 
     QOpenGLFunctions_1_1 *gl1funcs = qgl1_functions();
     gl1funcs->glVertexPointer( 2, GL_FLOAT, 0, vertexArray );
@@ -2421,11 +2421,11 @@ static void qDrawTextureRect( const QRectF &target, GLint textureWidth, GLint te
     gl1funcs->glDisableClientState( GL_TEXTURE_COORD_ARRAY );
 }
 
-#endif // !QT_OPENGL_ES_2
+#endif // !LSCS_OPENGL_ES_2
 
 void QGLContext::drawTexture( const QRectF &target, GLuint textureId, GLenum textureTarget )
 {
-#if !defined(QT_OPENGL_ES) || defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_OPENGL_ES) || defined(LSCS_OPENGL_ES_2)
 
     if ( d_ptr->active_engine &&
             d_ptr->active_engine->type() == QPaintEngine::OpenGL2 )
@@ -2448,13 +2448,13 @@ void QGLContext::drawTexture( const QRectF &target, GLuint textureId, GLenum tex
 #endif
 
 
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
     QOpenGLFunctions *funcs = qgl_functions();
 
     if ( !contextHandle()->isOpenGLES() )
     {
 
-#ifdef QT_OPENGL_ES
+#ifdef LSCS_OPENGL_ES
 
         if ( textureTarget != GL_TEXTURE_2D )
         {
@@ -2473,7 +2473,7 @@ void QGLContext::drawTexture( const QRectF &target, GLuint textureId, GLenum tex
 
         qDrawTextureRect( target, -1, -1, textureTarget );
 
-#ifdef QT_OPENGL_ES
+#ifdef LSCS_OPENGL_ES
         funcs->glDisable( textureTarget );
 #else
 
@@ -2498,7 +2498,7 @@ void QGLContext::drawTexture( const QRectF &target, GLuint textureId, GLenum tex
 
 void QGLContext::drawTexture( const QPointF &point, GLuint textureId, GLenum textureTarget )
 {
-#ifdef QT_OPENGL_ES
+#ifdef LSCS_OPENGL_ES
     ( void ) point;
     ( void ) textureId;
     ( void ) textureTarget;
@@ -2622,7 +2622,7 @@ bool QGLContext::create( const QGLContext *shareContext )
 
     if ( d->valid && d->paintDevice && d->paintDevice->devType() == QInternal::Widget )
     {
-        QWidgetPrivate *wd = qt_widget_private( static_cast<QWidget *>( d->paintDevice ) );
+        QWidgetPrivate *wd = lscs_widget_private( static_cast<QWidget *>( d->paintDevice ) );
         wd->usesDoubleBufferedGLContext = d->glFormat.doubleBuffer();
     }
 
@@ -3188,7 +3188,7 @@ void QGLWidget::glDraw()
 
     makeCurrent();
 
-#ifndef QT_OPENGL_ES
+#ifndef LSCS_OPENGL_ES
 
     if ( d->glcx->deviceIsPixmap() && !d->glcx->contextHandle()->isOpenGLES() )
     {
@@ -3236,9 +3236,9 @@ void QGLWidget::glDraw()
 
 void QGLWidget::qglColor( const QColor &c ) const
 {
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
 
-#ifdef QT_OPENGL_ES
+#ifdef LSCS_OPENGL_ES
     qgl_functions()->glColor4f( c.redF(), c.greenF(), c.blueF(), c.alphaF() );
 
 #else
@@ -3273,12 +3273,12 @@ void QGLWidget::qglColor( const QColor &c ) const
 #else
     ( void ) c;
 
-#endif //QT_OPENGL_ES_2
+#endif //LSCS_OPENGL_ES_2
 }
 
 void QGLWidget::qglClearColor( const QColor &c ) const
 {
-#ifdef QT_OPENGL_ES
+#ifdef LSCS_OPENGL_ES
     qgl_functions()->glClearColor( c.redF(), c.greenF(), c.blueF(), c.alphaF() );
 
 #else
@@ -3333,9 +3333,9 @@ void QGLWidget::setColormap( const QGLColormap &c )
     ( void ) c;
 }
 
-#ifndef QT_OPENGL_ES
+#ifndef LSCS_OPENGL_ES
 
-static void qt_save_gl_state()
+static void lscs_save_gl_state()
 {
     QOpenGLFunctions *funcs = qgl_functions();
     QOpenGLFunctions_1_1 *gl1funcs = qgl1_functions();
@@ -3358,7 +3358,7 @@ static void qt_save_gl_state()
     funcs->glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
 }
 
-static void qt_restore_gl_state()
+static void lscs_restore_gl_state()
 {
     QOpenGLFunctions_1_1 *gl1funcs = qgl1_functions();
     gl1funcs->glMatrixMode( GL_TEXTURE );
@@ -3371,7 +3371,7 @@ static void qt_restore_gl_state()
     gl1funcs->glPopClientAttrib();
 }
 
-static void qt_gl_draw_text( QPainter *p, int x, int y, const QString &str,
+static void lscs_gl_draw_text( QPainter *p, int x, int y, const QString &str,
                              const QFont &font )
 {
     GLfloat color[4];
@@ -3390,12 +3390,12 @@ static void qt_gl_draw_text( QPainter *p, int x, int y, const QString &str,
     p->setFont( old_font );
 }
 
-#endif // ! QT_OPENGL_ES
+#endif // ! LSCS_OPENGL_ES
 
 
 void QGLWidget::renderText( int x, int y, const QString &str, const QFont &font )
 {
-#ifndef QT_OPENGL_ES
+#ifndef LSCS_OPENGL_ES
     Q_D( QGLWidget );
 
     if ( ! d->glcx->contextHandle()->isOpenGLES() )
@@ -3421,7 +3421,7 @@ void QGLWidget::renderText( int x, int y, const QString &str, const QFont &font 
 
         QPaintEngine *engine = paintEngine();
 
-        qt_save_gl_state();
+        lscs_save_gl_state();
 
         // this changes what paintEngine() returns
         QPainter *p;
@@ -3460,7 +3460,7 @@ void QGLWidget::renderText( int x, int y, const QString &str, const QFont &font 
             funcs->glEnable( GL_SCISSOR_TEST );
         }
 
-        qt_gl_draw_text( p, x, y, str, font );
+        lscs_gl_draw_text( p, x, y, str, font );
 
         if ( !reuse_painter )
         {
@@ -3470,7 +3470,7 @@ void QGLWidget::renderText( int x, int y, const QString &str, const QFont &font 
             d->disable_clear_on_painter_begin = false;
         }
 
-        qt_restore_gl_state();
+        lscs_restore_gl_state();
 
         return;
     }
@@ -3488,7 +3488,7 @@ void QGLWidget::renderText( int x, int y, const QString &str, const QFont &font 
 
 void QGLWidget::renderText( double x, double y, double z, const QString &str, const QFont &font )
 {
-#ifndef QT_OPENGL_ES
+#ifndef LSCS_OPENGL_ES
     Q_D( QGLWidget );
 
     if ( ! d->glcx->contextHandle()->isOpenGLES() )
@@ -3525,7 +3525,7 @@ void QGLWidget::renderText( double x, double y, double z, const QString &str, co
         bool use_depth_testing = funcs->glIsEnabled( GL_DEPTH_TEST );
         bool use_scissor_testing = funcs->glIsEnabled( GL_SCISSOR_TEST );
 
-        qt_save_gl_state();
+        lscs_save_gl_state();
 
         if ( engine->isActive() )
         {
@@ -3567,7 +3567,7 @@ void QGLWidget::renderText( double x, double y, double z, const QString &str, co
         // extra values directly and let the engine figure the matrices out.
         static_cast<QGL2PaintEngineEx *>( p->paintEngine() )->setTranslateZ( -win_z );
 
-        qt_gl_draw_text( p, qRound( win_x ), qRound( win_y ), str, font );
+        lscs_gl_draw_text( p, qRound( win_x ), qRound( win_y ), str, font );
 
         static_cast<QGL2PaintEngineEx *>( p->paintEngine() )->setTranslateZ( 0 );
 
@@ -3579,7 +3579,7 @@ void QGLWidget::renderText( double x, double y, double z, const QString &str, co
             d->disable_clear_on_painter_begin = false;
         }
 
-        qt_restore_gl_state();
+        lscs_restore_gl_state();
 
         return;
     }
@@ -3689,20 +3689,20 @@ void QGLWidget::drawTexture( const QPointF &point, GLuint textureId, GLenum text
     d->glcx->drawTexture( point, textureId, textureTarget );
 }
 
-static QGLEngineThreadStorage<QGL2PaintEngineEx> *qt_gl_2_engine()
+static QGLEngineThreadStorage<QGL2PaintEngineEx> *lscs_gl_2_engine()
 {
     static QGLEngineThreadStorage<QGL2PaintEngineEx> retval;
     return &retval;
 }
 
-Q_OPENGL_EXPORT QPaintEngine *qt_qgl_paint_engine()
+Q_OPENGL_EXPORT QPaintEngine *lscs_qgl_paint_engine()
 {
-    return qt_gl_2_engine()->engine();
+    return lscs_gl_2_engine()->engine();
 }
 
 QPaintEngine *QGLWidget::paintEngine() const
 {
-    return qt_qgl_paint_engine();
+    return lscs_qgl_paint_engine();
 }
 
 void QGLWidgetPrivate::init( QGLContext *context, const QGLWidget *shareWidget )
@@ -3741,24 +3741,24 @@ void QGLWidgetPrivate::cleanupColormaps()
 {
 }
 
-static QString *qt_gl_lib_name()
+static QString *lscs_gl_lib_name()
 {
     static QString retval;
     return &retval;
 }
 
-void qt_set_gl_library_name( const QString &name )
+void lscs_set_gl_library_name( const QString &name )
 {
-    qt_gl_lib_name()->operator=( name );
+    lscs_gl_lib_name()->operator=( name );
 }
 
-const QString qt_gl_library_name()
+const QString lscs_gl_library_name()
 {
-    if ( qt_gl_lib_name()->isEmpty() )
+    if ( lscs_gl_lib_name()->isEmpty() )
     {
 
 
-#if defined(QT_OPENGL_ES_2)
+#if defined(LSCS_OPENGL_ES_2)
         return QLatin1String( "GLESv2" );
 # else
         return QLatin1String( "GL" );
@@ -3767,7 +3767,7 @@ const QString qt_gl_library_name()
 
     }
 
-    return *qt_gl_lib_name();
+    return *lscs_gl_lib_name();
 }
 
 
@@ -4265,11 +4265,11 @@ QString lscs_glGetString( GLenum data )
     }
 }
 
-using qt_glGetStringi = const GLubyte * ( QOPENGLF_APIENTRYP )( GLenum, GLuint );
+using lscs_glGetStringi = const GLubyte * ( QOPENGLF_APIENTRYP )( GLenum, GLuint );
 
 QString lscs_glGetStringI( GLenum data, GLuint index )
 {
-    static qt_glGetStringi funcPtr = nullptr;
+    static lscs_glGetStringi funcPtr = nullptr;
 
     if ( funcPtr == nullptr )
     {
@@ -4280,7 +4280,7 @@ QString lscs_glGetStringI( GLenum data, GLuint index )
             return QString();
         }
 
-        funcPtr = ( qt_glGetStringi )ctx->getProcAddress( "glGetStringi" );
+        funcPtr = ( lscs_glGetStringi )ctx->getProcAddress( "glGetStringi" );
     }
 
     const GLubyte *begin = funcPtr( data, index );

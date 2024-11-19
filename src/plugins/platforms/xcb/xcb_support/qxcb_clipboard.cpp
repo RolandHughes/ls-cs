@@ -32,7 +32,7 @@
 
 #include <xcb/xcb_icccm.h>
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
 class QXcbClipboardMime : public QXcbMime
 {
@@ -340,9 +340,9 @@ QXcbClipboard::~QXcbClipboard()
         if ( reply && reply->owner != XCB_NONE )
         {
             // we delete the property so the manager saves all TARGETS.
-            xcb_delete_property( xcb_connection(), m_owner, atom( QXcbAtom::_QT_SELECTION ) );
+            xcb_delete_property( xcb_connection(), m_owner, atom( QXcbAtom::_LSCS_SELECTION ) );
             xcb_convert_selection( xcb_connection(), m_owner, atom( QXcbAtom::CLIPBOARD_MANAGER ), atom( QXcbAtom::SAVE_TARGETS ),
-                                   atom( QXcbAtom::_QT_SELECTION ), connection()->time() );
+                                   atom( QXcbAtom::_LSCS_SELECTION ), connection()->time() );
             connection()->sync();
 
             // waiting until the clipboard manager fetches the content.
@@ -1268,7 +1268,7 @@ QByteArray QXcbClipboard::clipboardReadIncrementalProperty( xcb_window_t win, xc
 
 QByteArray QXcbClipboard::getDataInFormat( xcb_atom_t modeAtom, xcb_atom_t fmtAtom )
 {
-    return getSelection( modeAtom, fmtAtom, atom( QXcbAtom::_QT_SELECTION ) );
+    return getSelection( modeAtom, fmtAtom, atom( QXcbAtom::_LSCS_SELECTION ) );
 }
 
 QByteArray QXcbClipboard::getSelection( xcb_atom_t selection, xcb_atom_t target, xcb_atom_t property, xcb_timestamp_t time )
@@ -1309,4 +1309,4 @@ QByteArray QXcbClipboard::getSelection( xcb_atom_t selection, xcb_atom_t target,
     return buf;
 }
 
-#endif // QT_NO_CLIPBOARD
+#endif // LSCS_NO_CLIPBOARD

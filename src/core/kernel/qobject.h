@@ -47,7 +47,7 @@
 
 using QObjectList = QList<QObject *>;
 
-#if ! defined(QT_NO_EMIT)
+#if ! defined(LSCS_NO_EMIT)
 #define emit
 #endif
 
@@ -621,7 +621,7 @@ private:
     friend class QTimerInfoList;
     friend class QWinEventNotifier;
 
-#ifdef QT_BUILD_GUI_LIB
+#ifdef LSCS_BUILD_GUI_LIB
     friend QThreadData *internal_get_ThreadData( QObject *object );
 #endif
 

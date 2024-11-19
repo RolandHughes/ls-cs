@@ -169,11 +169,11 @@ struct QWExtra
     void *glContext;       // if the widget is hijacked by QGLWindowSurface
     QTLWExtra *topextra;   // only useful for TLWs
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
     QGraphicsProxyWidget *proxyWidget; // if the widget is embedded
 #endif
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QCursor *curs;
 #endif
 
@@ -339,7 +339,7 @@ public:
                                  const QRegion &rgn, const QPoint &offset, int flags,
                                  QPainter *sharedPainter, QWidgetBackingStore *backingStore );
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
     static QGraphicsProxyWidget *nearestGraphicsProxyWidget( const QWidget *origin );
 #endif
 
@@ -358,7 +358,7 @@ public:
     void updateIsTranslucent();
     bool paintOnScreen() const;
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
     void invalidateGraphicsEffectsRecursively();
 #endif
 
@@ -417,7 +417,7 @@ public:
     void updateFrameStrut();
     QRect frameStrut() const;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     static bool navigateToDirection( Direction direction );
     static QWidget *widgetInNavigationDirection( Direction direction );
     static bool canKeypadNavigate( Qt::Orientation orientation );
@@ -429,7 +429,7 @@ public:
     void setWindowTitle_sys( const QString &cap );
     void setWindowFilePath_sys( const QString &filePath );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     void setCursor_sys( const QCursor &cursor );
     void unsetCursor_sys();
 #endif
@@ -482,7 +482,7 @@ public:
     {
         QRect screen;
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
         QGraphicsProxyWidget *ancestorProxy = widget->d_func()->nearestGraphicsProxyWidget( widget );
 
         //It's embedded if it has an ancestor
@@ -563,7 +563,7 @@ public:
 
     QRect effectiveRectFor( const QRect &rect ) const
     {
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
         if ( graphicsEffect && graphicsEffect->isEnabled() )
         {
@@ -620,7 +620,7 @@ public:
         return nullptr;
     }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     virtual GLuint textureId() const
     {
         return 0;
@@ -709,31 +709,31 @@ public:
     static QWidgetMapper *mapper;
     static QWidgetSet *allWidgets;
 
-#if ! defined(QT_NO_IM)
+#if ! defined(LSCS_NO_IM)
     Qt::InputMethodHints imHints;
 #endif
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     static QPointer<QWidget> editingWidget;
 #endif
 
     QRegion opaqueChildren;
     QRegion dirty;
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     QString toolTip;
     int toolTipDuration;
 #endif
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
     QString statusTip;
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     QString whatsThis;
 #endif
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QString accessibleName;
     QString accessibleDescription;
 #endif
@@ -757,11 +757,11 @@ public:
     QLocale locale;
     QPoint redirectOffset;
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     QList<QAction *> actions;
 #endif
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     QMap<Qt::GestureType, Qt::GestureFlags> gestureContext;
 #endif
 
@@ -779,11 +779,11 @@ public:
     uint renderToTexture : 1;
     uint textureChildSeen : 1;
 
-#ifndef QT_NO_IM
+#ifndef LSCS_NO_IM
     uint inheritsInputMethodHints : 1;
 #endif
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     uint renderToTextureReallyDirty : 1;
     uint renderToTextureComposeActive : 1;
 #endif
@@ -826,7 +826,7 @@ struct QWidgetPaintContext
     QPainter *painter;
 };
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 class QWidgetEffectSourcePrivate : public QGraphicsEffectSourcePrivate
 {
 public:

@@ -24,7 +24,7 @@
 #include <qtextcontrol_p.h>
 #include <qtextcontrol_p_p.h>
 
-#ifndef QT_NO_TEXTCONTROL
+#ifndef LSCS_NO_TEXTCONTROL
 
 #include <qaccessible.h>
 #include <qapplication.h>
@@ -63,7 +63,7 @@
 
 #include <limits.h>
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 #include <qkeysequence.h>
 
 #include <qapplication_p.h>
@@ -111,14 +111,14 @@ QTextControlPrivate::QTextControlPrivate()
 
       dragEnabled( true ),
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
       mousePressed( false ), mightStartDrag( false ),
 #endif
 
       lastSelectionPosition( 0 ), lastSelectionAnchor( 0 ), ignoreAutomaticScrollbarAdjustement( false ),
       overwriteMode( false ), acceptRichText( true ), preeditCursor( 0 ), hideCursor( false ), hasFocus( false ),
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
       hasEditFocus( false ),
 #endif
 
@@ -129,7 +129,7 @@ QTextControlPrivate::QTextControlPrivate()
 
 bool QTextControlPrivate::cursorMoveKeyEvent( QKeyEvent *e )
 {
-#ifdef QT_NO_SHORTCUT
+#ifdef LSCS_NO_SHORTCUT
     ( void ) e;
 #endif
 
@@ -147,7 +147,7 @@ bool QTextControlPrivate::cursorMoveKeyEvent( QKeyEvent *e )
     QTextCursor::MoveOperation op = QTextCursor::NoMove;
 
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( e == QKeySequence::MoveToNextChar )
     {
@@ -268,7 +268,7 @@ bool QTextControlPrivate::cursorMoveKeyEvent( QKeyEvent *e )
     else if ( e == QKeySequence::MoveToEndOfDocument )
     {
         op = QTextCursor::End;
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
     }
     else
@@ -296,7 +296,7 @@ bool QTextControlPrivate::cursorMoveKeyEvent( QKeyEvent *e )
     bool ignoreNavigationEvents = ignoreUnusedNavigationEvents;
     bool isNavigationEvent = e->key() == Qt::Key_Up || e->key() == Qt::Key_Down;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     ignoreNavigationEvents = ignoreNavigationEvents || QApplication::keypadNavigationEnabled();
     isNavigationEvent = isNavigationEvent ||
                         ( QApplication::navigationMode() == Qt::NavigationModeKeypadDirectional
@@ -535,7 +535,7 @@ void QTextControlPrivate::setContent( Qt::TextFormat format, const QString &text
         }
         else
         {
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
             doc->setHtml( text );
 #else
             doc->setPlainText( text );
@@ -575,7 +575,7 @@ void QTextControlPrivate::setContent( Qt::TextFormat format, const QString &text
 
 void QTextControlPrivate::startDrag()
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     Q_Q( QTextControl );
 
     mousePressed = false;
@@ -674,7 +674,7 @@ void QTextControlPrivate::selectionChanged( bool forceEmitSelectionChanged )
     {
         emit q->selectionChanged();
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
         if ( q->parent() && q->parent()->isWidgetType() )
         {
@@ -706,7 +706,7 @@ void QTextControlPrivate::selectionChanged( bool forceEmitSelectionChanged )
                            || cursor.anchor() != lastSelectionAnchor ) ) ) )
     {
         emit q->selectionChanged();
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
         if ( q->parent() && q->parent()->isWidgetType() )
         {
@@ -728,7 +728,7 @@ void QTextControlPrivate::_q_updateCurrentCharFormatAndSelection()
     selectionChanged();
 }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 void QTextControlPrivate::setClipboardSelection()
 {
     QClipboard *clipboard = QApplication::clipboard();
@@ -757,7 +757,7 @@ void QTextControlPrivate::_q_emitCursorPosChanged( const QTextCursor &someCursor
 
 void QTextControlPrivate::_q_contentsChanged( int from, int charsRemoved, int charsAdded )
 {
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     Q_Q( QTextControl );
 
     if ( QAccessible::isActive() && q->parent() && q->parent()->isWidgetType() )
@@ -922,7 +922,7 @@ void QTextControlPrivate::extendWordwiseSelection( int suggestedNewPosition, qre
 
     if ( interactionFlags & Qt::TextSelectableByMouse )
     {
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
         setClipboardSelection();
 #endif
         selectionChanged( true );
@@ -957,7 +957,7 @@ void QTextControlPrivate::extendBlockwiseSelection( int suggestedNewPosition )
 
     if ( interactionFlags & Qt::TextSelectableByMouse )
     {
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
         setClipboardSelection();
 #endif
         selectionChanged( true );
@@ -1093,7 +1093,7 @@ QTextCursor QTextControl::textCursor() const
     return d->cursor;
 }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
 void QTextControl::cut()
 {
@@ -1174,7 +1174,7 @@ void QTextControl::processEvent( QEvent *e, const QMatrix &matrix, QWidget *cont
     {
         switch ( e->type() )
         {
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
             case QEvent::GraphicsSceneMouseMove:
             case QEvent::GraphicsSceneMousePress:
@@ -1195,7 +1195,7 @@ void QTextControl::processEvent( QEvent *e, const QMatrix &matrix, QWidget *cont
                 break;
             }
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
             default:
                 break;
@@ -1243,7 +1243,7 @@ void QTextControl::processEvent( QEvent *e, const QMatrix &matrix, QWidget *cont
         case QEvent::InputMethod:
             d->inputMethodEvent( static_cast<QInputMethodEvent *>( e ) );
             break;
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
         case QEvent::ContextMenu:
         {
@@ -1252,7 +1252,7 @@ void QTextControl::processEvent( QEvent *e, const QMatrix &matrix, QWidget *cont
             break;
         }
 
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
         case QEvent::FocusIn:
         case QEvent::FocusOut:
@@ -1263,7 +1263,7 @@ void QTextControl::processEvent( QEvent *e, const QMatrix &matrix, QWidget *cont
             d->isEnabled = e->isAccepted();
             break;
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
         case QEvent::ToolTip:
         {
@@ -1272,9 +1272,9 @@ void QTextControl::processEvent( QEvent *e, const QMatrix &matrix, QWidget *cont
             break;
         }
 
-#endif // QT_NO_TOOLTIP
+#endif // LSCS_NO_TOOLTIP
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
         case QEvent::DragEnter:
         {
@@ -1318,7 +1318,7 @@ void QTextControl::processEvent( QEvent *e, const QMatrix &matrix, QWidget *cont
 
 #endif
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
         case QEvent::GraphicsSceneMousePress:
         {
@@ -1407,8 +1407,8 @@ void QTextControl::processEvent( QEvent *e, const QMatrix &matrix, QWidget *cont
             break;
         }
 
-#endif // QT_NO_GRAPHICSVIEW
-#ifdef QT_KEYPAD_NAVIGATION
+#endif // LSCS_NO_GRAPHICSVIEW
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         case QEvent::EnterEditFocus:
         case QEvent::LeaveEditFocus:
@@ -1455,7 +1455,7 @@ void QTextControl::processEvent( QEvent *e, const QMatrix &matrix, QWidget *cont
                         }
                     }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
                 }
                 else if ( ke == QKeySequence::Copy
                           || ke == QKeySequence::Paste
@@ -1529,7 +1529,7 @@ void QTextControl::setHtml( const QString &text )
 void QTextControlPrivate::keyPressEvent( QKeyEvent *e )
 {
     Q_Q( QTextControl );
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( e == QKeySequence::SelectAll )
     {
@@ -1538,7 +1538,7 @@ void QTextControlPrivate::keyPressEvent( QKeyEvent *e )
         return;
     }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     else if ( e == QKeySequence::Copy )
     {
         e->accept();
@@ -1547,7 +1547,7 @@ void QTextControlPrivate::keyPressEvent( QKeyEvent *e )
     }
 
 #endif
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
     if ( interactionFlags & Qt::TextSelectableByKeyboard
             && cursorMoveKeyEvent( e ) )
@@ -1559,7 +1559,7 @@ void QTextControlPrivate::keyPressEvent( QKeyEvent *e )
     {
         if ( ( e->key() == Qt::Key_Return
                 || e->key() == Qt::Key_Enter
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
                 || e->key() == Qt::Key_Select
 #endif
              )
@@ -1615,7 +1615,7 @@ void QTextControlPrivate::keyPressEvent( QKeyEvent *e )
         goto accept;
     }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     else if ( e == QKeySequence::InsertParagraphSeparator )
     {
         cursor.insertBlock();
@@ -1635,7 +1635,7 @@ void QTextControlPrivate::keyPressEvent( QKeyEvent *e )
     {
     }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     else if ( e == QKeySequence::Undo )
     {
         q->undo();
@@ -1645,7 +1645,7 @@ void QTextControlPrivate::keyPressEvent( QKeyEvent *e )
         q->redo();
     }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     else if ( e == QKeySequence::Cut )
     {
         q->cut();
@@ -1714,7 +1714,7 @@ void QTextControlPrivate::keyPressEvent( QKeyEvent *e )
         cursor.removeSelectedText();
     }
 
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
     else
     {
@@ -1759,7 +1759,7 @@ accept:
 
 QVariant QTextControl::loadResource( int type, const QUrl &name )
 {
-#ifdef QT_NO_TEXTEDIT
+#ifdef LSCS_NO_TEXTEDIT
     ( void ) type;
     ( void ) name;
 #else
@@ -1819,7 +1819,7 @@ QRectF QTextControlPrivate::rectForPosition( int position ) const
     int cursorWidth;
     {
         bool ok = false;
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
         cursorWidth = docLayout->property( "cursorWidth" ).toInt( &ok );
 #endif
 
@@ -2013,7 +2013,7 @@ void QTextControlPrivate::mousePressEvent( QEvent *e, Qt::MouseButton button, co
 {
     Q_Q( QTextControl );
     mousePressPos = pos.toPoint();
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     mightStartDrag = false;
 #endif
 
@@ -2105,7 +2105,7 @@ void QTextControlPrivate::mousePressEvent( QEvent *e, Qt::MouseButton button, co
                     && q->hitTest( pos, Qt::ExactHit ) != -1 )
             {
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
                 mightStartDrag = true;
 #endif
                 return;
@@ -2241,7 +2241,7 @@ void QTextControlPrivate::mouseMoveEvent( QEvent *e, Qt::MouseButton button, con
 
             _q_updateCurrentCharFormatAndSelection();
 
-#ifndef QT_NO_IM
+#ifndef LSCS_NO_IM
 
             if ( contextWidget )
             {
@@ -2285,7 +2285,7 @@ void QTextControlPrivate::mouseReleaseEvent( QEvent *e, Qt::MouseButton button, 
 
     const int oldCursorPos = cursor.position();
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( mightStartDrag && ( button & Qt::LeftButton ) )
     {
@@ -2301,7 +2301,7 @@ void QTextControlPrivate::mouseReleaseEvent( QEvent *e, Qt::MouseButton button, 
     {
         mousePressed = false;
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
         setClipboardSelection();
         selectionChanged( true );
 
@@ -2371,7 +2371,7 @@ void QTextControlPrivate::mouseDoubleClickEvent( QEvent *e, Qt::MouseButton butt
             && ( interactionFlags & Qt::TextSelectableByMouse ) )
     {
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
         mightStartDrag = false;
 #endif
 
@@ -2398,7 +2398,7 @@ void QTextControlPrivate::mouseDoubleClickEvent( QEvent *e, Qt::MouseButton butt
         if ( doEmit )
         {
             selectionChanged();
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
             setClipboardSelection();
 #endif
             emit q->cursorPositionChanged();
@@ -2421,7 +2421,7 @@ bool QTextControlPrivate::sendMouseEventToInputContext( QEvent *e, QEvent::Type 
     ( void ) buttons;
     ( void ) globalPos;
 
-#if ! defined(QT_NO_IM)
+#if ! defined(LSCS_NO_IM)
     Q_Q( QTextControl );
 
     if ( isPreediting() )
@@ -2455,7 +2455,7 @@ bool QTextControlPrivate::sendMouseEventToInputContext( QEvent *e, QEvent::Type 
 
 void QTextControlPrivate::contextMenuEvent( const QPoint &screenPos, const QPointF &docPos, QWidget *contextWidget )
 {
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
     Q_Q( QTextControl );
 
@@ -2774,7 +2774,7 @@ void QTextControlPrivate::focusEvent( QFocusEvent *e )
     if ( e->gotFocus() )
     {
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         if ( ! QApplication::keypadNavigationEnabled() || ( hasEditFocus && ( e->reason() == Qt::PopupFocusReason ) ) )
         {
@@ -2787,7 +2787,7 @@ void QTextControlPrivate::focusEvent( QFocusEvent *e )
                 setBlinkingCursorEnabled( true );
             }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
         }
 
 #endif
@@ -2832,7 +2832,7 @@ QString QTextControlPrivate::anchorForCursor( const QTextCursor &anchorCursor ) 
     return QString();
 }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 void QTextControlPrivate::editFocusEvent( QEvent *e )
 {
     Q_Q( QTextControl );
@@ -2871,7 +2871,7 @@ void QTextControlPrivate::editFocusEvent( QEvent *e )
 }
 #endif
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
 static inline void setActionIcon( QAction *action, const QString &name )
 {
@@ -2919,7 +2919,7 @@ QMenu *QTextControl::createStandardContextMenu( const QPointF &pos, QWidget *par
 
         menu->addSeparator();
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
         a = menu->addAction( tr( "Cu&t" ) + ACCEL_KEY( QKeySequence::Cut ), this, SLOT( cut() ) );
         a->setEnabled( d->cursor.hasSelection() );
         a->setObjectName( "edit-cut" );
@@ -2927,7 +2927,7 @@ QMenu *QTextControl::createStandardContextMenu( const QPointF &pos, QWidget *par
 #endif
     }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( showTextSelectionActions )
     {
@@ -2950,7 +2950,7 @@ QMenu *QTextControl::createStandardContextMenu( const QPointF &pos, QWidget *par
 
     if ( d->interactionFlags & Qt::TextEditable )
     {
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
         a = menu->addAction( tr( "&Paste" ) + ACCEL_KEY( QKeySequence::Paste ), this, SLOT( paste() ) );
         a->setEnabled( canPaste() );
         a->setObjectName( "edit-paste" );
@@ -2982,7 +2982,7 @@ QMenu *QTextControl::createStandardContextMenu( const QPointF &pos, QWidget *par
 
     return menu;
 }
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
 QTextCursor QTextControl::cursorForPosition( const QPointF &pos ) const
 {
@@ -3054,7 +3054,7 @@ void QTextControl::setOverwriteMode( bool overwrite )
 
 int QTextControl::cursorWidth() const
 {
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     Q_D( const QTextControl );
 
     return d->doc->documentLayout()->property( "cursorWidth" ).toInt();
@@ -3067,7 +3067,7 @@ void QTextControl::setCursorWidth( int width )
 {
     Q_D( QTextControl );
 
-#ifdef QT_NO_PROPERTIES
+#ifdef LSCS_NO_PROPERTIES
     ( void ) width;
 #else
 
@@ -3094,7 +3094,7 @@ void QTextControl::setAcceptRichText( bool accept )
     d->acceptRichText = accept;
 }
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
 void QTextControl::setExtraSelections( const QList<QTextEdit::ExtraSelection> &selections )
 {
@@ -3190,7 +3190,7 @@ QList<QTextEdit::ExtraSelection> QTextControl::extraSelections() const
     return selections;
 }
 
-#endif // QT_NO_TEXTEDIT
+#endif // LSCS_NO_TEXTEDIT
 
 void QTextControl::setTextWidth( qreal width )
 {
@@ -3251,7 +3251,7 @@ void QTextControl::moveCursor( QTextCursor::MoveOperation op, QTextCursor::MoveM
 
 bool QTextControl::canPaste() const
 {
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     Q_D( const QTextControl );
 
     if ( d->interactionFlags & Qt::TextEditable )
@@ -3306,7 +3306,7 @@ bool QTextControl::isPreediting()
 {
     return d_func()->isPreediting();
 }
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 void QTextControl::print( QPagedPaintDevice *printer ) const
 {
     Q_D( const QTextControl );
@@ -3343,7 +3343,7 @@ void QTextControl::print( QPagedPaintDevice *printer ) const
     delete tempDoc;
 
 }
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 QMimeData *QTextControl::createMimeDataFromSelection() const
 {
@@ -3383,7 +3383,7 @@ void QTextControl::insertFromMimeData( const QMimeData *source )
     bool hasData = false;
     QTextDocumentFragment fragment;
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
     if ( source->hasFormat( "application/x-qrichtext" ) && d->acceptRichText )
     {
@@ -3706,7 +3706,7 @@ void QTextControlPrivate::activateLinkUnderCursor( QString href )
 
     repaintOldAndNewSelection( oldCursor );
 
-#ifndef QT_NO_DESKTOPSERVICES
+#ifndef LSCS_NO_DESKTOPSERVICES
 
     if ( openExternalLinks )
     {
@@ -3717,7 +3717,7 @@ void QTextControlPrivate::activateLinkUnderCursor( QString href )
         emit q_func()->linkActivated( href );
 }
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 void QTextControlPrivate::showToolTip( const QPoint &globalPos, const QPointF &pos, QWidget *contextWidget )
 {
     const QString toolTip = q_func()->cursorForPosition( pos ).charFormat().toolTip();
@@ -3729,7 +3729,7 @@ void QTextControlPrivate::showToolTip( const QPoint &globalPos, const QPointF &p
 
     QToolTip::showText( globalPos, toolTip, contextWidget );
 }
-#endif // QT_NO_TOOLTIP
+#endif // LSCS_NO_TOOLTIP
 
 
 bool QTextControlPrivate::isPreediting() const
@@ -3898,13 +3898,13 @@ void QTextControl::insertPlainText( const QString &text )
     d->cursor.insertText( text );
 }
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 void QTextControl::insertHtml( const QString &text )
 {
     Q_D( QTextControl );
     d->cursor.insertHtml( text );
 }
-#endif // QT_NO_TEXTHTMLPARSER
+#endif // LSCS_NO_TEXTHTMLPARSER
 
 QPointF QTextControl::anchorPosition( const QString &name ) const
 {
@@ -3989,7 +3989,7 @@ QString QTextControl::toPlainText() const
     return document()->toPlainText();
 }
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 QString QTextControl::toHtml() const
 {
     return document()->toHtml();
@@ -4014,7 +4014,7 @@ void QTextControlPrivate::append( const QString &text, Qt::TextFormat format )
     // preserve the char format
     QTextCharFormat oldCharFormat = cursor.charFormat();
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
     if ( format == Qt::RichText || ( format == Qt::AutoText && Qt::mightBeRichText( text ) ) )
     {
@@ -4106,7 +4106,7 @@ QAbstractTextDocumentLayout::PaintContext QTextControl::getPaintContext( QWidget
         ctx.cursorPosition = d->dndFeedbackCursor.position();
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( !QApplication::keypadNavigationEnabled() || d->hasEditFocus )
 #endif
@@ -4178,7 +4178,7 @@ void QTextControl::drawContents( QPainter *p, const QRectF &rect, QWidget *widge
 
 void QTextControlPrivate::_q_copyLink()
 {
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     QMimeData *md = new QMimeData;
     md->setText( linkToCopy );
     QApplication::clipboard()->setMimeData( md );
@@ -4197,14 +4197,14 @@ QRectF QTextControl::blockBoundingRect( const QTextBlock &block ) const
     return d->doc->documentLayout()->blockBoundingRect( block );
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 #define NUM_CONTROL_CHARACTERS 14
 
 const struct QUnicodeControlCharacter
 {
     const char *text;
     ushort character;
-} qt_controlCharacters[NUM_CONTROL_CHARACTERS] =
+} lscs_controlCharacters[NUM_CONTROL_CHARACTERS] =
 {
     { lscs_mark_tr( "QUnicodeControlCharacterMenu", "LRM Left-to-right mark" ), 0x200e },
     { lscs_mark_tr( "QUnicodeControlCharacterMenu", "RLM Right-to-left mark" ), 0x200f },
@@ -4229,7 +4229,7 @@ QUnicodeControlCharacterMenu::QUnicodeControlCharacterMenu( QObject *_editWidget
 
     for ( int i = 0; i < NUM_CONTROL_CHARACTERS; ++i )
     {
-        addAction( tr( qt_controlCharacters[i].text ), this, SLOT( menuActionTriggered() ) );
+        addAction( tr( lscs_controlCharacters[i].text ), this, SLOT( menuActionTriggered() ) );
     }
 }
 
@@ -4243,10 +4243,10 @@ void QUnicodeControlCharacterMenu::menuActionTriggered()
         return;
     }
 
-    QChar c( qt_controlCharacters[idx].character );
+    QChar c( lscs_controlCharacters[idx].character );
     QString str( c );
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
     if ( QTextEdit *edit = qobject_cast<QTextEdit *>( editWidget ) )
     {
@@ -4261,7 +4261,7 @@ void QUnicodeControlCharacterMenu::menuActionTriggered()
         control->insertPlainText( str );
     }
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
     if ( QLineEdit *edit = qobject_cast<QLineEdit *>( editWidget ) )
     {
@@ -4271,13 +4271,13 @@ void QUnicodeControlCharacterMenu::menuActionTriggered()
 
 #endif
 }
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
 QStringList QTextEditMimeData::formats() const
 {
     if ( !fragment.isEmpty() )
         return QStringList() << QString( "text/plain" ) << QString( "text/html" )
-#ifndef QT_NO_TEXTODFWRITER
+#ifndef LSCS_NO_TEXTODFWRITER
                << QString::fromLatin1( "application/vnd.oasis.opendocument.text" )
 #endif
                ;
@@ -4301,11 +4301,11 @@ void QTextEditMimeData::setup() const
 {
     QTextEditMimeData *that = const_cast<QTextEditMimeData *>( this );
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
     that->setData( QLatin1String( "text/html" ), fragment.toHtml( "utf-8" ).toUtf8() );
 #endif
 
-#ifndef QT_NO_TEXTODFWRITER
+#ifndef LSCS_NO_TEXTODFWRITER
     {
         QBuffer buffer;
         QTextDocumentWriter writer( &buffer, "ODF" );
@@ -4361,4 +4361,4 @@ void QTextControl::_q_contentsChanged( int arg1, int arg2, int arg3 )
     d->_q_contentsChanged( arg1, arg2, arg3 );
 }
 
-#endif // QT_NO_TEXTCONTROL
+#endif // LSCS_NO_TEXTCONTROL

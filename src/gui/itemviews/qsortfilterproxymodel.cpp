@@ -23,7 +23,7 @@
 
 #include <qsortfilterproxymodel.h>
 
-#ifndef QT_NO_SORTFILTERPROXYMODEL
+#ifndef LSCS_NO_SORTFILTERPROXYMODEL
 
 #include <qalgorithms.h>
 #include <qdatetime.h>
@@ -2986,4 +2986,4 @@ void QSortFilterProxyModel::_q_clearMapping()
     d->_q_clearMapping();
 }
 
-#endif // QT_NO_SORTFILTERPROXYMODEL
+#endif // LSCS_NO_SORTFILTERPROXYMODEL

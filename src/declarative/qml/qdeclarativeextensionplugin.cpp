@@ -23,7 +23,7 @@
 
 #include "qdeclarativeextensionplugin.h"
 
-QT_BEGIN_NAMESPACE QDeclarativeExtensionPlugin::QDeclarativeExtensionPlugin( QObject *parent )
+LSCS_BEGIN_NAMESPACE QDeclarativeExtensionPlugin::QDeclarativeExtensionPlugin( QObject *parent )
     : QObject( parent )
 {
 }
@@ -49,4 +49,4 @@ void QDeclarativeExtensionPlugin::initializeEngine( QDeclarativeEngine *engine, 
     Q_UNUSED( uri );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

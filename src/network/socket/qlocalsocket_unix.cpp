@@ -26,7 +26,7 @@
 #include <qlocalsocket_p.h>
 #include <qnet_unix_p.h>
 
-#ifndef QT_NO_LOCALSOCKET
+#ifndef LSCS_NO_LOCALSOCKET
 
 #include <qdebug.h>
 #include <qdir.h>
@@ -41,7 +41,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#define QT_CONNECT_TIMEOUT 30000
+#define LSCS_CONNECT_TIMEOUT 30000
 
 QLocalSocketPrivate::QLocalSocketPrivate()
     : QIODevicePrivate(), delayConnect( nullptr ), connectTimer( nullptr ), connectingSocket( -1 ),
@@ -53,7 +53,8 @@ void QLocalSocketPrivate::init()
 {
     Q_Q( QLocalSocket );
 
-    q->connect( &unixSocket, &QLocalUnixSocket::aboutToClose, q, &QLocalSocket::aboutToClose );
+    // do not allow aboutToClose to be queued across threads.
+    q->connect( &unixSocket, &QLocalUnixSocket::aboutToClose, q, &QLocalSocket::aboutToClose, Qt::DirectConnection );
     q->connect( &unixSocket, &QLocalUnixSocket::bytesWritten, q, &QLocalSocket::bytesWritten );
     q->connect( &unixSocket, &QLocalUnixSocket::readyRead,    q, &QLocalSocket::readyRead );
 
@@ -259,7 +260,7 @@ void QLocalSocket::connectToServer( OpenMode openMode )
     }
 
     // create the socket
-    if ( -1 == ( d->connectingSocket = qt_safe_socket( PF_UNIX, SOCK_STREAM, 0, O_NONBLOCK ) ) )
+    if ( -1 == ( d->connectingSocket = lscs_safe_socket( PF_UNIX, SOCK_STREAM, 0, O_NONBLOCK ) ) )
     {
         d->errorOccurred( UnsupportedSocketOperationError, "QLocalSocket::connectToServer" );
         return;
@@ -305,7 +306,7 @@ void QLocalSocketPrivate::_q_connectToSocket()
     ::memcpy( name.sun_path, encodedConnectingPathName.constData(),
               encodedConnectingPathName.size() + 1 );
 
-    if ( -1 == qt_safe_connect( connectingSocket, ( struct sockaddr * )&name, sizeof( name ) ) )
+    if ( -1 == lscs_safe_connect( connectingSocket, ( struct sockaddr * )&name, sizeof( name ) ) )
     {
         QString function = "QLocalSocket::connectToServer";
 
@@ -343,7 +344,7 @@ void QLocalSocketPrivate::_q_connectToSocket()
                     connectTimer = new QTimer( q );
 
                     q->connect( connectTimer, &QTimer::timeout, q, &QLocalSocket::_q_abortConnectionAttempt, Qt::DirectConnection );
-                    connectTimer->start( QT_CONNECT_TIMEOUT );
+                    connectTimer->start( LSCS_CONNECT_TIMEOUT );
                 }
 
                 delayConnect->setEnabled( true );

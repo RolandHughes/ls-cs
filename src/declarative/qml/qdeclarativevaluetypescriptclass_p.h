@@ -26,7 +26,7 @@
 
 #include <qscriptdeclarativeclass_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 class QDeclarativeValueType;
@@ -52,7 +52,7 @@ private:
     int m_lastIndex;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEVALUETYPESCRIPTCLASS_P_H
 

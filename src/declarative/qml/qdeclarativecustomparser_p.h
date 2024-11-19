@@ -31,7 +31,7 @@
 #include <QtCore/qbytearray.h>
 #include <QtCore/qxmlstream.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeCompiler;
 
@@ -130,7 +130,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS( QDeclarativeCustomParser::Flags );
             qmlRegisterCustomType<TYPE>(#URI, VERSION_MAJ, VERSION_MIN, #NAME, #TYPE, new CUSTOMTYPE)
 #endif
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QDeclarativeCustomParserProperty )
 Q_DECLARE_METATYPE( QDeclarativeCustomParserNode )

@@ -82,7 +82,7 @@ public:
     virtual double caretBlinkInterval() const;
 
     virtual bool isControlStyled( const RenderStyle *, const BorderData &, const FillLayer &, const Color &backgroundColor ) const;
-#if USE(QT_MOBILE_THEME)
+#if USE(LSCS_MOBILE_THEME)
     virtual int popupInternalPaddingBottom( RenderStyle * ) const;
 #endif
 

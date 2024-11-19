@@ -23,9 +23,9 @@
 
 #include <qslider.h>
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -288,7 +288,7 @@ void QSlider::mousePressEvent( QMouseEvent *ev )
         return;
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() )
     {
@@ -482,7 +482,7 @@ int QSlider::tickInterval() const
     return d_func()->tickInterval;
 }
 
-Q_GUI_EXPORT QStyleOptionSlider qt_qsliderStyleOption( QSlider *slider )
+Q_GUI_EXPORT QStyleOptionSlider lscs_qsliderStyleOption( QSlider *slider )
 {
     QStyleOptionSlider sliderOption;
     slider->initStyleOption( &sliderOption );

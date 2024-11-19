@@ -29,7 +29,7 @@
 
 #include <qfilesystemwatcher_fsevents_p.h>
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 
 #include <qdatetime.h>
 #include <qdebug.h>
@@ -589,4 +589,4 @@ void QFSEventsFileSystemWatcherEngine::run()
     waitForStop.wakeAll();
 #endif
 }
-#endif //QT_NO_FILESYSTEMWATCHER
+#endif //LSCS_NO_FILESYSTEMWATCHER

@@ -141,7 +141,7 @@ void JIT::emit_op_ret( Instruction *currentInstruction )
 {
     unsigned dst = currentInstruction[1].u.operand;
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
     JITStubCall stubCall( this, cti_op_debug_return );
     stubCall.addArgument( Imm32( dst ) );
     stubCall.call();

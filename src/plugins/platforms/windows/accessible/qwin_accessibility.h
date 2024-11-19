@@ -24,7 +24,7 @@
 #ifndef QWINDOWSACCESSIBILITY_H
 #define QWINDOWSACCESSIBILITY_H
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 #include <qplatform_accessibility.h>
 #include <qwin_context.h>

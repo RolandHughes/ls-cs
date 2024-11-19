@@ -29,7 +29,7 @@
 #include <QtCore/qhash.h>
 #include <qscriptdeclarativeclass_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeType;
 class QDeclarativeEngine;
@@ -77,7 +77,7 @@ int QDeclarativeIntegerCache::count() const
     return stringCache.count();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEINTEGERCACHE_P_H
 

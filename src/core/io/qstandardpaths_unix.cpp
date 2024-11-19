@@ -35,7 +35,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
-#ifndef QT_NO_STANDARDPATHS
+#ifndef LSCS_NO_STANDARDPATHS
 
 static void appendOrganizationAndApp( QString &path )
 {
@@ -143,7 +143,7 @@ QString QStandardPaths::writableLocation( StandardLocation type )
                     if ( ! QDir().mkdir( xdgRuntimeDir ) )
                     {
                         qWarning( "QStandardPaths::writableLocation() Error creating runtime directory %s: %s",
-                                  lscsPrintable( xdgRuntimeDir ), lscsPrintable( qt_error_string( errno ) ) );
+                                  lscsPrintable( xdgRuntimeDir ), lscsPrintable( lscs_error_string( errno ) ) );
                         return QString();
                     }
                 }

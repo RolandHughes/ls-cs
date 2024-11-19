@@ -27,7 +27,7 @@
 #include <qabstractsocket.h>
 #include <qhostaddress.h>
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
 
 class QNetworkInterface;
 class QUdpSocketPrivate;
@@ -44,7 +44,7 @@ public:
 
     virtual ~QUdpSocket();
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
     bool joinMulticastGroup( const QHostAddress &groupAddress );
     bool joinMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &interfaceId );
     bool leaveMulticastGroup( const QHostAddress &groupAddress );
@@ -68,6 +68,6 @@ private:
     Q_DECLARE_PRIVATE( QUdpSocket )
 };
 
-#endif // QT_NO_UDPSOCKET
+#endif // LSCS_NO_UDPSOCKET
 
 #endif

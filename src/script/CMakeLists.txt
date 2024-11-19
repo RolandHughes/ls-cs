@@ -1,7 +1,10 @@
 add_library(LsCsScript SHARED "")
 add_library(LsCs::LsCsScript ALIAS LsCsScript)
 
-set_target_properties(LsCsScript PROPERTIES OUTPUT_NAME LsCsScript${BUILD_ABI})
+set_target_properties(LsCsScript PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 add_definitions(
     -DQLALR_NO_SCRIPTGRAMMAR_DEBUG_INFO
@@ -17,7 +20,7 @@ add_definitions(
     -Djscyyerror=qtjscyyerror
     -DWTF=QTWTF
     -DUSE_SYSTEM_MALLOC
-    -DQT_BUILD_SCRIPT_LIB
+    -DLSCS_BUILD_SCRIPT_LIB
 )
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")

@@ -33,14 +33,14 @@
 #include <qdrawhelper_p.h>
 #include <qfont_p.h>
 
-#ifndef QT_NO_BLITTABLE
+#ifndef LSCS_NO_BLITTABLE
 
 static int global_ser_no = 0;
 
 QBlittablePlatformPixmap::QBlittablePlatformPixmap()
     : QPlatformPixmap( QPlatformPixmap::PixmapType, BlitterClass )
     , m_alpha( false ), m_devicePixelRatio( 1.0 )
-#ifdef QT_BLITTER_RASTEROVERLAY
+#ifdef LSCS_BLITTER_RASTEROVERLAY
     , m_rasterOverlay( 0 ), m_unmergedCopy( 0 )
 #endif
 
@@ -50,7 +50,7 @@ QBlittablePlatformPixmap::QBlittablePlatformPixmap()
 
 QBlittablePlatformPixmap::~QBlittablePlatformPixmap()
 {
-#ifdef QT_BLITTER_RASTEROVERLAY
+#ifdef LSCS_BLITTER_RASTEROVERLAY
     delete m_rasterOverlay;
     delete m_unmergedCopy;
 #endif
@@ -97,21 +97,21 @@ int QBlittablePlatformPixmap::metric( QPaintDevice::PaintDeviceMetric metric ) c
             return h;
 
         case QPaintDevice::PdmWidthMM:
-            return qRound( w * 25.4 / qt_defaultDpiX() );
+            return qRound( w * 25.4 / lscs_defaultDpiX() );
 
         case QPaintDevice::PdmHeightMM:
-            return qRound( h * 25.4 / qt_defaultDpiY() );
+            return qRound( h * 25.4 / lscs_defaultDpiY() );
 
         case QPaintDevice::PdmDepth:
             return 32;
 
         case QPaintDevice::PdmDpiX:
         case QPaintDevice::PdmPhysicalDpiX:
-            return qt_defaultDpiX();
+            return lscs_defaultDpiX();
 
         case QPaintDevice::PdmDpiY:
         case QPaintDevice::PdmPhysicalDpiY:
-            return qt_defaultDpiY();
+            return lscs_defaultDpiY();
 
         case QPaintDevice::PdmDevicePixelRatio:
             return devicePixelRatio();
@@ -228,9 +228,9 @@ QPaintEngine *QBlittablePlatformPixmap::paintEngine() const
     return m_engine.data();
 }
 
-#ifdef QT_BLITTER_RASTEROVERLAY
+#ifdef LSCS_BLITTER_RASTEROVERLAY
 
-static bool showRasterOverlay = ! qgetenv( "QT_BLITTER_RASTEROVERLAY" ).isEmpty();
+static bool showRasterOverlay = ! qgetenv( "LSCS_BLITTER_RASTEROVERLAY" ).isEmpty();
 
 void QBlittablePlatformPixmap::mergeOverlay()
 {
@@ -345,6 +345,6 @@ QRectF QBlittablePlatformPixmap::clipAndTransformRect( const QRectF &rect ) cons
     return transformationRect;
 }
 
-#endif //QT_BLITTER_RASTEROVERLAY
+#endif //LSCS_BLITTER_RASTEROVERLAY
 
-#endif //QT_NO_BLITTABLE
+#endif //LSCS_NO_BLITTABLE

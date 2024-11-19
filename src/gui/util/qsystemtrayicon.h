@@ -26,7 +26,7 @@
 
 #include <qobject.h>
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
 
 #include <qicon.h>
 #include <qplatform_systemtrayicon.h>
@@ -80,7 +80,7 @@ public:
         MiddleClick
     };
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     void setContextMenu( QMenu *menu );
     QMenu *contextMenu() const;
 #endif
@@ -141,5 +141,5 @@ inline void QSystemTrayIcon::hide()
     setVisible( false );
 }
 
-#endif // QT_NO_SYSTEMTRAYICON
+#endif // LSCS_NO_SYSTEMTRAYICON
 #endif // QSYSTEMTRAYICON_H

@@ -24,7 +24,7 @@
 #include "qscriptcompletiontaskinterface_p.h"
 #include "qscriptcompletiontaskinterface_p_p.h"
 
-QT_BEGIN_NAMESPACE QScriptCompletionTaskInterfacePrivate::QScriptCompletionTaskInterfacePrivate()
+LSCS_BEGIN_NAMESPACE QScriptCompletionTaskInterfacePrivate::QScriptCompletionTaskInterfacePrivate()
 {
     type = QScriptCompletionTaskInterface::NoCompletion;
 }
@@ -85,4 +85,4 @@ QString QScriptCompletionTaskInterface::appendix() const
     return d->appendix;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

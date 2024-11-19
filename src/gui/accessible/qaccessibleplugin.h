@@ -27,7 +27,7 @@
 #include <qaccessible.h>
 #include <qfactoryinterface.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 class QStringList;
 class QAccessibleInterface;
@@ -46,7 +46,7 @@ public:
     virtual QAccessibleInterface *create( const QString &key, QObject *object ) = 0;
 };
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
 
 

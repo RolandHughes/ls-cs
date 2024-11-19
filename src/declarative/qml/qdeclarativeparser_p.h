@@ -33,7 +33,7 @@
 #include <qdeclarativerefcount_p.h>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct QAbstractDynamicMetaObject : public QMetaObject
 {
@@ -378,7 +378,7 @@ public:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QDeclarativeParser::Object::ScriptBlock::Pragmas );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QDeclarativeParser::Variant )
 

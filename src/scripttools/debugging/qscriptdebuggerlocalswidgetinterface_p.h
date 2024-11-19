@@ -26,7 +26,7 @@
 
 #include <QtGui/qwidget.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerLocalsModel;
 class QModelIndex;
@@ -58,6 +58,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerLocalsWidgetInterface )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

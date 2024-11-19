@@ -30,7 +30,7 @@
 #include <qtcpsocket_p.h>
 #include <qsslconfiguration_p.h>
 
-#ifdef QT_OPENSSL
+#ifdef LSCS_OPENSSL
 #   include <qsslcontext_openssl_p.h>
 #else
 class QSslContext;

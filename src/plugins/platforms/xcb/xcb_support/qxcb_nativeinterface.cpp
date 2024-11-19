@@ -38,7 +38,7 @@
 
 #include <qapplication_p.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 #include <qdbusmenuconnection_p.h>
 #endif
 

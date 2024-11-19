@@ -28,7 +28,7 @@
 #include <qvariantanimation.h>
 #include <qabstractitemmodel.h>
 
-#ifndef QT_NO_TREEVIEW
+#ifndef LSCS_NO_TREEVIEW
 
 
 struct QTreeViewItem
@@ -74,7 +74,7 @@ public:
     QItemViewPaintPairs draggablePaintPairs( const QModelIndexList &indexes, QRect *r ) const override;
     void adjustViewOptionsForIndex( QStyleOptionViewItem *option, const QModelIndex &current ) const override;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     struct AnimatedOperation : public QVariantAnimation
     {
         int item;
@@ -292,6 +292,6 @@ public:
 
 
 
-#endif // QT_NO_TREEVIEW
+#endif // LSCS_NO_TREEVIEW
 
 #endif // QTREEVIEW_P_H

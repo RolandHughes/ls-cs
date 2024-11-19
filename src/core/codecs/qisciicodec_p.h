@@ -26,7 +26,7 @@
 
 #include <qtextcodec.h>
 
-#ifndef QT_NO_CODECS
+#ifndef LSCS_NO_CODECS
 
 class QIsciiCodec : public QTextCodec
 {

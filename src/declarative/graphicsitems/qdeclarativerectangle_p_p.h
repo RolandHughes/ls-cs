@@ -26,7 +26,7 @@
 
 #include <qdeclarativeitem_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeGradient;
 class QDeclarativeRectangle;
@@ -92,6 +92,6 @@ public:
     }
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVERECT_P_H

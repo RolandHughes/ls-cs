@@ -31,11 +31,11 @@
 #include <qmenu.h>
 #include <qelapsedtimer.h>
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
 #include <qscrollbar_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -258,7 +258,7 @@ void QScrollBarPrivate::init()
     q->setAttribute( Qt::WA_OpaquePaintEvent );
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
 void QScrollBar::contextMenuEvent( QContextMenuEvent *event )
 {
@@ -268,7 +268,7 @@ void QScrollBar::contextMenuEvent( QContextMenuEvent *event )
         return;
     }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     bool horiz = HORIZONTAL;
     QPointer<QMenu> menu = new QMenu( this );
     QAction *actScrollHere = menu->addAction( tr( "Scroll here" ) );
@@ -327,10 +327,10 @@ void QScrollBar::contextMenuEvent( QContextMenuEvent *event )
         triggerAction( QAbstractSlider::SliderSingleStepAdd );
     }
 
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 }
 
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
 QSize QScrollBar::sizeHint() const
 {
@@ -401,7 +401,7 @@ bool QScrollBar::event( QEvent *event )
 
     return QAbstractSlider::event( event );
 }
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 void QScrollBar::wheelEvent( QWheelEvent *event )
 {
     event->ignore();
@@ -686,11 +686,11 @@ void QScrollBar::hideEvent( QHideEvent * )
     }
 }
 
-Q_GUI_EXPORT QStyleOptionSlider qt_qscrollbarStyleOption( QScrollBar *scrollbar )
+Q_GUI_EXPORT QStyleOptionSlider lscs_qscrollbarStyleOption( QScrollBar *scrollbar )
 {
     QStyleOptionSlider opt;
     scrollbar->initStyleOption( &opt );
     return opt;
 }
 
-#endif // QT_NO_SCROLLBAR
+#endif // LSCS_NO_SCROLLBAR

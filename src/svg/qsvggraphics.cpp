@@ -34,7 +34,7 @@
 #include <math.h>
 #include <limits.h>
 
-#define QT_SVG_DRAW_SHAPE(command)                          \
+#define LSCS_SVG_DRAW_SHAPE(command)                          \
     qreal oldOpacity = p->opacity();                        \
     QBrush oldBrush = p->brush();                           \
     QPen oldPen = p->pen();                                 \
@@ -81,7 +81,7 @@ QRectF QSvgEllipse::bounds( QPainter *p, QSvgExtraStates & ) const
 void QSvgEllipse::draw( QPainter *p, QSvgExtraStates &states )
 {
     applyStyle( p, states );
-    QT_SVG_DRAW_SHAPE( p->drawEllipse( m_bounds ) );
+    LSCS_SVG_DRAW_SHAPE( p->drawEllipse( m_bounds ) );
     revertStyle( p, states );
 }
 
@@ -157,7 +157,7 @@ void QSvgPath::draw( QPainter *p, QSvgExtraStates &states )
 {
     applyStyle( p, states );
     m_path.setFillRule( states.fillRule );
-    QT_SVG_DRAW_SHAPE( p->drawPath( m_path ) );
+    LSCS_SVG_DRAW_SHAPE( p->drawPath( m_path ) );
     revertStyle( p, states );
 }
 
@@ -192,7 +192,7 @@ QRectF QSvgPolygon::bounds( QPainter *p, QSvgExtraStates & ) const
 void QSvgPolygon::draw( QPainter *p, QSvgExtraStates &states )
 {
     applyStyle( p, states );
-    QT_SVG_DRAW_SHAPE( p->drawPolygon( m_poly, states.fillRule ) );
+    LSCS_SVG_DRAW_SHAPE( p->drawPolygon( m_poly, states.fillRule ) );
     revertStyle( p, states );
 }
 
@@ -255,11 +255,11 @@ void QSvgRect::draw( QPainter *p, QSvgExtraStates &states )
 
     if ( m_rx || m_ry )
     {
-        QT_SVG_DRAW_SHAPE( p->drawRoundedRect( m_rect, m_rx, m_ry, Qt::RelativeSize ) );
+        LSCS_SVG_DRAW_SHAPE( p->drawRoundedRect( m_rect, m_rx, m_ry, Qt::RelativeSize ) );
     }
     else
     {
-        QT_SVG_DRAW_SHAPE( p->drawRect( m_rect ) );
+        LSCS_SVG_DRAW_SHAPE( p->drawRect( m_rect ) );
     }
 
     revertStyle( p, states );

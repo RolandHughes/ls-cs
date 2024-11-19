@@ -27,7 +27,7 @@
 
 #include <qxmlutils_p.h>
 
-#ifndef QT_NO_DOM
+#ifndef LSCS_NO_DOM
 
 #include <qatomic.h>
 #include <qbuffer.h>
@@ -44,7 +44,7 @@
 
 #include <stdio.h>
 
-static void qt_split_namespace( QString &prefix, QString &name, const QString &qName, bool hasURI )
+static void lscs_split_namespace( QString &prefix, QString &name, const QString &qName, bool hasURI )
 {
     int i = qName.indexOf( QLatin1Char( ':' ) );
 
@@ -772,7 +772,7 @@ static QString fixedXmlName( const QString &_name, bool *ok, bool namespaces = f
 
     if ( namespaces )
     {
-        qt_split_namespace( prefix, name, _name, true );
+        lscs_split_namespace( prefix, name, _name, true );
     }
     else
     {
@@ -3887,7 +3887,7 @@ QDomAttrPrivate::QDomAttrPrivate( QDomDocumentPrivate *d, QDomNodePrivate *paren
 QDomAttrPrivate::QDomAttrPrivate( QDomDocumentPrivate *d, QDomNodePrivate *p, const QString &nsURI, const QString &qName )
     : QDomNodePrivate( d, p )
 {
-    qt_split_namespace( prefix, name, qName, !nsURI.isEmpty() );
+    lscs_split_namespace( prefix, name, qName, !nsURI.isEmpty() );
     namespaceURI = nsURI;
     createdWithDom1Interface = false;
     m_specified = false;
@@ -3931,7 +3931,7 @@ bool QDomAttrPrivate::specified() const
 static QString encodeText( const QString &str, QTextStream &s, const bool encodeQuotes = true,
                            const bool performAVN = false, const bool encodeEOLs = false )
 {
-#ifdef QT_NO_TEXTCODEC
+#ifdef LSCS_NO_TEXTCODEC
     ( void ) s;
 #else
     const QTextCodec *const codec = s.codec();
@@ -3989,7 +3989,7 @@ static QString encodeText( const QString &str, QTextStream &s, const bool encode
         }
         else
         {
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
             if ( codec->canEncode( ati ) )
             {
@@ -4140,7 +4140,7 @@ QDomElementPrivate::QDomElementPrivate( QDomDocumentPrivate *d, QDomNodePrivate 
 QDomElementPrivate::QDomElementPrivate( QDomDocumentPrivate *d, QDomNodePrivate *p, const QString &nsURI, const QString &qName )
     : QDomNodePrivate( d, p )
 {
-    qt_split_namespace( prefix, name, qName, ! nsURI.isEmpty() );
+    lscs_split_namespace( prefix, name, qName, ! nsURI.isEmpty() );
     namespaceURI = nsURI;
     createdWithDom1Interface = false;
     m_attr = new QDomNamedNodeMapPrivate( this );
@@ -4217,7 +4217,7 @@ void QDomElementPrivate::setAttribute( const QString &aname, const QString &newV
 void QDomElementPrivate::setAttributeNS( const QString &nsURI, const QString &qName, const QString &newValue )
 {
     QString prefix, localName;
-    qt_split_namespace( prefix, localName, qName, true );
+    lscs_split_namespace( prefix, localName, qName, true );
     QDomNodePrivate *n = m_attr->namedItemNS( nsURI, localName );
 
     if ( !n )
@@ -6310,7 +6310,7 @@ void QDomDocumentPrivate::saveDocument( QTextStream &s, const int indent, QDomNo
     if ( encUsed == QDomNode::EncodingFromDocument )
     {
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
         const QDomNodePrivate *n = first;
 
         QTextCodec *codec = nullptr;
@@ -6366,7 +6366,7 @@ void QDomDocumentPrivate::saveDocument( QTextStream &s, const int indent, QDomNo
     {
 
         // Write out the XML declaration.
-#ifdef QT_NO_TEXTCODEC
+#ifdef LSCS_NO_TEXTCODEC
         const QLatin1String codecName( "iso-8859-1" );
 #else
         const QTextCodec *const codec = s.codec();
@@ -7255,11 +7255,11 @@ bool QDomHandler::processingInstruction( const QString &target, const QString &d
     }
 }
 
-extern bool qt_xml_skipped_entity_in_content;
+extern bool lscs_xml_skipped_entity_in_content;
 bool QDomHandler::skippedEntity( const QString &name )
 {
     // we can only handle inserting entity references into content
-    if ( !qt_xml_skipped_entity_in_content )
+    if ( !lscs_xml_skipped_entity_in_content )
     {
         return true;
     }
@@ -7345,4 +7345,4 @@ void QDomHandler::setDocumentLocator( QXmlLocator *locator )
     this->locator = locator;
 }
 
-#endif // QT_NO_DOM
+#endif // LSCS_NO_DOM

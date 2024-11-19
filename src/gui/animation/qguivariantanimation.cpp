@@ -24,7 +24,7 @@
 #include <qvariantanimation.h>
 #include <qvariantanimation_p.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 #include <qcolor.h>
 #include <qquaternion.h>

@@ -30,7 +30,7 @@
 #include <QtScript/qscriptvalue.h>
 #include <qscriptdebuggerbackend_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QEvent;
 class QString;
@@ -102,6 +102,6 @@ public:
     QScriptValue origLineNumberFunction;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

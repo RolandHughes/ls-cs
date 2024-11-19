@@ -21,7 +21,7 @@
 #include "config.h"
 #include "qgraphicswebview.h"
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 
 #include "qwebframe.h"
 #include "qwebframe_p.h"
@@ -481,7 +481,7 @@ bool QGraphicsWebView::event( QEvent *event )
             d->page->setPalette( palette() );
         }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
         if ( event->type() == QEvent::GraphicsSceneContextMenu )
         {
@@ -502,9 +502,9 @@ bool QGraphicsWebView::event( QEvent *event )
             d->page->updatePositionDependentActions( fakeEvent.pos() );
         }
         else
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
         {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
             if ( event->type() == QEvent::CursorChange )
             {
@@ -605,7 +605,7 @@ void QGraphicsWebView::setPage( QWebPage *page )
     connect( d->page,   SIGNAL( linkClicked( const QUrl & ) ),          this, SLOT( linkClicked( const QUrl & ) ) );
     connect( d->page,   SIGNAL( destroyed() ),                        this, SLOT( _q_pageDestroyed() ) );
 
-#if !defined(QT_NO_IM) && (defined(Q_WS_X11) || defined(Q_WS_QWS))
+#if !defined(LSCS_NO_IM) && (defined(Q_WS_X11) || defined(Q_WS_QWS))
     connect( d->page, SIGNAL( microFocusChanged() ), this, SLOT( updateMicroFocus() ) );
 #endif
 }
@@ -911,7 +911,7 @@ QWebSettings *QGraphicsWebView::settings() const
 */
 QAction *QGraphicsWebView::pageAction( QWebPage::WebAction action ) const
 {
-#ifdef QT_NO_ACTION
+#ifdef LSCS_NO_ACTION
     Q_UNUSED( action )
     return 0;
 #else
@@ -1210,7 +1210,7 @@ bool QGraphicsWebView::focusNextPrevChild( bool next )
 */
 void QGraphicsWebView::dragEnterEvent( QGraphicsSceneDragDropEvent *ev )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( d->page )
     {
@@ -1226,7 +1226,7 @@ void QGraphicsWebView::dragEnterEvent( QGraphicsSceneDragDropEvent *ev )
 */
 void QGraphicsWebView::dragLeaveEvent( QGraphicsSceneDragDropEvent *ev )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( d->page )
     {
@@ -1249,7 +1249,7 @@ void QGraphicsWebView::dragLeaveEvent( QGraphicsSceneDragDropEvent *ev )
 */
 void QGraphicsWebView::dragMoveEvent( QGraphicsSceneDragDropEvent *ev )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( d->page )
     {
@@ -1272,7 +1272,7 @@ void QGraphicsWebView::dragMoveEvent( QGraphicsSceneDragDropEvent *ev )
 */
 void QGraphicsWebView::dropEvent( QGraphicsSceneDragDropEvent *ev )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( d->page )
     {
@@ -1291,7 +1291,7 @@ void QGraphicsWebView::dropEvent( QGraphicsSceneDragDropEvent *ev )
 #endif
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 /* \reimp
 */
 void QGraphicsWebView::contextMenuEvent( QGraphicsSceneContextMenuEvent *ev )
@@ -1303,9 +1303,9 @@ void QGraphicsWebView::contextMenuEvent( QGraphicsSceneContextMenuEvent *ev )
         ev->setAccepted( accepted );
     }
 }
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 /* \reimp
 */
 void QGraphicsWebView::wheelEvent( QGraphicsSceneWheelEvent *ev )
@@ -1322,7 +1322,7 @@ void QGraphicsWebView::wheelEvent( QGraphicsSceneWheelEvent *ev )
         QGraphicsItem::wheelEvent( ev );
     }
 }
-#endif // QT_NO_WHEELEVENT
+#endif // LSCS_NO_WHEELEVENT
 
 /* \reimp
 */
@@ -1395,6 +1395,6 @@ void QGraphicsWebView::_q_scaleChanged()
 }
 
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 

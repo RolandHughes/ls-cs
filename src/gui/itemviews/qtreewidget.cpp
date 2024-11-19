@@ -23,7 +23,7 @@
 
 #include <qtreewidget.h>
 
-#ifndef QT_NO_TREEWIDGET
+#ifndef LSCS_NO_TREEWIDGET
 
 #include <qheaderview.h>
 #include <qpainter.h>
@@ -2517,7 +2517,7 @@ QTreeWidgetItem *QTreeWidget::itemFromIndex( const QModelIndex &index ) const
     return d->item( index );
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 void QTreeWidget::dropEvent( QDropEvent *event )
 {
@@ -2697,4 +2697,4 @@ void QTreeWidget::_q_selectionChanged( const QItemSelection &selected, const QIt
     d->_q_selectionChanged( selected, deselected );
 }
 
-#endif // QT_NO_TREEWIDGET
+#endif // LSCS_NO_TREEWIDGET

@@ -1755,7 +1755,7 @@ RegisterID *DoWhileNode::emitBytecode( BytecodeGenerator &generator, RegisterID 
     RefPtr<RegisterID> result = generator.emitNode( dst, m_statement );
 
     generator.emitLabel( scope->continueTarget() );
-#ifndef QT_BUILD_SCRIPT_LIB
+#ifndef LSCS_BUILD_SCRIPT_LIB
     generator.emitDebugHook( WillExecuteStatement, m_expr->lineNo(), m_expr->lineNo() );
 #endif
 
@@ -1779,7 +1779,7 @@ RegisterID *WhileNode::emitBytecode( BytecodeGenerator &generator, RegisterID *d
 {
     RefPtr<LabelScope> scope = generator.newLabelScope( LabelScope::Loop );
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
     generator.emitDebugHook( WillExecuteStatement, m_expr->lineNo(), m_expr->lineNo() );
 #endif
     generator.emitJump( scope->continueTarget() );
@@ -1790,7 +1790,7 @@ RegisterID *WhileNode::emitBytecode( BytecodeGenerator &generator, RegisterID *d
     generator.emitNode( dst, m_statement );
 
     generator.emitLabel( scope->continueTarget() );
-#ifndef QT_BUILD_SCRIPT_LIB
+#ifndef LSCS_BUILD_SCRIPT_LIB
     generator.emitDebugHook( WillExecuteStatement, m_expr->lineNo(), m_expr->lineNo() );
 #endif
 
@@ -1832,7 +1832,7 @@ RegisterID *ForNode::emitBytecode( BytecodeGenerator &generator, RegisterID *dst
     RefPtr<RegisterID> result = generator.emitNode( dst, m_statement );
 
     generator.emitLabel( scope->continueTarget() );
-#ifndef QT_BUILD_SCRIPT_LIB
+#ifndef LSCS_BUILD_SCRIPT_LIB
     generator.emitDebugHook( WillExecuteStatement, firstLine(), lastLine() );
 #endif
 
@@ -1951,7 +1951,7 @@ RegisterID *ForInNode::emitBytecode( BytecodeGenerator &generator, RegisterID *d
 
     generator.emitLabel( scope->continueTarget() );
     generator.emitNextPropertyName( propertyName, base.get(), i.get(), size.get(), iter.get(), loopStart.get() );
-#ifndef QT_BUILD_SCRIPT_LIB
+#ifndef LSCS_BUILD_SCRIPT_LIB
     generator.emitDebugHook( WillExecuteStatement, firstLine(), lastLine() );
 #endif
     generator.emitLabel( scope->breakTarget() );
@@ -2314,7 +2314,7 @@ RegisterID *TryNode::emitBytecode( BytecodeGenerator &generator, RegisterID *dst
     // NOTE: The catch and finally blocks must be labeled explicitly, so the
     // optimizer knows they may be jumped to from anywhere.
 
-#ifndef QT_BUILD_SCRIPT_LIB
+#ifndef LSCS_BUILD_SCRIPT_LIB
     generator.emitDebugHook( WillExecuteStatement, firstLine(), lastLine() );
 #endif
 

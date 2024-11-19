@@ -27,7 +27,7 @@
 #include <qdeclarativeguard_p.h>
 #include <QtCore/qmetaobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeNotifierEndpoint;
 class QDeclarativeNotifier
@@ -323,7 +323,7 @@ QDeclarativeNotifierEndpoint::Signal *QDeclarativeNotifierEndpoint::asSignal()
     return signal.signal;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVENOTIFIER_P_H
 

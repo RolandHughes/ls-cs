@@ -38,9 +38,11 @@ public:
     enum LibraryLocation
     {
         PrefixPath,
+        HeadersPath,
+        LibrariesPath,
+        BinariesPath,
         PluginsPath,
-        ImportsPath,
-        Qml2ImportsPath,
+        DataPath,
         TranslationsPath,
         SettingsPath,
     };

@@ -31,7 +31,7 @@
 #include <QtGui/qwidget.h>
 #include <QtDeclarative/qdeclarativedebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QGraphicsObject;
 class QDeclarativeEngine;
@@ -101,6 +101,6 @@ private:
     Q_DECLARE_PRIVATE( QDeclarativeView )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEVIEW_H

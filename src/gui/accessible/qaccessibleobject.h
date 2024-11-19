@@ -26,7 +26,7 @@
 
 #include <qaccessible.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 class QAccessibleObjectPrivate;
 class QObject;

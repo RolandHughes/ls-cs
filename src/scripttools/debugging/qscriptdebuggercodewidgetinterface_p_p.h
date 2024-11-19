@@ -26,7 +26,7 @@
 
 #include <qwidget_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerCodeWidgetInterface;
 class QScriptDebuggerCodeWidgetInterfacePrivate
@@ -38,6 +38,6 @@ public:
     ~QScriptDebuggerCodeWidgetInterfacePrivate();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

@@ -26,7 +26,7 @@
 #include <qcoreapplication.h>
 #include <qmutex.h>
 #include <qpointer.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qthreadstorage.h>
 
 #include <qcoreapplication_p.h>
@@ -38,41 +38,41 @@
 #endif
 
 #include <process.h>
-void qt_watch_adopted_thread( const HANDLE adoptedThreadHandle, QThread *qthread );
-DWORD WINAPI qt_adopted_thread_watcher_function( LPVOID );
+void lscs_watch_adopted_thread( const HANDLE adoptedThreadHandle, QThread *qthread );
+DWORD WINAPI lscs_adopted_thread_watcher_function( LPVOID );
 
-static DWORD qt_current_thread_data_tls_index = TLS_OUT_OF_INDEXES;
-void qt_create_tls()
+static DWORD lscs_current_thread_data_tls_index = TLS_OUT_OF_INDEXES;
+void lscs_create_tls()
 {
-    if ( qt_current_thread_data_tls_index != TLS_OUT_OF_INDEXES )
+    if ( lscs_current_thread_data_tls_index != TLS_OUT_OF_INDEXES )
     {
         return;
     }
 
     static QMutex mutex;
     QMutexLocker locker( &mutex );
-    qt_current_thread_data_tls_index = TlsAlloc();
+    lscs_current_thread_data_tls_index = TlsAlloc();
 }
 
-static void qt_free_tls()
+static void lscs_free_tls()
 {
-    if ( qt_current_thread_data_tls_index != TLS_OUT_OF_INDEXES )
+    if ( lscs_current_thread_data_tls_index != TLS_OUT_OF_INDEXES )
     {
-        TlsFree( qt_current_thread_data_tls_index );
-        qt_current_thread_data_tls_index = TLS_OUT_OF_INDEXES;
+        TlsFree( lscs_current_thread_data_tls_index );
+        lscs_current_thread_data_tls_index = TLS_OUT_OF_INDEXES;
     }
 }
-Q_DESTRUCTOR_FUNCTION( qt_free_tls )
+Q_DESTRUCTOR_FUNCTION( lscs_free_tls )
 
 void QThreadData::clearCurrentThreadData()
 {
-    TlsSetValue( qt_current_thread_data_tls_index, nullptr );
+    TlsSetValue( lscs_current_thread_data_tls_index, nullptr );
 }
 
 QThreadData *QThreadData::current( bool createIfNecessary )
 {
-    qt_create_tls();
-    QThreadData *threadData = reinterpret_cast<QThreadData *>( TlsGetValue( qt_current_thread_data_tls_index ) );
+    lscs_create_tls();
+    QThreadData *threadData = reinterpret_cast<QThreadData *>( TlsGetValue( lscs_current_thread_data_tls_index ) );
 
     if ( !threadData && createIfNecessary )
     {
@@ -81,7 +81,7 @@ QThreadData *QThreadData::current( bool createIfNecessary )
         // This needs to be called prior to new AdoptedThread() to
         // avoid recursion.
 
-        TlsSetValue( qt_current_thread_data_tls_index, threadData );
+        TlsSetValue( lscs_current_thread_data_tls_index, threadData );
 
         try
         {
@@ -89,7 +89,7 @@ QThreadData *QThreadData::current( bool createIfNecessary )
         }
         catch ( ... )
         {
-            TlsSetValue( qt_current_thread_data_tls_index, nullptr );
+            TlsSetValue( lscs_current_thread_data_tls_index, nullptr );
             threadData->deref();
             threadData = nullptr;
             throw;
@@ -115,7 +115,7 @@ QThreadData *QThreadData::current( bool createIfNecessary )
                              FALSE,
                              DUPLICATE_SAME_ACCESS );
 
-            qt_watch_adopted_thread( realHandle, threadData->thread );
+            lscs_watch_adopted_thread( realHandle, threadData->thread );
         }
     }
 
@@ -128,58 +128,58 @@ void QAdoptedThread::init()
     d_func()->id = GetCurrentThreadId();
 }
 
-static QVector<HANDLE> qt_adopted_thread_handles;
-static QVector<QThread *> qt_adopted_qthreads;
-static QMutex qt_adopted_thread_watcher_mutex;
-static DWORD qt_adopted_thread_watcher_id = 0;
-static HANDLE qt_adopted_thread_wakeup = nullptr;
+static QVector<HANDLE> lscs_adopted_thread_handles;
+static QVector<QThread *> lscs_adopted_qthreads;
+static QMutex lscs_adopted_thread_watcher_mutex;
+static DWORD lscs_adopted_thread_watcher_id = 0;
+static HANDLE lscs_adopted_thread_wakeup = nullptr;
 
-void qt_watch_adopted_thread( const HANDLE adoptedThreadHandle, QThread *qthread )
+void lscs_watch_adopted_thread( const HANDLE adoptedThreadHandle, QThread *qthread )
 {
-    QMutexLocker lock( &qt_adopted_thread_watcher_mutex );
+    QMutexLocker lock( &lscs_adopted_thread_watcher_mutex );
 
-    if ( GetCurrentThreadId() == qt_adopted_thread_watcher_id )
+    if ( GetCurrentThreadId() == lscs_adopted_thread_watcher_id )
     {
 
         CloseHandle( adoptedThreadHandle );
         return;
     }
 
-    qt_adopted_thread_handles.append( adoptedThreadHandle );
-    qt_adopted_qthreads.append( qthread );
+    lscs_adopted_thread_handles.append( adoptedThreadHandle );
+    lscs_adopted_qthreads.append( qthread );
 
     // Start watcher thread if it is not already running.
-    if ( qt_adopted_thread_watcher_id == 0 )
+    if ( lscs_adopted_thread_watcher_id == 0 )
     {
-        if ( qt_adopted_thread_wakeup == nullptr )
+        if ( lscs_adopted_thread_wakeup == nullptr )
         {
-            qt_adopted_thread_wakeup = CreateEvent( nullptr, false, false, nullptr );
-            qt_adopted_thread_handles.prepend( qt_adopted_thread_wakeup );
+            lscs_adopted_thread_wakeup = CreateEvent( nullptr, false, false, nullptr );
+            lscs_adopted_thread_handles.prepend( lscs_adopted_thread_wakeup );
         }
 
-        CloseHandle( CreateThread( nullptr, 0, qt_adopted_thread_watcher_function, nullptr, 0, &qt_adopted_thread_watcher_id ) );
+        CloseHandle( CreateThread( nullptr, 0, lscs_adopted_thread_watcher_function, nullptr, 0, &lscs_adopted_thread_watcher_id ) );
     }
     else
     {
-        SetEvent( qt_adopted_thread_wakeup );
+        SetEvent( lscs_adopted_thread_wakeup );
     }
 }
 
-DWORD WINAPI qt_adopted_thread_watcher_function( LPVOID )
+DWORD WINAPI lscs_adopted_thread_watcher_function( LPVOID )
 {
     while ( true )
     {
-        qt_adopted_thread_watcher_mutex.lock();
+        lscs_adopted_thread_watcher_mutex.lock();
 
-        if ( qt_adopted_thread_handles.count() == 1 )
+        if ( lscs_adopted_thread_handles.count() == 1 )
         {
-            qt_adopted_thread_watcher_id = 0;
-            qt_adopted_thread_watcher_mutex.unlock();
+            lscs_adopted_thread_watcher_id = 0;
+            lscs_adopted_thread_watcher_mutex.unlock();
             break;
         }
 
-        QVector<HANDLE> handlesCopy = qt_adopted_thread_handles;
-        qt_adopted_thread_watcher_mutex.unlock();
+        QVector<HANDLE> handlesCopy = lscs_adopted_thread_handles;
+        lscs_adopted_thread_watcher_mutex.unlock();
 
         DWORD ret = WAIT_TIMEOUT;
         int count;
@@ -228,12 +228,12 @@ DWORD WINAPI qt_adopted_thread_watcher_function( LPVOID )
         }
         else
         {
-            //          printf("(qt) - qt_adopted_thread_watcher_function... called\n");
+            //          printf("(qt) - lscs_adopted_thread_watcher_function... called\n");
             const int qthreadIndex = handleIndex - 1;
 
-            qt_adopted_thread_watcher_mutex.lock();
-            QThreadData *data = QThreadData::get2( qt_adopted_qthreads.at( qthreadIndex ) );
-            qt_adopted_thread_watcher_mutex.unlock();
+            lscs_adopted_thread_watcher_mutex.lock();
+            QThreadData *data = QThreadData::get2( lscs_adopted_qthreads.at( qthreadIndex ) );
+            lscs_adopted_thread_watcher_mutex.unlock();
 
             if ( data->isAdopted )
             {
@@ -248,15 +248,15 @@ DWORD WINAPI qt_adopted_thread_watcher_function( LPVOID )
 
             data->deref();
 
-            QMutexLocker lock( &qt_adopted_thread_watcher_mutex );
-            CloseHandle( qt_adopted_thread_handles.at( handleIndex ) );
+            QMutexLocker lock( &lscs_adopted_thread_watcher_mutex );
+            CloseHandle( lscs_adopted_thread_handles.at( handleIndex ) );
 
-            qt_adopted_thread_handles.remove( handleIndex );
-            qt_adopted_qthreads.remove( qthreadIndex );
+            lscs_adopted_thread_handles.remove( handleIndex );
+            lscs_adopted_qthreads.remove( qthreadIndex );
         }
     }
 
-    QThreadData *threadData = reinterpret_cast<QThreadData *>( TlsGetValue( qt_current_thread_data_tls_index ) );
+    QThreadData *threadData = reinterpret_cast<QThreadData *>( TlsGetValue( lscs_current_thread_data_tls_index ) );
 
     if ( threadData )
     {
@@ -281,7 +281,7 @@ struct tagTHREADNAME_INFO
 };
 using THREADNAME_INFO = tagTHREADNAME_INFO;
 
-void qt_set_thread_name( HANDLE threadId, LPCSTR threadName )
+void lscs_set_thread_name( HANDLE threadId, LPCSTR threadName )
 {
     THREADNAME_INFO info;
     info.dwType = 0x1000;
@@ -309,13 +309,13 @@ void QThreadPrivate::createEventDispatcher( QThreadData *data )
     theEventDispatcher->startingUp();
 }
 
-unsigned int __stdcall QT_ENSURE_STACK_ALIGNED_FOR_SSE QThreadPrivate::start( void *arg )
+unsigned int __stdcall LSCS_ENSURE_STACK_ALIGNED_FOR_SSE QThreadPrivate::start( void *arg )
 {
     QThread *thr = reinterpret_cast<QThread *>( arg );
     QThreadData *data = QThreadData::get2( thr );
 
-    qt_create_tls();
-    TlsSetValue( qt_current_thread_data_tls_index, data );
+    lscs_create_tls();
+    TlsSetValue( lscs_current_thread_data_tls_index, data );
     data->threadId = reinterpret_cast<Qt::HANDLE>( quintptr( GetCurrentThreadId() ) );
 
     QThread::setTerminationEnabled( false );
@@ -344,7 +344,7 @@ unsigned int __stdcall QT_ENSURE_STACK_ALIGNED_FOR_SSE QThreadPrivate::start( vo
         objectName = thr->metaObject()->className();
     }
 
-    qt_set_thread_name( ( HANDLE ) - 1, objectName.constData() );
+    lscs_set_thread_name( ( HANDLE ) - 1, objectName.constData() );
 #endif
 
     emit thr->started();

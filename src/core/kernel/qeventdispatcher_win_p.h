@@ -27,7 +27,7 @@
 #include <qabstracteventdispatcher.h>
 
 #include <qhash.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <qabstracteventdispatcher_p.h>
 
@@ -35,8 +35,8 @@ class QEventDispatcherWin32Private;
 class QWinEventNotifier;
 
 // forward declaration
-LRESULT QT_WIN_CALLBACK qt_internal_proc( HWND hwnd, UINT message, WPARAM wp, LPARAM lp );
-quint64 qt_msectime();
+LRESULT LSCS_WIN_CALLBACK lscs_internal_proc( HWND hwnd, UINT message, WPARAM wp, LPARAM lp );
+quint64 lscs_msectime();
 
 class Q_CORE_EXPORT QEventDispatcherWin32 : public QAbstractEventDispatcher
 {
@@ -47,7 +47,7 @@ public:
     explicit QEventDispatcherWin32( QObject *parent = nullptr );
     ~QEventDispatcherWin32();
 
-    bool QT_ENSURE_STACK_ALIGNED_FOR_SSE processEvents( QEventLoop::ProcessEventsFlags flags ) override;
+    bool LSCS_ENSURE_STACK_ALIGNED_FOR_SSE processEvents( QEventLoop::ProcessEventsFlags flags ) override;
     bool hasPendingEvents() override;
 
     void registerSocketNotifier( QSocketNotifier *notifier ) override;
@@ -82,8 +82,8 @@ protected:
     void uninstallMessageHook();
 
 private:
-    friend LRESULT QT_WIN_CALLBACK qt_internal_proc( HWND hwnd, UINT message, WPARAM wp, LPARAM lp );
-    friend LRESULT QT_WIN_CALLBACK qt_GetMessageHook( int, WPARAM, LPARAM );
+    friend LRESULT LSCS_WIN_CALLBACK lscs_internal_proc( HWND hwnd, UINT message, WPARAM wp, LPARAM lp );
+    friend LRESULT LSCS_WIN_CALLBACK lscs_GetMessageHook( int, WPARAM, LPARAM );
 };
 
 struct QSockNot

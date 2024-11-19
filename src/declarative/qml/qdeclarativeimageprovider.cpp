@@ -23,7 +23,7 @@
 
 #include "qdeclarativeimageprovider.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeImageProviderPrivate
 {
@@ -245,5 +245,5 @@ QPixmap QDeclarativeImageProvider::requestPixmap( const QString &id, QSize *size
     return QPixmap();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

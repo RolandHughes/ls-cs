@@ -43,7 +43,7 @@
 
 #include <qprintengine_mac_p.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 #include <qplatform_openglcontext.h>
 #include <qopenglcontext.h>
 #include <qcocoaglcontext.h>
@@ -55,7 +55,7 @@ QCocoaNativeInterface::QCocoaNativeInterface()
 {
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 void *QCocoaNativeInterface::nativeResourceForContext(const QByteArray &resourceString, QOpenGLContext *context)
 {
    if (! context) {
@@ -83,7 +83,7 @@ void *QCocoaNativeInterface::nativeResourceForWindow(const QByteArray &resourceS
    if (resourceString == "nsview") {
       return static_cast<QCocoaWindow *>(window->handle())->m_contentView;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
    } else if (resourceString == "nsopenglcontext") {
       return static_cast<QCocoaWindow *>(window->handle())->currentContext()->nsOpenGLContext();
 #endif
@@ -209,7 +209,7 @@ QPixmap QCocoaNativeInterface::defaultBackgroundPixmapForQWizard()
                int width = CGImageGetWidth(image);
                int height = CGImageGetHeight(image);
                if (width == ExpectedImageWidth && height == ExpectedImageHeight) {
-                  return QPixmap::fromImage(qt_mac_toQImage(image));
+                  return QPixmap::fromImage(lscs_mac_toQImage(image));
                }
             }
          }
@@ -229,7 +229,7 @@ void QCocoaNativeInterface::onAppFocusWindowChanged(QWindow *window)
    QCocoaMenuBar::updateMenuBarImmediately();
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 void *QCocoaNativeInterface::cglContextForContext(QOpenGLContext *context)
 {
    NSOpenGLContext *nsOpenGLContext = static_cast<NSOpenGLContext *>(nsOpenGLContextForContext(context));
@@ -266,17 +266,17 @@ QCocoaNativeInterface::FP_Void QCocoaNativeInterface::platformFunction(const QBy
 
 void QCocoaNativeInterface::addToMimeList(void *macPasteboardMime)
 {
-   qt_mac_addToGlobalMimeList(reinterpret_cast<QMacInternalPasteboardMime *>(macPasteboardMime));
+   lscs_mac_addToGlobalMimeList(reinterpret_cast<QMacInternalPasteboardMime *>(macPasteboardMime));
 }
 
 void QCocoaNativeInterface::removeFromMimeList(void *macPasteboardMime)
 {
-   qt_mac_removeFromGlobalMimeList(reinterpret_cast<QMacInternalPasteboardMime *>(macPasteboardMime));
+   lscs_mac_removeFromGlobalMimeList(reinterpret_cast<QMacInternalPasteboardMime *>(macPasteboardMime));
 }
 
 void QCocoaNativeInterface::registerDraggedTypes(const QStringList &types)
 {
-   qt_mac_registerDraggedTypes(types);
+   lscs_mac_registerDraggedTypes(types);
 }
 
 void QCocoaNativeInterface::setDockMenu(QPlatformMenu *platformMenu)
@@ -284,7 +284,7 @@ void QCocoaNativeInterface::setDockMenu(QPlatformMenu *platformMenu)
    QMacAutoReleasePool pool;
    QCocoaMenu *cocoaPlatformMenu = static_cast<QCocoaMenu *>(platformMenu);
    NSMenu *menu = cocoaPlatformMenu->nsMenu();
-   [NSApp qt_setDockMenu: menu];
+   [NSApp lscs_setDockMenu: menu];
 }
 
 void *QCocoaNativeInterface::qMenuToNSMenu(QPlatformMenu *platformMenu)
@@ -303,12 +303,12 @@ void *QCocoaNativeInterface::qMenuBarToNSMenu(QPlatformMenuBar *platformMenuBar)
 
 CGImageRef QCocoaNativeInterface::qImageToCGImage(const QImage &image)
 {
-   return qt_mac_toCGImage(image);
+   return lscs_mac_toCGImage(image);
 }
 
 QImage QCocoaNativeInterface::cgImageToQImage(CGImageRef image)
 {
-   return qt_mac_toQImage(image);
+   return lscs_mac_toQImage(image);
 }
 
 void QCocoaNativeInterface::setWindowContentView(QPlatformWindow *window, void *contentView)

@@ -33,9 +33,9 @@
 #include <QtDBus/qdbusextratypes.h>
 #include <QtDBus/qdbuspendingreply.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 Q_DBUS_EXPORT void qDBusReplyFill( const QDBusMessage &reply, QDBusError &error, QVariant &data );
 
@@ -180,7 +180,7 @@ private:
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

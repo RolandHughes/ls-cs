@@ -27,12 +27,12 @@
 #include <qstylepainter.h>
 #include <qstyleoption.h>
 
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 
 QToolBarExtension::QToolBarExtension( QWidget *parent )
     : QToolButton( parent )
 {
-    setObjectName( QLatin1String( "qt_toolbar_ext_button" ) );
+    setObjectName( QLatin1String( "lscs_toolbar_ext_button" ) );
     setAutoRaise( true );
     setOrientation( Qt::Horizontal );
     setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Minimum );
@@ -73,4 +73,4 @@ QSize QToolBarExtension::sizeHint() const
 
 
 
-#endif // QT_NO_TOOLBUTTON
+#endif // LSCS_NO_TOOLBUTTON

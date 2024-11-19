@@ -40,7 +40,7 @@
 #include <qopengl_version_functions_p.h>
 #include <qwindow_p.h>
 
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
 #include <QOpenGLFunctions_1_0>
 #include <QOpenGLFunctions_3_2_Core>
 #endif
@@ -155,13 +155,13 @@ static QThreadStorage<QGuiGLThreadContext *> *qwindow_context_storage()
 
 static QOpenGLContext *global_share_context = nullptr;
 
-void qt_gl_set_global_share_context( QOpenGLContext *context )
+void lscs_gl_set_global_share_context( QOpenGLContext *context )
 {
     global_share_context = context;
 }
 
 // internal
-QOpenGLContext *qt_gl_global_share_context()
+QOpenGLContext *lscs_gl_global_share_context()
 {
     return global_share_context;
 }
@@ -199,7 +199,7 @@ int QOpenGLContextPrivate::maxTextureSize()
     QOpenGLFunctions *funcs = q->functions();
     funcs->glGetIntegerv( GL_MAX_TEXTURE_SIZE, &max_texture_size );
 
-#ifndef QT_OPENGL_ES
+#ifndef LSCS_OPENGL_ES
 
     if ( ! q->isOpenGLES() )
     {
@@ -264,7 +264,7 @@ int QOpenGLContextPrivate::maxTextureSize()
         max_texture_size = size;
     }
 
-#endif // QT_OPENGL_ES
+#endif // LSCS_OPENGL_ES
 
     return max_texture_size;
 }
@@ -478,7 +478,7 @@ QOpenGLExtraFunctions *QOpenGLContext::extraFunctions() const
 
 QAbstractOpenGLFunctions *QOpenGLContext::versionFunctions( const QOpenGLVersionProfile &versionProfile ) const
 {
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
 
     if ( isOpenGLES() )
     {
@@ -675,7 +675,7 @@ void QOpenGLContext::swapBuffers( QSurface *surface )
     }
 
     if ( surface->surfaceClass() == QSurface::Window
-            && ! qt_window_private( static_cast<QWindow *>( surface ) )->receivedExpose )
+            && ! lscs_window_private( static_cast<QWindow *>( surface ) )->receivedExpose )
     {
         qWarning( "QOpenGLContext::swapBuffers() Called with a non exposed window" );
     }
@@ -767,7 +767,7 @@ void QOpenGLContext::deleteQGLContext()
 
 void *QOpenGLContext::openGLModuleHandle()
 {
-#ifdef QT_OPENGL_DYNAMIC
+#ifdef LSCS_OPENGL_DYNAMIC
     QPlatformNativeInterface *ni = QGuiApplication::platformNativeInterface();
     Q_ASSERT( ni );
     return ni->nativeResourceForIntegration( QByteArrayLiteral( "glhandle" ) );
@@ -778,10 +778,10 @@ void *QOpenGLContext::openGLModuleHandle()
 
 QOpenGLContext::OpenGLModuleType QOpenGLContext::openGLModuleType()
 {
-#if defined(QT_OPENGL_DYNAMIC)
+#if defined(LSCS_OPENGL_DYNAMIC)
     Q_ASSERT( qGuiApp );
     return QGuiApplicationPrivate::instance()->platformIntegration()->openGLModuleType();
-#elif defined(QT_OPENGL_ES_2)
+#elif defined(LSCS_OPENGL_ES_2)
     return LibGLES;
 #else
     return LibGL;
@@ -802,7 +802,7 @@ bool QOpenGLContext::supportsThreadedOpenGL()
 QOpenGLContext *QOpenGLContext::globalShareContext()
 {
     Q_ASSERT( qGuiApp );
-    return qt_gl_global_share_context();
+    return lscs_gl_global_share_context();
 }
 
 // internal

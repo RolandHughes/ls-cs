@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#if !defined(QT_NO_OPENGL) && !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_NO_OPENGL) && !defined(LSCS_OPENGL_ES_2)
 
 #include <qopengl_versionfunctions.h>
 #include <qopenglcontext.h>
@@ -1748,6 +1748,6 @@ inline void QOpenGLFunctions_3_2_Core::glGetInteger64i_v( GLenum target, GLuint 
     d_3_2_Core->GetInteger64i_v( target, index, data );
 }
 
-#endif // QT_NO_OPENGL && !QT_OPENGL_ES_2
+#endif // LSCS_NO_OPENGL && !LSCS_OPENGL_ES_2
 
 #endif

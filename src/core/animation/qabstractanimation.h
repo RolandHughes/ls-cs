@@ -27,7 +27,7 @@
 #include <qobject.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QAbstractAnimationPrivate;
 class QAnimationDriver;
@@ -168,6 +168,6 @@ private:
     void stop();
 };
 
-#endif // QT_NO_ANIMATION
+#endif // LSCS_NO_ANIMATION
 
 #endif

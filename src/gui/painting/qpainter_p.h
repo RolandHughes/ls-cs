@@ -288,11 +288,11 @@ public:
     QBrush colorBrush;          // for fill with solid color
 };
 
-Q_GUI_EXPORT void qt_draw_helper( QPainterPrivate *p, const QPainterPath &path, QPainterPrivate::DrawOperation operation );
+Q_GUI_EXPORT void lscs_draw_helper( QPainterPrivate *p, const QPainterPath &path, QPainterPrivate::DrawOperation operation );
 
-QString qt_generate_brush_key( const QBrush &brush );
+QString lscs_generate_brush_key( const QBrush &brush );
 
-inline bool qt_pen_is_cosmetic( const QPen &pen, QPainter::RenderHints hints )
+inline bool lscs_pen_is_cosmetic( const QPen &pen, QPainter::RenderHints hints )
 {
     ( void ) hints;
     return pen.isCosmetic() || ( const_cast<QPen &>( pen ).data_ptr()->defaultWidth );

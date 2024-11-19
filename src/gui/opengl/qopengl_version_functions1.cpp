@@ -24,7 +24,7 @@
 
 #include <qopengl_version_functions_p.h>
 
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
 #include "qopenglfunctions_4_5_core.h"
 #include "qopenglfunctions_4_5_compatibility.h"
 #include "qopenglfunctions_4_4_core.h"
@@ -49,7 +49,7 @@
 
 QAbstractOpenGLFunctions *QOpenGLVersionFunctionsFactory::create( const QOpenGLVersionProfile &versionProfile )
 {
-#if !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_OPENGL_ES_2)
     const int major = versionProfile.version().first;
     const int minor = versionProfile.version().second;
 

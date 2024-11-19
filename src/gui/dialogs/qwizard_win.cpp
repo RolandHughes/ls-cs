@@ -21,8 +21,8 @@
 *
 ***********************************************************************/
 
-#ifndef QT_NO_WIZARD
-#ifndef QT_NO_STYLE_WINDOWSVISTA
+#ifndef LSCS_NO_WIZARD
+#ifndef LSCS_NO_STYLE_WINDOWSVISTA
 
 #include <qwizard.h>
 #include <qwizard_win_p.h>
@@ -51,7 +51,7 @@
 
 #include <uxtheme.h>
 
-Q_GUI_EXPORT HICON qt_pixmapToWinHICON( const QPixmap & );
+Q_GUI_EXPORT HICON lscs_pixmapToWinHICON( const QPixmap & );
 
 //DWM related
 typedef struct         // MARGINS
@@ -406,7 +406,7 @@ bool QVistaHelper::setDWMTitleBar( TitleBarChangeType type )
     return value;
 }
 
-Q_GUI_EXPORT HICON qt_pixmapToWinHICON( const QPixmap & );
+Q_GUI_EXPORT HICON lscs_pixmapToWinHICON( const QPixmap & );
 
 static LOGFONT getCaptionLogFont( HANDLE hTheme )
 {
@@ -515,7 +515,7 @@ void QVistaHelper::drawTitleBar( QPainter *painter )
 
         const QPoint pos( origin.x() + iconLeft, origin.y() + verticalCenter - size / 2 );
         const QPoint posDp = pos * QVistaHelper::m_devicePixelRatio;
-        const HICON hIcon = qt_pixmapToWinHICON( windowIcon.pixmap( size * QVistaHelper::m_devicePixelRatio ) );
+        const HICON hIcon = lscs_pixmapToWinHICON( windowIcon.pixmap( size * QVistaHelper::m_devicePixelRatio ) );
 
         DrawIconEx( hdc, posDp.x(), posDp.y(), hIcon, 0, 0, 0, nullptr, DI_NORMAL | DI_COMPAT );
 
@@ -602,7 +602,7 @@ bool QVistaHelper::winEvent( MSG *msg, long *result )
 
 void QVistaHelper::setMouseCursor( QPoint pos )
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( rtTop.contains( pos ) )
     {
@@ -1096,6 +1096,6 @@ int QVistaHelper::topOffset()
     return aeroOffset + titleBarSize();
 }
 
-#endif // QT_NO_STYLE_WINDOWSVISTA
+#endif // LSCS_NO_STYLE_WINDOWSVISTA
 
-#endif // QT_NO_WIZARD
+#endif // LSCS_NO_WIZARD

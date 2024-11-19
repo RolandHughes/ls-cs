@@ -34,7 +34,7 @@
 
 #include <qabstractitemmodel_p.h>
 
-#ifndef QT_NO_TREEWIDGET
+#ifndef LSCS_NO_TREEWIDGET
 
 class QTreeWidgetItem;
 class QTreeWidgetItemIterator;
@@ -232,6 +232,6 @@ public:
     int explicitSortColumn;
 };
 
-#endif // QT_NO_TREEWIDGET
+#endif // LSCS_NO_TREEWIDGET
 
 #endif // QTREEWIDGET_P_H

@@ -31,7 +31,7 @@
 // ### Remove me
 #include <qdeclarativeengine_p.h>
 
-QT_BEGIN_NAMESPACE QDeclarativeListAccessor::QDeclarativeListAccessor()
+LSCS_BEGIN_NAMESPACE QDeclarativeListAccessor::QDeclarativeListAccessor()
     : m_type( Invalid )
 {
 }
@@ -141,4 +141,4 @@ bool QDeclarativeListAccessor::isValid() const
     return m_type != Invalid;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

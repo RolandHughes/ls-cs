@@ -27,14 +27,14 @@ import re
 
 def _convert_pattern(pattern):
     # patterns from http://www.unicode.org/reports/tr35/#Date_Format_Patterns
-    qt_regexps = {
+    lscs_regexps = {
         r"yyy{3,}" : "yyyy", # more that three digits hence convert to four-digit year
         r"L" : "M",          # stand-alone month names. not supported.
         r"g{1,}": "",        # modified julian day. not supported.
         r"S{1,}" : "",       # fractional seconds. not supported.
         r"A{1,}" : ""        # milliseconds in day. not supported.
     }
-    qt_patterns = {
+    lscs_patterns = {
         "G" : "", "GG" : "", "GGG" : "", "GGGG" : "", "GGGGG" : "", # Era. not supported.
         "y" : "yyyy", # four-digit year without leading zeroes
         "Q" : "", "QQ" : "", "QQQ" : "", "QQQQ" : "", # quarter. not supported.
@@ -57,9 +57,9 @@ def _convert_pattern(pattern):
         "v" : "t", "vv" : "t", "vvv" : "t", "vvvv" : "t", # timezone
         "V" : "t", "VV" : "t", "VVV" : "t", "VVVV" : "t"  # timezone
     }
-    if pattern in qt_patterns:
-        return qt_patterns[pattern]
-    for r,v in qt_regexps.items():
+    if pattern in lscs_patterns:
+        return lscs_patterns[pattern]
+    for r,v in lscs_regexps.items():
         pattern = re.sub(r, v, pattern)
     return pattern
 

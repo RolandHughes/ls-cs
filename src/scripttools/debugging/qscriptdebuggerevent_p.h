@@ -30,7 +30,7 @@
 #include <QtCore/qvariant.h>
 #include <QtCore/qscopedpointer.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDataStream;
 class QScriptDebuggerValue;
@@ -134,6 +134,6 @@ private:
     QScriptDebuggerEvent m_event;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

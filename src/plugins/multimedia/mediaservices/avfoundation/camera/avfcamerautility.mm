@@ -33,7 +33,7 @@
 #include <algorithm>
 #include <limits>
 
-AVFPSRange qt_connection_framerates(AVCaptureConnection *videoConnection)
+AVFPSRange lscs_connection_framerates(AVCaptureConnection *videoConnection)
 {
    Q_ASSERT(videoConnection);
 
@@ -63,7 +63,7 @@ AVFPSRange qt_connection_framerates(AVCaptureConnection *videoConnection)
 
 namespace {
 
-inline bool qt_area_sane(const QSize &size)
+inline bool lscs_area_sane(const QSize &size)
 {
     return !size.isNull() && size.isValid()
            && std::numeric_limits<int>::max() / size.width() >= size.height();
@@ -74,8 +74,8 @@ struct ResolutionPredicate : std::binary_function<AVCaptureDeviceFormat *, AVCap
     bool operator() (AVCaptureDeviceFormat *f1, AVCaptureDeviceFormat *f2)const
     {
         Q_ASSERT(f1 && f2);
-        const QSize r1(qt_device_format_resolution(f1));
-        const QSize r2(qt_device_format_resolution(f2));
+        const QSize r1(lscs_device_format_resolution(f1));
+        const QSize r2(lscs_device_format_resolution(f2));
         return r1.width() < r2.width() || (r2.width() == r1.width() && r1.height() < r2.height());
     }
 };
@@ -89,7 +89,7 @@ struct FormatHasNoFPSRange : std::unary_function<AVCaptureDeviceFormat *, bool>
     }
 };
 
-Float64 qt_find_min_framerate_distance(AVCaptureDeviceFormat *format, Float64 fps)
+Float64 lscs_find_min_framerate_distance(AVCaptureDeviceFormat *format, Float64 fps)
 {
     Q_ASSERT(format && format.videoSupportedFrameRateRanges
              && format.videoSupportedFrameRateRanges.count);
@@ -106,7 +106,7 @@ Float64 qt_find_min_framerate_distance(AVCaptureDeviceFormat *format, Float64 fp
 
 } // Unnamed namespace
 
-QVector<AVCaptureDeviceFormat *> qt_unique_device_formats(AVCaptureDevice *captureDevice, FourCharCode filter)
+QVector<AVCaptureDeviceFormat *> lscs_unique_device_formats(AVCaptureDevice *captureDevice, FourCharCode filter)
 {
     // 'filter' is the format we prefer if we have duplicates.
     Q_ASSERT(captureDevice);
@@ -118,7 +118,7 @@ QVector<AVCaptureDeviceFormat *> qt_unique_device_formats(AVCaptureDevice *captu
 
     formats.reserve(captureDevice.formats.count);
     for (AVCaptureDeviceFormat *format in captureDevice.formats) {
-        const QSize resolution(qt_device_format_resolution(format));
+        const QSize resolution(lscs_device_format_resolution(format));
         if (resolution.isNull() || !resolution.isValid())
             continue;
         formats << format;
@@ -129,11 +129,11 @@ QVector<AVCaptureDeviceFormat *> qt_unique_device_formats(AVCaptureDevice *captu
 
     std::sort(formats.begin(), formats.end(), ResolutionPredicate());
 
-    QSize size(qt_device_format_resolution(formats[0]));
+    QSize size(lscs_device_format_resolution(formats[0]));
     FourCharCode codec = CMVideoFormatDescriptionGetCodecType(formats[0].formatDescription);
     int last = 0;
     for (int i = 1; i < formats.size(); ++i) {
-        const QSize nextSize(qt_device_format_resolution(formats[i]));
+        const QSize nextSize(lscs_device_format_resolution(formats[i]));
         if (nextSize == size) {
             if (codec == filter)
                 continue;
@@ -150,7 +150,7 @@ QVector<AVCaptureDeviceFormat *> qt_unique_device_formats(AVCaptureDevice *captu
     return formats;
 }
 
-QSize qt_device_format_resolution(AVCaptureDeviceFormat *format)
+QSize lscs_device_format_resolution(AVCaptureDeviceFormat *format)
 {
     if (!format || !format.formatDescription)
         return QSize();
@@ -159,7 +159,7 @@ QSize qt_device_format_resolution(AVCaptureDeviceFormat *format)
     return QSize(res.width, res.height);
 }
 
-QSize qt_device_format_high_resolution(AVCaptureDeviceFormat *format)
+QSize lscs_device_format_high_resolution(AVCaptureDeviceFormat *format)
 {
     Q_ASSERT(format);
 
@@ -168,7 +168,7 @@ QSize qt_device_format_high_resolution(AVCaptureDeviceFormat *format)
     return res;
 }
 
-QVector<AVFPSRange> qt_device_format_framerates(AVCaptureDeviceFormat *format)
+QVector<AVFPSRange> lscs_device_format_framerates(AVCaptureDeviceFormat *format)
 {
     Q_ASSERT(format);
 
@@ -184,7 +184,7 @@ QVector<AVFPSRange> qt_device_format_framerates(AVCaptureDeviceFormat *format)
     return qtRanges;
 }
 
-QSize qt_device_format_pixel_aspect_ratio(AVCaptureDeviceFormat *format)
+QSize lscs_device_format_pixel_aspect_ratio(AVCaptureDeviceFormat *format)
 {
     Q_ASSERT(format);
 
@@ -205,7 +205,7 @@ QSize qt_device_format_pixel_aspect_ratio(AVCaptureDeviceFormat *format)
         return QSize();
 
     int n, d;
-    qt_real_to_fraction(resPAR.width > res.width
+    lscs_real_to_fraction(resPAR.width > res.width
                         ? res.width / qreal(resPAR.width)
                         : resPAR.width / qreal(res.width),
                         &n, &d);
@@ -213,7 +213,7 @@ QSize qt_device_format_pixel_aspect_ratio(AVCaptureDeviceFormat *format)
     return QSize(n, d);
 }
 
-AVCaptureDeviceFormat *qt_find_best_resolution_match(AVCaptureDevice *captureDevice,
+AVCaptureDeviceFormat *lscs_find_best_resolution_match(AVCaptureDevice *captureDevice,
             const QSize &request, FourCharCode filter)
 {
     Q_ASSERT(captureDevice);
@@ -223,18 +223,18 @@ AVCaptureDeviceFormat *qt_find_best_resolution_match(AVCaptureDevice *captureDev
         return nullptr;
     }
 
-    QVector<AVCaptureDeviceFormat *> formats(qt_unique_device_formats(captureDevice, filter));
+    QVector<AVCaptureDeviceFormat *> formats(lscs_unique_device_formats(captureDevice, filter));
 
     for (int i = 0; i < formats.size(); ++i) {
         AVCaptureDeviceFormat *format = formats[i];
-        if (qt_device_format_resolution(format) == request)
+        if (lscs_device_format_resolution(format) == request)
             return format;
         // iOS only (still images).
-        if (qt_device_format_high_resolution(format) == request)
+        if (lscs_device_format_high_resolution(format) == request)
             return format;
     }
 
-    if (! qt_area_sane(request)) {
+    if (! lscs_area_sane(request)) {
         return nullptr;
     }
 
@@ -245,14 +245,14 @@ AVCaptureDeviceFormat *qt_find_best_resolution_match(AVCaptureDevice *captureDev
 
     for (int i = 0; i < formats.size(); ++i) {
         AVCaptureDeviceFormat *format = formats[i];
-        const QSize res(qt_device_format_resolution(format));
+        const QSize res(lscs_device_format_resolution(format));
 
-        if (!res.isNull() && res.isValid() && qt_area_sane(res))
+        if (!res.isNull() && res.isValid() && lscs_area_sane(res))
             pairs << FormatPair(res, format);
 
-        const QSize highRes(qt_device_format_high_resolution(format));
+        const QSize highRes(lscs_device_format_high_resolution(format));
 
-        if (!highRes.isNull() && highRes.isValid() && qt_area_sane(highRes))
+        if (!highRes.isNull() && highRes.isValid() && lscs_area_sane(highRes))
             pairs << FormatPair(highRes, format);
     }
 
@@ -285,7 +285,7 @@ AVCaptureDeviceFormat *qt_find_best_resolution_match(AVCaptureDevice *captureDev
     return best;
 }
 
-AVCaptureDeviceFormat *qt_find_best_framerate_match(AVCaptureDevice *captureDevice,
+AVCaptureDeviceFormat *lscs_find_best_framerate_match(AVCaptureDevice *captureDevice,
             FourCharCode filter, Float64 fps)
 {
     Q_ASSERT(captureDevice);
@@ -293,7 +293,7 @@ AVCaptureDeviceFormat *qt_find_best_framerate_match(AVCaptureDevice *captureDevi
 
     const qreal epsilon = 0.1;
 
-    QVector<AVCaptureDeviceFormat *>sorted(qt_unique_device_formats(captureDevice, filter));
+    QVector<AVCaptureDeviceFormat *>sorted(lscs_unique_device_formats(captureDevice, filter));
     // Sort formats by their resolution in decreasing order:
     std::sort(sorted.begin(), sorted.end(), std::not2(ResolutionPredicate()));
     // We can use only formats with framerate ranges:
@@ -316,10 +316,10 @@ AVCaptureDeviceFormat *qt_find_best_framerate_match(AVCaptureDevice *captureDevi
         }
     }
 
-    Float64 distance = qt_find_min_framerate_distance(sorted[0], fps);
+    Float64 distance = lscs_find_min_framerate_distance(sorted[0], fps);
     AVCaptureDeviceFormat *match = sorted[0];
     for (int i = 1; i < sorted.size(); ++i) {
-        const Float64 newDistance = qt_find_min_framerate_distance(sorted[i], fps);
+        const Float64 newDistance = lscs_find_min_framerate_distance(sorted[i], fps);
         if (newDistance < distance) {
             distance = newDistance;
             match = sorted[i];
@@ -329,7 +329,7 @@ AVCaptureDeviceFormat *qt_find_best_framerate_match(AVCaptureDevice *captureDevi
     return match;
 }
 
-AVFrameRateRange *qt_find_supported_framerate_range(AVCaptureDeviceFormat *format, Float64 fps)
+AVFrameRateRange *lscs_find_supported_framerate_range(AVCaptureDeviceFormat *format, Float64 fps)
 {
     Q_ASSERT(format && format.videoSupportedFrameRateRanges
              && format.videoSupportedFrameRateRanges.count);
@@ -361,7 +361,7 @@ AVFrameRateRange *qt_find_supported_framerate_range(AVCaptureDeviceFormat *forma
     return match;
 }
 
-bool qt_formats_are_equal(AVCaptureDeviceFormat *f1, AVCaptureDeviceFormat *f2)
+bool lscs_formats_are_equal(AVCaptureDeviceFormat *f1, AVCaptureDeviceFormat *f2)
 {
     if (f1 == f2)
         return true;
@@ -372,14 +372,14 @@ bool qt_formats_are_equal(AVCaptureDeviceFormat *f1, AVCaptureDeviceFormat *f2)
     return CMFormatDescriptionEqual(f1.formatDescription, f2.formatDescription);
 }
 
-bool qt_set_active_format(AVCaptureDevice *captureDevice, AVCaptureDeviceFormat *format, bool preserveFps)
+bool lscs_set_active_format(AVCaptureDevice *captureDevice, AVCaptureDeviceFormat *format, bool preserveFps)
 {
     static bool firstSet = true;
 
     if (!captureDevice || !format)
         return false;
 
-    if (qt_formats_are_equal(captureDevice.activeFormat, format)) {
+    if (lscs_formats_are_equal(captureDevice.activeFormat, format)) {
         if (firstSet) {
             // The capture device format is persistent. The first time we set a format, report that
             // it changed even if the formats are the same.
@@ -401,17 +401,17 @@ bool qt_set_active_format(AVCaptureDevice *captureDevice, AVCaptureDeviceFormat 
     // Changing the activeFormat resets the frame rate.
     AVFPSRange fps;
     if (preserveFps)
-        fps = qt_current_framerates(captureDevice, nil);
+        fps = lscs_current_framerates(captureDevice, nil);
 
     captureDevice.activeFormat = format;
 
     if (preserveFps)
-        qt_set_framerate_limits(captureDevice, nil, fps.first, fps.second);
+        lscs_set_framerate_limits(captureDevice, nil, fps.first, fps.second);
 
     return true;
 }
 
-void qt_set_framerate_limits(AVCaptureConnection *videoConnection, qreal minFPS, qreal maxFPS)
+void lscs_set_framerate_limits(AVCaptureConnection *videoConnection, qreal minFPS, qreal maxFPS)
 {
     Q_ASSERT(videoConnection);
 
@@ -446,7 +446,7 @@ void qt_set_framerate_limits(AVCaptureConnection *videoConnection, qreal minFPS,
 
 }
 
-CMTime qt_adjusted_frame_duration(AVFrameRateRange *range, qreal fps)
+CMTime lscs_adjusted_frame_duration(AVFrameRateRange *range, qreal fps)
 {
     Q_ASSERT(range);
     Q_ASSERT(fps > 0.);
@@ -462,11 +462,11 @@ CMTime qt_adjusted_frame_duration(AVFrameRateRange *range, qreal fps)
         return range.minFrameDuration;
 
     int n, d;
-    qt_real_to_fraction(1. / fps, &n, &d);
+    lscs_real_to_fraction(1. / fps, &n, &d);
     return CMTimeMake(n, d);
 }
 
-void qt_set_framerate_limits(AVCaptureDevice *captureDevice, qreal minFPS, qreal maxFPS)
+void lscs_set_framerate_limits(AVCaptureDevice *captureDevice, qreal minFPS, qreal maxFPS)
 {
     Q_ASSERT(captureDevice);
     if (!captureDevice.activeFormat) {
@@ -483,7 +483,7 @@ void qt_set_framerate_limits(AVCaptureDevice *captureDevice, qreal minFPS, qreal
     CMTime minFrameDuration = kCMTimeInvalid;
     CMTime maxFrameDuration = kCMTimeInvalid;
     if (maxFPS || minFPS) {
-        AVFrameRateRange *range = qt_find_supported_framerate_range(captureDevice.activeFormat,
+        AVFrameRateRange *range = lscs_find_supported_framerate_range(captureDevice.activeFormat,
                                                                     maxFPS ? maxFPS : minFPS);
         if (!range) {
             qDebugCamera() << Q_FUNC_INFO << "no framerate range found, (min, max):"
@@ -492,9 +492,9 @@ void qt_set_framerate_limits(AVCaptureDevice *captureDevice, qreal minFPS, qreal
         }
 
         if (maxFPS)
-            minFrameDuration = qt_adjusted_frame_duration(range, maxFPS);
+            minFrameDuration = lscs_adjusted_frame_duration(range, maxFPS);
         if (minFPS)
-            maxFrameDuration = qt_adjusted_frame_duration(range, minFPS);
+            maxFrameDuration = lscs_adjusted_frame_duration(range, minFPS);
     }
 
     const AVFConfigurationLock lock(captureDevice);
@@ -526,16 +526,16 @@ void qt_set_framerate_limits(AVCaptureDevice *captureDevice, qreal minFPS, qreal
     }
 }
 
-void qt_set_framerate_limits(AVCaptureDevice *captureDevice, AVCaptureConnection *videoConnection,
+void lscs_set_framerate_limits(AVCaptureDevice *captureDevice, AVCaptureConnection *videoConnection,
                              qreal minFPS, qreal maxFPS)
 {
     Q_ASSERT(captureDevice);
 
-    qt_set_framerate_limits(captureDevice, minFPS, maxFPS);
+    lscs_set_framerate_limits(captureDevice, minFPS, maxFPS);
 
 }
 
-AVFPSRange qt_current_framerates(AVCaptureDevice *captureDevice, AVCaptureConnection *videoConnection)
+AVFPSRange lscs_current_framerates(AVCaptureDevice *captureDevice, AVCaptureConnection *videoConnection)
 {
     Q_ASSERT(captureDevice);
 

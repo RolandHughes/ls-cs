@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_PDF
+#ifndef LSCS_NO_PDF
 
 #include <qobject.h>
 #include <qpagedpaintdevice.h>
@@ -82,6 +82,6 @@ private:
     std::unique_ptr<QPdfEngine> m_engine;
 };
 
-#endif // QT_NO_PDF
+#endif // LSCS_NO_PDF
 
 #endif

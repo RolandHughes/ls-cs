@@ -30,7 +30,7 @@
 #include <qicon.h>
 #include <qdatastream.h>
 
-#ifndef QT_NO_STANDARDITEMMODEL
+#ifndef LSCS_NO_STANDARDITEMMODEL
 
 #include <qcontainerfwd.h>
 
@@ -70,7 +70,7 @@ public:
 
     inline void setIcon( const QIcon &icon );
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     inline QString toolTip() const
     {
         return ( data( Qt::ToolTipRole ) ).value<QString>();
@@ -78,7 +78,7 @@ public:
     inline void setToolTip( const QString &toolTip );
 #endif
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
     inline QString statusTip() const
     {
         return ( data( Qt::StatusTipRole ) ).value<QString>();
@@ -86,7 +86,7 @@ public:
     inline void setStatusTip( const QString &statusTip );
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     inline QString whatsThis() const
     {
         return ( data( Qt::WhatsThisRole ) ).value<QString>();
@@ -182,7 +182,7 @@ public:
     }
     void setUserTristate( bool tristate );
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     bool isDragEnabled() const
     {
         return ( flags() & Qt::ItemIsDragEnabled ) != 0;
@@ -239,7 +239,7 @@ public:
     virtual QStandardItem *clone() const;
     virtual int type() const;
 
-#ifndef QT_NO_DATASTREAM
+#ifndef LSCS_NO_DATASTREAM
     virtual void read( QDataStream &in );
     virtual void write( QDataStream &out ) const;
 #endif
@@ -270,21 +270,21 @@ inline void QStandardItem::setIcon( const QIcon &icon )
     setData( icon, Qt::DecorationRole );
 }
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 inline void QStandardItem::setToolTip( const QString &toolTip )
 {
     setData( toolTip, Qt::ToolTipRole );
 }
 #endif
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
 inline void QStandardItem::setStatusTip( const QString &statusTip )
 {
     setData( statusTip, Qt::StatusTipRole );
 }
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 inline void QStandardItem::setWhatsThis( const QString &whatsThis )
 {
     setData( whatsThis, Qt::WhatsThisRole );
@@ -503,6 +503,6 @@ inline bool QStandardItemModel::insertColumn( int column, const QModelIndex &par
 Q_GUI_EXPORT QDataStream &operator>>( QDataStream &in, QStandardItem &item );
 Q_GUI_EXPORT QDataStream &operator<<( QDataStream &out, const QStandardItem &item );
 
-#endif // QT_NO_STANDARDITEMMODEL
+#endif // LSCS_NO_STANDARDITEMMODEL
 
 #endif //QSTANDARDITEMMODEL_H

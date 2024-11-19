@@ -46,6 +46,6 @@ public:
     Q_DECLARE_PUBLIC( QAbstractFileEngine )
 };
 
-QAbstractFileEngine *qt_custom_file_engine_handler_create( const QString &path );
+QAbstractFileEngine *lscs_custom_file_engine_handler_create( const QString &path );
 
 #endif

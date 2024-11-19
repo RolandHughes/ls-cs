@@ -25,7 +25,7 @@
 
 #include <qlist.h>
 
-#ifndef QT_NO_CODECS
+#ifndef LSCS_NO_CODECS
 
 struct Codecs
 {
@@ -309,4 +309,4 @@ QString QIsciiCodec::convertToUnicode( const char *chars, int len, ConverterStat
     return result;
 }
 
-#endif // QT_NO_CODECS
+#endif // LSCS_NO_CODECS

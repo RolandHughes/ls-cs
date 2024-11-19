@@ -62,23 +62,23 @@ class QWidget;
 
 struct QDrawHelperGammaTables;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 class QGestureManager;
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 class QDrag;
 #endif
 
-#ifndef QT_NO_CLIPBOARD
-extern QClipboard *qt_clipboard;
+#ifndef LSCS_NO_CLIPBOARD
+extern QClipboard *lscs_clipboard;
 #endif
 
 #if defined (Q_OS_WIN)
-extern QSysInfo::WinVersion qt_winver;
+extern QSysInfo::WinVersion lscs_winver;
 
 #elif defined (Q_OS_DARWIN)
-extern QSysInfo::MacVersion qt_macver;
+extern QSysInfo::MacVersion lscs_macver;
 
 #endif
 
@@ -191,16 +191,16 @@ public:
     static void processTabletEnterProximityEvent( QWindowSystemInterfacePrivate::TabletEnterProximityEvent *e );
     static void processTabletLeaveProximityEvent( QWindowSystemInterfacePrivate::TabletLeaveProximityEvent *e );
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     static void processGestureEvent( QWindowSystemInterfacePrivate::GestureEvent *e );
 #endif
     static void processPlatformPanelEvent( QWindowSystemInterfacePrivate::PlatformPanelEvent *e );
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     static void processContextMenuEvent( QWindowSystemInterfacePrivate::ContextMenuEvent *e );
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     static QPlatformDragQtResponse processDrag( QWindow *w, const QMimeData *dropData, const QPoint &p,
             Qt::DropActions supportedActions );
     static QPlatformDropQtResponse processDrop( QWindow *w, const QMimeData *dropData, const QPoint &p,
@@ -274,8 +274,8 @@ public:
 
     static bool highDpiScalingUpdated;
 
-#ifndef QT_NO_CLIPBOARD
-    static QClipboard *qt_clipboard;
+#ifndef LSCS_NO_CLIPBOARD
+    static QClipboard *lscs_clipboard;
 #endif
 
     static QPalette *app_palette;
@@ -292,7 +292,7 @@ public:
     static QWindowList window_list;
     static QWindow *focus_window;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QList<QCursor> cursor_list;
 #endif
 
@@ -305,7 +305,7 @@ public:
 
     static QList<QObject *> generic_plugin_list;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     QShortcutMap shortcutMap;
 #endif
 
@@ -324,7 +324,7 @@ public:
     static void setFocusWidget( QWidget *focus, Qt::FocusReason reason );
     static QWidget *focusNextPrevChild_helper( QWidget *toplevel, bool next, bool *wrappingOccurred = nullptr );
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
     static bool is_fallback_session_management_enabled;
 
     QSessionManager *session_manager;
@@ -387,7 +387,7 @@ public:
     // emerald - for QTBUG-50199
     static bool scrollNoPhaseAllowed;
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
     // Maintain a list of all scenes to ensure font and palette propagation to all scenes.
     QList<QGraphicsScene *> scene_list;
 #endif
@@ -403,7 +403,7 @@ public:
 
     static int app_cspec;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     static int  wheel_scroll_lines;
     static QPointer<QWidget> wheel_widget;
 #endif
@@ -416,7 +416,7 @@ public:
     static void initializeWidgetFontHash();
     static void setSystemFont( const QFont &font );
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
     static QString styleSheet;
 
 #endif
@@ -461,7 +461,7 @@ public:
     }
 #endif
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     QGestureManager *gestureManager;
     QWidget *gestureWidget;
 #endif
@@ -488,7 +488,7 @@ protected:
     virtual void notifyThemeChanged();
     bool tryCloseRemainingWindows( QWindowList processedWindows );
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     virtual void notifyDragStarted( const QDrag * );
 #endif
 

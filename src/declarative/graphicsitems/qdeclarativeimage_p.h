@@ -27,7 +27,7 @@
 #include <qdeclarativeimagebase_p.h>
 #include <QtNetwork/qnetworkreply.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeImagePrivate;
 
@@ -77,7 +77,7 @@ private:
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeImage )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeImage )
 

@@ -46,7 +46,7 @@
 
 #include <float.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \qmlclass Transform QGraphicsTransform
@@ -4427,4 +4427,4 @@ qint64 QDeclarativeItemPrivate::restart( QElapsedTimer &t )
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

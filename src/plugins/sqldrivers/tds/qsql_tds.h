@@ -36,7 +36,7 @@
 #endif
 
 #include <winsock2.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <sqlfront.h>
 #include <sqldb.h>
 #define LSCS_PUBLIC
@@ -46,7 +46,7 @@
 #include <sybdb.h>
 #endif //Q_OS_WIN32
 
-#ifdef QT_PLUGIN
+#ifdef LSCS_PLUGIN
 #define Q_EXPORT_SQLDRIVER_TDS
 #else
 #define Q_EXPORT_SQLDRIVER_TDS Q_SQL_EXPORT

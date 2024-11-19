@@ -29,7 +29,7 @@
 
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 using namespace QDeclarativeParser;
 
@@ -311,4 +311,4 @@ QDeclarativeBinding::Identifier QDeclarativeCustomParser::rewriteBinding( const 
     return compiler->rewriteBinding( expression, name );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

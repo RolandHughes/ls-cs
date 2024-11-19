@@ -37,8 +37,8 @@
 #include <QtDBus/QDBusContext>
 #include <QMap>
 
-#ifndef QT_NO_BEARERMANAGEMENT
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_DBUS
 
 #ifndef __CONNMAN_DBUS_H
 
@@ -60,7 +60,7 @@
 #define CONNMAN_TECHNOLOGY_INTERFACE    CONNMAN_SERVICE ".Technology"
 #endif
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct ConnmanMap
 {
@@ -70,12 +70,12 @@ struct ConnmanMap
 
 typedef QList< ConnmanMap > ConnmanMapList;
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-Q_DECLARE_METATYPE( QT_PREPEND_NAMESPACE( ConnmanMap ) );
-Q_DECLARE_METATYPE( QT_PREPEND_NAMESPACE( ConnmanMapList ) )
+Q_DECLARE_METATYPE( LSCS_PREPEND_NAMESPACE( ConnmanMap ) );
+Q_DECLARE_METATYPE( LSCS_PREPEND_NAMESPACE( ConnmanMapList ) )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 QDBusArgument &operator<<( QDBusArgument &argument, const ConnmanMap &obj );
 const QDBusArgument &operator>>( const QDBusArgument &argument, ConnmanMap &obj );
@@ -301,9 +301,9 @@ Q_SIGNALS:
     void propertyChangedContext( const QString &,const QString &,const QDBusVariant & );
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_DBUS
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 #endif //QCONNMANSERVICE_H

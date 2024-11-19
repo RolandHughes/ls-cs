@@ -44,9 +44,9 @@
 #include <errno.h>
 #endif
 
-static QMutex qt_library_mutex;
-static QLibraryStore *qt_library_data = nullptr;
-static bool qt_library_data_once;
+static QMutex lscs_library_mutex;
+static QLibraryStore *lscs_library_data = nullptr;
+static bool lscs_library_data_once;
 
 using QPluginMetadataPtr = QMetaObject *( * )();
 
@@ -63,18 +63,18 @@ public:
 private:
     static inline QLibraryStore *instance();
 
-    // all members and instance() are protected by qt_library_mutex
+    // all members and instance() are protected by lscs_library_mutex
     QMap<QString, QLibraryHandle *> libraryMap;
 };
 
 QLibraryStore::~QLibraryStore()
 {
-    qt_library_data = nullptr;
+    lscs_library_data = nullptr;
 }
 
 inline void QLibraryStore::cleanup()
 {
-    QLibraryStore *data = qt_library_data;
+    QLibraryStore *data = lscs_library_data;
 
     if ( ! data )
     {
@@ -119,20 +119,20 @@ QLibraryStore *QLibraryStore::instance()
 {
     // this method must be called with a locked mutex
 
-    if ( ! qt_library_data_once && ! qt_library_data )
+    if ( ! lscs_library_data_once && ! lscs_library_data )
     {
         // only create once per process lifetime
-        qt_library_data = new QLibraryStore;
-        qt_library_data_once = true;
+        lscs_library_data = new QLibraryStore;
+        lscs_library_data_once = true;
     }
 
-    return qt_library_data;
+    return lscs_library_data;
 }
 
 inline QLibraryHandle *QLibraryStore::lscs_findLibrary( const QString &fileName, const QString &version,
         QLibrary::LoadHints loadHints )
 {
-    QMutexLocker locker( &qt_library_mutex );
+    QMutexLocker locker( &lscs_library_mutex );
     QLibraryStore *data = instance();
 
     // check if this library is already loaded
@@ -166,7 +166,7 @@ inline QLibraryHandle *QLibraryStore::lscs_findLibrary( const QString &fileName,
 
 inline void QLibraryStore::releaseLibrary( QLibraryHandle *lib )
 {
-    QMutexLocker locker( &qt_library_mutex );
+    QMutexLocker locker( &lscs_library_mutex );
     QLibraryStore *data = instance();
 
     if ( lib->libraryRefCount.deref() )
@@ -231,7 +231,7 @@ void *QLibraryHandle::resolve( const QString &symbol )
 void QLibraryHandle::setLoadHints( QLibrary::LoadHints lh )
 {
     // this locks a global mutex
-    QMutexLocker lock( &qt_library_mutex );
+    QMutexLocker lock( &lscs_library_mutex );
     mergeLoadHints( lh );
 }
 
@@ -384,7 +384,7 @@ bool QLibrary::isLibrary( const QString &fileName )
 
 }
 
-static bool qt_get_metadata( QPluginMetadataPtr ptrFunc, QLibraryHandle *ptr )
+static bool lscs_get_metadata( QPluginMetadataPtr ptrFunc, QLibraryHandle *ptr )
 {
     if ( ptrFunc == nullptr )
     {
@@ -460,7 +460,7 @@ void QLibraryHandle::updatePluginState()
 
         if ( metaPtr )
         {
-            success = qt_get_metadata( metaPtr, this );
+            success = lscs_get_metadata( metaPtr, this );
 
         }
         else

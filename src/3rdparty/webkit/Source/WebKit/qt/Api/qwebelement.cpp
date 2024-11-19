@@ -39,7 +39,7 @@
 #include "JSObject.h"
 #include "PropertyNameArray.h"
 #include <parser/SourceCode.h>
-#include "qt_runtime.h"
+#include "lscs_runtime.h"
 
 #elif USE(V8)
 #include "V8DOMWindow.h"

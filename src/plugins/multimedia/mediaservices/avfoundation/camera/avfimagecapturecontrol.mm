@@ -171,7 +171,7 @@ void AVFImageCaptureControl::makeCapturePreview(CaptureRequest request,
     QTransform transform;
     transform.rotate(rotation);
 
-    Q_EMIT imageCaptured(request.captureId, qt_imageFromVideoFrame(frame).transformed(transform));
+    Q_EMIT imageCaptured(request.captureId, lscs_imageFromVideoFrame(frame).transformed(transform));
 
     request.previewReady->release();
 }

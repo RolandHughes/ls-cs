@@ -29,9 +29,9 @@
 #include <QMap>
 #include <QTimer>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QNetworkConfigurationPrivate;
 class QNetworkSessionPrivate;
@@ -70,9 +70,9 @@ private:
     QMap<QString, QString> configurationInterface;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 #endif
 

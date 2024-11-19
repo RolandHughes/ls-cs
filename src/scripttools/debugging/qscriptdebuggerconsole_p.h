@@ -28,7 +28,7 @@
 #include <QtCore/qscopedpointer.h>
 #include <qscriptdebuggerconsolehistorianinterface_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QString;
 class QScriptDebuggerConsoleCommandJob;
@@ -83,6 +83,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerConsole )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

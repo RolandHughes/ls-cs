@@ -26,7 +26,7 @@
 
 #include <qdialog.h>
 
-#ifndef QT_NO_PRINTPREVIEWDIALOG
+#ifndef LSCS_NO_PRINTPREVIEWDIALOG
 
 class QGraphicsView;
 class QPrintPreviewDialogPrivate;
@@ -87,6 +87,6 @@ private:
 };
 
 
-#endif // QT_NO_PRINTPREVIEWDIALOG
+#endif // LSCS_NO_PRINTPREVIEWDIALOG
 
 #endif // QPRINTPREVIEWDIALOG_H

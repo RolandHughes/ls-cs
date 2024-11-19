@@ -26,7 +26,7 @@
 #include "private/qdeclarativeengine_p.h"
 #include "private/qdeclarativemetatype_p.h"
 
-QT_BEGIN_NAMESPACE QDeclarativeIntegerCache::QDeclarativeIntegerCache( QDeclarativeEngine *e )
+LSCS_BEGIN_NAMESPACE QDeclarativeIntegerCache::QDeclarativeIntegerCache( QDeclarativeEngine *e )
     : QDeclarativeCleanup( e ), engine( e )
 {
 }
@@ -77,4 +77,4 @@ int QDeclarativeIntegerCache::value( const QString &id )
     return d ? d->value : -1;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

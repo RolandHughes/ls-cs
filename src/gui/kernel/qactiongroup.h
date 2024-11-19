@@ -27,7 +27,7 @@
 #include <qaction.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
 class QActionGroupPrivate;
 
@@ -100,6 +100,6 @@ private:
     GUI_LSCS_SLOT_2( _q_actionHovered )
 };
 
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
 #endif

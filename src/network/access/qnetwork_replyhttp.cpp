@@ -200,7 +200,7 @@ QNetworkReplyHttpImpl::QNetworkReplyHttpImpl( QNetworkAccessManager *const manag
     d->outgoingData = outgoingData;
     d->url = request.url();
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     d->sslConfiguration = request.sslConfiguration();
 #endif
 
@@ -471,7 +471,7 @@ bool QNetworkReplyHttpImpl::canReadLine () const
     return d->downloadMultiBuffer.canReadLine();
 }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 void QNetworkReplyHttpImpl::ignoreSslErrors()
 {
     Q_D( QNetworkReplyHttpImpl );
@@ -510,7 +510,7 @@ QNetworkReplyHttpImplPrivate::QNetworkReplyHttpImplPrivate()
     , bytesDownloaded( 0 ), downloadBufferReadPosition( 0 ), downloadBufferCurrentSize( 0 ), downloadZerocopyBuffer( nullptr )
     , pendingDownloadDataEmissions( QSharedPointer<QAtomicInt>::create() )
     , pendingDownloadProgressEmissions( QSharedPointer<QAtomicInt>::create() )
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     , pendingIgnoreAllSslErrors( false )
 #endif
 {
@@ -756,7 +756,7 @@ void QNetworkReplyHttpImplPrivate::postRequest( const QNetworkRequest &newHttpRe
     bool preConnect = ( scheme == "preconnect-http" || scheme == "preconnect-https" );
     httpRequest.setPreConnect( preConnect );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QNetworkProxy transparentProxy, cacheProxy;
 
     // FIXME the proxy stuff should be done in the HTTP thread
@@ -912,7 +912,7 @@ void QNetworkReplyHttpImplPrivate::postRequest( const QNetworkRequest &newHttpRe
     // Create the HTTP thread delegate
     QHttpThreadDelegate *delegate = new QHttpThreadDelegate;
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     delegate->networkSession = managerPrivate->getNetworkSession();
 #endif
 
@@ -923,14 +923,14 @@ void QNetworkReplyHttpImplPrivate::postRequest( const QNetworkRequest &newHttpRe
     // Set the properties it needs
     delegate->httpRequest = httpRequest;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     delegate->cacheProxy = cacheProxy;
     delegate->transparentProxy = transparentProxy;
 #endif
 
     delegate->ssl = ssl;
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
     if ( ssl )
     {
@@ -982,7 +982,7 @@ void QNetworkReplyHttpImplPrivate::postRequest( const QNetworkRequest &newHttpRe
                           Qt::QueuedConnection );
 
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
         QObject::connect( delegate, &QHttpThreadDelegate::sslConfigurationChanged,     q,
                           &QNetworkReplyHttpImpl::replySslConfigurationChanged, Qt::QueuedConnection );
 #endif
@@ -991,12 +991,12 @@ void QNetworkReplyHttpImplPrivate::postRequest( const QNetworkRequest &newHttpRe
         QObject::connect( delegate, &QHttpThreadDelegate::authenticationRequired,      q,
                           &QNetworkReplyHttpImpl::httpAuthenticationRequired, Qt::BlockingQueuedConnection );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
         QObject::connect( delegate, &QHttpThreadDelegate::proxyAuthenticationRequired, q,
                           &QNetworkReplyHttpImpl::proxyAuthenticationRequired, Qt::BlockingQueuedConnection );
 #endif
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
         QObject::connect( delegate, &QHttpThreadDelegate::encrypted, q, &QNetworkReplyHttpImpl::replyEncrypted,
                           Qt::BlockingQueuedConnection );
         QObject::connect( delegate, &QHttpThreadDelegate::sslErrors, q, &QNetworkReplyHttpImpl::replySslErrors,
@@ -1154,7 +1154,8 @@ void QNetworkReplyHttpImplPrivate::initCacheSaveDevice()
 
     if ( cacheSaveDevice )
     {
-        q->connect( cacheSaveDevice, &QIODevice::aboutToClose, q, &QNetworkReplyHttpImpl::_q_cacheSaveDeviceAboutToClose );
+        // do not allow aboutToClose to be queued acrss threads
+        q->connect( cacheSaveDevice, &QIODevice::aboutToClose, q, &QNetworkReplyHttpImpl::_q_cacheSaveDeviceAboutToClose, Qt::DirectConnection );
     }
 
     if ( !cacheSaveDevice || ( cacheSaveDevice && !cacheSaveDevice->isOpen() ) )
@@ -1568,7 +1569,7 @@ void QNetworkReplyHttpImplPrivate::httpAuthenticationRequired( const QHttpNetwor
     managerPrivate->authenticationRequired( auth, q_func(), synchronous, url, &urlForLastAuthentication, request.withCredentials() );
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 void QNetworkReplyHttpImplPrivate::proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator )
 {
     managerPrivate->proxyAuthenticationRequired( request.url(), proxy, synchronous, authenticator, &lastProxyAuthentication );
@@ -1585,7 +1586,7 @@ void QNetworkReplyHttpImplPrivate::httpError( QNetworkReply::NetworkError errorC
     error( errorCode, errorMsg );
 }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 void QNetworkReplyHttpImplPrivate::replyEncrypted()
 {
     Q_Q( QNetworkReplyHttpImpl );
@@ -2034,7 +2035,7 @@ void QNetworkReplyHttpImplPrivate::setResumeOffset( quint64 offset )
 bool QNetworkReplyHttpImplPrivate::start( const QNetworkRequest &newHttpRequest )
 {
 
-#ifdef QT_NO_BEARERMANAGEMENT
+#ifdef LSCS_NO_BEARERMANAGEMENT
     postRequest( newHttpRequest );
     return true;
 
@@ -2102,7 +2103,7 @@ void QNetworkReplyHttpImplPrivate::_q_startOperation()
 
     state = Working;
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
     // Do not start background requests if they are not allowed by session policy
     QSharedPointer<QNetworkSession> session( manager->d_func()->getNetworkSession() );
@@ -2170,7 +2171,7 @@ void QNetworkReplyHttpImplPrivate::_q_startOperation()
         return;
     }
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT
 
     if ( synchronous )
     {
@@ -2332,7 +2333,7 @@ void QNetworkReplyHttpImplPrivate::_q_bufferOutgoingData()
     }
 }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 void QNetworkReplyHttpImplPrivate::_q_networkSessionConnected()
 {
     Q_Q( QNetworkReplyHttpImpl );
@@ -2513,7 +2514,7 @@ void QNetworkReplyHttpImplPrivate::finished()
 
     if ( manager )
     {
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
         QSharedPointer<QNetworkSession> session = managerPrivate->getNetworkSession();
 
         if ( session && session->state() == QNetworkSession::Roaming &&
@@ -2789,7 +2790,7 @@ void QNetworkReplyHttpImpl::_q_bufferOutgoingDataFinished()
     d->_q_bufferOutgoingDataFinished();
 }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 void QNetworkReplyHttpImpl::_q_networkSessionConnected()
 {
@@ -2865,7 +2866,7 @@ void QNetworkReplyHttpImpl::httpError( QNetworkReply::NetworkError errorCode, co
     d->httpError( errorCode, errorMsg );
 }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 void QNetworkReplyHttpImpl::replyEncrypted()
 {
@@ -2894,7 +2895,7 @@ void QNetworkReplyHttpImpl::replyPreSharedKeyAuthenticationRequiredSlot( QSslPre
 #endif
 
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 void QNetworkReplyHttpImpl::proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth )
 {
     Q_D( QNetworkReplyHttpImpl );

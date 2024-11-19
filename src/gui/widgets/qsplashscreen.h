@@ -27,7 +27,7 @@
 #include <qpixmap.h>
 #include <qwidget.h>
 
-#ifndef QT_NO_SPLASHSCREEN
+#ifndef LSCS_NO_SPLASHSCREEN
 class QSplashScreenPrivate;
 
 class Q_GUI_EXPORT QSplashScreen : public QWidget
@@ -68,6 +68,6 @@ private:
     Q_DECLARE_PRIVATE( QSplashScreen )
 };
 
-#endif // QT_NO_SPLASHSCREEN
+#endif // LSCS_NO_SPLASHSCREEN
 
 #endif

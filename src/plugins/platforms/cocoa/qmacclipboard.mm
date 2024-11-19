@@ -514,7 +514,7 @@ QVariant QMacPasteboard::retrieveData(const QString &format, QVariant::Type) con
             // correctly (as '\n') in this data. The 'public.utf16-plain-text' type
             // usually maps newlines to '\r' instead.
 
-            QString str = qt_mac_get_pasteboardString(paste);
+            QString str = lscs_mac_get_pasteboardString(paste);
             if (!str.isEmpty()) {
                return str;
             }
@@ -609,7 +609,7 @@ bool QMacPasteboard::sync() const
 }
 
 
-QString qt_mac_get_pasteboardString(PasteboardRef paste)
+QString lscs_mac_get_pasteboardString(PasteboardRef paste)
 {
    QMacAutoReleasePool pool;
    NSPasteboard *pb = nil;

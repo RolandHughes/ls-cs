@@ -456,7 +456,7 @@ OSStatus LSCS_GetThemeMenuSeparatorHeight(SInt16 *ash)
 
 
 // wrappers
-void qt_mac_updateContentBorderMetrics(void * /*OSWindowRef */window, const ::HIContentBorderMetrics &metrics)
+void lscs_mac_updateContentBorderMetrics(void * /*OSWindowRef */window, const ::HIContentBorderMetrics &metrics)
 {
    OSWindowRef theWindow = static_cast<OSWindowRef>(window);
 

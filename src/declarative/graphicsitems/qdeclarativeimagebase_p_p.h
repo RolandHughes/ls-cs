@@ -28,7 +28,7 @@
 #include <qdeclarativepixmapcache_p.h>
 #include <QtCore/QPointer>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QNetworkReply;
 class QDeclarativeImageBasePrivate : public QDeclarativeImplicitSizeItemPrivate
@@ -58,6 +58,6 @@ public:
     bool mirror: 1;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

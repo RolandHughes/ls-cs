@@ -31,7 +31,7 @@
 #include <QtGui/qtextcursor.h>
 #include <QtGui/qtextformat.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeTextEditPrivate;
 
@@ -342,7 +342,7 @@ public:
     DECL_LSCS_SLOT_2( isRightToLeft )
     LSCS_REVISION( isRightToLeft, 1 )
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     DECL_LSCS_SLOT_1( Public, void cut() )
     DECL_LSCS_SLOT_2( cut )
     DECL_LSCS_SLOT_1( Public, void copy() )
@@ -390,7 +390,7 @@ private :
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeTextEdit )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeTextEdit )
 

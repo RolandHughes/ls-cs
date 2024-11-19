@@ -35,7 +35,7 @@
 #include <qtextcontrol_p.h>
 #include <qplaintextedit.h>
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
 class QMimeData;
 class QPlainTextEdit;
@@ -153,7 +153,7 @@ public:
     qreal pageUpDownLastCursorY;
     bool pageUpDownLastCursorYIsValid;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     QBasicTimer deleteAllTimer;
 #endif
 
@@ -164,6 +164,6 @@ public:
     QString placeholderText;
 };
 
-#endif // QT_NO_TEXTEDIT
+#endif // LSCS_NO_TEXTEDIT
 
 #endif // QPLAINTEXTEDIT_P_H

@@ -23,7 +23,7 @@
 
 #include <qprogressdialog.h>
 
-#ifndef QT_NO_PROGRESSDIALOG
+#ifndef LSCS_NO_PROGRESSDIALOG
 
 #include <qapplication.h>
 #include <qcursor.h>
@@ -155,7 +155,7 @@ QString QProgressDialog::labelText() const
 void QProgressDialog::reset()
 {
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( value() >= 0 )
     {
@@ -219,7 +219,7 @@ void QProgressDialog::setCancelButton( QPushButton *newButton )
         m_layout->insertWidget( CANCEL_BUTTON_INDEX, m_cancelButton );
         connect( m_cancelButton, &QPushButton::clicked, this, &QProgressDialog::canceled );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         escapeShortcut = new QShortcut( QKeySequence::Cancel, this, SLOT( canceled() ) );
 #endif
 
@@ -227,7 +227,7 @@ void QProgressDialog::setCancelButton( QPushButton *newButton )
     else
     {
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         delete escapeShortcut;
         escapeShortcut = nullptr;
 #endif
@@ -578,4 +578,4 @@ void QProgressDialog::open( QObject *receiver, const QString &member )
     QDialog::open();
 }
 
-#endif // QT_NO_PROGRESSDIALOG
+#endif // LSCS_NO_PROGRESSDIALOG

@@ -27,7 +27,7 @@
 
 #include <qundostack_p.h>
 
-#ifndef QT_NO_UNDOGROUP
+#ifndef LSCS_NO_UNDOGROUP
 
 class QUndoGroupPrivate
 {
@@ -214,7 +214,7 @@ bool QUndoGroup::isClean() const
     return d->active == nullptr || d->active->isClean();
 }
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
 QAction *QUndoGroup::createUndoAction( QObject *parent, const QString &prefix ) const
 {
@@ -254,6 +254,6 @@ QAction *QUndoGroup::createRedoAction( QObject *parent, const QString &prefix ) 
     return result;
 }
 
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
-#endif // QT_NO_UNDOGROUP
+#endif // LSCS_NO_UNDOGROUP

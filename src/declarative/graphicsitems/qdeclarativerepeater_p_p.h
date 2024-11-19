@@ -28,7 +28,7 @@
 #include <qdeclarativeitem_p.h>
 #include <QPointer>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeContext;
 class QDeclarativeVisualModel;
@@ -47,5 +47,5 @@ public:
     QList<QPointer<QDeclarativeItem> > deletables;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 #endif // QDECLARATIVEREPEATER_P_H

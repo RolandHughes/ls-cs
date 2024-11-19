@@ -73,7 +73,7 @@ enum HBitmapFormat
 };
 
 #if OS(WINDOWS)
-Q_GUI_EXPORT QPixmap qt_pixmapFromWinHBITMAP( HBITMAP bitmap, int hbitmapFormat = 0 );
+Q_GUI_EXPORT QPixmap lscs_pixmapFromWinHBITMAP( HBITMAP bitmap, int hbitmapFormat = 0 );
 #endif
 
 namespace WebCore
@@ -1719,7 +1719,7 @@ void GraphicsContext::releaseWindowsContext( HDC hdc, const IntRect &dstRect, bo
             GetObject( bitmap, sizeof( info ), &info );
             ASSERT( info.bmBitsPixel == 32 );
 
-            QPixmap pixmap = qt_pixmapFromWinHBITMAP( bitmap, supportAlphaBlend ? HBitmapPremultipliedAplpha : HBitmapNoAlpha );
+            QPixmap pixmap = lscs_pixmapFromWinHBITMAP( bitmap, supportAlphaBlend ? HBitmapPremultipliedAplpha : HBitmapNoAlpha );
 
             m_data->p()->drawPixmap( dstRect, pixmap );
 

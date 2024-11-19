@@ -26,7 +26,7 @@
 
 #include <QtScript/qscriptvalue.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeGuardImpl;
 class QDeclarativeCompiledData;
@@ -169,6 +169,6 @@ private:
     mutable QDeclarativeDataExtended *extendedData;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEDATA_P_H

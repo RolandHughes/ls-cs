@@ -31,7 +31,7 @@
 
 Q_DECLARE_METATYPE( QScriptValue );
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeVMEVariant
 {
@@ -836,7 +836,7 @@ int QDeclarativeVMEMetaObject::metaCall( QMetaObject::Call c, int _id, void **a 
     }
     else
     {
-        return object->qt_metacall( c, _id, a );
+        return object->lscs_metacall( c, _id, a );
     }
 }
 
@@ -1126,4 +1126,4 @@ void QDeclarativeVMEMetaObject::connectAliasSignal( int index )
     connectAlias( aliasId );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

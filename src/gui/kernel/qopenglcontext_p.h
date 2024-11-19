@@ -24,7 +24,7 @@
 #ifndef QOPENGLCONTEXT_P_H
 #define QOPENGLCONTEXT_P_H
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qopengl.h>
 #include <qopenglcontext.h>
@@ -244,9 +244,9 @@ protected:
 
 };
 
-Q_GUI_EXPORT void qt_gl_set_global_share_context( QOpenGLContext *context );
-Q_GUI_EXPORT QOpenGLContext *qt_gl_global_share_context();
+Q_GUI_EXPORT void lscs_gl_set_global_share_context( QOpenGLContext *context );
+Q_GUI_EXPORT QOpenGLContext *lscs_gl_global_share_context();
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

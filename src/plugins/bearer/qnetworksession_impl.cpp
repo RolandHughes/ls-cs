@@ -32,7 +32,7 @@
 #include <qmutex.h>
 #include <qstringlist.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 static QBearerEngineImpl *getEngineFromId( const QString &id )
 {
@@ -217,7 +217,7 @@ void QNetworkSessionPrivateImpl::reject()
 {
 }
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
 QNetworkInterface QNetworkSessionPrivateImpl::currentInterface() const
 {
     if ( !engine || state != QNetworkSession::Connected || !publicConfig.isValid() )

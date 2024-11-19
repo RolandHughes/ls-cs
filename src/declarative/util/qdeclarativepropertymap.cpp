@@ -26,7 +26,7 @@
 #include <qdeclarativeopenmetaobject_p.h>
 #include <QDebug>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 //QDeclarativePropertyMapMetaObject lets us listen for changes coming from QML
 //so we can emit the changed signal.
@@ -282,4 +282,4 @@ QVariant QDeclarativePropertyMap::operator[]( const QString &key ) const
     or clear() - it is only emitted when a value is updated from QML.
 */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -3,7 +3,10 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    add_library(LsCsPrinterDriverCocoa MODULE "")
    add_library(LsCs::LsCsPrinterDriverCocoa ALIAS LsCsPrinterDriverCocoa)
 
-   set_target_properties(LsCsPrinterDriverCocoa PROPERTIES OUTPUT_NAME LsCsPrinterDriverCocoa${BUILD_ABI})
+   set_target_properties(LsCsPrinterDriverCocoa PROPERTIES
+      VERSION ${BUILD_ABI}
+      SOVERSION ${BUILD_MAJOR}
+   )
 
    target_sources(LsCsPrinterDriverCocoa
       PRIVATE
@@ -22,7 +25,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
    target_compile_definitions(LsCsPrinterDriverCocoa
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
    install(TARGETS LsCsPrinterDriverCocoa DESTINATION ${CMAKE_INSTALL_LIBDIR})

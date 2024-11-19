@@ -27,7 +27,7 @@
 #include <qdeclarativeinfo.h>
 #include <qdeclarativepixmapcache_p.h>
 
-QT_BEGIN_NAMESPACE QDeclarativeImageBase::QDeclarativeImageBase( QDeclarativeItem *parent )
+LSCS_BEGIN_NAMESPACE QDeclarativeImageBase::QDeclarativeImageBase( QDeclarativeItem *parent )
     : QDeclarativeImplicitSizeItem( *( new QDeclarativeImageBasePrivate ), parent )
 {
 }
@@ -321,4 +321,4 @@ void QDeclarativeImageBase::pixmapChange()
     setImplicitHeight( d->pix.height() );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

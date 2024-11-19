@@ -26,7 +26,7 @@
 
 #include <qabstractitemview.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 class QHeaderViewPrivate;
 class QStyleOptionHeader;
@@ -294,6 +294,6 @@ inline void QHeaderView::showSection( int logicalIndex )
     setSectionHidden( logicalIndex, false );
 }
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
 #endif

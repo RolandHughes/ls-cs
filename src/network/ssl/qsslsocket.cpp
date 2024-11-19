@@ -31,11 +31,11 @@
 #include <qmutex.h>
 #include <qsslcipher.h>
 
-#ifdef QT_OPENSSL
+#ifdef LSCS_OPENSSL
 #include <qsslsocket_openssl_p.h>
 #endif
 
-#ifdef QT_SECURETRANSPORT
+#ifdef LSCS_SECURETRANSPORT
 #include <qsslsocket_mac_p.h>
 #endif
 
@@ -620,7 +620,7 @@ bool QSslSocket::waitForEncrypted( int msecs )
 
         // Loop, waiting until the connection has been encrypted or an error
         // occurs.
-        if ( !d->plainSocket->waitForReadyRead( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
+        if ( !d->plainSocket->waitForReadyRead( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
         {
             return false;
         }
@@ -673,7 +673,7 @@ bool QSslSocket::waitForReadyRead( int msecs )
     // test readyReadEmitted first because either operation above
     // (waitForEncrypted or transmit) may have set it
     while ( !readyReadEmitted &&
-            d->plainSocket->waitForReadyRead( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
+            d->plainSocket->waitForReadyRead( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
     {
     }
 
@@ -713,7 +713,7 @@ bool QSslSocket::waitForBytesWritten( int msecs )
         d->transmit();
     }
 
-    return d->plainSocket->waitForBytesWritten( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) );
+    return d->plainSocket->waitForBytesWritten( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) );
 }
 
 bool QSslSocket::waitForDisconnected( int msecs )
@@ -749,7 +749,7 @@ bool QSslSocket::waitForDisconnected( int msecs )
         }
     }
 
-    bool retVal = d->plainSocket->waitForDisconnected( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) );
+    bool retVal = d->plainSocket->waitForDisconnected( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) );
 
     if ( !retVal )
     {
@@ -876,7 +876,7 @@ void QSslSocket::connectToHost( const QString &hostName, quint16 port, OpenMode 
         d->createPlainSocket( openMode );
     }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     d->plainSocket->setProxy( proxy() );
 #endif
 
@@ -1173,7 +1173,7 @@ void QSslSocketPrivate::createPlainSocket( QIODevice::OpenMode openMode )
 
     plainSocket = new QTcpSocket( q );
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     //copy network session down to the plain socket (if it has been set)
     plainSocket->setProperty( "_q_networksession", q->property( "_q_networksession" ) );
 #endif
@@ -1186,7 +1186,7 @@ void QSslSocketPrivate::createPlainSocket( QIODevice::OpenMode openMode )
     q->connect( plainSocket, &QTcpSocket::readyRead,    q, &QSslSocket::_q_readyReadSlot, Qt::DirectConnection );
     q->connect( plainSocket, &QTcpSocket::bytesWritten, q, &QSslSocket::_q_bytesWrittenSlot, Qt::DirectConnection );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     q->connect( plainSocket, &QTcpSocket::proxyAuthenticationRequired, q, &QSslSocket::proxyAuthenticationRequired );
 #endif
 

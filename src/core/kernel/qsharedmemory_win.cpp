@@ -26,12 +26,12 @@
 
 #include <qdebug.h>
 
-#ifndef QT_NO_SHAREDMEMORY
+#ifndef LSCS_NO_SHAREDMEMORY
 
 QSharedMemoryPrivate::QSharedMemoryPrivate()
     : memory( nullptr ), size( 0 ), error( QSharedMemory::NoError ),
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
       systemSemaphore( QString() ), lockedByMe( false ),
 #endif
 

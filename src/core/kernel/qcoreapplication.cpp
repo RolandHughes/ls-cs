@@ -49,13 +49,14 @@
 #include <qprocess_p.h>
 #include <qprocess_p.h>
 #include <qthread_p.h>
+#include <qdiriterator.h>
 
 #if defined(Q_OS_UNIX)
 #  if defined(Q_OS_DARWIN)
 #    include <qeventdispatcher_cf_p.h>
 #    include <qeventdispatcher_unix_p.h>
 #  else
-#    if ! defined(QT_NO_GLIB)
+#    if ! defined(LSCS_NO_GLIB)
 #    include <qeventdispatcher_glib_p.h>
 #    endif
 
@@ -214,7 +215,7 @@ void QCoreApplicationPrivate::processCommandLineArguments()
     }
 }
 
-extern "C" void Q_CORE_EXPORT qt_startup_hook()
+extern "C" void Q_CORE_EXPORT lscs_startup_hook()
 {
 }
 
@@ -252,7 +253,7 @@ void qAddPreRoutine( FP_Void p )
         p();
     }
 
-    list->prepend( p ); // in case QCoreApplication is re-initialized, refer to qt_call_pre_routines
+    list->prepend( p ); // in case QCoreApplication is re-initialized, refer to lscs_call_pre_routines
 }
 
 void qAddPostRoutine( FP_Void p )
@@ -279,7 +280,7 @@ void qRemovePostRoutine( FP_Void p )
     list->removeAll( p );
 }
 
-static void qt_call_pre_routines()
+static void lscs_call_pre_routines()
 {
     QStartUpFuncList *list = preRList();
 
@@ -290,7 +291,7 @@ static void qt_call_pre_routines()
 
     QMutexLocker locker( &globalPreRoutinesMutex );
 
-    // Unlike qt_call_post_routines, we do not empty the list, because Q_COREAPP_STARTUP_FUNCTION is a macro,
+    // Unlike lscs_call_post_routines, we do not empty the list, because Q_COREAPP_STARTUP_FUNCTION is a macro,
     // so the user expects the function to be executed every time QCoreApplication is created.
 
     for ( int i = 0; i < list->count(); ++i )
@@ -299,7 +300,7 @@ static void qt_call_pre_routines()
     }
 }
 
-void Q_CORE_EXPORT qt_call_post_routines()
+void Q_CORE_EXPORT lscs_call_post_routines()
 {
     QVFuncList *list = nullptr;
 
@@ -332,12 +333,12 @@ bool QCoreApplicationPrivate::is_app_running = false;
 bool QCoreApplicationPrivate::is_app_closing = false;
 
 // initialized in qcoreapplication and in qtextstream autotest when setlocale is called.
-Q_CORE_EXPORT bool qt_locale_initialized = false;
+Q_CORE_EXPORT bool lscs_locale_initialized = false;
 
-//  Create an instance of cs.conf. Ensures settings will not be thrown out of QSetting's cache for unused settings
+//  Create an instance of lscs.conf. Ensures settings will not be thrown out of QSetting's cache for unused settings
 static QSettings *internal_csConf()
 {
-    static QSettings retval( QSettings::UserScope, "CopperSpice" );
+    static QSettings retval( QSettings::UserScope, "LsCs" );
     return &retval;
 }
 
@@ -357,7 +358,7 @@ QAbstractEventDispatcher *QCoreApplicationPrivate::eventDispatcher = nullptr;
 uint QCoreApplicationPrivate::attribs;
 
 #ifdef Q_OS_UNIX
-Qt::HANDLE qt_application_thread_id = nullptr;
+Qt::HANDLE lscs_application_thread_id = nullptr;
 #endif
 
 struct QCoreApplicationData
@@ -414,7 +415,7 @@ QCoreApplicationPrivate::QCoreApplicationPrivate( int &aargc, char **aargv, uint
     QCoreApplicationPrivate::is_app_closing = false;
 
 #ifdef Q_OS_UNIX
-    qt_application_thread_id = QThread::currentThreadId();
+    lscs_application_thread_id = QThread::currentThreadId();
 #endif
 
     // this call to QThread::currentThread() may end up setting theMainThread
@@ -465,7 +466,7 @@ void QCoreApplicationPrivate::createEventDispatcher()
 
 #if defined(Q_OS_DARWIN)
     bool ok   = false;
-    int value = qgetenv( "QT_EVENT_DISPATCHER_CORE_FOUNDATION" ).toInt( &ok );
+    int value = qgetenv( "LSCS_EVENT_DISPATCHER_CORE_FOUNDATION" ).toInt( &ok );
 
     if ( ok && value > 0 )
     {
@@ -476,9 +477,9 @@ void QCoreApplicationPrivate::createEventDispatcher()
         eventDispatcher = new QEventDispatcherUNIX( q );
     }
 
-#elif ! defined(QT_NO_GLIB)
+#elif ! defined(LSCS_NO_GLIB)
 
-    if ( qgetenv( "QT_NO_GLIB" ).isEmpty() && QEventDispatcherGlib::versionSupported() )
+    if ( qgetenv( "LSCS_NO_GLIB" ).isEmpty() && QEventDispatcherGlib::versionSupported() )
     {
         eventDispatcher = new QEventDispatcherGlib( q );
     }
@@ -530,7 +531,7 @@ void QCoreApplicationPrivate::checkReceiverThread( QObject *receiver )
 
 void QCoreApplicationPrivate::appendApplicationPathToLibraryPaths()
 {
-#if ! defined(QT_NO_SETTINGS)
+#if ! defined(LSCS_NO_SETTINGS)
     QStringList *app_libpaths = coreappdata()->app_libpaths;
     Q_ASSERT( app_libpaths );
 
@@ -563,12 +564,12 @@ QString qAppName()
 
 void QCoreApplicationPrivate::initLocale()
 {
-    if ( qt_locale_initialized )
+    if ( lscs_locale_initialized )
     {
         return;
     }
 
-    qt_locale_initialized = true;
+    lscs_locale_initialized = true;
 
 #ifdef Q_OS_UNIX
     setlocale( LC_ALL, "" );
@@ -616,19 +617,23 @@ void QCoreApplicationPrivate::init()
     }
 
     // emerald - may want to adjust the library path
-#if ! defined(QT_NO_SETTINGS)
+#if ! defined(LSCS_NO_SETTINGS)
 
-    if ( ! coreappdata()->app_libpaths )
+    QStringList *app_libpaths = coreappdata()->app_libpaths;
+
+    if ( ! app_libpaths )
     {
         // make sure library paths is initialized
         q->libraryPaths();
-
+        app_libpaths = coreappdata()->app_libpaths;
     }
     else
     {
         appendApplicationPathToLibraryPaths();
     }
 
+    app_libpaths->append( QString::fromUtf8( LsCsLibraryInfo::libraries ) );
+    app_libpaths->append( QString::fromUtf8( LsCsLibraryInfo::plugins ) );
 #endif
 
     // threads
@@ -659,15 +664,15 @@ void QCoreApplicationPrivate::init()
 
     processCommandLineArguments();
 
-    qt_call_pre_routines();
-    qt_startup_hook();
+    lscs_call_pre_routines();
+    lscs_startup_hook();
 
     is_app_running = true;       // No longer starting up
 }
 
 QCoreApplication::~QCoreApplication()
 {
-    qt_call_post_routines();
+    lscs_call_post_routines();
 
     m_self = nullptr;
     QCoreApplicationPrivate::is_app_closing = true;
@@ -1836,7 +1841,7 @@ QString QCoreApplication::applicationName()
 }
 
 // Exported for QDesktopServices (backward compatibility)
-Q_CORE_EXPORT QString qt_applicationName_noFallback()
+Q_CORE_EXPORT QString lscs_applicationName_noFallback()
 {
     return coreappdata()->applicationNameSet ? coreappdata()->application : QString();
 }
@@ -1861,22 +1866,70 @@ QStringList QCoreApplication::libraryPaths()
 {
     QRecursiveMutexLocker locker( libraryPathMutex() );
 
+    /*  Original code was really bad design. It ass-u-me-d all libraries
+     * and plugins had been forcibly copied into a single directory. While
+     * that should still be supported in case someone wants to test
+     * not-yet-released library changes, the logic really needs to support
+     * the distribution directory tree. File and directory names are
+     * subject to change so just walk the tree.
+     *
+     * /usr/lib/LsCs/plugins
+     * ├── iconengines
+     * ├── imageformats
+     * │   └── LsCsImageFormatsSvg0.1.so
+     * ├── mediaservices
+     * │   ├── LsCsMultimedia_gst_audiodecoder0.1.so
+     * │   ├── LsCsMultimedia_gst_camerabin0.1.so
+     * │   └── LsCsMultimedia_gst_mediaplayer0.1.so
+     * ├── pictureformats
+     * ├── platforms
+     * │   └── LsCsGuiXcb0.1.so
+     * ├── playlistformats
+     * │   └── LsCsMultimedia_m3u0.1.so
+     * ├── printerdrivers
+     * │   └── LsCsPrinterDriverCups0.1.so
+     * ├── sqldrivers
+     * │   ├── LsCsSqlMySql0.1.so
+     * │   ├── LsCsSqlOdbc0.1.so
+     * │   └── LsCsSqlPsql0.1.so
+     * └── xcbglintegrations
+     *    └── LsCsGuiXcb_Glx0.1.so
+     */
+
     if ( ! coreappdata()->app_libpaths )
     {
         QStringList *app_libpaths   = new QStringList;
         coreappdata()->app_libpaths = app_libpaths;
 
-        // retrives the plugins path from cs.conf
-        QString installPathPlugins = QLibraryInfo::location( QLibraryInfo::PluginsPath );
+        // retrives the plugins path from lscs.conf or the compiled in directory
+        QString basePluginPath = QLibraryInfo::location( QLibraryInfo::PluginsPath );
 
-        if ( QFile::exists( installPathPlugins ) )
+        if ( QFile::exists( basePluginPath ) )
         {
             // make sure we convert from backslashes to slashes
-            installPathPlugins = QDir( installPathPlugins ).canonicalPath();
+            basePluginPath = QDir( basePluginPath ).canonicalPath();
 
-            if ( ! app_libpaths->contains( installPathPlugins ) )
+            if ( ! app_libpaths->contains( basePluginPath ) )
             {
-                app_libpaths->append( installPathPlugins );
+                app_libpaths->append( basePluginPath );
+            }
+        }
+
+        QDirIterator it( basePluginPath, QDirIterator::Subdirectories | QDirIterator::NoDotAndDotDot );
+
+        while ( it.hasNext() )
+        {
+            QString installPathPlugins = it.next();
+
+            if ( QFile::exists( installPathPlugins ) )
+            {
+                // make sure we convert from backslashes to slashes
+                installPathPlugins = QDir( installPathPlugins ).canonicalPath();
+
+                if ( ! app_libpaths->contains( installPathPlugins ) )
+                {
+                    app_libpaths->append( installPathPlugins );
+                }
             }
         }
 

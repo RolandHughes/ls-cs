@@ -26,7 +26,7 @@
 
 #include <qtextcodec.h>
 
-#ifndef QT_NO_CODECS
+#ifndef LSCS_NO_CODECS
 
 class Q_CORE_EXPORT QFontLaoCodec : public QTextCodec
 {
@@ -40,6 +40,6 @@ public:
     int mibEnum() const override;
 };
 
-#endif  // QT_NO_CODECS
+#endif  // LSCS_NO_CODECS
 
 #endif

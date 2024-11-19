@@ -28,13 +28,13 @@
 
 #include <math.h>
 
-#define QT_SINE_TABLE_SIZE 256
+#define LSCS_SINE_TABLE_SIZE 256
 
-extern Q_CORE_EXPORT const qreal qt_sine_table[QT_SINE_TABLE_SIZE];
+extern Q_CORE_EXPORT const qreal lscs_sine_table[LSCS_SINE_TABLE_SIZE];
 
 inline int qCeil( qreal v )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -47,7 +47,7 @@ inline int qCeil( qreal v )
 
 inline int qFloor( qreal v )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -60,7 +60,7 @@ inline int qFloor( qreal v )
 
 inline qreal qFabs( qreal v )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -73,7 +73,7 @@ inline qreal qFabs( qreal v )
 
 inline qreal qSin( qreal v )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -86,7 +86,7 @@ inline qreal qSin( qreal v )
 
 inline qreal qCos( qreal v )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -99,7 +99,7 @@ inline qreal qCos( qreal v )
 
 inline qreal qTan( qreal v )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -112,7 +112,7 @@ inline qreal qTan( qreal v )
 
 inline qreal qAcos( qreal v )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -125,7 +125,7 @@ inline qreal qAcos( qreal v )
 
 inline qreal qAsin( qreal v )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -138,7 +138,7 @@ inline qreal qAsin( qreal v )
 
 inline qreal qAtan( qreal v )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -151,7 +151,7 @@ inline qreal qAtan( qreal v )
 
 inline qreal qAtan2( qreal y, qreal x )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -164,7 +164,7 @@ inline qreal qAtan2( qreal y, qreal x )
 
 inline qreal qSqrt( qreal v )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -177,7 +177,7 @@ inline qreal qSqrt( qreal v )
 
 inline qreal qLn( qreal v )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -197,7 +197,7 @@ inline qreal qExp( qreal v )
 
 inline qreal qPow( qreal x, qreal y )
 {
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
 
     if ( sizeof( qreal ) == sizeof( float ) )
     {
@@ -214,24 +214,24 @@ inline qreal qPow( qreal x, qreal y )
 
 inline qreal qFastSin( qreal x )
 {
-    int si = int( x * ( 0.5 * QT_SINE_TABLE_SIZE / M_PI ) ); // Would be more accurate with qRound, but slower.
-    qreal d = x - si * ( 2.0 * M_PI / QT_SINE_TABLE_SIZE );
-    int ci = si + QT_SINE_TABLE_SIZE / 4;
-    si &= QT_SINE_TABLE_SIZE - 1;
-    ci &= QT_SINE_TABLE_SIZE - 1;
+    int si = int( x * ( 0.5 * LSCS_SINE_TABLE_SIZE / M_PI ) ); // Would be more accurate with qRound, but slower.
+    qreal d = x - si * ( 2.0 * M_PI / LSCS_SINE_TABLE_SIZE );
+    int ci = si + LSCS_SINE_TABLE_SIZE / 4;
+    si &= LSCS_SINE_TABLE_SIZE - 1;
+    ci &= LSCS_SINE_TABLE_SIZE - 1;
 
-    return qt_sine_table[si] + ( qt_sine_table[ci] - 0.5 * qt_sine_table[si] * d ) * d;
+    return lscs_sine_table[si] + ( lscs_sine_table[ci] - 0.5 * lscs_sine_table[si] * d ) * d;
 }
 
 inline qreal qFastCos( qreal x )
 {
-    int ci = int( x * ( 0.5 * QT_SINE_TABLE_SIZE / M_PI ) ); // Would be more accurate with qRound, but slower.
-    qreal d = x - ci * ( 2.0 * M_PI / QT_SINE_TABLE_SIZE );
-    int si = ci + QT_SINE_TABLE_SIZE / 4;
-    si &= QT_SINE_TABLE_SIZE - 1;
-    ci &= QT_SINE_TABLE_SIZE - 1;
+    int ci = int( x * ( 0.5 * LSCS_SINE_TABLE_SIZE / M_PI ) ); // Would be more accurate with qRound, but slower.
+    qreal d = x - ci * ( 2.0 * M_PI / LSCS_SINE_TABLE_SIZE );
+    int si = ci + LSCS_SINE_TABLE_SIZE / 4;
+    si &= LSCS_SINE_TABLE_SIZE - 1;
+    ci &= LSCS_SINE_TABLE_SIZE - 1;
 
-    return qt_sine_table[si] - ( qt_sine_table[ci] + 0.5 * qt_sine_table[si] * d ) * d;
+    return lscs_sine_table[si] - ( lscs_sine_table[ci] + 0.5 * lscs_sine_table[si] * d ) * d;
 }
 
 constexpr inline float qDegreesToRadians( float degrees )

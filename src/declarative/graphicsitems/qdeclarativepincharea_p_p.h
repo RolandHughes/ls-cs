@@ -30,7 +30,7 @@
 #include <qgraphicssceneevent.h>
 #include <qdeclarativeitem_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativePinch;
 class QDeclarativePinchAreaPrivate : public QDeclarativeItemPrivate
@@ -82,6 +82,6 @@ public:
     int id1;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEPINCHAREA_P_H

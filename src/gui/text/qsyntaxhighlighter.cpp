@@ -23,7 +23,7 @@
 
 #include <qsyntaxhighlighter.h>
 
-#ifndef QT_NO_SYNTAXHIGHLIGHTER
+#ifndef LSCS_NO_SYNTAXHIGHLIGHTER
 #include <qtextdocument.h>
 #include <qtextlayout.h>
 #include <qpointer.h>
@@ -460,4 +460,4 @@ void QSyntaxHighlighter::_q_delayedRehighlight()
     d->_q_delayedRehighlight();
 }
 
-#endif // QT_NO_SYNTAXHIGHLIGHTER
+#endif // LSCS_NO_SYNTAXHIGHLIGHTER

@@ -21,7 +21,7 @@
 *
 ***********************************************************************/
 
-#ifndef QT_NO_ICON
+#ifndef LSCS_NO_ICON
 
 #include <qiconloader_p.h>
 
@@ -204,7 +204,7 @@ QIconTheme::QIconTheme( const QString &themeName )
         }
     }
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
 
     if ( themeIndex.exists() )
     {
@@ -282,7 +282,7 @@ QIconTheme::QIconTheme( const QString &themeName )
         }
     }
 
-#endif //QT_NO_SETTINGS
+#endif //LSCS_NO_SETTINGS
 }
 
 QThemeIconInfo QIconLoader::findIconHelper( const QString &themeName,
@@ -739,4 +739,4 @@ void QIconLoaderEngine::virtual_hook( int id, void *data )
 }
 
 
-#endif //QT_NO_ICON
+#endif //LSCS_NO_ICON

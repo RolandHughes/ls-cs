@@ -32,7 +32,7 @@
 
 #include <private/qcoreapplication_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*
   QDeclarativeDebug Protocol (Version 1):
@@ -499,4 +499,4 @@ void QDeclarativeDebugServer::_q_deliverMessage( QString un_named_arg1, QByteArr
     d->_q_deliverMessage( un_named_arg1, un_named_arg2 );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

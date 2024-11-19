@@ -134,7 +134,7 @@ public:
 
     bool hasCapability( QPlatformIntegration::Capability cap ) const override;
     QPlatformWindow *createPlatformWindow( QWindow *window ) const override;
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     QPlatformOpenGLContext *createPlatformOpenGLContext( QOpenGLContext *context ) const override;
 #endif
     QPlatformBackingStore *createPlatformBackingStore( QWindow *widget ) const override;
@@ -145,7 +145,7 @@ public:
     QCocoaNativeInterface *nativeInterface() const override;
     QPlatformInputContext *inputContext() const override;
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QCocoaAccessibility *accessibility() const override;
 #endif
 
@@ -182,7 +182,7 @@ private:
 
     QScopedPointer<QPlatformInputContext> mInputContext;
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QScopedPointer<QCocoaAccessibility> mAccessibility;
 #endif
 

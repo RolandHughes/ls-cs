@@ -25,7 +25,7 @@
 
 #include <qglobal.h>
 
-#if ! defined(QT_NO_STYLE_GTK)
+#if ! defined(LSCS_NO_STYLE_GTK)
 
 // This class is primarily a wrapper around the gtk painter functions
 // and takes care of converting all such calls into cached Qt pixmaps.
@@ -151,12 +151,12 @@ QPixmap QGtk2Painter::renderTheme( uchar *bdata, uchar *wdata, const QRect &rect
             int alphaval = qMax( bdata[index + GTK_BLUE] - wdata[index + GTK_BLUE],
                                  bdata[index + GTK_GREEN] - wdata[index + GTK_GREEN] );
             alphaval = qMax( alphaval, bdata[index + GTK_RED] - wdata[index + GTK_RED] ) + 255;
-            bdata[index + QT_ALPHA] = alphaval;
+            bdata[index + LSCS_ALPHA] = alphaval;
         }
 
-        bdata[index + QT_RED] = bdata[index + GTK_RED];
-        bdata[index + QT_GREEN] = bdata[index + GTK_GREEN];
-        bdata[index + QT_BLUE] = val;
+        bdata[index + LSCS_RED] = bdata[index + GTK_RED];
+        bdata[index + LSCS_GREEN] = bdata[index + GTK_GREEN];
+        bdata[index + LSCS_BLUE] = val;
     }
 
     QImage converted( ( const uchar * )bdata, rect.width(), rect.height(), m_alpha ?
@@ -837,4 +837,4 @@ void QGtk2Painter::paintCheckbox( GtkWidget *gtkWidget, const QRect &checkrect,
 
 
 
-#endif // !defined(QT_NO_STYLE_GTK)
+#endif // !defined(LSCS_NO_STYLE_GTK)

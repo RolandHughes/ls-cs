@@ -31,7 +31,7 @@
 #include <qpoint.h>
 #include <qrect.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 class QGesturePrivate;
 class QPanGesturePrivate;
@@ -333,7 +333,7 @@ public:
     void setWidget( QWidget *widget );
     QWidget *widget() const;
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
     QPointF mapToGraphicsScene( const QPointF &gesturePoint ) const;
 #endif
 
@@ -350,6 +350,6 @@ private:
 Q_GUI_EXPORT QDebug operator<<( QDebug, const QGesture * );
 Q_GUI_EXPORT QDebug operator<<( QDebug, const QGestureEvent *event );
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
 #endif

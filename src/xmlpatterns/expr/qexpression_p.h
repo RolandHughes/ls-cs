@@ -66,7 +66,7 @@ public:
      */
     typedef QVector<Expression::Ptr> Vector;
 
-    typedef QT_PREPEND_NAMESPACE( QAbstractXmlForwardIterator<Expression::Ptr> )
+    typedef LSCS_PREPEND_NAMESPACE( QAbstractXmlForwardIterator<Expression::Ptr> )
     QAbstractXmlForwardIterator;
 
     /**

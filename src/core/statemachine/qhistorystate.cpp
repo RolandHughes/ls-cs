@@ -23,7 +23,7 @@
 
 #include <qhistorystate.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 #include <qhistorystate_p.h>
 
@@ -146,4 +146,4 @@ bool QHistoryState::event( QEvent *e )
     return QAbstractState::event( e );
 }
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE

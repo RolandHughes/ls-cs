@@ -82,7 +82,7 @@
 // include after QCoreEvent, enum issue
 #include <X11/X.h>
 
-#ifndef QT_NO_XRENDER
+#ifndef LSCS_NO_XRENDER
 #define Bool int
 #define Status int
 #include <X11/extensions/Xrender.h>
@@ -1040,8 +1040,8 @@ static void getVisualAndColormap( int depth, Visual **visual, Colormap *colormap
     *visual = 0;
     *colormap = 0;
 
-#ifndef QT_NO_XRENDER
-    static const bool useXRender = qgetenv( "QT_X11_NO_XRENDER" ).isNull(); // Should also check for XRender >= 0.5
+#ifndef LSCS_NO_XRENDER
+    static const bool useXRender = qgetenv( "LSCS_X11_NO_XRENDER" ).isNull(); // Should also check for XRender >= 0.5
 #else
     static const bool useXRender = false;
 #endif
@@ -1063,7 +1063,7 @@ static void getVisualAndColormap( int depth, Visual **visual, Colormap *colormap
         return;
     }
 
-#ifndef QT_NO_XRENDER
+#ifndef LSCS_NO_XRENDER
 
     if ( depth == 32 )
     {
@@ -1079,7 +1079,7 @@ static void getVisualAndColormap( int depth, Visual **visual, Colormap *colormap
         }
     }
     else
-#endif // QT_NO_XRENDER
+#endif // LSCS_NO_XRENDER
         *visual = xvi[0].visual;
 
     XFree( xvi );

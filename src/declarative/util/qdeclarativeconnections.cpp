@@ -33,7 +33,7 @@
 #include <QtCore/qdebug.h>
 #include <QtCore/qstringlist.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeConnectionsPrivate
 {
@@ -302,4 +302,4 @@ void QDeclarativeConnections::componentComplete()
     connectSignals();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -25,11 +25,11 @@
 #include <qtextcodec.h>
 #include <qstringlist.h>
 
-#ifndef QT_NO_TEXTCODECPLUGIN
+#ifndef LSCS_NO_TEXTCODECPLUGIN
 
 #include "qbig5codec.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class TWTextCodecs : public QTextCodecPlugin
 {
@@ -141,6 +141,6 @@ QTextCodec *TWTextCodecs::createForName( const QByteArray &name )
 Q_EXPORT_STATIC_PLUGIN( TWTextCodecs );
 Q_EXPORT_PLUGIN2( qtwcodecs, TWTextCodecs );
 
-#endif // QT_NO_TEXTCODECPLUGIN
+#endif // LSCS_NO_TEXTCODECPLUGIN
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

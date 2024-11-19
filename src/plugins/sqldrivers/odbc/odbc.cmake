@@ -13,7 +13,11 @@ if (WITH_ODBC_PLUGIN AND ODBC_FOUND)
    add_library(LsCsSqlOdbc MODULE "")
    add_library(LsCs::LsCsSqlOdbc ALIAS LsCsSqlOdbc)
 
-   set_target_properties(LsCsSqlOdbc PROPERTIES OUTPUT_NAME LsCsSqlOdbc${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsSqlOdbc PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    include_directories(${ODBC_INCLUDE_DIRS})
 
@@ -32,7 +36,7 @@ if (WITH_ODBC_PLUGIN AND ODBC_FOUND)
    target_compile_definitions(LsCsSqlOdbc
       PRIVATE
       -DIN_TRUE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)

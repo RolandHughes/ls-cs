@@ -24,7 +24,7 @@
 #include <qplatformdefs.h>
 #include <qxbmhandler_p.h>
 
-#ifndef QT_NO_IMAGEFORMAT_XBM
+#ifndef LSCS_NO_IMAGEFORMAT_XBM
 
 #include <qimage.h>
 #include <qiodevice.h>
@@ -442,4 +442,4 @@ QString QXbmHandler::name() const
 }
 
 
-#endif // QT_NO_IMAGEFORMAT_XBM
+#endif // LSCS_NO_IMAGEFORMAT_XBM

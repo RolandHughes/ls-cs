@@ -33,6 +33,6 @@ struct Q_CORE_EXPORT QFactoryInterface
     virtual QStringList keys() const = 0;
 };
 
-LSCS_DECLARE_INTERFACE( QFactoryInterface, "com.copperspice.CS.QFactoryInterface" )
+LSCS_DECLARE_INTERFACE( QFactoryInterface, "com.lscs.QFactoryInterface" )
 
 #endif

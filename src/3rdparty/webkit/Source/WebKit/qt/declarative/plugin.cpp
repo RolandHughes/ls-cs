@@ -22,7 +22,7 @@
 #include <QtDeclarative/qdeclarative.h>
 #include <QtDeclarative/qdeclarativeextensionplugin.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class WebKitQmlPlugin : public QDeclarativeExtensionPlugin
 {
@@ -41,7 +41,7 @@ public:
     }
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-Q_EXPORT_PLUGIN2( qmlwebkitplugin, QT_PREPEND_NAMESPACE( WebKitQmlPlugin ) );
+Q_EXPORT_PLUGIN2( qmlwebkitplugin, LSCS_PREPEND_NAMESPACE( WebKitQmlPlugin ) );
 

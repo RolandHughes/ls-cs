@@ -32,7 +32,7 @@
 #include <QtGui/qicon.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
   \since 4.5
@@ -597,4 +597,4 @@ Qt::ItemFlags QScriptBreakpointsModel::flags( const QModelIndex &index ) const
     return ret;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

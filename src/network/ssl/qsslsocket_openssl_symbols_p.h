@@ -29,7 +29,7 @@
 
 #define DUMMYARG
 
-#if !defined QT_LINKED_OPENSSL
+#if !defined LSCS_LINKED_OPENSSL
 // **************** Shared declarations ******************
 // ret func(arg)
 
@@ -129,7 +129,7 @@
    }
 // **************** Shared declarations ******************
 
-#else // !defined QT_LINKED_OPENSSL
+#else // !defined LSCS_LINKED_OPENSSL
 
 // **************** Static declarations ******************
 
@@ -167,7 +167,7 @@
 
 // **************** Static declarations ******************
 
-#endif // !defined QT_LINKED_OPENSSL
+#endif // !defined LSCS_LINKED_OPENSSL
 
 bool q_resolveOpenSslSymbols();
 long q_ASN1_INTEGER_get( ASN1_INTEGER *a );

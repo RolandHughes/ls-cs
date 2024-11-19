@@ -43,7 +43,11 @@ if(WITH_MULTIMEDIA AND CMAKE_SYSTEM_NAME MATCHES "Darwin")
    add_library(LsCsMultimedia_avf_camera MODULE "")
    add_library(LsCs::LsCsMultimedia_avf_camera ALIAS LsCsMultimedia_avf_camera)
 
-   set_target_properties(LsCsMultimedia_avf_camera PROPERTIES OUTPUT_NAME LsCsMultimedia_avf_camera${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsMultimedia_avf_camera PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    target_sources(LsCsMultimedia_avf_camera
       PRIVATE
@@ -87,7 +91,7 @@ if(WITH_MULTIMEDIA AND CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
    target_compile_definitions(LsCsMultimedia_avf_camera
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
       -DQMEDIA_AVF_CAMERA
    )
 
@@ -95,7 +99,11 @@ if(WITH_MULTIMEDIA AND CMAKE_SYSTEM_NAME MATCHES "Darwin")
    add_library(LsCsMultimedia_avf_mediaplayer MODULE "")
    add_library(LsCs::LsCsMultimedia_avf_mediaplayer ALIAS LsCsMultimedia_avf_mediaplayer)
 
-   set_target_properties(LsCsMultimedia_avf_mediaplayer PROPERTIES OUTPUT_NAME LsCsMultimedia_avf_mediaplayer${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsMultimedia_avf_mediaplayer PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    target_sources(LsCsMultimedia_avf_mediaplayer
       PRIVATE
@@ -128,7 +136,7 @@ if(WITH_MULTIMEDIA AND CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
    target_compile_definitions(LsCsMultimedia_avf_mediaplayer
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
       -DQMEDIA_AVF_MEDIAPLAYER
    )
 

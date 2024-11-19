@@ -33,7 +33,7 @@
 
 #include <lscs_shared_guarded.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QVariantAnimationPrivate;
 
@@ -130,6 +130,6 @@ void QVariantAnimation::lscs_addCustomType( CustomFormula callback )
     }
 }
 
-#endif // QT_NO_ANIMATION
+#endif // LSCS_NO_ANIMATION
 
 #endif

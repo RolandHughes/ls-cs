@@ -74,7 +74,7 @@ static const unsigned short symbol_map[0x100] =
 
 // ---------------------------- PS/PDF helper methods -----------------------------------
 
-#ifndef QT_NO_PDF
+#ifndef LSCS_NO_PDF
 
 QByteArray QFontSubset::glyphName( unsigned short unicode, bool symbol )
 {
@@ -390,7 +390,7 @@ int QFontSubset::addGlyph( int index )
     return idx;
 }
 
-#endif // QT_NO_PDF
+#endif // LSCS_NO_PDF
 
 // ------------------------------ Truetype generation ----------------------------------------------
 

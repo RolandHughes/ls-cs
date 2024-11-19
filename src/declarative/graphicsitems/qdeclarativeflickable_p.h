@@ -26,7 +26,7 @@
 
 #include <qdeclarativeitem.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeFlickablePrivate;
 class QDeclarativeFlickableVisibleArea;
@@ -261,7 +261,7 @@ private:
     friend class QDeclarativeFlickableVisibleArea;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeFlickable )
 

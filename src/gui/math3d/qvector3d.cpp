@@ -29,9 +29,9 @@
 #include <qvector2d.h>
 #include <qvector4d.h>
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
-#ifndef QT_NO_VECTOR2D
+#ifndef LSCS_NO_VECTOR2D
 
 QVector3D::QVector3D( const QVector2D &vector )
 {
@@ -49,7 +49,7 @@ QVector3D::QVector3D( const QVector2D &vector, qreal zpos )
 
 #endif
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
 
 QVector3D::QVector3D( const QVector4D &vector )
 {
@@ -146,7 +146,7 @@ qreal QVector3D::distanceToLine( const QVector3D &point, const QVector3D &direct
     return ( *this - p ).length();
 }
 
-#ifndef QT_NO_VECTOR2D
+#ifndef LSCS_NO_VECTOR2D
 
 QVector2D QVector3D::toVector2D() const
 {
@@ -155,7 +155,7 @@ QVector2D QVector3D::toVector2D() const
 
 #endif
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
 
 QVector4D QVector3D::toVector4D() const
 {
@@ -205,5 +205,5 @@ QDataStream &operator>>( QDataStream &stream, QVector3D &vector )
     return stream;
 }
 
-#endif // QT_NO_VECTOR3D
+#endif // LSCS_NO_VECTOR3D
 

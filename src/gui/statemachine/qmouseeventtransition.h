@@ -26,7 +26,7 @@
 
 #include <qeventtransition.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 class QMouseEventTransitionPrivate;
 class QPainterPath;
@@ -66,6 +66,6 @@ private:
     Q_DECLARE_PRIVATE( QMouseEventTransition )
 };
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE
 
 #endif

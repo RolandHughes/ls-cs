@@ -31,7 +31,7 @@
 #include <qsystemlibrary_p.h>
 
 #if defined(Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <time.h>
 #endif
 
@@ -40,7 +40,7 @@ static const char *winLangCodeToIsoName( int code );
 static QString winIso639LangName( LCID id = LOCALE_USER_DEFAULT );
 static QString winIso3116CtryName( LCID id = LOCALE_USER_DEFAULT );
 
-#ifndef QT_NO_SYSTEMLOCALE
+#ifndef LSCS_NO_SYSTEMLOCALE
 
 #ifndef MUI_LANGUAGE_NAME
 #define MUI_LANGUAGE_NAME 0x8
@@ -752,7 +752,7 @@ QString QSystemLocalePrivate::fromWinFormat( const QString &sys_fmt )
 
         if ( sys_fmt.at( i ) == '\'' )
         {
-            QString text = qt_readEscapedFormatString( sys_fmt, &i );
+            QString text = lscs_readEscapedFormatString( sys_fmt, &i );
 
             if ( text == "'" )
             {
@@ -768,7 +768,7 @@ QString QSystemLocalePrivate::fromWinFormat( const QString &sys_fmt )
         }
 
         QChar c = sys_fmt.at( i );
-        int repeat = qt_repeatCount( sys_fmt, i );
+        int repeat = lscs_repeatCount( sys_fmt, i );
 
         switch ( c.unicode() )
         {
@@ -978,7 +978,7 @@ QVariant QSystemLocale::query( QueryType type, QVariant in = QVariant() ) const
 
     return QVariant();
 }
-#endif // QT_NO_SYSTEMLOCALE
+#endif // LSCS_NO_SYSTEMLOCALE
 
 struct WindowsToISOListElt
 {
@@ -1201,7 +1201,7 @@ static QByteArray getWinLocaleName( LCID id )
 
         QString lang, script, cntry;
 
-        if ( result == "C" || ( !result.isEmpty() && qt_splitLocaleName( QString::fromUtf8( result ), lang, script, cntry ) ) )
+        if ( result == "C" || ( !result.isEmpty() && lscs_splitLocaleName( QString::fromUtf8( result ), lang, script, cntry ) ) )
         {
             long id = 0;
             bool ok = false;
@@ -1238,7 +1238,7 @@ static QByteArray getWinLocaleName( LCID id )
     return result;
 }
 
-Q_CORE_EXPORT QLocale qt_localeFromLCID( LCID id )
+Q_CORE_EXPORT QLocale lscs_localeFromLCID( LCID id )
 {
     return QLocale( QString::fromLatin1( getWinLocaleName( id ) ) );
 }

@@ -40,7 +40,7 @@
 #include <QtGui/qmessagebox.h>
 #include <QtScript/qscriptengine.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 namespace
 {
@@ -496,4 +496,4 @@ void QScriptDebuggerLocalsWidget::_q_expandIndex( const QModelIndex &un_named_ar
     d->_q_expandIndex();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

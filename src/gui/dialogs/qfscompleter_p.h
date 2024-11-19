@@ -27,7 +27,7 @@
 #include <qcompleter.h>
 #include <qfilesystemmodel.h>
 
-#ifndef QT_NO_FSCOMPLETER
+#ifndef LSCS_NO_FSCOMPLETER
 
 //  QCompleter which can deal with QFileSystemModel
 class QFSCompleter :  public QCompleter
@@ -48,7 +48,7 @@ public:
     QFileSystemModel *sourceModel;
 };
 
-#endif // QT_NO_FSCOMPLETER
+#endif // LSCS_NO_FSCOMPLETER
 
 #endif
 

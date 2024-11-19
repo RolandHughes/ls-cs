@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/lscs/etc">
+        <file>@CMAKE_BINARY_DIR@/lscs.conf</file>
+    </qresource>
+</RCC>

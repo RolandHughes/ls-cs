@@ -80,7 +80,7 @@ void QOutlineMapper::curveTo( const QPointF &cp1, const QPointF &cp2, const QPoi
 }
 
 
-QT_FT_Outline *QOutlineMapper::convertPath( const QPainterPath &path )
+LSCS_FT_Outline *QOutlineMapper::convertPath( const QPainterPath &path )
 {
     Q_ASSERT( !path.isEmpty() );
     int elmCount = path.elementCount();
@@ -121,7 +121,7 @@ QT_FT_Outline *QOutlineMapper::convertPath( const QPainterPath &path )
     return outline();
 }
 
-QT_FT_Outline *QOutlineMapper::convertPath( const QVectorPath &path )
+LSCS_FT_Outline *QOutlineMapper::convertPath( const QVectorPath &path )
 {
     int count = path.elementCount();
 
@@ -237,7 +237,7 @@ void QOutlineMapper::endOutline()
         QPainterPath path = vp.convertToPainterPath();
         path = QTransform( m_m11, m_m12, m_m13, m_m21, m_m22, m_m23, m_dx, m_dy, m_m33 ).map( path );
 
-        if ( !( m_outline.flags & QT_FT_OUTLINE_EVEN_ODD_FILL ) )
+        if ( !( m_outline.flags & LSCS_FT_OUTLINE_EVEN_ODD_FILL ) )
         {
             path.setFillRule( Qt::WindingFill );
         }
@@ -267,12 +267,12 @@ void QOutlineMapper::endOutline()
 #endif
 
     // Check for out of dev bounds
-    const bool do_clip = !m_in_clip_elements && ( ( controlPointRect.left() < -QT_RASTER_COORD_LIMIT
-                         || controlPointRect.right() > QT_RASTER_COORD_LIMIT
-                         || controlPointRect.top() < -QT_RASTER_COORD_LIMIT
-                         || controlPointRect.bottom() > QT_RASTER_COORD_LIMIT
-                         || controlPointRect.width() > QT_RASTER_COORD_LIMIT
-                         || controlPointRect.height() > QT_RASTER_COORD_LIMIT ) );
+    const bool do_clip = !m_in_clip_elements && ( ( controlPointRect.left() < -LSCS_RASTER_COORD_LIMIT
+                         || controlPointRect.right() > LSCS_RASTER_COORD_LIMIT
+                         || controlPointRect.top() < -LSCS_RASTER_COORD_LIMIT
+                         || controlPointRect.bottom() > LSCS_RASTER_COORD_LIMIT
+                         || controlPointRect.width() > LSCS_RASTER_COORD_LIMIT
+                         || controlPointRect.height() > LSCS_RASTER_COORD_LIMIT ) );
 
     if ( do_clip )
     {
@@ -298,7 +298,7 @@ void QOutlineMapper::convertElements( const QPointF *elements,
             {
                 case QPainterPath::MoveToElement:
                 {
-                    QT_FT_Vector pt_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
+                    LSCS_FT_Vector pt_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
 
                     if ( i != 0 )
                     {
@@ -306,30 +306,30 @@ void QOutlineMapper::convertElements( const QPointF *elements,
                     }
 
                     m_points << pt_fixed;
-                    m_tags <<  QT_FT_CURVE_TAG_ON;
+                    m_tags <<  LSCS_FT_CURVE_TAG_ON;
                 }
                 break;
 
                 case QPainterPath::LineToElement:
                 {
-                    QT_FT_Vector pt_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
+                    LSCS_FT_Vector pt_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
                     m_points << pt_fixed;
-                    m_tags << QT_FT_CURVE_TAG_ON;
+                    m_tags << LSCS_FT_CURVE_TAG_ON;
                 }
                 break;
 
                 case QPainterPath::CurveToElement:
                 {
-                    QT_FT_Vector cp1_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
+                    LSCS_FT_Vector cp1_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
                     ++e;
 
-                    QT_FT_Vector cp2_fixed = { qreal_to_fixed_26_6( ( e )->x() ), qreal_to_fixed_26_6( ( e )->y() ) };
+                    LSCS_FT_Vector cp2_fixed = { qreal_to_fixed_26_6( ( e )->x() ), qreal_to_fixed_26_6( ( e )->y() ) };
                     ++e;
 
-                    QT_FT_Vector ep_fixed = { qreal_to_fixed_26_6( ( e )->x() ), qreal_to_fixed_26_6( ( e )->y() ) };
+                    LSCS_FT_Vector ep_fixed = { qreal_to_fixed_26_6( ( e )->x() ), qreal_to_fixed_26_6( ( e )->y() ) };
 
                     m_points << cp1_fixed << cp2_fixed << ep_fixed;
-                    m_tags << QT_FT_CURVE_TAG_CUBIC << QT_FT_CURVE_TAG_CUBIC << QT_FT_CURVE_TAG_ON;
+                    m_tags << LSCS_FT_CURVE_TAG_CUBIC << LSCS_FT_CURVE_TAG_CUBIC << LSCS_FT_CURVE_TAG_ON;
 
                     types += 2;
                     i += 2;
@@ -353,9 +353,9 @@ void QOutlineMapper::convertElements( const QPointF *elements,
 
         while ( e < last )
         {
-            QT_FT_Vector pt_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
+            LSCS_FT_Vector pt_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
             m_points << pt_fixed;
-            m_tags << QT_FT_CURVE_TAG_ON;
+            m_tags << LSCS_FT_CURVE_TAG_ON;
             ++e;
         }
     }
@@ -386,7 +386,7 @@ void QOutlineMapper::clipElements( const QPointF *elements,
 
     QPainterPath path;
 
-    if ( !( m_outline.flags & QT_FT_OUTLINE_EVEN_ODD_FILL ) )
+    if ( !( m_outline.flags & LSCS_FT_OUTLINE_EVEN_ODD_FILL ) )
     {
         path.setFillRule( Qt::WindingFill );
     }

@@ -488,7 +488,7 @@ static void maskTable( uchar ( &table )[N], const uchar ( &mask )[N] )
     Corrects percent encoded errors by interpreting every '%' as meaning "%25"
 */
 
-int qt_urlRecode( QString &appendTo, QString::const_iterator begin, QString::const_iterator end,
+int lscs_urlRecode( QString &appendTo, QString::const_iterator begin, QString::const_iterator end,
                   QUrl::FormattingOptions encoding, const ushort *tableModifications )
 {
     uchar actionTable[sizeof defaultActionTable];
@@ -525,7 +525,7 @@ int qt_urlRecode( QString &appendTo, QString::const_iterator begin, QString::con
     return retval;
 }
 
-QString qt_urlRecodeByteArray( const QByteArray &ba )
+QString lscs_urlRecodeByteArray( const QByteArray &ba )
 {
     if ( ba.isNull() )
     {

@@ -23,7 +23,7 @@
 
 #include <qwindowdefs.h>
 
-#ifndef QT_NO_FONTDIALOG
+#ifndef LSCS_NO_FONTDIALOG
 
 #include <qfontdialog.h>
 #include <qdialog_p.h>
@@ -148,7 +148,7 @@ void QFontDialogPrivate::init()
     familyEdit->setFocusProxy( familyList );
 
     familyAccel = new QLabel( q );
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     familyAccel->setBuddy( familyList );
 #endif
     familyAccel->setIndent( 2 );
@@ -159,7 +159,7 @@ void QFontDialogPrivate::init()
     styleEdit->setFocusProxy( styleList );
 
     styleAccel = new QLabel( q );
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     styleAccel->setBuddy( styleList );
 #endif
     styleAccel->setIndent( 2 );
@@ -171,7 +171,7 @@ void QFontDialogPrivate::init()
     sizeList = new QFontListView( q );
 
     sizeAccel = new QLabel( q );
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     sizeAccel->setBuddy( sizeEdit );
 #endif
     sizeAccel->setIndent( 2 );
@@ -204,7 +204,7 @@ void QFontDialogPrivate::init()
 
     writingSystemAccel = new QLabel( q );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     writingSystemAccel->setBuddy( writingSystemCombo );
 #endif
 
@@ -310,7 +310,7 @@ void QFontDialogPrivate::init()
     familyList->setFocus();
     retranslateStrings();
 
-    sampleEdit->setObjectName( "qt_fontDialog_sampleEdit" );
+    sampleEdit->setObjectName( "lscs_fontDialog_sampleEdit" );
 }
 
 // internal
@@ -1061,4 +1061,4 @@ void QFontDialog::_q_updateSample()
     d->_q_updateSample();
 }
 
-#endif // QT_NO_FONTDIALOG
+#endif // LSCS_NO_FONTDIALOG

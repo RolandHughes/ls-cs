@@ -41,7 +41,7 @@
 Q_DECLARE_METATYPE( QScriptDebuggerValue )
 Q_DECLARE_METATYPE( QScriptDebuggerBackendPrivate * )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
   \since 4.5
@@ -1167,4 +1167,4 @@ void QScriptDebuggerBackend::setCommandExecutor( QScriptDebuggerCommandExecutor 
   \sa resume()
 */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

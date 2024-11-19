@@ -120,7 +120,7 @@ messageDebugEntries[] =
     {WM_IME_NOTIFY, "WM_IME_NOTIFY", true},
     {WM_IME_REQUEST, "WM_IME_REQUEST", true},
 
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
     {WM_QUERYENDSESSION, "WM_QUERYENDSESSION", true},
     {WM_ENDSESSION, "WM_ENDSESSION", true},
 #endif

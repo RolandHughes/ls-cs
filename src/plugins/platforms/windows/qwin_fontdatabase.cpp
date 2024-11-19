@@ -800,7 +800,7 @@ static bool addFontToDatabase( const QString &familyName, uchar charSet,
 
 static bool storeFont_callback = false;
 
-static int QT_WIN_CALLBACK storeFont( const LOGFONT *logFont, const TEXTMETRIC *textmetric,
+static int LSCS_WIN_CALLBACK storeFont( const LOGFONT *logFont, const TEXTMETRIC *textmetric,
                                       DWORD type, LPARAM lParam )
 {
     storeFont_callback = true;
@@ -883,7 +883,7 @@ struct PopulateFamiliesContext
 };
 }   // end namespace
 
-static int QT_WIN_CALLBACK populateFontFamilies( const LOGFONT *logFont, const TEXTMETRIC *textmetric,
+static int LSCS_WIN_CALLBACK populateFontFamilies( const LOGFONT *logFont, const TEXTMETRIC *textmetric,
         DWORD, LPARAM lparam )
 {
     // the "@family" fonts are just the same as "family". Ignore them.
@@ -969,7 +969,7 @@ QSharedPointer<QWindowsFontEngineData> sharedFontData()
     return data->localData();
 }
 
-extern Q_GUI_EXPORT bool qt_needs_a8_gamma_correction;
+extern Q_GUI_EXPORT bool lscs_needs_a8_gamma_correction;
 
 QWindowsFontDatabase::QWindowsFontDatabase()
 {
@@ -979,7 +979,7 @@ QWindowsFontDatabase::QWindowsFontDatabase()
     qDebug() << "QWindowsFontDatabase() Clear type = " << data->clearTypeEnabled << " Gamma = " << data->fontSmoothingGamma;
 #endif
 
-    qt_needs_a8_gamma_correction = true;
+    lscs_needs_a8_gamma_correction = true;
 }
 
 QWindowsFontDatabase::~QWindowsFontDatabase()

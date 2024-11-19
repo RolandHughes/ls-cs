@@ -103,7 +103,7 @@ static QGStreamerMetaDataKeys *metadataKeys()
     return &retval;
 }
 
-static const QGStreamerMetaDataKeys *qt_gstreamerMetaDataKeys()
+static const QGStreamerMetaDataKeys *lscs_gstreamerMetaDataKeys()
 {
     if ( metadataKeys()->isEmpty() )
     {
@@ -235,7 +235,7 @@ QVariant CameraBinMetaData::metaData( const QString &key ) const
 
 #endif
 
-    for ( const QGStreamerMetaDataKey &metadataKey : *qt_gstreamerMetaDataKeys() )
+    for ( const QGStreamerMetaDataKey &metadataKey : *lscs_gstreamerMetaDataKeys() )
     {
         if ( metadataKey.qtName == key )
         {
@@ -264,7 +264,7 @@ void CameraBinMetaData::setMetaData( const QString &key, const QVariant &value )
         }
     }
 
-    for ( const QGStreamerMetaDataKey &metadataKey : *qt_gstreamerMetaDataKeys() )
+    for ( const QGStreamerMetaDataKey &metadataKey : *lscs_gstreamerMetaDataKeys() )
     {
         if ( metadataKey.qtName == key )
         {
@@ -294,7 +294,7 @@ QStringList CameraBinMetaData::availableMetaData() const
 
     if ( keysMap.isEmpty() )
     {
-        for ( const QGStreamerMetaDataKey &metadataKey : *qt_gstreamerMetaDataKeys() )
+        for ( const QGStreamerMetaDataKey &metadataKey : *lscs_gstreamerMetaDataKeys() )
         {
             keysMap[QByteArray( metadataKey.gstName )] = metadataKey.qtName;
         }

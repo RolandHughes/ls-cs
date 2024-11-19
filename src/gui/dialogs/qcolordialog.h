@@ -26,7 +26,7 @@
 
 #include <qdialog.h>
 
-#ifndef QT_NO_COLORDIALOG
+#ifndef LSCS_NO_COLORDIALOG
 
 class QColorDialogPrivate;
 
@@ -127,6 +127,6 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QColorDialog::ColorDialogOptions )
 
-#endif // QT_NO_COLORDIALOG
+#endif // LSCS_NO_COLORDIALOG
 
 #endif // QCOLORDIALOG_H

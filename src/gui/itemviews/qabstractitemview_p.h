@@ -38,7 +38,7 @@
 #include <qabstractitemmodel_p.h>
 #include <qabstractscrollarea_p.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 struct QEditorInfo
 {
@@ -149,7 +149,7 @@ public:
         autoScrollCount = 0;
     }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     virtual bool dropOn( QDropEvent *event, int *row, int *col, QModelIndex *index );
 #endif
 
@@ -193,7 +193,7 @@ public:
         }
     }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     virtual QAbstractItemView::DropIndicatorPosition position( const QPoint &pos, const QRect &rect, const QModelIndex &idx ) const;
 
     bool canDrop( QDropEvent *event )
@@ -230,7 +230,7 @@ public:
     void paintDropIndicator( QPainter *painter )
     {
         if ( showDropIndicator && state == QAbstractItemView::DraggingState
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
                 && viewport->cursor().shape() != Qt::ForbiddenCursor
 #endif
            )
@@ -486,7 +486,7 @@ public:
 
     bool tabKeyNavigation;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     bool showDropIndicator;
     QRect dropIndicatorRect;
     bool dragEnabled;
@@ -522,7 +522,7 @@ public:
     QAbstractItemView::ScrollMode verticalScrollMode;
     QAbstractItemView::ScrollMode horizontalScrollMode;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     // the selection before the last mouse down. In case we have to restore it for scrolling
     QItemSelection oldSelection;
     QModelIndex oldCurrent;
@@ -559,6 +559,6 @@ inline int qBinarySearch( const QVector<T> &vec, const T &item, int start, int e
 
     return i;
 }
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
 #endif // QABSTRACTITEMVIEW_P_H

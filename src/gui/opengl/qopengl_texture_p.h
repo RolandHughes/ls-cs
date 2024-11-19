@@ -25,7 +25,7 @@
 #ifndef QABSTRACTOPENGLTEXTURE_P_H
 #define QABSTRACTOPENGLTEXTURE_P_H
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qopengl.h>
 #include <qopengl_texture.h>
@@ -142,6 +142,6 @@ public:
 
 #undef Q_CALL_MEMBER_FUNCTION
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif // QABSTRACTOPENGLTEXTURE_P_H

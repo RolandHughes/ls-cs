@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_TEXTODFWRITER
+#ifndef LSCS_NO_TEXTODFWRITER
 
 #include <qtextodfwriter_p.h>
 
@@ -1137,7 +1137,7 @@ bool QTextOdfWriter::writeAll()
 
     QXmlStreamWriter writer( m_strategy->contentStream );
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
     if ( m_codec )
     {
@@ -1215,4 +1215,4 @@ bool QTextOdfWriter::writeAll()
     return true;
 }
 
-#endif // QT_NO_TEXTODFWRITER
+#endif // LSCS_NO_TEXTODFWRITER

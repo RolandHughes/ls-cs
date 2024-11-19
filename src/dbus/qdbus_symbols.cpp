@@ -26,13 +26,13 @@
 #include <QtCore/qmutex.h>
 #include <qmutexpool_p.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 void *qdbus_resolve_me( const char *name );
 
-#if !defined QT_LINKED_LIBDBUS
+#if !defined LSCS_LINKED_LIBDBUS
 
 static QLibrary *qdbus_libdbus = 0;
 
@@ -110,8 +110,8 @@ void *qdbus_resolve_me( const char *name )
 
 Q_DESTRUCTOR_FUNCTION( qdbus_unloadLibDBus )
 
-#endif // QT_LINKED_LIBDBUS
+#endif // LSCS_LINKED_LIBDBUS
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

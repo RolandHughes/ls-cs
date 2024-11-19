@@ -26,7 +26,7 @@
 #include "private/qdeclarativeengine_p.h"
 #include "private/qdeclarativeproperty_p.h"
 
-QT_BEGIN_NAMESPACE QDeclarativeListReferencePrivate::QDeclarativeListReferencePrivate()
+LSCS_BEGIN_NAMESPACE QDeclarativeListReferencePrivate::QDeclarativeListReferencePrivate()
     : propertyType( -1 ), refCount( 1 )
 {
 }
@@ -455,4 +455,4 @@ Synonym for \c {void (*)(QDeclarativeListProperty<T> *property)}.
 Clear the list \a property.
 */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

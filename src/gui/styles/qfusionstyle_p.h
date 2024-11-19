@@ -26,7 +26,7 @@
 
 #include <qcommonstyle.h>
 
-#if ! defined(QT_NO_STYLE_FUSION)
+#if ! defined(LSCS_NO_STYLE_FUSION)
 
 class QFusionStylePrivate;
 
@@ -89,6 +89,6 @@ protected:
 
 };
 
-#endif // QT_NO_STYLE_FUSION
+#endif // LSCS_NO_STYLE_FUSION
 
 #endif //QFUSIONSTYLE_P_H

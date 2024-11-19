@@ -27,7 +27,7 @@
 #include <qdeclarative.h>
 #include <QtCore/qobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeBindPrivate;
 
@@ -69,7 +69,7 @@ private:
     void eval();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeBind )
 

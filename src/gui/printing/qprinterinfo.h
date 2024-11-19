@@ -29,7 +29,7 @@
 #include <qpair.h>
 #include <qpagesize.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 class QPrinterInfoPrivate;
 class QPrinterInfoPrivateDeleter;
@@ -96,7 +96,7 @@ private:
     QScopedPointer<QPrinterInfoPrivate, lscs_internal::QPrinterInfoPrivateDeleter> d_ptr;
 };
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 
 #endif

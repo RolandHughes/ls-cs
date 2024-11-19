@@ -31,7 +31,7 @@
 #include <qplatformdefs.h>
 #include <qregularexpression.h>
 #include <qstringparser.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qvarlengtharray.h>
 
 #include <qfsfileengine_p.h>
@@ -139,7 +139,7 @@ using PREPARSE_DATA_BUFFER = _REPARSE_DATA_BUFFER *;
 #   define FSCTL_GET_REPARSE_POINT CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 42, METHOD_BUFFERED, FILE_ANY_ACCESS)
 #endif
 
-Q_CORE_EXPORT int qt_ntfs_permission_lookup = 0;
+Q_CORE_EXPORT int lscs_ntfs_permission_lookup = 0;
 
 using PtrGetNamedSecurityInfoW =
     DWORD ( WINAPI * )( LPWSTR, SE_OBJECT_TYPE, SECURITY_INFORMATION, PSID *, PSID *, PACL *, PACL *, PSECURITY_DESCRIPTOR * );
@@ -767,9 +767,9 @@ QString QFileSystemEngine::owner( const QFileSystemEntry &entry, QAbstractFileEn
 {
     QString name;
 
-    extern int qt_ntfs_permission_lookup;
+    extern int lscs_ntfs_permission_lookup;
 
-    if ( ( qt_ntfs_permission_lookup > 0 ) && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based ) )
+    if ( ( lscs_ntfs_permission_lookup > 0 ) && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based ) )
     {
         resolveLibs();
 
@@ -841,7 +841,7 @@ bool QFileSystemEngine::fillPermissions( const QFileSystemEntry &entry, QFileSys
     static constexpr const int WriteMask = 0x00000002;
     static constexpr const int ExecMask  = 0x00000020;
 
-    if ( ( qt_ntfs_permission_lookup > 0 ) && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based ) )
+    if ( ( lscs_ntfs_permission_lookup > 0 ) && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based ) )
     {
         resolveLibs();
 
@@ -979,7 +979,7 @@ bool QFileSystemEngine::fillPermissions( const QFileSystemEntry &entry, QFileSys
 
         // ### what to do with permissions if we don't use NTFS
         // for now just add all permissions and what about exe missions
-        // also qt_ntfs_permission_lookup is now not set by default
+        // also lscs_ntfs_permission_lookup is now not set by default
 
         data.entryFlags |= QFileSystemMetaData::OwnerReadPermission |
                            QFileSystemMetaData::GroupReadPermission | QFileSystemMetaData::OtherReadPermission;

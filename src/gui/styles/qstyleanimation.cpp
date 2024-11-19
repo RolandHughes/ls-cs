@@ -23,7 +23,7 @@
 
 #include <qstyleanimation_p.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 #include <qcoreapplication.h>
 #include <qevent.h>
@@ -390,4 +390,4 @@ void QScrollbarStyleAnimation::updateCurrentTime( int time )
 }
 
 
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION

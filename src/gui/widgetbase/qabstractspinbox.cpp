@@ -30,7 +30,7 @@
 #include <qdatetimeparser_p.h>
 #include <qlineedit_p.h>
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
 #include <qapplication.h>
 #include <qclipboard.h>
@@ -44,7 +44,7 @@
 #include <qstylehints.h>
 #include <qstylepainter.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 # include <qaccessible.h>
 #endif
 
@@ -446,7 +446,7 @@ bool QAbstractSpinBox::event( QEvent *event )
 
             break;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         case QEvent::EnterEditFocus:
         case QEvent::LeaveEditFocus:
@@ -664,7 +664,7 @@ void QAbstractSpinBox::keyPressEvent( QKeyEvent *event )
         case Qt::Key_Down:
         {
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
             if ( QApplication::keypadNavigationEnabled() )
             {
@@ -709,14 +709,14 @@ void QAbstractSpinBox::keyPressEvent( QKeyEvent *event )
                 }
             }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
             QAccessibleValueChangeEvent event( this, d->value );
             QAccessible::updateAccessibility( &event );
 #endif
             return;
         }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         case Qt::Key_Left:
         case Qt::Key_Right:
@@ -748,7 +748,7 @@ void QAbstractSpinBox::keyPressEvent( QKeyEvent *event )
             emit d->edit->returnPressed();
             return;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         case Qt::Key_Select:
             if ( QApplication::keypadNavigationEnabled() )
@@ -813,7 +813,7 @@ void QAbstractSpinBox::keyPressEvent( QKeyEvent *event )
             break;
 
         default:
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
             if ( event == QKeySequence::SelectAll )
             {
                 selectAll();
@@ -852,7 +852,7 @@ void QAbstractSpinBox::keyReleaseEvent( QKeyEvent *event )
     }
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 void QAbstractSpinBox::wheelEvent( QWheelEvent *event )
 {
     Q_D( QAbstractSpinBox );
@@ -897,7 +897,7 @@ void QAbstractSpinBox::focusOutEvent( QFocusEvent *event )
     d->updateEdit();
     QWidget::focusOutEvent( event );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     // editingFinished() is already emitted on LeaveEditFocus
     if ( ! QApplication::keypadNavigationEnabled() )
@@ -1005,7 +1005,7 @@ void QAbstractSpinBox::timerEvent( QTimerEvent *event )
 
 void QAbstractSpinBox::contextMenuEvent( QContextMenuEvent *event )
 {
-#ifdef QT_NO_CONTEXTMENU
+#ifdef LSCS_NO_CONTEXTMENU
     ( void ) event;
 #else
     Q_D( QAbstractSpinBox );
@@ -1325,7 +1325,7 @@ void QAbstractSpinBoxPrivate::init()
     Q_Q( QAbstractSpinBox );
 
     q->setLineEdit( new QLineEdit( q ) );
-    edit->setObjectName( "qt_spinbox_lineedit" );
+    edit->setObjectName( "lscs_spinbox_lineedit" );
     validator = new QSpinBoxValidator( q, this );
     edit->setValidator( validator );
 
@@ -1382,7 +1382,7 @@ void QAbstractSpinBoxPrivate::updateState( bool up, bool fromKeyboard )
         buttonState = ( up ? Up : Down ) | ( fromKeyboard ? Keyboard : Mouse );
         q->stepBy( up ? 1 : -1 );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
         QAccessibleValueChangeEvent event( q, value );
         QAccessible::updateAccessibility( &event );
 #endif
@@ -1654,7 +1654,7 @@ void QAbstractSpinBoxPrivate::clearCache() const
 QSpinBoxValidator::QSpinBoxValidator( QAbstractSpinBox *qp, QAbstractSpinBoxPrivate *dp )
     : QValidator( qp ), qptr( qp ), dptr( dp )
 {
-    setObjectName( "qt_spinboxvalidator" );
+    setObjectName( "lscs_spinboxvalidator" );
 }
 
 QValidator::State QSpinBoxValidator::validate( QString &input, int &pos ) const
@@ -1983,4 +1983,4 @@ void QAbstractSpinBox::_q_editorCursorPositionChanged( int oldpos, int newpos )
     d->_q_editorCursorPositionChanged( oldpos, newpos );
 }
 
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX

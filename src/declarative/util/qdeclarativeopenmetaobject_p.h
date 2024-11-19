@@ -29,7 +29,7 @@
 #include <qdeclarativerefcount_p.h>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 class QMetaPropertyBuilder;
@@ -99,6 +99,6 @@ private:
     friend class QDeclarativeOpenMetaObjectType;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEOPENMETAOBJECT_H

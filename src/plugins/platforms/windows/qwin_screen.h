@@ -57,7 +57,7 @@ struct QWindowsScreenData
 class QWindowsScreen : public QPlatformScreen
 {
 public:
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     typedef QScopedPointer<QPlatformCursor> CursorPtr;
 #endif
 
@@ -116,7 +116,7 @@ public:
 
     inline void handleChanges( const QWindowsScreenData &newData );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QPlatformCursor *cursor() const override
     {
         return m_cursor.data();
@@ -140,7 +140,7 @@ public:
 private:
     QWindowsScreenData m_data;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     const CursorPtr m_cursor;
 #endif
 };

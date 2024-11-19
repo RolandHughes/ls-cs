@@ -27,7 +27,7 @@
 #include <QtCore/qurl.h>
 #include <QtCore/qstring.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDebug;
 class QDeclarativeErrorPrivate;
@@ -59,6 +59,6 @@ private:
 
 QDebug Q_DECLARATIVE_EXPORT operator<<( QDebug debug, const QDeclarativeError &error );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEERROR_H

@@ -75,7 +75,7 @@ NotificationWrapper::NotificationWrapper()
 {
 #if ENABLE(NOTIFICATIONS)
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
     m_notificationIcon = nullptr;
 #endif
     m_presenter = nullptr;
@@ -250,7 +250,7 @@ void NotificationPresenterClientQt::displayNotification( Notification *notificat
 
     if ( !wrapper->m_presenter )
     {
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
 
         if ( !dumpNotification )
         {
@@ -289,7 +289,7 @@ void NotificationPresenterClientQt::displayNotification( Notification *notificat
         return;
     }
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
     wrapper->connect( wrapper->m_notificationIcon.get(), SIGNAL( messageClicked() ), wrapper, SLOT( notificationClicked() ) );
     wrapper->m_notificationIcon->show();
     wrapper->m_notificationIcon->showMessage( notification->contents().title(), notification->contents().body() );

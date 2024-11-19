@@ -28,7 +28,7 @@
 
 #include <qpixmap_blitter_p.h>
 
-#ifndef QT_NO_BLITTABLE
+#ifndef LSCS_NO_BLITTABLE
 
 
 #define STATE_XFORM_SCALE       0x00000001
@@ -599,7 +599,7 @@ bool QBlitterPaintEngine::begin( QPaintDevice *pdev )
     Q_D( QBlitterPaintEngine );
     bool ok = QRasterPaintEngine::begin( pdev );
 
-#ifdef QT_BLITTER_RASTEROVERLAY
+#ifdef LSCS_BLITTER_RASTEROVERLAY
     d->pmData->unmergeOverlay();
 #endif
 
@@ -609,7 +609,7 @@ bool QBlitterPaintEngine::begin( QPaintDevice *pdev )
 
 bool QBlitterPaintEngine::end()
 {
-#ifdef QT_BLITTER_RASTEROVERLAY
+#ifdef LSCS_BLITTER_RASTEROVERLAY
     Q_D( QBlitterPaintEngine );
     d->pmData->mergeOverlay();
 #endif
@@ -987,7 +987,7 @@ void QBlitterPaintEngine::drawStaticTextItem( QStaticTextItem *sti )
     d->lock();
     QRasterPaintEngine::drawStaticTextItem( sti );
 
-#ifdef QT_BLITTER_RASTEROVERLAY
+#ifdef LSCS_BLITTER_RASTEROVERLAY
     //#### d->pmData->markRasterOverlay(sti);
     qWarning( "QBlitterPaintEngine::drawStaticTextItem() Unable to draw a QStaticTextItem" );
 #endif
@@ -1022,5 +1022,5 @@ bool QBlitterPaintEngine::drawCachedGlyphs( int numGlyphs, const glyph_t *glyphs
         return QRasterPaintEngine::drawCachedGlyphs( numGlyphs, glyphs, positions, fontEngine );
     }
 }
-#endif //QT_NO_BLITTABLE
+#endif //LSCS_NO_BLITTABLE
 

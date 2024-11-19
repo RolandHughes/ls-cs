@@ -26,7 +26,7 @@
 
 #include <QtCore/qobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeProperty;
 class Q_DECLARATIVE_EXPORT QDeclarativePropertyValueSource
@@ -38,7 +38,7 @@ public:
 };
 LSCS_DECLARE_INTERFACE( QDeclarativePropertyValueSource, "com.copperspice.qml.QDeclarativePropertyValueSource" )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 
 #endif // QDECLARATIVEPROPERTYVALUESOURCE_H

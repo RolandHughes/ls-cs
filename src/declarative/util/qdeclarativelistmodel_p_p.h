@@ -30,7 +30,7 @@
 #include "qdeclarative.h"
 #include <qscriptdeclarativeclass_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeOpenMetaObject;
 class QScriptEngine;
@@ -241,7 +241,7 @@ struct ModelNode
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( ModelNode * )
 

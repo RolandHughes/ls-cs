@@ -29,7 +29,7 @@
 #include <QtGui/qapplication.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 template<typename T>
 int qmlRegisterValueTypeEnums( const char *uri, int versionMajor, int versionMinor, const char *qmlName )
@@ -949,7 +949,7 @@ qreal QDeclarativeFontValueType::pointSize() const
     {
         if ( dpi.isNull )
         {
-            dpi = qt_defaultDpi();
+            dpi = lscs_defaultDpi();
         }
 
         return font.pixelSize() * qreal( 72. ) / qreal( dpi );
@@ -983,7 +983,7 @@ int QDeclarativeFontValueType::pixelSize() const
     {
         if ( dpi.isNull )
         {
-            dpi = qt_defaultDpi();
+            dpi = lscs_defaultDpi();
         }
 
         return ( font.pointSizeF() * dpi ) / qreal( 72. );
@@ -1040,4 +1040,4 @@ void QDeclarativeFontValueType::setWordSpacing( qreal size )
     font.setWordSpacing( size );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

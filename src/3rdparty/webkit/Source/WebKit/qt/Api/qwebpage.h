@@ -304,7 +304,7 @@ public:
 
     bool isModified() const;
 
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
     QUndoStack *undoStack() const;
 #endif
 
@@ -321,7 +321,7 @@ public:
     QString selectedText() const;
     QString selectedHtml() const;
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     QAction *action( WebAction action ) const;
 #endif
 
@@ -354,7 +354,7 @@ public:
     void setContentEditable( bool editable );
     bool isContentEditable() const;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     bool swallowContextMenuEvent( QContextMenuEvent *event );
 #endif
     void updatePositionDependentActions( const QPoint &pos );
@@ -522,7 +522,7 @@ private:
     WEB_LSCS_SLOT_1( Private, void _q_onLoadProgressChanged( int progress ) )
     WEB_LSCS_SLOT_2( _q_onLoadProgressChanged )
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     WEB_LSCS_SLOT_1( Private, void _q_webActionTriggered( bool checked ) )
     WEB_LSCS_SLOT_2( _q_webActionTriggered )
 #endif

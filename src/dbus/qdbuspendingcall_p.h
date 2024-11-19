@@ -45,9 +45,9 @@
 #include "qdbusmessage.h"
 #include "qdbus_symbols_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusPendingCall;
 class QDBusPendingCallWatcher;
@@ -124,7 +124,7 @@ public:
     LSCS_SIGNAL_2( error,error,msg )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

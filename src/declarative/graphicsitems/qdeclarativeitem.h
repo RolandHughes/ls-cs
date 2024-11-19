@@ -33,7 +33,7 @@
 #include <QtGui/qfont.h>
 #include <QtGui/qaction.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeState;
 class QDeclarativeAnchorLine;
@@ -308,7 +308,7 @@ T qobject_cast( QGraphicsItem *item )
 
 QDebug Q_DECLARATIVE_EXPORT operator<<( QDebug debug, QDeclarativeItem *item );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeItem )
 QML_DECLARE_TYPE( QGraphicsObject )

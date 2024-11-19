@@ -29,7 +29,7 @@
 #include <qscriptbreakpointdata_p.h>
 #include <qscriptscriptdata_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerBackendPrivate;
 class QScriptDebuggerAgentPrivate;
@@ -98,6 +98,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerAgent )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

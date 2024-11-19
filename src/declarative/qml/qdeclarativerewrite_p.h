@@ -29,7 +29,7 @@
 #include <qdeclarativejsparser_p.h>
 #include <qdeclarativejsnodepool_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 namespace QDeclarativeRewrite
 {
@@ -108,7 +108,7 @@ private:
 
 } // namespace QDeclarativeRewrite
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEREWRITE_P_H
 

@@ -64,7 +64,7 @@ public:
     {
         if ( !shareContext )
         {
-            this->shareContext = qt_gl_global_share_context();
+            this->shareContext = lscs_gl_global_share_context();
         }
     }
 
@@ -382,7 +382,7 @@ GLuint QOpenGLWindow::defaultFramebufferObject() const
     }
 }
 
-extern Q_GUI_EXPORT QImage qt_gl_read_framebuffer( const QSize &size, bool alpha_format, bool include_alpha );
+extern Q_GUI_EXPORT QImage lscs_gl_read_framebuffer( const QSize &size, bool alpha_format, bool include_alpha );
 
 QImage QOpenGLWindow::grabFramebuffer()
 {
@@ -393,7 +393,7 @@ QImage QOpenGLWindow::grabFramebuffer()
 
     makeCurrent();
 
-    return qt_gl_read_framebuffer( size() * devicePixelRatio(), false, false );
+    return lscs_gl_read_framebuffer( size() * devicePixelRatio(), false, false );
 }
 
 void QOpenGLWindow::initializeGL()

@@ -26,15 +26,15 @@
 
 #include <QtCore/qglobal.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
 #if QDBUS_THREAD_DEBUG
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 typedef void ( *qdbusThreadDebugFunc )( int, int, QDBusConnectionPrivate * );
 Q_DBUS_EXPORT void qdbusDefaultThreadDebug( int, int, QDBusConnectionPrivate * );
 extern Q_DBUS_EXPORT qdbusThreadDebugFunc qdbusThreadDebug;
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif
 
@@ -207,5 +207,5 @@ struct QDBusWatchAndTimeoutLocker: QDBusMutexLocker
 # define SEM_RELEASE(action, sem)       sem.release()
 #endif
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

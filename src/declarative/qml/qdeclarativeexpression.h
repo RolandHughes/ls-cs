@@ -28,7 +28,7 @@
 #include <QtCore/qobject.h>
 #include <QtCore/qvariant.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QString;
 class QDeclarativeRefCount;
@@ -92,7 +92,7 @@ private:
     friend class QDeclarativeVME;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEEXPRESSION_H
 

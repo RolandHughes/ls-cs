@@ -23,7 +23,7 @@
 
 #include <qpdf_p.h>
 
-#ifndef QT_NO_PDF
+#ifndef LSCS_NO_PDF
 
 #include <qalgorithms.h>
 #include <qbuffer.h>
@@ -41,11 +41,11 @@
 
 #include <cstdio>
 
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 #include <zlib.h>
 #endif
 
-#ifdef QT_NO_COMPRESS
+#ifdef LSCS_NO_COMPRESS
 static constexpr const bool do_compress = false;
 #else
 static constexpr const bool do_compress = true;
@@ -55,7 +55,7 @@ static constexpr const bool do_compress = true;
 // can not use it though, as gs generates completely wrong images if this is true.
 static constexpr const bool interpolateImages = false;
 
-inline QPaintEngine::PaintEngineFeatures qt_pdf_decide_features()
+inline QPaintEngine::PaintEngineFeatures lscs_pdf_decide_features()
 {
     QPaintEngine::PaintEngineFeatures f = QPaintEngine::AllFeatures;
     f &= ~( QPaintEngine::PorterDuff
@@ -66,7 +66,7 @@ inline QPaintEngine::PaintEngineFeatures qt_pdf_decide_features()
 }
 
 /* also adds a space at the end of the number */
-const char *qt_real_to_string( qreal val, char *buf )
+const char *lscs_real_to_string( qreal val, char *buf )
 {
     const char *ret = buf;
 
@@ -137,7 +137,7 @@ const char *qt_real_to_string( qreal val, char *buf )
     return ret;
 }
 
-const char *qt_int_to_string( int val, char *buf )
+const char *lscs_int_to_string( int val, char *buf )
 {
     const char *ret = buf;
 
@@ -273,7 +273,7 @@ ByteStream &ByteStream::operator <<( const QString &str )
 ByteStream &ByteStream::operator <<( qreal val )
 {
     char buf[256];
-    qt_real_to_string( val, buf );
+    lscs_real_to_string( val, buf );
     *this << buf;
     return *this;
 }
@@ -281,7 +281,7 @@ ByteStream &ByteStream::operator <<( qreal val )
 ByteStream &ByteStream::operator <<( int val )
 {
     char buf[256];
-    qt_int_to_string( val, buf );
+    lscs_int_to_string( val, buf );
     *this << buf;
     return *this;
 }
@@ -289,9 +289,9 @@ ByteStream &ByteStream::operator <<( int val )
 ByteStream &ByteStream::operator <<( const QPointF &p )
 {
     char buf[256];
-    qt_real_to_string( p.x(), buf );
+    lscs_real_to_string( p.x(), buf );
     *this << buf;
-    qt_real_to_string( p.y(), buf );
+    lscs_real_to_string( p.y(), buf );
     *this << buf;
     return *this;
 }
@@ -348,7 +348,7 @@ void ByteStream::prepareBuffer()
 }
 }
 
-#define QT_PATH_ELEMENT(elm)
+#define LSCS_PATH_ELEMENT(elm)
 
 QByteArray QPdf::generatePath( const QPainterPath &path, const QTransform &matrix, PathFlags flags )
 {
@@ -715,7 +715,7 @@ void QPdf::Stroker::setPen( const QPen &pen, QPainter::RenderHints hints )
 
     qreal w = pen.widthF();
     bool zeroWidth = w < 0.0001;
-    cosmeticPen = qt_pen_is_cosmetic( pen, hints );
+    cosmeticPen = lscs_pen_is_cosmetic( pen, hints );
 
     if ( zeroWidth )
     {
@@ -903,12 +903,12 @@ void QPdfPage::streamImage( int w, int h, int object )
 
 
 QPdfEngine::QPdfEngine( QPdfEnginePrivate &dd )
-    : QPaintEngine( dd, qt_pdf_decide_features() )
+    : QPaintEngine( dd, lscs_pdf_decide_features() )
 {
 }
 
 QPdfEngine::QPdfEngine()
-    : QPaintEngine( *new QPdfEnginePrivate(), qt_pdf_decide_features() )
+    : QPaintEngine( *new QPdfEnginePrivate(), lscs_pdf_decide_features() )
 {
 }
 
@@ -1266,10 +1266,10 @@ void QPdfEngine::drawHyperlink( const QRectF &r, const QUrl &url )
     char buf[256];
     const QRectF rr = d->pageMatrix().mapRect( r );
     d->xprintf( "<<\n/Type /Annot\n/Subtype /Link\n/Rect [" );
-    d->xprintf( "%s ", qt_real_to_string( rr.left(), buf ) );
-    d->xprintf( "%s ", qt_real_to_string( rr.top(), buf ) );
-    d->xprintf( "%s ", qt_real_to_string( rr.right(), buf ) );
-    d->xprintf( "%s", qt_real_to_string( rr.bottom(), buf ) );
+    d->xprintf( "%s ", lscs_real_to_string( rr.left(), buf ) );
+    d->xprintf( "%s ", lscs_real_to_string( rr.top(), buf ) );
+    d->xprintf( "%s ", lscs_real_to_string( rr.right(), buf ) );
+    d->xprintf( "%s", lscs_real_to_string( rr.bottom(), buf ) );
     d->xprintf( "]\n/Border [0 0 0]\n/A <<\n" );
     d->xprintf( "/Type /Action\n/S /URI\n/URI (%s)\n", url_esc.constData() );
     d->xprintf( ">>\n>>\n" );
@@ -1437,7 +1437,7 @@ void QPdfEngine::setupGraphicsState( QPaintEngine::DirtyFlags flags )
     }
 }
 
-extern QPainterPath qt_regionToPath( const QRegion &region );
+extern QPainterPath lscs_regionToPath( const QRegion &region );
 
 void QPdfEngine::updateClipPath( const QPainterPath &p, Qt::ClipOperation op )
 {
@@ -2272,7 +2272,7 @@ void QPdfEnginePrivate::xprintf( const char *fmt, ... )
 
 int QPdfEnginePrivate::writeCompressed( QIODevice *dev )
 {
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 
     if ( do_compress )
     {
@@ -2372,7 +2372,7 @@ int QPdfEnginePrivate::writeCompressed( QIODevice *dev )
 
 int QPdfEnginePrivate::writeCompressed( const char *src, int len )
 {
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 
     if ( do_compress )
     {

@@ -27,7 +27,7 @@
 #include <qpropertyanimation.h>
 #include <qvariantanimation_p.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QPropertyAnimationPrivate : public QVariantAnimationPrivate
 {
@@ -54,6 +54,6 @@ public:
     QString propertyName;
 };
 
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION
 
 #endif

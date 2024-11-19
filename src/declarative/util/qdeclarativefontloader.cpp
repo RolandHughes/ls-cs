@@ -33,7 +33,7 @@
 #include <qdeclarativeengine_p.h>
 #include <qdeclarativeinfo.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 #define FONTLOADER_MAXIMUM_REDIRECT_RECURSION 16
 
@@ -193,7 +193,7 @@ void QDeclarativeFontLoader::setSource( const QUrl &url )
     d->url = qmlContext( this )->resolvedUrl( url );
     emit sourceChanged();
 
-#ifndef QT_NO_LOCALFILE_OPTIMIZED_QML
+#ifndef LSCS_NO_LOCALFILE_OPTIMIZED_QML
     QString localFile = QDeclarativeEnginePrivate::urlToLocalFileOrQrc( d->url );
 
     if ( !localFile.isEmpty() )
@@ -357,5 +357,5 @@ QDeclarativeFontLoader::Status QDeclarativeFontLoader::status() const
     return d->status;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

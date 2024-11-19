@@ -33,9 +33,9 @@
 #include "qdbusconnection_p.h"
 #include "qdbusutil_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 static inline const char *data( const QByteArray &arr )
 {
@@ -891,6 +891,6 @@ QDebug operator<<( QDebug dbg, const QDBusMessage &msg )
     return dbg.space();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

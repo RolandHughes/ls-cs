@@ -27,7 +27,7 @@
 #include <qdialog.h>
 #include <qplatform_dialoghelper.h>
 
-#ifndef QT_NO_MESSAGEBOX
+#ifndef LSCS_NO_MESSAGEBOX
 
 class QAbstractButton;
 class QCheckBox;
@@ -56,7 +56,7 @@ class Q_GUI_EXPORT QMessageBox : public QDialog
     GUI_LSCS_PROPERTY_READ( standardButtons, standardButtons )
     GUI_LSCS_PROPERTY_WRITE( standardButtons, setStandardButtons )
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
     GUI_LSCS_PROPERTY_READ( detailedText, detailedText )
     GUI_LSCS_PROPERTY_WRITE( detailedText, setDetailedText )
 #endif
@@ -262,7 +262,7 @@ public:
     QString informativeText() const;
     void setInformativeText( const QString &text );
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
     QString detailedText() const;
     void setDetailedText( const QString &text );
 #endif
@@ -294,12 +294,12 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QMessageBox::StandardButtons )
 
-#define QT_REQUIRE_VERSION(argc, argv, str) static_assert(0, "Macro QT_REQUIRE_VERSION(argc, argv, str) has been" \
+#define LSCS_REQUIRE_VERSION(argc, argv, str) static_assert(0, "Macro LSCS_REQUIRE_VERSION(argc, argv, str) has been" \
    " removed, use function lscs_require_version(argc, argv, str) instead");
 
 Q_GUI_EXPORT void lscs_require_version( int argc, char *argv[], const char *str );
 
-#endif // QT_NO_MESSAGEBOX
+#endif // LSCS_NO_MESSAGEBOX
 
 
 #endif

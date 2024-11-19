@@ -28,7 +28,7 @@
 #include <qlayoutengine_p.h>
 #include <QVector>
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 class QAction;
 class QToolBarExtension;
@@ -101,7 +101,7 @@ private:
     QMenu *popupMenu;
 };
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 
 
 #endif // QTOOLBARLAYOUT_P_H

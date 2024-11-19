@@ -26,7 +26,7 @@
 
 #include <QtCore/qglobal.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QBitField
 {
@@ -163,6 +163,6 @@ bool QBitField::testBit( int b ) const
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QBITFIELD_P_H

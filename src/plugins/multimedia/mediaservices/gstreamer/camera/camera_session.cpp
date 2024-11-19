@@ -137,12 +137,12 @@ CameraBinSession::CameraBinSession( GstElementFactory *sourceFactory, QObject *p
         gst_object_ref( GST_OBJECT( m_sourceFactory ) );
     }
 
-    m_camerabin = gst_element_factory_make( QT_GSTREAMER_CAMERABIN_ELEMENT_NAME, "camerabin" );
+    m_camerabin = gst_element_factory_make( LSCS_GSTREAMER_CAMERABIN_ELEMENT_NAME, "camerabin" );
 
     g_signal_connect( G_OBJECT( m_camerabin ), "notify::idle", G_CALLBACK( updateBusyStatus ), this );
     g_signal_connect( G_OBJECT( m_camerabin ), "element-added",  G_CALLBACK( elementAdded ), this );
     g_signal_connect( G_OBJECT( m_camerabin ), "element-removed",  G_CALLBACK( elementRemoved ), this );
-    qt_gst_object_ref_sink( m_camerabin );
+    lscs_gst_object_ref_sink( m_camerabin );
 
     m_bus = gst_element_get_bus( m_camerabin );
 
@@ -160,7 +160,7 @@ CameraBinSession::CameraBinSession( GstElementFactory *sourceFactory, QObject *p
     m_captureDestinationControl = new CameraBinCaptureDestination( this );
     m_captureBufferFormatControl = new CameraBinCaptureBufferFormat( this );
 
-    QByteArray envFlags = qgetenv( "QT_GSTREAMER_CAMERABIN_FLAGS" );
+    QByteArray envFlags = qgetenv( "LSCS_GSTREAMER_CAMERABIN_FLAGS" );
 
     if ( !envFlags.isEmpty() )
     {
@@ -303,7 +303,7 @@ bool CameraBinSession::setupCameraBin()
         gst_object_unref( GST_OBJECT( pad ) );
 
         g_object_set( G_OBJECT( m_viewfinderElement ), "sync", FALSE, nullptr );
-        qt_gst_object_ref_sink( GST_OBJECT( m_viewfinderElement ) );
+        lscs_gst_object_ref_sink( GST_OBJECT( m_viewfinderElement ) );
         gst_element_set_state( m_camerabin, GST_STATE_NULL );
         g_object_set( G_OBJECT( m_camerabin ), VIEWFINDER_SINK_PROPERTY, m_viewfinderElement, nullptr );
     }
@@ -339,7 +339,7 @@ static GstCaps *resolutionToCaps( const QSize &resolution,
     {
         gint numerator;
         gint denominator;
-        qt_gst_util_double_to_fraction( frameRate, &numerator, &denominator );
+        lscs_gst_util_double_to_fraction( frameRate, &numerator, &denominator );
 
         gst_caps_set_simple(
             caps,
@@ -442,7 +442,7 @@ void CameraBinSession::setupCaptureResolution()
     gst_caps_unref( caps );
 
     // Special case when using mfw_v4lsrc
-    if ( m_videoSrc && qstrcmp( qt_gst_element_get_factory_name( m_videoSrc ), "mfw_v4lsrc" ) == 0 )
+    if ( m_videoSrc && qstrcmp( lscs_gst_element_get_factory_name( m_videoSrc ), "mfw_v4lsrc" ) == 0 )
     {
         int capMode = 0;
 
@@ -472,7 +472,7 @@ void CameraBinSession::setupCaptureResolution()
         if ( !qFuzzyIsNull( viewfinderFrameRate ) )
         {
             int n, d;
-            qt_gst_util_double_to_fraction( viewfinderFrameRate, &n, &d );
+            lscs_gst_util_double_to_fraction( viewfinderFrameRate, &n, &d );
             g_object_set( G_OBJECT( m_videoSrc ), "fps-n", n, nullptr );
             g_object_set( G_OBJECT( m_videoSrc ), "fps-d", d, nullptr );
         }
@@ -496,10 +496,10 @@ void CameraBinSession::setAudioCaptureCaps()
     }
 
 #if GST_CHECK_VERSION(1,0,0)
-    GstStructure *structure = gst_structure_new_empty( QT_GSTREAMER_RAW_AUDIO_MIME );
+    GstStructure *structure = gst_structure_new_empty( LSCS_GSTREAMER_RAW_AUDIO_MIME );
 #else
     GstStructure *structure = gst_structure_new(
-                                  QT_GSTREAMER_RAW_AUDIO_MIME,
+                                  LSCS_GSTREAMER_RAW_AUDIO_MIME,
                                   "endianness", G_TYPE_INT, 1234,
                                   "signed", G_TYPE_BOOLEAN, TRUE,
                                   "width", G_TYPE_INT, 16,
@@ -560,30 +560,30 @@ GstElement *CameraBinSession::buildCameraSource()
 #if CAMERABIN_DEBUG
         qDebug() << "set camera device" << m_inputDevice;
 #endif
-        m_usingWrapperCameraBinSrc = qstrcmp( qt_gst_element_get_factory_name( m_cameraSrc ), "wrappercamerabinsrc" ) == 0;
+        m_usingWrapperCameraBinSrc = qstrcmp( lscs_gst_element_get_factory_name( m_cameraSrc ), "wrappercamerabinsrc" ) == 0;
 
         if ( g_object_class_find_property( G_OBJECT_GET_CLASS( m_cameraSrc ), "video-source" ) )
         {
             if ( !m_videoSrc )
             {
-                /* QT_GSTREAMER_CAMERABIN_VIDEOSRC can be used to set the video source element.
+                /* LSCS_GSTREAMER_CAMERABIN_VIDEOSRC can be used to set the video source element.
 
                    --- Usage
 
-                     QT_GSTREAMER_CAMERABIN_VIDEOSRC=[drivername=elementname[,drivername2=elementname2 ...],][elementname]
+                     LSCS_GSTREAMER_CAMERABIN_VIDEOSRC=[drivername=elementname[,drivername2=elementname2 ...],][elementname]
 
                    --- Examples
 
                      Always use 'somevideosrc':
-                     QT_GSTREAMER_CAMERABIN_VIDEOSRC="somevideosrc"
+                     LSCS_GSTREAMER_CAMERABIN_VIDEOSRC="somevideosrc"
 
                      Use 'somevideosrc' when the device driver is 'somedriver', otherwise use default:
-                     QT_GSTREAMER_CAMERABIN_VIDEOSRC="somedriver=somevideosrc"
+                     LSCS_GSTREAMER_CAMERABIN_VIDEOSRC="somedriver=somevideosrc"
 
                      Use 'somevideosrc' when the device driver is 'somedriver', otherwise use 'somevideosrc2'
-                     QT_GSTREAMER_CAMERABIN_VIDEOSRC="somedriver=somevideosrc,somevideosrc2"
+                     LSCS_GSTREAMER_CAMERABIN_VIDEOSRC="somedriver=somevideosrc,somevideosrc2"
                 */
-                const QByteArray envVideoSource = qgetenv( "QT_GSTREAMER_CAMERABIN_VIDEOSRC" );
+                const QByteArray envVideoSource = qgetenv( "LSCS_GSTREAMER_CAMERABIN_VIDEOSRC" );
 
                 if ( !envVideoSource.isEmpty() )
                 {
@@ -1019,7 +1019,7 @@ qint64 CameraBinSession::duration() const
         {
             GstFormat format = GST_FORMAT_TIME;
             gint64 duration = 0;
-            bool ret = qt_gst_element_query_position( fileSink, format, &duration );
+            bool ret = lscs_gst_element_query_position( fileSink, format, &duration );
             gst_object_unref( GST_OBJECT( fileSink ) );
 
             if ( ret )
@@ -1291,7 +1291,7 @@ QString CameraBinSession::currentContainerFormat() const
 
     if ( GstPad *srcPad = gst_element_get_static_pad( m_muxer, "src" ) )
     {
-        if ( GstCaps *caps = qt_gst_pad_get_caps( srcPad ) )
+        if ( GstCaps *caps = lscs_gst_pad_get_caps( srcPad ) )
         {
             gchar *capsString = gst_caps_to_string( caps );
             format = QString::fromLatin1( capsString );
@@ -1389,7 +1389,7 @@ GstCaps *CameraBinSession::supportedCaps( QCamera::CaptureModes mode ) const
 
         if ( pad )
         {
-            supportedCaps = qt_gst_pad_get_caps( pad );
+            supportedCaps = lscs_gst_pad_get_caps( pad );
             gst_object_unref( GST_OBJECT( pad ) );
         }
     }
@@ -1714,7 +1714,7 @@ void CameraBinSession::updateSupportedViewfinderSettings()
     // Convert caps to QCameraViewfinderSettings
     if ( supportedCaps )
     {
-        supportedCaps = qt_gst_caps_normalize( supportedCaps );
+        supportedCaps = lscs_gst_caps_normalize( supportedCaps );
 
         for ( uint i = 0; i < gst_caps_get_size( supportedCaps ); i++ )
         {

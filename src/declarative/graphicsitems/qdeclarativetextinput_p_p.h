@@ -30,9 +30,9 @@
 #include <QPointer>
 #include <qlinecontrol_p.h>
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeTextInputPrivate : public QDeclarativeImplicitSizePaintedItemPrivate
 {
@@ -112,9 +112,9 @@ public:
     }
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT
 
 #endif
 

@@ -27,7 +27,7 @@
 #include <QtGui/qwidget.h>
 #include "qscriptmessagehandlerinterface_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptErrorLogWidgetInterfacePrivate;
 
@@ -49,6 +49,6 @@ private:
     Q_DISABLE_COPY( QScriptErrorLogWidgetInterface )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

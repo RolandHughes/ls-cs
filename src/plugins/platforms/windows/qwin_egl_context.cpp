@@ -28,14 +28,14 @@
 
 #include <QOpenGLContext>
 
-#if defined(QT_OPENGL_ES_2_ANGLE) || defined(QT_OPENGL_DYNAMIC)
+#if defined(LSCS_OPENGL_ES_2_ANGLE) || defined(LSCS_OPENGL_DYNAMIC)
 #  include <EGL/eglext.h>
 #endif
 
 QWindowsLibEGL QWindowsEGLStaticContext::libEGL;
 QWindowsLibGLESv2 QWindowsEGLStaticContext::libGLESv2;
 
-#if !defined(QT_STATIC) || defined(QT_OPENGL_DYNAMIC)
+#if !defined(LSCS_STATIC) || defined(LSCS_OPENGL_DYNAMIC)
 
 #ifdef Q_CC_MINGW
 static void *resolveFunc( HMODULE lib, const char *name )
@@ -88,7 +88,7 @@ void *QWindowsLibEGL::resolve( const char *name )
 }
 #endif
 
-#if ! defined(QT_STATIC) || defined(QT_OPENGL_DYNAMIC)
+#if ! defined(LSCS_STATIC) || defined(LSCS_OPENGL_DYNAMIC)
 #  define RESOLVE(signature, name) signature(resolve( #name ));
 #else
 #  define RESOLVE(signature, name) signature(&::name);
@@ -98,7 +98,7 @@ bool QWindowsLibEGL::init()
 {
     const wchar_t dllName[] = L "libEGL";
 
-#if ! defined(QT_STATIC) || defined(QT_OPENGL_DYNAMIC)
+#if ! defined(LSCS_STATIC) || defined(LSCS_OPENGL_DYNAMIC)
     m_lib = ::LoadLibraryW( dllName );
 
     if ( ! m_lib )
@@ -150,7 +150,7 @@ bool QWindowsLibEGL::init()
     return true;
 }
 
-#if ! defined(QT_STATIC) || defined(QT_OPENGL_DYNAMIC)
+#if ! defined(LSCS_STATIC) || defined(LSCS_OPENGL_DYNAMIC)
 void *QWindowsLibGLESv2::resolve( const char *name )
 {
     void *proc = m_lib ? resolveFunc( m_lib, name ) : 0;
@@ -172,7 +172,7 @@ bool QWindowsLibGLESv2::init()
     qDebug() << "QWindowsLibGLESv2::init() Using OpenGL ES 2.0 from " << dllName;
 #endif
 
-#if ! defined(QT_STATIC) || defined(QT_OPENGL_DYNAMIC)
+#if ! defined(LSCS_STATIC) || defined(LSCS_OPENGL_DYNAMIC)
     m_lib = ::LoadLibraryW( reinterpret_cast<LPCWSTR>( QString::fromLatin1( dllName ).utf16() ) );
 
     if ( ! m_lib )

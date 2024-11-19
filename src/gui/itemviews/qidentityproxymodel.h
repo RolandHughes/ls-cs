@@ -26,7 +26,7 @@
 
 #include <qabstractproxymodel.h>
 
-#ifndef QT_NO_IDENTITYPROXYMODEL
+#ifndef LSCS_NO_IDENTITYPROXYMODEL
 
 class QIdentityProxyModelPrivate;
 
@@ -138,7 +138,7 @@ private:
 };
 
 
-#endif // QT_NO_IDENTITYPROXYMODEL
+#endif // LSCS_NO_IDENTITYPROXYMODEL
 
 #endif // QIDENTITYPROXYMODEL_H
 

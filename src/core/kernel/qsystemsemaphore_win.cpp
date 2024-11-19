@@ -27,7 +27,7 @@
 #include <qcoreapplication.h>
 #include <qdebug.h>
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
 
 QSystemSemaphorePrivate::QSystemSemaphorePrivate() :
     semaphore( nullptr ), error( QSystemSemaphore::NoError )

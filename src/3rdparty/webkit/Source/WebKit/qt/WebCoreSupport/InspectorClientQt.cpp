@@ -84,7 +84,7 @@ public:
 
 void InspectorClientWebPage::javaScriptWindowObjectCleared()
 {
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     QVariant inspectorJavaScriptWindowObjects = property( "_q_inspectorJavaScriptWindowObjects" );
 
     if ( !inspectorJavaScriptWindowObjects.isValid() )
@@ -119,7 +119,7 @@ public:
     virtual ~InspectorFrontendSettingsQt() { }
     virtual String getProperty( const String &name )
     {
-#ifdef QT_NO_SETTINGS
+#ifdef LSCS_NO_SETTINGS
         ( void ) name;
         ( void ) value;
 
@@ -150,7 +150,7 @@ public:
 
     virtual void setProperty( const String &name, const String &value )
     {
-#ifdef QT_NO_SETTINGS
+#ifdef LSCS_NO_SETTINGS
         ( void ) name;
         ( void ) value;
         qWarning( "QWebInspector: QSettings is not supported." );
@@ -260,7 +260,7 @@ void InspectorClientQt::openInspectorFrontend( WebCore::InspectorController *ins
     // https://bugs.webkit.org/show_bug.cgi?id=35340
     QUrl inspectorUrl;
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     inspectorUrl = inspector->property( "_q_inspectorUrl" ).toUrl();
 #endif
 
@@ -269,7 +269,7 @@ void InspectorClientQt::openInspectorFrontend( WebCore::InspectorController *ins
         inspectorUrl = QUrl( QString( "qrc:/webkit/inspector/inspector.html" ) );
     }
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     QVariant inspectorJavaScriptWindowObjects = inspector->property( "_q_inspectorJavaScriptWindowObjects" );
 
     if ( inspectorJavaScriptWindowObjects.isValid() )

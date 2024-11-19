@@ -29,7 +29,7 @@
 #include <qguiapplication_p.h>
 #include <qsessionmanager_p.h>
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
 
 QSessionManagerPrivate::QSessionManagerPrivate( const QString &id, const QString &key )
 {
@@ -152,4 +152,4 @@ void QSessionManager::requestPhase2()
     d->platformSessionManager->requestPhase2();
 }
 
-#endif // QT_NO_SESSIONMANAGER
+#endif // LSCS_NO_SESSIONMANAGER

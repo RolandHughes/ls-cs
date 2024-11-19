@@ -23,7 +23,7 @@
 
 #include <qgraphicssvgitem.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW) && ! defined(QT_NO_SVGWIDGET)
+#if ! defined(LSCS_NO_GRAPHICSVIEW) && ! defined(LSCS_NO_SVGWIDGET)
 
 #include <qdebug.h>
 #include <qpainter.h>
@@ -111,7 +111,7 @@ QRectF QGraphicsSvgItem::boundingRect() const
     return d->boundingRect;
 }
 
-static void qt_graphicsItem_highlightSelected(
+static void lscs_graphicsItem_highlightSelected(
     QGraphicsItem *item, QPainter *painter, const QStyleOptionGraphicsItem *option )
 {
     const QRectF murect = painter->transform().mapRect( QRectF( 0, 0, 1, 1 ) );
@@ -201,7 +201,7 @@ void QGraphicsSvgItem::paint( QPainter *painter, const QStyleOptionGraphicsItem 
 
     if ( option->state & QStyle::State_Selected )
     {
-        qt_graphicsItem_highlightSelected( this, painter, option );
+        lscs_graphicsItem_highlightSelected( this, painter, option );
     }
 }
 
@@ -268,4 +268,4 @@ void QGraphicsSvgItem::_q_repaintItem()
     d->_q_repaintItem();
 }
 
-#endif // QT_NO_GRAPHICSSVGITEM
+#endif // LSCS_NO_GRAPHICSSVGITEM

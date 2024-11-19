@@ -45,11 +45,11 @@
 #include <unistd.h>
 #endif
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
 static QNetworkConfiguration::BearerType qGetInterfaceType( const QString &interface )
 {
 #ifdef Q_OS_WIN32
@@ -192,7 +192,7 @@ void QGenericEngine::requestUpdate()
 
 void QGenericEngine::doRequestUpdate()
 {
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
     QMutexLocker locker( &mutex );
 
     // Immediately after connecting with a wireless access point
@@ -398,6 +398,6 @@ bool QGenericEngine::requiresPolling() const
     return true;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT

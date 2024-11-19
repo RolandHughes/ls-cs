@@ -30,7 +30,7 @@
 
 #include <qurlinfo_p.h>
 
-#ifndef QT_NO_FTP
+#ifndef LSCS_NO_FTP
 
 class QFtpPrivate;
 
@@ -175,6 +175,6 @@ private:
     NET_LSCS_SLOT_2( _q_piFtpReply )
 };
 
-#endif // QT_NO_FTP
+#endif // LSCS_NO_FTP
 
 #endif

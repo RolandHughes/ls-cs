@@ -49,7 +49,7 @@ QWindowSystemEventHandler *QWindowSystemInterfacePrivate::eventHandler;
 
 QWindowSystemInterfacePrivate::WindowSystemEventList QWindowSystemInterfacePrivate::windowSystemEventQueue;
 
-extern QPointer<QWindow> qt_last_mouse_receiver;
+extern QPointer<QWindow> lscs_last_mouse_receiver;
 
 void QWindowSystemInterface::handleEnterEvent( QWindow *tlw, const QPointF &local, const QPointF &global )
 {
@@ -178,7 +178,7 @@ bool QWindowSystemInterface::handleShortcutEvent( QWindow *window, ulong timesta
         Qt::KeyboardModifiers modifiers, quint32 nativeScanCode, quint32 nativeVirtualKey, quint32 nativeModifiers,
         const QString &text, bool autorepeat, ushort count )
 {
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( ! window )
     {
@@ -712,7 +712,7 @@ int QWindowSystemInterface::windowSystemEventsQueued()
     return QWindowSystemInterfacePrivate::windowSystemEventsQueued();
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 QPlatformDragQtResponse QWindowSystemInterface::handleDrag( QWindow *w, const QMimeData *dropData, const QPoint &p,
         Qt::DropActions supportedActions )
 {
@@ -806,7 +806,7 @@ void QWindowSystemInterface::handleTabletLeaveProximityEvent( int device, int po
     handleTabletLeaveProximityEvent( time, device, pointerType, uid );
 }
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 void QWindowSystemInterface::handleGestureEvent( QWindow *window, ulong timestamp, Qt::NativeGestureType type,
         QPointF &local, QPointF &global )
 {
@@ -837,7 +837,7 @@ void QWindowSystemInterface::handleGestureEventWithSequenceIdAndValue( QWindow *
     e->intValue = value;
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
 }
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
 void QWindowSystemInterface::handlePlatformPanelEvent( QWindow *w )
 {
@@ -845,7 +845,7 @@ void QWindowSystemInterface::handlePlatformPanelEvent( QWindow *w )
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 void QWindowSystemInterface::handleContextMenuEvent( QWindow *w, bool mouseTriggered,
         const QPoint &pos, const QPoint &globalPos,
         Qt::KeyboardModifiers modifiers )
@@ -857,7 +857,7 @@ void QWindowSystemInterface::handleContextMenuEvent( QWindow *w, bool mouseTrigg
 }
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 void QWindowSystemInterface::handleEnterWhatsThisEvent()
 {
     QWindowSystemInterfacePrivate::WindowSystemEvent *e =

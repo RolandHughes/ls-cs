@@ -1,10 +1,13 @@
 add_library(LsCsXml SHARED "")
 add_library(LsCs::LsCsXml ALIAS LsCsXml)
 
-set_target_properties(LsCsXml PROPERTIES OUTPUT_NAME LsCsXml${BUILD_ABI})
+set_target_properties(LsCsXml PROPERTIES 
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 add_definitions(
-   -DQT_BUILD_XML_LIB
+   -DLSCS_BUILD_XML_LIB
 )
 
 set(EXTRA_XML_CXXFLAGS)

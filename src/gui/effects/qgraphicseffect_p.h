@@ -31,7 +31,7 @@
 
 #include <qpixmapfilter_p.h>
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
 class QGraphicsEffectSourcePrivate;
 
@@ -221,7 +221,7 @@ public:
     uint hasOpacityMask : 1;
 };
 
-#endif // QT_NO_GRAPHICSEFFECT
+#endif // LSCS_NO_GRAPHICSEFFECT
 
 #endif
 

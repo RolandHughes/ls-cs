@@ -23,7 +23,7 @@
 
 #include <qinputdialog.h>
 
-#ifndef QT_NO_INPUTDIALOG
+#ifndef LSCS_NO_INPUTDIALOG
 
 #include <qapplication.h>
 #include <qcombobox.h>
@@ -125,7 +125,7 @@ private:
         if ( ( event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter ) && ! hasAcceptableInput() )
         {
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
             setProperty( "value", property( "value" ) );
 #endif
 
@@ -173,7 +173,7 @@ private:
     {
         if ( ( event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter ) && !hasAcceptableInput() )
         {
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
             setProperty( "value", property( "value" ) );
 #endif
         }
@@ -274,7 +274,7 @@ void QInputDialogPrivate::ensureLayout()
         label = new QLabel( QInputDialog::tr( "Enter a value:" ), q );
     }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     label->setBuddy( inputWidget );
 #endif
 
@@ -301,8 +301,8 @@ void QInputDialogPrivate::ensureLineEdit()
     {
         lineEdit = new QLineEdit( q );
 
-#ifndef QT_NO_IM
-        qt_widget_private( lineEdit )->inheritsInputMethodHints = 1;
+#ifndef LSCS_NO_IM
+        lscs_widget_private( lineEdit )->inheritsInputMethodHints = 1;
 #endif
 
         lineEdit->hide();
@@ -319,8 +319,8 @@ void QInputDialogPrivate::ensurePlainTextEdit()
         plainTextEdit = new QPlainTextEdit( q );
         plainTextEdit->setLineWrapMode( QPlainTextEdit::NoWrap );
 
-#ifndef QT_NO_IM
-        qt_widget_private( plainTextEdit )->inheritsInputMethodHints = 1;
+#ifndef LSCS_NO_IM
+        lscs_widget_private( plainTextEdit )->inheritsInputMethodHints = 1;
 #endif
 
         plainTextEdit->hide();
@@ -336,8 +336,8 @@ void QInputDialogPrivate::ensureComboBox()
     {
         comboBox = new QComboBox( q );
 
-#ifndef QT_NO_IM
-        qt_widget_private( comboBox )->inheritsInputMethodHints = 1;
+#ifndef LSCS_NO_IM
+        lscs_widget_private( comboBox )->inheritsInputMethodHints = 1;
 #endif
 
         comboBox->hide();

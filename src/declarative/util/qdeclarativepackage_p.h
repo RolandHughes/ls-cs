@@ -26,7 +26,7 @@
 
 #include <qdeclarative.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativePackagePrivate;
 class QDeclarativePackageAttached;
@@ -69,7 +69,7 @@ private:
     QString _name;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativePackage )
 QML_DECLARE_TYPEINFO( QDeclarativePackage, QML_HAS_ATTACHED_PROPERTIES )

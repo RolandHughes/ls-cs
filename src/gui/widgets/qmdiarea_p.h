@@ -27,7 +27,7 @@
 #include <qmdiarea.h>
 #include <qmdisubwindow.h>
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
 
 #include <QList>
 #include <QVector>
@@ -138,7 +138,7 @@ public:
     QMdi::Rearranger *iconTiler;
     QMdi::Placer *placer;
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
     QRubberBand *rubberBand;
 #endif
 
@@ -154,13 +154,13 @@ public:
     QMdiArea::AreaOptions options;
     QMdiArea::ViewMode viewMode;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     bool documentMode;
     bool tabsClosable;
     bool tabsMovable;
 #endif
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
     QTabWidget::TabShape tabShape;
     QTabWidget::TabPosition tabPosition;
 #endif
@@ -213,7 +213,7 @@ public:
     void disconnectSubWindow( QObject *subWindow );
     void setViewMode( QMdiArea::ViewMode mode );
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     void updateTabBarGeometry();
     void refreshTabBar();
 #endif
@@ -270,7 +270,7 @@ public:
         }
     }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
     void showRubberBandFor( QMdiSubWindow *subWindow );
 
     inline void hideRubberBand()
@@ -282,9 +282,9 @@ public:
 
         indexToHighlighted = -1;
     }
-#endif // QT_NO_RUBBERBAND
+#endif // LSCS_NO_RUBBERBAND
 };
 
-#endif // QT_NO_MDIAREA
+#endif // LSCS_NO_MDIAREA
 
 #endif // QMDIAREA_P_H

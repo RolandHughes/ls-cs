@@ -190,7 +190,7 @@ public:
 
     // Text formatting flags for QPainter::drawText and QLabel.
     // The following two enums can be combined to one integer which
-    // is passed as 'flags' to drawText and qt_format_text.
+    // is passed as 'flags' to drawText and lscs_format_text.
 
     CORE_LSCS_ENUM( AlignmentFlag )
     CORE_LSCS_FLAG( AlignmentFlag, Alignment )
@@ -499,7 +499,8 @@ public:
         AA_SetPalette = 19,
         AA_EnableHighDpiScaling = 20,
         AA_DisableHighDpiScaling = 21,
-
+        AA_UseSystemConf = 22,
+        
         // Add new attributes before this line
         AA_AttributeCount
     };
@@ -1695,7 +1696,7 @@ public:
     };
     using TouchPointStates = QFlags<TouchPointState>;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     enum GestureState
     {
         NoGesture,
@@ -1796,7 +1797,7 @@ public:
     static bool mightBeRichText( const QString &text );
     static QString convertFromPlainText( const QString &plain, WhiteSpaceMode mode = WhiteSpacePre );
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     static QTextCodec *codecForHtml( const QByteArray &ba );
 #endif
 
@@ -1843,7 +1844,7 @@ public:
     CORE_LSCS_ENUM( WindowState )
     CORE_LSCS_FLAG( WindowState, WindowStates )
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     CORE_LSCS_ENUM( GestureState )
     CORE_LSCS_ENUM( GestureType )
 #endif
@@ -1872,7 +1873,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS( Qt::InputMethodHints )
 Q_DECLARE_OPERATORS_FOR_FLAGS( Qt::TouchPointStates )
 Q_DECLARE_OPERATORS_FOR_FLAGS( Qt::MouseEventFlags )
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 Q_DECLARE_OPERATORS_FOR_FLAGS( Qt::GestureFlags )
 #endif
 

@@ -23,7 +23,7 @@
 
 #include <qgtkstyle_p.h>
 
-#if ! defined(QT_NO_STYLE_GTK)
+#if ! defined(LSCS_NO_STYLE_GTK)
 
 #include <qlibrary.h>
 #include <qsettings.h>
@@ -62,7 +62,7 @@
 #include <qgtkstyle_p.h>
 #include <qstylehelper_p.h>
 
-static GtkStateType qt_gtk_state( const QStyleOption *option )
+static GtkStateType lscs_gtk_state( const QStyleOption *option )
 {
     GtkStateType state = GTK_STATE_NORMAL;
 
@@ -78,7 +78,7 @@ static GtkStateType qt_gtk_state( const QStyleOption *option )
     return state;
 }
 
-static QPixmap qt_gtk_get_icon( const char *iconName, GtkIconSize size = GTK_ICON_SIZE_BUTTON )
+static QPixmap lscs_gtk_get_icon( const char *iconName, GtkIconSize size = GTK_ICON_SIZE_BUTTON )
 {
     GtkStyle *style = QGtkStylePrivate::gtkStyle();
     GtkIconSet *iconSet  = QGtkStylePrivate::gtk_icon_factory_lookup_default ( iconName );
@@ -96,10 +96,10 @@ static QPixmap qt_gtk_get_icon( const char *iconName, GtkIconSize size = GTK_ICO
     for ( int index = 0 ; index < height * width * 4 ; index += 4 )
     {
         //int index = y * rowstride + x;
-        tdata[index + QT_RED]   = data[index + GTK_RED];
-        tdata[index + QT_GREEN] = data[index + GTK_GREEN];
-        tdata[index + QT_BLUE]  = data[index + GTK_BLUE];
-        tdata[index + QT_ALPHA] = data[index + GTK_ALPHA];
+        tdata[index + LSCS_RED]   = data[index + GTK_RED];
+        tdata[index + LSCS_GREEN] = data[index + GTK_GREEN];
+        tdata[index + LSCS_BLUE]  = data[index + GTK_BLUE];
+        tdata[index + LSCS_ALPHA] = data[index + GTK_ALPHA];
     }
 
     QGtkStylePrivate::gdk_pixbuf_unref( icon );
@@ -108,7 +108,7 @@ static QPixmap qt_gtk_get_icon( const char *iconName, GtkIconSize size = GTK_ICO
     return QPixmap::fromImage( converted );
 }
 
-static void qt_gtk_draw_mdibutton( QPainter *painter, const QStyleOptionTitleBar *option,
+static void lscs_gtk_draw_mdibutton( QPainter *painter, const QStyleOptionTitleBar *option,
                                    const QRect &tmp, bool hover, bool sunken )
 {
     QColor dark;
@@ -223,7 +223,7 @@ static const char *const dock_widget_restore_xpm[] =
     " @@@@@@@@@ ",
     "           "
 };
-static const char *const qt_titlebar_context_help[] =
+static const char *const lscs_titlebar_context_help[] =
 {
     "10 10 3 1",
     "  c None",
@@ -241,7 +241,7 @@ static const char *const qt_titlebar_context_help[] =
     "    ##    "
 };
 
-static const char *const qt_scrollbar_button_arrow_up[] =
+static const char *const lscs_scrollbar_button_arrow_up[] =
 {
     "7 4 2 1",
     "   c None",
@@ -252,7 +252,7 @@ static const char *const qt_scrollbar_button_arrow_up[] =
     "*******"
 };
 
-static const char *const qt_scrollbar_button_arrow_down[] =
+static const char *const lscs_scrollbar_button_arrow_down[] =
 {
     "7 4 2 1",
     "   c None",
@@ -489,7 +489,7 @@ void QGtkStyle::polish( QWidget *widget )
         widget->setAttribute( Qt::WA_Hover );
     }
 
-#ifndef QT_NO_TREEVIEW
+#ifndef LSCS_NO_TREEVIEW
     else if ( QTreeView *tree = qobject_cast<QTreeView *> ( widget ) )
     {
         tree->viewport()->setAttribute( Qt::WA_Hover );
@@ -819,7 +819,7 @@ int QGtkStyle::styleHint( StyleHint hint, const QStyleOption *option, const QWid
         case SH_MessageBox_CenterButtons:
             return false;
 
-#ifndef QT_NO_WIZARD
+#ifndef LSCS_NO_WIZARD
 
         case SH_WizardStyle:
             return  QWizard::ClassicStyle;
@@ -1085,7 +1085,7 @@ void QGtkStyle::drawPrimitive( PrimitiveElement element, const QStyleOption *opt
             if ( const QStyleOptionHeader *header = qstyleoption_cast<const QStyleOptionHeader *>( option ) )
             {
                 GtkWidget *gtkTreeHeader = d->gtkWidget( "GtkTreeView.GtkButton" );
-                GtkStateType state = qt_gtk_state( option );
+                GtkStateType state = lscs_gtk_state( option );
                 style = d->gtk_widget_get_style( gtkTreeHeader );
                 GtkArrowType type = GTK_ARROW_UP;
 
@@ -1323,7 +1323,7 @@ void QGtkStyle::drawPrimitive( PrimitiveElement element, const QStyleOption *opt
 
             QRect arrowRect = option->rect.adjusted( border + bsx, border + bsy, -border + bsx, -border + bsy );
             GtkShadowType shadow = option->state & State_Sunken ? GTK_SHADOW_IN : GTK_SHADOW_OUT;
-            GtkStateType state = qt_gtk_state( option );
+            GtkStateType state = lscs_gtk_state( option );
 
             QColor arrowColor = option->palette.buttonText().color();
             GtkWidget *gtkArrow = d->gtkWidget( "GtkArrow" );
@@ -1513,7 +1513,7 @@ void QGtkStyle::drawPrimitive( PrimitiveElement element, const QStyleOption *opt
                 break;
             }
 
-            GtkStateType state = qt_gtk_state( option );
+            GtkStateType state = lscs_gtk_state( option );
 
             if ( option->state & State_On || option->state & State_Sunken )
             {
@@ -1578,7 +1578,7 @@ void QGtkStyle::drawPrimitive( PrimitiveElement element, const QStyleOption *opt
         case PE_IndicatorRadioButton:
         {
             GtkShadowType shadow = GTK_SHADOW_OUT;
-            GtkStateType state = qt_gtk_state( option );
+            GtkStateType state = lscs_gtk_state( option );
 
             if ( option->state & State_Sunken )
             {
@@ -1629,7 +1629,7 @@ void QGtkStyle::drawPrimitive( PrimitiveElement element, const QStyleOption *opt
         case PE_IndicatorCheckBox:
         {
             GtkShadowType shadow = GTK_SHADOW_OUT;
-            GtkStateType state = qt_gtk_state( option );
+            GtkStateType state = lscs_gtk_state( option );
 
             if ( option->state & State_Sunken )
             {
@@ -1680,7 +1680,7 @@ void QGtkStyle::drawPrimitive( PrimitiveElement element, const QStyleOption *opt
         }
         break;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case PE_FrameTabBarBase:
 
@@ -1724,7 +1724,7 @@ void QGtkStyle::drawPrimitive( PrimitiveElement element, const QStyleOption *opt
 
             return;
 
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
         case PE_Widget:
             break;
@@ -1876,7 +1876,7 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
                     {
                         bool hover = ( titleBar->activeSubControls & SC_TitleBarMinButton ) && ( titleBar->state & State_MouseOver );
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarMinButton ) && ( titleBar->state & State_Sunken );
-                        qt_gtk_draw_mdibutton( painter, titleBar, minButtonRect, hover, sunken );
+                        lscs_gtk_draw_mdibutton( painter, titleBar, minButtonRect, hover, sunken );
                         QRect minButtonIconRect = minButtonRect.adjusted( buttonMargin, buttonMargin, -buttonMargin, -buttonMargin );
                         painter->setPen( textColor );
                         painter->drawLine( minButtonIconRect.center().x() - 2, minButtonIconRect.center().y() + 3,
@@ -1901,7 +1901,7 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
                     {
                         bool hover = ( titleBar->activeSubControls & SC_TitleBarMaxButton ) && ( titleBar->state & State_MouseOver );
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarMaxButton ) && ( titleBar->state & State_Sunken );
-                        qt_gtk_draw_mdibutton( painter, titleBar, maxButtonRect, hover, sunken );
+                        lscs_gtk_draw_mdibutton( painter, titleBar, maxButtonRect, hover, sunken );
 
                         QRect maxButtonIconRect = maxButtonRect.adjusted( buttonMargin, buttonMargin, -buttonMargin, -buttonMargin );
 
@@ -1930,7 +1930,7 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
                     {
                         bool hover = ( titleBar->activeSubControls & SC_TitleBarCloseButton ) && ( titleBar->state & State_MouseOver );
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarCloseButton ) && ( titleBar->state & State_Sunken );
-                        qt_gtk_draw_mdibutton( painter, titleBar, closeButtonRect, hover, sunken );
+                        lscs_gtk_draw_mdibutton( painter, titleBar, closeButtonRect, hover, sunken );
                         QRect closeIconRect = closeButtonRect.adjusted( buttonMargin, buttonMargin, -buttonMargin, -buttonMargin );
                         painter->setPen( textAlphaColor );
 
@@ -1982,7 +1982,7 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
                         QRect normalButtonIconRect = normalButtonRect.adjusted( buttonMargin,
                                                      buttonMargin, -buttonMargin, -buttonMargin );
 
-                        qt_gtk_draw_mdibutton( painter, titleBar, normalButtonRect, hover, sunken );
+                        lscs_gtk_draw_mdibutton( painter, titleBar, normalButtonRect, hover, sunken );
 
                         QRect frontWindowRect = normalButtonIconRect.adjusted( 0, 3, -3, 0 );
                         painter->setPen( textColor );
@@ -2037,10 +2037,10 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarContextHelpButton ) &&
                                       ( titleBar->state & State_Sunken );
 
-                        qt_gtk_draw_mdibutton( painter, titleBar, contextHelpButtonRect, hover, sunken );
+                        lscs_gtk_draw_mdibutton( painter, titleBar, contextHelpButtonRect, hover, sunken );
 
                         QColor blend;
-                        QImage image( qt_titlebar_context_help );
+                        QImage image( lscs_titlebar_context_help );
                         QColor alpha = textColor;
                         alpha.setAlpha( 128 );
                         image.setColor( 1, textColor.rgba() );
@@ -2059,8 +2059,8 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
                     {
                         bool hover = ( titleBar->activeSubControls & SC_TitleBarShadeButton ) && ( titleBar->state & State_MouseOver );
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarShadeButton ) && ( titleBar->state & State_Sunken );
-                        qt_gtk_draw_mdibutton( painter, titleBar, shadeButtonRect, hover, sunken );
-                        QImage image( qt_scrollbar_button_arrow_up );
+                        lscs_gtk_draw_mdibutton( painter, titleBar, shadeButtonRect, hover, sunken );
+                        QImage image( lscs_scrollbar_button_arrow_up );
                         image.setColor( 1, textColor.rgba() );
                         painter->drawImage( shadeButtonRect.adjusted( 5, 7, -5, -7 ), image );
                     }
@@ -2075,8 +2075,8 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
                     {
                         bool hover = ( titleBar->activeSubControls & SC_TitleBarUnshadeButton ) && ( titleBar->state & State_MouseOver );
                         bool sunken = ( titleBar->activeSubControls & SC_TitleBarUnshadeButton ) && ( titleBar->state & State_Sunken );
-                        qt_gtk_draw_mdibutton( painter, titleBar, unshadeButtonRect, hover, sunken );
-                        QImage image( qt_scrollbar_button_arrow_down );
+                        lscs_gtk_draw_mdibutton( painter, titleBar, unshadeButtonRect, hover, sunken );
+                        QImage image( lscs_scrollbar_button_arrow_down );
                         image.setColor( 1, textColor.rgba() );
                         painter->drawImage( unshadeButtonRect.adjusted( 5, 7, -5, -7 ), image );
                     }
@@ -2108,7 +2108,7 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
             painter->restore();
             break;
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
 
         case CC_GroupBox:
             painter->save();
@@ -2176,9 +2176,9 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
 
             painter->restore();
             break;
-#endif // QT_NO_GROUPBOX
+#endif // LSCS_NO_GROUPBOX
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CC_ComboBox:
 
@@ -2194,7 +2194,7 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
 
                 bool isEnabled = ( comboBox->state & State_Enabled );
                 bool focus = isEnabled && ( comboBox->state & State_HasFocus );
-                GtkStateType state = qt_gtk_state( option );
+                GtkStateType state = lscs_gtk_state( option );
                 int appears_as_list = !proxy()->styleHint( QStyle::SH_ComboBox_Popup, comboBox, widget );
                 QStyleOptionComboBox comboBoxCopy = *comboBox;
                 comboBoxCopy.rect = option->rect;
@@ -2463,9 +2463,9 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
 
             break;
 
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX
 
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 
         case CC_ToolButton:
             if ( const QStyleOptionToolButton *toolbutton = qstyleoption_cast<const QStyleOptionToolButton *>( option ) )
@@ -2582,9 +2582,9 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
 
             break;
 
-#endif // QT_NO_TOOLBUTTON
+#endif // LSCS_NO_TOOLBUTTON
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
         case CC_ScrollBar:
             if ( const QStyleOptionSlider *scrollBar = qstyleoption_cast<const QStyleOptionSlider *>( option ) )
@@ -2802,9 +2802,9 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
 
             break;
 
-#endif //QT_NO_SCROLLBAR
+#endif //LSCS_NO_SCROLLBAR
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case CC_SpinBox:
             if ( const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>( option ) )
@@ -2866,7 +2866,7 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
 
                 if ( spinBox->frame )
                 {
-                    GtkStateType state = qt_gtk_state( option );
+                    GtkStateType state = lscs_gtk_state( option );
 
                     if ( !( option->state & State_Enabled ) )
                     {
@@ -3038,9 +3038,9 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
 
             break;
 
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
         case CC_Slider:
             if ( const QStyleOptionSlider *slider = qstyleoption_cast<const QStyleOptionSlider *>( option ) )
@@ -3099,7 +3099,7 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
                     d->gtk_widget_style_get( scaleWidget, "trough-border", &outerSize, NULL );
                     ++outerSize;
 
-                    GtkStateType state = qt_gtk_state( option );
+                    GtkStateType state = lscs_gtk_state( option );
                     int focusFrameMargin = 2;
 
                     QRect grooveRect = option->rect.adjusted( focusFrameMargin, outerSize + focusFrameMargin,
@@ -3299,7 +3299,7 @@ void QGtkStyle::drawComplexControl( ComplexControl control, const QStyleOptionCo
 
             break;
 
-#endif // QT_NO_SLIDER
+#endif // LSCS_NO_SLIDER
 
         default:
             QCommonStyle::drawComplexControl( control, option, painter, widget );
@@ -3549,7 +3549,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
 
             break;
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CE_ComboBoxLabel:
             if ( const QStyleOptionComboBox *cb = qstyleoption_cast<const QStyleOptionComboBox *>( option ) )
@@ -3614,7 +3614,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
 
             break;
 
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX
 
         case CE_DockWidgetTitle:
             painter->save();
@@ -3680,7 +3680,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
                 Q_ASSERT( column );
 
                 GtkWidget *gtkTreeHeader = column->button;
-                GtkStateType state = qt_gtk_state( option );
+                GtkStateType state = lscs_gtk_state( option );
                 GtkShadowType shadow = GTK_SHADOW_OUT;
 
                 if ( option->state & State_Sunken )
@@ -3695,7 +3695,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
             painter->restore();
             break;
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
         case CE_SizeGrip:
         {
@@ -3710,7 +3710,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
         }
         break;
 
-#endif // QT_NO_SIZEGRIP
+#endif // LSCS_NO_SIZEGRIP
 
         case CE_MenuBarEmptyArea:
         {
@@ -3818,13 +3818,13 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
         case CE_Splitter:
         {
             GtkWidget *gtkWindow = d->gtkWidget( "GtkWindow" ); // The Murrine Engine currently assumes a widget is passed
-            gtkPainter->paintHandle( gtkWindow, "splitter", option->rect, qt_gtk_state( option ), GTK_SHADOW_NONE,
+            gtkPainter->paintHandle( gtkWindow, "splitter", option->rect, lscs_gtk_state( option ), GTK_SHADOW_NONE,
                                      !( option->state & State_Horizontal ) ? GTK_ORIENTATION_HORIZONTAL : GTK_ORIENTATION_VERTICAL,
                                      style );
         }
         break;
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
         case CE_ToolBar:
             if ( const QStyleOptionToolBar *toolbar = qstyleoption_cast<const QStyleOptionToolBar *>( option ) )
@@ -3852,7 +3852,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
 
             break;
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 
         case CE_MenuItem:
             painter->save();
@@ -3912,7 +3912,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
                 {
                     QRect rect = option->rect;
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
                     if ( qobject_cast<const QComboBox *>( widget ) )
                     {
@@ -3933,7 +3933,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
 
                 int checkcol = qMax( menuItem->maxIconWidth, qMax( 20, checkSize ) );
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
                 if ( qobject_cast<const QComboBox *>( widget ) ||
                         ( option->styleObject && option->styleObject->property( "_q_isComboBoxPopupItem" ).toBool() ) )
@@ -3958,7 +3958,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
                         {
                             // Radio button
                             GtkShadowType shadow = GTK_SHADOW_OUT;
-                            GtkStateType state = qt_gtk_state( option );
+                            GtkStateType state = lscs_gtk_state( option );
 
                             if ( selected )
                             {
@@ -3983,7 +3983,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
                             if ( menuItem->icon.isNull() )
                             {
                                 GtkShadowType shadow = GTK_SHADOW_OUT;
-                                GtkStateType state = qt_gtk_state( option );
+                                GtkStateType state = lscs_gtk_state( option );
 
                                 if ( selected )
                                 {
@@ -4041,7 +4041,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
                     int smallIconSize = proxy()->pixelMetric( PM_SmallIconSize, option, widget );
                     QSize iconSize( smallIconSize, smallIconSize );
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
                     if ( const QComboBox *combo = qobject_cast<const QComboBox *>( widget ) )
                     {
@@ -4250,7 +4250,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
 
             break;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case CE_TabBarTabShape:
             if ( const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>( option ) )
@@ -4339,7 +4339,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
 
             break;
 
-#endif //QT_NO_TABBAR
+#endif //LSCS_NO_TABBAR
 
         case CE_ProgressBarGroove:
             if ( const QStyleOptionProgressBar *bar = qstyleoption_cast<const QStyleOptionProgressBar *>( option ) )
@@ -4347,7 +4347,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
                 ( void ) bar;
 
                 GtkWidget *gtkProgressBar = d->gtkWidget( "GtkProgressBar" );
-                GtkStateType state = qt_gtk_state( option );
+                GtkStateType state = lscs_gtk_state( option );
                 gtkPainter->paintBox( gtkProgressBar, "trough", option->rect, state, GTK_SHADOW_IN,
                                       d->gtk_widget_get_style( gtkProgressBar ) );
             }
@@ -4437,7 +4437,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
                         progressBar.setRect( rect.right() - width, rect.top(), width, rect.height() );
                     }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
                     d->stopAnimation( option->styleObject );
 #endif
                 }
@@ -4447,7 +4447,7 @@ void QGtkStyle::drawControl( ControlElement element, const QStyleOption *option,
                     int slideWidth = ( ( rect.width() - 4 ) * 2 ) / 3;
                     int step = 0;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
                     if ( QProgressStyleAnimation *animation =
                                 dynamic_cast<QProgressStyleAnimation *>( d->animationValue( option->styleObject ) ) )
@@ -4594,7 +4594,7 @@ QRect QGtkStyle::subControlRect( ComplexControl control, const QStyleOptionCompl
 
             break;
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
 
         case CC_GroupBox:
             if ( const QStyleOptionGroupBox *groupBox = qstyleoption_cast<const QStyleOptionGroupBox *>( option ) )
@@ -4630,7 +4630,7 @@ QRect QGtkStyle::subControlRect( ComplexControl control, const QStyleOptionCompl
                     font.setBold( true );
                     fontMetrics = QFontMetrics( font );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
                 }
                 else if ( QStyleHelper::isInstanceOf( groupBox->styleObject, QAccessible::Grouping ) )
                 {
@@ -4673,7 +4673,7 @@ QRect QGtkStyle::subControlRect( ComplexControl control, const QStyleOptionCompl
             return rect;
 #endif
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case CC_SpinBox:
             if ( const QStyleOptionSpinBox *spinbox = qstyleoption_cast<const QStyleOptionSpinBox *>( option ) )
@@ -4741,7 +4741,7 @@ QRect QGtkStyle::subControlRect( ComplexControl control, const QStyleOptionCompl
 
 #endif // Qt_NO_SPINBOX
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CC_TitleBar:
             if ( const QStyleOptionTitleBar *tb = qstyleoption_cast<const QStyleOptionTitleBar *>( option ) )
@@ -4956,7 +4956,7 @@ QRect QGtkStyle::subControlRect( ComplexControl control, const QStyleOptionCompl
 
             break;
 
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX
 
         default:
             break;
@@ -5279,43 +5279,43 @@ QPixmap QGtkStyle::standardPixmap( StandardPixmap sp, const QStyleOption *option
         break;
 
         case SP_DialogDiscardButton:
-            return qt_gtk_get_icon( GTK_STOCK_DELETE );
+            return lscs_gtk_get_icon( GTK_STOCK_DELETE );
 
         case SP_DialogOkButton:
-            return qt_gtk_get_icon( GTK_STOCK_OK );
+            return lscs_gtk_get_icon( GTK_STOCK_OK );
 
         case SP_DialogCancelButton:
-            return qt_gtk_get_icon( GTK_STOCK_CANCEL );
+            return lscs_gtk_get_icon( GTK_STOCK_CANCEL );
 
         case SP_DialogYesButton:
-            return qt_gtk_get_icon( GTK_STOCK_YES );
+            return lscs_gtk_get_icon( GTK_STOCK_YES );
 
         case SP_DialogNoButton:
-            return qt_gtk_get_icon( GTK_STOCK_NO );
+            return lscs_gtk_get_icon( GTK_STOCK_NO );
 
         case SP_DialogOpenButton:
-            return qt_gtk_get_icon( GTK_STOCK_OPEN );
+            return lscs_gtk_get_icon( GTK_STOCK_OPEN );
 
         case SP_DialogCloseButton:
-            return qt_gtk_get_icon( GTK_STOCK_CLOSE );
+            return lscs_gtk_get_icon( GTK_STOCK_CLOSE );
 
         case SP_DialogApplyButton:
-            return qt_gtk_get_icon( GTK_STOCK_APPLY );
+            return lscs_gtk_get_icon( GTK_STOCK_APPLY );
 
         case SP_DialogSaveButton:
-            return qt_gtk_get_icon( GTK_STOCK_SAVE );
+            return lscs_gtk_get_icon( GTK_STOCK_SAVE );
 
         case SP_MessageBoxWarning:
-            return qt_gtk_get_icon( GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_DIALOG );
+            return lscs_gtk_get_icon( GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_DIALOG );
 
         case SP_MessageBoxQuestion:
-            return qt_gtk_get_icon( GTK_STOCK_DIALOG_QUESTION, GTK_ICON_SIZE_DIALOG );
+            return lscs_gtk_get_icon( GTK_STOCK_DIALOG_QUESTION, GTK_ICON_SIZE_DIALOG );
 
         case SP_MessageBoxInformation:
-            return qt_gtk_get_icon( GTK_STOCK_DIALOG_INFO, GTK_ICON_SIZE_DIALOG );
+            return lscs_gtk_get_icon( GTK_STOCK_DIALOG_INFO, GTK_ICON_SIZE_DIALOG );
 
         case SP_MessageBoxCritical:
-            return qt_gtk_get_icon( GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_DIALOG );
+            return lscs_gtk_get_icon( GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_DIALOG );
 
         default:
             return QCommonStyle::standardPixmap( sp, option, widget );
@@ -5336,43 +5336,43 @@ QIcon QGtkStyle::standardIcon( StandardPixmap standardIcon, const QStyleOption *
     switch ( standardIcon )
     {
         case SP_DialogDiscardButton:
-            return qt_gtk_get_icon( GTK_STOCK_DELETE );
+            return lscs_gtk_get_icon( GTK_STOCK_DELETE );
 
         case SP_DialogOkButton:
-            return qt_gtk_get_icon( GTK_STOCK_OK );
+            return lscs_gtk_get_icon( GTK_STOCK_OK );
 
         case SP_DialogCancelButton:
-            return qt_gtk_get_icon( GTK_STOCK_CANCEL );
+            return lscs_gtk_get_icon( GTK_STOCK_CANCEL );
 
         case SP_DialogYesButton:
-            return qt_gtk_get_icon( GTK_STOCK_YES );
+            return lscs_gtk_get_icon( GTK_STOCK_YES );
 
         case SP_DialogNoButton:
-            return qt_gtk_get_icon( GTK_STOCK_NO );
+            return lscs_gtk_get_icon( GTK_STOCK_NO );
 
         case SP_DialogOpenButton:
-            return qt_gtk_get_icon( GTK_STOCK_OPEN );
+            return lscs_gtk_get_icon( GTK_STOCK_OPEN );
 
         case SP_DialogCloseButton:
-            return qt_gtk_get_icon( GTK_STOCK_CLOSE );
+            return lscs_gtk_get_icon( GTK_STOCK_CLOSE );
 
         case SP_DialogApplyButton:
-            return qt_gtk_get_icon( GTK_STOCK_APPLY );
+            return lscs_gtk_get_icon( GTK_STOCK_APPLY );
 
         case SP_DialogSaveButton:
-            return qt_gtk_get_icon( GTK_STOCK_SAVE );
+            return lscs_gtk_get_icon( GTK_STOCK_SAVE );
 
         case SP_MessageBoxWarning:
-            return qt_gtk_get_icon( GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_DIALOG );
+            return lscs_gtk_get_icon( GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_DIALOG );
 
         case SP_MessageBoxQuestion:
-            return qt_gtk_get_icon( GTK_STOCK_DIALOG_QUESTION, GTK_ICON_SIZE_DIALOG );
+            return lscs_gtk_get_icon( GTK_STOCK_DIALOG_QUESTION, GTK_ICON_SIZE_DIALOG );
 
         case SP_MessageBoxInformation:
-            return qt_gtk_get_icon( GTK_STOCK_DIALOG_INFO, GTK_ICON_SIZE_DIALOG );
+            return lscs_gtk_get_icon( GTK_STOCK_DIALOG_INFO, GTK_ICON_SIZE_DIALOG );
 
         case SP_MessageBoxCritical:
-            return qt_gtk_get_icon( GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_DIALOG );
+            return lscs_gtk_get_icon( GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_DIALOG );
 
         default:
             return QCommonStyle::standardIcon( standardIcon, option, widget );
@@ -5485,4 +5485,4 @@ void QGtkStyle::drawItemText( QPainter *painter, const QRect &rect, int alignmen
     return QCommonStyle::drawItemText( painter, rect, alignment, pal, enabled, text, textRole );
 }
 
-#endif //! defined(QT_NO_STYLE_QGTK)
+#endif //! defined(LSCS_NO_STYLE_QGTK)

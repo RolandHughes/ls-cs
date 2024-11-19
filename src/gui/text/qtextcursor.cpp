@@ -2200,7 +2200,7 @@ void QTextCursor::insertFragment( const QTextDocumentFragment &fragment )
     }
 }
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 void QTextCursor::insertHtml( const QString &html )
 {
     if ( ! d || ! d->priv )

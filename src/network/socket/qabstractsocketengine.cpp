@@ -89,7 +89,7 @@ QAbstractSocketEngine::~QAbstractSocketEngine()
 QAbstractSocketEngine *QAbstractSocketEngine::createSocketEngine( QAbstractSocket::SocketType socketType,
         const QNetworkProxy &proxy, QObject *parent )
 {
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
     // proxy type must have been resolved by now
     if ( proxy.type() == QNetworkProxy::DefaultProxy )
@@ -109,7 +109,7 @@ QAbstractSocketEngine *QAbstractSocketEngine::createSocketEngine( QAbstractSocke
         }
     }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
     // only NoProxy can have reached here
     if ( proxy.type() != QNetworkProxy::NoProxy )
@@ -199,7 +199,7 @@ void QAbstractSocketEngine::connectionNotification()
     }
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 void QAbstractSocketEngine::proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator )
 {
     if ( QAbstractSocketEngineReceiver *receiver = d_func()->receiver )

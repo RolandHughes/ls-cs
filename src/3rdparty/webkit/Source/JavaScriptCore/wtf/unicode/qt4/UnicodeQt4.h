@@ -38,7 +38,7 @@
 #include <config.h>
 
 #include <stdint.h>
-#if USE(QT_ICU_TEXT_BREAKING)
+#if USE(LSCS_ICU_TEXT_BREAKING)
 #include <unicode/ubrk.h>
 #endif
 
@@ -63,8 +63,8 @@ struct Properties
     signed short titleCaseDiff : 16;
     signed short caseFoldDiff : 16;
 };
-Q_CORE_EXPORT const Properties *QT_FASTCALL properties( uint ucs4 );
-Q_CORE_EXPORT const Properties *QT_FASTCALL properties( ushort ucs2 );
+Q_CORE_EXPORT const Properties *LSCS_FASTCALL properties( uint ucs4 );
+Q_CORE_EXPORT const Properties *LSCS_FASTCALL properties( ushort ucs2 );
 }
 
 // ugly hack to make UChar compatible with JSChar in API/JSStringRef.h
@@ -74,7 +74,7 @@ typedef wchar_t UChar;
 typedef uint16_t UChar;
 #endif
 
-#if !USE(QT_ICU_TEXT_BREAKING)
+#if !USE(LSCS_ICU_TEXT_BREAKING)
 typedef uint32_t UChar32;
 #endif
 

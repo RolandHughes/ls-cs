@@ -26,7 +26,7 @@
 
 #include <qwidget_p.h>
 
-#ifndef QT_NO_QCOLUMNVIEW
+#ifndef LSCS_NO_QCOLUMNVIEW
 
 class QColumnViewGripPrivate;
 
@@ -74,6 +74,6 @@ private:
     Q_DECLARE_PUBLIC( QColumnViewGrip )
 };
 
-#endif //QT_NO_QCOLUMNVIEW
+#endif //LSCS_NO_QCOLUMNVIEW
 
 #endif

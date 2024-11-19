@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_SYNTAXHIGHLIGHTER
+#ifndef LSCS_NO_SYNTAXHIGHLIGHTER
 
 #include <qobject.h>
 #include <qscopedpointer.h>
@@ -90,6 +90,6 @@ private:
     Q_DECLARE_PRIVATE( QSyntaxHighlighter )
 };
 
-#endif // QT_NO_SYNTAXHIGHLIGHTER
+#endif // LSCS_NO_SYNTAXHIGHLIGHTER
 
 #endif

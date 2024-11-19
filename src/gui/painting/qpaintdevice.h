@@ -139,7 +139,7 @@ private:
     friend class QPainterPrivate;
     friend class QFontEngineMac;
     friend class QX11PaintEngine;
-    friend Q_GUI_EXPORT int qt_paint_device_metric( const QPaintDevice *device, PaintDeviceMetric metric );
+    friend Q_GUI_EXPORT int lscs_paint_device_metric( const QPaintDevice *device, PaintDeviceMetric metric );
 };
 
 inline int QPaintDevice::devType() const

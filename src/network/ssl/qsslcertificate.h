@@ -33,7 +33,7 @@
 #include <qsharedpointer.h>
 #include <qssl.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 class QDateTime;
 class QDebug;

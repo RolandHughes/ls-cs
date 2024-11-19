@@ -133,7 +133,7 @@ QOpenGLContext *QAbstractOpenGLFunctions::owningContext() const
     return d->owningContext;
 }
 
-#if !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_OPENGL_ES_2)
 
 QOpenGLFunctions_1_0_CoreBackend::QOpenGLFunctions_1_0_CoreBackend( QOpenGLContext *context )
     : QOpenGLVersionFunctionsBackend( context )
@@ -3039,4 +3039,4 @@ QOpenGLVersionStatus QOpenGLFunctions_4_5_DeprecatedBackend::versionStatus()
 
 // No backends for OpenGL ES 2
 
-#endif // !QT_OPENGL_ES_2
+#endif // !LSCS_OPENGL_ES_2

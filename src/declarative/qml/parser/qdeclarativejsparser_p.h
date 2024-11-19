@@ -33,7 +33,7 @@
 #include <QtCore/QList>
 #include <QtCore/QString>
 
-QT_QML_BEGIN_NAMESPACE
+LSCS_QML_BEGIN_NAMESPACE
 
 namespace QDeclarativeJS
 {
@@ -251,7 +251,7 @@ protected:
 
 #define J_SCRIPT_REGEXPLITERAL_RULE2 79
 
-QT_QML_END_NAMESPACE
+LSCS_QML_END_NAMESPACE
 
 
 

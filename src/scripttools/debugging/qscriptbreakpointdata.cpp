@@ -27,7 +27,7 @@
 #include <QtCore/qstring.h>
 #include <QtCore/qvariant.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
   \since 4.5
@@ -381,4 +381,4 @@ QDataStream &operator>>( QDataStream &in, QScriptBreakpointData &data )
     return in;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

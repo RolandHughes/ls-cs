@@ -1,5 +1,5 @@
-#ifndef QT_WEBKIT_H
-#define QT_WEBKIT_H
+#ifndef LSCS_WEBKIT_H
+#define LSCS_WEBKIT_H
 
 #include <qtcore.h>
 #include <qtgui.h>

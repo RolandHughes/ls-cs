@@ -27,7 +27,7 @@
 #include <qdeclarativeflickable_p.h>
 #include <qdeclarativeguard_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeViewSection : public QObject
 {
@@ -504,7 +504,7 @@ public:
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPEINFO( QDeclarativeListView, QML_HAS_ATTACHED_PROPERTIES )
 QML_DECLARE_TYPE( QDeclarativeListView )

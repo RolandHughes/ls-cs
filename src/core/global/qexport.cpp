@@ -25,7 +25,7 @@
 
 bool qSharedBuild()
 {
-#ifdef QT_STATIC
+#ifdef LSCS_STATIC
     return false;
 #else
     return true;

@@ -160,9 +160,9 @@ public:
         HoverLeave             = 128,                     // mouse cursor leaves a hover widget
         HoverMove              = 129,                     // mouse cursor move inside a hover widget
 
-#ifdef QT_KEYPAD_NAVIGATION
-        EnterEditFocus         = 150,                     // enter edit mode in keypad navigation (Defined only with QT_KEYPAD_NAVIGATION)
-        LeaveEditFocus         = 151,                     // leave edit mode in keypad navigation (Defined only with QT_KEYPAD_NAVIGATION)
+#ifdef LSCS_KEYPAD_NAVIGATION
+        EnterEditFocus         = 150,                     // enter edit mode in keypad navigation (Defined only with LSCS_KEYPAD_NAVIGATION)
+        LeaveEditFocus         = 151,                     // leave edit mode in keypad navigation (Defined only with LSCS_KEYPAD_NAVIGATION)
 #endif
 
         AcceptDropsChange                = 152,
@@ -211,7 +211,7 @@ public:
         TouchUpdate          = 195,
         TouchEnd             = 196,
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
         NativeGesture        = 197,             // Internal for platform gesture support
         Gesture              = 198,
         GestureOverride      = 202,

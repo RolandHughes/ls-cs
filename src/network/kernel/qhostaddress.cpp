@@ -44,11 +44,11 @@
 #  include <qsimd_p.h>
 #endif
 
-#ifdef QT_LINUXBASE
+#ifdef LSCS_LINUXBASE
 #  include <arpa/inet.h>
 #endif
 
-#define QT_ENSURE_PARSED(a) \
+#define LSCS_ENSURE_PARSED(a) \
     do { \
         if (! (a)->d->isParsed)  { \
            (a)->d->parse(); \
@@ -61,9 +61,9 @@
 // Only the new version is the correct one, so always
 // use this structure.
 
-struct qt_in6_addr
+struct lscs_in6_addr
 {
-    u_char qt_s6_addr[16];
+    u_char lscs_s6_addr[16];
 };
 
 typedef struct
@@ -71,13 +71,13 @@ typedef struct
     short   sin6_family;            /* AF_INET6 */
     u_short sin6_port;              /* Transport level port number */
     u_long  sin6_flowinfo;          /* IPv6 flow information */
-    struct  qt_in6_addr sin6_addr;  /* IPv6 address */
+    struct  lscs_in6_addr sin6_addr;  /* IPv6 address */
     u_long  sin6_scope_id;          /* set of interfaces for a scope */
-} qt_sockaddr_in6;
+} lscs_sockaddr_in6;
 
 #else
-#define qt_sockaddr_in6  sockaddr_in6
-#define qt_s6_addr       s6_addr
+#define lscs_sockaddr_in6  sockaddr_in6
+#define lscs_s6_addr       s6_addr
 #endif
 
 
@@ -457,7 +457,7 @@ QHostAddress::QHostAddress( const struct sockaddr *sockaddr )
     }
     else if ( sockaddr->sa_family == AF_INET6 )
     {
-        setAddress( ( ( const qt_sockaddr_in6 * )sockaddr )->sin6_addr.qt_s6_addr );
+        setAddress( ( ( const lscs_sockaddr_in6 * )sockaddr )->sin6_addr.lscs_s6_addr );
     }
 }
 
@@ -564,14 +564,14 @@ void QHostAddress::setAddress( const struct sockaddr *sockaddr )
     }
     else if ( sockaddr->sa_family == AF_INET6 )
     {
-        setAddress( ( ( const qt_sockaddr_in6 * )sockaddr )->sin6_addr.qt_s6_addr );
+        setAddress( ( ( const lscs_sockaddr_in6 * )sockaddr )->sin6_addr.lscs_s6_addr );
     }
 
 }
 
 quint32 QHostAddress::toIPv4Address( bool *ok ) const
 {
-    QT_ENSURE_PARSED( this );
+    LSCS_ENSURE_PARSED( this );
     quint32 dummy;
 
     if ( ok )
@@ -585,19 +585,19 @@ quint32 QHostAddress::toIPv4Address( bool *ok ) const
 
 QAbstractSocket::NetworkLayerProtocol QHostAddress::protocol() const
 {
-    QT_ENSURE_PARSED( this );
+    LSCS_ENSURE_PARSED( this );
     return d->protocol;
 }
 
 Q_IPV6ADDR QHostAddress::toIPv6Address() const
 {
-    QT_ENSURE_PARSED( this );
+    LSCS_ENSURE_PARSED( this );
     return d->a6;
 }
 
 QString QHostAddress::toString() const
 {
-    QT_ENSURE_PARSED( this );
+    LSCS_ENSURE_PARSED( this );
 
     if ( d->protocol == QAbstractSocket::IPv4Protocol
             || d->protocol == QAbstractSocket::AnyIPProtocol )
@@ -627,13 +627,13 @@ QString QHostAddress::toString() const
 
 QString QHostAddress::scopeId() const
 {
-    QT_ENSURE_PARSED( this );
+    LSCS_ENSURE_PARSED( this );
     return ( d->protocol == QAbstractSocket::IPv6Protocol ) ? d->scopeId : QString();
 }
 
 void QHostAddress::setScopeId( const QString &id )
 {
-    QT_ENSURE_PARSED( this );
+    LSCS_ENSURE_PARSED( this );
 
     if ( d->protocol == QAbstractSocket::IPv6Protocol )
     {
@@ -643,8 +643,8 @@ void QHostAddress::setScopeId( const QString &id )
 
 bool QHostAddress::operator==( const QHostAddress &other ) const
 {
-    QT_ENSURE_PARSED( this );
-    QT_ENSURE_PARSED( &other );
+    LSCS_ENSURE_PARSED( this );
+    LSCS_ENSURE_PARSED( &other );
 
     if ( d->protocol == QAbstractSocket::IPv4Protocol )
     {
@@ -662,7 +662,7 @@ bool QHostAddress::operator==( const QHostAddress &other ) const
 
 bool QHostAddress::operator ==( SpecialAddress other ) const
 {
-    QT_ENSURE_PARSED( this );
+    LSCS_ENSURE_PARSED( this );
 
     quint32 ip4 = INADDR_ANY;
 
@@ -702,13 +702,13 @@ bool QHostAddress::operator ==( SpecialAddress other ) const
 
 bool QHostAddress::isNull() const
 {
-    QT_ENSURE_PARSED( this );
+    LSCS_ENSURE_PARSED( this );
     return d->protocol == QAbstractSocket::UnknownNetworkLayerProtocol;
 }
 
 bool QHostAddress::isInSubnet( const QHostAddress &subnet, int netmask ) const
 {
-    QT_ENSURE_PARSED( this );
+    LSCS_ENSURE_PARSED( this );
 
     if ( subnet.protocol() != d->protocol || netmask < 0 )
     {
@@ -920,7 +920,7 @@ QPair<QHostAddress, int> QHostAddress::parseSubnet( const QString &subnet )
 
 bool QHostAddress::isLoopback() const
 {
-    QT_ENSURE_PARSED( this );
+    LSCS_ENSURE_PARSED( this );
 
     if ( ( d->a & 0xFF000000 ) == 0x7F000000 )
     {
@@ -943,7 +943,7 @@ bool QHostAddress::isLoopback() const
 
 bool QHostAddress::isMulticast() const
 {
-    QT_ENSURE_PARSED( this );
+    LSCS_ENSURE_PARSED( this );
 
     if ( ( d->a & 0xF0000000 ) == 0xE0000000 )
     {
@@ -977,7 +977,7 @@ QDebug operator<<( QDebug d, const QHostAddress &address )
 
 uint qHash( const QHostAddress &key, uint seed )
 {
-    QT_ENSURE_PARSED( &key );
+    LSCS_ENSURE_PARSED( &key );
     return qHashBits( key.d->a6.c, 16, seed );
 }
 

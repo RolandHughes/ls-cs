@@ -25,7 +25,7 @@
 
 #include "private/qdeclarativeengine_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
 \internal
@@ -83,4 +83,4 @@ QDeclarativeCleanup::~QDeclarativeCleanup()
     prev = 0;
     next = 0;
 }
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -252,7 +252,7 @@ void QFocusFrame::paintEvent( QPaintEvent * )
     int vmargin = style()->pixelMetric( QStyle::PM_FocusFrameVMargin );
     int hmargin = style()->pixelMetric( QStyle::PM_FocusFrameHMargin );
 
-    QWidgetPrivate *wd = qt_widget_private( d->widget );
+    QWidgetPrivate *wd = lscs_widget_private( d->widget );
     QRect rect = wd->clipRect().adjusted( 0, 0, hmargin * 2, vmargin * 2 );
 
     p.setClipRect( rect );

@@ -23,7 +23,7 @@
 
 #include <qactiongroup.h>
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
 #include <qaction_p.h>
 #include <qapplication.h>
@@ -272,4 +272,4 @@ void QActionGroup::_q_actionHovered()
     d->_q_actionHovered();
 }
 
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION

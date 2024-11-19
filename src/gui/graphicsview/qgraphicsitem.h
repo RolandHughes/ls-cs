@@ -36,7 +36,7 @@
 // accurate file name
 #include <qdeclarativelistproperty.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 #include <qgraphicseffect.h>
 
@@ -201,12 +201,12 @@ public:
     void setPanelModality( PanelModality panelModality );
     bool isBlockedByModalPanel( QGraphicsItem **blockingPanel = nullptr ) const;
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     QString toolTip() const;
     void setToolTip( const QString &toolTip );
 #endif
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QCursor cursor() const;
     void setCursor( const QCursor &cursor );
     bool hasCursor() const;
@@ -240,7 +240,7 @@ public:
     qreal effectiveOpacity() const;
     void setOpacity( qreal opacity );
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
     QGraphicsEffect *graphicsEffect() const;
     void setGraphicsEffect( QGraphicsEffect *effect );
 #endif
@@ -516,12 +516,12 @@ private:
     friend class QGraphicsItemEffectSourcePrivate;
     friend class QGraphicsTransformPrivate;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     friend class QGestureManager;
 #endif
 
-    friend bool qt_closestLeaf( const QGraphicsItem *, const QGraphicsItem * );
-    friend bool qt_closestItemFirst( const QGraphicsItem *, const QGraphicsItem * );
+    friend bool lscs_closestLeaf( const QGraphicsItem *, const QGraphicsItem * );
+    friend bool lscs_closestItemFirst( const QGraphicsItem *, const QGraphicsItem * );
 };
 
 inline void QGraphicsItem::setPos( qreal x, qreal y )
@@ -689,7 +689,7 @@ class Q_GUI_EXPORT QGraphicsObject : public QObject, public QGraphicsItem
     GUI_LSCS_PROPERTY_READ( transformOriginPoint, transformOriginPoint )
     GUI_LSCS_PROPERTY_WRITE( transformOriginPoint, lscs_setTransformOriginPoint )
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
     GUI_LSCS_PROPERTY_READ( effect, graphicsEffect )
     GUI_LSCS_PROPERTY_WRITE( effect, setGraphicsEffect )
 #endif
@@ -718,7 +718,7 @@ public:
     ~QGraphicsObject();
     using QObject::children;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     void grabGesture( Qt::GestureType gesture, Qt::GestureFlags flags = Qt::GestureFlags() );
     void ungrabGesture( Qt::GestureType gesture );
 #endif
@@ -1288,6 +1288,6 @@ LSCS_DECLARE_INTERFACE( QGraphicsItem, "com.copperspice.QGraphicsItem" )
 
 LSCS_DECLARE_METATYPE( QGraphicsItem )
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 #endif

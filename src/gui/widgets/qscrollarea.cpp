@@ -23,7 +23,7 @@
 
 #include <qscrollarea.h>
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 
 #include <qapplication.h>
 #include <qdebug.h>
@@ -181,7 +181,7 @@ bool QScrollArea::event( QEvent *e )
         d->updateScrollBars();
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     else if ( QApplication::keypadNavigationEnabled() )
     {
         if ( e->type() == QEvent::Show )
@@ -203,7 +203,7 @@ bool QScrollArea::eventFilter( QObject *o, QEvent *e )
 {
     Q_D( QScrollArea );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( d->widget && o != d->widget && e->type() == QEvent::FocusIn
             && QApplication::keypadNavigationEnabled() )
@@ -417,4 +417,4 @@ Qt::Alignment QScrollArea::alignment() const
     return d->alignment;
 }
 
-#endif // QT_NO_SCROLLAREA
+#endif // LSCS_NO_SCROLLAREA

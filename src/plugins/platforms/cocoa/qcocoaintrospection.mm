@@ -30,7 +30,7 @@
 
 #include "qcocoaintrospection.h"
 
-void qt_cocoa_change_implementation(Class baseClass, SEL originalSel, Class proxyClass, SEL replacementSel, SEL backupSel)
+void lscs_cocoa_change_implementation(Class baseClass, SEL originalSel, Class proxyClass, SEL replacementSel, SEL backupSel)
 {
    // The following code replaces the _implementation_ for the selector we want to hack
    // (originalSel) with the implementation found in proxyClass. Then it creates
@@ -55,7 +55,7 @@ void qt_cocoa_change_implementation(Class baseClass, SEL originalSel, Class prox
    }
 }
 
-void qt_cocoa_change_back_implementation(Class baseClass, SEL originalSel, SEL backupSel)
+void lscs_cocoa_change_back_implementation(Class baseClass, SEL originalSel, SEL backupSel)
 {
    Method originalMethod = class_getInstanceMethod(baseClass, originalSel);
    Method backupMethodInBaseClass = class_getInstanceMethod(baseClass, backupSel);

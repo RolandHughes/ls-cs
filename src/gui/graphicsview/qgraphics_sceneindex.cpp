@@ -31,7 +31,7 @@
 #include <qgraphics_sceneindex_p.h>
 #include <qgraphics_scenebsptreeindex_p.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 namespace QtPrivate
 {
@@ -538,4 +538,4 @@ void QGraphicsSceneIndex::prepareBoundingRectChange( const QGraphicsItem *item )
 
 
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW

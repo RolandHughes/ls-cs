@@ -79,7 +79,7 @@ public:
         State_Sibling =             0x00200000,
         State_Editing =             0x00400000,
         State_KeyboardFocusChange = 0x00800000,
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
         State_HasEditFocus =        0x01000000,
 #endif
         State_ReadOnly =            0x02000000,

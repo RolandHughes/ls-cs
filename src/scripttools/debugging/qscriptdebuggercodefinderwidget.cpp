@@ -32,7 +32,7 @@
 #include <QtGui/qevent.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerCodeFinderWidgetPrivate
     : public QScriptDebuggerCodeFinderWidgetInterfacePrivate
@@ -273,4 +273,4 @@ void QScriptDebuggerCodeFinderWidget::_q_previous()
     d->_q_previous();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

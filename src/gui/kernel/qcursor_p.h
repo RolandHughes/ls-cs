@@ -57,7 +57,7 @@ public:
     static bool initialized;
 };
 
-extern QCursorData *qt_cursorTable[Qt::LastCursor + 1]; // qcursor.cpp
+extern QCursorData *lscs_cursorTable[Qt::LastCursor + 1]; // qcursor.cpp
 
 
 #endif

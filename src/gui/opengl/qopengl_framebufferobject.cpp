@@ -37,12 +37,12 @@
 #include <qopenglcontext_p.h>
 
 #if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
-#define QT_RESET_GLERROR()                                \
+#define LSCS_RESET_GLERROR()                                \
 {                                                         \
     while (QOpenGLContext::currentContext()->functions()->glGetError() != GL_NO_ERROR) {} \
 }
 
-#define QT_CHECK_GLERROR()                                \
+#define LSCS_CHECK_GLERROR()                                \
 {                                                         \
     GLenum err = QOpenGLContext::currentContext()->functions()->glGetError();  \
     if (err != GL_NO_ERROR) {                             \
@@ -50,8 +50,8 @@
     }                                                     \
 }
 #else
-#define QT_RESET_GLERROR() {}
-#define QT_CHECK_GLERROR() {}
+#define LSCS_RESET_GLERROR() {}
+#define LSCS_CHECK_GLERROR() {}
 #endif
 
 #ifndef GL_MAX_SAMPLES
@@ -392,7 +392,7 @@ void QOpenGLFramebufferObjectPrivate::init( QOpenGLFramebufferObject *, const QS
 
     target = texture_target;
 
-    QT_RESET_GLERROR(); // reset error state
+    LSCS_RESET_GLERROR(); // reset error state
     GLuint fbo = 0;
 
     funcs.glGenFramebuffers( 1, &fbo );
@@ -400,7 +400,7 @@ void QOpenGLFramebufferObjectPrivate::init( QOpenGLFramebufferObject *, const QS
 
     QOpenGLContextPrivate::get( ctx )->qgl_current_fbo_invalid = true;
 
-    QT_CHECK_GLERROR();
+    LSCS_CHECK_GLERROR();
 
     format.setTextureTarget( target );
     format.setInternalTextureFormat( internal_format );
@@ -428,7 +428,7 @@ void QOpenGLFramebufferObjectPrivate::init( QOpenGLFramebufferObject *, const QS
         funcs.glDeleteFramebuffers( 1, &fbo );
     }
 
-    QT_CHECK_GLERROR();
+    LSCS_CHECK_GLERROR();
 }
 
 void QOpenGLFramebufferObjectPrivate::initTexture( int idx )
@@ -480,7 +480,7 @@ void QOpenGLFramebufferObjectPrivate::initTexture( int idx )
 
     funcs.glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + idx, target, texture, 0 );
 
-    QT_CHECK_GLERROR();
+    LSCS_CHECK_GLERROR();
 
     funcs.glBindTexture( target, 0 );
     valid = checkFramebufferStatus( ctx );
@@ -530,7 +530,7 @@ void QOpenGLFramebufferObjectPrivate::initColorBuffer( int idx, GLint *samples )
     funcs.glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + idx,
                                      GL_RENDERBUFFER, color_buffer );
 
-    QT_CHECK_GLERROR();
+    LSCS_CHECK_GLERROR();
     valid = checkFramebufferStatus( ctx );
 
     if ( valid )
@@ -683,7 +683,7 @@ void QOpenGLFramebufferObjectPrivate::initDepthStencilAttachments( QOpenGLContex
         funcs.glBindRenderbuffer( GL_RENDERBUFFER, stencil_buffer );
         Q_ASSERT( funcs.glIsRenderbuffer( stencil_buffer ) );
 
-#ifdef QT_OPENGL_ES
+#ifdef LSCS_OPENGL_ES
         GLenum storage = GL_STENCIL_INDEX8;
 #else
         GLenum storage = ctx->isOpenGLES() ? GL_STENCIL_INDEX8 : GL_STENCIL_INDEX;
@@ -760,7 +760,7 @@ void QOpenGLFramebufferObjectPrivate::initDepthStencilAttachments( QOpenGLContex
         }
     }
 
-    QT_CHECK_GLERROR();
+    LSCS_CHECK_GLERROR();
 
     format.setAttachment( fbo_attachment );
 }
@@ -770,7 +770,7 @@ static inline GLenum effectiveInternalFormat( GLenum internalFormat )
     if ( ! internalFormat )
     {
 
-#ifdef QT_OPENGL_ES_2
+#ifdef LSCS_OPENGL_ES_2
         internalFormat = GL_RGBA;
 #else
         internalFormat = QOpenGLContext::currentContext()->isOpenGLES() ? GL_RGBA : GL_RGBA8;
@@ -1081,7 +1081,7 @@ QOpenGLFramebufferObjectFormat QOpenGLFramebufferObject::format() const
     return d->format;
 }
 
-static inline QImage qt_gl_read_framebuffer_rgba8( const QSize &size, bool include_alpha, QOpenGLContext *context )
+static inline QImage lscs_gl_read_framebuffer_rgba8( const QSize &size, bool include_alpha, QOpenGLContext *context )
 {
     QOpenGLFunctions *funcs = context->functions();
     const int w = size.width();
@@ -1117,7 +1117,7 @@ static inline QImage qt_gl_read_framebuffer_rgba8( const QSize &size, bool inclu
     return rgbaImage;
 }
 
-static inline QImage qt_gl_read_framebuffer_rgb10a2( const QSize &size, bool include_alpha, QOpenGLContext *context )
+static inline QImage lscs_gl_read_framebuffer_rgb10a2( const QSize &size, bool include_alpha, QOpenGLContext *context )
 {
     // assume OpenGL 1.2+ or ES 3.0+
     QImage img( size, include_alpha ? QImage::Format_A2BGR30_Premultiplied : QImage::Format_BGR30 );
@@ -1127,7 +1127,7 @@ static inline QImage qt_gl_read_framebuffer_rgb10a2( const QSize &size, bool inc
     return img;
 }
 
-static QImage qt_gl_read_framebuffer( const QSize &size, GLenum internal_format, bool include_alpha, bool flip )
+static QImage lscs_gl_read_framebuffer( const QSize &size, GLenum internal_format, bool include_alpha, bool flip )
 {
     QOpenGLContext *ctx = QOpenGLContext::currentContext();
     QOpenGLFunctions *funcs = ctx->functions();
@@ -1141,18 +1141,18 @@ static QImage qt_gl_read_framebuffer( const QSize &size, GLenum internal_format,
     {
         case GL_RGB:
         case GL_RGB8:
-            return qt_gl_read_framebuffer_rgba8( size, false, ctx ).mirrored( false, flip );
+            return lscs_gl_read_framebuffer_rgba8( size, false, ctx ).mirrored( false, flip );
 
         case GL_RGB10:
-            return qt_gl_read_framebuffer_rgb10a2( size, false, ctx ).mirrored( false, flip );
+            return lscs_gl_read_framebuffer_rgb10a2( size, false, ctx ).mirrored( false, flip );
 
         case GL_RGB10_A2:
-            return qt_gl_read_framebuffer_rgb10a2( size, include_alpha, ctx ).mirrored( false, flip );
+            return lscs_gl_read_framebuffer_rgb10a2( size, include_alpha, ctx ).mirrored( false, flip );
 
         case GL_RGBA:
         case GL_RGBA8:
         default:
-            return qt_gl_read_framebuffer_rgba8( size, include_alpha, ctx ).mirrored( false, flip );
+            return lscs_gl_read_framebuffer_rgba8( size, include_alpha, ctx ).mirrored( false, flip );
     }
 
     // error, may want to throw
@@ -1160,9 +1160,9 @@ static QImage qt_gl_read_framebuffer( const QSize &size, GLenum internal_format,
     return QImage();
 }
 
-Q_GUI_EXPORT QImage qt_gl_read_framebuffer( const QSize &size, bool alpha_format, bool include_alpha )
+Q_GUI_EXPORT QImage lscs_gl_read_framebuffer( const QSize &size, bool alpha_format, bool include_alpha )
 {
-    return qt_gl_read_framebuffer( size, alpha_format ? GL_RGBA : GL_RGB, include_alpha, true );
+    return lscs_gl_read_framebuffer( size, alpha_format ? GL_RGBA : GL_RGB, include_alpha, true );
 }
 
 QImage QOpenGLFramebufferObject::toImage( bool flipped ) const
@@ -1210,7 +1210,7 @@ QImage QOpenGLFramebufferObject::toImage( bool flipped, int colorAttachmentIndex
     QImage image;
     QOpenGLExtraFunctions *extraFuncs = ctx->extraFunctions();
 
-    // qt_gl_read_framebuffer does not work on a multisample FBO
+    // lscs_gl_read_framebuffer does not work on a multisample FBO
     if ( format().samples() != 0 )
     {
         QRect rect( QPoint( 0, 0 ), size() );
@@ -1239,7 +1239,7 @@ QImage QOpenGLFramebufferObject::toImage( bool flipped, int colorAttachmentIndex
         if ( extraFuncs->hasOpenGLFeature( QOpenGLFunctions::MultipleRenderTargets ) )
         {
             extraFuncs->glReadBuffer( GL_COLOR_ATTACHMENT0 + colorAttachmentIndex );
-            image = qt_gl_read_framebuffer( d->colorAttachments[colorAttachmentIndex].size,
+            image = lscs_gl_read_framebuffer( d->colorAttachments[colorAttachmentIndex].size,
                                             d->colorAttachments[colorAttachmentIndex].internalFormat, true, flipped );
 
             extraFuncs->glReadBuffer( GL_COLOR_ATTACHMENT0 );
@@ -1247,7 +1247,7 @@ QImage QOpenGLFramebufferObject::toImage( bool flipped, int colorAttachmentIndex
         }
         else
         {
-            image = qt_gl_read_framebuffer( d->colorAttachments[0].size,
+            image = lscs_gl_read_framebuffer( d->colorAttachments[0].size,
                                             d->colorAttachments[0].internalFormat, true, flipped );
         }
     }

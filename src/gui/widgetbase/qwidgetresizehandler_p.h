@@ -27,7 +27,7 @@
 #include <qobject.h>
 #include <qpoint.h>
 
-#ifndef QT_NO_RESIZEHANDLER
+#ifndef LSCS_NO_RESIZEHANDLER
 
 class QMouseEvent;
 class QKeyEvent;
@@ -140,6 +140,6 @@ private:
     }
 };
 
-#endif // QT_NO_RESIZEHANDLER
+#endif // LSCS_NO_RESIZEHANDLER
 
 #endif // QWIDGETRESIZEHANDLER_P_H

@@ -32,7 +32,8 @@ QIODeviceDelegate::QIODeviceDelegate( QIODevice *const source ) : m_source( sour
 {
     Q_ASSERT( m_source );
 
-    connect( source, &QIODevice::aboutToClose,         this, &QIODeviceDelegate::aboutToClose );
+    // do not allow aboutToClose to be queued across threads
+    connect( source, &QIODevice::aboutToClose,         this, &QIODeviceDelegate::aboutToClose, Qt::DirectConnection );
     connect( source, &QIODevice::bytesWritten,         this, &QIODeviceDelegate::bytesWritten );
     connect( source, &QIODevice::readyRead,            this, &QIODeviceDelegate::readyRead );
     connect( source, &QIODevice::readChannelFinished,  this, &QIODeviceDelegate::readChannelFinished );

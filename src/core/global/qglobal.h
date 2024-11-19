@@ -48,19 +48,19 @@
 #include <optional>
 #include <type_traits>
 
-#define QT_PREPEND_NAMESPACE(name)   ::name
-#define QT_MANGLE_NAMESPACE(name)    name
+#define LSCS_PREPEND_NAMESPACE(name)   ::name
+#define LSCS_MANGLE_NAMESPACE(name)    name
 
 #endif   // defined(__cplusplus)
 
-#define QT_BEGIN_NAMESPACE
-#define QT_END_NAMESPACE
+#define LSCS_BEGIN_NAMESPACE
+#define LSCS_END_NAMESPACE
 
 // ** detect target architecture
 #if defined(__x86_64__) || defined(_M_AMD64)
 // 64-bit x86
 
-#  define QT_ARCH_X86_64
+#  define LSCS_ARCH_X86_64
 #  define Q_PROCESSOR_X86_64
 
 #  define Q_PROCESSOR_X86      6
@@ -68,7 +68,7 @@
 #elif defined(__i386__) || defined(_M_IX86)
 // 32-bit x86
 
-#  define QT_ARCH_I386
+#  define LSCS_ARCH_I386
 #  define Q_PROCESSOR_X86_32
 
 #  if defined(_M_IX86)
@@ -140,7 +140,7 @@
 #define Q_BIG_ENDIAN       __ORDER_BIG_ENDIAN__
 #define Q_LITTLE_ENDIAN    __ORDER_LITTLE_ENDIAN__
 
-#elif defined (__LITTLE_ENDIAN__) || defined (QT_ARCH_X86_64) || defined (QT_ARCH_I386)
+#elif defined (__LITTLE_ENDIAN__) || defined (LSCS_ARCH_X86_64) || defined (LSCS_ARCH_I386)
 
 #define Q_BIG_ENDIAN 1234
 #define Q_LITTLE_ENDIAN 4321
@@ -219,8 +219,8 @@
 
 #endif
 
-#if defined(Q_OS_DARWIN) && ! defined(QT_LARGEFILE_SUPPORT)
-#  define QT_LARGEFILE_SUPPORT 64
+#if defined(Q_OS_DARWIN) && ! defined(LSCS_LARGEFILE_SUPPORT)
+#  define LSCS_LARGEFILE_SUPPORT 64
 #endif
 
 #ifdef Q_OS_DARWIN
@@ -288,8 +288,8 @@
 #    error "This version of the Linux Standard Base is unsupported"
 #  endif
 
-#ifndef QT_LINUXBASE
-#  define QT_LINUXBASE
+#ifndef LSCS_LINUXBASE
+#  define LSCS_LINUXBASE
 #endif
 
 #endif
@@ -310,7 +310,7 @@
 #  define Q_UNLIKELY(expr)  __builtin_expect(!!(expr), false)
 
 #  ifndef __ARM_EABI__
-#     define QT_NO_ARM_EABI
+#     define LSCS_NO_ARM_EABI
 #  endif
 
 
@@ -340,7 +340,7 @@
 #  if (defined(Q_CC_GNU) || defined(Q_CC_INTEL))
 
 #    ifndef __ARM_EABI__
-#      define QT_NO_ARM_EABI
+#      define LSCS_NO_ARM_EABI
 #    endif
 #  endif
 
@@ -470,8 +470,8 @@ using qptrdiff = qintptr;
 #define Q_INT64_C(c)   static_cast<int64_t>(c ## LL)
 #define Q_UINT64_C(c)  static_cast<uint64_t>(c ## ULL)
 
-#ifndef QT_POINTER_SIZE
-#define QT_POINTER_SIZE  sizeof(void *)
+#ifndef LSCS_POINTER_SIZE
+#define LSCS_POINTER_SIZE  sizeof(void *)
 #endif
 
 #ifndef TRUE
@@ -483,17 +483,17 @@ using qptrdiff = qintptr;
 #  if defined(Q_CC_GNU)
 
 #    if ! defined(Q_CC_INTEL)
-#       define QT_FASTCALL    __attribute__((regparm(3)))
+#       define LSCS_FASTCALL    __attribute__((regparm(3)))
 #    else
-#       define QT_FASTCALL
+#       define LSCS_FASTCALL
 #    endif
 
 #  else
-#     define QT_FASTCALL
+#     define LSCS_FASTCALL
 #  endif
 
 #else
-#  define QT_FASTCALL
+#  define LSCS_FASTCALL
 
 #endif
 
@@ -502,12 +502,12 @@ using qptrdiff = qintptr;
 
 #if defined(Q_OS_WIN)
 #  if defined(Q_CC_MINGW)
-#    define QT_ENSURE_STACK_ALIGNED_FOR_SSE    __attribute__((force_align_arg_pointer))
+#    define LSCS_ENSURE_STACK_ALIGNED_FOR_SSE    __attribute__((force_align_arg_pointer))
 #  else
-#    define QT_ENSURE_STACK_ALIGNED_FOR_SSE
+#    define LSCS_ENSURE_STACK_ALIGNED_FOR_SSE
 #  endif
 
-#  define QT_WIN_CALLBACK CALLBACK             QT_ENSURE_STACK_ALIGNED_FOR_SSE
+#  define LSCS_WIN_CALLBACK CALLBACK             LSCS_ENSURE_STACK_ALIGNED_FOR_SSE
 #endif
 
 // utility macros and inline functions
@@ -698,7 +698,7 @@ Q_CORE_EXPORT const char *ls_csVersion();
 // avoid "unused parameter" warnings
 #define Q_UNUSED(x) (void)x;
 
-Q_CORE_EXPORT void qt_check_pointer( const char *, int );
+Q_CORE_EXPORT void lscs_check_pointer( const char *, int );
 Q_CORE_EXPORT void qBadAlloc();
 
 #define Q_CHECK_PTR(p) do { if (!(p)) qBadAlloc(); } while (false)
@@ -1073,14 +1073,14 @@ typename Wrapper::pointer qGetPtrHelper( const Wrapper &p )
 
 
 // not used in copperspice
-#define QT_TR_NOOP(text)                            lscs_mark_tr_old(text)
-#define QT_TRANSLATE_NOOP3(context, text, comment)  lscs_mark_tr_old(text, comment)
+#define LSCS_TR_NOOP(text)                            lscs_mark_tr_old(text)
+#define LSCS_TRANSLATE_NOOP3(context, text, comment)  lscs_mark_tr_old(text, comment)
 
 // used internally
-#define QT_TRANSLATE_NOOP(context, text)            lscs_mark_tr_old(text)
+#define LSCS_TRANSLATE_NOOP(context, text)            lscs_mark_tr_old(text)
 
 // not used in copperspice
-#define QT_TRID_NOOP(id)                            lscs_mark_tr_old(id)
+#define LSCS_TRID_NOOP(id)                            lscs_mark_tr_old(id)
 
 
 [[deprecated]] constexpr const char *lscs_mark_tr_old( const char *text )

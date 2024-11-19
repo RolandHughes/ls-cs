@@ -27,7 +27,7 @@
 #include <qobject.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_SIGNALMAPPER
+#ifndef LSCS_NO_SIGNALMAPPER
 class QSignalMapperPrivate;
 
 class Q_CORE_EXPORT QSignalMapper : public QObject
@@ -80,6 +80,6 @@ private:
     CORE_LSCS_SLOT_2( _q_senderDestroyed )
 };
 
-#endif // QT_NO_SIGNALMAPPER
+#endif // LSCS_NO_SIGNALMAPPER
 
 #endif

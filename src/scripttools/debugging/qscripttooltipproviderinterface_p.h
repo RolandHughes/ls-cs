@@ -26,7 +26,7 @@
 
 #include <QtCore/qobjectdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QPoint;
 class QStringList;
@@ -40,6 +40,6 @@ public:
                               int lineNumber, const QStringList &path ) = 0;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

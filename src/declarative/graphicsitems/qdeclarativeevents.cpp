@@ -23,7 +23,7 @@
 
 #include "private/qdeclarativeevents_p_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 /*!
     \qmlclass KeyEvent QDeclarativeKeyEvent
     \since 4.7
@@ -216,4 +216,4 @@ Item {
     \endqml
 */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

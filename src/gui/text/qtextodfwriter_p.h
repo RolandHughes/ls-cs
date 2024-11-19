@@ -25,7 +25,7 @@
 #define QTEXTODFWRITER_P_H
 
 #include <qglobal.h>
-#ifndef QT_NO_TEXTODFWRITER
+#ifndef LSCS_NO_TEXTODFWRITER
 
 #include <QXmlStreamWriter>
 #include <qset.h>
@@ -100,5 +100,5 @@ private:
 };
 
 
-#endif // QT_NO_TEXTODFWRITER
+#endif // LSCS_NO_TEXTODFWRITER
 #endif // QTEXTODFWRITER_H

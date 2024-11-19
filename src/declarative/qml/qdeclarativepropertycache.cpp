@@ -28,7 +28,7 @@
 
 Q_DECLARE_METATYPE( QScriptValue )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 QDeclarativePropertyCache::Data::Flags QDeclarativePropertyCache::Data::flagsForProperty( const QMetaProperty &p,
         QDeclarativeEngine *engine )
@@ -605,4 +605,4 @@ QDeclarativePropertyCache::Data *QDeclarativePropertyCache::property( QDeclarati
     return rv;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -25,9 +25,9 @@
 #define QGLOBAL_DEBUG_H
 
 #if defined(LSCS_DISABLE_DEBUG)
-# undef  QT_DEBUG
+# undef  LSCS_DEBUG
 #else
-# define QT_DEBUG
+# define LSCS_DEBUG
 #endif
 
 // ** (1) uncomment or pass any of the following defines in the CS build files

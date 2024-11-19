@@ -32,7 +32,7 @@
 
 #define DELAY_STOP_TIMER_INTERVAL 32
 
-QT_BEGIN_NAMESPACE QSmoothedAnimation::QSmoothedAnimation( QObject *parent )
+LSCS_BEGIN_NAMESPACE QSmoothedAnimation::QSmoothedAnimation( QObject *parent )
     : QAbstractAnimation( parent ), to( 0 ), velocity( 200 ), userDuration( -1 ), maximumEasingTime( -1 ),
       reversingMode( QDeclarativeSmoothedAnimation::Eased ), initialVelocity( 0 ),
       trackVelocity( 0 ), initialValue( 0 ), invert( false ), finalDuration( -1 ), lastTime( 0 )
@@ -540,4 +540,4 @@ void QDeclarativeSmoothedAnimation::setMaximumEasingTime( int v )
     d->updateRunningAnimations();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

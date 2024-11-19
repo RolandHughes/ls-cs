@@ -46,13 +46,13 @@ public:
 
     QString toPlainText() const;
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
     QString toHtml( const QByteArray &encoding = QByteArray() ) const;
 #endif
 
     static QTextDocumentFragment fromPlainText( const QString &plainText );
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
     static QTextDocumentFragment fromHtml( const QString &text );
     static QTextDocumentFragment fromHtml( const QString &text, const QTextDocument *resourceProvider );
 #endif

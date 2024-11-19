@@ -28,7 +28,7 @@
 #include <qstringlist.h>
 #include <qlist.h>
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 class QTextCodec;
 class QIODevice;
@@ -194,6 +194,6 @@ private:
     QTextCodec::ConverterState state;
 };
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC
 
 #endif

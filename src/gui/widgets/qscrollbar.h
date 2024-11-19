@@ -27,7 +27,7 @@
 #include <qwidget.h>
 #include <qabstractslider.h>
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
 class QScrollBarPrivate;
 class QStyleOptionSlider;
@@ -56,11 +56,11 @@ protected:
     void hideEvent( QHideEvent *event ) override;
     void sliderChange( SliderChange change ) override;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 
@@ -70,9 +70,9 @@ private:
     Q_DECLARE_PRIVATE( QScrollBar )
 
     friend class QAbstractScrollAreaPrivate;
-    friend Q_GUI_EXPORT QStyleOptionSlider qt_qscrollbarStyleOption( QScrollBar *scrollBar );
+    friend Q_GUI_EXPORT QStyleOptionSlider lscs_qscrollbarStyleOption( QScrollBar *scrollBar );
 };
 
-#endif // QT_NO_SCROLLBAR
+#endif // LSCS_NO_SCROLLBAR
 
 #endif

@@ -31,7 +31,7 @@
 #include <qscopedpointer.h>
 #include <qset.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 class QGraphicsSceneContextMenuEventPrivate;
 class QGraphicsSceneDragDropEventPrivate;
@@ -334,6 +334,6 @@ private:
     Q_DECLARE_PRIVATE( QGraphicsSceneMoveEvent )
 };
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 #endif

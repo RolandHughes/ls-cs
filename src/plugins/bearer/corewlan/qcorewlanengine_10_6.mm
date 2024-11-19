@@ -23,7 +23,7 @@
 
 #include <SystemConfiguration/SCNetworkConfiguration.h>
 
-@interface QT_MANGLE_NAMESPACE(QNSListener) : NSObject
+@interface LSCS_MANGLE_NAMESPACE(QNSListener) : NSObject
 {
     NSNotificationCenter *notificationCenter;
     CWInterface *currentInterface;
@@ -40,7 +40,7 @@
 
 @end
 
-@implementation QT_MANGLE_NAMESPACE(QNSListener)
+@implementation LSCS_MANGLE_NAMESPACE(QNSListener)
 
 - (id) init
 {
@@ -86,9 +86,9 @@
 }
 @end
 
-static QT_MANGLE_NAMESPACE(QNSListener) *listener = 0;
+static LSCS_MANGLE_NAMESPACE(QNSListener) *listener = 0;
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 void networkChangeCallback(SCDynamicStoreRef/* store*/, CFArrayRef changedKeys, void *info)
 {
@@ -398,7 +398,7 @@ void QCoreWlanEngine::initialize()
     NSAutoreleasePool *autoreleasepool = [[NSAutoreleasePool alloc] init];
 
     if([[CWInterface supportedInterfaces] count] > 0 && !listener) {
-        listener = [[QT_MANGLE_NAMESPACE(QNSListener) alloc] init];
+        listener = [[LSCS_MANGLE_NAMESPACE(QNSListener) alloc] init];
         listener.engine = this;
         hasWifi = true;
     } else {
@@ -898,4 +898,4 @@ quint64 QCoreWlanEngine::getBytes(const QString &interfaceName, bool b)
     return bytes;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -39,8 +39,8 @@
 
 #ifdef Q_OS_WIN
 
-#define QT_SOCKLEN_T    int
-#define QT_SOCKOPTLEN_T int
+#define LSCS_SOCKLEN_T    int
+#define LSCS_SOCKOPTLEN_T int
 
 #  ifndef WSAID_WSARECVMSG
 typedef INT ( WINAPI *LPFN_WSARECVMSG )( SOCKET s, LPWSAMSG lpMsg,
@@ -69,7 +69,7 @@ typedef INT ( WSAAPI *LPFN_WSASENDMSG )( SOCKET s, LPWSAMSG lpMsg, DWORD dwFlags
 
 #endif
 
-union qt_sockaddr
+union lscs_sockaddr
 {
     sockaddr a;
     sockaddr_in a4;
@@ -79,7 +79,7 @@ union qt_sockaddr
 class QSocketNotifier;
 class QNativeSocketEnginePrivate;
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
 class QNetworkInterface;
 #endif
 
@@ -116,8 +116,8 @@ public:
     qint64 read( char *data, qint64 maxlen ) override;
     qint64 write( const char *data, qint64 len )override;
 
-#ifndef QT_NO_UDPSOCKET
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_UDPSOCKET
+#ifndef LSCS_NO_NETWORKINTERFACE
     bool joinMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &iface ) override;
     bool leaveMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &iface ) override;
     QNetworkInterface multicastInterface() const override;
@@ -225,7 +225,7 @@ public:
     bool nativeListen( int backlog );
     int nativeAccept();
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
     bool nativeJoinMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &iface );
     bool nativeLeaveMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &iface );
     QNetworkInterface nativeMulticastInterface() const;
@@ -252,10 +252,10 @@ public:
     static uint scopeIdFromString( const QString &scopeid );
 
 #ifdef Q_OS_WIN
-    void setPortAndAddress( quint16 port, const QHostAddress &address, qt_sockaddr *sa_struct, int *sockAddrSize )
+    void setPortAndAddress( quint16 port, const QHostAddress &address, lscs_sockaddr *sa_struct, int *sockAddrSize )
     {
 #else
-    void setPortAndAddress( quint16 port, const QHostAddress &address, qt_sockaddr *sa_struct, QT_SOCKLEN_T *sockAddrSize )
+    void setPortAndAddress( quint16 port, const QHostAddress &address, lscs_sockaddr *sa_struct, LSCS_SOCKLEN_T *sockAddrSize )
     {
 #endif
 

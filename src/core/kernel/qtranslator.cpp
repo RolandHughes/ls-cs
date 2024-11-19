@@ -43,13 +43,13 @@
 
 #if defined(Q_OS_UNIX)
 
-#define QT_USE_MMAP
+#define LSCS_USE_MMAP
 #include <qcore_unix_p.h>
 #endif
 
 // most of the headers below are already included in qplatformdefs.h
 // this lacks Large File support but that's probably irrelevant
-#if defined(QT_USE_MMAP)
+#if defined(LSCS_USE_MMAP)
 
 // for mmap
 #include <sys/mman.h>
@@ -531,7 +531,7 @@ bool QTranslatorPrivate::do_load( const QString &realname, const QString &direct
 
         unmapLength = quint32( fileSize );
 
-#ifdef QT_USE_MMAP
+#ifdef LSCS_USE_MMAP
 
 #ifndef MAP_FILE
 #define MAP_FILE 0
@@ -561,7 +561,7 @@ bool QTranslatorPrivate::do_load( const QString &realname, const QString &direct
             }
         }
 
-#endif // QT_USE_MMAP
+#endif // LSCS_USE_MMAP
 
         if ( ! ok )
         {
@@ -585,7 +585,7 @@ bool QTranslatorPrivate::do_load( const QString &realname, const QString &direct
         return true;
     }
 
-#if defined(QT_USE_MMAP)
+#if defined(LSCS_USE_MMAP)
 
     if ( used_mmap )
     {
@@ -1219,7 +1219,7 @@ void QTranslatorPrivate::clear()
     if ( unmapPointer != nullptr && unmapLength != 0 )
     {
 
-#if defined(QT_USE_MMAP)
+#if defined(LSCS_USE_MMAP)
 
         if ( used_mmap )
         {

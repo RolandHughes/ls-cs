@@ -146,7 +146,7 @@ QPlatformScreen::SubpixelAntialiasingType QCocoaScreen::subpixelAntialiasingType
 
 QWindow *QCocoaScreen::topLevelWindowAt(const QPoint &point) const
 {
-   NSPoint screenPoint = qt_mac_flipPoint(point);
+   NSPoint screenPoint = lscs_mac_flipPoint(point);
 
    // Search (hit test) for the top-level window. [NSWidow windowNumberAtPoint:
    // belowWindowWithWindowNumber] may return windows that are not interesting
@@ -189,7 +189,7 @@ QWindow *QCocoaScreen::topLevelWindowAt(const QPoint &point) const
    return window;
 }
 
-extern CGContextRef qt_mac_cg_context(const QPaintDevice *pdev);
+extern CGContextRef lscs_mac_cg_context(const QPaintDevice *pdev);
 
 QPixmap QCocoaScreen::grabWindow(WId window, int x, int y, int width, int height) const
 {
@@ -246,9 +246,9 @@ QPixmap QCocoaScreen::grabWindow(WId window, int x, int y, int width, int height
       QPixmap pix(w, h);
       pix.fill(Qt::transparent);
       CGRect rect = CGRectMake(0, 0, w, h);
-      CGContextRef ctx = qt_mac_cg_context(&pix);
+      CGContextRef ctx = lscs_mac_cg_context(&pix);
 
-      qt_mac_drawCGImage(ctx, &rect, image);
+      lscs_mac_drawCGImage(ctx, &rect, image);
       CGContextRelease(ctx);
 
       QPainter painter(&windowPixmap);
@@ -262,7 +262,7 @@ static QCocoaIntegration::Options parseOptions(const QStringList &paramList)
    QCocoaIntegration::Options options;
    for (const QString &param : paramList) {
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
       if (param == "fontengine=freetype") {
          options |= QCocoaIntegration::UseFreeTypeFontEngine;
 
@@ -279,7 +279,7 @@ QCocoaIntegration *QCocoaIntegration::mInstance = nullptr;
 
 QCocoaIntegration::QCocoaIntegration(const QStringList &paramList)
    : mOptions(parseOptions(paramList)), mFontDb(new QCoreTextFontDatabase(mOptions.testFlag(UseFreeTypeFontEngine))),
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
      mAccessibility(new QCocoaAccessibility),
 #endif
      mCocoaClipboard(new QCocoaClipboard), mCocoaDrag(new QCocoaDrag),
@@ -303,15 +303,15 @@ QCocoaIntegration::QCocoaIntegration(const QStringList &paramList)
    qApp->setAttribute(Qt::AA_DontUseNativeMenuBar, false);
 
    NSApplication *cocoaApplication = [QNSApplication sharedApplication];
-   qt_redirectNSApplicationSendEvent();
+   lscs_redirectNSApplicationSendEvent();
 
-   if (qgetenv("QT_MAC_DISABLE_FOREGROUND_APPLICATION_TRANSFORM").isEmpty()) {
+   if (qgetenv("LSCS_MAC_DISABLE_FOREGROUND_APPLICATION_TRANSFORM").isEmpty()) {
       // Applications launched from plain executables (without an app
       // bundle) are "background" applications that does not take keybaord
       // focus or have a dock icon or task switcher entry. Gui apps generally
       // wants to be foreground applications so change the process type. (But
       // see the function implementation for exceptions.)
-      qt_mac_transformProccessToForegroundApplication();
+      lscs_mac_transformProccessToForegroundApplication();
 
       // Move the application window to front to make it take focus, also when launching
       // from the terminal. On 10.12+ this call has been moved to applicationDidFinishLauching
@@ -357,7 +357,7 @@ QCocoaIntegration::~QCocoaIntegration()
 {
    mInstance = nullptr;
 
-   qt_resetNSApplicationSendEvent();
+   lscs_resetNSApplicationSendEvent();
 
    QMacAutoReleasePool pool;
    if (!QCoreApplication::testAttribute(Qt::AA_MacPluginApplication)) {
@@ -480,7 +480,7 @@ bool QCocoaIntegration::hasCapability(QPlatformIntegration::Capability cap) cons
 {
    switch (cap) {
       case ThreadedPixmaps:
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
       case OpenGL:
       case ThreadedOpenGL:
       case BufferQueueingOpenGL:
@@ -503,7 +503,7 @@ QPlatformWindow *QCocoaIntegration::createPlatformWindow(QWindow *window) const
    return new QCocoaWindow(window);
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 QPlatformOpenGLContext *QCocoaIntegration::createPlatformOpenGLContext(QOpenGLContext *context) const
 {
    QCocoaGLContext *glContext = new QCocoaGLContext(context->format(),
@@ -540,7 +540,7 @@ QPlatformInputContext *QCocoaIntegration::inputContext() const
    return mInputContext.data();
 }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 QCocoaAccessibility *QCocoaIntegration::accessibility() const
 {
    return mAccessibility.data();
@@ -654,7 +654,7 @@ void QCocoaIntegration::setApplicationIcon(const QIcon &icon) const
    if (!icon.isNull()) {
       NSSize size = [[[NSApplication sharedApplication] dockTile] size];
       QPixmap pixmap = icon.pixmap(size.width, size.height);
-      image = static_cast<NSImage *>(qt_mac_create_nsimage(pixmap));
+      image = static_cast<NSImage *>(lscs_mac_create_nsimage(pixmap));
    }
    [[NSApplication sharedApplication] setApplicationIconImage: image];
    [image release];

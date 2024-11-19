@@ -23,7 +23,7 @@
 
 #include "qdeclarativenetworkaccessmanagerfactory.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \class QDeclarativeNetworkAccessManagerFactory
@@ -81,4 +81,4 @@ QT_BEGIN_NAMESPACE
     implementation of this method is reentrant.
 */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

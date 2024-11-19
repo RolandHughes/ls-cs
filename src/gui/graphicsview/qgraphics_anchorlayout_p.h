@@ -32,7 +32,7 @@
 #include <qgraph_p.h>
 #include <qsimplex_p.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 // internal
 struct AnchorVertex
@@ -563,6 +563,6 @@ public:
     friend class QGraphicsAnchorPrivate;
 };
 
-#endif //QT_NO_GRAPHICSVIEW
+#endif //LSCS_NO_GRAPHICSVIEW
 
 #endif

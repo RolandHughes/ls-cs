@@ -26,7 +26,7 @@
 
 #include <qwindows_style_p.h>
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
 
 #include <qstyleoption.h>
 #include <qbrush.h>
@@ -199,5 +199,5 @@ public:
     QSet<const QWidget *> autoFillDisabledWidgets;
 };
 
-#endif // QT_NO_STYLE_STYLESHEET
+#endif // LSCS_NO_STYLE_STYLESHEET
 #endif // QSTYLESHEETSTYLE_P_H

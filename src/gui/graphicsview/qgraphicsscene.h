@@ -36,7 +36,7 @@
 #include <qscopedpointer.h>
 #include <qtransform.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 class QFocusEvent;
 class QFont;
@@ -367,7 +367,7 @@ private:
     friend class QGraphicsSceneBspTreeIndexPrivate;
     friend class QGraphicsItemEffectSourcePrivate;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     friend class QGesture;
 #endif
 
@@ -380,6 +380,6 @@ void QGraphicsScene::lscs_setSceneRect( const QRectF &rect )
     setSceneRect( rect );
 }
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 #endif

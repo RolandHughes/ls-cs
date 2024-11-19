@@ -39,7 +39,7 @@
 
 class QEvent;
 
-#ifndef QT_NO_STATEMACHINE_EVENTFILTER
+#ifndef LSCS_NO_STATEMACHINE_EVENTFILTER
 class QEventTransition;
 #endif
 
@@ -52,7 +52,7 @@ class QHistoryState;
 class QState;
 class QStateMachine;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 class QAbstractAnimation;
 #endif
 
@@ -98,7 +98,7 @@ public:
     void _q_start();
     void _q_process();
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     void _q_animationFinished();
 #endif
 
@@ -128,7 +128,7 @@ public:
     QSet<QAbstractState *> computeExitSet_Unordered( QAbstractTransition *t, CalculationCache *cache );
     void executeTransitionContent( QEvent *event, const QList<QAbstractTransition *> &transitionList );
 
-#ifdef QT_NO_ANIMATION
+#ifdef LSCS_NO_ANIMATION
     virtual void enterStates( QEvent *event, const QList<QAbstractState *> &exitedStates_sorted,
                               const QList<QAbstractState *> &statesToEnter_sorted, const QSet<QAbstractState *> &statesForDefaultEntry,
                               QHash<QAbstractState *, QVector<QPropertyAssignment>> &propertyAssignmentsForState );
@@ -173,7 +173,7 @@ public:
     void unregisterSignalTransition( QSignalTransition *transition );
     void registerMultiThreadedSignalTransitions();
 
-#ifndef QT_NO_STATEMACHINE_EVENTFILTER
+#ifndef LSCS_NO_STATEMACHINE_EVENTFILTER
     void maybeRegisterEventTransition( QEventTransition *transition );
     void registerEventTransition( QEventTransition *transition );
     void unregisterEventTransition( QEventTransition *transition );
@@ -196,7 +196,7 @@ public:
     virtual void emitStateFinished( QState *forState, QFinalState *guiltyState );
     virtual void startupHook();
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     class RestorableId
     {
         QPointer<QObject> guard;
@@ -278,7 +278,7 @@ public:
     QSet<QAbstractState *> pendingErrorStates;
     QSet<QAbstractState *> pendingErrorStatesForDefaultEntry;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     bool animated;
 
     QPair<QList<QAbstractAnimation *>, QList<QAbstractAnimation *>> initializeAnimation( QAbstractAnimation *abstractAnimation,
@@ -308,7 +308,7 @@ public:
     QHash<const QObject *, QVector<int>> connections;
     QMutex connectionsMutex;
 
-#ifndef QT_NO_STATEMACHINE_EVENTFILTER
+#ifndef LSCS_NO_STATEMACHINE_EVENTFILTER
     QHash<QObject *, QHash<QEvent::Type, int>> qobjectEvents;
 #endif
 

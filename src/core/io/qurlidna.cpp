@@ -2029,7 +2029,7 @@ static bool isBidirectionalL( QChar32 uc )
     return false;
 }
 
-static void qt_nameprep( QString *source, int from )
+static void lscs_nameprep( QString *source, int from )
 {
     QString retval = source->left( from );
 
@@ -2138,7 +2138,7 @@ static void qt_nameprep( QString *source, int from )
     }
 }
 
-static QString::const_iterator qt_find_nonstd3( QString::const_iterator start, QString::const_iterator end,
+static QString::const_iterator lscs_find_nonstd3( QString::const_iterator start, QString::const_iterator end,
         Qt::CaseSensitivity cs )
 {
     if ( end - start > 63 )
@@ -2175,10 +2175,10 @@ static QString::const_iterator qt_find_nonstd3( QString::const_iterator start, Q
     return end;
 }
 
-static bool qt_check_nameprepped_std3( QString::const_iterator start, QString::const_iterator end )
+static bool lscs_check_nameprepped_std3( QString::const_iterator start, QString::const_iterator end )
 {
     // fast path, check for lowercase ASCII
-    QString::const_iterator iter = qt_find_nonstd3( start, end, Qt::CaseSensitive );
+    QString::const_iterator iter = lscs_find_nonstd3( start, end, Qt::CaseSensitive );
 
     if ( iter == end )
     {
@@ -2189,7 +2189,7 @@ static bool qt_check_nameprepped_std3( QString::const_iterator start, QString::c
     QString origin = QString( iter, end );
     QString copy   = origin;
 
-    qt_nameprep( &copy, 0 );
+    lscs_nameprep( &copy, 0 );
 
     return origin == copy;
 }
@@ -2260,7 +2260,7 @@ static inline void appendEncode( QString *output, uint &delta, uint &bias, uint 
     ++h;
 }
 
-static void qt_punycodeEncoder( QStringView str, QString *output )
+static void lscs_punycodeEncoder( QStringView str, QString *output )
 {
     QString retval;
 
@@ -2367,7 +2367,7 @@ static void qt_punycodeEncoder( QStringView str, QString *output )
     return;
 }
 
-static QString qt_punycodeDecoder( const QString &pc )
+static QString lscs_punycodeDecoder( const QString &pc )
 {
     uint n = initial_n;
     uint i = 0;
@@ -2527,7 +2527,7 @@ static bool lscs_internal_idn_enabled( QStringView domain )
         return false;
     }
 
-    QString tldString = qt_ACE_do( QStringView( iter + 1, domain.end() ), ToAceOnly, ForbidLeadingDot );
+    QString tldString = lscs_ACE_do( QStringView( iter + 1, domain.end() ), ToAceOnly, ForbidLeadingDot );
 
     if ( user_idn_whitelist )
     {
@@ -2563,7 +2563,7 @@ static QString::const_iterator nextDotDelimiter( QStringView domain, QString::co
     return iter;
 }
 
-QString qt_ACE_do( QStringView domain, AceOperation op, AceLeadingDot dot )
+QString lscs_ACE_do( QStringView domain, AceOperation op, AceLeadingDot dot )
 {
     if ( domain.isEmpty() )
     {
@@ -2636,7 +2636,7 @@ QString qt_ACE_do( QStringView domain, AceOperation op, AceLeadingDot dot )
         if ( simple )
         {
             // common case (non IDN-domains)
-            bool isStandard = qt_find_nonstd3( tmpLabel.cbegin(), tmpLabel.cend(), Qt::CaseInsensitive ) == tmpLabel.cend();
+            bool isStandard = lscs_find_nonstd3( tmpLabel.cbegin(), tmpLabel.cend(), Qt::CaseInsensitive ) == tmpLabel.cend();
 
             if ( ! isStandard )
             {
@@ -2646,19 +2646,19 @@ QString qt_ACE_do( QStringView domain, AceOperation op, AceLeadingDot dot )
         }
         else
         {
-            qt_nameprep( &retval, prevLen );
+            lscs_nameprep( &retval, prevLen );
 
             labelLength  = retval.length() - prevLen;
 
             aceForm.clear();
-            qt_punycodeEncoder( QStringView( retval.begin() + prevLen, retval.end() ), &aceForm );
+            lscs_punycodeEncoder( QStringView( retval.begin() + prevLen, retval.end() ), &aceForm );
 
             // resize() + memcpy() here because we are overwriting the data copied
             bool appended = false;
 
             if ( isIdnEnabled )
             {
-                QString tmp = qt_punycodeDecoder( aceForm );
+                QString tmp = lscs_punycodeDecoder( aceForm );
 
                 if ( tmp.isEmpty() )
                 {
@@ -2666,7 +2666,7 @@ QString qt_ACE_do( QStringView domain, AceOperation op, AceLeadingDot dot )
                     return QString();
                 }
 
-                if ( qt_check_nameprepped_std3( tmp.begin(), tmp.end() ) )
+                if ( lscs_check_nameprepped_std3( tmp.begin(), tmp.end() ) )
                 {
                     retval.resize( prevLen );
                     retval.append( tmp );
@@ -2681,7 +2681,7 @@ QString qt_ACE_do( QStringView domain, AceOperation op, AceLeadingDot dot )
                 retval.append( aceForm );
             }
 
-            bool isStandard = qt_find_nonstd3( aceForm.cbegin(), aceForm.cend(), Qt::CaseInsensitive ) == aceForm.cend();
+            bool isStandard = lscs_find_nonstd3( aceForm.cbegin(), aceForm.cend(), Qt::CaseInsensitive ) == aceForm.cend();
 
             if ( ! isStandard )
             {

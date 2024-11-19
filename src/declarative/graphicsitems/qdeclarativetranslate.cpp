@@ -26,7 +26,7 @@
 #include <QDebug>
 #include <QtCore/qmath.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeTranslatePrivate : public QGraphicsTransformPrivate
 {
@@ -112,4 +112,4 @@ void QDeclarativeTranslate::applyTo( QMatrix4x4 *matrix ) const
     matrix->translate( d->x, d->y, 0 );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

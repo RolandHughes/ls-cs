@@ -50,9 +50,9 @@
 
 #include "qdbusthreaddebug_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 static bool isDebugging;
 #define qDBusDebug              if (!::isDebugging); else qDebug
@@ -1011,7 +1011,7 @@ bool QDBusConnectionPrivate::activateCall( QObject *object, int flags, const QDB
         return false;
     }
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     Q_ASSERT_X( QThread::currentThread() == object->thread(),
                 "QDBusConnection: internal threading error",
                 "function called for an object that is in another thread!!" );
@@ -1085,7 +1085,7 @@ bool QDBusConnectionPrivate::activateCall( QObject *object, int flags, const QDB
         return true;
     }
 
-#endif // QT_NO_PROPERTIES
+#endif // LSCS_NO_PROPERTIES
     return false;
 }
 
@@ -1189,7 +1189,7 @@ void QDBusConnectionPrivate::deliverCall( QObject *object, int /*flags*/, const 
         QDBusConnectionPrivate::setSender( this );
 
         QPointer<QObject> ptr = object;
-        fail = object->qt_metacall( QMetaObject::InvokeMetaMethod,
+        fail = object->lscs_metacall( QMetaObject::InvokeMetaMethod,
                                     slotIdx, params.data() ) >= 0;
         QDBusConnectionPrivate::setSender( 0 );
 
@@ -2125,7 +2125,7 @@ static QDBusConnection::ConnectionCapabilities connectionCapabilies( DBusConnect
     typedef dbus_bool_t ( *can_send_type_t )( DBusConnection *, int );
     static can_send_type_t can_send_type = 0;
 
-#if defined(QT_LINKED_LIBDBUS)
+#if defined(LSCS_LINKED_LIBDBUS)
 # if DBUS_VERSION-0 >= 0x010400
     can_send_type = dbus_connection_can_send_type;
 # endif
@@ -3055,6 +3055,6 @@ void QDBusConnectionPrivate::postEventToThread( int action, QObject *object, QEv
     QDBusLockerBase::reportThreadAction( action, QDBusLockerBase::AfterPost, this );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

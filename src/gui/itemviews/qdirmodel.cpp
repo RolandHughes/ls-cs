@@ -23,7 +23,7 @@
 
 #include <qdirmodel.h>
 
-#ifndef QT_NO_DIRMODEL
+#ifndef LSCS_NO_DIRMODEL
 #include <qstack.h>
 #include <qfile.h>
 #include <qfilesystemmodel.h>
@@ -116,7 +116,7 @@ public:
     bool shouldStat; // use the "carefull not to stat directories" mode
 };
 
-void qt_setDirModelShouldNotStat( QDirModelPrivate *modelPrivate )
+void lscs_setDirModelShouldNotStat( QDirModelPrivate *modelPrivate )
 {
     modelPrivate->shouldStat = false;
 }
@@ -1536,4 +1536,4 @@ void QDirModel::_q_refresh()
     d->_q_refresh();
 }
 
-#endif // QT_NO_DIRMODEL
+#endif // LSCS_NO_DIRMODEL

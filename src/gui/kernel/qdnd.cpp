@@ -45,7 +45,7 @@
 
 #include <ctype.h>
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 // the universe's only drag manager
 QDragManager *QDragManager::m_instance = nullptr;
@@ -143,9 +143,9 @@ Qt::DropAction QDragManager::drag( QDrag *objDrag )
     return result;
 }
 
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
-#if !(defined(QT_NO_DRAGANDDROP) && defined(QT_NO_CLIPBOARD))
+#if !(defined(LSCS_NO_DRAGANDDROP) && defined(LSCS_NO_CLIPBOARD))
 
 static QStringList imageReadMimeFormats()
 {
@@ -421,4 +421,4 @@ QByteArray QInternalMimeData::renderDataHelper( const QString &mimeType, const Q
     return ba;
 }
 
-#endif // QT_NO_DRAGANDDROP && QT_NO_CLIPBOARD
+#endif // LSCS_NO_DRAGANDDROP && LSCS_NO_CLIPBOARD

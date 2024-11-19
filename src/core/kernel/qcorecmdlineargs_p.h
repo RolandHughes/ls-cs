@@ -30,7 +30,7 @@
 
 #if defined(Q_OS_WIN)
 
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 // template implementation of the parsing algorithm
 // used from qcoreapplication_win.cpp and the tools (rcc, uic...)

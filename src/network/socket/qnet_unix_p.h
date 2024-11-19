@@ -34,18 +34,18 @@
 #include <sys/types.h>
 
 // Almost always the same. If not, specify in qplatformdefs.h.
-#if !defined(QT_SOCKOPTLEN_T)
-# define QT_SOCKOPTLEN_T QT_SOCKLEN_T
+#if !defined(LSCS_SOCKOPTLEN_T)
+# define LSCS_SOCKOPTLEN_T LSCS_SOCKLEN_T
 #endif
 
 // UnixWare 7 redefines socket -> _socket
-static inline int qt_safe_socket( int domain, int type, int protocol, int flags = 0 )
+static inline int lscs_safe_socket( int domain, int type, int protocol, int flags = 0 )
 {
     Q_ASSERT( ( flags & ~O_NONBLOCK ) == 0 );
 
     int fd;
 
-#ifdef QT_THREADSAFE_CLOEXEC
+#ifdef LSCS_THREADSAFE_CLOEXEC
     int newtype = type | SOCK_CLOEXEC;
 
     if ( flags & O_NONBLOCK )
@@ -77,12 +77,12 @@ static inline int qt_safe_socket( int domain, int type, int protocol, int flags 
 }
 
 // Tru64 redefines accept -> _accept with _XOPEN_SOURCE_EXTENDED
-static inline int qt_safe_accept( int s, struct sockaddr *addr, QT_SOCKLEN_T *addrlen, int flags = 0 )
+static inline int lscs_safe_accept( int s, struct sockaddr *addr, LSCS_SOCKLEN_T *addrlen, int flags = 0 )
 {
     Q_ASSERT( ( flags & ~O_NONBLOCK ) == 0 );
 
     int fd;
-#ifdef QT_THREADSAFE_CLOEXEC
+#ifdef LSCS_THREADSAFE_CLOEXEC
     // use accept4
     int sockflags = SOCK_CLOEXEC;
 
@@ -91,11 +91,11 @@ static inline int qt_safe_accept( int s, struct sockaddr *addr, QT_SOCKLEN_T *ad
         sockflags |= SOCK_NONBLOCK;
     }
 
-    fd = ::accept4( s, addr, static_cast<QT_SOCKLEN_T *>( addrlen ), sockflags );
+    fd = ::accept4( s, addr, static_cast<LSCS_SOCKLEN_T *>( addrlen ), sockflags );
     return fd;
 #else
 
-    fd = ::accept( s, addr, static_cast<QT_SOCKLEN_T *>( addrlen ) );
+    fd = ::accept( s, addr, static_cast<LSCS_SOCKLEN_T *>( addrlen ) );
 
     if ( fd == -1 )
     {
@@ -115,21 +115,21 @@ static inline int qt_safe_accept( int s, struct sockaddr *addr, QT_SOCKLEN_T *ad
 }
 
 // UnixWare 7 redefines listen -> _listen
-static inline int qt_safe_listen( int s, int backlog )
+static inline int lscs_safe_listen( int s, int backlog )
 {
     return ::listen( s, backlog );
 }
 
-static inline int qt_safe_connect( int sockfd, const struct sockaddr *addr, QT_SOCKLEN_T addrlen )
+static inline int lscs_safe_connect( int sockfd, const struct sockaddr *addr, LSCS_SOCKLEN_T addrlen )
 {
     int ret;
 
     // Solaris e.g. expects a non-const 2nd parameter
-    EINTR_LOOP( ret, QT_SOCKET_CONNECT( sockfd, const_cast<struct sockaddr *>( addr ), addrlen ) );
+    EINTR_LOOP( ret, LSCS_SOCKET_CONNECT( sockfd, const_cast<struct sockaddr *>( addr ), addrlen ) );
     return ret;
 }
-#undef QT_SOCKET_CONNECT
-#define QT_SOCKET_CONNECT qt_safe_connect
+#undef LSCS_SOCKET_CONNECT
+#define LSCS_SOCKET_CONNECT lscs_safe_connect
 
 #if defined(socket)
 # undef socket
@@ -142,22 +142,22 @@ static inline int qt_safe_connect( int sockfd, const struct sockaddr *addr, QT_S
 #endif
 
 template <typename T>
-static inline int qt_safe_ioctl( int sockfd, int request, T arg )
+static inline int lscs_safe_ioctl( int sockfd, int request, T arg )
 {
     return ::ioctl( sockfd, request, arg );
 }
 
-static inline in_addr_t qt_safe_inet_addr( const char *cp )
+static inline in_addr_t lscs_safe_inet_addr( const char *cp )
 {
     return ::inet_addr( cp );
 }
 
-static inline ssize_t qt_safe_sendmsg( int sockfd, const struct msghdr *msg, int flags )
+static inline ssize_t lscs_safe_sendmsg( int sockfd, const struct msghdr *msg, int flags )
 {
 #ifdef MSG_NOSIGNAL
     flags |= MSG_NOSIGNAL;
 #else
-    qt_ignore_sigpipe();
+    lscs_ignore_sigpipe();
 #endif
 
     int ret;
@@ -165,7 +165,7 @@ static inline ssize_t qt_safe_sendmsg( int sockfd, const struct msghdr *msg, int
 
     return ret;
 }
-static inline int qt_safe_recvmsg( int sockfd, struct msghdr *msg, int flags )
+static inline int lscs_safe_recvmsg( int sockfd, struct msghdr *msg, int flags )
 {
     int ret;
 

@@ -35,7 +35,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 using namespace QDeclarativeJS;
 using namespace QDeclarativeParser;
@@ -947,7 +947,7 @@ bool QDeclarativeScriptParser::parse( const QByteArray &qmldata, const QUrl &url
     _scriptFile = fileName;
 
     QTextStream stream( qmldata, QIODevice::ReadOnly );
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     stream.setCodec( "UTF-8" );
 #endif
     const QString code = stream.readAll();
@@ -1400,4 +1400,4 @@ void QDeclarativeScriptParser::setTree( QDeclarativeParser::Object *tree )
     root = tree;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

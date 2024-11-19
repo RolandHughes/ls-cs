@@ -28,7 +28,7 @@
 
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeDebuggerStatus
 {
@@ -39,6 +39,6 @@ public:
 };
 LSCS_DECLARE_INTERFACE( QDeclarativeDebuggerStatus, "com.copperspice.qml.QDeclarativeDebuggerStatus" )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QLMDEBUGGERSTATUS_P_H

@@ -32,9 +32,9 @@
 
 #define ANNOTATION_NO_WAIT      "org.freedesktop.DBus.Method.NoReply"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusAbstractInterfacePrivate : public QObjectPrivate
 {
@@ -71,7 +71,7 @@ public:
     void _q_serviceOwnerChanged( const QString &name, const QString &oldOwner, const QString &newOwner );
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

@@ -28,7 +28,7 @@
 #include <qdeclarativejsglobal_p.h>
 #include <QtCore/QString>
 
-QT_QML_BEGIN_NAMESPACE
+LSCS_QML_BEGIN_NAMESPACE
 
 #define QDECLARATIVEJS_DECLARE_AST_NODE(name) \
   enum { K = Kind_##name };
@@ -3019,6 +3019,6 @@ public:
 
 
 
-QT_QML_END_NAMESPACE
+LSCS_QML_END_NAMESPACE
 
 #endif

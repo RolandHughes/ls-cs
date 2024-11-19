@@ -23,7 +23,7 @@
 
 #include <qgraphics_layoutstyleinfo_p.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 #include <qgraphicswidget.h>
 #include <qstyle.h>
 #include <qwidget.h>
@@ -100,4 +100,4 @@ QStyle *QGraphicsLayoutStyleInfo::style() const
     return m_style;
 }
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW

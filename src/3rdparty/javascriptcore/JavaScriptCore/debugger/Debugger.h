@@ -44,12 +44,12 @@ public:
     virtual void detach( JSGlobalObject * );
 
 #if PLATFORM(QT)
-#ifdef QT_BUILD_SCRIPT_LIB
-    virtual void scriptUnload( QT_PREPEND_NAMESPACE( qint64 ) id )
+#ifdef LSCS_BUILD_SCRIPT_LIB
+    virtual void scriptUnload( LSCS_PREPEND_NAMESPACE( qint64 ) id )
     {
         UNUSED_PARAM( id );
     };
-    virtual void scriptLoad( QT_PREPEND_NAMESPACE( qint64 ) id, const UString &program,
+    virtual void scriptLoad( LSCS_PREPEND_NAMESPACE( qint64 ) id, const UString &program,
                              const UString &fileName, int baseLineNumber )
     {
         UNUSED_PARAM( id );

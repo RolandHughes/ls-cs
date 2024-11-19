@@ -1,5 +1,5 @@
-#ifndef QT_OPENGL_H
-#define QT_OPENGL_H
+#ifndef LSCS_OPENGL_H
+#define LSCS_OPENGL_H
 
 #include <qtcore.h>
 

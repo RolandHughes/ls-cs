@@ -29,7 +29,7 @@
 #include <qabstractitemmodel.h>
 #include <qvariant.h>
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
 class QAbstractItemView;
 class QLineEdit;
@@ -75,7 +75,7 @@ class Q_GUI_EXPORT QComboBox : public QWidget
     GUI_LSCS_PROPERTY_READ( iconSize, iconSize )
     GUI_LSCS_PROPERTY_WRITE( iconSize, setIconSize )
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     GUI_LSCS_PROPERTY_READ( autoCompletion, autoCompletion )
     GUI_LSCS_PROPERTY_WRITE( autoCompletion, setAutoCompletion )
     GUI_LSCS_PROPERTY_DESIGNABLE( autoCompletion, false )
@@ -128,7 +128,7 @@ public:
     void setMaxCount( int max );
     int maxCount() const;
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     bool autoCompletion() const;
     void setAutoCompletion( bool enable );
 
@@ -166,12 +166,12 @@ public:
     void setLineEdit( QLineEdit *edit );
     QLineEdit *lineEdit() const;
 
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
     void setValidator( const QValidator *validator );
     const QValidator *validator() const;
 #endif
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     void setCompleter( QCompleter *completer );
     QCompleter *completer() const;
 #endif
@@ -286,7 +286,7 @@ protected:
     void keyPressEvent( QKeyEvent *event ) override;
     void keyReleaseEvent( QKeyEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 
@@ -335,7 +335,7 @@ private:
     GUI_LSCS_SLOT_1( Private, void _q_modelReset() )
     GUI_LSCS_SLOT_2( _q_modelReset )
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     GUI_LSCS_SLOT_1( Private, void _q_completerActivated( const QModelIndex &index ) )
     GUI_LSCS_SLOT_2( _q_completerActivated )
 #endif
@@ -357,6 +357,6 @@ inline void QComboBox::insertItem( int index, const QString &text, const QVarian
     insertItem( index, QIcon(), text, userData );
 }
 
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX
 
 #endif

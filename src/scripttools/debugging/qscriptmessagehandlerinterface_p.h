@@ -27,7 +27,7 @@
 #include <QtCore/qobjectdefs.h>
 #include <QtCore/qvariant.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptMessageHandlerInterface
 {
@@ -40,6 +40,6 @@ public:
                           const QVariant &data = QVariant() ) = 0;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

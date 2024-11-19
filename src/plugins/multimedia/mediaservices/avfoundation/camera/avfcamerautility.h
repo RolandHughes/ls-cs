@@ -153,32 +153,32 @@ private:
     dispatch_queue_t m_queue;
 };
 
-inline QSysInfo::MacVersion qt_OS_limit( QSysInfo::MacVersion osxVersion, QSysInfo::MacVersion iosVersion )
+inline QSysInfo::MacVersion lscs_OS_limit( QSysInfo::MacVersion osxVersion, QSysInfo::MacVersion iosVersion )
 {
     ( void ) iosVersion;
     return osxVersion;
 }
 
 typedef QPair<qreal, qreal> AVFPSRange;
-AVFPSRange qt_connection_framerates( AVCaptureConnection *videoConnection );
+AVFPSRange lscs_connection_framerates( AVCaptureConnection *videoConnection );
 
-QVector<AVCaptureDeviceFormat *> qt_unique_device_formats( AVCaptureDevice *captureDevice, FourCharCode preferredFormat );
-QSize qt_device_format_resolution( AVCaptureDeviceFormat *format );
-QSize qt_device_format_high_resolution( AVCaptureDeviceFormat *format );
-QSize qt_device_format_pixel_aspect_ratio( AVCaptureDeviceFormat *format );
-QVector<AVFPSRange> qt_device_format_framerates( AVCaptureDeviceFormat *format );
+QVector<AVCaptureDeviceFormat *> lscs_unique_device_formats( AVCaptureDevice *captureDevice, FourCharCode preferredFormat );
+QSize lscs_device_format_resolution( AVCaptureDeviceFormat *format );
+QSize lscs_device_format_high_resolution( AVCaptureDeviceFormat *format );
+QSize lscs_device_format_pixel_aspect_ratio( AVCaptureDeviceFormat *format );
+QVector<AVFPSRange> lscs_device_format_framerates( AVCaptureDeviceFormat *format );
 
-AVCaptureDeviceFormat *qt_find_best_resolution_match( AVCaptureDevice *captureDevice, const QSize &res,
+AVCaptureDeviceFormat *lscs_find_best_resolution_match( AVCaptureDevice *captureDevice, const QSize &res,
         FourCharCode preferredFormat );
 
-AVCaptureDeviceFormat *qt_find_best_framerate_match( AVCaptureDevice *captureDevice, FourCharCode preferredFormat, Float64 fps );
+AVCaptureDeviceFormat *lscs_find_best_framerate_match( AVCaptureDevice *captureDevice, FourCharCode preferredFormat, Float64 fps );
 
-AVFrameRateRange *qt_find_supported_framerate_range( AVCaptureDeviceFormat *format, Float64 fps );
+AVFrameRateRange *lscs_find_supported_framerate_range( AVCaptureDeviceFormat *format, Float64 fps );
 
-bool qt_formats_are_equal( AVCaptureDeviceFormat *f1, AVCaptureDeviceFormat *f2 );
-bool qt_set_active_format( AVCaptureDevice *captureDevice, AVCaptureDeviceFormat *format, bool preserveFps );
+bool lscs_formats_are_equal( AVCaptureDeviceFormat *f1, AVCaptureDeviceFormat *f2 );
+bool lscs_set_active_format( AVCaptureDevice *captureDevice, AVCaptureDeviceFormat *format, bool preserveFps );
 
-AVFPSRange qt_current_framerates( AVCaptureDevice *captureDevice, AVCaptureConnection *videoConnection );
-void qt_set_framerate_limits( AVCaptureDevice *captureDevice, AVCaptureConnection *videoConnection, qreal minFPS, qreal maxFPS );
+AVFPSRange lscs_current_framerates( AVCaptureDevice *captureDevice, AVCaptureConnection *videoConnection );
+void lscs_set_framerate_limits( AVCaptureDevice *captureDevice, AVCaptureConnection *videoConnection, qreal minFPS, qreal maxFPS );
 
 #endif

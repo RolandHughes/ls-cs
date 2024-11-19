@@ -29,7 +29,7 @@
 
 #include <qabstractslider_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -42,7 +42,7 @@ QAbstractSliderPrivate::QAbstractSliderPrivate()
       invertedAppearance( false ), invertedControls( false ),
       orientation( Qt::Horizontal ), repeatAction( QAbstractSlider::SliderNoAction )
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     , isAutoRepeating( false ), repeatMultiplier( 1 )
 {
     firstRepeat.invalidate();
@@ -286,7 +286,7 @@ void QAbstractSlider::setValue( int value )
         }
     }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleValueChangeEvent event( this, d->value );
     QAccessible::updateAccessibility( &event );
 #endif
@@ -444,7 +444,7 @@ bool QAbstractSliderPrivate::scrollByDelta( Qt::Orientation orientation, Qt::Key
 
         qreal stepsToScrollF = offset * effectiveSingleStep();
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
         stepsToScrollF *= QApplication::wheelScrollLines();
 #endif
 
@@ -500,7 +500,7 @@ bool QAbstractSliderPrivate::scrollByDelta( Qt::Orientation orientation, Qt::Key
     return true;
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 void QAbstractSlider::wheelEvent( QWheelEvent *e )
 {
     Q_D( QAbstractSlider );
@@ -520,7 +520,7 @@ void QAbstractSlider::keyPressEvent( QKeyEvent *ev )
 
     SliderAction action = SliderNoAction;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( ev->isAutoRepeat() )
     {
@@ -560,7 +560,7 @@ void QAbstractSlider::keyPressEvent( QKeyEvent *ev )
 
     switch ( ev->key() )
     {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         case Qt::Key_Select:
             if ( QApplication::keypadNavigationEnabled() )
@@ -591,7 +591,7 @@ void QAbstractSlider::keyPressEvent( QKeyEvent *ev )
         // It seems we need to use invertedAppearance for Left and right, otherwise, things look weird.
         case Qt::Key_Left:
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
             // In QApplication::KeypadNavigationDirectional, we want to change the slider
             // value if there is no left/right navigation possible and if this slider is not
@@ -625,7 +625,7 @@ void QAbstractSlider::keyPressEvent( QKeyEvent *ev )
             break;
 
         case Qt::Key_Right:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
             // Same logic as in Qt::Key_Left
             if ( QApplication::keypadNavigationEnabled()
@@ -656,7 +656,7 @@ void QAbstractSlider::keyPressEvent( QKeyEvent *ev )
             break;
 
         case Qt::Key_Up:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
             // In QApplication::KeypadNavigationDirectional, we want to change the slider
             // value if there is no up/down navigation possible.
@@ -674,7 +674,7 @@ void QAbstractSlider::keyPressEvent( QKeyEvent *ev )
             break;
 
         case Qt::Key_Down:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
             // Same logic as in Qt::Key_Up
             if ( QApplication::keypadNavigationEnabled()
@@ -739,7 +739,7 @@ void QAbstractSlider::changeEvent( QEvent *ev )
 
 bool QAbstractSlider::event( QEvent *e )
 {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     Q_D( QAbstractSlider );
 
     switch ( e->type() )

@@ -22,7 +22,7 @@
 ***********************************************************************/
 
 #include "config.h"
-#include "qt_pixmapruntime.h"
+#include "lscs_pixmapruntime.h"
 
 #include "CachedImage.h"
 #include "HTMLImageElement.h"
@@ -182,7 +182,7 @@ struct QtPixmapMetaData
     QtPixmapHeightField heightField;
     QtPixmapWidthField widthField;
     QtPixmapClass cls;
-} qt_pixmap_metaData;
+} lscs_pixmap_metaData;
 
 // Derived RuntimeObject
 class QtPixmapRuntimeObject : public RuntimeObject
@@ -215,7 +215,7 @@ QtPixmapClass::QtPixmapClass()
 
 Class *QtPixmapInstance::getClass() const
 {
-    return &qt_pixmap_metaData.cls;
+    return &lscs_pixmap_metaData.cls;
 }
 
 JSValue QtPixmapInstance::getMethod( ExecState *exec, const Identifier &propertyName )
@@ -244,15 +244,15 @@ MethodList QtPixmapClass::methodsNamed( const Identifier &identifier, Instance *
 
     if ( identifier == QtPixmapToDataUrlMethod::name() )
     {
-        methods.append( &qt_pixmap_metaData.toDataUrlMethod );
+        methods.append( &lscs_pixmap_metaData.toDataUrlMethod );
     }
     else if ( identifier == QtPixmapAssignToElementMethod::name() )
     {
-        methods.append( &qt_pixmap_metaData.assignToElementMethod );
+        methods.append( &lscs_pixmap_metaData.assignToElementMethod );
     }
     else if ( identifier == QtPixmapToStringMethod::name() )
     {
-        methods.append( &qt_pixmap_metaData.toStringMethod );
+        methods.append( &lscs_pixmap_metaData.toStringMethod );
     }
 
     return methods;
@@ -262,12 +262,12 @@ Field *QtPixmapClass::fieldNamed( const Identifier &identifier, Instance * ) con
 {
     if ( identifier == QtPixmapWidthField::name() )
     {
-        return &qt_pixmap_metaData.widthField;
+        return &lscs_pixmap_metaData.widthField;
     }
 
     if ( identifier == QtPixmapHeightField::name() )
     {
-        return &qt_pixmap_metaData.heightField;
+        return &lscs_pixmap_metaData.heightField;
     }
 
     return 0;

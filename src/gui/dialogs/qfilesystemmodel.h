@@ -30,7 +30,7 @@
 #include <qicon.h>
 #include <qpair.h>
 
-#ifndef QT_NO_FILESYSTEMMODEL
+#ifndef LSCS_NO_FILESYSTEMMODEL
 
 class ExtendedInformation;
 class QFileIconProvider;
@@ -174,7 +174,7 @@ inline QIcon QFileSystemModel::fileIcon( const QModelIndex &index ) const
     return ( index.data( Qt::DecorationRole ) ).value<QIcon>();
 }
 
-#endif // QT_NO_FILESYSTEMMODEL
+#endif // LSCS_NO_FILESYSTEMMODEL
 
 #endif
 

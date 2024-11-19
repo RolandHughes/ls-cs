@@ -29,7 +29,7 @@
 #include <QtGui/qtreeview.h>
 #include <QtGui/qboxlayout.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerStackWidgetPrivate
     : public QScriptDebuggerStackWidgetInterfacePrivate
@@ -127,4 +127,4 @@ void QScriptDebuggerStackWidget::_q_onCurrentChanged( const QModelIndex &un_name
     d->_q_onCurrentChanged();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

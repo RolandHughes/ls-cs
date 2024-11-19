@@ -30,7 +30,7 @@
 #include <qdebug.h>
 #include <qfileinfo.h>
 #include <qthread.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <qlockfile_p.h>
 #include <qfilesystementry_p.h>

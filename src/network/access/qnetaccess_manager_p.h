@@ -28,7 +28,7 @@
 #include <qnetworkproxy.h>
 #include <qnetworksession.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 #include <qnetworkconfigmanager.h>
 #endif
 
@@ -48,11 +48,11 @@ public:
     QNetworkAccessManagerPrivate()
         : networkCache( nullptr ), cookieJar( nullptr ), httpThread( nullptr ),
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
           proxyFactory( nullptr ),
 #endif
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
           lastSessionState( QNetworkSession::Invalid ),
           networkConfiguration( networkConfigurationManager.defaultConfiguration() ),
           customNetworkConfiguration( false ),
@@ -63,7 +63,7 @@ public:
           authenticationManager( QSharedPointer<QNetworkAccessAuthenticationManager>::create() )
     {
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
         online = ( networkConfiguration.state().testFlag( QNetworkConfiguration::Active ) );
 
         if ( online )
@@ -98,7 +98,7 @@ public:
     void cacheCredentials( const QUrl &url, const QAuthenticator *auth );
     QNetworkAuthenticationCredential *fetchCachedCredentials( const QUrl &url, const QAuthenticator *auth = nullptr );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     void proxyAuthenticationRequired( const QUrl &url, const QNetworkProxy &proxy, bool synchronous,
                                       QAuthenticator *authenticator, QNetworkProxy *lastProxyAuthentication );
 
@@ -110,7 +110,7 @@ public:
     QNetworkAccessBackend *findBackend( QNetworkAccessManager::Operation op, const QNetworkRequest &request );
     QStringList backendSupportedSchemes() const;
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     void createSession( const QNetworkConfiguration &config );
     QSharedPointer<QNetworkSession> getNetworkSession() const;
 
@@ -134,12 +134,12 @@ public:
 
     QThread *httpThread;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QNetworkProxy proxy;
     QNetworkProxyFactory *proxyFactory;
 #endif
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     QSharedPointer<QNetworkSession> networkSessionStrongRef;
     QWeakPointer<QNetworkSession> networkSessionWeakRef;
     QNetworkSession::State lastSessionState;
@@ -171,7 +171,7 @@ public:
 
     static void clearCache( QNetworkAccessManager *manager );
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     static const QWeakPointer<const QNetworkSession> getNetworkSession( const QNetworkAccessManager *manager );
 #endif
 

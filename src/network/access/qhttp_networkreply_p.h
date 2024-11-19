@@ -26,7 +26,7 @@
 
 #include <qplatformdefs.h>
 
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 struct z_stream_s;
 #endif
 
@@ -113,7 +113,7 @@ public:
     void setRedirectUrl( const QUrl &url );
     static bool isHttpRedirect( int statusCode );
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     QSslConfiguration sslConfiguration() const;
     void setSslConfiguration( const QSslConfiguration &config );
     void ignoreSslErrors();
@@ -150,7 +150,7 @@ public:
     NET_LSCS_SIGNAL_1( Public, void cacheCredentials( const QHttpNetworkRequest &request, QAuthenticator *authenticator ) )
     NET_LSCS_SIGNAL_2( cacheCredentials, request, authenticator )
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     NET_LSCS_SIGNAL_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
     NET_LSCS_SIGNAL_2( proxyAuthenticationRequired, proxy, authenticator )
 #endif
@@ -263,7 +263,7 @@ public:
 
     char *userProvidedDownloadBuffer;
     QUrl redirectUrl;
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
     z_stream_s *inflateStrm;
     int initializeInflateStream();
     qint64 uncompressBodyData( QByteDataBuffer *in, QByteDataBuffer *out );

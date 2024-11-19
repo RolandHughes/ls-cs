@@ -26,7 +26,7 @@
 
 #include <qdialog.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 class QAbstractPrintDialogPrivate;
 class QPrinter;
@@ -59,7 +59,7 @@ public:
 
     using PrintDialogOptions = QFlags<PrintDialogOption>;
 
-#ifndef QT_NO_PRINTDIALOG
+#ifndef LSCS_NO_PRINTDIALOG
     explicit QAbstractPrintDialog( QPrinter *printer, QWidget *parent = nullptr );
 
     QAbstractPrintDialog( const QAbstractPrintDialog & ) = delete;
@@ -96,11 +96,11 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QAbstractPrintDialog )
 
-#endif // QT_NO_PRINTDIALOG
+#endif // LSCS_NO_PRINTDIALOG
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QAbstractPrintDialog::PrintDialogOptions )
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 #endif

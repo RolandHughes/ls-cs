@@ -26,31 +26,31 @@
 
 #include <qdrawhelper_p.h>
 
-#define QT_ROTATION_CACHEDREAD 1
-#define QT_ROTATION_CACHEDWRITE 2
-#define QT_ROTATION_PACKING 3
-#define QT_ROTATION_TILED 4
+#define LSCS_ROTATION_CACHEDREAD 1
+#define LSCS_ROTATION_CACHEDWRITE 2
+#define LSCS_ROTATION_PACKING 3
+#define LSCS_ROTATION_TILED 4
 
-#ifndef QT_ROTATION_ALGORITHM
+#ifndef LSCS_ROTATION_ALGORITHM
 
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-#define QT_ROTATION_ALGORITHM QT_ROTATION_TILED
+#define LSCS_ROTATION_ALGORITHM LSCS_ROTATION_TILED
 #else
-#define QT_ROTATION_ALGORITHM QT_ROTATION_CACHEDREAD
+#define LSCS_ROTATION_ALGORITHM LSCS_ROTATION_CACHEDREAD
 #endif
 
 #endif
 
-#define QT_DECL_MEMROTATE(type)                            \
-    void Q_GUI_EXPORT qt_memrotate90(const type*, int, int, int, type*, int); \
-    void Q_GUI_EXPORT qt_memrotate180(const type*, int, int, int, type*, int); \
-    void Q_GUI_EXPORT qt_memrotate270(const type*, int, int, int, type*, int)
+#define LSCS_DECL_MEMROTATE(type)                            \
+    void Q_GUI_EXPORT lscs_memrotate90(const type*, int, int, int, type*, int); \
+    void Q_GUI_EXPORT lscs_memrotate180(const type*, int, int, int, type*, int); \
+    void Q_GUI_EXPORT lscs_memrotate270(const type*, int, int, int, type*, int)
 
-QT_DECL_MEMROTATE( quint32 );
-QT_DECL_MEMROTATE( quint16 );
-QT_DECL_MEMROTATE( quint24 );
-QT_DECL_MEMROTATE( quint8 );
+LSCS_DECL_MEMROTATE( quint32 );
+LSCS_DECL_MEMROTATE( quint16 );
+LSCS_DECL_MEMROTATE( quint24 );
+LSCS_DECL_MEMROTATE( quint8 );
 
-#undef QT_DECL_MEMROTATE
+#undef LSCS_DECL_MEMROTATE
 
 #endif

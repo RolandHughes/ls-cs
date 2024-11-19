@@ -27,12 +27,12 @@
 #include <QtScript/qscriptengineagent.h>
 #include <QtCore/qset.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 class QScriptValue;
 class QDeclarativeEngine;
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QJSDebuggerAgentPrivate;
 
@@ -190,6 +190,6 @@ private:
     QJSDebuggerAgentPrivate *d;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QJSDEBUGGERAGENT_P_H

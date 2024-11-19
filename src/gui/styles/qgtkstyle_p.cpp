@@ -33,7 +33,7 @@
 
 #include <qglobal.h>
 
-#if ! defined(QT_NO_STYLE_GTK)
+#if ! defined(LSCS_NO_STYLE_GTK)
 
 #include <qcoreevent.h>
 #include <QFile>
@@ -69,9 +69,9 @@
 #error "Can not include <X11/Xlib.h> before this file"
 #endif
 
-#define XRegisterIMInstantiateCallback qt_XRegisterIMInstantiateCallback
-#define XUnregisterIMInstantiateCallback qt_XUnregisterIMInstantiateCallback
-#define XSetIMValues qt_XSetIMValues
+#define XRegisterIMInstantiateCallback lscs_XRegisterIMInstantiateCallback
+#define XUnregisterIMInstantiateCallback lscs_XUnregisterIMInstantiateCallback
+#define XSetIMValues lscs_XSetIMValues
 
 #include <X11/Xlib.h>
 
@@ -518,13 +518,13 @@ void QGtkStylePrivate::initGtkWidgets() const
     {
 #ifndef Q_OS_DARWIN
         // Gtk will set the Qt error handler so we have to reset it afterwards
-        x11ErrorHandler qt_x_errhandler = XSetErrorHandler( 0 );
+        x11ErrorHandler lscs_x_errhandler = XSetErrorHandler( 0 );
 #endif
 
         QGtkStylePrivate::gtk_init ( NULL, NULL );
 
 #ifndef Q_OS_DARWIN
-        XSetErrorHandler( qt_x_errhandler );
+        XSetErrorHandler( lscs_x_errhandler );
 #endif
 
         // make a window
@@ -864,7 +864,7 @@ QPalette QGtkStylePrivate::gtkWidgetPalette( const QHashableLatin1Literal &gtkWi
 
 void QGtkStyleUpdateScheduler::updateTheme()
 {
-    static QString oldTheme( "qt_not_set" );
+    static QString oldTheme( "lscs_not_set" );
     QPixmapCache::clear();
 
     QFont font = QGtkStylePrivate::getThemeFont();
@@ -1008,4 +1008,4 @@ uint qHash( const QHashableLatin1Literal &key )
     return h;
 }
 
-#endif // !defined(QT_NO_STYLE_GTK)
+#endif // !defined(LSCS_NO_STYLE_GTK)

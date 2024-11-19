@@ -28,7 +28,7 @@
 
 #include "JSFunction.h"
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 #include "Debugger.h"
 #include "DebuggerCallFrame.h"
 #include "JSGlobalObject.h"
@@ -37,7 +37,7 @@
 namespace JSC
 {
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 JSObject *JSC::NativeConstrWrapper::operator() ( ExecState *exec, JSObject *jsobj, const ArgList &argList ) const
 {
     Debugger *debugger = exec->lexicalGlobalObject()->debugger();

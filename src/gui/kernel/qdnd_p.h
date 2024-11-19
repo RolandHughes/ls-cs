@@ -38,7 +38,7 @@ class QEventLoop;
 class QMouseEvent;
 class QPlatformDrag;
 
-#if ! (defined(QT_NO_DRAGANDDROP) && defined(QT_NO_CLIPBOARD))
+#if ! (defined(LSCS_NO_DRAGANDDROP) && defined(LSCS_NO_CLIPBOARD))
 
 class Q_GUI_EXPORT QInternalMimeData : public QMimeData
 {
@@ -66,7 +66,7 @@ protected:
 
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 class QDragPrivate
 {
@@ -126,6 +126,6 @@ private:
     static QDragManager *m_instance;
 };
 
-#endif // ! QT_NO_DRAGANDDROP
+#endif // ! LSCS_NO_DRAGANDDROP
 
 #endif

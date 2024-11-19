@@ -25,7 +25,7 @@
 
 #include <private/qdeclarativeitem_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 // Adding entries to the QDeclarativeFastProperties class allows the QML
 // binding optimizer to bypass Qt's meta system and read and, more
@@ -92,4 +92,4 @@ void QDeclarativeFastProperties::add( const QMetaObject *metaObject, int propert
     m_index.insert( data, accessorIndex );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

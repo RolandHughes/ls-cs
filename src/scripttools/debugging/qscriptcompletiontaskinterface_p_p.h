@@ -27,7 +27,7 @@
 #include <QtCore/qstring.h>
 #include <QtCore/qstringlist.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptCompletionTaskInterface;
 
@@ -46,6 +46,6 @@ public:
     QString appendix;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 #include <qprinter.h>
 #include <qprinterinfo.h>
@@ -47,7 +47,7 @@ class QPrinterPrivate
 public:
     QPrinterPrivate( QPrinter *printer )
         : printEngine( nullptr ), paintEngine( nullptr ), realPrintEngine( nullptr ), realPaintEngine( nullptr ),
-#ifndef QT_NO_PRINTPREVIEWWIDGET
+#ifndef LSCS_NO_PRINTPREVIEWWIDGET
           previewEngine( nullptr ),
 #endif
           q_ptr( printer ), printRange( QPrinter::AllPages ), use_default_engine( true ),
@@ -65,7 +65,7 @@ public:
     void initEngines( QPrinter::OutputFormat format, const QPrinterInfo &printer );
     void changeEngines( QPrinter::OutputFormat format, const QPrinterInfo &printer );
 
-#ifndef QT_NO_PRINTPREVIEWWIDGET
+#ifndef LSCS_NO_PRINTPREVIEWWIDGET
     QList<const QPicture *> previewPages() const;
     void setPreviewMode( bool );
 #endif
@@ -81,7 +81,7 @@ public:
     QPrintEngine *realPrintEngine;
     QPaintEngine *realPaintEngine;
 
-#ifndef QT_NO_PRINTPREVIEWWIDGET
+#ifndef LSCS_NO_PRINTPREVIEWWIDGET
     QPreviewPaintEngine *previewEngine;
 #endif
 
@@ -97,6 +97,6 @@ public:
     QSet<QPrintEngine::PrintEnginePropertyKey> m_properties;
 };
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 #endif

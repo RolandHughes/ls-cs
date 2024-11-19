@@ -29,13 +29,13 @@
 #include <QtCore/qlist.h>
 #include <QtCore/qvariant.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
 #if defined(Q_OS_WIN) && defined(interface)
 #  undef interface
 #endif
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusMessagePrivate;
 class Q_DBUS_EXPORT QDBusMessage
@@ -113,8 +113,8 @@ private:
 Q_DBUS_EXPORT QDebug operator<<( QDebug, const QDBusMessage & );
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif
 

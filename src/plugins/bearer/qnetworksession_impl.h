@@ -29,7 +29,7 @@
 #include <qnetworkconfigmanager_p.h>
 #include <qnetworksession_p.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 class QBearerEngineImpl;
 
@@ -53,7 +53,7 @@ public:
     //notification hooks to discover future state changes.
     void syncStateWithInterface();
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
     QNetworkInterface currentInterface() const;
 #endif
 
@@ -102,6 +102,6 @@ private:
     bool opened;
 };
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 #endif

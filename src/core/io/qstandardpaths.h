@@ -26,7 +26,7 @@
 
 #include <qstringlist.h>
 
-#ifndef QT_NO_STANDARDPATHS
+#ifndef LSCS_NO_STANDARDPATHS
 
 class Q_CORE_EXPORT QStandardPaths
 {
@@ -81,6 +81,6 @@ private:
     ~QStandardPaths();
 };
 
-#endif // QT_NO_STANDARDPATHS
+#endif // LSCS_NO_STANDARDPATHS
 
 #endif // QSTANDARDPATHS_H

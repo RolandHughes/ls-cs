@@ -70,7 +70,7 @@ QOpenGLTextureGlyphCache::~QOpenGLTextureGlyphCache()
     clear();
 }
 
-#if !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_OPENGL_ES_2)
 static inline bool isCoreProfile()
 {
     return QOpenGLContext::currentContext()->format().profile() == QSurfaceFormat::CoreProfile;
@@ -144,7 +144,7 @@ void QOpenGLTextureGlyphCache::createTextureData( int width, int height )
             data[i] = 0;
         }
 
-#if !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_OPENGL_ES_2)
         const GLint internalFormat = isCoreProfile() ? GL_R8 : GL_ALPHA;
         const GLenum format = isCoreProfile() ? GL_RED : GL_ALPHA;
 #else
@@ -182,10 +182,10 @@ void QOpenGLTextureGlyphCache::createTextureData( int width, int height )
 void QOpenGLTextureGlyphCache::setupVertexAttribs()
 {
     m_buffer.bind();
-    m_blitProgram->setAttributeBuffer( int( QT_VERTEX_COORDS_ATTR ), GL_FLOAT, 0, 2 );
-    m_blitProgram->setAttributeBuffer( int( QT_TEXTURE_COORDS_ATTR ), GL_FLOAT, sizeof( m_vertexCoordinateArray ), 2 );
-    m_blitProgram->enableAttributeArray( int( QT_VERTEX_COORDS_ATTR ) );
-    m_blitProgram->enableAttributeArray( int( QT_TEXTURE_COORDS_ATTR ) );
+    m_blitProgram->setAttributeBuffer( int( LSCS_VERTEX_COORDS_ATTR ), GL_FLOAT, 0, 2 );
+    m_blitProgram->setAttributeBuffer( int( LSCS_TEXTURE_COORDS_ATTR ), GL_FLOAT, sizeof( m_vertexCoordinateArray ), 2 );
+    m_blitProgram->enableAttributeArray( int( LSCS_VERTEX_COORDS_ATTR ) );
+    m_blitProgram->enableAttributeArray( int( LSCS_TEXTURE_COORDS_ATTR ) );
     m_buffer.release();
 }
 
@@ -248,7 +248,7 @@ void QOpenGLTextureGlyphCache::resizeTextureData( int width, int height )
     funcs->glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                                    GL_TEXTURE_2D, tmp_texture, 0 );
 
-    funcs->glActiveTexture( GL_TEXTURE0 + QT_IMAGE_TEXTURE_UNIT );
+    funcs->glActiveTexture( GL_TEXTURE0 + LSCS_IMAGE_TEXTURE_UNIT );
     funcs->glBindTexture( GL_TEXTURE_2D, oldTexture );
 
     if ( pex != nullptr )
@@ -298,8 +298,8 @@ void QOpenGLTextureGlyphCache::resizeTextureData( int width, int height )
                 m_blitProgram->addShader( fragmentShader );
             }
 
-            m_blitProgram->bindAttributeLocation( "vertexCoordsArray", QT_VERTEX_COORDS_ATTR );
-            m_blitProgram->bindAttributeLocation( "textureCoordArray", QT_TEXTURE_COORDS_ATTR );
+            m_blitProgram->bindAttributeLocation( "vertexCoordsArray", LSCS_VERTEX_COORDS_ATTR );
+            m_blitProgram->bindAttributeLocation( "textureCoordArray", LSCS_TEXTURE_COORDS_ATTR );
 
             m_blitProgram->link();
 
@@ -325,14 +325,14 @@ void QOpenGLTextureGlyphCache::resizeTextureData( int width, int height )
     }
     else
     {
-        pex->setVertexAttributePointer( QT_VERTEX_COORDS_ATTR, m_vertexCoordinateArray );
-        pex->setVertexAttributePointer( QT_TEXTURE_COORDS_ATTR, m_textureCoordinateArray );
+        pex->setVertexAttributePointer( LSCS_VERTEX_COORDS_ATTR, m_vertexCoordinateArray );
+        pex->setVertexAttributePointer( LSCS_TEXTURE_COORDS_ATTR, m_textureCoordinateArray );
 
         pex->shaderManager->useBlitProgram();
         blitProgram = pex->shaderManager->blitProgram();
     }
 
-    blitProgram->setUniformValue( "imageTexture", QT_IMAGE_TEXTURE_UNIT );
+    blitProgram->setUniformValue( "imageTexture", LSCS_IMAGE_TEXTURE_UNIT );
 
     funcs->glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
 
@@ -360,8 +360,8 @@ void QOpenGLTextureGlyphCache::resizeTextureData( int width, int height )
         }
         else
         {
-            m_blitProgram->disableAttributeArray( int( QT_VERTEX_COORDS_ATTR ) );
-            m_blitProgram->disableAttributeArray( int( QT_TEXTURE_COORDS_ATTR ) );
+            m_blitProgram->disableAttributeArray( int( LSCS_VERTEX_COORDS_ATTR ) );
+            m_blitProgram->disableAttributeArray( int( LSCS_TEXTURE_COORDS_ATTR ) );
         }
     }
 }
@@ -463,11 +463,11 @@ void QOpenGLTextureGlyphCache::fillTexture( const Coord &c, glyph_t glyph, QFixe
 
     if ( mask.depth() == 32 )
     {
-#ifdef QT_OPENGL_ES_2
+#ifdef LSCS_OPENGL_ES_2
         GLenum fmt = GL_RGBA;
 #else
         GLenum fmt = ctx->isOpenGLES() ? GL_RGBA : GL_BGRA;
-#endif // QT_OPENGL_ES_2
+#endif // LSCS_OPENGL_ES_2
 
 #if Q_BYTE_ORDER == Q_BIG_ENDIAN
         fmt = GL_RGBA;
@@ -478,7 +478,7 @@ void QOpenGLTextureGlyphCache::fillTexture( const Coord &c, glyph_t glyph, QFixe
     {
         // The scanlines in mask are 32-bit aligned, even for mono or 8-bit formats. This
         // is good because it matches the default of 4 bytes for GL_UNPACK_ALIGNMENT.
-#if !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_OPENGL_ES_2)
         const GLenum format = isCoreProfile() ? GL_RED : GL_ALPHA;
 #else
         const GLenum format = GL_ALPHA;

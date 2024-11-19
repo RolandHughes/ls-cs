@@ -28,7 +28,7 @@
 
 #include <algorithm>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 bool QItemSelectionRange::intersects( const QItemSelectionRange &other ) const
 {
@@ -836,7 +836,7 @@ static QItemSelection mergeIndexes( const QVector<QPersistentModelIndex> &indexe
     return rowSpans;
 }
 
-static bool qt_PersistentModelIndexLessThan( const QPersistentModelIndex &i1, const QPersistentModelIndex &i2 )
+static bool lscs_PersistentModelIndexLessThan( const QPersistentModelIndex &i1, const QPersistentModelIndex &i2 )
 {
     const QModelIndex parent1 = i1.parent();
     const QModelIndex parent2 = i2.parent();
@@ -880,10 +880,10 @@ void QItemSelectionModelPrivate::_q_layoutChanged( const QList<QPersistentModelI
     {
         // sort the "new" selection, as preparation for merging
         std::stable_sort( savedPersistentIndexes.begin(), savedPersistentIndexes.end(),
-                          qt_PersistentModelIndexLessThan );
+                          lscs_PersistentModelIndexLessThan );
 
         std::stable_sort( savedPersistentCurrentIndexes.begin(), savedPersistentCurrentIndexes.end(),
-                          qt_PersistentModelIndexLessThan );
+                          lscs_PersistentModelIndexLessThan );
 
         // update the selection by merging the individual indexes
         ranges = mergeIndexes( savedPersistentIndexes );
@@ -1680,4 +1680,4 @@ void QItemSelectionModel::_q_layoutChanged()
     d->_q_layoutChanged();
 }
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS

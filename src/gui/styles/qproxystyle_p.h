@@ -28,7 +28,7 @@
 #include <qcommonstyle_p.h>
 #include <qproxystyle.h>
 
-#ifndef QT_NO_STYLE_PROXY
+#ifndef LSCS_NO_STYLE_PROXY
 
 class QProxyStylePrivate : public QCommonStylePrivate
 {
@@ -46,6 +46,6 @@ private:
     mutable QPointer <QStyle> baseStyle;
 };
 
-#endif // QT_NO_STYLE_PROXY
+#endif // LSCS_NO_STYLE_PROXY
 
 #endif //QPROXYSTYLE_P_H

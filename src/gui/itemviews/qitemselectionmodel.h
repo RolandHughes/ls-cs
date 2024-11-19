@@ -30,7 +30,7 @@
 #include <qabstractitemmodel.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 class QItemSelection;
 class QItemSelectionModel;
@@ -383,6 +383,6 @@ Q_GUI_EXPORT QDebug operator<<( QDebug, const QItemSelectionRange & );
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QItemSelectionModel::SelectionFlags )
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
 #endif

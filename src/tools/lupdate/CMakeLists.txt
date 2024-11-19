@@ -38,7 +38,11 @@ if(CMAKE_SYSTEM_NAME MATCHES "DARWIN")
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-   set(EXTRA_LUPDATE_LDFLAGS  ${EXTRA_LUPDATE_LDFLAGS} '-Wl,-rpath,$ORIGIN/../lib')
+  if(BUILDING_DEBIAN OR BUILDING_RPM)
+    # only use RPATH on local build
+  else()
+      set(EXTRA_LUPDATE_LDFLAGS  ${EXTRA_LUPDATE_LDFLAGS} '-Wl,-rpath,$ORIGIN/../lib')
+  endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
@@ -66,8 +70,6 @@ set_target_properties(lupdate${TOOLS_SUFFIX}
    LINK_FLAGS ${EXTRA_LUPDATE_LDFLAGS}
    EXPORT_NAME lupdate
 )
-
-function_generate_resources(lupdate${TOOLS_SUFFIX})
 
 #
 #   Now that binary file names don't collide with

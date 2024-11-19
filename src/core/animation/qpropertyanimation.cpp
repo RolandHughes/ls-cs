@@ -29,7 +29,7 @@
 
 #include <qmutexpool_p.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 void QPropertyAnimationPrivate::updateMetaProperty()
 {
@@ -238,4 +238,4 @@ void QPropertyAnimation::updateState( QAbstractAnimation::State newState, QAbstr
     }
 }
 
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION

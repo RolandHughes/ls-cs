@@ -25,7 +25,6 @@ include_directories(
 target_sources(lconvert${TOOLS_SUFFIX}
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-   $<TARGET_OBJECTS:sharedtools>
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "DARWIN")
@@ -37,8 +36,26 @@ if(CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD)")
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-   list(APPEND EXTRA_LCONVERT_LDFLAGS  '-Wl,-rpath,$ORIGIN/../lib')
+  if(BUILDING_DEBIAN OR BUILDING_RPM)
+    # only use RPATH for local build
+  else()
+      list(APPEND EXTRA_LCONVERT_LDFLAGS  '-Wl,-rpath,$ORIGIN/../lib')
+  endif()
 endif()
+
+# don't include sharedtools until you have the full list of sources
+#
+target_sources(lconvert${TOOLS_SUFFIX}
+   PRIVATE
+   $<TARGET_OBJECTS:sharedtools>
+ )
+ 
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+   list(APPEND EXTRA_LCONVERT_LIBS
+      uuid
+   )
+endif()
+ 
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
    list(APPEND EXTRA_LCONVERT_LIBS

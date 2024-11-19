@@ -28,14 +28,14 @@
 #include <qrgb.h>
 
 
-uint qt_get_rgb_val( const char *name );
+uint lscs_get_rgb_val( const char *name );
 
-bool qt_get_named_rgb( const char *, QRgb * );
-bool qt_get_named_rgb( QStringView str, QRgb * );
+bool lscs_get_named_rgb( const char *, QRgb * );
+bool lscs_get_named_rgb( QStringView str, QRgb * );
 
-bool qt_get_hex_rgb( const char *, QRgb * );
-bool qt_get_hex_rgb( QStringView str, QRgb * );
+bool lscs_get_hex_rgb( const char *, QRgb * );
+bool lscs_get_hex_rgb( QStringView str, QRgb * );
 
-QStringList qt_get_colornames();
+QStringList lscs_get_colornames();
 
 #endif

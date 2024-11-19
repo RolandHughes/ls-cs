@@ -1,0 +1,8 @@
+[Paths]
+Prefix = @prefix@
+Headers = @LSCS_INST_INCLUDE@
+Libraries = @LSCS_INST_LIB@
+Binaries = @LSCS_INST_BIN@
+Plugins = @LSCS_INST_LIB@/plugins
+Data = @LSCS_INST_SHARE@
+Translations = translations

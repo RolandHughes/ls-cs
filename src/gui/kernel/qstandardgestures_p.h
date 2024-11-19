@@ -27,7 +27,7 @@
 #include <qgesturerecognizer.h>
 #include <qgesture_p.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 
 
@@ -84,5 +84,5 @@ public:
     void reset( QGesture *state ) override;
 };
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 #endif // QSTANDARDGESTURES_P_H

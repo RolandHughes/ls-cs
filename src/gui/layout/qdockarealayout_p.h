@@ -30,7 +30,7 @@
 #include <qrect.h>
 #include <qvector.h>
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
 class QDockAreaLayoutInfo;
 class QDockWidget;
@@ -178,12 +178,12 @@ public:
     QMainWindow *mainWindow;
     QList<QDockAreaLayoutItem> item_list;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     void updateSeparatorWidgets() const;
     QSet<QWidget *> usedSeparatorWidgets() const;
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     quintptr currentTabId() const;
     void setCurrentTab( QWidget *widget );
     void setCurrentTabId( quintptr id );
@@ -278,7 +278,7 @@ public:
     QRegion separatorRegion() const;
     int separatorMove( const QList<int> &separator, const QPoint &origin, const QPoint &dest );
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     void updateSeparatorWidgets() const;
 #endif
 
@@ -293,7 +293,7 @@ public:
 
     void keepSize( QDockWidget *w );
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     QSet<QTabBar *> usedTabBars() const;
     QSet<QWidget *> usedSeparatorWidgets() const;
 #endif
@@ -301,6 +301,6 @@ public:
     void styleChangedEvent();
 };
 
-#endif // QT_NO_QDOCKWIDGET
+#endif // LSCS_NO_QDOCKWIDGET
 
 #endif // QDOCKAREALAYOUT_P_H

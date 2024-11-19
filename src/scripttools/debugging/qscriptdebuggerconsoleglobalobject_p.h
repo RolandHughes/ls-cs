@@ -29,7 +29,7 @@
 #include <qscriptdebuggerconsolecommandgroupdata_p.h>
 #include <qscriptdebuggerconsolecommand_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerCommandSchedulerInterface;
 class QScriptMessageHandlerInterface;
@@ -180,6 +180,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerConsoleGlobalObject )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

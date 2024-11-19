@@ -26,7 +26,7 @@
 
 #include <qabstractspinbox.h>
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
 #include <qlineedit.h>
 #include <qstyleoption.h>
@@ -140,6 +140,6 @@ private:
     QAbstractSpinBoxPrivate *dptr;
 };
 
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX
 
 #endif

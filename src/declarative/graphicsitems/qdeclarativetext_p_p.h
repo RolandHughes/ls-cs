@@ -30,7 +30,7 @@
 #include <qdeclarative.h>
 #include <QtGui/qtextlayout.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QTextLayout;
 class QTextDocumentWithImageResources;
@@ -109,5 +109,5 @@ public:
     }
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 #endif

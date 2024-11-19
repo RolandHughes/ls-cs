@@ -26,7 +26,7 @@
 
 #include <QtGui/qwidget.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QPoint;
 class QStringList;
@@ -75,6 +75,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerCodeViewInterface )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

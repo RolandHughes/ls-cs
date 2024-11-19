@@ -22,7 +22,7 @@
 ***********************************************************************/
 
 // keep these in order
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <comutils.h>
 
 #include <qcolor.h>

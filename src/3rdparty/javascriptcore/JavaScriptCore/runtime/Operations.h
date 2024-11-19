@@ -294,7 +294,7 @@ ALWAYS_INLINE bool JSValue::equalSlowCaseInline( ExecState *exec, JSValue v1, JS
         {
             if ( v2.isObject() )
                 return v1 == v2
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
                        || asObject( v1 )->compareToObject( exec, asObject( v2 ) )
 #endif
                        ;

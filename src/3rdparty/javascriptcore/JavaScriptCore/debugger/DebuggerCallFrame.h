@@ -67,7 +67,7 @@ public:
     {
         return m_exception;
     }
-#if QT_BUILD_SCRIPT_LIB
+#if LSCS_BUILD_SCRIPT_LIB
     CallFrame *callFrame() const
     {
         return m_callFrame;

@@ -21,7 +21,7 @@
 *
 ***********************************************************************/
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 #include <qwin_msaa_accessible.h>
 

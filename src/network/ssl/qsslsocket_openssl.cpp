@@ -2024,7 +2024,7 @@ void QSslSocketBackendPrivate::continueHandshake()
         configuration.peerSessionShared = true;
     }
 
-#ifdef QT_DECRYPT_SSL_TRAFFIC
+#ifdef LSCS_DECRYPT_SSL_TRAFFIC
 
     if ( ssl->session && ssl->s3 )
     {

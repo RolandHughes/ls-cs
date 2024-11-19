@@ -28,7 +28,7 @@
 #include "qdeclarativecleanup_p.h"
 #include <qscriptdeclarativeclass_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeType;
 class QDeclarativeEngine;
@@ -88,7 +88,7 @@ QDeclarativeTypeNameCache::Data *QDeclarativeTypeNameCache::data( const QScriptD
     return identifierCache.value( id );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVETYPENAMECACHE_P_H
 

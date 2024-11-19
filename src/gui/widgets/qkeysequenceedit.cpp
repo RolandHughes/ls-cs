@@ -27,7 +27,7 @@
 #include <qboxlayout.h>
 #include <qlineedit.h>
 
-#ifndef QT_NO_KEYSEQUENCEEDIT
+#ifndef LSCS_NO_KEYSEQUENCEEDIT
 
 // assumed by the following code
 static_assert( QKeySequencePrivate::MaxKeyCount == 4, "Key sequence may not have more than four characters" );
@@ -37,7 +37,7 @@ void QKeySequenceEditPrivate::init()
     Q_Q( QKeySequenceEdit );
 
     lineEdit = new QLineEdit( q );
-    lineEdit->setObjectName( "qt_keysequenceedit_lineedit" );
+    lineEdit->setObjectName( "lscs_keysequenceedit_lineedit" );
     keyNum = 0;
     prevKey = -1;
     releaseTimer = 0;
@@ -287,6 +287,6 @@ void QKeySequenceEdit::timerEvent( QTimerEvent *e )
     QWidget::timerEvent( e );
 }
 
-#endif // QT_NO_KEYSEQUENCEEDIT
+#endif // LSCS_NO_KEYSEQUENCEEDIT
 
 

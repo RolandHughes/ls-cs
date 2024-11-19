@@ -65,7 +65,7 @@ struct QWindowsLibEGL
     EGLDisplay ( EGLAPIENTRY *eglGetPlatformDisplayEXT )( EGLenum platform, void *native_display, const EGLint *attrib_list );
 
 private:
-#if ! defined(QT_STATIC) || defined(QT_OPENGL_DYNAMIC)
+#if ! defined(LSCS_STATIC) || defined(LSCS_OPENGL_DYNAMIC)
     void *resolve( const char *name );
     HMODULE m_lib;
 #endif
@@ -75,7 +75,7 @@ struct QWindowsLibGLESv2
 {
     bool init();
 
-#if !defined(QT_STATIC) || defined(QT_OPENGL_DYNAMIC)
+#if !defined(LSCS_STATIC) || defined(LSCS_OPENGL_DYNAMIC)
     void *moduleHandle() const
     {
         return m_lib;
@@ -248,7 +248,7 @@ struct QWindowsLibGLESv2
     void ( APIENTRY *glDepthRangef )( GLclampf nearVal, GLclampf farVal );
 
 private:
-#if !defined(QT_STATIC) || defined(QT_OPENGL_DYNAMIC)
+#if !defined(LSCS_STATIC) || defined(LSCS_OPENGL_DYNAMIC)
     void *resolve( const char *name );
     HMODULE m_lib;
 #endif

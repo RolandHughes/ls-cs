@@ -30,9 +30,9 @@
 #include <QtDBus/qdbusmacros.h>
 #include <QtDBus/qdbusmessage.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusConnection;
 class QDBusError;
@@ -91,7 +91,7 @@ private:
     LSCS_SLOT_2( _q_finished )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

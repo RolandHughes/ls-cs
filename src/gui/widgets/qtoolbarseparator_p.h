@@ -26,7 +26,7 @@
 
 #include <qwidget.h>
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 class QStyleOption;
 class QToolBar;
@@ -50,7 +50,7 @@ public:
     GUI_LSCS_SLOT_2( setOrientation )
 };
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 
 
 

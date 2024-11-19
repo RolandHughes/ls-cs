@@ -30,7 +30,7 @@
 
 #include <qabstractanimation_p.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QAnimationGroupPrivate : public QAbstractAnimationPrivate
 {
@@ -58,6 +58,6 @@ public:
     QList<QAbstractAnimation *> animations;
 };
 
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION
 
 #endif

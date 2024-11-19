@@ -25,7 +25,7 @@
 
 #include <QComboBox>
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
 class QGraphicsProxyWidget;
 class QWebPageClient;
@@ -97,6 +97,6 @@ private:
 
 }
 
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX
 
 #endif // QtFallbackWebPopup_h

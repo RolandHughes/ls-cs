@@ -28,7 +28,7 @@
 #include <QtCore/qstringlist.h>
 #include "qscriptvalueproperty_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptObjectSnapshot
 {
@@ -52,6 +52,6 @@ private:
     QScriptValuePropertyList m_properties;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

@@ -31,7 +31,7 @@
 #include <qthread.h>
 #include <qvector.h>
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 struct kevent;
 
 class QKqueueFileSystemWatcherEngine : public QFileSystemWatcherEngine
@@ -61,6 +61,6 @@ private:
     QHash<int, QString> idToPath;
 };
 
-#endif //QT_NO_FILESYSTEMWATCHER
+#endif //LSCS_NO_FILESYSTEMWATCHER
 
 #endif

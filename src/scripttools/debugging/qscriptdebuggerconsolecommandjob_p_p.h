@@ -26,7 +26,7 @@
 
 #include <qscriptdebuggercommandschedulerjob_p_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerConsole;
 class QScriptMessageHandlerInterface;
@@ -44,6 +44,6 @@ public:
     QScriptMessageHandlerInterface *messageHandler;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

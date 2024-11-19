@@ -39,26 +39,26 @@
 #include <qstylesheetstyle_p.h>
 #include <qtextengine_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
 QLabelPrivate::QLabelPrivate()
     : QFramePrivate(),
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
       picture( nullptr ),
 #endif
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
       movie(),
 #endif
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
       cursor(),
 #endif
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
       buddy(),
       shortcutId( 0 ),
 #endif
@@ -78,7 +78,7 @@ QLabelPrivate::QLabelPrivate()
       shortcutCursor(), sh(), msh(), text(),
       pixmap( nullptr ), scaledpixmap( nullptr ), cachedimage( nullptr ),
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
       validCursor( false ),
       onAnchor( false ),
 #endif
@@ -89,7 +89,7 @@ QLabelPrivate::QLabelPrivate()
 QLabelPrivate::~QLabelPrivate()
 {}
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
 
 const QPicture *QLabel::picture() const
 {
@@ -169,7 +169,7 @@ void QLabel::setText( const QString &text )
         // Note: mouse tracking not disabled intentionally
     }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( d->buddy )
     {
@@ -180,7 +180,7 @@ void QLabel::setText( const QString &text )
 
     d->updateLabel();
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( accessibleName().isEmpty() )
     {
@@ -228,7 +228,7 @@ const QPixmap *QLabel::pixmap() const
     return d->pixmap;
 }
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
 void QLabel::setPicture( const QPicture &picture )
 {
     Q_D( QLabel );
@@ -346,7 +346,7 @@ QSize QLabelPrivate::sizeForWidth( int w ) const
         br = pixmap->rect();
         br.setSize( br.size() / pixmap->devicePixelRatio() );
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
     }
     else if ( picture && !picture->isNull() )
     {
@@ -354,7 +354,7 @@ QSize QLabelPrivate::sizeForWidth( int w ) const
 
 #endif
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
     }
     else if ( movie && !movie->currentPixmap().isNull() )
     {
@@ -667,7 +667,7 @@ void QLabel::mouseReleaseEvent( QMouseEvent *ev )
 
 void QLabel::contextMenuEvent( QContextMenuEvent *ev )
 {
-#ifdef QT_NO_CONTEXTMENU
+#ifdef LSCS_NO_CONTEXTMENU
     ( void ) ev;
 #else
     Q_D( QLabel );
@@ -750,7 +750,7 @@ bool QLabel::event( QEvent *e )
     Q_D( QLabel );
     QEvent::Type type = e->type();
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( type == QEvent::Shortcut )
     {
@@ -820,7 +820,7 @@ void QLabel::paintEvent( QPaintEvent * )
     int align = QStyle::visualAlignment( d->isTextLabel ? d->textDirection()
                                          : layoutDirection(), QFlag( d->align ) );
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
 
     if ( d->movie )
     {
@@ -843,7 +843,7 @@ void QLabel::paintEvent( QPaintEvent * )
             QStyleOption opt;
             opt.initFrom( this );
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
 
             if ( QStyleSheetStyle *cssStyle = qobject_cast<QStyleSheetStyle *>( style ) )
             {
@@ -854,7 +854,7 @@ void QLabel::paintEvent( QPaintEvent * )
 
             if ( d->control )
             {
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
                 const bool underline = ( bool )style->styleHint( QStyle::SH_UnderlineShortcut, nullptr, this, nullptr );
 
                 if ( d->shortcutId != 0
@@ -907,7 +907,7 @@ void QLabel::paintEvent( QPaintEvent * )
         }
         else
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
             if ( d->picture )
             {
                 QRect br = d->picture->boundingRect();
@@ -1019,7 +1019,7 @@ void QLabelPrivate::updateLabel()
     q->update( q->contentsRect() );
 }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 void QLabel::setBuddy( QWidget *buddy )
 {
     Q_D( QLabel );
@@ -1068,9 +1068,9 @@ void QLabelPrivate::updateShortcut()
     hasShortcut = true;
     shortcutId = q->grabShortcut( QKeySequence::mnemonic( text ) );
 }
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
 void QLabelPrivate::_q_movieUpdated( const QRect &rect )
 {
     Q_Q( QLabel );
@@ -1136,7 +1136,7 @@ void QLabel::setMovie( QMovie *movie )
     }
 }
 
-#endif // QT_NO_MOVIE
+#endif // LSCS_NO_MOVIE
 
 void QLabelPrivate::clearContents()
 {
@@ -1145,7 +1145,7 @@ void QLabelPrivate::clearContents()
     isTextLabel = false;
     hasShortcut = false;
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
     delete picture;
     picture = nullptr;
 #endif
@@ -1163,7 +1163,7 @@ void QLabelPrivate::clearContents()
 
     Q_Q( QLabel );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( shortcutId )
     {
@@ -1173,7 +1173,7 @@ void QLabelPrivate::clearContents()
     shortcutId = 0;
 #endif
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
 
     if ( movie )
     {
@@ -1184,7 +1184,7 @@ void QLabelPrivate::clearContents()
     movie = nullptr;
 #endif
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( onAnchor )
     {
@@ -1203,7 +1203,7 @@ void QLabelPrivate::clearContents()
 #endif
 }
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
 QMovie *QLabel::movie() const
 {
     Q_D( const QLabel );
@@ -1370,7 +1370,7 @@ void QLabelPrivate::ensureTextPopulated() const
 
         if ( textDirty )
         {
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
             if ( isRichText )
             {
@@ -1386,7 +1386,7 @@ void QLabelPrivate::ensureTextPopulated() const
 #endif
             doc->setUndoRedoEnabled( false );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
             if ( hasShortcut )
             {
@@ -1498,7 +1498,7 @@ void QLabelPrivate::_q_linkHovered( const QString &anchor )
 {
     Q_Q( QLabel );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( anchor.isEmpty() )
     {
@@ -1570,7 +1570,7 @@ QPoint QLabelPrivate::layoutPoint( const QPoint &p ) const
     return p - lr.topLeft();
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 QMenu *QLabelPrivate::createStandardContextMenu( const QPoint &pos )
 {
     QString linkToCopy;
@@ -1591,7 +1591,7 @@ QMenu *QLabelPrivate::createStandardContextMenu( const QPoint &pos )
 }
 #endif
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
 void QLabel::_q_movieUpdated( const QRect &rect )
 {
     Q_D( QLabel );

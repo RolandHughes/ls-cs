@@ -31,7 +31,7 @@
 #include <QtCore/qmath.h>
 #include <QtCore/qnumeric.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \qmlclass PathElement QDeclarativePathElement
@@ -1018,4 +1018,4 @@ void QDeclarativePathPercent::setValue( qreal value )
         emit changed();
     }
 }
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

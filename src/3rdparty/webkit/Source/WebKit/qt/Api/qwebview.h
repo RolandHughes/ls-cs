@@ -84,7 +84,7 @@ public:
     QString selectedText() const;
     QString selectedHtml() const;
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     QAction *pageAction( QWebPage::WebAction action ) const;
 #endif
     void triggerPageAction( QWebPage::WebAction action, bool checked = false );
@@ -169,11 +169,11 @@ protected:
     void mouseDoubleClickEvent( QMouseEvent *event ) override;
     void mouseReleaseEvent( QMouseEvent *event ) override;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 

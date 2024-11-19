@@ -35,7 +35,7 @@ public:
 
     static const char *windowsMessageName( UINT msg );
 
-    bool QT_ENSURE_STACK_ALIGNED_FOR_SSE processEvents( QEventLoop::ProcessEventsFlags flags ) override;
+    bool LSCS_ENSURE_STACK_ALIGNED_FOR_SSE processEvents( QEventLoop::ProcessEventsFlags flags ) override;
     void sendPostedEvents() override;
 
 private:

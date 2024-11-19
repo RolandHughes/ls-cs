@@ -1,5 +1,5 @@
-#ifndef QT_SCRIPT_H
-#define QT_SCRIPT_H
+#ifndef LSCS_SCRIPT_H
+#define LSCS_SCRIPT_H
 
 #include <qtcore.h>
 #include "qscriptable.h"

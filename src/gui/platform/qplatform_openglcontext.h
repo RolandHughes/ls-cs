@@ -26,7 +26,7 @@
 
 #include <qnamespace.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 #include <qsurfaceformat.h>
 #include <qwindow.h>
 #include <qopengl.h>

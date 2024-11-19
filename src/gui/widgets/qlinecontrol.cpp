@@ -23,7 +23,7 @@
 
 #include <qlinecontrol_p.h>
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
 #include <qabstractitemview.h>
 #include <qapplication.h>
@@ -31,11 +31,11 @@
 #include <qplatform_theme.h>
 #include <qstylehints.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 #include <qgraphicssceneevent.h>
 #endif
 
@@ -119,7 +119,7 @@ void QLineControl::updateDisplayText( bool forceUpdate )
     }
 }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
 void QLineControl::copy( QClipboard::Mode mode ) const
 {
@@ -150,7 +150,7 @@ void QLineControl::paste( QClipboard::Mode clipboardMode )
 
 void QLineControl::commitPreedit()
 {
-#ifndef QT_NO_IM
+#ifndef LSCS_NO_IM
 
     if ( ! composeMode() )
     {
@@ -416,7 +416,7 @@ QRect QLineControl::cursorRect() const
 */
 bool QLineControl::fixup() // this function assumes that validate currently returns != Acceptable
 {
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
 
     if ( m_validator )
     {
@@ -585,7 +585,7 @@ void QLineControl::processInputMethodEvent( QInputMethodEvent *event )
         }
     }
 
-#ifndef QT_NO_IM
+#ifndef LSCS_NO_IM
     setPreeditArea( m_cursor, event->preeditString() );
 #endif
 
@@ -728,7 +728,7 @@ bool QLineControl::finishChange( int validateFromState, bool update, bool edited
         bool wasValidInput = m_validInput;
         m_validInput = true;
 
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
 
         if ( m_validator )
         {
@@ -825,7 +825,7 @@ void QLineControl::internalSetText( const QString &txt, int pos, bool edited )
     m_textDirty = ( oldText != m_text );
     const bool changed = finishChange( -1, true, edited );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( changed )
     {
@@ -911,7 +911,7 @@ void QLineControl::internalInsert( const QString &s )
     if ( m_maskData )
     {
         QString ms = maskString( m_cursor, s );
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
         QAccessibleTextInsertEvent insertEvent( accessibleObject(), m_cursor, ms );
         QAccessible::updateAccessibility( &insertEvent );
 #endif
@@ -926,7 +926,7 @@ void QLineControl::internalInsert( const QString &s )
         m_cursor += ms.length();
         m_cursor = nextMaskBlank( m_cursor );
         m_textDirty = true;
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
         QAccessibleTextCursorEvent event( accessibleObject(), m_cursor );
         QAccessible::updateAccessibility( &event );
 #endif
@@ -937,7 +937,7 @@ void QLineControl::internalInsert( const QString &s )
 
         if ( remaining != 0 )
         {
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
             QAccessibleTextInsertEvent insertEvent( accessibleObject(), m_cursor, s );
             QAccessible::updateAccessibility( &insertEvent );
 #endif
@@ -978,7 +978,7 @@ void QLineControl::internalDelete( bool wasBackspace )
         addCommand( Command( ( CommandType )( ( m_maskData ? 2 : 0 ) + ( wasBackspace ? Remove : Delete ) ),
                              m_cursor, m_text.at( m_cursor ), -1, -1 ) );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
         QAccessibleTextRemoveEvent event( accessibleObject(), m_cursor, m_text.at( m_cursor ) );
         QAccessible::updateAccessibility( &event );
 #endif
@@ -1031,7 +1031,7 @@ void QLineControl::removeSelectedText()
             }
         }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
         QAccessibleTextRemoveEvent event( accessibleObject(), m_selstart, m_text.mid( m_selstart, m_selend - m_selstart ) );
         QAccessible::updateAccessibility( &event );
 #endif
@@ -1348,7 +1348,7 @@ bool QLineControl::isValidInput( QChar key, QChar mask ) const
 */
 bool QLineControl::hasAcceptableInput( const QString &str ) const
 {
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
     QString textCopy = str;
     int cursorCopy = m_cursor;
 
@@ -1733,7 +1733,7 @@ void QLineControl::emitCursorPositionChanged()
         m_lastCursorPos = m_cursor;
         cursorPositionChanged( oldLast, m_cursor );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
         if ( !hasSelectedText() )
         {
@@ -1745,7 +1745,7 @@ void QLineControl::emitCursorPositionChanged()
     }
 }
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 // iterating forward(dir=1)/backward(dir=-1) from the
 // current row based. dir=0 indicates a new completion prefix was set.
 bool QLineControl::advanceToEnabledItem( int dir )
@@ -1843,7 +1843,7 @@ void QLineControl::complete( int key )
     }
     else
     {
-#ifndef QT_KEYPAD_NAVIGATION
+#ifndef LSCS_KEYPAD_NAVIGATION
 
         if ( text.isEmpty() )
         {
@@ -1943,7 +1943,7 @@ void QLineControl::timerEvent( QTimerEvent *event )
     }
 }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 void QLineControl::processShortcutOverrideEvent( QKeyEvent *ke )
 {
     if ( isReadOnly() )
@@ -2009,7 +2009,7 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
 {
     bool inlineCompletionAccepted = false;
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
     if ( m_completer )
     {
@@ -2031,7 +2031,7 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
                 case Qt::Key_Enter:
                 case Qt::Key_Return:
                 case Qt::Key_F4:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
                 case Qt::Key_Select:
                     if ( !QApplication::keypadNavigationEnabled() )
                     {
@@ -2052,7 +2052,7 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
                 case Qt::Key_Enter:
                 case Qt::Key_Return:
                 case Qt::Key_F4:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
                 case Qt::Key_Select:
                     if ( !QApplication::keypadNavigationEnabled() )
                     {
@@ -2074,7 +2074,7 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
         }
     }
 
-#endif // QT_NO_COMPLETER
+#endif // LSCS_NO_COMPLETER
 
     if ( event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return )
     {
@@ -2109,7 +2109,7 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
             && !passwordEchoEditing()
             && !isReadOnly()
             && !event->text().isEmpty()
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
             && event->key() != Qt::Key_Select
             && event->key() != Qt::Key_Up
             && event->key() != Qt::Key_Down
@@ -2133,7 +2133,7 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
     {
     }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     else if ( event == QKeySequence::Undo )
     {
         if ( !isReadOnly() )
@@ -2153,7 +2153,7 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
         selectAll();
     }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     else if ( event == QKeySequence::Copy )
     {
         copy();
@@ -2192,7 +2192,7 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
         }
     }
 
-#endif //QT_NO_CLIPBOARD
+#endif //LSCS_NO_CLIPBOARD
 
     else if ( event == QKeySequence::MoveToStartOfLine || event == QKeySequence::MoveToStartOfBlock )
     {
@@ -2213,7 +2213,7 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
     else if ( event == QKeySequence::MoveToNextChar )
     {
 
-#if defined(QT_NO_COMPLETER)
+#if defined(LSCS_NO_COMPLETER)
         const bool inlineCompletion = false;
 #else
         const bool inlineCompletion = m_completer && m_completer->completionMode() == QCompleter::InlineCompletion;
@@ -2237,7 +2237,7 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
     else if ( event == QKeySequence::MoveToPreviousChar )
     {
 
-#if defined(QT_NO_COMPLETER)
+#if defined(LSCS_NO_COMPLETER)
         const bool inlineCompletion = false;
 #else
         const bool inlineCompletion = m_completer && m_completer->completionMode() == QCompleter::InlineCompletion;
@@ -2337,14 +2337,14 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
         if ( !isReadOnly() )
         {
             setSelection( 0, text().size() );
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
             copy();
 #endif
             del();
         }
     }
 
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
     else
     {
         bool handled = false;
@@ -2389,7 +2389,7 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
                     }
 
                     break;
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
                 case Qt::Key_Up:
                 case Qt::Key_Down:
@@ -2412,14 +2412,14 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
                     if ( ! isReadOnly() )
                     {
                         backspace();
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
                         complete( Qt::Key_Backspace );
 #endif
                     }
 
                     break;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
                 case Qt::Key_Back:
                     if ( QApplication::keypadNavigationEnabled() && ! event->isAutoRepeat() && ! isReadOnly() )
@@ -2471,7 +2471,7 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
     {
         insert( event->text() );
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
         complete( event->key() );
 #endif
         event->accept();

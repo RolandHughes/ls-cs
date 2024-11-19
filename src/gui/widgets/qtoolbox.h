@@ -27,7 +27,7 @@
 #include <qframe.h>
 #include <qicon.h>
 
-#ifndef QT_NO_TOOLBOX
+#ifndef LSCS_NO_TOOLBOX
 
 class QToolBoxPrivate;
 
@@ -65,7 +65,7 @@ public:
     void setItemIcon( int index, const QIcon &icon );
     QIcon itemIcon( int index ) const;
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     void setItemToolTip( int index, const QString &toolTip );
     QString itemToolTip( int index ) const;
 #endif
@@ -119,6 +119,6 @@ inline int QToolBox::insertItem( int index, QWidget *widget, const QString &text
     return insertItem( index, widget, QIcon(), text );
 }
 
-#endif // QT_NO_TOOLBOX
+#endif // LSCS_NO_TOOLBOX
 
 #endif // QTOOLBOX_H

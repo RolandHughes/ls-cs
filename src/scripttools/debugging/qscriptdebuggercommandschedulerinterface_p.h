@@ -26,7 +26,7 @@
 
 #include <QtCore/qobjectdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerCommand;
 class QScriptDebuggerResponseHandlerInterface;
@@ -41,6 +41,6 @@ public:
         QScriptDebuggerResponseHandlerInterface *responseHandler ) = 0;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

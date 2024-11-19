@@ -33,9 +33,9 @@
 #include <QtDBus/qdbusextratypes.h>
 #include <QtDBus/qdbusconnection.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusError;
 class QDBusPendingCall;
@@ -44,7 +44,7 @@ class QDBusAbstractInterfacePrivate;
 class Q_DBUS_EXPORT QDBusAbstractInterfaceBase: public QObject
 {
 public:
-    int qt_metacall( QMetaObject::Call, int, void ** );
+    int lscs_metacall( QMetaObject::Call, int, void ** );
 protected:
     QDBusAbstractInterfaceBase( QDBusAbstractInterfacePrivate &dd, QObject *parent );
 private:
@@ -143,8 +143,8 @@ private:
     */
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

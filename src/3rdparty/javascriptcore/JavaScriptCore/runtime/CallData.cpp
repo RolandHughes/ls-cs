@@ -29,7 +29,7 @@
 #include "JSFunction.h"
 #include "JSGlobalObject.h"
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 #include "Debugger.h"
 #include "DebuggerCallFrame.h"
 #endif
@@ -37,7 +37,7 @@
 namespace JSC
 {
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 JSValue JSC::NativeFuncWrapper::operator() ( ExecState *exec, JSObject *jsobj, JSValue thisValue, const ArgList &argList ) const
 {
     Debugger *debugger = exec->lexicalGlobalObject()->debugger();

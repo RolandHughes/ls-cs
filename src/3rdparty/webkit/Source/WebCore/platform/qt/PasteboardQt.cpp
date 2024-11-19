@@ -79,7 +79,7 @@ void Pasteboard::writeSelection( Range *selectedRange, bool canSmartCopyOrDelete
     md->setHtml( markup );
 #endif
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     QApplication::clipboard()->setMimeData( md, m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard );
 #endif
 
@@ -91,7 +91,7 @@ void Pasteboard::writeSelection( Range *selectedRange, bool canSmartCopyOrDelete
 
 bool Pasteboard::canSmartReplace()
 {
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( QApplication::clipboard()->mimeData()->hasFormat( ( QLatin1String( "application/vnd.qtwebkit.smartpaste" ) ) ) )
     {
@@ -104,7 +104,7 @@ bool Pasteboard::canSmartReplace()
 
 String Pasteboard::plainText( Frame * )
 {
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     return QApplication::clipboard()->text( m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard );
 #else
     return String();
@@ -114,7 +114,7 @@ String Pasteboard::plainText( Frame * )
 PassRefPtr<DocumentFragment> Pasteboard::documentFragment( Frame *frame, PassRefPtr<Range> context,
         bool allowPlainText, bool &chosePlainText )
 {
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     const QMimeData *mimeData = QApplication::clipboard()->mimeData(
                                     m_selectionMode ? QClipboard::Selection : QClipboard::Clipboard );
 
@@ -152,7 +152,7 @@ PassRefPtr<DocumentFragment> Pasteboard::documentFragment( Frame *frame, PassRef
 
 void Pasteboard::writePlainText( const String &text )
 {
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     QMimeData *md = new QMimeData;
     QString qtext = text;
     qtext.replace( QChar( 0xa0 ), QLatin1Char( ' ' ) );
@@ -165,7 +165,7 @@ void Pasteboard::writeURL( const KURL &url, const String &, Frame * )
 {
     ASSERT( !url.isEmpty() );
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     QMimeData *md = new QMimeData;
     QString urlString = url.string();
     md->setText( urlString );
@@ -178,7 +178,7 @@ void Pasteboard::writeImage( Node *node, const KURL &, const String & )
 {
     ASSERT( node && node->renderer() && node->renderer()->isImage() );
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     CachedImage *cachedImage = toRenderImage( node->renderer() )->cachedImage();
 
     if ( !cachedImage || cachedImage->errorOccurred() )

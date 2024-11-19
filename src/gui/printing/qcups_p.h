@@ -29,7 +29,7 @@
 #include <qprinter.h>
 #include <qdatetime.h>
 
-#ifndef QT_NO_CUPS
+#ifndef LSCS_NO_CUPS
 
 // emerald - Define these temporarily so they can be used in the dialogs without a
 // circular reference to QCupsPrintEngine in the plugin.
@@ -113,6 +113,6 @@ public:
     static void setPageRange( QPrinter *printer, int pageFrom, int pageTo );
 };
 
-#endif // QT_NO_CUPS
+#endif // LSCS_NO_CUPS
 
 #endif

@@ -66,7 +66,7 @@ void QFileDevicePrivate::setError( QFileDevice::FileError err, const QString &er
 void QFileDevicePrivate::setError( QFileDevice::FileError err, int errNum )
 {
     error = err;
-    errorString = qt_error_string( errNum );
+    errorString = lscs_error_string( errNum );
 }
 
 QFileDevice::QFileDevice()

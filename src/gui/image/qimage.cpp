@@ -76,7 +76,7 @@ QImageData::QImageData()
     : ref( 0 ), width( 0 ), height( 0 ), depth( 0 ), nbytes( 0 ), devicePixelRatio( 1.0 ), data( nullptr ),
       format( QImage::Format_ARGB32 ), bytes_per_line( 0 ),
       ser_no( qimage_serial_number.fetchAndAddRelaxed( 1 ) ), detach_no( 0 ),
-      dpmx( qt_defaultDpiX() * 100 / qreal( 2.54 ) ), dpmy( qt_defaultDpiY() * 100 / qreal( 2.54 ) ),
+      dpmx( lscs_defaultDpiX() * 100 / qreal( 2.54 ) ), dpmy( lscs_defaultDpiY() * 100 / qreal( 2.54 ) ),
       offset( 0, 0 ), own_data( true ), ro_data( false ), has_alpha_clut( false ),
       is_cached( false ), is_locked( false ), cleanupFunction( nullptr ), cleanupInfo( nullptr ), paintEngine( nullptr )
 {
@@ -91,7 +91,7 @@ QImageData *QImageData::create( const QSize &size, QImage::Format format )
 
     uint width  = size.width();
     uint height = size.height();
-    uint depth  = qt_depthForFormat( format );
+    uint depth  = lscs_depthForFormat( format );
 
     const int bytes_per_line = ( ( width * depth + 31 ) >> 5 ) << 2; // bytes per scanline (must be multiple of 4)
 
@@ -339,7 +339,7 @@ QImageData *QImageData::create( uchar *data, int width, int height,  int bpl, QI
         return d;
     }
 
-    const int depth = qt_depthForFormat( format );
+    const int depth = lscs_depthForFormat( format );
     const int calc_bytes_per_line = ( ( width * depth + 31 ) / 32 ) * 4;
     const int min_bytes_per_line  = ( width * depth + 7 ) / 8;
 
@@ -413,8 +413,8 @@ QImage::QImage( const QString &fileName, const QString &format )
     load( fileName, format );
 }
 
-#ifndef QT_NO_IMAGEFORMAT_XPM
-extern bool qt_read_xpm_image_or_array( QIODevice *device, const char *const *source, QImage &image );
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
+extern bool lscs_read_xpm_image_or_array( QIODevice *device, const char *const *source, QImage &image );
 
 QImage::QImage( const char *const xpm[] )
     : QPaintDevice()
@@ -426,7 +426,7 @@ QImage::QImage( const char *const xpm[] )
         return;
     }
 
-    if ( ! qt_read_xpm_image_or_array( nullptr, xpm, *this ) )
+    if ( ! lscs_read_xpm_image_or_array( nullptr, xpm, *this ) )
     {
         qWarning( "QImage::QImage() XPM format is not supported" );
     }
@@ -952,20 +952,20 @@ void QImage::fill( uint pixel )
             pixel &= 0xff;
         }
 
-        qt_rectfill<quint8>( d->data, pixel, 0, 0, w, d->height, d->bytes_per_line );
+        lscs_rectfill<quint8>( d->data, pixel, 0, 0, w, d->height, d->bytes_per_line );
         return;
 
     }
     else if ( d->depth == 16 )
     {
-        qt_rectfill<quint16>( reinterpret_cast<quint16 *>( d->data ), pixel,
+        lscs_rectfill<quint16>( reinterpret_cast<quint16 *>( d->data ), pixel,
                               0, 0, d->width, d->height, d->bytes_per_line );
         return;
 
     }
     else if ( d->depth == 24 )
     {
-        qt_rectfill<quint24>( reinterpret_cast<quint24 *>( d->data ), pixel,
+        lscs_rectfill<quint24>( reinterpret_cast<quint24 *>( d->data ), pixel,
                               0, 0, d->width, d->height, d->bytes_per_line );
         return;
     }
@@ -988,7 +988,7 @@ void QImage::fill( uint pixel )
         pixel |= 0xc0000000;
     }
 
-    qt_rectfill<uint>( reinterpret_cast<uint *>( d->data ), pixel,
+    lscs_rectfill<uint>( reinterpret_cast<uint *>( d->data ), pixel,
                        0, 0, d->width, d->height, d->bytes_per_line );
 }
 
@@ -1991,7 +1991,7 @@ QImage QImage::createAlphaMask( Qt::ImageConversionFlags flags ) const
     return mask;
 }
 
-#ifndef QT_NO_IMAGE_HEURISTIC_MASK
+#ifndef LSCS_NO_IMAGE_HEURISTIC_MASK
 
 QImage QImage::createHeuristicMask( bool clipTight ) const
 {
@@ -2117,7 +2117,7 @@ QImage QImage::createHeuristicMask( bool clipTight ) const
 
     return m;
 }
-#endif //QT_NO_IMAGE_HEURISTIC_MASK
+#endif //LSCS_NO_IMAGE_HEURISTIC_MASK
 
 QImage QImage::createMaskFromColor( QRgb color, Qt::MaskMode mode ) const
 {
@@ -2281,7 +2281,7 @@ inline void do_mirror( QImageData *dst, QImageData *src, bool horizontal, bool v
     {
         Q_ASSERT( dst->format == QImage::Format_Mono || dst->format == QImage::Format_MonoLSB );
         const int shift = 8 - ( dst->width % 8 );
-        const uchar *bitflip = qt_get_bitflip_array();
+        const uchar *bitflip = lscs_get_bitflip_array();
 
         for ( int y = 0; y < h; ++y )
         {
@@ -3044,7 +3044,7 @@ int QImage::metric( PaintDeviceMetric metric ) const
                         trigx += m11;                                                  \
                         trigy += m12;
 // END OF MACRO
-bool qt_xForm_helper( const QTransform &trueMat, int xoffset, int type, int depth,
+bool lscs_xForm_helper( const QTransform &trueMat, int xoffset, int type, int depth,
                       uchar *dptr, int dbpl, int p_inc, int dHeight, const uchar *sptr, int sbpl, int sWidth, int sHeight )
 {
     int m11 = int( trueMat.m11() * 4096.0 );
@@ -3143,7 +3143,7 @@ bool qt_xForm_helper( const QTransform &trueMat, int xoffset, int type, int dept
         {
             switch ( type )
             {
-                case QT_XFORM_TYPE_MSBFIRST:
+                case LSCS_XFORM_TYPE_MSBFIRST:
                     while ( dptr < maxp )
                     {
                         IWX_MSB( 128 );
@@ -3159,7 +3159,7 @@ bool qt_xForm_helper( const QTransform &trueMat, int xoffset, int type, int dept
 
                     break;
 
-                case QT_XFORM_TYPE_LSBFIRST:
+                case LSCS_XFORM_TYPE_LSBFIRST:
                     while ( dptr < maxp )
                     {
                         IWX_LSB( 1 );
@@ -3257,11 +3257,11 @@ void QImage::setAlphaChannel( const QImage &alphaChannel )
             for ( int x = 0; x < w; ++x )
             {
                 int alpha = *src;
-                int destAlpha = qt_div_255( alpha * qAlpha( *dest ) );
+                int destAlpha = lscs_div_255( alpha * qAlpha( *dest ) );
                 *dest = ( ( destAlpha << 24 )
-                          | ( qt_div_255( qRed( *dest ) * alpha ) << 16 )
-                          | ( qt_div_255( qGreen( *dest ) * alpha ) << 8 )
-                          | ( qt_div_255( qBlue( *dest ) * alpha ) ) );
+                          | ( lscs_div_255( qRed( *dest ) * alpha ) << 16 )
+                          | ( lscs_div_255( qGreen( *dest ) * alpha ) << 8 )
+                          | ( lscs_div_255( qBlue( *dest ) * alpha ) ) );
                 ++dest;
                 ++src;
             }
@@ -3291,11 +3291,11 @@ void QImage::setAlphaChannel( const QImage &alphaChannel )
             for ( int x = 0; x < w; ++x )
             {
                 int alpha = qGray( *src );
-                int destAlpha = qt_div_255( alpha * qAlpha( *dest ) );
+                int destAlpha = lscs_div_255( alpha * qAlpha( *dest ) );
                 *dest = ( ( destAlpha << 24 )
-                          | ( qt_div_255( qRed( *dest ) * alpha ) << 16 )
-                          | ( qt_div_255( qGreen( *dest ) * alpha ) << 8 )
-                          | ( qt_div_255( qBlue( *dest ) * alpha ) ) );
+                          | ( lscs_div_255( qRed( *dest ) * alpha ) << 16 )
+                          | ( lscs_div_255( qGreen( *dest ) * alpha ) << 8 )
+                          | ( lscs_div_255( qBlue( *dest ) * alpha ) ) );
                 ++dest;
                 ++src;
             }
@@ -3462,7 +3462,7 @@ int QImage::bitPlaneCount() const
             break;
 
         default:
-            bpc = qt_depthForFormat( d->format );
+            bpc = lscs_depthForFormat( d->format );
             break;
     }
 
@@ -3533,7 +3533,7 @@ static QImage rotated90( const QImage &image )
         case QImage::Format_A2BGR30_Premultiplied:
         case QImage::Format_RGB30:
         case QImage::Format_A2RGB30_Premultiplied:
-            qt_memrotate270( reinterpret_cast<const quint32 *>( image.bits() ),
+            lscs_memrotate270( reinterpret_cast<const quint32 *>( image.bits() ),
                              w, h, image.bytesPerLine(),
                              reinterpret_cast<quint32 *>( out.bits() ),
                              out.bytesPerLine() );
@@ -3544,7 +3544,7 @@ static QImage rotated90( const QImage &image )
         case QImage::Format_ARGB8565_Premultiplied:
         case QImage::Format_ARGB8555_Premultiplied:
         case QImage::Format_RGB888:
-            qt_memrotate270( reinterpret_cast<const quint24 *>( image.bits() ),
+            lscs_memrotate270( reinterpret_cast<const quint24 *>( image.bits() ),
                              w, h, image.bytesPerLine(),
                              reinterpret_cast<quint24 *>( out.bits() ),
                              out.bytesPerLine() );
@@ -3553,7 +3553,7 @@ static QImage rotated90( const QImage &image )
         case QImage::Format_RGB555:
         case QImage::Format_RGB16:
         case QImage::Format_ARGB4444_Premultiplied:
-            qt_memrotate270( reinterpret_cast<const quint16 *>( image.bits() ),
+            lscs_memrotate270( reinterpret_cast<const quint16 *>( image.bits() ),
                              w, h, image.bytesPerLine(),
                              reinterpret_cast<quint16 *>( out.bits() ),
                              out.bytesPerLine() );
@@ -3562,7 +3562,7 @@ static QImage rotated90( const QImage &image )
         case QImage::Format_Alpha8:
         case QImage::Format_Grayscale8:
         case QImage::Format_Indexed8:
-            qt_memrotate270( reinterpret_cast<const quint8 *>( image.bits() ),
+            lscs_memrotate270( reinterpret_cast<const quint8 *>( image.bits() ),
                              w, h, image.bytesPerLine(),
                              reinterpret_cast<quint8 *>( out.bits() ),
                              out.bytesPerLine() );
@@ -3620,7 +3620,7 @@ static QImage rotated270( const QImage &image )
         case QImage::Format_A2BGR30_Premultiplied:
         case QImage::Format_RGB30:
         case QImage::Format_A2RGB30_Premultiplied:
-            qt_memrotate90( reinterpret_cast<const quint32 *>( image.bits() ),
+            lscs_memrotate90( reinterpret_cast<const quint32 *>( image.bits() ),
                             w, h, image.bytesPerLine(),
                             reinterpret_cast<quint32 *>( out.bits() ),
                             out.bytesPerLine() );
@@ -3631,7 +3631,7 @@ static QImage rotated270( const QImage &image )
         case QImage::Format_ARGB8565_Premultiplied:
         case QImage::Format_ARGB8555_Premultiplied:
         case QImage::Format_RGB888:
-            qt_memrotate90( reinterpret_cast<const quint24 *>( image.bits() ),
+            lscs_memrotate90( reinterpret_cast<const quint24 *>( image.bits() ),
                             w, h, image.bytesPerLine(),
                             reinterpret_cast<quint24 *>( out.bits() ),
                             out.bytesPerLine() );
@@ -3640,7 +3640,7 @@ static QImage rotated270( const QImage &image )
         case QImage::Format_RGB555:
         case QImage::Format_RGB16:
         case QImage::Format_ARGB4444_Premultiplied:
-            qt_memrotate90( reinterpret_cast<const quint16 *>( image.bits() ),
+            lscs_memrotate90( reinterpret_cast<const quint16 *>( image.bits() ),
                             w, h, image.bytesPerLine(),
                             reinterpret_cast<quint16 *>( out.bits() ),
                             out.bytesPerLine() );
@@ -3649,7 +3649,7 @@ static QImage rotated270( const QImage &image )
         case QImage::Format_Alpha8:
         case QImage::Format_Grayscale8:
         case QImage::Format_Indexed8:
-            qt_memrotate90( reinterpret_cast<const quint8 *>( image.bits() ),
+            lscs_memrotate90( reinterpret_cast<const quint8 *>( image.bits() ),
                             w, h, image.bytesPerLine(),
                             reinterpret_cast<quint8 *>( out.bits() ),
                             out.bytesPerLine() );
@@ -3779,7 +3779,7 @@ QImage QImage::transformed( const QTransform &matrix, Qt::TransformationMode mod
     {
         if ( d->format < QImage::Format_RGB32 || !hasAlphaChannel() )
         {
-            target_format = qt_alphaVersion( d->format );
+            target_format = lscs_alphaVersion( d->format );
         }
     }
 
@@ -3843,9 +3843,9 @@ QImage QImage::transformed( const QTransform &matrix, Qt::TransformationMode mod
         }
 
         // create target image (some of the code is from QImage::copy())
-        int type = format() == Format_Mono ? QT_XFORM_TYPE_MSBFIRST : QT_XFORM_TYPE_LSBFIRST;
+        int type = format() == Format_Mono ? LSCS_XFORM_TYPE_MSBFIRST : LSCS_XFORM_TYPE_LSBFIRST;
         int dbpl = dImage.bytesPerLine();
-        qt_xForm_helper( mat, 0, type, bpp, dImage.bits(), dbpl, 0, hd, sptr, sbpl, ws, hs );
+        lscs_xForm_helper( mat, 0, type, bpp, dImage.bits(), dbpl, 0, hd, sptr, sbpl, ws, hs );
     }
 
     copyMetadata( dImage.d, d );
@@ -4269,7 +4269,7 @@ QImage::Format QImage::toImageFormat( QPixelFormat format )
     return Format_Invalid;
 }
 
-Q_GUI_EXPORT void qt_imageTransform( QImage &src, QImageIOHandler::Transformations orient )
+Q_GUI_EXPORT void lscs_imageTransform( QImage &src, QImageIOHandler::Transformations orient )
 {
     if ( orient == QImageIOHandler::TransformationNone )
     {

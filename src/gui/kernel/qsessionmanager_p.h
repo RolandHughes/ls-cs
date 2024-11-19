@@ -27,7 +27,7 @@
 #include <qstring.h>
 #include <qstringlist.h>
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
 
 class QPlatformSessionManager;
 
@@ -46,6 +46,6 @@ public:
     QPlatformSessionManager *platformSessionManager;
 };
 
-#endif // QT_NO_SESSIONMANAGER
+#endif // LSCS_NO_SESSIONMANAGER
 
 #endif

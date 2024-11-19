@@ -31,7 +31,7 @@
 #include <qicon.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
 class QMenu;
 class QActionGroup;
@@ -86,7 +86,7 @@ class Q_GUI_EXPORT QAction : public QObject
     GUI_LSCS_PROPERTY_WRITE( font, setFont )
     GUI_LSCS_PROPERTY_NOTIFY( font, changed )
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     GUI_LSCS_PROPERTY_READ( shortcut, shortcut )
     GUI_LSCS_PROPERTY_WRITE( shortcut, setShortcut )
     GUI_LSCS_PROPERTY_NOTIFY( shortcut, changed )
@@ -174,7 +174,7 @@ public:
     void setPriority( Priority priority );
     Priority priority() const;
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     QMenu *menu() const;
     void setMenu( QMenu *menu );
 #endif
@@ -182,7 +182,7 @@ public:
     void setSeparator( bool separator );
     bool isSeparator() const;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     void setShortcut( const QKeySequence &shortcut );
     QKeySequence shortcut() const;
 
@@ -223,7 +223,7 @@ public:
 
     QList<QWidget *> associatedWidgets() const;
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
     QList<QGraphicsWidget *> associatedGraphicsWidgets() const; // ### suboptimal
 #endif
 
@@ -278,7 +278,7 @@ private:
     friend class QToolButton;
 
 #ifdef Q_OS_DARWIN
-    friend void qt_mac_clear_status_text( QAction *action );
+    friend void lscs_mac_clear_status_text( QAction *action );
 #endif
 
 };
@@ -303,6 +303,6 @@ inline void QAction::setDisabled( bool disabled )
 // recursive, leave here
 #include <qactiongroup.h>
 
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
 #endif

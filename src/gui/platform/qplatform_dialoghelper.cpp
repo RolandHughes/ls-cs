@@ -274,7 +274,7 @@ QColorDialogStaticData::QColorDialogStaticData() : customSet( false )
 
 void QColorDialogStaticData::readSettings()
 {
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
     const QSettings settings( QSettings::UserScope, "CsProject" );
 
     for ( int i = 0; i < int( CustomColorCount ); ++i )
@@ -292,7 +292,7 @@ void QColorDialogStaticData::readSettings()
 
 void QColorDialogStaticData::writeSettings() const
 {
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
 
     if ( !customSet )
     {

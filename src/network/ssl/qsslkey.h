@@ -30,7 +30,7 @@
 #include <qshareddata.h>
 #include <qssl.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 class QDebug;
 class QIODevice;

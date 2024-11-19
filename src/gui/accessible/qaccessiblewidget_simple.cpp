@@ -48,12 +48,12 @@
 
 #include <qwindowcontainer_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 extern QList<QWidget *> childWidgets( const QWidget *widget );
 
-QString qt_accStripAmp( const QString &text );
-QString qt_accHotKey( const QString &text );
+QString lscs_accStripAmp( const QString &text );
+QString lscs_accHotKey( const QString &text );
 
 QAccessibleButton::QAccessibleButton( QWidget *w )
     : QAccessibleWidget( w )
@@ -85,7 +85,7 @@ QString QAccessibleButton::text( QAccessible::Text t ) const
     {
         case QAccessible::Accelerator:
         {
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
             QPushButton *pb = qobject_cast<QPushButton *>( object() );
 
             if ( pb && pb->isDefault() )
@@ -97,7 +97,7 @@ QString QAccessibleButton::text( QAccessible::Text t ) const
 
             if ( str.isEmpty() )
             {
-                str = qt_accHotKey( button()->text() );
+                str = lscs_accHotKey( button()->text() );
             }
         }
         break;
@@ -107,7 +107,7 @@ QString QAccessibleButton::text( QAccessible::Text t ) const
 
             if ( str.isEmpty() )
             {
-                str = qt_accStripAmp( button()->text() );
+                str = lscs_accStripAmp( button()->text() );
             }
 
             break;
@@ -159,7 +159,7 @@ QAccessible::State QAccessibleButton::state() const
             state.defaultButton = true;
         }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
         if ( pb->menu() )
         {
@@ -204,7 +204,7 @@ QAccessible::Role QAccessibleButton::role() const
 {
     QAbstractButton *ab = button();
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     if ( QPushButton *pb = qobject_cast<QPushButton *>( ab ) )
     {
@@ -268,7 +268,7 @@ void QAccessibleButton::doAction( const QString &actionName )
     if ( actionName == pressAction() ||
             actionName == showMenuAction() )
     {
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
         QPushButton *pb = qobject_cast<QPushButton *>( object() );
 
         if ( pb && pb->menu() )
@@ -293,7 +293,7 @@ QStringList QAccessibleButton::keyBindingsForAction( const QString &actionName )
 {
     if ( actionName == pressAction() )
     {
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         return QStringList() << button()->shortcut().toString();
 #endif
     }
@@ -301,7 +301,7 @@ QStringList QAccessibleButton::keyBindingsForAction( const QString &actionName )
     return QStringList();
 }
 
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 
 QAccessibleToolButton::QAccessibleToolButton( QWidget *w )
     : QAccessibleButton( w )
@@ -316,7 +316,7 @@ QToolButton *QAccessibleToolButton::toolButton() const
 
 bool QAccessibleToolButton::isSplitButton() const
 {
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     return toolButton()->menu() && toolButton()->popupMode() == QToolButton::MenuButtonPopup;
 #else
     return false;
@@ -332,7 +332,7 @@ QAccessible::State QAccessibleToolButton::state() const
         st.hotTracked = true;
     }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     if ( toolButton()->menu() )
     {
@@ -353,7 +353,7 @@ QAccessible::Role QAccessibleToolButton::role() const
 {
     QAbstractButton *ab = button();
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     QToolButton *tb = qobject_cast<QToolButton *>( ab );
 
     if ( ! tb->menu() )
@@ -373,7 +373,7 @@ QAccessible::Role QAccessibleToolButton::role() const
 
 QAccessibleInterface *QAccessibleToolButton::child( int index ) const
 {
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     if ( index == 0 && toolButton()->menu() )
     {
@@ -420,7 +420,7 @@ void QAccessibleToolButton::doAction( const QString &actionName )
         if ( toolButton()->popupMode() != QToolButton::InstantPopup )
         {
             toolButton()->setDown( true );
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
             toolButton()->showMenu();
 #endif
         }
@@ -432,7 +432,7 @@ void QAccessibleToolButton::doAction( const QString &actionName )
 
 }
 
-#endif // QT_NO_TOOLBUTTON
+#endif // LSCS_NO_TOOLBUTTON
 
 QAccessibleDisplay::QAccessibleDisplay( QWidget *w, QAccessible::Role role )
     : QAccessibleWidget( w, role )
@@ -450,7 +450,7 @@ QAccessible::Role QAccessibleDisplay::role() const
             return QAccessible::Graphic;
         }
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
 
         if ( l->picture() )
         {
@@ -459,7 +459,7 @@ QAccessible::Role QAccessibleDisplay::role() const
 
 #endif
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
 
         if ( l->movie() )
         {
@@ -468,7 +468,7 @@ QAccessible::Role QAccessibleDisplay::role() const
 
 #endif
 
-#ifndef QT_NO_PROGRESSBAR
+#ifndef LSCS_NO_PROGRESSBAR
     }
     else if ( qobject_cast<QProgressBar *>( object() ) )
     {
@@ -500,7 +500,7 @@ QString QAccessibleDisplay::text( QAccessible::Text t ) const
                     QLabel *label = qobject_cast<QLabel *>( object() );
                     str = label->text();
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
                     if ( label->textFormat() == Qt::RichText
                             || ( label->textFormat() == Qt::AutoText && Qt::mightBeRichText( str ) ) )
@@ -514,10 +514,10 @@ QString QAccessibleDisplay::text( QAccessible::Text t ) const
 
                     if ( label->buddy() )
                     {
-                        str = qt_accStripAmp( str );
+                        str = lscs_accStripAmp( str );
                     }
 
-#ifndef QT_NO_LCDNUMBER
+#ifndef LSCS_NO_LCDNUMBER
                 }
                 else if ( qobject_cast<QLCDNumber *>( object() ) )
                 {
@@ -544,7 +544,7 @@ QString QAccessibleDisplay::text( QAccessible::Text t ) const
             break;
 
         case QAccessible::Value:
-#ifndef QT_NO_PROGRESSBAR
+#ifndef LSCS_NO_PROGRESSBAR
             if ( qobject_cast<QProgressBar *>( object() ) )
             {
                 str = QString::number( qobject_cast<QProgressBar *>( object() )->value() );
@@ -573,7 +573,7 @@ QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> QAccessibleDisplay
     {
         QVarLengthArray<QObject *, 4> relatedObjects;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
         if ( QLabel *label = qobject_cast<QLabel *>( object() ) )
         {
@@ -609,7 +609,7 @@ void *QAccessibleDisplay::interface_cast( QAccessible::InterfaceType t )
 
 QString QAccessibleDisplay::imageDescription() const
 {
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     return widget()->toolTip();
 #else
     return QString::null;
@@ -653,7 +653,7 @@ QPoint QAccessibleDisplay::imagePosition() const
     return QPoint( label->mapToGlobal( label->pos() ) );
 }
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
 QAccessibleGroupBox::QAccessibleGroupBox( QWidget *w )
     : QAccessibleWidget( w )
 {
@@ -673,7 +673,7 @@ QString QAccessibleGroupBox::text( QAccessible::Text t ) const
         switch ( t )
         {
             case QAccessible::Name:
-                txt = qt_accStripAmp( groupBox()->title() );
+                txt = lscs_accStripAmp( groupBox()->title() );
                 break;
 
             case QAccessible::Description:
@@ -681,7 +681,7 @@ QString QAccessibleGroupBox::text( QAccessible::Text t ) const
                 break;
 
             case QAccessible::Accelerator:
-                txt = qt_accHotKey( groupBox()->title() );
+                txt = lscs_accHotKey( groupBox()->title() );
                 break;
 
             default:
@@ -754,7 +754,7 @@ QStringList QAccessibleGroupBox::keyBindingsForAction( const QString & ) const
 
 #endif
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
 QAccessibleLineEdit::QAccessibleLineEdit( QWidget *w, const QString &name )
     : QAccessibleWidget( w, QAccessible::EditableText, name )
@@ -1041,9 +1041,9 @@ void QAccessibleLineEdit::replaceText( int startOffset, int endOffset, const QSt
     lineEdit()->setText( lineEdit()->text().replace( startOffset, endOffset - startOffset, text ) );
 }
 
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT
 
-#ifndef QT_NO_PROGRESSBAR
+#ifndef LSCS_NO_PROGRESSBAR
 QAccessibleProgressBar::QAccessibleProgressBar( QWidget *o )
     : QAccessibleDisplay( o )
 {
@@ -1129,4 +1129,4 @@ QWindowContainer *QAccessibleWindowContainer::container() const
     return static_cast<QWindowContainer *>( widget() );
 }
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY

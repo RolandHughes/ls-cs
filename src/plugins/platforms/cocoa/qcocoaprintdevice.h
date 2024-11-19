@@ -26,9 +26,9 @@
 
 #include <qplatform_printdevice.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
-#include <qt_mac_p.h>
+#include <lscs_mac_p.h>
 
 #include <cups/ppd.h>
 
@@ -67,7 +67,7 @@ protected:
     void loadDuplexModes() const override;
     void loadColorModes() const override;
 
-#if ! defined(QT_NO_MIMETYPE)
+#if ! defined(LSCS_NO_MIMETYPE)
     void loadMimeTypes() const;
 #endif
 
@@ -87,5 +87,5 @@ private:
     mutable QHash<QString, QMarginsF> m_printableMargins;
 };
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 #endif

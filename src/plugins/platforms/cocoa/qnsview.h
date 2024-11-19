@@ -61,7 +61,7 @@ using QNSViewMouseMoveHelper = struct objc_object;
     Qt::KeyboardModifiers currentWheelModifiers;
     bool m_subscribesForGlobalFrameNotifications;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     QCocoaGLContext *m_glContext;
     bool m_shouldSetGLContextinDrawRect;
 #endif
@@ -80,7 +80,7 @@ using QNSViewMouseMoveHelper = struct objc_object;
 - ( id )initWithQWindow: ( QWindow * )window platformWindow: ( QCocoaWindow * ) platformWindow;
 - ( void ) clearQWindowPointers;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 - ( void )setQCocoaGLContext: ( QCocoaGLContext * )context;
 #endif
 

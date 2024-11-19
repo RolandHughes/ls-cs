@@ -40,7 +40,7 @@
 #include <qlayoutengine_p.h>
 #include <qtextengine_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -48,7 +48,7 @@
 #include <qplatform_nativeinterface.h>
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
 QMovableTabWidget::QMovableTabWidget( QWidget *parent )
     : QWidget( parent )
@@ -240,7 +240,7 @@ void QTabBarPrivate::initBasicStyleOption( QStyleOptionTab *option, int tabIndex
         option->position = QStyleOptionTab::Middle;
     }
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
 
     if ( const QTabWidget *tw = qobject_cast<const QTabWidget *>( q->parentWidget() ) )
     {
@@ -292,7 +292,7 @@ void QTabBarPrivate::init()
     QObject::connect( rightB, &QToolButton::clicked, q, &QTabBar::_q_scrollTabs );
     rightB->hide();
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() )
     {
@@ -305,7 +305,7 @@ void QTabBarPrivate::init()
 #endif
         q->setFocusPolicy( Qt::TabFocus );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     leftB->setAccessibleName( QTabBar::tr( "Scroll Left" ) );
     rightB->setAccessibleName( QTabBar::tr( "Scroll Right" ) );
 #endif
@@ -904,7 +904,7 @@ int QTabBar::insertTab( int index, const QIcon &icon, const QString &text )
         d->tabList.insert( index, QMakeShared<QTabBarPrivate::Tab>( icon, text ) );
     }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     d->tabList[index]->shortcutId = grabShortcut( QKeySequence::mnemonic( text ) );
 #endif
 
@@ -955,7 +955,7 @@ void QTabBar::removeTab( int index )
             d->moveTabFinished( d->pressedIndex );
         }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         releaseShortcut( d->tabList.at( index )->shortcutId );
 #endif
 
@@ -1082,7 +1082,7 @@ void QTabBar::setTabEnabled( int index, bool enabled )
     {
         tab->enabled = enabled;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         setShortcutEnabled( tab->shortcutId, enabled );
 #endif
 
@@ -1120,7 +1120,7 @@ void QTabBar::setTabText( int index, const QString &text )
         d->textSizes.remove( tab->text );
         tab->text = text;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         releaseShortcut( tab->shortcutId );
         tab->shortcutId = grabShortcut( QKeySequence::mnemonic( text ) );
         setShortcutEnabled( tab->shortcutId, tab->enabled );
@@ -1185,7 +1185,7 @@ void QTabBar::setTabIcon( int index, const QIcon &icon )
     }
 }
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
 void QTabBar::setTabToolTip( int index, const QString &tip )
 {
@@ -1208,9 +1208,9 @@ QString QTabBar::tabToolTip( int index ) const
 
     return QString();
 }
-#endif // QT_NO_TOOLTIP
+#endif // LSCS_NO_TOOLTIP
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
 void QTabBar::setTabWhatsThis( int index, const QString &text )
 {
@@ -1234,7 +1234,7 @@ QString QTabBar::tabWhatsThis( int index ) const
     return QString();
 }
 
-#endif // QT_NO_WHATSTHIS
+#endif // LSCS_NO_WHATSTHIS
 
 void QTabBar::setTabData( int index, const QVariant &data )
 {
@@ -1350,7 +1350,7 @@ void QTabBar::setCurrentIndex( int index )
 
         d->layoutTab( index );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
         if ( QAccessible::isActive() )
         {
@@ -1648,7 +1648,7 @@ bool QTabBar::event( QEvent *event )
         update( oldHoverRect );
         return true;
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
     }
     else if ( event->type() == QEvent::ToolTip )
@@ -1662,9 +1662,9 @@ bool QTabBar::event( QEvent *event )
             }
         }
 
-#endif // QT_NO_TOOLTIP
+#endif // LSCS_NO_TOOLTIP
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     }
     else if ( event->type() == QEvent::QueryWhatsThis )
     {
@@ -1691,7 +1691,7 @@ bool QTabBar::event( QEvent *event )
 
 #endif
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     }
     else if ( event->type() == QEvent::Shortcut )
     {
@@ -1729,7 +1729,7 @@ bool QTabBar::event( QEvent *event )
         d->updateMacBorderMetrics();
         return QWidget::event( event );
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     }
     else if ( event->type() == QEvent::DragEnter )
     {
@@ -2321,7 +2321,7 @@ void QTabBarPrivate::moveTabFinished( int index )
     bool cleanup = ( pressedIndex == index ) || ( pressedIndex == -1 ) || ! validIndex( index );
     bool allAnimationsFinished = true;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
     for ( int i = 0; allAnimationsFinished && i < tabList.count(); ++i )
     {
@@ -2424,7 +2424,7 @@ void QTabBar::keyPressEvent( QKeyEvent *event )
     d->setCurrentNextEnabledIndex( offset );
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 
 void QTabBar::wheelEvent( QWheelEvent *event )
 {
@@ -2763,11 +2763,11 @@ CloseButton::CloseButton( QWidget *parent )
 {
     setFocusPolicy( Qt::NoFocus );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     setCursor( Qt::ArrowCursor );
 #endif
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     setToolTip( tr( "Close Tab" ) );
 #endif
 
@@ -2841,7 +2841,7 @@ void CloseButton::paintEvent( QPaintEvent * )
     style()->drawPrimitive( QStyle::PE_IndicatorTabClose, &opt, &p, this );
 }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 void QTabBarPrivate::Tab::TabBarAnimation::updateCurrentValue( const QVariant &current )
 {
     priv->moveTab( priv->tabList.indexOf( tab ), current.toInt() );
@@ -2856,4 +2856,4 @@ void QTabBarPrivate::Tab::TabBarAnimation::updateState( QAbstractAnimation::Stat
 }
 #endif
 
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR

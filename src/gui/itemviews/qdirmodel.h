@@ -28,7 +28,7 @@
 #include <qdir.h>
 #include <qfileiconprovider.h>
 
-#ifndef QT_NO_DIRMODEL
+#ifndef LSCS_NO_DIRMODEL
 
 class QDirModelPrivate;
 
@@ -137,6 +137,6 @@ private:
     GUI_LSCS_SLOT_2( _q_refresh )
 };
 
-#endif // QT_NO_DIRMODEL
+#endif // LSCS_NO_DIRMODEL
 
 #endif // QDIRMODEL_H

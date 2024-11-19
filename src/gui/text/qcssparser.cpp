@@ -34,7 +34,7 @@
 
 #include <algorithm>
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 
 #include <qcssscanner_p.cpp>
 
@@ -4459,4 +4459,4 @@ bool Parser::testTokenAndEndsWith( QCss::TokenType t, QStringView str )
     return true;
 }
 
-#endif // QT_NO_CSSPARSER
+#endif // LSCS_NO_CSSPARSER

@@ -32,7 +32,7 @@
 #include <qpaintengine_p.h>
 #include <qpicture_p.h>
 
-#ifndef QT_NO_PRINTPREVIEWWIDGET
+#ifndef LSCS_NO_PRINTPREVIEWWIDGET
 
 class QPreviewPaintEnginePrivate : public QPaintEnginePrivate
 {

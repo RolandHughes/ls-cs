@@ -26,7 +26,7 @@
 
 #include <qmatrix.h>
 
-#ifndef QT_NO_SVGRENDERER
+#ifndef LSCS_NO_SVGRENDERER
 
 #include <qobject.h>
 #include <qrect.h>
@@ -115,5 +115,5 @@ void QSvgRenderer::lscs_setViewBox( const QRectF &viewbox )
     setViewBox( viewbox );
 }
 
-#endif // QT_NO_SVGRENDERER
+#endif // LSCS_NO_SVGRENDERER
 #endif // QSVGRENDERER_H

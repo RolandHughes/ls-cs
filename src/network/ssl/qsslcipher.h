@@ -28,7 +28,7 @@
 #include <qssl.h>
 #include <qstring.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 class QDebug;
 class QSslCipherPrivate;

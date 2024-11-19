@@ -24,7 +24,7 @@
 #ifndef QZIPWRITER_P_H
 #define QZIPWRITER_P_H
 
-#ifndef QT_NO_TEXTODFWRITER
+#ifndef LSCS_NO_TEXTODFWRITER
 
 #include <qstring.h>
 #include <qfile.h>
@@ -83,6 +83,6 @@ private:
     QZipWriterPrivate *d;
 };
 
-#endif // QT_NO_TEXTODFWRITER
+#endif // LSCS_NO_TEXTODFWRITER
 
 #endif // QZIPWRITER_H

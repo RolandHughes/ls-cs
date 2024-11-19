@@ -27,7 +27,7 @@
 #include <qdeclarativeitem.h>
 #include <qdeclarativepath_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativePathViewPrivate;
 class QDeclarativePathViewAttached;
@@ -303,7 +303,7 @@ private:
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativePathView )
 QML_DECLARE_TYPEINFO( QDeclarativePathView, QML_HAS_ATTACHED_PROPERTIES )

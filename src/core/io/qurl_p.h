@@ -27,7 +27,7 @@
 #include <qurl.h>
 
 // in qurlrecode.cpp
-extern int qt_urlRecode( QString &appendTo, QString::const_iterator begin, QString::const_iterator end,
+extern int lscs_urlRecode( QString &appendTo, QString::const_iterator begin, QString::const_iterator end,
                          QUrl::FormattingOptions encoding, const ushort *tableModifications = nullptr );
 
 // in qurlidna.cpp
@@ -43,7 +43,7 @@ enum AceOperation
     NormalizeAce
 };
 
-QString qt_ACE_do( QStringView domain, AceOperation op, AceLeadingDot dot );
-QString qt_urlRecodeByteArray( const QByteArray &ba );
+QString lscs_ACE_do( QStringView domain, AceOperation op, AceLeadingDot dot );
+QString lscs_urlRecodeByteArray( const QByteArray &ba );
 
 #endif

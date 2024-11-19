@@ -23,7 +23,7 @@
 
 #include <qwidgetresizehandler_p.h>
 
-#ifndef QT_NO_RESIZEHANDLER
+#ifndef LSCS_NO_RESIZEHANDLER
 
 #include <qapplication.h>
 #include <qcursor.h>
@@ -34,7 +34,7 @@
 #include <qsizegrip.h>
 
 #if defined(Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #endif
 
 #include <qlayoutengine_p.h>
@@ -146,7 +146,7 @@ bool QWidgetResizeHandler::eventFilter( QObject *o, QEvent *ee )
                 */
 
                 if ( e->spontaneous() )
-#  if ! defined(QT_NO_CURSOR)
+#  if ! defined(LSCS_NO_CURSOR)
                     widget->grabMouse( widget->cursor() );
 
 #  else
@@ -305,7 +305,7 @@ void QWidgetResizeHandler::mouseMoveEvent( QMouseEvent *e )
             mode = Center;
         }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
         setMouseCursor( mode );
 #endif
         return;
@@ -449,7 +449,7 @@ void QWidgetResizeHandler::mouseMoveEvent( QMouseEvent *e )
 
 void QWidgetResizeHandler::setMouseCursor( MousePosition m )
 {
-#ifdef QT_NO_CURSOR
+#ifdef LSCS_NO_CURSOR
     ( void ) m;
 
 #else
@@ -540,7 +540,7 @@ void QWidgetResizeHandler::keyPressEvent( QKeyEvent *e )
                     mode = TopLeft;
                 }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
                 setMouseCursor( mode );
                 widget->grabMouse( widget->cursor() );
 #else
@@ -580,7 +580,7 @@ void QWidgetResizeHandler::keyPressEvent( QKeyEvent *e )
                     mode = TopRight;
                 }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
                 setMouseCursor( mode );
                 widget->grabMouse( widget->cursor() );
 #else
@@ -620,7 +620,7 @@ void QWidgetResizeHandler::keyPressEvent( QKeyEvent *e )
                     mode = TopRight;
                 }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
                 setMouseCursor( mode );
                 widget->grabMouse( widget->cursor() );
 #else
@@ -660,7 +660,7 @@ void QWidgetResizeHandler::keyPressEvent( QKeyEvent *e )
                     mode = BottomRight;
                 }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
                 setMouseCursor( mode );
                 widget->grabMouse( widget->cursor() );
 #else
@@ -722,7 +722,7 @@ void QWidgetResizeHandler::doResize()
 
     invertedMoveOffset = widget->rect().bottomRight() - moveOffset;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     setMouseCursor( mode );
     widget->grabMouse( widget->cursor() );
 #else
@@ -746,7 +746,7 @@ void QWidgetResizeHandler::doMove()
     moveOffset = widget->mapFromGlobal( QCursor::pos() );
     invertedMoveOffset = widget->rect().bottomRight() - moveOffset;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     widget->grabMouse( Qt::SizeAllCursor );
 #else
     widget->grabMouse();
@@ -755,4 +755,4 @@ void QWidgetResizeHandler::doMove()
     widget->grabKeyboard();
 }
 
-#endif //QT_NO_RESIZEHANDLER
+#endif //LSCS_NO_RESIZEHANDLER

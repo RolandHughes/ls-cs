@@ -29,7 +29,7 @@
 
 #include <qgraphics_widget_p.h>
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 class QShortcutMap;
 
 class QActionPrivate
@@ -57,7 +57,7 @@ public:
 
     QVariant userData;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     QKeySequence shortcut;
     QList<QKeySequence> alternateShortcuts;
 
@@ -83,11 +83,11 @@ public:
 
     QList<QWidget *> widgets;
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
     QList<QGraphicsWidget *> graphicsWidgets;
 #endif
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     void redoGrab( QShortcutMap &map );
     void redoGrabAlternate( QShortcutMap &map );
     void setShortcutEnabled( bool enable, QShortcutMap &map );
@@ -102,5 +102,5 @@ protected:
 
 };
 
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 #endif

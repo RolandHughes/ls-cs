@@ -26,7 +26,7 @@
 #include <QBuffer>
 #include <QElapsedTimer>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 #define MAX_PACKET_SIZE 0x7FFFFFFF
 
@@ -106,7 +106,8 @@ public:
         QObject::connect( this, SIGNAL( packetWritten() ), parent, SLOT( packetWritten() ) );
         QObject::connect( this, SIGNAL( invalidPacket() ), parent, SLOT( invalidPacket() ) );
         QObject::connect( dev,  SIGNAL( readyRead() ), this, SLOT( readyToRead() ) );
-        QObject::connect( dev,  SIGNAL( aboutToClose() ), this, SLOT( aboutToClose() ) );
+        // do not allow aboutToClose to be queued across threads
+        QObject::connect( dev,  SIGNAL( aboutToClose() ), this, SLOT( aboutToClose() ), Qt::DirectConnection );
         QObject::connect( dev,  SIGNAL( bytesWritten( qint64 ) ), this, SLOT( bytesWritten( qint64 ) ) );
     }
 
@@ -257,7 +258,7 @@ QPacket QPacketProtocol::read()
    Returns the difference between msecs and elapsed. If msecs is -1,
    however, -1 is returned.
 */
-static int qt_timeout_value( int msecs, int elapsed )
+static int lscs_timeout_value( int msecs, int elapsed )
 {
     if ( msecs == -1 )
     {
@@ -303,7 +304,7 @@ bool QPacketProtocol::waitForReadyRead( int msecs )
             return true;
         }
 
-        msecs = qt_timeout_value( msecs, stopWatch.elapsed() );
+        msecs = lscs_timeout_value( msecs, stopWatch.elapsed() );
     }
     while ( true );
 }
@@ -582,4 +583,4 @@ void QPacketProtocolPrivate::readyToRead()
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

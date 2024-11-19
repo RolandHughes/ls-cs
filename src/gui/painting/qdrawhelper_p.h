@@ -56,8 +56,8 @@ static constexpr const uint RMASK = 0x00ff0000;
 static constexpr const uint GMASK = 0x0000ff00;
 static constexpr const uint BMASK = 0x000000ff;
 
-typedef QT_FT_Span QSpan;
-typedef QT_FT_SpanFunc ProcessSpans;
+typedef LSCS_FT_Span QSpan;
+typedef LSCS_FT_SpanFunc ProcessSpans;
 
 typedef void ( *BitmapBlitFunc )( QRasterBuffer *rasterBuffer,
                                   int x, int y, const QRgba64 &color,
@@ -132,9 +132,9 @@ private:
 
 void qBlendTexture( int count, const QSpan *spans, void *userData );
 
-extern void qt_memfill64( quint64 *dest, quint64 value, int count );
-extern void qt_memfill32( quint32 *dest, quint32 value, int count );
-extern void qt_memfill16( quint16 *dest, quint16 value, int count );
+extern void lscs_memfill64( quint64 *dest, quint64 value, int count );
+extern void lscs_memfill32( quint32 *dest, quint32 value, int count );
+extern void lscs_memfill16( quint16 *dest, quint16 value, int count );
 
 typedef void ( *CompositionFunction )( uint *__restrict dest, const uint *__restrict src, int length, uint const_alpha );
 
@@ -354,13 +354,13 @@ struct QDrawHelperGammaTables
 
     void refresh( qreal smoothing );
 
-    uchar qt_pow_rgb_gamma[256];
-    uchar qt_pow_rgb_invgamma[256];
-    uint qt_pow_gamma[256];
-    uchar qt_pow_invgamma[2048];
+    uchar lscs_pow_rgb_gamma[256];
+    uchar lscs_pow_rgb_invgamma[256];
+    uint lscs_pow_gamma[256];
+    uchar lscs_pow_invgamma[2048];
 };
 
-static inline uint qt_gradient_clamp( const QGradientData *data, int ipos )
+static inline uint lscs_gradient_clamp( const QGradientData *data, int ipos )
 {
     if ( ipos < 0 || ipos >= GRADIENT_STOPTABLE_SIZE )
     {
@@ -396,16 +396,16 @@ static inline uint qt_gradient_clamp( const QGradientData *data, int ipos )
     return ipos;
 }
 
-static inline uint qt_gradient_pixel( const QGradientData *data, qreal pos )
+static inline uint lscs_gradient_pixel( const QGradientData *data, qreal pos )
 {
     int ipos = int( pos * ( GRADIENT_STOPTABLE_SIZE - 1 ) + qreal( 0.5 ) );
-    return data->colorTable32[qt_gradient_clamp( data, ipos )];
+    return data->colorTable32[lscs_gradient_clamp( data, ipos )];
 }
 
-static inline const QRgba64 &qt_gradient_pixel64( const QGradientData *data, qreal pos )
+static inline const QRgba64 &lscs_gradient_pixel64( const QGradientData *data, qreal pos )
 {
     int ipos = int( pos * ( GRADIENT_STOPTABLE_SIZE - 1 ) + qreal( 0.5 ) );
-    return data->colorTable64[qt_gradient_clamp( data, ipos )];
+    return data->colorTable64[lscs_gradient_clamp( data, ipos )];
 }
 
 static inline qreal qRadialDeterminant( qreal a, qreal b, qreal c )
@@ -414,7 +414,7 @@ static inline qreal qRadialDeterminant( qreal a, qreal b, qreal c )
 }
 
 template <class RadialFetchFunc, typename BlendType>
-static const BlendType *qt_fetch_radial_gradient_template( BlendType *buffer, const Operator *op,
+static const BlendType *lscs_fetch_radial_gradient_template( BlendType *buffer, const Operator *op,
         const QSpanData *data, int y, int x, int length )
 {
     // avoid division by zero
@@ -527,11 +527,11 @@ public:
     }
     static uint fetchSingle( const QGradientData &gradient, qreal v )
     {
-        return qt_gradient_pixel( &gradient, v );
+        return lscs_gradient_pixel( &gradient, v );
     }
     static void memfill( uint *buffer, uint fill, int length )
     {
-        qt_memfill32( buffer, fill, length );
+        lscs_memfill32( buffer, fill, length );
     }
 
     static void fetch( uint *buffer, uint *end, const Operator *op, const QSpanData *data, qreal det,
@@ -781,12 +781,12 @@ static inline uint BYTE_MUL_RGB16_32( uint x, uint a )
     return t;
 }
 
-// qt_div_255 is a fast rounded division by 255 using an approximation that is accurate for all positive 16-bit integers
-static constexpr inline int qt_div_255( int x )
+// lscs_div_255 is a fast rounded division by 255 using an approximation that is accurate for all positive 16-bit integers
+static constexpr inline int lscs_div_255( int x )
 {
     return ( x + ( x >> 8 ) + 0x80 ) >> 8;
 }
-static constexpr inline uint qt_div_65535( uint x )
+static constexpr inline uint lscs_div_65535( uint x )
 {
     return ( x + ( x >> 16 ) + 0x8000U ) >> 16;
 }
@@ -818,46 +818,46 @@ inline quint24::operator uint() const
 }
 
 template <class T>
-static void qt_memfill( T *dest, T value, int count );
+static void lscs_memfill( T *dest, T value, int count );
 
 template <>
-inline void qt_memfill( quint64 *dest, quint64 color, int count )
+inline void lscs_memfill( quint64 *dest, quint64 color, int count )
 {
-    qt_memfill64( dest, color, count );
+    lscs_memfill64( dest, color, count );
 }
 
 template <>
-inline void qt_memfill( quint32 *dest, quint32 color, int count )
+inline void lscs_memfill( quint32 *dest, quint32 color, int count )
 {
-    qt_memfill32( dest, color, count );
+    lscs_memfill32( dest, color, count );
 }
 
 template <>
-inline void qt_memfill( quint16 *dest, quint16 color, int count )
+inline void lscs_memfill( quint16 *dest, quint16 color, int count )
 {
-    qt_memfill16( dest, color, count );
+    lscs_memfill16( dest, color, count );
 }
 
 template <>
-inline void qt_memfill( quint8 *dest, quint8 color, int count )
+inline void lscs_memfill( quint8 *dest, quint8 color, int count )
 {
     memset( dest, color, count );
 }
 
 template <class T>
-inline void qt_memfill( T *dest, T value, int count )
+inline void lscs_memfill( T *dest, T value, int count )
 {
     std::fill_n( dest, count, value );
 }
 
 template <class T>
-static inline void qt_rectfill( T *dest, T value, int x, int y, int width, int height, int stride )
+static inline void lscs_rectfill( T *dest, T value, int x, int y, int width, int height, int stride )
 {
     char *d = reinterpret_cast<char *>( dest + x ) + y * stride;
 
     if ( uint( stride ) == ( width * sizeof( T ) ) )
     {
-        qt_memfill( reinterpret_cast<T *>( d ), value, width * height );
+        lscs_memfill( reinterpret_cast<T *>( d ), value, width * height );
 
     }
     else
@@ -865,13 +865,13 @@ static inline void qt_rectfill( T *dest, T value, int x, int y, int width, int h
         for ( int j = 0; j < height; ++j )
         {
             dest = reinterpret_cast<T *>( d );
-            qt_memfill( dest, value, width );
+            lscs_memfill( dest, value, width );
             d += stride;
         }
     }
 }
 
-#define QT_MEMCPY_REV_UINT(dest, src, length)   \
+#define LSCS_MEMCPY_REV_UINT(dest, src, length)   \
 do {                                            \
     /* Duff's device */                         \
     uint *_d = (uint*)(dest) + length;          \
@@ -1108,7 +1108,7 @@ inline int qBlue565( quint16 rgb )
     return ( b << 3 ) | ( b >> 2 );
 }
 
-static inline const uint *qt_convertARGB32ToARGB32PM( uint *buffer, const uint *src, int count )
+static inline const uint *lscs_convertARGB32ToARGB32PM( uint *buffer, const uint *src, int count )
 {
     for ( int i = 0; i < count; ++i )
     {
@@ -1118,7 +1118,7 @@ static inline const uint *qt_convertARGB32ToARGB32PM( uint *buffer, const uint *
     return buffer;
 }
 
-static inline const uint *qt_convertRGBA8888ToARGB32PM( uint *buffer, const uint *src, int count )
+static inline const uint *lscs_convertRGBA8888ToARGB32PM( uint *buffer, const uint *src, int count )
 {
     for ( int i = 0; i < count; ++i )
     {
@@ -1128,7 +1128,7 @@ static inline const uint *qt_convertRGBA8888ToARGB32PM( uint *buffer, const uint
     return buffer;
 }
 
-const uint qt_bayer_matrix[16][16] =
+const uint lscs_bayer_matrix[16][16] =
 {
     {
         0x1, 0xc0, 0x30, 0xf0, 0xc, 0xcc, 0x3c, 0xfc,

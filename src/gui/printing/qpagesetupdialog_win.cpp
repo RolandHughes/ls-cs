@@ -23,7 +23,7 @@
 
 #include <qpagesetupdialog.h>
 
-#ifndef QT_NO_PRINTDIALOG
+#ifndef LSCS_NO_PRINTDIALOG
 
 #include <qapplication.h>
 #include <qprinter.h>

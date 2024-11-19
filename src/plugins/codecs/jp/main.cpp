@@ -25,7 +25,7 @@
 #include <qtextcodec.h>
 #include <qstringlist.h>
 
-#ifndef QT_NO_TEXTCODECPLUGIN
+#ifndef LSCS_NO_TEXTCODECPLUGIN
 
 #include "qeucjpcodec.h"
 #include "qjiscodec.h"
@@ -34,7 +34,7 @@
 #include "qfontjpcodec.h"
 #endif
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class JPTextCodecs : public QTextCodecPlugin
 {
@@ -158,6 +158,6 @@ QTextCodec *JPTextCodecs::createForName( const QByteArray &name )
 Q_EXPORT_STATIC_PLUGIN( JPTextCodecs );
 Q_EXPORT_PLUGIN2( qjpcodecs, JPTextCodecs );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_TEXTCODECPLUGIN
+#endif // LSCS_NO_TEXTCODECPLUGIN

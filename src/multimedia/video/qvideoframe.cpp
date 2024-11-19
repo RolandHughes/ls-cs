@@ -550,18 +550,18 @@ QImage::Format QVideoFrame::imageFormatFromPixelFormat( PixelFormat format )
     }
 }
 
-extern void qt_convert_BGRA32_to_ARGB32( const QVideoFrame &, uchar * );
-extern void qt_convert_BGR24_to_ARGB32( const QVideoFrame &, uchar * );
-extern void qt_convert_BGR565_to_ARGB32( const QVideoFrame &, uchar * );
-extern void qt_convert_BGR555_to_ARGB32( const QVideoFrame &, uchar * );
-extern void qt_convert_AYUV444_to_ARGB32( const QVideoFrame &, uchar * );
-extern void qt_convert_YUV444_to_ARGB32( const QVideoFrame &, uchar * );
-extern void qt_convert_YUV420P_to_ARGB32( const QVideoFrame &, uchar * );
-extern void qt_convert_YV12_to_ARGB32( const QVideoFrame &, uchar * );
-extern void qt_convert_UYVY_to_ARGB32( const QVideoFrame &, uchar * );
-extern void qt_convert_YUYV_to_ARGB32( const QVideoFrame &, uchar * );
-extern void qt_convert_NV12_to_ARGB32( const QVideoFrame &, uchar * );
-extern void qt_convert_NV21_to_ARGB32( const QVideoFrame &, uchar * );
+extern void lscs_convert_BGRA32_to_ARGB32( const QVideoFrame &, uchar * );
+extern void lscs_convert_BGR24_to_ARGB32( const QVideoFrame &, uchar * );
+extern void lscs_convert_BGR565_to_ARGB32( const QVideoFrame &, uchar * );
+extern void lscs_convert_BGR555_to_ARGB32( const QVideoFrame &, uchar * );
+extern void lscs_convert_AYUV444_to_ARGB32( const QVideoFrame &, uchar * );
+extern void lscs_convert_YUV444_to_ARGB32( const QVideoFrame &, uchar * );
+extern void lscs_convert_YUV420P_to_ARGB32( const QVideoFrame &, uchar * );
+extern void lscs_convert_YV12_to_ARGB32( const QVideoFrame &, uchar * );
+extern void lscs_convert_UYVY_to_ARGB32( const QVideoFrame &, uchar * );
+extern void lscs_convert_YUYV_to_ARGB32( const QVideoFrame &, uchar * );
+extern void lscs_convert_NV12_to_ARGB32( const QVideoFrame &, uchar * );
+extern void lscs_convert_NV21_to_ARGB32( const QVideoFrame &, uchar * );
 static VideoFrameConvertFunc qConvertFuncs[QVideoFrame::NPixelFormats] =
 {
     /* Format_Invalid */                nullptr, // Not needed
@@ -572,22 +572,22 @@ static VideoFrameConvertFunc qConvertFuncs[QVideoFrame::NPixelFormats] =
     /* Format_RGB565 */                 nullptr, // Not needed
     /* Format_RGB555 */                 nullptr, // Not needed
     /* Format_ARGB8565_Premultiplied */ nullptr, // Not needed
-    /* Format_BGRA32 */                 qt_convert_BGRA32_to_ARGB32,
-    /* Format_BGRA32_Premultiplied */   qt_convert_BGRA32_to_ARGB32,
-    /* Format_BGR32 */                  qt_convert_BGRA32_to_ARGB32,
-    /* Format_BGR24 */                  qt_convert_BGR24_to_ARGB32,
-    /* Format_BGR565 */                 qt_convert_BGR565_to_ARGB32,
-    /* Format_BGR555 */                 qt_convert_BGR555_to_ARGB32,
+    /* Format_BGRA32 */                 lscs_convert_BGRA32_to_ARGB32,
+    /* Format_BGRA32_Premultiplied */   lscs_convert_BGRA32_to_ARGB32,
+    /* Format_BGR32 */                  lscs_convert_BGRA32_to_ARGB32,
+    /* Format_BGR24 */                  lscs_convert_BGR24_to_ARGB32,
+    /* Format_BGR565 */                 lscs_convert_BGR565_to_ARGB32,
+    /* Format_BGR555 */                 lscs_convert_BGR555_to_ARGB32,
     /* Format_BGRA5658_Premultiplied */ nullptr,
-    /* Format_AYUV444 */                qt_convert_AYUV444_to_ARGB32,
+    /* Format_AYUV444 */                lscs_convert_AYUV444_to_ARGB32,
     /* Format_AYUV444_Premultiplied */  nullptr,
-    /* Format_YUV444 */                 qt_convert_YUV444_to_ARGB32,
-    /* Format_YUV420P */                qt_convert_YUV420P_to_ARGB32,
-    /* Format_YV12 */                   qt_convert_YV12_to_ARGB32,
-    /* Format_UYVY */                   qt_convert_UYVY_to_ARGB32,
-    /* Format_YUYV */                   qt_convert_YUYV_to_ARGB32,
-    /* Format_NV12 */                   qt_convert_NV12_to_ARGB32,
-    /* Format_NV21 */                   qt_convert_NV21_to_ARGB32,
+    /* Format_YUV444 */                 lscs_convert_YUV444_to_ARGB32,
+    /* Format_YUV420P */                lscs_convert_YUV420P_to_ARGB32,
+    /* Format_YV12 */                   lscs_convert_YV12_to_ARGB32,
+    /* Format_UYVY */                   lscs_convert_UYVY_to_ARGB32,
+    /* Format_YUYV */                   lscs_convert_YUYV_to_ARGB32,
+    /* Format_NV12 */                   lscs_convert_NV12_to_ARGB32,
+    /* Format_NV21 */                   lscs_convert_NV21_to_ARGB32,
     /* Format_IMC1 */                   nullptr,
     /* Format_IMC2 */                   nullptr,
     /* Format_IMC3 */                   nullptr,
@@ -601,44 +601,44 @@ static VideoFrameConvertFunc qConvertFuncs[QVideoFrame::NPixelFormats] =
 
 static void qInitConvertFuncsAsm()
 {
-#ifdef QT_COMPILER_SUPPORTS_SSE2
-    extern void qt_convert_BGRA32_to_ARGB32_sse2( const QVideoFrame &, uchar * );
+#ifdef LSCS_COMPILER_SUPPORTS_SSE2
+    extern void lscs_convert_BGRA32_to_ARGB32_sse2( const QVideoFrame &, uchar * );
 
     if ( qCpuHasFeature( SSE2 ) )
     {
-        qConvertFuncs[QVideoFrame::Format_BGRA32] = qt_convert_BGRA32_to_ARGB32_sse2;
-        qConvertFuncs[QVideoFrame::Format_BGRA32_Premultiplied] = qt_convert_BGRA32_to_ARGB32_sse2;
-        qConvertFuncs[QVideoFrame::Format_BGR32] = qt_convert_BGRA32_to_ARGB32_sse2;
+        qConvertFuncs[QVideoFrame::Format_BGRA32] = lscs_convert_BGRA32_to_ARGB32_sse2;
+        qConvertFuncs[QVideoFrame::Format_BGRA32_Premultiplied] = lscs_convert_BGRA32_to_ARGB32_sse2;
+        qConvertFuncs[QVideoFrame::Format_BGR32] = lscs_convert_BGRA32_to_ARGB32_sse2;
     }
 
 #endif
 
-#ifdef QT_COMPILER_SUPPORTS_SSSE3
-    extern void qt_convert_BGRA32_to_ARGB32_ssse3( const QVideoFrame &, uchar * );
+#ifdef LSCS_COMPILER_SUPPORTS_SSSE3
+    extern void lscs_convert_BGRA32_to_ARGB32_ssse3( const QVideoFrame &, uchar * );
 
     if ( qCpuHasFeature( SSSE3 ) )
     {
-        qConvertFuncs[QVideoFrame::Format_BGRA32] = qt_convert_BGRA32_to_ARGB32_ssse3;
-        qConvertFuncs[QVideoFrame::Format_BGRA32_Premultiplied] = qt_convert_BGRA32_to_ARGB32_ssse3;
-        qConvertFuncs[QVideoFrame::Format_BGR32] = qt_convert_BGRA32_to_ARGB32_ssse3;
+        qConvertFuncs[QVideoFrame::Format_BGRA32] = lscs_convert_BGRA32_to_ARGB32_ssse3;
+        qConvertFuncs[QVideoFrame::Format_BGRA32_Premultiplied] = lscs_convert_BGRA32_to_ARGB32_ssse3;
+        qConvertFuncs[QVideoFrame::Format_BGR32] = lscs_convert_BGRA32_to_ARGB32_ssse3;
     }
 
 #endif
 
-#ifdef QT_COMPILER_SUPPORTS_AVX2
-    extern void qt_convert_BGRA32_to_ARGB32_avx2( const QVideoFrame &, uchar * );
+#ifdef LSCS_COMPILER_SUPPORTS_AVX2
+    extern void lscs_convert_BGRA32_to_ARGB32_avx2( const QVideoFrame &, uchar * );
 
     if ( qCpuHasFeature( AVX2 ) )
     {
-        qConvertFuncs[QVideoFrame::Format_BGRA32] = qt_convert_BGRA32_to_ARGB32_avx2;
-        qConvertFuncs[QVideoFrame::Format_BGRA32_Premultiplied] = qt_convert_BGRA32_to_ARGB32_avx2;
-        qConvertFuncs[QVideoFrame::Format_BGR32] = qt_convert_BGRA32_to_ARGB32_avx2;
+        qConvertFuncs[QVideoFrame::Format_BGRA32] = lscs_convert_BGRA32_to_ARGB32_avx2;
+        qConvertFuncs[QVideoFrame::Format_BGRA32_Premultiplied] = lscs_convert_BGRA32_to_ARGB32_avx2;
+        qConvertFuncs[QVideoFrame::Format_BGR32] = lscs_convert_BGRA32_to_ARGB32_avx2;
     }
 
 #endif
 }
 
-QImage qt_imageFromVideoFrame( const QVideoFrame &f )
+QImage lscs_imageFromVideoFrame( const QVideoFrame &f )
 {
     QVideoFrame &frame = const_cast<QVideoFrame &>( f );
     QImage result;

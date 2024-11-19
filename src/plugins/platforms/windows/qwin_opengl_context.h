@@ -27,7 +27,7 @@
 #include <qopenglcontext.h>
 #include <qplatform_openglcontext.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 class QWindowsOpenGLContext;
 
@@ -81,6 +81,6 @@ public:
     }
 };
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

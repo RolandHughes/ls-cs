@@ -25,7 +25,7 @@
 #include <qprinterinfo_p.h>
 #include <qprintdevice_p.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 #include <qdebug.h>
 

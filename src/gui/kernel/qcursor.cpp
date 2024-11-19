@@ -76,7 +76,7 @@ void QCursor::setPos( int x, int y )
     QCursor::setPos( QGuiApplication::primaryScreen(), x, y );
 }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
 QDataStream &operator<<( QDataStream &s, const QCursor &c )
 {
@@ -187,7 +187,7 @@ QCursor::QCursor()
         QCursorData::initialize();
     }
 
-    QCursorData *c = qt_cursorTable[0];
+    QCursorData *c = lscs_cursorTable[0];
     c->ref.ref();
     d = c;
 }
@@ -220,11 +220,11 @@ void QCursor::setShape( Qt::CursorShape shape )
         QCursorData::initialize();
     }
 
-    QCursorData *c = uint( shape ) <= Qt::LastCursor ? qt_cursorTable[shape] : nullptr;
+    QCursorData *c = uint( shape ) <= Qt::LastCursor ? lscs_cursorTable[shape] : nullptr;
 
     if ( ! c )
     {
-        c = qt_cursorTable[0];
+        c = lscs_cursorTable[0];
     }
 
     c->ref.ref();
@@ -342,7 +342,7 @@ QDebug operator<<( QDebug debug, const QCursor &c )
     return debug;
 }
 
-QCursorData *qt_cursorTable[Qt::LastCursor + 1];
+QCursorData *lscs_cursorTable[Qt::LastCursor + 1];
 bool QCursorData::initialized = false;
 
 QCursorData::QCursorData( Qt::CursorShape s )
@@ -365,12 +365,12 @@ void QCursorData::cleanup()
 
     for ( int shape = 0; shape <= Qt::LastCursor; ++shape )
     {
-        if ( !qt_cursorTable[shape]->ref.deref() )
+        if ( !lscs_cursorTable[shape]->ref.deref() )
         {
-            delete qt_cursorTable[shape];
+            delete lscs_cursorTable[shape];
         }
 
-        qt_cursorTable[shape] = nullptr;
+        lscs_cursorTable[shape] = nullptr;
     }
 
     QCursorData::initialized = false;
@@ -385,7 +385,7 @@ void QCursorData::initialize()
 
     for ( int shape = 0; shape <= Qt::LastCursor; ++shape )
     {
-        qt_cursorTable[shape] = new QCursorData( ( Qt::CursorShape )shape );
+        lscs_cursorTable[shape] = new QCursorData( ( Qt::CursorShape )shape );
     }
 
     QCursorData::initialized = true;
@@ -401,7 +401,7 @@ QCursorData *QCursorData::setBitmap( const QBitmap &bitmap, const QBitmap &mask,
     if ( bitmap.depth() != 1 || mask.depth() != 1 || bitmap.size() != mask.size() )
     {
         qWarning( "QCursor::setBitmap() Unable to create bitmap cursor, invalid bitmap(s)" );
-        QCursorData *c = qt_cursorTable[0];
+        QCursorData *c = lscs_cursorTable[0];
         c->ref.ref();
         return c;
     }
@@ -420,5 +420,5 @@ void QCursorData::update()
 {
 }
 
-#endif // QT_NO_CURSOR
+#endif // LSCS_NO_CURSOR
 

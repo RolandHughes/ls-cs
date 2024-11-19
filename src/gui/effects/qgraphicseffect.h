@@ -31,7 +31,7 @@
 #include <qrect.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
 class QGraphicsBlurEffectPrivate;
 class QGraphicsColorizeEffectPrivate;
@@ -355,7 +355,7 @@ inline void QGraphicsDropShadowEffect::lscs_setOffset( const QPointF &ofs )
     setOffset( ofs );
 }
 
-#endif //QT_NO_GRAPHICSEFFECT
+#endif //LSCS_NO_GRAPHICSEFFECT
 
 #endif
 

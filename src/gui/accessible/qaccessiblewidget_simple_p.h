@@ -27,7 +27,7 @@
 #include <qcoreapplication.h>
 #include <qaccessiblewidget.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 class QAbstractButton;
 class QLineEdit;
@@ -55,7 +55,7 @@ protected:
     QAbstractButton *button() const;
 };
 
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 class QAccessibleToolButton : public QAccessibleButton
 {
 public:
@@ -76,7 +76,7 @@ protected:
 
     bool isSplitButton() const;
 };
-#endif // QT_NO_TOOLBUTTON
+#endif // LSCS_NO_TOOLBUTTON
 
 class QAccessibleDisplay : public QAccessibleWidget, public QAccessibleImageInterface
 {
@@ -97,7 +97,7 @@ public:
     QPoint imagePosition() const override;
 };
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
 class QAccessibleGroupBox : public QAccessibleWidget
 {
 public:
@@ -121,7 +121,7 @@ private:
 };
 #endif
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 class QAccessibleLineEdit : public QAccessibleWidget, public QAccessibleTextInterface, public QAccessibleEditableTextInterface
 {
 public:
@@ -162,9 +162,9 @@ protected:
     QLineEdit *lineEdit() const;
     friend class QAccessibleAbstractSpinBox;
 };
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT
 
-#ifndef QT_NO_PROGRESSBAR
+#ifndef LSCS_NO_PROGRESSBAR
 class QAccessibleProgressBar : public QAccessibleDisplay, public QAccessibleValueInterface
 {
 public:
@@ -197,6 +197,6 @@ private:
     QWindowContainer *container() const;
 };
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
 #endif

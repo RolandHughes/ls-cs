@@ -29,7 +29,7 @@
 
 
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
 class QAction;
 
@@ -48,7 +48,7 @@ public:
     static QAction *createAction( QObject *parent = nullptr );
 };
 
-#endif // QT_NO_WHATSTHIS
+#endif // LSCS_NO_WHATSTHIS
 
 
 #endif // QWHATSTHIS_H

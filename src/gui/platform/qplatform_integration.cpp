@@ -33,7 +33,7 @@
 #include <qdnd_p.h>
 #include <qsimpledrag_p.h>
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
 #include <qplatform_sessionmanager.h>
 #endif
 
@@ -49,7 +49,7 @@ QPlatformFontDatabase *QPlatformIntegration::fontDatabase() const
     return db;
 }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 QPlatformClipboard *QPlatformIntegration::clipboard() const
 {
     static QPlatformClipboard *clipboard = nullptr;
@@ -63,7 +63,7 @@ QPlatformClipboard *QPlatformIntegration::clipboard() const
 }
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 QPlatformDrag *QPlatformIntegration::drag() const
 {
     static QSimpleDrag *drag = nullptr;
@@ -97,7 +97,7 @@ QPlatformPixmap *QPlatformIntegration::createPlatformPixmap( QPlatformPixmap::Pi
     return new QRasterPlatformPixmap( type );
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 QPlatformOpenGLContext *QPlatformIntegration::createPlatformOpenGLContext( QOpenGLContext *context ) const
 {
     ( void ) context;
@@ -133,7 +133,7 @@ QPlatformInputContext *QPlatformIntegration::inputContext() const
     return nullptr;
 }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 QPlatformAccessibility *QPlatformIntegration::accessibility() const
 {
     return nullptr;
@@ -304,7 +304,7 @@ QPlatformOffscreenSurface *QPlatformIntegration::createPlatformOffscreenSurface(
     return nullptr;
 }
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
 QPlatformSessionManager *QPlatformIntegration::createPlatformSessionManager( const QString &id, const QString &key ) const
 {
     return new QPlatformSessionManager( id, key );
@@ -315,7 +315,7 @@ void QPlatformIntegration::sync()
 {
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 QOpenGLContext::OpenGLModuleType QPlatformIntegration::openGLModuleType()
 {
     qWarning( "QPlatformIntegration::openGLModuleType() Plugin does not support dynamic OpenGL loading" );

@@ -34,7 +34,7 @@
 
 #include <qplatform_menu.h>
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
 class QTornOffMenu;
 class QEventLoop;
@@ -292,7 +292,7 @@ public:
           delayedPopupGuard( false ), hasReceievedEnter( false ), hasHadMouse( 0 ), aboutToHide( 0 ),
           motions( 0 ), currentAction( nullptr ),
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
           selectAction( nullptr ),
           cancelAction( nullptr ),
 #endif
@@ -360,7 +360,7 @@ public:
     int mousePopupDelay;
     QAction *currentAction;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     QAction *selectAction;
     QAction *cancelAction;
 #endif
@@ -500,6 +500,6 @@ public:
     QPointer<QWidget> noReplayFor;
 };
 
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 
 #endif

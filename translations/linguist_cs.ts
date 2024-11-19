@@ -669,9 +669,9 @@ Volby:
 </translation>
     </message>
     <message>
-        <source>//% cannot be used with tr() / QT_TR_NOOP(). Ignoring
+        <source>//% cannot be used with tr() / LSCS_TR_NOOP(). Ignoring
 </source>
-        <translation>//% nelze použít s tr() / QT_TR_NOOP(). Přehlíží se
+        <translation>//% nelze použít s tr() / LSCS_TR_NOOP(). Přehlíží se
 </translation>
     </message>
     <message>
@@ -699,15 +699,15 @@ Volby:
 </translation>
     </message>
     <message>
-        <source>//% cannot be used with translate() / QT_TRANSLATE_NOOP(). Ignoring
+        <source>//% cannot be used with translate() / LSCS_TRANSLATE_NOOP(). Ignoring
 </source>
-        <translation>//% nelze použít s translate() / QT_TRANSLATE_NOOP(). Přehlíží se
+        <translation>//% nelze použít s translate() / LSCS_TRANSLATE_NOOP(). Přehlíží se
 </translation>
     </message>
     <message>
-        <source>//= cannot be used with qtTrId() / QT_TRID_NOOP(). Ignoring
+        <source>//= cannot be used with qtTrId() / LSCS_TRID_NOOP(). Ignoring
 </source>
-        <translation>//= nelze použít s qtTrId() / QT_TRID_NOOP(). Přehlíží se
+        <translation>//= nelze použít s qtTrId() / LSCS_TRID_NOOP(). Přehlíží se
 </translation>
     </message>
     <message>

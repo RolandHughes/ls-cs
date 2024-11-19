@@ -26,7 +26,7 @@
 
 #include "qscriptbreakpointswidgetinterface_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptBreakpointsWidgetPrivate;
 
@@ -64,6 +64,6 @@ private:
     Q_DISABLE_COPY( QScriptBreakpointsWidget )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

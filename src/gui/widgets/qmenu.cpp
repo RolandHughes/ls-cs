@@ -24,7 +24,7 @@
 
 #include <qmenu.h>
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
 #include <qapplication.h>
 #include <qdebug.h>
@@ -50,15 +50,15 @@
 #include <qmacnativewidget_mac.h>
 #endif
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #  include <qaccessible.h>
 #endif
 
-#ifndef QT_NO_EFFECTS
+#ifndef LSCS_NO_EFFECTS
 # include <qeffects_p.h>
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 # include <qwhatsthis.h>
 #endif
 
@@ -168,7 +168,7 @@ void QMenuPrivate::init()
 {
     Q_Q( QMenu );
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     q->setAttribute( Qt::WA_CustomWhatsThis );
 #endif
 
@@ -422,7 +422,7 @@ void QMenuPrivate::updateActionRects( const QRect &screen ) const
                     tabWidth = qMax( int( tabWidth ), qfm.width( s.mid( t + 1 ) ) );
                     s = s.left( t );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
                 }
                 else
                 {
@@ -582,7 +582,7 @@ void QMenuPrivate::hideUpToMenuBar()
 
         while ( caused )
         {
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
             if ( QMenuBar *mb = qobject_cast<QMenuBar *>( caused ) )
             {
@@ -626,7 +626,7 @@ void QMenuPrivate::hideMenu( QMenu *menu )
         return;
     }
 
-#if ! defined(QT_NO_EFFECTS)
+#if ! defined(LSCS_NO_EFFECTS)
     bool blockValue = menu->blockSignals( true );
     aboutToHide = true;
 
@@ -846,7 +846,7 @@ void QMenuPrivate::setCurrentAction( QAction *action, int popup, SelectionReason
             }
         }
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
     }
     else if ( previousAction )
     {
@@ -860,7 +860,7 @@ void QMenuPrivate::setCurrentAction( QAction *action, int popup, SelectionReason
         if ( popup == -1 )
         {
 
-#ifndef QT_NO_EFFECTS
+#ifndef LSCS_NO_EFFECTS
             // kill any running effect
             qFadeEffect( nullptr );
             qScrollEffect( nullptr );
@@ -1537,7 +1537,7 @@ bool QMenuPrivate::mouseEventTaken( QMouseEvent *e )
         QWidget *next_widget = nullptr;
         QPoint cpos = caused->mapFromGlobal( e->globalPos() );
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
         if ( QMenuBar *mb = qobject_cast<QMenuBar *>( caused ) )
         {
@@ -1609,7 +1609,7 @@ void QMenuPrivate::activateCausedStack( const QVector<QPointer<QWidget>> &caused
                 emit qmenu->hovered( action );
             }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
         }
         else if ( QMenuBar *qmenubar = qobject_cast<QMenuBar *>( widget ) )
         {
@@ -1636,13 +1636,13 @@ void QMenuPrivate::activateAction( QAction *action, QAction::ActionEvent action_
 {
     Q_Q( QMenu );
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     bool inWhatsThisMode = QWhatsThis::inWhatsThisMode();
 #endif
 
     if ( ! action || !q->isEnabled() || ( action_e == QAction::Trigger
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
                                           && !inWhatsThisMode
 #endif
                                           && ( action->isSeparator() || !action->isEnabled() ) ) )
@@ -1658,7 +1658,7 @@ void QMenuPrivate::activateAction( QAction *action, QAction::ActionEvent action_
     if ( action_e == QAction::Trigger )
     {
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
         if ( ! inWhatsThisMode )
         {
@@ -1692,7 +1692,7 @@ void QMenuPrivate::activateAction( QAction *action, QAction::ActionEvent action_
             }
         }
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
         if ( inWhatsThisMode )
         {
@@ -1716,7 +1716,7 @@ void QMenuPrivate::activateAction( QAction *action, QAction::ActionEvent action_
     if ( action_e == QAction::Hover )
     {
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
         if ( QAccessible::isActive() )
         {
@@ -1760,7 +1760,7 @@ void QMenuPrivate::_q_actionTriggered()
             for ( QWidget *widget = q->parentWidget(); widget; )
             {
 
-#ifdef QT_NO_MENUBAR
+#ifdef LSCS_NO_MENUBAR
 
                 if ( qobject_cast<QMenu *>( widget ) )
                 {
@@ -1901,7 +1901,7 @@ void QMenu::initStyleOption( QStyleOptionMenuItem *option, const QAction *action
 
     QString textAndAccel = action->text();
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( textAndAccel.indexOf( '\t' ) == -1 )
     {
@@ -1990,7 +1990,7 @@ QAction *QMenu::addAction( const QString &text, const QObject *receiver, const Q
 {
     QAction *action = new QAction( text, this );
 
-#ifdef QT_NO_SHORTCUT
+#ifdef LSCS_NO_SHORTCUT
     ( void ) shortcut;
 #else
     action->setShortcut( shortcut );
@@ -2006,7 +2006,7 @@ QAction *QMenu::addAction( const QIcon &icon, const QString &text, const QObject
 {
     QAction *action = new QAction( icon, text, this );
 
-#ifdef QT_NO_SHORTCUT
+#ifdef LSCS_NO_SHORTCUT
     ( void ) shortcut;
 #else
     action->setShortcut( shortcut );
@@ -2282,7 +2282,7 @@ void QMenu::popup( const QPoint &p, QAction *atAction )
     d->doChildEffects = true;
     d->updateLayoutDirection();
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     // if this menu is part of a chain attached to a QMenuBar, set the
     // _NET_WM_WINDOW_TYPE_DROPDOWN_MENU X11 window type
     setAttribute( Qt::WA_X11NetWmWindowTypeDropDownMenu, qobject_cast<QMenuBar *>( d->topCausedWidget() ) != nullptr );
@@ -2308,7 +2308,7 @@ void QMenu::popup( const QPoint &p, QAction *atAction )
     QSize size = sizeHint();
     QRect screen;
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
     bool isEmbedded = ! bypassGraphicsProxyWidget( this ) && d->nearestGraphicsProxyWidget( this );
 
     if ( isEmbedded )
@@ -2336,7 +2336,7 @@ void QMenu::popup( const QPoint &p, QAction *atAction )
         adjustToDesktop = true;
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( ! atAction && QApplication::keypadNavigationEnabled() )
     {
@@ -2431,7 +2431,7 @@ void QMenu::popup( const QPoint &p, QAction *atAction )
                 pos.setX( mouse.x() - size.width() );
             }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
             // if in a menubar, it should be right-aligned
             if ( qobject_cast<QMenuBar *>( d->causedPopup.widget ) || qobject_cast<QMenu *>( d->causedPopup.widget ) )
@@ -2557,7 +2557,7 @@ void QMenu::popup( const QPoint &p, QAction *atAction )
 
     setGeometry( QRect( pos, size ) );
 
-#ifndef QT_NO_EFFECTS
+#ifndef LSCS_NO_EFFECTS
     int hGuess = isRightToLeft() ? QEffects::LeftScroll : QEffects::RightScroll;
     int vGuess = QEffects::DownScroll;
 
@@ -2578,7 +2578,7 @@ void QMenu::popup( const QPoint &p, QAction *atAction )
         }
     }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
     if ( ( snapToMouse && ( pos.y() + size.height() / 2 < mouse.y() ) ) ||
             ( qobject_cast<QMenuBar *>( d->causedPopup.widget ) &&
@@ -2593,7 +2593,7 @@ void QMenu::popup( const QPoint &p, QAction *atAction )
     {
         bool doChildEffects = true;
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
         if ( QMenuBar *mb = qobject_cast<QMenuBar *>( d->causedPopup.widget ) )
         {
@@ -2641,7 +2641,7 @@ void QMenu::popup( const QPoint &p, QAction *atAction )
         show();
     }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleEvent event( this, QAccessible::PopupMenuStart );
     QAccessible::updateAccessibility( &event );
 #endif
@@ -2697,12 +2697,12 @@ void QMenu::hideEvent( QHideEvent * )
 
     d->setCurrentAction( nullptr );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleEvent event( this, QAccessible::PopupMenuEnd );
     QAccessible::updateAccessibility( &event );
 #endif
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
     if ( QMenuBar *mb = qobject_cast<QMenuBar *>( d->causedPopup.widget ) )
     {
@@ -2846,7 +2846,7 @@ void QMenu::paintEvent( QPaintEvent *e )
     style()->drawControl( QStyle::CE_MenuEmptyArea, &menuOpt, &p, this );
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 void QMenu::wheelEvent( QWheelEvent *e )
 {
     Q_D( QMenu );
@@ -3065,7 +3065,7 @@ bool QMenu::event( QEvent *e )
 
             break;
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
         case QEvent::ToolTip:
             if ( d->toolTipsVisible )
@@ -3088,7 +3088,7 @@ bool QMenu::event( QEvent *e )
             break;
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
         case QEvent::QueryWhatsThis:
             e->setAccepted( d->whatsThis.size() );
@@ -3492,7 +3492,7 @@ void QMenu::keyPressEvent( QKeyEvent *e )
             {
                 d->hideMenu( this );
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
                 if ( QMenuBar *mb = qobject_cast<QMenuBar *>( QApplication::focusWidget() ) )
                 {
@@ -3512,7 +3512,7 @@ void QMenu::keyPressEvent( QKeyEvent *e )
 
             [[fallthrough]];
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         case Qt::Key_Select:
 #endif
@@ -3542,7 +3542,7 @@ void QMenu::keyPressEvent( QKeyEvent *e )
             break;
         }
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
         case Qt::Key_F1:
             if ( ! d->currentAction || d->currentAction->whatsThis().isEmpty() )
@@ -3560,7 +3560,7 @@ void QMenu::keyPressEvent( QKeyEvent *e )
     }
 
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( ! key_consumed && ( e->matches( QKeySequence::Cancel ) || e->key() == Qt::Key_Back ) )
     {
@@ -3584,7 +3584,7 @@ void QMenu::keyPressEvent( QKeyEvent *e )
             QPointer<QWidget> caused = d->causedPopup.widget;
             d->hideMenu( this );
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
             if ( QMenuBar *mb = qobject_cast<QMenuBar *>( caused ) )
             {
@@ -3641,7 +3641,7 @@ void QMenu::keyPressEvent( QKeyEvent *e )
                 }
             }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
             else
             {
                 int clashCount = 0;
@@ -3723,7 +3723,7 @@ void QMenu::keyPressEvent( QKeyEvent *e )
             }
         }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
         if ( ! key_consumed )
         {
@@ -4171,4 +4171,4 @@ void QMenu::_q_platformMenuAboutToShow()
     d->_q_platformMenuAboutToShow();
 }
 
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU

@@ -26,7 +26,7 @@
 
 #include <qdeclarative.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeTypeNotAvailable
     : public QObject
@@ -37,7 +37,7 @@ public:
     QDeclarativeTypeNotAvailable();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeTypeNotAvailable )
 

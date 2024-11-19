@@ -27,9 +27,9 @@
 #include <QStringList>
 #include <qobject_p.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE Q_GLOBAL_STATIC_WITH_ARGS( QString, busService, ( QLatin1String( DBUS_SERVICE_DBUS ) ) )
+LSCS_BEGIN_NAMESPACE Q_GLOBAL_STATIC_WITH_ARGS( QString, busService, ( QLatin1String( DBUS_SERVICE_DBUS ) ) )
 Q_GLOBAL_STATIC_WITH_ARGS( QString, busInterface, ( QLatin1String( DBUS_INTERFACE_DBUS ) ) )
 Q_GLOBAL_STATIC_WITH_ARGS( QString, signalName, ( QLatin1String( "NameOwnerChanged" ) ) )
 
@@ -384,6 +384,6 @@ void QDBusServiceWatcher::setConnection( const QDBusConnection &connection )
     d->setConnection( d->servicesWatched, connection, d->watchMode );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

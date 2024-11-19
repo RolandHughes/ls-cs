@@ -290,7 +290,7 @@ void CameraBinService::releaseControl( QMediaControl *control )
 
 bool CameraBinService::isCameraBinAvailable()
 {
-    GstElementFactory *factory = gst_element_factory_find( QT_GSTREAMER_CAMERABIN_ELEMENT_NAME );
+    GstElementFactory *factory = gst_element_factory_find( LSCS_GSTREAMER_CAMERABIN_ELEMENT_NAME );
 
     if ( factory )
     {

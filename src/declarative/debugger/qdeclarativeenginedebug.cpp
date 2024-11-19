@@ -25,7 +25,7 @@
 #include <qdeclarativedebugclient_p.h>
 #include <qdeclarativeenginedebugservice_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngineDebugClient : public QDeclarativeDebugClient
 {
@@ -1254,5 +1254,5 @@ QDeclarativeEngineDebugPrivate *QDeclarativeEngineDebugPrivate::lscs_getPrivate(
 }
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

@@ -73,7 +73,7 @@ public :
     WEB_LSCS_SLOT_1( Public, void socketErrorCallback( int error ) )
     WEB_LSCS_SLOT_2( socketErrorCallback )
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     WEB_LSCS_SLOT_1( Public, void socketSslErrors( const QList <QSslError> &error ) )
     WEB_LSCS_SLOT_2( socketSslErrors )
 #endif

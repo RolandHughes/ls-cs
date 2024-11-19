@@ -28,7 +28,7 @@
 #include <QtCore/qpair.h>
 #include <qscriptscriptdata_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerScriptsModelPrivate;
 
@@ -67,6 +67,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerScriptsModel )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

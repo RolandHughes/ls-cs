@@ -88,7 +88,7 @@
 #include <private/qdeclarativeutilmodule_p.h>
 
 #ifdef Q_OS_WIN // for %APPDATA%
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qlibrary.h>
 #include <windows.h>
 
@@ -97,7 +97,7 @@
 
 Q_DECLARE_METATYPE( QDeclarativeProperty )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
   \qmlclass QtObject QObject
@@ -162,7 +162,7 @@ struct StaticQtMetaObject : public QObject
     }
 };
 
-static bool qt_QmlQtModule_registered = false;
+static bool lscs_QmlQtModule_registered = false;
 bool QDeclarativeEnginePrivate::qml_debugging_enabled = false;
 
 void QDeclarativeEnginePrivate::defineModule()
@@ -337,9 +337,9 @@ QDeclarativeEnginePrivate::QDeclarativeEnginePrivate( QDeclarativeEngine *e )
       inBeginCreate( false ), networkAccessManager( 0 ), networkAccessManagerFactory( 0 ),
       typeLoader( e ), importDatabase( e ), uniqueId( 1 )
 {
-    if ( !qt_QmlQtModule_registered )
+    if ( !lscs_QmlQtModule_registered )
     {
-        qt_QmlQtModule_registered = true;
+        lscs_QmlQtModule_registered = true;
         QDeclarativeEnginePrivate::defineModule();
         QDeclarativeItemModule::defineModule();
         QDeclarativeValueTypeFactory::registerValueTypes();
@@ -384,17 +384,17 @@ QDeclarativeScriptEngine::QDeclarativeScriptEngine( QDeclarativeEnginePrivate *p
         newQMetaObject( StaticQtMetaObject::get() );
     globalObject().setProperty( QLatin1String( "Qt" ), qtObject );
 
-#ifndef QT_NO_DESKTOPSERVICES
+#ifndef LSCS_NO_DESKTOPSERVICES
     offlineStoragePath = QDesktopServices::storageLocation( QDesktopServices::DataLocation ).replace( QLatin1Char( '/' ),
                          QDir::separator() )
                          + QDir::separator() + QLatin1String( "QML" )
                          + QDir::separator() + QLatin1String( "OfflineStorage" );
 #endif
 
-#ifndef QT_NO_XMLSTREAMREADER
-    qt_add_qmlxmlhttprequest( this );
+#ifndef LSCS_NO_XMLSTREAMREADER
+    lscs_add_qmlxmlhttprequest( this );
 #endif
-    qt_add_qmlsqldatabase( this );
+    lscs_add_qmlsqldatabase( this );
     // XXX A Multimedia "Qt.Sound" class also needs to be made available,
     // XXX but we don't want a dependency in that cirection.
     // XXX When the above a done some better way, that way should also be
@@ -426,7 +426,7 @@ QDeclarativeScriptEngine::QDeclarativeScriptEngine( QDeclarativeEnginePrivate *p
         qtObject.setProperty( QLatin1String( "tint" ), newFunction( QDeclarativeEnginePrivate::tint, 2 ) );
     }
 
-#ifndef QT_NO_DATESTRING
+#ifndef LSCS_NO_DATESTRING
     //date/time formatting
     qtObject.setProperty( QLatin1String( "formatDate" ), newFunction( QDeclarativeEnginePrivate::formatDate, 2 ) );
     qtObject.setProperty( QLatin1String( "formatTime" ), newFunction( QDeclarativeEnginePrivate::formatTime, 2 ) );
@@ -1702,7 +1702,7 @@ the possible format values as described for
 If \a format is not specified, \a date is formatted using
 \l {Qt::DefaultLocaleShortDate}{Qt.DefaultLocaleShortDate}.
 */
-#ifndef QT_NO_DATESTRING
+#ifndef LSCS_NO_DATESTRING
 QScriptValue QDeclarativeEnginePrivate::formatDate( QScriptContext *ctxt, QScriptEngine *engine )
 {
     int argCount = ctxt->argumentCount();
@@ -1916,7 +1916,7 @@ QScriptValue QDeclarativeEnginePrivate::formatDateTime( QScriptContext *ctxt, QS
 
     return engine->newVariant( QVariant::fromValue( date.toString( enumFormat ) ) );
 }
-#endif // QT_NO_DATESTRING
+#endif // LSCS_NO_DATESTRING
 
 /*!
 \qmlmethod color Qt::rgba(real red, real green, real blue, real alpha)
@@ -2219,7 +2219,7 @@ QScriptValue QDeclarativeEnginePrivate::desktopOpenUrl( QScriptContext *ctxt, QS
     }
 
     bool ret = false;
-#ifndef QT_NO_DESKTOPSERVICES
+#ifndef LSCS_NO_DESKTOPSERVICES
     ret = QDesktopServices::openUrl( QDeclarativeScriptEngine::get( e )->resolvedUrl( ctxt,
                                      QUrl( ctxt->argument( 0 ).toString() ) ) );
 #endif
@@ -3121,4 +3121,4 @@ bool QDeclarative_isFileCaseCorrect( const QString &fileName )
     return true;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

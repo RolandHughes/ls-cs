@@ -24,7 +24,7 @@
 #ifndef QSQL_DB2_H
 #define QSQL_DB2_H
 
-#ifdef QT_PLUGIN
+#ifdef LSCS_PLUGIN
 #define Q_EXPORT_SQLDRIVER_DB2
 #else
 #define Q_EXPORT_SQLDRIVER_DB2 Q_SQL_EXPORT

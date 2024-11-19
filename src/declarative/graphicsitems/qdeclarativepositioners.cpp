@@ -36,7 +36,7 @@
 #include <QDebug>
 #include <QCoreApplication>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 static const QDeclarativeItemPrivate::ChangeTypes watchedChanges
     = QDeclarativeItemPrivate::Geometry
@@ -1694,4 +1694,4 @@ void QDeclarativeFlow::reportConflictingAnchors()
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -25,7 +25,7 @@
 #include <qsqlrecord.h>
 
 #if defined (Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #endif
 
 #include <qcoreapplication.h>

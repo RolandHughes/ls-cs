@@ -26,7 +26,7 @@
 
 #include <qabstractitemmodel_p.h>
 
-#ifndef QT_NO_PROXYMODEL
+#ifndef LSCS_NO_PROXYMODEL
 
 class QAbstractProxyModelPrivate : public QAbstractItemModelPrivate
 {
@@ -41,6 +41,6 @@ public:
                                      int *source_row, int *source_column, QModelIndex *source_parent ) const;
 };
 
-#endif // QT_NO_PROXYMODEL
+#endif // LSCS_NO_PROXYMODEL
 
 #endif // QABSTRACTPROXYMODEL_P_H

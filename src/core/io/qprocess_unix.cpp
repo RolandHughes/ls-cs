@@ -23,7 +23,7 @@
 
 #include <qdebug.h>
 
-#ifndef QT_NO_PROCESS
+#ifndef LSCS_NO_PROCESS
 
 #include <qdir.h>
 #include <qelapsedtimer.h>
@@ -63,7 +63,7 @@ extern char **environ;
 
 #include <ctype.h>
 
-static QByteArray qt_prettyDebug( const char *data, int len, int maxSize )
+static QByteArray lscs_prettyDebug( const char *data, int len, int maxSize )
 {
     if ( ! data )
     {
@@ -126,24 +126,24 @@ static inline void add_fd( int &nfds, int fd, fd_set *fdset )
     }
 }
 
-static int qt_create_pipe( int *pipe )
+static int lscs_create_pipe( int *pipe )
 {
     if ( pipe[0] != -1 )
     {
-        qt_safe_close( pipe[0] );
+        lscs_safe_close( pipe[0] );
     }
 
     if ( pipe[1] != -1 )
     {
-        qt_safe_close( pipe[1] );
+        lscs_safe_close( pipe[1] );
     }
 
-    int pipe_ret = qt_safe_pipe( pipe );
+    int pipe_ret = lscs_safe_pipe( pipe );
 
     if ( pipe_ret != 0 )
     {
         qWarning( "QProcess::createPipe() Unable to create pipe %p: %s",
-                  static_cast<void *>( pipe ), lscsPrintable( qt_error_string( errno ) ) );
+                  static_cast<void *>( pipe ), lscsPrintable( lscs_error_string( errno ) ) );
     }
 
     return pipe_ret;
@@ -153,13 +153,13 @@ void QProcessPrivate::destroyPipe( int *pipe )
 {
     if ( pipe[1] != -1 )
     {
-        qt_safe_close( pipe[1] );
+        lscs_safe_close( pipe[1] );
         pipe[1] = -1;
     }
 
     if ( pipe[0] != -1 )
     {
-        qt_safe_close( pipe[0] );
+        lscs_safe_close( pipe[0] );
         pipe[0] = -1;
     }
 }
@@ -183,7 +183,7 @@ bool QProcessPrivate::openChannel( Channel &channel )
     if ( channel.type == Channel::Normal )
     {
         // piping this channel to our own process
-        if ( qt_create_pipe( channel.pipe ) != 0 )
+        if ( lscs_create_pipe( channel.pipe ) != 0 )
         {
             return false;
         }
@@ -234,7 +234,7 @@ bool QProcessPrivate::openChannel( Channel &channel )
             // try to open in read-only mode
             channel.pipe[1] = -1;
 
-            if ( ( channel.pipe[0] = qt_safe_open( fname.constData(), O_RDONLY ) ) != -1 )
+            if ( ( channel.pipe[0] = lscs_safe_open( fname.constData(), O_RDONLY ) ) != -1 )
             {
                 return true;   // success
             }
@@ -257,7 +257,7 @@ bool QProcessPrivate::openChannel( Channel &channel )
 
             channel.pipe[0] = -1;
 
-            if ( ( channel.pipe[1] = qt_safe_open( fname.constData(), mode, 0666 ) ) != -1 )
+            if ( ( channel.pipe[1] = lscs_safe_open( fname.constData(), mode, 0666 ) ) != -1 )
             {
                 return true;   // success
             }
@@ -310,7 +310,7 @@ bool QProcessPrivate::openChannel( Channel &channel )
 
             Q_PIPE pipe[2] = { -1, -1 };
 
-            if ( qt_create_pipe( pipe ) != 0 )
+            if ( lscs_create_pipe( pipe ) != 0 )
             {
                 return false;
             }
@@ -381,9 +381,9 @@ void QProcessPrivate::startProcess()
 
     // Initialize pipes
     if ( ! openChannel( stdinChannel ) || ! openChannel( stdoutChannel ) ||
-            ! openChannel( stderrChannel ) || qt_create_pipe( childStartedPipe ) != 0 )
+            ! openChannel( stderrChannel ) || lscs_create_pipe( childStartedPipe ) != 0 )
     {
-        setErrorAndEmit( QProcess::FailedToStart, qt_error_string( errno ) );
+        setErrorAndEmit( QProcess::FailedToStart, lscs_error_string( errno ) );
         cleanup();
         return;
     }
@@ -542,12 +542,12 @@ void QProcessPrivate::startProcess()
         // Cleanup, report error and return
 
 #if defined(LSCS_SHOW_DEBUG_CORE_IO)
-        qDebug( "QProcess::startProcess() Call to fork() failed, %s", lscsPrintable( qt_error_string( lastForkErrno ) ) );
+        qDebug( "QProcess::startProcess() Call to fork() failed, %s", lscsPrintable( lscs_error_string( lastForkErrno ) ) );
 #endif
 
         q->setProcessState( QProcess::NotRunning );
         setErrorAndEmit( QProcess::FailedToStart,
-                         QProcess::tr( "Resource error (fork failure): %1" ).formatArg( qt_error_string( lastForkErrno ) ) );
+                         QProcess::tr( "Resource error (fork failure): %1" ).formatArg( lscs_error_string( lastForkErrno ) ) );
 
         cleanup();
         return;
@@ -564,12 +564,12 @@ void QProcessPrivate::startProcess()
 
     // parent. close the ends we do not use and make all pipes non-blocking
 
-    qt_safe_close( childStartedPipe[1] );
+    lscs_safe_close( childStartedPipe[1] );
     childStartedPipe[1] = -1;
 
     if ( stdinChannel.pipe[0] != -1 )
     {
-        qt_safe_close( stdinChannel.pipe[0] );
+        lscs_safe_close( stdinChannel.pipe[0] );
         stdinChannel.pipe[0] = -1;
     }
 
@@ -580,7 +580,7 @@ void QProcessPrivate::startProcess()
 
     if ( stdoutChannel.pipe[1] != -1 )
     {
-        qt_safe_close( stdoutChannel.pipe[1] );
+        lscs_safe_close( stdoutChannel.pipe[1] );
         stdoutChannel.pipe[1] = -1;
     }
 
@@ -591,7 +591,7 @@ void QProcessPrivate::startProcess()
 
     if ( stderrChannel.pipe[1] != -1 )
     {
-        qt_safe_close( stderrChannel.pipe[1] );
+        lscs_safe_close( stderrChannel.pipe[1] );
         stderrChannel.pipe[1] = -1;
     }
 
@@ -616,7 +616,7 @@ void QProcessPrivate::execChild( const char *workingDir, char **path, char **arg
     // copy the stdin socket (without closing on exec)
     if ( inputChannelMode != QProcess::ForwardedInputChannel )
     {
-        qt_safe_dup2( stdinChannel.pipe[0], STDIN_FILENO, 0 );
+        lscs_safe_dup2( stdinChannel.pipe[0], STDIN_FILENO, 0 );
     }
 
     // copy the stdout and stderr if asked to
@@ -624,26 +624,26 @@ void QProcessPrivate::execChild( const char *workingDir, char **path, char **arg
     {
         if ( processChannelMode != QProcess::ForwardedOutputChannel )
         {
-            qt_safe_dup2( stdoutChannel.pipe[1], STDOUT_FILENO, 0 );
+            lscs_safe_dup2( stdoutChannel.pipe[1], STDOUT_FILENO, 0 );
         }
 
         // merge stdout and stderr if asked to
         if ( processChannelMode == QProcess::MergedChannels )
         {
-            qt_safe_dup2( STDOUT_FILENO, STDERR_FILENO, 0 );
+            lscs_safe_dup2( STDOUT_FILENO, STDERR_FILENO, 0 );
 
         }
         else if ( processChannelMode != QProcess::ForwardedErrorChannel )
         {
-            qt_safe_dup2( stderrChannel.pipe[1], STDERR_FILENO, 0 );
+            lscs_safe_dup2( stderrChannel.pipe[1], STDERR_FILENO, 0 );
         }
     }
 
     // make sure this fd is closed if execvp() succeeds
-    qt_safe_close( childStartedPipe[0] );
+    lscs_safe_close( childStartedPipe[0] );
 
     // enter the working directory
-    if ( workingDir && QT_CHDIR( workingDir ) == -1 )
+    if ( workingDir && LSCS_CHDIR( workingDir ) == -1 )
     {
         // failed, stop the process
         goto report_errno;
@@ -655,7 +655,7 @@ void QProcessPrivate::execChild( const char *workingDir, char **path, char **arg
     // execute the process
     if ( ! envp )
     {
-        qt_safe_execvp( argv[0], argv );
+        lscs_safe_execvp( argv[0], argv );
 
     }
     else
@@ -672,7 +672,7 @@ void QProcessPrivate::execChild( const char *workingDir, char **path, char **arg
                 qDebug( "QProcess::execChild() Starting %s", argv[0] );
 #endif
 
-                qt_safe_execve( argv[0], argv, envp );
+                lscs_safe_execve( argv[0], argv, envp );
                 ++arg;
             }
 
@@ -684,27 +684,27 @@ void QProcessPrivate::execChild( const char *workingDir, char **path, char **arg
             qDebug( "QProcess::execChild() Starting %s", argv[0] );
 #endif
 
-            qt_safe_execve( argv[0], argv, envp );
+            lscs_safe_execve( argv[0], argv, envp );
         }
     }
 
 report_errno:
     // notify failure
-    QString error = qt_error_string( errno );
+    QString error = lscs_error_string( errno );
 
 #if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QProcess::execChild() Command failed with error %s", lscsPrintable( error ) );
 #endif
 
-    qt_safe_write( childStartedPipe[1], error.data(), error.length() * sizeof( QChar ) );
-    qt_safe_close( childStartedPipe[1] );
+    lscs_safe_write( childStartedPipe[1], error.data(), error.length() * sizeof( QChar ) );
+    lscs_safe_close( childStartedPipe[1] );
     childStartedPipe[1] = -1;
 }
 
 bool QProcessPrivate::processStarted( QString *errorMessage )
 {
     ushort buf[errorBufferMax];
-    int i = qt_safe_read( childStartedPipe[0], &buf, sizeof buf );
+    int i = lscs_safe_read( childStartedPipe[0], &buf, sizeof buf );
 
     if ( startupSocketNotifier )
     {
@@ -713,7 +713,7 @@ bool QProcessPrivate::processStarted( QString *errorMessage )
         startupSocketNotifier = nullptr;
     }
 
-    qt_safe_close( childStartedPipe[0] );
+    lscs_safe_close( childStartedPipe[0] );
     childStartedPipe[0] = -1;
 
 #if defined(LSCS_SHOW_DEBUG_CORE_IO)
@@ -752,13 +752,13 @@ qint64 QProcessPrivate::bytesAvailableInChannel( const Channel *channel ) const
 qint64 QProcessPrivate::readFromChannel( const Channel *channel, char *data, qint64 maxlen )
 {
     Q_ASSERT( channel->pipe[0] != INVALID_Q_PIPE );
-    qint64 bytesRead = qt_safe_read( channel->pipe[0], data, maxlen );
+    qint64 bytesRead = lscs_safe_read( channel->pipe[0], data, maxlen );
 
 #if defined(LSCS_SHOW_DEBUG_CORE_IO)
     int save_errno = errno;
 
     qDebug( "QProcess::readFromChannel() channel = %d, data = %s, maxlen = %lld, bytes read = %lld",
-            int( channel - &stdinChannel ), qt_prettyDebug( data, bytesRead, 16 ).constData(), maxlen, bytesRead );
+            int( channel - &stdinChannel ), lscs_prettyDebug( data, bytesRead, 16 ).constData(), maxlen, bytesRead );
 
     errno = save_errno;
 #endif
@@ -776,15 +776,15 @@ bool QProcessPrivate::writeToStdin()
     const char *data = stdinChannel.buffer.readPointer();
     const qint64 bytesToWrite = stdinChannel.buffer.nextDataBlockSize();
 
-    qint64 written = qt_safe_write_nosignal( stdinChannel.pipe[1], data, bytesToWrite );
+    qint64 written = lscs_safe_write_nosignal( stdinChannel.pipe[1], data, bytesToWrite );
 
 #if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QProcess::writeToStdin() data = %s, bytes to write = %lld, written = %lld",
-            qt_prettyDebug( data, bytesToWrite, 16 ).constData(), bytesToWrite, written );
+            lscs_prettyDebug( data, bytesToWrite, 16 ).constData(), bytesToWrite, written );
 
     if ( written == -1 )
     {
-        qDebug( "QProcess::writeToStdin() Failed to write, %s", lscsPrintable( qt_error_string( errno ) ) );
+        qDebug( "QProcess::writeToStdin() Failed to write, %s", lscsPrintable( lscs_error_string( errno ) ) );
     }
 
 #endif
@@ -843,7 +843,7 @@ bool QProcessPrivate::waitForStarted( int msecs )
     FD_ZERO( &fds );
     FD_SET( childStartedPipe[0], &fds );
 
-    if ( qt_select_msecs( childStartedPipe[0] + 1, &fds, nullptr, msecs ) == 0 )
+    if ( lscs_select_msecs( childStartedPipe[0] + 1, &fds, nullptr, msecs ) == 0 )
     {
         setError( QProcess::Timedout );
 
@@ -903,8 +903,8 @@ bool QProcessPrivate::waitForReadyRead( int msecs )
             add_fd( nfds, stdinChannel.pipe[1], &fdwrite );
         }
 
-        int timeout = qt_subtract_from_timeout( msecs, stopWatch.elapsed() );
-        int ret = qt_select_msecs( nfds + 1, &fdread, &fdwrite, timeout );
+        int timeout = lscs_subtract_from_timeout( msecs, stopWatch.elapsed() );
+        int ret = lscs_select_msecs( nfds + 1, &fdread, &fdwrite, timeout );
 
         if ( ret < 0 )
         {
@@ -1010,8 +1010,8 @@ bool QProcessPrivate::waitForBytesWritten( int msecs )
             add_fd( nfds, stdinChannel.pipe[1], &fdwrite );
         }
 
-        int timeout = qt_subtract_from_timeout( msecs, stopWatch.elapsed() );
-        int ret = qt_select_msecs( nfds + 1, &fdread, &fdwrite, timeout );
+        int timeout = lscs_subtract_from_timeout( msecs, stopWatch.elapsed() );
+        int ret = lscs_select_msecs( nfds + 1, &fdread, &fdwrite, timeout );
 
         if ( ret < 0 )
         {
@@ -1102,8 +1102,8 @@ bool QProcessPrivate::waitForFinished( int msecs )
             add_fd( nfds, stdinChannel.pipe[1], &fdwrite );
         }
 
-        int timeout = qt_subtract_from_timeout( msecs, stopWatch.elapsed() );
-        int ret = qt_select_msecs( nfds + 1, &fdread, &fdwrite, timeout );
+        int timeout = lscs_subtract_from_timeout( msecs, stopWatch.elapsed() );
+        int ret = lscs_select_msecs( nfds + 1, &fdread, &fdwrite, timeout );
 
         if ( ret < 0 )
         {
@@ -1156,7 +1156,7 @@ bool QProcessPrivate::waitForWrite( int msecs )
     fd_set fdwrite;
     FD_ZERO( &fdwrite );
     FD_SET( stdinChannel.pipe[1], &fdwrite );
-    return qt_select_msecs( stdinChannel.pipe[1] + 1, nullptr, &fdwrite, msecs < 0 ? 0 : msecs ) == 1;
+    return lscs_select_msecs( stdinChannel.pipe[1] + 1, nullptr, &fdwrite, msecs < 0 ? 0 : msecs ) == 1;
 }
 
 void QProcessPrivate::findExitCode()
@@ -1198,7 +1198,7 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
     // To catch the startup of the child
     int startedPipe[2];
 
-    if ( qt_safe_pipe( startedPipe ) != 0 )
+    if ( lscs_safe_pipe( startedPipe ) != 0 )
     {
         return false;
     }
@@ -1206,10 +1206,10 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
     // To communicate the pid of the child
     int pidPipe[2];
 
-    if ( qt_safe_pipe( pidPipe ) != 0 )
+    if ( lscs_safe_pipe( pidPipe ) != 0 )
     {
-        qt_safe_close( startedPipe[0] );
-        qt_safe_close( startedPipe[1] );
+        lscs_safe_close( startedPipe[0] );
+        lscs_safe_close( startedPipe[1] );
         return false;
     }
 
@@ -1224,18 +1224,18 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
 
         ::setsid();
 
-        qt_safe_close( startedPipe[0] );
-        qt_safe_close( pidPipe[0] );
+        lscs_safe_close( startedPipe[0] );
+        lscs_safe_close( pidPipe[0] );
 
         pid_t doubleForkPid = fork();
 
         if ( doubleForkPid == 0 )
         {
-            qt_safe_close( pidPipe[1] );
+            lscs_safe_close( pidPipe[1] );
 
             if ( !encodedWorkingDirectory.isEmpty() )
             {
-                if ( QT_CHDIR( encodedWorkingDirectory.constData() ) == -1 )
+                if ( LSCS_CHDIR( encodedWorkingDirectory.constData() ) == -1 )
                 {
                     qWarning( "QProcess::startDetached() Failed to change directory to %s", encodedWorkingDirectory.constData() );
                 }
@@ -1269,7 +1269,7 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
 
                         tmp += QFile::encodeName( program );
                         argv[0] = tmp.data();
-                        qt_safe_execv( argv[0], argv );
+                        lscs_safe_execv( argv[0], argv );
                     }
                 }
 
@@ -1278,7 +1278,7 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
             {
                 QByteArray tmp = QFile::encodeName( program );
                 argv[0] = tmp.data();
-                qt_safe_execv( argv[0], argv );
+                lscs_safe_execv( argv[0], argv );
             }
 
             struct sigaction noaction;
@@ -1292,9 +1292,9 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
             // '\1' means execv failed
             char c = '\1';
 
-            qt_safe_write( startedPipe[1], &c, 1 );
+            lscs_safe_write( startedPipe[1], &c, 1 );
 
-            qt_safe_close( startedPipe[1] );
+            lscs_safe_close( startedPipe[1] );
 
             ::_exit( 1 );
 
@@ -1308,13 +1308,13 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
 
             // '\2' means internal error
             char c = '\2';
-            qt_safe_write( startedPipe[1], &c, 1 );
+            lscs_safe_write( startedPipe[1], &c, 1 );
         }
 
-        qt_safe_close( startedPipe[1] );
-        qt_safe_write( pidPipe[1], ( const char * )&doubleForkPid, sizeof( pid_t ) );
+        lscs_safe_close( startedPipe[1] );
+        lscs_safe_write( pidPipe[1], ( const char * )&doubleForkPid, sizeof( pid_t ) );
 
-        if ( QT_CHDIR( "/" ) == -1 )
+        if ( LSCS_CHDIR( "/" ) == -1 )
         {
             qWarning( "QProcess::startDetached() Failed to change directory to /" );
         }
@@ -1322,29 +1322,29 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
         ::_exit( 1 );
     }
 
-    qt_safe_close( startedPipe[1] );
-    qt_safe_close( pidPipe[1] );
+    lscs_safe_close( startedPipe[1] );
+    lscs_safe_close( pidPipe[1] );
 
     if ( childPid == -1 )
     {
-        qt_safe_close( startedPipe[0] );
-        qt_safe_close( pidPipe[0] );
+        lscs_safe_close( startedPipe[0] );
+        lscs_safe_close( pidPipe[0] );
         return false;
     }
 
     char reply = '\0';
-    int startResult = qt_safe_read( startedPipe[0], &reply, 1 );
+    int startResult = lscs_safe_read( startedPipe[0], &reply, 1 );
     int result;
 
-    qt_safe_close( startedPipe[0] );
-    qt_safe_waitpid( childPid, &result, 0 );
+    lscs_safe_close( startedPipe[0] );
+    lscs_safe_waitpid( childPid, &result, 0 );
     bool success = ( startResult != -1 && reply == '\0' );
 
     if ( success && pid )
     {
         pid_t actualPid = 0;
 
-        if ( qt_safe_read( pidPipe[0], ( char * )&actualPid, sizeof( pid_t ) ) == sizeof( pid_t ) )
+        if ( lscs_safe_read( pidPipe[0], ( char * )&actualPid, sizeof( pid_t ) ) == sizeof( pid_t ) )
         {
             *pid = actualPid;
         }
@@ -1354,8 +1354,8 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
         }
     }
 
-    qt_safe_close( pidPipe[0] );
+    lscs_safe_close( pidPipe[0] );
     return success;
 }
 
-#endif // QT_NO_PROCESS
+#endif // LSCS_NO_PROCESS

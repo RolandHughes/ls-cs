@@ -30,7 +30,7 @@
 #include <qpair.h>
 #include <qdebug.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 #include <qsslsocket_p.h>
 #include <qsslkey.h>
 #include <qsslcipher.h>
@@ -59,13 +59,13 @@ QHttpNetworkConnectionPrivate::QHttpNetworkConnectionPrivate( const QString &hos
     : state( RunningState ), networkLayerState( Unknown ),
       hostName( hostName ), port( port ), encrypt( encrypt ), delayIpv4( true ),
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
       channelCount( ( type == QHttpNetworkConnection::ConnectionTypeSPDY ) ? 1 : defaultHttpChannelCount ),
 #else
       channelCount( defaultHttpChannelCount ),
 #endif
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
       networkProxy( QNetworkProxy::NoProxy ),
 #endif
 
@@ -80,7 +80,7 @@ QHttpNetworkConnectionPrivate::QHttpNetworkConnectionPrivate( quint16 channelCou
     : state( RunningState ), networkLayerState( Unknown ),
       hostName( hostName ), port( port ), encrypt( encrypt ), delayIpv4( true ), channelCount( channelCount ),
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
       networkProxy( QNetworkProxy::NoProxy ),
 #endif
       preConnectRequests( 0 ),
@@ -113,7 +113,7 @@ void QHttpNetworkConnectionPrivate::init()
         channels[i].setConnection( this->q_func() );
         channels[i].ssl = encrypt;
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
         //push session down to channels
         channels[i].networkSession = networkSession;
 #endif
@@ -134,7 +134,7 @@ void QHttpNetworkConnectionPrivate::pauseConnection()
         if ( channels[i].socket )
         {
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
             if ( encrypt )
             {
@@ -157,7 +157,7 @@ void QHttpNetworkConnectionPrivate::resumeConnection()
         if ( channels[i].socket )
         {
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
             if ( encrypt )
             {
@@ -314,7 +314,7 @@ void QHttpNetworkConnectionPrivate::prepareRequest( HttpMessagePair &messagePair
     }
 
     // set the Connection/Proxy-Connection: Keep-Alive headers
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
     if ( networkProxy.type() == QNetworkProxy::HttpCachingProxy )
     {
@@ -336,7 +336,7 @@ void QHttpNetworkConnectionPrivate::prepareRequest( HttpMessagePair &messagePair
             request.setHeaderField( "Connection", "Keep-Alive" );
         }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     }
 
 #endif
@@ -352,7 +352,7 @@ void QHttpNetworkConnectionPrivate::prepareRequest( HttpMessagePair &messagePair
     if ( value.isEmpty() )
     {
 
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
         request.setHeaderField( "Accept-Encoding", "gzip, deflate" );
         request.d->autoDecompress = true;
 #else
@@ -588,7 +588,7 @@ bool QHttpNetworkConnectionPrivate::handleAuthenticateChallenge( QAbstractSocket
 
                 emit reply->authenticationRequired( reply->request(), auth );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
             }
             else
             {
@@ -794,7 +794,7 @@ QHttpNetworkReply *QHttpNetworkConnectionPrivate::queueRequest( const QHttpNetwo
         }
     }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     else
     {
         // SPDY
@@ -1223,7 +1223,7 @@ void QHttpNetworkConnectionPrivate::removeReply( QHttpNetworkReply *reply )
             }
         }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
         QMultiMap<int, HttpMessagePair>::iterator it = channels[i].spdyRequestsToSend.begin();
         QMultiMap<int, HttpMessagePair>::iterator end = channels[i].spdyRequestsToSend.end();
 
@@ -1342,7 +1342,7 @@ void QHttpNetworkConnectionPrivate::_q_startNextRequest()
         case QHttpNetworkConnection::ConnectionTypeSPDY:
         {
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
             if ( channels[0].spdyRequestsToSend.isEmpty() )
             {
@@ -1475,7 +1475,7 @@ void QHttpNetworkConnectionPrivate::startHostInfoLookup()
     networkLayerState = HostLookupPending;
     QString lookupHost = hostName;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
     if ( networkProxy.capabilities() & QNetworkProxy::HostNameLookupCapability )
     {
@@ -1511,7 +1511,7 @@ void QHttpNetworkConnectionPrivate::startHostInfoLookup()
         int hostLookupId;
         bool immediateResultValid = false;
 
-        QHostInfo hostInfo = qt_qhostinfo_lookup( lookupHost, this->q_func(),
+        QHostInfo hostInfo = lscs_qhostinfo_lookup( lookupHost, this->q_func(),
                              SLOT( _q_hostLookupFinished( const QHostInfo & ) ), &immediateResultValid, &hostLookupId );
 
         if ( immediateResultValid )
@@ -1581,7 +1581,7 @@ void QHttpNetworkConnectionPrivate::_q_hostLookupFinished( const QHostInfo &info
             networkLayerState = QHttpNetworkConnectionPrivate::Unknown;
         }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
         else if ( connectionType == QHttpNetworkConnection::ConnectionTypeSPDY )
         {
             QList<HttpMessagePair> spdyPairs = channels[0].spdyRequestsToSend.values();
@@ -1616,7 +1616,7 @@ void QHttpNetworkConnectionPrivate::startNetworkLayerStateLookup()
         channels[1].networkLayerPreference = QAbstractSocket::IPv6Protocol;
         int timeout = 300;
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
         if ( networkSession )
         {
@@ -1684,7 +1684,7 @@ void QHttpNetworkConnectionPrivate::_q_connectDelayedChannel()
     }
 }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 QHttpNetworkConnection::QHttpNetworkConnection( const QString &hostName, quint16 port, bool encrypt,
         QHttpNetworkConnection::ConnectionType connectionType,
         QObject *parent, QSharedPointer<QNetworkSession> networkSession )
@@ -1766,7 +1766,7 @@ QHttpNetworkConnectionChannel *QHttpNetworkConnection::channels() const
     return d_func()->channels;
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 void QHttpNetworkConnection::setCacheProxy( const QNetworkProxy &networkProxy )
 {
     Q_D( QHttpNetworkConnection );
@@ -1819,7 +1819,7 @@ void QHttpNetworkConnection::setConnectionType( ConnectionType type )
 }
 
 // SSL support below
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 void QHttpNetworkConnection::setSslConfiguration( const QSslConfiguration &config )
 {
     Q_D( QHttpNetworkConnection );
@@ -1902,7 +1902,7 @@ void QHttpNetworkConnection::preConnectFinished()
     d_func()->preConnectRequests--;
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 // only called from QHttpNetworkConnectionChannel::_q_proxyAuthenticationRequired, not
 // from QHttpNetworkConnectionChannel::handleAuthenticationChallenge
 // e.g. it is for SOCKS proxies which require authentication.
@@ -1915,7 +1915,7 @@ void QHttpNetworkConnectionPrivate::emitProxyAuthenticationRequired( const QHttp
 
     QHttpNetworkReply *reply;
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
     if ( connectionType == QHttpNetworkConnection::ConnectionTypeSPDY )
     {
@@ -1930,7 +1930,7 @@ void QHttpNetworkConnectionPrivate::emitProxyAuthenticationRequired( const QHttp
 #endif
         reply = chan->reply;
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     }
 
 #endif

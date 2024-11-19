@@ -28,7 +28,7 @@
 #include <qpainter_p.h>
 #include <qpaintengineex_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeTextLayoutPrivate
 {
@@ -207,12 +207,12 @@ public:
 
             case PdmDpiX:
             case PdmPhysicalDpiX:
-                val = qt_defaultDpiX();
+                val = lscs_defaultDpiX();
                 break;
 
             case PdmDpiY:
             case PdmPhysicalDpiY:
-                val = qt_defaultDpiY();
+                val = lscs_defaultDpiY();
                 break;
 
             case PdmNumColors:
@@ -351,7 +351,7 @@ void QDeclarativeTextLayout::prepare()
 }
 
 // Defined in qpainter.cpp
-extern Q_GUI_EXPORT void qt_draw_decoration_for_glyphs( QPainter *painter, const glyph_t *glyphArray,
+extern Q_GUI_EXPORT void lscs_draw_decoration_for_glyphs( QPainter *painter, const glyph_t *glyphArray,
         const QFixedPoint *positions, int glyphCount,
         QFontEngine *fontEngine, const QFont &font,
         const QTextCharFormat &charFormat );
@@ -423,7 +423,7 @@ void QDeclarativeTextLayout::draw( QPainter *painter, const QPointF &p )
 
         priv->extended->drawStaticTextItem( &item );
 
-        qt_draw_decoration_for_glyphs( painter, item.glyphs, item.glyphPositions,
+        lscs_draw_decoration_for_glyphs( painter, item.glyphs, item.glyphPositions,
                                        item.numGlyphs, item.fontEngine(), painter->font(),
                                        QTextCharFormat() );
     }
@@ -434,5 +434,5 @@ void QDeclarativeTextLayout::draw( QPainter *painter, const QPointF &p )
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

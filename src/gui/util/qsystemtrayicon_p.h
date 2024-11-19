@@ -26,7 +26,7 @@
 
 #include <qsystemtrayicon.h>
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
 
 #include <qmenu.h>
 #include <qpixmap.h>
@@ -115,6 +115,6 @@ private:
     bool showArrow;
 };
 
-#endif // QT_NO_SYSTEMTRAYICON
+#endif // LSCS_NO_SYSTEMTRAYICON
 
 #endif // QSYSTEMTRAYICON_P_H

@@ -21,8 +21,8 @@
 *
 ***********************************************************************/
 
-#ifndef qt_class_h
-#define qt_class_h
+#ifndef lscs_class_h
+#define lscs_class_h
 
 #include "BridgeJSC.h"
 #include "qglobal.h"

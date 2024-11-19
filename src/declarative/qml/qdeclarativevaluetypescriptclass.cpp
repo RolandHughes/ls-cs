@@ -28,7 +28,7 @@
 #include <qdeclarativeguard_p.h>
 #include <QtScript/qscriptcontextinfo.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct QDeclarativeValueTypeObject : public QScriptDeclarativeClass::Object
 {
@@ -260,5 +260,5 @@ QVariant QDeclarativeValueTypeScriptClass::toVariant( const QScriptValue &value 
     return toVariant( object( value ), 0 );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

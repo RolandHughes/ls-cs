@@ -23,7 +23,7 @@
 
 #include <qgtkpainter_p.h>
 
-#if ! defined(QT_NO_STYLE_GTK)
+#if ! defined(LSCS_NO_STYLE_GTK)
 
 #include <qhexstring_p.h>
 
@@ -59,4 +59,4 @@ QString QGtkPainter::uniqueName( const QString &key, GtkStateType state, GtkShad
     return tmp;
 }
 
-#endif //!defined(QT_NO_STYLE_GTK)
+#endif //!defined(LSCS_NO_STYLE_GTK)

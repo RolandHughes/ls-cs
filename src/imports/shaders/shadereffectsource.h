@@ -27,7 +27,7 @@
 #include <QDeclarativeItem>
 #include <QtOpenGL>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class ShaderEffectBuffer;
 
@@ -162,7 +162,7 @@ private:
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 
 #endif // SHADEREFFECTSOURCE_H

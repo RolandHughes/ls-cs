@@ -41,23 +41,23 @@
 #include <qxbmhandler_p.h>
 #include <qxpmhandler_p.h>
 
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
 #include <qpnghandler_p.h>
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_JPEG
+#ifndef LSCS_NO_IMAGEFORMAT_JPEG
 #include <qjpeghandler_p.h>
 #endif
 
-#ifdef QT_BUILTIN_GIF_READER
+#ifdef LSCS_BUILTIN_GIF_READER
 #include <qgifhandler_p.h>
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_TIFF
+#ifndef LSCS_NO_IMAGEFORMAT_TIFF
 #include <qtiffhandler_p.h>
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_ICO
+#ifndef LSCS_NO_IMAGEFORMAT_ICO
 #include <qicohandler_p.h>
 #endif
 
@@ -120,28 +120,28 @@ static QImageIOHandler *createWriteHandlerHelper( QIODevice *device, const QStri
         if ( false )
         {
 
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
         }
         else if ( testFormat == "png" )
         {
             handler = new QPngHandler;
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_JPEG
+#ifndef LSCS_NO_IMAGEFORMAT_JPEG
         }
         else if ( testFormat == "jpg" || testFormat == "jpeg" )
         {
             handler = new QJpegHandler;
 #endif
 
-#ifdef QT_BUILTIN_GIF_READER
+#ifdef LSCS_BUILTIN_GIF_READER
         }
         else if ( testFormat == "gif" )
         {
             handler = new QGifHandler;
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_BMP
+#ifndef LSCS_NO_IMAGEFORMAT_BMP
         }
         else if ( testFormat == "bmp" )
         {
@@ -152,14 +152,14 @@ static QImageIOHandler *createWriteHandlerHelper( QIODevice *device, const QStri
             handler = new QBmpHandler( QBmpHandler::DibFormat );
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
         }
         else if ( testFormat == "xpm" )
         {
             handler = new QXpmHandler;
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_XBM
+#ifndef LSCS_NO_IMAGEFORMAT_XBM
         }
         else if ( testFormat == "xbm" )
         {
@@ -167,7 +167,7 @@ static QImageIOHandler *createWriteHandlerHelper( QIODevice *device, const QStri
             handler->setOption( QImageIOHandler::SubType, testFormat );
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_PPM
+#ifndef LSCS_NO_IMAGEFORMAT_PPM
         }
         else if ( testFormat == "pbm" || testFormat == "pbmraw" || testFormat == "pgm"
                   || testFormat == "pgmraw" || testFormat == "ppm" || testFormat == "ppmraw" )
@@ -176,14 +176,14 @@ static QImageIOHandler *createWriteHandlerHelper( QIODevice *device, const QStri
             handler->setOption( QImageIOHandler::SubType, testFormat );
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_TIFF
+#ifndef LSCS_NO_IMAGEFORMAT_TIFF
         }
         else if ( testFormat == "tif" || testFormat == "tiff" )
         {
             handler = new QTiffHandler;
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_ICO
+#ifndef LSCS_NO_IMAGEFORMAT_ICO
         }
         else if ( testFormat == "ico" )
         {
@@ -537,7 +537,7 @@ bool QImageWriter::canWrite() const
     return d->canWriteHelper();
 }
 
-extern void qt_imageTransform( QImage &src, QImageIOHandler::Transformations orient );
+extern void lscs_imageTransform( QImage &src, QImageIOHandler::Transformations orient );
 
 
 bool QImageWriter::write( const QImage &image )
@@ -590,7 +590,7 @@ bool QImageWriter::write( const QImage &image )
     }
     else
     {
-        qt_imageTransform( img, d->transformation );
+        lscs_imageTransform( img, d->transformation );
     }
 
     if ( !d->handler->write( img ) )
@@ -681,36 +681,36 @@ QList<QString> QImageWriter::supportedImageFormats()
     QList<QString> formats;
     formats << "bmp";
 
-#ifndef QT_NO_IMAGEFORMAT_PPM
+#ifndef LSCS_NO_IMAGEFORMAT_PPM
     formats << "pbm" << "pgm" << "ppm";
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_XBM
+#ifndef LSCS_NO_IMAGEFORMAT_XBM
     formats << "xbm";
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
     formats << "xpm";
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
     formats << "png";
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_JPEG
+#ifndef LSCS_NO_IMAGEFORMAT_JPEG
     formats << "jpg" << "jpeg";
 #endif
 
     // keep for now
-#ifndef QT_NO_IMAGEFORMAT_TIFF
+#ifndef LSCS_NO_IMAGEFORMAT_TIFF
     formats << "tif" << "tiff";
 #endif
 
-#ifdef QT_BUILTIN_GIF_READER
+#ifdef LSCS_BUILTIN_GIF_READER
     formats << "gif";
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_ICO
+#ifndef LSCS_NO_IMAGEFORMAT_ICO
     formats << "ico";
 #endif
 
@@ -726,29 +726,29 @@ QList<QString> QImageWriter::supportedMimeTypes()
 {
     QList<QString> mimeTypes;
 
-#ifndef QT_NO_IMAGEFORMAT_BMP
+#ifndef LSCS_NO_IMAGEFORMAT_BMP
     mimeTypes << "image/bmp";
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_PPM
+#ifndef LSCS_NO_IMAGEFORMAT_PPM
     mimeTypes << "image/x-portable-bitmap";
     mimeTypes << "image/x-portable-graymap";
     mimeTypes << "image/x-portable-pixmap";
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_XBM
+#ifndef LSCS_NO_IMAGEFORMAT_XBM
     mimeTypes << "image/x-xbitmap";
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
     mimeTypes << "image/x-xpixmap";
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
     mimeTypes << "image/png";
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_JPEG
+#ifndef LSCS_NO_IMAGEFORMAT_JPEG
     mimeTypes << "image/jpeg";
 #endif
 

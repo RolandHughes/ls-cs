@@ -29,7 +29,7 @@
 #include <QtCore/qnumeric.h>
 #include <QtScript/qscriptvalueiterator.h>
 
-QT_BEGIN_NAMESPACE QScriptObjectSnapshot::QScriptObjectSnapshot()
+LSCS_BEGIN_NAMESPACE QScriptObjectSnapshot::QScriptObjectSnapshot()
 {
 }
 
@@ -148,4 +148,4 @@ QScriptValuePropertyList QScriptObjectSnapshot::properties() const
     return m_properties;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

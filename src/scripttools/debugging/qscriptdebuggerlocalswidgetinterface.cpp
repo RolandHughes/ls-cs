@@ -24,7 +24,7 @@
 #include "qscriptdebuggerlocalswidgetinterface_p.h"
 #include "qscriptdebuggerlocalswidgetinterface_p_p.h"
 
-QT_BEGIN_NAMESPACE QScriptDebuggerLocalsWidgetInterfacePrivate::QScriptDebuggerLocalsWidgetInterfacePrivate()
+LSCS_BEGIN_NAMESPACE QScriptDebuggerLocalsWidgetInterfacePrivate::QScriptDebuggerLocalsWidgetInterfacePrivate()
 {
     completionProvider = 0;
 }
@@ -56,4 +56,4 @@ void QScriptDebuggerLocalsWidgetInterface::setCompletionProvider( QScriptComplet
     d->completionProvider = completionProvider;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

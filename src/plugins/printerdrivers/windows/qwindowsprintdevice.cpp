@@ -31,7 +31,7 @@
 #  define DC_COLLATE 22
 #endif
 
-extern qreal qt_pointMultiplier( QPageLayout::Unit unit );
+extern qreal lscs_pointMultiplier( QPageLayout::Unit unit );
 
 static inline uint qwcsnlen( const wchar_t *str, uint maxlen )
 {
@@ -136,7 +136,7 @@ QWindowsPrintDevice::QWindowsPrintDevice( const QString &id )
             m_supportsCollateCopies  = DeviceCapabilities( tmp.data(), nullptr, DC_COLLATE, nullptr, nullptr );
 
             // Min/Max custom size is in tenths of a millimeter
-            const qreal multiplier = qt_pointMultiplier( QPageSize::Millimeter );
+            const qreal multiplier = lscs_pointMultiplier( QPageSize::Millimeter );
             DWORD min = DeviceCapabilities( tmp.data(), nullptr, DC_MINEXTENT, nullptr, nullptr );
             m_minimumPhysicalPageSize = QSize( ( LOWORD( min ) / 10.0 ) * multiplier, ( HIWORD( min ) / 10.0 ) * multiplier );
 
@@ -217,7 +217,7 @@ void QWindowsPrintDevice::loadPageSizes() const
         {
 
             // Returned size is in tenths of a millimeter
-            const qreal multiplier = qt_pointMultiplier( QPageSize::Millimeter );
+            const qreal multiplier = lscs_pointMultiplier( QPageSize::Millimeter );
 
             for ( int i = 0; i < int( paperCount ); ++i )
             {

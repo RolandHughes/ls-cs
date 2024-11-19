@@ -75,7 +75,7 @@ QGstreamerAudioDecoderSession::QGstreamerAudioDecoderSession( QObject *parent )
       m_durationQueries( 0 )
 {
     // Create pipeline here
-    m_playbin = gst_element_factory_make( QT_GSTREAMER_PLAYBIN_ELEMENT_NAME, nullptr );
+    m_playbin = gst_element_factory_make( LSCS_GSTREAMER_PLAYBIN_ELEMENT_NAME, nullptr );
 
     if ( m_playbin != nullptr )
     {
@@ -667,7 +667,7 @@ void QGstreamerAudioDecoderSession::updateDuration()
     gint64 gstDuration = 0;
     int duration = -1;
 
-    if ( m_playbin && qt_gst_element_query_duration( m_playbin, GST_FORMAT_TIME, &gstDuration ) )
+    if ( m_playbin && lscs_gst_element_query_duration( m_playbin, GST_FORMAT_TIME, &gstDuration ) )
     {
         duration = gstDuration / 1000000;
     }

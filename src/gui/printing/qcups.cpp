@@ -25,7 +25,7 @@
 
 #include <qprintengine.h>
 
-#ifndef QT_NO_CUPS
+#ifndef LSCS_NO_CUPS
 
 QStringList QCUPSSupport::cupsOptionsList( QPrinter *printer )
 {
@@ -232,4 +232,4 @@ void QCUPSSupport::setPageRange( QPrinter *printer, int pageFrom, int pageTo )
     setCupsOptions( printer, cupsOptions );
 }
 
-#endif // QT_NO_CUPS
+#endif // LSCS_NO_CUPS

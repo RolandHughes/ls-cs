@@ -24,7 +24,7 @@
 #ifndef QSCROLLAREA_P_H
 #define QSCROLLAREA_P_H
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 
 #include <qabstractscrollarea_p.h>
 #include <qscrollbar.h>

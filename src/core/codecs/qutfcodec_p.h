@@ -53,7 +53,7 @@ struct QUtf32
     static QByteArray convertFromUnicode( QStringView str, QTextCodec::ConverterState *, DataEndianness = DetectEndianness );
 };
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 class QUtf8Codec : public QTextCodec
 {
@@ -162,6 +162,6 @@ public:
     int mibEnum() const override;
 };
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC
 
 #endif // QUTFCODEC_P_H

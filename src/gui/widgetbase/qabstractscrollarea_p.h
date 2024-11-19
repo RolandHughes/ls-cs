@@ -28,7 +28,7 @@
 
 #include <qframe_p.h>
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 
 class QAbstractScrollAreaScrollBarContainer;
 class QBoxLayout;
@@ -91,7 +91,7 @@ class QAbstractScrollAreaFilter : public QObject
 public:
     QAbstractScrollAreaFilter( QAbstractScrollAreaPrivate *p ) : d( p )
     {
-        setObjectName( "qt_abstractscrollarea_filter" );
+        setObjectName( "lscs_abstractscrollarea_filter" );
     }
 
     bool eventFilter( QObject *o, QEvent *e ) override
@@ -122,6 +122,6 @@ private:
     Qt::Orientation orientation;
 };
 
-#endif // QT_NO_SCROLLAREA
+#endif // LSCS_NO_SCROLLAREA
 
 #endif

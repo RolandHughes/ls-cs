@@ -50,7 +50,7 @@ private:
     AnimationMap m_animation_map;
     QMainWindowLayout *m_mainWindowLayout;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     GUI_LSCS_SLOT_1( Private, void animationFinished() )
     GUI_LSCS_SLOT_2( animationFinished )
 #endif

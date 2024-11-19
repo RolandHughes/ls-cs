@@ -31,7 +31,7 @@ QXcbEglIntegration::QXcbEglIntegration()
     : m_connection( nullptr )
     , m_egl_display( EGL_NO_DISPLAY )
 {
-    qCDebug( QT_XCB_GLINTEGRATION ) << "Xcb EGL gl-integration created";
+    qCDebug( LSCS_XCB_GLINTEGRATION ) << "Xcb EGL gl-integration created";
 }
 
 QXcbEglIntegration::~QXcbEglIntegration()
@@ -53,13 +53,13 @@ bool QXcbEglIntegration::initialize( QXcbConnection *connection )
     if ( !success )
     {
         m_egl_display = eglGetDisplay( EGL_DEFAULT_DISPLAY );
-        qCDebug( QT_XCB_GLINTEGRATION ) << "Xcb EGL gl-integration retrying with display" << m_egl_display;
+        qCDebug( LSCS_XCB_GLINTEGRATION ) << "Xcb EGL gl-integration retrying with display" << m_egl_display;
         success = eglInitialize( m_egl_display, &major, &minor );
     }
 
     m_native_interface_handler.reset( new QXcbEglNativeInterfaceHandler( connection->nativeInterface() ) );
 
-    qCDebug( QT_XCB_GLINTEGRATION ) << "Xcb EGL gl-integration successfully initialized";
+    qCDebug( LSCS_XCB_GLINTEGRATION ) << "Xcb EGL gl-integration successfully initialized";
     return success;
 }
 

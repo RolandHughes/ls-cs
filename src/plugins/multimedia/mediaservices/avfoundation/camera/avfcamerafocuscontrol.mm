@@ -33,7 +33,7 @@
 
 namespace {
 
-bool qt_focus_mode_supported(QCameraFocus::FocusModes mode)
+bool lscs_focus_mode_supported(QCameraFocus::FocusModes mode)
 {
     // Check if QCameraFocus::FocusMode has counterpart in AVFoundation.
 
@@ -45,7 +45,7 @@ bool qt_focus_mode_supported(QCameraFocus::FocusModes mode)
            || mode == QCameraFocus::ContinuousFocus;
 }
 
-bool qt_focus_point_mode_supported(QCameraFocus::FocusPointMode mode)
+bool lscs_focus_point_mode_supported(QCameraFocus::FocusPointMode mode)
 {
     return mode == QCameraFocus::FocusPointAuto
            || mode == QCameraFocus::FocusPointCustom
@@ -85,7 +85,7 @@ void AVFCameraFocusControl::setFocusMode(QCameraFocus::FocusModes mode)
 
     AVCaptureDevice *captureDevice = m_session->videoCaptureDevice();
     if (!captureDevice) {
-        if (qt_focus_mode_supported(mode)) {
+        if (lscs_focus_mode_supported(mode)) {
             m_focusMode = mode;
             Q_EMIT focusModeChanged(m_focusMode);
         } else {
@@ -119,7 +119,7 @@ bool AVFCameraFocusControl::isFocusModeSupported(QCameraFocus::FocusModes mode) 
     if (!captureDevice)
         return false;
 
-    if (!qt_focus_mode_supported(mode))
+    if (!lscs_focus_mode_supported(mode))
         return false;
 
     return [captureDevice isFocusModeSupported:avf_focus_mode(mode)];
@@ -137,7 +137,7 @@ void AVFCameraFocusControl::setFocusPointMode(QCameraFocus::FocusPointMode mode)
 
     AVCaptureDevice *captureDevice = m_session->videoCaptureDevice();
     if (!captureDevice) {
-        if (qt_focus_point_mode_supported(mode)) {
+        if (lscs_focus_point_mode_supported(mode)) {
             m_focusPointMode = mode;
             Q_EMIT focusPointModeChanged(mode);
         }
@@ -183,7 +183,7 @@ bool AVFCameraFocusControl::isFocusPointModeSupported(QCameraFocus::FocusPointMo
     if (!captureDevice)
         return false;
 
-    if (!qt_focus_point_mode_supported(mode))
+    if (!lscs_focus_point_mode_supported(mode))
         return false;
 
     return [captureDevice isFocusPointOfInterestSupported];

@@ -1,15 +1,15 @@
-list(APPEND GUI_HELLO_INCLUDES
+list(APPEND GUI-HELLO_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/gui-hello_build_info.h
 )
 
-list(APPEND GUI_HELLO_SOURCES
+list(APPEND GUI-HELLO_SOURCES
    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h
 
 )
 
-add_executable(gui-hello ${GUI_HELLO_SOURCES})
+add_executable(gui-hello ${GUI-HELLO_SOURCES} ${GUI-HELLO_INCLUDES})
 
 target_include_directories(gui-hello
    PRIVATE
@@ -39,17 +39,3 @@ else()
    install(TARGETS gui-hello DESTINATION .)
 endif()
 
-lscs_copy_library(LsCsCore)
-lscs_copy_library(LsCsGui)
-lscs_copy_library(LsCsNetwork)
-lscs_copy_library(LsCsMultimedia)
-
-if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   # copy required plugins to the bundle
-   lscs_copy_plugins(LsCsGui ../plugins)
-   lscs_copy_plugins(LsCsPrinterDriver ../plugins)
-else()
-   # installs required plugins
-   lscs_copy_plugins(LsCsGui)
-   lscs_copy_plugins(LsCsPrinterDriver)
-endif()

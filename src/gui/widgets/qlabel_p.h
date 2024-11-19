@@ -49,12 +49,12 @@ public:
     void updateLabel();
     QSize sizeForWidth( int w ) const;
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
     void _q_movieUpdated( const QRect & );
     void _q_movieResized( const QSize & );
 #endif
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     void updateShortcut();
 #endif
 
@@ -76,23 +76,23 @@ public:
     QPoint layoutPoint( const QPoint &p ) const;
     Qt::LayoutDirection textDirection() const;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     QMenu *createStandardContextMenu( const QPoint &pos );
 #endif
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
     QPicture *picture;
 #endif
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
     QPointer<QMovie> movie;
 #endif
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QCursor cursor;
 #endif
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     QPointer<QWidget> buddy;
     int shortcutId;
 #endif
@@ -122,7 +122,7 @@ public:
     QPixmap *scaledpixmap;
     QImage *cachedimage;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     uint validCursor : 1;
     uint onAnchor : 1;
 #endif

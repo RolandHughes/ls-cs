@@ -29,7 +29,7 @@
 
 #include <qthread_p.h>
 
-#if ! defined(QT_NO_NETWORKPROXY)
+#if ! defined(LSCS_NO_NETWORKPROXY)
 # include <qabstractsocket.h>
 # include <qnetworkproxy.h>
 # include <qtcpserver.h>
@@ -268,7 +268,7 @@ bool QNativeSocketEnginePrivate::checkProxy( const QHostAddress &address )
         return true;
     }
 
-#if ! defined(QT_NO_NETWORKPROXY)
+#if ! defined(LSCS_NO_NETWORKPROXY)
     QObject *parent = q_func()->parent();
     QNetworkProxy proxy;
 
@@ -591,8 +591,8 @@ qint64 QNativeSocketEngine::bytesAvailable() const
     return d->nativeBytesAvailable();
 }
 
-#ifndef QT_NO_UDPSOCKET
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_UDPSOCKET
+#ifndef LSCS_NO_NETWORKINTERFACE
 
 bool QNativeSocketEngine::joinMulticastGroup( const QHostAddress &groupAddress,
         const QNetworkInterface &iface )
@@ -666,7 +666,7 @@ bool QNativeSocketEngine::setMulticastInterface( const QNetworkInterface &iface 
     return d->nativeSetMulticastInterface( iface );
 }
 
-#endif // QT_NO_NETWORKINTERFACE
+#endif // LSCS_NO_NETWORKINTERFACE
 
 
 bool QNativeSocketEngine::hasPendingDatagrams() const
@@ -725,7 +725,7 @@ qint64 QNativeSocketEngine::writeDatagram( const char *data, qint64 size, const 
 
     return d->nativeSendDatagram( data, size, header );
 }
-#endif // QT_NO_UDPSOCKET
+#endif // LSCS_NO_UDPSOCKET
 
 qint64 QNativeSocketEngine::write( const char *data, qint64 size )
 {
@@ -774,7 +774,7 @@ qint64 QNativeSocketEngine::read( char *data, qint64 maxSize )
         {
             d->hasSetSocketError = true;
             d->socketError = QAbstractSocket::NetworkError;
-            d->socketErrorString = qt_error_string();
+            d->socketErrorString = lscs_error_string();
         }
 
         close();

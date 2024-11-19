@@ -68,13 +68,13 @@ struct QOpenGLFunctionsPrivateEx : public QOpenGLExtensionsPrivate, public QOpen
     int m_extensions;
 };
 
-static QOpenGLMultiGroupSharedResource *qt_gl_functions_resource()
+static QOpenGLMultiGroupSharedResource *lscs_gl_functions_resource()
 {
     static QOpenGLMultiGroupSharedResource retval;
     return &retval;
 }
 
-static QOpenGLFunctionsPrivateEx *qt_gl_functions( QOpenGLContext *context = nullptr )
+static QOpenGLFunctionsPrivateEx *lscs_gl_functions( QOpenGLContext *context = nullptr )
 {
     if ( ! context )
     {
@@ -84,7 +84,7 @@ static QOpenGLFunctionsPrivateEx *qt_gl_functions( QOpenGLContext *context = nul
     Q_ASSERT( context );
 
     QOpenGLFunctionsPrivateEx *funcs =
-        qt_gl_functions_resource()->value<QOpenGLFunctionsPrivateEx>( context );
+        lscs_gl_functions_resource()->value<QOpenGLFunctionsPrivateEx>( context );
 
     return funcs;
 }
@@ -99,7 +99,7 @@ QOpenGLFunctions::QOpenGLFunctions( QOpenGLContext *context )
 {
     if ( context && QOpenGLContextGroup::currentContextGroup() == context->shareGroup() )
     {
-        d_ptr = qt_gl_functions( context );
+        d_ptr = lscs_gl_functions( context );
     }
     else
     {
@@ -116,7 +116,7 @@ QOpenGLExtensions::QOpenGLExtensions( QOpenGLContext *context )
 {
 }
 
-static int qt_gl_resolve_features()
+static int lscs_gl_resolve_features()
 {
     QOpenGLContext *ctx = QOpenGLContext::currentContext();
 
@@ -258,7 +258,7 @@ static int qt_gl_resolve_features()
     }
 }
 
-static int qt_gl_resolve_extensions()
+static int lscs_gl_resolve_extensions()
 {
     int extensions = 0;
     QOpenGLExtensionMatcher extensionMatcher;
@@ -480,7 +480,7 @@ QOpenGLFunctions::OpenGLFeatures QOpenGLFunctions::openGLFeatures() const
 
     if ( d->m_features == -1 )
     {
-        d->m_features = qt_gl_resolve_features();
+        d->m_features = lscs_gl_resolve_features();
     }
 
     return QOpenGLFunctions::OpenGLFeatures( d->m_features );
@@ -497,7 +497,7 @@ bool QOpenGLFunctions::hasOpenGLFeature( QOpenGLFunctions::OpenGLFeature feature
 
     if ( d->m_features == -1 )
     {
-        d->m_features = qt_gl_resolve_features();
+        d->m_features = lscs_gl_resolve_features();
     }
 
     return ( d->m_features & int( feature ) ) != 0;
@@ -514,7 +514,7 @@ QOpenGLExtensions::OpenGLExtensions QOpenGLExtensions::openGLExtensions()
 
     if ( d->m_extensions == -1 )
     {
-        d->m_extensions = qt_gl_resolve_extensions();
+        d->m_extensions = lscs_gl_resolve_extensions();
     }
 
     return QOpenGLExtensions::OpenGLExtensions( d->m_extensions );
@@ -531,7 +531,7 @@ bool QOpenGLExtensions::hasOpenGLExtension( QOpenGLExtensions::OpenGLExtension e
 
     if ( d->m_extensions == -1 )
     {
-        d->m_extensions = qt_gl_resolve_extensions();
+        d->m_extensions = lscs_gl_resolve_extensions();
     }
 
     return ( d->m_extensions & int( extension ) ) != 0;
@@ -539,7 +539,7 @@ bool QOpenGLExtensions::hasOpenGLExtension( QOpenGLExtensions::OpenGLExtension e
 
 void QOpenGLFunctions::initializeOpenGLFunctions()
 {
-    d_ptr = qt_gl_functions();
+    d_ptr = lscs_gl_functions();
 }
 
 namespace
@@ -663,7 +663,7 @@ private:
 
 #define RESOLVER_COMMON \
     QOpenGLContext *context = QOpenGLContext::currentContext(); \
-    Base *funcs = qt_gl_functions(context); \
+    Base *funcs = lscs_gl_functions(context); \
  \
     FuncType old = funcs->*funcPointerName; \
  \
@@ -962,7 +962,7 @@ Resolver<Base, FuncType, Policy, ReturnType> functionResolver( FuncType Base::*f
 #define RESOLVE_FUNC_VOID_WITH_ALTERNATE(POLICY, NAME, ALTERNATE) \
     functionResolver<void, POLICY>(&QOpenGLExtensionsPrivate::NAME, "gl" #NAME, "gl" #ALTERNATE)
 
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
 
 // GLES2 + OpenGL1 common subset. These are normally not resolvable,
 // but the underlying platform code may hide this limitation.
@@ -1740,7 +1740,7 @@ static void QOPENGLF_APIENTRY qopenglfResolveVertexAttribPointer( GLuint indx, G
     RESOLVE_FUNC_VOID( 0, VertexAttribPointer )( indx, size, type, normalized, stride, ptr );
 }
 
-#endif // !QT_OPENGL_ES_2
+#endif // !LSCS_OPENGL_ES_2
 
 // Extensions not standard in any ES version
 
@@ -1776,7 +1776,7 @@ static void QOPENGLF_APIENTRY qopenglfResolveDiscardFramebuffer( GLenum target, 
     RESOLVE_FUNC_VOID( ResolveEXT, DiscardFramebuffer )( target, numAttachments, attachments );
 }
 
-#if !defined(QT_OPENGL_ES_2) && !defined(QT_OPENGL_DYNAMIC)
+#if !defined(LSCS_OPENGL_ES_2) && !defined(LSCS_OPENGL_DYNAMIC)
 // Special translation functions for ES-specific calls on desktop GL
 
 static void QOPENGLF_APIENTRY qopenglfTranslateClearDepthf( GLclampf depth )
@@ -1796,7 +1796,7 @@ QOpenGLFunctionsPrivate::QOpenGLFunctionsPrivate( QOpenGLContext * )
      * which on first call resolves the function from the current
      * context, assigns it to the member variable and executes it
      * (see Resolver template) */
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
     // The GL1 functions may not be queriable via getProcAddress().
     if ( QGuiApplicationPrivate::platformIntegration()->hasCapability( QPlatformIntegration::AllGLFunctionsQueryable ) )
     {
@@ -1853,7 +1853,7 @@ QOpenGLFunctionsPrivate::QOpenGLFunctionsPrivate( QOpenGLContext * )
     else
     {
 
-#ifndef QT_OPENGL_DYNAMIC
+#ifndef LSCS_OPENGL_DYNAMIC
         // Use the functions directly. This requires linking QtGui to an OpenGL implementation.
         BindTexture = ::glBindTexture;
         BlendFunc = ::glBlendFunc;
@@ -1902,7 +1902,7 @@ QOpenGLFunctionsPrivate::QOpenGLFunctionsPrivate( QOpenGLContext * )
         TexParameteriv = ::glTexParameteriv;
         TexSubImage2D = ::glTexSubImage2D;
         Viewport = ::glViewport;
-#else // QT_OPENGL_DYNAMIC
+#else // LSCS_OPENGL_DYNAMIC
 
         // This should not happen.
         qFatal( "QOpenGLFunctions: Dynamic OpenGL builds do not support platforms with insufficient function resolving capabilities" );
@@ -2004,7 +2004,7 @@ QOpenGLFunctionsPrivate::QOpenGLFunctionsPrivate( QOpenGLContext * )
     VertexAttrib4f = qopenglfResolveVertexAttrib4f;
     VertexAttrib4fv = qopenglfResolveVertexAttrib4fv;
     VertexAttribPointer = qopenglfResolveVertexAttribPointer;
-#endif // !QT_OPENGL_ES_2
+#endif // !LSCS_OPENGL_ES_2
 }
 
 // Functions part of the OpenGL ES 3.0+ standard need special handling. These, just like

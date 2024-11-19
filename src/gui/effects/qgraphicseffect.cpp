@@ -33,7 +33,7 @@
 #include <qdrawhelper_p.h>
 #include <qgraphics_item_p.h>
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
 QGraphicsEffectSource::QGraphicsEffectSource( QGraphicsEffectSourcePrivate &dd, QObject *parent )
     : QObject( parent ), d_ptr( &dd )
@@ -742,4 +742,4 @@ void  QGraphicsDropShadowEffect::setOffset( qreal d )
     setOffset( QPointF( d, d ) );
 }
 
-#endif //QT_NO_GRAPHICSEFFECT
+#endif //LSCS_NO_GRAPHICSEFFECT

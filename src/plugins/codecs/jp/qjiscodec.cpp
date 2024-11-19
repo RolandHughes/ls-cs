@@ -33,9 +33,9 @@
 #include "qjiscodec.h"
 #include "qlist.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 enum
 {
     Esc = 0x1b,
@@ -448,6 +448,6 @@ QList<QByteArray> QJisCodec::_aliases()
     return list;
 }
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

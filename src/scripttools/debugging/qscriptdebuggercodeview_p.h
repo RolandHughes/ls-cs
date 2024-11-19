@@ -26,7 +26,7 @@
 
 #include <qscriptdebuggercodeviewinterface_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerCodeViewPrivate;
 
@@ -63,6 +63,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerCodeView )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

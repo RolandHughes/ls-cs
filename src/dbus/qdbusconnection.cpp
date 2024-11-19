@@ -41,9 +41,9 @@
 
 #include "qdbusthreaddebug_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE Q_GLOBAL_STATIC( QDBusConnectionManager, _q_manager )
+LSCS_BEGIN_NAMESPACE Q_GLOBAL_STATIC( QDBusConnectionManager, _q_manager )
 
 QDBusConnectionPrivate *QDBusConnectionManager::sender() const
 {
@@ -773,7 +773,7 @@ bool QDBusConnection::connect( const QString &service, const QString &path, cons
 
     if ( !interface.isEmpty() && !QDBusUtil::isValidInterfaceName( interface ) )
     {
-#ifndef QT_NO_DEBUG
+#ifndef LSCS_NO_DEBUG
         qWarning( "QDBusConnection::connect: interface name '%s' is not valid", interface.toLatin1().constData() );
 #endif
         return false;
@@ -781,7 +781,7 @@ bool QDBusConnection::connect( const QString &service, const QString &path, cons
 
     if ( !service.isEmpty() && !QDBusUtil::isValidBusName( service ) )
     {
-#ifndef QT_NO_DEBUG
+#ifndef LSCS_NO_DEBUG
         qWarning( "QDBusConnection::connect: service name '%s' is not valid", service.toLatin1().constData() );
 #endif
         return false;
@@ -789,7 +789,7 @@ bool QDBusConnection::connect( const QString &service, const QString &path, cons
 
     if ( !path.isEmpty() && !QDBusUtil::isValidObjectPath( path ) )
     {
-#ifndef QT_NO_DEBUG
+#ifndef LSCS_NO_DEBUG
         qWarning( "QDBusConnection::connect: object path '%s' is not valid", path.toLatin1().constData() );
 #endif
         return false;
@@ -1246,8 +1246,8 @@ bool QDBusConnection::unregisterService( const QString &serviceName )
     return false;
 }
 
-static const char _q_sessionBusName[] = "qt_default_session_bus";
-static const char _q_systemBusName[] = "qt_default_system_bus";
+static const char _q_sessionBusName[] = "lscs_default_session_bus";
+static const char _q_systemBusName[] = "lscs_default_system_bus";
 
 class QDBusDefaultConnection: public QDBusConnection
 {
@@ -1377,6 +1377,6 @@ QByteArray QDBusConnection::localMachineId()
     When using BlockWithGui, applications must be prepared for reentrancy in any function.
 */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

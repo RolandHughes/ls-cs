@@ -32,7 +32,7 @@
 #include <QtGui/qboxlayout.h>
 #include <QtGui/qstackedwidget.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerCodeWidgetPrivate
     : public QScriptDebuggerCodeWidgetInterfacePrivate
@@ -399,4 +399,4 @@ void QScriptDebuggerCodeWidget: _q_onToolTipRequest( const QPoint &un_named_arg1
     d->_q_onToolTipRequest();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

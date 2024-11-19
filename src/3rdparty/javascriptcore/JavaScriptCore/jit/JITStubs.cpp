@@ -60,7 +60,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 #include "bridge/qscriptobject_p.h"
 #endif
 
@@ -1209,7 +1209,7 @@ DEFINE_STUB_FUNCTION( int, timeout_check )
         VM_THROW_EXCEPTION_AT_END();
     }
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
     else
     {
         // It's possible that the call to QtScript's implementation of
@@ -2064,8 +2064,8 @@ DEFINE_STUB_FUNCTION( JSObject *, op_construct_JSConstruct )
         structure = constructor->scope().node()->globalObject->emptyObjectStructure();
     }
 
-#ifdef QT_BUILD_SCRIPT_LIB
-    return new ( stackFrame.globalData ) QT_PREPEND_NAMESPACE( QScriptObject )( structure );
+#ifdef LSCS_BUILD_SCRIPT_LIB
+    return new ( stackFrame.globalData ) LSCS_PREPEND_NAMESPACE( QScriptObject )( structure );
 #else
     return new ( stackFrame.globalData ) JSObject( structure );
 #endif
@@ -2853,7 +2853,7 @@ start:
     if ( src2.isObject() )
     {
         return asObject( cell1 ) == asObject( src2 )
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
                || asObject( cell1 )->compareToObject( stackFrame.callFrame, asObject( src2 ) )
 #endif
                ;
@@ -3527,7 +3527,7 @@ DEFINE_STUB_FUNCTION( void, op_debug )
     stackFrame.globalData->interpreter->debug( callFrame, static_cast<DebugHookID>( debugHookID ), firstLine, lastLine );
 }
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 DEFINE_STUB_FUNCTION( void, op_debug_catch )
 {
     STUB_INIT_STACK_FRAME( stackFrame );

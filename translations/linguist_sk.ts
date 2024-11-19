@@ -627,9 +627,9 @@ Voľby:
 </translation>
     </message>
     <message>
-        <source>//% cannot be used with tr() / QT_TR_NOOP(). Ignoring
+        <source>//% cannot be used with tr() / LSCS_TR_NOOP(). Ignoring
 </source>
-        <translation>//% nemôže byť použité s tr() / QT_TR_NOOP(). Ignoruje sa
+        <translation>//% nemôže byť použité s tr() / LSCS_TR_NOOP(). Ignoruje sa
 </translation>
     </message>
     <message>
@@ -656,15 +656,15 @@ Voľby:
 </translation>
     </message>
     <message>
-        <source>//% cannot be used with translate() / QT_TRANSLATE_NOOP(). Ignoring
+        <source>//% cannot be used with translate() / LSCS_TRANSLATE_NOOP(). Ignoring
 </source>
-        <translation>//% nemôže byť použité s translate() / QT_TRANSLATE_NOOP(). Ignoruje sa
+        <translation>//% nemôže byť použité s translate() / LSCS_TRANSLATE_NOOP(). Ignoruje sa
 </translation>
     </message>
     <message>
-        <source>//= cannot be used with qtTrId() / QT_TRID_NOOP(). Ignoring
+        <source>//= cannot be used with qtTrId() / LSCS_TRID_NOOP(). Ignoring
 </source>
-        <translation>//= nemôže byť použité s qtTrId() / QT_TRID_NOOP(). Ignoruje sa
+        <translation>//= nemôže byť použité s qtTrId() / LSCS_TRID_NOOP(). Ignoruje sa
 </translation>
     </message>
     <message>

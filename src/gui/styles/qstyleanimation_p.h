@@ -28,7 +28,7 @@
 #include <qdatetime.h>
 #include <qimage.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QStyleAnimation : public QAbstractAnimation
 {
@@ -171,6 +171,6 @@ private:
     bool _active;
 };
 
-#endif // QT_NO_ANIMATION
+#endif // LSCS_NO_ANIMATION
 
 #endif // QSTYLEANIMATION_P_H

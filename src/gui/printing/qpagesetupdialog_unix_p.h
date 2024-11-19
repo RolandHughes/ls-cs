@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_PRINTDIALOG
+#ifndef LSCS_NO_PRINTDIALOG
 
 #include <qprinter.h>
 #include <qpagelayout.h>
@@ -91,6 +91,6 @@ private:
     bool m_blockSignals;
 };
 
-#endif // QT_NO_PRINTDIALOG
+#endif // LSCS_NO_PRINTDIALOG
 
 #endif

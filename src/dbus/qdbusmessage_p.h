@@ -31,9 +31,9 @@
 
 struct DBusMessage;
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusConnectionPrivate;
 
@@ -77,7 +77,7 @@ public:
                                         const QDBusMessage &asSent );
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

@@ -29,7 +29,7 @@
 #include <QtCore/QObject>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeAnchorsPrivate;
 class QDeclarativeAnchorLine;
@@ -237,7 +237,7 @@ private:
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS( QDeclarativeAnchors::Anchors )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeAnchors )
 

@@ -26,7 +26,7 @@
 
 #include <qdeclarative.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeItemModule
 {
@@ -35,6 +35,6 @@ public:
     static void defineModuleCompat();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEITEMMODULE_H

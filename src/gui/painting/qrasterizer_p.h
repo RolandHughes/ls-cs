@@ -46,7 +46,7 @@ public:
 
     void initialize( ProcessSpans blend, void *data );
 
-    void rasterize( const QT_FT_Outline *outline, Qt::FillRule fillRule );
+    void rasterize( const LSCS_FT_Outline *outline, Qt::FillRule fillRule );
     void rasterize( const QPainterPath &path, Qt::FillRule fillRule );
 
     // width should be in units of |a-b|

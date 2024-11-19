@@ -25,7 +25,7 @@
 #include <qbearerplugin_p.h>
 #include <qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QNlaEnginePlugin : public QBearerEnginePlugin
 {
@@ -65,4 +65,4 @@ QBearerEngine *QNlaEnginePlugin::create( const QString &key ) const
 Q_EXPORT_STATIC_PLUGIN( QNlaEnginePlugin )
 Q_EXPORT_PLUGIN2( qnlabearer, QNlaEnginePlugin )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

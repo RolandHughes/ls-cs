@@ -27,7 +27,7 @@
 #include <qalgorithms.h>
 #include <qlocalsocket.h>
 
-#ifndef QT_NO_LOCALSERVER
+#ifndef LSCS_NO_LOCALSERVER
 
 QLocalServer::QLocalServer( QObject *parent )
     : QObject( parent ), d_ptr( new QLocalServerPrivate )
@@ -171,7 +171,7 @@ QLocalSocket *QLocalServer::nextPendingConnection()
 
     QLocalSocket *nextSocket = d->pendingConnections.dequeue();
 
-#ifndef QT_LOCALSOCKET_TCP
+#ifndef LSCS_LOCALSOCKET_TCP
 
     if ( d->pendingConnections.size() <= d->maxPendingConnections )
 #ifndef Q_OS_WIN

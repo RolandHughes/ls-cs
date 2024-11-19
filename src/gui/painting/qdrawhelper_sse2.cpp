@@ -30,7 +30,7 @@
 
 #ifndef QDRAWHELPER_AVX
 // in AVX mode, we'll use the SSSE3 code
-void qt_blend_argb32_on_argb32_sse2( uchar *destPixels, int dbpl,
+void lscs_blend_argb32_on_argb32_sse2( uchar *destPixels, int dbpl,
                                      const uchar *srcPixels, int sbpl,
                                      int w, int h,
                                      int const_alpha )
@@ -76,12 +76,12 @@ void qt_blend_argb32_on_argb32_sse2( uchar *destPixels, int dbpl,
 #endif
 
 // qblendfunctions.cpp
-void qt_blend_rgb32_on_rgb32( uchar *destPixels, int dbpl,
+void lscs_blend_rgb32_on_rgb32( uchar *destPixels, int dbpl,
                               const uchar *srcPixels, int sbpl,
                               int w, int h,
                               int const_alpha );
 
-void qt_blend_rgb32_on_rgb32_sse2( uchar *destPixels, int dbpl,
+void lscs_blend_rgb32_on_rgb32_sse2( uchar *destPixels, int dbpl,
                                    const uchar *srcPixels, int sbpl,
                                    int w, int h,
                                    int const_alpha )
@@ -137,11 +137,11 @@ void qt_blend_rgb32_on_rgb32_sse2( uchar *destPixels, int dbpl,
     }
     else
     {
-        qt_blend_rgb32_on_rgb32( destPixels, dbpl, srcPixels, sbpl, w, h, const_alpha );
+        lscs_blend_rgb32_on_rgb32( destPixels, dbpl, srcPixels, sbpl, w, h, const_alpha );
     }
 }
 
-void QT_FASTCALL comp_func_SourceOver_sse2( uint *destPixels, const uint *srcPixels, int length, uint const_alpha )
+void LSCS_FASTCALL comp_func_SourceOver_sse2( uint *destPixels, const uint *srcPixels, int length, uint const_alpha )
 {
     Q_ASSERT( const_alpha < 256 );
 
@@ -165,7 +165,7 @@ void QT_FASTCALL comp_func_SourceOver_sse2( uint *destPixels, const uint *srcPix
     }
 }
 
-void QT_FASTCALL comp_func_Plus_sse2( uint *dst, const uint *src, int length, uint const_alpha )
+void LSCS_FASTCALL comp_func_Plus_sse2( uint *dst, const uint *src, int length, uint const_alpha )
 {
     int x = 0;
 
@@ -224,7 +224,7 @@ void QT_FASTCALL comp_func_Plus_sse2( uint *dst, const uint *src, int length, ui
     }
 }
 
-void QT_FASTCALL comp_func_Source_sse2( uint *dst, const uint *src, int length, uint const_alpha )
+void LSCS_FASTCALL comp_func_Source_sse2( uint *dst, const uint *src, int length, uint const_alpha )
 {
     if ( const_alpha == 255 )
     {
@@ -262,7 +262,7 @@ void QT_FASTCALL comp_func_Source_sse2( uint *dst, const uint *src, int length, 
     }
 }
 
-void qt_memfill32( quint32 *dest, quint32 value, int count )
+void lscs_memfill32( quint32 *dest, quint32 value, int count )
 {
     if ( count < 7 )
     {
@@ -363,11 +363,11 @@ void qt_memfill32( quint32 *dest, quint32 value, int count )
     }
 }
 
-void QT_FASTCALL comp_func_solid_SourceOver_sse2( uint *destPixels, int length, uint color, uint const_alpha )
+void LSCS_FASTCALL comp_func_solid_SourceOver_sse2( uint *destPixels, int length, uint color, uint const_alpha )
 {
     if ( ( const_alpha & qAlpha( color ) ) == 255 )
     {
-        qt_memfill32( destPixels, color, length );
+        lscs_memfill32( destPixels, color, length );
 
     }
     else
@@ -404,7 +404,7 @@ void QT_FASTCALL comp_func_solid_SourceOver_sse2( uint *destPixels, int length, 
     }
 }
 
-void qt_memfill16( quint16 *dest, quint16 value, int count )
+void lscs_memfill16( quint16 *dest, quint16 value, int count )
 {
     if ( count < 3 )
     {
@@ -431,7 +431,7 @@ void qt_memfill16( quint16 *dest, quint16 value, int count )
     }
 
     const quint32 value32 = ( value << 16 ) | value;
-    qt_memfill32( reinterpret_cast<quint32 *>( dest ), value32, count / 2 );
+    lscs_memfill32( reinterpret_cast<quint32 *>( dest ), value32, count / 2 );
 
     if ( count & 0x1 )
     {
@@ -439,7 +439,7 @@ void qt_memfill16( quint16 *dest, quint16 value, int count )
     }
 }
 
-void qt_bitmapblit32_sse2_base( QRasterBuffer *rasterBuffer, int x, int y, quint32 color,
+void lscs_bitmapblit32_sse2_base( QRasterBuffer *rasterBuffer, int x, int y, quint32 color,
                                 const uchar *src, int width, int height, int stride )
 {
     quint32 *dest = reinterpret_cast<quint32 *>( rasterBuffer->scanLine( y ) ) + x;
@@ -504,21 +504,21 @@ void qt_bitmapblit32_sse2_base( QRasterBuffer *rasterBuffer, int x, int y, quint
     }
 }
 
-void qt_bitmapblit32_sse2( QRasterBuffer *rasterBuffer, int x, int y,
+void lscs_bitmapblit32_sse2( QRasterBuffer *rasterBuffer, int x, int y,
                            const QRgba64 &color,
                            const uchar *src, int width, int height, int stride )
 {
-    qt_bitmapblit32_sse2_base( rasterBuffer, x, y, color.toArgb32(), src, width, height, stride );
+    lscs_bitmapblit32_sse2_base( rasterBuffer, x, y, color.toArgb32(), src, width, height, stride );
 }
 
-void qt_bitmapblit8888_sse2( QRasterBuffer *rasterBuffer, int x, int y,
+void lscs_bitmapblit8888_sse2( QRasterBuffer *rasterBuffer, int x, int y,
                              const QRgba64 &color,
                              const uchar *src, int width, int height, int stride )
 {
-    qt_bitmapblit32_sse2_base( rasterBuffer, x, y, ARGB2RGBA( color.toArgb32() ), src, width, height, stride );
+    lscs_bitmapblit32_sse2_base( rasterBuffer, x, y, ARGB2RGBA( color.toArgb32() ), src, width, height, stride );
 }
 
-void qt_bitmapblit16_sse2( QRasterBuffer *rasterBuffer, int x, int y,
+void lscs_bitmapblit16_sse2( QRasterBuffer *rasterBuffer, int x, int y,
                            const QRgba64 &color,
                            const uchar *src, int width, int height, int stride )
 {
@@ -646,13 +646,13 @@ public:
     }
 };
 
-const uint *QT_FASTCALL qt_fetch_radial_gradient_sse2( uint *buffer, const Operator *op, const QSpanData *data,
+const uint *LSCS_FASTCALL lscs_fetch_radial_gradient_sse2( uint *buffer, const Operator *op, const QSpanData *data,
         int y, int x, int length )
 {
-    return qt_fetch_radial_gradient_template<QRadialFetchSimd<QSimdSse2>, uint>( buffer, op, data, y, x, length );
+    return lscs_fetch_radial_gradient_template<QRadialFetchSimd<QSimdSse2>, uint>( buffer, op, data, y, x, length );
 }
 
-void qt_scale_image_argb32_on_argb32_sse2( uchar *destPixels, int dbpl,
+void lscs_scale_image_argb32_on_argb32_sse2( uchar *destPixels, int dbpl,
         const uchar *srcPixels, int sbpl, int srch,
         const QRectF &targetRect,
         const QRectF &sourceRect,
@@ -661,13 +661,13 @@ void qt_scale_image_argb32_on_argb32_sse2( uchar *destPixels, int dbpl,
 {
     if ( const_alpha != 256 )
     {
-        extern void qt_scale_image_argb32_on_argb32( uchar * destPixels, int dbpl,
+        extern void lscs_scale_image_argb32_on_argb32( uchar * destPixels, int dbpl,
                 const uchar * srcPixels, int sbpl, int srch,
                 const QRectF & targetRect,
                 const QRectF & sourceRect,
                 const QRect & clip,
                 int const_alpha );
-        return qt_scale_image_argb32_on_argb32( destPixels, dbpl, srcPixels, sbpl, srch, targetRect, sourceRect, clip, const_alpha );
+        return lscs_scale_image_argb32_on_argb32( destPixels, dbpl, srcPixels, sbpl, srch, targetRect, sourceRect, clip, const_alpha );
     }
 
     qreal sx = targetRect.width() / ( qreal ) sourceRect.width();

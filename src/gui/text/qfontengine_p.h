@@ -47,8 +47,8 @@ struct QGlyphLayout;
     ((quint32)(ch4)) \
    )
 
-typedef void ( *qt_destroy_func_t ) ( void *user_data );
-typedef bool ( *qt_get_font_table_func_t ) ( void *user_data, uint tag, uchar *buffer, uint *length );
+typedef void ( *lscs_destroy_func_t ) ( void *user_data );
+typedef bool ( *lscs_get_font_table_func_t ) ( void *user_data, uint tag, uchar *buffer, uint *length );
 
 class Q_GUI_EXPORT QFontEngine
 {

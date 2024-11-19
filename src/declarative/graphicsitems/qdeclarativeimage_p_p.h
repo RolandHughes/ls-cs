@@ -27,7 +27,7 @@
 #include <qdeclarativeitem_p.h>
 #include <qdeclarativeimagebase_p_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeImagePrivate : public QDeclarativeImageBasePrivate
 {
@@ -45,6 +45,6 @@ public:
     void setPixmap( const QPixmap &pix );
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEIMAGE_P_H

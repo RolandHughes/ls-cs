@@ -81,7 +81,7 @@ public:
 
     static void clearCurrentThreadCocoaEventDispatcherInterruptFlag();
 
-    friend void qt_mac_maybeCancelWaitForMoreEventsForwarder( QAbstractEventDispatcher *eventDispatcher );
+    friend void lscs_mac_maybeCancelWaitForMoreEventsForwarder( QAbstractEventDispatcher *eventDispatcher );
 };
 
 class QCocoaEventDispatcherPrivate : public QAbstractEventDispatcherPrivate

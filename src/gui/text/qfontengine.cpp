@@ -629,7 +629,7 @@ static void collectSingleContour( qreal x0, qreal y0, uint *grid, int x, int y, 
     path->closeSubpath();
 }
 
-Q_GUI_EXPORT void qt_addBitmapToPath( qreal x0, qreal y0, const uchar *image_data, int bpl,
+Q_GUI_EXPORT void lscs_addBitmapToPath( qreal x0, qreal y0, const uchar *image_data, int bpl,
                                       int w, int h, QPainterPath *path )
 {
     uint *grid = new uint[( w + 1 ) * ( h + 1 )];
@@ -758,7 +758,7 @@ void QFontEngine::addBitmapFontToPath( qreal x, qreal y, const QGlyphLayout &gly
         advanceX += offset.x;
         advanceY += offset.y;
 
-        qt_addBitmapToPath( ( advanceX + metrics.x ).toReal(), ( advanceY + metrics.y ).toReal(), bitmap_data, bitmap.bytesPerLine(),
+        lscs_addBitmapToPath( ( advanceX + metrics.x ).toReal(), ( advanceY + metrics.y ).toReal(), bitmap_data, bitmap.bytesPerLine(),
                             w, h, path );
         advanceX += glyphs.advances[i];
     }
@@ -2019,7 +2019,7 @@ QFontEngineMulti::~QFontEngineMulti()
     }
 }
 
-QStringList qt_fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint, QChar::Script script );
+QStringList lscs_fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint, QChar::Script script );
 
 void QFontEngineMulti::ensureFallbackFamiliesQueried()
 {
@@ -2030,7 +2030,7 @@ void QFontEngineMulti::ensureFallbackFamiliesQueried()
         styleHint = QFont::TypeWriter;
     }
 
-    setFallbackFamiliesList( qt_fallbacksForFamily( fontDef.family, QFont::Style( fontDef.style ),
+    setFallbackFamiliesList( lscs_fallbacksForFamily( fontDef.family, QFont::Style( fontDef.style ),
                              styleHint, QChar::Script( m_script ) ) );
 }
 

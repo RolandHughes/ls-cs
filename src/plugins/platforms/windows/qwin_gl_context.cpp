@@ -159,7 +159,7 @@ bool QWindowsOpengl32DLL::init( bool softwareRendering )
     const QByteArray opengl32 = QByteArray( "opengl32.dll" );
     const QByteArray swopengl = QByteArray( "opengl32sw.dll" );
 
-    QByteArray openglDll = qgetenv( "QT_OPENGL_DLL" );
+    QByteArray openglDll = qgetenv( "LSCS_OPENGL_DLL" );
 
     if ( openglDll.isEmpty() )
     {
@@ -1763,7 +1763,7 @@ QWindowsGLContext::FP_Void QWindowsGLContext::getProcAddress( const QByteArray &
     // Supports AllGLFunctionsQueryable, which means this function must be able to
     // return a function pointer even for functions that are in GL.h and exported
     // normally from opengl32.dll. wglGetProcAddress() is not guaranteed to work for such
-    // functions, however in QT_OPENGL_DYNAMIC builds QOpenGLFunctions will just blindly
+    // functions, however in LSCS_OPENGL_DYNAMIC builds QOpenGLFunctions will just blindly
     // call into here for _any_ OpenGL function. Hence the need to handle these specially here.
 
     // The list has to match QOpenGLFunctions

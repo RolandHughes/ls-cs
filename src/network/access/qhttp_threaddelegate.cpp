@@ -136,7 +136,7 @@ static QByteArray makeCacheKey( QUrl &url, QNetworkProxy *proxy )
     result = copy.toString( QUrl::RemoveUserInfo | QUrl::RemovePath |
                             QUrl::RemoveQuery | QUrl::RemoveFragment | QUrl::FullyEncoded );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
     if ( proxy && proxy->type() != QNetworkProxy::NoProxy )
     {
@@ -179,7 +179,7 @@ class QNetworkAccessCachedHttpConnection: public QHttpNetworkConnection, public 
 {
 public:
 
-#ifdef QT_NO_BEARERMANAGEMENT
+#ifdef LSCS_NO_BEARERMANAGEMENT
     QNetworkAccessCachedHttpConnection( const QString &hostName, quint16 port, bool encrypt,
                                         QHttpNetworkConnection::ConnectionType connectionType )
         : QHttpNetworkConnection( hostName, port, encrypt, connectionType )
@@ -275,7 +275,7 @@ void QHttpThreadDelegate::startRequest()
 
     QHttpNetworkConnection::ConnectionType connectionType = QHttpNetworkConnection::ConnectionTypeHTTP;
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
     if ( httpRequest.isSPDYAllowed() && ssl )
     {
@@ -291,7 +291,7 @@ void QHttpThreadDelegate::startRequest()
 
 #endif
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
     if ( transparentProxy.type() != QNetworkProxy::NoProxy )
     {
@@ -316,14 +316,14 @@ void QHttpThreadDelegate::startRequest()
         // no entry in cache; create an object
         // the http object is actually a QHttpNetworkConnection
 
-#ifdef QT_NO_BEARERMANAGEMENT
+#ifdef LSCS_NO_BEARERMANAGEMENT
         httpConnection = new QNetworkAccessCachedHttpConnection( urlCopy.host(), urlCopy.port(), ssl, connectionType );
 #else
         httpConnection = new QNetworkAccessCachedHttpConnection( urlCopy.host(),
                 urlCopy.port(), ssl, connectionType, networkSession );
 #endif
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
         // Set the QSslConfiguration from this QNetworkRequest.
         if ( ssl && incomingSslConfiguration != QSslConfiguration::defaultConfiguration() )
@@ -333,7 +333,7 @@ void QHttpThreadDelegate::startRequest()
 
 #endif
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
         httpConnection->setTransparentProxy( transparentProxy );
         httpConnection->setCacheProxy( cacheProxy );
 #endif
@@ -371,7 +371,7 @@ void QHttpThreadDelegate::startRequest()
         connect( httpReply, &QHttpNetworkReply::authenticationRequired, this,
                  &QHttpThreadDelegate::synchronousAuthenticationRequiredSlot );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
         connect( httpReply, &QHttpNetworkReply::proxyAuthenticationRequired, this,
                  &QHttpThreadDelegate::synchronousProxyAuthenticationRequiredSlot );
 #endif
@@ -389,7 +389,7 @@ void QHttpThreadDelegate::startRequest()
         connect( httpReply, &QHttpNetworkReply::readyRead,         this, &QHttpThreadDelegate::readyReadSlot );
         connect( httpReply, &QHttpNetworkReply::dataReadProgress,  this, &QHttpThreadDelegate::dataReadProgressSlot );
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
         connect( httpReply, &QHttpNetworkReply::encrypted, this, &QHttpThreadDelegate::encryptedSlot );
         connect( httpReply, &QHttpNetworkReply::sslErrors, this, &QHttpThreadDelegate::sslErrorsSlot );
 
@@ -401,7 +401,7 @@ void QHttpThreadDelegate::startRequest()
         // Connect the reply signals that we can directly forward
         connect( httpReply, &QHttpNetworkReply::authenticationRequired, this, &QHttpThreadDelegate::authenticationRequired );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
         connect( httpReply, &QHttpNetworkReply::proxyAuthenticationRequired, this, &QHttpThreadDelegate::proxyAuthenticationRequired );
 #endif
     }
@@ -532,7 +532,7 @@ void QHttpThreadDelegate::finishedSlot()
         emit downloadData( httpReply->readAny() );
     }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
     if ( ssl )
     {
@@ -602,7 +602,7 @@ void QHttpThreadDelegate::finishedWithErrorSlot( QNetworkReply::NetworkError err
              << errorCode << detail;
 #endif
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
     if ( ssl )
     {
@@ -657,7 +657,7 @@ void QHttpThreadDelegate::headerChangedSlot()
     qDebug() << "QHttpThreadDelegate::headerChangedSlot() thread=" << QThread::currentThreadId();
 #endif
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
     if ( ssl )
     {
@@ -738,7 +738,7 @@ void QHttpThreadDelegate::cacheCredentialsSlot( const QHttpNetworkRequest &reque
     authenticationManager->cacheCredentials( request.url(), authenticator );
 }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 void QHttpThreadDelegate::encryptedSlot()
 {
     if ( ! httpReply )
@@ -808,7 +808,7 @@ void QHttpThreadDelegate::synchronousAuthenticationRequiredSlot( const QHttpNetw
                          &QHttpThreadDelegate::synchronousAuthenticationRequiredSlot );
 }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 void QHttpThreadDelegate::synchronousProxyAuthenticationRequiredSlot( const QNetworkProxy &proxy, QAuthenticator *authenticator )
 {
     if ( ! httpReply )

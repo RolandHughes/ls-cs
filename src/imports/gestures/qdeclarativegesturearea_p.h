@@ -32,9 +32,9 @@
 #include <QtCore/qstring.h>
 #include <QtGui/qgesture.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeBoundSignal;
 class QDeclarativeContext;
@@ -71,10 +71,10 @@ public:
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeGestureArea )
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
 #endif

@@ -643,7 +643,7 @@ static const int scriptForWritingSystem[] =
 static_assert( sizeof( scriptForWritingSystem ) / sizeof( scriptForWritingSystem[0] ) == QFontDatabase::WritingSystemsCount,
                "Type mismatch" );
 
-Q_GUI_EXPORT int qt_script_for_writing_system( QFontDatabase::WritingSystem writingSystem )
+Q_GUI_EXPORT int lscs_script_for_writing_system( QFontDatabase::WritingSystem writingSystem )
 {
     return scriptForWritingSystem[writingSystem];
 }
@@ -741,7 +741,7 @@ static QStringList familyList( const QFontDef &req )
 }
 
 // used in qapplication.cpp
-void qt_cleanupFontDatabase()
+void lscs_cleanupFontDatabase()
 {
     QFontDatabasePrivate *db = privateDb();
 
@@ -753,12 +753,12 @@ void qt_cleanupFontDatabase()
 }
 
 // used in qfontengine_x11.cpp
-QRecursiveMutex *qt_fontdatabase_mutex()
+QRecursiveMutex *lscs_fontdatabase_mutex()
 {
     return fontDatabaseMutex();
 }
 
-void qt_registerFont( const QString &familyName, const QString &stylename, const QString &foundryname, int weight,
+void lscs_registerFont( const QString &familyName, const QString &stylename, const QString &foundryname, int weight,
                       QFont::Style style, int stretch, bool antialiased, bool scalable, int pixelSize, bool fixedPitch,
                       const QSupportedWritingSystems &writingSystems, void *handle )
 {
@@ -790,13 +790,13 @@ void qt_registerFont( const QString &familyName, const QString &stylename, const
     family->m_populated = true;
 }
 
-void qt_registerFontFamily( const QString &familyName )
+void lscs_registerFontFamily( const QString &familyName )
 {
     // Create uninitialized/unpopulated family
     privateDb()->family( familyName, QFontDatabasePrivate::EnsureCreated );
 }
 
-void qt_registerAliasToFontFamily( const QString &familyName, const QString &alias )
+void lscs_registerAliasToFontFamily( const QString &familyName, const QString &alias )
 {
     if ( alias.isEmpty() )
     {
@@ -820,7 +820,7 @@ void qt_registerAliasToFontFamily( const QString &familyName, const QString &ali
     family->m_aliases.push_back( alias );
 }
 
-QString qt_resolveFontFamilyAlias( const QString &alias )
+QString lscs_resolveFontFamilyAlias( const QString &alias )
 {
     if ( alias.isEmpty() )
     {
@@ -953,7 +953,7 @@ static QStringList fallbacksForFamily( const QString &familyName, QFont::Style s
     return retval;
 }
 
-QStringList qt_fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint, QChar::Script script )
+QStringList lscs_fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint, QChar::Script script )
 {
     QRecursiveMutexLocker locker( fontDatabaseMutex() );
     return fallbacksForFamily( family, style, styleHint, script );
@@ -1878,7 +1878,7 @@ QList<int> QFontDatabase::pointSizes( const QString &family, const QString &styl
         return sizes;
     }
 
-    const int dpi = qt_defaultDpiY();      // embedded
+    const int dpi = lscs_defaultDpiY();      // embedded
     QtFontStyle::Key styleKey( styleName );
 
     for ( auto &fontFoundry : fontFamily->m_foundries )
@@ -1999,7 +1999,7 @@ QList<int> QFontDatabase::smoothSizes( const QString &family, const QString &sty
         return sizes;
     }
 
-    const int dpi = qt_defaultDpiY();      // embedded
+    const int dpi = lscs_defaultDpiY();      // embedded
 
     QtFontStyle::Key styleKey( styleName );
 
@@ -2636,7 +2636,7 @@ void QFontDatabase::createDatabase()
 }
 
 // used from qfontengine_ft.cpp
-Q_GUI_EXPORT QByteArray qt_fontdata_from_index( int index )
+Q_GUI_EXPORT QByteArray lscs_fontdata_from_index( int index )
 {
     QRecursiveMutexLocker locker( fontDatabaseMutex() );
     return privateDb()->applicationFonts.value( index ).data;

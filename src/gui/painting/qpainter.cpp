@@ -64,9 +64,9 @@
 #define QGradient_StretchToDevice     0x10000000
 #define QPaintEngine_OpaqueBackground 0x40000000
 
-extern QPixmap qt_pixmapForBrush( int style, bool invert );
+extern QPixmap lscs_pixmapForBrush( int style, bool invert );
 
-void qt_format_text( const QFont &font,
+void lscs_format_text( const QFont &font,
                      const QRectF &_r, int tf, const QTextOption *option, const QString &str, QRectF *brect,
                      int tabstops, int *tabarray, int tabarraylen, QPainter *painter );
 
@@ -75,7 +75,7 @@ static void drawTextItemDecoration( QPainter *painter, const QPointF &pos, const
                                     QTextItem::RenderFlags flags, qreal width, const QTextCharFormat &charFormat );
 
 // Helper function to calculate left most position, width and flags for decoration drawing
-Q_GUI_EXPORT void qt_draw_decoration_for_glyphs( QPainter *painter, const glyph_t *glyphArray,
+Q_GUI_EXPORT void lscs_draw_decoration_for_glyphs( QPainter *painter, const glyph_t *glyphArray,
         const QFixedPoint *positions, int glyphCount,
         QFontEngine *fontEngine, const QFont &font,
         const QTextCharFormat &charFormat );
@@ -136,7 +136,7 @@ static inline uint line_emulation( uint emulation )
 }
 
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
-static bool qt_painter_thread_test( int devType, int engineType, const char *what )
+static bool lscs_painter_thread_test( int devType, int engineType, const char *what )
 {
     const QPlatformIntegration *platformIntegration = QGuiApplicationPrivate::platformIntegration();
 
@@ -158,7 +158,7 @@ static bool qt_painter_thread_test( int devType, int engineType, const char *wha
                     && ( devType != QInternal::Widget || !platformIntegration->hasCapability( QPlatformIntegration::ThreadedOpenGL )
                          || ( engineType != QPaintEngine::OpenGL && engineType != QPaintEngine::OpenGL2 ) ) )
             {
-                qDebug( "qt_painter_thread() Unsafe to use %s outside the GUI thread", what );
+                qDebug( "lscs_painter_thread() Unsafe to use %s outside the GUI thread", what );
 
                 return false;
             }
@@ -742,7 +742,7 @@ void QPainterPrivate::updateInvMatrix()
     invMatrix = state->matrix.inverted();
 }
 
-extern bool qt_isExtendedRadialGradient( const QBrush &brush );
+extern bool lscs_isExtendedRadialGradient( const QBrush &brush );
 
 void QPainterPrivate::updateEmulationSpecifier( QPainterState *s )
 {
@@ -786,7 +786,7 @@ void QPainterPrivate::updateEmulationSpecifier( QPainterState *s )
                            ( brushStyle == Qt::LinearGradientPattern ) );
         radialGradient = ( ( penBrushStyle == Qt::RadialGradientPattern ) ||
                            ( brushStyle == Qt::RadialGradientPattern ) );
-        extendedRadialGradient = radialGradient && ( qt_isExtendedRadialGradient( penBrush ) || qt_isExtendedRadialGradient( s->brush ) );
+        extendedRadialGradient = radialGradient && ( lscs_isExtendedRadialGradient( penBrush ) || lscs_isExtendedRadialGradient( s->brush ) );
 
         conicalGradient = ( ( penBrushStyle == Qt::ConicalGradientPattern ) ||
                             ( brushStyle == Qt::ConicalGradientPattern ) );
@@ -1244,7 +1244,7 @@ void QPainter::restore()
     delete tmp;
 }
 
-static inline void qt_cleanup_painter_state( QPainterPrivate *d )
+static inline void lscs_cleanup_painter_state( QPainterPrivate *d )
 {
     d->states.clear();
     delete d->state;
@@ -1351,7 +1351,7 @@ bool QPainter::begin( QPaintDevice *pd )
             if ( pm->isNull() )
             {
                 qWarning( "QPainter::begin() Unable to paint on a invalid pixmap" );
-                qt_cleanup_painter_state( d );
+                lscs_cleanup_painter_state( d );
                 return false;
             }
 
@@ -1372,7 +1372,7 @@ bool QPainter::begin( QPaintDevice *pd )
             if ( img->isNull() )
             {
                 qWarning( "QPainter::begin() Unable to paint on a invalid image" );
-                qt_cleanup_painter_state( d );
+                lscs_cleanup_painter_state( d );
                 return false;
 
             }
@@ -1380,7 +1380,7 @@ bool QPainter::begin( QPaintDevice *pd )
             {
                 // Painting on indexed8 images is not supported.
                 qWarning( "QPainter::begin() Unable to paint on an image with a format of QImage::Format_Indexed8" );
-                qt_cleanup_painter_state( d );
+                lscs_cleanup_painter_state( d );
                 return false;
             }
 
@@ -1417,7 +1417,7 @@ bool QPainter::begin( QPaintDevice *pd )
         }
         else
         {
-            qt_cleanup_painter_state( d );
+            lscs_cleanup_painter_state( d );
         }
 
         return false;
@@ -1479,7 +1479,7 @@ bool QPainter::end()
     if ( !d->engine )
     {
         qWarning( "QPainter::end() Painter engine is not active" );
-        qt_cleanup_painter_state( d );
+        lscs_cleanup_painter_state( d );
         return false;
     }
 
@@ -1526,7 +1526,7 @@ bool QPainter::end()
         d->extended = nullptr;
     }
 
-    qt_cleanup_painter_state( d );
+    lscs_cleanup_painter_state( d );
 
     return ended;
 }
@@ -1977,7 +1977,7 @@ QRegion QPainter::clipRegion() const
     return region;
 }
 
-extern QPainterPath qt_regionToPath( const QRegion &region );
+extern QPainterPath lscs_regionToPath( const QRegion &region );
 
 QPainterPath QPainter::clipPath() const
 {
@@ -2024,7 +2024,7 @@ QPainterPath QPainter::clipPath() const
         else
         {
             // Fallback to clipRegion() for now, since we don't have isect/unite for paths
-            return qt_regionToPath( clipRegion() );
+            return lscs_regionToPath( clipRegion() );
         }
     }
 }
@@ -3734,7 +3734,7 @@ void QPainter::drawPixmap( const QPointF &p, const QPixmap &pm )
     }
 
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
-    qt_painter_thread_test( d->device->devType(), d->engine->type(), "drawPixmap()" );
+    lscs_painter_thread_test( d->device->devType(), d->engine->type(), "drawPixmap()" );
 #endif
 
     if ( d->extended )
@@ -3818,7 +3818,7 @@ void QPainter::drawPixmap( const QRectF &r, const QPixmap &pm, const QRectF &sr 
     }
 
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
-    qt_painter_thread_test( d->device->devType(), d->engine->type(), "drawPixmap()" );
+    lscs_painter_thread_test( d->device->devType(), d->engine->type(), "drawPixmap()" );
 #endif
 
     qreal x = r.x();
@@ -4447,7 +4447,7 @@ void QPainter::drawStaticText( const QPointF &topLeftPosition, const QStaticText
 
         d->extended->drawStaticTextItem( item );
 
-        qt_draw_decoration_for_glyphs( this, item->glyphs, item->glyphPositions,
+        lscs_draw_decoration_for_glyphs( this, item->glyphs, item->glyphPositions,
                                        item->numGlyphs, item->fontEngine(), staticText_d->font, QTextCharFormat() );
     }
 
@@ -4590,7 +4590,7 @@ void QPainter::drawText( const QRect &r, int flags, const QString &str, QRect *b
     }
 
     QRectF bounds;
-    qt_format_text( d->state->font, r, flags, nullptr, str, br ? &bounds : nullptr, 0, nullptr, 0, this );
+    lscs_format_text( d->state->font, r, flags, nullptr, str, br ? &bounds : nullptr, 0, nullptr, 0, this );
 
     if ( br )
     {
@@ -4617,7 +4617,7 @@ void QPainter::drawText( const QRectF &r, int flags, const QString &str, QRectF 
         d->updateState( d->state );
     }
 
-    qt_format_text( d->state->font, r, flags, nullptr, str, br, 0, nullptr, 0, this );
+    lscs_format_text( d->state->font, r, flags, nullptr, str, br, 0, nullptr, 0, this );
 }
 
 void QPainter::drawText( const QRectF &r, const QString &text, const QTextOption &o )
@@ -4639,7 +4639,7 @@ void QPainter::drawText( const QRectF &r, const QString &text, const QTextOption
         d->updateState( d->state );
     }
 
-    qt_format_text( d->state->font, r, 0, &o, text, nullptr, 0, nullptr, 0, this );
+    lscs_format_text( d->state->font, r, 0, &o, text, nullptr, 0, nullptr, 0, this );
 }
 
 static QPixmap generateWavyPixmap( qreal maxRadius, const QPen &pen )
@@ -4827,7 +4827,7 @@ static void drawTextItemDecoration( QPainter *painter, const QPointF &pos, const
     painter->setBrush( oldBrush );
 }
 
-Q_GUI_EXPORT void qt_draw_decoration_for_glyphs( QPainter *painter, const glyph_t *glyphArray,
+Q_GUI_EXPORT void lscs_draw_decoration_for_glyphs( QPainter *painter, const glyph_t *glyphArray,
         const QFixedPoint *positions, int glyphCount, QFontEngine *fontEngine, const QFont &font,
         const QTextCharFormat &charFormat )
 {
@@ -5139,7 +5139,7 @@ QRectF QPainter::boundingRect( const QRectF &r, const QString &text, const QText
     }
 
     QRectF br;
-    qt_format_text( d->state->font, r, Qt::TextDontPrint, &o, text, &br, 0, nullptr, 0, this );
+    lscs_format_text( d->state->font, r, Qt::TextDontPrint, &o, text, &br, 0, nullptr, 0, this );
 
     return br;
 }
@@ -5159,7 +5159,7 @@ void QPainter::drawTiledPixmap( const QRectF &r, const QPixmap &pixmap, const QP
     }
 
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
-    qt_painter_thread_test( d->device->devType(), d->engine->type(), "drawTiledPixmap()" );
+    lscs_painter_thread_test( d->device->devType(), d->engine->type(), "drawTiledPixmap()" );
 #endif
 
     qreal sw = pixmap.width();
@@ -5247,7 +5247,7 @@ void QPainter::drawTiledPixmap( const QRectF &r, const QPixmap &pixmap, const QP
     d->engine->drawTiledPixmap( QRectF( x, y, r.width(), r.height() ), pixmap, QPointF( sx, sy ) );
 }
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
 
 void QPainter::drawPicture( const QPointF &p, const QPicture &picture )
 {
@@ -5581,13 +5581,13 @@ QPaintDevice *QPainter::redirected( const QPaintDevice *device, QPoint *offset )
     return nullptr;
 }
 
-void qt_format_text( const QFont &fnt, const QRectF &_r, int tf, const QString &str, QRectF *brect,
+void lscs_format_text( const QFont &fnt, const QRectF &_r, int tf, const QString &str, QRectF *brect,
                      int tabstops, int *ta, int tabarraylen, QPainter *painter )
 {
-    qt_format_text( fnt, _r, tf, nullptr, str, brect, tabstops, ta, tabarraylen, painter );
+    lscs_format_text( fnt, _r, tf, nullptr, str, brect, tabstops, ta, tabarraylen, painter );
 }
 
-void qt_format_text( const QFont &fnt, const QRectF &_r, int tf, const QTextOption *option,
+void lscs_format_text( const QFont &fnt, const QRectF &_r, int tf, const QTextOption *option,
                      const QString &str, QRectF *brect, int tabstops, int *ta, int tabarraylen, QPainter *painter )
 {
     Q_ASSERT( !( ( tf & ~Qt::TextDontPrint ) != 0 && option != nullptr ) ); //  either have an option or flags
@@ -6324,7 +6324,7 @@ QPainter::PixmapFragment QPainter::PixmapFragment::create( const QPointF &pos, c
     return fragment;
 }
 
-void qt_draw_helper( QPainterPrivate *p, const QPainterPath &path, QPainterPrivate::DrawOperation operation )
+void lscs_draw_helper( QPainterPrivate *p, const QPainterPath &path, QPainterPrivate::DrawOperation operation )
 {
     p->draw_helper( path, operation );
 }

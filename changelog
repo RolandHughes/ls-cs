@@ -1,4 +1,24 @@
-CopperSpice (0.01-001) unstable; urgency=low
+LsCs (0.1.2) unstable; urgency=low
+	* Fixed QTBUG-12055 where QTextStream disconnect was queued across threads.
+LsCs (0.1.1) unstable; urgency=low
+	* Deeper branding changes.
+	* Created LsCs-library.conf for library paths so now we have proper SONAME linking
+	* Fixed architectural flaw with plugin loading.
+	* Purged really nasty use of RPATH which isn't allowed in secure Linux
+	versions.
+	* Added lscs.conf to share directory so app developers can "just use it"
+	* Fixed architectural flaw where .conf file had to be resource compiled
+	into program. This mean it could never be compiled into tools. Added
+	AA_UseSystemConf to work around this design flaw.
+	* Converted tools so they can run from anywhere.
+	* Eliminated tilde expansion code duplication.
+	* Added simple-text-editor example
+LsCs (0.1.0) unstable; urgency=low
 
-  * Initial Release.  placeholder changelog until we decide what to do
+	* Initial branding change.
+	* Added astyle file to help enforce coding style change.
+	* Added check for root in build script.
+	* Added console example and script to build examples.
+	* pkgconfig relocation.
+	* Standardized Ubuntu 20.04 as primary development platform.
 

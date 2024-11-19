@@ -27,11 +27,11 @@
 #include <QtDBus/qdbusmacros.h>
 #include <QtCore/qstring.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
 struct DBusError;
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusMessage;
 
@@ -93,7 +93,7 @@ private:
 
 Q_DBUS_EXPORT QDebug operator<<( QDebug, const QDBusError & );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

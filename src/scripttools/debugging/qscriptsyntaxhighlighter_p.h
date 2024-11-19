@@ -27,13 +27,13 @@
 
 #include <QtCore/qglobal.h>
 
-#ifndef QT_NO_SYNTAXHIGHLIGHTER
+#ifndef LSCS_NO_SYNTAXHIGHLIGHTER
 
 #include <QtGui/qsyntaxhighlighter.h>
 
 #include <QtGui/qtextformat.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptSyntaxHighlighter : public QSyntaxHighlighter
 {
@@ -61,8 +61,8 @@ private:
     Q_DISABLE_COPY( QScriptSyntaxHighlighter )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_SYNTAXHIGHLIGHTER
+#endif // LSCS_NO_SYNTAXHIGHLIGHTER
 
 #endif

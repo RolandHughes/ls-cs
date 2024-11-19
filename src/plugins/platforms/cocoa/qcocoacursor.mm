@@ -53,7 +53,7 @@ void QCocoaCursor::changeCursor(QCursor *cursor, QWindow *window)
 
 QPoint QCocoaCursor::pos() const
 {
-   return qt_mac_flipPoint([NSEvent mouseLocation]).toPoint();
+   return lscs_mac_flipPoint([NSEvent mouseLocation]).toPoint();
 }
 
 void QCocoaCursor::setPos(const QPoint &position)
@@ -159,9 +159,9 @@ NSCursor *QCocoaCursor::createCursorData(QCursor *cursor)
     * 0xFF x 0xFF == fully opaque black
     * 0x00 x 0x00 == fully transparent
     */
-#define QT_USE_APPROXIMATE_CURSORS
+#define LSCS_USE_APPROXIMATE_CURSORS
 
-#ifdef QT_USE_APPROXIMATE_CURSORS
+#ifdef LSCS_USE_APPROXIMATE_CURSORS
    static const uchar cur_ver_bits[] = {
       0x00, 0x00, 0x00, 0x00, 0x01, 0x80, 0x03, 0xc0, 0x07, 0xe0, 0x0f, 0xf0,
       0x01, 0x80, 0x01, 0x80, 0x01, 0x80, 0x01, 0x80, 0x01, 0x80, 0x0f, 0xf0,
@@ -263,9 +263,9 @@ NSCursor *QCocoaCursor::createCursorData(QCursor *cursor)
          break;
       }
 
-#define QT_USE_APPROXIMATE_CURSORS
+#define LSCS_USE_APPROXIMATE_CURSORS
 
-#ifdef QT_USE_APPROXIMATE_CURSORS
+#ifdef LSCS_USE_APPROXIMATE_CURSORS
       case Qt::SizeVerCursor:
          cursorData = cur_ver_bits;
          cursorMaskData = mcur_ver_bits;
@@ -346,14 +346,14 @@ NSCursor *QCocoaCursor::createCursorFromPixmap(const QPixmap pixmap, const QPoin
    if (pixmap.devicePixelRatio() > 1.0) {
       QSize layoutSize = pixmap.size() / pixmap.devicePixelRatio();
       QPixmap scaledPixmap = pixmap.scaled(layoutSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-      nsimage = static_cast<NSImage *>(qt_mac_create_nsimage(scaledPixmap));
-      CGImageRef cgImage = qt_mac_toCGImage(pixmap.toImage());
+      nsimage = static_cast<NSImage *>(lscs_mac_create_nsimage(scaledPixmap));
+      CGImageRef cgImage = lscs_mac_toCGImage(pixmap.toImage());
       NSBitmapImageRep *imageRep = [[NSBitmapImageRep alloc] initWithCGImage: cgImage];
       [nsimage addRepresentation: imageRep];
       [imageRep release];
       CGImageRelease(cgImage);
    } else {
-      nsimage = static_cast<NSImage *>(qt_mac_create_nsimage(pixmap));
+      nsimage = static_cast<NSImage *>(lscs_mac_create_nsimage(pixmap));
    }
 
    NSCursor *nsCursor = [[NSCursor alloc] initWithImage: nsimage hotSpot: hotSpot];

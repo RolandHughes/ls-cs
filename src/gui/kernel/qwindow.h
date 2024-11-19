@@ -34,7 +34,7 @@
 #include <qwindowdefs.h>
 #include <qicon.h>
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 #include <qcursor.h>
 #endif
 
@@ -48,13 +48,13 @@ class QHideEvent;
 class QKeyEvent;
 class QMouseEvent;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 class QWheelEvent;
 #endif
 
 class QTouchEvent;
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 class QTabletEvent;
 #endif
 
@@ -304,7 +304,7 @@ public:
     QPoint mapToGlobal( const QPoint &pos ) const;
     QPoint mapFromGlobal( const QPoint &pos ) const;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QCursor cursor() const;
     void setCursor( const QCursor &cursor );
     void unsetCursor();
@@ -436,13 +436,13 @@ protected:
     virtual void mouseDoubleClickEvent( QMouseEvent *event );
     virtual void mouseMoveEvent( QMouseEvent *event );
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     virtual void wheelEvent( QWheelEvent *event );
 #endif
 
     virtual void touchEvent( QTouchEvent *event );
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
     virtual void tabletEvent( QTabletEvent *event );
 #endif
 
@@ -467,7 +467,7 @@ private:
     friend class QApplicationPrivate;
     friend class QWindowContainer;
 
-    friend Q_GUI_EXPORT QWindowPrivate *qt_window_private( QWindow *window );
+    friend Q_GUI_EXPORT QWindowPrivate *lscs_window_private( QWindow *window );
 };
 
 Q_GUI_EXPORT QDebug operator<<( QDebug, const QWindow * );

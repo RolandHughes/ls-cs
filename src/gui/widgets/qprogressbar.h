@@ -26,7 +26,7 @@
 
 #include <qframe.h>
 
-#ifndef QT_NO_PROGRESSBAR
+#ifndef LSCS_NO_PROGRESSBAR
 
 class QProgressBarPrivate;
 class QStyleOptionProgressBar;
@@ -141,6 +141,6 @@ private:
     Q_DECLARE_PRIVATE( QProgressBar )
 };
 
-#endif // QT_NO_PROGRESSBAR
+#endif // LSCS_NO_PROGRESSBAR
 
 #endif

@@ -23,7 +23,7 @@
 
 #include <qheaderview.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 #include <qbitarray.h>
 #include <qbrush.h>
@@ -2263,7 +2263,7 @@ void QHeaderView::mouseMoveEvent( QMouseEvent *e )
         case QHeaderViewPrivate::NoState:
         {
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
             int handle = d->sectionHandleAt( pos );
             bool hasCursor = testAttribute( Qt::WA_SetCursor );
 
@@ -2365,7 +2365,7 @@ void QHeaderView::mouseDoubleClickEvent( QMouseEvent *e )
     {
         emit sectionHandleDoubleClicked( handle );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
         Qt::CursorShape splitCursor = ( d->orientation == Qt::Horizontal )
                                       ? Qt::SplitHCursor : Qt::SplitVCursor;
 
@@ -2396,7 +2396,7 @@ bool QHeaderView::viewportEvent( QEvent *e )
     switch ( e->type() )
     {
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
         case QEvent::ToolTip:
         {
@@ -2419,7 +2419,7 @@ bool QHeaderView::viewportEvent( QEvent *e )
 
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
         case QEvent::QueryWhatsThis:
         {
@@ -2457,7 +2457,7 @@ bool QHeaderView::viewportEvent( QEvent *e )
 
 #endif
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
 
         case QEvent::StatusTip:
         {
@@ -4057,4 +4057,4 @@ void QHeaderView::_q_layoutAboutToBeChanged()
     d->_q_layoutAboutToBeChanged();
 }
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS

@@ -27,7 +27,7 @@
 #include <qpointer.h>
 #include <qvideowidget.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 #include <qglwidget.h>
 #endif
 

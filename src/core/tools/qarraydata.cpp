@@ -32,14 +32,14 @@
 
 static QArrayData *qtArray()
 {
-    static const QArrayData qt_array[3] =
+    static const QArrayData lscs_array[3] =
     {
         { Q_REFCOUNT_INITIALIZE_STATIC, 0, 0, 0, sizeof( QArrayData ) }, // shared empty
         { { 0 }, 0, 0, 0, sizeof( QArrayData ) },                       // unsharable empty
         { { 0 }, 0, 0, 0, 0 }                                           // zero initialized element
     };
 
-    return const_cast<QArrayData *>( qt_array );
+    return const_cast<QArrayData *>( lscs_array );
 }
 
 QArrayData *QArrayData::sharedNull()
@@ -57,12 +57,12 @@ QArrayData *QArrayData::sharedNull()
 #pragma GCC diagnostic pop
 #endif
 
-static const QArrayData &qt_array_empty()
+static const QArrayData &lscs_array_empty()
 {
     return qtArray()[0];
 }
 
-static const QArrayData &qt_array_unsharable_empty()
+static const QArrayData &lscs_array_unsharable_empty()
 {
     return qtArray()[1];
 }
@@ -78,12 +78,12 @@ QArrayData *QArrayData::allocate( size_t objectSize, size_t alignment, size_t ca
 
         if ( options & Unsharable )
         {
-            return const_cast<QArrayData *>( &qt_array_unsharable_empty() );
+            return const_cast<QArrayData *>( &lscs_array_unsharable_empty() );
 
         }
         else
         {
-            return const_cast<QArrayData *>( &qt_array_empty() );
+            return const_cast<QArrayData *>( &lscs_array_empty() );
 
         }
     }
@@ -133,7 +133,7 @@ void QArrayData::deallocate( QArrayData *data, size_t objectSize, size_t alignme
     ( void ) objectSize;
     ( void ) alignment;
 
-    if ( data == &qt_array_unsharable_empty() )
+    if ( data == &lscs_array_unsharable_empty() )
     {
         return;
     }

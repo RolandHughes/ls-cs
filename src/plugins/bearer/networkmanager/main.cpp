@@ -25,10 +25,10 @@
 #include <qbearerplugin_p.h>
 #include <qdebug.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QNetworkManagerEnginePlugin : public QBearerEnginePlugin
 {
@@ -75,7 +75,7 @@ QBearerEngine *QNetworkManagerEnginePlugin::create( const QString &key ) const
 Q_EXPORT_STATIC_PLUGIN( QNetworkManagerEnginePlugin )
 Q_EXPORT_PLUGIN2( qnmbearer, QNetworkManagerEnginePlugin )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_DBUS
+#endif // LSCS_NO_BEARERMANAGEMENT

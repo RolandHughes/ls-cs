@@ -28,23 +28,23 @@
 #include <qapplication.h>
 #include <qwindows_style_p.h>
 
-#ifndef QT_NO_STYLE_FUSION
+#ifndef LSCS_NO_STYLE_FUSION
 #include <qfusionstyle_p.h>
 #endif
 
-#ifndef QT_NO_STYLE_GTK
+#ifndef LSCS_NO_STYLE_GTK
 #include <qgtkstyle_p.h>
 #endif
 
-#ifndef QT_NO_STYLE_WINDOWSXP
+#ifndef LSCS_NO_STYLE_WINDOWSXP
 #include <qwindows_xpstyle_p.h>
 #endif
 
-#ifndef QT_NO_STYLE_WINDOWSVISTA
+#ifndef LSCS_NO_STYLE_WINDOWSVISTA
 #include <qwindows_vistastyle_p.h>
 #endif
 
-#if !defined(QT_NO_STYLE_MAC) && defined(Q_OS_DARWIN)
+#if !defined(LSCS_NO_STYLE_MAC) && defined(Q_OS_DARWIN)
 #include <qmacstyle.h>
 #endif
 
@@ -59,7 +59,7 @@ QStyle *QStyleFactory::create( const QString &key )
     QStyle *retval = nullptr;
     QString style  = key.toLower();
 
-#ifndef QT_NO_STYLE_WINDOWS
+#ifndef LSCS_NO_STYLE_WINDOWS
 
     if ( style == "windows" )
     {
@@ -68,7 +68,7 @@ QStyle *QStyleFactory::create( const QString &key )
     else
 #endif
 
-#ifndef QT_NO_STYLE_WINDOWSXP
+#ifndef LSCS_NO_STYLE_WINDOWSXP
         if ( style == "windowsxp" )
         {
             retval = new QWindowsXPStyle;
@@ -76,7 +76,7 @@ QStyle *QStyleFactory::create( const QString &key )
         else
 #endif
 
-#ifndef QT_NO_STYLE_WINDOWSVISTA
+#ifndef LSCS_NO_STYLE_WINDOWSVISTA
             if ( style == "windowsvista" )
             {
                 retval = new QWindowsVistaStyle;
@@ -84,7 +84,7 @@ QStyle *QStyleFactory::create( const QString &key )
             else
 #endif
 
-#ifndef QT_NO_STYLE_FUSION
+#ifndef LSCS_NO_STYLE_FUSION
                 if ( style == "fusion" )
                 {
                     retval = new QFusionStyle;
@@ -92,7 +92,7 @@ QStyle *QStyleFactory::create( const QString &key )
                 else
 #endif
 
-#ifndef QT_NO_STYLE_GTK
+#ifndef LSCS_NO_STYLE_GTK
                     if ( style == "gtk" || style == "gtk+" )
                     {
                         retval = new QGtkStyle;
@@ -100,7 +100,7 @@ QStyle *QStyleFactory::create( const QString &key )
                     else
 #endif
 
-#ifndef QT_NO_STYLE_MAC
+#ifndef LSCS_NO_STYLE_MAC
                         if ( style.startsWith( "macintosh" ) )
                         {
                             retval = new QMacStyle;
@@ -130,7 +130,7 @@ QStringList QStyleFactory::keys()
     auto keySet = loader()->keySet();
     list.append( keySet.toList() );
 
-#ifndef QT_NO_STYLE_WINDOWS
+#ifndef LSCS_NO_STYLE_WINDOWS
 
     if ( ! list.contains( "Windows" ) )
     {
@@ -139,7 +139,7 @@ QStringList QStyleFactory::keys()
 
 #endif
 
-#ifndef QT_NO_STYLE_WINDOWSXP
+#ifndef LSCS_NO_STYLE_WINDOWSXP
 
     if ( ! list.contains( "WindowsXP" ) &&
             ( QSysInfo::WindowsVersion >= QSysInfo::WV_XP && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based ) ) )
@@ -149,7 +149,7 @@ QStringList QStyleFactory::keys()
 
 #endif
 
-#ifndef QT_NO_STYLE_WINDOWSVISTA
+#ifndef LSCS_NO_STYLE_WINDOWSVISTA
 
     if ( ! list.contains( "WindowsVista" ) &&
             ( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based ) ) )
@@ -159,7 +159,7 @@ QStringList QStyleFactory::keys()
 
 #endif
 
-#ifndef QT_NO_STYLE_GTK
+#ifndef LSCS_NO_STYLE_GTK
 
     if ( ! list.contains( "GTK+" ) )
     {
@@ -168,7 +168,7 @@ QStringList QStyleFactory::keys()
 
 #endif
 
-#ifndef QT_NO_STYLE_FUSION
+#ifndef LSCS_NO_STYLE_FUSION
 
     if ( ! list.contains( "Fusion" ) )
     {
@@ -177,7 +177,7 @@ QStringList QStyleFactory::keys()
 
 #endif
 
-#ifndef QT_NO_STYLE_MAC
+#ifndef LSCS_NO_STYLE_MAC
     QString mstyle = "Macintosh";
 
     if ( !list.contains( mstyle ) )

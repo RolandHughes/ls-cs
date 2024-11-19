@@ -26,7 +26,7 @@
 
 #include <qabstractitemview.h>
 
-#ifndef QT_NO_LISTVIEW
+#ifndef LSCS_NO_LISTVIEW
 
 class QListViewPrivate;
 
@@ -201,14 +201,14 @@ protected:
     void mouseMoveEvent( QMouseEvent *event ) override;
     void mouseReleaseEvent( QMouseEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 
     void timerEvent( QTimerEvent *event ) override;
     void resizeEvent( QResizeEvent *event ) override;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void dragMoveEvent( QDragMoveEvent *event ) override;
     void dragLeaveEvent( QDragLeaveEvent *event ) override;
     void dropEvent( QDropEvent *event ) override;
@@ -244,6 +244,6 @@ private:
     int visualIndex( const QModelIndex &index ) const;
 };
 
-#endif // QT_NO_LISTVIEW
+#endif // LSCS_NO_LISTVIEW
 
 #endif

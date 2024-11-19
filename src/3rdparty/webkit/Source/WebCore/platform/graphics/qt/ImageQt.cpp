@@ -52,7 +52,7 @@
 #include <math.h>
 
 #if OS(WINDOWS)
-Q_GUI_EXPORT QPixmap qt_pixmapFromWinHBITMAP( HBITMAP bitmap, int hbitmapFormat = 0 );
+Q_GUI_EXPORT QPixmap lscs_pixmapFromWinHBITMAP( HBITMAP bitmap, int hbitmapFormat = 0 );
 #endif
 
 // This function loads resources into WebKit
@@ -323,7 +323,7 @@ void BitmapImage::checkForSolidColor()
 
 PassRefPtr<BitmapImage> BitmapImage::create( HBITMAP hBitmap )
 {
-    return BitmapImage::create( new QPixmap( qt_pixmapFromWinHBITMAP( hBitmap ) ) );
+    return BitmapImage::create( new QPixmap( lscs_pixmapFromWinHBITMAP( hBitmap ) ) );
 }
 #endif
 

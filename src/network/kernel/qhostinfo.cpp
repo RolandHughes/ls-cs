@@ -140,7 +140,7 @@ QHostInfo QHostInfo::fromName( const QString &name )
     return hostInfo;
 }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 QHostInfo QHostInfoPrivate::fromName( const QString &name, QSharedPointer<QNetworkSession> session )
 {
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
@@ -530,7 +530,7 @@ void QHostInfoLookupManager::lookupFinished( QHostInfoRunnable *r )
 }
 
 // returns immediately when a result is in the cache, else it will later emit a signal
-QHostInfo qt_qhostinfo_lookup( const QString &name, QObject *receiver, const QString &member, bool *valid, int *id )
+QHostInfo lscs_qhostinfo_lookup( const QString &name, QObject *receiver, const QString &member, bool *valid, int *id )
 {
     *valid = false;
     *id = -1;
@@ -555,7 +555,7 @@ QHostInfo qt_qhostinfo_lookup( const QString &name, QObject *receiver, const QSt
     return QHostInfo();
 }
 
-void qt_qhostinfo_clear_cache()
+void lscs_qhostinfo_clear_cache()
 {
     QAbstractHostInfoLookupManager *manager = lscs_HostInfoLookupManager();
 
@@ -565,7 +565,7 @@ void qt_qhostinfo_clear_cache()
     }
 }
 
-void qt_qhostinfo_enable_cache( bool e )
+void lscs_qhostinfo_enable_cache( bool e )
 {
     QAbstractHostInfoLookupManager *manager = lscs_HostInfoLookupManager();
 
@@ -575,7 +575,7 @@ void qt_qhostinfo_enable_cache( bool e )
     }
 }
 
-void qt_qhostinfo_cache_inject( const QString &hostname, const QHostInfo &resolution )
+void lscs_qhostinfo_cache_inject( const QString &hostname, const QHostInfo &resolution )
 {
     QAbstractHostInfoLookupManager *manager = lscs_HostInfoLookupManager();
 
@@ -591,7 +591,7 @@ void qt_qhostinfo_cache_inject( const QString &hostname, const QHostInfo &resolu
 QHostInfoCache::QHostInfoCache()
     : max_age( 60 ), enabled( true ), cache( 128 )
 {
-#ifdef QT_QHOSTINFO_CACHE_DISABLED_BY_DEFAULT
+#ifdef LSCS_QHOSTINFO_CACHE_DISABLED_BY_DEFAULT
     enabled = false;
 #endif
 }

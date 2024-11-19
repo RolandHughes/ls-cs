@@ -27,7 +27,7 @@
 #include <qvalidator.h>
 #include <qwidget.h>
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
 class QLineEdit;
 class QAbstractSpinBoxPrivate;
@@ -168,7 +168,7 @@ protected:
     void keyPressEvent( QKeyEvent *event ) override;
     void keyReleaseEvent( QKeyEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 
@@ -207,6 +207,6 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QAbstractSpinBox::StepEnabled )
 
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX
 
 #endif

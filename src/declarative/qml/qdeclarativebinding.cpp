@@ -36,7 +36,7 @@
 #include <QVariant>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE QDeclarativeAbstractBinding::QDeclarativeAbstractBinding()
+LSCS_BEGIN_NAMESPACE QDeclarativeAbstractBinding::QDeclarativeAbstractBinding()
     : m_object( 0 ), m_propertyIndex( -1 ), m_mePtr( 0 ), m_prevBinding( 0 ), m_nextBinding( 0 )
 {
 }
@@ -711,4 +711,4 @@ void QDeclarativeValueTypeProxyBinding::removeBindings( quint32 mask )
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

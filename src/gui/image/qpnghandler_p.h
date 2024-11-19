@@ -26,7 +26,7 @@
 
 #include <qimageiohandler.h>
 
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
 
 class QPngHandlerPrivate;
 
@@ -53,5 +53,5 @@ private:
 };
 
 
-#endif // QT_NO_IMAGEFORMAT_PNG
+#endif // LSCS_NO_IMAGEFORMAT_PNG
 #endif

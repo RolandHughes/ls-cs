@@ -44,9 +44,9 @@ struct ClassInfoEntry
 static const ClassInfoEntry qclass_lib_map[] =
 {
 
-#define QT_CLASS_LIB(Name, Library, Header) { #Name, #Library, #Header },
+#define LSCS_CLASS_LIB(Name, Library, Header) { #Name, #Library, #Header },
 #include <qclass_lib_map.h>
-#undef QT_CLASS_LIB
+#undef LSCS_CLASS_LIB
 
 };
 

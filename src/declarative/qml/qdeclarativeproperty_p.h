@@ -29,7 +29,7 @@
 #include <qdeclarativepropertycache_p.h>
 #include <qdeclarativeguard_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeContext;
 class QDeclarativeEnginePrivate;
@@ -112,6 +112,6 @@ public:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QDeclarativePropertyPrivate::WriteFlags )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEPROPERTY_P_H

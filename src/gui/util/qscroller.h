@@ -32,7 +32,7 @@ class QScrollerPrivate;
 class QScrollerProperties;
 class QWidget;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 class QFlickGestureRecognizer;
 class QMouseFlickGestureRecognizer;
 #endif
@@ -82,7 +82,7 @@ public:
     static QScroller *scroller( QObject *target );
     static const QScroller *scroller( const QObject *target );
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     static Qt::GestureType grabGesture( QObject *target, ScrollerGestureType gestureType = TouchGesture );
     static Qt::GestureType grabbedGesture( QObject *target );
     static void ungrabGesture( QObject *target );
@@ -140,7 +140,7 @@ private:
 
     QScrollerPrivate *d_ptr;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     friend class QFlickGestureRecognizer;
 #endif
 };

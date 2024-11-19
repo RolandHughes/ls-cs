@@ -35,7 +35,7 @@
 // Create default time zone using appropriate backend
 static QTimeZonePrivate *newBackendTimeZone()
 {
-#ifdef QT_NO_SYSTEMLOCALE
+#ifdef LSCS_NO_SYSTEMLOCALE
     return new QUtcTimeZonePrivate();
 
 #else
@@ -889,7 +889,7 @@ void QUtcTimeZonePrivate::serialize( QDataStream &stream ) const
 // Create named time zone using appropriate backend
 static QTimeZonePrivate *newBackendTimeZone( const QByteArray &ianaId )
 {
-#ifdef QT_NO_SYSTEMLOCALE
+#ifdef LSCS_NO_SYSTEMLOCALE
     return new QUtcTimeZonePrivate( ianaId );
 
 #else
@@ -924,7 +924,7 @@ public:
     // The backend_tz is the tz to use in static methods such as availableTimeZoneIds() and
     // isTimeZoneIdAvailable() and to create named IANA time zones.  This is usually the host
     // system, but may be different if the host resources are insufficient or if
-    // QT_NO_SYSTEMLOCALE is set. A simple UTC backend is used if no alternative is available.
+    // LSCS_NO_SYSTEMLOCALE is set. A simple UTC backend is used if no alternative is available.
 
     QSharedDataPointer<QTimeZonePrivate> backend;
 };

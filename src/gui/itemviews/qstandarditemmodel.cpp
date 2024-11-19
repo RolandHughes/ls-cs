@@ -23,7 +23,7 @@
 
 #include <qstandarditemmodel.h>
 
-#ifndef QT_NO_STANDARDITEMMODEL
+#ifndef LSCS_NO_STANDARDITEMMODEL
 
 #include <qalgorithms.h>
 #include <qdatetime.h>
@@ -956,7 +956,7 @@ void QStandardItem::setUserTristate( bool tristate )
     d->changeFlags( tristate, Qt::ItemIsUserTristate );
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 void QStandardItem::setDragEnabled( bool dragEnabled )
 {
@@ -2418,4 +2418,4 @@ void QStandardItemModel::_q_emitItemChanged( const QModelIndex &topLeft, const Q
     d->_q_emitItemChanged( topLeft, bottomRight );
 }
 
-#endif // QT_NO_STANDARDITEMMODEL
+#endif // LSCS_NO_STANDARDITEMMODEL

@@ -32,7 +32,7 @@
 #include <QtCore/qcoreevent.h>
 #include <QtCore/qcoreapplication.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
   \class QScriptDebuggerFrontend
@@ -236,4 +236,4 @@ int QScriptDebuggerFrontend::scheduledCommandCount() const
   complete.
 */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

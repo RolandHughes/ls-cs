@@ -23,7 +23,7 @@
 
 #include <qpaintengine_pic_p.h>
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
 
 #include <qbuffer.h>
 #include <qbytearray.h>
@@ -88,7 +88,7 @@ bool QPicturePaintEngine::begin( QPaintDevice *pd )
     d->s.setVersion( d->pic_d->formatMajor );
 
     d->pic_d->pictb.open( QIODevice::WriteOnly | QIODevice::Truncate );
-    d->s.writeRawData( qt_mfhdr_tag, 4 );
+    d->s.writeRawData( lscs_mfhdr_tag, 4 );
     d->s << ( quint16 ) 0 << ( quint16 ) d->pic_d->formatMajor << ( quint16 ) d->pic_d->formatMinor;
     d->s << ( quint8 ) QPicturePrivate::PdcBegin << ( quint8 ) sizeof( qint32 );
     d->pic_d->brect = QRect();
@@ -580,7 +580,7 @@ void QPicturePaintEngine::drawTextItem( const QPointF &p, const QTextItem &ti )
             justificationWidth = si.width.toReal();
         }
 
-        d->s << p << ti.text() << fnt << ti.renderFlags() << double( fnt.d->dpi ) / qt_defaultDpi() << justificationWidth;
+        d->s << p << ti.text() << fnt << ti.renderFlags() << double( fnt.d->dpi ) / lscs_defaultDpi() << justificationWidth;
         writeCmdLength( pos, /*brect=*/QRectF(), /*corr=*/false );
 
     }

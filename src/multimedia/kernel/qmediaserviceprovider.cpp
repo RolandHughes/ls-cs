@@ -754,18 +754,18 @@ int QMediaServiceProvider::cameraOrientation( const QString &device ) const
     return 0;
 }
 
-static QMediaServiceProvider *qt_defaultMediaServiceProvider = nullptr;
+static QMediaServiceProvider *lscs_defaultMediaServiceProvider = nullptr;
 
 void QMediaServiceProvider::setDefaultServiceProvider( QMediaServiceProvider *provider )
 {
-    qt_defaultMediaServiceProvider = provider;
+    lscs_defaultMediaServiceProvider = provider;
 }
 
 QMediaServiceProvider *QMediaServiceProvider::defaultServiceProvider()
 {
-    if ( qt_defaultMediaServiceProvider != nullptr )
+    if ( lscs_defaultMediaServiceProvider != nullptr )
     {
-        return qt_defaultMediaServiceProvider;
+        return lscs_defaultMediaServiceProvider;
 
     }
     else

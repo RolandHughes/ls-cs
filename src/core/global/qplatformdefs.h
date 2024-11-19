@@ -118,7 +118,7 @@
 #define _UNICODE
 #endif
 
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <direct.h>
 #include <errno.h>
@@ -149,96 +149,96 @@ using PEXTENDED_NAME_FORMAT = *EXTENDED_NAME_FORMAT;
 
 #endif
 
-#ifdef QT_LARGEFILE_SUPPORT
+#ifdef LSCS_LARGEFILE_SUPPORT
 
-#define QT_STATBUF            struct _stati64      // non-ANSI defs
-#define QT_STATBUF4TSTAT      struct _stati64      // non-ANSI defs
-#define QT_STAT               ::_stati64
-#define QT_FSTAT              ::_fstati64
+#define LSCS_STATBUF            struct _stati64      // non-ANSI defs
+#define LSCS_STATBUF4TSTAT      struct _stati64      // non-ANSI defs
+#define LSCS_STAT               ::_stati64
+#define LSCS_FSTAT              ::_fstati64
 
 #else
-#define QT_STATBUF            struct _stat         // non-ANSI defs
-#define QT_STATBUF4TSTAT      struct _stat         // non-ANSI defs
-#define QT_STAT               ::_stat
-#define QT_FSTAT              ::_fstat
+#define LSCS_STATBUF            struct _stat         // non-ANSI defs
+#define LSCS_STATBUF4TSTAT      struct _stat         // non-ANSI defs
+#define LSCS_STAT               ::_stat
+#define LSCS_FSTAT              ::_fstat
 
 #endif
 
-#define QT_STAT_REG           _S_IFREG
-#define QT_STAT_DIR           _S_IFDIR
-#define QT_STAT_MASK          _S_IFMT
+#define LSCS_STAT_REG           _S_IFREG
+#define LSCS_STAT_DIR           _S_IFDIR
+#define LSCS_STAT_MASK          _S_IFMT
 
 #if defined(_S_IFLNK)
-#define QT_STAT_LNK           _S_IFLNK
+#define LSCS_STAT_LNK           _S_IFLNK
 #endif
 
-#define QT_FILENO             _fileno
-#define QT_OPEN               ::_open
-#define QT_CLOSE              ::_close
+#define LSCS_FILENO             _fileno
+#define LSCS_OPEN               ::_open
+#define LSCS_CLOSE              ::_close
 
 //  block A
-#ifdef QT_LARGEFILE_SUPPORT
-#define QT_LSEEK              ::_lseeki64
+#ifdef LSCS_LARGEFILE_SUPPORT
+#define LSCS_LSEEK              ::_lseeki64
 
 #ifndef UNICODE
-#define QT_TSTAT              ::_stati64
+#define LSCS_TSTAT              ::_stati64
 #else
-#define QT_TSTAT              ::_wstati64
+#define LSCS_TSTAT              ::_wstati64
 #endif
 
 #else
-#define QT_LSEEK              ::_lseek
+#define LSCS_LSEEK              ::_lseek
 
 #ifndef UNICODE
-#define QT_TSTAT              ::_stat
+#define LSCS_TSTAT              ::_stat
 #else
-#define QT_TSTAT              ::_wstat
+#define LSCS_TSTAT              ::_wstat
 #endif
 
 #endif  // end block A
 
-#define QT_READ               ::_read
-#define QT_WRITE              ::_write
-#define QT_ACCESS             ::_access
-#define QT_GETCWD             ::_getcwd
-#define QT_CHDIR              ::_chdir
-#define QT_MKDIR              ::_mkdir
-#define QT_RMDIR              ::_rmdir
+#define LSCS_READ               ::_read
+#define LSCS_WRITE              ::_write
+#define LSCS_ACCESS             ::_access
+#define LSCS_GETCWD             ::_getcwd
+#define LSCS_CHDIR              ::_chdir
+#define LSCS_MKDIR              ::_mkdir
+#define LSCS_RMDIR              ::_rmdir
 
-#define QT_OPEN_LARGEFILE     0
-#define QT_OPEN_RDONLY        _O_RDONLY
-#define QT_OPEN_WRONLY        _O_WRONLY
-#define QT_OPEN_RDWR          _O_RDWR
-#define QT_OPEN_CREAT         _O_CREAT
-#define QT_OPEN_TRUNC         _O_TRUNC
-#define QT_OPEN_APPEND        _O_APPEND
+#define LSCS_OPEN_LARGEFILE     0
+#define LSCS_OPEN_RDONLY        _O_RDONLY
+#define LSCS_OPEN_WRONLY        _O_WRONLY
+#define LSCS_OPEN_RDWR          _O_RDWR
+#define LSCS_OPEN_CREAT         _O_CREAT
+#define LSCS_OPEN_TRUNC         _O_TRUNC
+#define LSCS_OPEN_APPEND        _O_APPEND
 
 #if defined(O_TEXT)
-#define QT_OPEN_TEXT         _O_TEXT
-#define QT_OPEN_BINARY       _O_BINARY
+#define LSCS_OPEN_TEXT         _O_TEXT
+#define LSCS_OPEN_BINARY       _O_BINARY
 #endif
 
-#define QT_FPOS_T              fpos_t
-#define QT_OFF_T               long
+#define LSCS_FPOS_T              fpos_t
+#define LSCS_OFF_T               long
 
-#define QT_FOPEN               ::fopen
-#define QT_FSEEK               ::fseek
-#define QT_FTELL               ::ftell
-#define QT_FGETPOS             ::fgetpos
-#define QT_FSETPOS             ::fsetpos
+#define LSCS_FOPEN               ::fopen
+#define LSCS_FSEEK               ::fseek
+#define LSCS_FTELL               ::ftell
+#define LSCS_FGETPOS             ::fgetpos
+#define LSCS_FSETPOS             ::fsetpos
 
-#ifdef QT_LARGEFILE_SUPPORT
-#undef QT_FSEEK
-#undef QT_FTELL
-#undef QT_OFF_T
+#ifdef LSCS_LARGEFILE_SUPPORT
+#undef LSCS_FSEEK
+#undef LSCS_FTELL
+#undef LSCS_OFF_T
 
-#define QT_FSEEK              ::fseeko64
-#define QT_FTELL              ::ftello64
-#define QT_OFF_T              off64_t
+#define LSCS_FSEEK              ::fseeko64
+#define LSCS_FTELL              ::ftello64
+#define LSCS_OFF_T              off64_t
 #endif
 
-#define QT_SNPRINTF           ::_snprintf
-#define QT_VSNPRINTF          ::_vsnprintf
+#define LSCS_SNPRINTF           ::_snprintf
+#define LSCS_VSNPRINTF          ::_vsnprintf
 
 #define F_OK                  0
 #define X_OK                  1
@@ -257,14 +257,14 @@ using PEXTENDED_NAME_FORMAT = *EXTENDED_NAME_FORMAT;
 #define _GNU_SOURCE
 #endif
 
-#define QT_USE_XOPEN_LFS_EXTENSIONS
+#define LSCS_USE_XOPEN_LFS_EXTENSIONS
 #include <qplatformposix.h>
 
-#undef QT_SOCKLEN_T
-#define QT_SOCKLEN_T          socklen_t
+#undef LSCS_SOCKLEN_T
+#define LSCS_SOCKLEN_T          socklen_t
 
-#define QT_SNPRINTF           ::snprintf
-#define QT_VSNPRINTF          ::vsnprintf
+#define LSCS_SNPRINTF           ::snprintf
+#define LSCS_VSNPRINTF          ::vsnprintf
 
 
 // ***********
@@ -272,14 +272,14 @@ using PEXTENDED_NAME_FORMAT = *EXTENDED_NAME_FORMAT;
 
 #include <qplatformposix.h>
 
-#undef QT_OPEN_LARGEFILE
-#define QT_OPEN_LARGEFILE     0
+#undef LSCS_OPEN_LARGEFILE
+#define LSCS_OPEN_LARGEFILE     0
 
-#undef QT_SOCKLEN_T
-#define QT_SOCKLEN_T          socklen_t
+#undef LSCS_SOCKLEN_T
+#define LSCS_SOCKLEN_T          socklen_t
 
-#define QT_SNPRINTF           ::snprintf
-#define QT_VSNPRINTF          ::vsnprintf
+#define LSCS_SNPRINTF           ::snprintf
+#define LSCS_VSNPRINTF          ::vsnprintf
 
 
 // ***********
@@ -287,11 +287,11 @@ using PEXTENDED_NAME_FORMAT = *EXTENDED_NAME_FORMAT;
 
 #include <qplatformposix.h>
 
-#undef QT_OPEN_LARGEFILE
-#define QT_OPEN_LARGEFILE    0
+#undef LSCS_OPEN_LARGEFILE
+#define LSCS_OPEN_LARGEFILE    0
 
-#define QT_SNPRINTF          ::snprintf
-#define QT_VSNPRINTF         ::vsnprintf
+#define LSCS_SNPRINTF          ::snprintf
+#define LSCS_VSNPRINTF         ::vsnprintf
 
 #endif
 

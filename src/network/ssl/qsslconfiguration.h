@@ -28,7 +28,7 @@
 #include <qsslsocket.h>
 #include <qssl.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 template <typename T>
 class QList;

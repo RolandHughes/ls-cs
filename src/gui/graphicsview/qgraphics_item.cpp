@@ -25,7 +25,7 @@
 
 #include <qgraphicsitem.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qgraphicsscene.h>
 #include <qgraphicssceneevent.h>
@@ -85,14 +85,14 @@ public:
     QHash<const QGraphicsItem *, QMap<int, QVariant>> data;
 };
 
-static QGraphicsItemCustomDataStore *qt_dataStore()
+static QGraphicsItemCustomDataStore *lscs_dataStore()
 {
     static QGraphicsItemCustomDataStore retval;
     return &retval;
 }
 
 // internal
-static QPainterPath qt_graphicsItem_shapeFromPath( const QPainterPath &path, const QPen &pen )
+static QPainterPath lscs_graphicsItem_shapeFromPath( const QPainterPath &path, const QPen &pen )
 {
     // We unfortunately need this adjustment since QPainterPathStroker will set a width of 1.0
     // if we pass a value of 0.0 to QPainterPathStroker::setWidth()
@@ -942,7 +942,7 @@ QGraphicsItem::~QGraphicsItem()
     d_ptr->inDestructor = 1;
     d_ptr->removeExtraItemCache();
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
     if ( d_ptr->isObject && !d_ptr->gestureContext.isEmpty() )
     {
@@ -1000,7 +1000,7 @@ QGraphicsItem::~QGraphicsItem()
         setParentItem( nullptr );
     }
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
     delete d_ptr->graphicsEffect;
 #endif
 
@@ -1016,7 +1016,7 @@ QGraphicsItem::~QGraphicsItem()
 
     delete d_ptr->transformData;
 
-    if ( QGraphicsItemCustomDataStore *dataStore = qt_dataStore() )
+    if ( QGraphicsItemCustomDataStore *dataStore = lscs_dataStore() )
     {
         dataStore->data.remove( this );
     }
@@ -1534,7 +1534,7 @@ bool QGraphicsItem::isBlockedByModalPanel( QGraphicsItem **blockingPanel ) const
     return false;
 }
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
 QString QGraphicsItem::toolTip() const
 {
@@ -1549,7 +1549,7 @@ void QGraphicsItem::setToolTip( const QString &toolTip )
 }
 #endif
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 QCursor QGraphicsItem::cursor() const
 {
     QVariant variant = d_ptr->extra( QGraphicsItemPrivate::ExtraCursor );
@@ -1619,7 +1619,7 @@ void QGraphicsItem::unsetCursor()
         }
     }
 }
-#endif // QT_NO_CURSOR
+#endif // LSCS_NO_CURSOR
 
 bool QGraphicsItem::isVisible() const
 {
@@ -1701,7 +1701,7 @@ void QGraphicsItemPrivate::setVisibleHelper( bool newVisible, bool explicitly,
 
         if ( scene )
         {
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
             invalidateParentGraphicsEffectsRecursively();
 #endif
 
@@ -2099,7 +2099,7 @@ void QGraphicsItem::setOpacity( qreal opacity )
     if ( d_ptr->scene )
     {
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
         d_ptr->invalidateParentGraphicsEffectsRecursively();
 
         if ( ! ( d_ptr->itemFlags & ItemDoesntPropagateOpacityToChildren ) )
@@ -2126,7 +2126,7 @@ void QGraphicsItem::setOpacity( qreal opacity )
     }
 }
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 QGraphicsEffect *QGraphicsItem::graphicsEffect() const
 {
     return d_ptr->graphicsEffect;
@@ -2162,7 +2162,7 @@ void QGraphicsItem::setGraphicsEffect( QGraphicsEffect *effect )
 
 void QGraphicsItemPrivate::updateChildWithGraphicsEffectFlagRecursively()
 {
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
     QGraphicsItemPrivate *itemPrivate = this;
 
     do
@@ -2182,7 +2182,7 @@ void QGraphicsItemPrivate::updateChildWithGraphicsEffectFlagRecursively()
 
 QRectF QGraphicsItemPrivate::effectiveBoundingRect( const QRectF &rect ) const
 {
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
     Q_Q( const QGraphicsItem );
     QGraphicsEffect *effect = graphicsEffect;
 
@@ -2213,7 +2213,7 @@ QRectF QGraphicsItemPrivate::effectiveBoundingRect( const QRectF &rect ) const
 
 QRectF QGraphicsItemPrivate::effectiveBoundingRect( QGraphicsItem *topMostEffectItem ) const
 {
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
     Q_Q( const QGraphicsItem );
 
     QRectF brect = effectiveBoundingRect( q_ptr->boundingRect() );
@@ -3837,7 +3837,7 @@ QList<QGraphicsItem *> QGraphicsItem::collidingItems( Qt::ItemSelectionMode mode
 }
 
 // internal
-static bool qt_QGraphicsItem_isObscured( const QGraphicsItem *item,
+static bool lscs_QGraphicsItem_isObscured( const QGraphicsItem *item,
         const QGraphicsItem *other,
         const QRectF &rect )
 {
@@ -3863,7 +3863,7 @@ bool QGraphicsItem::isObscured( const QRectF &rect ) const
             break;
         }
 
-        if ( qt_QGraphicsItem_isObscured( this, item, testRect ) )
+        if ( lscs_QGraphicsItem_isObscured( this, item, testRect ) )
         {
             return true;
         }
@@ -3879,8 +3879,8 @@ bool QGraphicsItem::isObscuredBy( const QGraphicsItem *item ) const
         return false;
     }
 
-    return qt_closestItemFirst( item, this )
-           && qt_QGraphicsItem_isObscured( this, item, boundingRect() );
+    return lscs_closestItemFirst( item, this )
+           && lscs_QGraphicsItem_isObscured( this, item, boundingRect() );
 }
 
 QPainterPath QGraphicsItem::opaqueArea() const
@@ -3999,7 +3999,7 @@ int QGraphicsItemPrivate::depth() const
 }
 
 // internal
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 void QGraphicsItemPrivate::invalidateParentGraphicsEffectsRecursively()
 {
     QGraphicsItemPrivate *itemPrivate = this;
@@ -4046,7 +4046,7 @@ void QGraphicsItemPrivate::invalidateChildGraphicsEffectsRecursively( QGraphicsI
         childPrivate->invalidateChildGraphicsEffectsRecursively( reason );
     }
 }
-#endif //QT_NO_GRAPHICSEFFECT
+#endif //LSCS_NO_GRAPHICSEFFECT
 
 void QGraphicsItemPrivate::invalidateDepthRecursively()
 {
@@ -4324,7 +4324,7 @@ void QGraphicsItem::update( const QRectF &rect )
 
     // Make sure we notify effects about invalidated source.
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
     d_ptr->invalidateParentGraphicsEffectsRecursively();
 #endif
 
@@ -4852,7 +4852,7 @@ bool QGraphicsItem::isUnderMouse() const
 
 QVariant QGraphicsItem::data( int key ) const
 {
-    QGraphicsItemCustomDataStore *store = qt_dataStore();
+    QGraphicsItemCustomDataStore *store = lscs_dataStore();
 
     if ( !store->data.contains( this ) )
     {
@@ -4864,7 +4864,7 @@ QVariant QGraphicsItem::data( int key ) const
 
 void QGraphicsItem::setData( int key, const QVariant &value )
 {
-    qt_dataStore()->data[this][key] = value;
+    lscs_dataStore()->data[this][key] = value;
 }
 
 int QGraphicsItem::type() const
@@ -5224,18 +5224,18 @@ void QGraphicsItem::mousePressEvent( QGraphicsSceneMouseEvent *event )
 }
 
 // obsolete
-bool _qt_movableAncestorIsSelected( const QGraphicsItem *item )
+bool _lscs_movableAncestorIsSelected( const QGraphicsItem *item )
 {
     const QGraphicsItem *parent = item->parentItem();
     return parent && ( ( ( parent->flags() & QGraphicsItem::ItemIsMovable ) && parent->isSelected() ) ||
-                       _qt_movableAncestorIsSelected( parent ) );
+                       _lscs_movableAncestorIsSelected( parent ) );
 }
 
 bool QGraphicsItemPrivate::movableAncestorIsSelected( const QGraphicsItem *item )
 {
     const QGraphicsItem *parent = item->d_ptr->parent;
     return parent && ( ( ( parent->flags() & QGraphicsItem::ItemIsMovable ) && parent->isSelected() ) ||
-                       _qt_movableAncestorIsSelected( parent ) );
+                       _lscs_movableAncestorIsSelected( parent ) );
 }
 
 void QGraphicsItem::mouseMoveEvent( QGraphicsSceneMouseEvent *event )
@@ -5584,8 +5584,8 @@ void QGraphicsItem::prepareGeometryChange()
 }
 
 // internal
-// This function is a duplicate of qt_graphicsItem_highlightSelected() in qgraphicssvgitem.cpp
-static void qt_graphicsItem_highlightSelected(
+// This function is a duplicate of lscs_graphicsItem_highlightSelected() in qgraphicssvgitem.cpp
+static void lscs_graphicsItem_highlightSelected(
     QGraphicsItem *item, QPainter *painter, const QStyleOptionGraphicsItem *option )
 {
     const QRectF murect = painter->transform().mapRect( QRectF( 0, 0, 1, 1 ) );
@@ -5687,7 +5687,7 @@ bool QGraphicsObject::event( QEvent *ev )
     return QObject::event( ev );
 }
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 void QGraphicsObject::grabGesture( Qt::GestureType gesture, Qt::GestureFlags flags )
 {
@@ -5976,7 +5976,7 @@ QRectF QGraphicsPathItem::boundingRect() const
 QPainterPath QGraphicsPathItem::shape() const
 {
     Q_D( const QGraphicsPathItem );
-    return qt_graphicsItem_shapeFromPath( d->path, d->pen );
+    return lscs_graphicsItem_shapeFromPath( d->path, d->pen );
 }
 
 bool QGraphicsPathItem::contains( const QPointF &point ) const
@@ -5996,7 +5996,7 @@ void QGraphicsPathItem::paint( QPainter *painter, const QStyleOptionGraphicsItem
 
     if ( option->state & QStyle::State_Selected )
     {
-        qt_graphicsItem_highlightSelected( this, painter, option );
+        lscs_graphicsItem_highlightSelected( this, painter, option );
     }
 }
 
@@ -6109,7 +6109,7 @@ QPainterPath QGraphicsRectItem::shape() const
     Q_D( const QGraphicsRectItem );
     QPainterPath path;
     path.addRect( d->rect );
-    return qt_graphicsItem_shapeFromPath( path, d->pen );
+    return lscs_graphicsItem_shapeFromPath( path, d->pen );
 }
 
 bool QGraphicsRectItem::contains( const QPointF &point ) const
@@ -6129,7 +6129,7 @@ void QGraphicsRectItem::paint( QPainter *painter, const QStyleOptionGraphicsItem
 
     if ( option->state & QStyle::State_Selected )
     {
-        qt_graphicsItem_highlightSelected( this, painter, option );
+        lscs_graphicsItem_highlightSelected( this, painter, option );
     }
 }
 
@@ -6306,7 +6306,7 @@ QPainterPath QGraphicsEllipseItem::shape() const
         path.addEllipse( d->rect );
     }
 
-    return qt_graphicsItem_shapeFromPath( path, d->pen );
+    return lscs_graphicsItem_shapeFromPath( path, d->pen );
 }
 
 bool QGraphicsEllipseItem::contains( const QPointF &point ) const
@@ -6334,7 +6334,7 @@ void QGraphicsEllipseItem::paint( QPainter *painter, const QStyleOptionGraphicsI
 
     if ( option->state & QStyle::State_Selected )
     {
-        qt_graphicsItem_highlightSelected( this, painter, option );
+        lscs_graphicsItem_highlightSelected( this, painter, option );
     }
 }
 
@@ -6465,7 +6465,7 @@ QPainterPath QGraphicsPolygonItem::shape() const
     Q_D( const QGraphicsPolygonItem );
     QPainterPath path;
     path.addPolygon( d->polygon );
-    return qt_graphicsItem_shapeFromPath( path, d->pen );
+    return lscs_graphicsItem_shapeFromPath( path, d->pen );
 }
 
 bool QGraphicsPolygonItem::contains( const QPointF &point ) const
@@ -6485,7 +6485,7 @@ void QGraphicsPolygonItem::paint( QPainter *painter, const QStyleOptionGraphicsI
 
     if ( option->state & QStyle::State_Selected )
     {
-        qt_graphicsItem_highlightSelected( this, painter, option );
+        lscs_graphicsItem_highlightSelected( this, painter, option );
     }
 }
 
@@ -6628,7 +6628,7 @@ QPainterPath QGraphicsLineItem::shape() const
 
     path.moveTo( d->line.p1() );
     path.lineTo( d->line.p2() );
-    return qt_graphicsItem_shapeFromPath( path, d->pen );
+    return lscs_graphicsItem_shapeFromPath( path, d->pen );
 }
 
 bool QGraphicsLineItem::contains( const QPointF &point ) const
@@ -6647,7 +6647,7 @@ void QGraphicsLineItem::paint( QPainter *painter, const QStyleOptionGraphicsItem
 
     if ( option->state & QStyle::State_Selected )
     {
-        qt_graphicsItem_highlightSelected( this, painter, option );
+        lscs_graphicsItem_highlightSelected( this, painter, option );
     }
 }
 
@@ -6687,7 +6687,7 @@ QVariant QGraphicsLineItem::extension( const QVariant &variant ) const
     return QVariant();
 }
 
-extern QPainterPath qt_regionToPath( const QRegion &region );
+extern QPainterPath lscs_regionToPath( const QRegion &region );
 
 class QGraphicsPixmapItemPrivate : public QGraphicsItemPrivate
 {
@@ -6720,7 +6720,7 @@ public:
 
                 if ( ! mask.isNull() )
                 {
-                    shape = qt_regionToPath( QRegion( mask ).translated( offset.toPoint() ) );
+                    shape = lscs_regionToPath( QRegion( mask ).translated( offset.toPoint() ) );
                     break;
                 }
 
@@ -6732,8 +6732,8 @@ public:
                 break;
 
             case QGraphicsPixmapItem::HeuristicMaskShape:
-#ifndef QT_NO_IMAGE_HEURISTIC_MASK
-                shape = qt_regionToPath( QRegion( pixmap.createHeuristicMask() ).translated( offset.toPoint() ) );
+#ifndef LSCS_NO_IMAGE_HEURISTIC_MASK
+                shape = lscs_regionToPath( QRegion( pixmap.createHeuristicMask() ).translated( offset.toPoint() ) );
 #else
                 shape.addRect( QRectF( offset.x(), offset.y(), pixmap.width(), pixmap.height() ) );
 #endif
@@ -6868,7 +6868,7 @@ void QGraphicsPixmapItem::paint( QPainter *painter, const QStyleOptionGraphicsIt
 
     if ( option->state & QStyle::State_Selected )
     {
-        qt_graphicsItem_highlightSelected( this, painter, option );
+        lscs_graphicsItem_highlightSelected( this, painter, option );
     }
 }
 
@@ -6997,7 +6997,7 @@ QGraphicsTextItem::~QGraphicsTextItem()
 
 QString QGraphicsTextItem::toHtml() const
 {
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
     if ( dd->control )
     {
@@ -7118,7 +7118,7 @@ void QGraphicsTextItem::paint( QPainter *painter, const QStyleOptionGraphicsItem
 
     if ( option->state & ( QStyle::State_Selected | QStyle::State_HasFocus ) )
     {
-        qt_graphicsItem_highlightSelected( this, painter, option );
+        lscs_graphicsItem_highlightSelected( this, painter, option );
     }
 }
 
@@ -7300,7 +7300,7 @@ void QGraphicsTextItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
 
     if ( widget && ( dd->control->textInteractionFlags() & Qt::TextEditable ) && boundingRect().contains( event->pos() ) )
     {
-        qt_widget_private( widget )->handleSoftwareInputPanel( event->button(), dd->clickCausedFocus );
+        lscs_widget_private( widget )->handleSoftwareInputPanel( event->button(), dd->clickCausedFocus );
     }
 
     dd->clickCausedFocus = 0;
@@ -7785,7 +7785,7 @@ void QGraphicsSimpleTextItem::paint( QPainter *painter, const QStyleOptionGraphi
 
     if ( option->state & ( QStyle::State_Selected | QStyle::State_HasFocus ) )
     {
-        qt_graphicsItem_highlightSelected( this, painter, option );
+        lscs_graphicsItem_highlightSelected( this, painter, option );
     }
 }
 
@@ -7999,7 +7999,7 @@ int QGraphicsItemGroup::type() const
     return Type;
 }
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 QRectF QGraphicsItemEffectSourcePrivate::boundingRect( Qt::CoordinateSystem system ) const
 {
     const bool deviceCoordinates = ( system == Qt::DeviceCoordinates );
@@ -8623,4 +8623,4 @@ void QGraphicsObject::lscs_resetHeight()
     d->resetHeight();
 }
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW

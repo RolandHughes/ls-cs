@@ -26,9 +26,9 @@
 
 #include <qdeclarativeimage_p.h>
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QMovie;
 class QDeclarativeAnimatedImagePrivate;
@@ -97,10 +97,10 @@ private:
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeAnimatedImage )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeAnimatedImage )
 
-#endif // QT_NO_MOVIE
+#endif // LSCS_NO_MOVIE
 
 #endif

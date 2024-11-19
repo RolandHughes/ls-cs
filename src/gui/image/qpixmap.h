@@ -53,7 +53,7 @@ public:
 
     QPixmap( const QString &fileName, const QString &format = QString(), Qt::ImageConversionFlags flags = Qt::AutoColor );
 
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
     explicit QPixmap( const char *const xpm[] );
 #endif
 
@@ -102,7 +102,7 @@ public:
     bool hasAlpha() const;
     bool hasAlphaChannel() const;
 
-#ifndef QT_NO_IMAGE_HEURISTIC_MASK
+#ifndef LSCS_NO_IMAGE_HEURISTIC_MASK
     QBitmap createHeuristicMask( bool clipTight = true ) const;
 #endif
 

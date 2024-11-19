@@ -40,7 +40,7 @@
 #include <qdeclarativenetworkaccessmanagerfactory.h>
 
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class WorkerDataEvent : public QEvent
 {
@@ -406,7 +406,7 @@ QVariant QDeclarativeWorkerScriptEnginePrivate::scriptValueToVariant( const QScr
     else if ( value.isDate() )
     {
         return QVariant( value.toDateTime() );
-#ifndef QT_NO_REGEXP
+#ifndef LSCS_NO_REGEXP
     }
     else if ( value.isRegExp() )
     {
@@ -487,7 +487,7 @@ QScriptValue QDeclarativeWorkerScriptEnginePrivate::variantToScriptValue( const 
     else if ( value.userType() == QVariant::DateTime )
     {
         return engine->newDate( value.toDateTime() );
-#ifndef QT_NO_REGEXP
+#ifndef LSCS_NO_REGEXP
     }
     else if ( value.userType() == QVariant::RegExp )
     {
@@ -862,4 +862,4 @@ bool QDeclarativeWorkerScript::event( QEvent *event )
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

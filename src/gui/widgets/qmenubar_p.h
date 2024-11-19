@@ -28,7 +28,7 @@
 #include <qmenu_p.h>          // Mac needs what in this file
 #include <qplatform_menu.h>
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 class QToolBar;
 class QMenuBarExtension;
 
@@ -114,6 +114,6 @@ public:
     }
 };
 
-#endif // QT_NO_MENUBAR
+#endif // LSCS_NO_MENUBAR
 
 #endif // QMENUBAR_P_H

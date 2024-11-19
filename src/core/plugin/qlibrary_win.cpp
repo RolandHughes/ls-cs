@@ -25,12 +25,12 @@
 #include <qfile.h>
 #include <qfileinfo.h>
 #include <qplatformdefs.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <qfilesystementry_p.h>
 #include <qlibrary_p.h>
 
-extern QString qt_error_string( int code );
+extern QString lscs_error_string( int code );
 
 QStringList QLibraryHandle::suffixes_sys( const QString & )
 {
@@ -83,7 +83,7 @@ bool QLibraryHandle::load_sys()
 
     if ( pHnd == nullptr )
     {
-        errorString = QLibrary::tr( "Unable to load library %1: %2" ).formatArgs( fileName, qt_error_string() );
+        errorString = QLibrary::tr( "Unable to load library %1: %2" ).formatArgs( fileName, lscs_error_string() );
 
     }
     else
@@ -116,7 +116,7 @@ bool QLibraryHandle::unload_sys()
 {
     if ( ! FreeLibrary( pHnd ) )
     {
-        errorString = QLibrary::tr( "Unable to unload library %1: %2" ).formatArgs( fileName, qt_error_string() );
+        errorString = QLibrary::tr( "Unable to unload library %1: %2" ).formatArgs( fileName, lscs_error_string() );
         return false;
     }
 
@@ -131,7 +131,7 @@ void *QLibraryHandle::resolve_sys( const QString &symbol )
     if ( ! address )
     {
         errorString = QLibrary::tr( "resolve_sys(): Unable to resolve symbol \"%1\" in %2. %3" ).formatArgs( symbol, fileName,
-                      qt_error_string() );
+                      lscs_error_string() );
 
         // show the full error message
         qWarning( "%s", lscsPrintable( errorString ) );

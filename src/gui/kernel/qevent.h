@@ -43,7 +43,7 @@
 class QAction;
 class QScreen;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 class QGesture;
 #endif
 
@@ -84,7 +84,7 @@ public:
     QEnterEvent( const QPointF &localPos, const QPointF &windowPos, const QPointF &screenPos );
     ~QEnterEvent();
 
-#ifndef QT_NO_INTEGER_EVENT_COORDINATES
+#ifndef LSCS_NO_INTEGER_EVENT_COORDINATES
     QPoint pos() const
     {
         return l.toPoint();
@@ -154,7 +154,7 @@ public:
 
     ~QMouseEvent();
 
-#ifndef QT_NO_INTEGER_EVENT_COORDINATES
+#ifndef LSCS_NO_INTEGER_EVENT_COORDINATES
     QPoint pos() const
     {
         return l.toPoint();
@@ -233,7 +233,7 @@ public:
     QHoverEvent( Type type, const QPointF &pos, const QPointF &oldPos, Qt::KeyboardModifiers modifiers = Qt::NoModifier );
     ~QHoverEvent();
 
-#ifndef QT_NO_INTEGER_EVENT_COORDINATES
+#ifndef LSCS_NO_INTEGER_EVENT_COORDINATES
     QPoint pos() const
     {
         return p.toPoint();
@@ -260,7 +260,7 @@ protected:
     QPointF op;
 };
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 class Q_GUI_EXPORT QWheelEvent : public QInputEvent
 {
 public:
@@ -308,7 +308,7 @@ public:
         return Qt::Horizontal;
     }
 
-#ifndef QT_NO_INTEGER_EVENT_COORDINATES
+#ifndef LSCS_NO_INTEGER_EVENT_COORDINATES
     QPoint pos() const
     {
         return p.toPoint();
@@ -380,7 +380,7 @@ protected:
 };
 #endif
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 class Q_GUI_EXPORT QTabletEvent : public QInputEvent
 {
     GUI_LSCS_GADGET( QTabletEvent )
@@ -524,7 +524,7 @@ protected:
 };
 #endif
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 class Q_GUI_EXPORT QNativeGestureEvent : public QInputEvent
 {
 public:
@@ -541,7 +541,7 @@ public:
         return mRealValue;
     }
 
-#ifndef QT_NO_INTEGER_EVENT_COORDINATES
+#ifndef LSCS_NO_INTEGER_EVENT_COORDINATES
     const QPoint pos() const
     {
         return mLocalPos.toPoint();
@@ -596,7 +596,7 @@ public:
         return k;
     }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     bool matches( QKeySequence::StandardKey key ) const;
 #endif
 
@@ -801,7 +801,7 @@ public:
     ~QHideEvent();
 };
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 class Q_GUI_EXPORT QContextMenuEvent : public QInputEvent
 {
 public:
@@ -862,7 +862,7 @@ protected:
 };
 #endif
 
-#ifndef QT_NO_INPUTMETHOD
+#ifndef LSCS_NO_INPUTMETHOD
 class Q_GUI_EXPORT QInputMethodEvent : public QEvent
 {
 public:
@@ -954,9 +954,9 @@ private:
     };
     QVector<QueryPair> m_values;
 };
-#endif // QT_NO_INPUTMETHOD
+#endif // LSCS_NO_INPUTMETHOD
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 class QMimeData;
 
@@ -1081,7 +1081,7 @@ public:
     QDragLeaveEvent();
     ~QDragLeaveEvent();
 };
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 
 class Q_GUI_EXPORT QHelpEvent : public QEvent
@@ -1125,7 +1125,7 @@ private:
     QPoint gp;
 };
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
 class Q_GUI_EXPORT QStatusTipEvent : public QEvent
 {
 public:
@@ -1142,7 +1142,7 @@ private:
 };
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 class Q_GUI_EXPORT QWhatsThisClickedEvent : public QEvent
 {
 public:
@@ -1159,7 +1159,7 @@ private:
 };
 #endif
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 class Q_GUI_EXPORT QActionEvent : public QEvent
 {
 public:
@@ -1206,7 +1206,7 @@ private:
     QUrl m_url;
 };
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 class Q_GUI_EXPORT QToolBarChangeEvent : public QEvent
 {
 public:
@@ -1223,7 +1223,7 @@ private:
 };
 #endif
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 class Q_GUI_EXPORT QShortcutEvent : public QEvent
 {
 public:
@@ -1272,7 +1272,7 @@ private:
 
 Q_GUI_EXPORT QDebug operator<<( QDebug, const QEvent *event );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 inline bool operator==( QKeyEvent *e, QKeySequence::StandardKey key )
 {
     return ( e ? e->matches( key ) : false );

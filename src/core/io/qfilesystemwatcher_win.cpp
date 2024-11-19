@@ -24,7 +24,7 @@
 #include <qfilesystemwatcher.h>
 #include <qfilesystemwatcher_win_p.h>
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 
 #include <qdatetime.h>
 #include <qdebug.h>
@@ -485,4 +485,4 @@ void QWindowsFileSystemWatcherEngineThread::wakeup()
     SetEvent( handles.at( 0 ) );
 }
 
-#endif // QT_NO_FILESYSTEMWATCHER
+#endif // LSCS_NO_FILESYSTEMWATCHER

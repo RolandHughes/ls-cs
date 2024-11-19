@@ -30,7 +30,7 @@
 #include <float.h>
 #include <math.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 
 /*!
@@ -728,4 +728,4 @@ QDeclarativePinch *QDeclarativePinchArea::pinch()
 }
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

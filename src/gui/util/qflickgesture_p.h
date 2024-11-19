@@ -31,7 +31,7 @@
 
 #include <qgesture_p.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 class QFlickGesturePrivate;
 class QGraphicsItem;
@@ -77,6 +77,6 @@ private:
     Qt::MouseButton button;          // NoButton == Touch
 };
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
 #endif // QFLICKGESTURE_P_H

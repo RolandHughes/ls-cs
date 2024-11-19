@@ -26,7 +26,7 @@
 
 #include <QtCore/qobjectdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerConsoleCommand;
 
@@ -41,6 +41,6 @@ public:
     QScriptDebuggerConsoleCommand *q_ptr;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

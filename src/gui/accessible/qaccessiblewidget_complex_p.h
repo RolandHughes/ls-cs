@@ -28,7 +28,7 @@
 #include <qaccessiblewidget.h>
 #include <qabstractitemview.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 class QAbstractButton;
 class QHeaderView;
@@ -38,7 +38,7 @@ class QTitleBar;
 class QAbstractScrollArea;
 class QScrollArea;
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 class QAccessibleAbstractScrollArea : public QAccessibleWidget
 {
 public:
@@ -76,7 +76,7 @@ public:
 };
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 class QAccessibleTabBar : public QAccessibleWidget
 {
 public:
@@ -95,7 +95,7 @@ protected:
 };
 #endif
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 class QAccessibleComboBox : public QAccessibleWidget
 {
 public:
@@ -119,6 +119,6 @@ protected:
 };
 #endif
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
 #endif

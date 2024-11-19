@@ -23,7 +23,7 @@
 
 #include <qmdisubwindow_p.h>
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
 
 #include <qapplication.h>
 #include <qdebug.h>
@@ -37,7 +37,7 @@
 #include <qvboxlayout.h>
 #include <qwhatsthis.h>
 
-#if defined(Q_OS_DARWIN) && ! defined(QT_NO_STYLE_MAC)
+#if defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)
 #include <qmacstyle.h>
 #endif
 
@@ -99,8 +99,8 @@ static inline int getResizeDeltaComponent( uint cflags, uint resizeFlag, uint re
     return 0;
 }
 
-#if (defined(Q_OS_DARWIN) && ! defined(QT_NO_STYLE_MAC)) ||  \
-   (defined(QT_NO_MENUBAR) || defined(QT_NO_MAINWINDOW))
+#if (defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)) ||  \
+   (defined(LSCS_NO_MENUBAR) || defined(LSCS_NO_MAINWINDOW))
 
 // do not implement
 
@@ -204,7 +204,7 @@ static inline bool isHoverControl( QStyle::SubControl control )
     return control != QStyle::SC_None && control != QStyle::SC_TitleBarLabel;
 }
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 static void showToolTip( QHelpEvent *helpEvent, QWidget *widget, const QStyleOptionComplex &opt,
                          QStyle::ComplexControl complexControl, QStyle::SubControl subControl )
 {
@@ -212,7 +212,7 @@ static void showToolTip( QHelpEvent *helpEvent, QWidget *widget, const QStyleOpt
     Q_ASSERT( helpEvent->type() == QEvent::ToolTip );
     Q_ASSERT( widget );
 
-#if defined(Q_OS_DARWIN) && !defined(QT_NO_STYLE_MAC)
+#if defined(Q_OS_DARWIN) && !defined(LSCS_NO_STYLE_MAC)
 
     // Native Mac windows do not show tool tip
     if ( qobject_cast<QMacStyle *>( widget->style() ) )
@@ -304,7 +304,7 @@ static void showToolTip( QHelpEvent *helpEvent, QWidget *widget, const QStyleOpt
     const QRect rect = widget->style()->subControlRect( complexControl, &opt, subControl, widget );
     QToolTip::showText( helpEvent->globalPos(), toolTip, widget, rect );
 }
-#endif // QT_NO_TOOLTIP
+#endif // LSCS_NO_TOOLTIP
 
 namespace QMdi
 {
@@ -362,7 +362,7 @@ bool ControlLabel::event( QEvent *event )
         updateWindowIcon();
     }
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     else if ( event->type() == QEvent::ToolTip )
     {
         QStyleOptionTitleBar options;
@@ -633,7 +633,7 @@ void ControllerWidget::leaveEvent( QEvent * )
 
 bool ControllerWidget::event( QEvent *event )
 {
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
     if ( event->type() == QEvent::ToolTip )
     {
@@ -657,7 +657,7 @@ void ControllerWidget::initStyleOption( QStyleOptionComplex *option ) const
 
 ControlContainer::ControlContainer( QMdiSubWindow *mdiChild )
     : QObject( mdiChild ), previousLeft( nullptr ), previousRight( nullptr ),
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
       m_menuBar( nullptr ),
 #endif
       mdiChild( mdiChild )
@@ -682,7 +682,7 @@ ControlContainer::ControlContainer( QMdiSubWindow *mdiChild )
 
     m_menuLabel->setWindowIcon( mdiChild->windowIcon() );
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     connect( tmpLabel, &ControlElement<ControlLabel>::_q_clicked,       mdiChild, &QMdiSubWindow::showSystemMenu );
 #endif
 
@@ -691,7 +691,7 @@ ControlContainer::ControlContainer( QMdiSubWindow *mdiChild )
 
 ControlContainer::~ControlContainer()
 {
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     removeButtonsFromMenuBar();
 #endif
 
@@ -702,11 +702,11 @@ ControlContainer::~ControlContainer()
     m_controllerWidget = nullptr;
 }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
 QMenuBar *QMdiSubWindowPrivate::menuBar() const
 {
-#if defined(QT_NO_MAINWINDOW)
+#if defined(LSCS_NO_MAINWINDOW)
     return nullptr;
 #else
 
@@ -786,7 +786,7 @@ void ControlContainer::removeButtonsFromMenuBar( QMenuBar *menuBar )
         m_menuBar     = menuBar;
     }
 
-    if ( ! m_menuBar || ! mdiChild || qt_widget_private( mdiChild->window() )->m_privateData.in_destructor )
+    if ( ! m_menuBar || ! mdiChild || lscs_widget_private( mdiChild->window() )->m_privateData.in_destructor )
     {
         return;
     }
@@ -867,7 +867,7 @@ void ControlContainer::removeButtonsFromMenuBar( QMenuBar *menuBar )
     }
 }
 
-#endif // QT_NO_MENUBAR
+#endif // LSCS_NO_MENUBAR
 
 void ControlContainer::updateWindowIcon( const QIcon &windowIcon )
 {
@@ -880,17 +880,17 @@ void ControlContainer::updateWindowIcon( const QIcon &windowIcon )
 QMdiSubWindowPrivate::QMdiSubWindowPrivate()
     : baseWidget( nullptr ), restoreFocusWidget( nullptr ), controlContainer( nullptr ),
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
       sizeGrip( nullptr ),
 #endif
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
       rubberBand( nullptr ),
 #endif
 
       userMinimumSize( 0, 0 ), resizeEnabled( true ), moveEnabled( true ), isInInteractiveMode( false ),
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
       isInRubberBandMode( false ),
 #endif
 
@@ -906,7 +906,7 @@ QMdiSubWindowPrivate::QMdiSubWindowPrivate()
 
 void QMdiSubWindowPrivate::_q_updateStaysOnTopHint()
 {
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     Q_Q( QMdiSubWindow );
 
     if ( QAction *senderAction = qobject_cast<QAction *>( q->sender() ) )
@@ -929,7 +929,7 @@ void QMdiSubWindowPrivate::_q_updateStaysOnTopHint()
 
 void QMdiSubWindowPrivate::_q_enterInteractiveMode()
 {
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     Q_Q( QMdiSubWindow );
 
     QAction *action = qobject_cast<QAction *>( q->sender() );
@@ -962,7 +962,7 @@ void QMdiSubWindowPrivate::_q_enterInteractiveMode()
 
     updateCursor();
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     q->cursor().setPos( q->mapToGlobal( pressPos ) );
 #endif
 
@@ -971,7 +971,7 @@ void QMdiSubWindowPrivate::_q_enterInteractiveMode()
     isInInteractiveMode = true;
     q->setFocus();
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     if ( ( q->testOption( QMdiSubWindow::RubberBandResize )
             && ( currentOperation == BottomRightResize || currentOperation == BottomLeftResize ) )
@@ -985,7 +985,7 @@ void QMdiSubWindowPrivate::_q_enterInteractiveMode()
         q->grabMouse();
     }
 
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 }
 
 void QMdiSubWindowPrivate::_q_processFocusChanged( QWidget *oldWidget, QWidget *newWidget )
@@ -1009,7 +1009,7 @@ void QMdiSubWindowPrivate::leaveInteractiveMode()
 {
     Q_Q( QMdiSubWindow );
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     if ( isInRubberBandMode )
     {
@@ -1077,7 +1077,7 @@ void QMdiSubWindowPrivate::initOperationMap()
     operationMap.insert( BottomRightResize, OperationInfo( HResize | VResize, Qt::SizeFDiagCursor ) );
 }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
 void QMdiSubWindowPrivate::createSystemMenu()
 {
@@ -1109,7 +1109,7 @@ void QMdiSubWindowPrivate::createSystemMenu()
     addToSystemMenu( CloseAction, QMdiSubWindow::tr( "&Close" ), SLOT( close() ) );
     actions[CloseAction]->setIcon( style->standardIcon( QStyle::SP_TitleBarCloseButton, nullptr, q ) );
 
-#if !defined(QT_NO_SHORTCUT)
+#if !defined(LSCS_NO_SHORTCUT)
     actions[CloseAction]->setShortcuts( QKeySequence::Close );
 #endif
 
@@ -1119,10 +1119,10 @@ void QMdiSubWindowPrivate::createSystemMenu()
 
 void QMdiSubWindowPrivate::updateCursor()
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     Q_Q( QMdiSubWindow );
 
-#if defined(Q_OS_DARWIN) && ! defined(QT_NO_STYLE_MAC)
+#if defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)
 
     if ( qobject_cast<QMacStyle *>( q->style() ) )
     {
@@ -1342,7 +1342,7 @@ void QMdiSubWindowPrivate::setMinimizeMode()
 
     moveEnabled = false;
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     setEnabled( MoveAction, moveEnabled );
 #endif
 
@@ -1367,7 +1367,7 @@ void QMdiSubWindowPrivate::setNormalMode()
 
     ensureWindowState( Qt::WindowNoState );
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     removeButtonsFromMenuBar();
 #endif
 
@@ -1408,17 +1408,17 @@ void QMdiSubWindowPrivate::setNormalMode()
     restoreSize.setWidth( -1 );
     restoreSize.setHeight( -1 );
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     setSizeGripVisible( true );
 #endif
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     setEnabled( MoveAction, true );
     setEnabled( MaximizeAction, true );
     setEnabled( MinimizeAction, true );
     setEnabled( RestoreAction, false );
     setEnabled( ResizeAction, resizeEnabled );
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
     Q_ASSERT( !( q_func()->windowState() & Qt::WindowMinimized ) );
     // This sub-window can be maximized when shown above if not the
@@ -1456,7 +1456,7 @@ void QMdiSubWindowPrivate::setMaximizeMode()
 
     storeFocusWidget();
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     setSizeGripVisible( false );
 #endif
 
@@ -1489,7 +1489,7 @@ void QMdiSubWindowPrivate::setMaximizeMode()
     if ( wasVisible )
     {
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
         if ( QMenuBar *mBar = menuBar() )
         {
@@ -1531,7 +1531,7 @@ void QMdiSubWindowPrivate::setMaximizeMode()
     resizeEnabled = false;
     moveEnabled = false;
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     setEnabled( MoveAction, moveEnabled );
     setEnabled( MaximizeAction, false );
     setEnabled( MinimizeAction, true );
@@ -1564,7 +1564,7 @@ void QMdiSubWindowPrivate::setActive( bool activate, bool changeFocus )
         ensureWindowState( Qt::WindowActive );
         emit q->aboutToActivate();
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
         if ( QMenuBar *mBar = menuBar() )
         {
@@ -1639,7 +1639,7 @@ void QMdiSubWindowPrivate::processClickedSubControl()
     switch ( activeSubControl )
     {
         case QStyle::SC_TitleBarContextHelpButton:
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
             QWhatsThis::enterWhatsThisMode();
 #endif
             break;
@@ -1659,7 +1659,7 @@ void QMdiSubWindowPrivate::processClickedSubControl()
             break;
 
         case QStyle::SC_TitleBarMinButton:
-#if defined(Q_OS_DARWIN) && ! defined(QT_NO_STYLE_MAC)
+#if defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)
             if ( qobject_cast<QMacStyle *>( q->style() ) )
             {
                 if ( q->isMinimized() )
@@ -1688,7 +1688,7 @@ void QMdiSubWindowPrivate::processClickedSubControl()
             break;
 
         case QStyle::SC_TitleBarMaxButton:
-#if defined(Q_OS_DARWIN) && ! defined(QT_NO_STYLE_MAC)
+#if defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)
             if ( qobject_cast<QMacStyle *>( q->style() ) )
             {
                 if ( q->isMaximized() )
@@ -1750,7 +1750,7 @@ QRegion QMdiSubWindowPrivate::getRegion( Operation operation ) const
 
     QRegion region;
 
-#if defined(Q_OS_DARWIN) && ! defined(QT_NO_STYLE_MAC)
+#if defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)
 
     if ( qobject_cast<QMacStyle *>( q->style() ) )
     {
@@ -2011,7 +2011,7 @@ bool QMdiSubWindowPrivate::drawTitleBarWhenMaximized() const
         return false;
     }
 
-#if defined(Q_OS_DARWIN) && ! defined(QT_NO_STYLE_MAC)
+#if defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)
     return true;
 
 #else
@@ -2021,7 +2021,7 @@ bool QMdiSubWindowPrivate::drawTitleBarWhenMaximized() const
         return true;
     }
 
-#if defined(QT_NO_MENUBAR) || defined(QT_NO_MAINWINDOW)
+#if defined(LSCS_NO_MENUBAR) || defined(LSCS_NO_MAINWINDOW)
     return true;
 
 #else
@@ -2039,7 +2039,7 @@ bool QMdiSubWindowPrivate::drawTitleBarWhenMaximized() const
 #endif
 }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
 void QMdiSubWindowPrivate::showButtonsInMenuBar( QMenuBar *menuBar )
 {
@@ -2099,7 +2099,7 @@ void QMdiSubWindowPrivate::removeButtonsFromMenuBar()
 
     QMenuBar *currentMenuBar = nullptr;
 
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
 
     if ( QMainWindow *mainWindow = qobject_cast<QMainWindow *>( q->window() ) )
     {
@@ -2125,7 +2125,7 @@ void QMdiSubWindowPrivate::removeButtonsFromMenuBar()
     originalTitle = QString();
 }
 
-#endif // QT_NO_MENUBAR
+#endif // LSCS_NO_MENUBAR
 
 void QMdiSubWindowPrivate::updateWindowTitle( bool isRequestFromChild )
 {
@@ -2164,7 +2164,7 @@ void QMdiSubWindowPrivate::updateWindowTitle( bool isRequestFromChild )
     ignoreWindowTitleChange = false;
 }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 void QMdiSubWindowPrivate::enterRubberBandMode()
 {
     Q_Q( QMdiSubWindow );
@@ -2181,7 +2181,7 @@ void QMdiSubWindowPrivate::enterRubberBandMode()
     {
         rubberBand = new QRubberBand( QRubberBand::Rectangle, q->parentWidget() );
         // For accessibility to identify this special widget.
-        rubberBand->setObjectName( QLatin1String( "qt_rubberband" ) );
+        rubberBand->setObjectName( QLatin1String( "lscs_rubberband" ) );
     }
 
     QPoint rubberBandPos = q->mapToParent( QPoint( 0, 0 ) );
@@ -2202,7 +2202,7 @@ void QMdiSubWindowPrivate::leaveRubberBandMode()
     rubberBand->hide();
     currentOperation = None;
 }
-#endif // QT_NO_RUBBERBAND
+#endif // LSCS_NO_RUBBERBAND
 
 // Taken from the old QWorkspace (::readColors())
 QPalette QMdiSubWindowPrivate::desktopPalette() const
@@ -2405,7 +2405,7 @@ void QMdiSubWindowPrivate::setWindowFlags( Qt::WindowFlags flags )
     flags &= ~Qt::WindowFullscreenButtonHint;
     flags |= Qt::SubWindow;
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
     if ( QAction *stayOnTopAction = actions[QMdiSubWindowPrivate::StayOnTopAction] )
     {
@@ -2421,7 +2421,7 @@ void QMdiSubWindowPrivate::setWindowFlags( Qt::WindowFlags flags )
 
 #endif
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
     if ( ( flags & Qt::FramelessWindowHint ) && sizeGrip )
     {
@@ -2445,7 +2445,7 @@ void QMdiSubWindowPrivate::setWindowFlags( Qt::WindowFlags flags )
 
 void QMdiSubWindowPrivate::setVisible( WindowStateAction action, bool visible )
 {
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
     if ( actions[action] )
     {
@@ -2468,7 +2468,7 @@ void QMdiSubWindowPrivate::setVisible( WindowStateAction action, bool visible )
     }
 }
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 void QMdiSubWindowPrivate::setEnabled( WindowStateAction action, bool enable )
 {
     if ( actions[action] )
@@ -2477,7 +2477,7 @@ void QMdiSubWindowPrivate::setEnabled( WindowStateAction action, bool enable )
     }
 }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 void QMdiSubWindowPrivate::addToSystemMenu( WindowStateAction action, const QString &text, const QString &slot )
 {
     if ( ! systemMenu )
@@ -2488,7 +2488,7 @@ void QMdiSubWindowPrivate::addToSystemMenu( WindowStateAction action, const QStr
     actions[action] = systemMenu->addAction( text, q_func(), slot );
 }
 #endif
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
 QSize QMdiSubWindowPrivate::iconSize() const
 {
@@ -2502,7 +2502,7 @@ QSize QMdiSubWindowPrivate::iconSize() const
     return QSize( q->style()->pixelMetric( QStyle::PM_MdiSubWindowMinimizedWidth, nullptr, q ), titleBarHeight() );
 }
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
 void QMdiSubWindowPrivate::setSizeGrip( QSizeGrip *newSizeGrip )
 {
@@ -2521,7 +2521,7 @@ void QMdiSubWindowPrivate::setSizeGrip( QSizeGrip *newSizeGrip )
     newSizeGrip->setFixedSize( newSizeGrip->sizeHint() );
     bool putSizeGripInLayout = layout ? true : false;
 
-#if defined(Q_OS_DARWIN) && !defined(QT_NO_STYLE_MAC)
+#if defined(Q_OS_DARWIN) && !defined(LSCS_NO_STYLE_MAC)
 
     if ( qobject_cast<QMacStyle *>( q->style() ) )
     {
@@ -2560,7 +2560,7 @@ void QMdiSubWindowPrivate::setSizeGripVisible( bool visible ) const
         grip->setVisible( visible );
     }
 }
-#endif // QT_NO_SIZEGRIP
+#endif // LSCS_NO_SIZEGRIP
 
 void QMdiSubWindowPrivate::updateInternalWindowTitle()
 {
@@ -2584,7 +2584,7 @@ QMdiSubWindow::QMdiSubWindow( QWidget *parent, Qt::WindowFlags flags )
 {
     Q_D( QMdiSubWindow );
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     d->createSystemMenu();
     addActions( d->systemMenu->actions() );
 #endif
@@ -2626,7 +2626,7 @@ QMdiSubWindow::~QMdiSubWindow()
 {
     Q_D( QMdiSubWindow );
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     d->removeButtonsFromMenuBar();
 #endif
 
@@ -2661,7 +2661,7 @@ void QMdiSubWindow::setWidget( QWidget *widget )
         widget->setParent( this );
     }
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     QSizeGrip *sizeGrip = widget->findChild<QSizeGrip *>();
 
     if ( sizeGrip )
@@ -2759,7 +2759,7 @@ void QMdiSubWindow::setOption( SubWindowOption option, bool on )
         d->options &= ~option;
     }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     if ( ( option & ( RubberBandResize | RubberBandMove ) ) && !on && d->isInRubberBandMode )
     {
@@ -2801,7 +2801,7 @@ void QMdiSubWindow::setKeyboardPageStep( int step )
     d_func()->keyboardPageStep = step;
 }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 void QMdiSubWindow::setSystemMenu( QMenu *systemMenu )
 {
     Q_D( QMdiSubWindow );
@@ -2880,7 +2880,7 @@ void QMdiSubWindow::showSystemMenu()
 
     d->systemMenu->popup( globalPopupPos );
 }
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 
 QMdiArea *QMdiSubWindow::mdiArea() const
 {
@@ -2926,7 +2926,7 @@ void QMdiSubWindow::showShaded()
         d->ensureWindowState( Qt::WindowMinimized );
     }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     d->removeButtonsFromMenuBar();
 #endif
 
@@ -2938,7 +2938,7 @@ void QMdiSubWindow::showShaded()
         d->ensureWindowState( Qt::WindowActive );
     }
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     d->setSizeGripVisible( false );
 #endif
 
@@ -2987,7 +2987,7 @@ void QMdiSubWindow::showShaded()
     d->updateDirtyRegions();
     d->updateMask();
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     d->setEnabled( QMdiSubWindowPrivate::MinimizeAction, false );
     d->setEnabled( QMdiSubWindowPrivate::ResizeAction, d->resizeEnabled );
     d->setEnabled( QMdiSubWindowPrivate::MaximizeAction, true );
@@ -3005,7 +3005,7 @@ bool QMdiSubWindow::eventFilter( QObject *object, QEvent *event )
         return QWidget::eventFilter( object, event );
     }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     // System menu events
     if ( d->systemMenu && d->systemMenu == object )
@@ -3040,7 +3040,7 @@ bool QMdiSubWindow::eventFilter( QObject *object, QEvent *event )
 
 #endif
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
     if ( object != d->baseWidget && parent() && qobject_cast<QSizeGrip *>( object ) )
     {
@@ -3055,7 +3055,7 @@ bool QMdiSubWindow::eventFilter( QObject *object, QEvent *event )
         d->currentOperation = isLeftToRight() ? QMdiSubWindowPrivate::BottomRightResize
                               : QMdiSubWindowPrivate::BottomLeftResize;
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
         d->enterRubberBandMode();
 #endif
 
@@ -3130,7 +3130,7 @@ bool QMdiSubWindow::eventFilter( QObject *object, QEvent *event )
             {
                 d->updateWindowTitle( true );
                 d->lastChildWindowTitle = d->baseWidget->windowTitle();
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
             }
             else if ( maximizedButtonsWidget() && d->controlContainer->menuBar() && d->controlContainer->menuBar()
@@ -3234,7 +3234,7 @@ bool QMdiSubWindow::event( QEvent *event )
         {
             bool wasResized = testAttribute( Qt::WA_Resized );
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
             d->removeButtonsFromMenuBar();
 #endif
 
@@ -3242,7 +3242,7 @@ bool QMdiSubWindow::event( QEvent *event )
             d->activeSubControl = QStyle::SC_None;
             d->hoveredSubControl = QStyle::SC_None;
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
             if ( d->isInRubberBandMode )
             {
@@ -3257,7 +3257,7 @@ bool QMdiSubWindow::event( QEvent *event )
 
             if ( ! parent() )
             {
-#if !defined(QT_NO_SIZEGRIP) && defined(Q_OS_DARWIN) && !defined(QT_NO_STYLE_MAC)
+#if !defined(LSCS_NO_SIZEGRIP) && defined(Q_OS_DARWIN) && !defined(LSCS_NO_STYLE_MAC)
 
                 if ( qobject_cast<QMacStyle *>( style() ) )
                 {
@@ -3325,7 +3325,7 @@ bool QMdiSubWindow::event( QEvent *event )
                 break;
             }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
             if ( maximizedButtonsWidget() && d->controlContainer->menuBar() && d->controlContainer->menuBar()
                     ->cornerWidget( Qt::TopRightCorner ) == maximizedButtonsWidget() )
@@ -3373,7 +3373,7 @@ bool QMdiSubWindow::event( QEvent *event )
             d->font = font();
             break;
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
         case QEvent::ToolTip:
             showToolTip( static_cast<QHelpEvent *>( event ), this, d->titleBarOptions(),
@@ -3398,7 +3398,7 @@ void QMdiSubWindow::showEvent( QShowEvent *showEvent )
         return;
     }
 
-#if !defined(QT_NO_SIZEGRIP) && defined(Q_OS_DARWIN) && !defined(QT_NO_STYLE_MAC)
+#if !defined(LSCS_NO_SIZEGRIP) && defined(Q_OS_DARWIN) && !defined(LSCS_NO_STYLE_MAC)
 
     if ( qobject_cast<QMacStyle *>( style() ) && !d->sizeGrip
             && !( windowFlags() & Qt::FramelessWindowHint ) )
@@ -3423,7 +3423,7 @@ void QMdiSubWindow::showEvent( QShowEvent *showEvent )
     d->updateDirtyRegions();
     // Show buttons in the menu bar if they're already not there.
     // We want to do this when QMdiSubWindow becomes visible after being hidden.
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
     if ( d->controlContainer )
     {
@@ -3442,7 +3442,7 @@ void QMdiSubWindow::showEvent( QShowEvent *showEvent )
 
 void QMdiSubWindow::hideEvent( QHideEvent * )
 {
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     d_func()->removeButtonsFromMenuBar();
 #endif
 }
@@ -3540,7 +3540,7 @@ void QMdiSubWindow::closeEvent( QCloseEvent *closeEvent )
         return;
     }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     d->removeButtonsFromMenuBar();
 #endif
 
@@ -3570,7 +3570,7 @@ void QMdiSubWindow::resizeEvent( QResizeEvent *resizeEvent )
 {
     Q_D( QMdiSubWindow );
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
     if ( d->sizeGrip )
     {
@@ -3733,7 +3733,7 @@ void QMdiSubWindow::mousePressEvent( QMouseEvent *mouseEvent )
         d->leaveInteractiveMode();
     }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     if ( d->isInRubberBandMode )
     {
@@ -3758,7 +3758,7 @@ void QMdiSubWindow::mousePressEvent( QMouseEvent *mouseEvent )
             d->oldGeometry = geometry();
         }
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
         if ( ( testOption( QMdiSubWindow::RubberBandResize ) && d->isResizeOperation() )
                 || ( testOption( QMdiSubWindow::RubberBandMove ) && d->isMoveOperation() ) )
@@ -3771,7 +3771,7 @@ void QMdiSubWindow::mousePressEvent( QMouseEvent *mouseEvent )
     }
 
     d->activeSubControl = d->hoveredSubControl;
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     if ( d->activeSubControl == QStyle::SC_TitleBarSysMenu )
     {
@@ -3800,7 +3800,7 @@ void QMdiSubWindow::mouseDoubleClickEvent( QMouseEvent *mouseEvent )
 
     if ( ! d->isMoveOperation() )
     {
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
         if ( d->hoveredSubControl == QStyle::SC_TitleBarSysMenu )
         {
@@ -3862,7 +3862,7 @@ void QMdiSubWindow::mouseReleaseEvent( QMouseEvent *mouseEvent )
 
     if ( d->currentOperation != QMdiSubWindowPrivate::None )
     {
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
         if ( d->isInRubberBandMode && !d->isInInteractiveMode )
         {
@@ -3923,7 +3923,7 @@ void QMdiSubWindow::mouseMoveEvent( QMouseEvent *mouseEvent )
                                                     d->hoveredSubControl, this );
         }
 
-#if defined(Q_OS_DARWIN) && !defined(QT_NO_STYLE_MAC)
+#if defined(Q_OS_DARWIN) && !defined(LSCS_NO_STYLE_MAC)
 
         if ( qobject_cast<QMacStyle *>( style() ) && !hoverRegion.isEmpty() )
         {
@@ -4032,11 +4032,11 @@ void QMdiSubWindow::keyPressEvent( QKeyEvent *keyEvent )
             return;
     }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QPoint newPosition = parentWidget()->mapFromGlobal( cursor().pos() + delta );
 
     QRect oldGeometry =
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
         d->isInRubberBandMode ? d->rubberBand->geometry() :
 #endif
         geometry();
@@ -4044,7 +4044,7 @@ void QMdiSubWindow::keyPressEvent( QKeyEvent *keyEvent )
     d->setNewGeometry( newPosition );
 
     QRect currentGeometry =
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
         d->isInRubberBandMode ? d->rubberBand->geometry() :
 #endif
         geometry();
@@ -4080,7 +4080,7 @@ void QMdiSubWindow::keyPressEvent( QKeyEvent *keyEvent )
 #endif
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 void QMdiSubWindow::contextMenuEvent( QContextMenuEvent *contextMenuEvent )
 {
     Q_D( QMdiSubWindow );
@@ -4120,7 +4120,7 @@ void QMdiSubWindow::childEvent( QChildEvent *childEvent )
         return;
     }
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
     if ( QSizeGrip *sizeGrip = qobject_cast<QSizeGrip *>( childEvent->child() ) )
     {
@@ -4197,7 +4197,7 @@ QSize QMdiSubWindow::minimumSizeHint() const
         }
     }
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     // SizeGrip
     int sizeGripHeight = 0;
 
@@ -4206,7 +4206,7 @@ QSize QMdiSubWindow::minimumSizeHint() const
         sizeGripHeight = d->sizeGrip->height();
     }
 
-#if defined(Q_OS_DARWIN) && !defined(QT_NO_STYLE_MAC)
+#if defined(Q_OS_DARWIN) && !defined(LSCS_NO_STYLE_MAC)
     else if ( parent() && qobject_cast<QMacStyle *>( style() ) && !d->sizeGrip )
     {
         sizeGripHeight = style()->pixelMetric( QStyle::PM_SizeGripSize, nullptr, this );
@@ -4238,4 +4238,4 @@ void QMdiSubWindow::_q_processFocusChanged( QWidget *oldWidget, QWidget *newWidg
     d->_q_processFocusChanged( oldWidget, newWidget );
 }
 
-#endif //QT_NO_MDIAREA
+#endif //LSCS_NO_MDIAREA

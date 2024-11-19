@@ -30,13 +30,13 @@
 #include <qscopedpointer.h>
 #include <qstate.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 class QAbstractTransitionPrivate;
 class QEvent;
 class QStateMachine;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 class QAbstractAnimation;
 #endif
 
@@ -84,7 +84,7 @@ public:
     void setTransitionType( TransitionType type );
     QStateMachine *machine() const;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     void addAnimation( QAbstractAnimation *animation );
     void removeAnimation( QAbstractAnimation *animation );
     QList<QAbstractAnimation *> animations() const;
@@ -113,6 +113,6 @@ private:
     Q_DECLARE_PRIVATE( QAbstractTransition )
 };
 
-#endif // QT_NO_STATEMACHINE
+#endif // LSCS_NO_STATEMACHINE
 
 #endif

@@ -111,7 +111,7 @@ AVFVideoRendererControl::AVFVideoRendererControl(QObject *parent)
 
 AVFVideoRendererControl::~AVFVideoRendererControl()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
    m_displayLink->stop();
@@ -125,7 +125,7 @@ QAbstractVideoSurface *AVFVideoRendererControl::surface() const
 
 void AVFVideoRendererControl::setSurface(QAbstractVideoSurface *surface)
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << "Set video surface" << surface;
 #endif
 

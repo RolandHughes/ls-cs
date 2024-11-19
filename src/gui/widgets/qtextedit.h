@@ -30,7 +30,7 @@
 #include <qtextcursor.h>
 #include <qtextformat.h>
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
 class QStyleSheet;
 class QTextDocument;
@@ -73,7 +73,7 @@ class Q_GUI_EXPORT QTextEdit : public QAbstractScrollArea
     GUI_LSCS_PROPERTY_READ( wordWrapMode, wordWrapMode )
     GUI_LSCS_PROPERTY_WRITE( wordWrapMode, setWordWrapMode )
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
     GUI_LSCS_PROPERTY_READ( html, toHtml )
     GUI_LSCS_PROPERTY_WRITE( html, setHtml )
     GUI_LSCS_PROPERTY_NOTIFY( html, textChanged )
@@ -191,14 +191,14 @@ public:
 
     QString toPlainText() const;
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
     QString toHtml() const;
 #endif
 
     void ensureCursorVisible();
     virtual QVariant loadResource( int type, const QUrl &name );
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     QMenu *createStandardContextMenu();
     QMenu *createStandardContextMenu( const QPoint &position );
 #endif
@@ -271,7 +271,7 @@ public:
     GUI_LSCS_SLOT_1( Public, void setText( const QString &text ) )
     GUI_LSCS_SLOT_2( setText )
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
     GUI_LSCS_SLOT_1( Public, void setHtml( const QString &text ) )
     GUI_LSCS_SLOT_2( setHtml )
 
@@ -279,7 +279,7 @@ public:
     GUI_LSCS_SLOT_2( insertHtml )
 #endif
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     GUI_LSCS_SLOT_1( Public, void cut() )
     GUI_LSCS_SLOT_2( cut )
 
@@ -351,18 +351,18 @@ protected:
     void mouseDoubleClickEvent( QMouseEvent *event ) override;
     bool focusNextPrevChild( bool next ) override;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void dragEnterEvent( QDragEnterEvent *event ) override;
     void dragLeaveEvent( QDragLeaveEvent *event ) override;
     void dragMoveEvent( QDragMoveEvent *event ) override;
     void dropEvent( QDropEvent *event ) override;
 #endif
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 
@@ -428,6 +428,6 @@ void QTextEdit::setUndoRedoEnabled( bool enabled )
     document()->setUndoRedoEnabled( enabled );
 }
 
-#endif // QT_NO_TEXTEDIT
+#endif // LSCS_NO_TEXTEDIT
 
 #endif // QTEXTEDIT_H

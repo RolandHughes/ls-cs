@@ -66,10 +66,10 @@ static const QString text_translate        = "translate";
 static const QString text_Q_DECLARE_TR_FUNCTIONS = "Q_DECLARE_TR_FUNCTIONS";
 
 // declared in qglobal.h
-static const QString text_QT_TR_NOOP             = "QT_TR_NOOP";
-static const QString text_QT_TRANSLATE_NOOP      = "QT_TRANSLATE_NOOP";
-static const QString text_QT_TRANSLATE_NOOP3     = "QT_TRANSLATE_NOOP3";
-static const QString text_QT_TRID_NOOP           = "QT_TRID_NOOP";
+static const QString text_LSCS_TR_NOOP             = "LSCS_TR_NOOP";
+static const QString text_LSCS_TRANSLATE_NOOP      = "LSCS_TRANSLATE_NOOP";
+static const QString text_LSCS_TRANSLATE_NOOP3     = "LSCS_TRANSLATE_NOOP3";
+static const QString text_LSCS_TRID_NOOP           = "LSCS_TRID_NOOP";
 
 static const QString text_lscs_mark_tr           = "lscs_mark_tr";
 static const QString text_lscs_mark_string_tr    = "lscs_mark_string_tr";
@@ -2824,7 +2824,7 @@ incOk:
                         }
 
                     }
-                    else if ( yyWord == text_tr || yyWord == text_QT_TR_NOOP )
+                    else if ( yyWord == text_tr || yyWord == text_LSCS_TR_NOOP )
                     {
 
                         if ( m_translator != nullptr )
@@ -2834,7 +2834,7 @@ incOk:
 
                     }
                     else if ( yyWord == text_findMessage || yyWord == text_translate ||
-                              yyWord == text_QT_TRANSLATE_NOOP || yyWord == text_QT_TRANSLATE_NOOP3 )
+                              yyWord == text_LSCS_TRANSLATE_NOOP || yyWord == text_LSCS_TRANSLATE_NOOP3 )
                     {
 
                         if ( m_translator != nullptr )
@@ -2843,7 +2843,7 @@ incOk:
                         }
 
                     }
-                    else if ( yyWord == text_qtTrId || yyWord == text_QT_TRID_NOOP || yyWord == text_lscs_mark_tr_id )
+                    else if ( yyWord == text_qtTrId || yyWord == text_LSCS_TRID_NOOP || yyWord == text_lscs_mark_tr_id )
                     {
 
                         if ( m_translator != nullptr )

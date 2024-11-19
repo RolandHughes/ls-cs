@@ -29,9 +29,9 @@
 #include <qvector2d.h>
 #include <qvector3d.h>
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
 
-#ifndef QT_NO_VECTOR2D
+#ifndef LSCS_NO_VECTOR2D
 
 QVector4D::QVector4D( const QVector2D &vector )
 {
@@ -51,7 +51,7 @@ QVector4D::QVector4D( const QVector2D &vector, qreal zpos, qreal wpos )
 
 #endif
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
 QVector4D::QVector4D( const QVector3D &vector )
 {
@@ -132,7 +132,7 @@ qreal QVector4D::dotProduct( const QVector4D &v1, const QVector4D &v2 )
     return v1.xp * v2.xp + v1.yp * v2.yp + v1.zp * v2.zp + v1.wp * v2.wp;
 }
 
-#ifndef QT_NO_VECTOR2D
+#ifndef LSCS_NO_VECTOR2D
 
 QVector2D QVector4D::toVector2D() const
 {
@@ -151,7 +151,7 @@ QVector2D QVector4D::toVector2DAffine() const
 
 #endif
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
 QVector3D QVector4D::toVector3D() const
 {
@@ -204,5 +204,5 @@ QDataStream &operator>>( QDataStream &stream, QVector4D &vector )
     return stream;
 }
 
-#endif // QT_NO_VECTOR4D
+#endif // LSCS_NO_VECTOR4D
 

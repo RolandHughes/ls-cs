@@ -39,7 +39,7 @@
 #include <QtCore/qdebug.h>
 #include <QtCore/QStringBuilder>
 
-#ifndef QT_NO_XMLSTREAMREADER
+#ifndef LSCS_NO_XMLSTREAMREADER
 
 // From DOM-Level-3-Core spec
 // http://www.w3.org/TR/DOM-Level-3-Core/core.html
@@ -76,7 +76,7 @@
 #define D(arg) (arg)->release()
 #define A(arg) (arg)->addref()
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 DEFINE_BOOL_CONFIG_OPTION( xhrDump, QML_XHR_DUMP );
 
@@ -322,11 +322,11 @@ public:
     static QScriptValue load( QScriptEngine *engine, const QByteArray &data );
 };
 
-QT_END_NAMESPACE Q_DECLARE_METATYPE( Node )
+LSCS_END_NAMESPACE Q_DECLARE_METATYPE( Node )
 Q_DECLARE_METATYPE( NodeList )
 Q_DECLARE_METATYPE( NamedNodeMap )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 void NodeImpl::addref()
 {
@@ -1246,7 +1246,7 @@ private:
     QByteArray m_charset;
     QTextCodec *m_textCodec;
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     QTextCodec *findTextCodec() const;
 #endif
     void readEncoding();
@@ -1723,7 +1723,7 @@ bool QDeclarativeXMLHttpRequest::receivedXml() const
 }
 
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 QTextCodec *QDeclarativeXMLHttpRequest::findTextCodec() const
 {
     QTextCodec *codec = 0;
@@ -1762,7 +1762,7 @@ QTextCodec *QDeclarativeXMLHttpRequest::findTextCodec() const
 
 QString QDeclarativeXMLHttpRequest::responseBody()
 {
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
     if ( !m_textCodec )
     {
@@ -2186,7 +2186,7 @@ static QScriptValue qmlxmlhttprequest_new( QScriptContext *context, QScriptEngin
     return engine->undefinedValue();
 }
 
-void qt_add_qmlxmlhttprequest( QScriptEngine *engine )
+void lscs_add_qmlxmlhttprequest( QScriptEngine *engine )
 {
     QScriptValue prototype = engine->newObject();
 
@@ -2279,6 +2279,6 @@ void qt_add_qmlxmlhttprequest( QScriptEngine *engine )
     engine->globalObject().setProperty( QLatin1String( "DOMException" ), domExceptionPrototype );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_XMLSTREAMREADER
+#endif // LSCS_NO_XMLSTREAMREADER

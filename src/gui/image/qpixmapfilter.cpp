@@ -36,7 +36,7 @@
 #include <qmemrotate_p.h>
 #include <qdrawhelper_p.h>
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
 class QPixmapFilterPrivate
 {
@@ -416,7 +416,7 @@ QRectF QPixmapBlurFilter::boundingRectFor( const QRectF &rect ) const
 }
 
 template <int shift>
-inline int qt_static_shift( int value )
+inline int lscs_static_shift( int value )
 {
     if constexpr ( shift == 0 )
     {
@@ -435,15 +435,15 @@ inline int qt_static_shift( int value )
 }
 
 template <int aprec, int zprec>
-inline void qt_blurinner( uchar *bptr, int &zR, int &zG, int &zB, int &zA, int alpha )
+inline void lscs_blurinner( uchar *bptr, int &zR, int &zG, int &zB, int &zA, int alpha )
 {
     QRgb *pixel = ( QRgb * )bptr;
 
 #define Z_MASK (0xff << zprec)
-    const int A_zprec = qt_static_shift < zprec - 24 > ( *pixel ) & Z_MASK;
-    const int R_zprec = qt_static_shift < zprec - 16 > ( *pixel ) & Z_MASK;
-    const int G_zprec = qt_static_shift < zprec - 8 > ( *pixel )  & Z_MASK;
-    const int B_zprec = qt_static_shift<zprec>( *pixel )      & Z_MASK;
+    const int A_zprec = lscs_static_shift < zprec - 24 > ( *pixel ) & Z_MASK;
+    const int R_zprec = lscs_static_shift < zprec - 16 > ( *pixel ) & Z_MASK;
+    const int G_zprec = lscs_static_shift < zprec - 8 > ( *pixel )  & Z_MASK;
+    const int B_zprec = lscs_static_shift<zprec>( *pixel )      & Z_MASK;
 #undef Z_MASK
 
     const int zR_zprec = zR >> aprec;
@@ -458,17 +458,17 @@ inline void qt_blurinner( uchar *bptr, int &zR, int &zG, int &zB, int &zA, int a
 
 #define ZA_MASK (0xff << (zprec + aprec))
     *pixel =
-        qt_static_shift < 24 - zprec - aprec > ( zA & ZA_MASK )
-        | qt_static_shift < 16 - zprec - aprec > ( zR & ZA_MASK )
-        | qt_static_shift < 8 - zprec - aprec > ( zG & ZA_MASK )
-        | qt_static_shift < -zprec - aprec > ( zB & ZA_MASK );
+        lscs_static_shift < 24 - zprec - aprec > ( zA & ZA_MASK )
+        | lscs_static_shift < 16 - zprec - aprec > ( zR & ZA_MASK )
+        | lscs_static_shift < 8 - zprec - aprec > ( zG & ZA_MASK )
+        | lscs_static_shift < -zprec - aprec > ( zB & ZA_MASK );
 #undef ZA_MASK
 }
 
 const int alphaIndex = ( QSysInfo::ByteOrder == QSysInfo::BigEndian ? 0 : 3 );
 
 template <int aprec, int zprec>
-inline void qt_blurinner_alphaOnly( uchar *bptr, int &z, int alpha )
+inline void lscs_blurinner_alphaOnly( uchar *bptr, int &z, int alpha )
 {
     const int A_zprec = int( *( bptr ) ) << zprec;
     const int z_zprec = z >> aprec;
@@ -477,7 +477,7 @@ inline void qt_blurinner_alphaOnly( uchar *bptr, int &z, int alpha )
 }
 
 template <int aprec, int zprec, bool alphaOnly>
-inline void qt_blurrow( QImage &im, int line, int alpha )
+inline void lscs_blurrow( QImage &im, int line, int alpha )
 {
     uchar *bptr = im.scanLine( line );
 
@@ -495,11 +495,11 @@ inline void qt_blurrow( QImage &im, int line, int alpha )
     {
         if ( alphaOnly )
         {
-            qt_blurinner_alphaOnly<aprec, zprec>( bptr, zA, alpha );
+            lscs_blurinner_alphaOnly<aprec, zprec>( bptr, zA, alpha );
         }
         else
         {
-            qt_blurinner<aprec, zprec>( bptr, zR, zG, zB, zA, alpha );
+            lscs_blurinner<aprec, zprec>( bptr, zR, zG, zB, zA, alpha );
         }
 
         bptr += stride;
@@ -513,11 +513,11 @@ inline void qt_blurrow( QImage &im, int line, int alpha )
 
         if ( alphaOnly )
         {
-            qt_blurinner_alphaOnly<aprec, zprec>( bptr, zA, alpha );
+            lscs_blurinner_alphaOnly<aprec, zprec>( bptr, zA, alpha );
         }
         else
         {
-            qt_blurinner<aprec, zprec>( bptr, zR, zG, zB, zA, alpha );
+            lscs_blurinner<aprec, zprec>( bptr, zR, zG, zB, zA, alpha );
         }
     }
 }
@@ -550,7 +550,7 @@ void expblur( QImage &img, qreal radius, bool improvedQuality = false, int trans
     {
         for ( int i = 0; i <= int( improvedQuality ); ++i )
         {
-            qt_blurrow<aprec, zprec, alphaOnly>( img, row, alpha );
+            lscs_blurrow<aprec, zprec, alphaOnly>( img, row, alpha );
         }
     }
 
@@ -560,14 +560,14 @@ void expblur( QImage &img, qreal radius, bool improvedQuality = false, int trans
     {
         if ( img.depth() == 8 )
         {
-            qt_memrotate270( reinterpret_cast<const quint8 *>( img.bits() ),
+            lscs_memrotate270( reinterpret_cast<const quint8 *>( img.bits() ),
                              img.width(), img.height(), img.bytesPerLine(),
                              reinterpret_cast<quint8 *>( temp.bits() ),
                              temp.bytesPerLine() );
         }
         else
         {
-            qt_memrotate270( reinterpret_cast<const quint32 *>( img.bits() ),
+            lscs_memrotate270( reinterpret_cast<const quint32 *>( img.bits() ),
                              img.width(), img.height(), img.bytesPerLine(),
                              reinterpret_cast<quint32 *>( temp.bits() ),
                              temp.bytesPerLine() );
@@ -577,14 +577,14 @@ void expblur( QImage &img, qreal radius, bool improvedQuality = false, int trans
     {
         if ( img.depth() == 8 )
         {
-            qt_memrotate90( reinterpret_cast<const quint8 *>( img.bits() ),
+            lscs_memrotate90( reinterpret_cast<const quint8 *>( img.bits() ),
                             img.width(), img.height(), img.bytesPerLine(),
                             reinterpret_cast<quint8 *>( temp.bits() ),
                             temp.bytesPerLine() );
         }
         else
         {
-            qt_memrotate90( reinterpret_cast<const quint32 *>( img.bits() ),
+            lscs_memrotate90( reinterpret_cast<const quint32 *>( img.bits() ),
                             img.width(), img.height(), img.bytesPerLine(),
                             reinterpret_cast<quint32 *>( temp.bits() ),
                             temp.bytesPerLine() );
@@ -597,7 +597,7 @@ void expblur( QImage &img, qreal radius, bool improvedQuality = false, int trans
     {
         for ( int i = 0; i <= int( improvedQuality ); ++i )
         {
-            qt_blurrow<aprec, zprec, alphaOnly>( temp, row, alpha );
+            lscs_blurrow<aprec, zprec, alphaOnly>( temp, row, alpha );
         }
     }
 
@@ -605,14 +605,14 @@ void expblur( QImage &img, qreal radius, bool improvedQuality = false, int trans
     {
         if ( img.depth() == 8 )
         {
-            qt_memrotate90( reinterpret_cast<const quint8 *>( temp.bits() ),
+            lscs_memrotate90( reinterpret_cast<const quint8 *>( temp.bits() ),
                             temp.width(), temp.height(), temp.bytesPerLine(),
                             reinterpret_cast<quint8 *>( img.bits() ),
                             img.bytesPerLine() );
         }
         else
         {
-            qt_memrotate90( reinterpret_cast<const quint32 *>( temp.bits() ),
+            lscs_memrotate90( reinterpret_cast<const quint32 *>( temp.bits() ),
                             temp.width(), temp.height(), temp.bytesPerLine(),
                             reinterpret_cast<quint32 *>( img.bits() ),
                             img.bytesPerLine() );
@@ -626,7 +626,7 @@ void expblur( QImage &img, qreal radius, bool improvedQuality = false, int trans
 #define AVG(a,b)  ( ((((a)^(b)) & 0xfefefefeUL) >> 1) + ((a)&(b)) )
 #define AVG16(a,b)  ( ((((a)^(b)) & 0xf7deUL) >> 1) + ((a)&(b)) )
 
-Q_GUI_EXPORT QImage qt_halfScaled( const QImage &source )
+Q_GUI_EXPORT QImage lscs_halfScaled( const QImage &source )
 {
     if ( source.width() < 2 || source.height() < 2 )
     {
@@ -731,7 +731,7 @@ Q_GUI_EXPORT QImage qt_halfScaled( const QImage &source )
     return dest;
 }
 
-Q_GUI_EXPORT void qt_blurImage( QPainter *p, QImage &blurImage, qreal radius, bool quality, bool alphaOnly, int transposed = 0 )
+Q_GUI_EXPORT void lscs_blurImage( QPainter *p, QImage &blurImage, qreal radius, bool quality, bool alphaOnly, int transposed = 0 )
 {
     if ( blurImage.format() != QImage::Format_ARGB32_Premultiplied
             && blurImage.format() != QImage::Format_RGB32 )
@@ -743,7 +743,7 @@ Q_GUI_EXPORT void qt_blurImage( QPainter *p, QImage &blurImage, qreal radius, bo
 
     if ( radius >= 4 && blurImage.width() >= 2 && blurImage.height() >= 2 )
     {
-        blurImage = qt_halfScaled( blurImage );
+        blurImage = lscs_halfScaled( blurImage );
         scale = 2;
         radius *= qreal( 0.5 );
     }
@@ -765,7 +765,7 @@ Q_GUI_EXPORT void qt_blurImage( QPainter *p, QImage &blurImage, qreal radius, bo
     }
 }
 
-Q_GUI_EXPORT void qt_blurImage( QImage &blurImage, qreal radius, bool quality, int transposed = 0 )
+Q_GUI_EXPORT void lscs_blurImage( QImage &blurImage, qreal radius, bool quality, int transposed = 0 )
 {
     if ( blurImage.format() == QImage::Format_Indexed8 || blurImage.format() == QImage::Format_Grayscale8 )
     {
@@ -777,7 +777,7 @@ Q_GUI_EXPORT void qt_blurImage( QImage &blurImage, qreal radius, bool quality, i
     }
 }
 
-Q_GUI_EXPORT extern bool qt_scaleForTransform( const QTransform &transform, qreal *scale );
+Q_GUI_EXPORT extern bool lscs_scaleForTransform( const QTransform &transform, qreal *scale );
 
 void QPixmapBlurFilter::draw( QPainter *painter, const QPointF &p, const QPixmap &src, const QRectF &rect ) const
 {
@@ -809,7 +809,7 @@ void QPixmapBlurFilter::draw( QPainter *painter, const QPointF &p, const QPixmap
     qreal scaledRadius = radiusScale * d->radius;
     qreal scale;
 
-    if ( qt_scaleForTransform( painter->transform(), &scale ) )
+    if ( lscs_scaleForTransform( painter->transform(), &scale ) )
     {
         scaledRadius /= scale;
     }
@@ -829,7 +829,7 @@ void QPixmapBlurFilter::draw( QPainter *painter, const QPointF &p, const QPixmap
 
     QTransform transform = painter->worldTransform();
     painter->translate( p );
-    qt_blurImage( painter, srcImage, scaledRadius, ( d->hints & QGraphicsBlurEffect::QualityHint ), false );
+    lscs_blurImage( painter, srcImage, scaledRadius, ( d->hints & QGraphicsBlurEffect::QualityHint ), false );
     painter->setWorldTransform( transform );
 }
 
@@ -1076,7 +1076,7 @@ void QPixmapDropShadowFilter::draw( QPainter *p, const QPointF &pos, const QPixm
     QImage blurred( tmp.size(), QImage::Format_ARGB32_Premultiplied );
     blurred.fill( 0 );
     QPainter blurPainter( &blurred );
-    qt_blurImage( &blurPainter, tmp, d->radius, false, true );
+    lscs_blurImage( &blurPainter, tmp, d->radius, false, true );
     blurPainter.end();
 
     tmp = blurred;

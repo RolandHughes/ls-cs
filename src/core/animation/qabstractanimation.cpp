@@ -31,7 +31,7 @@
 #include <qpointer.h>
 #include <qthreadstorage.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 #define DEFAULT_TIMER_INTERVAL 16
 #define STARTSTOP_TIMER_DELAY 0
@@ -843,4 +843,4 @@ void QAbstractAnimation::updateDirection( QAbstractAnimation::Direction directio
     ( void ) direction;
 }
 
-#endif // QT_NO_ANIMATION
+#endif // LSCS_NO_ANIMATION

@@ -30,7 +30,7 @@
 struct sqlite3;
 struct sqlite3_stmt;
 
-#ifdef QT_PLUGIN
+#ifdef LSCS_PLUGIN
 #define Q_EXPORT_SQLDRIVER_SQLITE
 #else
 #define Q_EXPORT_SQLDRIVER_SQLITE Q_SQL_EXPORT

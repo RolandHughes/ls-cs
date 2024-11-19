@@ -26,7 +26,7 @@
 
 #include <qabstractfileengine.h>
 
-#ifndef QT_NO_FSFILEENGINE
+#ifndef LSCS_NO_FSFILEENGINE
 
 class QFSFileEnginePrivate;
 
@@ -71,7 +71,7 @@ public:
     void setFileName( const QString &file ) override;
     int handle() const override;
 
-#ifndef QT_NO_FILESYSTEMITERATOR
+#ifndef LSCS_NO_FILESYSTEMITERATOR
     QAbstractFileEngineIterator *beginEntryList( QDir::Filters filters, const QStringList &filterNames ) override;
     QAbstractFileEngineIterator *endEntryList() override;
 #endif
@@ -99,6 +99,6 @@ protected:
     QFSFileEngine( QFSFileEnginePrivate &dd );
 };
 
-#endif // QT_NO_FSFILEENGINE
+#endif // LSCS_NO_FSFILEENGINE
 
 #endif

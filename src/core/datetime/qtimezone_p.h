@@ -41,7 +41,7 @@ class NSTimeZone;
 #endif
 
 #ifdef Q_OS_WIN
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #endif
 
 #ifdef Q_OS_ANDROID

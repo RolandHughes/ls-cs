@@ -45,10 +45,10 @@ enum EngineMode
 };
 
 #define GL_STENCIL_HIGH_BIT         GLuint(0x80)
-#define QT_BRUSH_TEXTURE_UNIT       GLuint(0)
-#define QT_IMAGE_TEXTURE_UNIT       GLuint(0) //Can be the same as brush texture unit
-#define QT_MASK_TEXTURE_UNIT        GLuint(1)
-#define QT_BACKGROUND_TEXTURE_UNIT  GLuint(2)
+#define LSCS_BRUSH_TEXTURE_UNIT       GLuint(0)
+#define LSCS_IMAGE_TEXTURE_UNIT       GLuint(0) //Can be the same as brush texture unit
+#define LSCS_MASK_TEXTURE_UNIT        GLuint(1)
+#define LSCS_BACKGROUND_TEXTURE_UNIT  GLuint(2)
 
 class QGL2PaintEngineExPrivate;
 
@@ -321,7 +321,7 @@ void QGL2PaintEngineExPrivate::setVertexAttributePointer( unsigned int arrayInde
 
     vertexAttribPointers[arrayIndex] = pointer;
 
-    if ( arrayIndex == QT_OPACITY_ATTR )
+    if ( arrayIndex == LSCS_OPACITY_ATTR )
     {
         glVertexAttribPointer( arrayIndex, 1, GL_FLOAT, GL_FALSE, 0, pointer );
     }

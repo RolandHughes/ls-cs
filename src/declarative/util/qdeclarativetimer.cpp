@@ -27,7 +27,7 @@
 #include <QtCore/qpauseanimation.h>
 #include <qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeTimerPrivate
 {
@@ -324,4 +324,4 @@ void QDeclarativeTimer::finished()
     emit runningChanged();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

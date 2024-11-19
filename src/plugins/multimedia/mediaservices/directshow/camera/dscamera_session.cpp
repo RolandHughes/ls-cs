@@ -1334,7 +1334,7 @@ void DSCameraSession::disconnectGraph()
     }
 }
 
-static bool qt_frameRateRangeGreaterThan( const QCamera::FrameRateRange &r1, const QCamera::FrameRateRange &r2 )
+static bool lscs_frameRateRangeGreaterThan( const QCamera::FrameRateRange &r1, const QCamera::FrameRateRange &r2 )
 {
     return r1.maximumFrameRate > r2.maximumFrameRate;
 }
@@ -1473,7 +1473,7 @@ void DSCameraSession::updateSourceCapabilities()
                             }
 
                             // Make sure higher frame rates come first
-                            std::sort( frameRateRanges.begin(), frameRateRanges.end(), qt_frameRateRangeGreaterThan );
+                            std::sort( frameRateRanges.begin(), frameRateRanges.end(), lscs_frameRateRangeGreaterThan );
                         }
 
                         pPin->Release();

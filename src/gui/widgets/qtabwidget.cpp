@@ -23,7 +23,7 @@
 
 #include <qtabwidget.h>
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
 
 #include <qwidget_p.h>
 #include <qtabbar_p.h>
@@ -79,7 +79,7 @@ void QTabWidgetPrivate::init()
     Q_Q( QTabWidget );
 
     stack = new QStackedWidget( q );
-    stack->setObjectName( QLatin1String( "qt_tabwidget_stackedwidget" ) );
+    stack->setObjectName( QLatin1String( "lscs_tabwidget_stackedwidget" ) );
     stack->setLineWidth( 0 );
 
     // do this so QMacStyle::layoutSpacing() can detect tab widget pages
@@ -88,14 +88,14 @@ void QTabWidgetPrivate::init()
     QObject::connect( stack, &QStackedWidget::widgetRemoved, q, &QTabWidget::_q_removeTab );
 
     QTabBar *tabBar = new QTabBar( q );
-    tabBar->setObjectName( QLatin1String( "qt_tabwidget_tabbar" ) );
+    tabBar->setObjectName( QLatin1String( "lscs_tabwidget_tabbar" ) );
     tabBar->setDrawBase( false );
     q->setTabBar( tabBar );
 
     q->setSizePolicy( QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding,
                                    QSizePolicy::TabWidget ) );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::keypadNavigationEnabled() )
     {
@@ -791,7 +791,7 @@ void QTabWidget::keyPressEvent( QKeyEvent *e )
 
     if ( ( ( e->key() == Qt::Key_Tab || e->key() == Qt::Key_Backtab ) &&
             count() > 1 && e->modifiers() & Qt::ControlModifier )
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
             || QApplication::keypadNavigationEnabled() && ( e->key() == Qt::Key_Left || e->key() == Qt::Key_Right ) && count() > 1
 #endif
 
@@ -801,7 +801,7 @@ void QTabWidget::keyPressEvent( QKeyEvent *e )
         int page = currentIndex();
         int dx = ( e->key() == Qt::Key_Backtab || e->modifiers() & Qt::ShiftModifier ) ? -1 : 1;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         if ( QApplication::keypadNavigationEnabled() && ( e->key() == Qt::Key_Left || e->key() == Qt::Key_Right ) )
         {
@@ -815,7 +815,7 @@ void QTabWidget::keyPressEvent( QKeyEvent *e )
             page += dx;
 
             if ( page < 0
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
                     && !e->isAutoRepeat()
 #endif
                )
@@ -825,7 +825,7 @@ void QTabWidget::keyPressEvent( QKeyEvent *e )
             }
             else if ( page >= pageCount
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
                       && !e->isAutoRepeat()
 #endif
                     )
@@ -864,7 +864,7 @@ int QTabWidget::count() const
     return d->tabs->count();
 }
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 void QTabWidget::setTabToolTip( int index, const QString &tip )
 {
     Q_D( QTabWidget );
@@ -878,7 +878,7 @@ QString QTabWidget::tabToolTip( int index ) const
 }
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 void QTabWidget::setTabWhatsThis( int index, const QString &text )
 {
     Q_D( QTabWidget );
@@ -1023,4 +1023,4 @@ void QTabWidget::_q_tabMoved( int from, int to )
     d->_q_tabMoved( from, to );
 }
 
-#endif //QT_NO_TABWIDGET
+#endif //LSCS_NO_TABWIDGET

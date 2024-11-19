@@ -27,7 +27,7 @@
 #include "private/qdeclarativeguard_p.h"
 #include "private/qdeclarativelist_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct ListData : public QScriptDeclarativeClass::Object
 {
@@ -149,5 +149,5 @@ QVariant QDeclarativeListScriptClass::toVariant( Object *obj, bool *ok )
     return QVariant::fromValue( QDeclarativeListReferencePrivate::init( data->property, data->propertyType, engine ) );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

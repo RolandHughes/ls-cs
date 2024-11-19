@@ -27,7 +27,7 @@
 #include <qscriptdebuggerjob_p.h>
 #include <qscriptdebuggerresponsehandlerinterface_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerCommandSchedulerInterface;
 class QScriptDebuggerCommandSchedulerJobPrivate;
@@ -50,6 +50,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerCommandSchedulerJob )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

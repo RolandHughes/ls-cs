@@ -60,9 +60,9 @@
 #include <qline.h>
 #include <qvector3d.h>
 
-#define NS(x) QT_PREPEND_NAMESPACE(x)
+#define NS(x) LSCS_PREPEND_NAMESPACE(x)
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct QDeclarativeMetaTypeData
 {
@@ -879,7 +879,7 @@ int QDeclarativePrivate::qmlregister( RegistrationType type, void *data )
 */
 bool QDeclarativeMetaType::isModule( const QByteArray &module, int versionMajor, int versionMinor )
 {
-#ifndef QT_NO_IMPORT_QT47_QML
+#ifndef LSCS_NO_IMPORT_QT47_QML
 
     // "import Qt 4.7" should have died off, but unfortunately, it was in a
     // major release. We don't register 4.7 types by default, as it's a
@@ -1313,7 +1313,7 @@ QList<QDeclarativeType *> QDeclarativeMetaType::qmlTypes()
     return data->nameToType.values();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #include <QtGui/qfont.h>
 #include <QtGui/qpixmap.h>
@@ -1342,7 +1342,7 @@ QT_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QScriptValue );
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 bool QDeclarativeMetaType::canCopy( int type )
 {
@@ -1386,7 +1386,7 @@ bool QDeclarativeMetaType::canCopy( int type )
         case QMetaType::QPoint:
         case QMetaType::QPointF:
         case QMetaType::QVector3D:
-#ifndef QT_NO_REGEXP
+#ifndef LSCS_NO_REGEXP
         case QMetaType::QRegExp:
 #endif
         case QMetaType::Void:
@@ -1400,7 +1400,7 @@ bool QDeclarativeMetaType::canCopy( int type )
         case QMetaType::QPolygon:
         case QMetaType::QRegion:
         case QMetaType::QBitmap:
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
         case QMetaType::QCursor:
 #endif
         case QMetaType::QSizePolicy:
@@ -1589,7 +1589,7 @@ bool QDeclarativeMetaType::copy( int type, void *data, const void *copy )
             case QMetaType::QVector3D:
                 *static_cast<NS( QVector3D ) *>( data ) = *static_cast<const NS( QVector3D ) *>( copy );
                 return true;
-#ifndef QT_NO_REGEXP
+#ifndef LSCS_NO_REGEXP
 
             case QMetaType::QRegExp:
                 *static_cast<NS( QRegExp ) *>( data ) = *static_cast<const NS( QRegExp ) *>( copy );
@@ -1638,7 +1638,7 @@ bool QDeclarativeMetaType::copy( int type, void *data, const void *copy )
             case QMetaType::QBitmap:
                 *static_cast<NS( QBitmap ) *>( data ) = *static_cast<const NS( QBitmap ) *>( copy );
                 return true;
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
             case QMetaType::QCursor:
                 *static_cast<NS( QCursor ) *>( data ) = *static_cast<const NS( QCursor ) *>( copy );
@@ -1858,7 +1858,7 @@ bool QDeclarativeMetaType::copy( int type, void *data, const void *copy )
             case QMetaType::QVector3D:
                 *static_cast<NS( QVector3D ) *>( data ) = NS( QVector3D )();
                 return true;
-#ifndef QT_NO_REGEXP
+#ifndef LSCS_NO_REGEXP
 
             case QMetaType::QRegExp:
                 *static_cast<NS( QRegExp ) *>( data ) = NS( QRegExp )();
@@ -1907,7 +1907,7 @@ bool QDeclarativeMetaType::copy( int type, void *data, const void *copy )
             case QMetaType::QBitmap:
                 *static_cast<NS( QBitmap ) *>( data ) = NS( QBitmap )();
                 return true;
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
             case QMetaType::QCursor:
                 *static_cast<NS( QCursor ) *>( data ) = NS( QCursor )();
@@ -1982,4 +1982,4 @@ bool QDeclarativeMetaType::copy( int type, void *data, const void *copy )
     return false;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

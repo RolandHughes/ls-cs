@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
 
 #include <qstylesheetstyle_p.h>
 
@@ -767,7 +767,7 @@ QRenderRule::QRenderRule( const QVector<QCss::Declaration> &declarations, const 
     int adj = -255;
     hasFont = v.extractFont( &font, &adj );
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
     if ( object && ( object->metaObject()->className() == "QTipLabel" ) )
     {
@@ -1501,7 +1501,7 @@ public:
 
         const QMetaObject *metaObject = OBJECT_PTR( node )->metaObject();
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
         if ( metaObject->className() == "QTipLabel" )
         {
@@ -1597,7 +1597,7 @@ public:
 
         const QMetaObject *metaObject = OBJECT_PTR( node )->metaObject();
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
         if ( metaObject->className() == "QTipLabel" )
         {
@@ -1841,7 +1841,7 @@ int QStyleSheetStyle::nativeFrameWidth( const QWidget *w )
 {
     QStyle *base = baseStyle();
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
     if ( qobject_cast<const QAbstractSpinBox *>( w ) )
     {
@@ -1850,7 +1850,7 @@ int QStyleSheetStyle::nativeFrameWidth( const QWidget *w )
 
 #endif
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
     if ( qobject_cast<const QComboBox *>( w ) )
     {
@@ -1859,7 +1859,7 @@ int QStyleSheetStyle::nativeFrameWidth( const QWidget *w )
 
 #endif
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     if ( qobject_cast<const QMenu *>( w ) )
     {
@@ -1868,7 +1868,7 @@ int QStyleSheetStyle::nativeFrameWidth( const QWidget *w )
 
 #endif
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
     if ( qobject_cast<const QMenuBar *>( w ) )
     {
@@ -1877,7 +1877,7 @@ int QStyleSheetStyle::nativeFrameWidth( const QWidget *w )
 
 #endif
 
-#ifndef QT_NO_FRAME
+#ifndef LSCS_NO_FRAME
 
     if ( const QFrame *frame = qobject_cast<const QFrame *>( w ) )
     {
@@ -1994,7 +1994,7 @@ static quint64 pseudoClass( QStyle::State state )
         pc |= QCss::PseudoClass_Item;
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( state & QStyle::State_HasEditFocus )
     {
@@ -2005,19 +2005,19 @@ static quint64 pseudoClass( QStyle::State state )
     return pc;
 }
 
-static void qt_check_if_internal_object( const QObject **obj, int *element )
+static void lscs_check_if_internal_object( const QObject **obj, int *element )
 {
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
     if ( *obj && ( *obj )->metaObject()->className() == "QDockWidgetTitleButton" )
     {
 
-        if ( ( *obj )->objectName() == "qt_dockwidget_closebutton" )
+        if ( ( *obj )->objectName() == "lscs_dockwidget_closebutton" )
         {
             *element = PseudoElement_DockWidgetCloseButton;
 
         }
-        else if ( ( *obj )->objectName() == "qt_dockwidget_floatbutton" )
+        else if ( ( *obj )->objectName() == "lscs_dockwidget_floatbutton" )
         {
             *element = PseudoElement_DockWidgetFloatButton;
         }
@@ -2030,7 +2030,7 @@ static void qt_check_if_internal_object( const QObject **obj, int *element )
 
 QRenderRule QStyleSheetStyle::renderRule( const QObject *obj, int element, quint64 state ) const
 {
-    qt_check_if_internal_object( &obj, &element );
+    lscs_check_if_internal_object( &obj, &element );
 
     QHash<quint64, QRenderRule> &cache = styleSheetCaches->renderRulesCache[obj][element];
     QHash<quint64, QRenderRule>::const_iterator cacheIt = cache.constFind( state );
@@ -2108,7 +2108,7 @@ QRenderRule QStyleSheetStyle::renderRule( const QObject *obj, const QStyleOption
             case PseudoElement_SpinBoxDownButton:
             case PseudoElement_SpinBoxUpArrow:
             case PseudoElement_SpinBoxDownArrow:
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
                 if ( const QStyleOptionSpinBox *sb = qstyleoption_cast<const QStyleOptionSpinBox *>( opt ) )
                 {
                     bool on = false;
@@ -2127,7 +2127,7 @@ QRenderRule QStyleSheetStyle::renderRule( const QObject *obj, const QStyleOption
                     state |= ( on ? QStyle::State_On : QStyle::State_Off );
                 }
 
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX
                 break;
 
             case PseudoElement_GroupBoxTitle:
@@ -2181,7 +2181,7 @@ QRenderRule QStyleSheetStyle::renderRule( const QObject *obj, const QStyleOption
                 extraClass |= QCss::PseudoClass_Editable;
             }
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
         }
         else if ( const QStyleOptionSpinBox *spin = qstyleoption_cast<const QStyleOptionSpinBox *>( opt ) )
         {
@@ -2275,7 +2275,7 @@ QRenderRule QStyleSheetStyle::renderRule( const QObject *obj, const QStyleOption
                 extraClass |= QCss::PseudoClass_PreviousSelected;
             }
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
         }
         else if ( const QStyleOptionTabWidgetFrame *tab = qstyleoption_cast<const QStyleOptionTabWidgetFrame *>( opt ) )
         {
@@ -2307,7 +2307,7 @@ QRenderRule QStyleSheetStyle::renderRule( const QObject *obj, const QStyleOption
 
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
         }
         else if ( const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>( opt ) )
         {
@@ -2363,7 +2363,7 @@ QRenderRule QStyleSheetStyle::renderRule( const QObject *obj, const QStyleOption
                     break;
             }
 
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
         }
         else if ( const QStyleOptionButton *btn = qstyleoption_cast<const QStyleOptionButton *>( opt ) )
@@ -2393,7 +2393,7 @@ QRenderRule QStyleSheetStyle::renderRule( const QObject *obj, const QStyleOption
         }
 
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
         else if ( const QStyleOptionToolBar *tb = qstyleoption_cast<const QStyleOptionToolBar *>( opt ) )
         {
             if ( tb->toolBarArea == Qt::LeftToolBarArea )
@@ -2433,7 +2433,7 @@ QRenderRule QStyleSheetStyle::renderRule( const QObject *obj, const QStyleOption
 
 #endif
 
-#ifndef QT_NO_TOOLBOX
+#ifndef LSCS_NO_TOOLBOX
         else if ( const QStyleOptionToolBox *tab = qstyleoption_cast<const QStyleOptionToolBox *>( opt ) )
         {
 
@@ -2464,9 +2464,9 @@ QRenderRule QStyleSheetStyle::renderRule( const QObject *obj, const QStyleOption
             }
         }
 
-#endif // QT_NO_TOOLBOX
+#endif // LSCS_NO_TOOLBOX
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
         else if ( const QStyleOptionDockWidget *dw = qstyleoption_cast<const QStyleOptionDockWidget *>( opt ) )
         {
             if ( dw->verticalTitleBar )
@@ -2494,9 +2494,9 @@ QRenderRule QStyleSheetStyle::renderRule( const QObject *obj, const QStyleOption
             }
         }
 
-#endif // QT_NO_DOCKWIDGET
+#endif // LSCS_NO_DOCKWIDGET
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
         else if ( const QStyleOptionViewItem *vOption = qstyleoption_cast<const QStyleOptionViewItem *>( opt ) )
         {
 
@@ -2526,7 +2526,7 @@ QRenderRule QStyleSheetStyle::renderRule( const QObject *obj, const QStyleOption
 
 #endif
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
         // LineEdit sets Sunken flag to indicate Sunken frame (argh)
         if ( const QLineEdit *lineEdit = qobject_cast<const QLineEdit *>( obj ) )
@@ -2948,7 +2948,7 @@ QRect QStyleSheetStyle::positionRect( const QWidget *w, const QRenderRule &rule1
  */
 static QWidget *embeddedWidget( QWidget *w )
 {
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
     if ( QComboBox *cmb = qobject_cast<QComboBox *>( w ) )
     {
@@ -2964,7 +2964,7 @@ static QWidget *embeddedWidget( QWidget *w )
 
 #endif
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
     if ( QAbstractSpinBox *sb = qobject_cast<QAbstractSpinBox *>( w ) )
     {
@@ -2973,7 +2973,7 @@ static QWidget *embeddedWidget( QWidget *w )
 
 #endif
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 
     if ( QAbstractScrollArea *sa = qobject_cast<QAbstractScrollArea *>( w ) )
     {
@@ -2994,13 +2994,13 @@ static QWidget *embeddedWidget( QWidget *w )
 */
 static QWidget *containerWidget( const QWidget *w )
 {
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
     if ( qobject_cast<const QLineEdit *>( w ) )
     {
         //if the QLineEdit is an embeddedWidget, we need the rule of the real widget
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
         if ( qobject_cast<const QComboBox *>( w->parentWidget() ) )
         {
             return w->parentWidget();
@@ -3008,7 +3008,7 @@ static QWidget *containerWidget( const QWidget *w )
 
 #endif
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         if ( qobject_cast<const QAbstractSpinBox *>( w->parentWidget() ) )
         {
@@ -3019,9 +3019,9 @@ static QWidget *containerWidget( const QWidget *w )
 
     }
 
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 
     if ( const QAbstractScrollArea *sa = qobject_cast<const QAbstractScrollArea *>( w->parentWidget() ) )
     {
@@ -3056,13 +3056,13 @@ static bool unstylable( const QWidget *w )
         return true;
     }
 
-#ifndef QT_NO_FRAME
+#ifndef LSCS_NO_FRAME
     // detect QComboBoxPrivateContainer
     else if ( qobject_cast<const QFrame *>( w ) )
     {
 
         if ( 0
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
                 || qobject_cast<const QComboBox *>( w->parentWidget() )
 #endif
            )
@@ -3073,7 +3073,7 @@ static bool unstylable( const QWidget *w )
 
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
     if ( w->metaObject() == &QWidget::staticMetaObject() && qobject_cast<const QTabBar *>( w->parentWidget() ) )
     {
@@ -3095,7 +3095,7 @@ static quint64 extendedPseudoClass( const QWidget *w )
     }
     else
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
         if ( const QComboBox *combo = qobject_cast<const QComboBox *>( w ) )
         {
             if ( combo->isEditable() )
@@ -3106,7 +3106,7 @@ static quint64 extendedPseudoClass( const QWidget *w )
         else
 #endif
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
             if ( const QLineEdit *edit = qobject_cast<const QLineEdit *>( w ) )
             {
                 pc |= ( edit->isReadOnly() ? QCss::PseudoClass_ReadOnly : QCss::PseudoClass_Editable );
@@ -3270,7 +3270,7 @@ void QStyleSheetStyle::setProperties( QWidget *w )
                 v = decl.brushValue();
                 break;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
             case QVariant::KeySequence:
                 v = QKeySequence( decl.d->values.at( 0 ).variant.toString() );
@@ -3525,7 +3525,7 @@ void QStyleSheetStyle::polish( QWidget *w )
         }
     }
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 
     if ( QAbstractScrollArea *sa = qobject_cast<QAbstractScrollArea *>( w ) )
     {
@@ -3552,27 +3552,27 @@ void QStyleSheetStyle::polish( QWidget *w )
 
         if ( w->metaObject() == &QWidget::staticMetaObject()
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
                 || qobject_cast<QHeaderView *>( w )
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
                 || qobject_cast<QTabBar *>( w )
 #endif
 
-#ifndef QT_NO_FRAME
+#ifndef LSCS_NO_FRAME
                 || qobject_cast<QFrame *>( w )
 #endif
 
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
                 || qobject_cast<QMainWindow *>( w )
 #endif
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
                 || qobject_cast<QMdiSubWindow *>( w )
 #endif
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
                 || qobject_cast<QMenuBar *>( w )
 #endif
                 || qobject_cast<QDialog *>( w ) )
@@ -3656,7 +3656,7 @@ void QStyleSheetStyle::unpolish( QWidget *w )
 
     QObject::disconnect( w, QString(), this, QString() );
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 
     if ( QAbstractScrollArea *sa = qobject_cast<QAbstractScrollArea *>( w ) )
     {
@@ -3679,7 +3679,7 @@ void QStyleSheetStyle::unpolish( QApplication *app )
     styleSheetCaches->styleSheetCache.remove( qApp );
 }
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
 static inline bool verticalTabs( QTabBar::Shape shape )
 {
@@ -3761,7 +3761,7 @@ void QStyleSheetStyle::drawComplexControl( ComplexControl cc, const QStyleOption
 
             break;
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case CC_SpinBox:
             if ( const QStyleOptionSpinBox *spin = qstyleoption_cast<const QStyleOptionSpinBox *>( opt ) )
@@ -3858,7 +3858,7 @@ void QStyleSheetStyle::drawComplexControl( ComplexControl cc, const QStyleOption
             }
 
             break;
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX
 
         case CC_GroupBox:
             if ( const QStyleOptionGroupBox *gb = qstyleoption_cast<const QStyleOptionGroupBox *>( opt ) )
@@ -4087,7 +4087,7 @@ void QStyleSheetStyle::drawComplexControl( ComplexControl cc, const QStyleOption
 
             break;
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
         case CC_ScrollBar:
             if ( const QStyleOptionSlider *sb = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -4110,9 +4110,9 @@ void QStyleSheetStyle::drawComplexControl( ComplexControl cc, const QStyleOption
             }
 
             break;
-#endif // QT_NO_SCROLLBAR
+#endif // LSCS_NO_SCROLLBAR
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
         case CC_Slider:
             if ( const QStyleOptionSlider *slider = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -4186,7 +4186,7 @@ void QStyleSheetStyle::drawComplexControl( ComplexControl cc, const QStyleOption
             }
 
             break;
-#endif // QT_NO_SLIDER
+#endif // LSCS_NO_SLIDER
 
         case CC_MdiControls:
             if ( hasStyleRule( w, PseudoElement_MdiCloseButton ) || hasStyleRule( w, PseudoElement_MdiNormalButton )
@@ -4649,7 +4649,7 @@ void QStyleSheetStyle::drawControl( ControlElement ce, const QStyleOption *opt, 
             }
             else
             {
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
                 if ( const QStyleOptionToolBar *tb = qstyleoption_cast<const QStyleOptionToolBar *>( opt ) )
                 {
@@ -4935,7 +4935,7 @@ void QStyleSheetStyle::drawControl( ControlElement ce, const QStyleOption *opt, 
 
             return;
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CE_ComboBoxLabel:
             if ( !rule.hasBox() )
@@ -4990,7 +4990,7 @@ void QStyleSheetStyle::drawControl( ControlElement ce, const QStyleOption *opt, 
             }
 
             break;
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX
 
         case CE_Header:
             if ( hasStyleRule( w, PseudoElement_HeaderViewUpArrow )
@@ -5352,7 +5352,7 @@ void QStyleSheetStyle::drawControl( ControlElement ce, const QStyleOption *opt, 
             fallback = true;
             break;
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
         case CE_ItemViewItem:
             if ( const QStyleOptionViewItem *vopt = qstyleoption_cast<const QStyleOptionViewItem *>( opt ) )
@@ -5380,9 +5380,9 @@ void QStyleSheetStyle::drawControl( ControlElement ce, const QStyleOption *opt, 
             }
 
             break;
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case CE_TabBarTab:
             if ( hasStyleRule( w, PseudoElement_TabBarTab ) )
@@ -5436,7 +5436,7 @@ void QStyleSheetStyle::drawControl( ControlElement ce, const QStyleOption *opt, 
             }
 
             break;
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
         case CE_ColumnViewGrip:
             if ( rule.hasDrawable() )
@@ -5705,7 +5705,7 @@ void QStyleSheetStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *o
         case PE_PanelLineEdit:
             if ( const QStyleOptionFrame *frm = qstyleoption_cast<const QStyleOptionFrame *>( opt ) )
             {
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
                 if ( w && qobject_cast<const QAbstractSpinBox *>( w->parentWidget() ) )
                 {
@@ -5766,7 +5766,7 @@ void QStyleSheetStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *o
                 break;
             }
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 
             if ( const QAbstractScrollArea *sa = qobject_cast<const QAbstractScrollArea *>( w ) )
             {
@@ -5922,7 +5922,7 @@ void QStyleSheetStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *o
             rule.drawBorder( p, opt->rect );
             return;
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
 
         case PE_FrameTabWidget:
             if ( const QStyleOptionTabWidgetFrame *frm = qstyleoption_cast<const QStyleOptionTabWidgetFrame *>( opt ) )
@@ -5945,7 +5945,7 @@ void QStyleSheetStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *o
             }
 
             break;
-#endif // QT_NO_TABWIDGET
+#endif // LSCS_NO_TABWIDGET
 
         case PE_IndicatorProgressChunk:
             pseudoElement = PseudoElement_ProgressBarChunk;
@@ -5985,7 +5985,7 @@ void QStyleSheetStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *o
         case PE_IndicatorSpinPlus:
             pseudoElement = PseudoElement_SpinBoxUpArrow;
             break;
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case PE_IndicatorTabClose:
             if ( w )
@@ -6120,7 +6120,7 @@ int QStyleSheetStyle::pixelMetric( PixelMetric m, const QStyleOption *opt, const
     switch ( m )
     {
         case PM_MenuButtonIndicator:
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 
             // QToolButton adds this directly to the width
             if ( qobject_cast<const QToolButton *>( w ) && ( rule.hasBox() || !rule.hasNativeBorder() ) )
@@ -6307,7 +6307,7 @@ int QStyleSheetStyle::pixelMetric( PixelMetric m, const QStyleOption *opt, const
 
             break;
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
         case PM_ScrollBarExtent:
             if ( rule.hasContentsSize() )
@@ -6347,7 +6347,7 @@ int QStyleSheetStyle::pixelMetric( PixelMetric m, const QStyleOption *opt, const
             }
 
             break;
-#endif // QT_NO_SCROLLBAR
+#endif // LSCS_NO_SCROLLBAR
 
         case PM_ProgressBarChunkWidth:
             subRule = renderRule( w, opt, PseudoElement_ProgressBarChunk );
@@ -6361,7 +6361,7 @@ int QStyleSheetStyle::pixelMetric( PixelMetric m, const QStyleOption *opt, const
 
             break;
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
 
         case PM_TabBarTabHSpace:
         case PM_TabBarTabVSpace:
@@ -6414,7 +6414,7 @@ int QStyleSheetStyle::pixelMetric( PixelMetric m, const QStyleOption *opt, const
             break;
         }
 
-#endif // QT_NO_TABWIDGET
+#endif // LSCS_NO_TABWIDGET
 
         case PM_SliderThickness: // horizontal slider's height (sizeHint)
         case PM_SliderLength: // minimum length of slider
@@ -6641,7 +6641,7 @@ QSize QStyleSheetStyle::sizeFromContents( ContentsType ct, const QStyleOption *o
         case CT_GroupBox:
         case CT_LineEdit:
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
             if ( qobject_cast<QAbstractSpinBox *>( w ? w->parentWidget() : nullptr ) )
             {
                 return csz;   // we only care about the size hint of the line edit
@@ -6743,7 +6743,7 @@ QSize QStyleSheetStyle::sizeFromContents( ContentsType ct, const QStyleOption *o
 
             break;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case CT_TabBarTab:
         {
@@ -6823,7 +6823,7 @@ QSize QStyleSheetStyle::sizeFromContents( ContentsType ct, const QStyleOption *o
 
             break;
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
         case CT_ItemViewItem:
         {
@@ -7206,7 +7206,7 @@ int QStyleSheetStyle::styleHint( StyleHint sh, const QStyleOption *opt, const QW
             break;
 
         case SH_TabBar_Alignment:
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
             if ( qobject_cast<const QTabWidget *>( w ) )
             {
                 rule = renderRule( w, opt, PseudoElement_TabWidgetTabBar );
@@ -7221,7 +7221,7 @@ int QStyleSheetStyle::styleHint( StyleHint sh, const QStyleOption *opt, const QW
             s = "alignment";
             break;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case SH_TabBar_CloseButtonPosition:
             rule = renderRule( w, opt, PseudoElement_TabBarTabCloseButton );
@@ -7253,7 +7253,7 @@ int QStyleSheetStyle::styleHint( StyleHint sh, const QStyleOption *opt, const QW
             break;
 
         case SH_ComboBox_PopupFrameStyle:
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
             if ( qobject_cast<const QComboBox *>( w ) )
             {
                 QAbstractItemView *view = w->findChild<QAbstractItemView *>();
@@ -7378,7 +7378,7 @@ QRect QStyleSheetStyle::subControlRect( ComplexControl cc, const QStyleOptionCom
 
             break;
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case CC_SpinBox:
             if ( const QStyleOptionSpinBox *spin = qstyleoption_cast<const QStyleOptionSpinBox *>( opt ) )
@@ -7450,7 +7450,7 @@ QRect QStyleSheetStyle::subControlRect( ComplexControl cc, const QStyleOptionCom
             }
 
             break;
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX
 
         case CC_GroupBox:
             if ( const QStyleOptionGroupBox *gb = qstyleoption_cast<const QStyleOptionGroupBox *>( opt ) )
@@ -7573,7 +7573,7 @@ QRect QStyleSheetStyle::subControlRect( ComplexControl cc, const QStyleOptionCom
 
             break;
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
         case CC_ScrollBar:
             if ( const QStyleOptionSlider *sb = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -7726,7 +7726,7 @@ QRect QStyleSheetStyle::subControlRect( ComplexControl cc, const QStyleOptionCom
             break;
 #endif
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
         case CC_Slider:
             if ( const QStyleOptionSlider *slider = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -7853,7 +7853,7 @@ QRect QStyleSheetStyle::subElementRect( SubElement se, const QStyleOption *opt, 
     RECURSION_GUARD( return baseStyle()->subElementRect( se, opt, w ) )
 
     QRenderRule rule = renderRule( w, opt );
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     int pe = PseudoElement_None;
 #endif
 
@@ -7937,7 +7937,7 @@ QRect QStyleSheetStyle::subElementRect( SubElement se, const QStyleOption *opt, 
         case SE_CheckBoxClickRect: // relies on indicator and contents
             return ParentStyle::subElementRect( se, opt, w );
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
         case SE_ItemViewItemCheckIndicator:
             if ( ! qstyleoption_cast<const QStyleOptionViewItem *>( opt ) )
@@ -8035,7 +8035,7 @@ QRect QStyleSheetStyle::subElementRect( SubElement se, const QStyleOption *opt, 
 
             break;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case SE_TabWidgetLeftCorner:
             pe = PseudoElement_TabWidgetLeftCorner;
@@ -8139,7 +8139,7 @@ QRect QStyleSheetStyle::subElementRect( SubElement se, const QStyleOption *opt, 
             break;
         }
 
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
         case SE_DockWidgetCloseButton:
         case SE_DockWidgetFloatButton:
@@ -8157,7 +8157,7 @@ QRect QStyleSheetStyle::subElementRect( SubElement se, const QStyleOption *opt, 
             return positionRect( w, subRule, subRule2, pe, opt->rect, opt->direction );
         }
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
         case SE_ToolBarHandle:
             if ( hasStyleRule( w, PseudoElement_ToolBarHandle ) )
@@ -8204,7 +8204,7 @@ bool QStyleSheetStyle::event( QEvent *e )
 
 void QStyleSheetStyle::updateStyleSheetFont( QWidget *w ) const
 {
-    if ( w->objectName() == "qt_fontDialog_sampleEdit" )
+    if ( w->objectName() == "lscs_fontDialog_sampleEdit" )
     {
         return;
     }
@@ -8290,7 +8290,7 @@ Qt::Alignment QStyleSheetStyle::resolveAlignment( Qt::LayoutDirection layDir, Qt
 
 bool QStyleSheetStyle::isNaturalChild( const QObject *obj )
 {
-    if ( obj->objectName().startsWith( "qt_" ) )
+    if ( obj->objectName().startsWith( "lscs_" ) )
     {
         return true;
     }
@@ -8298,4 +8298,4 @@ bool QStyleSheetStyle::isNaturalChild( const QObject *obj )
     return false;
 }
 
-#endif // QT_NO_STYLE_STYLESHEET
+#endif // LSCS_NO_STYLE_STYLESHEET

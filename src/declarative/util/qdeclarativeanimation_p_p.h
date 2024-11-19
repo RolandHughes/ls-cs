@@ -40,7 +40,7 @@
 
 #include <qvariantanimation_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 //interface for classes that provide animation actions for QActionAnimation
 class QAbstractAnimationAction
@@ -422,6 +422,6 @@ public:
     void setValue( qreal v );
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEANIMATION_P_H

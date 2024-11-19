@@ -26,7 +26,7 @@
 
 #include <qwidget.h>
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
 class Q_GUI_EXPORT QToolTip
 {
@@ -51,6 +51,6 @@ public:
     static void setFont( const QFont &font );
 };
 
-#endif // QT_NO_TOOLTIP
+#endif // LSCS_NO_TOOLTIP
 
 #endif // QTOOLTIP_H

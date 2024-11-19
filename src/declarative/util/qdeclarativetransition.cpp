@@ -30,7 +30,7 @@
 #include <qdeclarativetransitionmanager_p_p.h>
 #include <QParallelAnimationGroup>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 //ParallelAnimationWrapper allows us to do a "callback" when the animation finishes, rather than connecting
 //and disconnecting signals and slots frequently
@@ -303,5 +303,5 @@ QDeclarativeListProperty<QDeclarativeAbstractAnimation> QDeclarativeTransition::
             QDeclarativeTransitionPrivate::clear_animations );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

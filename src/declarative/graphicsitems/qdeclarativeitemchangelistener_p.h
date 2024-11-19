@@ -26,7 +26,7 @@
 
 #include <QtCore/qglobal.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QRectF;
 class QDeclarativeItem;
@@ -45,6 +45,6 @@ public:
     }
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEITEMCHANGELISTENER

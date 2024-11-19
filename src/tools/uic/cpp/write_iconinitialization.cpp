@@ -67,7 +67,7 @@ void WriteIconInitialization::acceptUI( DomUI *node )
 
 QString WriteIconInitialization::iconFromDataFunction()
 {
-    return "qt_get_icon";
+    return "lscs_get_icon";
 }
 
 void WriteIconInitialization::acceptImages( DomImages *images )

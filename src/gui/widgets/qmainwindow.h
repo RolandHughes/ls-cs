@@ -27,7 +27,7 @@
 #include <qwidget.h>
 #include <qtabwidget.h>
 
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
 
 class QDockWidget;
 class QMainWindowPrivate;
@@ -49,28 +49,28 @@ class Q_GUI_EXPORT QMainWindow : public QWidget
     GUI_LSCS_PROPERTY_READ( toolButtonStyle, toolButtonStyle )
     GUI_LSCS_PROPERTY_WRITE( toolButtonStyle, setToolButtonStyle )
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
     GUI_LSCS_PROPERTY_READ( animated, isAnimated )
     GUI_LSCS_PROPERTY_WRITE( animated, setAnimated )
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     GUI_LSCS_PROPERTY_READ( documentMode, documentMode )
     GUI_LSCS_PROPERTY_WRITE( documentMode, setDocumentMode )
 #endif
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
     GUI_LSCS_PROPERTY_READ( tabShape, tabShape )
     GUI_LSCS_PROPERTY_WRITE( tabShape, setTabShape )
 #endif
 
     GUI_LSCS_PROPERTY_READ( dockNestingEnabled, isDockNestingEnabled )
     GUI_LSCS_PROPERTY_WRITE( dockNestingEnabled, setDockNestingEnabled )
-#endif // QT_NO_DOCKWIDGET
+#endif // LSCS_NO_DOCKWIDGET
 
     GUI_LSCS_PROPERTY_READ( dockOptions, dockOptions )
     GUI_LSCS_PROPERTY_WRITE( dockOptions, setDockOptions )
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
     GUI_LSCS_PROPERTY_READ( unifiedTitleAndToolBarOnMac, unifiedTitleAndToolBarOnMac )
     GUI_LSCS_PROPERTY_WRITE( unifiedTitleAndToolBarOnMac, setUnifiedTitleAndToolBarOnMac )
 #endif
@@ -112,7 +112,7 @@ public:
 
     QWidget *takeCentralWidget();
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
     bool isAnimated() const;
     bool isDockNestingEnabled() const;
 
@@ -140,23 +140,23 @@ public:
     GUI_LSCS_SLOT_2( setDockNestingEnabled )
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     bool documentMode() const;
     void setDocumentMode( bool enabled );
 #endif
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
     QTabWidget::TabShape tabShape() const;
     void setTabShape( QTabWidget::TabShape tabShape );
     QTabWidget::TabPosition tabPosition( Qt::DockWidgetArea area ) const;
     void setTabPosition( Qt::DockWidgetAreas areas, QTabWidget::TabPosition tabPosition );
 #endif
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     virtual QMenu *createPopupMenu();
 #endif
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     QMenuBar *menuBar() const;
     void setMenuBar( QMenuBar *menuBar );
 
@@ -164,12 +164,12 @@ public:
     void setMenuWidget( QWidget *menuBar );
 #endif
 
-#ifndef QT_NO_STATUSBAR
+#ifndef LSCS_NO_STATUSBAR
     QStatusBar *statusBar() const;
     void setStatusBar( QStatusBar *statusbar );
 #endif
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
     void addToolBarBreak( Qt::ToolBarArea area = Qt::TopToolBarArea );
     void insertToolBarBreak( QToolBar *location );
 
@@ -199,7 +199,7 @@ public:
     GUI_LSCS_SIGNAL_2( toolButtonStyleChanged, toolButtonStyle )
 
 protected:
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 
@@ -211,6 +211,6 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QMainWindow::DockOptions )
 
-#endif // QT_NO_MAINWINDOW
+#endif // LSCS_NO_MAINWINDOW
 
 #endif

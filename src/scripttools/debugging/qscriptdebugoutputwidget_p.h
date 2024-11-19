@@ -26,7 +26,7 @@
 
 #include <qscriptdebugoutputwidgetinterface_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebugOutputWidgetPrivate;
 
@@ -48,6 +48,6 @@ private:
     Q_DISABLE_COPY( QScriptDebugOutputWidget )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

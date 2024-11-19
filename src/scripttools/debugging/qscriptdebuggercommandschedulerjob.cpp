@@ -24,7 +24,7 @@
 #include "qscriptdebuggercommandschedulerjob_p.h"
 #include "qscriptdebuggercommandschedulerjob_p_p.h"
 
-QT_BEGIN_NAMESPACE QScriptDebuggerCommandSchedulerJobPrivate::QScriptDebuggerCommandSchedulerJobPrivate()
+LSCS_BEGIN_NAMESPACE QScriptDebuggerCommandSchedulerJobPrivate::QScriptDebuggerCommandSchedulerJobPrivate()
 {
 }
 
@@ -59,4 +59,4 @@ QScriptDebuggerCommandSchedulerInterface *QScriptDebuggerCommandSchedulerJob::co
     return d->commandScheduler;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

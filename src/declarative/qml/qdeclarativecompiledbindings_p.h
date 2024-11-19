@@ -27,7 +27,7 @@
 #include <qdeclarativeexpression_p.h>
 #include <qdeclarativebinding_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct QDeclarativeBindingCompilerPrivate;
 class QDeclarativeBindingCompiler
@@ -70,14 +70,14 @@ public:
     QDeclarativeAbstractBinding *configBinding( int index, QObject *target, QObject *scope, int property );
 
 protected:
-    int qt_metacall( QMetaObject::Call, int, void ** );
+    int lscs_metacall( QMetaObject::Call, int, void ** );
 
 private:
     Q_DISABLE_COPY( QDeclarativeCompiledBindings )
     Q_DECLARE_PRIVATE( QDeclarativeCompiledBindings )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEBINDINGOPTIMIZATIONS_P_H
 

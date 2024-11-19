@@ -1,7 +1,11 @@
 add_library(LsCsMultimedia_m3u MODULE "")
 add_library(LsCs::LsCsMultimedia_m3u ALIAS LsCsMultimedia_m3u)
 
-set_target_properties(LsCsMultimedia_m3u PROPERTIES OUTPUT_NAME LsCsMultimedia_m3u${BUILD_ABI} PREFIX "")
+set_target_properties(LsCsMultimedia_m3u PROPERTIES
+  PREFIX ""
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 
 list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
@@ -21,7 +25,7 @@ target_link_libraries(LsCsMultimedia_m3u
 target_compile_definitions(LsCsMultimedia_m3u
    PRIVATE
    -DIN_TRUE
-   -DQT_PLUGIN
+   -DLSCS_PLUGIN
 )
 
 #if(BUILDING_RPM OR BUILDING_DEBIAN)

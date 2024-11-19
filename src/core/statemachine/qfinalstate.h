@@ -26,7 +26,7 @@
 
 #include <qabstractstate.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 class QFinalStatePrivate;
 
@@ -52,6 +52,6 @@ private:
     Q_DECLARE_PRIVATE( QFinalState )
 };
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE
 
 #endif

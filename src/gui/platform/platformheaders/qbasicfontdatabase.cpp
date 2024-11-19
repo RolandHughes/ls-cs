@@ -23,7 +23,7 @@
 
 #include <qbasicfontdatabase_p.h>
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
 
 #include <qplatform_screen.h>
 #include <qdir.h>
@@ -175,11 +175,11 @@ void QBasicFontDatabase::releaseHandle( void *handle )
     delete file;
 }
 
-extern FT_Library qt_getFreetype();
+extern FT_Library lscs_getFreetype();
 
 QStringList QBasicFontDatabase::addTTFile( const QByteArray &fontData, const QByteArray &file )
 {
-    FT_Library library = qt_getFreetype();
+    FT_Library library = lscs_getFreetype();
 
     int index    = 0;
     int numFaces = 0;

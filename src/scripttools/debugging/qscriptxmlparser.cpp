@@ -27,7 +27,7 @@
 #include <QtCore/qxmlstream.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 static void tokenUntil( QXmlStreamReader &reader, QXmlStreamReader::TokenType target,
                         QList<int> &lineNumbers )
@@ -219,4 +219,4 @@ QScriptXmlParser::Result QScriptXmlParser::parse( const QString &xml )
     return Result( functionsInfo, lineNumbers.toSet() );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

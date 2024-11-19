@@ -25,7 +25,7 @@
 #include "qscriptdebuggercommandschedulerinterface_p.h"
 #include "qscriptdebuggercommand_p.h"
 
-QT_BEGIN_NAMESPACE QScriptDebuggerCommandSchedulerFrontend::QScriptDebuggerCommandSchedulerFrontend(
+LSCS_BEGIN_NAMESPACE QScriptDebuggerCommandSchedulerFrontend::QScriptDebuggerCommandSchedulerFrontend(
     QScriptDebuggerCommandSchedulerInterface *scheduler,
     QScriptDebuggerResponseHandlerInterface *responseHandler )
     : m_scheduler( scheduler ), m_responseHandler( responseHandler )
@@ -298,4 +298,4 @@ int QScriptDebuggerCommandSchedulerFrontend::scheduleDeleteScriptObjectSnapshot(
     return scheduleCommand( QScriptDebuggerCommand::deleteScriptObjectSnapshotCommand( id ) );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

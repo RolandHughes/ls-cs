@@ -23,7 +23,7 @@
 
 #include <qtoolbutton.h>
 
-#if ! defined(QT_NO_TOOLBUTTON)
+#if ! defined(LSCS_NO_TOOLBUTTON)
 
 #include <qapplication.h>
 #include <qdesktopwidget.h>
@@ -57,7 +57,7 @@ public:
         ToolButtonPressed = 2
     };
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     void _q_buttonPressed();
     void _q_buttonReleased();
     void popupTimerDone();
@@ -86,13 +86,13 @@ public:
 
     QAction *defaultAction;
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     bool hasMenu() const;
     QList<QAction *> actionsCopy;
 #endif
 };
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 bool QToolButtonPrivate::hasMenu() const
 {
     return ( ( defaultAction && defaultAction->menu() )
@@ -115,7 +115,7 @@ void QToolButtonPrivate::init()
 
     defaultAction = nullptr;
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
     if ( qobject_cast<QToolBar *>( q->parent() ) )
     {
@@ -137,7 +137,7 @@ void QToolButtonPrivate::init()
     q->setSizePolicy( QSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed,
                                    QSizePolicy::ToolButton ) );
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     QObject::connect( q, &QToolButton::pressed,  q, &QToolButton::_q_buttonPressed );
     QObject::connect( q, &QToolButton::released, q, &QToolButton::_q_buttonReleased );
 #endif
@@ -158,7 +158,7 @@ void QToolButton::initStyleOption( QStyleOptionToolButton *option ) const
     bool forceNoText = false;
     option->iconSize = iconSize(); //default value
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
     if ( parentWidget() )
     {
@@ -168,7 +168,7 @@ void QToolButton::initStyleOption( QStyleOptionToolButton *option ) const
         }
     }
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 
     if ( !forceNoText )
     {
@@ -237,7 +237,7 @@ void QToolButton::initStyleOption( QStyleOptionToolButton *option ) const
         option->features |= QStyleOptionToolButton::PopupDelay;
     }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     if ( d->hasMenu() )
     {
@@ -438,7 +438,7 @@ void QToolButton::actionEvent( QActionEvent *event )
                 d->defaultAction = nullptr;
             }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
             if ( action == d->menuAction )
             {
@@ -536,7 +536,7 @@ void QToolButton::leaveEvent( QEvent *e )
 
 void QToolButton::timerEvent( QTimerEvent *e )
 {
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     Q_D( QToolButton );
 
     if ( e->timerId() == d->popupTimer.timerId() )
@@ -551,7 +551,7 @@ void QToolButton::timerEvent( QTimerEvent *e )
 
 void QToolButton::changeEvent( QEvent *e )
 {
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
     Q_D( QToolButton );
 
     if ( e->type() == QEvent::ParentChange )
@@ -583,7 +583,7 @@ void QToolButton::mousePressEvent( QMouseEvent *e )
 {
     Q_D( QToolButton );
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     QStyleOptionToolButton opt;
     initStyleOption( &opt );
 
@@ -624,7 +624,7 @@ bool QToolButton::hitButton( const QPoint &pos ) const
     return false;
 }
 
-#if ! defined(QT_NO_MENU)
+#if ! defined(LSCS_NO_MENU)
 
 void QToolButton::setMenu( QMenu *menu )
 {
@@ -759,7 +759,7 @@ void QToolButtonPrivate::popupTimerDone()
     q->setAutoRepeat( false );
     bool horizontal = true;
 
-#if ! defined(QT_NO_TOOLBAR)
+#if ! defined(LSCS_NO_TOOLBAR)
     QToolBar *tb = qobject_cast<QToolBar *>( q->parent() );
 
     if ( tb && tb->orientation() == Qt::Vertical )
@@ -931,7 +931,7 @@ void QToolButton::setDefaultAction( QAction *action )
 {
     Q_D( QToolButton );
 
-#if ! defined(QT_NO_MENU)
+#if ! defined(LSCS_NO_MENU)
     bool hadMenu = false;
     hadMenu = d->hasMenu();
 #endif
@@ -960,19 +960,19 @@ void QToolButton::setDefaultAction( QAction *action )
     setText( buttonText );
     setIcon( action->icon() );
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     setToolTip( action->toolTip() );
 #endif
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
     setStatusTip( action->statusTip() );
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     setWhatsThis( action->whatsThis() );
 #endif
 
-#if ! defined(QT_NO_MENU)
+#if ! defined(LSCS_NO_MENU)
 
     if ( action->menu() && !hadMenu )
     {
@@ -1034,7 +1034,7 @@ bool QToolButton::event( QEvent *event )
     return QAbstractButton::event( event );
 }
 
-#if ! defined(QT_NO_MENU)
+#if ! defined(LSCS_NO_MENU)
 void QToolButton::_q_buttonPressed()
 {
     Q_D( QToolButton );

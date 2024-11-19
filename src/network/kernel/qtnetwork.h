@@ -1,5 +1,5 @@
-#ifndef QT_NETWORK_H
-#define QT_NETWORK_H
+#ifndef LSCS_NETWORK_H
+#define LSCS_NETWORK_H
 
 #include <qtcore.h>
 

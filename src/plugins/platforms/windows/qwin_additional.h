@@ -25,7 +25,7 @@
 #define QTWINDOWS_ADDITIONAL_H
 
 #include <qglobal.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #ifndef WM_THEMECHANGED
 #   define WM_THEMECHANGED 0x031A

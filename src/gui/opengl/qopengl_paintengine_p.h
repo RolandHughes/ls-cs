@@ -46,12 +46,12 @@ enum EngineMode
 };
 
 #define GL_STENCIL_HIGH_BIT         GLuint(0x80)
-#define QT_UNKNOWN_TEXTURE_UNIT     GLuint(-1)
-#define QT_DEFAULT_TEXTURE_UNIT     GLuint(0)
-#define QT_BRUSH_TEXTURE_UNIT       GLuint(0)
-#define QT_IMAGE_TEXTURE_UNIT       GLuint(0) //Can be the same as brush texture unit
-#define QT_MASK_TEXTURE_UNIT        GLuint(1)
-#define QT_BACKGROUND_TEXTURE_UNIT  GLuint(2)
+#define LSCS_UNKNOWN_TEXTURE_UNIT     GLuint(-1)
+#define LSCS_DEFAULT_TEXTURE_UNIT     GLuint(0)
+#define LSCS_BRUSH_TEXTURE_UNIT       GLuint(0)
+#define LSCS_IMAGE_TEXTURE_UNIT       GLuint(0) //Can be the same as brush texture unit
+#define LSCS_MASK_TEXTURE_UNIT        GLuint(1)
+#define LSCS_BACKGROUND_TEXTURE_UNIT  GLuint(2)
 
 class QOpenGL2PaintEngineExPrivate;
 
@@ -152,7 +152,7 @@ private:
 
 // This probably needs to grow to GL_MAX_VERTEX_ATTRIBS, but 3 is ok for now as that's
 // all the GL2 engine uses:
-#define QT_GL_VERTEX_ARRAY_TRACKED_COUNT 3
+#define LSCS_GL_VERTEX_ARRAY_TRACKED_COUNT 3
 
 class QOpenGL2PaintEngineExPrivate : public QPaintEngineExPrivate
 {
@@ -167,7 +167,7 @@ public:
     QOpenGL2PaintEngineExPrivate( QOpenGL2PaintEngineEx *q_ptr )
         : q( q_ptr ), shaderManager( nullptr ), width( 0 ), height( 0 ), ctx( nullptr ), useSystemClip( true ), elementIndicesVBOId( 0 ),
           snapToPixelGrid( false ), nativePaintingActive( false ), inverseScale( 1 ),
-          lastTextureUnitUsed( QT_UNKNOWN_TEXTURE_UNIT )
+          lastTextureUnitUsed( LSCS_UNKNOWN_TEXTURE_UNIT )
     {
     }
 
@@ -269,7 +269,7 @@ public:
     EngineMode mode;
     QFontEngine::GlyphFormat glyphCacheFormat;
 
-    bool vertexAttributeArraysEnabledState[QT_GL_VERTEX_ARRAY_TRACKED_COUNT];
+    bool vertexAttributeArraysEnabledState[LSCS_GL_VERTEX_ARRAY_TRACKED_COUNT];
 
     // dirty flags
     bool matrixDirty; // Implies matrix uniforms are also dirty
@@ -332,7 +332,7 @@ void QOpenGL2PaintEngineExPrivate::setVertexAttributePointer( unsigned int array
 
     vertexAttribPointers[arrayIndex] = pointer;
 
-    if ( arrayIndex == QT_OPACITY_ATTR )
+    if ( arrayIndex == LSCS_OPACITY_ATTR )
     {
         funcs.glVertexAttribPointer( arrayIndex, 1, GL_FLOAT, GL_FALSE, 0, pointer );
     }

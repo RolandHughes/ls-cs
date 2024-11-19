@@ -27,7 +27,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QAbstractAnimation>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QEasingCurve;
 class QDeclarativeTimeLineValue;
@@ -193,6 +193,6 @@ private:
     void ( T::*_setFunctionInt )( int );
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

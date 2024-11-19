@@ -61,13 +61,13 @@ QSharedPointer<X> qSharedPointerConstCast( const QSharedPointer<T> &ptr );
 template <class X, class T>
 QSharedPointer<X> qSharedPointerObjectCast( const QSharedPointer<T> &ptr );
 
-#ifdef QT_NO_DEBUG
-# define QSHAREDPOINTER_VERIFY_AUTO_CAST(T, X)  qt_noop()
+#ifdef LSCS_NO_DEBUG
+# define QSHAREDPOINTER_VERIFY_AUTO_CAST(T, X)  lscs_noop()
 #else
 
-template<typename T> inline void qt_sharedpointer_cast_check( T * ) { }
+template<typename T> inline void lscs_sharedpointer_cast_check( T * ) { }
 # define QSHAREDPOINTER_VERIFY_AUTO_CAST(T, X)          \
-    qt_sharedpointer_cast_check<T>(static_cast<X *>(nullptr))
+    lscs_sharedpointer_cast_check<T>(static_cast<X *>(nullptr))
 #endif
 
 namespace QtSharedPointer
@@ -569,7 +569,7 @@ private:
 
         typedef QtSharedPointer::ExternalRefCountWithCustomDeleter<T, Deleter> Private;
 
-#ifdef QT_SHAREDPOINTER_TRACK_POINTERS
+#ifdef LSCS_SHAREDPOINTER_TRACK_POINTERS
         typename Private::DestroyerFn actualDeleter = &Private::safetyCheckDeleter;
 #else
         typename Private::DestroyerFn actualDeleter = &Private::deleter;
@@ -577,7 +577,7 @@ private:
 
         d = Private::create( ptr, deleter, actualDeleter );
 
-#ifdef QT_SHAREDPOINTER_TRACK_POINTERS
+#ifdef LSCS_SHAREDPOINTER_TRACK_POINTERS
         internalSafetyCheckAdd( d, ptr );
 #endif
         d->setQObjectShared( ptr, true );
@@ -994,7 +994,7 @@ inline bool operator<( T *ptr1, const QSharedPointer<X> &ptr2 )
 template <class T>
 inline uint qHash( const QSharedPointer<T> &ptr, uint seed = 0 )
 {
-    return QT_PREPEND_NAMESPACE( qHash )( ptr.data(), seed );
+    return LSCS_PREPEND_NAMESPACE( qHash )( ptr.data(), seed );
 }
 
 template<class T, class...Args>

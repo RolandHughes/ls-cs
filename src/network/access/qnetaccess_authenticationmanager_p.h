@@ -73,7 +73,7 @@ public:
     QNetworkAuthenticationCredential fetchCachedCredentials( const QUrl &url,
             const QAuthenticator *auth = nullptr );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     void cacheProxyCredentials( const QNetworkProxy &proxy, const QAuthenticator *auth );
     QNetworkAuthenticationCredential fetchCachedProxyCredentials( const QNetworkProxy &proxy,
             const QAuthenticator *auth = nullptr );

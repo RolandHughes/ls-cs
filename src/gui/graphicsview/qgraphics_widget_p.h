@@ -36,7 +36,7 @@
 class QGraphicsLayout;
 class QStyleOptionTitleBar;
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 class QGraphicsWidgetPrivate : public QGraphicsItemPrivate
 {
@@ -227,7 +227,7 @@ public:
     // Windows
     Qt::WindowFlags m_flags;
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     QList<QAction *> actions;
 #endif
 

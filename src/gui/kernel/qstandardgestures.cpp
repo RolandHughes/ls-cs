@@ -32,7 +32,7 @@
 
 #include <qgesture_p.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 // If the change in scale for a single touch event is out of this range,
 // we consider it to be spurious.
@@ -44,7 +44,7 @@ QGesture *QPanGestureRecognizer::create( QObject *target )
     if ( target && target->isWidgetType() )
     {
 
-#if (defined(Q_OS_DARWIN) || defined(Q_OS_WIN)) && ! defined(QT_NO_NATIVE_GESTURES)
+#if (defined(Q_OS_DARWIN) || defined(Q_OS_WIN)) && ! defined(LSCS_NO_NATIVE_GESTURES)
 
         // for scroll areas on Windows we want to use native gestures instead
         if ( !qobject_cast<QAbstractScrollArea *>( target->parent() ) )
@@ -642,7 +642,7 @@ QGestureRecognizer::Result QTapAndHoldGestureRecognizer::recognize( QGesture *st
 
     switch ( event->type() )
     {
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
         case QEvent::GraphicsSceneMousePress:
         {
@@ -691,7 +691,7 @@ QGestureRecognizer::Result QTapAndHoldGestureRecognizer::recognize( QGesture *st
             return QGestureRecognizer::MayBeGesture; // we don't show a sign of life until the timeout
         }
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
         case QEvent::GraphicsSceneMouseRelease:
 #endif
@@ -730,7 +730,7 @@ QGestureRecognizer::Result QTapAndHoldGestureRecognizer::recognize( QGesture *st
             return QGestureRecognizer::CancelGesture;
         }
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
         case QEvent::GraphicsSceneMouseMove:
         {
@@ -770,4 +770,4 @@ void QTapAndHoldGestureRecognizer::reset( QGesture *state )
 }
 
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES

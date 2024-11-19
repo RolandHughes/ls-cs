@@ -27,7 +27,7 @@
 #include <QColor>
 #include <QImage>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QIODevice;
 
@@ -137,6 +137,6 @@ inline QTgaFile::Compression QTgaFile::compression() const
     return NoCompression;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QTGAFILE_H

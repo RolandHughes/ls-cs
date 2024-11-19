@@ -28,7 +28,7 @@
 #include <qdeclarativeimplicitsizeitem_p_p.h>
 #include <qdeclarative.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 class QTextLayout;
 class QTextDocument;
 class QTextControl;
@@ -100,5 +100,5 @@ public:
     QSize paintedSize;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 #endif

@@ -35,8 +35,8 @@
 
 #include <stdarg.h>
 
-// same as qt_painterpath_isect_line in qpainterpath.cpp
-static void qt_polygon_isect_line( const QPointF &p1, const QPointF &p2, const QPointF &pos, int *winding )
+// same as lscs_painterpath_isect_line in qpainterpath.cpp
+static void lscs_polygon_isect_line( const QPointF &p1, const QPointF &p2, const QPointF &pos, int *winding )
 {
     qreal x1 = p1.x();
     qreal y1 = p1.y();
@@ -470,14 +470,14 @@ bool QPolygonF::containsPoint( const QPointF &pt, Qt::FillRule fillRule ) const
     for ( int i = 1; i < size(); ++i )
     {
         const QPointF &e = at( i );
-        qt_polygon_isect_line( last_pt, e, pt, &winding_number );
+        lscs_polygon_isect_line( last_pt, e, pt, &winding_number );
         last_pt = e;
     }
 
     // implicitly close last subpath
     if ( last_pt != last_start )
     {
-        qt_polygon_isect_line( last_pt, last_start, pt, &winding_number );
+        lscs_polygon_isect_line( last_pt, last_start, pt, &winding_number );
     }
 
     return ( fillRule == Qt::WindingFill
@@ -500,14 +500,14 @@ bool QPolygon::containsPoint( const QPoint &pt, Qt::FillRule fillRule ) const
     for ( int i = 1; i < size(); ++i )
     {
         const QPoint &e = at( i );
-        qt_polygon_isect_line( last_pt, e, pt, &winding_number );
+        lscs_polygon_isect_line( last_pt, e, pt, &winding_number );
         last_pt = e;
     }
 
     // implicitly close last subpath
     if ( last_pt != last_start )
     {
-        qt_polygon_isect_line( last_pt, last_start, pt, &winding_number );
+        lscs_polygon_isect_line( last_pt, last_start, pt, &winding_number );
     }
 
     return ( fillRule == Qt::WindingFill

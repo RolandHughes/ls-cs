@@ -626,9 +626,9 @@ XML 기반 번역물은 QTranslator에서 사용할 수 있는 &apos;컴파일�
 </translation>
     </message>
     <message>
-        <source>//% cannot be used with tr() / QT_TR_NOOP(). Ignoring
+        <source>//% cannot be used with tr() / LSCS_TR_NOOP(). Ignoring
 </source>
-        <translation>//%는 tr()/QT_TR_NOOP()와 같이 사용할 수 없음. 무시함
+        <translation>//%는 tr()/LSCS_TR_NOOP()와 같이 사용할 수 없음. 무시함
 </translation>
     </message>
     <message>
@@ -655,15 +655,15 @@ XML 기반 번역물은 QTranslator에서 사용할 수 있는 &apos;컴파일�
 </translation>
     </message>
     <message>
-        <source>//% cannot be used with translate() / QT_TRANSLATE_NOOP(). Ignoring
+        <source>//% cannot be used with translate() / LSCS_TRANSLATE_NOOP(). Ignoring
 </source>
-        <translation>//%는 translate()/QT_TR_NOOP()와 같이 사용할 수 없음. 무시함
+        <translation>//%는 translate()/LSCS_TR_NOOP()와 같이 사용할 수 없음. 무시함
 </translation>
     </message>
     <message>
-        <source>//= cannot be used with qtTrId() / QT_TRID_NOOP(). Ignoring
+        <source>//= cannot be used with qtTrId() / LSCS_TRID_NOOP(). Ignoring
 </source>
-        <translation>//=은 qtTrId()/QT_TRID_NOOP()와 같이 사용할 수 없음. 무시함
+        <translation>//=은 qtTrId()/LSCS_TRID_NOOP()와 같이 사용할 수 없음. 무시함
 </translation>
     </message>
     <message>

@@ -26,7 +26,7 @@
 
 #include <qanimationgroup.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QPauseAnimationPrivate;
 
@@ -57,6 +57,6 @@ private:
     Q_DECLARE_PRIVATE( QPauseAnimation )
 };
 
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION
 
 #endif

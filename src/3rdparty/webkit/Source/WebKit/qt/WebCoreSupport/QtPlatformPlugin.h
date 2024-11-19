@@ -29,7 +29,7 @@ class QWebNotificationPresenter;
 class QWebHapticFeedbackPlayer;
 class QWebSelectData;
 class QWebTouchModifier;
-#if ENABLE(VIDEO) && USE(QT_MULTIMEDIA)
+#if ENABLE(VIDEO) && USE(LSCS_MULTIMEDIA)
 class QWebFullScreenVideoHandler;
 #endif
 
@@ -46,7 +46,7 @@ public:
     QWebNotificationPresenter *createNotificationPresenter();
     QWebHapticFeedbackPlayer *createHapticFeedbackPlayer();
     QWebTouchModifier *createTouchModifier();
-#if ENABLE(VIDEO) && USE(QT_MULTIMEDIA)
+#if ENABLE(VIDEO) && USE(LSCS_MULTIMEDIA)
     QWebFullScreenVideoHandler *createFullScreenVideoHandler();
 #endif
 

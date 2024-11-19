@@ -26,32 +26,32 @@
 
 Q_CORE_EXPORT bool qIsInf( double d )
 {
-    return qt_is_inf( d );
+    return lscs_is_inf( d );
 }
 
 Q_CORE_EXPORT bool qIsNaN( double d )
 {
-    return qt_is_nan( d );
+    return lscs_is_nan( d );
 }
 
 Q_CORE_EXPORT bool qIsFinite( double d )
 {
-    return qt_is_finite( d );
+    return lscs_is_finite( d );
 }
 
 Q_CORE_EXPORT bool qIsInf( float f )
 {
-    return qt_is_inf( f );
+    return lscs_is_inf( f );
 }
 
 Q_CORE_EXPORT bool qIsNaN( float f )
 {
-    return qt_is_nan( f );
+    return lscs_is_nan( f );
 }
 
 Q_CORE_EXPORT bool qIsFinite( float f )
 {
-    return qt_is_finite( f );
+    return lscs_is_finite( f );
 }
 
 /*!
@@ -59,7 +59,7 @@ Q_CORE_EXPORT bool qIsFinite( float f )
 */
 Q_CORE_EXPORT double qSNaN()
 {
-    return qt_snan();
+    return lscs_snan();
 }
 
 /*!
@@ -67,7 +67,7 @@ Q_CORE_EXPORT double qSNaN()
 */
 Q_CORE_EXPORT double qQNaN()
 {
-    return qt_qnan();
+    return lscs_qnan();
 }
 
 /*!
@@ -75,6 +75,6 @@ Q_CORE_EXPORT double qQNaN()
 */
 Q_CORE_EXPORT double qInf()
 {
-    return qt_inf();
+    return lscs_inf();
 }
 

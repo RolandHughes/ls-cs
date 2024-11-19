@@ -26,7 +26,7 @@
 
 #include <QtCore/qobjectdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebugOutputWidgetInterface;
 class QScriptDebuggerConsoleWidgetInterface;
@@ -54,6 +54,6 @@ public:
     virtual QScriptBreakpointsWidgetInterface *createBreakpointsWidget() = 0;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

@@ -27,7 +27,7 @@
 #include <qaccessible.h>
 #include <qstringlist.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 namespace QAccessibleBridgeUtils
 {

@@ -29,7 +29,7 @@
 #include <qscopedpointer_p.h>
 #include <QtScript/qscriptvalue.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDataStream;
 class QString;
@@ -67,6 +67,6 @@ typedef QList<QScriptDebuggerValueProperty> QScriptDebuggerValuePropertyList;
 QDataStream &operator<<( QDataStream &, const QScriptDebuggerValueProperty & );
 QDataStream &operator>>( QDataStream &, QScriptDebuggerValueProperty & );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

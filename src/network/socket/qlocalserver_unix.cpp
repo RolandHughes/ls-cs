@@ -29,7 +29,7 @@
 #include <qlocalsocket_p.h>
 #include <qnet_unix_p.h>
 
-#ifndef QT_NO_LOCALSERVER
+#ifndef LSCS_NO_LOCALSERVER
 
 #include <qdebug.h>
 #include <qdir.h>
@@ -105,7 +105,7 @@ bool QLocalServerPrivate::listen( const QString &requestedServerName )
     }
 
     // create the unix socket
-    listenSocket = qt_safe_socket( PF_UNIX, SOCK_STREAM, 0 );
+    listenSocket = lscs_safe_socket( PF_UNIX, SOCK_STREAM, 0 );
 
     if ( listenSocket == -1 )
     {
@@ -143,14 +143,14 @@ bool QLocalServerPrivate::listen( const QString &requestedServerName )
     }
 
     // bind
-    if ( QT_SOCKET_BIND( listenSocket, ( sockaddr * )&addr, sizeof( sockaddr_un ) ) == -1 )
+    if ( LSCS_SOCKET_BIND( listenSocket, ( sockaddr * )&addr, sizeof( sockaddr_un ) ) == -1 )
     {
         setError( "QLocalServer::listen" );
 
         // if address is in use already, just close the socket, but do not delete the file
         if ( errno == EADDRINUSE )
         {
-            QT_CLOSE( listenSocket );
+            LSCS_CLOSE( listenSocket );
 
         }
         else
@@ -165,7 +165,7 @@ bool QLocalServerPrivate::listen( const QString &requestedServerName )
     }
 
     // listen for connections
-    if ( qt_safe_listen( listenSocket, 50 ) == -1 )
+    if ( lscs_safe_listen( listenSocket, 50 ) == -1 )
     {
         setError( "QLocalServer::listen" );
         closeServer();
@@ -236,7 +236,7 @@ bool QLocalServerPrivate::listen( qintptr socketDescriptor )
 #ifdef Q_OS_LINUX
     struct ::sockaddr_un addr;
 
-    QT_SOCKLEN_T len = sizeof( addr );
+    LSCS_SOCKLEN_T len = sizeof( addr );
     memset( &addr, 0, sizeof( addr ) );
 
     if ( ::getsockname( listenSocket, ( sockaddr * )&addr, &len ) == 0 )
@@ -287,7 +287,7 @@ void QLocalServerPrivate::closeServer()
 
     if ( listenSocket != -1 )
     {
-        QT_CLOSE( listenSocket );
+        LSCS_CLOSE( listenSocket );
     }
 
     listenSocket = -1;
@@ -309,8 +309,8 @@ void QLocalServerPrivate::_q_onNewConnection()
 
     ::sockaddr_un addr;
 
-    QT_SOCKLEN_T length = sizeof( sockaddr_un );
-    int connectedSocket = qt_safe_accept( listenSocket, ( sockaddr * )&addr, &length );
+    LSCS_SOCKLEN_T length = sizeof( sockaddr_un );
+    int connectedSocket = lscs_safe_accept( listenSocket, ( sockaddr * )&addr, &length );
 
     if ( connectedSocket == -1 )
     {
@@ -336,7 +336,7 @@ void QLocalServerPrivate::waitForNewConnection( int msec, bool *timedOut )
     timeout.tv_nsec = ( msec % 1000 ) * 1000 * 1000;
 
     int result = -1;
-    result = qt_safe_select( listenSocket + 1, &readfds, nullptr, nullptr, ( msec == -1 ) ? nullptr : &timeout );
+    result = lscs_safe_select( listenSocket + 1, &readfds, nullptr, nullptr, ( msec == -1 ) ? nullptr : &timeout );
 
     if ( result == -1 )
     {
@@ -393,4 +393,4 @@ void QLocalServerPrivate::setError( const QString &function )
     }
 }
 
-#endif // QT_NO_LOCALSERVER
+#endif // LSCS_NO_LOCALSERVER

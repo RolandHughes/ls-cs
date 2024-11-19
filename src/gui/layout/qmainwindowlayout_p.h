@@ -26,7 +26,7 @@
 
 #include <qmainwindow.h>
 
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
 
 #include <qlayout.h>
 #include <qtabbar.h>
@@ -41,7 +41,7 @@
 class QToolBar;
 class QRubberBand;
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 class QDockWidgetGroupWindow : public QWidget
 {
     GUI_LSCS_OBJECT( QDockWidgetGroupWindow )
@@ -101,11 +101,11 @@ public:
 
     QMainWindowLayoutState( QMainWindow *win );
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
     QToolBarAreaLayout toolBarAreaLayout;
 #endif
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
     QDockAreaLayout dockAreaLayout;
 #else
     QLayoutItem *centralWidgetItem;
@@ -166,7 +166,7 @@ public:
     // status bar
     QLayoutItem *statusbar;
 
-#ifndef QT_NO_STATUSBAR
+#ifndef LSCS_NO_STATUSBAR
     QStatusBar *statusBar() const;
     void setStatusBar( QStatusBar *sb );
 #endif
@@ -175,7 +175,7 @@ public:
     QWidget *centralWidget() const;
     void setCentralWidget( QWidget *cw );
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
     // toolbars
     void addToolBarBreak( Qt::ToolBarArea area );
     void insertToolBarBreak( QToolBar *before );
@@ -192,7 +192,7 @@ public:
 #endif
 
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
     // dock widgets
     void setCorner( Qt::Corner corner, Qt::DockWidgetArea area );
     Qt::DockWidgetArea corner( Qt::Corner corner ) const;
@@ -206,7 +206,7 @@ public:
     bool restoreDockWidget( QDockWidget *dockwidget );
     QDockAreaLayoutInfo *dockInfo( QWidget *w );
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     bool _documentMode;
     bool documentMode() const;
     void setDocumentMode( bool enabled );
@@ -221,7 +221,7 @@ public:
     QList<QWidget *> unusedSeparatorWidgets;
     int sep; // separator extent
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
     QTabWidget::TabPosition tabPositions[4];
     QTabWidget::TabShape _tabShape;
 
@@ -232,7 +232,7 @@ public:
     QDockWidgetGroupWindow *createTabbedDockWindow();
 #endif
 
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
     // separators
     QList<int> movingSeparator;
@@ -271,10 +271,10 @@ public:
     QRect currentGapRect;
     QWidget *pluggingWidget;
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
     QPointer<QRubberBand> gapIndicator;
 #endif
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
     QPointer<QWidget> currentHoveredFloat; // set when dragging over a floating dock widget
     void setCurrentHoveredFloat( QWidget *w );
 #endif
@@ -294,8 +294,8 @@ private:
     GUI_LSCS_SLOT_1( Private, void updateGapIndicator() )
     GUI_LSCS_SLOT_2( updateGapIndicator )
 
-#ifndef QT_NO_DOCKWIDGET
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_DOCKWIDGET
+#ifndef LSCS_NO_TABBAR
     GUI_LSCS_SLOT_1( Private, void tabChanged() )
     GUI_LSCS_SLOT_2( tabChanged )
 
@@ -304,7 +304,7 @@ private:
 #endif
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     void updateTabBarShapes();
 #endif
 
@@ -312,6 +312,6 @@ private:
 QDebug operator<<( QDebug debug, const QDockAreaLayout &layout );
 QDebug operator<<( QDebug debug, const QMainWindowLayout *layout );
 
-#endif // QT_NO_MAINWINDOW
+#endif // LSCS_NO_MAINWINDOW
 
 #endif // QDYNAMICMAINWINDOWLAYOUT_P_H

@@ -36,9 +36,9 @@
 
 #include <qhexstring_p.h>
 
-static void qt_cleanup_brush_pattern_image_cache();
+static void lscs_cleanup_brush_pattern_image_cache();
 
-const uchar *qt_patternForBrush( int brushStyle, bool invert )
+const uchar *lscs_patternForBrush( int brushStyle, bool invert )
 {
     Q_ASSERT( brushStyle > Qt::SolidPattern && brushStyle < Qt::LinearGradientPattern );
     static const uchar pat_tbl[][2][8] =
@@ -88,14 +88,14 @@ const uchar *qt_patternForBrush( int brushStyle, bool invert )
     return pat_tbl[brushStyle - Qt::Dense1Pattern][invert];
 }
 
-QPixmap qt_pixmapForBrush( int brushStyle, bool invert )
+QPixmap lscs_pixmapForBrush( int brushStyle, bool invert )
 {
     QPixmap pm;
     QString key = "$lscs_brush$" + HexString<uint>( brushStyle ) + QChar( invert ? '1' : '0' );
 
     if ( ! QPixmapCache::find( key, pm ) )
     {
-        pm = QBitmap::fromData( QSize( 8, 8 ), qt_patternForBrush( brushStyle, invert ), QImage::Format_MonoLSB );
+        pm = QBitmap::fromData( QSize( 8, 8 ), lscs_patternForBrush( brushStyle, invert ), QImage::Format_MonoLSB );
         QPixmapCache::insert( key, pm );
     }
 
@@ -113,13 +113,13 @@ public:
 
     void init()
     {
-        qAddPostRoutine( qt_cleanup_brush_pattern_image_cache );
+        qAddPostRoutine( lscs_cleanup_brush_pattern_image_cache );
 
         for ( int style = Qt::Dense1Pattern; style <= Qt::DiagCrossPattern; ++style )
         {
             int i = style - Qt::Dense1Pattern;
-            m_images[i][0] = QImage( qt_patternForBrush( style, 0 ), 8, 8, 1, QImage::Format_MonoLSB );
-            m_images[i][1] = QImage( qt_patternForBrush( style, 1 ), 8, 8, 1, QImage::Format_MonoLSB );
+            m_images[i][0] = QImage( lscs_patternForBrush( style, 0 ), 8, 8, 1, QImage::Format_MonoLSB );
+            m_images[i][1] = QImage( lscs_patternForBrush( style, 1 ), 8, 8, 1, QImage::Format_MonoLSB );
         }
 
         m_initialized = true;
@@ -154,20 +154,20 @@ private:
     bool m_initialized;
 };
 
-static QBrushPatternImageCache *qt_brushPatternImageCache()
+static QBrushPatternImageCache *lscs_brushPatternImageCache()
 {
     static QBrushPatternImageCache retval;
     return &retval;
 }
 
-static void qt_cleanup_brush_pattern_image_cache()
+static void lscs_cleanup_brush_pattern_image_cache()
 {
-    qt_brushPatternImageCache()->cleanup();
+    lscs_brushPatternImageCache()->cleanup();
 }
 
-Q_GUI_EXPORT QImage qt_imageForBrush( int brushStyle, bool invert )
+Q_GUI_EXPORT QImage lscs_imageForBrush( int brushStyle, bool invert )
 {
-    return qt_brushPatternImageCache()->getImage( brushStyle, invert );
+    return lscs_brushPatternImageCache()->getImage( brushStyle, invert );
 }
 
 struct QTexturedBrushData : public QBrushData
@@ -636,7 +636,7 @@ const QGradient *QBrush::gradient() const
     return nullptr;
 }
 
-Q_GUI_EXPORT bool qt_isExtendedRadialGradient( const QBrush &brush )
+Q_GUI_EXPORT bool lscs_isExtendedRadialGradient( const QBrush &brush )
 {
     if ( brush.style() == Qt::RadialGradientPattern )
     {
@@ -669,7 +669,7 @@ bool QBrush::isOpaque() const
         return opaqueColor;
     }
 
-    if ( qt_isExtendedRadialGradient( *this ) )
+    if ( lscs_isExtendedRadialGradient( *this ) )
     {
         return false;
     }
@@ -1205,7 +1205,7 @@ void QLinearGradient::setFinalStop( const QPointF &stop )
     m_data.linear.y2 = stop.y();
 }
 
-static QPointF qt_radial_gradient_adapt_focal_point( const QPointF &center,
+static QPointF lscs_radial_gradient_adapt_focal_point( const QPointF &center,
         qreal radius, const QPointF &focalPoint )
 {
     // have a one pixel buffer zone to avoid numerical instability on the
@@ -1232,7 +1232,7 @@ QRadialGradient::QRadialGradient( const QPointF &center, qreal radius, const QPo
     m_data.radial.cradius = radius;
     m_data.radial.fradius = 0;
 
-    QPointF adapted_focal = qt_radial_gradient_adapt_focal_point( center, radius, focalPoint );
+    QPointF adapted_focal = lscs_radial_gradient_adapt_focal_point( center, radius, focalPoint );
     m_data.radial.fx = adapted_focal.x();
     m_data.radial.fy = adapted_focal.y();
 }
@@ -1259,7 +1259,7 @@ QRadialGradient::QRadialGradient( qreal cx, qreal cy, qreal radius, qreal fx, qr
     m_data.radial.cradius = radius;
     m_data.radial.fradius = 0;
 
-    QPointF adapted_focal = qt_radial_gradient_adapt_focal_point( QPointF( cx, cy ), radius, QPointF( fx, fy ) );
+    QPointF adapted_focal = lscs_radial_gradient_adapt_focal_point( QPointF( cx, cy ), radius, QPointF( fx, fy ) );
 
     m_data.radial.fx = adapted_focal.x();
     m_data.radial.fy = adapted_focal.y();

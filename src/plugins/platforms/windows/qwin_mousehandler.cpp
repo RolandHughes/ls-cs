@@ -126,13 +126,13 @@ static inline QTouchDevice *createTouchDevice()
 {
     enum
     {
-        QT_SM_TABLETPC          = 86,
-        QT_SM_DIGITIZER         = 94,
-        QT_SM_MAXIMUMTOUCHES    = 95,
-        QT_NID_INTEGRATED_TOUCH = 0x1,
-        QT_NID_EXTERNAL_TOUCH   = 0x02,
-        QT_NID_MULTI_INPUT      = 0x40,
-        QT_NID_READY            = 0x80
+        LSCS_SM_TABLETPC          = 86,
+        LSCS_SM_DIGITIZER         = 94,
+        LSCS_SM_MAXIMUMTOUCHES    = 95,
+        LSCS_NID_INTEGRATED_TOUCH = 0x1,
+        LSCS_NID_EXTERNAL_TOUCH   = 0x02,
+        LSCS_NID_MULTI_INPUT      = 0x40,
+        LSCS_NID_READY            = 0x80
     };
 
     if ( QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS7 )
@@ -140,25 +140,25 @@ static inline QTouchDevice *createTouchDevice()
         return nullptr;
     }
 
-    const int digitizers = GetSystemMetrics( QT_SM_DIGITIZER );
+    const int digitizers = GetSystemMetrics( LSCS_SM_DIGITIZER );
 
-    if ( ! ( digitizers & ( QT_NID_INTEGRATED_TOUCH | QT_NID_EXTERNAL_TOUCH ) ) )
+    if ( ! ( digitizers & ( LSCS_NID_INTEGRATED_TOUCH | LSCS_NID_EXTERNAL_TOUCH ) ) )
     {
         return nullptr;
     }
 
-    const int maxTouchPoints = GetSystemMetrics( QT_SM_MAXIMUMTOUCHES );
+    const int maxTouchPoints = GetSystemMetrics( LSCS_SM_MAXIMUMTOUCHES );
 
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-    const int tabletPc = GetSystemMetrics( QT_SM_TABLETPC );
+    const int tabletPc = GetSystemMetrics( LSCS_SM_TABLETPC );
 
-    qDebug() << "createTouchDevice() Digitizers =" << hex << showbase << ( digitizers & ~QT_NID_READY ) << "\n  "
-             << "Ready =" << ( digitizers & QT_NID_READY ) << dec << noshowbase
+    qDebug() << "createTouchDevice() Digitizers =" << hex << showbase << ( digitizers & ~LSCS_NID_READY ) << "\n  "
+             << "Ready =" << ( digitizers & LSCS_NID_READY ) << dec << noshowbase
              << "Tablet PC =" << tabletPc << "Max touch points =" << maxTouchPoints;
 #endif
 
     QTouchDevice *result = new QTouchDevice;
-    result->setType( digitizers & QT_NID_INTEGRATED_TOUCH
+    result->setType( digitizers & LSCS_NID_INTEGRATED_TOUCH
                      ? QTouchDevice::TouchScreen : QTouchDevice::TouchPad );
 
     QTouchDevice::Capabilities capabilities = QTouchDevice::Position |

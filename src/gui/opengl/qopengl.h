@@ -27,11 +27,11 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 // Windows always needs this to ensure that APIENTRY gets defined
 #if defined(Q_OS_WIN)
-# include <qt_windows.h>
+# include <lscs_windows.h>
 #endif
 
 // Note: Mac OSX is a "controlled platform" for OpenGL ABI so we
@@ -48,10 +48,10 @@
 // access to additional functionality the drivers may expose but
 // which the system headers do not.
 
-#if defined(QT_OPENGL_ES_2)
+#if defined(LSCS_OPENGL_ES_2)
 
 # if defined(Q_OS_DARWIN) // iOS
-#  if defined(QT_OPENGL_ES_3)
+#  if defined(LSCS_OPENGL_ES_3)
 #   include <OpenGLES/ES3/gl.h>
 #   include <OpenGLES/ES3/glext.h>
 #  else
@@ -69,7 +69,7 @@ typedef void *GLeglImageOES;
 
 # else // "uncontrolled" ES2 platforms
 
-// In "es2" builds (QT_OPENGL_ES_2) additional defines indicate if ES
+// In "es2" builds (LSCS_OPENGL_ES_2) additional defines indicate if ES
 // 3.0 or higher is available. In this case include the corresponding
 // header. These are backwards compatible and it should be safe to
 // include headers on top of each other, meaning that applications can
@@ -88,9 +88,9 @@ typedef void *GLeglImageOES;
 #   define QGL_TEMP_GLEXT_PROTO
 #  endif
 
-#  if defined(QT_OPENGL_ES_3_1)
+#  if defined(LSCS_OPENGL_ES_3_1)
 #   include <GLES3/gl31.h>
-#  elif defined(QT_OPENGL_ES_3)
+#  elif defined(LSCS_OPENGL_ES_3)
 #   include <GLES3/gl3.h>
 #  else
 #   include <GLES2/gl2.h>
@@ -137,25 +137,25 @@ typedef char GLchar;
 #  include <qopengl_ext.h>
 # endif // Q_OS_DARWIN
 
-#endif // QT_OPENGL_ES_2
+#endif // LSCS_OPENGL_ES_2
 
 // Desktops, apart from Mac OS X prior to 10.7 can support OpenGL 3.
 // Desktops, apart from Mac OS X prior to 10.9 can support OpenGL 4.
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
 
-#  define QT_OPENGL_3
-#  define QT_OPENGL_3_2
-#  define QT_OPENGL_4
+#  define LSCS_OPENGL_3
+#  define LSCS_OPENGL_3_2
+#  define LSCS_OPENGL_4
 
 # if ! defined(Q_OS_DARWIN)
-#  define QT_OPENGL_4_3
+#  define LSCS_OPENGL_4_3
 # endif
 #endif
 
 
 // When all else fails we provide sensible fallbacks - this is needed to
 // allow compilation on OS X 10.6
-#if !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_OPENGL_ES_2)
 
 // OS X 10.6 doesn't define these which are needed below
 // OS X 10.7 and later define them in gl3.h
@@ -311,6 +311,6 @@ typedef ptrdiff_t qopengl_GLsizeiptr;
 # endif
 
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

@@ -28,7 +28,7 @@
 #include <qdeclarativelistaccessor_p.h>
 #include <qlistmodelinterface_p.h>
 
-QT_BEGIN_NAMESPACE QDeclarativeRepeaterPrivate::QDeclarativeRepeaterPrivate()
+LSCS_BEGIN_NAMESPACE QDeclarativeRepeaterPrivate::QDeclarativeRepeaterPrivate()
     : model( 0 ), ownModel( false )
 {
 }
@@ -522,4 +522,4 @@ void QDeclarativeRepeater::modelReset()
     emit countChanged();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

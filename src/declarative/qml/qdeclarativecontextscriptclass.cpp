@@ -29,7 +29,7 @@
 #include "private/qdeclarativelistscriptclass_p.h"
 #include "private/qdeclarativeguard_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct ContextData : public QScriptDeclarativeClass::Object
 {
@@ -389,4 +389,4 @@ void QDeclarativeContextScriptClass::setProperty( Object *object, const Identifi
     ep->objectClass->setProperty( lastScopeObject, name, value, context(), bindContext );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

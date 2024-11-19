@@ -26,7 +26,7 @@
 
 #include <qdialog.h>
 
-#ifndef QT_NO_ERRORMESSAGE
+#ifndef LSCS_NO_ERRORMESSAGE
 
 class QErrorMessagePrivate;
 
@@ -56,6 +56,6 @@ private:
     Q_DECLARE_PRIVATE( QErrorMessage )
 };
 
-#endif // QT_NO_ERRORMESSAGE
+#endif // LSCS_NO_ERRORMESSAGE
 
 #endif

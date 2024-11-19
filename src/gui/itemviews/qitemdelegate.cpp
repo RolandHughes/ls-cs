@@ -23,7 +23,7 @@
 
 #include <qitemdelegate.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 #include <qabstractitemmodel.h>
 #include <qapplication.h>
 #include <qbrush.h>
@@ -330,7 +330,7 @@ QWidget *QItemDelegate::createEditor( QWidget *parent, const QStyleOptionViewIte
 
 void QItemDelegate::setEditorData( QWidget *editor, const QModelIndex &index ) const
 {
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     QVariant v = index.data( Qt::EditRole );
     QString n  = editor->metaObject()->userProperty().name();
 
@@ -349,7 +349,7 @@ void QItemDelegate::setEditorData( QWidget *editor, const QModelIndex &index ) c
 
 void QItemDelegate::setModelData( QWidget *editor, QAbstractItemModel *model, const QModelIndex &index ) const
 {
-#if ! defined(QT_NO_PROPERTIES)
+#if ! defined(LSCS_NO_PROPERTIES)
     Q_D( const QItemDelegate );
     Q_ASSERT( model );
     Q_ASSERT( editor );
@@ -1108,4 +1108,4 @@ QStyleOptionViewItem QItemDelegate::setOptions( const QModelIndex &index,
     return opt;
 }
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS

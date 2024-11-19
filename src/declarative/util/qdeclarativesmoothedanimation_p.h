@@ -28,7 +28,7 @@
 #include <qdeclarativeanimation_p.h>
 #include <QtCore/qobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeProperty;
 class QDeclarativeSmoothedAnimationPrivate;
@@ -80,7 +80,7 @@ public:
     DECL_LSCS_SIGNAL_2( maximumEasingTimeChanged )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeSmoothedAnimation )
 

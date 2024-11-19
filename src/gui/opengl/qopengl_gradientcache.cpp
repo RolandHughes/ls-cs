@@ -50,7 +50,7 @@ private:
     QMutex m_mutex;
 };
 
-static QOpenGL2GradientCacheWrapper *qt_gradient_caches()
+static QOpenGL2GradientCacheWrapper *lscs_gradient_caches()
 {
     static QOpenGL2GradientCacheWrapper retval;
     return &retval;
@@ -68,7 +68,7 @@ QOpenGL2GradientCache::~QOpenGL2GradientCache()
 
 QOpenGL2GradientCache *QOpenGL2GradientCache::cacheForContext( QOpenGLContext *context )
 {
-    return qt_gradient_caches()->cacheForContext( context );
+    return lscs_gradient_caches()->cacheForContext( context );
 }
 
 void QOpenGL2GradientCache::invalidateResource()

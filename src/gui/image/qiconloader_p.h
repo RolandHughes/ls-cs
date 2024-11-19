@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_ICON
+#ifndef LSCS_NO_ICON
 
 #include <qicon.h>
 #include <qiconengine.h>

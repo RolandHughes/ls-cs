@@ -33,7 +33,7 @@
 #include <qtransform.h>
 #include <qscopedpointer.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 class QGraphicsSceneIndexPrivate;
 class QPointF;
@@ -143,6 +143,6 @@ inline void QGraphicsSceneIndexPrivate::items_helper( const QRectF &rect, QGraph
     }
 }
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 #endif

@@ -29,7 +29,7 @@
 #include "qpoint.h"
 #include "qgesturerecognizer.h"
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 class QMacSwipeGestureRecognizer : public QGestureRecognizer
 {
@@ -68,6 +68,6 @@ private:
 
 
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
 #endif

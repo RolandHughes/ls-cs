@@ -48,9 +48,9 @@ typedef int Q16Dot16;
 #define COORD_ROUNDING 1 // 0: round up, 1: round down
 #define COORD_OFFSET 32 // 26.6, 32 is half a pixel
 
-static inline QT_FT_Vector PointToVector( const QPointF &p )
+static inline LSCS_FT_Vector PointToVector( const QPointF &p )
 {
-    QT_FT_Vector result = { int( p.x() * 64 ), int( p.y() * 64 ) };
+    LSCS_FT_Vector result = { int( p.x() * 64 ), int( p.y() * 64 ) };
     return result;
 }
 
@@ -97,7 +97,7 @@ private:
         m_spanCount = 0;
     }
 
-    QT_FT_Span m_spans[SPAN_BUFFER_SIZE];
+    LSCS_FT_Span m_spans[SPAN_BUFFER_SIZE];
     int m_spanCount;
 
     ProcessSpans m_blend;
@@ -117,9 +117,9 @@ public:
                 Qt::FillRule fillRule, bool legacyRounding, QSpanBuffer *spanBuffer );
     void end();
 
-    void mergeCurve( const QT_FT_Vector &a, const QT_FT_Vector &b,
-                     const QT_FT_Vector &c, const QT_FT_Vector &d );
-    void mergeLine( QT_FT_Vector a, QT_FT_Vector b );
+    void mergeCurve( const LSCS_FT_Vector &a, const LSCS_FT_Vector &b,
+                     const LSCS_FT_Vector &c, const LSCS_FT_Vector &d );
+    void mergeLine( LSCS_FT_Vector a, LSCS_FT_Vector b );
 
     struct Line
     {
@@ -262,7 +262,7 @@ void QScanConverter::emitSpans( int chunk )
 
 // split control points b[0] ... b[3] into
 // left (b[0] ... b[3]) and right (b[3] ... b[6])
-static void split( QT_FT_Vector *b )
+static void split( LSCS_FT_Vector *b )
 {
     b[6] = b[3];
 
@@ -527,13 +527,13 @@ inline void QScanConverter::mergeIntersection( Intersection *it, const Intersect
     current->winding += isect.winding;
 }
 
-void QScanConverter::mergeCurve( const QT_FT_Vector &pa, const QT_FT_Vector &pb,
-                                 const QT_FT_Vector &pc, const QT_FT_Vector &pd )
+void QScanConverter::mergeCurve( const LSCS_FT_Vector &pa, const LSCS_FT_Vector &pb,
+                                 const LSCS_FT_Vector &pc, const LSCS_FT_Vector &pd )
 {
     // make room for 32 splits
-    QT_FT_Vector beziers[4 + 3 * 32];
+    LSCS_FT_Vector beziers[4 + 3 * 32];
 
-    QT_FT_Vector *b = beziers;
+    LSCS_FT_Vector *b = beziers;
 
     b[0] = pa;
     b[1] = pb;
@@ -544,7 +544,7 @@ void QScanConverter::mergeCurve( const QT_FT_Vector &pa, const QT_FT_Vector &pb,
 
     while ( b >= beziers )
     {
-        QT_FT_Vector delta = { b[3].x - b[0].x, b[3].y - b[0].y };
+        LSCS_FT_Vector delta = { b[3].x - b[0].x, b[3].y - b[0].y };
         int l = qAbs( delta.x ) + qAbs( delta.y );
 
         bool belowThreshold;
@@ -663,7 +663,7 @@ inline bool QScanConverter::clip( Q16Dot16 &xFP, int &iTop, int &iBottom, Q16Dot
     return false;
 }
 
-void QScanConverter::mergeLine( QT_FT_Vector a, QT_FT_Vector b )
+void QScanConverter::mergeLine( LSCS_FT_Vector a, LSCS_FT_Vector b )
 {
     int winding = 1;
 
@@ -1412,14 +1412,14 @@ void QRasterizer::rasterizeLine( const QPointF &a, const QPointF &b, qreal width
     }
 }
 
-void QRasterizer::rasterize( const QT_FT_Outline *outline, Qt::FillRule fillRule )
+void QRasterizer::rasterize( const LSCS_FT_Outline *outline, Qt::FillRule fillRule )
 {
     if ( outline->n_points < 3 || outline->n_contours == 0 )
     {
         return;
     }
 
-    const QT_FT_Vector *points = outline->points;
+    const LSCS_FT_Vector *points = outline->points;
 
     QSpanBuffer buffer( d->blend, d->data, d->clipRect );
 
@@ -1427,7 +1427,7 @@ void QRasterizer::rasterize( const QT_FT_Outline *outline, Qt::FillRule fillRule
 
     for ( int i = 1; i < outline->n_points; ++i )
     {
-        const QT_FT_Vector &p = points[i];
+        const LSCS_FT_Vector &p = points[i];
         min_y = qMin( p.y, min_y );
         max_y = qMax( p.y, max_y );
     }
@@ -1451,9 +1451,9 @@ void QRasterizer::rasterize( const QT_FT_Outline *outline, Qt::FillRule fillRule
 
         for ( int j = first; j < last; ++j )
         {
-            if ( outline->tags[j + 1] == QT_FT_CURVE_TAG_CUBIC )
+            if ( outline->tags[j + 1] == LSCS_FT_CURVE_TAG_CUBIC )
             {
-                Q_ASSERT( outline->tags[j + 2] == QT_FT_CURVE_TAG_CUBIC );
+                Q_ASSERT( outline->tags[j + 2] == LSCS_FT_CURVE_TAG_CUBIC );
                 d->scanConverter.mergeCurve( points[j], points[j + 1], points[j + 2], points[j + 3] );
                 j += 2;
             }
@@ -1493,7 +1493,7 @@ void QRasterizer::rasterize( const QPainterPath &path, Qt::FillRule fillRule )
     d->scanConverter.begin( iTopBound, iBottomBound, d->clipRect.left(), d->clipRect.right(), fillRule, d->legacyRounding, &buffer );
 
     int subpathStart = 0;
-    QT_FT_Vector last = { 0, 0 };
+    LSCS_FT_Vector last = { 0, 0 };
 
     for ( int i = 0; i < path.elementCount(); ++i )
     {
@@ -1501,8 +1501,8 @@ void QRasterizer::rasterize( const QPainterPath &path, Qt::FillRule fillRule )
         {
             case QPainterPath::LineToElement:
             {
-                QT_FT_Vector p1 = last;
-                QT_FT_Vector p2 = PointToVector( path.elementAt( i ) );
+                LSCS_FT_Vector p1 = last;
+                LSCS_FT_Vector p2 = PointToVector( path.elementAt( i ) );
                 d->scanConverter.mergeLine( p1, p2 );
                 last = p2;
                 break;
@@ -1512,7 +1512,7 @@ void QRasterizer::rasterize( const QPainterPath &path, Qt::FillRule fillRule )
             {
                 if ( i != 0 )
                 {
-                    QT_FT_Vector first = PointToVector( path.elementAt( subpathStart ) );
+                    LSCS_FT_Vector first = PointToVector( path.elementAt( subpathStart ) );
 
                     // close previous subpath
                     if ( first.x != last.x || first.y != last.y )
@@ -1528,10 +1528,10 @@ void QRasterizer::rasterize( const QPainterPath &path, Qt::FillRule fillRule )
 
             case QPainterPath::CurveToElement:
             {
-                QT_FT_Vector p1 = last;
-                QT_FT_Vector p2 = PointToVector( path.elementAt( i ) );
-                QT_FT_Vector p3 = PointToVector( path.elementAt( ++i ) );
-                QT_FT_Vector p4 = PointToVector( path.elementAt( ++i ) );
+                LSCS_FT_Vector p1 = last;
+                LSCS_FT_Vector p2 = PointToVector( path.elementAt( i ) );
+                LSCS_FT_Vector p3 = PointToVector( path.elementAt( ++i ) );
+                LSCS_FT_Vector p4 = PointToVector( path.elementAt( ++i ) );
                 d->scanConverter.mergeCurve( p1, p2, p3, p4 );
                 last = p4;
                 break;
@@ -1543,7 +1543,7 @@ void QRasterizer::rasterize( const QPainterPath &path, Qt::FillRule fillRule )
         }
     }
 
-    QT_FT_Vector first = PointToVector( path.elementAt( subpathStart ) );
+    LSCS_FT_Vector first = PointToVector( path.elementAt( subpathStart ) );
 
     // close path
     if ( first.x != last.x || first.y != last.y )

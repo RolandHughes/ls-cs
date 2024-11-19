@@ -26,7 +26,7 @@
 
 #include <QtCore/qglobal.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_EXPORT QDeclarativeRefCount
 {
@@ -40,6 +40,6 @@ private:
     int refCount;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEREFCOUNT_P_H

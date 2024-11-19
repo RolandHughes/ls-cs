@@ -24,7 +24,7 @@
 #ifndef GLFUNCTIONS_H
 #define GLFUNCTIONS_H
 
-#ifndef QT_OPENGL_ES
+#ifndef LSCS_OPENGL_ES
 
 #ifndef Q_OS_DARWIN
 # ifndef APIENTRYP

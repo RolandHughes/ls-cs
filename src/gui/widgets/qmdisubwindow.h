@@ -26,7 +26,7 @@
 
 #include <qwidget.h>
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
 
 class QMenu;
 class QMdiArea;
@@ -85,7 +85,7 @@ public:
     void setKeyboardPageStep( int step );
     int keyboardPageStep() const;
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     void setSystemMenu( QMenu *systemMenu );
     QMenu *systemMenu() const;
 #endif
@@ -97,7 +97,7 @@ public:
     GUI_LSCS_SIGNAL_1( Public, void aboutToActivate() )
     GUI_LSCS_SIGNAL_2( aboutToActivate )
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     GUI_LSCS_SLOT_1( Public, void showSystemMenu() )
     GUI_LSCS_SLOT_2( showSystemMenu )
 #endif
@@ -123,7 +123,7 @@ protected:
     void mouseMoveEvent( QMouseEvent *mouseEvent ) override;
     void keyPressEvent( QKeyEvent *keyEvent ) override;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QContextMenuEvent *contextMenuEvent ) override;
 #endif
 
@@ -146,7 +146,7 @@ private:
     friend class QMdiAreaPrivate;
     friend class QMdi::ControlContainer;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     friend class QMdiAreaTabBar;
 #endif
 
@@ -154,6 +154,6 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QMdiSubWindow::SubWindowOptions )
 
-#endif // QT_NO_MDIAREA
+#endif // LSCS_NO_MDIAREA
 
 #endif

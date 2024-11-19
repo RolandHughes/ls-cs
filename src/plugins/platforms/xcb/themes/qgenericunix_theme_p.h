@@ -62,14 +62,14 @@ public:
 
     static QStringList xdgIconThemePaths();
 
-#if ! defined(QT_NO_DBUS) && ! defined(QT_NO_SYSTEMTRAYICON)
+#if ! defined(LSCS_NO_DBUS) && ! defined(LSCS_NO_SYSTEMTRAYICON)
     QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
 #endif
 
     static QString m_name;
 };
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
 class QKdeThemePrivate;
 
 class QKdeTheme : public QPlatformTheme
@@ -86,13 +86,13 @@ public:
 
     const QFont *font( Font type ) const override;
 
-#if ! defined(QT_NO_DBUS) && !defined(QT_NO_SYSTEMTRAYICON)
+#if ! defined(LSCS_NO_DBUS) && !defined(LSCS_NO_SYSTEMTRAYICON)
     QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
 #endif
 
     static QString m_name;
 };
-#endif // QT_NO_SETTINGS
+#endif // LSCS_NO_SETTINGS
 
 class QGnomeTheme : public QPlatformTheme
 {
@@ -106,13 +106,13 @@ public:
 
     virtual QString gtkFontName() const;
 
-#if ! defined(QT_NO_DBUS) && !defined(QT_NO_SYSTEMTRAYICON)
+#if ! defined(LSCS_NO_DBUS) && !defined(LSCS_NO_SYSTEMTRAYICON)
     QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
 #endif
 
     static QString m_name;
 };
 
-QPlatformTheme *qt_createUnixTheme();
+QPlatformTheme *lscs_createUnixTheme();
 
 #endif

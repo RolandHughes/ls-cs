@@ -27,7 +27,7 @@
 #include <qabstractsocket.h>
 #include <qiodevice.h>
 
-#ifndef QT_NO_LOCALSOCKET
+#ifndef LSCS_NO_LOCALSOCKET
 
 #include <qdebug.h>
 
@@ -119,7 +119,7 @@ protected:
     qint64 writeData( const char *data, qint64 ch ) override;
 
 private:
-#if defined(QT_LOCALSOCKET_TCP)
+#if defined(LSCS_LOCALSOCKET_TCP)
     NET_LSCS_SLOT_1( Private, void _q_stateChanged( QAbstractSocket::SocketState socketState ) )
     NET_LSCS_SLOT_2( _q_stateChanged )
 
@@ -155,6 +155,6 @@ private:
 Q_NETWORK_EXPORT QDebug operator<<( QDebug, QLocalSocket::LocalSocketError );
 Q_NETWORK_EXPORT QDebug operator<<( QDebug, QLocalSocket::LocalSocketState );
 
-#endif // QT_NO_LOCALSOCKET
+#endif // LSCS_NO_LOCALSOCKET
 
 #endif

@@ -36,7 +36,11 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
    add_library(LsCsMultimedia_DirectShow MODULE "")
    add_library(LsCs::LsCsMultimedia_DirectShow ALIAS LsCsMultimedia_DirectShow)
 
-   set_target_properties(LsCsMultimedia_DirectShow PROPERTIES OUTPUT_NAME LsCsMultimedia_DirectShow${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsMultimedia_DirectShow PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    target_sources(LsCsMultimedia_DirectShow
       PRIVATE
@@ -87,7 +91,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
     target_compile_definitions(LsCsMultimedia_DirectShow
        PRIVATE
-       -DQT_PLUGIN
+       -DLSCS_PLUGIN
        -DQMEDIA_DIRECTSHOW_CAMERA
        -DQMEDIA_DIRECTSHOW_PLAYER
        -DNO_DSHOW_STRSAFE

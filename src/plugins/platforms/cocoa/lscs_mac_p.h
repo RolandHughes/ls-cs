@@ -21,8 +21,8 @@
 *
 ***********************************************************************/
 
-#ifndef QT_MAC_P_H
-#define QT_MAC_P_H
+#ifndef LSCS_MAC_P_H
+#define LSCS_MAC_P_H
 
 #include <qmacdefines_mac.h>
 #include <qglobal.h>
@@ -79,8 +79,8 @@ public:
 
     ~QMacSmartQuickDrawRegion()
     {
-        extern void qt_mac_dispose_rgn( RgnHandle );         // qregion_mac.cpp
-        qt_mac_dispose_rgn( qdRgn );
+        extern void lscs_mac_dispose_rgn( RgnHandle );         // qregion_mac.cpp
+        lscs_mac_dispose_rgn( qdRgn );
     }
 
     operator RgnHandle()
@@ -89,7 +89,7 @@ public:
     }
 };
 
-QString qt_mac_removeMnemonics( const QString &original ); // implemented in qmacstyle_mac.cpp
+QString lscs_mac_removeMnemonics( const QString &original ); // implemented in qmacstyle_mac.cpp
 
 class QMacCGContext
 {
@@ -105,8 +105,8 @@ public:
 
     QMacCGContext( const QPaintDevice *pdev )
     {
-        extern CGContextRef qt_mac_cg_context( const QPaintDevice * );
-        context = qt_mac_cg_context( pdev );
+        extern CGContextRef lscs_mac_cg_context( const QPaintDevice * );
+        context = lscs_mac_cg_context( pdev );
     }
 
     QMacCGContext( CGContextRef cg, bool takeOwnership = false )
@@ -171,11 +171,11 @@ public:
 class QMacInternalPasteboardMime;
 class QMimeData;
 
-extern QPaintDevice *qt_mac_safe_pdev;                          // implemented in qmacstyle_mac.cpp
+extern QPaintDevice *lscs_mac_safe_pdev;                          // implemented in qmacstyle_mac.cpp
 
-extern OSWindowRef qt_mac_window_for( const QWidget * );        // implemented in qwidget_mac.mm
-extern OSViewRef qt_mac_nativeview_for( const QWidget * );
-extern QPoint qt_mac_nativeMapFromParent( const QWidget *child, const QPoint &pt );
+extern OSWindowRef lscs_mac_window_for( const QWidget * );        // implemented in qwidget_mac.mm
+extern OSViewRef lscs_mac_nativeview_for( const QWidget * );
+extern QPoint lscs_mac_nativeMapFromParent( const QWidget *child, const QPoint &pt );
 
 #ifdef check
 # undef check
@@ -202,8 +202,8 @@ struct QMacDndAnswerRecord
     }
 };
 
-extern QMacDndAnswerRecord qt_mac_dnd_answer_rec;
-void qt_mac_copy_answer_rect( const QDragMoveEvent &event );
-bool qt_mac_mouse_inside_answer_rect( QPoint mouse );
+extern QMacDndAnswerRecord lscs_mac_dnd_answer_rec;
+void lscs_mac_copy_answer_rect( const QDragMoveEvent &event );
+bool lscs_mac_mouse_inside_answer_rect( QPoint mouse );
 
 #endif

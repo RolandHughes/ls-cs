@@ -67,7 +67,7 @@ class QHostInfoAgent : public QObject
 public:
     static QHostInfo fromName( const QString &hostName );
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     static QHostInfo fromName( const QString &hostName, QSharedPointer<QNetworkSession> networkSession );
 #endif
 
@@ -81,7 +81,7 @@ public:
     {
     }
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     //not a public API yet
     static QHostInfo fromName( const QString &hostName, QSharedPointer<QNetworkSession> networkSession );
 #endif
@@ -96,11 +96,11 @@ public:
 // These functions are outside of the QHostInfo class and strictly internal.
 // Do NOT use them outside of QAbstractSocket.
 
-QHostInfo Q_NETWORK_EXPORT qt_qhostinfo_lookup( const QString &name, QObject *receiver, const QString &member, bool *valid,
+QHostInfo Q_NETWORK_EXPORT lscs_qhostinfo_lookup( const QString &name, QObject *receiver, const QString &member, bool *valid,
         int *id );
-void qt_qhostinfo_clear_cache();
-void qt_qhostinfo_enable_cache( bool e );
-void qt_qhostinfo_cache_inject( const QString &hostname, const QHostInfo &resolution );
+void lscs_qhostinfo_clear_cache();
+void lscs_qhostinfo_enable_cache( bool e );
+void lscs_qhostinfo_cache_inject( const QString &hostname, const QHostInfo &resolution );
 
 class QHostInfoCache
 {

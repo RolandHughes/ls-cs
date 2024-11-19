@@ -37,7 +37,7 @@
 #include <qtextedit.h>
 
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
 class QMimeData;
 
@@ -113,12 +113,12 @@ public:
 
     QString placeholderText;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     QBasicTimer deleteAllTimer;
 #endif
 
 };
 
-#endif // QT_NO_TEXTEDIT
+#endif // LSCS_NO_TEXTEDIT
 
 #endif // QTEXTEDIT_P_H

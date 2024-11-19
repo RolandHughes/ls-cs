@@ -29,7 +29,7 @@
 #include <qfilesystementry_p.h>
 #include <qfsfileengine_p.h>
 
-#ifndef QT_NO_FSFILEENGINE
+#ifndef LSCS_NO_FSFILEENGINE
 
 #include <qdatetime.h>
 #include <qdir.h>
@@ -101,30 +101,30 @@ static inline QByteArray openModeToFopenMode( QIODevice::OpenMode flags, const Q
 
 static inline int openModeToOpenFlags( QIODevice::OpenMode mode )
 {
-    int oflags = QT_OPEN_RDONLY;
+    int oflags = LSCS_OPEN_RDONLY;
 
-#ifdef QT_LARGEFILE_SUPPORT
-    oflags |= QT_OPEN_LARGEFILE;
+#ifdef LSCS_LARGEFILE_SUPPORT
+    oflags |= LSCS_OPEN_LARGEFILE;
 #endif
 
     if ( ( mode & QFile::ReadWrite ) == QFile::ReadWrite )
     {
-        oflags = QT_OPEN_RDWR | QT_OPEN_CREAT;
+        oflags = LSCS_OPEN_RDWR | LSCS_OPEN_CREAT;
     }
     else if ( mode & QFile::WriteOnly )
     {
-        oflags = QT_OPEN_WRONLY | QT_OPEN_CREAT;
+        oflags = LSCS_OPEN_WRONLY | LSCS_OPEN_CREAT;
     }
 
     if ( mode & QFile::Append )
     {
-        oflags |= QT_OPEN_APPEND;
+        oflags |= LSCS_OPEN_APPEND;
     }
     else if ( mode & QFile::WriteOnly )
     {
         if ( ( mode & QFile::Truncate ) || !( mode & QFile::ReadOnly ) )
         {
-            oflags |= QT_OPEN_TRUNC;
+            oflags |= LSCS_OPEN_TRUNC;
         }
     }
 
@@ -147,7 +147,7 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
         // Try to open the file in unbuffered mode.
         do
         {
-            fd = QT_OPEN( fileEntry.nativeFilePath().constData(), flags, 0666 );
+            fd = LSCS_OPEN( fileEntry.nativeFilePath().constData(), flags, 0666 );
         }
         while ( fd == -1 && errno == EINTR );
 
@@ -155,7 +155,7 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
         if ( fd == -1 )
         {
             q->setError( errno == EMFILE ? QFile::ResourceError : QFile::OpenError,
-                         qt_error_string( errno ) );
+                         lscs_error_string( errno ) );
             return false;
         }
 
@@ -167,7 +167,7 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
                     && metaData.isDirectory() )
             {
                 q->setError( QFile::OpenError, QLatin1String( "file to open is a directory" ) );
-                QT_CLOSE( fd );
+                LSCS_CLOSE( fd );
                 return false;
             }
         }
@@ -179,14 +179,14 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
 
             do
             {
-                ret = QT_LSEEK( fd, 0, SEEK_END );
+                ret = LSCS_LSEEK( fd, 0, SEEK_END );
             }
             while ( ret == -1 && errno == EINTR );
 
             if ( ret == -1 )
             {
                 q->setError( errno == EMFILE ? QFile::ResourceError : QFile::OpenError,
-                             qt_error_string( int( errno ) ) );
+                             lscs_error_string( int( errno ) ) );
                 return false;
             }
         }
@@ -200,7 +200,7 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
         // Try to open the file in buffered mode.
         do
         {
-            fh = QT_FOPEN( fileEntry.nativeFilePath().constData(), fopenMode.constData() );
+            fh = LSCS_FOPEN( fileEntry.nativeFilePath().constData(), fopenMode.constData() );
         }
         while ( !fh && errno == EINTR );
 
@@ -208,7 +208,7 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
         if ( !fh )
         {
             q->setError( errno == EMFILE ? QFile::ResourceError : QFile::OpenError,
-                         qt_error_string( int( errno ) ) );
+                         lscs_error_string( int( errno ) ) );
             return false;
         }
 
@@ -216,7 +216,7 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
         {
             // we don't need this check if we tried to open for writing because then
             // we had received EISDIR anyway.
-            if ( QFileSystemEngine::fillMetaData( QT_FILENO( fh ), metaData )
+            if ( QFileSystemEngine::fillMetaData( LSCS_FILENO( fh ), metaData )
                     && metaData.isDirectory() )
             {
                 q->setError( QFile::OpenError, QLatin1String( "file to open is a directory" ) );
@@ -234,14 +234,14 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
 
             do
             {
-                ret = QT_FSEEK( fh, 0, SEEK_END );
+                ret = LSCS_FSEEK( fh, 0, SEEK_END );
             }
             while ( ret == -1 && errno == EINTR );
 
             if ( ret == -1 )
             {
                 q->setError( errno == EMFILE ? QFile::ResourceError : QFile::OpenError,
-                             qt_error_string( int( errno ) ) );
+                             lscs_error_string( int( errno ) ) );
                 return false;
             }
         }
@@ -275,7 +275,7 @@ bool QFSFileEnginePrivate::nativeSyncToDisk()
 
     if ( ret != 0 )
     {
-        q->setError( QFile::WriteError, qt_error_string( errno ) );
+        q->setError( QFile::WriteError, lscs_error_string( errno ) );
     }
 
     return ret == 0;
@@ -288,14 +288,14 @@ qint64 QFSFileEnginePrivate::nativeRead( char *data, qint64 len )
     if ( fh && nativeIsSequential() )
     {
         size_t readBytes = 0;
-        int oldFlags = fcntl( QT_FILENO( fh ), F_GETFL );
+        int oldFlags = fcntl( LSCS_FILENO( fh ), F_GETFL );
 
         for ( int i = 0; i < 2; ++i )
         {
             // Unix: Make the underlying file descriptor non-blocking
             if ( ( oldFlags & O_NONBLOCK ) == 0 )
             {
-                fcntl( QT_FILENO( fh ), F_SETFL, oldFlags | O_NONBLOCK );
+                fcntl( LSCS_FILENO( fh ), F_SETFL, oldFlags | O_NONBLOCK );
             }
 
             // Cross platform stdlib read
@@ -325,7 +325,7 @@ qint64 QFSFileEnginePrivate::nativeRead( char *data, qint64 len )
             // Unix: Restore the blocking state of the underlying socket
             if ( ( oldFlags & O_NONBLOCK ) == 0 )
             {
-                fcntl( QT_FILENO( fh ), F_SETFL, oldFlags );
+                fcntl( LSCS_FILENO( fh ), F_SETFL, oldFlags );
 
                 if ( readBytes == 0 )
                 {
@@ -353,13 +353,13 @@ qint64 QFSFileEnginePrivate::nativeRead( char *data, qint64 len )
         // Unix: Restore the blocking state of the underlying socket
         if ( ( oldFlags & O_NONBLOCK ) == 0 )
         {
-            fcntl( QT_FILENO( fh ), F_SETFL, oldFlags );
+            fcntl( LSCS_FILENO( fh ), F_SETFL, oldFlags );
         }
 
         if ( readBytes == 0 && !feof( fh ) )
         {
             // if we didn't read anything and we're not at EOF, it must be an error
-            q->setError( QFile::ReadError, qt_error_string( int( errno ) ) );
+            q->setError( QFile::ReadError, lscs_error_string( int( errno ) ) );
             return -1;
         }
 
@@ -527,7 +527,7 @@ bool QFSFileEnginePrivate::doStat( QFileSystemMetaData::MetaDataFlags flags ) co
 
         if ( fh && fileEntry.isEmpty() )
         {
-            localFd = QT_FILENO( fh );
+            localFd = LSCS_FILENO( fh );
         }
 
         if ( localFd != -1 )
@@ -772,20 +772,20 @@ bool QFSFileEngine::setSize( qint64 size )
 
     if ( d->fd != -1 )
     {
-        ret = QT_FTRUNCATE( d->fd, size ) == 0;
+        ret = LSCS_FTRUNCATE( d->fd, size ) == 0;
     }
     else if ( d->fh )
     {
-        ret = QT_FTRUNCATE( QT_FILENO( d->fh ), size ) == 0;
+        ret = LSCS_FTRUNCATE( LSCS_FILENO( d->fh ), size ) == 0;
     }
     else
     {
-        ret = QT_TRUNCATE( d->fileEntry.nativeFilePath().constData(), size ) == 0;
+        ret = LSCS_TRUNCATE( d->fileEntry.nativeFilePath().constData(), size ) == 0;
     }
 
     if ( !ret )
     {
-        setError( QFile::ResizeError, qt_error_string( errno ) );
+        setError( QFile::ResizeError, lscs_error_string( errno ) );
     }
 
     return ret;
@@ -810,21 +810,21 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
 
     if ( openMode == QIODevice::NotOpen )
     {
-        q->setError( QFile::PermissionsError, qt_error_string( int( EACCES ) ) );
+        q->setError( QFile::PermissionsError, lscs_error_string( int( EACCES ) ) );
         return nullptr;
     }
 
-    if ( offset < 0 || offset != qint64( QT_OFF_T( offset ) )
+    if ( offset < 0 || offset != qint64( LSCS_OFF_T( offset ) )
             || size < 0 || quint64( size ) > quint64( size_t( -1 ) ) )
     {
-        q->setError( QFile::UnspecifiedError, qt_error_string( int( EINVAL ) ) );
+        q->setError( QFile::UnspecifiedError, lscs_error_string( int( EINVAL ) ) );
         return nullptr;
     }
 
     // If we know the mapping will extend beyond EOF, fail early to avoid
     // undefined behavior. Otherwise, let mmap have its say.
     if ( doStat( QFileSystemMetaData::SizeAttribute )
-            && ( QT_OFF_T( size ) > metaData.size() - QT_OFF_T( offset ) ) )
+            && ( LSCS_OFF_T( size ) > metaData.size() - LSCS_OFF_T( offset ) ) )
     {
         qWarning( "QFSFileEngine::map() Mapping beyond the end of a file is not portable" );
     }
@@ -846,15 +846,15 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
 
     if ( quint64( size + extra ) > quint64( ( size_t ) - 1 ) )
     {
-        q->setError( QFile::UnspecifiedError, qt_error_string( int( EINVAL ) ) );
+        q->setError( QFile::UnspecifiedError, lscs_error_string( int( EINVAL ) ) );
         return nullptr;
     }
 
     size_t realSize = ( size_t )size + extra;
-    QT_OFF_T realOffset = QT_OFF_T( offset );
-    realOffset &= ~( QT_OFF_T( pageSize - 1 ) );
+    LSCS_OFF_T realOffset = LSCS_OFF_T( offset );
+    realOffset &= ~( LSCS_OFF_T( pageSize - 1 ) );
 
-    void *mapAddress = QT_MMAP( ( void * )nullptr, realSize,
+    void *mapAddress = LSCS_MMAP( ( void * )nullptr, realSize,
                                 access, MAP_SHARED, nativeHandle(), realOffset );
 
     if ( MAP_FAILED != mapAddress )
@@ -867,19 +867,19 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
     switch ( errno )
     {
         case EBADF:
-            q->setError( QFile::PermissionsError, qt_error_string( int( EACCES ) ) );
+            q->setError( QFile::PermissionsError, lscs_error_string( int( EACCES ) ) );
             break;
 
         case ENFILE:
         case ENOMEM:
-            q->setError( QFile::ResourceError, qt_error_string( int( errno ) ) );
+            q->setError( QFile::ResourceError, lscs_error_string( int( errno ) ) );
             break;
 
         case EINVAL:
 
         // size are out of bounds
         default:
-            q->setError( QFile::UnspecifiedError, qt_error_string( int( errno ) ) );
+            q->setError( QFile::UnspecifiedError, lscs_error_string( int( errno ) ) );
             break;
     }
 
@@ -892,7 +892,7 @@ bool QFSFileEnginePrivate::unmap( uchar *ptr )
 
     if ( ! maps.contains( ptr ) )
     {
-        q->setError( QFile::PermissionsError, qt_error_string( EACCES ) );
+        q->setError( QFile::PermissionsError, lscs_error_string( EACCES ) );
         return false;
     }
 
@@ -901,7 +901,7 @@ bool QFSFileEnginePrivate::unmap( uchar *ptr )
 
     if ( -1 == munmap( start, len ) )
     {
-        q->setError( QFile::UnspecifiedError, qt_error_string( errno ) );
+        q->setError( QFile::UnspecifiedError, lscs_error_string( errno ) );
         return false;
     }
 
@@ -910,4 +910,4 @@ bool QFSFileEnginePrivate::unmap( uchar *ptr )
     return true;
 }
 
-#endif // QT_NO_FSFILEENGINE
+#endif // LSCS_NO_FSFILEENGINE

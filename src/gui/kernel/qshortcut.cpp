@@ -24,7 +24,7 @@
 #include <qshortcut.h>
 #include <qwidget_p.h>
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
 #include <qapplication.h>
 #include <qevent.h>
@@ -46,11 +46,11 @@
 
 static bool correctWidgetContext( Qt::ShortcutContext context, QWidget *w, QWidget *active_window );
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 static bool correctGraphicsWidgetContext( Qt::ShortcutContext context, QGraphicsWidget *w, QWidget *active_window );
 #endif
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 static bool correctActionContext( Qt::ShortcutContext context, QAction *a, QWidget *active_window );
 #endif
 bool qWidgetShortcutContextMatcher( QObject *object, Qt::ShortcutContext context )
@@ -93,7 +93,7 @@ bool qWidgetShortcutContextMatcher( QObject *object, Qt::ShortcutContext context
         return false;
     }
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
     if ( QAction *a = qobject_cast<QAction *>( object ) )
     {
@@ -102,7 +102,7 @@ bool qWidgetShortcutContextMatcher( QObject *object, Qt::ShortcutContext context
 
 #endif
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
     if ( QGraphicsWidget *gw = qobject_cast<QGraphicsWidget *>( object ) )
     {
@@ -192,7 +192,7 @@ static bool correctWidgetContext( Qt::ShortcutContext context, QWidget *w, QWidg
     // Below is Qt::WindowShortcut context
     QWidget *tlw = w->window();
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
     if ( QWExtra *topData = static_cast<QWidgetPrivate *>( QWidgetPrivate::get( tlw ) )->extra )
     {
@@ -241,7 +241,7 @@ static bool correctWidgetContext( Qt::ShortcutContext context, QWidget *w, QWidg
     return true;
 }
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 static bool correctGraphicsWidgetContext( Qt::ShortcutContext context, QGraphicsWidget *w, QWidget *active_window )
 {
     bool visible = w->isVisible();
@@ -330,7 +330,7 @@ static bool correctGraphicsWidgetContext( Qt::ShortcutContext context, QGraphics
 }
 #endif
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 static bool correctActionContext( Qt::ShortcutContext context, QAction *a, QWidget *active_window )
 {
     const QList<QWidget *> &widgets = static_cast<QActionPrivate *>( QActionPrivate::get( a ) )->widgets;
@@ -348,7 +348,7 @@ static bool correctActionContext( Qt::ShortcutContext context, QAction *a, QWidg
     {
         QWidget *w = widgets.at( i );
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
         if ( QMenu *menu = qobject_cast<QMenu *>( w ) )
         {
@@ -388,7 +388,7 @@ static bool correctActionContext( Qt::ShortcutContext context, QAction *a, QWidg
             }
     }
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
     const QList<QGraphicsWidget *> &graphicsWidgets = static_cast<QActionPrivate *>( QActionPrivate::get( a ) )->graphicsWidgets;
 
 #if defined(LSCS_SHOW_DEBUG_GUI)
@@ -414,7 +414,7 @@ static bool correctActionContext( Qt::ShortcutContext context, QAction *a, QWidg
 
     return false;
 }
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
 class QShortcutPrivate
 {
@@ -634,7 +634,7 @@ bool QShortcut::event( QEvent *e )
         if ( se->shortcutId() == d->sc_id && se->key() == d->sc_sequence )
         {
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
             if ( QWhatsThis::inWhatsThisMode() )
             {
@@ -658,5 +658,5 @@ bool QShortcut::event( QEvent *e )
 
     return handled;
 }
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 

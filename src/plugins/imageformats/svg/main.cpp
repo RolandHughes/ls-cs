@@ -24,7 +24,7 @@
 #include <qimageiohandler.h>
 #include <qstringlist.h>
 
-#if ! defined(QT_NO_IMAGEFORMATPLUGIN) && ! defined(QT_NO_SVGRENDERER)
+#if ! defined(LSCS_NO_IMAGEFORMATPLUGIN) && ! defined(LSCS_NO_SVGRENDERER)
 
 #include <qsvgiohandler.h>
 

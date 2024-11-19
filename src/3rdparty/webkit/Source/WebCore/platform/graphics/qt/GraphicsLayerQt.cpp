@@ -20,7 +20,7 @@
 #include "config.h"
 #include "GraphicsLayerQt.h"
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 
 #include "CurrentTime.h"
 #include "FloatRect.h"
@@ -54,17 +54,17 @@
 #define GRAPHICS_LAYER_TILING_THRESHOLD 2000
 #endif
 
-#define QT_DEBUG_RECACHE 0
-#define QT_DEBUG_CACHEDUMP 0
+#define LSCS_DEBUG_RECACHE 0
+#define LSCS_DEBUG_CACHEDUMP 0
 
-#define QT_DEBUG_FPS 0
+#define LSCS_DEBUG_FPS 0
 
 namespace WebCore
 {
 
 static const int gMinimumPixmapCacheLimit = 2048;
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 class MaskEffectQt : public QGraphicsEffect
 {
 public:
@@ -129,7 +129,7 @@ public:
 
     QGraphicsItem *m_maskLayer;
 };
-#endif // QT_NO_GRAPHICSEFFECT
+#endif // LSCS_NO_GRAPHICSEFFECT
 
 class GraphicsLayerQtImpl : public QGraphicsObject
 #if ENABLE(TILED_BACKING_STORE)
@@ -241,7 +241,7 @@ public:
     bool m_opacityAnimationRunning;
     bool m_blockNotifySyncRequired;
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
     QWeakPointer<MaskEffectQt> m_maskEffect;
 #endif
 
@@ -283,7 +283,7 @@ public:
         QPixmapCache::Key key;
         QSizeF size;
     } m_backingStore;
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     QList<QWeakPointer<QAbstractAnimation> > m_animations;
 #endif
     QTimer m_suspendTimer;
@@ -323,7 +323,7 @@ public:
         }
     } m_state;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     friend class AnimationQtBase;
 #endif
 };
@@ -383,7 +383,7 @@ GraphicsLayerQtImpl::~GraphicsLayerQtImpl()
 #if ENABLE(TILED_BACKING_STORE)
     delete m_tiledBackingStore;
 #endif
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     // We do, however, own the animations.
     QList<QWeakPointer<QAbstractAnimation> >::iterator it;
 
@@ -473,7 +473,7 @@ QPixmap GraphicsLayerQtImpl::recache( const QRegion &regionToUpdate )
         // If the pixmap is not in the cache or the view has grown since last cached.
         if ( pixmap.isNull() || m_size != m_backingStore.size )
         {
-#if QT_DEBUG_RECACHE
+#if LSCS_DEBUG_RECACHE
 
             if ( pixmap.isNull() )
             {
@@ -488,7 +488,7 @@ QPixmap GraphicsLayerQtImpl::recache( const QRegion &regionToUpdate )
             // If the pixmap is two small to hold the view contents we enlarge, otherwise just use the old (large) pixmap.
             if ( pixmap.width() < m_size.width() || pixmap.height() < m_size.height() )
             {
-#if QT_DEBUG_RECACHE
+#if LSCS_DEBUG_RECACHE
                 qDebug() << "CacheGrow" << this << m_size;
 #endif
                 pixmap = QPixmap( m_size.toSize() );
@@ -506,7 +506,7 @@ QPixmap GraphicsLayerQtImpl::recache( const QRegion &regionToUpdate )
 
                 if ( !cleanRegion.isEmpty() )
                 {
-#if QT_DEBUG_RECACHE
+#if LSCS_DEBUG_RECACHE
                     qDebug() << "CacheBlit" << this << cleanRegion;
 #endif
                     const QRect cleanBounds( cleanRegion.boundingRect() );
@@ -525,7 +525,7 @@ QPixmap GraphicsLayerQtImpl::recache( const QRegion &regionToUpdate )
 
             if ( fill && !region.isEmpty() ) // Clear the entire pixmap with the background.
             {
-#if QT_DEBUG_RECACHE
+#if LSCS_DEBUG_RECACHE
                 qDebug() << "CacheErase" << this << m_size << background;
 #endif
                 erased = true;
@@ -538,7 +538,7 @@ QPixmap GraphicsLayerQtImpl::recache( const QRegion &regionToUpdate )
         // If we have something to draw its time to erase it and render the contents.
         if ( !region.isEmpty() )
         {
-#if QT_DEBUG_CACHEDUMP
+#if LSCS_DEBUG_CACHEDUMP
             static int recacheCount = 0;
             ++recacheCount;
             qDebug() << "**** CACHEDUMP" << recacheCount << this << m_layer << region << m_size;
@@ -555,7 +555,7 @@ QPixmap GraphicsLayerQtImpl::recache( const QRegion &regionToUpdate )
                 painter.setCompositionMode( QPainter::CompositionMode_Clear );
                 painter.fillRect( region.boundingRect(), Qt::transparent );
 
-#if QT_DEBUG_CACHEDUMP
+#if LSCS_DEBUG_CACHEDUMP
                 qDebug() << "**** CACHEDUMP" << recacheCount << this << m_layer << region << m_size;
                 pixmap.save( QString().sprintf( "/tmp/%05d_B.png", recacheCount ), "PNG" );
 #endif
@@ -566,7 +566,7 @@ QPixmap GraphicsLayerQtImpl::recache( const QRegion &regionToUpdate )
             m_layer->paintGraphicsLayerContents( gc, region.boundingRect() );
             painter.end();
 
-#if QT_DEBUG_CACHEDUMP
+#if LSCS_DEBUG_CACHEDUMP
             qDebug() << "**** CACHEDUMP" << recacheCount << this << m_layer << region << m_size;
             pixmap.save( QString().sprintf( "/tmp/%05d_C.png", recacheCount ), "PNG" );
 #endif
@@ -860,7 +860,7 @@ void GraphicsLayerQtImpl::flushChanges( bool recursive, bool forceUpdateTransfor
         // We can't paint here, because we don't know if the mask layer itself is ready... we'll have
         // to wait till this layer tries to paint.
         setFlag( ItemClipsChildrenToShape, m_layer->maskLayer() || m_layer->masksToBounds() );
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
         setGraphicsEffect( 0 );
 
         if ( m_layer->maskLayer() )
@@ -985,7 +985,7 @@ void GraphicsLayerQtImpl::flushChanges( bool recursive, bool forceUpdateTransfor
         prepareGeometryChange();
     }
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
     if ( m_maskEffect )
     {
@@ -995,7 +995,7 @@ void GraphicsLayerQtImpl::flushChanges( bool recursive, bool forceUpdateTransfor
 #endif
         if ( m_changeMask & DisplayChange )
         {
-#ifndef QT_GRAPHICS_LAYER_NO_RECACHE_ON_DISPLAY_CHANGE
+#ifndef LSCS_GRAPHICS_LAYER_NO_RECACHE_ON_DISPLAY_CHANGE
 
             // Recache now: all the content is ready and we don't want to wait until the paint event.
             // We only need to do this for HTML content, there's no point in caching directly composited
@@ -1629,7 +1629,7 @@ static inline qreal applyTimingFunction( const TimingFunction *timingFunction, q
 
 // Helper functions to safely get a value out of WebCore's AnimationValue*.
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 static void webkitAnimationToQtAnimationValue( const AnimationValue *animationValue, TransformOperations &transformOperations )
 {
     transformOperations = TransformOperations();
@@ -1739,7 +1739,7 @@ protected:
 
     virtual void updateState( QAbstractAnimation::State newState, QAbstractAnimation::State oldState )
     {
-#if QT_DEBUG_FPS
+#if LSCS_DEBUG_FPS
 
         if ( newState == Running && oldState == Stopped )
         {
@@ -1811,13 +1811,13 @@ protected:
         progress = ( !progress || progress == 1 || it.key() == it2.key() ) ?
                    progress : applyTimingFunction( timingFunc, ( progress - it.key() ) / ( it2.key() - it.key() ), duration() );
         applyFrame( fromValue, toValue, progress );
-#if QT_DEBUG_FPS
+#if LSCS_DEBUG_FPS
         ++m_fps.frames;
 #endif
     }
 
     QMap<qreal, KeyframeValueQt<T> > m_keyframeValues;
-#if QT_DEBUG_FPS
+#if LSCS_DEBUG_FPS
     struct
     {
         QTime duration;
@@ -2165,7 +2165,7 @@ void GraphicsLayerQt::resumeAnimations()
     }
 }
 
-#endif // QT_NO_ANIMATION
+#endif // LSCS_NO_ANIMATION
 }
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW

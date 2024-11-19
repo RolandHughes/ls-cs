@@ -31,7 +31,7 @@
 
 #include <QCoreApplication>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \fn QDeclarativeInfo qmlInfo(const QObject *object)
@@ -173,4 +173,4 @@ QDeclarativeInfo qmlInfo( const QObject *me, const QList<QDeclarativeError> &err
 }
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

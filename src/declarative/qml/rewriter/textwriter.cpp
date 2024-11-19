@@ -23,7 +23,7 @@
 
 #include "private/textwriter_p.h"
 
-QT_QML_BEGIN_NAMESPACE
+LSCS_QML_BEGIN_NAMESPACE
 
 using namespace QDeclarativeJS;
 
@@ -250,4 +250,4 @@ void TextWriter::write_helper()
     }
 }
 
-QT_QML_END_NAMESPACE
+LSCS_QML_END_NAMESPACE

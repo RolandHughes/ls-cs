@@ -27,7 +27,7 @@
 #include <qdebug.h>
 #include <qpauseanimation.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 bool QSequentialAnimationGroupPrivate::atEnd() const
 {
@@ -571,4 +571,4 @@ void QSequentialAnimationGroupPrivate::animationRemoved( int index, QAbstractAni
     totalCurrentTime = currentTime + loopCount * q->duration();
 }
 
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION

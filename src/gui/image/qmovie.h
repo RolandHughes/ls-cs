@@ -26,7 +26,7 @@
 
 #include <qobject.h>
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
 
 #include <qlist.h>
 #include <qimagereader.h>
@@ -156,6 +156,6 @@ private:
     GUI_LSCS_SLOT_2( _q_loadNextFrame )
 };
 
-#endif // QT_NO_MOVIE
+#endif // LSCS_NO_MOVIE
 
 #endif

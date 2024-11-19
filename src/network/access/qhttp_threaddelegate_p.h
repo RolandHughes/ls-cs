@@ -57,7 +57,7 @@ public:
     // incoming
     bool ssl;
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     QSslConfiguration incomingSslConfiguration;
 #endif
 
@@ -70,7 +70,7 @@ public:
     QSharedPointer<QAtomicInt> pendingDownloadData;
     QSharedPointer<QAtomicInt> pendingDownloadProgress;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QNetworkProxy cacheProxy;
     QNetworkProxy transparentProxy;
 #endif
@@ -89,19 +89,19 @@ public:
     QNetworkReply::NetworkError incomingErrorCode;
     QString incomingErrorDetail;
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     QSharedPointer<QNetworkSession> networkSession;
 #endif
 
     NET_LSCS_SIGNAL_1( Public, void authenticationRequired( const QHttpNetworkRequest &request, QAuthenticator *authenticator ) )
     NET_LSCS_SIGNAL_2( authenticationRequired, request, authenticator )
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     NET_LSCS_SIGNAL_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
     NET_LSCS_SIGNAL_2( proxyAuthenticationRequired, proxy, authenticator )
 #endif
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     NET_LSCS_SIGNAL_1( Public, void encrypted() )
     NET_LSCS_SIGNAL_2( encrypted )
 
@@ -196,7 +196,7 @@ protected:
     NET_LSCS_SLOT_1( Protected, void cacheCredentialsSlot( const QHttpNetworkRequest &request, QAuthenticator *authenticator ) )
     NET_LSCS_SLOT_2( cacheCredentialsSlot )
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     NET_LSCS_SLOT_1( Protected, void sslErrorsSlot( const QList <QSslError> &errors ) )
     NET_LSCS_SLOT_2( sslErrorsSlot )
 
@@ -211,7 +211,7 @@ protected:
                    QAuthenticator *authenticator ) )
     NET_LSCS_SLOT_2( synchronousAuthenticationRequiredSlot )
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     NET_LSCS_SLOT_1( Protected, void synchronousProxyAuthenticationRequiredSlot( const QNetworkProxy &proxy,
                    QAuthenticator *authenticator ) )
     NET_LSCS_SLOT_2( synchronousProxyAuthenticationRequiredSlot )

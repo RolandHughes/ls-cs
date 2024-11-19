@@ -508,7 +508,7 @@ void QLayoutPrivate::doResize( const QSize &r )
 
     q->setGeometry( rect );
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
     if ( menubar )
     {
@@ -551,7 +551,7 @@ void QLayout::widgetEvent( QEvent *e )
             {
 
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
                 if ( c->child() == d->menubar )
                 {
@@ -627,7 +627,7 @@ int QLayout::totalHeightForWidth( int w ) const
 
     int h = heightForWidth( w - side ) + top;
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     h += menuBarHeightForWidth( d->menubar, w );
 #endif
     return h;
@@ -649,7 +649,7 @@ QSize QLayout::totalMinimumSize() const
 
     QSize s = minimumSize();
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     top += menuBarHeightForWidth( d->menubar, s.width() + side );
 #endif
 
@@ -677,7 +677,7 @@ QSize QLayout::totalSizeHint() const
         s.setHeight( heightForWidth( s.width() + side ) );
     }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     top += menuBarHeightForWidth( d->menubar, s.width() );
 #endif
     return s + QSize( side, top );
@@ -700,7 +700,7 @@ QSize QLayout::totalMaximumSize() const
 
     QSize s = maximumSize();
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
     top += menuBarHeightForWidth( d->menubar, s.width() );
 #endif
 
@@ -753,7 +753,7 @@ void QLayoutPrivate::reparentChildWidgets( QWidget *mw )
     Q_Q( QLayout );
     int n =  q->count();
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
     if ( menubar && menubar->parentWidget() != mw )
     {

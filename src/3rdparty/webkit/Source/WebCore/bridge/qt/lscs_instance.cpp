@@ -22,7 +22,7 @@
 ***********************************************************************/
 
 #include "config.h"
-#include "qt_instance.h"
+#include "lscs_instance.h"
 
 #include "Error.h"
 #include "JSDOMBinding.h"
@@ -30,8 +30,8 @@
 #include "JSLock.h"
 #include "ObjectPrototype.h"
 #include "PropertyNameArray.h"
-#include "qt_class.h"
-#include "qt_runtime.h"
+#include "lscs_class.h"
+#include "lscs_runtime.h"
 #include "runtime_object.h"
 #include "runtime/FunctionPrototype.h"
 
@@ -264,7 +264,7 @@ void QtInstance::getPropertyNames( ExecState *exec, PropertyNameArray &array )
             }
         }
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
         QList<QString> dynProps = obj->dynamicPropertyNames();
 
         for ( const QString &ba : dynProps )
@@ -377,7 +377,7 @@ JSValue QtInstance::valueOf( ExecState *exec ) const
     return stringValue( exec );
 }
 
-// In qt_runtime.cpp
+// In lscs_runtime.cpp
 JSValue convertQVariantToValue( ExecState *, PassRefPtr<RootObject> root, const QVariant &variant );
 QVariant convertValueToQVariant( ExecState *, JSValue, QVariant::Type hint, int *distance );
 
@@ -394,7 +394,7 @@ QString QtField::name() const
     }
 
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
 
     if ( m_type == DynamicProperty )
     {
@@ -434,7 +434,7 @@ JSValue QtField::valueFromInstance( ExecState *exec, const Instance *inst ) cons
             val = QVariant::fromValue( ( QObject * ) m_childObject );
         }
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
         else if ( m_type == DynamicProperty )
         {
             val = obj->property( m_dynamicProperty );
@@ -478,7 +478,7 @@ void QtField::setValueToInstance( ExecState *exec, const Instance *inst, JSValue
             }
         }
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
         else if ( m_type == DynamicProperty )
         {
             obj->setProperty( m_dynamicProperty, val );

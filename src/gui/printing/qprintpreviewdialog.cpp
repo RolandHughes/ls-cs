@@ -44,7 +44,7 @@
 #include <qdialog_p.h>
 #include <qprinter_p.h>
 
-#ifndef QT_NO_PRINTPREVIEWDIALOG
+#ifndef LSCS_NO_PRINTPREVIEWDIALOG
 
 class QPrintPreviewMainWindow : public QMainWindow
 {
@@ -368,7 +368,7 @@ void QPrintPreviewDialogPrivate::init( QPrinter *_printer )
     preview->setFocus();
 }
 
-static inline void qt_setupActionIcon( QAction *action, const QString &name )
+static inline void lscs_setupActionIcon( QAction *action, const QString &name )
 {
     static const QString imagePrefix( ":LsCs/printing/images/" );
 
@@ -390,10 +390,10 @@ void QPrintPreviewDialogPrivate::setupActions()
     firstPageAction = navGroup->addAction( QCoreApplication::translate( "QPrintPreviewDialog", "First page" ) );
     lastPageAction  = navGroup->addAction( QCoreApplication::translate( "QPrintPreviewDialog", "Last page" ) );
 
-    qt_setupActionIcon( nextPageAction,  "go-next" );
-    qt_setupActionIcon( prevPageAction,  "go-previous" );
-    qt_setupActionIcon( firstPageAction, "go-first" );
-    qt_setupActionIcon( lastPageAction,  "go-last" );
+    lscs_setupActionIcon( nextPageAction,  "go-next" );
+    lscs_setupActionIcon( prevPageAction,  "go-previous" );
+    lscs_setupActionIcon( firstPageAction, "go-first" );
+    lscs_setupActionIcon( lastPageAction,  "go-last" );
 
     QObject::connect( navGroup, &QActionGroup::triggered, q, &QPrintPreviewDialog::_q_navigate );
 
@@ -406,8 +406,8 @@ void QPrintPreviewDialogPrivate::setupActions()
     fitWidthAction->setCheckable( true );
     fitPageAction->setCheckable( true );
 
-    qt_setupActionIcon( fitWidthAction, "fit-width" );
-    qt_setupActionIcon( fitPageAction,  "fit-page" );
+    lscs_setupActionIcon( fitWidthAction, "fit-width" );
+    lscs_setupActionIcon( fitPageAction,  "fit-page" );
 
     QObject::connect( fitGroup, &QActionGroup::triggered, q, &QPrintPreviewDialog::_q_fit );
 
@@ -415,8 +415,8 @@ void QPrintPreviewDialogPrivate::setupActions()
     zoomGroup = new QActionGroup( q );
     zoomInAction = zoomGroup->addAction( QCoreApplication::translate( "QPrintPreviewDialog", "Zoom in" ) );
     zoomOutAction = zoomGroup->addAction( QCoreApplication::translate( "QPrintPreviewDialog", "Zoom out" ) );
-    qt_setupActionIcon( zoomInAction,  QLatin1String( "zoom-in" ) );
-    qt_setupActionIcon( zoomOutAction, QLatin1String( "zoom-out" ) );
+    lscs_setupActionIcon( zoomInAction,  QLatin1String( "zoom-in" ) );
+    lscs_setupActionIcon( zoomOutAction, QLatin1String( "zoom-out" ) );
 
     // Portrait/Landscape
     orientationGroup = new QActionGroup( q );
@@ -424,8 +424,8 @@ void QPrintPreviewDialogPrivate::setupActions()
     landscapeAction = orientationGroup->addAction( QCoreApplication::translate( "QPrintPreviewDialog", "Landscape" ) );
     portraitAction->setCheckable( true );
     landscapeAction->setCheckable( true );
-    qt_setupActionIcon( portraitAction, QLatin1String( "layout-portrait" ) );
-    qt_setupActionIcon( landscapeAction, QLatin1String( "layout-landscape" ) );
+    lscs_setupActionIcon( portraitAction, QLatin1String( "layout-portrait" ) );
+    lscs_setupActionIcon( landscapeAction, QLatin1String( "layout-landscape" ) );
 
     QObject::connect( portraitAction,  &QAction::triggered, preview, &QPrintPreviewWidget::setPortraitOrientation );
     QObject::connect( landscapeAction, &QAction::triggered, preview, &QPrintPreviewWidget::setLandscapeOrientation );
@@ -436,9 +436,9 @@ void QPrintPreviewDialogPrivate::setupActions()
     facingModeAction = modeGroup->addAction( QCoreApplication::translate( "QPrintPreviewDialog",   "Show facing pages" ) );
     overviewModeAction = modeGroup->addAction( QCoreApplication::translate( "QPrintPreviewDialog", "Show overview of all pages" ) );
 
-    qt_setupActionIcon( singleModeAction, QLatin1String( "view-page-one" ) );
-    qt_setupActionIcon( facingModeAction, QLatin1String( "view-page-sided" ) );
-    qt_setupActionIcon( overviewModeAction, QLatin1String( "view-page-multi" ) );
+    lscs_setupActionIcon( singleModeAction, QLatin1String( "view-page-one" ) );
+    lscs_setupActionIcon( facingModeAction, QLatin1String( "view-page-sided" ) );
+    lscs_setupActionIcon( overviewModeAction, QLatin1String( "view-page-multi" ) );
     singleModeAction->setObjectName( QLatin1String( "singleModeAction" ) );
     facingModeAction->setObjectName( QLatin1String( "facingModeAction" ) );
     overviewModeAction->setObjectName( QLatin1String( "overviewModeAction" ) );
@@ -453,8 +453,8 @@ void QPrintPreviewDialogPrivate::setupActions()
     printerGroup = new QActionGroup( q );
     printAction = printerGroup->addAction( QCoreApplication::translate( "QPrintPreviewDialog", "Print" ) );
     pageSetupAction = printerGroup->addAction( QCoreApplication::translate( "QPrintPreviewDialog", "Page setup" ) );
-    qt_setupActionIcon( printAction, QLatin1String( "print" ) );
-    qt_setupActionIcon( pageSetupAction, QLatin1String( "page-setup" ) );
+    lscs_setupActionIcon( printAction, QLatin1String( "print" ) );
+    lscs_setupActionIcon( pageSetupAction, QLatin1String( "page-setup" ) );
 
     QObject::connect( printAction,     &QAction::triggered, q, &QPrintPreviewDialog::_q_print );
     QObject::connect( pageSetupAction, &QAction::triggered, q, &QPrintPreviewDialog::_q_pageSetup );
@@ -861,4 +861,4 @@ void QPrintPreviewDialog::_q_zoomFactorChanged()
     d->_q_zoomFactorChanged();
 }
 
-#endif // QT_NO_PRINTPREVIEWDIALOG
+#endif // LSCS_NO_PRINTPREVIEWDIALOG

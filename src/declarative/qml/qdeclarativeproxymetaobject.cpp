@@ -24,7 +24,7 @@
 #include "private/qdeclarativeproxymetaobject_p.h"
 #include "private/qdeclarativeproperty_p.h"
 
-QT_BEGIN_NAMESPACE QDeclarativeProxyMetaObject::QDeclarativeProxyMetaObject( QObject *obj, QList<ProxyData> *mList )
+LSCS_BEGIN_NAMESPACE QDeclarativeProxyMetaObject::QDeclarativeProxyMetaObject( QObject *obj, QList<ProxyData> *mList )
     : metaObjects( mList ), proxies( 0 ), parent( 0 ), object( obj )
 {
     *static_cast<QMetaObject *>( this ) = *metaObjects->first().metaObject;
@@ -102,7 +102,7 @@ int QDeclarativeProxyMetaObject::metaCall( QMetaObject::Call c, int id, void **a
                 int proxyOffset = proxies[ii]->metaObject()->propertyOffset();
                 int proxyId = id - data.propertyOffset + proxyOffset;
 
-                return proxies[ii]->qt_metacall( c, proxyId, a );
+                return proxies[ii]->lscs_metacall( c, proxyId, a );
             }
         }
     }
@@ -124,8 +124,8 @@ int QDeclarativeProxyMetaObject::metaCall( QMetaObject::Call c, int id, void **a
     }
     else
     {
-        return object->qt_metacall( c, id, a );
+        return object->lscs_metacall( c, id, a );
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

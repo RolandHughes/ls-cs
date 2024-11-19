@@ -60,7 +60,7 @@ public:
           fileEngine( QFileSystemEngine::resolveEntryAndCreateLegacyEngine( fileEntry, metaData ) ),
           cachedFlags( 0 ),
 
-#ifndef QT_NO_FSFILEENGINE
+#ifndef LSCS_NO_FSFILEENGINE
           isDefaultConstructed( false ),
 #else
           isDefaultConstructed( ! fileEngine ),
@@ -75,7 +75,7 @@ public:
           fileEngine( QFileSystemEngine::resolveEntryAndCreateLegacyEngine( fileEntry, metaData ) ),
           cachedFlags( 0 ),
 
-#ifndef QT_NO_FSFILEENGINE
+#ifndef LSCS_NO_FSFILEENGINE
           isDefaultConstructed( false ),
 #else
           isDefaultConstructed( ! fileEngine ),

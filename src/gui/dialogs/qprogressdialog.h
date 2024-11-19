@@ -28,7 +28,7 @@
 #include <qelapsedtimer.h>
 #include <qshortcut.h>
 
-#ifndef QT_NO_PROGRESSDIALOG
+#ifndef LSCS_NO_PROGRESSDIALOG
 
 class QLabel;
 class QProgressBar;
@@ -154,11 +154,11 @@ private:
     QTimer *forceTimer;
     QElapsedTimer starttime;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QCursor parentCursor;
 #endif
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     QShortcut *escapeShortcut;
 #endif
 
@@ -175,6 +175,6 @@ private:
     QString memberToDisconnectOnClose;
 };
 
-#endif // QT_NO_PROGRESSDIALOG
+#endif // LSCS_NO_PROGRESSDIALOG
 
 #endif

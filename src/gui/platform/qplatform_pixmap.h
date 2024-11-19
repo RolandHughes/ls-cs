@@ -161,9 +161,9 @@ private:
     uint is_cached;
 };
 
-#  define QT_XFORM_TYPE_MSBFIRST 0
-#  define QT_XFORM_TYPE_LSBFIRST 1
+#  define LSCS_XFORM_TYPE_MSBFIRST 0
+#  define LSCS_XFORM_TYPE_LSBFIRST 1
 
-extern bool qt_xForm_helper( const QTransform &, int, int, int, uchar *, int, int, int, const uchar *, int, int, int );
+extern bool lscs_xForm_helper( const QTransform &, int, int, int, uchar *, int, int, int, const uchar *, int, int, int );
 
 #endif

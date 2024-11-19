@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef qt_pixmapruntime_h
-#define qt_pixmapruntime_h
+#ifndef lscs_pixmapruntime_h
+#define lscs_pixmapruntime_h
 
 #include "BridgeJSC.h"
 #include <QVariant>

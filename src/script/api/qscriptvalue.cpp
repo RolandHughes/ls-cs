@@ -332,7 +332,7 @@ QScriptValue QScriptValue::scope() const
     QScript::APIShim shim( d->engine );
 
     // ### make hidden property
-    JSC::JSValue result = d->property( "__qt_scope__", QScriptValue::ResolveLocal );
+    JSC::JSValue result = d->property( "__lscs_scope__", QScriptValue::ResolveLocal );
     return d->engine->scriptValueFromJSCValue( result );
 }
 
@@ -355,7 +355,7 @@ void QScriptValue::setScope( const QScriptValue &scope )
 
     JSC::JSValue other = d->engine->scriptValueToJSCValue( scope );
     JSC::ExecState *exec = d->engine->currentFrame;
-    JSC::Identifier id = JSC::Identifier( exec, "__qt_scope__" );
+    JSC::Identifier id = JSC::Identifier( exec, "__lscs_scope__" );
 
     if ( !scope.isValid() )
     {
@@ -1703,7 +1703,7 @@ QScriptValue QScriptValue::data() const
     else
     {
         // ### make hidden property
-        return property( QLatin1String( "__qt_data__" ), QScriptValue::ResolveLocal );
+        return property( QLatin1String( "__lscs_data__" ), QScriptValue::ResolveLocal );
     }
 }
 
@@ -1727,7 +1727,7 @@ void QScriptValue::setData( const QScriptValue &data )
     else
     {
         JSC::ExecState *exec = d->engine->currentFrame;
-        JSC::Identifier id = JSC::Identifier( exec, "__qt_data__" );
+        JSC::Identifier id = JSC::Identifier( exec, "__lscs_data__" );
 
         if ( !data.isValid() )
         {

@@ -24,7 +24,7 @@
 #include "qscripterrorlogwidgetinterface_p.h"
 #include "qscripterrorlogwidgetinterface_p_p.h"
 
-QT_BEGIN_NAMESPACE QScriptErrorLogWidgetInterfacePrivate::QScriptErrorLogWidgetInterfacePrivate()
+LSCS_BEGIN_NAMESPACE QScriptErrorLogWidgetInterfacePrivate::QScriptErrorLogWidgetInterfacePrivate()
 {
 }
 
@@ -43,4 +43,4 @@ QScriptErrorLogWidgetInterface::QScriptErrorLogWidgetInterface(
 {
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

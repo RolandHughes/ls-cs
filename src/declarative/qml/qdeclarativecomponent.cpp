@@ -44,7 +44,7 @@
 #include <QApplication>
 #include <qdeclarativeinfo.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QByteArray;
 
@@ -1026,7 +1026,7 @@ void QDeclarativeComponentPrivate::complete( QDeclarativeEnginePrivate *enginePr
 {
     if ( state->completePending )
     {
-        QT_TRY
+        LSCS_TRY
         {
             for ( int ii = 0; ii < state->bindValues.count(); ++ii )
             {
@@ -1109,14 +1109,14 @@ void QDeclarativeComponentPrivate::complete( QDeclarativeEnginePrivate *enginePr
                 a->add( &d->context->componentAttached );
                 emit a->completed();
             }
-        } QT_CATCH( const std::exception & )
+        } LSCS_CATCH( const std::exception & )
         {
             state->bindValues.clear();
             state->parserStatus.clear();
             state->finalizedParserStatus.clear();
             state->completePending = false;
             enginePriv->inProgressCreations--;
-            QT_RETHROW;
+            LSCS_RETHROW;
         }
 
         state->bindValues.clear();
@@ -1212,4 +1212,4 @@ QDeclarativeComponentAttached *QDeclarativeComponent::qmlAttachedProperties( QOb
     return a;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

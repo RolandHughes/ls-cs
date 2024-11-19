@@ -29,9 +29,9 @@
 #include <qdbusmacros.h>
 #include "qdbusintrospection_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusXmlParser
 {
@@ -48,7 +48,7 @@ public:
     QSharedDataPointer<QDBusIntrospection::ObjectTree> objectTree() const;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

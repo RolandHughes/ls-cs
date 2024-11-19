@@ -59,7 +59,7 @@ QMouseEvent::QMouseEvent( Type type, const QPointF &localPos, Qt::MouseButton bu
                           Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers )
     : QInputEvent( type, modifiers ), l( localPos ), w( localPos ), b( button ), mouseState( buttons ), caps( 0 )
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     s = QCursor::pos();
 #endif
 }
@@ -108,7 +108,7 @@ QHoverEvent::~QHoverEvent()
 {
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 
 QWheelEvent::QWheelEvent( const QPointF &pos, int delta,
                           Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers, Qt::Orientation orientation )
@@ -162,7 +162,7 @@ QWheelEvent::~QWheelEvent()
 {
 }
 
-#endif // QT_NO_WHEELEVENT
+#endif // LSCS_NO_WHEELEVENT
 
 QKeyEvent::QKeyEvent( Type type, int key, Qt::KeyboardModifiers modifiers, const QString &text, bool autorep, ushort count )
     : QInputEvent( type, modifiers ), txt( text ), k( key ), nScanCode( 0 ), nVirtualKey( 0 ), nModifiers( 0 ), c( count ),
@@ -220,7 +220,7 @@ Qt::KeyboardModifiers QKeyEvent::modifiers() const
     return QInputEvent::modifiers();
 }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
 bool QKeyEvent::matches( QKeySequence::StandardKey matchKey ) const
 {
@@ -315,7 +315,7 @@ QIconDragEvent::~QIconDragEvent()
 {
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 QContextMenuEvent::QContextMenuEvent( Reason reason, const QPoint &pos, const QPoint &globalPos )
     : QInputEvent( ContextMenu ), p( pos ), gp( globalPos ), reas( reason )
 {
@@ -334,12 +334,12 @@ QContextMenuEvent::~QContextMenuEvent()
 QContextMenuEvent::QContextMenuEvent( Reason reason, const QPoint &pos )
     : QInputEvent( ContextMenu ), p( pos ), reas( reason )
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     gp = QCursor::pos();
 #endif
 }
 
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
 QInputMethodEvent::QInputMethodEvent()
     : QEvent( QEvent::InputMethod ), replace_from( 0 ), replace_length( 0 )
@@ -405,7 +405,7 @@ QVariant QInputMethodQueryEvent::value( Qt::InputMethodQuery query ) const
     return QVariant();
 }
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 
 QTabletEvent::QTabletEvent( Type type, const QPointF &pos, const QPointF &globalPos, int device, int pointerType,
                             qreal pressure, int xTilt, int yTilt, qreal tangentialPressure, qreal rotation, int z,
@@ -431,9 +431,9 @@ Qt::MouseButtons QTabletEvent::buttons() const
     return static_cast<QTabletEventPrivate *>( mExtra )->buttonState;
 }
 
-#endif // QT_NO_TABLETEVENT
+#endif // LSCS_NO_TABLETEVENT
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 QNativeGestureEvent::QNativeGestureEvent( Qt::NativeGestureType type, const QPointF &localPos, const QPointF &windowPos,
         const QPointF &screenPos, qreal realValue, ulong sequenceId, quint64 intValue )
     : QInputEvent( QEvent::NativeGesture ), mGestureType( type ),
@@ -443,7 +443,7 @@ QNativeGestureEvent::QNativeGestureEvent( Qt::NativeGestureType type, const QPoi
 }
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 QDragMoveEvent::QDragMoveEvent( const QPoint &pos, Qt::DropActions actions, const QMimeData *data,
                                 Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers, Type type )
     : QDropEvent( pos, actions, data, buttons, modifiers, type ), rect( pos, QSize( 1, 1 ) )
@@ -503,7 +503,7 @@ QDragLeaveEvent::QDragLeaveEvent()
 // internal
 QDragLeaveEvent::~QDragLeaveEvent()
 {}
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 QHelpEvent::QHelpEvent( Type type, const QPoint &pos, const QPoint &globalPos )
     : QEvent( type ), p( pos ), gp( globalPos )
@@ -512,7 +512,7 @@ QHelpEvent::QHelpEvent( Type type, const QPoint &pos, const QPoint &globalPos )
 QHelpEvent::~QHelpEvent()
 {}
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
 
 QStatusTipEvent::QStatusTipEvent( const QString &tip )
     : QEvent( StatusTip ), s( tip )
@@ -524,7 +524,7 @@ QStatusTipEvent::~QStatusTipEvent()
 
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
 QWhatsThisClickedEvent::QWhatsThisClickedEvent( const QString &href )
     : QEvent( WhatsThisClicked ), s( href )
@@ -537,7 +537,7 @@ QWhatsThisClickedEvent::~QWhatsThisClickedEvent()
 
 #endif
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
 QActionEvent::QActionEvent( int type, QAction *action, QAction *before )
     : QEvent( static_cast<QEvent::Type>( type ) ), act( action ), bef( before )
@@ -585,7 +585,7 @@ bool QFileOpenEvent::openFile( QFile &file, QIODevice::OpenMode flags ) const
     return file.open( flags );
 }
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 // internal
 QToolBarChangeEvent::QToolBarChangeEvent( bool t )
@@ -598,7 +598,7 @@ QToolBarChangeEvent::~QToolBarChangeEvent()
 
 #endif
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
 QShortcutEvent::QShortcutEvent( const QKeySequence &key, int id, bool ambiguous )
     : QEvent( Shortcut ), sequence( key ), ambig( ambiguous ), sid( id )
@@ -773,7 +773,7 @@ static const char *eventClassName( QEvent::Type t )
         case QEvent::FileOpen:
             return "QFileOpenEvent";
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
         case QEvent::NativeGesture:
             return "QNativeGestureEvent";
@@ -861,7 +861,7 @@ static const char *eventClassName( QEvent::Type t )
     return "QEvent";
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 static void formatDropEvent( QDebug debug, const QDropEvent *e )
 {
     const QEvent::Type type = e->type();
@@ -890,7 +890,7 @@ static void formatDropEvent( QDebug debug, const QDropEvent *e )
 }
 #endif
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 static void formatTabletEvent( QDebug debug, const QTabletEvent *e )
 {
     const QEvent::Type type = e->type();
@@ -1016,7 +1016,7 @@ QDebug operator<<( QDebug debug, const QEvent *e )
 
         break;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 
         case QEvent::Wheel:
         {
@@ -1108,7 +1108,7 @@ QDebug operator<<( QDebug debug, const QEvent *e )
         }
         break;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
         case QEvent::DragEnter:
         case QEvent::DragMove:
@@ -1139,7 +1139,7 @@ QDebug operator<<( QDebug debug, const QEvent *e )
             debug << ", " << ( static_cast<const QChildEvent *>( e ) )->child() << ')';
             break;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
         case QEvent::NativeGesture:
         {
@@ -1165,7 +1165,7 @@ QDebug operator<<( QDebug debug, const QEvent *e )
             debug << "QContextMenuEvent(" << static_cast<const QContextMenuEvent *>( e )->pos() << ')';
             break;
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 
         case QEvent::TabletEnterProximity:
         case QEvent::TabletLeaveProximity:

@@ -33,11 +33,11 @@
 #include <qpagelayout.h>
 
 #include <qcups_p.h>          // Only needed for PPK_CupsOptions
-#include <qcore_unix_p.h>     // overrides QT_OPEN
+#include <qcore_unix_p.h>     // overrides LSCS_OPEN
 
 #include <cups/cups.h>
 
-extern QMarginsF qt_convertMargins( const QMarginsF &margins, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits );
+extern QMarginsF lscs_convertMargins( const QMarginsF &margins, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits );
 
 QCupsPrintEngine::QCupsPrintEngine( QPrinter::PrinterMode m )
     : QPdfPrintEngine( *new QCupsPrintEnginePrivate( m ) )
@@ -387,7 +387,7 @@ void QCupsPrintEnginePrivate::setPageSize( const QPageSize &pageSize )
 
         QPageSize usePageSize = printerPageSize.isValid() ? printerPageSize : pageSize;
         QMarginsF printable = m_printDevice.printableMargins( usePageSize, m_pageLayout.orientation(), resolution );
-        m_pageLayout.setPageSize( usePageSize, qt_convertMargins( printable, QPageSize::Unit::Point, m_pageLayout.units() ) );
+        m_pageLayout.setPageSize( usePageSize, lscs_convertMargins( printable, QPageSize::Unit::Point, m_pageLayout.units() ) );
     }
 }
 

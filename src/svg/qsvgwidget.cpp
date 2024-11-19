@@ -23,7 +23,7 @@
 
 #include <qsvgwidget.h>
 
-#ifndef QT_NO_SVGWIDGET
+#ifndef LSCS_NO_SVGWIDGET
 
 #include <qpainter.h>
 #include <qsvgrenderer.h>
@@ -95,4 +95,4 @@ void QSvgWidget::load( const QByteArray &contents )
     d->renderer->load( contents );
 }
 
-#endif // QT_NO_SVGWIDGET
+#endif // LSCS_NO_SVGWIDGET

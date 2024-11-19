@@ -50,7 +50,7 @@ enum CallType
 
 typedef JSValue ( JSC_HOST_CALL *NativeFunction )( ExecState *, JSObject *, JSValue thisValue, const ArgList & );
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 class NativeFuncWrapper
 {
     NativeFunction ptr;
@@ -73,7 +73,7 @@ public:
 };
 #endif
 
-#if defined(QT_BUILD_SCRIPT_LIB) && OS(SOLARIS)
+#if defined(LSCS_BUILD_SCRIPT_LIB) && OS(SOLARIS)
 struct
 #else
 union
@@ -82,7 +82,7 @@ union
 {
     struct
     {
-#ifndef QT_BUILD_SCRIPT_LIB
+#ifndef LSCS_BUILD_SCRIPT_LIB
         NativeFunction function;
 #else
         NativeFuncWrapper function;

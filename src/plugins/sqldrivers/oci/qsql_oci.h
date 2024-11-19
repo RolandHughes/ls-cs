@@ -28,7 +28,7 @@
 #include <qsqldriver.h>
 #include <qsqlcachedresult_p.h>
 
-#ifdef QT_PLUGIN
+#ifdef LSCS_PLUGIN
 #define Q_EXPORT_SQLDRIVER_OCI
 #else
 #define Q_EXPORT_SQLDRIVER_OCI Q_SQL_EXPORT
