@@ -250,7 +250,6 @@ public:
 #if (defined Q_OS_DARWIN && !defined Q_OS_IOS) || (defined Q_OS_UNIX && !defined LSCS_NO_CUPS)
 
     // PPD utilities shared by CUPS and Mac plugins requiring CUPS headers
-    // May turn into a proper internal QPpd class if enough shared between Mac and CUPS,
     // but where would it live?  Not in base module as don't want to link to CUPS.
     // May have to have two copies in plugins to keep in sync.
 

@@ -30,8 +30,6 @@
 #include <qprinterinfo_p.h>
 #include <qprintdevice_p.h>
 
-#include <cups/ppd.h>
-
 // LSB merges everything into cups.h
 #ifndef LSCS_LINUXBASE
 # include <cups/language.h>
@@ -67,7 +65,7 @@ QStringList QCupsPrinterSupport::availablePrintDeviceIds() const
 {
     QStringList list;
     cups_dest_t *dests;
-    int count = cupsGetDests( &dests );
+    int count = cupsGetDests2( &dests );
 
     for ( int i = 0; i < count; ++i )
     {

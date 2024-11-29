@@ -1,5 +1,7 @@
 /***********************************************************************
 *
+* Copyright (c) 2024 Roland Hughes d.b.a Logikal Solutions
+*
 * Copyright (c) 2012-2024 Barbara Geller
 * Copyright (c) 2012-2024 Ansel Sermersheim
 *
@@ -33,11 +35,19 @@
 
 #ifndef LSCS_NO_PRINTER
 
+class BdPrintDestination
+{
+public:
+    QString name;
+    QString instance;
+    QString uri;
+};
+
 class Q_GUI_EXPORT QPlatformPrintDevice
 {
 public:
     QPlatformPrintDevice();
-    explicit QPlatformPrintDevice( const QString &id );
+    explicit QPlatformPrintDevice( const BdPrintDesitnation &id );
 
     QPlatformPrintDevice( const QPlatformPrintDevice & ) = delete;
     QPlatformPrintDevice &operator=( const QPlatformPrintDevice & ) = delete;
@@ -117,6 +127,7 @@ protected:
     QString m_name;
     QString m_location;
     QString m_makeAndModel;
+    QString m_uri;
 
     bool m_isRemote;
 

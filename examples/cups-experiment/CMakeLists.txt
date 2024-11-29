@@ -5,7 +5,7 @@ cmake_policy(VERSION 3.8..3.13)
 # support using rpath on Mac OS X
 cmake_policy(SET CMP0042 NEW)
 
-project(console-hello)
+project(cups-experiment)
 
 set(BUILD_MAJOR "1")
 set(BUILD_MINOR "3")
@@ -20,6 +20,7 @@ include(CheckIncludeFiles)
 include(CheckTypeSize)
 
 find_package(LsCs REQUIRED)
+find_package(Cups REQUIRED)
 
 # When building your own stand alone executables
 # you really shouldn't use RPATH. That's only for
@@ -29,6 +30,13 @@ find_package(LsCs REQUIRED)
 # assigning a value to CMAKE_INSTALL_RPATH.
 #
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+message("**********")
+message("CUPS_INCLUDE_DIRS:   ${CUPS_INCLUDE_DIRS}")
+message("CUPS_LIBRARIES:      ${CUPS_LIBRARIES}")
+message("CUPS_VERSION_STRING: ${CUPS_VERSION_STRING}")
+message("**********")
+
 
 # file locations for installing
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")

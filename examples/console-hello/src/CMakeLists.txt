@@ -1,5 +1,5 @@
 list(APPEND CONSOLE-HELLO_INCLUDES
-   ${CMAKE_CURRENT_SOURCE_DIR}/console-hello_build_info.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}_build_info.h
 )
 
 list(APPEND CONSOLE-HELLO_SOURCES
@@ -7,14 +7,14 @@ list(APPEND CONSOLE-HELLO_SOURCES
 
 )
 
-add_executable(console-hello ${CONSOLE-HELLO_SOURCES} ${CONSOLE-HELLO_INCLUDES})
+add_executable(${PROJECT_NAME} ${CONSOLE-HELLO_SOURCES} ${CONSOLE-HELLO_INCLUDES})
 
-target_include_directories(console-hello
+target_include_directories(${PROJECT_NAME}
    PRIVATE
    ${CMAKE_SOURCE_DIR}/src
 )
 
-target_link_libraries(console-hello
+target_link_libraries(${PROJECT_NAME}
    PRIVATE
    LsCs::LsCsCore
    LsCs::LsCsGui
@@ -22,19 +22,19 @@ target_link_libraries(console-hello
 )
 
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   set_target_properties(console-hello PROPERTIES OUTPUT_NAME console-hello)
+   set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-   set_target_properties(console-hello PROPERTIES OUTPUT_NAME console-hello)
+   set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 endif()
 
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   install(TARGETS console-hello DESTINATION ../MacOS)
+   install(TARGETS ${PROJECT_NAME} DESTINATION ../MacOS)
 else()
-   install(TARGETS console-hello DESTINATION .)
+   install(TARGETS ${PROJECT_NAME} DESTINATION .)
 endif()
 
 #  If you are using RPATH in the main CMakeLists.txt

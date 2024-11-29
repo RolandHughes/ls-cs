@@ -16,7 +16,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 set(BUILD_MAJOR "0")
 set(BUILD_MINOR "1")
-set(BUILD_MICRO "1")
+set(BUILD_MICRO "3")
 
 project(LsCs VERSION ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO} DESCRIPTION "A C++ Cross Platform Application Framework" )
 

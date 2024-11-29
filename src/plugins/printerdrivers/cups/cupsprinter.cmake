@@ -1,5 +1,4 @@
 list(APPEND PRINTERDRIVERS_CUPS_PRIVATE_INCLUDES
-	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/cups/qppdprintdevice.h
 	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/cups/qcupsprintersupport_p.h
 	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/cups/qcupsprintengine_p.h
 )
@@ -17,7 +16,6 @@ if(Cups_FOUND)
    target_sources(LsCsPrinterDriverCups
       PRIVATE
    	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/cups/main.cpp
-   	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/cups/qppdprintdevice.cpp
    	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/cups/qcupsprintengine.cpp
    	${CMAKE_SOURCE_DIR}/src/plugins/printerdrivers/cups/qcupsprintersupport.cpp
    )
