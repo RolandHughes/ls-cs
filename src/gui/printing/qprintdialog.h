@@ -37,7 +37,6 @@ class Q_GUI_EXPORT QPrintDialog : public QAbstractPrintDialog
     GUI_LSCS_OBJECT( QPrintDialog )
     Q_DECLARE_PRIVATE( QPrintDialog )
 
-    GUI_LSCS_ENUM( PrintDialogOption )
 
     GUI_LSCS_PROPERTY_READ( options,  options )
     GUI_LSCS_PROPERTY_WRITE( options, setOptions )
@@ -54,11 +53,11 @@ public:
 #endif
 
     void done( int result ) override;
-    void setOption( PrintDialogOption option, bool on = true );
-    bool testOption( PrintDialogOption option ) const;
-    void setOptions( PrintDialogOptions options );
+    void setOption( PDOptions option, bool on = true );
+    bool testOption( PDOptions option ) const;
+    void setOptions( PDOptions options );
 
-    PrintDialogOptions options() const;
+    PDOptions options() const;
 
 #if defined(Q_OS_UNIX) || defined(Q_OS_WIN)
     void setVisible( bool visible ) override;

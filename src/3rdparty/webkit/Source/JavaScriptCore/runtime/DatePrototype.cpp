@@ -283,11 +283,14 @@ static JSCell *formatLocaleDate( ExecState *exec, const GregorianDateTime &gdt, 
     {
         static const int yearLen = 5;   // FIXME will be a problem in the year 10,000
         char yearString[yearLen];
-
-        snprintf( yearString, yearLen, "%d", localTM.tm_year + 1900 );
+// until we completely replace the browser and JavaScript ignore the warning
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-truncation"        
+        snprintf( yearString, yearLen, "%4d", localTM.tm_year + 1900 );
         char *yearLocation = strstr( timebuffer, yearString );
-        snprintf( yearString, yearLen, "%d", year );
-
+        snprintf( yearString, yearLen, "%4d", year );
+#pragma GCC diagnostic pop
+        
         strncpy( yearLocation, yearString, yearLen - 1 );
     }
 
@@ -588,6 +591,10 @@ EncodedJSValue JSC_HOST_CALL dateProtoFuncToISOString( ExecState *exec )
         return JSValue::encode( jsNontrivialString( exec, "Invalid Date" ) );
     }
 
+// until we completely replace the browser and JavaScript ignore the warning
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-truncation"        
+    
     // Maximum amount of space we need in buffer: 6 (max. digits in year) + 2 * 5 (2 characters each for month, day, hour, minute, second) + 4 (. + 3 digits for milliseconds)
     // 6 for formatting and one for null termination = 27.  We add one extra character to allow us to force null termination.
     char buffer[28];
@@ -595,6 +602,8 @@ EncodedJSValue JSC_HOST_CALL dateProtoFuncToISOString( ExecState *exec )
               gregorianDateTime->month + 1, gregorianDateTime->monthDay, gregorianDateTime->hour, gregorianDateTime->minute,
               gregorianDateTime->second, static_cast<int>( fmod( thisDateObj->internalNumber(), 1000 ) ) );
     buffer[sizeof( buffer ) - 1] = 0;
+
+#pragma GCC diagnostic pop    
     return JSValue::encode( jsNontrivialString( exec, buffer ) );
 }
 

@@ -203,7 +203,7 @@ void QPrintDialogPrivate::openCocoaPrintPanel(Qt::WindowModality modality)
 
    [printInfo updateFromPMPrintSettings];
 
-   QPrintDialog::PrintDialogOptions qtOptions = q->options();
+   PDOptions qtOptions = q->options();
    NSPrintPanelOptions macOptions = NSPrintPanelShowsCopies;
    if (qtOptions & QPrintDialog::PrintPageRange) {
       macOptions |= NSPrintPanelShowsPageRange;

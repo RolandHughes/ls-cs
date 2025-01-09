@@ -27,8 +27,6 @@
 
 #ifndef LSCS_NO_PRINTER
 
-#include <qdebug.h>
-
 #include <qplatform_printplugin.h>
 #include <qplatform_printersupport.h>
 
@@ -83,7 +81,8 @@ QPrinterInfo::QPrinterInfo( const QPrinter &printer )
 
     if ( ps )
     {
-        QPrinterInfo pi( printer.printerName() );
+        QString nmStr = printer.printerName();      // getting rid of const
+        QPrinterInfo pi( nmStr );
 
         if ( pi.d_ptr.data() == shared_null() )
         {
@@ -124,13 +123,13 @@ QPrinterInfo &QPrinterInfo::operator=( const QPrinterInfo &other )
 QString QPrinterInfo::printerName() const
 {
     const Q_D( QPrinterInfo );
-    return d->m_printDevice.id();
+    return d->m_printDevice.name();
 }
 
 QString QPrinterInfo::description() const
 {
     const Q_D( QPrinterInfo );
-    return d->m_printDevice.name();
+    return d->m_printDevice.uri();
 }
 
 QString QPrinterInfo::location() const
@@ -157,22 +156,52 @@ bool QPrinterInfo::isDefault() const
     return d->m_printDevice.isDefault();
 }
 
+bool QPrinterInfo::isValid() const
+{
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.isValid();
+}
+
 bool QPrinterInfo::isRemote() const
 {
     Q_D( const QPrinterInfo );
     return d->m_printDevice.isRemote();
 }
 
-QPrinter::PrinterState QPrinterInfo::state() const
+QString QPrinterInfo::defaultOutputBin() const
 {
     Q_D( const QPrinterInfo );
-    return QPrinter::PrinterState( d->m_printDevice.state() );
+    return d->m_printDevice.defaultOutputBin();
+}
+
+QStringList QPrinterInfo::supportedOutputBins() const
+{
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.supportedOutputBins();
+}
+
+PrinterState QPrinterInfo::state() const
+{
+    Q_D( const QPrinterInfo );
+    return PrinterState( d->m_printDevice.state() );
 }
 
 QList<QPageSize> QPrinterInfo::supportedPageSizes() const
 {
     Q_D( const QPrinterInfo );
     return d->m_printDevice.supportedPageSizes();
+}
+
+QString QPrinterInfo::defaultColorMode() const
+{
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.defaultColorMode();
+}
+
+QStringList QPrinterInfo::supportedColorModes() const
+{
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.supportedColorModes();
 }
 
 QPageSize QPrinterInfo::defaultPageSize() const
@@ -199,30 +228,52 @@ QPageSize QPrinterInfo::maximumPhysicalPageSize() const
     return QPageSize( d->m_printDevice.maximumPhysicalPageSize(), QString(), QPageSize::ExactMatch );
 }
 
+QString QPrinterInfo::defaultDuplexMode() const
+{
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.defaultDuplexMode();
+}
+
+QPageSize QPrinterInfo::supportedPageSize( const QString &pageName ) const
+{
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.supportedPageSize( pageName );
+}
+
+QString QPrinterInfo::lastPrintError() const
+{
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.lastPrintError();
+}
+
+QStringList QPrinterInfo::supportedDuplexModes() const
+{
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.supportedDuplexModes();
+}
+
+int QPrinterInfo::defaultResolution() const
+{
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.defaultResolution();
+}
+
 QList<int> QPrinterInfo::supportedResolutions() const
 {
     Q_D( const QPrinterInfo );
     return d->m_printDevice.supportedResolutions();
 }
 
-QPrinter::DuplexMode QPrinterInfo::defaultDuplexMode() const
+QString QPrinterInfo::defaultMediaSource() const
 {
     Q_D( const QPrinterInfo );
-    return QPrinter::DuplexMode( d->m_printDevice.defaultDuplexMode() );
+    return d->m_printDevice.defaultMediaSource();
 }
 
-QList<QPrinter::DuplexMode> QPrinterInfo::supportedDuplexModes() const
+QStringList QPrinterInfo::supportedMediaSources() const
 {
     Q_D( const QPrinterInfo );
-    QList<QPrinter::DuplexMode> list;
-    const QList<QPrint::DuplexMode> supportedDuplexModes = d->m_printDevice.supportedDuplexModes();
-
-    for ( QPrint::DuplexMode mode : supportedDuplexModes )
-    {
-        list << QPrinter::DuplexMode( mode );
-    }
-
-    return list;
+    return d->m_printDevice.supportedMediaSources();
 }
 
 QStringList QPrinterInfo::availablePrinterNames()
@@ -284,24 +335,5 @@ QPrinterInfo QPrinterInfo::printerInfo( const QString &printerName )
     return QPrinterInfo( printerName );
 }
 
-QDebug operator<<( QDebug debug, const QPrinterInfo &p )
-{
-    QDebugStateSaver saver( debug );
-    debug.nospace();
-    debug << "QPrinterInfo(";
-
-    if ( p.isNull() )
-    {
-        debug << "null";
-    }
-    else
-    {
-        p.d_ptr->m_printDevice.format( debug );
-    }
-
-    debug << ')';
-
-    return debug;
-}
 
 #endif

@@ -37,7 +37,6 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/printing/qpagesetupdialog_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/printing/qpagesetupdialog_unix_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/printing/qpdf_p.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/printing/qprint_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/printing/qprintdevice_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/printing/qprinter_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/printing/qprinterinfo_p.h

@@ -1,4 +1,5 @@
 /***********************************************************************
+* Copyright (c) 2024 Roland Hughes d.b.a. Logikal Solutions
 *
 * Copyright (c) 2012-2024 Barbara Geller
 * Copyright (c) 2012-2024 Ansel Sermersheim
@@ -40,6 +41,7 @@
 #include <qpainter_p.h>
 
 #include <cstdio>
+#include <bdguiutils.h>
 
 #ifndef LSCS_NO_COMPRESS
 #include <zlib.h>
@@ -1486,7 +1488,7 @@ void QPdfEngine::setPen()
 
     QColor rgba = b.color();
 
-    if ( d->grayscale )
+    if (shouldBeGrayScale( d->color ))
     {
         qreal gray = qGray( rgba.rgba() )/255.;
         *d->currentPage << gray << gray << gray;
@@ -1576,7 +1578,7 @@ void QPdfEngine::setBrush()
     {
         QColor rgba = d->brush.color();
 
-        if ( d->grayscale )
+        if ( shouldBeGrayScale(d->color ))
         {
             qreal gray = qGray( rgba.rgba() )/255.;
             *d->currentPage << gray << gray << gray;
@@ -1736,7 +1738,7 @@ int QPdfEngine::metric( QPaintDevice::PaintDeviceMetric metricType ) const
 
 QPdfEnginePrivate::QPdfEnginePrivate()
     : clipEnabled( false ), allClipped( false ), hasPen( true ), hasBrush( false ), simplePen( false ),
-      outDevice( nullptr ), ownsDevice( false ), embedFonts( true ), grayscale( false ),
+      outDevice( nullptr ), ownsDevice( false ), embedFonts( true ), color( "auto" ),
       m_pageLayout( QPageSize( QPageSize::A4 ), QPageLayout::Portrait, QMarginsF( 10, 10, 10, 10 ) )
 {
     resolution     = 1200;
@@ -3087,7 +3089,7 @@ int QPdfEnginePrivate::addImage( const QImage &img, bool *bitmap, qint64 serial_
         bool hasAlpha = false;
         bool hasMask = false;
 
-        if ( QImageWriter::supportedImageFormats().contains( "jpeg" ) && !grayscale )
+        if ( QImageWriter::supportedImageFormats().contains( "jpeg" ) && !shouldBeGrayScale( color) )
         {
             QBuffer buffer( &imageData );
             QImageWriter writer( &buffer, "jpeg" );
@@ -3117,7 +3119,7 @@ int QPdfEnginePrivate::addImage( const QImage &img, bool *bitmap, qint64 serial_
         }
         else
         {
-            imageData.resize( grayscale ? w *h : 3 * w * h );
+            imageData.resize( shouldBeGrayScale( color) ? w *h : 3 * w * h );
             uchar *data = ( uchar * )imageData.data();
             softMaskData.resize( w * h );
             uchar *sdata = ( uchar * )softMaskData.data();
@@ -3126,7 +3128,7 @@ int QPdfEnginePrivate::addImage( const QImage &img, bool *bitmap, qint64 serial_
             {
                 const QRgb *rgb = ( const QRgb * )image.constScanLine( y );
 
-                if ( grayscale )
+                if ( shouldBeGrayScale( color) )
                 {
                     for ( int x = 0; x < w; ++x )
                     {
@@ -3194,7 +3196,7 @@ int QPdfEnginePrivate::addImage( const QImage &img, bool *bitmap, qint64 serial_
             maskObject = writeImage( mask, w, h, 1, 0, 0 );
         }
 
-        object = writeImage( imageData, w, h, grayscale ? 8 : 32,
+        object = writeImage( imageData, w, h, shouldBeGrayScale(color) ? 8 : 32,
                              maskObject, softMaskObject, dct );
     }
 

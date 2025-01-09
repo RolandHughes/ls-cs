@@ -1035,14 +1035,14 @@ void QWin32PrintEnginePrivate::initHDC()
 
     switch ( mode )
     {
-        case QPrinter::ScreenResolution:
+        case PrinterMode::ScreenResolution:
             resolution = dpi_display;
             stretch_x = dpi_x / double( dpi_display );
             stretch_y = dpi_y / double( dpi_display );
             break;
 
-        case QPrinter::PrinterResolution:
-        case QPrinter::HighResolution:
+        case PrinterMode::PrinterResolution:
+        case PrinterMode::HighResolution:
             resolution = dpi_y;
             stretch_x = 1;
             stretch_y = 1;

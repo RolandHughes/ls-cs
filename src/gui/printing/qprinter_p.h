@@ -50,7 +50,7 @@ public:
 #ifndef LSCS_NO_PRINTPREVIEWWIDGET
           previewEngine( nullptr ),
 #endif
-          q_ptr( printer ), printRange( QPrinter::AllPages ), use_default_engine( true ),
+          q_ptr( printer ), printRange( PrinterPrintRange::AllPages ), use_default_engine( true ),
           validPrinter( false )
     {
     }
@@ -59,11 +59,11 @@ public:
     {
     }
 
-    void init( const QPrinterInfo &printer, QPrinter::PrinterMode mode );
+    void init( const QPrinterInfo &printer, PrinterMode mode );
 
     QPrinterInfo findValidPrinter( const QPrinterInfo &printer = QPrinterInfo() );
-    void initEngines( QPrinter::OutputFormat format, const QPrinterInfo &printer );
-    void changeEngines( QPrinter::OutputFormat format, const QPrinterInfo &printer );
+    void initEngines( PrinterFormat outputFormat, const QPrinterInfo &printer );
+    void changeEngines( PrinterFormat outputFormat, const QPrinterInfo &printer );
 
 #ifndef LSCS_NO_PRINTPREVIEWWIDGET
     QList<const QPicture *> previewPages() const;
@@ -72,8 +72,8 @@ public:
 
     void setProperty( QPrintEngine::PrintEnginePropertyKey key, const QVariant &value );
 
-    QPrinter::PrinterMode printerMode;
-    QPrinter::OutputFormat outputFormat;
+    PrinterMode printerMode;
+    PrinterFormat outputFormat;
 
     QPrintEngine *printEngine;
     QPaintEngine *paintEngine;
@@ -86,7 +86,7 @@ public:
 #endif
 
     QPrinter *q_ptr;
-    QPrinter::PrintRange printRange;
+    PrinterPrintRange printRange;
 
     uint use_default_engine : 1;
     uint had_default_engines : 1;

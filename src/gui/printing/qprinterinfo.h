@@ -61,28 +61,41 @@ public:
     bool isNull() const;
     bool isDefault() const;
     bool isRemote() const;
+    bool isValid() const;
 
-    QPrinter::PrinterState state() const;
+    int defaultResolution() const; // 600, 1200, etc.
+    QList<int> supportedResolutions() const;
+
+    PrinterState state() const;
 
     QList<QPageSize> supportedPageSizes() const;
     QPageSize defaultPageSize() const;
+    QPageSize supportedPageSize( const QString &pageName ) const;
 
     bool supportsCustomPageSizes() const;
 
     QPageSize minimumPhysicalPageSize() const;
     QPageSize maximumPhysicalPageSize() const;
 
+    QString lastPrintError() const;
+    
+    QString defaultDuplexMode() const;
+    QStringList supportedDuplexModes() const;
 
-    QList<int> supportedResolutions() const;
-
-    QPrinter::DuplexMode defaultDuplexMode() const;
-    QList<QPrinter::DuplexMode> supportedDuplexModes() const;
+    QString defaultColorMode() const;
+    QStringList supportedColorModes() const;
 
     static QStringList availablePrinterNames();
     static QList<QPrinterInfo> availablePrinters();
 
     static QString defaultPrinterName();
     static QPrinterInfo defaultPrinter();
+
+    QString defaultMediaSource() const;
+    QStringList supportedMediaSources() const;
+
+    QString defaultOutputBin() const;
+    QStringList supportedOutputBins() const;
 
     static QPrinterInfo printerInfo( const QString &printerName );
 

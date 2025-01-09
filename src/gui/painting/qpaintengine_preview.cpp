@@ -38,13 +38,13 @@ class QPreviewPaintEnginePrivate : public QPaintEnginePrivate
 {
     Q_DECLARE_PUBLIC( QPreviewPaintEngine )
 public:
-    QPreviewPaintEnginePrivate() : state( QPrinter::Idle ) {}
+    QPreviewPaintEnginePrivate() : state( PrinterState::Idle ) {}
     ~QPreviewPaintEnginePrivate() {}
 
     QList<const QPicture *> pages;
     QPaintEngine *engine;
     QPainter *painter;
-    QPrinter::PrinterState state;
+    PrinterState state;
 
     QPaintEngine *proxy_paint_engine;
     QPrintEngine *proxy_print_engine;
@@ -78,7 +78,7 @@ bool QPreviewPaintEngine::begin( QPaintDevice * )
     d->engine = d->painter->paintEngine();
     *d->painter->d_func()->state = *painter()->d_func()->state;
     d->pages.append( page );
-    d->state = QPrinter::Active;
+    d->state = PrinterState::Active;
     return true;
 }
 
@@ -89,7 +89,7 @@ bool QPreviewPaintEngine::end()
     delete d->painter;
     d->painter = nullptr;
     d->engine  = nullptr;
-    d->state   = QPrinter::Idle;
+    d->state   = PrinterState::Idle;
     return true;
 }
 
@@ -160,7 +160,7 @@ bool QPreviewPaintEngine::abort()
     Q_D( QPreviewPaintEngine );
     end();
     qDeleteAll( d->pages );
-    d->state = QPrinter::Aborted;
+    d->state = PrinterState::Stopped;
 
     return true;
 }
@@ -196,7 +196,7 @@ int QPreviewPaintEngine::metric( QPaintDevice::PaintDeviceMetric id ) const
     return d->proxy_print_engine->metric( id );
 }
 
-QPrinter::PrinterState QPreviewPaintEngine::printerState() const
+PrinterState QPreviewPaintEngine::printerState() const
 {
     Q_D( const QPreviewPaintEngine );
     return d->state;

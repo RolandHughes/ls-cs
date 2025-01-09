@@ -97,8 +97,8 @@ class QWin32PrintEnginePrivate : public QAlphaPaintEnginePrivate
 public:
     QWin32PrintEnginePrivate()
         : hPrinter( nullptr ), globalDevMode( nullptr ), devMode( nullptr ), pInfo( nullptr ), hMem( nullptr ), hdc( nullptr ),
-          ownsDevMode( false ), mode( QPrinter::ScreenResolution ), state( QPrinter::Idle ),
-          resolution( 0 ), m_pageLayout( QPageLayout( QPageSize( QPageSize::A4 ),
+          ownsDevMode( false ), mode( PrinterMode::ScreenResolution ), state( PrinterState::Idle ),
+          resolution( 0 ), m_pageLayout( QPageLayout( QPageSize( QPageSize::Letter ),
                                          QPageLayout::Portrait, QMarginsF( 0, 0, 0, 0 ) ) ),
           stretch_x( 1 ), stretch_y( 1 ), origin_x( 0 ), origin_y( 0 ), dpi_x( 96 ), dpi_y( 96 ),
           dpi_display( 96 ), num_copies( 1 ), printToFile( false ), reinit( false ),

@@ -38,7 +38,7 @@ class QCupsPrintEnginePrivate;
 class QCupsPrintEngine : public QPdfPrintEngine
 {
 public:
-    QCupsPrintEngine( QPrinter::PrinterMode m );
+    QCupsPrintEngine( PrinterMode m );
 
     QCupsPrintEngine( const QCupsPrintEngine & ) = delete;
     QCupsPrintEngine &operator=( const QCupsPrintEngine & ) = delete;
@@ -57,7 +57,7 @@ private:
 class QCupsPrintEnginePrivate : public QPdfPrintEnginePrivate
 {
 public:
-    QCupsPrintEnginePrivate( QPrinter::PrinterMode m );
+    QCupsPrintEnginePrivate( PrinterMode m );
 
     QCupsPrintEnginePrivate( const QCupsPrintEnginePrivate & ) = delete;
     QCupsPrintEnginePrivate &operator=( const QCupsPrintEnginePrivate & ) = delete;

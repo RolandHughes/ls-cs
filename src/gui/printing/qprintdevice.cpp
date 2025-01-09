@@ -24,28 +24,47 @@
 #include <qprintdevice_p.h>
 #include <qplatform_printdevice.h>
 
-#include <qdebug_p.h>
+#include <qstringlist.h>
 
 #ifndef LSCS_NO_PRINTER
 
 QPrintDevice::QPrintDevice()
     : d( new QPlatformPrintDevice() )
 {
+    qDebug() << "QPrintDevice() default constructor called.";
 }
 
 QPrintDevice::QPrintDevice( const QString &id )
     : d( new QPlatformPrintDevice( id ) )
 {
+    qDebug() << "QPrintDevice constructor called with id: " << id;
 }
 
 QPrintDevice::QPrintDevice( QPlatformPrintDevice *dd )
     : d( dd )
 {
+    qDebug() << "QPrintDevice constructor called with:  ";
+
+    if ( dd == nullptr )
+    {
+        qDebug() << "a null pointer";
+    }
+    else
+    {
+        qDebug() << " name: " << dd->name() << "  isValid: " << dd->isValid()
+                 << " uri: " << dd->uri() << " makeAndModel: " << dd->makeAndModel()
+                 << " state: " << static_cast<int>( dd->state() ) << endl << endl;
+    }
 }
 
 QPrintDevice::QPrintDevice( const QPrintDevice &other )
     : d( other.d )
 {
+    qDebug() << "QPrintDevice copy constructor called name: " << d->name()
+             << "    isValid:  " << d->isValid()
+             << "    uri: " << d->uri()
+             << "    makeAndModel: " << d->makeAndModel()
+             << "    state: " << static_cast<int>( d->state() ) << endl << endl;
 }
 
 QPrintDevice::~QPrintDevice()
@@ -55,22 +74,31 @@ QPrintDevice::~QPrintDevice()
 QPrintDevice &QPrintDevice::operator=( const QPrintDevice &other )
 {
     d = other.d;
+    qDebug() << "QPrintDevice assignment operator called name: " << d->name()
+             << "    isValid:  " << d->isValid()
+             << "    uri: " << d->uri()
+             << "    makeAndModel: " << d->makeAndModel()
+             << "    state: " << static_cast<int>( d->state() ) << endl << endl;
     return *this;
 }
 
 bool QPrintDevice::operator==( const QPrintDevice &other ) const
 {
+    bool retVal = false;
+
     if ( d && other.d )
     {
-        return d->id() == other.d->id();
+        if ( ( d->name() == other.d->name() )
+                && ( d->instance() == other.d->instance() )
+                && ( d->location() == other.d->location() )
+                && ( d->makeAndModel() == other.d->makeAndModel() )
+                && ( d->uri() == other.d->uri() ) )
+        {
+            retVal = true;
+        }
     }
 
-    return d == other.d;
-}
-
-QString QPrintDevice::id() const
-{
-    return isValid() ? d->id() : QString();
+    return retVal;
 }
 
 QString QPrintDevice::name() const
@@ -88,9 +116,19 @@ QString QPrintDevice::makeAndModel() const
     return isValid() ? d->makeAndModel() : QString();
 }
 
+QString QPrintDevice::uri() const
+{
+    return isValid() ? d->uri() : QString();
+}
+
+QString QPrintDevice::lastPrintError() const
+{
+    return isValid() ? d->lastPrintError() : QString();
+}
+
 bool QPrintDevice::isValid() const
 {
-    return d && d->isValid();
+    return ( d && d->isValid() );
 }
 
 bool QPrintDevice::isDefault() const
@@ -103,9 +141,9 @@ bool QPrintDevice::isRemote() const
     return isValid() && d->isRemote();
 }
 
-QPrint::DeviceState QPrintDevice::state() const
+PrinterState QPrintDevice::state() const
 {
-    return isValid() ? d->state() : QPrint::Error;
+    return isValid() ? d->state() : PrinterState::Error;
 }
 
 bool QPrintDevice::isValidPageLayout( const QPageLayout &layout, int resolution ) const
@@ -190,141 +228,46 @@ QList<int> QPrintDevice::supportedResolutions() const
     return isValid() ? d->supportedResolutions() : QList<int>();
 }
 
-QPrint::InputSlot QPrintDevice::defaultInputSlot() const
+QString QPrintDevice::defaultMediaSource() const
 {
-    return isValid() ? d->defaultInputSlot() : QPrint::InputSlot();
+    return isValid() ? d->defaultMediaSource() : QString( "auto" );
 }
 
-QList<QPrint::InputSlot> QPrintDevice::supportedInputSlots() const
+QStringList QPrintDevice::supportedMediaSources() const
 {
-    return isValid() ? d->supportedInputSlots() : QList<QPrint::InputSlot>();
+    return isValid() ? d->supportedMediaSources() : QStringList();
 }
 
-QPrint::OutputBin QPrintDevice::defaultOutputBin() const
+QString QPrintDevice::defaultOutputBin() const
 {
-    return isValid() ? d->defaultOutputBin() : QPrint::OutputBin();
+    return isValid() ? d->defaultOutputBin() : QString();
 }
 
-QList<QPrint::OutputBin> QPrintDevice::supportedOutputBins() const
+QStringList QPrintDevice::supportedOutputBins() const
 {
-    return isValid() ? d->supportedOutputBins() : QList<QPrint::OutputBin>();
+    return isValid() ? d->supportedOutputBins() : QStringList();
 }
 
-QPrint::DuplexMode QPrintDevice::defaultDuplexMode() const
+QString QPrintDevice::defaultDuplexMode() const
 {
-    return isValid() ? d->defaultDuplexMode() : QPrint::DuplexNone;
+    return isValid() ? d->defaultDuplexMode() : QString();
 }
 
-QList<QPrint::DuplexMode> QPrintDevice::supportedDuplexModes() const
+QStringList QPrintDevice::supportedDuplexModes() const
 {
-    return isValid() ? d->supportedDuplexModes() : QList<QPrint::DuplexMode>();
+    return isValid() ? d->supportedDuplexModes() : QStringList();
 }
 
-QPrint::ColorMode QPrintDevice::defaultColorMode() const
+QString QPrintDevice::defaultColorMode() const
 {
-    return isValid() ? d->defaultColorMode() : QPrint::GrayScale;
+    return isValid() ? d->defaultColorMode() : QString();
 }
 
-QList<QPrint::ColorMode> QPrintDevice::supportedColorModes() const
+QStringList QPrintDevice::supportedColorModes() const
 {
-    return isValid() ? d->supportedColorModes() : QList<QPrint::ColorMode>();
+    return isValid() ? d->supportedColorModes() : QStringList();
 }
 
-#ifndef LSCS_NO_MIMETYPE
-/* emerald - mimedatabase
-QList<QMimeType> QPrintDevice::supportedMimeTypes() const
-{
-    return isValid() ? d->supportedMimeTypes() : QList<QMimeType>();
-}
-*/
-#endif // LSCS_NO_MIMETYPE
-
-void QPrintDevice::format( QDebug debug ) const
-{
-    QDebugStateSaver saver( debug );
-    debug.noquote();
-    debug.nospace();
-
-    if ( isValid() )
-    {
-        const QString deviceId = id();
-        const QString deviceName = name();
-        debug << "id=\"" << deviceId << "\", state=" << state();
-
-        if ( !deviceName.isEmpty() && deviceName != deviceId )
-        {
-            debug << ", name=\"" << deviceName << '"';
-        }
-
-        if ( !location().isEmpty() )
-        {
-            debug << ", location=\"" << location() << '"';
-        }
-
-        debug << ", makeAndModel=\"" << makeAndModel() << '"';
-
-        if ( isDefault() )
-        {
-            debug << ", default";
-        }
-
-        if ( isRemote() )
-        {
-            debug << ", remote";
-        }
-
-        debug << ", defaultPageSize=" << defaultPageSize();
-
-        if ( supportsCustomPageSizes() )
-        {
-            debug << ", supportsCustomPageSizes";
-        }
-
-        debug << ", physicalPageSize=(";
-
-        QtDebugUtils::formatQSize( debug, minimumPhysicalPageSize() );
-        debug << ")..(";
-
-        QtDebugUtils::formatQSize( debug, maximumPhysicalPageSize() );
-        debug << "), defaultResolution=" << defaultResolution()
-              << ", defaultDuplexMode=" << defaultDuplexMode()
-              << ", defaultColorMode="<< defaultColorMode();
-
-#ifndef LSCS_NO_MIMETYPE
-
-        /* emerald - mimedatabase
-
-                const QList<QMimeType> mimeTypes = supportedMimeTypes();
-
-                if (const int mimeTypeCount = mimeTypes.size()) {
-                    debug << ", supportedMimeTypes=(";
-
-                    for (int i = 0; i < mimeTypeCount; ++i)
-                        debug << " \"" << mimeTypes.at(i).name() << '"';
-                    debug << ')';
-                }
-        */
-
-#endif
-
-    }
-    else
-    {
-        debug << "null";
-    }
-}
-
-QDebug operator<<( QDebug debug, const QPrintDevice &p )
-{
-    QDebugStateSaver saver( debug );
-    debug.nospace();
-
-    debug << "QPrintDevice(";
-    p.format( debug );
-    debug << ')';
-
-    return debug;
-}
 
 #endif // LSCS_NO_PRINTER
 

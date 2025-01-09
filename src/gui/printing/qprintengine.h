@@ -1,4 +1,5 @@
 /***********************************************************************
+* Copyright (c) 2024 Roland Hughes d.b.a. Logikal Solutions
 *
 * Copyright (c) 2012-2024 Barbara Geller
 * Copyright (c) 2012-2024 Ansel Sermersheim
@@ -82,7 +83,7 @@ public:
 
     virtual int metric( QPaintDevice::PaintDeviceMetric id ) const = 0;
 
-    virtual QPrinter::PrinterState printerState() const = 0;
+    virtual PrinterState printerState() const = 0;
 
 };
 

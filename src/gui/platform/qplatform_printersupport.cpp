@@ -26,7 +26,7 @@
 #include <qplatform_printdevice.h>
 #include <qpagesize.h>
 #include <qprinterinfo.h>
-
+#include <qprinter.h>
 #include <qprinterinfo_p.h>
 #include <qprintdevice_p.h>
 
@@ -40,13 +40,13 @@ QPlatformPrinterSupport::~QPlatformPrinterSupport()
 {
 }
 
-QPrintEngine *QPlatformPrinterSupport::createNativePrintEngine( QPrinter::PrinterMode mode )
+QPrintEngine *QPlatformPrinterSupport::createNativePrintEngine( PrinterMode mode )
 {
     ( void ) mode;
     return nullptr;
 }
 
-QPaintEngine *QPlatformPrinterSupport::createPaintEngine( QPrintEngine *engine, QPrinter::PrinterMode mode )
+QPaintEngine *QPlatformPrinterSupport::createPaintEngine( QPrintEngine *engine, PrinterMode mode )
 {
     ( void ) engine;
     ( void ) mode;
@@ -56,6 +56,16 @@ QPaintEngine *QPlatformPrinterSupport::createPaintEngine( QPrintEngine *engine, 
 QPrintDevice QPlatformPrinterSupport::createPrintDevice( QPlatformPrintDevice *device )
 {
     ( void ) device;
+    qDebug() << "QPlatformPrinterSupport::createPrintDevice() called";
+    if (!device)
+    {
+        qDebug() << "\t device recieved - m_name : " << device->name()
+                 << "   m_instance : " << device->instance()
+                 << "   m_location : " << device->location()
+                 << "   m_makeAndModel : " << device->makeAndModel() 
+                 << "   m_uri : " << device->uri() << endl;
+    }
+    
     return QPrintDevice( device );
 }
 

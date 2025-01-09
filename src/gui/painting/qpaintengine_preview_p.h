@@ -68,7 +68,7 @@ public:
 
     int metric( QPaintDevice::PaintDeviceMetric ) const override;
 
-    QPrinter::PrinterState printerState() const override;
+    PrinterState printerState() const override;
 };
 
 #endif // LSCS_NO_PRINTPREVIEWWIDGET

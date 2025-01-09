@@ -39,7 +39,6 @@
 #include <qpdf_p.h>
 #include <qpaintengine_p.h>
 #include <qpaintengine_p.h>
-#include <qprint_p.h>
 
 class QImage;
 class QDataStream;
@@ -55,7 +54,7 @@ class QPdfPrintEngine: public QPdfEngine, public QPrintEngine
     Q_DECLARE_PRIVATE( QPdfPrintEngine )
 
 public:
-    QPdfPrintEngine( QPrinter::PrinterMode m );
+    QPdfPrintEngine( PrinterMode m );
 
     QPdfPrintEngine( const QPdfPrintEngine & ) = delete;
     QPdfPrintEngine &operator=( const QPdfPrintEngine & ) = delete;
@@ -72,7 +71,7 @@ public:
 
     bool newPage() override;
 
-    QPrinter::PrinterState printerState() const override
+    PrinterState printerState() const override
     {
         return state;
     }
@@ -81,7 +80,7 @@ public:
     void setProperty( PrintEnginePropertyKey key, const QVariant &value ) override;
     QVariant property( PrintEnginePropertyKey key ) const override;
 
-    QPrinter::PrinterState state;
+    PrinterState state;
 
 protected:
     QPdfPrintEngine( QPdfPrintEnginePrivate &p );
@@ -92,7 +91,7 @@ class Q_GUI_EXPORT QPdfPrintEnginePrivate : public QPdfEnginePrivate
     Q_DECLARE_PUBLIC( QPdfPrintEngine )
 
 public:
-    QPdfPrintEnginePrivate( QPrinter::PrinterMode m );
+    QPdfPrintEnginePrivate( PrinterMode m );
 
     QPdfPrintEnginePrivate( const QPdfPrintEnginePrivate & ) = delete;
     QPdfPrintEnginePrivate &operator=( const QPdfPrintEnginePrivate & ) = delete;
@@ -109,11 +108,12 @@ private:
     QString printerName;
     QString printProgram;
     QString selectionOption;
-    QPrint::DuplexMode duplex;
+    QString duplex;
+    QString colorMode;
     bool collate;
     int copies;
-    QPrinter::PageOrder pageOrder;
-    QPrinter::PaperSource paperSource;
+    PrinterPageOrder pageOrder;
+    QString paperSource;
 
     int fd;
 };

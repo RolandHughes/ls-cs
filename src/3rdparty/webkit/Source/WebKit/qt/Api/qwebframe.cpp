@@ -1716,7 +1716,7 @@ void QWebFrame::print( QPrinter *printer )
         return;
     }
 
-    if ( printer->pageOrder() == QPrinter::LastPageFirst )
+    if ( printer->pageOrder() == PrinterPageOrder::LastPageFirst )
     {
         int tmp = fromPage;
         fromPage = toPage;
@@ -1735,8 +1735,8 @@ void QWebFrame::print( QPrinter *printer )
         {
             for ( int j = 0; j < pageCopies; ++j )
             {
-                if ( printer->printerState() == QPrinter::Aborted
-                        || printer->printerState() == QPrinter::Error )
+                if ( printer->printerState() == PrinterState::Stopped
+                        || printer->printerState() == PrinterState::Error )
                 {
                     printContext.end();
                     return;

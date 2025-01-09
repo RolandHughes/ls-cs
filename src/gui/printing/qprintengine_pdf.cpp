@@ -40,16 +40,16 @@
 #include <io.h>             // _close
 #endif
 
-QPdfPrintEngine::QPdfPrintEngine( QPrinter::PrinterMode m )
+QPdfPrintEngine::QPdfPrintEngine( PrinterMode m )
     : QPdfEngine( *new QPdfPrintEnginePrivate( m ) )
 {
-    state = QPrinter::Idle;
+    state = PrinterState::Idle;
 }
 
 QPdfPrintEngine::QPdfPrintEngine( QPdfPrintEnginePrivate &p )
     : QPdfEngine( p )
 {
-    state = QPrinter::Idle;
+    state = PrinterState::Idle;
 }
 
 QPdfPrintEngine::~QPdfPrintEngine()
@@ -62,11 +62,11 @@ bool QPdfPrintEngine::begin( QPaintDevice *pdev )
 
     if ( ! d->openPrintDevice() )
     {
-        state = QPrinter::Error;
+        state = PrinterState::Error;
         return false;
     }
 
-    state = QPrinter::Active;
+    state = PrinterState::Active;
 
     return QPdfEngine::begin( pdev );
 }
@@ -78,7 +78,7 @@ bool QPdfPrintEngine::end()
     QPdfEngine::end();
 
     d->closePrintDevice();
-    state = QPrinter::Idle;
+    state = PrinterState::Idle;
 
     return true;
 }
@@ -126,7 +126,7 @@ void QPdfPrintEngine::setProperty( PrintEnginePropertyKey key, const QVariant &v
             break;
 
         case PPK_ColorMode:
-            d->grayscale = ( QPrinter::ColorMode( value.toInt() ) == QPrinter::GrayScale );
+            d->color = value.toString();
             break;
 
         case PPK_Creator:
@@ -163,7 +163,7 @@ void QPdfPrintEngine::setProperty( PrintEnginePropertyKey key, const QVariant &v
             break;
 
         case PPK_PageOrder:
-            d->pageOrder = QPrinter::PageOrder( value.toInt() );
+            d->pageOrder = PrinterPageOrder( value.toInt() );
             break;
 
         case PPK_PageSize:
@@ -201,7 +201,7 @@ void QPdfPrintEngine::setProperty( PrintEnginePropertyKey key, const QVariant &v
             break;
 
         case PPK_PaperSource:
-            d->paperSource = QPrinter::PaperSource( value.toInt() );
+            d->paperSource = value.toString();
             break;
 
         case PPK_PrinterName:
@@ -225,7 +225,7 @@ void QPdfPrintEngine::setProperty( PrintEnginePropertyKey key, const QVariant &v
             break;
 
         case PPK_Duplex:
-            d->duplex = static_cast<QPrint::DuplexMode>( value.toInt() );
+            d->duplex = value.toString();
             break;
 
         case PPK_CustomPaperSize:
@@ -300,7 +300,7 @@ QVariant QPdfPrintEngine::property( PrintEnginePropertyKey key ) const
             break;
 
         case PPK_ColorMode:
-            ret = d->grayscale ? QPrinter::GrayScale : QPrinter::Color;
+            ret = d->color;
             break;
 
         case PPK_Creator:
@@ -336,7 +336,7 @@ QVariant QPdfPrintEngine::property( PrintEnginePropertyKey key ) const
             break;
 
         case PPK_PageOrder:
-            ret = d->pageOrder;
+            ret = static_cast<int>(d->pageOrder);
             break;
 
         case PPK_PageSize:
@@ -470,19 +470,22 @@ void QPdfPrintEnginePrivate::closePrintDevice()
     }
 }
 
-QPdfPrintEnginePrivate::QPdfPrintEnginePrivate( QPrinter::PrinterMode m )
-    : QPdfEnginePrivate(), duplex( QPrint::DuplexNone ), collate( true ),
-      copies( 1 ), pageOrder( QPrinter::FirstPageFirst ),
-      paperSource( QPrinter::Auto ), fd( -1 )
+QPdfPrintEnginePrivate::QPdfPrintEnginePrivate( PrinterMode m )
+    : QPdfEnginePrivate(), duplex( QPrinter::ONE_SIDED ), collate( true ),
+      copies( 1 ), pageOrder( PrinterPageOrder::FirstPageFirst ),
+      paperSource( QPrinter::MEDIA_SOURCE_AUTO ), fd( -1 )
 {
     resolution = 72;
 
-    if ( m == QPrinter::HighResolution )
+    // TODO:: track dwon when this object is created. We should be able
+    //        to get the maximum supported DPI from the printer now.
+    //        For many printers they can only do 600DPI 
+    if ( m == PrinterMode::HighResolution )
     {
         resolution = 1200;
 
     }
-    else if ( m == QPrinter::ScreenResolution )
+    else if ( m == PrinterMode::ScreenResolution )
     {
         resolution = lscs_defaultDpi();
     }

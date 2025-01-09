@@ -28,7 +28,6 @@
 
 #include <qiodevice.h>
 #include <qfile.h>
-#include <qdebug.h>
 #include <qbuffer.h>
 #include <qpagelayout.h>
 
@@ -39,12 +38,12 @@
 
 extern QMarginsF lscs_convertMargins( const QMarginsF &margins, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits );
 
-QCupsPrintEngine::QCupsPrintEngine( QPrinter::PrinterMode m )
+QCupsPrintEngine::QCupsPrintEngine( PrinterMode m )
     : QPdfPrintEngine( *new QCupsPrintEnginePrivate( m ) )
 {
     Q_D( QCupsPrintEngine );
     d->setupDefaultPrinter();
-    state = QPrinter::Idle;
+    state = PrinterState::Idle;
 }
 
 QCupsPrintEngine::~QCupsPrintEngine()
@@ -73,18 +72,6 @@ void QCupsPrintEngine::setProperty( PrintEnginePropertyKey key, const QVariant &
             // Get the named page size from the printer if supported
             d->setPageSize( d->m_printDevice.supportedPageSize( value.toString() ) );
             break;
-
-        case PPK_Duplex:
-        {
-            QPrint::DuplexMode mode = QPrint::DuplexMode( value.toInt() );
-
-            if ( mode != d->duplex && d->m_printDevice.supportedDuplexModes().contains( mode ) )
-            {
-                d->duplex = mode;
-            }
-
-            break;
-        }
 
         case PPK_PrinterName:
             d->changePrinter( value.toString() );
@@ -148,7 +135,7 @@ QVariant QCupsPrintEngine::property( PrintEnginePropertyKey key ) const
 }
 
 
-QCupsPrintEnginePrivate::QCupsPrintEnginePrivate( QPrinter::PrinterMode m ) : QPdfPrintEnginePrivate( m )
+QCupsPrintEnginePrivate::QCupsPrintEnginePrivate( PrinterMode m ) : QPdfPrintEnginePrivate( m )
 {
 }
 
@@ -228,32 +215,7 @@ void QCupsPrintEnginePrivate::closePrintDevice()
             options.append( QPair<QByteArray, QByteArray>( "Collate", "True" ) );
         }
 
-        switch ( duplex )
-        {
-            case QPrint::DuplexNone:
-                options.append( QPair<QByteArray, QByteArray>( "sides", "one-sided" ) );
-                break;
-
-            case QPrint::DuplexAuto:
-                if ( m_pageLayout.orientation() == QPageLayout::Portrait )
-                {
-                    options.append( QPair<QByteArray, QByteArray>( "sides", "two-sided-long-edge" ) );
-                }
-                else
-                {
-                    options.append( QPair<QByteArray, QByteArray>( "sides", "two-sided-short-edge" ) );
-                }
-
-                break;
-
-            case QPrint::DuplexLongSide:
-                options.append( QPair<QByteArray, QByteArray>( "sides", "two-sided-long-edge" ) );
-                break;
-
-            case QPrint::DuplexShortSide:
-                options.append( QPair<QByteArray, QByteArray>( "sides", "two-sided-short-edge" ) );
-                break;
-        }
+        options.append( QPair<QByteArray, QByteArray>( "sides", duplex.toUtf8() ) );
 
         if ( m_pageLayout.orientation() == QPageLayout::Landscape )
         {
@@ -328,7 +290,7 @@ void QCupsPrintEnginePrivate::setupDefaultPrinter()
 
     // Setup the printer defaults
     duplex = m_printDevice.defaultDuplexMode();
-    grayscale = m_printDevice.defaultColorMode() == QPrint::GrayScale;
+    colorMode = m_printDevice.defaultColorMode();
     // CUPS server always supports collation, even if individual m_printDevice doesn't
     collate = true;
     setPageSize( m_printDevice.defaultPageSize() );
@@ -359,19 +321,17 @@ void QCupsPrintEnginePrivate::changePrinter( const QString &newPrinter )
     }
 
     m_printDevice.swap( printDevice );
-    printerName = m_printDevice.id();
+    printerName = m_printDevice.name();
 
     // Check if new printer supports current settings, otherwise us defaults
-    if ( duplex != QPrint::DuplexAuto && !m_printDevice.supportedDuplexModes().contains( duplex ) )
+    if (  !m_printDevice.supportedDuplexModes().contains( duplex ) )
     {
         duplex = m_printDevice.defaultDuplexMode();
     }
 
-    QPrint::ColorMode colorMode = grayscale ? QPrint::GrayScale : QPrint::Color;
-
     if ( !m_printDevice.supportedColorModes().contains( colorMode ) )
     {
-        grayscale = m_printDevice.defaultColorMode() == QPrint::GrayScale;
+        colorMode = m_printDevice.defaultColorMode();
     }
 
     // Get the equivalent page size for this printer as supported names may be different

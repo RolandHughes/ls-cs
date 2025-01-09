@@ -26,141 +26,98 @@
 #ifndef QPLATFORMPRINTDEVICE_H
 #define QPLATFORMPRINTDEVICE_H
 
-#include <qprint_p.h>
-
 #include <qvector.h>
 #include <qpagelayout.h>
-
-// emerald   #include <qmimetype.h>
+#include <qprinter.h>
 
 #ifndef LSCS_NO_PRINTER
 
 class BdPrintDestination
 {
 public:
-    QString name;
-    QString instance;
-    QString uri;
+    QByteArray name;
+    QByteArray instance;
+    QByteArray uri;
 };
 
 class Q_GUI_EXPORT QPlatformPrintDevice
 {
 public:
     QPlatformPrintDevice();
-    explicit QPlatformPrintDevice( const BdPrintDesitnation &id );
+    explicit QPlatformPrintDevice( const BdPrintDestination &id );
+    explicit QPlatformPrintDevice( const QString &name );
 
     QPlatformPrintDevice( const QPlatformPrintDevice & ) = delete;
     QPlatformPrintDevice &operator=( const QPlatformPrintDevice & ) = delete;
 
     virtual ~QPlatformPrintDevice();
 
-    virtual QString id() const;
-    virtual QString name() const;
-    virtual QString location() const;
-    virtual QString makeAndModel() const;
+    virtual QString name();
+    virtual QString location();
+    virtual QString makeAndModel();
+    virtual QString uri();
+    virtual QString instance();
 
-    virtual bool isValid() const;
-    virtual bool isDefault() const;
-    virtual bool isRemote() const;
+    virtual bool isValid();
+    virtual bool isDefault();
+    virtual bool isRemote();
+    virtual bool supportsMultipleCopies();
+    virtual bool supportsCollateCopies();
+    virtual bool supportsCustomPageSizes();
+    virtual bool isValidPageLayout( const QPageLayout &layout, int resolution );
 
-    virtual QPrint::DeviceState state() const;
+    virtual PrinterState state();
 
-    virtual bool isValidPageLayout( const QPageLayout &layout, int resolution ) const;
+    virtual QPageSize defaultPageSize();
+    virtual QList<QPageSize> supportedPageSizes();
 
-    virtual bool supportsMultipleCopies() const;
-    virtual bool supportsCollateCopies() const;
+    virtual QPageSize supportedPageSize( const QPageSize &pageSize );
+    virtual QPageSize supportedPageSize( QPageSize::PageSizeId pageSizeId );
+    virtual QPageSize supportedPageSize( const QString &pageName );
+    virtual QPageSize supportedPageSize( const QSize &pointSize );
+    virtual QPageSize supportedPageSize( const QSizeF &size, QPageSize::Unit units );
 
-    virtual QPageSize defaultPageSize() const;
-    virtual QList<QPageSize> supportedPageSizes() const;
-
-    virtual QPageSize supportedPageSize( const QPageSize &pageSize ) const;
-    virtual QPageSize supportedPageSize( QPageSize::PageSizeId pageSizeId ) const;
-    virtual QPageSize supportedPageSize( const QString &pageName ) const;
-    virtual QPageSize supportedPageSize( const QSize &pointSize ) const;
-    virtual QPageSize supportedPageSize( const QSizeF &size, QPageSize::Unit units ) const;
-
-    virtual bool supportsCustomPageSizes() const;
-
-    virtual QSize minimumPhysicalPageSize() const;
-    virtual QSize maximumPhysicalPageSize() const;
+    virtual QSize minimumPhysicalPageSize();
+    virtual QSize maximumPhysicalPageSize();
 
     virtual QMarginsF printableMargins( const QPageSize &pageSize, QPageLayout::Orientation orientation,
-                                        int resolution ) const;
+                                        int resolution );
 
-    virtual int defaultResolution() const;
-    virtual QList<int> supportedResolutions() const;
+    virtual int defaultResolution();
+    virtual QList<int> supportedResolutions();
 
-    virtual QPrint::InputSlot defaultInputSlot() const;
-    virtual QList<QPrint::InputSlot> supportedInputSlots() const;
+    virtual QString defaultPrintQuality();
+    virtual QStringList supportedPrintQualities();
 
-    virtual QPrint::OutputBin defaultOutputBin() const;
-    virtual QList<QPrint::OutputBin> supportedOutputBins() const;
+    virtual QString defaultMediaSource();
+    virtual QStringList supportedMediaSources();
 
-    virtual QPrint::DuplexMode defaultDuplexMode() const;
-    virtual QList<QPrint::DuplexMode> supportedDuplexModes() const;
+    virtual QString defaultOutputBin();
+    virtual QStringList supportedOutputBins();
 
-    virtual QPrint::ColorMode defaultColorMode() const;
-    virtual QList<QPrint::ColorMode> supportedColorModes() const;
+    virtual QString defaultDuplexMode();
+    virtual QStringList supportedDuplexModes();
 
-#ifndef LSCS_NO_MIMETYPE
-    // emerald   virtual QList<QMimeType> supportedMimeTypes() const;
-#endif
+    virtual QString defaultColorMode();
+    virtual QStringList supportedColorModes();
 
     static QPageSize createPageSize( const QString &key, const QSize &size, const QString &localizedName );
     static QPageSize createPageSize( int windowsId, const QSize &size, const QString &localizedName );
 
+    virtual QString lastPrintError();
+
 protected:
-    virtual void loadPageSizes() const;
-    virtual void loadResolutions() const;
-    virtual void loadInputSlots() const;
-    virtual void loadOutputBins() const;
-    virtual void loadDuplexModes() const;
-    virtual void loadColorModes() const;
 
-#ifndef LSCS_NO_MIMETYPE
-    // emerald   virtual void loadMimeTypes() const;
-#endif
+    QPageSize supportedPageSizeMatch( const QPageSize &pageSize );
 
-    QPageSize supportedPageSizeMatch( const QPageSize &pageSize ) const;
+    QByteArray m_name;
+    QByteArray m_instance;
+    QByteArray m_location;
+    QByteArray m_makeAndModel;
+    QByteArray m_uri;
 
-    QString m_id;
-    QString m_name;
-    QString m_location;
-    QString m_makeAndModel;
-    QString m_uri;
 
-    bool m_isRemote;
 
-    bool m_supportsMultipleCopies;
-    bool m_supportsCollateCopies;
-
-    mutable bool m_havePageSizes;
-    mutable QVector<QPageSize> m_pageSizes;
-
-    bool m_supportsCustomPageSizes;
-
-    QSize m_minimumPhysicalPageSize;
-    QSize m_maximumPhysicalPageSize;
-
-    mutable bool m_haveResolutions;
-    mutable QVector<int> m_resolutions;
-
-    mutable bool m_haveInputSlots;
-    mutable QVector<QPrint::InputSlot> m_inputSlots;
-
-    mutable bool m_haveOutputBins;
-    mutable QVector<QPrint::OutputBin> m_outputBins;
-
-    mutable bool m_haveDuplexModes;
-    mutable QVector<QPrint::DuplexMode> m_duplexModes;
-
-    mutable bool m_haveColorModes;
-    mutable QVector<QPrint::ColorMode> m_colorModes;
-
-#ifndef LSCS_NO_MIMETYPE
-    // emerald    mutable bool m_haveMimeTypes;
-    // emerald    mutable QVector<QMimeType> m_mimeTypes;
-#endif
 };
 
 #endif // LSCS_NO_PRINTER

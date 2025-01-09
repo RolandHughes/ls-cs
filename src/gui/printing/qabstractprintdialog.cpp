@@ -65,7 +65,7 @@ QAbstractPrintDialog::~QAbstractPrintDialog()
     }
 }
 
-void QPrintDialog::setOption( PrintDialogOption option, bool on )
+void QPrintDialog::setOption( PDOptions option, bool on )
 {
     Q_D( QPrintDialog );
 
@@ -75,17 +75,17 @@ void QPrintDialog::setOption( PrintDialogOption option, bool on )
     }
 }
 
-bool QPrintDialog::testOption( PrintDialogOption option ) const
+bool QPrintDialog::testOption( PDOptions option ) const
 {
     Q_D( const QPrintDialog );
     return ( d->options & option ) != 0;
 }
 
-void QPrintDialog::setOptions( PrintDialogOptions options )
+void QPrintDialog::setOptions( PDOptions options )
 {
     Q_D( QPrintDialog );
 
-    PrintDialogOptions changed = ( options ^ d->options );
+    PDOptions changed = ( options ^ d->options );
 
     if ( ! changed )
     {
@@ -95,46 +95,46 @@ void QPrintDialog::setOptions( PrintDialogOptions options )
     d->options = options;
 }
 
-QPrintDialog::PrintDialogOptions QPrintDialog::options() const
+PDOptions QPrintDialog::options() const
 {
     Q_D( const QPrintDialog );
     return d->options;
 }
 
-void QAbstractPrintDialog::setEnabledOptions( PrintDialogOptions options )
+void QAbstractPrintDialog::setEnabledOptions( PDOptions options )
 {
     Q_D( QAbstractPrintDialog );
     d->options = options;
 }
 
-void QAbstractPrintDialog::addEnabledOption( PrintDialogOption option )
+void QAbstractPrintDialog::addEnabledOption( PDOptions option )
 {
     Q_D( QAbstractPrintDialog );
     d->options |= option;
 }
 
-QAbstractPrintDialog::PrintDialogOptions QAbstractPrintDialog::enabledOptions() const
+PDOptions QAbstractPrintDialog::enabledOptions() const
 {
     Q_D( const QAbstractPrintDialog );
     return d->options;
 }
 
-bool QAbstractPrintDialog::isOptionEnabled( PrintDialogOption option ) const
+bool QAbstractPrintDialog::isOptionEnabled( PDOptions option ) const
 {
     Q_D( const QAbstractPrintDialog );
     return d->options & option;
 }
 
-void QAbstractPrintDialog::setPrintRange( PrintRange range )
+void QAbstractPrintDialog::setPrintRange( PrinterPrintRange range )
 {
     Q_D( QAbstractPrintDialog );
-    d->printer->setPrintRange( QPrinter::PrintRange( range ) );
+    d->printer->setPrintRange( range );
 }
 
-QAbstractPrintDialog::PrintRange QAbstractPrintDialog::printRange() const
+PrinterPrintRange QAbstractPrintDialog::printRange() const
 {
     Q_D( const QAbstractPrintDialog );
-    return QAbstractPrintDialog::PrintRange( d->pd->printRange );
+    return static_cast<PrinterPrintRange>( d->pd->printRange );
 }
 
 void QAbstractPrintDialog::setMinMax( int min, int max )
@@ -145,7 +145,7 @@ void QAbstractPrintDialog::setMinMax( int min, int max )
 
     d->minPage = min;
     d->maxPage = max;
-    d->options |= PrintPageRange;
+    d->options |= PDOption::PrintPageRange;
 }
 
 int QAbstractPrintDialog::minPage() const
@@ -205,7 +205,7 @@ void QAbstractPrintDialogPrivate::setPrinter( QPrinter *newPrinter )
 
         if ( printer->fromPage() || printer->toPage() )
         {
-            options |= QAbstractPrintDialog::PrintPageRange;
+            options |= PDOption::PrintPageRange;
         }
     }
     else

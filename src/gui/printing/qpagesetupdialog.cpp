@@ -52,7 +52,7 @@ void QPageSetupDialogPrivate::setPrinter( QPrinter *newPrinter )
         ownsPrinter = true;
     }
 
-    if ( printer->outputFormat() != QPrinter::NativeFormat )
+    if ( printer->outputFormat() != PrinterFormat::Native )
     {
         qWarning( "setPrinter() Unable to use on a non-native printer" );
     }

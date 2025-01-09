@@ -260,7 +260,7 @@ public:
     QString creator;
     bool embedFonts;
     int resolution;
-    bool grayscale;
+    QString color;
 
     // Page layout: size, orientation and margins
     QPageLayout m_pageLayout;

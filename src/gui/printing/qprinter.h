@@ -1,5 +1,16 @@
 /***********************************************************************
+* Copyright (c) 2024 Roland Hughes d.b.a Logikal Solutions
 *
+* This file is part of Ls-Cs.
+*
+* Ls-Cs is free software. You can redistribute it and/or
+* modify it under the terms of the GNU Lesser General Public License
+* version 2.1 as published by the Free Software Foundation.
+*
+* Ls-Cs is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
 * Copyright (c) 2012-2024 Barbara Geller
 * Copyright (c) 2012-2024 Ansel Sermersheim
 *
@@ -38,6 +49,15 @@ class QPrinterInfo;
 class QPageSize;
 class QPageMargins;
 
+enum class PrinterPrintRange:int  { AllPages, Selection, PageRange, CurrentPage };
+enum class PrinterPageOrder:int   { FirstPageFirst, LastPageFirst };
+enum class PrinterMode:int        { ScreenResolution, PrinterResolution, HighResolution };
+enum class PrinterState:int       { Idle=3, Active, Stopped, Error };
+enum class PrinterFormat:int      { Native, Pdf, Text };
+    // TODO:: Add support for Text so we can print to dot matrix
+    //        counting pages by both lines and formfeeds.
+
+
 class Q_GUI_EXPORT QPrinter : public QPagedPaintDevice
 {
     Q_DECLARE_PRIVATE( QPrinter )
@@ -46,53 +66,14 @@ public:
     using Orientation = QPageLayout::Orientation;
     using Unit = QPageSize::Unit;
 
-    // Keep in sync with QAbstractPrintDialog::PrintRange
-    enum PrintRange   { AllPages, Selection, PageRange, CurrentPage };
 
-    enum ColorMode    { GrayScale, Color };
-    enum OutputFormat { NativeFormat, PdfFormat };
-    enum PageOrder    { FirstPageFirst, LastPageFirst };
-    enum PrinterMode  { ScreenResolution, PrinterResolution, HighResolution };
-
-    enum PaperSource
-    {
-        OnlyOne,
-        Lower,
-        Middle,
-        Manual,
-        Envelope,
-        EnvelopeManual,
-        Auto,
-        Tractor,
-        SmallFormat,
-        LargeFormat,
-        LargeCapacity,
-        Cassette,
-        FormSource,
-        MaxPageSource,       // Deprecated
-        CustomSource,
-        LastPaperSource = CustomSource,
-        Upper = OnlyOne     // As defined in Windows
-    };
-
-    enum PrinterState
-    {
-        Idle,
-        Active,
-        Aborted,
-        Error
-    };
-
-    enum DuplexMode
-    {
-        DuplexNone = 0,
-        DuplexAuto,
-        DuplexLongSide,
-        DuplexShortSide
-    };
-
-    explicit QPrinter( PrinterMode mode = ScreenResolution );
-    explicit QPrinter( const QPrinterInfo &printer, PrinterMode mode = ScreenResolution );
+    static const QString ONE_SIDED;
+    static const QString TWO_SIDED_LONG_EDGE;
+    static const QString TWO_SIDED_SHORT_EDGE;
+    static const QString MEDIA_SOURCE_AUTO;
+    
+    explicit QPrinter( PrinterMode mode = PrinterMode::ScreenResolution );
+    explicit QPrinter( const QPrinterInfo &printer, PrinterMode mode = PrinterMode::ScreenResolution );
 
     QPrinter( const QPrinter & ) = delete;
     QPrinter &operator=( const QPrinter & ) = delete;
@@ -101,25 +82,25 @@ public:
 
     int devType() const override;
 
-    void setOutputFormat( OutputFormat format );
-    OutputFormat outputFormat() const;
+    void setOutputFormat( PrinterFormat outputFormat );
+    PrinterFormat outputFormat();
 
     void setPrinterName( const QString &name );
     QString printerName() const;
 
-    bool isValid() const;
+    bool isValid();
 
     void setOutputFileName( const QString &fileName );
-    QString outputFileName()const;
+    QString outputFileName();
 
     void setPrintProgram( const QString &command );
-    QString printProgram() const;
+    QString printProgram();
 
     void setDocName( const QString &name );
-    QString docName() const;
+    QString docName();
 
     void setCreator( const QString &creator );
-    QString creator() const;
+    QString creator();
 
     void setMargins( const QMarginsF &margins ) override;
     QMarginsF margins( QPageSize::Unit unit ) const;
@@ -129,7 +110,7 @@ public:
 
     bool setPageOrientation( QPageLayout::Orientation orientation ) override;
     void setOrientation( Orientation orientation );
-    Orientation orientation() const;
+    Orientation orientation();
 
     bool setPageMargins( const QMarginsF &margins, QPageSize::Unit units ) override;
     bool setPageMargins( const QMarginsF &margins ) override;
@@ -142,72 +123,71 @@ public:
 
     void setPaperSize( QPageSize::PageSizeId paperSize );
     void setPaperSize( const QSizeF &paperSize, Unit unit );
-    QPageSize::PageSizeId paperSize() const;
-    QSizeF paperSize( Unit unit ) const;
+    QPageSize::PageSizeId paperSize();
+    QSizeF paperSize( Unit unit );
 
     void setPaperName( const QString &paperName );
     QString paperName() const;
 
-    void setPrintRange( PrintRange range );
-    PrintRange printRange() const;
+    void setPrintRange( PrinterPrintRange range );
+    PrinterPrintRange printRange();
 
-    void setPageOrder( PageOrder pageOrder );
-    PageOrder pageOrder() const;
+    void setPageOrder( PrinterPageOrder pageOrder );
+    PrinterPageOrder pageOrder();
 
     void setResolution( int dpi );
     int resolution() const;
 
-    void setColorMode( ColorMode colorMode );
-    ColorMode colorMode() const;
+    void setColorMode( QString colorMode );
+    QString colorMode();
 
     void setCollateCopies( bool collate );
-    bool collateCopies() const;
+    bool collateCopies();
 
     void setFullPage( bool fullPage );
-    bool fullPage() const;
+    bool fullPage();
 
     void setNumCopies( int numCopies );
-    int numCopies() const;
+    int numCopies();
 
-    int actualNumCopies() const;
+    int actualNumCopies();
 
     void setCopyCount( int count );
-    int copyCount() const;
-    bool supportsMultipleCopies() const;
+    int copyCount();
+    bool supportsMultipleCopies();
 
-    void setPaperSource( PaperSource source );
-    PaperSource paperSource() const;
+    void setPaperSource( QString source );
+    QString paperSource();
 
-    void setDuplex( DuplexMode enable );
-    DuplexMode duplex() const;
+    void setDuplex( QString duplexModeStr );
+    QString duplex();
 
-    QList<int> supportedResolutions() const;
+    QList<int> supportedResolutions();
 
 #ifdef Q_OS_WIN
-    QList<PaperSource> supportedPaperSources() const;
+    QList<PaperSource> supportedPaperSources();
 #endif
 
     void setFontEmbeddingEnabled( bool enable );
-    bool fontEmbeddingEnabled() const;
+    bool fontEmbeddingEnabled();
 
-    void setDoubleSidedPrinting( bool enable );
-    bool doubleSidedPrinting() const;
+    bool doubleSidedPrinting();
 
     void setWinPageSize( int pageSize );
-    int winPageSize() const;
+    int winPageSize();
 
-    QRect paperRect() const;
-    QRect pageRect() const;
-    QRectF paperRect( Unit unit ) const;
-    QRectF pageRect( Unit unit ) const;
+    QRect paperRect();
+    QRect pageRect();
+    QRectF paperRect( Unit unit );
+    QRectF pageRect( Unit unit );
 
-    QString printerSelectionOption() const;
+    QString printerSelectionOption();
     void setPrinterSelectionOption( const QString &option );
 
     bool newPage() override;
     bool abort();
 
-    PrinterState printerState() const;
+    PrinterState printerState();
 
     QPaintEngine *paintEngine() const override;
     QPrintEngine *printEngine() const;

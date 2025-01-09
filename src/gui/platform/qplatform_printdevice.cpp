@@ -30,24 +30,17 @@
 #ifndef LSCS_NO_PRINTER
 
 QPlatformPrintDevice::QPlatformPrintDevice()
-    : m_isRemote( false ), m_supportsMultipleCopies( false ), m_supportsCollateCopies( false ),
-      m_havePageSizes( false ), m_supportsCustomPageSizes( false ), m_haveResolutions( false ),
-      m_haveInputSlots( false ), m_haveOutputBins( false ), m_haveDuplexModes( false ),
-      m_haveColorModes( false )
-#ifndef LSCS_NO_MIMETYPES
-// emerald    , m_haveMimeTypes(false)
-#endif
 {
 }
 
-QPlatformPrintDevice::QPlatformPrintDevice( const QString &id )
-    : m_id( id ), m_isRemote( false ), m_supportsMultipleCopies( false ),
-      m_supportsCollateCopies( false ), m_havePageSizes( false ), m_supportsCustomPageSizes( false ),
-      m_haveResolutions( false ), m_haveInputSlots( false ), m_haveOutputBins( false ),
-      m_haveDuplexModes( false ), m_haveColorModes( false )
-#ifndef LSCS_NO_MIMETYPES
-// emerald    , m_haveMimeTypes(false)
-#endif
+QPlatformPrintDevice::QPlatformPrintDevice( const BdPrintDestination &id )
+    :m_name( id.name ), m_instance( id.instance ), m_uri( id.uri )
+{
+
+}
+
+QPlatformPrintDevice::QPlatformPrintDevice( const QString &name )
+    :m_name( name.toUtf8() )
 {
 }
 
@@ -55,42 +48,47 @@ QPlatformPrintDevice::~QPlatformPrintDevice()
 {
 }
 
-QString QPlatformPrintDevice::id() const
+QString QPlatformPrintDevice::name()
 {
-    return m_id;
+    return QString::fromUtf8( m_name );
 }
 
-QString QPlatformPrintDevice::name() const
+QString QPlatformPrintDevice::location()
 {
-    return m_name;
+    return QString::fromUtf8( m_location );
 }
 
-QString QPlatformPrintDevice::location() const
+QString QPlatformPrintDevice::makeAndModel()
 {
-    return m_location;
+    return QString::fromUtf8( m_makeAndModel );
 }
 
-QString QPlatformPrintDevice::makeAndModel() const
+QString QPlatformPrintDevice::uri()
 {
-    return m_makeAndModel;
+    return QString::fromUtf8( m_uri );
 }
 
-bool QPlatformPrintDevice::isValid() const
+QString QPlatformPrintDevice::instance()
+{
+    return QString::fromUtf8( m_instance );
+}
+
+bool QPlatformPrintDevice::isValid()
 {
     return false;
 }
 
-bool QPlatformPrintDevice::isDefault() const
+bool QPlatformPrintDevice::isDefault()
 {
     return false;
 }
 
-bool QPlatformPrintDevice::isRemote() const
+bool QPlatformPrintDevice::isRemote()
 {
-    return m_isRemote;
+    return false;
 }
 
-bool QPlatformPrintDevice::isValidPageLayout( const QPageLayout &layout, int resolution ) const
+bool QPlatformPrintDevice::isValidPageLayout( const QPageLayout &layout, int resolution )
 {
     // Check the page size is supported
     if ( !supportedPageSize( layout.pageSize() ).isValid() )
@@ -108,145 +106,72 @@ bool QPlatformPrintDevice::isValidPageLayout( const QPageLayout &layout, int res
            && pointMargins.bottom() >= printMargins.bottom();
 }
 
-QPrint::DeviceState QPlatformPrintDevice::state() const
+PrinterState QPlatformPrintDevice::state()
 {
-    return QPrint::Error;
+    return PrinterState::Error;
 }
 
-bool QPlatformPrintDevice::supportsMultipleCopies() const
+bool QPlatformPrintDevice::supportsMultipleCopies()
 {
-    return m_supportsMultipleCopies;
+    // default does nothing
+    return false;
 }
 
-bool QPlatformPrintDevice::supportsCollateCopies() const
+bool QPlatformPrintDevice::supportsCollateCopies()
 {
-    return m_supportsCollateCopies;
+    // default does nothing
+    return false;
 }
 
-void QPlatformPrintDevice::loadPageSizes() const
+QPageSize QPlatformPrintDevice::defaultPageSize()
 {
-}
-
-QPageSize QPlatformPrintDevice::defaultPageSize() const
-{
+    // default does nothing
     return QPageSize();
 }
 
-QList<QPageSize> QPlatformPrintDevice::supportedPageSizes() const
+QList<QPageSize> QPlatformPrintDevice::supportedPageSizes()
 {
-    if ( !m_havePageSizes )
-    {
-        loadPageSizes();
-    }
+    // default does nothing
+    QList<QPageSize> retVal;
 
-    return m_pageSizes.toList();
+    return retVal;
 }
 
-QPageSize QPlatformPrintDevice::supportedPageSize( const QPageSize &pageSize ) const
+QPageSize QPlatformPrintDevice::supportedPageSize( const QPageSize &pageSize )
 {
     if ( !pageSize.isValid() )
     {
         return QPageSize();
     }
 
-    if ( !m_havePageSizes )
-    {
-        loadPageSizes();
-    }
-
-    // First try match on name and id for case where printer defines same size twice with different names
-    // e.g. Windows defines DMPAPER_11X17 and DMPAPER_TABLOID with names "11x17" and "Tabloid", but both
-    // map to QPageSize::Tabloid / PPD Key "Tabloid" / ANSI B Tabloid
-    if ( pageSize.id() != QPageSize::Custom )
-    {
-        for ( const QPageSize &ps : m_pageSizes )
-        {
-            if ( ps.id() == pageSize.id() && ps.name() == pageSize.name() )
-            {
-                return ps;
-            }
-        }
-    }
-
-    // Next try match on id only if not custom
-    if ( pageSize.id() != QPageSize::Custom )
-    {
-        for ( const QPageSize &ps : m_pageSizes )
-        {
-            if ( ps.id() == pageSize.id() )
-            {
-                return ps;
-            }
-        }
-    }
-
-    // Next try a match on size, in case it's a custom with a different name
     return supportedPageSizeMatch( pageSize );
 }
 
-QPageSize QPlatformPrintDevice::supportedPageSize( QPageSize::PageSizeId pageSizeId ) const
+QPageSize QPlatformPrintDevice::supportedPageSize( QPageSize::PageSizeId pageSizeId )
 {
-    if ( !m_havePageSizes )
-    {
-        loadPageSizes();
-    }
-
-    for ( const QPageSize &ps : m_pageSizes )
-    {
-        if ( ps.id() == pageSizeId )
-        {
-            return ps;
-        }
-    }
-
-    // If no supported page size found, try use a custom size instead if supported
     return supportedPageSizeMatch( QPageSize( pageSizeId ) );
 }
 
-QPageSize QPlatformPrintDevice::supportedPageSize( const QString &pageName ) const
+QPageSize QPlatformPrintDevice::supportedPageSize( const QString &pageName )
 {
-    if ( !m_havePageSizes )
-    {
-        loadPageSizes();
-    }
-
-    for ( const QPageSize &ps : m_pageSizes )
-    {
-        if ( ps.name() == pageName )
-        {
-            return ps;
-        }
-    }
-
+    // default does nothing
     return QPageSize();
 }
 
-QPageSize QPlatformPrintDevice::supportedPageSize( const QSize &sizePoints ) const
+QPageSize QPlatformPrintDevice::supportedPageSize( const QSize &sizePoints )
 {
-    if ( !m_havePageSizes )
-    {
-        loadPageSizes();
-    }
-
-    // Try to find a supported page size based on fuzzy-matched point size
     return supportedPageSizeMatch( QPageSize( sizePoints ) );
 }
 
-QPageSize QPlatformPrintDevice::supportedPageSize( const QSizeF &size, QPageSize::Unit units ) const
+QPageSize QPlatformPrintDevice::supportedPageSize( const QSizeF &size, QPageSize::Unit units )
 {
-    if ( !m_havePageSizes )
-    {
-        loadPageSizes();
-    }
-
-    // Try to find a supported page size based on fuzzy-matched unit size
     return supportedPageSizeMatch( QPageSize( size, units ) );
 }
 
-QPageSize QPlatformPrintDevice::supportedPageSizeMatch( const QPageSize &pageSize ) const
+QPageSize QPlatformPrintDevice::supportedPageSizeMatch( const QPageSize &pageSize )
 {
     // Try to find a supported page size based on point size
-    for ( const QPageSize &ps : m_pageSizes )
+    for ( const QPageSize &ps : supportedPageSizes() )
     {
         if ( ps.sizePoints() == pageSize.sizePoints() )
         {
@@ -257,23 +182,25 @@ QPageSize QPlatformPrintDevice::supportedPageSizeMatch( const QPageSize &pageSiz
     return QPageSize();
 }
 
-bool QPlatformPrintDevice::supportsCustomPageSizes() const
+bool QPlatformPrintDevice::supportsCustomPageSizes()
 {
-    return m_supportsCustomPageSizes;
+    return false;
 }
 
-QSize QPlatformPrintDevice::minimumPhysicalPageSize() const
+QSize QPlatformPrintDevice::minimumPhysicalPageSize()
 {
-    return m_minimumPhysicalPageSize;
+    // default does nothing
+    return QSize();
 }
 
-QSize QPlatformPrintDevice::maximumPhysicalPageSize() const
+QSize QPlatformPrintDevice::maximumPhysicalPageSize()
 {
-    return m_maximumPhysicalPageSize;
+    // default does nothing
+    return QSize();
 }
 
 QMarginsF QPlatformPrintDevice::printableMargins( const QPageSize &pageSize,
-        QPageLayout::Orientation orientation, int resolution ) const
+        QPageLayout::Orientation orientation, int resolution )
 {
     ( void ) pageSize;
     ( void ) orientation;
@@ -282,127 +209,67 @@ QMarginsF QPlatformPrintDevice::printableMargins( const QPageSize &pageSize,
     return QMarginsF( 0, 0, 0, 0 );
 }
 
-void QPlatformPrintDevice::loadResolutions() const
-{
-}
-
-int QPlatformPrintDevice::defaultResolution() const
+int QPlatformPrintDevice::defaultResolution()
 {
     return 0;
 }
 
-QList<int> QPlatformPrintDevice::supportedResolutions() const
+QList<int> QPlatformPrintDevice::supportedResolutions()
 {
-    if ( ! m_haveResolutions )
-    {
-        loadResolutions();
-    }
+    // default does nothing
+    QList<int> retVal;
 
-    return m_resolutions.toList();
+    return retVal;
 }
 
-void QPlatformPrintDevice::loadInputSlots() const
+QString QPlatformPrintDevice::defaultMediaSource()
 {
+    return QString();
 }
 
-QPrint::InputSlot QPlatformPrintDevice::defaultInputSlot() const
+QStringList QPlatformPrintDevice::supportedMediaSources()
 {
-    QPrint::InputSlot input;
-    input.key = QByteArray( "Auto" );
-    input.name = QPrintDialog::tr( "Automatic" );
-    input.id = QPrint::Auto;
-    return input;
+    // default does nothing
+    QStringList retVal;
+    return retVal;
 }
 
-QList<QPrint::InputSlot> QPlatformPrintDevice::supportedInputSlots() const
+QString QPlatformPrintDevice::defaultOutputBin()
 {
-    if ( ! m_haveInputSlots )
-    {
-        loadInputSlots();
-    }
-
-    return m_inputSlots.toList();
+    // default does nothing
+    return QString();
 }
 
-void QPlatformPrintDevice::loadOutputBins() const
+QStringList QPlatformPrintDevice::supportedOutputBins()
 {
+    // default does nothing
+    QStringList retVal;
+    return retVal;
 }
 
-QPrint::OutputBin QPlatformPrintDevice::defaultOutputBin() const
+QString QPlatformPrintDevice::defaultDuplexMode()
 {
-    QPrint::OutputBin output;
-    output.key = QByteArray( "Auto" );
-    output.name = QPrintDialog::tr( "Automatic" );
-    output.id = QPrint::AutoOutputBin;
-    return output;
+    return QString( "one-sided" );
 }
 
-QList<QPrint::OutputBin> QPlatformPrintDevice::supportedOutputBins() const
+QStringList QPlatformPrintDevice::supportedDuplexModes()
 {
-    if ( !m_haveOutputBins )
-    {
-        loadOutputBins();
-    }
-
-    return m_outputBins.toList();
+    // default does nothing
+    QStringList retVal;
+    return retVal;
 }
 
-void QPlatformPrintDevice::loadDuplexModes() const
+QString QPlatformPrintDevice::defaultColorMode()
 {
+    return QString( "monochrome" );
 }
 
-QPrint::DuplexMode QPlatformPrintDevice::defaultDuplexMode() const
+QStringList QPlatformPrintDevice::supportedColorModes()
 {
-    return QPrint::DuplexNone;
+    // default does nothing
+    QStringList retVal;
+    return retVal;
 }
-
-QList<QPrint::DuplexMode> QPlatformPrintDevice::supportedDuplexModes() const
-{
-    if ( !m_haveDuplexModes )
-    {
-        loadDuplexModes();
-    }
-
-    return m_duplexModes.toList();
-}
-
-void QPlatformPrintDevice::loadColorModes() const
-{
-}
-
-QPrint::ColorMode QPlatformPrintDevice::defaultColorMode() const
-{
-    return QPrint::GrayScale;
-}
-
-QList<QPrint::ColorMode> QPlatformPrintDevice::supportedColorModes() const
-{
-    if ( !m_haveColorModes )
-    {
-        loadColorModes();
-    }
-
-    return m_colorModes.toList();
-}
-
-#ifndef LSCS_NO_MIMETYPE
-
-/* emerald (mime types )
-void QPlatformPrintDevice::loadMimeTypes() const
-{
-}
-
-QList<QMimeType> QPlatformPrintDevice::supportedMimeTypes() const
-{
-    if (! m_haveMimeTypes) {
-        loadMimeTypes();
-    }
-
-    return m_mimeTypes.toList();
-}
-*/
-
-#endif
 
 QPageSize QPlatformPrintDevice::createPageSize( const QString &key, const QSize &size, const QString &localizedName )
 {
@@ -412,6 +279,24 @@ QPageSize QPlatformPrintDevice::createPageSize( const QString &key, const QSize 
 QPageSize QPlatformPrintDevice::createPageSize( int windowsId, const QSize &size, const QString &localizedName )
 {
     return QPageSize( windowsId, size, localizedName );
+}
+
+QString QPlatformPrintDevice::defaultPrintQuality()
+{
+    return QString( "normal" );
+}
+
+QStringList QPlatformPrintDevice::supportedPrintQualities()
+{
+    QStringList retVal;
+    retVal << QString( "normal" );
+    return retVal;
+}
+
+QString QPlatformPrintDevice::lastPrintError()
+{
+    // default does nothing
+    return QString();
 }
 
 #endif // LSCS_NO_PRINTER

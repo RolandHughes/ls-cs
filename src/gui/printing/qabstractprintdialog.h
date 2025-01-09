@@ -25,27 +25,13 @@
 #define QABSTRACTPRINTDIALOG_H
 
 #include <qdialog.h>
+#include <qprinter.h>
 
 #ifndef LSCS_NO_PRINTER
 
 class QAbstractPrintDialogPrivate;
-class QPrinter;
 
-class Q_GUI_EXPORT QAbstractPrintDialog : public QDialog
-{
-    GUI_LSCS_OBJECT( QAbstractPrintDialog )
-
-public:
-    // Keep in sync with QPrinter::PrintRange
-    enum PrintRange
-    {
-        AllPages,
-        Selection,
-        PageRange,
-        CurrentPage
-    };
-
-    enum PrintDialogOption
+enum class PDOption : int
     {
         None                    = 0x0000, // obsolete
         PrintToFile             = 0x0001,
@@ -57,7 +43,17 @@ public:
         PrintCurrentPage        = 0x0040
     };
 
-    using PrintDialogOptions = QFlags<PrintDialogOption>;
+    using PDOptions = QFlags<PDOption>;
+Q_DECLARE_OPERATORS_FOR_FLAGS( PDOptions )
+//GUI_LSCS_ENUM( PrintDialogOptions )
+
+
+class Q_GUI_EXPORT QAbstractPrintDialog : public QDialog
+{
+    GUI_LSCS_OBJECT( QAbstractPrintDialog )
+
+public:
+
 
 #ifndef LSCS_NO_PRINTDIALOG
     explicit QAbstractPrintDialog( QPrinter *printer, QWidget *parent = nullptr );
@@ -70,15 +66,15 @@ public:
     int exec() override = 0;
 
     // obsolete
-    void addEnabledOption( PrintDialogOption option );
-    void setEnabledOptions( PrintDialogOptions options );
-    PrintDialogOptions enabledOptions() const;
-    bool isOptionEnabled( PrintDialogOption option ) const;
+    void addEnabledOption( PDOptions option );
+    void setEnabledOptions( PDOptions options );
+    PDOptions enabledOptions() const;
+    bool isOptionEnabled( PDOptions option ) const;
 
     void setOptionTabs( const QList<QWidget *> &tabs );
 
-    void setPrintRange( PrintRange range );
-    PrintRange printRange() const;
+    void setPrintRange( PrinterPrintRange range );
+    PrinterPrintRange printRange() const;
 
     void setMinMax( int min, int max );
     int minPage() const;
@@ -99,7 +95,6 @@ private:
 #endif // LSCS_NO_PRINTDIALOG
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( QAbstractPrintDialog::PrintDialogOptions )
 
 #endif // LSCS_NO_PRINTER
 

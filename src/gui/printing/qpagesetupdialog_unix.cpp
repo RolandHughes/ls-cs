@@ -211,7 +211,7 @@ void QUnixPageSetupDialogPrivate::init()
 
 QPageSetupWidget::QPageSetupWidget( QWidget *parent )
     : QWidget( parent ), m_pagePreview( nullptr ), m_printer( nullptr ),
-      m_outputFormat( QPrinter::OutputFormat::PdfFormat ),
+      m_outputFormat( PrinterFormat::Pdf ),
       m_units( QPageSize::Unit::Point ), m_blockSignals( false )
 {
     m_ui.setupUi( this );
@@ -325,7 +325,7 @@ void QPageSetupWidget::initPageSizes()
 
     m_ui.pageSizeCombo->clear();
 
-    if ( m_outputFormat == QPrinter::NativeFormat && !m_printerName.isEmpty() )
+    if ( m_outputFormat == PrinterFormat::Native && !m_printerName.isEmpty() )
     {
         QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
 
@@ -394,7 +394,7 @@ void QPageSetupWidget::setPrinter( QPrinter *printer )
     selectPrinter( m_printer->outputFormat(), m_printer->printerName() );
 }
 
-void QPageSetupWidget::selectPrinter( QPrinter::OutputFormat outputFormat, const QString &printerName )
+void QPageSetupWidget::selectPrinter( PrinterFormat outputFormat, const QString &printerName )
 {
     m_outputFormat = outputFormat;
     m_printerName = printerName;
@@ -492,7 +492,7 @@ void QPageSetupWidget::updateWidget()
 
     m_ui.landscape->setChecked( m_pageLayout.orientation() == QPageLayout::Landscape );
 
-    m_ui.pagesPerSheetButtonGroup->setEnabled( m_outputFormat == QPrinter::NativeFormat );
+    m_ui.pagesPerSheetButtonGroup->setEnabled( m_outputFormat == PrinterFormat::Native );
 
 #ifdef PSD_ENABLE_PAPERSOURCE
     m_ui.paperSource->setCurrentItem( printer->paperSource() );

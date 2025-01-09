@@ -23,12 +23,12 @@
 
 #include <qcupsprintersupport_p.h>
 
-#include <qppdprintdevice.h>
 #include <qprinterinfo.h>
 
 #include <qcupsprintengine_p.h>
 #include <qprinterinfo_p.h>
 #include <qprintdevice_p.h>
+#include <bdcupsprintdevice.h>
 
 // LSB merges everything into cups.h
 #ifndef LSCS_LINUXBASE
@@ -44,28 +44,28 @@ QCupsPrinterSupport::~QCupsPrinterSupport()
 {
 }
 
-QPrintEngine *QCupsPrinterSupport::createNativePrintEngine( QPrinter::PrinterMode printerMode )
+QPrintEngine *QCupsPrinterSupport::createNativePrintEngine( PrinterMode printerMode )
 {
     return new QCupsPrintEngine( printerMode );
 }
 
-QPaintEngine *QCupsPrinterSupport::createPaintEngine( QPrintEngine *engine, QPrinter::PrinterMode printerMode )
+QPaintEngine *QCupsPrinterSupport::createPaintEngine( QPrintEngine *engine, PrinterMode printerMode )
 {
     ( void ) printerMode;
 
     return static_cast<QCupsPrintEngine *>( engine );
 }
 
-QPrintDevice QCupsPrinterSupport::createPrintDevice( const QString &id )
+QPrintDevice QCupsPrinterSupport::createPrintDevice( const QString &name )
 {
-    return QPlatformPrinterSupport::createPrintDevice( new QPpdPrintDevice( id ) );
+    return QPlatformPrinterSupport::createPrintDevice( new BdCupsPrintDevice( name ) );
 }
 
 QStringList QCupsPrinterSupport::availablePrintDeviceIds() const
 {
     QStringList list;
     cups_dest_t *dests;
-    int count = cupsGetDests2( &dests );
+    int count = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
 
     for ( int i = 0; i < count; ++i )
     {
@@ -87,7 +87,7 @@ QString QCupsPrinterSupport::defaultPrintDeviceId() const
 {
     QString printerId;
     cups_dest_t *dests;
-    int count = cupsGetDests( &dests );
+    int count = cupsGetDests2(CUPS_HTTP_DEFAULT, &dests );
 
     for ( int i = 0; i < count; ++i )
     {

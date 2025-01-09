@@ -247,10 +247,10 @@ void QMacPrintEnginePrivate::initialize()
 
    QList<int> resolutions = m_printDevice->supportedResolutions();
 
-   if (! resolutions.isEmpty() && mode != QPrinter::ScreenResolution) {
+   if (! resolutions.isEmpty() && mode != PrinterMode::ScreenResolution) {
       std::sort(resolutions.begin(), resolutions.end() );
 
-      if (resolutions.count() > 1 && mode == QPrinter::HighResolution) {
+      if (resolutions.count() > 1 && mode == PrinterMode::HighResolution) {
          resolution.hRes = resolution.vRes = resolutions.last();
       } else {
          resolution.hRes = resolution.vRes = resolutions.first();

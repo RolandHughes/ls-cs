@@ -44,7 +44,7 @@ public:
     explicit QPageSetupWidget( QPrinter *printer, QWidget *parent = nullptr );
 
     void setPrinter( QPrinter *printer );
-    void selectPrinter( QPrinter::OutputFormat outputFormat, const QString &printerName );
+    void selectPrinter( PrinterFormat outputFormat, const QString &printerName );
     void setupPrinter() const;
 
 private:
@@ -83,7 +83,7 @@ private:
     QPagePreview *m_pagePreview;
     QPrinter *m_printer;
 
-    QPrinter::OutputFormat m_outputFormat;
+    PrinterFormat m_outputFormat;
 
     QString m_printerName;
     QPageLayout m_pageLayout;

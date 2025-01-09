@@ -36,9 +36,9 @@
  * being used in production systems. Even the SCSI drives available
  * for personal computers were both small and incredibly slow.
  *
- * Most application frameworks and applications of the day used the 
+ * Most application frameworks and applications of the day used the
  * ppd functions early on when creating a printer software device.
- * They gathered all of the information and saved it in memory. This 
+ * They gathered all of the information and saved it in memory. This
  * created a lot of problems. Most printer developers would not create
  * ppd files unless they were targetting a business and then they would
  * only create files for the higher end printers.
@@ -51,55 +51,87 @@
  * this meant it worked for some of the printers some of the time.
  *
  * Adding insult to injury, high end printing systems were dynamically
- * configurable. The number of drawers could change throughout the day; 
- * collaters could come and go. 3D printers really threw a monkey 
- * wrench into it because the really good ones have interchangeable 
+ * configurable. The number of drawers could change throughout the day;
+ * collaters could come and go. 3D printers really threw a monkey
+ * wrench into it because the really good ones have interchangeable
  * heads and spools. It may be printing with plastic in the morning
  * then some kind of metal or even concrete in the afternoon.
  *
- * We will maintain the _external_ interface but remove all ppd 
- * logic and configuration caching.
+ * We will support only the 3.x ipp api and will always request
+ * information directly from Cups.
+ *
+ * Application can be up for days/weeks/months at a time. A duplex or
+ * collate unit could fail and get replaced or simply be added over
+ * that time. The system will not have restarted, but the printer
+ * will have changed capabilities.
  */
-class BdCupsPrintDevice:: public QPlatformPrintDevice
+typedef struct
+{
+    int numDests;
+    cups_dest_t *dests;
+} bd_dest_list_t;
+
+class BdCupsPrintDevice : public QPlatformPrintDevice
 {
 public:
-    
+
     BdCupsPrintDevice();
+    BdCupsPrintDevice( const QString &name );
     virtual ~BdCupsPrintDevice();
 
-    explicit BdCupsPrintDevice( const QString &id);
+    explicit BdCupsPrintDevice( const BdPrintDestination &id );
 
-    bool isValid() const override;
-    bool isDefault() const override;
+    static const size_t RESOURCE_SIZE = 40000;
+    static const size_t VALUE_SIZE = 4096;
 
-    QPrint::DeviceState state() const override;
-    
-    QPageSize defaultPageSize() const override;
+    bool isValid();
+    bool isDefault();
+    bool isRemote();
+    bool supportsMultipleCopies();
+    bool supportsCollateCopies();
+    bool supportsCustomPageSizes();
 
-    QMarginsF printableMargins( const QPageSize &pageSize, QPageLayout::Orientation orientation, int resolution) const override;
+    PrinterState state();
 
-    int defaultResolutions() const override;
 
-    QPrint::InputSlot defaultInputSlot() const override;
+    QPageSize defaultPageSize();
+    QList<QPageSize> supportedPageSizes();
 
-    QPrint::OutputBin defaultOutputBin() const override;
+    QPageSize supportedPageSize( const QString &pageName );
 
-    QPrint::DuplexMode defaultDuplexMode() const override;
+    QSize minimumPhysicalPageSize();
+    QSize maximumPhysicalPageSize();
 
-    QPrint::ColorMode defaultColorMode() const override;
+    QMarginsF printableMargins( const QPageSize &pageSize, QPageLayout::Orientation orientation, int resolution );
+
+    int defaultResolution();
+    QList<int> supportedResolutions();
+
+    QString lastPrintError();
+
+    QString defaultMediaSource();
+    QStringList supportedMediaSources();
+
+    QString defaultOutputBin();
+    QStringList supportedOutputBins();
+
+    QString defaultDuplexMode();
+    QStringList supportedDuplexModes();
+
+    QString defaultColorMode();
+    QStringList supportedColorModes();
 
 protected:
 
-
 private:
-    void gatherPrinterInfo();
-    QString printerOption( const QString &key ) const;
-    cups_ptype_e printerTypeFlags() const;
+    void loadInfo();
+    QString printerOption( const QString &key );
+    cups_ptype_e printerTypeFlags();
 
     cups_dest_t *m_cupsDest;
-    QByteArray m_cupsName;
-    QByteArray m_cupsInstance;
-    QByteArray m_uri;
+    char        m_resource[ RESOURCE_SIZE];
+    char        m_value[ VALUE_SIZE];
+
 };
 
 #endif // BDCUPSPRINTDEVICE_H

@@ -37,14 +37,20 @@
 #include <qprintengine_pdf_p.h>
 #include <qpaintengine_preview_p.h>
 
+const QString QPrinter::ONE_SIDED("one-sided");
+const QString QPrinter::TWO_SIDED_LONG_EDGE("two-sided-long-edge");
+const QString QPrinter::TWO_SIDED_SHORT_EDGE("two-sided-short-edge");
+const QString QPrinter::MEDIA_SOURCE_AUTO("auto");
+
+
 #define ABORT_IF_ACTIVE(location) \
-    if (d_ptr->printEngine->printerState() == QPrinter::Active) { \
+    if (d_ptr->printEngine->printerState() == PrinterState::Active) { \
         qWarning("%s: Unable to change while printer is active", location); \
         return; \
     }
 
 #define ABORT_IF_ACTIVE_RETURN(location, retValue) \
-    if (d_ptr->printEngine->printerState() == QPrinter::Active) { \
+    if (d_ptr->printEngine->printerState() == PrinterState::Active) { \
         qWarning("%s: Unable to change while printer is active", location); \
         return retValue; \
     }
@@ -84,7 +90,7 @@ double lscs_multiplierForUnit( QPrinter::Unit unit, int resolution )
 
 // method used in qpagesetupdialog_unix.cpp
 QSizeF lscs_printerPaperSize( QPrinter::Orientation orientation, QPageSize::PageSizeId paperSize,
-                            QPrinter::Unit unit, int resolution )
+                              QPrinter::Unit unit, int resolution )
 {
     QPageSize pageSize = QPageSize( QPageSize::PageSizeId( paperSize ) );
     QSizeF sizef;
@@ -124,25 +130,27 @@ QPrinterInfo QPrinterPrivate::findValidPrinter( const QPrinterInfo &printer )
     return printerToUse;
 }
 
-void QPrinterPrivate::initEngines( QPrinter::OutputFormat format, const QPrinterInfo &printer )
+void QPrinterPrivate::initEngines( PrinterFormat format, const QPrinterInfo &printer )
 {
-    outputFormat = QPrinter::PdfFormat;
+    outputFormat = PrinterFormat::Pdf;
     QPlatformPrinterSupport *ps = nullptr;
     QString printerName;
 
-    if ( format == QPrinter::NativeFormat )
+    if ( format == PrinterFormat::Native )
     {
         ps = QPlatformPrinterSupportPlugin::get();
         QPrinterInfo printerToUse = findValidPrinter( printer );
 
         if ( ps && !printerToUse.isNull() )
         {
-            outputFormat = QPrinter::NativeFormat;
+            outputFormat = PrinterFormat::Native;
             printerName = printerToUse.printerName();
         }
     }
 
-    if ( outputFormat == QPrinter::NativeFormat )
+    // TODO:: Add support for Text format
+    //
+    if ( outputFormat == PrinterFormat::Native )
     {
         printEngine = ps->createNativePrintEngine( printerMode );
         paintEngine = ps->createPaintEngine( printEngine, printerMode );
@@ -161,7 +169,7 @@ void QPrinterPrivate::initEngines( QPrinter::OutputFormat format, const QPrinter
     validPrinter = true;
 }
 
-void QPrinterPrivate::changeEngines( QPrinter::OutputFormat format, const QPrinterInfo &printer )
+void QPrinterPrivate::changeEngines( PrinterFormat format, const QPrinterInfo &printer )
 {
     QPrintEngine *oldPrintEngine = printEngine;
     const bool def_engine = use_default_engine;
@@ -245,7 +253,7 @@ void QPrinterPrivate::setProperty( QPrintEngine::PrintEnginePropertyKey key, con
 
 bool QPrinter::setPageLayout( const QPageLayout &newPageLayout )
 {
-    if ( d_ptr->paintEngine->type() != QPaintEngine::Pdf && d_ptr->printEngine->printerState() == QPrinter::Active )
+    if ( d_ptr->paintEngine->type() != QPaintEngine::Pdf && d_ptr->printEngine->printerState() == PrinterState::Active )
     {
         qWarning( "QPrinter::setPageLayout() Unable to change page layout while printer is active" );
         return false;
@@ -259,7 +267,7 @@ bool QPrinter::setPageLayout( const QPageLayout &newPageLayout )
 
 bool QPrinter::setPageSize( const QPageSize &pageSize )
 {
-    if ( d_ptr->paintEngine->type() != QPaintEngine::Pdf && d_ptr->printEngine->printerState() == QPrinter::Active )
+    if ( d_ptr->paintEngine->type() != QPaintEngine::Pdf && d_ptr->printEngine->printerState() == PrinterState::Active )
     {
         qWarning( "QPrinter::setPageSize() Unable to change page size while printer is active" );
         return false;
@@ -302,7 +310,7 @@ QPrinter::QPrinter( const QPrinterInfo &printer, PrinterMode mode )
     d_ptr->init( printer, mode );
 }
 
-void QPrinterPrivate::init( const QPrinterInfo &printer, QPrinter::PrinterMode mode )
+void QPrinterPrivate::init( const QPrinterInfo &printer, PrinterMode mode )
 {
     if ( ! QCoreApplication::instance() )
     {
@@ -311,7 +319,7 @@ void QPrinterPrivate::init( const QPrinterInfo &printer, QPrinter::PrinterMode m
     }
 
     printerMode = mode;
-    initEngines( QPrinter::NativeFormat, printer );
+    initEngines( PrinterFormat::Native, printer );
 }
 
 void QPrinter::setEngines( QPrintEngine *printEngine, QPaintEngine *paintEngine )
@@ -347,7 +355,7 @@ QPrinter::~QPrinter()
 #endif
 }
 
-void QPrinter::setOutputFormat( OutputFormat format )
+void QPrinter::setOutputFormat( PrinterFormat format )
 {
     Q_D( QPrinter );
 
@@ -356,7 +364,7 @@ void QPrinter::setOutputFormat( OutputFormat format )
         return;
     }
 
-    if ( format == QPrinter::NativeFormat )
+    if ( format == PrinterFormat::Native )
     {
         QPrinterInfo printerToUse = d->findValidPrinter();
 
@@ -371,7 +379,7 @@ void QPrinter::setOutputFormat( OutputFormat format )
     }
 }
 
-QPrinter::OutputFormat QPrinter::outputFormat() const
+PrinterFormat QPrinter::outputFormat()
 {
     Q_D( const QPrinter );
     return d->outputFormat;
@@ -405,7 +413,7 @@ void QPrinter::setPrinterName( const QString &name )
 
     if ( name.isEmpty() )
     {
-        setOutputFormat( QPrinter::PdfFormat );
+        setOutputFormat( PrinterFormat::Pdf );
         return;
     }
 
@@ -416,9 +424,9 @@ void QPrinter::setPrinterName( const QString &name )
         return;
     }
 
-    if ( outputFormat() == QPrinter::PdfFormat )
+    if ( outputFormat() == PrinterFormat::Pdf )
     {
-        d->changeEngines( QPrinter::NativeFormat, printerToUse );
+        d->changeEngines( PrinterFormat::Native, printerToUse );
     }
     else
     {
@@ -426,7 +434,7 @@ void QPrinter::setPrinterName( const QString &name )
     }
 }
 
-bool QPrinter::isValid() const
+bool QPrinter::isValid() 
 {
     Q_D( const QPrinter );
 
@@ -440,7 +448,7 @@ bool QPrinter::isValid() const
 
 
 
-QString QPrinter::outputFileName() const
+QString QPrinter::outputFileName()
 {
     Q_D( const QPrinter );
     return d->printEngine->property( QPrintEngine::PPK_OutputFileName ).toString();
@@ -457,19 +465,19 @@ void QPrinter::setOutputFileName( const QString &fileName )
 
     if ( ! fi.suffix().compare( QLatin1String( "pdf" ), Qt::CaseInsensitive ) )
     {
-        setOutputFormat( QPrinter::PdfFormat );
+        setOutputFormat( PrinterFormat::Pdf );
 
     }
     else if ( fileName.isEmpty() )
     {
-        setOutputFormat( QPrinter::NativeFormat );
+        setOutputFormat( PrinterFormat::Native );
     }
 
     d->setProperty( QPrintEngine::PPK_OutputFileName, fileName );
 
 }
 
-QString QPrinter::printProgram() const
+QString QPrinter::printProgram()
 {
     Q_D( const QPrinter );
     return d->printEngine->property( QPrintEngine::PPK_PrinterProgram ).toString();
@@ -482,7 +490,7 @@ void QPrinter::setPrintProgram( const QString &printProg )
     d->setProperty( QPrintEngine::PPK_PrinterProgram, printProg );
 }
 
-QString QPrinter::docName() const
+QString QPrinter::docName()
 {
     Q_D( const QPrinter );
     return d->printEngine->property( QPrintEngine::PPK_DocumentName ).toString();
@@ -496,7 +504,7 @@ void QPrinter::setDocName( const QString &name )
     d->setProperty( QPrintEngine::PPK_DocumentName, name );
 }
 
-QString QPrinter::creator() const
+QString QPrinter::creator()
 {
     Q_D( const QPrinter );
     return d->printEngine->property( QPrintEngine::PPK_Creator ).toString();
@@ -509,7 +517,7 @@ void QPrinter::setCreator( const QString &creator )
     d->setProperty( QPrintEngine::PPK_Creator, creator );
 }
 
-QPrinter::Orientation QPrinter::orientation() const
+QPrinter::Orientation QPrinter::orientation()
 {
     return QPrinter::Orientation( pageLayout().orientation() );
 }
@@ -519,7 +527,7 @@ void QPrinter::setOrientation( Orientation orientation )
     setPageOrientation( QPageLayout::Orientation( orientation ) );
 }
 
-QPageSize::PageSizeId QPrinter::paperSize() const
+QPageSize::PageSizeId QPrinter::paperSize()
 {
     return pageSize();
 }
@@ -557,7 +565,7 @@ void QPrinter::setPageSizeMM( const QSizeF &size )
     setPageSize( QPageSize( size, QPageSize::Millimeter ) );
 }
 
-QSizeF QPrinter::paperSize( Unit unit ) const
+QSizeF QPrinter::paperSize( Unit unit ) 
 {
     if ( unit == QPageSize::Unit::DevicePixel )
     {
@@ -586,38 +594,38 @@ QString QPrinter::paperName() const
     return d->printEngine->property( QPrintEngine::PPK_PaperName ).toString();
 }
 
-void QPrinter::setPageOrder( PageOrder pageOrder )
+void QPrinter::setPageOrder( PrinterPageOrder pageOrder )
 {
-    m_pageOrderAscending = ( pageOrder == FirstPageFirst );
+    m_pageOrderAscending = ( pageOrder == PrinterPageOrder::FirstPageFirst );
 
     ABORT_IF_ACTIVE( "QPrinter::setPageOrder" );
-    d_ptr->setProperty( QPrintEngine::PPK_PageOrder, pageOrder );
+    d_ptr->setProperty( QPrintEngine::PPK_PageOrder, static_cast<int>(pageOrder) );
 }
 
-QPrinter::PageOrder QPrinter::pageOrder() const
+PrinterPageOrder QPrinter::pageOrder()
 {
-    return QPrinter::PageOrder( d_ptr->printEngine->property( QPrintEngine::PPK_PageOrder ).toInt() );
+    return static_cast<PrinterPageOrder>( d_ptr->printEngine->property( QPrintEngine::PPK_PageOrder ).toInt() );
 }
 
-void QPrinter::setColorMode( ColorMode newColorMode )
+void QPrinter::setColorMode( QString newColorMode )
 {
     ABORT_IF_ACTIVE( "QPrinter::setColorMode" );
     d_ptr->setProperty( QPrintEngine::PPK_ColorMode, newColorMode );
 }
 
-QPrinter::ColorMode QPrinter::colorMode() const
+QString QPrinter::colorMode()
 {
     Q_D( const QPrinter );
-    return QPrinter::ColorMode( d->printEngine->property( QPrintEngine::PPK_ColorMode ).toInt() );
+    return d->printEngine->property( QPrintEngine::PPK_ColorMode ).toString();
 }
 
-int QPrinter::numCopies() const
+int QPrinter::numCopies()
 {
     Q_D( const QPrinter );
     return d->printEngine->property( QPrintEngine::PPK_NumberOfCopies ).toInt();
 }
 
-int QPrinter::actualNumCopies() const
+int QPrinter::actualNumCopies()
 {
     return copyCount();
 }
@@ -636,19 +644,19 @@ void QPrinter::setCopyCount( int count )
     d->setProperty( QPrintEngine::PPK_CopyCount, count );
 }
 
-int QPrinter::copyCount() const
+int QPrinter::copyCount()
 {
     Q_D( const QPrinter );
     return d->printEngine->property( QPrintEngine::PPK_CopyCount ).toInt();
 }
 
-bool QPrinter::supportsMultipleCopies() const
+bool QPrinter::supportsMultipleCopies()
 {
     Q_D( const QPrinter );
     return d->printEngine->property( QPrintEngine::PPK_SupportsMultipleCopies ).toBool();
 }
 
-bool QPrinter::collateCopies() const
+bool QPrinter::collateCopies()
 {
     Q_D( const QPrinter );
     return d->printEngine->property( QPrintEngine::PPK_CollateCopies ).toBool();
@@ -670,7 +678,7 @@ void QPrinter::setFullPage( bool fp )
     m_pageLayout = pageLayout();
 }
 
-bool QPrinter::fullPage() const
+bool QPrinter::fullPage()
 {
     Q_D( const QPrinter );
     return d->printEngine->property( QPrintEngine::PPK_FullPage ).toBool();
@@ -689,16 +697,16 @@ int QPrinter::resolution() const
     return d->printEngine->property( QPrintEngine::PPK_Resolution ).toInt();
 }
 
-void QPrinter::setPaperSource( PaperSource source )
+void QPrinter::setPaperSource( QString source )
 {
     Q_D( QPrinter );
     d->setProperty( QPrintEngine::PPK_PaperSource, source );
 }
 
-QPrinter::PaperSource QPrinter::paperSource() const
+QString QPrinter::paperSource()
 {
     Q_D( const QPrinter );
-    return QPrinter::PaperSource( d->printEngine->property( QPrintEngine::PPK_PaperSource ).toInt() );
+    return d->printEngine->property( QPrintEngine::PPK_PaperSource ).toString();
 }
 
 void QPrinter::setFontEmbeddingEnabled( bool enable )
@@ -708,40 +716,40 @@ void QPrinter::setFontEmbeddingEnabled( bool enable )
 }
 
 
-bool QPrinter::fontEmbeddingEnabled() const
+bool QPrinter::fontEmbeddingEnabled()
 {
     Q_D( const QPrinter );
     return d->printEngine->property( QPrintEngine::PPK_FontEmbedding ).toBool();
 }
 
 
-void QPrinter::setDoubleSidedPrinting( bool doubleSided )
+bool QPrinter::doubleSidedPrinting()
 {
-    setDuplex( doubleSided ? DuplexAuto : DuplexNone );
+    bool retVal = false;
+
+    if (duplex().contains(QString("two-sided"), Qt::CaseInsensitive))
+    {
+        retVal = true;
+    }
+            
+    return retVal;
 }
 
 
-
-bool QPrinter::doubleSidedPrinting() const
-{
-    return duplex() != DuplexNone;
-}
-
-
-void QPrinter::setDuplex( DuplexMode duplex )
+void QPrinter::setDuplex( QString duplex )
 {
     Q_D( QPrinter );
     d->setProperty( QPrintEngine::PPK_Duplex, duplex );
 }
 
-QPrinter::DuplexMode QPrinter::duplex() const
+QString QPrinter::duplex()
 {
     Q_D( const QPrinter );
-    return static_cast <DuplexMode> ( d->printEngine->property( QPrintEngine::PPK_Duplex ).toInt() );
+    return d->printEngine->property( QPrintEngine::PPK_Duplex ).toString();
 }
 
 
-QRectF QPrinter::pageRect( QPageSize::Unit unit ) const
+QRectF QPrinter::pageRect( QPageSize::Unit unit ) 
 {
     if ( unit == QPageSize::Unit::DevicePixel )
     {
@@ -753,7 +761,7 @@ QRectF QPrinter::pageRect( QPageSize::Unit unit ) const
     }
 }
 
-QRectF QPrinter::paperRect( QPageSize::Unit unit ) const
+QRectF QPrinter::paperRect( QPageSize::Unit unit ) 
 {
     // the page rect is in device pixels
     if ( unit == QPageSize::Unit::DevicePixel )
@@ -766,12 +774,12 @@ QRectF QPrinter::paperRect( QPageSize::Unit unit ) const
     }
 }
 
-QRect QPrinter::pageRect() const
+QRect QPrinter::pageRect() 
 {
     return d_ptr->printEngine->property( QPrintEngine::PPK_PageRect ).toRect();
 }
 
-QRect QPrinter::paperRect() const
+QRect QPrinter::paperRect() 
 {
     return d_ptr->printEngine->property( QPrintEngine::PPK_PaperRect ).toRect();
 }
@@ -839,12 +847,12 @@ void QPrinter::setWinPageSize( int pageSize )
     d_ptr->setProperty( QPrintEngine::PPK_WindowsPageSize, pageSize );
 }
 
-int QPrinter::winPageSize() const
+int QPrinter::winPageSize()
 {
     return d_ptr->printEngine->property( QPrintEngine::PPK_WindowsPageSize ).toInt();
 }
 
-QList<int> QPrinter::supportedResolutions() const
+QList<int> QPrinter::supportedResolutions() 
 {
     Q_D( const QPrinter );
 
@@ -865,7 +873,7 @@ bool QPrinter::newPage()
 {
     Q_D( QPrinter );
 
-    if ( d->printEngine->printerState() != QPrinter::Active )
+    if ( d->printEngine->printerState() != PrinterState::Active )
     {
         return false;
     }
@@ -879,7 +887,7 @@ bool QPrinter::abort()
     return d->printEngine->abort();
 }
 
-QPrinter::PrinterState QPrinter::printerState() const
+PrinterState QPrinter::printerState() 
 {
     Q_D( const QPrinter );
     return d->printEngine->printerState();
@@ -887,25 +895,21 @@ QPrinter::PrinterState QPrinter::printerState() const
 
 #ifdef Q_OS_WIN
 
-QList<QPrinter::PaperSource> QPrinter::supportedPaperSources() const
+QStringLis QPrinter::supportedPaperSources()
 {
+    QStringList retVal;
+    
     Q_D( const QPrinter );
     QVariant v = d->printEngine->property( QPrintEngine::PPK_PaperSources );
 
-    QList<QVariant> variant_list = v.toList();
-    QList<QPrinter::PaperSource> int_list;
+    retVal = v.toStringList();
 
-    for ( int i = 0; i < variant_list.size(); ++i )
-    {
-        int_list << ( QPrinter::PaperSource ) variant_list.at( i ).toInt();
-    }
-
-    return int_list;
+    return retVal;
 }
 
 #endif
 
-QString QPrinter::printerSelectionOption() const
+QString QPrinter::printerSelectionOption()
 {
     return d_ptr->printEngine->property( QPrintEngine::PPK_SelectionOption ).toString();
 }
@@ -938,13 +942,13 @@ void QPrinter::setFromTo( int from, int to )
     m_toPage   = to;
 }
 
-void QPrinter::setPrintRange( PrintRange range )
+void QPrinter::setPrintRange( PrinterPrintRange range )
 {
-    m_printSelectionOnly = ( range == Selection );
+    m_printSelectionOnly = ( range == PrinterPrintRange::Selection );
     d_ptr->printRange  = range;
 }
 
-QPrinter::PrintRange QPrinter::printRange() const
+PrinterPrintRange QPrinter::printRange()
 {
     return d_ptr->printRange;
 }

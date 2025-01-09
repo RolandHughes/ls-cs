@@ -42,8 +42,8 @@ class QAbstractPrintDialogPrivate : public QDialogPrivate
 public:
     QAbstractPrintDialogPrivate()
         : printer( nullptr ), pd( nullptr ), ownsPrinter( false )
-        , options( QAbstractPrintDialog::PrintToFile | QAbstractPrintDialog::PrintPageRange |
-                   QAbstractPrintDialog::PrintCollateCopies | QAbstractPrintDialog::PrintShowPageSize ),
+        , options( PDOption::PrintToFile | PDOption::PrintPageRange |
+                   PDOption::PrintCollateCopies | PDOption::PrintShowPageSize ),
           minPage( 0 ), maxPage( INT_MAX )
     {  }
 
@@ -54,7 +54,7 @@ public:
     QPointer<QObject> receiverToDisconnectOnClose;
     QString memberToDisconnectOnClose;
 
-    QAbstractPrintDialog::PrintDialogOptions options;
+    PDOptions options;
 
     virtual void setTabs( const QList<QWidget *> & ) {}
     void setPrinter( QPrinter *newPrinter );

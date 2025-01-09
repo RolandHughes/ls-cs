@@ -76,6 +76,7 @@ build_all(){
     build_one "gui-hello"
     build_one "simple-text-editor"
     build_one "combo-box-example"
+    build_one "text-edit-with-print"
     #build_one "serial-comm"
 }
 
@@ -104,8 +105,9 @@ while true; do
     echo "2   - gui based Hello World program"
     echo "3   - simple text editor"
     echo "4   - cups experiment"
-    echo "5   - combobox example"
-    echo "6   - serial communications"
+    echo "5   - text edit with print"
+    echo "6   - combobox example"
+    echo "7   - serial communications"
     echo "999 - build all"
     echo " "
     echo "e to exit"
@@ -119,8 +121,9 @@ while true; do
         [2]* ) build_one "gui-hello"; break;;
         [3]* ) build_one "simple-text-editor"; break;;
         [4]* ) build_one "cups-experiment"; break;;
-        [5]* ) build_one "combo-box-example"; break;;
-        [6]* ) build_one "serial-comm"; break;;
+        [5]* ) build_one "text-edit-with-print"; break;;
+        [6]* ) build_one "combo-box-example"; break;;
+        [7]* ) build_one "serial-comm"; break;;
         [999]*) build_all; exit;;
         [Ee]* ) exit;;
 	* ) echo "Unknown response - please try again";;

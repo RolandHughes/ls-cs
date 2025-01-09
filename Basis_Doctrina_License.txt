@@ -1,0 +1,21 @@
+Basis Doctrina License
+
+Basis Doctrina is free software. You can redistribute it and/or modify it under
+the terms of this license.
+
+Basis Doctrina is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PUPOSE.
+
+The Basis Doctrina License is a restricted GNU Lesser General Public License
+version 2.1 as published by the Free Software Foundation.
+https://www.gnu.org/licenses/
+
+The restriction is that you may not include any part of this software in a
+software library that you charge money for either by commercial license, or
+mandatory/required donation, or subscription of any kind. The perversion of
+OpenSource to mean "everyone must buy . . ." ends here.
+
+This in no way restricts commercial products (software or hardware) that
+actually "do" something. It only applies to libraries and other SDKs. YOU CANNOT
+CHARGE MONEY FOR THEM IN ANY WAY.

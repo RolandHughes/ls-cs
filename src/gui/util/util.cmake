@@ -20,6 +20,7 @@ list(APPEND GUI_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/util/qundogroup.h
    ${CMAKE_CURRENT_SOURCE_DIR}/util/qundostack.h
    ${CMAKE_CURRENT_SOURCE_DIR}/util/qundoview.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/util/bdguiutils.h
 )
 
 list(APPEND GUI_PRIVATE_INCLUDES
@@ -42,6 +43,7 @@ target_sources(LsCsGui
    ${CMAKE_CURRENT_SOURCE_DIR}/util/qundogroup.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/util/qundostack.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/util/qundoview.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/util/bdguiutils.cpp
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")

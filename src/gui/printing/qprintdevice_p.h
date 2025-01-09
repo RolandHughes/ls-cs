@@ -24,10 +24,9 @@
 #ifndef QPRINTDEVICE_H
 #define QPRINTDEVICE_H
 
-#include <qprint_p.h>
-
 #include <qsharedpointer.h>
 #include <qpagelayout.h>
+#include <qprinter.h>
 
 #ifndef LSCS_NO_PRINTER
 
@@ -53,7 +52,7 @@ public:
 
     bool operator==( const QPrintDevice &other ) const;
 
-    QString id() const;
+    QString uri() const;
     QString name() const;
     QString location() const;
     QString makeAndModel() const;
@@ -62,7 +61,7 @@ public:
     bool isDefault() const;
     bool isRemote() const;
 
-    QPrint::DeviceState state() const;
+    PrinterState state() const;
 
     bool isValidPageLayout( const QPageLayout &layout, int resolution ) const;
 
@@ -93,25 +92,21 @@ public:
     int defaultResolution() const;
     QList<int> supportedResolutions() const;
 
-    QPrint::InputSlot defaultInputSlot() const;
-    QList<QPrint::InputSlot> supportedInputSlots() const;
+    QString defaultMediaSource() const;
+    QStringList supportedMediaSources() const;
 
-    QPrint::OutputBin defaultOutputBin() const;
-    QList<QPrint::OutputBin> supportedOutputBins() const;
+    QString defaultOutputBin() const;
+    QStringList supportedOutputBins() const;
 
-    QPrint::DuplexMode defaultDuplexMode() const;
-    QList<QPrint::DuplexMode> supportedDuplexModes() const;
+    QString defaultDuplexMode() const;
+    QStringList supportedDuplexModes() const;
 
-    QPrint::ColorMode defaultColorMode() const;
-    QList<QPrint::ColorMode> supportedColorModes() const;
-
-#ifndef LSCS_NO_MIMETYPE
-    /* emerald - mimedatabase
-        QList<QMimeType> supportedMimeTypes() const;
-    */
-#endif
+    QString defaultColorMode() const;
+    QStringList supportedColorModes() const;
 
     void format( QDebug debug ) const;
+
+    QString lastPrintError() const;
 
 private:
     QPrintDevice( QPlatformPrintDevice *dd );
