@@ -7,7 +7,6 @@ list(APPEND PLATFORMS_COCOA_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qnsview.h
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qnswindowdelegate.h
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qpaintengine_mac_p.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qprintengine_mac_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/lscs_mac_p.h
 
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qcocoaaccessibilityelement.h
@@ -34,8 +33,6 @@ list(APPEND PLATFORMS_COCOA_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qcocoamenuloader.h
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qcocoamimetypes.h
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qcocoanativeinterface.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qcocoaprintersupport.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qcocoaprintdevice.h
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qcocoaservices.h
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qcocoasystemtrayicon.h
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qcocoasystemsettings.h

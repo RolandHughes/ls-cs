@@ -77,6 +77,7 @@ build_all(){
     build_one "simple-text-editor"
     build_one "combo-box-example"
     build_one "text-edit-with-print"
+    build_one "cups-3x-dialog"
     #build_one "serial-comm"
 }
 
@@ -107,7 +108,8 @@ while true; do
     echo "4   - cups experiment"
     echo "5   - text edit with print"
     echo "6   - combobox example"
-    echo "7   - serial communications"
+    echo "7   - cups 3.x API dialog"
+    #echo "8   - serial communications"
     echo "999 - build all"
     echo " "
     echo "e to exit"
@@ -123,7 +125,7 @@ while true; do
         [4]* ) build_one "cups-experiment"; break;;
         [5]* ) build_one "text-edit-with-print"; break;;
         [6]* ) build_one "combo-box-example"; break;;
-        [7]* ) build_one "serial-comm"; break;;
+        [7]* ) build_one "cups-3x-dialog"; break;;
         [999]*) build_all; exit;;
         [Ee]* ) exit;;
 	* ) echo "Unknown response - please try again";;

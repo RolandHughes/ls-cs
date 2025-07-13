@@ -1,0 +1,30 @@
+
+https://github.com/sybrexsys/VersyPDF
+
+http://libharu.org/
+
+https://github.com/podofo/podofo
+libpodofo-dev
+
+good instructions for building PODOFO on other platforms here:  https://corymickelson.github.io/NoPoDoFo/documentation/installation.html
+https://github.com/podofo/podofo?tab=readme-ov-file#licensing
+
+optional libraries for podofo
+libjpeg
+libtiff
+libpng
+libidn
+
+documentation  https://podofo.github.io/podofo/documentation/
+
+
+
+
+https://pslib.sourceforge.net/
+pslib-dev
+
+https://sourceforge.net/projects/lasi/files/lasi/1.1.3%20Source/
+https://unifont.org/lasi/
+liblasi-dev
+
+

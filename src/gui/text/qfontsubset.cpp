@@ -23,14 +23,375 @@
 
 #include <qfontsubset_p.h>
 
-#include <qdebug.h>
+#include <qbuffer.h>
 #include <qendian.h>
 #include <qpainterpath.h>
-
+#include <qnumeric.h>
 #include <qfontsubset_agl_p.h>
-#include <qpdf_p.h>
+#include <qtemporaryfile.h>
 
 #include <algorithm>
+
+const char *toHex( ushort u, char *buffer )
+{
+    int i = 3;
+
+    while ( i >= 0 )
+    {
+        ushort hex = ( u & 0x000f );
+
+        if ( hex < 0x0a )
+        {
+            buffer[i] = '0'+hex;
+        }
+        else
+        {
+            buffer[i] = 'A'+( hex-0x0a );
+        }
+
+        u = u >> 4;
+        i--;
+    }
+
+    buffer[4] = '\0';
+    return buffer;
+}
+
+const char *toHex( uchar u, char *buffer )
+{
+    int i = 1;
+
+    while ( i >= 0 )
+    {
+        ushort hex = ( u & 0x000f );
+
+        if ( hex < 0x0a )
+        {
+            buffer[i] = '0'+hex;
+        }
+        else
+        {
+            buffer[i] = 'A'+( hex-0x0a );
+        }
+
+        u = u >> 4;
+        i--;
+    }
+
+    buffer[2] = '\0';
+    return buffer;
+}
+
+/* also adds a space at the end of the number */
+const char *lscs_real_to_string( qreal val, char *buf )
+{
+    const char *ret = buf;
+
+    if ( qIsNaN( val ) )
+    {
+        *( buf++ ) = '0';
+        *( buf++ ) = ' ';
+        *buf = 0;
+        return ret;
+    }
+
+    if ( val < 0 )
+    {
+        *( buf++ ) = '-';
+        val = -val;
+    }
+
+    unsigned int ival = ( unsigned int ) val;
+    qreal frac = val - ( qreal )ival;
+
+    int ifrac = ( int )( frac * 1000000000 );
+
+    if ( ifrac == 1000000000 )
+    {
+        ++ival;
+        ifrac = 0;
+    }
+
+    char output[256];
+    int i = 0;
+
+    while ( ival )
+    {
+        output[i] = '0' + ( ival % 10 );
+        ++i;
+        ival /= 10;
+    }
+
+    int fact = 100000000;
+
+    if ( i == 0 )
+    {
+        *( buf++ ) = '0';
+    }
+    else
+    {
+        while ( i )
+        {
+            *( buf++ ) = output[--i];
+            fact /= 10;
+            ifrac /= 10;
+        }
+    }
+
+    if ( ifrac )
+    {
+        *( buf++ ) =  '.';
+
+        while ( fact )
+        {
+            *( buf++ ) = '0' + ( ( ifrac/fact ) % 10 );
+            fact /= 10;
+        }
+    }
+
+    *( buf++ ) = ' ';
+    *buf = 0;
+    return ret;
+}
+
+const char *lscs_int_to_string( int val, char *buf )
+{
+    const char *ret = buf;
+
+    if ( val < 0 )
+    {
+        *( buf++ ) = '-';
+        val = -val;
+    }
+
+    char output[256];
+    int i = 0;
+
+    while ( val )
+    {
+        output[i] = '0' + ( val % 10 );
+        ++i;
+        val /= 10;
+    }
+
+    if ( i == 0 )
+    {
+        *( buf++ ) = '0';
+    }
+    else
+    {
+        while ( i )
+        {
+            *( buf++ ) = output[--i];
+        }
+    }
+
+    *( buf++ ) = ' ';
+    *buf = 0;
+    return ret;
+}
+
+class ByteStream
+{
+public:
+    // fileBacking means that ByteStream will buffer the contents on disk
+    // if the size exceeds a certain threshold. In this case, if a byte
+    // array was passed in, its contents may no longer correspond to the
+    // ByteStream contents.
+
+    explicit ByteStream( bool fileBacking = false );
+    explicit ByteStream( QByteArray *ba, bool fileBacking = false );
+    ~ByteStream();
+
+    ByteStream &operator <<( char chr );
+    ByteStream &operator <<( const char *str );
+    ByteStream &operator <<( const QByteArray &str );
+    ByteStream &operator <<( const ByteStream &src );
+
+    ByteStream &operator <<( const QString &str );
+
+    ByteStream &operator <<( qreal val );
+    ByteStream &operator <<( int val );
+    ByteStream &operator <<( const QPointF &p );
+
+    // Note that the stream may be invalidated by calls that insert data.
+    QIODevice *stream();
+    void clear();
+
+    static inline int maxMemorySize()
+    {
+        return 100000000;
+    }
+    static inline int chunkSize()
+    {
+        return 10000000;
+    }
+
+protected:
+    void constructor_helper( QIODevice *dev );
+    void constructor_helper( QByteArray *ba );
+
+private:
+    void prepareBuffer();
+
+    QIODevice *dev;
+    QByteArray ba;
+    bool fileBackingEnabled;
+    bool fileBackingActive;
+    bool handleDirty;
+};
+
+void ByteStream::prepareBuffer()
+{
+    Q_ASSERT( !dev->isSequential() );
+    qint64 size = dev->size();
+
+    if ( fileBackingEnabled && !fileBackingActive
+            && size > maxMemorySize() )
+    {
+        // Switch to file backing.
+        QTemporaryFile *newFile = new QTemporaryFile;
+        newFile->open();
+        dev->reset();
+
+        while ( !dev->atEnd() )
+        {
+            QByteArray buf = dev->read( chunkSize() );
+            newFile->write( buf );
+        }
+
+        delete dev;
+        dev = newFile;
+        ba.clear();
+        fileBackingActive = true;
+    }
+
+    if ( dev->pos() != size )
+    {
+        dev->seek( size );
+        handleDirty = false;
+    }
+}
+
+ByteStream::ByteStream( QByteArray *byteArray, bool fileBacking )
+    : dev( new QBuffer( byteArray ) ),
+      fileBackingEnabled( fileBacking ),
+      fileBackingActive( false ),
+      handleDirty( false )
+{
+    dev->open( QIODevice::ReadWrite | QIODevice::Append );
+}
+
+ByteStream::ByteStream( bool fileBacking )
+    : dev( new QBuffer( &ba ) ),
+      fileBackingEnabled( fileBacking ),
+      fileBackingActive( false ),
+      handleDirty( false )
+{
+    dev->open( QIODevice::ReadWrite );
+}
+
+ByteStream::~ByteStream()
+{
+    delete dev;
+}
+
+ByteStream &ByteStream::operator <<( char chr )
+{
+    if ( handleDirty )
+    {
+        prepareBuffer();
+    }
+
+    dev->write( &chr, 1 );
+    return *this;
+}
+
+ByteStream &ByteStream::operator <<( const char *str )
+{
+    if ( handleDirty )
+    {
+        prepareBuffer();
+    }
+
+    dev->write( str, strlen( str ) );
+    return *this;
+}
+
+ByteStream &ByteStream::operator <<( const QByteArray &str )
+{
+    if ( handleDirty )
+    {
+        prepareBuffer();
+    }
+
+    dev->write( str );
+    return *this;
+}
+
+ByteStream &ByteStream::operator <<( const ByteStream &src )
+{
+    Q_ASSERT( !src.dev->isSequential() );
+
+    if ( handleDirty )
+    {
+        prepareBuffer();
+    }
+
+    // We do play nice here, even though it looks ugly.
+    // We save the position and restore it afterwards.
+    ByteStream &s = const_cast<ByteStream &>( src );
+    qint64 pos = s.dev->pos();
+    s.dev->reset();
+
+    while ( !s.dev->atEnd() )
+    {
+        QByteArray buf = s.dev->read( chunkSize() );
+        dev->write( buf );
+    }
+
+    s.dev->seek( pos );
+    return *this;
+}
+
+ByteStream &ByteStream::operator <<( const QString &str )
+{
+    if ( handleDirty )
+    {
+        prepareBuffer();
+    }
+
+    dev->write( str.constData(), str.size_storage() );
+
+    return *this;
+}
+
+ByteStream &ByteStream::operator <<( qreal val )
+{
+    char buf[256];
+    lscs_real_to_string( val, buf );
+    *this << buf;
+    return *this;
+}
+
+ByteStream &ByteStream::operator <<( int val )
+{
+    char buf[256];
+    lscs_int_to_string( val, buf );
+    *this << buf;
+    return *this;
+}
+
+ByteStream &ByteStream::operator <<( const QPointF &p )
+{
+    char buf[256];
+    lscs_real_to_string( p.x(), buf );
+    *this << buf;
+    lscs_real_to_string( p.y(), buf );
+    *this << buf;
+    return *this;
+}
+
 
 // This map is used for symbol fonts to get the correct glyph names for the latin range
 static const unsigned short symbol_map[0x100] =
@@ -95,7 +456,7 @@ QByteArray QFontSubset::glyphName( unsigned short unicode, bool symbol )
     buffer[0] = 'u';
     buffer[1] = 'n';
     buffer[2] = 'i';
-    QPdf::toHex( unicode, buffer + 3 );
+    toHex( unicode, buffer + 3 );
     return buffer;
 }
 
@@ -109,7 +470,7 @@ QByteArray QFontSubset::glyphName( unsigned int glyph, const QVector<int> &rever
     }
 
     QByteArray ba;
-    QPdf::ByteStream s( &ba );
+    ByteStream s( &ba );
 
     if ( reverseMap[glyphIndex] && reverseMap[glyphIndex] < 0x10000 )
     {
@@ -130,7 +491,7 @@ QByteArray QFontSubset::widthArray() const
     QFontEngine::Properties properties = fontEngine->properties();
 
     QByteArray width;
-    QPdf::ByteStream s( &width );
+    ByteStream s( &width );
     QFixed scale = QFixed( 1000 ) / emSquare;
 
     QFixed defWidth = widths[0];
@@ -214,7 +575,7 @@ QByteArray QFontSubset::widthArray() const
     return width;
 }
 
-static void checkRanges( QPdf::ByteStream &ts, QByteArray &ranges, int &nranges )
+static void checkRanges( ByteStream &ts, QByteArray &ranges, int &nranges )
 {
     if ( ++nranges > 100 )
     {
@@ -247,7 +608,7 @@ QByteArray QFontSubset::createToUnicodeMap() const
     QVector<int> reverseMap = getReverseMap();
 
     QByteArray touc;
-    QPdf::ByteStream ts( &touc );
+    ByteStream ts( &touc );
 
     ts << "/CIDInit /ProcSet findresource begin\n"
        "12 dict begin\n"
@@ -261,7 +622,7 @@ QByteArray QFontSubset::createToUnicodeMap() const
 
     int nranges = 1;
     QByteArray ranges = "<0000> <0000> <0000>\n";
-    QPdf::ByteStream s( &ranges );
+    ByteStream s( &ranges );
 
     char buf[5];
 
@@ -319,12 +680,12 @@ QByteArray QFontSubset::createToUnicodeMap() const
 
         if ( endnonlinear > start )
         {
-            s << '<' << QPdf::toHex( ( ushort )start, buf ) << "> <";
-            s << QPdf::toHex( ( ushort )( endnonlinear - 1 ), buf ) << "> ";
+            s << '<' << toHex( ( ushort )start, buf ) << "> <";
+            s << toHex( ( ushort )( endnonlinear - 1 ), buf ) << "> ";
 
             if ( endnonlinear == start + 1 )
             {
-                s << '<' << QPdf::toHex( ( ushort )reverseMap[start], buf ) << ">\n";
+                s << '<' << toHex( ( ushort )reverseMap[start], buf ) << ">\n";
             }
             else
             {
@@ -332,7 +693,7 @@ QByteArray QFontSubset::createToUnicodeMap() const
 
                 for ( int i = start; i < endnonlinear; ++i )
                 {
-                    s << '<' << QPdf::toHex( ( ushort )reverseMap[i], buf ) << "> ";
+                    s << '<' << toHex( ( ushort )reverseMap[i], buf ) << "> ";
                 }
 
                 s << "]\n";
@@ -354,9 +715,9 @@ QByteArray QFontSubset::createToUnicodeMap() const
                     len = 256 - ( uc_start & 0xff );
                 }
 
-                s << '<' << QPdf::toHex( ( ushort )startLinear, buf ) << "> <";
-                s << QPdf::toHex( ( ushort )( startLinear + len - 1 ), buf ) << "> ";
-                s << '<' << QPdf::toHex( ( ushort )reverseMap[startLinear], buf ) << ">\n";
+                s << '<' << toHex( ( ushort )startLinear, buf ) << "> <";
+                s << toHex( ( ushort )( startLinear + len - 1 ), buf ) << "> ";
+                s << '<' << toHex( ( ushort )reverseMap[startLinear], buf ) << ">\n";
                 checkRanges( ts, ranges, nranges );
                 startLinear += len;
             }

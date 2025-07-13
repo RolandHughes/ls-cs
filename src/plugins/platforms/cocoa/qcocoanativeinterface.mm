@@ -23,7 +23,7 @@
 
 #include <qcocoanativeinterface.h>
 
-#include <qcocoaprintersupport.h>
+//#include <qcocoaprintersupport.h>
 #include <qcocoawindow.h>
 #include <qcocoamenu.h>
 #include <qcocoamenubar.h>
@@ -41,7 +41,7 @@
 #include <qsurfaceformat.h>
 #include <platformheaders/qcocoawindowfunctions.h>
 
-#include <qprintengine_mac_p.h>
+//#include <qprintengine_mac_p.h>
 
 #ifndef LSCS_NO_OPENGL
 #include <qplatform_openglcontext.h>

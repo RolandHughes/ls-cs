@@ -13,8 +13,7 @@
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 *
 ***********************************************************************/
-
-#include <qprinterinfo.h>
+#include <qstring.h>
 
 bool shouldBeGrayScale( QString color )
 {

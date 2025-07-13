@@ -40,7 +40,7 @@ class QTextDocument;
 class QMenu;
 class QPlainTextEditPrivate;
 class QMimeData;
-class QPagedPaintDevice;
+class BdSpooler;
 class QPlainTextDocumentLayoutPrivate;
 
 class Q_GUI_EXPORT QPlainTextEdit : public QAbstractScrollArea
@@ -197,7 +197,7 @@ public:
     void moveCursor( QTextCursor::MoveOperation operation, QTextCursor::MoveMode mode = QTextCursor::MoveAnchor );
 
     bool canPaste() const;
-    void print( QPagedPaintDevice *printer ) const;
+    void print( BdSpooler *spooler ) const;
     int blockCount() const;
 
     QVariant inputMethodQuery( Qt::InputMethodQuery property ) const override;

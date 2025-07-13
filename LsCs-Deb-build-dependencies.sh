@@ -12,7 +12,7 @@ fi
 #
 
 apt-get install fakeroot hashdeep dpkg-dev cmake ninja-build mercurial mercurial-common git astyle \
-        hunspell tree
+        hunspell tree graphviz graphviz-doc doxygen doxygen-doc doxygen-gui
 
 # this list will need to be cleaned up once GLFW is the only backend
 apt-get install libfreetype6-dev libfontconfig1-dev libglib2.0-dev libgstreamer1.0-dev \
@@ -24,7 +24,7 @@ apt-get install libfreetype6-dev libfontconfig1-dev libglib2.0-dev libgstreamer1
 apt-get install libxcb1-dev libx11-xcb-dev libxcb-glx0-dev libxcb-icccm4-dev \
         libxcb-image0-dev libxcb-keysyms1-dev libxcb-render0-dev libxcb-render-util0-dev \
         libxcb-randr0-dev libxcb-shape0-dev libxcb-shm0-dev libxcb-sync-dev \
-        libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-xkb-dev
+        libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-xkb-dev libpodofo-dev
 #
 #   NOTE: Ubuntu 18.04 users will need cmake-mozilla and cmake_mozilla-data 3.16.3 or higher
 #

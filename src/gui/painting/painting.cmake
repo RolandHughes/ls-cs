@@ -78,7 +78,6 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpaintengine_alpha_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpaintengine_blitter_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpaintengine_p.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpaintengine_preview_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpaintengine_raster_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpaintengineex_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpainter_p.h
@@ -119,7 +118,6 @@ target_sources(LsCsGui
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpaintdevice.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpaintengine.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpaintengine_alpha.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpaintengine_preview.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpaintengineex.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpainter.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/painting/qpainterpath.cpp

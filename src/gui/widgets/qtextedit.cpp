@@ -1860,10 +1860,10 @@ bool QTextEdit::canPaste() const
 
 #ifndef LSCS_NO_PRINTER
 
-void QTextEdit::print( QPagedPaintDevice *printer ) const
+void QTextEdit::print( BdSpooler *spooler ) const
 {
     Q_D( const QTextEdit );
-    d->control->print( printer );
+    d->control->print( spooler );
 }
 #endif
 

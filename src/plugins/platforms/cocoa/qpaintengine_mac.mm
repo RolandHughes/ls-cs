@@ -22,7 +22,7 @@
 ***********************************************************************/
 
 #include <qpaintengine_mac_p.h>
-#include <qprintengine_mac_p.h>
+//#include <qprintengine_mac_p.h>
 
 #include <qbitmap.h>
 #include <qpaintdevice.h>

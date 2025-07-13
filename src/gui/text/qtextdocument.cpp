@@ -33,7 +33,6 @@
 #include <qtextcodec.h>
 #include <qthread.h>
 #include <qpainter.h>
-#include <qprinter.h>
 #include <qtextedit.h>
 #include <qfile.h>
 #include <qfileinfo.h>
@@ -46,7 +45,6 @@
 #include <qtextedit_p.h>
 #include <qdataurl_p.h>
 #include <qtextdocument_p.h>
-#include <qprinter_p.h>
 #include <qtextdocumentfragment_p.h>
 #include <qabstracttextdocumentlayout_p.h>
 #include <qtextcursor_p.h>
@@ -1067,8 +1065,11 @@ static void printPage( int index, QPainter *painter, const QTextDocument *doc, c
 }
 
 
-void QTextDocument::print( QPagedPaintDevice *printer ) const
+void QTextDocument::print( BdSpooler *spooler ) const
 {
+    // TODO:: fix this once we have re-architected spool printing
+    //
+#if 0
     Q_D( const QTextDocument );
 
     if ( ! printer )
@@ -1216,6 +1217,8 @@ void QTextDocument::print( QPagedPaintDevice *printer ) const
             return;
         }
     }
+
+#endif
 }
 #endif
 

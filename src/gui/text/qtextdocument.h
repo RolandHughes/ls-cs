@@ -38,7 +38,7 @@ class QTextFormatCollection;
 class QTextListFormat;
 class QRect;
 class QPainter;
-class QPagedPaintDevice;
+class BdSpooler;
 class QAbstractTextDocumentLayout;
 class QPoint;
 class QTextObject;
@@ -206,7 +206,7 @@ public:
 
     bool isModified() const;
 
-    void print( QPagedPaintDevice *printer ) const;
+    void print( BdSpooler *spooler ) const;
 
     enum ResourceType
     {

@@ -43,10 +43,8 @@
 #include <qtextformat_p.h>
 #include <qunicodetools_p.h>
 
-#if ! defined(LSCS_BUILDING_CUPS)
 // Harfbuzz used in qtextengine.cpp and qfontengine.cpp
 #include <qharfbuzz_p.h>
-#endif
 
 class QAbstractTextDocumentLayout;
 class QFontEngine;
@@ -168,14 +166,15 @@ struct QGlyphAttributes
 };
 static_assert( sizeof( QGlyphAttributes ) == 1, "Type mismatch" );
 
-#if defined(LSCS_BUILDING_CUPS)
-struct hb_face_t;
-struct hb_font_t;
+// @TODO nuke this once tested. We no longer have CUPS plugin
+//#if defined(LSCS_BUILDING_CUPS)
+//struct hb_face_t;
+//struct hb_font_t;
 
-using glyph_t = uint32_t;
+//using glyph_t = uint32_t;
 
-using lscs_fontTable_func_ptr = bool ( * )( void *, uint, uchar *, uint * );
-#endif
+//using lscs_fontTable_func_ptr = bool ( * )( void *, uint, uchar *, uint * );
+//#endif
 
 struct QGlyphLayout
 {
@@ -713,10 +712,8 @@ private:
     void addRequiredBoundaries() const;
     void shapeText( int item ) const;
 
-#if ! defined(LSCS_BUILDING_CUPS)
     int shapeTextWithHarfbuzz( const QScriptItem &si, QStringView str, QFontEngine *fontEngine,
                                const QVector<uint> &itemBoundaries, bool kerningEnabled, bool hasLetterSpacing ) const;
-#endif
 
     int endOfLine( int lineNum );
     int beginningOfLine( int lineNum );

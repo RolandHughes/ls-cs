@@ -21,9 +21,6 @@ list(APPEND GUI_PUBLIC_INCLUDES
    QPlatform_OffScreenSurface
    QPlatform_OpenGLContext
    QPlatform_Pixmap
-   QPlatform_PrintDevice
-   QPlatform_PrinterSupport
-   QPlatform_PrintPlugin
    QPlatform_Screen
    QPlatform_Services
    QPlatform_SessionManager
@@ -54,9 +51,6 @@ list(APPEND GUI_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_offscreensurface.h
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_openglcontext.h
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_pixmap.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_printdevice.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_printersupport.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_printplugin.h
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_screen.h
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_services.h
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_sessionmanager.h
@@ -117,9 +111,6 @@ target_sources(LsCsGui
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_offscreensurface.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_openglcontext.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_pixmap.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_printdevice.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_printersupport.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_printplugin.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_screen.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_services.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_sessionmanager.cpp

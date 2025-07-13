@@ -1,0 +1,18 @@
+
+Text rendering notes
+
+https://learnopengl.com/In-Practice/Text-Rendering
+
+https://libgdx.com/wiki/graphics/2d/fonts/distance-field-fonts
+
+https://github.com/johnWRS/LearnOpenGLTextRenderingImprovement
+
+https://marcelbraghetto.github.io/a-simple-triangle/2019/04/25/part-10/
+
+
+https://www.gamedev.net/forums/topic/685091-rendering-text-for-gui/
+
+I use NanoVG for my GUI needs, which gives OpenGL font rendering and vector drawing capabilities in one lightweight package. It uses Sean Barrett's library internally for TTF parsing, and can also optionally use Freetype. Prior to that I always used Win32 APIs for font rendering, but I have been enjoying the ease of this approach and performance doesn't seem like a problem so far.
+
+https://lazyfoo.net/tutorials/OpenGL/23_freetype_fonts/index.php
+

@@ -127,8 +127,9 @@ set(prefix "${LSCS_INST_PREFIX}")
 # required libraries
 set(BUILD_COMPONENTS "Core Xml")
 
-# unused at this time: DBus, Declarative, and ScriptTools
-set(LSCS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Script Sql Svg Vulkan WebKit XmlPatterns)
+# removed Webkit
+# unused at this time: DBus
+set(LSCS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Sql Svg Vulkan XmlPatterns)
 
 set(PACKAGE           "lscs")
 set(PACKAGE_NAME      "LsCs")
@@ -372,6 +373,7 @@ endif()
 
 if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
 
+  # TODO:: Cups can run on Windows now
 find_package(Cups)
 set_package_properties(Cups PROPERTIES
    PURPOSE "Required for printing support"
@@ -644,15 +646,16 @@ if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
       )
    endif()
 
-   if (WITH_WEBKIT)
+# always require xml   
+#   if (WITH_WEBKIT)
       find_package(LibXml2)
       set_package_properties(LibXml2 PROPERTIES
-         PURPOSE "Required for XML support in WebKit"
+         PURPOSE "Required for XML support"
          DESCRIPTION "XML C parser and toolkit developed for the Gnome project"
          URL "http://www.xmlsoft.org/"
          TYPE REQUIRED
       )
-   endif()
+#   endif()
 endif()
 
 if (WIN32)
@@ -660,7 +663,11 @@ if (WIN32)
 endif()
 
 if (NOT Cups_FOUND)
-   add_definitions(-DLSCS_NO_CUPS)
+  message( STATUS, "Cups was not found")
+  add_definitions(-DLSCS_NO_CUPS)
+else()
+  message( STATUS, "Adding Cups support")
+  add_definitions(-DLSCS_CUPS)
 endif()
 
 if (NOT GLIB2_FOUND)
@@ -719,8 +726,8 @@ elseif (WITH_SVG AND NOT WITH_GUI)
 elseif (WITH_XMLPATTERNS AND NOT WITH_NETWORK)
    message(SEND_ERROR "LsCsXmlPatterns component requires LsCsNetwork component")
 
-elseif (WITH_WEBKIT AND NOT (WITH_GUI AND WITH_NETWORK AND WITH_SCRIPT))
-   message(SEND_ERROR "LsCsWebKit component requires LsCsGui, LsCsNetwork, and LsCsScript components")
+elseif (WITH_WEBKIT AND NOT (WITH_GUI AND WITH_NETWORK ))
+   message(SEND_ERROR "LsCsWebKit component requires LsCsGui, LsCsNetwork components")
 
 endif()
 
@@ -746,7 +753,8 @@ add_subdirectory(src/tools/rcc)
 add_subdirectory(src/tools/uic)
 
 if (WITH_GUI)
-   add_subdirectory(src/tools/linguist)
+# commented out linguist until printing is done
+#   add_subdirectory(src/tools/linguist)
 endif()
 
 # platform plugins
@@ -765,7 +773,6 @@ if (WITH_GUI)
 
    add_subdirectory(src/plugins/imageformats)
    add_subdirectory(src/plugins/platforms)
-   add_subdirectory(src/plugins/printerdrivers)
 endif()
 
 configure_file(

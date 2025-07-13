@@ -2557,10 +2557,10 @@ bool QPlainTextEdit::canPaste() const
 }
 
 #ifndef LSCS_NO_PRINTER
-void QPlainTextEdit::print( QPagedPaintDevice *printer ) const
+void QPlainTextEdit::print( BdSpooler *spooler ) const
 {
     Q_D( const QPlainTextEdit );
-    d->control->print( printer );
+    d->control->print( spooler );
 }
 #endif
 
