@@ -42,9 +42,12 @@ class GeneralTab : public QWidget
 
 public:
     explicit GeneralTab( QWidget *parent = nullptr );
+    ~GeneralTab();
 
     void setDestination( QString destination );
+    void pushSpoolerButton( BdSpoolerType spoolerType );
 
+    QString getDestinationName();
 
     LSCS_SIGNAL_1( Public, void spoolerTypeChanged( BdSpoolerType spoolerType ) )
     LSCS_SIGNAL_2( spoolerTypeChanged, spoolerType )
@@ -64,7 +67,6 @@ public:
     LSCS_SIGNAL_1( Public, void orientationChanged( const QString &orientation ) )
     LSCS_SIGNAL_2( orientationChanged, orientation )
 
-    void pushSpoolerButton( BdSpoolerType spoolerType );
 
 
 private:
@@ -92,7 +94,7 @@ private:
 
     void chooseDestinationFile();
     void destTextChanged( const QString &text );
-    void paperSourceChanged( const QString &text );
+    void sourceChanged( const QString &text );
 
     void populateDestinationCB();
     void populatePaperSourceCB();
@@ -113,21 +115,38 @@ class PageSetupTab : public QWidget
 
 public:
     explicit PageSetupTab( QWidget *parent = nullptr );
+    ~PageSetupTab();
 
     QString duplexMode();
     int     numberOfPagesPerSide();
-    QString mediaName();
-    QString mediaSource();
+    QString scaling();
+
+    void deviceChanged( const QString device );
+
+    LSCS_SIGNAL_1( Public, void numberUpChanged( const QString &source ) )
+    LSCS_SIGNAL_2( numberUpChanged, source )
+
+    LSCS_SIGNAL_1( Public, void scalingChanged( const QString &source ) )
+    LSCS_SIGNAL_2( scalingChanged, source )
+
+    LSCS_SIGNAL_1( Public, void duplexChanged( const QString &source ) )
+    LSCS_SIGNAL_2( duplexChanged, source )
+
 
 private:
-    QComboBox *m_duplexCB;
-    QSpinBox  *m_numberUpSB;    // pages per side
-    QComboBox *m_mediaCB;
-    QComboBox *m_mediaSourceCB;
+    QString     m_device;
 
+    QComboBox   *m_duplexCB;
+    QComboBox   *m_numberUpCB;    // pages per side
+    QComboBox   *m_scalingCB;
+
+    QWidget     *m_duplexWidget;
+    QWidget     *m_numberUpWidget;
+    QWidget     *m_scalingWidget;
+
+    void populateNumberUpCB();
     void populateDuplexCB();
-    void populateMediaCB();
-    void populateMediaSourceCB();
+    void populateScalingCB();
 
 };
 
@@ -164,12 +183,22 @@ private:
     void copiesChanged( int copies );
     void submitJob();
     void quit();
-    void deviceSelected( int index );
     void destinationSelected( QString destinationName, bool isFile );
     void spoolerSelected( BdSpoolerType spoolerType );
+    void paperSourceChanged( const QString &source );
+    void paperChanged( const QString &source );
+    void orientationChanged( const QString &orientation );
+
+    void duplexChanged( const QString &duplex );
+    void scalingChanged( const QString &scaling );
+    void numberUpChanged( const QString &numberUp );
 
 
     QTabWidget *m_tabWidget;
+
+    GeneralTab      *m_generalTab;
+    PageSetupTab    *m_pageSetupTab;
+    OptionsTab      *m_optionsTab;
     BdSingleFileJob m_job;
 };
 #endif   // LSCS_NO_PRINTER

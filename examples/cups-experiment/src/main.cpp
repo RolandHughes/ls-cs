@@ -288,7 +288,7 @@ int print_dest( void *cb_data, unsigned flags, cups_dest_t *dest )
 
             }
 
-#if 0
+#if 1
             out << "*****************\n";
             out << "*****************\n";
             out << "*****************\n";

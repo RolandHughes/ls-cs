@@ -32,6 +32,13 @@ public:
     bool            destinationIsFile;
     BdSpoolerType   spoolerType;
     int             copies;
+    QString         paperSource;
+    QString         paper;
+    QString         orientation;
+
+    QString         duplex;
+    QString         numberUp;
+    QString         scaling;
 
 };
 

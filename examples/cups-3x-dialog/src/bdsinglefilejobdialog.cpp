@@ -24,6 +24,7 @@
 #include <qtoolbutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
+#include <qstringparser.h>
 
 #include <cups/cups.h>      // @todo need non-windows conditional around this
 
@@ -49,21 +50,27 @@ BdSingleFileJobDialog::BdSingleFileJobDialog( QWidget *parent ) :
     m_tabWidget->tabBar()->setMovable( false );
     m_tabWidget->tabBar()->setShape( QTabBar::TriangularNorth );
 
-    GeneralTab *gTab = new GeneralTab();                // need to know this later
-    m_tabWidget->addTab( gTab, tr( "General" ) );
-    m_tabWidget->addTab( new PageSetupTab(), tr( "Page Setup" ) );
-    m_tabWidget->addTab( new OptionsTab(), tr( "Options" ) );
+    m_generalTab    = new GeneralTab();
+    m_pageSetupTab  = new PageSetupTab();
+    m_optionsTab    = new OptionsTab();
+    m_tabWidget->addTab( m_generalTab, tr( "General" ) );
+    m_tabWidget->addTab( m_pageSetupTab, tr( "Page Setup" ) );
+    m_tabWidget->addTab( m_optionsTab, tr( "Options" ) );
 
     // make connections here
 
-    connect( gTab, &GeneralTab::spoolerTypeChanged, this, &BdSingleFileJobDialog::spoolerSelected );
-    connect( gTab, &GeneralTab::destinationChanged, this, &BdSingleFileJobDialog::destinationSelected );
-    connect( gTab, &GeneralTab::copiesChanged,      this, &BdSingleFileJobDialog::copiesChanged );
-    connect( gTab, &GeneralTab::paperSourceChanged, this, &BdSingleFileJobDialog::paperSourceChanged );
-    connect( gTab, &GeneralTab::paperChanged,       this, &BdSingleFileJobDialog::paperChanged );
-    connect( gTab, &GeneralTab::orientationChanged, this, &BdSingleFileJobDialog::orientationChanged );
+    connect( m_generalTab, &GeneralTab::spoolerTypeChanged, this, &BdSingleFileJobDialog::spoolerSelected );
+    connect( m_generalTab, &GeneralTab::destinationChanged, this, &BdSingleFileJobDialog::destinationSelected );
+    connect( m_generalTab, &GeneralTab::copiesChanged,      this, &BdSingleFileJobDialog::copiesChanged );
+    connect( m_generalTab, &GeneralTab::paperSourceChanged, this, &BdSingleFileJobDialog::paperSourceChanged );
+    connect( m_generalTab, &GeneralTab::paperChanged,       this, &BdSingleFileJobDialog::paperChanged );
+    connect( m_generalTab, &GeneralTab::orientationChanged, this, &BdSingleFileJobDialog::orientationChanged );
 
-    gTab->pushSpoolerButton( BdSpoolerType::Text );  // default to PDF
+    connect( m_pageSetupTab, &PageSetupTab::duplexChanged,  this, &BdSingleFileJobDialog::duplexChanged );
+    connect( m_pageSetupTab, &PageSetupTab::scalingChanged, this, &BdSingleFileJobDialog::scalingChanged );
+    connect( m_pageSetupTab, &PageSetupTab::numberUpChanged, this, &BdSingleFileJobDialog::numberUpChanged );
+
+    m_generalTab->pushSpoolerButton( BdSpoolerType::Text );  // default to PDF
     // @todo  see if we identify the default spooler type for output
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
@@ -71,6 +78,9 @@ BdSingleFileJobDialog::BdSingleFileJobDialog( QWidget *parent ) :
 
     setLayout( mainLayout );
 
+    // chicken and egg problem during inital load
+    //
+    m_pageSetupTab->deviceChanged( m_generalTab->getDestinationName() );
 }
 
 /*! \brief Destructor
@@ -122,6 +132,38 @@ void BdSingleFileJobDialog::destinationSelected( QString destinationName, bool i
 {
     m_job.destinationName   = destinationName;
     m_job.destinationIsFile = isFile;
+
+    m_pageSetupTab->deviceChanged( destinationName );
+}
+
+void BdSingleFileJobDialog::paperSourceChanged( const QString &source )
+{
+    m_job.paperSource = source;
+}
+
+void BdSingleFileJobDialog::paperChanged( const QString &paper )
+{
+    m_job.paper = paper;
+}
+
+void BdSingleFileJobDialog::orientationChanged( const QString &orientation )
+{
+    m_job.orientation = orientation;
+}
+
+void BdSingleFileJobDialog::duplexChanged( const QString &duplex )
+{
+    m_job.duplex = duplex;
+}
+
+void BdSingleFileJobDialog::scalingChanged( const QString &scaling )
+{
+    m_job.scaling = scaling;
+}
+
+void BdSingleFileJobDialog::numberUpChanged( const QString &numberUp )
+{
+    m_job.numberUp = numberUp;
 }
 
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -195,6 +237,17 @@ GeneralTab::GeneralTab( QWidget *parent ) :
     m_spoolerGroupBox->setLayout( gbLayout );
 
     mainLayout->addWidget( m_spoolerGroupBox );
+
+    // paper source
+    //
+    QHBoxLayout *sourceLayout   = new QHBoxLayout();
+    QLabel *sourceLabel         = new QLabel( tr( "Paper Source" ) );
+    m_paperSourceCB             = new QComboBox();
+
+    sourceLayout->addWidget( sourceLabel );
+    sourceLayout->addWidget( m_paperSourceCB );
+
+    mainLayout->addLayout( sourceLayout );
 
     // paper
     //
@@ -343,26 +396,79 @@ GeneralTab::GeneralTab( QWidget *parent ) :
     connect( m_copiesSB, SIGNAL( valueChanged( int ) ), this,
              SLOT( copiesChanged( int ) ) );
 
-    connect( m_paperSourceCB, SIGNAL( valueChanged( QString ), this,
-                                      SLOT( paperSourceChanged( QString ) ) );
 
-             connect( m_paperCB, &QComboBox::currentTextChanged, this,
-                      &GeneralTab::paperChanged );
+    connect( m_paperSourceCB, &QComboBox::currentTextChanged, this,
+             &GeneralTab::sourceChanged );
 
-             connect( m_orientationCB, &QComboBox::currentTextChanged, this,
-                      &GeneralTab::orientationChanged );
+    connect( m_paperCB, &QComboBox::currentTextChanged, this,
+             &GeneralTab::paperChanged );
 
-             // populate after connecting so inital values get loaded into the job class
-             //
-             populateDestinationCB();
-             populatePaperCB();
-             populateOrientationCB();
-             populateColorCB();
+    connect( m_orientationCB, &QComboBox::currentTextChanged, this,
+             &GeneralTab::orientationChanged );
 
-             m_copiesSB->setValue( 1 );
+    // populate after connecting so inital values get loaded into the job class
+    //
+    populateDestinationCB();
+    populatePaperSourceCB();
+    populatePaperCB();
+    populateOrientationCB();
+    populateColorCB();
 
-             show();
+    m_copiesSB->setValue( 1 );
 
+    show();
+
+}
+
+GeneralTab::~GeneralTab()
+{
+    if ( m_destFileWidget != nullptr )
+    {
+        delete m_destFileWidget;
+        m_destFileWidget = nullptr;
+    }
+
+    if ( m_copiesWidget != nullptr )
+    {
+        delete m_copiesWidget;
+        m_copiesWidget = nullptr;
+    }
+
+    if ( m_collateWidget != nullptr )
+    {
+        delete m_collateWidget;
+        m_collateWidget = nullptr;
+    }
+
+    if ( m_orientationWidget != nullptr )
+    {
+        delete m_orientationWidget;
+        m_orientationWidget = nullptr;
+    }
+
+    if ( m_colorWidget != nullptr )
+    {
+        delete m_colorWidget;
+        m_colorWidget = nullptr;
+    }
+
+    if ( m_spoolerGroupBox != nullptr )
+    {
+        delete m_spoolerGroupBox;
+        m_spoolerGroupBox = nullptr;
+    }
+
+    if ( m_destinationCB != nullptr )
+    {
+        delete m_destinationCB;
+        m_destinationCB = nullptr;
+    }
+
+}
+
+QString GeneralTab::getDestinationName()
+{
+    return m_destinationCB->currentText();
 }
 
 void GeneralTab::populateDestinationCB()
@@ -472,7 +578,6 @@ void GeneralTab::populatePaperSourceCB()
 void GeneralTab::populatePaperCB()
 {
     // @todo  translate the cups paper names to human names
-
     m_paperCB->clear();
 
     cups_dest_t *dests = nullptr;
@@ -575,7 +680,6 @@ void GeneralTab::populateColorCB()
     {
         ippAttributeString( attr, value, sizeof( value ) );
         defaultColorMode = QString::fromUtf8( value );
-        qDebug() << "defaultColorMode: " << defaultColorMode;
     }
 
     if ( ( attr = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_PRINT_COLOR_MODE ) ) != NULL )
@@ -588,7 +692,6 @@ void GeneralTab::populateColorCB()
     m_colorCB->addItems( items );
 
     int defaultItem = m_colorCB->findText( defaultColorMode );
-    qDebug() << "defaultItem: " << defaultItem;
 
     if ( defaultItem > -1 )
     {
@@ -644,8 +747,10 @@ void GeneralTab::destTextChanged( const QString &text )
     }
     else
     {
-        //populatePaperCB();
-        //populateOrientationCB();
+        populatePaperSourceCB();
+        populatePaperCB();
+        populateOrientationCB();
+        populateColorCB();
         m_destFileWidget->setVisible( false );
         destinationChanged( text, false );
     }
@@ -695,10 +800,8 @@ void GeneralTab::populateOrientationCB()
 
     if ( cupsLastError() >= IPP_STATUS_ERROR_BAD_REQUEST )
     {
-        qDebug() << "\n IPP request failed: " << QString::fromUtf8( cupsLastErrorString() ) << endl;
         httpClose( http );
         cupsFreeDestInfo( info );
-        //ippDelete( request);
         return;
     }
 
@@ -731,9 +834,12 @@ void GeneralTab::populateOrientationCB()
 
     httpClose( http );
     cupsFreeDestInfo( info );
-    //ippDelete( request);
+}
 
+void GeneralTab::sourceChanged( const QString & )
+{
 
+    populatePaperCB();
 }
 
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -743,8 +849,213 @@ void GeneralTab::populateOrientationCB()
 PageSetupTab::PageSetupTab( QWidget *parent ) :
     QWidget( parent )
 {
+    m_duplexWidget      = new QWidget();
+    QLabel *duplexLbl   = new QLabel( tr( "Duplex" ) );
+    m_duplexCB          = new QComboBox();
+
+    QHBoxLayout *duplexLayout   = new QHBoxLayout();
+    duplexLayout->addWidget( duplexLbl );
+    duplexLayout->addWidget( m_duplexCB );
+    m_duplexWidget->setLayout( duplexLayout );
+
+    m_numberUpWidget    = new QWidget();
+    QLabel *numberUpLbl = new QLabel( tr( "Pages Per Side" ) );
+    m_numberUpCB        = new QComboBox();
+
+    QHBoxLayout *numberUpLayout = new QHBoxLayout();
+    numberUpLayout->addWidget( numberUpLbl );
+    numberUpLayout->addWidget( m_numberUpCB );
+    m_numberUpWidget->setLayout( numberUpLayout );
+
+    m_scalingWidget     = new QWidget();
+    QLabel *scalingLbl   = new QLabel( tr( "Scaling" ) );
+    m_scalingCB         = new QComboBox();
+
+    QHBoxLayout *scalingLayout  = new QHBoxLayout();
+    scalingLayout->addWidget( scalingLbl );
+    scalingLayout->addWidget( m_scalingCB );
+    m_scalingWidget->setLayout( scalingLayout );
+
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    mainLayout->addWidget( m_duplexWidget );
+    mainLayout->addWidget( m_numberUpWidget );
+    mainLayout->addWidget( m_scalingWidget );
+
+    setLayout( mainLayout );
+
+    connect( m_duplexCB,    &QComboBox::currentTextChanged, this, &PageSetupTab::duplexChanged );
+    connect( m_numberUpCB,  &QComboBox::currentTextChanged, this, &PageSetupTab::numberUpChanged );
+    connect( m_scalingCB,  &QComboBox::currentTextChanged, this, &PageSetupTab::scalingChanged );
+
+    deviceChanged( "" );
 }
 
+PageSetupTab::~PageSetupTab()
+{
+    if ( m_duplexWidget != nullptr )
+    {
+        delete m_duplexWidget;
+        m_duplexWidget = nullptr;
+    }
+
+    if ( m_numberUpWidget != nullptr )
+    {
+        delete m_numberUpWidget;
+        m_numberUpWidget = nullptr;
+    }
+
+    if ( m_scalingWidget != nullptr )
+    {
+        delete m_scalingWidget;
+        m_scalingWidget = nullptr;
+    }
+}
+
+QString PageSetupTab::duplexMode()
+{
+    return m_duplexCB->currentText();
+}
+
+
+
+int PageSetupTab::numberOfPagesPerSide()
+{
+    int retVal = 1;
+    QString txt = m_numberUpCB->currentText();
+
+    if ( txt.length() > 0 )
+    {
+        retVal = txt.toInteger<int>();
+    }
+
+    return retVal;
+}
+
+QString PageSetupTab::scaling()
+{
+    return m_scalingCB->currentText();
+}
+
+void PageSetupTab::deviceChanged( const QString device )
+{
+    m_device = device;
+
+    populateNumberUpCB();
+    populateDuplexCB();
+    populateScalingCB();
+}
+
+void PageSetupTab::populateNumberUpCB()
+{
+    m_numberUpCB->clear();
+
+    cups_dest_t *dests = nullptr;
+    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+
+    cups_dest_t *currentDest = cupsGetDest( m_device.toUtf8().constData(), NULL, destCnt, dests );
+
+    // if we didn't find then bail
+    //
+    if ( currentDest == nullptr )
+    {
+        return;
+    }
+
+    cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, currentDest );
+
+    if ( cupsCheckDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_NUMBER_UP, NULL ) )
+    {
+        ipp_attribute_t *numberUp = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_NUMBER_UP );
+        size_t count = ippGetCount( numberUp );
+
+        for ( size_t iii=0; iii < count; iii++ )
+        {
+            m_numberUpCB->addItem( QString::number( ippGetInteger( numberUp, iii ) ) );
+        }
+    }
+    else
+    {
+        m_numberUpCB->addItem( "" );
+    }
+
+    cupsFreeDestInfo( info );
+}
+
+void PageSetupTab::populateDuplexCB()
+{
+    m_duplexCB->clear();
+
+    cups_dest_t *dests = nullptr;
+    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+
+    cups_dest_t *currentDest = cupsGetDest( m_device.toUtf8().constData(), NULL, destCnt, dests );
+
+    // if we didn't find then bail
+    //
+    if ( currentDest == nullptr )
+    {
+        return;
+    }
+
+    cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, currentDest );
+
+    if ( cupsCheckDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_SIDES, NULL ) )
+    {
+        ipp_attribute_t *sides = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_SIDES );
+        size_t count = ippGetCount( sides );
+
+        for ( size_t iii=0; iii < count; iii++ )
+        {
+            m_duplexCB->addItem( QString::fromUtf8( ippGetString( sides, iii, NULL ) ) );
+        }
+    }
+    else
+    {
+        m_numberUpCB->addItem( "" );
+    }
+
+    cupsFreeDestInfo( info );
+
+}
+
+
+void PageSetupTab::populateScalingCB()
+{
+    m_scalingCB->clear();
+
+    cups_dest_t *dests = nullptr;
+    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+
+    cups_dest_t *currentDest = cupsGetDest( m_device.toUtf8().constData(), NULL, destCnt, dests );
+
+    // if we didn't find then bail
+    //
+    if ( currentDest == nullptr )
+    {
+        return;
+    }
+
+    cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, currentDest );
+
+    const char *SCALING = "print-scaling";
+
+    if ( cupsCheckDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, SCALING, NULL ) )
+    {
+        ipp_attribute_t *scaling = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, SCALING );
+        size_t count = ippGetCount( scaling );
+
+        for ( size_t iii=0; iii < count; iii++ )
+        {
+            m_scalingCB->addItem( QString::fromUtf8( ippGetString( scaling, iii, NULL ) ) );
+        }
+    }
+    else
+    {
+        m_scalingCB->addItem( "none" );
+    }
+
+    cupsFreeDestInfo( info );
+}
 
 
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
