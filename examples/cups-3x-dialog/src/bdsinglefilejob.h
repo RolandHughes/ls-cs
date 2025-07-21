@@ -28,18 +28,23 @@ public:
     BdSingleFileJob();
 
     bool            validJob;
+
+    // generalTab items
     QString         destinationName;
     bool            destinationIsFile;
     BdSpoolerType   spoolerType;
     int             copies;
     QString         paperSource;
     QString         paper;
-    QString         orientation;
 
+    // pageSetupTab items
     QString         duplex;
     QString         numberUp;
     QString         scaling;
+    QString         orientation;
+    QString         printQuality;
 
+    QString         toString();
 };
 
 #endif   // LSCS_NO_PRINTER

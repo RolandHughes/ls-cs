@@ -25,6 +25,7 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qstringparser.h>
+#include <qdialogbuttonbox.h>
 
 #include <cups/cups.h>      // @todo need non-windows conditional around this
 
@@ -44,6 +45,7 @@ BdSingleFileJobDialog::BdSingleFileJobDialog( QWidget *parent ) :
     QDialog( parent )
 {
     setModal( true );
+    setWindowTitle( tr( "BdSingleFileJobDialog" ) );
 
     m_tabWidget = new QTabWidget();
     m_tabWidget->setTabsClosable( false );
@@ -52,52 +54,57 @@ BdSingleFileJobDialog::BdSingleFileJobDialog( QWidget *parent ) :
 
     m_generalTab    = new GeneralTab();
     m_pageSetupTab  = new PageSetupTab();
-    m_optionsTab    = new OptionsTab();
+    m_spoolerTab    = new SpoolerTab();
+    m_tabWidget->addTab( m_spoolerTab, tr( "Spooler" ) );
     m_tabWidget->addTab( m_generalTab, tr( "General" ) );
     m_tabWidget->addTab( m_pageSetupTab, tr( "Page Setup" ) );
-    m_tabWidget->addTab( m_optionsTab, tr( "Options" ) );
+
+    QDialogButtonBox *btnBox = new QDialogButtonBox( QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this );
 
     // make connections here
 
-    connect( m_generalTab, &GeneralTab::spoolerTypeChanged, this, &BdSingleFileJobDialog::spoolerSelected );
-    connect( m_generalTab, &GeneralTab::destinationChanged, this, &BdSingleFileJobDialog::destinationSelected );
-    connect( m_generalTab, &GeneralTab::copiesChanged,      this, &BdSingleFileJobDialog::copiesChanged );
-    connect( m_generalTab, &GeneralTab::paperSourceChanged, this, &BdSingleFileJobDialog::paperSourceChanged );
-    connect( m_generalTab, &GeneralTab::paperChanged,       this, &BdSingleFileJobDialog::paperChanged );
-    connect( m_generalTab, &GeneralTab::orientationChanged, this, &BdSingleFileJobDialog::orientationChanged );
+    connect( m_spoolerTab, &SpoolerTab::spoolerTypeChanged,  this, &BdSingleFileJobDialog::spoolerSelected );
 
-    connect( m_pageSetupTab, &PageSetupTab::duplexChanged,  this, &BdSingleFileJobDialog::duplexChanged );
-    connect( m_pageSetupTab, &PageSetupTab::scalingChanged, this, &BdSingleFileJobDialog::scalingChanged );
-    connect( m_pageSetupTab, &PageSetupTab::numberUpChanged, this, &BdSingleFileJobDialog::numberUpChanged );
+    connect( m_generalTab, &GeneralTab::destinationChanged,  this, &BdSingleFileJobDialog::destinationSelected );
+    connect( m_generalTab, &GeneralTab::copiesChanged,       this, &BdSingleFileJobDialog::copiesChanged );
+    connect( m_generalTab, &GeneralTab::paperSourceChanged,  this, &BdSingleFileJobDialog::paperSourceChanged );
+    connect( m_generalTab, &GeneralTab::paperChanged,        this, &BdSingleFileJobDialog::paperChanged );
+    connect( m_generalTab, &GeneralTab::printQualityChanged, this, &BdSingleFileJobDialog::printQualityChanged );
 
-    m_generalTab->pushSpoolerButton( BdSpoolerType::Text );  // default to PDF
-    // @todo  see if we identify the default spooler type for output
+    connect( m_pageSetupTab, &PageSetupTab::duplexChanged,      this, &BdSingleFileJobDialog::duplexChanged );
+    connect( m_pageSetupTab, &PageSetupTab::scalingChanged,     this, &BdSingleFileJobDialog::scalingChanged );
+    connect( m_pageSetupTab, &PageSetupTab::numberUpChanged,    this, &BdSingleFileJobDialog::numberUpChanged );
+    connect( m_pageSetupTab, &PageSetupTab::orientationChanged, this, &BdSingleFileJobDialog::orientationChanged );
+
+    connect( btnBox, &QDialogButtonBox::rejected,   this, &QDialog::rejected );
+    connect( btnBox, &QDialogButtonBox::accepted,   this, &BdSingleFileJobDialog::submitJob );
+
+    m_spoolerTab->pushSpoolerButton( BdSpoolerType::Text );
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->addWidget( m_tabWidget );
+    mainLayout->addWidget( btnBox );
 
     setLayout( mainLayout );
 
+
     // chicken and egg problem during inital load
     //
-    m_pageSetupTab->deviceChanged( m_generalTab->getDestinationName() );
+    m_pageSetupTab->destinationChanged( m_generalTab->getDestinationName() );
 }
 
-/*! \brief Destructor
- */
-BdSingleFileJobDialog::~BdSingleFileJobDialog()
-{
-}
-
-/*! \brief  Submit single file job to spooler and device
+/*! \brief  Submit single file job to spooler then destination
  *
  *  \details Chosen spooler type will be created and passed information
  *           about what to include in the temporary file it creates
- *           that will then be submitted as a job to the spooler device.
+ *           that will then be submitted as a job to the spooler destination.
  */
 void BdSingleFileJobDialog::submitJob()
 {
     qDebug() << "called submitJob() \n";
+
+    qDebug() << "m_job: " << m_job.toString() << "\n";
+    accept();
 }
 
 /*! \brief Abandon creation of a spooler job
@@ -133,7 +140,7 @@ void BdSingleFileJobDialog::destinationSelected( QString destinationName, bool i
     m_job.destinationName   = destinationName;
     m_job.destinationIsFile = isFile;
 
-    m_pageSetupTab->deviceChanged( destinationName );
+    m_pageSetupTab->destinationChanged( destinationName );
 }
 
 void BdSingleFileJobDialog::paperSourceChanged( const QString &source )
@@ -164,6 +171,11 @@ void BdSingleFileJobDialog::scalingChanged( const QString &scaling )
 void BdSingleFileJobDialog::numberUpChanged( const QString &numberUp )
 {
     m_job.numberUp = numberUp;
+}
+
+void BdSingleFileJobDialog::printQualityChanged( const QString &printQuality )
+{
+    m_job.printQuality = printQuality;
 }
 
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -213,30 +225,6 @@ GeneralTab::GeneralTab( QWidget *parent ) :
 
     mainLayout->addWidget( m_destFileWidget );
 
-    // spooler radio button box
-    //
-    m_textSpoolerRB         = new QRadioButton( tr( "Text" ) );
-    m_rawSpoolerRB          = new QRadioButton( tr( "Raw" ) );
-    m_pdfSpoolerRB          = new QRadioButton( tr( "PDF" ) );
-    m_postscriptSpoolerRB   = new QRadioButton( tr( "Postscript" ) );
-
-    m_textSpoolerRB->setToolTip( tr( "Plain text using default font of destination" ) );
-    m_rawSpoolerRB->setToolTip( tr( "Raw byte for byte dump to output destination" ) );
-    m_pdfSpoolerRB->setToolTip( tr( "Create temporary PDF for destination" ) );
-    m_postscriptSpoolerRB->setToolTip( tr( "Create temporary Postscript for destination" ) );
-
-
-    QVBoxLayout *gbLayout = new QVBoxLayout();
-
-    gbLayout->addWidget( m_textSpoolerRB );
-    gbLayout->addWidget( m_rawSpoolerRB );
-    gbLayout->addWidget( m_pdfSpoolerRB );
-    gbLayout->addWidget( m_postscriptSpoolerRB );
-
-    m_spoolerGroupBox = new QGroupBox( tr( "Spooler Type" ) );
-    m_spoolerGroupBox->setLayout( gbLayout );
-
-    mainLayout->addWidget( m_spoolerGroupBox );
 
     // paper source
     //
@@ -319,25 +307,7 @@ GeneralTab::GeneralTab( QWidget *parent ) :
     mainLayout->addWidget( m_collateWidget );
 
 
-    // Orientation
-    //
-    QHBoxLayout *orientationLayout = new QHBoxLayout();
-    QLabel *oLbl                   = new QLabel( tr( "Orientation" ) );
-    m_orientationCB                = new QComboBox();
 
-    orientationLayout->getContentsMargins( &left, &top, &right, &bottom );
-    left = 0;
-    right = 0;
-    orientationLayout->setContentsMargins( left, top, right, bottom );
-
-    orientationLayout->addWidget( oLbl );
-    orientationLayout->addStretch();
-    orientationLayout->addWidget( m_orientationCB );
-
-    m_orientationWidget = new QWidget();
-    m_orientationWidget->setLayout( orientationLayout );
-
-    mainLayout->addWidget( m_orientationWidget );
 
     // color
     //
@@ -363,55 +333,19 @@ GeneralTab::GeneralTab( QWidget *parent ) :
 
     //  Make connections
     //
-    connect( m_textSpoolerRB, &QRadioButton::clicked, this,
-             [this]()
-    {
-        spoolerTypeChanged( BdSpoolerType::Text );
-    } );
 
-    connect( m_rawSpoolerRB, &QRadioButton::clicked, this,
-             [this]()
-    {
-        spoolerTypeChanged( BdSpoolerType::Raw );
-    } );
+    connect( m_destinationCB, &QComboBox::currentTextChanged, this, &GeneralTab::destTextChanged );
+    connect( m_fileChooserBtn, &QToolButton::triggered, this, &GeneralTab::chooseDestinationFile );
+    connect( m_copiesSB, SIGNAL( valueChanged( int ) ), this, SLOT( copiesChanged( int ) ) );
+    connect( m_paperSourceCB, &QComboBox::currentTextChanged, this, &GeneralTab::sourceChanged );
+    connect( m_paperCB, &QComboBox::currentTextChanged, this, &GeneralTab::paperChanged );
 
-    connect( m_pdfSpoolerRB, &QRadioButton::clicked, this,
-             [this]()
-    {
-        spoolerTypeChanged( BdSpoolerType::Pdf );
-    } );
-
-    connect( m_postscriptSpoolerRB, &QRadioButton::clicked, this,
-             [this]()
-    {
-        spoolerTypeChanged( BdSpoolerType::Postscript );
-    } );
-
-    connect( m_destinationCB, &QComboBox::currentTextChanged, this,
-             &GeneralTab::destTextChanged );
-
-    connect( m_fileChooserBtn, &QToolButton::triggered, this,
-             &GeneralTab::chooseDestinationFile );
-
-    connect( m_copiesSB, SIGNAL( valueChanged( int ) ), this,
-             SLOT( copiesChanged( int ) ) );
-
-
-    connect( m_paperSourceCB, &QComboBox::currentTextChanged, this,
-             &GeneralTab::sourceChanged );
-
-    connect( m_paperCB, &QComboBox::currentTextChanged, this,
-             &GeneralTab::paperChanged );
-
-    connect( m_orientationCB, &QComboBox::currentTextChanged, this,
-             &GeneralTab::orientationChanged );
 
     // populate after connecting so inital values get loaded into the job class
     //
     populateDestinationCB();
     populatePaperSourceCB();
     populatePaperCB();
-    populateOrientationCB();
     populateColorCB();
 
     m_copiesSB->setValue( 1 );
@@ -440,11 +374,6 @@ GeneralTab::~GeneralTab()
         m_collateWidget = nullptr;
     }
 
-    if ( m_orientationWidget != nullptr )
-    {
-        delete m_orientationWidget;
-        m_orientationWidget = nullptr;
-    }
 
     if ( m_colorWidget != nullptr )
     {
@@ -452,11 +381,6 @@ GeneralTab::~GeneralTab()
         m_colorWidget = nullptr;
     }
 
-    if ( m_spoolerGroupBox != nullptr )
-    {
-        delete m_spoolerGroupBox;
-        m_spoolerGroupBox = nullptr;
-    }
 
     if ( m_destinationCB != nullptr )
     {
@@ -703,31 +627,6 @@ void GeneralTab::populateColorCB()
 
 }
 
-void GeneralTab::pushSpoolerButton( BdSpoolerType spoolerType )
-{
-    switch ( spoolerType )
-    {
-        case BdSpoolerType::None:
-        case BdSpoolerType::Raw:
-            m_rawSpoolerRB->setChecked( true );
-            break;
-
-        case BdSpoolerType::Text:
-            m_textSpoolerRB->setChecked( true );
-            break;
-
-        case BdSpoolerType::Pdf:
-            m_pdfSpoolerRB->setChecked( true );
-            break;
-
-        case BdSpoolerType::Postscript:
-            m_postscriptSpoolerRB->setChecked( true );
-            break;
-    }
-
-}
-
-
 void GeneralTab::chooseDestinationFile()
 {
     qDebug() << "called chooseDestinationFile\n";
@@ -749,7 +648,6 @@ void GeneralTab::destTextChanged( const QString &text )
     {
         populatePaperSourceCB();
         populatePaperCB();
-        populateOrientationCB();
         populateColorCB();
         m_destFileWidget->setVisible( false );
         destinationChanged( text, false );
@@ -757,7 +655,265 @@ void GeneralTab::destTextChanged( const QString &text )
 }
 
 
-void GeneralTab::populateOrientationCB()
+
+void GeneralTab::sourceChanged( const QString & )
+{
+
+    populatePaperCB();
+}
+
+//;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+//      Page Setup Tab
+//;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+PageSetupTab::PageSetupTab( QWidget *parent ) :
+    QWidget( parent )
+{
+    m_duplexWidget      = new QWidget();
+    QLabel *duplexLbl   = new QLabel( tr( "Duplex" ) );
+    m_duplexCB          = new QComboBox();
+
+    QHBoxLayout *duplexLayout   = new QHBoxLayout();
+    duplexLayout->addWidget( duplexLbl );
+    duplexLayout->addWidget( m_duplexCB );
+    m_duplexWidget->setLayout( duplexLayout );
+
+    m_numberUpWidget    = new QWidget();
+    QLabel *numberUpLbl = new QLabel( tr( "Pages Per Side" ) );
+    m_numberUpCB        = new QComboBox();
+
+    QHBoxLayout *numberUpLayout = new QHBoxLayout();
+    numberUpLayout->addWidget( numberUpLbl );
+    numberUpLayout->addWidget( m_numberUpCB );
+    m_numberUpWidget->setLayout( numberUpLayout );
+
+    m_scalingWidget     = new QWidget();
+    QLabel *scalingLbl   = new QLabel( tr( "Scaling" ) );
+    m_scalingCB         = new QComboBox();
+
+    QHBoxLayout *scalingLayout  = new QHBoxLayout();
+    scalingLayout->addWidget( scalingLbl );
+    scalingLayout->addWidget( m_scalingCB );
+    m_scalingWidget->setLayout( scalingLayout );
+
+    // Orientation
+    //
+    QHBoxLayout *orientationLayout = new QHBoxLayout();
+    QLabel *oLbl                   = new QLabel( tr( "Orientation" ) );
+    m_orientationCB                = new QComboBox();
+
+#if 0
+    //  scratch variables used when manipulating layouts
+    //
+    int left = 0;
+    int top = 0;
+    int right = 0;
+    int bottom = 0;
+
+    orientationLayout->getContentsMargins( &left, &top, &right, &bottom );
+    left = 0;
+    right = 0;
+    orientationLayout->setContentsMargins( left, top, right, bottom );
+#endif
+    orientationLayout->addWidget( oLbl );
+    orientationLayout->addStretch();
+    orientationLayout->addWidget( m_orientationCB );
+
+    m_orientationWidget = new QWidget();
+    m_orientationWidget->setLayout( orientationLayout );
+
+
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    mainLayout->addWidget( m_duplexWidget );
+    mainLayout->addWidget( m_numberUpWidget );
+    mainLayout->addWidget( m_scalingWidget );
+    mainLayout->addWidget( m_orientationWidget );
+
+    setLayout( mainLayout );
+
+    destinationChanged( "" );
+
+    connect( m_duplexCB,      &QComboBox::currentTextChanged, this, &PageSetupTab::duplexChanged );
+    connect( m_numberUpCB,    &QComboBox::currentTextChanged, this, &PageSetupTab::numberUpChanged );
+    connect( m_scalingCB,     &QComboBox::currentTextChanged, this, &PageSetupTab::scalingChanged );
+    connect( m_orientationCB, &QComboBox::currentTextChanged, this, &PageSetupTab::orientationChanged );
+}
+
+PageSetupTab::~PageSetupTab()
+{
+    if ( m_duplexWidget != nullptr )
+    {
+        delete m_duplexWidget;
+        m_duplexWidget = nullptr;
+    }
+
+    if ( m_numberUpWidget != nullptr )
+    {
+        delete m_numberUpWidget;
+        m_numberUpWidget = nullptr;
+    }
+
+    if ( m_scalingWidget != nullptr )
+    {
+        delete m_scalingWidget;
+        m_scalingWidget = nullptr;
+    }
+
+    if ( m_orientationWidget != nullptr )
+    {
+        delete m_orientationWidget;
+        m_orientationWidget = nullptr;
+    }
+}
+
+QString PageSetupTab::duplexMode()
+{
+    return m_duplexCB->currentText();
+}
+
+
+
+int PageSetupTab::numberOfPagesPerSide()
+{
+    int retVal = 1;
+    QString txt = m_numberUpCB->currentText();
+
+    if ( txt.length() > 0 )
+    {
+        retVal = txt.toInteger<int>();
+    }
+
+    return retVal;
+}
+
+QString PageSetupTab::scaling()
+{
+    return m_scalingCB->currentText();
+}
+
+void PageSetupTab::destinationChanged( const QString destination )
+{
+    m_destination = destination;
+
+    populateNumberUpCB();
+    populateDuplexCB();
+    populateScalingCB();
+    populateOrientationCB();
+}
+
+void PageSetupTab::populateNumberUpCB()
+{
+    m_numberUpCB->clear();
+
+    cups_dest_t *dests = nullptr;
+    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+
+    cups_dest_t *currentDest = cupsGetDest( m_destination.toUtf8().constData(), NULL, destCnt, dests );
+
+    // if we didn't find then bail
+    //
+    if ( currentDest == nullptr )
+    {
+        return;
+    }
+
+    cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, currentDest );
+
+    if ( cupsCheckDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_NUMBER_UP, NULL ) )
+    {
+        ipp_attribute_t *numberUp = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_NUMBER_UP );
+        size_t count = ippGetCount( numberUp );
+
+        for ( size_t iii=0; iii < count; iii++ )
+        {
+            m_numberUpCB->addItem( QString::number( ippGetInteger( numberUp, iii ) ) );
+        }
+    }
+    else
+    {
+        m_numberUpCB->addItem( "" );
+    }
+
+    cupsFreeDestInfo( info );
+}
+
+void PageSetupTab::populateDuplexCB()
+{
+    m_duplexCB->clear();
+
+    cups_dest_t *dests = nullptr;
+    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+
+    cups_dest_t *currentDest = cupsGetDest( m_destination.toUtf8().constData(), NULL, destCnt, dests );
+
+    // if we didn't find then bail
+    //
+    if ( currentDest == nullptr )
+    {
+        return;
+    }
+
+    cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, currentDest );
+
+    if ( cupsCheckDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_SIDES, NULL ) )
+    {
+        ipp_attribute_t *sides = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_SIDES );
+        size_t count = ippGetCount( sides );
+
+        for ( size_t iii=0; iii < count; iii++ )
+        {
+            m_duplexCB->addItem( QString::fromUtf8( ippGetString( sides, iii, NULL ) ) );
+        }
+    }
+    else
+    {
+        m_numberUpCB->addItem( "" );
+    }
+
+    cupsFreeDestInfo( info );
+
+}
+
+
+void PageSetupTab::populateScalingCB()
+{
+    m_scalingCB->clear();
+
+    cups_dest_t *dests = nullptr;
+    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+
+    cups_dest_t *currentDest = cupsGetDest( m_destination.toUtf8().constData(), NULL, destCnt, dests );
+
+    // if we didn't find then bail
+    //
+    if ( currentDest == nullptr )
+    {
+        return;
+    }
+
+    cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, currentDest );
+
+    const char *SCALING = "print-scaling";
+
+    if ( cupsCheckDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, SCALING, NULL ) )
+    {
+        ipp_attribute_t *scaling = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, SCALING );
+        size_t count = ippGetCount( scaling );
+
+        for ( size_t iii=0; iii < count; iii++ )
+        {
+            m_scalingCB->addItem( QString::fromUtf8( ippGetString( scaling, iii, NULL ) ) );
+        }
+    }
+    else
+    {
+        m_scalingCB->addItem( "none" );
+    }
+
+    cupsFreeDestInfo( info );
+}
+
+void PageSetupTab::populateOrientationCB()
 {
     m_orientationCB->clear();
 
@@ -768,8 +924,7 @@ void GeneralTab::populateOrientationCB()
     // the GUI has not had time to set display text, but the object will know what the
     // current index was set to.
     //
-    QString currentDestStr = m_destinationCB->itemText( m_destinationCB->currentIndex() );
-    cups_dest_t *currentDest = cupsGetDest( currentDestStr.toUtf8().constData(), NULL, destCnt, dests );
+    cups_dest_t *currentDest = cupsGetDest( m_destination.toUtf8().constData(), NULL, destCnt, dests );
 
     // if we didn't find then bail
     //
@@ -836,233 +991,99 @@ void GeneralTab::populateOrientationCB()
     cupsFreeDestInfo( info );
 }
 
-void GeneralTab::sourceChanged( const QString & )
-{
 
-    populatePaperCB();
-}
 
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-//      Page Setup Tab
+//      Spooler Tab
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-PageSetupTab::PageSetupTab( QWidget *parent ) :
+SpoolerTab::SpoolerTab( QWidget *parent ) :
     QWidget( parent )
 {
-    m_duplexWidget      = new QWidget();
-    QLabel *duplexLbl   = new QLabel( tr( "Duplex" ) );
-    m_duplexCB          = new QComboBox();
+    // spooler radio button box
+    //
+    m_textSpoolerRB         = new QRadioButton( tr( "Text" ) );
+    m_rawSpoolerRB          = new QRadioButton( tr( "Raw" ) );
+    m_pdfSpoolerRB          = new QRadioButton( tr( "PDF" ) );
+    m_postscriptSpoolerRB   = new QRadioButton( tr( "Postscript" ) );
 
-    QHBoxLayout *duplexLayout   = new QHBoxLayout();
-    duplexLayout->addWidget( duplexLbl );
-    duplexLayout->addWidget( m_duplexCB );
-    m_duplexWidget->setLayout( duplexLayout );
+    m_textSpoolerRB->setToolTip( tr( "Plain text using default font of destination" ) );
+    m_rawSpoolerRB->setToolTip( tr( "Raw byte for byte dump to output destination" ) );
+    m_pdfSpoolerRB->setToolTip( tr( "Create temporary PDF for destination" ) );
+    m_postscriptSpoolerRB->setToolTip( tr( "Create temporary Postscript for destination" ) );
 
-    m_numberUpWidget    = new QWidget();
-    QLabel *numberUpLbl = new QLabel( tr( "Pages Per Side" ) );
-    m_numberUpCB        = new QComboBox();
 
-    QHBoxLayout *numberUpLayout = new QHBoxLayout();
-    numberUpLayout->addWidget( numberUpLbl );
-    numberUpLayout->addWidget( m_numberUpCB );
-    m_numberUpWidget->setLayout( numberUpLayout );
+    QVBoxLayout *gbLayout = new QVBoxLayout();
 
-    m_scalingWidget     = new QWidget();
-    QLabel *scalingLbl   = new QLabel( tr( "Scaling" ) );
-    m_scalingCB         = new QComboBox();
+    gbLayout->addWidget( m_textSpoolerRB );
+    gbLayout->addWidget( m_rawSpoolerRB );
+    gbLayout->addWidget( m_pdfSpoolerRB );
+    gbLayout->addWidget( m_postscriptSpoolerRB );
 
-    QHBoxLayout *scalingLayout  = new QHBoxLayout();
-    scalingLayout->addWidget( scalingLbl );
-    scalingLayout->addWidget( m_scalingCB );
-    m_scalingWidget->setLayout( scalingLayout );
+    m_spoolerGroupBox = new QGroupBox( tr( "Spooler Type" ) );
+    m_spoolerGroupBox->setLayout( gbLayout );
 
-    QVBoxLayout *mainLayout = new QVBoxLayout();
-    mainLayout->addWidget( m_duplexWidget );
-    mainLayout->addWidget( m_numberUpWidget );
-    mainLayout->addWidget( m_scalingWidget );
+    QHBoxLayout *mainLayout = new QHBoxLayout();
+    mainLayout->addWidget( m_spoolerGroupBox );
 
     setLayout( mainLayout );
 
-    connect( m_duplexCB,    &QComboBox::currentTextChanged, this, &PageSetupTab::duplexChanged );
-    connect( m_numberUpCB,  &QComboBox::currentTextChanged, this, &PageSetupTab::numberUpChanged );
-    connect( m_scalingCB,  &QComboBox::currentTextChanged, this, &PageSetupTab::scalingChanged );
-
-    deviceChanged( "" );
-}
-
-PageSetupTab::~PageSetupTab()
-{
-    if ( m_duplexWidget != nullptr )
+    connect( m_textSpoolerRB, &QRadioButton::clicked, this,
+             [this]()
     {
-        delete m_duplexWidget;
-        m_duplexWidget = nullptr;
-    }
+        spoolerTypeChanged( BdSpoolerType::Text );
+    } );
 
-    if ( m_numberUpWidget != nullptr )
+    connect( m_rawSpoolerRB, &QRadioButton::clicked, this,
+             [this]()
     {
-        delete m_numberUpWidget;
-        m_numberUpWidget = nullptr;
-    }
+        spoolerTypeChanged( BdSpoolerType::Raw );
+    } );
 
-    if ( m_scalingWidget != nullptr )
+    connect( m_pdfSpoolerRB, &QRadioButton::clicked, this,
+             [this]()
     {
-        delete m_scalingWidget;
-        m_scalingWidget = nullptr;
-    }
-}
+        spoolerTypeChanged( BdSpoolerType::Pdf );
+    } );
 
-QString PageSetupTab::duplexMode()
-{
-    return m_duplexCB->currentText();
-}
-
-
-
-int PageSetupTab::numberOfPagesPerSide()
-{
-    int retVal = 1;
-    QString txt = m_numberUpCB->currentText();
-
-    if ( txt.length() > 0 )
+    connect( m_postscriptSpoolerRB, &QRadioButton::clicked, this,
+             [this]()
     {
-        retVal = txt.toInteger<int>();
-    }
-
-    return retVal;
-}
-
-QString PageSetupTab::scaling()
-{
-    return m_scalingCB->currentText();
-}
-
-void PageSetupTab::deviceChanged( const QString device )
-{
-    m_device = device;
-
-    populateNumberUpCB();
-    populateDuplexCB();
-    populateScalingCB();
-}
-
-void PageSetupTab::populateNumberUpCB()
-{
-    m_numberUpCB->clear();
-
-    cups_dest_t *dests = nullptr;
-    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
-
-    cups_dest_t *currentDest = cupsGetDest( m_device.toUtf8().constData(), NULL, destCnt, dests );
-
-    // if we didn't find then bail
-    //
-    if ( currentDest == nullptr )
-    {
-        return;
-    }
-
-    cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, currentDest );
-
-    if ( cupsCheckDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_NUMBER_UP, NULL ) )
-    {
-        ipp_attribute_t *numberUp = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_NUMBER_UP );
-        size_t count = ippGetCount( numberUp );
-
-        for ( size_t iii=0; iii < count; iii++ )
-        {
-            m_numberUpCB->addItem( QString::number( ippGetInteger( numberUp, iii ) ) );
-        }
-    }
-    else
-    {
-        m_numberUpCB->addItem( "" );
-    }
-
-    cupsFreeDestInfo( info );
-}
-
-void PageSetupTab::populateDuplexCB()
-{
-    m_duplexCB->clear();
-
-    cups_dest_t *dests = nullptr;
-    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
-
-    cups_dest_t *currentDest = cupsGetDest( m_device.toUtf8().constData(), NULL, destCnt, dests );
-
-    // if we didn't find then bail
-    //
-    if ( currentDest == nullptr )
-    {
-        return;
-    }
-
-    cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, currentDest );
-
-    if ( cupsCheckDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_SIDES, NULL ) )
-    {
-        ipp_attribute_t *sides = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_SIDES );
-        size_t count = ippGetCount( sides );
-
-        for ( size_t iii=0; iii < count; iii++ )
-        {
-            m_duplexCB->addItem( QString::fromUtf8( ippGetString( sides, iii, NULL ) ) );
-        }
-    }
-    else
-    {
-        m_numberUpCB->addItem( "" );
-    }
-
-    cupsFreeDestInfo( info );
+        spoolerTypeChanged( BdSpoolerType::Postscript );
+    } );
 
 }
 
-
-void PageSetupTab::populateScalingCB()
+SpoolerTab::~SpoolerTab()
 {
-    m_scalingCB->clear();
-
-    cups_dest_t *dests = nullptr;
-    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
-
-    cups_dest_t *currentDest = cupsGetDest( m_device.toUtf8().constData(), NULL, destCnt, dests );
-
-    // if we didn't find then bail
-    //
-    if ( currentDest == nullptr )
+    if ( m_spoolerGroupBox != nullptr )
     {
-        return;
+        delete m_spoolerGroupBox;
+        m_spoolerGroupBox = nullptr;
     }
 
-    cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, currentDest );
-
-    const char *SCALING = "print-scaling";
-
-    if ( cupsCheckDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, SCALING, NULL ) )
-    {
-        ipp_attribute_t *scaling = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, SCALING );
-        size_t count = ippGetCount( scaling );
-
-        for ( size_t iii=0; iii < count; iii++ )
-        {
-            m_scalingCB->addItem( QString::fromUtf8( ippGetString( scaling, iii, NULL ) ) );
-        }
-    }
-    else
-    {
-        m_scalingCB->addItem( "none" );
-    }
-
-    cupsFreeDestInfo( info );
 }
 
-
-//;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-//      Options Tab
-//;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-OptionsTab::OptionsTab( QWidget *parent ) :
-    QWidget( parent )
+void SpoolerTab::pushSpoolerButton( BdSpoolerType spoolerType )
 {
+    switch ( spoolerType )
+    {
+        case BdSpoolerType::None:
+        case BdSpoolerType::Raw:
+            m_rawSpoolerRB->setChecked( true );
+            break;
+
+        case BdSpoolerType::Text:
+            m_textSpoolerRB->setChecked( true );
+            break;
+
+        case BdSpoolerType::Pdf:
+            m_pdfSpoolerRB->setChecked( true );
+            break;
+
+        case BdSpoolerType::Postscript:
+            m_postscriptSpoolerRB->setChecked( true );
+            break;
+    }
+
 }

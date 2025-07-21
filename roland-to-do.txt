@@ -1,0 +1,43 @@
+
+*) Spooler type needs to be in its own tab. Need some kind of drop down when
+   spooler selected to control spooer specific options.
+   Text spooler has line numbers, number width in characters, and checkbox for wrapping
+   Raw spooler has none
+*) Doesn't seem to be using sides-default attribute for Duplex 
+*) Need print-quality combo box on general tab 
+*) Pages needs to default to all then show range widget
+*) Research Cups margin unit support
+*) disable collate checkbox when copies == 1
+*) adjust orientation position
+
+*) copies must default to 1
+*) validJob must be filled in once we have a destination
+*) printQuality needs to be filled in once dialog is created.
+*) paperSource needs to be filled in once dialog is created.
+
+m_job:  validJob:           0
+destinationName:    Brother_MFC_L3770CDW_series
+destinationIsFile:  0
+spoolerType:        Raw
+copies:             1243073232
+paperSource:        
+paper:              na_letter_8.5x11in
+duplex:             two-sided-long-edge
+numberUp:           1
+scaling:            fill
+orientation:        landscape
+printQuality:       
+
+
+
+print-quality 
+print-quality-default 
+print-quality-supported 
+
+copies-supported
+
+document-format-supported = application/octet-stream,
+                            application/pdf,
+                            application/postscript,
+                            text/plain     tag: 4
+

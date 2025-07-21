@@ -49,9 +49,6 @@ public:
 
     QString getDestinationName();
 
-    LSCS_SIGNAL_1( Public, void spoolerTypeChanged( BdSpoolerType spoolerType ) )
-    LSCS_SIGNAL_2( spoolerTypeChanged, spoolerType )
-
     LSCS_SIGNAL_1( Public, void destinationChanged( QString destinationName, bool isFile ) )
     LSCS_SIGNAL_2( destinationChanged, destinationName, isFile )
 
@@ -64,33 +61,29 @@ public:
     LSCS_SIGNAL_1( Public, void paperChanged( const QString &paper ) )
     LSCS_SIGNAL_2( paperChanged, paper )
 
-    LSCS_SIGNAL_1( Public, void orientationChanged( const QString &orientation ) )
-    LSCS_SIGNAL_2( orientationChanged, orientation )
+    LSCS_SIGNAL_1( Public, void printQualityChanged( const QString &paper ) )
+    LSCS_SIGNAL_2( printQualityChanged, paper )
+
 
 
 
 private:
-    QGroupBox    *m_spoolerGroupBox;
-    QRadioButton *m_textSpoolerRB;
-    QRadioButton *m_rawSpoolerRB;
-    QRadioButton *m_pdfSpoolerRB;
-    QRadioButton *m_postscriptSpoolerRB;
 
     QComboBox   *m_destinationCB;
     QToolButton *m_fileChooserBtn;
     QLineEdit   *m_fileNameLE;
     QComboBox   *m_paperSourceCB;
     QComboBox   *m_paperCB;
+    QComboBox   *m_printQualityCB;
     QLineEdit   *m_pagesLE;
     QSpinBox    *m_copiesSB;
     QCheckBox   *m_collateCKB;
-    QComboBox   *m_orientationCB;
     QComboBox   *m_colorCB;
     QWidget     *m_destFileWidget;
     QWidget     *m_copiesWidget;
     QWidget     *m_collateWidget;
-    QWidget     *m_orientationWidget;
     QWidget     *m_colorWidget;
+    QWidget     *m_printQualityWidget;
 
     void chooseDestinationFile();
     void destTextChanged( const QString &text );
@@ -99,8 +92,8 @@ private:
     void populateDestinationCB();
     void populatePaperSourceCB();
     void populatePaperCB();
-    void populateOrientationCB();
     void populateColorCB();
+    void populatePrintQualityCB();
 
 
 };
@@ -121,7 +114,7 @@ public:
     int     numberOfPagesPerSide();
     QString scaling();
 
-    void deviceChanged( const QString device );
+    void destinationChanged( const QString destination );
 
     LSCS_SIGNAL_1( Public, void numberUpChanged( const QString &source ) )
     LSCS_SIGNAL_2( numberUpChanged, source )
@@ -132,36 +125,62 @@ public:
     LSCS_SIGNAL_1( Public, void duplexChanged( const QString &source ) )
     LSCS_SIGNAL_2( duplexChanged, source )
 
+    LSCS_SIGNAL_1( Public, void orientationChanged( const QString &orientation ) )
+    LSCS_SIGNAL_2( orientationChanged, orientation )
+
 
 private:
-    QString     m_device;
+    QString     m_destination;
 
     QComboBox   *m_duplexCB;
     QComboBox   *m_numberUpCB;    // pages per side
     QComboBox   *m_scalingCB;
+    QComboBox   *m_orientationCB;
 
     QWidget     *m_duplexWidget;
     QWidget     *m_numberUpWidget;
     QWidget     *m_scalingWidget;
+    QWidget     *m_orientationWidget;
 
     void populateNumberUpCB();
     void populateDuplexCB();
     void populateScalingCB();
+    void populateOrientationCB();
 
 };
 
 
-/*! \brief tab containing advanced printing options such as resolution, output bin, finishings, etc.
+/*! \brief tab containing spooler data type and type specific options
+ *
+ *  We must now create a temporary file and need to know what type of data
+ *  to put into that file. Normally this will be launched from some kind of
+ *  text edit widget, but could be a word processor or image editor.
+ *
+ *  \todo need to add some method of identifying input type so we can perform
+ *        some form of conversion. Say from MS Word or ODT format to PostScript.
  *
  *  \param parent - QWidget pointer to parent widget - defaults to nullptr
  */
-class OptionsTab : public QWidget
+class SpoolerTab : public QWidget
 {
-    LSCS_OBJECT( OptionsTab )
+    LSCS_OBJECT( SpoolerTab )
 
 public:
-    explicit OptionsTab( QWidget *parent = nullptr );
+    explicit SpoolerTab( QWidget *parent = nullptr );
+    ~SpoolerTab();
 
+    void pushSpoolerButton( BdSpoolerType spoolerType );
+
+
+    LSCS_SIGNAL_1( Public, void spoolerTypeChanged( BdSpoolerType spoolerType ) )
+    LSCS_SIGNAL_2( spoolerTypeChanged, spoolerType )
+
+private:
+    QGroupBox    *m_spoolerGroupBox;
+    QRadioButton *m_textSpoolerRB;
+    QRadioButton *m_rawSpoolerRB;
+    QRadioButton *m_pdfSpoolerRB;
+    QRadioButton *m_postscriptSpoolerRB;
 
 };
 
@@ -175,7 +194,6 @@ class Q_GUI_EXPORT BdSingleFileJobDialog : public QDialog
 
 public:
     explicit BdSingleFileJobDialog( QWidget *parent = nullptr );
-    ~BdSingleFileJobDialog();
 
     BdSpoolerType spoolerType();
 
@@ -188,6 +206,7 @@ private:
     void paperSourceChanged( const QString &source );
     void paperChanged( const QString &source );
     void orientationChanged( const QString &orientation );
+    void printQualityChanged( const QString &printQuality );
 
     void duplexChanged( const QString &duplex );
     void scalingChanged( const QString &scaling );
@@ -198,7 +217,7 @@ private:
 
     GeneralTab      *m_generalTab;
     PageSetupTab    *m_pageSetupTab;
-    OptionsTab      *m_optionsTab;
+    SpoolerTab      *m_spoolerTab;
     BdSingleFileJob m_job;
 };
 #endif   // LSCS_NO_PRINTER

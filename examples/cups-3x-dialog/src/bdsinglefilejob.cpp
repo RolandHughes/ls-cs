@@ -15,6 +15,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
 #ifndef LSCS_NO_PRINTER
 
+#include <qtextstream.h>
+
 #include <bdsinglefilejob.h>
 
 BdSingleFileJob::BdSingleFileJob() :
@@ -22,6 +24,57 @@ BdSingleFileJob::BdSingleFileJob() :
     , destinationIsFile( false )
     , spoolerType( BdSpoolerType::None )
 {
+}
+
+QString BdSingleFileJob::toString()
+{
+    QString retVal;
+
+    QTextStream out( &retVal );
+
+    out << "validJob:           " << validJob << "\n";
+    out << "destinationName:    " << destinationName << "\n";
+    out << "destinationIsFile:  " << destinationIsFile << "\n";
+
+    out << "spoolerType:        ";
+
+    switch ( spoolerType )
+    {
+        case BdSpoolerType::None:
+            out << "none";
+            break;
+
+        case BdSpoolerType::Text:
+            out << "Text";
+            break;
+
+        case BdSpoolerType::Raw:
+            out << "Raw";
+            break;
+
+        case BdSpoolerType::Pdf:
+            out << "Pdf";
+            break;
+
+        case BdSpoolerType::Postscript:
+            out << "Postscript";
+            break;
+    }
+
+    out << "\n";
+
+    out << "copies:             " << copies << "\n";
+    out << "paperSource:        " << paperSource << "\n";
+    out << "paper:              " << paper << "\n";
+    out << "duplex:             " << duplex << "\n";
+    out << "numberUp:           " << numberUp << "\n";
+    out << "scaling:            " << scaling << "\n";
+    out << "orientation:        " << orientation << "\n";
+    out << "printQuality:       " << printQuality << "\n";
+
+    out.flush();
+
+    return retVal;
 }
 
 #endif   // LSCS_NO_PRINTER
