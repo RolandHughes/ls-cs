@@ -42,7 +42,6 @@ class GeneralTab : public QWidget
 
 public:
     explicit GeneralTab( QWidget *parent = nullptr );
-    ~GeneralTab();
 
     void setDestination( QString destination );
     void pushSpoolerButton( BdSpoolerType spoolerType );
@@ -83,7 +82,10 @@ private:
     QWidget     *m_copiesWidget;
     QWidget     *m_collateWidget;
     QWidget     *m_colorWidget;
-    QWidget     *m_printQualityWidget;
+    QWidget     *m_sourceWidget;
+    QWidget     *m_paperLayoutWidget;
+    QWidget     *m_printQWidget;
+    QWidget     *m_pagesWidget;
 
     void chooseDestinationFile();
     void destTextChanged( const QString &text );
@@ -94,6 +96,7 @@ private:
     void populatePaperCB();
     void populateColorCB();
     void populatePrintQualityCB();
+    void populateCopies();
 
 
 };

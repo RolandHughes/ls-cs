@@ -3,17 +3,20 @@
    spooler selected to control spooer specific options.
    Text spooler has line numbers, number width in characters, and checkbox for wrapping
    Raw spooler has none
-*) Doesn't seem to be using sides-default attribute for Duplex 
-*) Need print-quality combo box on general tab 
+
+*) print quality not updated on device change.
+
+
+*) disable/hide Collate when copies == 1
+*) disable/hide print quality when only one 
+*) disable/hide paper source when only one option
+*) disable/hide color mode when only one value 
+*) disable orientation when only one value 
+*) disable scaling when only one value 
+
 *) Pages needs to default to all then show range widget
 *) Research Cups margin unit support
-*) disable collate checkbox when copies == 1
-*) adjust orientation position
 
-*) copies must default to 1
-*) validJob must be filled in once we have a destination
-*) printQuality needs to be filled in once dialog is created.
-*) paperSource needs to be filled in once dialog is created.
 
 m_job:  validJob:           0
 destinationName:    Brother_MFC_L3770CDW_series

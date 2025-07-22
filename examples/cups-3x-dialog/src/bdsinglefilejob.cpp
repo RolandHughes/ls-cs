@@ -23,6 +23,7 @@ BdSingleFileJob::BdSingleFileJob() :
     validJob( false )
     , destinationIsFile( false )
     , spoolerType( BdSpoolerType::None )
+    , copies( 1 )
 {
 }
 
