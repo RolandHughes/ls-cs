@@ -79,7 +79,6 @@ BdSingleFileJobDialog::BdSingleFileJobDialog( QWidget *parent ) :
     connect( btnBox, &QDialogButtonBox::rejected,   this, &QDialog::reject );
     connect( btnBox, &QDialogButtonBox::accepted,   this, &BdSingleFileJobDialog::submitJob );
 
-    m_spoolerTab->pushSpoolerButton( BdSpoolerType::Text );
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->addWidget( m_tabWidget );
@@ -87,10 +86,10 @@ BdSingleFileJobDialog::BdSingleFileJobDialog( QWidget *parent ) :
 
     setLayout( mainLayout );
 
+    m_spoolerTab->pushSpoolerButton( BdSpoolerType::Text );
 
-    // chicken and egg problem during inital load
-    //
-    m_pageSetupTab->destinationChanged( m_generalTab->getDestinationName() );
+    m_generalTab->makeDefaultCurrentDestination();
+
 }
 
 /*! \brief  Submit single file job to spooler then destination
@@ -102,6 +101,19 @@ BdSingleFileJobDialog::BdSingleFileJobDialog( QWidget *parent ) :
 void BdSingleFileJobDialog::submitJob()
 {
     qDebug() << "called submitJob() \n";
+
+    // Update the job capabilities
+    //
+    m_job.useCollateValue           = m_generalTab->isCollateVisible();
+    m_job.usePrintQualityValue      = m_generalTab->isPrintQualityVisible();
+    m_job.usePaperSourceValue       = m_generalTab->isPaperSourceVisible();
+    m_job.useColorValue             = m_generalTab->isColorModeVisible();
+    m_job.useCopiesValue            = m_generalTab->isCopiesVisible();
+    m_job.useNumberUpValue          = m_pageSetupTab->isNumberUpVisible();
+    m_job.useDuplexValue            = m_pageSetupTab->isDuplexVisible();
+    m_job.useOrientationValue       = m_pageSetupTab->isOrientationVisible();
+    m_job.useScalingValue           = m_pageSetupTab->isScalingVisible();
+
 
     qDebug() << "m_job: " << m_job.toString() << "\n";
     accept();
@@ -137,6 +149,8 @@ BdSpoolerType BdSingleFileJobDialog::spoolerType()
 
 void BdSingleFileJobDialog::destinationSelected( QString destinationName, bool isFile )
 {
+    qDebug() << "destinationSelected() called with name: " << destinationName;
+
     m_job.destinationName   = destinationName;
     m_job.destinationIsFile = isFile;
     m_job.validJob          = true;
@@ -371,27 +385,73 @@ GeneralTab::GeneralTab( QWidget *parent ) :
 
     this->setLayout( mainLayout );
 
+    // avoid chicken and egg problem.
+    // populate destinations combobox before connections made.
+    //
+    populateDestinationCB();
+
     //  Make connections
     //
-    connect( m_copiesSB, SIGNAL( valueChanged( int ) ), this, SLOT( copiesChanged( int ) ) );
-
     connect( m_destinationCB,   &QComboBox::currentTextChanged, this, &GeneralTab::destTextChanged );
     connect( m_fileChooserBtn,  &QToolButton::triggered,        this, &GeneralTab::chooseDestinationFile );
     connect( m_paperSourceCB,   &QComboBox::currentTextChanged, this, &GeneralTab::sourceChanged );
     connect( m_paperCB,         &QComboBox::currentTextChanged, this, &GeneralTab::paperChanged );
     connect( m_printQualityCB,  &QComboBox::currentTextChanged, this, &GeneralTab::printQualityChanged );
 
+    connect( m_copiesSB,       static_cast<void ( QSpinBox::* )( int )>( &QSpinBox::valueChanged ),
+             this, &GeneralTab::copiesValueChanged );
 
-    // populate after connecting so inital values get loaded into the job class
-    //
-    populateDestinationCB();
-    populatePaperSourceCB();
-    populatePaperCB();
-    populateColorCB();
-    populateCopies();
-    populatePrintQualityCB();
 }
 
+bool GeneralTab::isCollateVisible()
+{
+    return m_collateWidget->isVisible();
+}
+
+bool GeneralTab::isPrintQualityVisible()
+{
+    return m_printQWidget->isVisible();
+}
+
+bool GeneralTab::isPaperSourceVisible()
+{
+    return m_sourceWidget->isVisible();
+}
+
+bool GeneralTab::isColorModeVisible()
+{
+    return m_colorWidget->isVisible();
+}
+
+bool GeneralTab::isCopiesVisible()
+{
+    qDebug() << "m_copiesWidget-isVisible():  " << m_copiesWidget->isVisible();
+    return m_copiesWidget->isVisible();
+}
+
+
+void GeneralTab::copiesValueChanged( int newValue )
+{
+    if ( m_canCollate )
+    {
+        m_collateWidget->setVisible( true );
+
+        if ( newValue < 2 )
+        {
+            m_collateWidget->setDisabled( true );
+        }
+        else
+        {
+            m_collateWidget->setDisabled( false );
+        }
+    }
+    else
+    {
+        m_collateCKB->setCheckState( Qt::Unchecked );
+        m_collateWidget->setVisible( false );
+        m_collateWidget->setDisabled( true );
+    }
+}
 
 QString GeneralTab::getDestinationName()
 {
@@ -431,6 +491,11 @@ void GeneralTab::populateDestinationCB()
     m_destinationCB->addItem( tr( "File" ) );
 
 
+}
+
+void GeneralTab::makeDefaultCurrentDestination()
+{
+
     QString defaultDestination = QString::fromUtf8( cupsGetDefault() );
     int defaultIndex = m_destinationCB->findText( defaultDestination );
 
@@ -442,6 +507,7 @@ void GeneralTab::populateDestinationCB()
     {
         m_destinationCB->setCurrentIndex( m_destinationCB->count() );
     }
+
 }
 
 void GeneralTab::populatePaperSourceCB()
@@ -497,10 +563,65 @@ void GeneralTab::populatePaperSourceCB()
         m_paperSourceCB->setCurrentIndex( defaultItem );
     }
 
+    if ( m_paperSourceCB->count() < 2 )
+    {
+        m_sourceWidget->setVisible( false );
+        m_sourceWidget->setDisabled( true );
+    }
+    else
+    {
+        m_sourceWidget->setVisible( true );
+        m_sourceWidget->setDisabled( false );
+    }
+
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
 }
 
+bool GeneralTab::destCanCollate( QString destination )
+{
+    cups_dest_t *dests = nullptr;
+
+    bool retVal = false;
+
+    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+
+    cups_dest_t *currentDest = cupsGetDest( destination.toUtf8().constData(), NULL, destCnt, dests );
+
+    // if we didn't find then bail
+    //
+    if ( currentDest == nullptr )
+    {
+        return retVal;
+    }
+
+    cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, currentDest );
+    char value[4096];
+
+    ipp_attribute_t *attr = nullptr;
+
+
+    if ( ( attr = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, "multiple-document-handling" ) ) != NULL )
+    {
+        ippAttributeString( attr, value, sizeof( value ) );
+        QString rslt = QString::fromUtf8( value );
+
+        if ( rslt.contains( "-collated" ) )
+        {
+            retVal = true;
+        }
+    }
+    else
+    {
+        qDebug() << "cupsFindDestSupported call failed";
+    }
+
+
+    cupsFreeDestInfo( info );
+    cupsFreeDests( destCnt, dests );
+
+    return retVal;
+}
 
 void GeneralTab::populatePaperCB()
 {
@@ -565,6 +686,7 @@ void GeneralTab::populatePaperCB()
 
     m_paperCB->setCurrentIndex( currentItem );
 
+
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
 
@@ -572,7 +694,6 @@ void GeneralTab::populatePaperCB()
 
 void GeneralTab::populateColorCB()
 {
-    qDebug() << "called populateColorCB()";
     m_colorCB->clear();
 
     cups_dest_t *dests = nullptr;
@@ -668,7 +789,6 @@ void GeneralTab::populateCopies()
     if ( ( attr = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_COPIES ) ) != NULL )
     {
         ippAttributeString( attr, value, sizeof( value ) );
-        qDebug() << "copies: " << QString::fromUtf8( value );
         items = QString::fromUtf8( value ).split( "-" );
     }
 
@@ -734,6 +854,8 @@ void GeneralTab::populatePrintQualityCB()
         defaultQuality = QString::fromUtf8( value );
     }
 
+    // \todo  use cupsDoRequest() because cupsFindDestSupported() for CUPS_PRINT_QUALITY does not work
+    //
     if ( ( attr = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_PRINT_QUALITY ) ) != NULL )
     {
         ippAttributeString( attr, value, sizeof( value ) );
@@ -749,6 +871,17 @@ void GeneralTab::populatePrintQualityCB()
     if ( defaultItem > -1 )
     {
         m_printQualityCB->setCurrentIndex( defaultItem );
+    }
+
+    if ( m_printQualityCB->count() < 2 )
+    {
+        m_printQWidget->setVisible( false );
+        m_printQWidget->setDisabled( true );
+    }
+    else
+    {
+        m_printQWidget->setVisible( true );
+        m_printQWidget->setDisabled( false );
     }
 
     cupsFreeDestInfo( info );
@@ -768,12 +901,15 @@ void GeneralTab::destTextChanged( const QString &text )
 
     if ( text.compare( tr( "File" ), Qt::CaseInsensitive ) == 0 )
     {
+        m_canCollate = false;
         m_destFileWidget->setVisible( true );
         // TODO::
         // @todo  need file path display after file dialog
     }
     else
     {
+        m_canCollate = destCanCollate( text );
+
         populatePaperSourceCB();
         populatePaperCB();
         populateColorCB();
@@ -848,46 +984,38 @@ PageSetupTab::PageSetupTab( QWidget *parent ) :
 
     setLayout( mainLayout );
 
-    destinationChanged( "" );
-
     connect( m_duplexCB,      &QComboBox::currentTextChanged, this, &PageSetupTab::duplexChanged );
     connect( m_numberUpCB,    &QComboBox::currentTextChanged, this, &PageSetupTab::numberUpChanged );
     connect( m_scalingCB,     &QComboBox::currentTextChanged, this, &PageSetupTab::scalingChanged );
     connect( m_orientationCB, &QComboBox::currentTextChanged, this, &PageSetupTab::orientationChanged );
 }
 
-PageSetupTab::~PageSetupTab()
-{
-    if ( m_duplexWidget != nullptr )
-    {
-        delete m_duplexWidget;
-        m_duplexWidget = nullptr;
-    }
-
-    if ( m_numberUpWidget != nullptr )
-    {
-        delete m_numberUpWidget;
-        m_numberUpWidget = nullptr;
-    }
-
-    if ( m_scalingWidget != nullptr )
-    {
-        delete m_scalingWidget;
-        m_scalingWidget = nullptr;
-    }
-
-    if ( m_orientationWidget != nullptr )
-    {
-        delete m_orientationWidget;
-        m_orientationWidget = nullptr;
-    }
-}
 
 QString PageSetupTab::duplexMode()
 {
     return m_duplexCB->currentText();
 }
 
+
+bool PageSetupTab::isDuplexVisible()
+{
+    return m_duplexWidget->isVisible();
+}
+
+bool PageSetupTab::isNumberUpVisible()
+{
+    return m_numberUpWidget->isVisible();
+}
+
+bool PageSetupTab::isOrientationVisible()
+{
+    return m_orientationWidget->isVisible();
+}
+
+bool PageSetupTab::isScalingVisible()
+{
+    return m_scalingWidget->isVisible();
+}
 
 
 int PageSetupTab::numberOfPagesPerSide()
@@ -989,7 +1117,6 @@ void PageSetupTab::populateDuplexCB()
         {
             ippAttributeString( attr, value, sizeof( value ) );
             QString defaultDuplex = QString::fromUtf8( value );
-            qDebug() << "defaultDuplex: " << defaultDuplex;
             int defaultIndex = m_duplexCB->findText( defaultDuplex );
 
             if ( defaultIndex > -1 )

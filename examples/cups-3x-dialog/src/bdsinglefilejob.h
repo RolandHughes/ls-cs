@@ -29,15 +29,26 @@ public:
 
     bool            validJob;
 
-    // generalTab items
+    //  capability flags
+    //  destination either doesn't support the capability
+    //  or user entered values negated them.
+    //
+    bool            useCollateValue;
+    bool            usePrintQualityValue;
+    bool            usePaperSourceValue;
+    bool            useColorValue;
+    bool            useOrientationValue;
+    bool            useScalingValue;
+    bool            useCopiesValue;
+    bool            useNumberUpValue;
+    bool            useDuplexValue;
+
     QString         destinationName;
     bool            destinationIsFile;
     BdSpoolerType   spoolerType;
     int             copies;
     QString         paperSource;
     QString         paper;
-
-    // pageSetupTab items
     QString         duplex;
     QString         numberUp;
     QString         scaling;

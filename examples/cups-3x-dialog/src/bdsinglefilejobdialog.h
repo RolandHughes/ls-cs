@@ -43,10 +43,21 @@ class GeneralTab : public QWidget
 public:
     explicit GeneralTab( QWidget *parent = nullptr );
 
-    void setDestination( QString destination );
     void pushSpoolerButton( BdSpoolerType spoolerType );
+    void makeDefaultCurrentDestination();
 
     QString getDestinationName();
+
+
+    bool destCanCollate( QString destination );
+
+    bool isCollateVisible();
+    bool isPrintQualityVisible();
+    bool isPaperSourceVisible();
+    bool isColorModeVisible();
+    bool isOrientationVisible();
+    bool isScalingVisible();
+    bool isCopiesVisible();
 
     LSCS_SIGNAL_1( Public, void destinationChanged( QString destinationName, bool isFile ) )
     LSCS_SIGNAL_2( destinationChanged, destinationName, isFile )
@@ -87,9 +98,12 @@ private:
     QWidget     *m_printQWidget;
     QWidget     *m_pagesWidget;
 
+    bool        m_canCollate;
+
     void chooseDestinationFile();
     void destTextChanged( const QString &text );
     void sourceChanged( const QString &text );
+    void copiesValueChanged( int newValue );
 
     void populateDestinationCB();
     void populatePaperSourceCB();
@@ -111,11 +125,16 @@ class PageSetupTab : public QWidget
 
 public:
     explicit PageSetupTab( QWidget *parent = nullptr );
-    ~PageSetupTab();
 
     QString duplexMode();
     int     numberOfPagesPerSide();
     QString scaling();
+
+    bool isDuplexVisible();
+    bool isNumberUpVisible();
+    bool isScalingVisible();
+    bool isOrientationVisible();
+
 
     void destinationChanged( const QString destination );
 

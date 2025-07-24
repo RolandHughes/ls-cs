@@ -1,0 +1,1419 @@
+
+roland@roland-HP-Z820-Workstation:/mnt/data6tb/github_projects/ls-cs_examples_install/cups-experiment$ ./cups-experiment 
+flags: 2
+Dest Name: Brother_MFC_L3770CDW_series
+uri: ipp://localhost/printers/Brother_MFC_L3770CDW_series
+  resolution printer-resolution-default: 600dpi
+text value: 600  integer value: 600
+	 DPI   600
+	 !!!!!!! orientation: 
+	                      portrait
+	                      landscape
+	                      reverse-landscape
+	                      reverse-portrait
+	 ;;;;;;;;;;;;;media source: 0  name: auto
+	 ;;;;;;;;;;;;;media source: 1  name: by-pass-tray
+	 ;;;;;;;;;;;;;media source: 2  name: tray-1
+	 ++++++++++++output bin: 0  name: face-down
+
+	``````````  output-bin-default: output-bin-default   value: face-down
+	 ********side: 0  name: one-sided
+	 ********side: 1  name: two-sided-long-edge
+	 ********side: 2  name: two-sided-short-edge
+	 ********color: 0  name: monochrome
+	 ********color: 1  name: color
+xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED
+jjj: 0  integer: 4   string version: normal
+
+	---------- CUPS_PRINT_COLOR_MODE   name: print-color-mode-default  default: color
+
+	........... CUPS_SIDES   name: sides-default  default: one-sided
+
+
+	Supported Media:
+Name	    Width    Length    bottom    left    right    top
+na_index-3x5_3x5in	7620    12700    432    432    432    432
+na_monarch_3.875x7.5in	9842    19050    432    432    432    432
+na_number-10_4.125x9.5in	10477    24130    432    432    432    432
+iso_a6_105x148mm	10500    14800    432    432    432    432
+iso_dl_110x220mm	11000    22000    432    432    432    432
+iso_a5_148x210mm	14800    21000    432    432    432    432
+iso_c5_162x229mm	16200    22900    432    432    432    432
+iso_b5_176x250mm	17600    25000    432    432    432    432
+na_executive_7.25x10.5in	18415    26670    432    432    432    432
+iso_a4_210x297mm	21000    29700    432    432    432    432
+custom_215x345mm_215x345mm	21500    34500    432    432    432    432
+na_letter_8.5x11in	21590    27940    432    432    432    432
+na_foolscap_8.5x13in	21590    33020    432    432    432    432
+na_oficio_8.5x13.4in	21590    34036    432    432    432    432
+na_legal_8.5x14in	21590    35560    432    432    432    432
+*****************
+*****************
+*****************
+attributes-charset = utf-8     tag: 1
+attributes-natural-language = en-us     tag: 1
+marker-change-time = 0     tag: 4
+printer-config-change-date-time = 2025-07-23T05:00:06Z     tag: 4
+printer-config-change-time = 1753246806     tag: 4
+printer-current-time = 2025-07-23T12:28:13Z     tag: 4
+printer-dns-sd-name = no-value     tag: 4
+printer-icons = http://localhost/icons/Brother_MFC_L3770CDW_series.png     tag: 4
+printer-is-accepting-jobs = true     tag: 4
+printer-is-shared = false     tag: 4
+printer-is-temporary = false     tag: 4
+printer-more-info = http://localhost/printers/Brother_MFC_L3770CDW_series     tag: 4
+printer-state = idle     tag: 4
+printer-state-change-date-time = 2025-07-23T05:00:06Z     tag: 4
+printer-state-change-time = 1753246806     tag: 4
+printer-state-message =      tag: 4
+printer-state-reasons = none     tag: 4
+printer-type = 2134108     tag: 4
+printer-up-time = 1753273693     tag: 4
+printer-uri-supported = ipp://localhost/printers/Brother_MFC_L3770CDW_series     tag: 4
+queued-job-count = 0     tag: 4
+uri-authentication-supported = requesting-user-name     tag: 4
+uri-security-supported = none     tag: 4
+printer-id = 1033     tag: 4
+printer-name = Brother_MFC_L3770CDW_series     tag: 4
+printer-location =      tag: 4
+printer-geo-location = unknown     tag: 4
+printer-info =      tag: 4
+printer-organization =      tag: 4
+printer-organizational-unit =      tag: 4
+printer-uuid = urn:uuid:dda18b89-fe3e-3fc6-529a-0e0ccfc1ef92     tag: 4
+job-quota-period = 0     tag: 4
+job-k-limit = 0     tag: 4
+job-page-limit = 0     tag: 4
+job-sheets-default = none,none     tag: 4
+device-uri = implicitclass://Brother_MFC_L3770CDW_series/     tag: 4
+document-format-supported = application/octet-stream,application/pdf,application/postscript,application/vnd.adobe-reader-postscript,application/vnd.cups-pdf,application/vnd.cups-pdf-banner,application/vnd.cups-postscript,application/vnd.cups-raster,application/vnd.cups-raw,application/x-cshell,application/x-csource,application/x-perl,application/x-shell,image/gif,image/jpeg,image/png,image/pwg-raster,image/tiff,image/urf,image/x-bitmap,image/x-photocd,image/x-portable-anymap,image/x-portable-bitmap,image/x-portable-graymap,image/x-portable-pixmap,image/x-sgi-rgb,image/x-sun-raster,image/x-xbitmap,image/x-xpixmap,image/x-xwindowdump,text/css,text/html,text/plain     tag: 4
+copies-default = 1     tag: 4
+document-format-default = application/octet-stream     tag: 4
+job-hold-until-default = no-hold     tag: 4
+job-priority-default = 50     tag: 4
+number-up-default = 1     tag: 4
+orientation-requested-default = no-value     tag: 4
+print-quality-default = normal     tag: 4
+color-supported = true     tag: 4
+job-password-encryption-supported = none     tag: 4
+job-password-supported = 4     tag: 4
+pages-per-minute = 1     tag: 4
+pages-per-minute-color = 1     tag: 4
+print-quality-supported = normal     tag: 4
+printer-make-and-model = Brother MFC-L3770CDW series, driverless, cups-filters 1.27.4     tag: 4
+media-default = na_letter_8.5x11in     tag: 4
+media-col-default = {media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432}     tag: 4
+media-supported = custom_215x345mm_215x345mm,na_index-3x5_3x5in,iso_a4_210x297mm,iso_a5_148x210mm,iso_a6_105x148mm,na_number-10_4.125x9.5in,iso_c5_162x229mm,iso_dl_110x220mm,na_monarch_3.875x7.5in,na_executive_7.25x10.5in,na_foolscap_8.5x13in,iso_b5_176x250mm,na_legal_8.5x14in,na_letter_8.5x11in,na_oficio_8.5x13.4in,custom_min_3x5in,custom_max_8.5x14in     tag: 4
+media-size-supported = {x-dimension=21500 y-dimension=34500},{x-dimension=7620 y-dimension=12700},{x-dimension=21000 y-dimension=29700},{x-dimension=14800 y-dimension=21000},{x-dimension=10500 y-dimension=14800},{x-dimension=10477 y-dimension=24130},{x-dimension=16200 y-dimension=22900},{x-dimension=11000 y-dimension=22000},{x-dimension=9842 y-dimension=19050},{x-dimension=18415 y-dimension=26670},{x-dimension=21590 y-dimension=33020},{x-dimension=17600 y-dimension=25000},{x-dimension=21590 y-dimension=35560},{x-dimension=21590 y-dimension=27940},{x-dimension=21590 y-dimension=34036},{x-dimension=7620-21590 y-dimension=12700-35560}     tag: 4
+media-source-supported = auto,by-pass-tray,tray-1     tag: 4
+media-type-supported = stationery,stationery-lightweight,stationery-heavyweight,envelope,envelope,envelope,labels,photographic-glossy,stationery-bond,com.brother.thicker,com.brother.recycled     tag: 4
+media-bottom-margin-supported = 432     tag: 4
+media-left-margin-supported = 432     tag: 4
+media-right-margin-supported = 432     tag: 4
+media-top-margin-supported = 432     tag: 4
+media-col-database = {media-size={x-dimension=21500 y-dimension=34500} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=7620 y-dimension=12700} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=21000 y-dimension=29700} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=14800 y-dimension=21000} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=10500 y-dimension=14800} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=10477 y-dimension=24130} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=16200 y-dimension=22900} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=11000 y-dimension=22000} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=9842 y-dimension=19050} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=18415 y-dimension=26670} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=21590 y-dimension=33020} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=17600 y-dimension=25000} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=21590 y-dimension=35560} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=21590 y-dimension=34036} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432}     tag: 4
+output-bin-supported = face-down     tag: 4
+output-bin-default = face-down     tag: 4
+print-color-mode-supported = monochrome,color     tag: 4
+print-color-mode-default = color     tag: 4
+pwg-raster-document-type-supported = black_1,sgray_8,srgb_8     tag: 4
+printer-resolution-default = 600dpi     tag: 4
+printer-resolution-supported = 600dpi     tag: 4
+pwg-raster-document-resolution-supported = 600dpi     tag: 4
+pwg-raster-document-sheet-back = normal     tag: 4
+sides-supported = one-sided,two-sided-long-edge,two-sided-short-edge     tag: 4
+sides-default = one-sided     tag: 4
+printer-commands = none     tag: 4
+port-monitor = none     tag: 4
+port-monitor-supported = none     tag: 4
+finishings-supported = none     tag: 4
+finishings-default = none     tag: 4
+charset-configured = utf-8     tag: 4
+charset-supported = us-ascii,utf-8     tag: 4
+compression-supported = none,gzip     tag: 4
+copies-supported = 1-9999     tag: 4
+generated-natural-language-supported = en-us     tag: 4
+ipp-features-supported = subscription-object     tag: 4
+ipp-versions-supported = 1.0,1.1,2.0,2.1     tag: 4
+ippget-event-life = 15     tag: 4
+job-creation-attributes-supported = copies,finishings,finishings-col,ipp-attribute-fidelity,job-hold-until,job-name,job-priority,job-sheets,media,media-col,multiple-document-handling,number-up,number-up-layout,orientation-requested,output-bin,page-delivery,page-ranges,print-color-mode,print-quality,print-scaling,printer-resolution,sides     tag: 4
+job-hold-until-supported = no-hold,indefinite,day-time,evening,night,second-shift,third-shift,weekend     tag: 4
+job-ids-supported = true     tag: 4
+job-k-octets-supported = 0-946334736     tag: 4
+job-priority-supported = 100     tag: 4
+job-settable-attributes-supported = copies,finishings,job-hold-until,job-name,job-priority,media,media-col,multiple-document-handling,number-up,output-bin,orientation-requested,page-ranges,print-color-mode,print-quality,printer-resolution,sides     tag: 4
+job-sheets-supported = none,classified,confidential,form,secret,standard,topsecret,unclassified     tag: 4
+jpeg-k-octets-supported = 0-946334736     tag: 4
+jpeg-x-dimension-supported = 0-65535     tag: 4
+jpeg-y-dimension-supported = 1-65535     tag: 4
+media-col-supported = media-bottom-margin,media-left-margin,media-right-margin,media-size,media-source,media-top-margin,media-type     tag: 4
+multiple-document-handling-supported = separate-documents-uncollated-copies,separate-documents-collated-copies     tag: 4
+multiple-document-jobs-supported = true     tag: 4
+multiple-operation-time-out = 900     tag: 4
+multiple-operation-time-out-action = process-job     tag: 4
+natural-language-configured = en-us     tag: 4
+number-up-supported = 1,2,4,6,9,16     tag: 4
+operations-supported = Print-Job,Validate-Job,Create-Job,Send-Document,Cancel-Job,Get-Job-Attributes,Get-Jobs,Get-Printer-Attributes,Hold-Job,Release-Job,Pause-Printer,Resume-Printer,Purge-Jobs,Set-Printer-Attributes,Set-Job-Attributes,Get-Printer-Supported-Values,Create-Printer-Subscriptions,Create-Job-Subscriptions,Get-Subscription-Attributes,Get-Subscriptions,Renew-Subscription,Cancel-Subscription,Get-Notifications,Enable-Printer,Disable-Printer,Hold-New-Jobs,Release-Held-New-Jobs,Cancel-Jobs,Cancel-My-Jobs,Close-Job,CUPS-Get-Default,CUPS-Get-Printers,CUPS-Add-Modify-Printer,CUPS-Delete-Printer,CUPS-Get-Classes,CUPS-Add-Modify-Class,CUPS-Delete-Class,CUPS-Accept-Jobs,CUPS-Reject-Jobs,CUPS-Set-Default,CUPS-Get-Devices,CUPS-Get-PPDs,CUPS-Move-Job,CUPS-Authenticate-Job,CUPS-Get-PPD,CUPS-Get-Document,Restart-Job     tag: 4
+orientation-requested-supported = portrait,landscape,reverse-landscape,reverse-portrait     tag: 4
+page-delivery-supported = reverse-order,same-order     tag: 4
+page-ranges-supported = true     tag: 4
+pdf-k-octets-supported = 0-946334736     tag: 4
+pdf-versions-supported = adobe-1.2,adobe-1.3,adobe-1.4,adobe-1.5,adobe-1.6,adobe-1.7,iso-19005-1_2005,iso-32000-1_2008,pwg-5102.3     tag: 4
+pdl-override-supported = attempted     tag: 4
+print-scaling-supported = auto,auto-fit,fill,fit,none     tag: 4
+printer-get-attributes-supported = document-format     tag: 4
+printer-settable-attributes-supported = printer-geo-location,printer-info,printer-location,printer-organization,printer-organizational-unit     tag: 4
+which-jobs-supported = completed,not-completed,aborted,all,canceled,pending,pending-held,processing,processing-stopped     tag: 4
+*****************
+*****************
+*****************
+	Option#	Name	Value
+	0	copies	1
+	1	cups-browsed	true
+	2	device-uri	implicitclass://Brother_MFC_L3770CDW_series/
+	3	finishings	3
+	4	job-cancel-after	10800
+	5	job-hold-until	no-hold
+	6	job-priority	50
+	7	job-sheets	none,none
+	8	marker-change-time	0
+	9	number-up	1
+	10	printer-commands	none
+	11	printer-info	
+	12	printer-is-accepting-jobs	true
+	13	printer-is-shared	false
+	14	printer-is-temporary	false
+	15	printer-location	
+	16	printer-make-and-model	Brother MFC-L3770CDW series, driverless, cups-filters 1.27.4
+	17	printer-state	3
+	18	printer-state-change-time	1753246806
+	19	printer-state-reasons	none
+	20	printer-type	2134108      duplex        color        copies  
+	21	printer-uri-supported	ipp://localhost/printers/Brother_MFC_L3770CDW_series
+
+flags: 2
+Dest Name: Brother_MFC_L8900CDW_series
+uri: ipp://localhost/printers/Brother_MFC_L8900CDW_series
+  resolution printer-resolution-default: 600dpi
+text value: 600  integer value: 600
+	 DPI   600
+	 !!!!!!! orientation: 
+	                      portrait
+	                      landscape
+	                      reverse-landscape
+	                      reverse-portrait
+	 ;;;;;;;;;;;;;media source: 0  name: auto
+	 ;;;;;;;;;;;;;media source: 1  name: by-pass-tray
+	 ;;;;;;;;;;;;;media source: 2  name: tray-1
+	 ++++++++++++output bin: 0  name: face-down
+
+	``````````  output-bin-default: output-bin-default   value: face-down
+	 ********side: 0  name: one-sided
+	 ********side: 1  name: two-sided-long-edge
+	 ********side: 2  name: two-sided-short-edge
+	 ********color: 0  name: monochrome
+	 ********color: 1  name: color
+xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED
+jjj: 0  integer: 4   string version: normal
+
+	---------- CUPS_PRINT_COLOR_MODE   name: print-color-mode-default  default: color
+
+	........... CUPS_SIDES   name: sides-default  default: one-sided
+
+
+	Supported Media:
+Name	    Width    Length    bottom    left    right    top
+na_index-3x5_3x5in	7620    12700    432    432    432    432
+na_monarch_3.875x7.5in	9842    19050    432    432    432    432
+na_number-10_4.125x9.5in	10477    24130    432    432    432    432
+iso_a6_105x148mm	10500    14800    432    432    432    432
+iso_dl_110x220mm	11000    22000    432    432    432    432
+iso_a5_148x210mm	14800    21000    432    432    432    432
+iso_c5_162x229mm	16200    22900    432    432    432    432
+iso_b5_176x250mm	17600    25000    432    432    432    432
+na_executive_7.25x10.5in	18415    26670    432    432    432    432
+iso_a4_210x297mm	21000    29700    432    432    432    432
+na_letter_8.5x11in	21590    27940    432    432    432    432
+na_foolscap_8.5x13in	21590    33020    432    432    432    432
+na_oficio_8.5x13.4in	21590    34036    432    432    432    432
+na_legal_8.5x14in	21590    35560    432    432    432    432
+*****************
+*****************
+*****************
+attributes-charset = utf-8     tag: 1
+attributes-natural-language = en-us     tag: 1
+marker-change-time = 0     tag: 4
+printer-config-change-date-time = 2025-07-23T05:00:07Z     tag: 4
+printer-config-change-time = 1753246807     tag: 4
+printer-current-time = 2025-07-23T12:28:13Z     tag: 4
+printer-dns-sd-name = no-value     tag: 4
+printer-icons = http://localhost/icons/Brother_MFC_L8900CDW_series.png     tag: 4
+printer-is-accepting-jobs = true     tag: 4
+printer-is-shared = false     tag: 4
+printer-is-temporary = false     tag: 4
+printer-more-info = http://localhost/printers/Brother_MFC_L8900CDW_series     tag: 4
+printer-state = idle     tag: 4
+printer-state-change-date-time = 2025-07-23T05:00:07Z     tag: 4
+printer-state-change-time = 1753246807     tag: 4
+printer-state-message =      tag: 4
+printer-state-reasons = none     tag: 4
+printer-type = 2265180     tag: 4
+printer-up-time = 1753273693     tag: 4
+printer-uri-supported = ipp://localhost/printers/Brother_MFC_L8900CDW_series     tag: 4
+queued-job-count = 0     tag: 4
+uri-authentication-supported = requesting-user-name     tag: 4
+uri-security-supported = none     tag: 4
+printer-id = 1035     tag: 4
+printer-name = Brother_MFC_L8900CDW_series     tag: 4
+printer-location =      tag: 4
+printer-geo-location = unknown     tag: 4
+printer-info =      tag: 4
+printer-organization =      tag: 4
+printer-organizational-unit =      tag: 4
+printer-uuid = urn:uuid:204fd86e-e33f-375d-5a78-d5116191d64e     tag: 4
+job-quota-period = 0     tag: 4
+job-k-limit = 0     tag: 4
+job-page-limit = 0     tag: 4
+job-sheets-default = none,none     tag: 4
+device-uri = implicitclass://Brother_MFC_L8900CDW_series/     tag: 4
+document-format-supported = application/octet-stream,application/pdf,application/postscript,application/vnd.adobe-reader-postscript,application/vnd.cups-pdf,application/vnd.cups-pdf-banner,application/vnd.cups-postscript,application/vnd.cups-raster,application/vnd.cups-raw,application/x-cshell,application/x-csource,application/x-perl,application/x-shell,image/gif,image/jpeg,image/png,image/pwg-raster,image/tiff,image/urf,image/x-bitmap,image/x-photocd,image/x-portable-anymap,image/x-portable-bitmap,image/x-portable-graymap,image/x-portable-pixmap,image/x-sgi-rgb,image/x-sun-raster,image/x-xbitmap,image/x-xpixmap,image/x-xwindowdump,text/css,text/html,text/plain     tag: 4
+copies-default = 1     tag: 4
+document-format-default = application/octet-stream     tag: 4
+job-hold-until-default = no-hold     tag: 4
+job-priority-default = 50     tag: 4
+number-up-default = 1     tag: 4
+orientation-requested-default = no-value     tag: 4
+print-quality-default = normal     tag: 4
+color-supported = true     tag: 4
+pages-per-minute = 1     tag: 4
+pages-per-minute-color = 1     tag: 4
+print-quality-supported = normal     tag: 4
+printer-make-and-model = Brother MFC-L8900CDW series, driverless, cups-filters 1.27.4     tag: 4
+media-default = na_letter_8.5x11in     tag: 4
+media-col-default = {media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432}     tag: 4
+media-supported = na_index-3x5_3x5in,iso_a4_210x297mm,iso_a5_148x210mm,iso_a6_105x148mm,na_number-10_4.125x9.5in,iso_c5_162x229mm,iso_dl_110x220mm,na_monarch_3.875x7.5in,na_executive_7.25x10.5in,na_foolscap_8.5x13in,iso_b5_176x250mm,na_legal_8.5x14in,na_letter_8.5x11in,na_oficio_8.5x13.4in,custom_min_3x5in,custom_max_8.5x14in     tag: 4
+media-size-supported = {x-dimension=7620 y-dimension=12700},{x-dimension=21000 y-dimension=29700},{x-dimension=14800 y-dimension=21000},{x-dimension=10500 y-dimension=14800},{x-dimension=10477 y-dimension=24130},{x-dimension=16200 y-dimension=22900},{x-dimension=11000 y-dimension=22000},{x-dimension=9842 y-dimension=19050},{x-dimension=18415 y-dimension=26670},{x-dimension=21590 y-dimension=33020},{x-dimension=17600 y-dimension=25000},{x-dimension=21590 y-dimension=35560},{x-dimension=21590 y-dimension=27940},{x-dimension=21590 y-dimension=34036},{x-dimension=7620-21590 y-dimension=12700-35560}     tag: 4
+media-source-supported = auto,by-pass-tray,tray-1     tag: 4
+media-bottom-margin-supported = 432     tag: 4
+media-left-margin-supported = 432     tag: 4
+media-right-margin-supported = 432     tag: 4
+media-top-margin-supported = 432     tag: 4
+media-col-database = {media-size={x-dimension=7620 y-dimension=12700} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=21000 y-dimension=29700} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=14800 y-dimension=21000} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=10500 y-dimension=14800} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=10477 y-dimension=24130} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=16200 y-dimension=22900} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=11000 y-dimension=22000} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=9842 y-dimension=19050} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=18415 y-dimension=26670} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=21590 y-dimension=33020} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=17600 y-dimension=25000} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=21590 y-dimension=35560} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432},{media-size={x-dimension=21590 y-dimension=34036} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432}     tag: 4
+output-bin-supported = face-down     tag: 4
+output-bin-default = face-down     tag: 4
+print-color-mode-supported = monochrome,color     tag: 4
+print-color-mode-default = color     tag: 4
+pwg-raster-document-type-supported = black_1,sgray_8,srgb_8     tag: 4
+printer-resolution-default = 600dpi     tag: 4
+printer-resolution-supported = 600dpi     tag: 4
+pwg-raster-document-resolution-supported = 600dpi     tag: 4
+pwg-raster-document-sheet-back = normal     tag: 4
+sides-supported = one-sided,two-sided-long-edge,two-sided-short-edge     tag: 4
+sides-default = one-sided     tag: 4
+printer-commands = none     tag: 4
+port-monitor = none     tag: 4
+port-monitor-supported = none     tag: 4
+finishings-supported = none     tag: 4
+finishings-default = none     tag: 4
+charset-configured = utf-8     tag: 4
+charset-supported = us-ascii,utf-8     tag: 4
+compression-supported = none,gzip     tag: 4
+copies-supported = 1-9999     tag: 4
+generated-natural-language-supported = en-us     tag: 4
+ipp-features-supported = subscription-object     tag: 4
+ipp-versions-supported = 1.0,1.1,2.0,2.1     tag: 4
+ippget-event-life = 15     tag: 4
+job-creation-attributes-supported = copies,finishings,finishings-col,ipp-attribute-fidelity,job-hold-until,job-name,job-priority,job-sheets,media,media-col,multiple-document-handling,number-up,number-up-layout,orientation-requested,output-bin,page-delivery,page-ranges,print-color-mode,print-quality,print-scaling,printer-resolution,sides     tag: 4
+job-hold-until-supported = no-hold,indefinite,day-time,evening,night,second-shift,third-shift,weekend     tag: 4
+job-ids-supported = true     tag: 4
+job-k-octets-supported = 0-946334736     tag: 4
+job-priority-supported = 100     tag: 4
+job-settable-attributes-supported = copies,finishings,job-hold-until,job-name,job-priority,media,media-col,multiple-document-handling,number-up,output-bin,orientation-requested,page-ranges,print-color-mode,print-quality,printer-resolution,sides     tag: 4
+job-sheets-supported = none,classified,confidential,form,secret,standard,topsecret,unclassified     tag: 4
+jpeg-k-octets-supported = 0-946334736     tag: 4
+jpeg-x-dimension-supported = 0-65535     tag: 4
+jpeg-y-dimension-supported = 1-65535     tag: 4
+media-col-supported = media-bottom-margin,media-left-margin,media-right-margin,media-size,media-source,media-top-margin,media-type     tag: 4
+multiple-document-handling-supported = separate-documents-uncollated-copies,separate-documents-collated-copies     tag: 4
+multiple-document-jobs-supported = true     tag: 4
+multiple-operation-time-out = 900     tag: 4
+multiple-operation-time-out-action = process-job     tag: 4
+natural-language-configured = en-us     tag: 4
+number-up-supported = 1,2,4,6,9,16     tag: 4
+operations-supported = Print-Job,Validate-Job,Create-Job,Send-Document,Cancel-Job,Get-Job-Attributes,Get-Jobs,Get-Printer-Attributes,Hold-Job,Release-Job,Pause-Printer,Resume-Printer,Purge-Jobs,Set-Printer-Attributes,Set-Job-Attributes,Get-Printer-Supported-Values,Create-Printer-Subscriptions,Create-Job-Subscriptions,Get-Subscription-Attributes,Get-Subscriptions,Renew-Subscription,Cancel-Subscription,Get-Notifications,Enable-Printer,Disable-Printer,Hold-New-Jobs,Release-Held-New-Jobs,Cancel-Jobs,Cancel-My-Jobs,Close-Job,CUPS-Get-Default,CUPS-Get-Printers,CUPS-Add-Modify-Printer,CUPS-Delete-Printer,CUPS-Get-Classes,CUPS-Add-Modify-Class,CUPS-Delete-Class,CUPS-Accept-Jobs,CUPS-Reject-Jobs,CUPS-Set-Default,CUPS-Get-Devices,CUPS-Get-PPDs,CUPS-Move-Job,CUPS-Authenticate-Job,CUPS-Get-PPD,CUPS-Get-Document,Restart-Job     tag: 4
+orientation-requested-supported = portrait,landscape,reverse-landscape,reverse-portrait     tag: 4
+page-delivery-supported = reverse-order,same-order     tag: 4
+page-ranges-supported = true     tag: 4
+pdf-k-octets-supported = 0-946334736     tag: 4
+pdf-versions-supported = adobe-1.2,adobe-1.3,adobe-1.4,adobe-1.5,adobe-1.6,adobe-1.7,iso-19005-1_2005,iso-32000-1_2008,pwg-5102.3     tag: 4
+pdl-override-supported = attempted     tag: 4
+print-scaling-supported = auto,auto-fit,fill,fit,none     tag: 4
+printer-get-attributes-supported = document-format     tag: 4
+printer-settable-attributes-supported = printer-geo-location,printer-info,printer-location,printer-organization,printer-organizational-unit     tag: 4
+which-jobs-supported = completed,not-completed,aborted,all,canceled,pending,pending-held,processing,processing-stopped     tag: 4
+*****************
+*****************
+*****************
+	Option#	Name	Value
+	0	copies	1
+	1	cups-browsed	true
+	2	device-uri	implicitclass://Brother_MFC_L8900CDW_series/
+	3	finishings	3
+	4	job-cancel-after	10800
+	5	job-hold-until	no-hold
+	6	job-priority	50
+	7	job-sheets	none,none
+	8	marker-change-time	0
+	9	number-up	1
+	10	printer-commands	none
+	11	printer-info	
+	12	printer-is-accepting-jobs	true
+	13	printer-is-shared	false
+	14	printer-is-temporary	false
+	15	printer-location	
+	16	printer-make-and-model	Brother MFC-L8900CDW series, driverless, cups-filters 1.27.4
+	17	printer-state	3
+	18	printer-state-change-time	1753246807
+	19	printer-state-reasons	none
+	20	printer-type	2265180      ***********  Default printer        duplex        color        copies  
+	21	printer-uri-supported	ipp://localhost/printers/Brother_MFC_L8900CDW_series
+
+flags: 0
+Dest Name: Officejet_Pro_8100_09E040_
+uri: ipp://localhost/printers/Officejet_Pro_8100_09E040_
+  resolution printer-resolution-default: 600dpi
+text value: 600  integer value: 600
+	 DPI   600
+	 !!!!!!! orientation: 
+	                      portrait
+	                      landscape
+	                      reverse-landscape
+	                      reverse-portrait
+	 ;;;;;;;;;;;;;media source: 0  name: main
+	 ;;;;;;;;;;;;;media source: 1  name: alternate
+	 ++++++++++++output bin: 0  name: face-up
+
+	``````````  output-bin-default: output-bin-default   value: face-up
+	 ********side: 0  name: one-sided
+	 ********side: 1  name: two-sided-long-edge
+	 ********side: 2  name: two-sided-short-edge
+	 ********color: 0  name: monochrome
+	 ********color: 1  name: color
+xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED
+jjj: 0  integer: 4   string version: normal
+
+	---------- CUPS_PRINT_COLOR_MODE   name: print-color-mode-default  default: color
+
+	........... CUPS_SIDES   name: sides-default  default: one-sided
+
+
+	Supported Media:
+Name	    Width    Length    bottom    left    right    top
+na_index-3x5_3x5in	7620    12700    330    330    330    330
+na_index-3x5_3x5in_borderless	7620    12700    0    0    0    0
+oe_photo-l_3.5x5in	8890    12700    330    330    330    330
+oe_photo-l_3.5x5in_borderless	8890    12700    0    0    0    0
+jpn_chou4_90x205mm	9000    20500    330    330    330    330
+jpn_chou4_90x205mm_borderless	9000    20500    0    0    0    0
+na_personal_3.625x6.5in	9207    16510    330    330    330    330
+na_personal_3.625x6.5in_borderless	9207    16510    0    0    0    0
+na_monarch_3.875x7.5in	9842    19050    330    330    330    330
+na_monarch_3.875x7.5in_borderless	9842    19050    0    0    0    0
+jpn_hagaki_100x148mm	10000    14800    330    330    330    330
+jpn_hagaki_100x148mm_borderless	10000    14800    0    0    0    0
+om_small-photo_100x150mm	10000    15000    330    330    330    330
+om_small-photo_100x150mm_borderless	10000    15000    0    0    0    0
+na_index-4x6_4x6in	10160    15240    330    330    330    330
+na_index-4x6_4x6in_borderless	10160    15240    0    0    0    0
+na_number-10_4.125x9.5in	10477    24130    330    330    330    330
+na_number-10_4.125x9.5in_borderless	10477    24130    0    0    0    0
+iso_a6_105x148mm	10500    14800    330    330    330    330
+iso_a6_105x148mm_borderless	10500    14800    0    0    0    0
+iso_dl_110x220mm	11000    22000    330    330    330    330
+iso_dl_110x220mm_borderless	11000    22000    0    0    0    0
+na_a2_4.375x5.75in	11112    14605    330    330    330    330
+na_a2_4.375x5.75in_borderless	11112    14605    0    0    0    0
+iso_c6_114x162mm	11400    16200    330    330    330    330
+iso_c6_114x162mm_borderless	11400    16200    0    0    0    0
+jpn_chou3_120x235mm	12000    23500    330    330    330    330
+jpn_chou3_120x235mm_borderless	12000    23500    0    0    0    0
+na_5x7_5x7in	12700    17780    330    330    330    330
+na_5x7_5x7in_borderless	12700    17780    0    0    0    0
+na_index-5x8_5x8in	12700    20320    330    330    330    330
+na_index-5x8_5x8in_borderless	12700    20320    0    0    0    0
+na_invoice_5.5x8.5in	13970    21590    330    330    330    330
+na_invoice_5.5x8.5in_borderless	13970    21590    0    0    0    0
+jpn_oufuku_148x200mm_borderless	14800    20000    0    0    0    0
+iso_a5_148x210mm	14800    21000    330    330    330    330
+iso_a5_148x210mm_borderless	14800    21000    0    0    0    0
+iso_c5_162x229mm	16200    22900    330    330    330    330
+iso_c5_162x229mm_borderless	16200    22900    0    0    0    0
+jis_b5_182x257mm	18200    25700    330    330    330    330
+jis_b5_182x257mm_borderless	18200    25700    0    0    0    0
+custom_183.89x260.09mm_183.89x260.09mm	18389    26009    330    330    330    330
+custom_184x260mm_184x260mm_borderless	18400    26000    0    0    0    0
+na_executive_7.25x10.5in	18415    26670    330    330    330    330
+na_executive_7.25x10.5in_borderless	18415    26670    0    0    0    0
+custom_195x270mm_195x270mm_borderless	19500    27000    0    0    0    0
+custom_195.07x270mm_195.07x270mm	19507    27000    330    330    330    330
+roc_16k_7.75x10.75in	19685    27305    330    330    330    330
+roc_16k_7.75x10.75in_borderless	19685    27305    0    0    0    0
+custom_200.01x147.99mm_200.01x147.99mm	20001    14799    330    330    330    330
+na_govt-letter_8x10in	20320    25400    330    330    330    330
+na_govt-letter_8x10in_borderless	20320    25400    0    0    0    0
+iso_a4_210x297mm	21000    29700    330    330    330    330
+iso_a4_210x297mm_borderless	21000    29700    0    0    0    0
+na_letter_8.5x11in	21590    27940    330    330    330    330
+na_letter_8.5x11in_borderless	21590    27940    0    0    0    0
+na_foolscap_8.5x13in	21590    33020    330    330    330    330
+na_foolscap_8.5x13in_borderless	21590    33020    0    0    0    0
+na_legal_8.5x14in	21590    35560    330    330    330    330
+na_legal_8.5x14in_borderless	21590    35560    0    0    0    0
+*****************
+*****************
+*****************
+attributes-charset = utf-8     tag: 1
+attributes-natural-language = en-us     tag: 1
+marker-change-time = 0     tag: 4
+printer-config-change-date-time = 2025-07-23T05:00:07Z     tag: 4
+printer-config-change-time = 1753246807     tag: 4
+printer-current-time = 2025-07-23T12:28:13Z     tag: 4
+printer-dns-sd-name = no-value     tag: 4
+printer-icons = http://localhost/icons/Officejet_Pro_8100_09E040_.png     tag: 4
+printer-is-accepting-jobs = true     tag: 4
+printer-is-shared = false     tag: 4
+printer-is-temporary = false     tag: 4
+printer-more-info = http://localhost/printers/Officejet_Pro_8100_09E040_     tag: 4
+printer-state = idle     tag: 4
+printer-state-change-date-time = 2025-07-23T05:00:07Z     tag: 4
+printer-state-change-time = 1753246807     tag: 4
+printer-state-message =      tag: 4
+printer-state-reasons = none     tag: 4
+printer-type = 2101340     tag: 4
+printer-up-time = 1753273693     tag: 4
+printer-uri-supported = ipp://localhost/printers/Officejet_Pro_8100_09E040_     tag: 4
+queued-job-count = 0     tag: 4
+uri-authentication-supported = requesting-user-name     tag: 4
+uri-security-supported = none     tag: 4
+printer-id = 1034     tag: 4
+printer-name = Officejet_Pro_8100_09E040_     tag: 4
+printer-location =      tag: 4
+printer-geo-location = unknown     tag: 4
+printer-info =      tag: 4
+printer-organization =      tag: 4
+printer-organizational-unit =      tag: 4
+printer-uuid = urn:uuid:5e439292-fe59-33af-46a2-1090ec0c189c     tag: 4
+job-quota-period = 0     tag: 4
+job-k-limit = 0     tag: 4
+job-page-limit = 0     tag: 4
+job-sheets-default = none,none     tag: 4
+device-uri = implicitclass://Officejet_Pro_8100_09E040_/     tag: 4
+document-format-supported = application/octet-stream,application/pdf,application/postscript,application/vnd.adobe-reader-postscript,application/vnd.cups-pdf,application/vnd.cups-pdf-banner,application/vnd.cups-postscript,application/vnd.cups-raster,application/vnd.cups-raw,application/x-cshell,application/x-csource,application/x-perl,application/x-shell,image/gif,image/jpeg,image/png,image/pwg-raster,image/tiff,image/urf,image/x-bitmap,image/x-photocd,image/x-portable-anymap,image/x-portable-bitmap,image/x-portable-graymap,image/x-portable-pixmap,image/x-sgi-rgb,image/x-sun-raster,image/x-xbitmap,image/x-xpixmap,image/x-xwindowdump,text/css,text/html,text/plain     tag: 4
+copies-default = 1     tag: 4
+document-format-default = application/octet-stream     tag: 4
+job-hold-until-default = no-hold     tag: 4
+job-priority-default = 50     tag: 4
+number-up-default = 1     tag: 4
+orientation-requested-default = no-value     tag: 4
+print-quality-default = normal     tag: 4
+color-supported = true     tag: 4
+pages-per-minute = 1     tag: 4
+pages-per-minute-color = 1     tag: 4
+print-quality-supported = normal     tag: 4
+printer-make-and-model = HP Officejet Pro 8100, driverless, cups-filters 1.27.4     tag: 4
+media-default = na_letter_8.5x11in     tag: 4
+media-col-default = {media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330}     tag: 4
+media-supported = om_small-photo_100x150mm,om_100x-150mm-borderless_100x150mm,custom_183.89x260.09mm_183.89x260.09mm,custom_184x260mm_184x260mm,custom_195.07x270mm_195.07x270mm,custom_195x270mm_195x270mm,custom_200.01x147.99mm_200.01x147.99mm,oe_photo-l_3.5x5in,oe_3-5x-5-borderless_3.5x5in,na_index-3x5_3x5in,oe_3x-5-borderless_3x5in,na_index-4x6_4x6in,oe_4x-6-borderless_4x6in,na_5x7_5x7in,oe_5x-7-borderless_5x7in,na_index-5x8_5x8in,oe_5x-8-borderless_5x8in,na_govt-letter_8x10in,oe_8x-10-borderless_8x10in,iso_a4_210x297mm,om_a-4-borderless_210x297mm,iso_a5_148x210mm,om_a-5-borderless_148x210mm,iso_a6_105x148mm,om_a-6-borderless_105x148mm,jis_b5_182x257mm,om_b-5-borderless_182x257mm,jpn_oufuku_148x200mm,na_number-10_4.125x9.5in,om_env-10-borderless_104.77x241.3mm,na_a2_4.375x5.75in,om_env-a-2-borderless_111.12x146.05mm,iso_c5_162x229mm,om_env-c-5-borderless_162x229mm,iso_c6_114x162mm,om_env-c-6-borderless_114x162mm,jpn_chou3_120x235mm,om_env-chou-3-borderless_120x235mm,jpn_chou4_90x205mm,om_env-chou-4-borderless_90x205mm,iso_dl_110x220mm,om_env-dl-borderless_110x220mm,na_monarch_3.875x7.5in,om_env-monarch-borderless_98.42x190.5mm,na_personal_3.625x6.5in,om_env-personal-borderless_92.07x165.1mm,na_executive_7.25x10.5in,oe_executive-borderless_7.25x10.5in,na_foolscap_8.5x13in,oe_fan-fold-german-legal-borderless_8.5x13in,na_legal_8.5x14in,oe_legal-borderless_8.5x14in,na_letter_8.5x11in,oe_letter-borderless_8.5x11in,jpn_hagaki_100x148mm,om_postcard-borderless_100x148mm,na_invoice_5.5x8.5in,oe_statement-borderless_5.5x8.5in,roc_16k_7.75x10.75in,oe_roc-16k-borderless_7.75x10.75in     tag: 4
+media-size-supported = {x-dimension=10000 y-dimension=15000},{x-dimension=10000 y-dimension=15000},{x-dimension=18389 y-dimension=26009},{x-dimension=18400 y-dimension=26000},{x-dimension=19507 y-dimension=27000},{x-dimension=19500 y-dimension=27000},{x-dimension=20001 y-dimension=14799},{x-dimension=8890 y-dimension=12700},{x-dimension=8890 y-dimension=12700},{x-dimension=7620 y-dimension=12700},{x-dimension=7620 y-dimension=12700},{x-dimension=10160 y-dimension=15240},{x-dimension=10160 y-dimension=15240},{x-dimension=12700 y-dimension=17780},{x-dimension=12700 y-dimension=17780},{x-dimension=12700 y-dimension=20320},{x-dimension=12700 y-dimension=20320},{x-dimension=20320 y-dimension=25400},{x-dimension=20320 y-dimension=25400},{x-dimension=21000 y-dimension=29700},{x-dimension=21000 y-dimension=29700},{x-dimension=14800 y-dimension=21000},{x-dimension=14800 y-dimension=21000},{x-dimension=10500 y-dimension=14800},{x-dimension=10500 y-dimension=14800},{x-dimension=18200 y-dimension=25700},{x-dimension=18200 y-dimension=25700},{x-dimension=14800 y-dimension=20000},{x-dimension=10477 y-dimension=24130},{x-dimension=10477 y-dimension=24130},{x-dimension=11112 y-dimension=14605},{x-dimension=11112 y-dimension=14605},{x-dimension=16200 y-dimension=22900},{x-dimension=16200 y-dimension=22900},{x-dimension=11400 y-dimension=16200},{x-dimension=11400 y-dimension=16200},{x-dimension=12000 y-dimension=23500},{x-dimension=12000 y-dimension=23500},{x-dimension=9000 y-dimension=20500},{x-dimension=9000 y-dimension=20500},{x-dimension=11000 y-dimension=22000},{x-dimension=11000 y-dimension=22000},{x-dimension=9842 y-dimension=19050},{x-dimension=9842 y-dimension=19050},{x-dimension=9207 y-dimension=16510},{x-dimension=9207 y-dimension=16510},{x-dimension=18415 y-dimension=26670},{x-dimension=18415 y-dimension=26670},{x-dimension=21590 y-dimension=33020},{x-dimension=21590 y-dimension=33020},{x-dimension=21590 y-dimension=35560},{x-dimension=21590 y-dimension=35560},{x-dimension=21590 y-dimension=27940},{x-dimension=21590 y-dimension=27940},{x-dimension=10000 y-dimension=14800},{x-dimension=10000 y-dimension=14800},{x-dimension=13970 y-dimension=21590},{x-dimension=13970 y-dimension=21590},{x-dimension=19685 y-dimension=27305},{x-dimension=19685 y-dimension=27305}     tag: 4
+media-source-supported = main,alternate     tag: 4
+media-type-supported = stationery,photographic-glossy,com.hp.brochure-glossy,com.hp.brochure-matte,com.hp.everyday-glossy,com.hp.advanced-photo,com.hp.everyday-matte,com.hp.premium-photo     tag: 4
+media-bottom-margin-supported = 330,0     tag: 4
+media-left-margin-supported = 330,0     tag: 4
+media-right-margin-supported = 330,0     tag: 4
+media-top-margin-supported = 330,0     tag: 4
+media-col-database = {media-size={x-dimension=10000 y-dimension=15000} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=10000 y-dimension=15000} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=18389 y-dimension=26009} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=18400 y-dimension=26000} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=19507 y-dimension=27000} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=19500 y-dimension=27000} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=20001 y-dimension=14799} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=8890 y-dimension=12700} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=8890 y-dimension=12700} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=7620 y-dimension=12700} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=7620 y-dimension=12700} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=10160 y-dimension=15240} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=10160 y-dimension=15240} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=12700 y-dimension=17780} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=12700 y-dimension=17780} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=12700 y-dimension=20320} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=12700 y-dimension=20320} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=20320 y-dimension=25400} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=20320 y-dimension=25400} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=21000 y-dimension=29700} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=21000 y-dimension=29700} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=14800 y-dimension=21000} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=14800 y-dimension=21000} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=10500 y-dimension=14800} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=10500 y-dimension=14800} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=18200 y-dimension=25700} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=18200 y-dimension=25700} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=14800 y-dimension=20000} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top-margin=0},{media-size={x-dimension=10477 y-dimension=24130} media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-top-margin=330},{media-size={x-dimension=10477 y-dimension=24130} media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-top     tag: 4
+output-bin-supported = face-up     tag: 4
+output-bin-default = face-up     tag: 4
+print-color-mode-supported = monochrome,color     tag: 4
+print-color-mode-default = color     tag: 4
+pwg-raster-document-type-supported = black_1,sgray_8,srgb_8     tag: 4
+printer-resolution-default = 600dpi     tag: 4
+printer-resolution-supported = 600dpi     tag: 4
+pwg-raster-document-resolution-supported = 600dpi     tag: 4
+pwg-raster-document-sheet-back = normal     tag: 4
+sides-supported = one-sided,two-sided-long-edge,two-sided-short-edge     tag: 4
+sides-default = one-sided     tag: 4
+printer-commands = none     tag: 4
+port-monitor = none     tag: 4
+port-monitor-supported = none     tag: 4
+finishings-supported = none     tag: 4
+finishings-default = none     tag: 4
+charset-configured = utf-8     tag: 4
+charset-supported = us-ascii,utf-8     tag: 4
+compression-supported = none,gzip     tag: 4
+copies-supported = 1-9999     tag: 4
+generated-natural-language-supported = en-us     tag: 4
+ipp-features-supported = subscription-object     tag: 4
+ipp-versions-supported = 1.0,1.1,2.0,2.1     tag: 4
+ippget-event-life = 15     tag: 4
+job-creation-attributes-supported = copies,finishings,finishings-col,ipp-attribute-fidelity,job-hold-until,job-name,job-priority,job-sheets,media,media-col,multiple-document-handling,number-up,number-up-layout,orientation-requested,output-bin,page-delivery,page-ranges,print-color-mode,print-quality,print-scaling,printer-resolution,sides     tag: 4
+job-hold-until-supported = no-hold,indefinite,day-time,evening,night,second-shift,third-shift,weekend     tag: 4
+job-ids-supported = true     tag: 4
+job-k-octets-supported = 0-946334736     tag: 4
+job-priority-supported = 100     tag: 4
+job-settable-attributes-supported = copies,finishings,job-hold-until,job-name,job-priority,media,media-col,multiple-document-handling,number-up,output-bin,orientation-requested,page-ranges,print-color-mode,print-quality,printer-resolution,sides     tag: 4
+job-sheets-supported = none,classified,confidential,form,secret,standard,topsecret,unclassified     tag: 4
+jpeg-k-octets-supported = 0-946334736     tag: 4
+jpeg-x-dimension-supported = 0-65535     tag: 4
+jpeg-y-dimension-supported = 1-65535     tag: 4
+media-col-supported = media-bottom-margin,media-left-margin,media-right-margin,media-size,media-source,media-top-margin,media-type     tag: 4
+multiple-document-handling-supported = separate-documents-uncollated-copies,separate-documents-collated-copies     tag: 4
+multiple-document-jobs-supported = true     tag: 4
+multiple-operation-time-out = 900     tag: 4
+multiple-operation-time-out-action = process-job     tag: 4
+natural-language-configured = en-us     tag: 4
+number-up-supported = 1,2,4,6,9,16     tag: 4
+operations-supported = Print-Job,Validate-Job,Create-Job,Send-Document,Cancel-Job,Get-Job-Attributes,Get-Jobs,Get-Printer-Attributes,Hold-Job,Release-Job,Pause-Printer,Resume-Printer,Purge-Jobs,Set-Printer-Attributes,Set-Job-Attributes,Get-Printer-Supported-Values,Create-Printer-Subscriptions,Create-Job-Subscriptions,Get-Subscription-Attributes,Get-Subscriptions,Renew-Subscription,Cancel-Subscription,Get-Notifications,Enable-Printer,Disable-Printer,Hold-New-Jobs,Release-Held-New-Jobs,Cancel-Jobs,Cancel-My-Jobs,Close-Job,CUPS-Get-Default,CUPS-Get-Printers,CUPS-Add-Modify-Printer,CUPS-Delete-Printer,CUPS-Get-Classes,CUPS-Add-Modify-Class,CUPS-Delete-Class,CUPS-Accept-Jobs,CUPS-Reject-Jobs,CUPS-Set-Default,CUPS-Get-Devices,CUPS-Get-PPDs,CUPS-Move-Job,CUPS-Authenticate-Job,CUPS-Get-PPD,CUPS-Get-Document,Restart-Job     tag: 4
+orientation-requested-supported = portrait,landscape,reverse-landscape,reverse-portrait     tag: 4
+page-delivery-supported = reverse-order,same-order     tag: 4
+page-ranges-supported = true     tag: 4
+pdf-k-octets-supported = 0-946334736     tag: 4
+pdf-versions-supported = adobe-1.2,adobe-1.3,adobe-1.4,adobe-1.5,adobe-1.6,adobe-1.7,iso-19005-1_2005,iso-32000-1_2008,pwg-5102.3     tag: 4
+pdl-override-supported = attempted     tag: 4
+print-scaling-supported = auto,auto-fit,fill,fit,none     tag: 4
+printer-get-attributes-supported = document-format     tag: 4
+printer-settable-attributes-supported = printer-geo-location,printer-info,printer-location,printer-organization,printer-organizational-unit     tag: 4
+which-jobs-supported = completed,not-completed,aborted,all,canceled,pending,pending-held,processing,processing-stopped     tag: 4
+*****************
+*****************
+*****************
+	Option#	Name	Value
+	0	copies	1
+	1	cups-browsed	true
+	2	device-uri	implicitclass://Officejet_Pro_8100_09E040_/
+	3	finishings	3
+	4	job-cancel-after	10800
+	5	job-hold-until	no-hold
+	6	job-priority	50
+	7	job-sheets	none,none
+	8	marker-change-time	0
+	9	number-up	1
+	10	printer-commands	none
+	11	printer-info	
+	12	printer-is-accepting-jobs	true
+	13	printer-is-shared	false
+	14	printer-is-temporary	false
+	15	printer-location	
+	16	printer-make-and-model	HP Officejet Pro 8100, driverless, cups-filters 1.27.4
+	17	printer-state	3
+	18	printer-state-change-time	1753246807
+	19	printer-state-reasons	none
+	20	printer-type	2101340      duplex        color        copies  
+	21	printer-uri-supported	ipp://localhost/printers/Officejet_Pro_8100_09E040_
+
+flags: 0
+Dest Name: Brother_MFC_L3770CDW_series
+uri: 
+  resolution printer-resolution-default: 600dpi
+text value: 600  integer value: 600
+	 DPI   600
+
+	==========  media-source: media-source  default: auto
+
+	 !!!!!!! orientation: 
+	                      portrait
+	                      landscape
+	 ;;;;;;;;;;;;;media source: 0  name: auto
+	 ;;;;;;;;;;;;;media source: 1  name: by-pass-tray
+	 ;;;;;;;;;;;;;media source: 2  name: tray-1
+	 ++++++++++++output bin: 0  name: face-down
+
+	``````````  output-bin-default: output-bin-default   value: face-down
+	 ********side: 0  name: one-sided
+	 ********side: 1  name: two-sided-long-edge
+	 ********side: 2  name: two-sided-short-edge
+	 ********color: 0  name: auto
+	 ********color: 1  name: color
+	 ********color: 2  name: monochrome
+	 ********color: 3  name: auto-monochrome
+xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED
+jjj: 0  integer: 4   string version: normal
+
+	---------- CUPS_PRINT_COLOR_MODE   name: print-color-mode-default  default: color
+
+	........... CUPS_SIDES   name: sides-default  default: one-sided
+
+
+	Supported Media:
+Name	    Width    Length    bottom    left    right    top
+na_index-3x5_3x5in	7620    12700    432    432    432    432
+na_monarch_3.875x7.5in	9842    19050    432    432    432    432
+na_number-10_4.125x9.5in	10477    24130    432    432    432    432
+iso_a6_105x148mm	10500    14800    432    432    432    432
+iso_dl_110x220mm	11000    22000    432    432    432    432
+iso_a5_148x210mm	14800    21000    432    432    432    432
+iso_c5_162x229mm	16200    22900    432    432    432    432
+iso_b5_176x250mm	17600    25000    432    432    432    432
+na_executive_7.25x10.5in	18415    26670    432    432    432    432
+iso_a4_210x297mm	21000    29700    432    432    432    432
+custom_215x345mm_215x345mm	21500    34500    432    432    432    432
+na_letter_8.5x11in	21590    27940    432    432    432    432
+na_foolscap_8.5x13in	21590    33020    432    432    432    432
+na_oficio_8.5x13.4in	21590    34036    432    432    432    432
+na_legal_8.5x14in	21590    35560    432    432    432    432
+*****************
+*****************
+*****************
+attributes-charset = utf-8     tag: 1
+attributes-natural-language = en-us     tag: 1
+requested-attributes = sides-supported      tag: 5
+copies-default = 1     tag: 4
+finishings-default = none     tag: 4
+media-default = na_letter_8.5x11in     tag: 4
+media-col-default = {media-type=stationery media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=auto media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}}     tag: 4
+orientation-requested-default = portrait     tag: 4
+output-bin-default = face-down     tag: 4
+output-mode-default = color     tag: 4
+print-quality-default = normal     tag: 4
+printer-resolution-default = 600dpi     tag: 4
+sides-default = two-sided-long-edge     tag: 4
+print-color-mode-default = color     tag: 4
+print-content-optimize-default = auto     tag: 4
+print-scaling-default = auto     tag: 4
+copies-supported = 1-99     tag: 4
+finishings-supported = none     tag: 4
+media-supported = iso_a4_210x297mm,na_letter_8.5x11in,na_legal_8.5x14in,na_executive_7.25x10.5in,iso_a5_148x210mm,iso_a6_105x148mm,iso_b5_176x250mm,na_number-10_4.125x9.5in,iso_dl_110x220mm,iso_c5_162x229mm,na_monarch_3.875x7.5in,na_index-3x5_3x5in,na_foolscap_8.5x13in,na_oficio_8.5x13.4in,om_india-legal_215x345mm,custom_min_76.2x127mm,custom_max_215.9x355.6mm     tag: 4
+media-col-supported = media-type,media-size,media-top-margin,media-left-margin,media-right-margin,media-bottom-margin,media-source,media-auto-dimension,media-source-propaties     tag: 4
+orientation-requested-supported = portrait,landscape     tag: 4
+output-bin-supported = face-down     tag: 4
+output-mode-supported = color,auto,auto-monochrome,monochrome     tag: 4
+print-quality-supported = normal     tag: 4
+printer-resolution-supported = 600dpi     tag: 4
+sides-supported = one-sided,two-sided-long-edge,two-sided-short-edge     tag: 4
+print-color-mode-supported = auto,color,monochrome,auto-monochrome     tag: 4
+print-content-optimize-supported = auto     tag: 4
+print-scaling-supported = auto,auto-fit,fill,fit,none     tag: 4
+generated-natural-language-supported = en,fr,de,es,pt,it,nl,no,sv,fi,da,ru,cs,hu,pl,bg,ro,sk,sl,hr,tr,id     tag: 4
+printer-uri-supported = ipp://BRN3C2AF49FE253.local./ipp/print     tag: 4
+uri-security-supported = none     tag: 4
+uri-authentication-supported = none     tag: 4
+printer-name = BRN3C2AF49FE253     tag: 4
+printer-location =      tag: 4
+printer-info = Brother MFC-L3770CDW series[en]     tag: 4
+printer-make-and-model = Brother MFC-L3770CDW series[en]     tag: 4
+printer-state = idle     tag: 4
+printer-state-reasons = none     tag: 4
+ipp-versions-supported = 1.0,1.1,2.0     tag: 4
+operations-supported = Print-Job,Validate-Job,Create-Job,Send-Document,Cancel-Job,Get-Job-Attributes,Get-Jobs,Get-Printer-Attributes,Close-Job,Identify-Printer     tag: 4
+multiple-document-jobs-supported = false     tag: 4
+multiple-operation-time-out = 150     tag: 4
+natural-language-configured = en     tag: 4
+charset-configured = utf-8     tag: 4
+charset-supported = utf-8     tag: 4
+document-format-supported = application/octet-stream,image/urf,image/jpeg,image/pwg-raster     tag: 4
+document-format-default = application/octet-stream     tag: 4
+printer-is-accepting-jobs = true     tag: 4
+queued-job-count = 0     tag: 4
+pdl-override-supported = attempted     tag: 4
+printer-up-time = 42069     tag: 4
+compression-supported = none,gzip     tag: 4
+color-supported = true     tag: 4
+job-creation-attributes-supported = copies,finishings,ipp-attribute-fidelity,job-name,media,media-col,orientation-requested,output-bin,output-mode,print-quality,printer-resolution,requesting-user-name,sides,print-color-mode     tag: 4
+media-bottom-margin-supported = 432     tag: 4
+media-left-margin-supported = 432     tag: 4
+media-right-margin-supported = 432     tag: 4
+media-source-supported = auto,by-pass-tray,tray-1     tag: 4
+media-top-margin-supported = 432     tag: 4
+media-type-supported = stationery,stationery-lightweight,stationery-heavyweight,envelope,envelope-heavyweight,envelope-lightweight,labels,photographic-glossy,stationery-bond,com.brother.thicker,com.brother.recycled     tag: 4
+media-size-supported = {x-dimension=21000 y-dimension=29700},{x-dimension=21590 y-dimension=27940},{x-dimension=21590 y-dimension=35560},{x-dimension=18415 y-dimension=26670},{x-dimension=14800 y-dimension=21000},{x-dimension=10500 y-dimension=14800},{x-dimension=17600 y-dimension=25000},{x-dimension=10477 y-dimension=24130},{x-dimension=11000 y-dimension=22000},{x-dimension=16200 y-dimension=22900},{x-dimension=9842 y-dimension=19050},{x-dimension=7620 y-dimension=12700},{x-dimension=21590 y-dimension=33020},{x-dimension=21590 y-dimension=34036},{x-dimension=21500 y-dimension=34500},{x-dimension=7620-21590 y-dimension=12700-35560}     tag: 4
+pages-per-minute = 24     tag: 4
+pages-per-minute-color = 24     tag: 4
+printer-alert = code=other     tag: 4
+printer-alert-description = Sleep[en]     tag: 4
+printer-device-id = MFG:Brother;CMD:PJL,PCL,PCLXL,URF;MDL:MFC-L3770CDW series;CLS:PRINTER;CID:Brother Generic Jpeg Type2;URF:SRGB24,W8,CP1,IS19-1,MT1-3-4-5-8-11,OB10,PQ4,RS600,V1.4,DM1;[en]     tag: 4
+printer-icons = http://BRN3C2AF49FE253.local./ipp/printer-icons-128.png,http://BRN3C2AF49FE253.local./ipp/printer-icons-512.png     tag: 4
+printer-more-info = http://BRN3C2AF49FE253.local./net/net/airprint.html     tag: 4
+printer-uuid = urn:uuid:e3248000-80ce-11db-8000-3c2af49fe253     tag: 4
+job-impressions-supported = 1-999     tag: 4
+printer-geo-location = unknown     tag: 4
+printer-supply-info-uri = http://BRN3C2AF49FE253.local./general/status.html     tag: 4
+media-ready = na_letter_8.5x11in     tag: 4
+media-col-ready = {media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}}     tag: 4
+identify-actions-default = flash,sound     tag: 4
+identify-actions-supported = flash,sound     tag: 4
+ipp-features-supported = airprint-1.8,wfds-print-1.0     tag: 4
+printer-input-tray = type=other;mediafeed=279400;mediaxfeed=215900;maxcapacity=250;level=-3;status=0;name=AUTO;index=1;dimunit=micrometers;unit=sheets;medianame=THIN;mediaweight=-2;mediatype=Unknown;mediacolor=Unknown;,type=sheetFeedAutoNonRemovableTray;mediafeed=279400;mediaxfeed=215900;maxcapacity=250;level=0;status=19;name=MP\ TRAY;index=2;dimunit=micrometers;unit=sheets;medianame=REGULAR;mediaweight=-2;mediatype=Unknown;mediacolor=Unknown;,type=sheetFeedAutoNonRemovableTray;mediafeed=279400;mediaxfeed=215900;maxcapacity=250;level=-3;status=0;name=TRAY1;index=3;dimunit=micrometers;unit=sheets;medianame=REGULAR;mediaweight=-2;mediatype=Unknown;mediacolor=Unknown;     tag: 4
+printer-output-tray = type=unRemovableBin;maxcapacity=-2;remaining=-2;status=0;name=face-down;index=1;unit=sheets;stackingorder=firstToLast;pagedelivery=notPresent;offsetstacking=notPresent;     tag: 4
+print_wfds = T     tag: 4
+document-format-varying-attributes = copies     tag: 4
+multiple-operation-time-out-action = abort-job     tag: 4
+printer-organization =      tag: 4
+printer-organizational-unit =      tag: 4
+printer-get-attributes-supported = document-format     tag: 4
+which-jobs-supported = completed,not_completed     tag: 4
+printer-current-time = 2025-07-23T07:28:13-0044     tag: 4
+printer-config-change-time = 1     tag: 4
+printer-config-change-date-time = 2025-07-19T12:26:52-0044     tag: 4
+printer-state-change-time = 1     tag: 4
+printer-state-change-date-time = 2025-07-19T12:26:52-0044     tag: 4
+printer-strings-languages-supported = en,fr,de,es,it,nl,nb,sv,fi,da,ru,cs,hu,pl,ro,sk,hr,tr,id     tag: 4
+printer-strings-uri = http://BRN3C2AF49FE253.local./ipp/strings/dict/en.txt     tag: 4
+printer-mandatory-job-attributes = attributes-charset,attributes-natural-language,printer-uri     tag: 4
+landscape-orientation-requested-preferred = 5     tag: 4
+marker-colors = #000000[en],#00FFFF[en],#FF00FF[en],#FFFF00[en]     tag: 4
+marker-high-levels = 100,100,100,100     tag: 4
+marker-levels = 20,80,70,70     tag: 4
+marker-low-levels = 10,10,10,10     tag: 4
+marker-names = BK[en],C[en],M[en],Y[en]     tag: 4
+marker-types = toner,toner,toner,toner     tag: 4
+pdf-versions-supported = none     tag: 4
+printer-dns-sd-name = Brother MFC-L3770CDW series     tag: 4
+printer-firmware-name = MAIN,SUB1,SUB5     tag: 4
+printer-firmware-string-version = ZF2409181750:4FC2,1.60,1.00     tag: 4
+printer-firmware-version = ZF2409181750:4FC2,1.60,1.00     tag: 4
+printer-kind = document,envelope,label,postcard     tag: 4
+urf-supported = SRGB24,W8,CP1,IS19-1,MT1-3-4-5-8-11,OB10,PQ4,RS600,V1.4,DM1     tag: 4
+document-format-preferred = image/urf     tag: 4
+jpeg-k-octets-supported = 0-16384     tag: 4
+jpeg-x-dimension-supported = 0-15000     tag: 4
+jpeg-y-dimension-supported = 1-15000     tag: 4
+jpeg-features-supported = none     tag: 4
+mopria-certified = 1.3     tag: 4
+pwg-raster-document-resolution-supported = 600dpi     tag: 4
+pwg-raster-document-sheet-back = rotated     tag: 4
+pwg-raster-document-type-supported = sgray_8,srgb_8     tag: 4
+job-password-supported = 4     tag: 4
+job-password-length-supported = 4-4     tag: 4
+job-password-encryption-supported = none     tag: 4
+job-password-repertoire-supported = iana_us-ascii_digits     tag: 4
+job-password-repertoire-configured = iana_us-ascii_digits     tag: 4
+generated-natural-language-supported = en,fr,de,es,pt,it,nl,no,sv,fi,da,ru,cs,hu,pl,bg,ro,sk,sl,hr,tr,id     tag: 4
+printer-uri-supported = ipp://BRN3C2AF49FE253.local./ipp/print     tag: 4
+uri-security-supported = none     tag: 4
+uri-authentication-supported = none     tag: 4
+printer-name = BRN3C2AF49FE253     tag: 4
+printer-location =      tag: 4
+printer-info = Brother MFC-L3770CDW series[en]     tag: 4
+printer-make-and-model = Brother MFC-L3770CDW series[en]     tag: 4
+printer-state = idle     tag: 4
+printer-state-reasons = none     tag: 4
+ipp-versions-supported = 1.0,1.1,2.0     tag: 4
+operations-supported = Print-Job,Validate-Job,Create-Job,Send-Document,Cancel-Job,Get-Job-Attributes,Get-Jobs,Get-Printer-Attributes,Close-Job,Identify-Printer     tag: 4
+multiple-document-jobs-supported = false     tag: 4
+multiple-operation-time-out = 150     tag: 4
+natural-language-configured = en     tag: 4
+charset-configured = utf-8     tag: 4
+charset-supported = utf-8     tag: 4
+document-format-supported = application/octet-stream,image/urf,image/jpeg,image/pwg-raster     tag: 4
+document-format-default = application/octet-stream     tag: 4
+printer-is-accepting-jobs = true     tag: 4
+queued-job-count = 0     tag: 4
+pdl-override-supported = attempted     tag: 4
+printer-up-time = 42069     tag: 4
+compression-supported = none,gzip     tag: 4
+color-supported = true     tag: 4
+job-creation-attributes-supported = copies,finishings,ipp-attribute-fidelity,job-name,media,media-col,orientation-requested,output-bin,output-mode,print-quality,printer-resolution,requesting-user-name,sides,print-color-mode     tag: 4
+media-bottom-margin-supported = 432     tag: 4
+media-left-margin-supported = 432     tag: 4
+media-right-margin-supported = 432     tag: 4
+media-source-supported = auto,by-pass-tray,tray-1     tag: 4
+media-top-margin-supported = 432     tag: 4
+media-type-supported = stationery,stationery-lightweight,stationery-heavyweight,envelope,envelope-heavyweight,envelope-lightweight,labels,photographic-glossy,stationery-bond,com.brother.thicker,com.brother.recycled     tag: 4
+media-size-supported = {x-dimension=21000 y-dimension=29700},{x-dimension=21590 y-dimension=27940},{x-dimension=21590 y-dimension=35560},{x-dimension=18415 y-dimension=26670},{x-dimension=14800 y-dimension=21000},{x-dimension=10500 y-dimension=14800},{x-dimension=17600 y-dimension=25000},{x-dimension=10477 y-dimension=24130},{x-dimension=11000 y-dimension=22000},{x-dimension=16200 y-dimension=22900},{x-dimension=9842 y-dimension=19050},{x-dimension=7620 y-dimension=12700},{x-dimension=21590 y-dimension=33020},{x-dimension=21590 y-dimension=34036},{x-dimension=21500 y-dimension=34500},{x-dimension=7620-21590 y-dimension=12700-35560}     tag: 4
+pages-per-minute = 24     tag: 4
+pages-per-minute-color = 24     tag: 4
+printer-alert = code=other     tag: 4
+printer-alert-description = Sleep[en]     tag: 4
+printer-device-id = MFG:Brother;CMD:PJL,PCL,PCLXL,URF;MDL:MFC-L3770CDW series;CLS:PRINTER;CID:Brother Generic Jpeg Type2;URF:SRGB24,W8,CP1,IS19-1,MT1-3-4-5-8-11,OB10,PQ4,RS600,V1.4,DM1;[en]     tag: 4
+printer-icons = http://BRN3C2AF49FE253.local./ipp/printer-icons-128.png,http://BRN3C2AF49FE253.local./ipp/printer-icons-512.png     tag: 4
+printer-more-info = http://BRN3C2AF49FE253.local./net/net/airprint.html     tag: 4
+printer-uuid = urn:uuid:e3248000-80ce-11db-8000-3c2af49fe253     tag: 4
+job-impressions-supported = 1-999     tag: 4
+printer-geo-location = unknown     tag: 4
+printer-supply-info-uri = http://BRN3C2AF49FE253.local./general/status.html     tag: 4
+media-ready = na_letter_8.5x11in     tag: 4
+media-col-ready = {media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}}     tag: 4
+identify-actions-default = flash,sound     tag: 4
+identify-actions-supported = flash,sound     tag: 4
+ipp-features-supported = airprint-1.8,wfds-print-1.0     tag: 4
+printer-input-tray = type=other;mediafeed=279400;mediaxfeed=215900;maxcapacity=250;level=-3;status=0;name=AUTO;index=1;dimunit=micrometers;unit=sheets;medianame=THIN;mediaweight=-2;mediatype=Unknown;mediacolor=Unknown;,type=sheetFeedAutoNonRemovableTray;mediafeed=279400;mediaxfeed=215900;maxcapacity=250;level=0;status=19;name=MP\ TRAY;index=2;dimunit=micrometers;unit=sheets;medianame=REGULAR;mediaweight=-2;mediatype=Unknown;mediacolor=Unknown;,type=sheetFeedAutoNonRemovableTray;mediafeed=279400;mediaxfeed=215900;maxcapacity=250;level=-3;status=0;name=TRAY1;index=3;dimunit=micrometers;unit=sheets;medianame=REGULAR;mediaweight=-2;mediatype=Unknown;mediacolor=Unknown;     tag: 4
+printer-output-tray = type=unRemovableBin;maxcapacity=-2;remaining=-2;status=0;name=face-down;index=1;unit=sheets;stackingorder=firstToLast;pagedelivery=notPresent;offsetstacking=notPresent;     tag: 4
+print_wfds = T     tag: 4
+document-format-varying-attributes = copies     tag: 4
+multiple-operation-time-out-action = abort-job     tag: 4
+printer-organization =      tag: 4
+printer-organizational-unit =      tag: 4
+printer-get-attributes-supported = document-format     tag: 4
+which-jobs-supported = completed,not_completed     tag: 4
+printer-current-time = 2025-07-23T07:28:13-0044     tag: 4
+printer-config-change-time = 1     tag: 4
+printer-config-change-date-time = 2025-07-19T12:26:52-0044     tag: 4
+printer-state-change-time = 1     tag: 4
+printer-state-change-date-time = 2025-07-19T12:26:52-0044     tag: 4
+printer-strings-languages-supported = en,fr,de,es,it,nl,nb,sv,fi,da,ru,cs,hu,pl,ro,sk,hr,tr,id     tag: 4
+printer-strings-uri = http://BRN3C2AF49FE253.local./ipp/strings/dict/en.txt     tag: 4
+printer-mandatory-job-attributes = attributes-charset,attributes-natural-language,printer-uri     tag: 4
+landscape-orientation-requested-preferred = 5     tag: 4
+marker-colors = #000000[en],#00FFFF[en],#FF00FF[en],#FFFF00[en]     tag: 4
+marker-high-levels = 100,100,100,100     tag: 4
+marker-levels = 20,80,70,70     tag: 4
+marker-low-levels = 10,10,10,10     tag: 4
+marker-names = BK[en],C[en],M[en],Y[en]     tag: 4
+marker-types = toner,toner,toner,toner     tag: 4
+pdf-versions-supported = none     tag: 4
+printer-dns-sd-name = Brother MFC-L3770CDW series     tag: 4
+printer-firmware-name = MAIN,SUB1,SUB5     tag: 4
+printer-firmware-string-version = ZF2409181750:4FC2,1.60,1.00     tag: 4
+printer-firmware-version = ZF2409181750:4FC2,1.60,1.00     tag: 4
+printer-kind = document,envelope,label,postcard     tag: 4
+urf-supported = SRGB24,W8,CP1,IS19-1,MT1-3-4-5-8-11,OB10,PQ4,RS600,V1.4,DM1     tag: 4
+document-format-preferred = image/urf     tag: 4
+jpeg-k-octets-supported = 0-16384     tag: 4
+jpeg-x-dimension-supported = 0-15000     tag: 4
+jpeg-y-dimension-supported = 1-15000     tag: 4
+jpeg-features-supported = none     tag: 4
+mopria-certified = 1.3     tag: 4
+pwg-raster-document-resolution-supported = 600dpi     tag: 4
+pwg-raster-document-sheet-back = rotated     tag: 4
+pwg-raster-document-type-supported = sgray_8,srgb_8     tag: 4
+job-password-supported = 4     tag: 4
+job-password-length-supported = 4-4     tag: 4
+job-password-encryption-supported = none     tag: 4
+job-password-repertoire-supported = iana_us-ascii_digits     tag: 4
+job-password-repertoire-configured = iana_us-ascii_digits     tag: 4
+copies-default = 1     tag: 4
+finishings-default = none     tag: 4
+media-default = na_letter_8.5x11in     tag: 4
+media-col-default = {media-type=stationery media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=auto media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}}     tag: 4
+orientation-requested-default = portrait     tag: 4
+output-bin-default = face-down     tag: 4
+output-mode-default = color     tag: 4
+print-quality-default = normal     tag: 4
+printer-resolution-default = 600dpi     tag: 4
+sides-default = two-sided-long-edge     tag: 4
+print-color-mode-default = color     tag: 4
+print-content-optimize-default = auto     tag: 4
+print-scaling-default = auto     tag: 4
+copies-supported = 1-99     tag: 4
+finishings-supported = none     tag: 4
+media-supported = iso_a4_210x297mm,na_letter_8.5x11in,na_legal_8.5x14in,na_executive_7.25x10.5in,iso_a5_148x210mm,iso_a6_105x148mm,iso_b5_176x250mm,na_number-10_4.125x9.5in,iso_dl_110x220mm,iso_c5_162x229mm,na_monarch_3.875x7.5in,na_index-3x5_3x5in,na_foolscap_8.5x13in,na_oficio_8.5x13.4in,om_india-legal_215x345mm,custom_min_76.2x127mm,custom_max_215.9x355.6mm     tag: 4
+media-col-supported = media-type,media-size,media-top-margin,media-left-margin,media-right-margin,media-bottom-margin,media-source,media-auto-dimension,media-source-propaties     tag: 4
+orientation-requested-supported = portrait,landscape     tag: 4
+output-bin-supported = face-down     tag: 4
+output-mode-supported = color,auto,auto-monochrome,monochrome     tag: 4
+print-quality-supported = normal     tag: 4
+printer-resolution-supported = 600dpi     tag: 4
+sides-supported = one-sided,two-sided-long-edge,two-sided-short-edge     tag: 4
+print-color-mode-supported = auto,color,monochrome,auto-monochrome     tag: 4
+print-content-optimize-supported = auto     tag: 4
+print-scaling-supported = auto,auto-fit,fill,fit,none     tag: 4
+printer-resolution-supported = 600dpi     tag: 4
+print-quality-supported = normal     tag: 4
+media-source-supported = auto,by-pass-tray,tray-1     tag: 4
+output-bin-supported = face-down     tag: 4
+print-color-mode-supported = auto,color,monochrome,auto-monochrome     tag: 4
+orientation-requested-supported = portrait,landscape     tag: 4
+media-col-database = {media-type=stationery media-size={x-dimension=21000 y-dimension=29700} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=21590 y-dimension=35560} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=18415 y-dimension=26670} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=14800 y-dimension=21000} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=10500 y-dimension=14800} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=21590 y-dimension=33020} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=21590 y-dimension=34036} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=21500 y-dimension=34500} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=14800 y-dimension=21000} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=long-edge-first media-source-feed-orientation=3}},{media-type=stationery-heavyweight media-size={x-dimension=21000 y-dimension=29700} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery-heavyweight media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery-heavyweight media-size={x-dimension=21590 y-dimension=35560} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orienta     tag: 4
+*****************
+*****************
+*****************
+	Option#	Name	Value
+	0	device-uri	ipp://BRN3C2AF49FE253.local:631/ipp/print
+	1	printer-info	Brother MFC-L3770CDW series
+	2	printer-location	
+	3	printer-make-and-model	Brother MFC-L3770CDW series
+	4	printer-type	83923036      duplex        color        copies        discovered        MFP  
+	5	printer-uri-supported	ipp://localhost/printers/Brother_MFC_L3770CDW_series
+
+flags: 0
+Dest Name: Officejet_Pro_8100_09E040_
+uri: 
+  resolution printer-resolution-default: 600dpi
+text value: 600  integer value: 600
+	 DPI   300
+	 DPI   600
+	 DPI   1200
+
+	==========  media-source: media-source  default: main
+
+	 !!!!!!! orientation: 
+	                      portrait
+	 ;;;;;;;;;;;;;media source: 0  name: main
+	 ;;;;;;;;;;;;;media source: 1  name: alternate
+	 ++++++++++++output bin: 0  name: face-up
+
+	``````````  output-bin-default: output-bin-default   value: face-up
+	 ********side: 0  name: one-sided
+	 ********side: 1  name: two-sided-short-edge
+	 ********side: 2  name: two-sided-long-edge
+	 ********color: 0  name: color
+	 ********color: 1  name: monochrome
+	 ********color: 2  name: process-monochrome
+	 ********color: 3  name: auto
+xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED
+jjj: 0  integer: 3   string version: draft
+jjj: 1  integer: 4   string version: normal
+jjj: 2  integer: 5   string version: high
+
+	---------- CUPS_PRINT_COLOR_MODE   name: print-color-mode-default  default: color
+
+	........... CUPS_SIDES   name: sides-default  default: one-sided
+
+
+	Supported Media:
+Name	    Width    Length    bottom    left    right    top
+na_index-3x5_3x5in	7620    12700    330    330    330    330
+na_index-3x5_3x5in_borderless	7620    12700    0    0    0    0
+oe_photo-l_3.5x5in	8890    12700    330    330    330    330
+oe_photo-l_3.5x5in_borderless	8890    12700    0    0    0    0
+jpn_chou4_90x205mm	9000    20500    330    330    330    330
+jpn_chou4_90x205mm_borderless	9000    20500    0    0    0    0
+na_personal_3.625x6.5in	9207    16510    330    330    330    330
+na_personal_3.625x6.5in_borderless	9207    16510    0    0    0    0
+na_monarch_3.875x7.5in	9842    19050    330    330    330    330
+na_monarch_3.875x7.5in_borderless	9842    19050    0    0    0    0
+jpn_hagaki_100x148mm	10000    14800    330    330    330    330
+jpn_hagaki_100x148mm_borderless	10000    14800    0    0    0    0
+om_small-photo_100x150mm	10000    15000    330    330    330    330
+om_small-photo_100x150mm_borderless	10000    15000    0    0    0    0
+na_index-4x6_4x6in	10160    15240    330    330    330    330
+na_index-4x6_4x6in_borderless	10160    15240    0    0    0    0
+na_number-10_4.125x9.5in	10477    24130    330    330    330    330
+na_number-10_4.125x9.5in_borderless	10477    24130    0    0    0    0
+iso_a6_105x148mm	10500    14800    330    330    330    330
+iso_a6_105x148mm_borderless	10500    14800    0    0    0    0
+iso_dl_110x220mm	11000    22000    330    330    330    330
+iso_dl_110x220mm_borderless	11000    22000    0    0    0    0
+na_a2_4.375x5.75in	11112    14605    330    330    330    330
+na_a2_4.375x5.75in_borderless	11112    14605    0    0    0    0
+iso_c6_114x162mm	11400    16200    330    330    330    330
+iso_c6_114x162mm_borderless	11400    16200    0    0    0    0
+jpn_chou3_120x235mm	12000    23500    330    330    330    330
+jpn_chou3_120x235mm_borderless	12000    23500    0    0    0    0
+na_5x7_5x7in	12700    17780    330    330    330    330
+na_5x7_5x7in_borderless	12700    17780    0    0    0    0
+na_index-5x8_5x8in	12700    20320    330    330    330    330
+na_index-5x8_5x8in_borderless	12700    20320    0    0    0    0
+na_invoice_5.5x8.5in	13970    21590    330    330    330    330
+na_invoice_5.5x8.5in_borderless	13970    21590    0    0    0    0
+jpn_oufuku_148x200mm_borderless	14800    20000    0    0    0    0
+iso_a5_148x210mm	14800    21000    330    330    330    330
+iso_a5_148x210mm_borderless	14800    21000    0    0    0    0
+iso_c5_162x229mm	16200    22900    330    330    330    330
+iso_c5_162x229mm_borderless	16200    22900    0    0    0    0
+jis_b5_182x257mm	18200    25700    330    330    330    330
+jis_b5_182x257mm_borderless	18200    25700    0    0    0    0
+custom_183.89x260.09mm_183.89x260.09mm	18389    26009    330    330    330    330
+custom_184x260mm_184x260mm_borderless	18400    26000    0    0    0    0
+na_executive_7.25x10.5in	18415    26670    330    330    330    330
+na_executive_7.25x10.5in_borderless	18415    26670    0    0    0    0
+custom_195x270mm_195x270mm_borderless	19500    27000    0    0    0    0
+custom_195.07x270mm_195.07x270mm	19507    27000    330    330    330    330
+roc_16k_7.75x10.75in	19685    27305    330    330    330    330
+roc_16k_7.75x10.75in_borderless	19685    27305    0    0    0    0
+custom_200.01x147.99mm_200.01x147.99mm	20001    14799    330    330    330    330
+na_govt-letter_8x10in	20320    25400    330    330    330    330
+na_govt-letter_8x10in_borderless	20320    25400    0    0    0    0
+iso_a4_210x297mm	21000    29700    330    330    330    330
+iso_a4_210x297mm_borderless	21000    29700    0    0    0    0
+na_letter_8.5x11in	21590    27940    330    330    330    330
+na_letter_8.5x11in_borderless	21590    27940    0    0    0    0
+na_foolscap_8.5x13in	21590    33020    330    330    330    330
+na_foolscap_8.5x13in_borderless	21590    33020    0    0    0    0
+na_legal_8.5x14in	21590    35560    330    330    330    330
+na_legal_8.5x14in_borderless	21590    35560    0    0    0    0
+*****************
+*****************
+*****************
+attributes-charset = utf-8     tag: 1
+attributes-natural-language = en-us     tag: 1
+printer-uri-supported = ipp://HP09E040.local/ipp/printer     tag: 4
+uri-security-supported = none     tag: 4
+uri-authentication-supported = requesting-user-name     tag: 4
+printer-name = HP13E646     tag: 4
+printer-location =      tag: 4
+printer-more-info = http://HP09E040.local.     tag: 4
+printer-info = Officejet Pro 8100 \[09E040]     tag: 4
+printer-make-and-model = HP Officejet Pro 8100     tag: 4
+printer-state = idle     tag: 4
+printer-state-reasons = marker-supply-low-warning     tag: 4
+ipp-versions-supported = 1.0,1.1,2.0     tag: 4
+operations-supported = Print-Job,Validate-Job,Cancel-Job,Get-Job-Attributes,Get-Jobs,Get-Printer-Attributes,Print-URI     tag: 4
+charset-configured = us-ascii     tag: 4
+charset-supported = us-ascii,utf-8     tag: 4
+natural-language-configured = en-us     tag: 4
+generated-natural-language-supported = en-us     tag: 4
+document-format-default = application/octet-stream     tag: 4
+document-format-supported = application/vnd.hp-PCL,image/urf,application/octet-stream     tag: 4
+printer-is-accepting-jobs = true     tag: 4
+queued-job-count = 0     tag: 4
+pdl-override-supported = attempted     tag: 4
+printer-up-time = 573516     tag: 4
+compression-supported = none     tag: 4
+color-supported = true     tag: 4
+job-creation-attributes-supported = copies,finishings,sides,orientation-requested,media,print-quality,printer-resolution,output-bin,media-col,output-mode,print-content-optimize,ipp-attribute-fidelity,job-name     tag: 4
+reference-uri-schemes-supported = http,https     tag: 4
+printer-device-id = MFG:HP;MDL:Officejet Pro 8100;CMD:PCL3GUI,PCL3,PJL,URF,DW-PCL,802.11,802.3,DESKJET,DYN;CLS:PRINTER;DES:CM752A;CID:HPIJVIPAV2;LEDMDIS:USB#07#01#02,USB#FF#04#01;SN:CN27OBS1DN05MX;S:038080C484200021005a0080000451d0414441d0414461d041441180450;Z:0102,0500000900000c00000c00000d00000e,0600,0700000000000000000000,0b000000000000000000009a90000000009ab1000000009a90000000009b2f,0c0,0e00000000000000000000,0f00000000000000000000,10000002000008000008000008000008,110,12000,150,17000000000025000025000025000000,181;     tag: 4
+printer-alert = code=unknown;severity=other;group=other,code=unknown;severity=other;group=other,code=markerInkAlmostEmpty;severity=other;group=markerSupplies,code=markerInkAlmostEmpty;severity=other;group=markerSupplies,code=markerInkAlmostEmpty;severity=other;group=markerSupplies,code=unknown;severity=other;group=other     tag: 4
+printer-alert-description = nonHPSupplyDetected,nonHPSupplyDetected,cartridgeLow,cartridgeLow,cartridgeLow,inPowerSave     tag: 4
+printer-uuid = urn:uuid:1c852a4d-b800-1f08-abcd-b4b52f09e040     tag: 4
+landscape-orientation-requested-preferred = 5     tag: 4
+media-supported = na_executive_7.25x10.5in,na_letter_8.5x11in,na_legal_8.5x14in,na_govt-letter_8x10in,na_invoice_5.5x8.5in,iso_a5_148x210mm,iso_a4_210x297mm,jis_b5_182x257mm,jpn_hagaki_100x148mm,iso_a6_105x148mm,na_index-4x6_4x6in,na_index-5x8_5x8in,na_index-3x5_3x5in,na_monarch_3.875x7.5in,na_number-10_4.125x9.5in,iso_dl_110x220mm,iso_c5_162x229mm,iso_c6_114x162mm,na_a2_4.375x5.75in,jpn_chou3_120x235mm,jpn_chou4_90x205mm,oe_l_3.5x5in,na_5x7_5x7in,na_personal_3.625x6.5in,jpn_oufuku_148x200mm,om_small-photo_100x150mm,na_foolscap_8.5x13in,roc_16k_7.75x10.75in,om_16k_195x270mm,om_16k_184x260mm     tag: 4
+media-default = na_letter_8.5x11in     tag: 4
+media-col-supported = media-type,media-size,media-top-margin,media-left-margin,media-right-margin,media-bottom-margin,media-source     tag: 4
+media-col-default = {media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=main media-type=stationery}     tag: 4
+media-col-database = {media-size={x-dimension=18415 y-dimension=26670} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=main media-type=stationery},{media-size={x-dimension=18415 y-dimension=26670} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=alternate media-type=stationery},{media-size={x-dimension=18415 y-dimension=26670} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=main media-type=stationery},{media-size={x-dimension=18415 y-dimension=26670} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=alternate media-type=stationery},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=main media-type=stationery},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=alternate media-type=stationery},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=0 media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-source=main media-type=stationery},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=0 media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-source=alternate media-type=stationery},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=main media-type=stationery},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=alternate media-type=stationery},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=main media-type=photographic-glossy},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=alternate media-type=photographic-glossy},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=0 media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-source=main media-type=photographic-glossy},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=0 media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-source=alternate media-type=photographic-glossy},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=main media-type=com.hp.brochure-glossy},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=alternate media-type=com.hp.brochure-glossy},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=0 media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-source=main media-type=com.hp.brochure-glossy},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=0 media-bottom-margin=0 media-left-margin=0 media-right-margin=0 media-source=alternate media-type=com.hp.brochure-glossy},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=main media-type=com.hp.brochure-glossy},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=alternate media-type=com.hp.brochure-glossy},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=main media-type=com.hp.brochure-matte},{media-size={x-dimension=21590 y-dimension=27940} media-top-margin=330 media-bottom-margin=330 media-left-margin=330 media-right-margin=330 media-source=alternate media-type     tag: 4
+media-left-margin-supported = 330,0     tag: 4
+media-right-margin-supported = 330,0     tag: 4
+media-top-margin-supported = 330,0     tag: 4
+media-bottom-margin-supported = 330,0     tag: 4
+media-source-supported = main,alternate     tag: 4
+media-type-supported = stationery,photographic-glossy,com.hp.brochure-glossy,com.hp.brochure-matte,com.hp.everyday-glossy,com.hp.advanced-photo,com.hp.everyday-matte,com.hp.premium-photo     tag: 4
+pages-per-minute = 20     tag: 4
+pages-per-minute-color = 16     tag: 4
+pdf-versions-supported = none     tag: 4
+urf-supported = CP1,MT1-2-8-9-10-11,OB9,OFU0,PQ3-4-5,RS300-600,SRGB24,W8,DEVW8,DEVRGB24-48,ADOBERGB24-48,DM3,IS1-2     tag: 4
+marker-names = black ink,cyan ink,magenta ink,yellow ink     tag: 4
+marker-colors = #000000,#00FFFF,#FF00FF,#FFFF00     tag: 4
+marker-types = inkCartridge,inkCartridge,inkCartridge,inkCartridge     tag: 4
+marker-low-levels = 0,20,20,20     tag: 4
+marker-high-levels = 100,100,100,100     tag: 4
+marker-levels = 80,20,20,20     tag: 4
+copies-default = 1     tag: 4
+finishings-default = none     tag: 4
+orientation-requested-default = portrait     tag: 4
+print-quality-default = normal     tag: 4
+printer-resolution-default = 600dpi     tag: 4
+sides-default = one-sided     tag: 4
+output-bin-default = face-up     tag: 4
+output-mode-default = color     tag: 4
+print-color-mode-default = auto     tag: 4
+copies-supported = 1-1     tag: 4
+finishings-supported = none     tag: 4
+orientation-requested-supported = portrait     tag: 4
+print-quality-supported = draft,normal,high     tag: 4
+printer-resolution-supported = 300dpi,600dpi,1200dpi     tag: 4
+sides-supported = one-sided,two-sided-short-edge,two-sided-long-edge     tag: 4
+output-bin-supported = face-up     tag: 4
+output-mode-supported = color,monochrome     tag: 4
+print-color-mode-supported = color,monochrome,process-monochrome,auto     tag: 4
+printer-icons = http://HP09E040.local/webApps/images/printer.png     tag: 4
+printer-supplies-info = http://HP09E040.local/SureSupplyMobile/     tag: 4
+print-content-optimize-default = text-and-graphics     tag: 4
+print-content-optimize-supported = photo,graphics,text,text-and-graphics     tag: 4
+*****************
+*****************
+*****************
+	Option#	Name	Value
+	0	device-uri	ipp://HP09E040.local:631/ipp/printer
+	1	printer-info	Officejet Pro 8100 [09E040]
+	2	printer-location	
+	3	printer-make-and-model	HP Officejet Pro 8100
+	4	printer-type	16777244      duplex        color        discovered  
+	5	printer-uri-supported	ipp://localhost/printers/Officejet_Pro_8100_09E040_
+
+flags: 0
+Dest Name: Brother_MFC_L8900CDW_series
+uri: 
+  resolution printer-resolution-default: 600dpi
+text value: 600  integer value: 600
+	 DPI   600
+
+	==========  media-source: media-source  default: auto
+
+	 !!!!!!! orientation: 
+	                      portrait
+	                      landscape
+	 ;;;;;;;;;;;;;media source: 0  name: auto
+	 ;;;;;;;;;;;;;media source: 1  name: by-pass-tray
+	 ;;;;;;;;;;;;;media source: 2  name: tray-1
+	 ++++++++++++output bin: 0  name: face-down
+
+	``````````  output-bin-default: output-bin-default   value: face-down
+	 ********side: 0  name: one-sided
+	 ********side: 1  name: two-sided-long-edge
+	 ********side: 2  name: two-sided-short-edge
+	 ********color: 0  name: auto
+	 ********color: 1  name: color
+	 ********color: 2  name: monochrome
+	 ********color: 3  name: auto-monochrome
+xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED
+jjj: 0  integer: 4   string version: normal
+
+	---------- CUPS_PRINT_COLOR_MODE   name: print-color-mode-default  default: color
+
+	........... CUPS_SIDES   name: sides-default  default: one-sided
+
+
+	Supported Media:
+Name	    Width    Length    bottom    left    right    top
+na_index-3x5_3x5in	7620    12700    432    432    432    432
+na_monarch_3.875x7.5in	9842    19050    432    432    432    432
+na_number-10_4.125x9.5in	10477    24130    432    432    432    432
+iso_a6_105x148mm	10500    14800    432    432    432    432
+iso_dl_110x220mm	11000    22000    432    432    432    432
+iso_a5_148x210mm	14800    21000    432    432    432    432
+iso_c5_162x229mm	16200    22900    432    432    432    432
+iso_b5_176x250mm	17600    25000    432    432    432    432
+na_executive_7.25x10.5in	18415    26670    432    432    432    432
+iso_a4_210x297mm	21000    29700    432    432    432    432
+na_letter_8.5x11in	21590    27940    432    432    432    432
+na_foolscap_8.5x13in	21590    33020    432    432    432    432
+na_oficio_8.5x13.4in	21590    34036    432    432    432    432
+na_legal_8.5x14in	21590    35560    432    432    432    432
+*****************
+*****************
+*****************
+attributes-charset = utf-8     tag: 1
+attributes-natural-language = en-us     tag: 1
+requested-attributes = sides-supported      tag: 5
+copies-default = 1     tag: 4
+finishings-default = none     tag: 4
+media-default = na_letter_8.5x11in     tag: 4
+media-col-default = {media-type=stationery media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=auto media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}}     tag: 4
+orientation-requested-default = portrait     tag: 4
+output-bin-default = face-down     tag: 4
+output-mode-default = color     tag: 4
+print-quality-default = normal     tag: 4
+printer-resolution-default = 600dpi     tag: 4
+sides-default = one-sided     tag: 4
+print-color-mode-default = color     tag: 4
+print-content-optimize-default = auto     tag: 4
+print-scaling-default = auto     tag: 4
+copies-supported = 1-99     tag: 4
+finishings-supported = none     tag: 4
+media-supported = iso_a4_210x297mm,na_letter_8.5x11in,na_legal_8.5x14in,na_executive_7.25x10.5in,iso_a5_148x210mm,iso_a6_105x148mm,iso_b5_176x250mm,na_number-10_4.125x9.5in,iso_dl_110x220mm,iso_c5_162x229mm,na_monarch_3.875x7.5in,na_index-3x5_3x5in,na_foolscap_8.5x13in,na_oficio_8.5x13.4in,custom_min_76.2x127mm,custom_max_215.9x355.6mm     tag: 4
+media-col-supported = media-type,media-size,media-top-margin,media-left-margin,media-right-margin,media-bottom-margin,media-source,media-auto-dimension,media-property     tag: 4
+orientation-requested-supported = portrait,landscape     tag: 4
+output-bin-supported = face-down     tag: 4
+output-mode-supported = color,auto,auto-monochrome,monochrome     tag: 4
+print-quality-supported = normal     tag: 4
+printer-resolution-supported = 600dpi     tag: 4
+sides-supported = one-sided,two-sided-long-edge,two-sided-short-edge     tag: 4
+print-color-mode-supported = auto,color,monochrome,auto-monochrome     tag: 4
+print-content-optimize-supported = auto     tag: 4
+print-scaling-supported = auto,auto-fit,fill,fit,none     tag: 4
+generated-natural-language-supported = en,fr,de,es,pt,it,nl,no,sv,fi,da,ru,cs,hu,pl,bg,ro,sk,sl,hr,tr,id     tag: 4
+printer-uri-supported = ipp://BRNB42200BD06C8.local./ipp/print     tag: 4
+uri-security-supported = none     tag: 4
+uri-authentication-supported = none     tag: 4
+printer-name = BRNB42200BD06C8     tag: 4
+printer-location =      tag: 4
+printer-info = Brother MFC-L8900CDW series[en]     tag: 4
+printer-make-and-model = Brother MFC-L8900CDW series[en]     tag: 4
+printer-state = idle     tag: 4
+printer-state-reasons = toner-low-warning     tag: 4
+ipp-versions-supported = 1.0,1.1,2.0     tag: 4
+operations-supported = Print-Job,Validate-Job,Create-Job,Send-Document,Cancel-Job,Get-Job-Attributes,Get-Jobs,Get-Printer-Attributes,Close-Job,Identify-Printer     tag: 4
+multiple-document-jobs-supported = false     tag: 4
+multiple-operation-time-out = 150     tag: 4
+natural-language-configured = en     tag: 4
+charset-configured = utf-8     tag: 4
+charset-supported = utf-8     tag: 4
+document-format-supported = application/octet-stream,image/urf,image/jpeg,image/pwg-raster     tag: 4
+document-format-default = application/octet-stream     tag: 4
+printer-is-accepting-jobs = true     tag: 4
+queued-job-count = 0     tag: 4
+pdl-override-supported = attempted     tag: 4
+printer-up-time = 166500     tag: 4
+compression-supported = none,gzip     tag: 4
+color-supported = true     tag: 4
+job-creation-attributes-supported = copies,finishings,ipp-attribute-fidelity,job-name,media,media-col,orientation-requested,output-bin,output-mode,print-quality,printer-resolution,requesting-user-name,sides,print-color-mode     tag: 4
+media-bottom-margin-supported = 432     tag: 4
+media-left-margin-supported = 432     tag: 4
+media-right-margin-supported = 432     tag: 4
+media-source-supported = auto,by-pass-tray,tray-1     tag: 4
+media-top-margin-supported = 432     tag: 4
+media-type-supported = stationery[en-us],stationery-lightweight[en-us],stationery-heavyweight[en-us],stationery-cover[en-us],envelope[en-us],envelope-heavyweight[en-us],envelope-lightweight[en-us],stationery-recycled[en-us],labels[en-us],photographic-glossy[en-us],stationery-bond[en-us],stationery-colored[en-us],stationery-letterhead[en]     tag: 4
+media-size-supported = {x-dimension=21000 y-dimension=29700},{x-dimension=21590 y-dimension=27940},{x-dimension=21590 y-dimension=35560},{x-dimension=18415 y-dimension=26670},{x-dimension=14800 y-dimension=21000},{x-dimension=10500 y-dimension=14800},{x-dimension=17600 y-dimension=25000},{x-dimension=10477 y-dimension=24130},{x-dimension=11000 y-dimension=22000},{x-dimension=16200 y-dimension=22900},{x-dimension=9842 y-dimension=19050},{x-dimension=7620 y-dimension=12700},{x-dimension=21590 y-dimension=33020},{x-dimension=21590 y-dimension=34036},{x-dimension=7620-21590 y-dimension=12700-35560}     tag: 4
+pages-per-minute = 31     tag: 4
+pages-per-minute-color = 31     tag: 4
+printer-alert = code=markerTonerAlmostEmpty,code=markerTonerAlmostEmpty,code=markerTonerAlmostEmpty,code=other     tag: 4
+printer-alert-description = Toner Low (Y)[en],Toner Low (M)[en],Toner Low (C)[en],Sleep[en]     tag: 4
+printer-device-id = MFG:Brother;CMD:PJL,PCL,PCLXL,URF;MDL:MFC-L8900CDW series;CLS:PRINTER;CID:Brother Generic Jpeg Type2;URF:SRGB24,W8,CP1,IS19-1,MT1-3-4-5-8-11,OB10,PQ4,RS600,V1.4,DM1;[en]     tag: 4
+printer-icons = http://BRNB42200BD06C8.local./ipp/printer-icons-128.png,http://BRNB42200BD06C8.local./ipp/printer-icons-512.png     tag: 4
+printer-more-info = http://BRNB42200BD06C8.local./net/net/airprint.html     tag: 4
+printer-uuid = urn:uuid:e3248000-80ce-11db-8000-b42200bd06c8     tag: 4
+job-impressions-supported = 1-999     tag: 4
+printer-geo-location = unknown     tag: 4
+printer-supply-info-uri = http://BRNB42200BD06C8.local./general/status.html     tag: 4
+media-ready = na_letter_8.5x11in     tag: 4
+media-col-ready = {media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}}     tag: 4
+identify-actions-default = flash,sound     tag: 4
+identify-actions-supported = flash,sound     tag: 4
+ipp-features-supported = airprint-1.6,wfds-print-1.0     tag: 4
+printer-input-tray = type=other;mediafeed=279400;mediaxfeed=215900;maxcapacity=250;level=-3;status=0;name=AUTO;index=1;dimunit=micrometers;unit=sheets;medianame=THIN;mediaweight=-2;mediatype=Unknown;mediacolor=Unknown;,type=sheetFeedAutoNonRemovableTray;mediafeed=279400;mediaxfeed=215900;maxcapacity=50;level=0;status=19;name=MP\ TRAY;index=2;dimunit=micrometers;unit=sheets;medianame=REGULAR;mediaweight=-2;mediatype=Unknown;mediacolor=Unknown;,type=sheetFeedAutoNonRemovableTray;mediafeed=279400;mediaxfeed=215900;maxcapacity=250;level=-3;status=0;name=TRAY1;index=3;dimunit=micrometers;unit=sheets;medianame=REGULAR;mediaweight=-2;mediatype=Unknown;mediacolor=Unknown;     tag: 4
+printer-output-tray = type=unRemovableBin;maxcapacity=-2;remaining=-2;status=0;name=face-down;index=1;unit=sheets;stackingorder=firstToLast;pagedelivery=notPresent;offsetstacking=notPresent;     tag: 4
+print_wfds = T     tag: 4
+document-format-varying-attributes = copies     tag: 4
+multiple-operation-time-out-action = abort-job     tag: 4
+printer-organization =      tag: 4
+printer-organizational-unit =      tag: 4
+printer-get-attributes-supported = document-format     tag: 4
+which-jobs-supported = completed,not_completed     tag: 4
+printer-current-time = 2025-07-23T07:28:14-0044     tag: 4
+printer-config-change-time = 1     tag: 4
+printer-config-change-date-time = 2025-07-19T13:52:05-0044     tag: 4
+printer-state-change-time = 26     tag: 4
+printer-state-change-date-time = 2025-07-19T13:52:25-0044     tag: 4
+landscape-orientation-requested-preferred = 5     tag: 4
+marker-colors = #000000[en],#00FFFF[en],#FF00FF[en],#FFFF00[en]     tag: 4
+marker-high-levels = 100,100,100,100     tag: 4
+marker-levels = 50,10,10,10     tag: 4
+marker-low-levels = 10,10,10,10     tag: 4
+marker-names = BK[en],C[en],M[en],Y[en]     tag: 4
+marker-types = toner,toner,toner,toner     tag: 4
+pdf-versions-supported = none     tag: 4
+printer-dns-sd-name = Brother MFC-L8900CDW series     tag: 4
+printer-firmware-name = MAIN     tag: 4
+printer-firmware-string-version = ZQ2503251054:EC16     tag: 4
+printer-firmware-version = ZQ2503251054:EC16     tag: 4
+printer-kind = document,envelope,label,postcard     tag: 4
+urf-supported = SRGB24,W8,CP1,IS19-1,MT1-3-4-5-8-11,OB10,PQ4,RS600,V1.4,DM1     tag: 4
+document-format-preferred = image/urf     tag: 4
+jpeg-k-octets-supported = 0-16384     tag: 4
+jpeg-x-dimension-supported = 0-15000     tag: 4
+jpeg-y-dimension-supported = 1-15000     tag: 4
+jpeg-features-supported = none     tag: 4
+mopria-certified = 1.3     tag: 4
+pwg-raster-document-resolution-supported = 600dpi     tag: 4
+pwg-raster-document-sheet-back = rotated     tag: 4
+pwg-raster-document-type-supported = sgray_8,srgb_8     tag: 4
+generated-natural-language-supported = en,fr,de,es,pt,it,nl,no,sv,fi,da,ru,cs,hu,pl,bg,ro,sk,sl,hr,tr,id     tag: 4
+printer-uri-supported = ipp://BRNB42200BD06C8.local./ipp/print     tag: 4
+uri-security-supported = none     tag: 4
+uri-authentication-supported = none     tag: 4
+printer-name = BRNB42200BD06C8     tag: 4
+printer-location =      tag: 4
+printer-info = Brother MFC-L8900CDW series[en]     tag: 4
+printer-make-and-model = Brother MFC-L8900CDW series[en]     tag: 4
+printer-state = idle     tag: 4
+printer-state-reasons = toner-low-warning     tag: 4
+ipp-versions-supported = 1.0,1.1,2.0     tag: 4
+operations-supported = Print-Job,Validate-Job,Create-Job,Send-Document,Cancel-Job,Get-Job-Attributes,Get-Jobs,Get-Printer-Attributes,Close-Job,Identify-Printer     tag: 4
+multiple-document-jobs-supported = false     tag: 4
+multiple-operation-time-out = 150     tag: 4
+natural-language-configured = en     tag: 4
+charset-configured = utf-8     tag: 4
+charset-supported = utf-8     tag: 4
+document-format-supported = application/octet-stream,image/urf,image/jpeg,image/pwg-raster     tag: 4
+document-format-default = application/octet-stream     tag: 4
+printer-is-accepting-jobs = true     tag: 4
+queued-job-count = 0     tag: 4
+pdl-override-supported = attempted     tag: 4
+printer-up-time = 166502     tag: 4
+compression-supported = none,gzip     tag: 4
+color-supported = true     tag: 4
+job-creation-attributes-supported = copies,finishings,ipp-attribute-fidelity,job-name,media,media-col,orientation-requested,output-bin,output-mode,print-quality,printer-resolution,requesting-user-name,sides,print-color-mode     tag: 4
+media-bottom-margin-supported = 432     tag: 4
+media-left-margin-supported = 432     tag: 4
+media-right-margin-supported = 432     tag: 4
+media-source-supported = auto,by-pass-tray,tray-1     tag: 4
+media-top-margin-supported = 432     tag: 4
+media-type-supported = stationery[en-us],stationery-lightweight[en-us],stationery-heavyweight[en-us],stationery-cover[en-us],envelope[en-us],envelope-heavyweight[en-us],envelope-lightweight[en-us],stationery-recycled[en-us],labels[en-us],photographic-glossy[en-us],stationery-bond[en-us],stationery-colored[en-us],stationery-letterhead[en]     tag: 4
+media-size-supported = {x-dimension=21000 y-dimension=29700},{x-dimension=21590 y-dimension=27940},{x-dimension=21590 y-dimension=35560},{x-dimension=18415 y-dimension=26670},{x-dimension=14800 y-dimension=21000},{x-dimension=10500 y-dimension=14800},{x-dimension=17600 y-dimension=25000},{x-dimension=10477 y-dimension=24130},{x-dimension=11000 y-dimension=22000},{x-dimension=16200 y-dimension=22900},{x-dimension=9842 y-dimension=19050},{x-dimension=7620 y-dimension=12700},{x-dimension=21590 y-dimension=33020},{x-dimension=21590 y-dimension=34036},{x-dimension=7620-21590 y-dimension=12700-35560}     tag: 4
+pages-per-minute = 31     tag: 4
+pages-per-minute-color = 31     tag: 4
+printer-alert = code=markerTonerAlmostEmpty,code=markerTonerAlmostEmpty,code=markerTonerAlmostEmpty,code=other     tag: 4
+printer-alert-description = Toner Low (Y)[en],Toner Low (M)[en],Toner Low (C)[en],Sleep[en]     tag: 4
+printer-device-id = MFG:Brother;CMD:PJL,PCL,PCLXL,URF;MDL:MFC-L8900CDW series;CLS:PRINTER;CID:Brother Generic Jpeg Type2;URF:SRGB24,W8,CP1,IS19-1,MT1-3-4-5-8-11,OB10,PQ4,RS600,V1.4,DM1;[en]     tag: 4
+printer-icons = http://BRNB42200BD06C8.local./ipp/printer-icons-128.png,http://BRNB42200BD06C8.local./ipp/printer-icons-512.png     tag: 4
+printer-more-info = http://BRNB42200BD06C8.local./net/net/airprint.html     tag: 4
+printer-uuid = urn:uuid:e3248000-80ce-11db-8000-b42200bd06c8     tag: 4
+job-impressions-supported = 1-999     tag: 4
+printer-geo-location = unknown     tag: 4
+printer-supply-info-uri = http://BRNB42200BD06C8.local./general/status.html     tag: 4
+media-ready = na_letter_8.5x11in     tag: 4
+media-col-ready = {media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}}     tag: 4
+identify-actions-default = flash,sound     tag: 4
+identify-actions-supported = flash,sound     tag: 4
+ipp-features-supported = airprint-1.6,wfds-print-1.0     tag: 4
+printer-input-tray = type=other;mediafeed=279400;mediaxfeed=215900;maxcapacity=250;level=-3;status=0;name=AUTO;index=1;dimunit=micrometers;unit=sheets;medianame=THIN;mediaweight=-2;mediatype=Unknown;mediacolor=Unknown;,type=sheetFeedAutoNonRemovableTray;mediafeed=279400;mediaxfeed=215900;maxcapacity=50;level=0;status=19;name=MP\ TRAY;index=2;dimunit=micrometers;unit=sheets;medianame=REGULAR;mediaweight=-2;mediatype=Unknown;mediacolor=Unknown;,type=sheetFeedAutoNonRemovableTray;mediafeed=279400;mediaxfeed=215900;maxcapacity=250;level=-3;status=0;name=TRAY1;index=3;dimunit=micrometers;unit=sheets;medianame=REGULAR;mediaweight=-2;mediatype=Unknown;mediacolor=Unknown;     tag: 4
+printer-output-tray = type=unRemovableBin;maxcapacity=-2;remaining=-2;status=0;name=face-down;index=1;unit=sheets;stackingorder=firstToLast;pagedelivery=notPresent;offsetstacking=notPresent;     tag: 4
+print_wfds = T     tag: 4
+document-format-varying-attributes = copies     tag: 4
+multiple-operation-time-out-action = abort-job     tag: 4
+printer-organization =      tag: 4
+printer-organizational-unit =      tag: 4
+printer-get-attributes-supported = document-format     tag: 4
+which-jobs-supported = completed,not_completed     tag: 4
+printer-current-time = 2025-07-23T07:28:15-0044     tag: 4
+printer-config-change-time = 1     tag: 4
+printer-config-change-date-time = 2025-07-19T13:52:05-0044     tag: 4
+printer-state-change-time = 26     tag: 4
+printer-state-change-date-time = 2025-07-19T13:52:25-0044     tag: 4
+landscape-orientation-requested-preferred = 5     tag: 4
+marker-colors = #000000[en],#00FFFF[en],#FF00FF[en],#FFFF00[en]     tag: 4
+marker-high-levels = 100,100,100,100     tag: 4
+marker-levels = 50,10,10,10     tag: 4
+marker-low-levels = 10,10,10,10     tag: 4
+marker-names = BK[en],C[en],M[en],Y[en]     tag: 4
+marker-types = toner,toner,toner,toner     tag: 4
+pdf-versions-supported = none     tag: 4
+printer-dns-sd-name = Brother MFC-L8900CDW series     tag: 4
+printer-firmware-name = MAIN     tag: 4
+printer-firmware-string-version = ZQ2503251054:EC16     tag: 4
+printer-firmware-version = ZQ2503251054:EC16     tag: 4
+printer-kind = document,envelope,label,postcard     tag: 4
+urf-supported = SRGB24,W8,CP1,IS19-1,MT1-3-4-5-8-11,OB10,PQ4,RS600,V1.4,DM1     tag: 4
+document-format-preferred = image/urf     tag: 4
+jpeg-k-octets-supported = 0-16384     tag: 4
+jpeg-x-dimension-supported = 0-15000     tag: 4
+jpeg-y-dimension-supported = 1-15000     tag: 4
+jpeg-features-supported = none     tag: 4
+mopria-certified = 1.3     tag: 4
+pwg-raster-document-resolution-supported = 600dpi     tag: 4
+pwg-raster-document-sheet-back = rotated     tag: 4
+pwg-raster-document-type-supported = sgray_8,srgb_8     tag: 4
+copies-default = 1     tag: 4
+finishings-default = none     tag: 4
+media-default = na_letter_8.5x11in     tag: 4
+media-col-default = {media-type=stationery media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=auto media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}}     tag: 4
+orientation-requested-default = portrait     tag: 4
+output-bin-default = face-down     tag: 4
+output-mode-default = color     tag: 4
+print-quality-default = normal     tag: 4
+printer-resolution-default = 600dpi     tag: 4
+sides-default = one-sided     tag: 4
+print-color-mode-default = color     tag: 4
+print-content-optimize-default = auto     tag: 4
+print-scaling-default = auto     tag: 4
+copies-supported = 1-99     tag: 4
+finishings-supported = none     tag: 4
+media-supported = iso_a4_210x297mm,na_letter_8.5x11in,na_legal_8.5x14in,na_executive_7.25x10.5in,iso_a5_148x210mm,iso_a6_105x148mm,iso_b5_176x250mm,na_number-10_4.125x9.5in,iso_dl_110x220mm,iso_c5_162x229mm,na_monarch_3.875x7.5in,na_index-3x5_3x5in,na_foolscap_8.5x13in,na_oficio_8.5x13.4in,custom_min_76.2x127mm,custom_max_215.9x355.6mm     tag: 4
+media-col-supported = media-type,media-size,media-top-margin,media-left-margin,media-right-margin,media-bottom-margin,media-source,media-auto-dimension,media-property     tag: 4
+orientation-requested-supported = portrait,landscape     tag: 4
+output-bin-supported = face-down     tag: 4
+output-mode-supported = color,auto,auto-monochrome,monochrome     tag: 4
+print-quality-supported = normal     tag: 4
+printer-resolution-supported = 600dpi     tag: 4
+sides-supported = one-sided,two-sided-long-edge,two-sided-short-edge     tag: 4
+print-color-mode-supported = auto,color,monochrome,auto-monochrome     tag: 4
+print-content-optimize-supported = auto     tag: 4
+print-scaling-supported = auto,auto-fit,fill,fit,none     tag: 4
+printer-resolution-supported = 600dpi     tag: 4
+print-quality-supported = normal     tag: 4
+media-source-supported = auto,by-pass-tray,tray-1     tag: 4
+output-bin-supported = face-down     tag: 4
+print-color-mode-supported = auto,color,monochrome,auto-monochrome     tag: 4
+orientation-requested-supported = portrait,landscape     tag: 4
+media-col-database = {media-type=stationery media-size={x-dimension=21000 y-dimension=29700} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=21590 y-dimension=27940} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=21590 y-dimension=35560} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=18415 y-dimension=26670} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=14800 y-dimension=21000} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=10500 y-dimension=14800} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=17600 y-dimension=25000} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=10477 y-dimension=24130} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=11000 y-dimension=22000} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=16200 y-dimension=22900} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=9842 y-dimension=19050} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=7620 y-dimension=12700} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media-size={x-dimension=21590 y-dimension=33020} media-bottom-margin=432 media-left-margin=432 media-right-margin=432 media-top-margin=432 media-source=tray-1 media-auto-dimension=false media-source-properties={media-source-feed-direction=short-edge-first media-source-feed-orientation=3}},{media-type=stationery media     tag: 4
+*****************
+*****************
+*****************
+	Option#	Name	Value
+	0	device-uri	ipp://BRNB42200BD06C8.local:631/ipp/print
+	1	printer-info	Brother MFC-L8900CDW series
+	2	printer-location	
+	3	printer-make-and-model	Brother MFC-L8900CDW series
+	4	printer-type	83923036      duplex        color        copies        discovered        MFP  
+	5	printer-uri-supported	ipp://localhost/printers/Brother_MFC_L8900CDW_series
+
+
+
+
+
+
+Please enter full path and name of file to print on default printer or exit to quit: exit
+roland@roland-HP-Z820-Workstation:/mnt/data6tb/github_projects/ls-cs_examples_install/cups-experiment$ 
+

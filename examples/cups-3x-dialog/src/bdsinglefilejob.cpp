@@ -21,6 +21,15 @@
 
 BdSingleFileJob::BdSingleFileJob() :
     validJob( false )
+    , useCollateValue( false )
+    , usePrintQualityValue( false )
+    , usePaperSourceValue( false )
+    , useColorValue( false )
+    , useOrientationValue( false )
+    , useScalingValue( false )
+    , useCopiesValue( false )
+    , useNumberUpValue( false )
+    , useDuplexValue( false )
     , destinationIsFile( false )
     , spoolerType( BdSpoolerType::None )
     , copies( 1 )
@@ -64,14 +73,25 @@ QString BdSingleFileJob::toString()
 
     out << "\n";
 
-    out << "copies:             " << copies << "\n";
-    out << "paperSource:        " << paperSource << "\n";
-    out << "paper:              " << paper << "\n";
-    out << "duplex:             " << duplex << "\n";
-    out << "numberUp:           " << numberUp << "\n";
-    out << "scaling:            " << scaling << "\n";
-    out << "orientation:        " << orientation << "\n";
-    out << "printQuality:       " << printQuality << "\n";
+    out << "copies:               " << copies << "\n";
+    out << "paperSource:          " << paperSource << "\n";
+    out << "paper:                " << paper << "\n";
+    out << "duplex:               " << duplex << "\n";
+    out << "numberUp:             " << numberUp << "\n";
+    out << "scaling:              " << scaling << "\n";
+    out << "orientation:          " << orientation << "\n";
+    out << "printQuality:         " << printQuality << "\n";
+
+    out << "useCollateValue:      " << useCollateValue << "\n";
+    out << "usePrintQualityValue: " << usePrintQualityValue << "\n";
+    out << "usePaperSourceValue:  " << usePaperSourceValue << "\n";
+    out << "useColorValue:        " << useColorValue << "\n";
+    out << "useOrientationValue:  " << useOrientationValue << "\n";
+    out << "useScalingValue:      " << useScalingValue << "\n";
+    out << "useCopiesValue:       " << useCopiesValue << "\n";
+    out << "useNumberUpValue:     " << useNumberUpValue << "\n";
+    out << "useDuplexValue:       " << useDuplexValue << "\n";
+
 
     out.flush();
 
