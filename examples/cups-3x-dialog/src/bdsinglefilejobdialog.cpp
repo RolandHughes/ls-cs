@@ -33,11 +33,12 @@
 
 const char *URI_TAG = "printer-uri";        // @todo need non-windows conditional around this
 const char *REQUESTED_ATTRIBUTES = "requested-attributes";  // @todo need non-windows conditional around this.
-const char *REQUESTED_DEFAULT_ORIENTATION = "orientation-requested-default";  // @todo need non-windows conditional around this
+const char *REQUEST_DEFAULT_ORIENTATION = "orientation-requested-default";  // @todo need non-windows conditional around this
 const char *URI_SUPPORTED_TAG = "printer-uri-supported";  // @todo need non-windows conditional around this
-const char *REQUESTED_COLOR_SUPPORTED = "color-supported";  // @todo need non-windows conditional around this
-const char *REQUESTED_COLOR_MODE = "print-color-mode-supported"; // @todo need non-windows conditional around this
-const char *REQUESTED_COLOR_MODE_DEFAULT = "print-color-mode-default"; // @todo need non-windows conditional around this
+const char *REQUEST_COLOR_SUPPORTED = "color-supported";  // @todo need non-windows conditional around this
+const char *REQUEST_COLOR_MODE = "print-color-mode-supported"; // @todo need non-windows conditional around this
+const char *REQUEST_COLOR_MODE_DEFAULT = "print-color-mode-default"; // @todo need non-windows conditional around this
+const char *REQUEST_PRINT_QUALITY_DEFAULT = "print-quality-default"; // @todo need non-windows conditional around this
 
 /*! \brief Constructor
  */
@@ -463,7 +464,7 @@ void GeneralTab::populateDestinationCB()
     m_destinationCB->clear();
 
     cups_dest_t *dests = nullptr;
-    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+    size_t destCnt = cupsGetDests( &dests );  //cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
 
     QStringList items;
 
@@ -505,7 +506,7 @@ void GeneralTab::makeDefaultCurrentDestination()
     }
     else
     {
-        m_destinationCB->setCurrentIndex( m_destinationCB->count() );
+        m_destinationCB->setCurrentIndex( 0 );
     }
 
 }
@@ -824,6 +825,8 @@ void GeneralTab::populatePrintQualityCB()
 
     size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
 
+    qDebug() << "destCnt: " << destCnt;
+
     // if populate paper called instantly behind populateDestinationCB it is possible
     // the GUI has not had time to set display text, but the object will know what the
     // current index was set to.
@@ -840,29 +843,69 @@ void GeneralTab::populatePrintQualityCB()
     }
 
     cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, currentDest );
+
+    QString uri = QString::fromUtf8( cupsGetOption( URI_SUPPORTED_TAG, currentDest->num_options, currentDest->options ) );
+
+    static const char *const requested_attributes[] =
+    {
+        "all",
+        "print-quality-supported",
+        "printer-resolution-supported",
+        REQUEST_PRINT_QUALITY_DEFAULT
+    };
+
+    char resource[40000];
     char value[4096];
+    http_t *http = cupsConnectDest( currentDest, CUPS_DEST_FLAGS_NONE, 30000, NULL, resource, sizeof( resource ), NULL, NULL );
+
+    ipp_t *request = ippNewRequest( IPP_OP_GET_PRINTER_ATTRIBUTES );
+    ippAddString( request, IPP_TAG_OPERATION, IPP_TAG_URI, URI_TAG, NULL, uri.toUtf8().constData() );
+    ippAddStrings( request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD, REQUESTED_ATTRIBUTES,
+                   ( int ) ( sizeof( requested_attributes ) / sizeof( requested_attributes[0] ) ), NULL, requested_attributes );
+    ipp_t *response = cupsDoRequest( http, request, resource );
 
     ipp_attribute_t *attr = nullptr;
-
     QString defaultQuality;
     QStringList items;
 
-
-    if ( ( attr = cupsFindDestDefault( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_PRINT_QUALITY ) ) != NULL )
+    if ( !( cupsLastError() >= IPP_STATUS_ERROR_BAD_REQUEST ) )
     {
-        ippAttributeString( attr, value, sizeof( value ) );
-        defaultQuality = QString::fromUtf8( value );
-    }
+        if ( ( attr = ippFindAttribute( response, "print-quality-supported", IPP_TAG_ZERO ) ) != NULL )
+        {
+            ippAttributeString( attr, value, sizeof( value ) );
+            QString str = QString::fromUtf8( value );
+            qDebug() << "print-quality-supported: " << str;
+            items = str.split( "," );
 
-    // \todo  use cupsDoRequest() because cupsFindDestSupported() for CUPS_PRINT_QUALITY does not work
-    //
-    if ( ( attr = cupsFindDestSupported( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_PRINT_QUALITY ) ) != NULL )
+            int cnt = ippGetCount( attr );
+
+            for ( int jjj = 0; jjj < cnt; jjj++ )
+            {
+                int eee = ippGetInteger( attr, jjj );
+                qDebug() << "jjj: " << jjj << "  integer: " << eee << "   string version: "
+                         << QString::fromUtf8( ippEnumString( CUPS_PRINT_QUALITY_SUPPORTED, eee ) ) << endl;
+            }
+
+        }
+
+        if ( ( attr = ippFindAttribute( response, REQUEST_PRINT_QUALITY_DEFAULT, IPP_TAG_ZERO ) ) != NULL )
+        {
+            ippAttributeString( attr, value, sizeof( value ) );
+            defaultQuality = QString::fromUtf8( value );
+            qDebug() << "print-quality-default: " << defaultQuality;
+        }
+
+        if ( ( attr = ippFindAttribute( response, "printer-resolution-supported", IPP_TAG_ZERO ) ) != NULL )
+        {
+            ippAttributeString( attr, value, sizeof( value ) );
+
+            qDebug() << "printer-resolution-supported: " << QString::fromUtf8( value );
+        }
+    }
+    else
     {
-        ippAttributeString( attr, value, sizeof( value ) );
-        qDebug() << "Print Quality: " << QString::fromUtf8( value );
-        items = QString::fromUtf8( value ).split( "," );
+        qDebug() << "cups error: " << QString::fromUtf8( cupsLastErrorString() );
     }
-
 
     m_printQualityCB->addItems( items );
 
@@ -884,6 +927,7 @@ void GeneralTab::populatePrintQualityCB()
         m_printQWidget->setDisabled( false );
     }
 
+    httpClose( http );
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
 }
@@ -1080,6 +1124,7 @@ void PageSetupTab::populateNumberUpCB()
     }
 
     cupsFreeDestInfo( info );
+    cupsFreeDests( destCnt, dests );
 }
 
 void PageSetupTab::populateDuplexCB()
@@ -1133,6 +1178,7 @@ void PageSetupTab::populateDuplexCB()
     }
 
     cupsFreeDestInfo( info );
+    cupsFreeDests( destCnt, dests );
 
 }
 
@@ -1190,6 +1236,7 @@ void PageSetupTab::populateScalingCB()
     }
 
     cupsFreeDestInfo( info );
+    cupsFreeDests( destCnt, dests );
 }
 
 void PageSetupTab::populateOrientationCB()
@@ -1219,7 +1266,7 @@ void PageSetupTab::populateOrientationCB()
     static const char *const requested_attributes[] =
     {
         CUPS_ORIENTATION_SUPPORTED,
-        REQUESTED_DEFAULT_ORIENTATION
+        REQUEST_DEFAULT_ORIENTATION
     };
 
     char resource[40000];
@@ -1234,8 +1281,10 @@ void PageSetupTab::populateOrientationCB()
 
     if ( cupsLastError() >= IPP_STATUS_ERROR_BAD_REQUEST )
     {
+        qDebug() << "orientation cups error: " << QString::fromUtf8( cupsLastErrorString() );
         httpClose( http );
         cupsFreeDestInfo( info );
+        cupsFreeDests( destCnt, dests );
         return;
     }
 
@@ -1253,7 +1302,7 @@ void PageSetupTab::populateOrientationCB()
         }
     }
 
-    if ( ( attr = ippFindAttribute( response, REQUESTED_DEFAULT_ORIENTATION, IPP_TAG_ZERO ) ) != NULL )
+    if ( ( attr = ippFindAttribute( response, REQUEST_DEFAULT_ORIENTATION, IPP_TAG_ZERO ) ) != NULL )
     {
         ippAttributeString( attr, value, sizeof( value ) );
         QString defaultOrientation = QString::fromUtf8( value );
@@ -1268,6 +1317,7 @@ void PageSetupTab::populateOrientationCB()
 
     httpClose( http );
     cupsFreeDestInfo( info );
+    cupsFreeDests( destCnt, dests );
 }
 
 

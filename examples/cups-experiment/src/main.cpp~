@@ -408,22 +408,7 @@ void Task::run()
          }
     }
 
-    cupsFreeDests( destCnt, dests );
 
-    destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
-
-    out << endl << endl << "getDest2 destCnt: " << destCnt << endl;
-    for ( size_t jjj = 0; jjj < destCnt; jjj++ )
-    {
-         cups_dest_t *workDest = &dests[jjj];
-
-         if ( workDest != nullptr )
-         {
-              out << QString::fromUtf8( workDest->name ) << endl;
-         }
-    }
-
-    cupsFreeDests( destCnt, dests );
     bool doneFlg = false;
     std::string filePath;
 

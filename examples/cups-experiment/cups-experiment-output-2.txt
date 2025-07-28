@@ -1,0 +1,284 @@
+
+roland@roland-HP-Z820-Workstation:/mnt/data6tb/github_projects/ls-cs_examples_install/cups-experiment$ ./cups-experiment 
+flags: 2
+Dest Name: Brother_MFC_L3770CDW_series
+uri: ipp://localhost/printers/Brother_MFC_L3770CDW_series
+  resolution printer-resolution-default: 600dpi
+text value: 600  integer value: 600
+	 DPI   600
+	 !!!!!!! orientation: 
+	                      portrait
+	                      landscape
+	                      reverse-landscape
+	                      reverse-portrait
+	 ;;;;;;;;;;;;;media source: 0  name: auto
+	 ;;;;;;;;;;;;;media source: 1  name: by-pass-tray
+	 ;;;;;;;;;;;;;media source: 2  name: tray-1
+	 ++++++++++++output bin: 0  name: face-down
+
+	``````````  output-bin-default: output-bin-default   value: face-down
+	 ********side: 0  name: one-sided
+	 ********side: 1  name: two-sided-long-edge
+	 ********side: 2  name: two-sided-short-edge
+	 ********color: 0  name: monochrome
+	 ********color: 1  name: color
+xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED
+jjj: 0  integer: 4   string version: normal
+
+	---------- CUPS_PRINT_COLOR_MODE   name: print-color-mode-default  default: color
+
+	........... CUPS_SIDES   name: sides-default  default: one-sided
+	Option#	Name	Value
+	0	copies	1
+	1	cups-browsed	true
+	2	device-uri	implicitclass://Brother_MFC_L3770CDW_series/
+	3	finishings	3
+	4	job-cancel-after	10800
+	5	job-hold-until	no-hold
+	6	job-priority	50
+	7	job-sheets	none,none
+	8	marker-change-time	0
+	9	number-up	1
+	10	printer-commands	none
+	11	printer-info	
+	12	printer-is-accepting-jobs	true
+	13	printer-is-shared	false
+	14	printer-is-temporary	false
+	15	printer-location	
+	16	printer-make-and-model	Brother MFC-L3770CDW series, driverless, cups-filters 1.27.4
+	17	printer-state	3
+	18	printer-state-change-time	1753621834
+	19	printer-state-reasons	none
+	20	printer-type	2134108      duplex        color        copies  
+	21	printer-uri-supported	ipp://localhost/printers/Brother_MFC_L3770CDW_series
+
+flags: 2
+Dest Name: Brother_MFC_L8900CDW_series
+uri: ipp://localhost/printers/Brother_MFC_L8900CDW_series
+  resolution printer-resolution-default: 600dpi
+text value: 600  integer value: 600
+	 DPI   600
+	 !!!!!!! orientation: 
+	                      portrait
+	                      landscape
+	                      reverse-landscape
+	                      reverse-portrait
+	 ;;;;;;;;;;;;;media source: 0  name: auto
+	 ;;;;;;;;;;;;;media source: 1  name: by-pass-tray
+	 ;;;;;;;;;;;;;media source: 2  name: tray-1
+	 ++++++++++++output bin: 0  name: face-down
+
+	``````````  output-bin-default: output-bin-default   value: face-down
+	 ********side: 0  name: one-sided
+	 ********side: 1  name: two-sided-long-edge
+	 ********side: 2  name: two-sided-short-edge
+	 ********color: 0  name: monochrome
+	 ********color: 1  name: color
+xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED
+jjj: 0  integer: 4   string version: normal
+
+	---------- CUPS_PRINT_COLOR_MODE   name: print-color-mode-default  default: color
+
+	........... CUPS_SIDES   name: sides-default  default: one-sided
+	Option#	Name	Value
+	0	copies	1
+	1	cups-browsed	true
+	2	device-uri	implicitclass://Brother_MFC_L8900CDW_series/
+	3	finishings	3
+	4	job-cancel-after	10800
+	5	job-hold-until	no-hold
+	6	job-priority	50
+	7	job-sheets	none,none
+	8	marker-change-time	0
+	9	number-up	1
+	10	printer-commands	none
+	11	printer-info	
+	12	printer-is-accepting-jobs	true
+	13	printer-is-shared	false
+	14	printer-is-temporary	false
+	15	printer-location	
+	16	printer-make-and-model	Brother MFC-L8900CDW series, driverless, cups-filters 1.27.4
+	17	printer-state	3
+	18	printer-state-change-time	1753628626
+	19	printer-state-reasons	none
+	20	printer-type	2265180      ***********  Default printer        duplex        color        copies  
+	21	printer-uri-supported	ipp://localhost/printers/Brother_MFC_L8900CDW_series
+
+flags: 0
+Dest Name: Officejet_Pro_8100_09E040_
+uri: ipp://localhost/printers/Officejet_Pro_8100_09E040_
+  resolution printer-resolution-default: 600dpi
+text value: 600  integer value: 600
+	 DPI   600
+	 !!!!!!! orientation: 
+	                      portrait
+	                      landscape
+	                      reverse-landscape
+	                      reverse-portrait
+	 ;;;;;;;;;;;;;media source: 0  name: main
+	 ;;;;;;;;;;;;;media source: 1  name: alternate
+	 ++++++++++++output bin: 0  name: face-up
+
+	``````````  output-bin-default: output-bin-default   value: face-up
+	 ********side: 0  name: one-sided
+	 ********side: 1  name: two-sided-long-edge
+	 ********side: 2  name: two-sided-short-edge
+	 ********color: 0  name: monochrome
+	 ********color: 1  name: color
+xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED
+jjj: 0  integer: 4   string version: normal
+
+	---------- CUPS_PRINT_COLOR_MODE   name: print-color-mode-default  default: color
+
+	........... CUPS_SIDES   name: sides-default  default: one-sided
+	Option#	Name	Value
+	0	copies	1
+	1	cups-browsed	true
+	2	device-uri	implicitclass://Officejet_Pro_8100_09E040_/
+	3	finishings	3
+	4	job-cancel-after	10800
+	5	job-hold-until	no-hold
+	6	job-priority	50
+	7	job-sheets	none,none
+	8	marker-change-time	0
+	9	number-up	1
+	10	printer-commands	none
+	11	printer-info	
+	12	printer-is-accepting-jobs	true
+	13	printer-is-shared	false
+	14	printer-is-temporary	false
+	15	printer-location	
+	16	printer-make-and-model	HP Officejet Pro 8100, driverless, cups-filters 1.27.4
+	17	printer-state	3
+	18	printer-state-change-time	1753621834
+	19	printer-state-reasons	none
+	20	printer-type	2101340      duplex        color        copies  
+	21	printer-uri-supported	ipp://localhost/printers/Officejet_Pro_8100_09E040_
+
+flags: 0
+Dest Name: Brother_MFC_L8900CDW_series
+uri: 
+  resolution printer-resolution-default: 600dpi
+text value: 600  integer value: 600
+	 DPI   600
+
+	==========  media-source: media-source  default: auto
+
+	 !!!!!!! orientation: 
+	                      portrait
+	                      landscape
+	 ;;;;;;;;;;;;;media source: 0  name: auto
+	 ;;;;;;;;;;;;;media source: 1  name: by-pass-tray
+	 ;;;;;;;;;;;;;media source: 2  name: tray-1
+	 ++++++++++++output bin: 0  name: face-down
+
+	``````````  output-bin-default: output-bin-default   value: face-down
+	 ********side: 0  name: one-sided
+	 ********side: 1  name: two-sided-long-edge
+	 ********side: 2  name: two-sided-short-edge
+	 ********color: 0  name: auto
+	 ********color: 1  name: color
+	 ********color: 2  name: monochrome
+	 ********color: 3  name: auto-monochrome
+xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED
+jjj: 0  integer: 4   string version: normal
+
+	---------- CUPS_PRINT_COLOR_MODE   name: print-color-mode-default  default: color
+
+	........... CUPS_SIDES   name: sides-default  default: one-sided
+	Option#	Name	Value
+	0	device-uri	ipp://BRNB42200BD06C8.local:631/ipp/print
+	1	printer-info	Brother MFC-L8900CDW series
+	2	printer-location	
+	3	printer-make-and-model	Brother MFC-L8900CDW series
+	4	printer-type	83923036      duplex        color        copies        discovered        MFP  
+	5	printer-uri-supported	ipp://localhost/printers/Brother_MFC_L8900CDW_series
+
+flags: 0
+Dest Name: Brother_MFC_L3770CDW_series
+uri: 
+  resolution printer-resolution-default: 600dpi
+text value: 600  integer value: 600
+	 DPI   600
+
+	==========  media-source: media-source  default: auto
+
+	 !!!!!!! orientation: 
+	                      portrait
+	                      landscape
+	 ;;;;;;;;;;;;;media source: 0  name: auto
+	 ;;;;;;;;;;;;;media source: 1  name: by-pass-tray
+	 ;;;;;;;;;;;;;media source: 2  name: tray-1
+	 ++++++++++++output bin: 0  name: face-down
+
+	``````````  output-bin-default: output-bin-default   value: face-down
+	 ********side: 0  name: one-sided
+	 ********side: 1  name: two-sided-long-edge
+	 ********side: 2  name: two-sided-short-edge
+	 ********color: 0  name: auto
+	 ********color: 1  name: color
+	 ********color: 2  name: monochrome
+	 ********color: 3  name: auto-monochrome
+xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED
+jjj: 0  integer: 4   string version: normal
+
+	---------- CUPS_PRINT_COLOR_MODE   name: print-color-mode-default  default: color
+
+	........... CUPS_SIDES   name: sides-default  default: one-sided
+	Option#	Name	Value
+	0	device-uri	ipp://BRN3C2AF49FE253.local:631/ipp/print
+	1	printer-info	Brother MFC-L3770CDW series
+	2	printer-location	
+	3	printer-make-and-model	Brother MFC-L3770CDW series
+	4	printer-type	83923036      duplex        color        copies        discovered        MFP  
+	5	printer-uri-supported	ipp://localhost/printers/Brother_MFC_L3770CDW_series
+
+flags: 0
+Dest Name: Officejet_Pro_8100_09E040_
+uri: 
+  resolution printer-resolution-default: 600dpi
+text value: 600  integer value: 600
+	 DPI   300
+	 DPI   600
+	 DPI   1200
+
+	==========  media-source: media-source  default: main
+
+	 !!!!!!! orientation: 
+	                      portrait
+	 ;;;;;;;;;;;;;media source: 0  name: main
+	 ;;;;;;;;;;;;;media source: 1  name: alternate
+	 ++++++++++++output bin: 0  name: face-up
+
+	``````````  output-bin-default: output-bin-default   value: face-up
+	 ********side: 0  name: one-sided
+	 ********side: 1  name: two-sided-short-edge
+	 ********side: 2  name: two-sided-long-edge
+	 ********color: 0  name: color
+	 ********color: 1  name: monochrome
+	 ********color: 2  name: process-monochrome
+	 ********color: 3  name: auto
+xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED
+jjj: 0  integer: 3   string version: draft
+jjj: 1  integer: 4   string version: normal
+jjj: 2  integer: 5   string version: high
+
+	---------- CUPS_PRINT_COLOR_MODE   name: print-color-mode-default  default: color
+
+	........... CUPS_SIDES   name: sides-default  default: one-sided
+	Option#	Name	Value
+	0	device-uri	ipp://HP09E040.local:631/ipp/printer
+	1	printer-info	Officejet Pro 8100 [09E040]
+	2	printer-location	
+	3	printer-make-and-model	HP Officejet Pro 8100
+	4	printer-type	16777244      duplex        color        discovered  
+	5	printer-uri-supported	ipp://localhost/printers/Officejet_Pro_8100_09E040_
+
+
+
+
+
+
+Please enter full path and name of file to print on default printer or exit to quit: exit
+roland@roland-HP-Z820-Workstation:/mnt/data6tb/github_projects/ls-cs_examples_install/cups-experiment$ 
+
