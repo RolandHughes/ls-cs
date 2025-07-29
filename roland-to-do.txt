@@ -4,12 +4,12 @@
    Text spooler has line numbers, number width in characters, and checkbox for wrapping
    Raw spooler has none
 
-*) use IPP request to get print-quality-supported because there is a bug in cups - steal from line 1216
+
+*) paperSource not being filled in for m_job
 
 *) disable/hide print quality when only one   --  print quality no longer displayed
 *) disable/hide paper source when only one option
 *) disable/hide color mode when only one value 
-*) disable orientation when only one value 
 *) disable scaling when only one value 
 
 *) Pages needs to default to all then show range widget

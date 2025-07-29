@@ -397,30 +397,156 @@ void Task::run()
     cups_dest_t *dests = nullptr;
     size_t destCnt = cupsGetDests( &dests );  //cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
 
+    out << "================================================================================" << endl << endl;
     out << "destCnt: " << destCnt << endl;
+
     for ( size_t jjj = 0; jjj < destCnt; jjj++ )
     {
-         cups_dest_t *workDest = &dests[jjj];
+        cups_dest_t *workDest = &dests[jjj];
 
-         if ( workDest != nullptr )
-         {
-              out << QString::fromUtf8( workDest->name ) << endl;
-         }
+        if ( workDest != nullptr )
+        {
+            cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, workDest );
+            out << QString::fromUtf8( workDest->name ) << endl;
+            QString uri = QString::fromUtf8( cupsGetOption( "printer-uri-supported", workDest->num_options, workDest->options ) );
+            out << "uri: " << uri << endl << endl;
+
+            out << "\tOption#\tName\tValue" << endl;
+
+            for ( int jjj = 0; jjj < workDest->num_options; jjj++ )
+            {
+                QString nameStr = QString::fromUtf8( workDest->options[jjj].name );
+                QString valueStr = QString::fromUtf8( workDest->options[jjj].value );
+                out << "\t" << jjj << "\t" << nameStr << "\t" << valueStr << endl;
+
+            }
+
+            static const char *const requested_attributes[] =
+            {
+                "all", "printer-description", "job-template", "printer-resolution-supported", "print-quality-supported",
+                "media-source-supported", "output-bin-supported", "sides-supported ", "print-color-mode-supported",
+                "media-col-database", "orientation-requested-supported"
+            };
+
+            char resource[40000];
+            http_t *http = cupsConnectDest( workDest, CUPS_DEST_FLAGS_DEVICE, 30000, NULL, resource, sizeof( resource ), NULL, NULL );
+
+            ipp_t *request = ippNewRequest( IPP_OP_GET_PRINTER_ATTRIBUTES );
+            ippAddString( request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, uri.toUtf8().constData() );
+            ippAddStrings( request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD, "requested-attributes",
+                           ( int ) ( sizeof( requested_attributes ) / sizeof( requested_attributes[0] ) ), NULL, requested_attributes );
+            ipp_t *response = cupsDoRequest( http, request, resource );
+
+
+            ipp_attribute_t *attr = nullptr;
+
+            if ( cupsLastError() >= IPP_STATUS_ERROR_BAD_REQUEST )
+            {
+                out << "\n IPP request failed: " << QString::fromUtf8( cupsLastErrorString() ) << endl;
+            }
+            else
+            {
+                if ( ( attr = ippFindAttribute( response, CUPS_PRINT_QUALITY_SUPPORTED, IPP_TAG_ZERO ) ) != NULL )
+                {
+                    out << "xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED" << endl;
+                    int cnt = ippGetCount( attr );
+
+                    for ( int jjj = 0; jjj < cnt; jjj++ )
+                    {
+                        int eee = ippGetInteger( attr, jjj );
+                        out << "jjj: " << jjj << "  integer: " << eee << "   string version: "
+                            << QString::fromUtf8( ippEnumString( CUPS_PRINT_QUALITY_SUPPORTED, eee ) ) << endl;
+                    }
+
+                }
+                else
+                {
+                    out << "unable to get attribute for CUPS_PRINT_QUALITY_SUPPORTED  IPP_TAG_ZERO" << endl;
+                }
+
+            }
+
+            httpClose( http );
+
+            cupsFreeDestInfo( info );
+        }
     }
 
     cupsFreeDests( destCnt, dests );
 
     destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
 
+    out << "================================================================================" << endl << endl;
     out << endl << endl << "getDest2 destCnt: " << destCnt << endl;
+
     for ( size_t jjj = 0; jjj < destCnt; jjj++ )
     {
-         cups_dest_t *workDest = &dests[jjj];
+        cups_dest_t *workDest = &dests[jjj];
 
-         if ( workDest != nullptr )
-         {
-              out << QString::fromUtf8( workDest->name ) << endl;
-         }
+        if ( workDest != nullptr )
+        {
+            cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, workDest );
+            out << QString::fromUtf8( workDest->name ) << endl;
+            QString uri = QString::fromUtf8( cupsGetOption( "printer-uri-supported", workDest->num_options, workDest->options ) );
+            out << "uri: " << uri << endl << endl;
+            out << "\tOption#\tName\tValue" << endl;
+
+            for ( int jjj = 0; jjj < workDest->num_options; jjj++ )
+            {
+                QString nameStr = QString::fromUtf8( workDest->options[jjj].name );
+                QString valueStr = QString::fromUtf8( workDest->options[jjj].value );
+                out << "\t" << jjj << "\t" << nameStr << "\t" << valueStr << endl;
+
+            }
+
+            static const char *const requested_attributes[] =
+            {
+                "all", "printer-description", "job-template", "printer-resolution-supported", "print-quality-supported",
+                "media-source-supported", "output-bin-supported", "sides-supported ", "print-color-mode-supported",
+                "media-col-database", "orientation-requested-supported"
+            };
+
+            char resource[40000];
+            http_t *http = cupsConnectDest( workDest, CUPS_DEST_FLAGS_DEVICE, 30000, NULL, resource, sizeof( resource ), NULL, NULL );
+
+            ipp_t *request = ippNewRequest( IPP_OP_GET_PRINTER_ATTRIBUTES );
+            ippAddString( request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, uri.toUtf8().constData() );
+            ippAddStrings( request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD, "requested-attributes",
+                           ( int ) ( sizeof( requested_attributes ) / sizeof( requested_attributes[0] ) ), NULL, requested_attributes );
+            ipp_t *response = cupsDoRequest( http, request, resource );
+
+            if ( cupsLastError() >= IPP_STATUS_ERROR_BAD_REQUEST )
+            {
+                out << "\n IPP request failed: " << QString::fromUtf8( cupsLastErrorString() ) << endl;
+            }
+            else
+            {
+                ipp_attribute_t *attr = nullptr;
+
+                if ( ( attr = ippFindAttribute( response, CUPS_PRINT_QUALITY_SUPPORTED, IPP_TAG_ZERO ) ) != NULL )
+                {
+                    out << "xxxxxxxxxxxx found CUPS_PRINT_QUALITY_SUPPORTED" << endl;
+                    int cnt = ippGetCount( attr );
+
+                    for ( int jjj = 0; jjj < cnt; jjj++ )
+                    {
+                        int eee = ippGetInteger( attr, jjj );
+                        out << "jjj: " << jjj << "  integer: " << eee << "   string version: "
+                            << QString::fromUtf8( ippEnumString( CUPS_PRINT_QUALITY_SUPPORTED, eee ) ) << endl;
+                    }
+
+                }
+                else
+                {
+                    out << "unable to get attribute for CUPS_PRINT_QUALITY_SUPPORTED  IPP_TAG_ZERO" << endl;
+                }
+
+            }
+
+            httpClose( http );
+
+            cupsFreeDestInfo( info );
+        }
     }
 
     cupsFreeDests( destCnt, dests );
