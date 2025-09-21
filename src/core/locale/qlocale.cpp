@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -674,7 +674,7 @@ QString lscs_readEscapedFormatString( const QString &format, int *idx )
             if ( i + 1 < format.size() && format.at( i + 1 ).unicode() == '\'' )
             {
                 // "''" inside of a quoted string
-                result.append( QLatin1Char( '\'' ) );
+                result.append( QChar( '\'' ) );
                 i += 2;
 
             }
@@ -998,12 +998,17 @@ bool QLocale::operator!=( const QLocale &other ) const
     return d->m_data != other.d->m_data || d->m_numberOptions != other.d->m_numberOptions;
 }
 
-uint qHash( const QLocale &key, uint seed )
+uint QLocale::hash( const QLocale &key, uint seed )
 {
     seed = qHash( key.d->m_data, seed );
     seed = qHash( key.d->m_numberOptions, seed );
 
     return seed;
+}
+
+uint qHash( const QLocale &key, uint seed )
+{
+    return QLocale::hash( key, seed );
 }
 
 void QLocale::setNumberOptions( NumberOptions options )
@@ -1268,9 +1273,9 @@ quint64 QLocale::toULongLong( const QString &s, bool *ok, int base ) const
 float QLocale::toFloat( const QString &s, bool *ok ) const
 {
     bool isOk;
-    double d = toDouble( s, &isOk );
+    double result = toDouble( s, &isOk );
 
-    if ( ! isOk || d < std::numeric_limits<float>::lowest() || d > std::numeric_limits<float>::max() )
+    if ( ! isOk || result < std::numeric_limits<float>::lowest() || result > std::numeric_limits<float>::max() )
     {
 
         if ( ok != nullptr )
@@ -1286,7 +1291,7 @@ float QLocale::toFloat( const QString &s, bool *ok ) const
         *ok = true;
     }
 
-    return float( d );
+    return float( result );
 }
 
 double QLocale::toDouble( const QString &s, bool *ok ) const
@@ -2541,17 +2546,17 @@ QString QLocaleData::doubleToString( const QChar _zero, const QChar plus, const 
 
             case DFSignificantDigits:
             {
-                PrecisionMode mode = ( flags & Alternate ) ? PMSignificantDigits : PMChopTrailingZeros;
+                PrecisionMode newMode = ( flags & Alternate ) ? PMSignificantDigits : PMChopTrailingZeros;
 
                 if ( decpt != digits.length() && ( decpt <= -4 || decpt > precision ) )
                 {
 
                     num_str = exponentForm( _zero, decimal, exponential, group, plus, minus,
-                                            digits, decpt, precision, mode, always_show_decpt );
+                                            digits, decpt, precision, newMode, always_show_decpt );
                 }
                 else
                 {
-                    num_str = decimalForm( _zero, decimal, group, digits, decpt, precision, mode,
+                    num_str = decimalForm( _zero, decimal, group, digits, decpt, precision, newMode,
                                            always_show_decpt, flags & ThousandsGroup );
                 }
 
@@ -2562,7 +2567,7 @@ QString QLocaleData::doubleToString( const QChar _zero, const QChar plus, const 
         negative = sign != 0 && ! isZero( d );
     }
 
-    // pad with zeros. LeftAdjusted overrides this flag). Also, we don't pad special numbers
+    // pad with zeros, leftAdjusted overrides this flag, do not pad special numbers
     if ( flags & QLocaleData::ZeroPadded && !( flags & QLocaleData::LeftAdjusted ) && !special_number )
     {
         int num_pad_chars = width - num_str.length();
@@ -2592,7 +2597,7 @@ QString QLocaleData::doubleToString( const QChar _zero, const QChar plus, const 
     }
     else if ( flags & QLocaleData::BlankBeforePositive )
     {
-        num_str.prepend( QLatin1Char( ' ' ) );
+        num_str.prepend( QChar( ' ' ) );
     }
 
     if ( flags & QLocaleData::CapitalEorX )
@@ -2697,12 +2702,12 @@ QString QLocaleData::longLongToString( const QChar zero, const QChar group, cons
 
     if ( base == 16 && ( flags & Alternate || flags & ShowBase ) )
     {
-        num_str.prepend( QLatin1String( flags & UppercaseBase ? "0X" : "0x" ) );
+        num_str.prepend( QString( flags & UppercaseBase ? "0X" : "0x" ) );
     }
 
     if ( base == 2 && ( flags & Alternate || flags & ShowBase ) )
     {
-        num_str.prepend( QLatin1String( flags & UppercaseBase ? "0B" : "0b" ) );
+        num_str.prepend( QString( flags & UppercaseBase ? "0B" : "0b" ) );
     }
 
     // add sign
@@ -2716,7 +2721,7 @@ QString QLocaleData::longLongToString( const QChar zero, const QChar group, cons
     }
     else if ( flags & BlankBeforePositive )
     {
-        num_str.prepend( QLatin1Char( ' ' ) );
+        num_str.prepend( ' ' );
     }
 
     return num_str;
@@ -2790,12 +2795,12 @@ QString QLocaleData::unsLongLongToString( const QChar zero, const QChar group, c
 
     if ( base == 16 && ( flags & Alternate || flags & ShowBase ) )
     {
-        num_str.prepend( QLatin1String( flags & UppercaseBase ? "0X" : "0x" ) );
+        num_str.prepend( QString( flags & UppercaseBase ? "0X" : "0x" ) );
 
     }
     else if ( base == 2 && ( flags & Alternate || flags & ShowBase ) )
     {
-        num_str.prepend( QLatin1String( flags & UppercaseBase ? "0B" : "0b" ) );
+        num_str.prepend( QString( flags & UppercaseBase ? "0B" : "0b" ) );
     }
 
     // add sign
@@ -2805,7 +2810,7 @@ QString QLocaleData::unsLongLongToString( const QChar zero, const QChar group, c
     }
     else if ( flags & BlankBeforePositive )
     {
-        num_str.prepend( QLatin1Char( ' ' ) );
+        num_str.prepend( QChar( ' ' ) );
     }
 
     return num_str;
@@ -2816,7 +2821,7 @@ bool QLocaleData::numberToCLocale( const QString &num, GroupSeparatorMode group_
     QString::const_iterator iter = num.begin();
     QString::const_iterator end  = num.end();
 
-    // Skip whitespace
+    // skip whitespace
     while ( iter != end && iter->isSpace() )
     {
         ++iter;
@@ -2872,6 +2877,7 @@ bool QLocaleData::numberToCLocale( const QString &num, GroupSeparatorMode group_
                 break;
 
             }
+            }
 
             if ( group_sep_mode == ParseGroupSeparators )
             {
@@ -2883,7 +2889,7 @@ bool QLocaleData::numberToCLocale( const QString &num, GroupSeparatorMode group_
                 }
                 else if ( out == ',' )
                 {
-                    // Don't allow group chars after the decimal point
+                // do not allow group chars after the decimal point
                     if ( decpt_iter != end )
                     {
                         return false;
@@ -2904,7 +2910,7 @@ bool QLocaleData::numberToCLocale( const QString &num, GroupSeparatorMode group_
                     last_separator_iter = iter;
                     ++group_cnt;
 
-                    // don't add the group separator
+                // do not add the group separator
                     ++iter;
                     continue;
 
@@ -2912,7 +2918,7 @@ bool QLocaleData::numberToCLocale( const QString &num, GroupSeparatorMode group_
                 else if ( out == '.' || out == 'e' || out == 'E' )
                 {
 
-                    // Fail if more than one decimal point
+                // fail if more than one decimal point
                     if ( out == '.' && decpt_iter != end )
                     {
                         return false;
@@ -2931,7 +2937,6 @@ bool QLocaleData::numberToCLocale( const QString &num, GroupSeparatorMode group_
 
                     // stop processing separators
                     last_separator_iter = end;
-                }
             }
         }
 
@@ -3266,7 +3271,7 @@ qint64 QLocaleData::bytearrayToLongLong( const char *num, int base, bool *ok, bo
 
     if ( *endptr != '\0' )
     {
-        // we stopped at a non-digit character after converting some digits
+        // stopped at a non-digit character after converting some digits
         if ( ok != nullptr )
         {
             *ok = false;
@@ -3385,8 +3390,6 @@ QString QLocale::toCurrencyString( qint64 value, const QString &symbol ) const
     }
 
 #endif
-
-    const QLocalePrivate *d = this->d;
 
     quint8 idx = d->m_data->m_currency_format_idx;
     quint8 size = d->m_data->m_currency_format_size;

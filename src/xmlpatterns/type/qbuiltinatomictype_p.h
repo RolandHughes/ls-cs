@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,9 +26,10 @@
 
 #include <qatomictype_p.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class BuiltinAtomicType : public AtomicType
 {
 public:
@@ -78,8 +79,8 @@ private:
     const AtomicMathematicianLocator::Ptr   m_mathematicianLocator;
     const AtomicCasterLocator::Ptr          m_casterLocator;
 };
-
 }
 
+QT_END_NAMESPACE
 
 #endif

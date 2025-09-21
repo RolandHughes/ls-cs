@@ -50,7 +50,7 @@
 #include <algorithm>
 
 void lscs_format_text( const QFont &fnt, const QRectF &_r, int tf, const QTextOption *opt,
-                     const QString &str, QRectF *brect, int tabstops, int *, int tabarraylen, QPainter *painter );
+                       const QString &str, QRectF *brect, int tabstops, int *, int tabarraylen, QPainter *painter );
 
 const char *lscs_mfhdr_tag = "QPIC";               // header tag
 
@@ -677,13 +677,13 @@ bool QPicture::exec( QPainter *painter, QDataStream &s, int nrecords )
                     QFontMetrics fm( fnt );
                     QPointF pt( p.x(), p.y() - fm.ascent() );
                     lscs_format_text( fnt, QRectF( pt, size ), flags, nullptr,
-                                    str, nullptr, 0, nullptr, 0, painter );
+                                      str, nullptr, 0, nullptr, 0, painter );
 
                 }
                 else
                 {
                     lscs_format_text( font, QRectF( p, QSizeF( 1, 1 ) ), Qt::TextSingleLine | Qt::TextDontClip, nullptr,
-                                    str, nullptr, 0, nullptr, 0, painter );
+                                      str, nullptr, 0, nullptr, 0, painter );
                 }
 
                 break;

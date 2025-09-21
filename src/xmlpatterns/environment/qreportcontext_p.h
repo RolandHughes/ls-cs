@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,12 +31,15 @@
 #include <qxmlname.h>
 #include <qstringfwd.h>
 
+QT_BEGIN_NAMESPACE
+
 class QAbstractMessageHandler;
 class QSourceLocation;
 
 namespace QPatternist
 {
 class SourceLocationReflection;
+
 
 class ReportContext : public QSharedData
 {
@@ -2366,5 +2369,7 @@ private:
  */
 typedef bool Exception;
 }
+
+QT_END_NAMESPACE
 
 #endif

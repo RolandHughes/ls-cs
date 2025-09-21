@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -1250,7 +1250,7 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
 
             argv[arguments.size() + 1] = nullptr;
 
-            if ( !program.contains( QLatin1Char( '/' ) ) )
+            if ( ! program.contains( QChar( '/' ) ) )
             {
                 const QString path = QString::fromUtf8( ::getenv( "PATH" ) );
 
@@ -1281,13 +1281,13 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
                 lscs_safe_execv( argv[0], argv );
             }
 
-            struct sigaction noaction;
+            struct sigaction tmpAction;
 
-            memset( &noaction, 0, sizeof( noaction ) );
+            memset( &tmpAction, 0, sizeof( tmpAction ) );
 
             noaction.sa_handler = SIG_IGN;
 
-            ::sigaction( SIGPIPE, &noaction, nullptr );
+            ::sigaction( SIGPIPE, &tmpAction, nullptr );
 
             // '\1' means execv failed
             char c = '\1';
@@ -1301,10 +1301,11 @@ bool QProcessPrivate::startDetached( const QString &program, const QStringList &
         }
         else if ( doubleForkPid == -1 )
         {
-            struct sigaction noaction;
-            memset( &noaction, 0, sizeof( noaction ) );
+            struct sigaction tmpAction;
+
+            memset( &tmpAction, 0, sizeof( tmpAction ) );
             noaction.sa_handler = SIG_IGN;
-            ::sigaction( SIGPIPE, &noaction, nullptr );
+            ::sigaction( SIGPIPE, &tmpAction, nullptr );
 
             // '\2' means internal error
             char c = '\2';

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,9 +29,10 @@
 #include <qxsdschemacontext_p.h>
 #include <qxsdwildcard_p.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class XsdParticleChecker
 {
 public:
@@ -62,7 +63,8 @@ public:
     static bool subsumes( const XsdParticle::Ptr &particle, const XsdParticle::Ptr &derivedParticle,
                           const XsdSchemaContext::Ptr &context, QString &errorMsg );
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

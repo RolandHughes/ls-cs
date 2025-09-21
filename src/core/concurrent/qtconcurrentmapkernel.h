@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -65,7 +65,7 @@ public:
 };
 
 template <typename ReducedResultType, typename Iterator, typename MapFunctor, typename ReduceFunctor,
-          typename Reducer = ReduceKernel<ReduceFunctor, ReducedResultType, typename MapFunctor::result_type>>
+          typename Reducer = ReduceKernel<ReduceFunctor, ReducedResultType, typename MapFunctor::result_type> >
 
 class MappedReducedKernel : public IterateKernel<Iterator, ReducedResultType>
 {
@@ -142,7 +142,6 @@ template <typename Iterator, typename MapFunctor>
 class MappedEachKernel : public IterateKernel<Iterator, typename MapFunctor::result_type>
 {
     MapFunctor map;
-
     using T = typename MapFunctor::result_type;
 
 public:
@@ -184,6 +183,10 @@ inline ThreadEngineStarter<T> startMapped( Iterator begin, Iterator end, Functor
     return startThreadEngine( new MappedEachKernel<Iterator, Functor>( begin, end, functor ) );
 }
 
+/*
+    The SequnceHolder class is used to hold a reference to the
+    sequence we are working on.
+*/
 template <typename Sequence, typename Base, typename Functor>
 struct SequenceHolder1 : public Base
 {
@@ -220,7 +223,6 @@ inline ThreadEngineStarter<ResultType> startMappedReduced( const Sequence &seque
     using Reducer             = ReduceKernel<ReduceFunctor, ResultType, IntermediateType>;
     using MappedReduceType    = MappedReducedKernel<ResultType, Iterator, MapFunctor, ReduceFunctor, Reducer>;
     using SequenceHolderType  = SequenceHolder2<Sequence, MappedReduceType, MapFunctor, ReduceFunctor>;
-
     return startThreadEngine( new SequenceHolderType( sequence, mapFunctor, reduceFunctor, options ) );
 }
 
@@ -230,7 +232,6 @@ inline ThreadEngineStarter<ResultType> startMappedReduced( Iterator begin, Itera
 {
     using Reducer          = ReduceKernel<ReduceFunctor, ResultType, IntermediateType>;
     using MappedReduceType = MappedReducedKernel<ResultType, Iterator, MapFunctor, ReduceFunctor, Reducer>;
-
     return startThreadEngine( new MappedReduceType( begin, end, mapFunctor, reduceFunctor, options ) );
 }
 

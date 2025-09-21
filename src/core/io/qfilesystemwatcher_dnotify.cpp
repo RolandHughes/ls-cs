@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -20,15 +20,13 @@
 * https://www.gnu.org/licenses/
 *
 ***********************************************************************/
+#include <qfilesystemwatcher_dnotify_p.h>
 
 #include <qfilesystemwatcher.h>
 #include <qplatformdefs.h>
 
-#include <qfilesystemwatcher_dnotify_p.h>
-
 #ifndef LSCS_NO_FILESYSTEMWATCHER
 
-#include <dirent.h>
 #include <qcoreapplication.h>
 #include <qdir.h>
 #include <qfileinfo.h>
@@ -39,6 +37,7 @@
 
 #include <qcore_unix_p.h>
 
+#include <dirent.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <sys/stat.h>
@@ -523,7 +522,7 @@ bool QDnotifyFileSystemWatcherEngine::Directory::File::updateInfo()
     uint nOwnerId = fi.ownerId();
     uint nGroupId = fi.groupId();
 
-    QFile::Permissions nPermissions = fi.permissions();
+    QFileDevice::Permissions nPermissions = fi.permissions();
 
     if ( nLastWrite != lastWrite || nOwnerId != ownerId || nGroupId != groupId || nPermissions != permissions )
     {

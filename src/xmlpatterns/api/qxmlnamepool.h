@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,10 @@
 #ifndef QXMLNAMEPOOL_H
 #define QXMLNAMEPOOL_H
 
-#include <qshareddata.h>
-#include <qstring.h>
+#include <QSharedData>
+#include <QString>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -63,5 +65,7 @@ private:
     friend class QPatternistSDK::Global;
     QExplicitlySharedDataPointer<QPatternist::NamePool> d;
 };
+
+QT_END_NAMESPACE
 
 #endif

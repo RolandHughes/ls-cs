@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,6 +26,8 @@
 
 #include <quniquepointer.h>
 
+#if ! defined(CS_DOXYPRESS)
+
 template <typename T, typename Deleter = std::default_delete<LsCsPointer::lscs_add_missing_extent_t<T>>>
           class QScopedArrayPointer : public QUniqueArrayPointer<T, Deleter>
 {
@@ -35,6 +37,8 @@ public:
     QScopedArrayPointer( QScopedArrayPointer &&other ) = delete;
     QScopedArrayPointer &operator=( QScopedArrayPointer &&other ) = delete;
 };
+
+#endif
 
 // free functions
 template <typename T, typename Deleter>

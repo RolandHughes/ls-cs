@@ -425,8 +425,8 @@ void LSCS_EnableSecureEventInput();
 void LSCS_DisableSecureEventInput();
 
 OSStatus LSCS_GetEventParameter( EventRef event, EventParamName eventName, EventParamType eventType,
-                               EventParamType *eventTypePtr,
-                               ByteCount bufferSize, ByteCount *actualSize, void *data );
+                                 EventParamType *eventTypePtr,
+                                 ByteCount bufferSize, ByteCount *actualSize, void *data );
 
 UInt32 LSCS_GetCurrentKeyModifiers();
 UInt32 LSCS_GetCurrentEventKeyModifiers();
@@ -466,14 +466,14 @@ OSStatus LSCS_RemoveEventLoopTimer( EventLoopTimerRef timer );
 EventLoopTimerUPP LSCS_NewEventLoopTimerUPP( EventLoopTimerProcPtr callBack );
 EventHandlerUPP LSCS_NewEventHandlerUPP( EventHandlerProcPtr callBack );
 OSStatus LSCS_CreateEvent( CFAllocatorRef allocator, UInt32 id, UInt32 kind, EventTime time, EventAttributes flags,
-                         EventRef *event );
+                           EventRef *event );
 
 OSStatus LSCS_InstallEventLoopTimer( EventLoopRef eventLopp, EventTimerInterval delay, EventTimerInterval interval,
-                                   EventLoopTimerUPP callBack, void *data, EventLoopTimerRef *timer );
+                                     EventLoopTimerUPP callBack, void *data, EventLoopTimerRef *timer );
 
 OSStatus LSCS_InstallEventHandler( EventTargetRef target, EventHandlerUPP handler, ItemCount numTypes,
-                                 const EventTypeSpec *list,
-                                 void *data, EventHandlerRef *ref );
+                                   const EventTypeSpec *list,
+                                   void *data, EventHandlerRef *ref );
 
 void LSCS_DisposeEventHandlerUPP( EventHandlerUPP userUPP );
 OSStatus LSCS_SetSystemUIMode( SystemUIMode mode, SystemUIOptions options );
@@ -486,92 +486,92 @@ OSStatus LSCS_HIThemeGetButtonContentBounds( const HIRect *inBounds, const HIThe
         HIRect *outBounds );
 
 OSStatus LSCS_HIThemeDrawButton( const HIRect *inBounds, const HIThemeButtonDrawInfo *inDrawInfo, CGContextRef inContext,
-                               HIThemeOrientation inOrientation, HIRect *outLabelRect );
+                                 HIThemeOrientation inOrientation, HIRect *outLabelRect );
 
 OSStatus LSCS_HIThemeSetFill( ThemeBrush brush, void *info, CGContextRef context, HIThemeOrientation orientation );
 
 OSStatus LSCS_HIThemeDrawMenuBackground( const HIRect *rect, const HIThemeMenuDrawInfo *info, CGContextRef context,
-                                       HIThemeOrientation orientation );
+        HIThemeOrientation orientation );
 
 OSStatus LSCS_HIThemeGetMenuBackgroundShape( const HIRect *menuRect, const HIThemeMenuDrawInfo *mdi, HIShapeRef *shape );
 
 OSStatus LSCS_HIThemeDrawGroupBox( const HIRect *hirect, const HIThemeGroupBoxDrawInfo *drawInfo, CGContextRef context,
-                                 HIThemeOrientation orientation );
+                                   HIThemeOrientation orientation );
 
 OSStatus LSCS_CopyThemeIdentifier( CFStringRef *theme );
 
 OSStatus LSCS_HIThemeDrawFrame( const HIRect *hirect, const HIThemeFrameDrawInfo *drawInfo, CGContextRef context,
-                              HIThemeOrientation orientation );
+                                HIThemeOrientation orientation );
 
 OSStatus LSCS_HIThemeDrawPopupArrow( const HIRect *hirect, const HIThemePopupArrowDrawInfo *drawInfo, CGContextRef context,
-                                   HIThemeOrientation orientation );
+                                     HIThemeOrientation orientation );
 
 OSStatus LSCS_HIThemeDrawSeparator( const HIRect *hirect, const HIThemeSeparatorDrawInfo *drawInfo, CGContextRef context,
-                                  HIThemeOrientation orientation );
+                                    HIThemeOrientation orientation );
 
 OSStatus LSCS_HIThemeDrawTabPane( const HIRect *hirect, const HIThemeTabPaneDrawInfo *info, CGContextRef context,
-                                HIThemeOrientation orientation );
-
-OSStatus LSCS_HIThemeDrawTextBox( CFTypeRef text, const HIRect *hirect, HIThemeTextInfo *info, CGContextRef context,
-                                HIThemeOrientation orientation );
-
-OSStatus LSCS_HIThemeDrawTab( const HIRect *hirect, const HIThemeTabDrawInfo *info, CGContextRef context,
-                            HIThemeOrientation orientation, HIRect *outRect );
-
-OSStatus LSCS_HIThemeDrawWindowFrame( const HIRect *hirect, const HIThemeWindowDrawInfo *info, CGContextRef context,
-                                    HIThemeOrientation orientation, HIRect *outRect );
-
-OSStatus LSCS_HIThemeDrawFocusRect( const HIRect *hirect, unsigned char, CGContextRef context,
                                   HIThemeOrientation orientation );
 
+OSStatus LSCS_HIThemeDrawTextBox( CFTypeRef text, const HIRect *hirect, HIThemeTextInfo *info, CGContextRef context,
+                                  HIThemeOrientation orientation );
+
+OSStatus LSCS_HIThemeDrawTab( const HIRect *hirect, const HIThemeTabDrawInfo *info, CGContextRef context,
+                              HIThemeOrientation orientation, HIRect *outRect );
+
+OSStatus LSCS_HIThemeDrawWindowFrame( const HIRect *hirect, const HIThemeWindowDrawInfo *info, CGContextRef context,
+                                      HIThemeOrientation orientation, HIRect *outRect );
+
+OSStatus LSCS_HIThemeDrawFocusRect( const HIRect *hirect, unsigned char, CGContextRef context,
+                                    HIThemeOrientation orientation );
+
 OSStatus LSCS_HIThemeGetWindowShape( const HIRect *hirect, const HIThemeWindowDrawInfo *info, WindowRegionCode code,
-                                   HIShapeRef *outShape );
+                                     HIShapeRef *outShape );
 
 OSStatus LSCS_HIThemeDrawMenuSeparator( const HIRect *hirect1, const HIRect *hirect2, const HIThemeMenuItemDrawInfo *info,
-                                      CGContextRef context, HIThemeOrientation orientation );
+                                        CGContextRef context, HIThemeOrientation orientation );
 
 OSStatus LSCS_HIThemeDrawMenuItem( const HIRect *hirect1, const HIRect *hirect2, const HIThemeMenuItemDrawInfo *info,
-                                 CGContextRef context, HIThemeOrientation orientation, HIRect *outRect );
+                                   CGContextRef context, HIThemeOrientation orientation, HIRect *outRect );
 
 OSStatus LSCS_HIThemeGetTextDimensions( CFTypeRef string, CGFloat width, HIThemeTextInfo *tti, CGFloat *outWidth,
-                                      CGFloat *outHeight, CGFloat *outBaseline );
+                                        CGFloat *outHeight, CGFloat *outBaseline );
 
 OSStatus LSCS_HIThemeDrawMenuBarBackground( const HIRect *hirect, const HIThemeMenuBarDrawInfo *bdi, CGContextRef context,
         HIThemeOrientation orientation );
 
 OSStatus LSCS_HIThemeDrawTrack( const HIThemeTrackDrawInfo *tdi, const HIRect *hirect, CGContextRef context,
-                              HIThemeOrientation orientation );
-
-OSStatus LSCS_HIThemeDrawGrowBox( const HIPoint *pt, const HIThemeGrowBoxDrawInfo *gdi, CGContextRef context,
                                 HIThemeOrientation orientation );
 
+OSStatus LSCS_HIThemeDrawGrowBox( const HIPoint *pt, const HIThemeGrowBoxDrawInfo *gdi, CGContextRef context,
+                                  HIThemeOrientation orientation );
+
 OSStatus LSCS_HIThemeDrawPaneSplitter( const HIRect *hirect, const HIThemeSplitterDrawInfo *info, CGContextRef context,
-                                     HIThemeOrientation orientation );
+                                       HIThemeOrientation orientation );
 
 OSStatus LSCS_HIThemeGetButtonShape( const HIRect *hirect, const HIThemeButtonDrawInfo *bdi, HIShapeRef *shape );
 
 OSStatus LSCS_HIThemeGetTrackThumbShape( const HIThemeTrackDrawInfo *tdi, HIShapeRef *shape );
 
 OSStatus LSCS_HIThemeDrawTrackTickMarks( const HIThemeTrackDrawInfo *tdi, ItemCount numMarks, CGContextRef context,
-                                       HIThemeOrientation orientation );
+        HIThemeOrientation orientation );
 
 OSStatus LSCS_HIThemeGetButtonBackgroundBounds( const HIRect *newRect, const HIThemeButtonDrawInfo *info, HIRect *outRect );
 OSStatus LSCS_HIThemeDrawTitleBarWidget( const HIRect *titleBarRect, const HIThemeWindowWidgetDrawInfo *info,
-                                       CGContextRef context,
-                                       HIThemeOrientation orientation );
+        CGContextRef context,
+        HIThemeOrientation orientation );
 
 OSStatus LSCS_HIThemeGetTrackBounds( const HIThemeTrackDrawInfo *info, HIRect *macRect );
 OSStatus LSCS_HIThemeGetTrackDragRect( const HIThemeTrackDrawInfo *info, HIRect *macRect );
 
 unsigned char LSCS_HIThemeHitTestTrack( const HIThemeTrackDrawInfo *info, const HIPoint *point,
-                                      ControlPartCode *outPartHit );
+                                        ControlPartCode *outPartHit );
 
 unsigned char LSCS_HIThemeHitTestScrollBarArrows( const HIRect *bounds, const HIScrollBarTrackInfo *info,
         unsigned char isHoriz,
         const HIPoint *point, HIRect *outBounds,  ControlPartCode *outPartCode );
 
 OSStatus LSCS_HIThemeGetTrackPartBounds( const HIThemeTrackDrawInfo *info, ControlPartCode inPartCode,
-                                       HIRect *outPartBounds );
+        HIRect *outPartBounds );
 
 OSStatus LSCS_GetThemeMenuSeparatorHeight( SInt16 *ash );
 

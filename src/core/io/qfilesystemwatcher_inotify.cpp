@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -20,10 +20,10 @@
 * https://www.gnu.org/licenses/
 *
 ***********************************************************************/
+#include <qfilesystemwatcher_inotify_p.h>
 
 #include <qfilesystemwatcher.h>
 
-#include <qfilesystemwatcher_inotify_p.h>
 
 #ifndef LSCS_NO_FILESYSTEMWATCHER
 

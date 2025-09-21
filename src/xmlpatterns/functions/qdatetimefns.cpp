@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,7 +28,8 @@ Item ExtractFromDurationFN<TSubClass>::evaluateSingleton( const DynamicContext::
 
     if ( item )
     {
-        return static_cast<const TSubClass *>( this )->extract( item.as<AbstractDuration>() );
+        return static_cast<const TSubClass *>( this )->
+               extract( item.as<AbstractDuration>() );
     }
     else
     {
@@ -106,15 +107,19 @@ Item SecondsFromAbstractDateTimeFN::extract( const QDateTime &dt ) const
 
 Item TimezoneFromAbstractDateTimeFN::extract( const QDateTime &dt ) const
 {
-    if ( dt.timeZone() == QTimeZone::utc() )
+    if ( dt.timeSpec() == Qt::UTC )
     {
         return toItem( CommonValues::DayTimeDurationZero );
 
     }
-    else
+    else if ( dt.timeSpec() == Qt::OffsetFromUTC )
     {
         return toItem( DayTimeDuration::fromSeconds( dt.offsetFromUtc() ) );
 
+    }
+    else
+    {
+        return Item();
     }
 }
 

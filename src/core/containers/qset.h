@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,7 +23,6 @@
 
 #ifndef QSET_H
 #define QSET_H
-
 #include <qhash.h>
 
 #include <initializer_list>
@@ -77,7 +76,7 @@ public:
     QSet( std::initializer_list<T> args )
         : m_data( args )  {}
 
-    template <class Input_Iterator>
+    template<class Input_Iterator>
     QSet( Input_Iterator first, Input_Iterator last );
 
     // methods
@@ -471,6 +470,8 @@ public:
         : c( set ), i( c.constBegin() )
     { }
 
+    ~QSetIterator() = default;
+
     QSetIterator &operator=( const QSet<T> &set )
     {
         c = set;
@@ -482,37 +483,30 @@ public:
     {
         i = c.constBegin();
     }
-
     void toBack()
     {
         i = c.constEnd();
     }
-
     bool hasNext() const
     {
         return i != c.constEnd();
     }
-
     const T &next()
     {
         return *( i++ );
     }
-
     const T &peekNext() const
     {
         return *i;
     }
-
     bool hasPrevious() const
     {
         return i != c.constBegin();
     }
-
     const T &previous()
     {
         return *( --i );
     }
-
     const T &peekPrevious() const
     {
         const_iterator p = i;
@@ -567,16 +561,13 @@ public:
         n = c->end();
     }
 
-    ~QMutableSetIterator()
-    {
-    }
+    ~QMutableSetIterator() = default;
 
     QMutableSetIterator &operator=( QSet<T> &set )
     {
         c = &set;
         i = c->begin();
         n = c->end();
-
         return *this;
     }
 
@@ -596,35 +587,29 @@ public:
     {
         return c->constEnd() != i;
     }
-
     const T &next()
     {
         n = i++;
         return *n;
     }
-
     const T &peekNext() const
     {
         return *i;
     }
-
     bool hasPrevious() const
     {
         return c->constBegin() != i;
     }
-
     const T &previous()
     {
         n = --i;
         return *n;
     }
-
     const T &peekPrevious() const
     {
         iterator p = i;
         return *( --p );
     }
-
     void remove()
     {
         if ( c->constEnd() != n )
@@ -633,13 +618,11 @@ public:
             n = c->end();
         }
     }
-
     const T &value() const
     {
         Q_ASSERT( item_exists() );
         return *n;
     }
-
     bool findNext( const T &value )
     {
         while ( c->constEnd() != ( n = i ) )
@@ -648,11 +631,10 @@ public:
             {
                 return true;
             }
-        }
+            }
 
         return false;
     }
-
     bool findPrevious( const T &value )
     {
         while ( c->constBegin() != i )
@@ -663,7 +645,7 @@ public:
             {
                 return true;
             }
-        }
+            }
 
         n = c->end();
         return false;

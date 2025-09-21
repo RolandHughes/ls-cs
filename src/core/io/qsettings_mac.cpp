@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -444,15 +444,15 @@ public:
 
     ~QMacSettingsPrivate();
 
-    void remove( const QString &key );
-    void set( const QString &key, const QVariant &value );
-    bool get( const QString &key, QVariant *value ) const;
-    QStringList children( const QString &prefix, ChildSpec spec ) const;
-    void clear();
-    void sync();
-    void flush();
-    bool isWritable() const;
-    QString fileName() const;
+    void remove( const QString &key ) override;
+    void set( const QString &key, const QVariant &value ) override;
+    bool get( const QString &key, QVariant *value ) const override;
+    QStringList children( const QString &prefix, ChildSpec spec ) const override;
+    void clear() override;
+    void sync() override;
+    void flush() override;
+    bool isWritable() const override;
+    QString fileName() const override;
 
 private:
     struct SearchDomain
@@ -711,7 +711,7 @@ void QMacSettingsPrivate::flush()
 bool QMacSettingsPrivate::isWritable() const
 {
     QMacSettingsPrivate *that = const_cast<QMacSettingsPrivate *>( this );
-    QString impossibleKey( "lscs_internal/" );
+    QString impossibleKey( "qt_internal/" );
 
     QSettings::Status oldStatus = that->m_status;
     that->m_status = QSettings::NoError;

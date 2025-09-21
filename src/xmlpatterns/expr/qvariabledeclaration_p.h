@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,6 +28,8 @@
 #include <qexpression_p.h>
 #include <qpatternistlocale_p.h>
 #include <qvariablereference_p.h>
+
+QT_BEGIN_NAMESPACE
 
 template<typename T> class QStack;
 
@@ -138,5 +140,7 @@ static inline QString formatKeyword( const VariableDeclaration::Ptr &var,
 }
 
 }
+
+QT_END_NAMESPACE
 
 #endif

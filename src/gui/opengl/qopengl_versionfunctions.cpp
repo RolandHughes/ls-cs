@@ -147,7 +147,8 @@ QOpenGLFunctions_1_0_CoreBackend::QOpenGLFunctions_1_0_CoreBackend( QOpenGLConte
         handle = GetModuleHandleA( "opengl32.dll" );
     }
 
-    Viewport   = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLint, GLint, GLsizei, GLsizei )>( GetProcAddress( handle, "glViewport" ) );
+    Viewport   = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLint, GLint, GLsizei, GLsizei )>( GetProcAddress( handle,
+                 "glViewport" ) );
     DepthRange = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLdouble, GLdouble )>( GetProcAddress( handle, "glDepthRange" ) );
     IsEnabled  = lscs_bitCast<GLboolean ( QOPENGLF_APIENTRYP )( GLenum )>( GetProcAddress( handle, "glIsEnabled" ) );
 
@@ -211,7 +212,8 @@ QOpenGLFunctions_1_0_CoreBackend::QOpenGLFunctions_1_0_CoreBackend( QOpenGLConte
 
     TexParameteriv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLint * )>( GetProcAddress( handle,
                      "glTexParameteriv" ) );
-    TexParameteri  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLint )>( GetProcAddress( handle, "glTexParameteri" ) );
+    TexParameteri  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLint )>( GetProcAddress( handle,
+                     "glTexParameteri" ) );
     TexParameterfv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLfloat * )>( GetProcAddress( handle,
                      "glTexParameterfv" ) );
     TexParameterf  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLfloat )>( GetProcAddress( handle,
@@ -1813,7 +1815,8 @@ QOpenGLFunctions_1_0_DeprecatedBackend::QOpenGLFunctions_1_0_DeprecatedBackend( 
     }
 
     Translatef = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLfloat, GLfloat, GLfloat )>( GetProcAddress( handle, "glTranslatef" ) );
-    Translated = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLdouble, GLdouble, GLdouble )>( GetProcAddress( handle, "glTranslated" ) );
+    Translated = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLdouble, GLdouble, GLdouble )>( GetProcAddress( handle,
+                 "glTranslated" ) );
     Scalef     = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLfloat, GLfloat, GLfloat )>( GetProcAddress( handle, "glScalef" ) );
     Scaled     = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLdouble, GLdouble, GLdouble )>( GetProcAddress( handle, "glScaled" ) );
     Rotatef    = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLfloat, GLfloat, GLfloat, GLfloat )>( GetProcAddress( handle,
@@ -1839,12 +1842,14 @@ QOpenGLFunctions_1_0_DeprecatedBackend::QOpenGLFunctions_1_0_DeprecatedBackend( 
     IsList      = lscs_bitCast<GLboolean ( QOPENGLF_APIENTRYP )( GLuint )>( GetProcAddress( handle, "glIsList" ) );
     GetTexGeniv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLint * )>( GetProcAddress( handle, "glGetTexGeniv" ) );
     GetTexGenfv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLfloat * )>( GetProcAddress( handle, "glGetTexGenfv" ) );
-    GetTexGendv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLdouble * )>( GetProcAddress( handle, "glGetTexGendv" ) );
+    GetTexGendv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLdouble * )>( GetProcAddress( handle,
+                  "glGetTexGendv" ) );
     GetTexEnviv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLint * )>( GetProcAddress( handle, "glGetTexEnviv" ) );
     GetTexEnvfv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLfloat * )>( GetProcAddress( handle, "glGetTexEnvfv" ) );
 
     GetPolygonStipple = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLubyte * )>( GetProcAddress( handle, "glGetPolygonStipple" ) );
-    GetPixelMapusv    = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLushort * )>( GetProcAddress( handle, "glGetPixelMapusv" ) );
+    GetPixelMapusv    = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLushort * )>( GetProcAddress( handle,
+                        "glGetPixelMapusv" ) );
     GetPixelMapuiv    = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLuint * )>( GetProcAddress( handle, "glGetPixelMapuiv" ) );
     GetPixelMapfv     = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLfloat * )>( GetProcAddress( handle, "glGetPixelMapfv" ) );
     GetMaterialiv     = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLint * )>( GetProcAddress( handle,
@@ -1930,14 +1935,16 @@ QOpenGLFunctions_1_0_DeprecatedBackend::QOpenGLFunctions_1_0_DeprecatedBackend( 
 
     TexGeniv   = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLint * )>( GetProcAddress( handle, "glTexGeniv" ) );
     TexGeni    = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLint )>( GetProcAddress( handle, "glTexGeni" ) );
-    TexGenfv   = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLfloat * )>( GetProcAddress( handle, "glTexGenfv" ) );
+    TexGenfv   = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLfloat * )>( GetProcAddress( handle,
+                 "glTexGenfv" ) );
     TexGenf    = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLfloat )>( GetProcAddress( handle, "glTexGenf" ) );
     TexGendv   = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLdouble * )>( GetProcAddress( handle,
                  "glTexGendv" ) );
     TexGend    = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLdouble )>( GetProcAddress( handle, "glTexGend" ) );
     TexEnviv   = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLint * )>( GetProcAddress( handle, "glTexEnviv" ) );
     TexEnvi    = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLint )>( GetProcAddress( handle, "glTexEnvi" ) );
-    TexEnvfv   = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLfloat * )>( GetProcAddress( handle, "glTexEnvfv" ) );
+    TexEnvfv   = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLfloat * )>( GetProcAddress( handle,
+                 "glTexEnvfv" ) );
     TexEnvf    = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLfloat )>( GetProcAddress( handle, "glTexEnvf" ) );
     ShadeModel = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum )>( GetProcAddress( handle, "glShadeModel" ) );
 
@@ -1954,7 +1961,8 @@ QOpenGLFunctions_1_0_DeprecatedBackend::QOpenGLFunctions_1_0_DeprecatedBackend( 
     LightModeli  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLint )>( GetProcAddress( handle, "glLightModeli" ) );
     LightModelfv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, const GLfloat * )>( GetProcAddress( handle, "glLightModelfv" ) );
     LightModelf  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLfloat )>( GetProcAddress( handle, "glLightModelf" ) );
-    Lightiv      = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLint * )>( GetProcAddress( handle, "glLightiv" ) );
+    Lightiv      = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLint * )>( GetProcAddress( handle,
+                   "glLightiv" ) );
     Lighti       = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLint )>( GetProcAddress( handle, "glLighti" ) );
     Lightfv      = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLfloat * )>( GetProcAddress( handle,
                    "glLightfv" ) );
@@ -2015,7 +2023,8 @@ QOpenGLFunctions_1_0_DeprecatedBackend::QOpenGLFunctions_1_0_DeprecatedBackend( 
     TexCoord3fv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLfloat * )>( GetProcAddress( handle, "glTexCoord3fv" ) );
     TexCoord3f  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLfloat, GLfloat, GLfloat )>( GetProcAddress( handle, "glTexCoord3f" ) );
     TexCoord3dv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLdouble * )>( GetProcAddress( handle, "glTexCoord3dv" ) );
-    TexCoord3d  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLdouble, GLdouble, GLdouble )>( GetProcAddress( handle, "glTexCoord3d" ) );
+    TexCoord3d  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLdouble, GLdouble, GLdouble )>( GetProcAddress( handle,
+                  "glTexCoord3d" ) );
     TexCoord2sv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLshort * )>( GetProcAddress( handle, "glTexCoord2sv" ) );
     TexCoord2s  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLshort, GLshort )>( GetProcAddress( handle, "glTexCoord2s" ) );
     TexCoord2iv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLint * )>( GetProcAddress( handle, "glTexCoord2iv" ) );
@@ -2040,13 +2049,15 @@ QOpenGLFunctions_1_0_DeprecatedBackend::QOpenGLFunctions_1_0_DeprecatedBackend( 
     Rectfv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLfloat *, const GLfloat * )>( GetProcAddress( handle, "glRectfv" ) );
     Rectf  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLfloat, GLfloat, GLfloat, GLfloat )>( GetProcAddress( handle, "glRectf" ) );
     Rectdv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLdouble *, const GLdouble * )>( GetProcAddress( handle, "glRectdv" ) );
-    Rectd  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLdouble, GLdouble, GLdouble, GLdouble )>( GetProcAddress( handle, "glRectd" ) );
+    Rectd  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLdouble, GLdouble, GLdouble, GLdouble )>( GetProcAddress( handle,
+             "glRectd" ) );
 
     RasterPos4sv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLshort * )>( GetProcAddress( handle, "glRasterPos4sv" ) );
     RasterPos4s  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLshort, GLshort, GLshort, GLshort )>( GetProcAddress( handle,
                    "glRasterPos4s" ) );
     RasterPos4iv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLint * )>( GetProcAddress( handle, "glRasterPos4iv" ) );
-    RasterPos4i  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLint, GLint, GLint, GLint )>( GetProcAddress( handle, "glRasterPos4i" ) );
+    RasterPos4i  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLint, GLint, GLint, GLint )>( GetProcAddress( handle,
+                   "glRasterPos4i" ) );
     RasterPos4fv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLfloat * )>( GetProcAddress( handle, "glRasterPos4fv" ) );
     RasterPos4f  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLfloat, GLfloat, GLfloat, GLfloat )>( GetProcAddress( handle,
                    "glRasterPos4f" ) );
@@ -2056,11 +2067,13 @@ QOpenGLFunctions_1_0_DeprecatedBackend::QOpenGLFunctions_1_0_DeprecatedBackend( 
                    GLdouble )>( GetProcAddress( handle, "glRasterPos4d" ) );
 
     RasterPos3sv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLshort * )>( GetProcAddress( handle, "glRasterPos3sv" ) );
-    RasterPos3s  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLshort, GLshort, GLshort )>( GetProcAddress( handle, "glRasterPos3s" ) );
+    RasterPos3s  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLshort, GLshort, GLshort )>( GetProcAddress( handle,
+                   "glRasterPos3s" ) );
     RasterPos3iv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLint * )>( GetProcAddress( handle, "glRasterPos3iv" ) );
     RasterPos3i  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLint, GLint, GLint )>( GetProcAddress( handle, "glRasterPos3i" ) );
     RasterPos3fv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLfloat * )>( GetProcAddress( handle, "glRasterPos3fv" ) );
-    RasterPos3f  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLfloat, GLfloat, GLfloat )>( GetProcAddress( handle, "glRasterPos3f" ) );
+    RasterPos3f  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLfloat, GLfloat, GLfloat )>( GetProcAddress( handle,
+                   "glRasterPos3f" ) );
     RasterPos3dv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLdouble * )>( GetProcAddress( handle, "glRasterPos3dv" ) );
     RasterPos3d  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLdouble, GLdouble, GLdouble )>( GetProcAddress( handle,
                    "glRasterPos3d" ) );
@@ -2079,7 +2092,8 @@ QOpenGLFunctions_1_0_DeprecatedBackend::QOpenGLFunctions_1_0_DeprecatedBackend( 
     Normal3fv    = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLfloat * )>( GetProcAddress( handle, "glNormal3fv" ) );
     Normal3f     = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLfloat, GLfloat, GLfloat )>( GetProcAddress( handle, "glNormal3f" ) );
     Normal3dv    = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLdouble * )>( GetProcAddress( handle, "glNormal3dv" ) );
-    Normal3d     = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLdouble, GLdouble, GLdouble )>( GetProcAddress( handle, "glNormal3d" ) );
+    Normal3d     = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLdouble, GLdouble, GLdouble )>( GetProcAddress( handle,
+                   "glNormal3d" ) );
 
     Normal3bv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLbyte * )>( GetProcAddress( handle, "glNormal3bv" ) );
     Normal3b  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLbyte, GLbyte, GLbyte )>( GetProcAddress( handle, "glNormal3b" ) );
@@ -2511,8 +2525,9 @@ QOpenGLFunctions_1_1_DeprecatedBackend::QOpenGLFunctions_1_1_DeprecatedBackend( 
     PopClientAttrib = lscs_bitCast<void ( QOPENGLF_APIENTRYP )()>( GetProcAddress( handle, "glPopClientAttrib" ) );
     Indexubv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( const GLubyte * )>( GetProcAddress( handle, "glIndexubv" ) );
     Indexub = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLubyte )>( GetProcAddress( handle, "glIndexub" ) );
-    PrioritizeTextures = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLsizei, const GLuint *, const GLfloat * )>( GetProcAddress( handle,
-                         "glPrioritizeTextures" ) );
+    PrioritizeTextures = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLsizei, const GLuint *, const GLfloat * )>( GetProcAddress(
+                             handle,
+                             "glPrioritizeTextures" ) );
     AreTexturesResident = lscs_bitCast<GLboolean ( QOPENGLF_APIENTRYP )( GLsizei, const GLuint *, GLboolean * )>( GetProcAddress(
                               handle, "glAreTexturesResident" ) );
     VertexPointer = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLint, GLenum, GLsizei, const GLvoid * )>( GetProcAddress( handle,

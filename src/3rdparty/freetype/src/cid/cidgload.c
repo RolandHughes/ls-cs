@@ -142,7 +142,7 @@
     {
       CID_FaceDict  dict;
       CID_Subrs     cid_subrs = face->subrs + fd_select;
-      FT_UInt       lscs_offset;
+      FT_UInt       cs_offset;
 
 
       /* Set up subrs */
@@ -161,8 +161,8 @@
       /* Decode the charstring. */
 
       /* Adjustment for seed bytes. */
-      lscs_offset = decoder->lenIV >= 0 ? (FT_UInt)decoder->lenIV : 0;
-      if ( lscs_offset > glyph_length )
+      cs_offset = decoder->lenIV >= 0 ? (FT_UInt)decoder->lenIV : 0;
+      if ( cs_offset > glyph_length )
       {
         FT_TRACE0(( "cid_load_glyph: invalid glyph stream offsets\n" ));
         error = FT_THROW( Invalid_Offset );
@@ -180,14 +180,14 @@
            decoder->builder.metrics_only                            )
         error = psaux->t1_decoder_funcs->parse_charstrings_old(
                   decoder,
-                  charstring + lscs_offset,
-                  glyph_length - lscs_offset );
+                  charstring + cs_offset,
+                  glyph_length - cs_offset );
 #else
       if ( decoder->builder.metrics_only )
         error = psaux->t1_decoder_funcs->parse_metrics(
                   decoder,
-                  charstring + lscs_offset,
-                  glyph_length - lscs_offset );
+                  charstring + cs_offset,
+                  glyph_length - cs_offset );
 #endif
       else
       {
@@ -204,8 +204,8 @@
 
         error = psaux->t1_decoder_funcs->parse_charstrings(
                   &psdecoder,
-                  charstring + lscs_offset,
-                  glyph_length - lscs_offset );
+                  charstring + cs_offset,
+                  glyph_length - cs_offset );
 
         /* Adobe's engine uses 16.16 numbers everywhere;              */
         /* as a consequence, glyphs larger than 2000ppem get rejected */
@@ -220,8 +220,8 @@
 
           error = psaux->t1_decoder_funcs->parse_charstrings(
                     &psdecoder,
-                    charstring + lscs_offset,
-                    glyph_length - lscs_offset );
+                    charstring + cs_offset,
+                    glyph_length - cs_offset );
         }
       }
     }

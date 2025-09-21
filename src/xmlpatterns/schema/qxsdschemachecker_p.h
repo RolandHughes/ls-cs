@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -35,9 +35,10 @@
 
 #include <QExplicitlySharedDataPointer>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class XsdSchemaContext;
 class XsdSchemaParserContext;
 
@@ -240,7 +241,8 @@ private:
     QHash<QXmlName, QSet<XsdFacet::Type> >               m_allowedAtomicFacets;
     QHash<NamedSchemaComponent::Ptr, QSourceLocation>    m_componentLocationHash;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

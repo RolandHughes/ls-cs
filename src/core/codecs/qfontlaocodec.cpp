@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,8 @@
 #include <qfontlaocodec_p.h>
 #include <qlist.h>
 
-#ifndef LSCS_NO_CODECS
-#ifndef LSCS_NO_BIG_CODECS
+#ifndef QT_NO_CODECS
+#ifndef QT_NO_BIG_CODECS
 
 static unsigned char const unicode_to_mulelao[256] =
 {
@@ -111,6 +111,6 @@ QByteArray QFontLaoCodec::convertFromUnicode( QStringView str, ConverterState * 
     return retval;
 }
 
-#endif // LSCS_NO_BIG_CODECS
+#endif // QT_NO_BIG_CODECS
 
-#endif // LSCS_NO_CODECS
+#endif // QT_NO_CODECS

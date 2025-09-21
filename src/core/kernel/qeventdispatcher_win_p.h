@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -95,14 +95,16 @@ using QSNDict = QHash<int, QSockNot *>;
 
 struct QSockFd
 {
+    explicit QSockFd( long ev = 0 )
+        : event( ev ), selected( false )
+    { }
+
     long event;
     bool selected;
-
-    explicit inline QSockFd( long ev = 0 ) : event( ev ), selected( false ) { }
 };
 using QSFDict = QHash<int, QSockFd>;
 
-struct WinTimerInfo                             // internal timer info
+struct WinTimerInfo
 {
     QObject *dispatcher;
     int timerId;
@@ -117,7 +119,7 @@ struct WinTimerInfo                             // internal timer info
 class QZeroTimerEvent : public QTimerEvent
 {
 public:
-    explicit inline QZeroTimerEvent( int timerId )
+    explicit QZeroTimerEvent( int timerId )
         : QTimerEvent( timerId )
     {
         t = QEvent::ZeroTimerEvent;
@@ -140,7 +142,7 @@ public:
     bool interrupt;
     bool closingDown;
 
-    // internal window handle used for socketnotifiers/timers/etc
+    // window handle is used for socketnotifiers and timers
     HWND internalHwnd;
     HHOOK getMessageHook;
 

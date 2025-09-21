@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -95,7 +95,7 @@ template < typename T, typename... Args, typename = typename std::enable_if_t < 
 
 // QScopedArrayPointer
 template <typename T, typename = typename std::enable_if_t<std::is_array_v<T>>>
-          QUniquePointer<T> QMakeUnique( std::size_t size )
+          QUniqueArrayPointer<T> QMakeUnique( std::size_t size )
 {
     return LsCsPointer::make_unique<T>( size );
 }

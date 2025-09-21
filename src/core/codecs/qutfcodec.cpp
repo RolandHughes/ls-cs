@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,7 +22,6 @@
 ***********************************************************************/
 
 #include <qutfcodec_p.h>
-
 #include <qendian.h>
 #include <qlist.h>
 #include <qstring.h>
@@ -642,7 +641,7 @@ QString QUtf32::convertToUnicode( const char *chars, int len, QTextCodec::Conver
     return retval;
 }
 
-#ifndef LSCS_NO_TEXTCODEC
+#ifndef QT_NO_TEXTCODEC
 
 QUtf8Codec::~QUtf8Codec()
 {
@@ -796,3 +795,4 @@ QStringList QUtf32LECodec::aliases() const
 }
 
 #endif
+

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,6 +25,8 @@
 
 #include "qderivedstring_p.h"
 #include "qxsdschemahelper_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -130,3 +132,4 @@ bool TargetNode::operator==( const TargetNode &other ) const
     return ( m_item.toNodeModelIndex() == other.m_item.toNodeModelIndex() );
 }
 
+QT_END_NAMESPACE

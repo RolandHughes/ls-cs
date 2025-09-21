@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -166,7 +166,7 @@ void ColorOutput::writeUncolored( const QString &message )
 QString ColorOutput::colorify( const QString &message, int colorID ) const
 {
     Q_ASSERT_X( colorID == -1 || d->colorMapping.contains( colorID ), Q_FUNC_INFO,
-                lscsPrintable( QString( "There is no color registered by id %1" ).formatArg( colorID ) ) );
+                qPrintable( QString( "There is no color registered by id %1" ).formatArg( colorID ) ) );
 
     Q_ASSERT_X( ! message.isEmpty(), Q_FUNC_INFO, "Can not print an empty string." );
 

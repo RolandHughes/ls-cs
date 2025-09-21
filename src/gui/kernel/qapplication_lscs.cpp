@@ -2521,11 +2521,11 @@ bool QApplication::notify( QObject *receiver, QEvent *e )
         {
             int key = static_cast<QKeyEvent *>( e )->key();
             lscs_in_tab_key_event = ( key == Qt::Key_Backtab
-                                    || key == Qt::Key_Tab
-                                    || key == Qt::Key_Left
-                                    || key == Qt::Key_Up
-                                    || key == Qt::Key_Right
-                                    || key == Qt::Key_Down );
+                                      || key == Qt::Key_Tab
+                                      || key == Qt::Key_Left
+                                      || key == Qt::Key_Up
+                                      || key == Qt::Key_Right
+                                      || key == Qt::Key_Down );
         }
 
         default:

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,11 +26,11 @@
 
 #include <qexport.h>
 
-static constexpr  inline void lscs_do_nothing( void )
+static constexpr  inline void cs_do_nothing( void )
 {
 }
 
-Q_CORE_EXPORT void lscs_assert( const char *assertion, const char *file, int line );
+Q_CORE_EXPORT void qt_assert( const char *assertion, const char *file, int line );
 
 #if ! defined(Q_ASSERT)
 #  ifdef LSCS_DISABLE_ASSERT
@@ -43,7 +43,7 @@ Q_CORE_EXPORT void lscs_assert( const char *assertion, const char *file, int lin
 Q_CORE_EXPORT void lscs_assert_x( const char *where, const char *what, const char *file, int line );
 
 #if ! defined(Q_ASSERT_X)
-#  ifdef LSCS_DISABLE_ASSERT
+#  if defined(LSCS_DISABLE_ASSERT)
 #    define Q_ASSERT_X(cond, where, what) lscs_do_nothing()
 #  else
 #    define Q_ASSERT_X(cond, where, what) ((!(cond)) ? lscs_assert_x(where, what,__FILE__,__LINE__) : lscs_do_nothing())

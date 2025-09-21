@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -43,7 +43,7 @@ public:
         Gui
     };
 
-    QCoreApplicationPrivate( int &aargc,  char **aargv, uint flags );
+    QCoreApplicationPrivate( int &argc,  char **argv );
     virtual ~QCoreApplicationPrivate();
 
     void init();
@@ -93,15 +93,19 @@ public:
         return LSCSInternalThreadData::get_m_ThreadData( q_ptr );
     }
 
-    int &argc;
-    char **argv;
     void appendApplicationPathToLibraryPaths( void );
     void processCommandLineArguments();
 
-    static QString qmljsDebugArguments();          // access arguments from other libraries
+    static QSettings *copperspiceConf();
 
-    QTranslatorList translators;
+    static bool testAttribute( uint flag )
+    {
+        return attribs & ( 1 << flag );
+    }
     static bool isTranslatorInstalled( QTranslator *translator );
+
+    int &m_argc;
+    char **m_argv;
 
     QCoreApplicationPrivate::Type application_type;
 
@@ -111,6 +115,8 @@ public:
     QString cachedApplicationDirPath;
     QString cachedApplicationFilePath;
 
+    QTranslatorList translators;
+
     static QThread *theMainThread;
     static QAbstractEventDispatcher *eventDispatcher;  // points to the platform dispatcher
     static bool is_app_running;
@@ -118,13 +124,6 @@ public:
 
     static bool setuidAllowed;
     static uint attribs;
-
-    static bool testAttribute( uint flag )
-    {
-        return attribs & ( 1 << flag );
-    }
-
-    static QSettings *copperspiceConf();
 
 protected:
     QCoreApplication *q_ptr;

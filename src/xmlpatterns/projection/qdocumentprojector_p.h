@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,34 +24,34 @@
 #ifndef QDocumentProjector_P_H
 #define QDocumentProjector_P_H
 
+#include <qprojectedexpression_p.h>
 #include <qabstractxmlreceiver.h>
 
-#include <qprojectedexpression_p.h>
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
-
 class DocumentProjector : public QAbstractXmlReceiver
 {
 public:
     DocumentProjector( const ProjectedExpression::Vector &paths, QAbstractXmlReceiver *const receiver );
 
-    void startElement( const QXmlName &name ) override;
+    virtual void namespaceBinding( const QXmlName nb );
+
+    virtual void characters( const QString &value );
+    void comment( const QString &value ) override;
+
+    virtual void startElement( const QXmlName name );
     void endElement() override;
 
-    void attribute( const QXmlName &name, QStringView value ) override;
+    virtual void attribute( const QXmlName name, const QString &value );
 
-    void comment( const QString &value ) override;
-    void characters( QStringView value ) override;
+    virtual void processingInstruction( const QXmlName name, const QString &value );
+
+    void item( const Item &item ) override;
 
     void startDocument() override;
     void endDocument() override;
-
-    void processingInstruction( const QXmlName &name, const QString &value ) override;
-
-    void namespaceBinding( const QXmlName &nb ) override;
-
-    void item( const Item &item ) override;
 
     ProjectedExpression::Vector m_paths;
     const int m_pathCount;
@@ -61,7 +61,8 @@ public:
 
     QAbstractXmlReceiver *const m_receiver;
 };
+}
 
-}   // end namespace
+QT_END_NAMESPACE
 
 #endif

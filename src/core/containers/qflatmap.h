@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -346,7 +346,7 @@ public:
     explicit QFlatMap( const std::map<Key, Val, C> &other )
         : m_data( other.begin(), other.end() ), m_compare( other.key_comp() ) {}
 
-    template <typename Input_Iterator> QFlatMap( Input_Iterator first, Input_Iterator last, const C &compare = C() )
+    template<typename Input_Iterator> QFlatMap( Input_Iterator first, Input_Iterator last, const C &compare = C() )
         : m_data( first, last ), m_compare( compare )
     {
 
@@ -401,6 +401,22 @@ public:
     QPair<const_iterator, const_iterator> equal_range( const Key &key ) const
     {
         return std::equal_range( m_data.begin(), m_data.end(), key, CompareFilter{m_compare} );
+    }
+
+    size_type erase( const Key &key )
+    {
+        auto iter = find( key );
+
+        if ( iter != m_data.end() )
+        {
+            erase( iter );
+            return 1;
+
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     iterator erase( const_iterator iter )
@@ -459,6 +475,11 @@ public:
         return iter;
     }
 
+    iterator insert( const std::pair<const Key, Val> &data )
+    {
+        return insert( data.first, data.second );
+    }
+
     iterator insert( const Key &key, const Val &value )
     {
         auto iter = std::lower_bound( m_data.begin(), m_data.end(), key, CompareFilter{m_compare} );
@@ -472,6 +493,22 @@ public:
 
         // update value
         iter->second = value;
+        return iter;
+    }
+
+    iterator insert( const Key &key, Val &&value )
+    {
+        auto iter = std::lower_bound( m_data.begin(), m_data.end(), key, CompareFilter{m_compare} );
+
+        if ( iter == m_data.end() || m_compare( key, iter->first ) )
+        {
+            // add new element, emplace returns an std::pair, first is the iterator
+
+            return m_data.emplace( iter, key, std::move( value ) );
+        }
+
+        // update value
+        iter->second = std::move( value );
 
         return iter;
     }
@@ -507,7 +544,7 @@ public:
 
     Val &last()
     {
-        return ( end() - 1 ).value();
+        return ( end()- 1 ).value();
     }
 
     const Val &last() const
@@ -821,6 +858,7 @@ Val &QFlatMap<Key, Val, C>::operator[]( const Key &key )
     return iter->second;
 }
 
+
 // java style iterators
 
 template <class Key, class Val, class C = qMapCompare<Key>>
@@ -833,9 +871,7 @@ public:
     QFlatMapIterator( const QFlatMap<Key, Val, C> &flatmap )
         : c( &flatmap ), i( c->constBegin() ), n( c->constEnd() ) {}
 
-    ~QFlatMapIterator()
-    {
-    }
+    ~QFlatMapIterator() = default;
 
     QFlatMapIterator &operator=( const QFlatMap<Key, Val, C> &flatmap )
     {
@@ -954,9 +990,7 @@ public:
     {
     }
 
-    ~QMutableFlatMapIterator()
-    {
-    }
+    ~QMutableFlatMapIterator() = default;
 
     QMutableFlatMapIterator &operator=( QFlatMap<Key, Val, C> &flatmap )
     {

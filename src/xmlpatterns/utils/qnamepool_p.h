@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,13 +24,13 @@
 #ifndef QNamePool_P_H
 #define QNamePool_P_H
 
-#include <qhash.h>
-#include <qreadlocker.h>
-#include <qreadwritelock.h>
-#include <qshareddata.h>
-#include <qstring.h>
-#include <qvector.h>
-#include <qxmlname.h>
+#include <QHash>
+#include <QReadLocker>
+#include <QReadWriteLock>
+#include <QSharedData>
+#include <QString>
+#include <QVector>
+#include <QXmlName>
 
 #include <qprimitives_p.h>
 
@@ -446,16 +446,15 @@ inline QXmlName::QXmlName( const NamespaceCode uri,
     /* We can't use members like prefix() here because if one of the
      * values are to large, they would overflow into the others. */
     Q_ASSERT_X( p <= MaximumPrefixes, "",
-                lscsPrintable( QString( "NamePool prefix limits: max is %1, therefore %2 exceeds." ).formatArg( MaximumPrefixes ).formatArg(
-                                 p ) ) );
+                qPrintable( QString( "NamePool prefix limits: max is %1, therefore %2 exceeds." ).formatArg( MaximumPrefixes ).formatArg( p ) ) );
 
     Q_ASSERT_X( ln <= MaximumLocalNames, "",
-                lscsPrintable( QString( "NamePool local name limits: max is %1, therefore %2 exceeds." ).formatArg( MaximumLocalNames ).formatArg(
-                                 ln ) ) );
+                qPrintable( QString( "NamePool local name limits: max is %1, therefore %2 exceeds." ).formatArg( MaximumLocalNames ).formatArg(
+                                ln ) ) );
 
     Q_ASSERT_X( uri <= MaximumNamespaces, "",
-                lscsPrintable( QString( "NamePool namespace limits: max is %1, therefore %2 exceeds." ).formatArg( MaximumNamespaces ).formatArg(
-                                 uri ) ) );
+                qPrintable( QString( "NamePool namespace limits: max is %1, therefore %2 exceeds." ).formatArg( MaximumNamespaces ).formatArg(
+                                uri ) ) );
 }
 
 #endif

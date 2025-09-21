@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,6 +27,8 @@
 #include "qcommonnamespaces_p.h"
 #include "qexpression_p.h"
 #include "qreportcontext_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -69,7 +71,7 @@ QSourceLocation ReportContext::lookupSourceLocation( const SourceLocationReflect
     if ( sl.isNull() )
     {
         Q_ASSERT_X( !locationFor( actual ).isNull(), Q_FUNC_INFO,
-                    lscsPrintable( QString::fromLatin1( "No location is available for: %1" ).formatArg( actual->description() ) ) );
+                    qPrintable( QString::fromLatin1( "No location is available for: %1" ).formatArg( actual->description() ) ) );
 
         return locationFor( actual );
     }
@@ -1368,3 +1370,4 @@ QUrl ReportContext::resolveURI( const QUrl &relative, const QUrl &baseURI ) cons
     }
 }
 
+QT_END_NAMESPACE

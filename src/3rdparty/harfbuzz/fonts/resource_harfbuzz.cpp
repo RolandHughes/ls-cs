@@ -8,7 +8,7 @@
 
 #include <qglobal.h>
 
-static const unsigned char lscs_resource_data[] =
+static const unsigned char qt_resource_data[] =
 {
     // Z:/cs5/src/3rdparty/harfbuzz/fonts/DejaVuSans.ttf
     0x0,0x7,0x87,0xfc,
@@ -30864,7 +30864,7 @@ static const unsigned char lscs_resource_data[] =
 
 };
 
-static const unsigned char lscs_resource_name[] =
+static const unsigned char qt_resource_name[] =
 {
     // copperspice
     0x0,0xb,
@@ -30884,20 +30884,20 @@ static const unsigned char lscs_resource_name[] =
 
 };
 
-static const unsigned char lscs_resource_struct[] =
+static const unsigned char qt_resource_struct[] =
 {
     // :
     0x0,0x0,0x0,0x0,0x0,0x2,0x0,0x0,0x0,0x1,0x0,0x0,0x0,0x1,
     // :/copperspice
     0x0,0x0,0x0,0x0,0x0,0x2,0x0,0x0,0x0,0x1,0x0,0x0,0x0,0x2,
-    // /LsCs/harfbuzz
+    // :/copperspice/harfbuzz
     0x0,0x0,0x0,0x11,0x0,0x2,0x0,0x0,0x0,0x1,0x0,0x0,0x0,0x3,
-    // /LsCs/harfbuzz/DejaVuSans.ttf
+    // :/copperspice/harfbuzz/DejaVuSans.ttf
     0x0,0x0,0x0,0x1f,0x0,0x0,0x0,0x0,0x0,0x1,0x0,0x0,0x0,0x0,
 
 };
 
-LSCS_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 extern Q_CORE_EXPORT bool qRegisterResourceData
 ( int, const unsigned char *, const unsigned char *, const unsigned char * );
@@ -30905,24 +30905,24 @@ extern Q_CORE_EXPORT bool qRegisterResourceData
 extern Q_CORE_EXPORT bool qUnregisterResourceData
 ( int, const unsigned char *, const unsigned char *, const unsigned char * );
 
-LSCS_END_NAMESPACE
+QT_END_NAMESPACE
 
 
-int LSCS_MANGLE_NAMESPACE( qInitResources )()
+int QT_MANGLE_NAMESPACE( qInitResources )()
 {
-    LSCS_PREPEND_NAMESPACE( qRegisterResourceData )
-    ( 0x01, lscs_resource_struct, lscs_resource_name, lscs_resource_data );
+    QT_PREPEND_NAMESPACE( qRegisterResourceData )
+    ( 0x01, qt_resource_struct, qt_resource_name, qt_resource_data );
     return 1;
 }
 
-Q_CONSTRUCTOR_FUNCTION( LSCS_MANGLE_NAMESPACE( qInitResources ) )
+Q_CONSTRUCTOR_FUNCTION( QT_MANGLE_NAMESPACE( qInitResources ) )
 
-int LSCS_MANGLE_NAMESPACE( qCleanupResources )()
+int QT_MANGLE_NAMESPACE( qCleanupResources )()
 {
-    LSCS_PREPEND_NAMESPACE( qUnregisterResourceData )
-    ( 0x01, lscs_resource_struct, lscs_resource_name, lscs_resource_data );
+    QT_PREPEND_NAMESPACE( qUnregisterResourceData )
+    ( 0x01, qt_resource_struct, qt_resource_name, qt_resource_data );
     return 1;
 }
 
-Q_DESTRUCTOR_FUNCTION( LSCS_MANGLE_NAMESPACE( qCleanupResources ) )
+Q_DESTRUCTOR_FUNCTION( QT_MANGLE_NAMESPACE( qCleanupResources ) )
 

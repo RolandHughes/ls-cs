@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,15 +21,14 @@
 *
 ***********************************************************************/
 
-#include <qxslttokenizer_p.h>
-
 #include <qstringlist.h>
 
-#include <qbuiltintypes_p.h>
-#include <qcommonnamespaces_p.h>
-#include <qquerytransformparser_p.h>
-#include <qxquerytokenizer_p.h>
-#include <qpatternistlocale_p.h>
+#include "qbuiltintypes_p.h"
+#include "qcommonnamespaces_p.h"
+#include "qquerytransformparser_p.h"
+#include "qxquerytokenizer_p.h"
+#include "qpatternistlocale_p.h"
+#include "qxslttokenizer_p.h"
 
 using namespace QPatternist;
 
@@ -577,7 +576,7 @@ int XSLTTokenizer::commenceScanOnly()
 
 void XSLTTokenizer::resumeTokenizationFrom( const int position )
 {
-    ( void ) position;
+    Q_UNUSED( position );
 }
 
 void XSLTTokenizer::handleXSLTVersion( TokenSource::Queue *const to, QStack<Token> *const queueOnExit,
@@ -699,6 +698,8 @@ void XSLTTokenizer::handleStandardAttributes( const bool isXSLTElement )
 
         if ( att.qualifiedName() == "xml:space" )
         {
+            const QStringView val( m_currentAttributes.value( CommonNamespaces::XML, "space" ) );
+
             /* We raise an error if the value is not recognized.
              *
              * Extensible Markup Language (XML) 1.0 (Fourth Edition), 2.10
@@ -784,7 +785,7 @@ void XSLTTokenizer::handleValidationAttributes( const bool isLRE ) const
 
 Tokenizer::Token XSLTTokenizer::nextToken( YYLTYPE *const sourceLocator )
 {
-    ( void ) sourceLocator;
+    Q_UNUSED( sourceLocator );
 
     if ( m_tokenSource.isEmpty() )
     {

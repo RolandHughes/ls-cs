@@ -598,7 +598,7 @@ void QXcbConnection::initializeScreens()
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
                                 qDebug( "QXcbConnection::initializeScreens() Output %s is not connected",
                                         lscsPrintable( QString::fromUtf8( ( const char * )xcb_randr_get_output_info_name( output.data() ),
-                                                                        xcb_randr_get_output_info_name_length( output.data() ) ) ) );
+                                                       xcb_randr_get_output_info_name_length( output.data() ) ) ) );
 #endif
                                 continue;
                             }
@@ -1250,7 +1250,8 @@ void QXcbConnection::handleXcbError( xcb_generic_error_t *error )
         }
         else if ( m_callLog.at( i ).sequence > error->sequence )
         {
-            qDebug( "QXcbConnection::handleXcbError() Caused before = %s:%d", lscsPrintable( m_callLog.at( i ).file ), m_callLog.at( i ).line );
+            qDebug( "QXcbConnection::handleXcbError() Caused before = %s:%d", lscsPrintable( m_callLog.at( i ).file ),
+                    m_callLog.at( i ).line );
 
             if ( i > 0 )
             {
@@ -1263,7 +1264,8 @@ void QXcbConnection::handleXcbError( xcb_generic_error_t *error )
 
     if ( i == m_callLog.size() && !m_callLog.isEmpty() )
     {
-        qDebug( "QXcbConnection::handleXcbError() Caused after =  %s:%d", lscsPrintable( m_callLog.first().file ), m_callLog.first().line );
+        qDebug( "QXcbConnection::handleXcbError() Caused after =  %s:%d", lscsPrintable( m_callLog.first().file ),
+                m_callLog.first().line );
     }
 
 #endif

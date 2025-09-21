@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,6 +25,8 @@
 #define QDecimal_P_H
 
 #include <qschemanumeric_p.h>
+
+QT_BEGIN_NAMESPACE
 
 Q_CORE_EXPORT char *qdtoa( double d, int mode, int ndigits, int *decpt, int *sign, char **rve, char **resultp );
 
@@ -90,5 +92,7 @@ private:
     const xsDecimal m_value;
 };
 }
+
+QT_END_NAMESPACE
 
 #endif

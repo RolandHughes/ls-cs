@@ -630,7 +630,7 @@ static void collectSingleContour( qreal x0, qreal y0, uint *grid, int x, int y, 
 }
 
 Q_GUI_EXPORT void lscs_addBitmapToPath( qreal x0, qreal y0, const uchar *image_data, int bpl,
-                                      int w, int h, QPainterPath *path )
+                                        int w, int h, QPainterPath *path )
 {
     uint *grid = new uint[( w + 1 ) * ( h + 1 )];
 
@@ -759,7 +759,7 @@ void QFontEngine::addBitmapFontToPath( qreal x, qreal y, const QGlyphLayout &gly
         advanceY += offset.y;
 
         lscs_addBitmapToPath( ( advanceX + metrics.x ).toReal(), ( advanceY + metrics.y ).toReal(), bitmap_data, bitmap.bytesPerLine(),
-                            w, h, path );
+                              w, h, path );
         advanceX += glyphs.advances[i];
     }
 }
@@ -2019,7 +2019,8 @@ QFontEngineMulti::~QFontEngineMulti()
     }
 }
 
-QStringList lscs_fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint, QChar::Script script );
+QStringList lscs_fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint,
+                                     QChar::Script script );
 
 void QFontEngineMulti::ensureFallbackFamiliesQueried()
 {

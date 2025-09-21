@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -50,7 +50,7 @@ class Q_CORE_EXPORT QDataStream
 {
 public:
 
-#if LSCS_VERSION >= 0x011000
+#if LSCS_VERSION >= 0x020100
 #error (CopperSpice compile issue in qdatastream.h) Verify version number is listed in the following enum
 #endif
 
@@ -67,7 +67,9 @@ public:
         LSCS_1_8 = LSCS_1_7,
         LSCS_1_9 = LSCS_1_8,
 
-        LSCS_DefaultStreamVersion = LSCS_1_9
+        LSCS_2_0 = CS_1_9,
+
+        LSCS_DefaultStreamVersion = LSCS_2_0
     };
 
     enum ByteOrder

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,7 +29,7 @@
 #include <qlist.h>
 #include <qplugin.h>
 
-#ifndef LSCS_NO_TEXTCODECPLUGIN
+#ifndef QT_NO_TEXTCODECPLUGIN
 
 class QTextCodec;
 
@@ -39,13 +39,13 @@ struct Q_CORE_EXPORT QTextCodecFactoryInterface : public QFactoryInterface
 };
 
 #define QTextCodecInterface_ID "com.copperspice.CS.QTextCodecInterface"
-LSCS_DECLARE_INTERFACE( QTextCodecFactoryInterface, QTextCodecInterface_ID )
+CS_DECLARE_INTERFACE( QTextCodecFactoryInterface, QTextCodecInterface_ID )
 
 class Q_CORE_EXPORT QTextCodecPlugin : public QObject, public QTextCodecFactoryInterface
 {
-    CORE_LSCS_OBJECT_MULTIPLE( QTextCodecPlugin, QObject )
+    CORE_CS_OBJECT_MULTIPLE( QTextCodecPlugin, QObject )
 
-    LSCS_INTERFACES( QTextCodecFactoryInterface, QFactoryInterface )
+    CS_INTERFACES( QTextCodecFactoryInterface, QFactoryInterface )
 
 public:
     explicit QTextCodecPlugin( QObject *parent = nullptr );
@@ -63,6 +63,6 @@ private:
     QTextCodec *create( const QString &name ) override;
 };
 
-#endif // LSCS_NO_TEXTCODECPLUGIN
+#endif // QT_NO_TEXTCODECPLUGIN
 
 #endif // QTEXTCODECPLUGIN_H

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,6 +25,8 @@
 
 #include "quntypedatomic_p.h"
 
+QT_BEGIN_NAMESPACE
+
 using namespace QPatternist;
 
 UntypedAtomic::UntypedAtomic( const QString &s ) : AtomicString( s )
@@ -41,3 +43,4 @@ ItemType::Ptr UntypedAtomic::type() const
     return BuiltinTypes::xsUntypedAtomic;
 }
 
+QT_END_NAMESPACE

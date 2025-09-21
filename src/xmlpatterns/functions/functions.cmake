@@ -52,7 +52,7 @@ list(APPEND XMLPATTERNS_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/functions/qdatetimefns.cpp
 )
 
-target_sources(LsCsXmlPatterns
+target_sources(CsXmlPatterns
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/functions/qabstractfunctionfactory.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/functions/qaccessorfns.cpp

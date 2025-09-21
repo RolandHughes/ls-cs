@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,10 +21,12 @@
 *
 ***********************************************************************/
 
-#include <qdebug.h>
+#include <QDebug>
 
-#include <qpatternistlocale_p.h>
-#include <qiodevicedelegate_p.h>
+#include "qpatternistlocale_p.h"
+#include "qiodevicedelegate_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -32,12 +34,14 @@ QIODeviceDelegate::QIODeviceDelegate( QIODevice *const source ) : m_source( sour
 {
     Q_ASSERT( m_source );
 
-    // do not allow aboutToClose to be queued across threads
-    connect( source, &QIODevice::aboutToClose,         this, &QIODeviceDelegate::aboutToClose, Qt::DirectConnection );
-    connect( source, &QIODevice::bytesWritten,         this, &QIODeviceDelegate::bytesWritten );
-    connect( source, &QIODevice::readyRead,            this, &QIODeviceDelegate::readyRead );
-    connect( source, &QIODevice::readChannelFinished,  this, &QIODeviceDelegate::readChannelFinished );
-    connect( source, &QIODevice::readChannelFinished,  this, &QIODeviceDelegate::finished );
+    connect( source, SIGNAL( aboutToClose() ),         this, SLOT( aboutToClose() ) );
+    connect( source, SIGNAL( bytesWritten( qint64 ) ),   this, SLOT( bytesWritten( qint64 ) ) );
+    connect( source, SIGNAL( readChannelFinished() ),  this, SLOT( readChannelFinished() ) );
+    connect( source, SIGNAL( readyRead() ),            this, SLOT( readyRead() ) );
+
+    /* According to Thiago these two signals are very similar, but QtNetworkAccess uses finished()
+     * instead for a minor but significant reason. */
+    connect( source, SIGNAL( readChannelFinished() ), this, SLOT( finished() ) );
 
     /* For instance QFile emits no signals, so how do we know if the device has all data available
      * and it therefore is safe and correct to emit finished()? isSequential() tells us whether it's
@@ -54,7 +58,7 @@ QIODeviceDelegate::QIODeviceDelegate( QIODevice *const source ) : m_source( sour
     setOpenMode( QIODevice::ReadOnly );
 
     /* Set up the timeout timer. */
-    connect( &m_timeout, &QTimer::timeout, this, &QIODeviceDelegate::networkTimeout );
+    connect( &m_timeout, SIGNAL( timeout() ), this, SLOT( networkTimeout() ) );
 
     m_timeout.setSingleShot( true );
     m_timeout.start( Timeout );
@@ -142,3 +146,6 @@ qint64 QIODeviceDelegate::readData( char *data, qint64 maxSize )
 {
     return m_source->read( data, maxSize );
 }
+
+QT_END_NAMESPACE
+

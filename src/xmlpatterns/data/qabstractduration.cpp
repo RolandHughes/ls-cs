@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,13 +21,15 @@
 *
 ***********************************************************************/
 
-#include <qstringlist.h>
+#include <QStringList>
 
 #include "qbuiltintypes_p.h"
 #include "qpatternistlocale_p.h"
 #include "qvalidationerror_p.h"
 
 #include "qabstractduration_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -234,3 +236,4 @@ bool AbstractDuration::isPositive() const
     return m_isPositive;
 }
 
+QT_END_NAMESPACE

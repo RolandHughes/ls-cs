@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,8 @@
 #ifndef QTLDURL_P_H
 #define QTLDURL_P_H
 
-#include <qurl.h>
 #include <qstring.h>
+#include <qurl.h>
 
 Q_CORE_EXPORT QString qTopLevelDomain( const QString &domain );
 Q_CORE_EXPORT bool qIsEffectiveTLD( const QString &domain );

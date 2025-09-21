@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -35,7 +35,7 @@
 // Create default time zone using appropriate backend
 static QTimeZonePrivate *newBackendTimeZone()
 {
-#ifdef LSCS_NO_SYSTEMLOCALE
+#ifdef QT_NO_SYSTEMLOCALE
     return new QUtcTimeZonePrivate();
 
 #else
@@ -599,9 +599,9 @@ QString QTimeZonePrivate::isoOffsetFormat( int offsetFromUtc )
 {
     const int mins = offsetFromUtc / 60;
 
-    return QString::fromUtf8( "UTC%1%2:%3" ).formatArg( mins >= 0 ? '+' : '-' )
-           .formatArg( qAbs( mins ) / 60, 2, 10, QLatin1Char( '0' ) )
-           .formatArg( qAbs( mins ) % 60, 2, 10, QLatin1Char( '0' ) );
+    return QString::fromUtf8( "UTC%1%2:%3" ).formatArg( mins >= 0 ? QChar( '+' ) : QChar( '-' ) )
+           .formatArg( qAbs( mins ) / 60, 2, 10, QChar( '0' ) )
+           .formatArg( qAbs( mins ) % 60, 2, 10, QChar( '0' ) );
 }
 
 QByteArray QTimeZonePrivate::ianaIdToWindowsId( const QByteArray &id )
@@ -889,7 +889,7 @@ void QUtcTimeZonePrivate::serialize( QDataStream &stream ) const
 // Create named time zone using appropriate backend
 static QTimeZonePrivate *newBackendTimeZone( const QByteArray &ianaId )
 {
-#ifdef LSCS_NO_SYSTEMLOCALE
+#ifdef QT_NO_SYSTEMLOCALE
     return new QUtcTimeZonePrivate( ianaId );
 
 #else
@@ -924,8 +924,7 @@ public:
     // The backend_tz is the tz to use in static methods such as availableTimeZoneIds() and
     // isTimeZoneIdAvailable() and to create named IANA time zones.  This is usually the host
     // system, but may be different if the host resources are insufficient or if
-    // LSCS_NO_SYSTEMLOCALE is set. A simple UTC backend is used if no alternative is available.
-
+    // QT_NO_SYSTEMLOCALE is set.  A simple UTC backend is used if no alternative is available.
     QSharedDataPointer<QTimeZonePrivate> backend;
 };
 
@@ -1195,7 +1194,6 @@ QTimeZone::OffsetDataList QTimeZone::transitions( const QDateTime &fromDateTime,
     {
         QTimeZonePrivate::DataList plist = d->transitions( fromDateTime.toMSecsSinceEpoch(),
                                            toDateTime.toMSecsSinceEpoch() );
-
         list.reserve( plist.count() );
 
         for ( const QTimeZonePrivate::Data &pdata : plist )
@@ -1256,7 +1254,7 @@ bool QTimeZone::isTimeZoneIdAvailable( const QByteArray &ianaId )
 {
     // isValidId is not strictly required, but faster to weed out invalid
     // IDs as availableTimeZoneIds() may be slow
-    if ( ! QTimeZonePrivate::isValidId( ianaId ) )
+    if ( !QTimeZonePrivate::isValidId( ianaId ) )
     {
         return false;
     }
@@ -1270,7 +1268,6 @@ static QList<QByteArray> set_union( const QList<QByteArray> &l1, const QList<QBy
 {
     QList<QByteArray> result;
     std::set_union( l1.begin(), l1.end(), l2.begin(), l2.end(), std::back_inserter( result ) );
-
     return result;
 }
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,9 +21,9 @@
 *
 ***********************************************************************/
 
-#include <qurl.h>
-#include <qvector.h>
-#include <qxmlnamepool.h>
+#include <QUrl>
+#include <QVector>
+#include <QXmlNamePool>
 
 #include "qabstractxmlnodemodel_p.h"
 #include "qemptyiterator_p.h"
@@ -95,7 +95,7 @@ QXmlNamePool &QSimpleXmlNodeModel::namePool() const
  */
 QVector<QXmlName> QSimpleXmlNodeModel::namespaceBindings( const QXmlNodeModelIndex &node ) const
 {
-    ( void ) node;
+    Q_UNUSED( node );
     return QVector<QXmlName>();
 }
 
@@ -107,7 +107,7 @@ QVector<QXmlName> QSimpleXmlNodeModel::namespaceBindings( const QXmlNodeModelInd
  */
 QXmlNodeModelIndex QSimpleXmlNodeModel::elementById( const QXmlName &id ) const
 {
-    ( void ) id;
+    Q_UNUSED( id );
     return QXmlNodeModelIndex();
 }
 
@@ -119,7 +119,7 @@ QXmlNodeModelIndex QSimpleXmlNodeModel::elementById( const QXmlName &id ) const
  */
 QVector<QXmlNodeModelIndex> QSimpleXmlNodeModel::nodesByIdref( const QXmlName &idref ) const
 {
-    ( void ) idref;
+    Q_UNUSED( idref );
     return QVector<QXmlNodeModelIndex>();
 }
 

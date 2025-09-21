@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,8 +21,6 @@
 *
 ***********************************************************************/
 
-#include <qfsfileengine_p.h>
-
 #include <qabstractfileengine.h>
 #include <qdatetime.h>
 #include <qdebug.h>
@@ -33,6 +31,7 @@
 #include <qvarlengtharray.h>
 
 #include <qfilesystemengine_p.h>
+#include <qfsfileengine_p.h>
 #include <qmutexpool_p.h>
 
 #include <accctrl.h>
@@ -81,7 +80,7 @@ QString QFSFileEnginePrivate::longFileName( const QString &path )
     return prefix + absPath;
 }
 
-bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
+bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode fileMode )
 {
     Q_Q( QFSFileEngine );
 
@@ -90,12 +89,12 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
 
     int accessRights = 0;
 
-    if ( openMode & QIODevice::ReadOnly )
+    if ( fileMode & QIODevice::ReadOnly )
     {
         accessRights |= GENERIC_READ;
     }
 
-    if ( openMode & QIODevice::WriteOnly )
+    if ( fileMode & QIODevice::WriteOnly )
     {
         accessRights |= GENERIC_WRITE;
     }
@@ -103,7 +102,7 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
     SECURITY_ATTRIBUTES securityAtts = { sizeof( SECURITY_ATTRIBUTES ), nullptr, FALSE };
 
     // WriteOnly can create files, ReadOnly cannot
-    DWORD creationDisp = ( openMode & QIODevice::WriteOnly ) ? OPEN_ALWAYS : OPEN_EXISTING;
+    DWORD creationDisp = ( fileMode & QIODevice::WriteOnly ) ? OPEN_ALWAYS : OPEN_EXISTING;
 
     // Create the file handle
     fileHandle = CreateFile( &fileEntry.nativeFilePath().toStdWString()[0],
@@ -117,7 +116,7 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
     }
 
     // Truncate the file after successfully opening it if Truncate is passed
-    if ( openMode & QIODevice::Truncate )
+    if ( fileMode & QIODevice::Truncate )
     {
         q->setSize( 0 );
     }
@@ -729,7 +728,7 @@ QAbstractFileEngine::FileFlags QFSFileEngine::fileFlags( QAbstractFileEngine::Fi
     bool exists;
     {
         QFileSystemMetaData::MetaDataFlags queryFlags = Qt::EmptyFlag;
-        queryFlags |= QFileSystemMetaData::MetaDataFlags( uint( type ) ) & QFileSystemMetaData::Permissions;
+        queryFlags |= QFileSystemMetaData::MetaDataFlags( uint( type ) ) & QFileSystemMetaData::MetaDataFlag::AllPermissions;
 
         // AliasType and BundleType are 0x0
         if ( type & TypesMask )
@@ -930,11 +929,11 @@ bool QFSFileEngine::setPermissions( uint perms )
     Q_D( QFSFileEngine );
 
     QSystemError error;
-    bool retval = QFileSystemEngine::setPermissions( d->fileEntry, QFile::Permissions( perms ), error );
+    bool retval = QFileSystemEngine::setPermissions( d->fileEntry, QFileDevice::Permissions( perms ), error );
 
     if ( ! retval )
     {
-        setError( QFile::PermissionsError, error.toString() );
+        setError( QFileDevice::PermissionsError, error.toString() );
     }
 
     return retval;
@@ -999,16 +998,67 @@ bool QFSFileEngine::setSize( qint64 size )
     return false;
 }
 
-QDateTime QFSFileEngine::fileTime( FileTime time ) const
+QDateTime QFSFileEngine::fileTime( QFileDevice::FileTimeType type ) const
 {
     Q_D( const QFSFileEngine );
 
     if ( d->doStat( QFileSystemMetaData::Times ) )
     {
-        return d->metaData.fileTime( time );
+        return d->metaData.fileTime( type );
     }
 
     return QDateTime();
+}
+
+bool QFSFileEngine::setFileTime( const QDateTime &newTime, QFileDevice::FileTimeType type )
+{
+    Q_D( QFSFileEngine );
+
+    if ( d->openMode == QIODevice::NotOpen )
+    {
+        setError( QFileDevice::PermissionsError, qt_error_string( ERROR_ACCESS_DENIED ) );
+        return false;
+    }
+
+    if ( ! newTime.isValid() )
+    {
+        setError( QFile::UnspecifiedError, qt_error_string( ERROR_INVALID_PARAMETER ) );
+        return false;
+    }
+
+    HANDLE handle = d->fileHandle;
+
+    if ( handle == INVALID_HANDLE_VALUE && d->fh )
+    {
+        handle = ( HANDLE )::_get_osfhandle( QT_FILENO( d->fh ) );
+
+    }
+    else if ( handle == INVALID_HANDLE_VALUE && d->fd != -1 )
+    {
+        handle = ( HANDLE )::_get_osfhandle( d->fd );
+
+    }
+
+    if ( handle == INVALID_HANDLE_VALUE )
+    {
+        setError( QFileDevice::PermissionsError, qt_error_string( ERROR_ACCESS_DENIED ) );
+        return false;
+    }
+
+    QSystemError error;
+    bool ok = QFileSystemEngine::setFileTime( handle, newTime, type, error );
+
+    if ( ok )
+    {
+        d->metaData.clearFlags( QFileSystemMetaData::Times );
+        return true;
+
+    }
+    else
+    {
+        setError( QFileDevice::PermissionsError, error.toString() );
+        return false;
+    }
 }
 
 uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFlags flags )
@@ -1019,7 +1069,7 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
 
     if ( openMode == QFile::NotOpen )
     {
-        q->setError( QFile::PermissionsError, lscs_error_string( ERROR_ACCESS_DENIED ) );
+        q->setError( QFileDevice::PermissionsError, lscs_error_string( ERROR_ACCESS_DENIED ) );
         return nullptr;
     }
 
@@ -1041,7 +1091,7 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
 
         if ( handle == INVALID_HANDLE_VALUE )
         {
-            q->setError( QFile::PermissionsError, lscs_error_string( ERROR_ACCESS_DENIED ) );
+            q->setError( QFileDevice::PermissionsError, lscs_error_string( ERROR_ACCESS_DENIED ) );
             return nullptr;
         }
 
@@ -1051,7 +1101,7 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
 
         if ( mapHandle == nullptr )
         {
-            q->setError( QFile::PermissionsError, lscs_error_string() );
+            q->setError( QFileDevice::PermissionsError, lscs_error_string() );
             return nullptr;
         }
     }
@@ -1094,7 +1144,7 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
     switch ( GetLastError() )
     {
         case ERROR_ACCESS_DENIED:
-            q->setError( QFile::PermissionsError, lscs_error_string() );
+            q->setError( QFileDevice::PermissionsError, lscs_error_string() );
             break;
 
         case ERROR_INVALID_PARAMETER:
@@ -1117,7 +1167,7 @@ bool QFSFileEnginePrivate::unmap( uchar *ptr )
 
     if ( ! maps.contains( ptr ) )
     {
-        q->setError( QFile::PermissionsError, lscs_error_string( ERROR_ACCESS_DENIED ) );
+        q->setError( QFileDevice::PermissionsError, lscs_error_string( ERROR_ACCESS_DENIED ) );
         return false;
     }
 
@@ -1125,7 +1175,7 @@ bool QFSFileEnginePrivate::unmap( uchar *ptr )
 
     if ( !UnmapViewOfFile( start ) )
     {
-        q->setError( QFile::PermissionsError, lscs_error_string() );
+        q->setError( QFileDevice::PermissionsError, lscs_error_string() );
         return false;
     }
 

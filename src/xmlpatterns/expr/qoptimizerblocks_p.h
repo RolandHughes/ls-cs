@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,9 +28,10 @@
 #include "qexpression_p.h"
 #include "qoptimizerframework_p.h"
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class ByIDIdentifier : public ExpressionIdentifier
 {
 public:
@@ -111,7 +112,8 @@ public:
 private:
     const Expression::ID m_id;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

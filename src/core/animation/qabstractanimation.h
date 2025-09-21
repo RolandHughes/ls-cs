@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,7 +27,7 @@
 #include <qobject.h>
 #include <qscopedpointer.h>
 
-#ifndef LSCS_NO_ANIMATION
+#ifndef QT_NO_ANIMATION
 
 class QAbstractAnimationPrivate;
 class QAnimationDriver;
@@ -37,25 +37,25 @@ class QSequentialAnimationGroup;
 
 class Q_CORE_EXPORT QAbstractAnimation : public QObject
 {
-    CORE_LSCS_OBJECT( QAbstractAnimation )
+    CORE_CS_OBJECT( QAbstractAnimation )
 
-    CORE_LSCS_PROPERTY_READ( state, state )
-    CORE_LSCS_PROPERTY_NOTIFY( state, stateChanged )
+    CORE_CS_PROPERTY_READ( state, state )
+    CORE_CS_PROPERTY_NOTIFY( state, stateChanged )
 
-    CORE_LSCS_PROPERTY_READ( loopCount, loopCount )
-    CORE_LSCS_PROPERTY_WRITE( loopCount, setLoopCount )
+    CORE_CS_PROPERTY_READ( loopCount, loopCount )
+    CORE_CS_PROPERTY_WRITE( loopCount, setLoopCount )
 
-    CORE_LSCS_PROPERTY_READ( currentTime, currentTime )
-    CORE_LSCS_PROPERTY_WRITE( currentTime, setCurrentTime )
+    CORE_CS_PROPERTY_READ( currentTime, currentTime )
+    CORE_CS_PROPERTY_WRITE( currentTime, setCurrentTime )
 
-    CORE_LSCS_PROPERTY_READ( currentLoop, currentLoop )
-    CORE_LSCS_PROPERTY_NOTIFY( currentLoop, currentLoopChanged )
+    CORE_CS_PROPERTY_READ( currentLoop, currentLoop )
+    CORE_CS_PROPERTY_NOTIFY( currentLoop, currentLoopChanged )
 
-    CORE_LSCS_PROPERTY_READ( direction, direction )
-    CORE_LSCS_PROPERTY_WRITE( direction, setDirection )
-    CORE_LSCS_PROPERTY_NOTIFY( direction, directionChanged )
+    CORE_CS_PROPERTY_READ( direction, direction )
+    CORE_CS_PROPERTY_WRITE( direction, setDirection )
+    CORE_CS_PROPERTY_NOTIFY( direction, directionChanged )
 
-    CORE_LSCS_PROPERTY_READ( duration, duration )
+    CORE_CS_PROPERTY_READ( duration, duration )
 
 public:
     enum Direction
@@ -77,8 +77,8 @@ public:
         DeleteWhenStopped
     };
 
-    CORE_LSCS_ENUM( State )
-    CORE_LSCS_ENUM( Direction )
+    CORE_CS_ENUM( State )
+    CORE_CS_ENUM( Direction )
 
     QAbstractAnimation( QObject *parent = nullptr );
 
@@ -104,27 +104,27 @@ public:
     virtual int duration() const = 0;
     int totalDuration() const;
 
-    CORE_LSCS_SIGNAL_1( Public, void finished() )
-    CORE_LSCS_SIGNAL_2( finished )
-    CORE_LSCS_SIGNAL_1( Public, void stateChanged( QAbstractAnimation::State newState, QAbstractAnimation::State oldState ) )
-    CORE_LSCS_SIGNAL_2( stateChanged, newState, oldState )
-    CORE_LSCS_SIGNAL_1( Public, void currentLoopChanged( int currentLoop ) )
-    CORE_LSCS_SIGNAL_2( currentLoopChanged, currentLoop )
-    CORE_LSCS_SIGNAL_1( Public, void directionChanged( QAbstractAnimation::Direction newDirection ) )
-    CORE_LSCS_SIGNAL_2( directionChanged, newDirection )
+    CORE_CS_SIGNAL_1( Public, void finished() )
+    CORE_CS_SIGNAL_2( finished )
+    CORE_CS_SIGNAL_1( Public, void stateChanged( QAbstractAnimation::State newState, QAbstractAnimation::State oldState ) )
+    CORE_CS_SIGNAL_2( stateChanged, newState, oldState )
+    CORE_CS_SIGNAL_1( Public, void currentLoopChanged( int currentLoop ) )
+    CORE_CS_SIGNAL_2( currentLoopChanged, currentLoop )
+    CORE_CS_SIGNAL_1( Public, void directionChanged( QAbstractAnimation::Direction newDirection ) )
+    CORE_CS_SIGNAL_2( directionChanged, newDirection )
 
-    CORE_LSCS_SLOT_1( Public, void start( QAbstractAnimation::DeletionPolicy policy = KeepWhenStopped ) )
-    CORE_LSCS_SLOT_2( start )
-    CORE_LSCS_SLOT_1( Public, void pause() )
-    CORE_LSCS_SLOT_2( pause )
-    CORE_LSCS_SLOT_1( Public, void resume() )
-    CORE_LSCS_SLOT_2( resume )
-    CORE_LSCS_SLOT_1( Public, void setPaused( bool paused ) )
-    CORE_LSCS_SLOT_2( setPaused )
-    CORE_LSCS_SLOT_1( Public, void stop() )
-    CORE_LSCS_SLOT_2( stop )
-    CORE_LSCS_SLOT_1( Public, void setCurrentTime( int msecs ) )
-    CORE_LSCS_SLOT_2( setCurrentTime )
+    CORE_CS_SLOT_1( Public, void start( QAbstractAnimation::DeletionPolicy policy = KeepWhenStopped ) )
+    CORE_CS_SLOT_2( start )
+    CORE_CS_SLOT_1( Public, void pause() )
+    CORE_CS_SLOT_2( pause )
+    CORE_CS_SLOT_1( Public, void resume() )
+    CORE_CS_SLOT_2( resume )
+    CORE_CS_SLOT_1( Public, void setPaused( bool paused ) )
+    CORE_CS_SLOT_2( setPaused )
+    CORE_CS_SLOT_1( Public, void stop() )
+    CORE_CS_SLOT_2( stop )
+    CORE_CS_SLOT_1( Public, void setCurrentTime( int msecs ) )
+    CORE_CS_SLOT_2( setCurrentTime )
 
 protected:
     QAbstractAnimation( QAbstractAnimationPrivate &dd, QObject *parent = nullptr );
@@ -142,7 +142,7 @@ private:
 
 class Q_CORE_EXPORT QAnimationDriver : public QObject
 {
-    CORE_LSCS_OBJECT( QAnimationDriver )
+    CORE_CS_OBJECT( QAnimationDriver )
 
 public:
     QAnimationDriver( QObject *parent = nullptr );
@@ -168,6 +168,6 @@ private:
     void stop();
 };
 
-#endif // LSCS_NO_ANIMATION
+#endif // QT_NO_ANIMATION
 
 #endif

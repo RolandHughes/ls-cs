@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,9 +26,10 @@
 
 #include <qitem_p.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class ProjectedExpression
 {
 public:
@@ -36,7 +37,8 @@ public:
     typedef QVector<ProjectedExpression::Ptr> Vector;
 
     virtual ~ProjectedExpression()
-    { }
+    {
+    }
 
     enum Action
     {
@@ -48,24 +50,24 @@ public:
 
     virtual Action actionForElement( const QXmlName name, ProjectedExpression::Ptr &next ) const
     {
-        ( void ) name;
-        ( void ) next;
-
+        Q_UNUSED( name );
+        Q_UNUSED( next );
         return Skip;
     }
+
 };
 
 class ProjectedNodeTest
 {
 public:
     typedef ProjectedNodeTest *Ptr;
-
     virtual ~ProjectedNodeTest()
-    { }
+    {
+    }
 
     virtual bool isMatch( const QXmlNodeModelIndex::NodeKind kind ) const
     {
-        ( void ) kind;
+        Q_UNUSED( kind );
         return false;
     }
 };
@@ -73,32 +75,31 @@ public:
 class ProjectedStep : public ProjectedExpression
 {
 public:
-    ProjectedStep( const ProjectedNodeTest::Ptr test, const QXmlNodeModelIndex::Axis axis )
-        : m_test( test )
+    ProjectedStep( const ProjectedNodeTest::Ptr test,
+                   const QXmlNodeModelIndex::Axis axis ) : m_test( test ),
+        m_axis( axis )
     {
-        ( void ) axis;
-
         Q_ASSERT( m_test );
     }
 
     Action actionForElement( const QXmlName name, ProjectedExpression::Ptr &next ) const override
     {
-        ( void ) name;
-        ( void ) next;
-
+        Q_UNUSED( name );
+        Q_UNUSED( next );
         // TODO
         return Skip;
     }
 
 private:
-    const ProjectedNodeTest::Ptr m_test;
+    const ProjectedNodeTest::Ptr    m_test;
+    const QXmlNodeModelIndex::Axis  m_axis;
 };
 
 class ProjectedPath : public ProjectedExpression
 {
 public:
-    ProjectedPath( const ProjectedExpression::Ptr left, const ProjectedExpression::Ptr right )
-        : m_left( left ), m_right( right )
+    ProjectedPath( const ProjectedExpression::Ptr left, const ProjectedExpression::Ptr right ) : m_left( left ),
+        m_right( right )
     {
         Q_ASSERT( m_left );
         Q_ASSERT( m_right );
@@ -122,7 +123,8 @@ private:
     const ProjectedExpression::Ptr  m_left;
     const ProjectedExpression::Ptr  m_right;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

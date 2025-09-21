@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -35,13 +35,13 @@
 using MSG = struct tagMSG;
 #endif
 
-class QCoreApplicationPrivate;
-class QTextCodec;
-class QTranslator;
-class QPostEventList;
-class QStringList;
 class QAbstractEventDispatcher;
 class QAbstractNativeEventFilter;
+class QCoreApplicationPrivate;
+class QPostEventList;
+class QStringList;
+class QTextCodec;
+class QTranslator;
 
 #define qApp QCoreApplication::instance()
 
@@ -67,9 +67,7 @@ class Q_CORE_EXPORT QCoreApplication : public QObject
     Q_DECLARE_PRIVATE( QCoreApplication )
 
 public:
-    static constexpr const int ApplicationFlags = LSCS_VERSION | 0x01000000;
-
-    QCoreApplication( int &argc, char **argv, int = ApplicationFlags );
+    QCoreApplication( int &argc, char **argv );
 
     QCoreApplication( const QCoreApplication & ) = delete;
     QCoreApplication &operator=( const QCoreApplication & ) = delete;

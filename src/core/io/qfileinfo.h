@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,8 +29,8 @@
 #include <qshareddata.h>
 
 class QDir;
-class QDirIteratorPrivate;
 class QDateTime;
+class QDirIteratorPrivate;
 class QFileInfoPrivate;
 
 class Q_CORE_EXPORT QFileInfo
@@ -115,8 +115,8 @@ public:
     QString group() const;
     uint groupId() const;
 
-    bool permission( QFile::Permissions permissions ) const;
-    QFile::Permissions permissions() const;
+    bool permission( QFileDevice::Permissions permissions ) const;
+    QFileDevice::Permissions permissions() const;
 
     qint64 size() const;
 

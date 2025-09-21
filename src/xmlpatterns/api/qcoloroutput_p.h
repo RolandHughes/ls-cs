@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -33,11 +33,14 @@ class ColorOutputPrivate;
 
 class ColorOutput
 {
-    static constexpr uint32_t ForegroundShift = 0;
-    static constexpr uint32_t BackgroundShift = 10;
-
-    static constexpr uint32_t ForegroundMask  = 0x000003FF;
-    static constexpr uint32_t BackgroundMask  = 0xFFFFFC00;
+    enum
+    {
+        ForegroundShift = 10,
+        BackgroundShift = 20,
+        SpecialShift    = 20,
+        ForegroundMask  = ( ( static_cast<quint64>( 1 ) << ForegroundShift ) - 1 ) << ForegroundShift,
+        BackgroundMask  = ( ( static_cast<quint64>( 1 ) << BackgroundShift ) - 1 ) << BackgroundShift
+    };
 
 public:
     enum ColorCodeComponent
@@ -66,12 +69,11 @@ public:
         RedBackground           = 5 << BackgroundShift,
         PurpleBackground        = 6 << BackgroundShift,
         BrownBackground         = 7 << BackgroundShift,
-
-        DefaultColor            = BlackBackground,
+        DefaultColor            = 1 << SpecialShift
     };
 
-    using ColorCode    = QFlags<ColorCodeComponent>;
-    using ColorMapping = QHash<int, ColorCode>;
+    typedef QFlags<ColorCodeComponent> ColorCode;
+    typedef QHash<int, ColorCode> ColorMapping;
 
     ColorOutput();
     ~ColorOutput();

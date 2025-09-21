@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,9 +26,10 @@
 
 #include <qatomictypedispatch_p.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class AtomicCasterLocator : public AtomicTypeVisitor
 {
 public:
@@ -106,7 +107,8 @@ public:
     AtomicTypeVisitorResult::Ptr visit( const YearMonthDurationType *,
                                         const SourceLocationReflection *const reflection ) const override;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,6 +28,8 @@
 #include <qdynamiccontext_p.h>
 #include <qitem_p.h>
 #include <qatomictypedispatch_p.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -89,5 +91,8 @@ public:
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS( AtomicMathematician::Operators )
 }
+
+QT_END_NAMESPACE
+
 
 #endif

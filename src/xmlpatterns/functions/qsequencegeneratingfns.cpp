@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,10 +21,9 @@
 *
 ***********************************************************************/
 
-#include <qstack.h>
-#include <qstringlist.h>
-#include <qfileinfo.h>
-
+#include <QStack>
+#include <QStringList>
+#include <QFileInfo>
 #include "qanyuri_p.h"
 #include "qboolean_p.h"
 #include "qcommonsequencetypes_p.h"
@@ -35,6 +34,8 @@
 #include "qpatternistlocale_p.h"
 #include "qxmlutils_p.h"
 #include "qsequencegeneratingfns_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -285,3 +286,5 @@ Item::Iterator::Ptr CollectionFN::evaluateSequence( const DynamicContext::Ptr &c
         }
     }
 }
+
+QT_END_NAMESPACE

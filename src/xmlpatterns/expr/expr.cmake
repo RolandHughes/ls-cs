@@ -95,7 +95,7 @@ list(APPEND XMLPATTERNS_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/expr/qevaluationcache.cpp
 )
 
-target_sources(LsCsXmlPatterns
+target_sources(CsXmlPatterns
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/expr/qandexpression.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/expr/qapplytemplate.cpp

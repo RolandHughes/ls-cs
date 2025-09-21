@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,9 +26,10 @@
 
 #include <qsimplecontentconstructor_p.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class XSLTSimpleContentConstructor : public SimpleContentConstructor
 {
 public:
@@ -41,7 +42,8 @@ public:
 private:
     static inline QString processItem( const Item &item, bool &discard, bool &isText );
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

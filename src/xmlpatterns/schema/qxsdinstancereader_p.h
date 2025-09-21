@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,6 +27,8 @@
 #include <qabstractxmlnodemodel.h>
 #include <qpullbridge_p.h>
 #include <qxsdschemacontext_p.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -139,7 +141,8 @@ private:
     QSourceLocation           m_cachedSourceLocation;
     QXmlItem                  m_cachedItem;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

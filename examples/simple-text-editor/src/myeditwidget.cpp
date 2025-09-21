@@ -28,17 +28,17 @@ MyEditWidget::MyEditWidget( QWidget *parent ) :
     , m_isDirty( false )
 {
 
-    setTabStopWidth( 4);
+    setTabStopWidth( 4 );
     setUndoRedoEnabled( true );
-    setBackgroundColor( QColor("#004d00"));
-    setTextColor( Qt::white);
+    setBackgroundColor( QColor( "#004d00" ) );
+    setTextColor( Qt::white );
 
     // allow widget to accept drops
     //
     setAcceptDrops( true );
 
-    connect( this, &QTextEdit::undoAvailable, this, &MyEditWidget::savePointReached);
-    
+    connect( this, &QTextEdit::undoAvailable, this, &MyEditWidget::savePointReached );
+
     // Set a default font that should be available everywhere
     //
     QString defaultFont = "Monospace";
@@ -75,10 +75,10 @@ void MyEditWidget::loadFile( QString fullPathToFile )
     else
     {
 
-        setText( QString::fromUtf8(file.readAll().constData() ));
+        setText( QString::fromUtf8( file.readAll().constData() ) );
         file.close();
 
-        moveCursor( QTextCursor::Start);
+        moveCursor( QTextCursor::Start );
 
         m_isDirty     = false;
         updateTabText();
@@ -146,7 +146,7 @@ void MyEditWidget::save()
 
 }
 
-void MyEditWidget::savePointReached(bool yesNo)
+void MyEditWidget::savePointReached( bool yesNo )
 {
     m_isDirty = yesNo;
     updateDirtyIndicator();
@@ -335,7 +335,7 @@ void MyEditWidget::dropEvent( QDropEvent *event )
     {
         if ( useCurrentTab )
         {
-            insertFromMimeData( mimeData);
+            insertFromMimeData( mimeData );
         }
         else
         {
@@ -350,10 +350,10 @@ bool MyEditWidget::isDirty()
     return m_isDirty;
 }
 
-void MyEditWidget::setBackgroundColor( QColor background)
+void MyEditWidget::setBackgroundColor( QColor background )
 {
     QPalette p = palette();
-    p.setColor(QPalette::Base, background );
-    setPalette(p);
+    p.setColor( QPalette::Base, background );
+    setPalette( p );
 }
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,9 +26,10 @@
 
 #include <QSharedData>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class AnyAtomicType;
 class AnyURIType;
 class Base64BinaryType;
@@ -210,7 +211,8 @@ public:
     virtual AtomicTypeVisitorResult::Ptr visit( const YearMonthDurationType *, const qint16 param,
             const SourceLocationReflection *const reflection ) const = 0;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

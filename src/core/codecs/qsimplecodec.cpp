@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,7 +24,7 @@
 #include <qsimplecodec_p.h>
 #include <qlist.h>
 
-#ifndef LSCS_NO_TEXTCODEC
+#ifndef QT_NO_TEXTCODEC
 
 #define LAST_MIB 2004
 
@@ -652,6 +652,7 @@ static const struct
         }
     },
 
+
     // this one is generated from the charmap file located in /usr/share/i18n/charmaps
     // on most Linux distributions. The thai character set tis620 is byte by byte equivalent
     // to iso8859-11, so we name it 8859-11 here, but recognise the name tis620 too.
@@ -877,4 +878,4 @@ int QSimpleTextCodec::mibEnum() const
     return unicodevalues[forwardIndex].mib;
 }
 
-#endif // LSCS_NO_TEXTCODEC
+#endif // QT_NO_TEXTCODEC

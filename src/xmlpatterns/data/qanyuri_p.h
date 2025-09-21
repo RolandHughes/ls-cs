@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -96,7 +96,7 @@ public:
 
     inline QUrl toQUrl() const
     {
-        Q_ASSERT_X( QUrl( m_value ).isValid(), Q_FUNC_INFO, lscsPrintable( QString( "%1 is not a valid QUrl" ).formatArg( m_value ) ) );
+        Q_ASSERT_X( QUrl( m_value ).isValid(), Q_FUNC_INFO, qPrintable( QString( "%1 is not a valid QUrl" ).formatArg( m_value ) ) );
         return QUrl( m_value );
     }
 

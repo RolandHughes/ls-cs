@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,6 +26,8 @@
 
 #include <qatomiccasterlocator_p.h>
 #include <qatomiccasters_p.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -384,127 +386,127 @@ public:
 
     AtomicTypeVisitorResult::Ptr visit( const BooleanType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new BooleanToDerivedIntegerCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const StringType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new StringToDerivedIntegerCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const AnyURIType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new StringToDerivedIntegerCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const UntypedAtomicType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new StringToDerivedIntegerCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const IntegerType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedIntegerType<TypeByte> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedIntegerType<TypeInt> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedIntegerType<TypeLong> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedIntegerType<TypeNegativeInteger> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedIntegerType<TypeNonNegativeInteger> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedIntegerType<TypeNonPositiveInteger> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedIntegerType<TypePositiveInteger> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedIntegerType<TypeShort> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedIntegerType<TypeUnsignedByte> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedIntegerType<TypeUnsignedInt> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedIntegerType<TypeUnsignedLong> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedIntegerType<TypeUnsignedShort> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const DoubleType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const FloatType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new NumericToDerivedIntegerCaster<type>() );
     }
 };
@@ -517,25 +519,25 @@ public:
 
     AtomicTypeVisitorResult::Ptr visit( const BooleanType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const StringType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const AnyURIType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const UntypedAtomicType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
@@ -543,146 +545,148 @@ public:
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedStringType<TypeNormalizedString> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedStringType<TypeToken> *, const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedStringType<TypeLanguage> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedStringType<TypeNMTOKEN> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedStringType<TypeName> *, const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedStringType<TypeNCName> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedStringType<TypeID> *, const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedStringType<TypeIDREF> *, const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     virtual AtomicTypeVisitorResult::Ptr visit( const DerivedStringType<TypeENTITY> *,
             const SourceLocationReflection *const r ) const
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const DateTimeType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const DateType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const SchemaTimeType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const FloatType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const DoubleType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const DecimalType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const IntegerType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const DurationType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const GYearMonthType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const GYearType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const GMonthDayType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const GDayType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const GMonthType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 
     AtomicTypeVisitorResult::Ptr visit( const QNameType *, const SourceLocationReflection *const r ) const override
     {
-        ( void ) r;
+        Q_UNUSED( r );
         return AtomicTypeVisitorResult::Ptr( new AnyToDerivedStringCaster<type>() );
     }
 };
 }
+
+QT_END_NAMESPACE
 
 #endif

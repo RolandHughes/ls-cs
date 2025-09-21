@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,7 +25,10 @@
 #include "qcommonsequencetypes_p.h"
 #include "qdynamiccontextstore_p.h"
 #include "qliteral_p.h"
+
 #include "qletclause_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -122,3 +125,5 @@ Expression::ID LetClause::id() const
 {
     return IDLetClause;
 }
+
+QT_END_NAMESPACE

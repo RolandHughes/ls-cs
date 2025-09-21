@@ -261,7 +261,7 @@ private:
     LSCS_SLOT_2( nextUnfinished )
 
     LSCS_SLOT_1( Private, void findNext( const QString &text, DataModel::FindLocation where, bool matchCase, bool ignoreAccelerators,
-                                       bool skipObsolete ) )
+                                         bool skipObsolete ) )
     LSCS_SLOT_2( findNext )
 
     LSCS_SLOT_1( Private, void revalidate() )

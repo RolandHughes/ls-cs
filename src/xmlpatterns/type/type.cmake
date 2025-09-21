@@ -45,7 +45,7 @@ list(APPEND XMLPATTERNS_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/type/qatomicmathematicianlocators.cpp
 )
 
-target_sources(LsCsXmlPatterns
+target_sources(CsXmlPatterns
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/type/qabstractnodetest.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/type/qanyitemtype.cpp

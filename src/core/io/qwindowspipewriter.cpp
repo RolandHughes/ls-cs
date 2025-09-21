@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,13 +21,14 @@
 *
 ***********************************************************************/
 
-#include <string.h>
-
 #include <qwindowspipewriter_p.h>
+
 #include <qiodevice_p.h>
 
-QWindowsPipeWriter::Overlapped::Overlapped( QWindowsPipeWriter *pipeWriter )
-    : pipeWriter( pipeWriter )
+#include <string.h>
+
+QWindowsPipeWriter::Overlapped::Overlapped( QWindowsPipeWriter *newWriter )
+    : pipeWriter( newWriter )
 {
 }
 

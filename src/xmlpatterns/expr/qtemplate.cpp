@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,7 +23,10 @@
 
 #include "qdynamiccontextstore_p.h"
 #include "qpatternistlocale_p.h"
+
 #include "qtemplate_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -211,3 +214,5 @@ Expression::Properties Template::dependencies() const
 
     return collect & ( Expression::RequiresFocus | Expression::IsEvaluated | Expression::DisableElimination );
 }
+
+QT_END_NAMESPACE

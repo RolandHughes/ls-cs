@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,7 +31,7 @@
     support them., e.g. Mac does not support availableTimeZones() filtering by region or offset.
 
     Another data table is provided for generic UTC+00:00 format time zones to be used as a
-    fall-back if no system time zones are available (LSCS_NO_SYSTEMLOCALE is set) or for QDateTimes
+    fall-back if no system time zones are available (QT_NO_SYSTEMLOCALE is set) or for QDateTimes
     with a QT:Spec of OffsetFromUTC
 
     These tables are automatically adapted from the CLDR supplemental/windowsZones.xml data file
@@ -606,7 +606,7 @@ static const QWindowsData windowsDataTable[] =
     {    138,  3150,  6682, 36000 }, // West Pacific Standard Time
     {    139,  3177,  7757, 32400 }, // Yakutsk Standard Time
     {    140,  3199,  7770,-25200 }, // Yukon Standard Time
-    {      0,     0,     0,     0 }  // Trailing zeroes
+    {      0,     0,     0,     0 } // Trailing zeroes
 };
 
 // IANA ID Index, UTC Offset
@@ -651,7 +651,7 @@ static const QUtcData utcDataTable[] =
     {   8143, 43200 }, // UTC+12:00
     {   8153, 46800 }, // UTC+13:00
     {   8163, 50400 }, // UTC+14:00
-    {     0,      0 }  // Trailing zeroes
+    {     0,      0 } // Trailing zeroes
 };
 
 static const char windowsIdData[] =

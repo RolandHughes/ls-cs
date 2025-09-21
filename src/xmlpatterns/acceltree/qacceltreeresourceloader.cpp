@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,8 +21,6 @@
 *
 ***********************************************************************/
 
-#include <qacceltreeresourceloader_p.h>
-
 #include <qfile.h>
 #include <qtextcodec.h>
 #include <qtimer.h>
@@ -31,6 +29,7 @@
 
 #include <qatomicstring_p.h>
 #include <qcommonsequencetypes_p.h>
+#include <qacceltreeresourceloader_p.h>
 
 using namespace QPatternist;
 
@@ -97,8 +96,10 @@ QNetworkReply *AccelTreeResourceLoader::load( const QUrl &uri, QNetworkAccessMan
     QNetworkRequest request( uri );
     QNetworkReply *const reply = networkManager->get( request );
 
-    networkLoop.connect( reply, &QNetworkReply::error,    &networkLoop, &NetworkLoop::error );
-    networkLoop.connect( reply, &QNetworkReply::finished, &networkLoop, &NetworkLoop::finished );
+    networkLoop.connect( reply, SIGNAL( error( QNetworkReply::NetworkError ) ), &networkLoop,
+                         SLOT( error( QNetworkReply::NetworkError ) ) );
+
+    networkLoop.connect( reply, SIGNAL( finished() ), &networkLoop, SLOT( finished() ) );
 
     if ( networkLoop.exec( QEventLoop::ExcludeUserInputEvents ) )
     {

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -230,14 +230,14 @@ bool QFSFileEngine::open( QIODevice::OpenMode openMode, FILE *fh, QFile::FileHan
 /*!
     Opens the file handle \a fh using the open mode \a flags.
 */
-bool QFSFileEnginePrivate::openFh( QIODevice::OpenMode openMode, FILE *fh )
+bool QFSFileEnginePrivate::openFh( QIODevice::OpenMode fileMode, FILE *filePtrHandle )
 {
     Q_Q( QFSFileEngine );
-    this->fh = fh;
+    this->fh = filePtrHandle;
     fd = -1;
 
     // Seek to the end when in Append mode.
-    if ( openMode & QIODevice::Append )
+    if ( fileMode & QIODevice::Append )
     {
         int ret;
 
@@ -294,14 +294,14 @@ bool QFSFileEngine::open( QIODevice::OpenMode openMode, int fd, QFile::FileHandl
     return d->openFd( openMode, fd );
 }
 
-bool QFSFileEnginePrivate::openFd( QIODevice::OpenMode openMode, int fd )
+bool QFSFileEnginePrivate::openFd( QIODevice::OpenMode fileMode, int fileDescriptor )
 {
     Q_Q( QFSFileEngine );
-    this->fd = fd;
-    fh = nullptr;
+    this->fd = fileDescriptor;
+    this->fh = nullptr;
 
     // Seek to the end when in Append mode.
-    if ( openMode & QFile::Append )
+    if ( fileMode & QFile::Append )
     {
         int ret;
 

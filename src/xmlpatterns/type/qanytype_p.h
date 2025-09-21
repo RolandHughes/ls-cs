@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,9 +26,10 @@
 
 #include <qschematype_p.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class AtomicType;
 
 class AnyType : public SchemaType
@@ -40,29 +41,29 @@ public:
 
     virtual ~AnyType();
 
-    QXmlName name( const NamePool::Ptr &np ) const override;
+    virtual QXmlName name( const NamePool::Ptr &np ) const override;
 
     /**
      * @returns always "xs:anyType"
      */
-    QString displayName( const NamePool::Ptr &np ) const override;
+    virtual QString displayName( const NamePool::Ptr &np ) const override;
 
     /**
      * @returns always @c false
      */
-    bool isAbstract() const override;
+    virtual bool isAbstract() const override;
 
     /**
      * @returns @c null, since <tt>xs:anyType</tt> has no base type, it is the ur-type.
      *
      * @returns always @c null
      */
-    SchemaType::Ptr wxsSuperType() const override;
+    virtual SchemaType::Ptr wxsSuperType() const override;
 
     /**
      * @returns @c true only if @p other is xsAnyType.
      */
-    bool wxsTypeMatches( const SchemaType::Ptr &other ) const override;
+    virtual bool wxsTypeMatches( const SchemaType::Ptr &other ) const override;
 
     /**
      * <tt>xs:anyType</tt> is the "ur-type" and special. Therefore, this function
@@ -70,22 +71,22 @@ public:
      *
      * @returns SchemaType::None
      */
-    TypeCategory category() const override;
+    virtual TypeCategory category() const override;
 
     /**
      * @returns always NoDerivation.
      */
-    DerivationMethod derivationMethod() const override;
+    virtual DerivationMethod derivationMethod() const override;
 
     /**
      * @returns an empty set of derivation constraint flags.
      */
-    DerivationConstraints derivationConstraints() const override;
+    virtual DerivationConstraints derivationConstraints() const override;
 
     /**
      * Always returns @c true.
      */
-    bool isComplexType() const override;
+    virtual bool isComplexType() const override;
 
 protected:
     /**
@@ -96,7 +97,8 @@ protected:
     {
     }
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

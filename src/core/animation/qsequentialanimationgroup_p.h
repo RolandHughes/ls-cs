@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,10 +25,9 @@
 #define QSEQUENTIALANIMATIONGROUP_P_H
 
 #include <qsequentialanimationgroup.h>
-
 #include <qanimationgroup_p.h>
 
-#ifndef LSCS_NO_ANIMATION
+#ifndef QT_NO_ANIMATION
 
 class QSequentialAnimationGroupPrivate : public QAnimationGroupPrivate
 {
@@ -81,6 +80,6 @@ public:
     int lastLoop;
 };
 
-#endif //LSCS_NO_ANIMATION
+#endif //QT_NO_ANIMATION
 
 #endif

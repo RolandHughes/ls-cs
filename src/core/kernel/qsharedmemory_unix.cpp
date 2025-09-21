@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -211,7 +211,7 @@ void QSharedMemoryPrivate::cleanHandle()
 #endif
 }
 
-bool QSharedMemoryPrivate::create( int size )
+bool QSharedMemoryPrivate::create( int newSize )
 {
 #ifndef LSCS_POSIX_IPC
     // build file if needed
@@ -238,7 +238,7 @@ bool QSharedMemoryPrivate::create( int size )
     }
 
     // create
-    if ( -1 == shmget( unix_key, size, 0600 | IPC_CREAT | IPC_EXCL ) )
+    if ( -1 == shmget( unix_key, newSize, 0600 | IPC_CREAT | IPC_EXCL ) )
     {
         QString function = "QSharedMemory::create";
 
@@ -275,7 +275,7 @@ bool QSharedMemoryPrivate::create( int size )
 
     if ( fd == -1 )
     {
-        QString function = QLatin1String( "QSharedMemory::create" );
+        QString function = "QSharedMemory::create";
 
         switch ( errno )
         {
@@ -294,11 +294,11 @@ bool QSharedMemoryPrivate::create( int size )
 
     // the size may only be set once; ignore errors
     int ret;
-    EINTR_LOOP( ret, ftruncate( fd, size ) );
+    EINTR_LOOP( ret, ftruncate( fd, newSize ) );
 
     if ( ret == -1 )
     {
-        setErrorString( QLatin1String( "QSharedMemory::create (ftruncate)" ) );
+        setErrorString( "QSharedMemory::create (ftruncate)" );
         lscs_safe_close( fd );
         return false;
     }
@@ -317,7 +317,7 @@ bool QSharedMemoryPrivate::attach( QSharedMemory::AccessMode mode )
 
     if ( -1 == id )
     {
-        setErrorString( QLatin1String( "QSharedMemory::attach (shmget)" ) );
+        setErrorString( "QSharedMemory::attach (shmget)" );
         return false;
     }
 
@@ -327,7 +327,7 @@ bool QSharedMemoryPrivate::attach( QSharedMemory::AccessMode mode )
     if ( ( void * ) - 1 == memory )
     {
         memory = nullptr;
-        setErrorString( QLatin1String( "QSharedMemory::attach (shmat)" ) );
+        setErrorString( "QSharedMemory::attach (shmat)" );
         return false;
     }
 
@@ -340,7 +340,7 @@ bool QSharedMemoryPrivate::attach( QSharedMemory::AccessMode mode )
     }
     else
     {
-        setErrorString( QLatin1String( "QSharedMemory::attach (shmctl)" ) );
+        setErrorString( "QSharedMemory::attach (shmctl)" );
         return false;
     }
 
@@ -354,7 +354,7 @@ bool QSharedMemoryPrivate::attach( QSharedMemory::AccessMode mode )
 
     if ( hand == -1 )
     {
-        QString function = QLatin1String( "QSharedMemory::attach (shm_open)" );
+        QString function = "QSharedMemory::attach (shm_open)";
 
         switch ( errno )
         {
@@ -377,7 +377,7 @@ bool QSharedMemoryPrivate::attach( QSharedMemory::AccessMode mode )
 
     if ( LSCS_FSTAT( hand, &st ) == -1 )
     {
-        setErrorString( QLatin1String( "QSharedMemory::attach (fstat)" ) );
+        setErrorString( "QSharedMemory::attach (fstat)" );
         cleanHandle();
         return false;
     }
@@ -390,7 +390,7 @@ bool QSharedMemoryPrivate::attach( QSharedMemory::AccessMode mode )
 
     if ( memory == MAP_FAILED || !memory )
     {
-        setErrorString( QLatin1String( "QSharedMemory::attach (mmap)" ) );
+        setErrorString( "QSharedMemory::attach (mmap)" );
         cleanHandle();
         memory = 0;
         size = 0;
@@ -409,7 +409,7 @@ bool QSharedMemoryPrivate::detach()
     // detach from the memory segment
     if ( -1 == shmdt( memory ) )
     {
-        QString function = QLatin1String( "QSharedMemory::detach" );
+        QString function = "QSharedMemory::detach";
 
         switch ( errno )
         {
@@ -452,7 +452,7 @@ bool QSharedMemoryPrivate::detach()
         // mark for removal
         if ( -1 == shmctl( id, IPC_RMID, &shmid_ds ) )
         {
-            setErrorString( QLatin1String( "QSharedMemory::detach" ) );
+            setErrorString( "QSharedMemory::detach" );
 
             switch ( errno )
             {
@@ -476,7 +476,7 @@ bool QSharedMemoryPrivate::detach()
     // detach from the memory segment
     if ( munmap( memory, size ) == -1 )
     {
-        setErrorString( QLatin1String( "QSharedMemory::detach (munmap)" ) );
+        setErrorString( "QSharedMemory::detach (munmap)" );
         return false;
     }
 
@@ -502,7 +502,7 @@ bool QSharedMemoryPrivate::detach()
 
         if ( shm_unlink( shmName.constData() ) == -1 && errno != ENOENT )
         {
-            setErrorString( QLatin1String( "QSharedMemory::detach (shm_unlink)" ) );
+            setErrorString( "QSharedMemory::detach (shm_unlink)" );
         }
     }
 

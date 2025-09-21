@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,15 +22,15 @@
 ***********************************************************************/
 
 #include <qstate.h>
+#include <qstate_p.h>
 
 #ifndef LSCS_NO_STATEMACHINE
 
-#include <qhistorystate.h>
 #include <qabstracttransition.h>
+#include <qhistorystate.h>
 #include <qsignaltransition.h>
 #include <qstatemachine.h>
 
-#include <qstate_p.h>
 #include <qabstracttransition_p.h>
 #include <qhistorystate_p.h>
 #include <qstatemachine_p.h>

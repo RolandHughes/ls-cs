@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,6 +22,8 @@
 ***********************************************************************/
 
 #include "qoptimizerblocks_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -47,3 +49,5 @@ OptimizationPass::OptimizationPass( const ExpressionIdentifier::Ptr &startID,
                 "Either resultCreator or sourceExpression must be set, otherwise there's "
                 "nothing to rewrite to." );
 }
+
+QT_END_NAMESPACE

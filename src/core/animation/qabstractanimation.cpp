@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,11 +27,13 @@
 #include <qanimationgroup.h>
 #include <qcoreevent.h>
 #include <qdebug.h>
+
+
 #include <qmath.h>
 #include <qpointer.h>
 #include <qthreadstorage.h>
 
-#ifndef LSCS_NO_ANIMATION
+#ifndef QT_NO_ANIMATION
 
 #define DEFAULT_TIMER_INTERVAL 16
 #define STARTSTOP_TIMER_DELAY 0
@@ -92,7 +94,6 @@ void QUnifiedTimer::updateAnimationsTime()
     }
 
     qint64 totalElapsed = time.elapsed();
-
     // ignore consistentTiming in case the pause timer is active
     int delta = ( consistentTiming && !isPauseTimerActive ) ?
                 timingInterval : totalElapsed - lastTick;
@@ -112,9 +113,8 @@ void QUnifiedTimer::updateAnimationsTime()
     lastTick = totalElapsed;
 
     // make sure we only call update time if the time has actually changed
-    // this might happen wjen the time does not change because events are delayed
-    // when the CPU load is high
-
+    // this might happen when the time does not change because events are delayed
+    //when the CPU load is high
     if ( delta )
     {
         insideTick = true;
@@ -122,10 +122,8 @@ void QUnifiedTimer::updateAnimationsTime()
         for ( currentAnimationIdx = 0; currentAnimationIdx < animations.count(); ++currentAnimationIdx )
         {
             QAbstractAnimation *animation = animations.at( currentAnimationIdx );
-
             int elapsed = QAbstractAnimationPrivate::get( animation )->totalCurrentTime
                           + ( animation->direction() == QAbstractAnimation::Forward ? delta : -delta );
-
             animation->setCurrentTime( elapsed );
         }
 
@@ -155,7 +153,7 @@ void QUnifiedTimer::restartAnimationTimer()
         isPauseTimerActive = true;
 
     }
-    else if ( ! driver->isRunning() || isPauseTimerActive )
+    else if ( !driver->isRunning() || isPauseTimerActive )
     {
         driver->start();
         isPauseTimerActive = false;
@@ -181,8 +179,8 @@ void QUnifiedTimer::setTimingInterval( int interval )
 
 void QUnifiedTimer::timerEvent( QTimerEvent *event )
 {
-    // in the case of consistent timing we make sure the orders in which events come is always the same
-    // for that purpose we do as if the startstoptimer would always fire before the animation timer
+    //in the case of consistent timing we make sure the orders in which events come is always the same
+    //for that purpose we do as if the startstoptimer would always fire before the animation timer
 
     if ( ( consistentTiming && startStopAnimationTimer.isActive() ) ||
             event->timerId() == startStopAnimationTimer.timerId() )
@@ -197,16 +195,14 @@ void QUnifiedTimer::timerEvent( QTimerEvent *event )
         {
             animationTimer.stop();
             isPauseTimerActive = false;
-
             // invalidate the start reference time
             time.invalidate();
-
         }
         else
         {
             restartAnimationTimer();
 
-            if ( ! time.isValid() )
+            if ( !time.isValid() )
             {
                 lastTick = 0;
                 time.start();
@@ -233,7 +229,7 @@ void QUnifiedTimer::registerAnimation( QAbstractAnimation *animation, bool isTop
         QAbstractAnimationPrivate::get( animation )->hasRegisteredTimer = true;
         inst->animationsToStart << animation;
 
-        if ( ! inst->startStopAnimationTimer.isActive() )
+        if ( !inst->startStopAnimationTimer.isActive() )
         {
             inst->startStopAnimationTimer.start( STARTSTOP_TIMER_DELAY, inst );
         }
@@ -246,8 +242,8 @@ void QUnifiedTimer::unregisterAnimation( QAbstractAnimation *animation )
 
     if ( inst )
     {
-        // at this point the unified timer should have been created
-        // but it might also have been already destroyed in case the application is shutting down
+        //at this point the unified timer should have been created
+        //but it might also have been already destroyed in case the application is shutting down
 
         inst->unregisterRunningAnimation( animation );
 
@@ -272,7 +268,6 @@ void QUnifiedTimer::unregisterAnimation( QAbstractAnimation *animation )
             {
                 inst->startStopAnimationTimer.start( STARTSTOP_TIMER_DELAY, inst );
             }
-
         }
         else
         {
@@ -480,8 +475,8 @@ void QAbstractAnimationPrivate::setState( QAbstractAnimation::State newState )
     state = newState;
     QWeakPointer<QAbstractAnimation> guard( q );
 
-    // (un)registration of the animation must always happen before calls to
-    // virtual function (updateState) to ensure a correct state of the timer
+    //(un)registration of the animation must always happen before calls to
+    //virtual function (updateState) to ensure a correct state of the timer
 
     bool isTopLevel = ! group || group->state() == QAbstractAnimation::Stopped;
 
@@ -568,6 +563,7 @@ QAbstractAnimation::QAbstractAnimation( QObject *parent )
     setParent( parent );
 }
 
+// internal
 QAbstractAnimation::QAbstractAnimation( QAbstractAnimationPrivate &dd, QObject *parent )
     : QObject( nullptr ), d_ptr( &dd )
 {
@@ -577,6 +573,11 @@ QAbstractAnimation::QAbstractAnimation( QAbstractAnimationPrivate &dd, QObject *
     setParent( parent );
 }
 
+/*!
+    Stops the animation if it's running, then destroys the
+    QAbstractAnimation. If the animation is part of a QAnimationGroup, it is
+    automatically removed before it's destroyed.
+*/
 QAbstractAnimation::~QAbstractAnimation()
 {
     Q_D( QAbstractAnimation );
@@ -702,7 +703,6 @@ int QAbstractAnimation::currentTime() const
     Q_D( const QAbstractAnimation );
     return d->totalCurrentTime;
 }
-
 void QAbstractAnimation::setCurrentTime( int msecs )
 {
     Q_D( QAbstractAnimation );
@@ -802,6 +802,13 @@ void QAbstractAnimation::pause()
     d->setState( Paused );
 }
 
+/*!
+    Resumes the animation after it was paused. When the animation is resumed,
+    it emits the resumed() and stateChanged() signals. The currenttime is not
+    changed.
+
+    \sa start(), pause(), state()
+ */
 void QAbstractAnimation::resume()
 {
     Q_D( QAbstractAnimation );
@@ -843,4 +850,4 @@ void QAbstractAnimation::updateDirection( QAbstractAnimation::Direction directio
     ( void ) direction;
 }
 
-#endif // LSCS_NO_ANIMATION
+#endif // QT_NO_ANIMATION

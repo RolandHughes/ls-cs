@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,7 +29,7 @@
 
 #include <qmutexpool_p.h>
 
-#ifndef LSCS_NO_ANIMATION
+#ifndef QT_NO_ANIMATION
 
 void QPropertyAnimationPrivate::updateMetaProperty()
 {
@@ -59,14 +59,14 @@ void QPropertyAnimationPrivate::updateMetaProperty()
         if ( ! targetValue->dynamicPropertyNames().contains( propertyName ) )
         {
             qWarning( "QPropertyAnimationPrivate::updateMetaProperty() Trying to animate a non existent property %s",
-                      lscsPrintable( propertyName ) );
+                      csPrintable( propertyName ) );
         }
 
     }
     else if ( ! targetValue->metaObject()->property( propertyIndex ).isWritable() )
     {
         qWarning( "QPropertyAnimationPrivate::updateMetaProperty() Trying to animate a read only property %s",
-                  lscsPrintable( propertyName ) );
+                  csPrintable( propertyName ) );
     }
 }
 
@@ -98,6 +98,7 @@ QPropertyAnimation::QPropertyAnimation( QObject *target, const QString &property
     setTargetObject( target );
     setPropertyName( propertyName );
 }
+
 
 QPropertyAnimation::~QPropertyAnimation()
 {
@@ -150,6 +151,7 @@ void QPropertyAnimation::setPropertyName( const QString &propertyName )
     d->updateMetaProperty();
 }
 
+// reimp
 bool QPropertyAnimation::event( QEvent *event )
 {
     return QVariantAnimation::event( event );
@@ -161,6 +163,7 @@ void QPropertyAnimation::updateCurrentValue( const QVariant &value )
     d->updateProperty( value );
 }
 
+// reimp
 void QPropertyAnimation::updateState( QAbstractAnimation::State newState, QAbstractAnimation::State oldState )
 {
     Q_D( QPropertyAnimation );
@@ -202,17 +205,17 @@ void QPropertyAnimation::updateState( QAbstractAnimation::State newState, QAbstr
                 if ( ! startValue().isValid() && ( d->direction == Backward || ! d->m_defaultValue.isValid() ) )
                 {
 
-                    qWarning( "QPropertyAnimation::updateState (%s, %s, %s): Trying to start an animation, no start value available",
-                              lscsPrintable( d->propertyName ), lscsPrintable( d->target.data()->metaObject()->className() ),
-                              lscsPrintable( d->target.data()->objectName() ) );
+                    qWarning( "QPropertyAnimation::updateState() Trying to start an animation, no start value available (%s, %s, %s)",
+                              csPrintable( d->propertyName ), csPrintable( d->target.lock()->metaObject()->className() ),
+                              csPrintable( d->target.lock()->objectName() ) );
                 }
 
                 if ( ! endValue().isValid() && ( d->direction == Forward || ! d->m_defaultValue.isValid() ) )
                 {
 
-                    qWarning( "QPropertyAnimation::updateState (%s, %s, %s): Trying to start an animation, no end value available",
-                              lscsPrintable( d->propertyName ), lscsPrintable( d->target.data()->metaObject()->className() ),
-                              lscsPrintable( d->target.data()->objectName() ) );
+                    qWarning( "QPropertyAnimation::updateState() Trying to start an animation, no end value available (%s, %s, %s)",
+                              csPrintable( d->propertyName ), csPrintable( d->target.lock()->metaObject()->className() ),
+                              csPrintable( d->target.lock()->objectName() ) );
                 }
             }
 
@@ -238,4 +241,4 @@ void QPropertyAnimation::updateState( QAbstractAnimation::State newState, QAbstr
     }
 }
 
-#endif //LSCS_NO_ANIMATION
+#endif //QT_NO_ANIMATION

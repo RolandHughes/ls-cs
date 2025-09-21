@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,7 +23,6 @@
 
 #ifndef QLIST_H
 #define QLIST_H
-
 #include <qassert.h>
 #include <qcontainerfwd.h>
 #include <qglobal.h>
@@ -79,7 +78,7 @@ public:
         :  m_data( args )
     { }
 
-    template <class Input_Iterator> QList( Input_Iterator first, Input_Iterator last )
+    template<class Input_Iterator> QList( Input_Iterator first, Input_Iterator last )
         : m_data( first, last )
     { }
 
@@ -327,7 +326,6 @@ public:
     [[deprecated]] void reserve( size_type size )
     {
         // this method should do nothing, undocumented
-
         ( void ) size;
     }
 
@@ -572,10 +570,13 @@ inline void QList<T>::insert( size_type i, const T &value )
     m_data.insert( m_data.begin() + i, value );
 }
 
-template <typename T>
+template<typename T>
 QList<T> QList<T>::mid( size_type pos, size_type length ) const
 {
-    Q_ASSERT_X( pos < size(), "QList<T>::mid", "pos out of range" );
+    if ( pos >= size() )
+    {
+        return QList<T>();
+    }
 
     if ( length < 0 || pos + length > size() )
     {
@@ -691,7 +692,7 @@ inline T QList<T>::takeLast()
     return retval;
 }
 
-template <typename T>
+template<typename T>
 T QList<T>::value( size_type i ) const
 {
     if ( i < 0 || i >= size() )
@@ -702,7 +703,7 @@ T QList<T>::value( size_type i ) const
     return m_data[i];
 }
 
-template <typename T>
+template<typename T>
 T QList<T>::value( size_type i, const T &defaultValue ) const
 {
     return ( ( i < 0 || i >= size() ) ? defaultValue : m_data[i] );
@@ -752,7 +753,6 @@ template <class T>
 class QListIterator
 {
     using const_iterator = typename QList<T>::const_iterator;
-
     QList<T> c;
     const_iterator i;
 
@@ -760,6 +760,8 @@ public:
     QListIterator( const QList<T> &list )
         : c( list ), i( c.constBegin() )
     { }
+
+    ~QListIterator() = default;
 
     QListIterator &operator=( const QList<T> &list )
     {
@@ -772,37 +774,30 @@ public:
     {
         i = c.constBegin();
     }
-
     void toBack()
     {
         i = c.constEnd();
     }
-
     bool hasNext() const
     {
         return i != c.constEnd();
     }
-
     const T &next()
     {
         return *i++;
     }
-
     const T &peekNext() const
     {
         return *i;
     }
-
     bool hasPrevious() const
     {
         return i != c.constBegin();
     }
-
     const T &previous()
     {
         return *--i;
     }
-
     const T &peekPrevious() const
     {
         const_iterator p = i;
@@ -844,7 +839,6 @@ class QMutableListIterator
 
     QList<T> *c;
     iterator i, n;
-
     bool item_exists() const
     {
         return const_iterator( n ) != c->constEnd();
@@ -858,8 +852,7 @@ public:
         n = c->end();
     }
 
-    ~QMutableListIterator()
-    {  }
+    ~QMutableListIterator() = default;
 
     QMutableListIterator &operator=( QList<T> &list )
     {
@@ -875,40 +868,33 @@ public:
         i = c->begin();
         n = c->end();
     }
-
     void toBack()
     {
         i = c->end();
         n = i;
     }
-
     bool hasNext() const
     {
         return c->constEnd() != const_iterator( i );
     }
-
     T &next()
     {
         n = i++;
         return *n;
     }
-
     T &peekNext() const
     {
         return *i;
     }
-
     bool hasPrevious() const
     {
         return c->constBegin() != const_iterator( i );
     }
-
     T &previous()
     {
         n = --i;
         return *n;
     }
-
     T &peekPrevious() const
     {
         iterator p = i;
@@ -931,19 +917,16 @@ public:
             *n = value;
         }
     }
-
     T &value()
     {
         Q_ASSERT( item_exists() );
         return *n;
     }
-
     const T &value() const
     {
         Q_ASSERT( item_exists() );
         return *n;
     }
-
     void insert( const T &value )
     {
         n = i = c->insert( i, value );

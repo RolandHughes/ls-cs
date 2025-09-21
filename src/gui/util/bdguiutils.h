@@ -16,4 +16,4 @@
 
 #include <qstring.h>
 
-bool shouldBeGrayScale( QString color);
+bool shouldBeGrayScale( QString color );

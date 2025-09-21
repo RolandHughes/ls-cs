@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,10 +23,12 @@
 
 #include "qcallsite_p.h"
 
+QT_BEGIN_NAMESPACE
+
 using namespace QPatternist;
 
-CallSite::CallSite( const QXmlName &name )
-    : m_isRecursive( false ), m_name( name )
+CallSite::CallSite( const QXmlName &name ) : m_isRecursive( false )
+    , m_name( name )
 {
 }
 
@@ -44,3 +46,5 @@ void CallSite::setIsRecursive( const bool value )
 {
     m_isRecursive = value;
 }
+
+QT_END_NAMESPACE

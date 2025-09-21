@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -240,8 +240,8 @@ int QEventDispatcherUNIXPrivate::doSelect( QEventLoop::ProcessEventsFlags flags,
     return ( nevents + q->activateSocketNotifiers() );
 }
 
-// Internal functions for manipulating timer data structures.  The
-// timerBitVec array is used for keeping track of timer identifiers.
+// methods for changing timer data structures
+// timerBitVec array is used for keeping track of timer identifiers
 
 int QEventDispatcherUNIXPrivate::initThreadWakeUp()
 {
@@ -513,12 +513,12 @@ void QEventDispatcherUNIX::unregisterSocketNotifier( QSocketNotifier *notifier )
     {
         d->sn_highest = -1;
 
-        for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
         {
-            if ( !d->sn_vec[i].list.isEmpty() )
+            if ( ! d->sn_vec[j].list.isEmpty() )
             {
                 // list is fd-sorted
-                d->sn_highest = qMax( d->sn_highest, d->sn_vec[i].list[0]->fd );
+                d->sn_highest = qMax( d->sn_highest, d->sn_vec[j].list[0]->fd );
             }
         }
     }

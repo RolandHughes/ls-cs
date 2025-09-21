@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,14 +24,14 @@
 #ifndef QUserFunction_P_H
 #define QUserFunction_P_H
 
-template<typename T>
-class QList;
+template<typename T> class QList;
 
 #include <QSharedData>
-
 #include <qexpression_p.h>
 #include <qfunctionsignature_p.h>
 #include <qvariabledeclaration_p.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -86,5 +86,7 @@ void UserFunction::setBody( const Expression::Ptr &newBody )
 }
 
 }
+
+QT_END_NAMESPACE
 
 #endif

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -73,6 +73,7 @@ public:
     ResultReporter( ThreadEngine<T> *_threadEngine )
         : threadEngine( _threadEngine )
     {
+
     }
 
     void reserveSpace( int resultCount )
@@ -171,7 +172,6 @@ public:
         ( void ) result;
         return false;
     }
-
     virtual bool runIterations( Iterator _begin, int beginIndex, int endIndex, T *results )
     {
         ( void ) _begin;
@@ -334,6 +334,7 @@ public:
 
         return ThreadFinished;
     }
+
 
 public:
     const Iterator begin;

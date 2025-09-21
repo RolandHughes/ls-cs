@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,8 +21,9 @@
 *
 ***********************************************************************/
 
-#include <qbytearray.h>
 #include <qglobal.h>
+
+#include <qbytearray.h>
 #include <qlog.h>
 #include <qscopedarraypointer.h>
 #include <qstring.h>
@@ -38,7 +39,6 @@
 #if defined(Q_OS_DARWIN)
 #include <qcore_mac_p.h>
 #include <qnamespace.h>
-
 #include <CoreServices/CoreServices.h>
 #endif
 
@@ -48,12 +48,13 @@
 #endif
 
 #if defined(Q_OS_WIN)
-#include <lscs_windows.h>
+#include <qt_windows.h>
 
 // from <ddk/ntddk.h>
 extern "C" __declspec( dllimport ) NTSTATUS NTAPI RtlGetVersion( IN OUT PRTL_OSVERSIONINFOW lpVersionInformation );
 
 #endif
+
 
 const char *ls_csVersion()
 {
@@ -66,7 +67,7 @@ const char *ls_csVersion()
 QSysInfo::MacVersion QSysInfo::macVersion()
 {
     // kernel/qcore_mac_objc.mm
-    const QAppleOperatingSystemVersion osVersion = lscs_apple_os_version();
+    const QAppleOperatingSystemVersion osVersion = qt_apple_os_version();
 
     QSysInfo::MacVersion retval;
 
@@ -110,7 +111,7 @@ QSysInfo::MacVersion QSysInfo::macVersion()
     {
         retval = MacVersion::MV_12;
 
-    }
+}
     else if ( osVersion.major == 13 )
     {
         retval = MacVersion::MV_13;
@@ -121,6 +122,12 @@ QSysInfo::MacVersion QSysInfo::macVersion()
         retval = MacVersion::MV_14;
 
     }
+    else if ( osVersion.major == 15 )
+    {
+        retval = MacVersion::MV_15;
+
+    }
+
     else
     {
         retval = QSysInfo::MV_Unknown;
@@ -133,11 +140,11 @@ QSysInfo::MacVersion QSysInfo::macVersion()
 const QSysInfo::MacVersion QSysInfo::MacintoshVersion = QSysInfo::macVersion();
 
 QString QSysInfo::macEdition( MacVersion macVersion )
-{
+    {
     QString retval = "Unknown Version";
 
     switch ( macVersion )
-    {
+{
         case QSysInfo::MacVersion::MV_10_11:
             retval = "El Capitan";
             break;
@@ -174,12 +181,17 @@ QString QSysInfo::macEdition( MacVersion macVersion )
             retval = "Sonoma";
             break;
 
+        case QSysInfo::MacVersion::MV_15:
+            retval = "Sequoia";
+            break;
+
         default:
             break;
     }
 
     return retval;
 }
+
 
 
 // ** Windows
@@ -189,6 +201,7 @@ static OSVERSIONINFO winOsVersion()
 {
     OSVERSIONINFO result = { };
     result.dwOSVersionInfoSize = sizeof( OSVERSIONINFO );
+
 
     RtlGetVersion( &result );
 
@@ -209,12 +222,14 @@ QSysInfo::WinVersion QSysInfo::windowsVersion()
 
     switch ( osVersion.dwPlatformId )
     {
+        // Windows 3.1 support dropped.
 
         case VER_PLATFORM_WIN32_WINDOWS:
+            // Windows Me (minor 90) is the same as Windows 98
+
             if ( osVersion.dwMinorVersion == 90 )
             {
                 winVersion = QSysInfo::WV_Me;
-
             }
             else if ( osVersion.dwMinorVersion == 10 )
             {
@@ -275,7 +290,6 @@ QSysInfo::WinVersion QSysInfo::windowsVersion()
             else if ( osVersion.dwMajorVersion == 10 && osVersion.dwMinorVersion == 0 )
             {
                 winVersion = QSysInfo::WV_WINDOWS10;
-
             }
             else if ( osVersion.dwMajorVersion == 11 && osVersion.dwMinorVersion == 0 )
             {

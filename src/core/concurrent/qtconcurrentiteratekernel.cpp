@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,7 +22,6 @@
 ***********************************************************************/
 
 #include <qtconcurrentiteratekernel.h>
-
 #include <qglobal.h>
 
 #if defined(Q_OS_DARWIN)
@@ -35,7 +34,7 @@
 #include <unistd.h>
 
 #elif defined(Q_OS_WIN)
-#include <lscs_windows.h>
+#include <qt_windows.h>
 
 #endif
 
@@ -50,6 +49,7 @@ static qint64 getticks()
 }
 
 #elif defined(Q_OS_UNIX)
+
 
 static qint64 getticks()
 {
@@ -98,6 +98,7 @@ static qint64 getticks()
     gettimeofday( &tv, 0 );
     return ( tv.tv_sec * 1000000 ) + tv.tv_usec;
 
+
 #endif
 }
 
@@ -125,6 +126,9 @@ static double elapsed( qint64 after, qint64 before )
 namespace QtConcurrent
 {
 
+/*! \internal
+
+*/
 BlockSizeManager::BlockSizeManager( int iterationCount )
     : maxBlockSize( iterationCount / ( QThreadPool::globalInstance()->maxThreadCount() * 2 ) ),
       beforeUser( 0 ), afterUser( 0 ), controlPartElapsed( MedianSize ),

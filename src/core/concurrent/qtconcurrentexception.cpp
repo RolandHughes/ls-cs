@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -48,22 +48,22 @@ Exception *UnhandledException::clone() const
     return new UnhandledException( *this );
 }
 
-namespace lscs_internal
+namespace cs_internal
 {
 
 class Base
 {
 public:
     Base( Exception *exception )
-        : exception( exception ), refCount( 1 ), hasThrown( false )
+        : m_exception( exception ), refCount( 1 ), hasThrown( false )
     { }
 
     ~Base()
     {
-        delete exception;
+        delete m_exception;
     }
 
-    Exception *exception;
+    Exception *m_exception;
     QAtomicInt refCount;
     bool hasThrown;
 };
@@ -105,7 +105,7 @@ ExceptionHolder::~ExceptionHolder()
 
 Exception *ExceptionHolder::exception() const
 {
-    return base->exception;
+    return base->m_exception;
 }
 
 void ExceptionStore::setException( const Exception &e )
@@ -141,6 +141,7 @@ bool ExceptionStore::hasThrown() const
 }
 
 }   // end namespace
+
 
 } // namespace QtConcurrent
 

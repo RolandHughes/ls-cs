@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -33,8 +33,8 @@
 class QBitArray;
 class QByteArray;
 
-Q_CORE_EXPORT uint lscs_getHashSeed();
-Q_CORE_EXPORT uint lscs_stable_hash( const QString &key );
+Q_CORE_EXPORT uint cs_getHashSeed();
+Q_CORE_EXPORT uint cs_stable_hash( const QString &key );
 
 Q_CORE_EXPORT uint qHashBits( const void *p, size_t len, uint seed );
 
@@ -178,7 +178,7 @@ uint qHash( const QPair<T1, T2> &key )
     return ( ( h1 << 16 ) | ( h1 >> 16 ) ) ^ h2;
 }
 
-template <typename T>
+template<typename T>
 uint qHash( const T &t, uint seed )
 {
     return qHash( t ) ^ seed;
@@ -191,7 +191,7 @@ class qHashFunc
 public:
     uint operator()( const Key &key ) const
     {
-        return qHash( key, lscs_getHashSeed() );
+        return qHash( key, cs_getHashSeed() );
     }
 };
 

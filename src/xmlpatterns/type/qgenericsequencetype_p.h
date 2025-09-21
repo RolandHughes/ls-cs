@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,9 +27,10 @@
 #include <qcommonsequencetypes_p.h>
 #include <qsequencetype_p.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class GenericSequenceType : public SequenceType
 {
 public:
@@ -71,7 +72,8 @@ static inline SequenceType::Ptr makeGenericSequenceType( const ItemType::Ptr &it
         return SequenceType::Ptr( new GenericSequenceType( itemType, cardinality ) );
     }
 }
-
 }
+
+QT_END_NAMESPACE
 
 #endif

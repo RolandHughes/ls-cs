@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -316,7 +316,7 @@ public:
         : m_data( other )
     { }
 
-    template <typename Input_Iterator> QMap( Input_Iterator first, Input_Iterator last, const C &compare = C() )
+    template<typename Input_Iterator> QMap( Input_Iterator first, Input_Iterator last, const C &compare = C() )
         : m_data( first, last, compare )
     { }
 
@@ -361,6 +361,11 @@ public:
     QPair<const_iterator, const_iterator> equal_range( const Key &key ) const
     {
         return m_data.equal_range( key );
+    }
+
+    size_type erase( const Key &key )
+    {
+        return m_data.erase( key );
     }
 
     iterator erase( const_iterator iter )
@@ -409,6 +414,11 @@ public:
         return m_data.insert_or_assign( key, value ).first;
     }
 
+    iterator insert( const Key &key, Val &&value )
+    {
+        return m_data.insert_or_assign( key, std::move( value ) ).first;
+    }
+
     iterator insert( const_iterator hint, const Key &key, const Val &value )
     {
         auto oldSize = m_data.size();
@@ -430,7 +440,7 @@ public:
 
     Val &last()
     {
-        return ( end() - 1 ).value();
+        return ( end()- 1 ).value();
     }
 
     const Val &last() const
@@ -776,9 +786,7 @@ public:
     QMapIterator( const QMap<Key, Val, C> &map )
         : c( &map ), i( c->constBegin() ), n( c->constEnd() ) {}
 
-    ~QMapIterator()
-    {
-    }
+    ~QMapIterator() = default;
 
     QMapIterator &operator=( const QMap<Key, Val, C> &map )
     {
@@ -895,9 +903,7 @@ public:
     QMutableMapIterator( QMap<Key, Val, C> &map )
         : c( &map ), i( c->begin() ), n( c->end() ) {}
 
-    ~QMutableMapIterator()
-    {
-    }
+    ~QMutableMapIterator() = default;
 
     QMutableMapIterator &operator=( QMap<Key, Val, C> &map )
     {

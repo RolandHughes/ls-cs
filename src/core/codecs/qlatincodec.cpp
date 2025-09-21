@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,7 +24,7 @@
 #include <qlatincodec_p.h>
 #include <qlist.h>
 
-#ifndef LSCS_NO_TEXTCODEC
+#ifndef QT_NO_TEXTCODEC
 
 QLatin1Codec::~QLatin1Codec()
 {
@@ -300,4 +300,4 @@ int QLatin15Codec::mibEnum() const
     return 111;
 }
 
-#endif // LSCS_NO_TEXTCODEC
+#endif // QT_NO_TEXTCODEC

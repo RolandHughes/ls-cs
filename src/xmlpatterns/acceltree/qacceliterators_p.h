@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,12 +24,13 @@
 #ifndef QAccelIterators_P_H
 #define QAccelIterators_P_H
 
-#include <qacceltree_p.h>
-#include <qitem_p.h>
+#include "qacceltree_p.h"
+#include "qitem_p.h"
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
-
 class AccelIterator : public QXmlNodeModelIndex::Iterator
 {
 public:
@@ -158,7 +159,7 @@ public:
                     "When being following-sibling, the context node cannot be the last node in the document." );
     }
 
-    QXmlNodeModelIndex next() override
+    virtual QXmlNodeModelIndex next()  override
     {
         if ( m_currentPre == -1 )
         {
@@ -209,7 +210,7 @@ public:
         }
     }
 
-    QXmlNodeModelIndex::Iterator::Ptr copy() const override
+    virtual QXmlNodeModelIndex::Iterator::Ptr copy() const  override
     {
         return QXmlNodeModelIndex::Iterator::Ptr( new SiblingIterator<IsFollowing>( m_document, m_preNumber ) );
     }
@@ -350,7 +351,8 @@ public:
     QXmlNodeModelIndex next() override;
     QXmlNodeModelIndex::Iterator::Ptr copy() const override;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

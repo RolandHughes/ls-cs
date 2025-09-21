@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,14 +24,14 @@
 #ifndef QXsdAttributeUse_P_H
 #define QXsdAttributeUse_P_H
 
-#include <qlist.h>
-
 #include <qxsdattribute_p.h>
 #include <qxsdattributeterm_p.h>
+#include <QList>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
-
 class XsdAttributeUse : public XsdAttributeTerm
 {
 public:
@@ -169,7 +169,8 @@ private:
     XsdAttribute::Ptr    m_attribute;
     ValueConstraint::Ptr m_valueConstraint;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

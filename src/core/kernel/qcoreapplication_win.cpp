@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,6 +25,7 @@
 
 #include <qfileinfo.h>
 #include <qmutex.h>
+#include <qstring16.h>
 #include <qstringlist.h>
 #include <qstring16.h>
 #include <lscs_windows.h>
@@ -598,7 +599,7 @@ QString flagCheck( uint actual, ... )
         {
             if ( count++ )
             {
-                result += QLatin1String( " | " );
+                result += " | ";
             }
 
             result += QString::fromLatin1( v.str );
@@ -942,7 +943,7 @@ QString decodeMSG( const MSG &msg )
 #ifdef WM_INPUTLANGCHANGE
 
         case WM_INPUTLANGCHANGE:
-            parameters = QLatin1String( "Keyboard layout changed" );
+            parameters = "Keyboard layout changed";
             break;
 #endif
 

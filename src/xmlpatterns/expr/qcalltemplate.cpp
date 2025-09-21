@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,6 +24,8 @@
 #include "qcommonsequencetypes_p.h"
 
 #include "qcalltemplate_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -126,7 +128,7 @@ ExpressionVisitorResult::Ptr CallTemplate::accept( const ExpressionVisitor::Ptr 
 
 bool CallTemplate::configureRecursion( const CallTargetDescription::Ptr &sign )
 {
-    ( void ) sign;
+    Q_UNUSED( sign );
     return false;
 }
 
@@ -139,3 +141,5 @@ CallTargetDescription::Ptr CallTemplate::callTargetDescription() const
 {
     return CallTargetDescription::Ptr();
 }
+
+QT_END_NAMESPACE

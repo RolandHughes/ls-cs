@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -314,7 +314,7 @@ public:
     explicit QMultiMap( const std::multimap<Key, Val, C> &other )
         : m_data( other ) {}
 
-    template <typename Input_Iterator> QMultiMap( Input_Iterator first, Input_Iterator last, const C &compare = C() )
+    template<typename Input_Iterator> QMultiMap( Input_Iterator first, Input_Iterator last, const C &compare = C() )
         : m_data( first, last, compare )
     { }
 
@@ -363,6 +363,11 @@ public:
     QPair<const_iterator, const_iterator> equal_range( const Key &key ) const
     {
         return m_data.equal_range( key );
+    }
+
+    size_type erase( const Key &key )
+    {
+        return m_data.erase( key );
     }
 
     iterator erase( const_iterator iter )
@@ -447,6 +452,11 @@ public:
         return insertMulti( key, value );
     }
 
+    iterator insert( const Key &key, Val &&value )
+    {
+        return insertMulti( key, std::move( value ) );
+    }
+
     iterator insert( const_iterator hint, const Key &key, const Val &value )
     {
         auto iter = m_data.emplace_hint( hint.m_iter, key, value );
@@ -466,6 +476,12 @@ public:
         return iter;
     }
 
+    iterator insertMulti( const Key &key, Val &&value )
+    {
+        // emplace returns an iterator
+        return m_data.emplace( key, std::move( value ) );
+    }
+
     const Key key( const Val &value, const Key &defaultKey = Key() ) const;
 
     QList<Key> keys() const;
@@ -473,7 +489,7 @@ public:
 
     Val &last()
     {
-        return ( end() - 1 ).value();
+        return ( end()- 1 ).value();
     }
 
     const Val &last() const
@@ -892,6 +908,7 @@ Val &QMultiMap<Key, Val, C>::operator[]( const Key &key )
     return iter->second;
 }
 
+
 // to from
 
 template <class Key, class Val, class C>
@@ -909,6 +926,7 @@ std::multimap<Key, Val, C> QMultiMap<Key, Val, C>::toStdMultiMap() const
     return map;
 }
 
+
 // java style iterators
 
 template <class Key, class Val, class C = qMapCompare<Key>>
@@ -923,9 +941,7 @@ public:
     {
     }
 
-    ~QMultiMapIterator()
-    {
-    }
+    ~QMultiMapIterator() = default;
 
     QMultiMapIterator &operator=( const QMultiMap<Key, Val, C> &map )
     {
@@ -1044,9 +1060,7 @@ public:
     {
     }
 
-    ~QMutableMultiMapIterator()
-    {
-    }
+    ~QMutableMultiMapIterator() = default;
 
     QMutableMultiMapIterator &operator=( QMultiMap<Key, Val, C> &map )
     {

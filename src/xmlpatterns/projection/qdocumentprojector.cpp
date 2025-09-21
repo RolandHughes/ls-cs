@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,17 +25,20 @@
 
 using namespace QPatternist;
 
-DocumentProjector::DocumentProjector( const ProjectedExpression::Vector &paths, QAbstractXmlReceiver *const receiver )
+DocumentProjector::DocumentProjector( const ProjectedExpression::Vector &paths,
+                                      QAbstractXmlReceiver *const receiver )
     : m_paths( paths ), m_pathCount( paths.count() ), m_action( ProjectedExpression::Move ),
       m_nodesInProcess( 0 ), m_receiver( receiver )
 {
     Q_ASSERT_X( paths.count() > 0, Q_FUNC_INFO,
-                "Using DocumentProjector with no paths is undefined behavior." );
+                "Using DocumentProjector with no paths is an overhead and has also undefined behavior." );
     Q_ASSERT( m_receiver );
 }
 
-void DocumentProjector::startElement( const QXmlName &name )
+void DocumentProjector::startElement( const QXmlName name )
 {
+    ( void ) name;
+
     switch ( m_action )
     {
         case ProjectedExpression::KeepSubtree:
@@ -54,8 +57,8 @@ void DocumentProjector::startElement( const QXmlName &name )
         default:
         {
             Q_ASSERT_X( m_action == ProjectedExpression::Move, Q_FUNC_INFO,
-                        "Not to supposed to receive Keep because "
-                        "endElement() should always end the Keep state." );
+                        "We're not supposed to receive Keep here, because "
+                        "endElement() should always end that state." );
 
             for ( int i = 0; i < m_pathCount; ++i )
             {
@@ -71,7 +74,8 @@ void DocumentProjector::startElement( const QXmlName &name )
 
                     case ProjectedExpression::KeepSubtree:
                     {
-                        // Ok, at least one path wanted this node. Pass it on, * and exit.
+                        /* Ok, at least one path wanted this node. Pass it on,
+                         * and exit. */
                         m_receiver->startElement( name );
                         ++m_nodesInProcess;
                         return;
@@ -148,41 +152,43 @@ void DocumentProjector::endElement()
     }
 }
 
-void DocumentProjector::attribute( const QXmlName &name, QStringView value )
+void DocumentProjector::attribute( const QXmlName name,
+                                   const QString &value )
 {
-    ( void ) name;
-    ( void ) value;
+    Q_UNUSED( name );
+    Q_UNUSED( value );
 }
 
-void DocumentProjector::namespaceBinding( const QXmlName &nb )
+void DocumentProjector::namespaceBinding( const QXmlName nb )
 {
-    ( void ) nb;
+    Q_UNUSED( nb );
 }
 
 void DocumentProjector::comment( const QString &value )
 {
     Q_ASSERT_X( ! value.contains( QString( "--" ) ), Q_FUNC_INFO,
                 "Invalid input, caller is responsible to supply valid input." );
-    ( void ) value;
+    Q_UNUSED( value );
 }
 
-void DocumentProjector::characters( QStringView value )
+void DocumentProjector::characters( const QString &value )
 {
-    ( void ) value;
+    Q_UNUSED( value );
 }
 
-void DocumentProjector::processingInstruction( const QXmlName &name, const QString &value )
+void DocumentProjector::processingInstruction( const QXmlName name,
+        const QString &value )
 {
-    Q_ASSERT_X( ! value.contains( QString( "?>" ) ), Q_FUNC_INFO,
+    Q_ASSERT_X( ! value.contains( QLatin1String( "?>" ) ), Q_FUNC_INFO,
                 "Invalid input, caller is responsible to supply valid input." );
 
-    ( void ) name;
-    ( void ) value;
+    Q_UNUSED( name );
+    Q_UNUSED( value );
 }
 
 void DocumentProjector::item( const Item &outputItem )
 {
-    ( void ) outputItem;
+    Q_UNUSED( outputItem );
 }
 
 void DocumentProjector::startDocument()
@@ -192,3 +198,4 @@ void DocumentProjector::startDocument()
 void DocumentProjector::endDocument()
 {
 }
+

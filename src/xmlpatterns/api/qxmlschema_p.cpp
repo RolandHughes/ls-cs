@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -131,7 +131,7 @@ void QXmlSchemaPrivate::load( QIODevice *source, const QUrl &documentUri, const 
     }
     catch ( QPatternist::Exception exception )
     {
-        ( void ) exception;
+        Q_UNUSED( exception );
         m_schemaIsValid = false;
     }
 }

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -50,12 +50,6 @@ int minPositive( int value1, int value2 )
     }
 
     return retval;
-}
-
-static inline bool isHex( char c )
-{
-    c |= 0x20;
-    return ( c >= '0' && c <= '9' ) || ( c >= 'a' && c <= 'f' );
 }
 
 static inline QString ftpScheme()
@@ -518,7 +512,7 @@ inline void QUrlPrivate::appendUserInfo( QString &appendTo, QUrl::FormattingOpti
     }
     else
     {
-        appendTo += QLatin1Char( ':' );
+        appendTo += QChar( ':' );
 
         if ( ! lscs_urlRecode( appendTo, password.constBegin(), password.constEnd(), options, passwordActions ) )
         {
@@ -565,7 +559,7 @@ inline void QUrlPrivate::appendPath( QString &appendTo, QUrl::FormattingOptions 
     // check if we need to remove trailing slashes
     if ( options & QUrl::StripTrailingSlash )
     {
-        while ( thePath.length() > 1 && thePath.endsWith( QLatin1Char( '/' ) ) )
+        while ( thePath.length() > 1 && thePath.endsWith( QChar( '/' ) ) )
         {
             thePath.chop( 1 );
         }
@@ -716,7 +710,7 @@ inline void QUrlPrivate::setAuthority( const QString &auth, int from, int end, Q
             if ( auth.at( from ).unicode() == '[' )
             {
                 // check if colonIndex isn't inside the "[...]" part
-                int closingBracket = auth.indexOf( QLatin1Char( ']' ), from );
+                int closingBracket = auth.indexOf( QChar( ']' ), from );
 
                 if ( uint( closingBracket ) > uint( colonIndex ) )
                 {
@@ -1332,7 +1326,7 @@ inline QString QUrlPrivate::mergePaths( const QString &relativePath ) const
 
     if ( !host.isEmpty() && path.isEmpty() )
     {
-        return QLatin1Char( '/' ) + relativePath;
+        return QChar( '/' ) + relativePath;
     }
 
     // Return a string consisting of the reference's path component
@@ -1576,8 +1570,8 @@ bool QUrlPrivate::validateComponent( QUrlPrivate::Section section, const QString
 
         bool error = false;
 
-        if ( ( uc == '%' && ( iter + 1 != iter_end || iter + 2 != iter_end || ! isHex( iter[1].unicode() ) ||
-                              ! isHex( iter[2].unicode() ) ) ) || uc <= 0x20 || strchr( forbidden, uc ) )
+        if ( ( uc == '%' && ( iter + 1 != iter_end || iter + 2 != iter_end || ! iter[1].isHex() || ! iter[2].isHex() ) ) ||
+                uc <= 0x20 || strchr( forbidden, uc ) )
         {
             // found an error
             error = true;
@@ -1918,13 +1912,13 @@ void QUrl::setHost( const QString &host, ParsingMode mode )
         // setHost failed, it might be IPv6 or IPvFuture in need of bracketing
         Q_ASSERT( d->m_error );
 
-        data.prepend( QLatin1Char( '[' ) );
-        data.append( QLatin1Char( ']' ) );
+        data.prepend( QChar( '[' ) );
+        data.append( QChar( ']' ) );
 
         if ( !d->setHost( data, 0, data.length(), mode ) )
         {
             // failed again
-            if ( data.contains( QLatin1Char( ':' ) ) )
+            if ( data.contains( QChar( ':' ) ) )
             {
                 // source data contains ':', so it's an IPv6 error
                 d->m_error->code = QUrlPrivate::InvalidIPv6AddressError;
@@ -2950,7 +2944,7 @@ QString QUrl::errorString() const
     }
 
     QString msg = errorMessage( errorCode, errorSource, errorPosition );
-    msg += QLatin1String( "; source was \"" );
+    msg += "; source was \"";
     msg += errorSource;
     msg += "\";";
 
@@ -2996,7 +2990,7 @@ QList<QUrl> QUrl::fromStringList( const QStringList &urls, ParsingMode mode )
     return lst;
 }
 
-uint qHash( const QUrl &url, uint seed )
+uint QUrl::hash( const QUrl &url, uint seed )
 {
     if ( ! url.d )
     {
@@ -3011,6 +3005,11 @@ uint qHash( const QUrl &url, uint seed )
            qHash( url.d->path ) ^
            qHash( url.d->query ) ^
            qHash( url.d->fragment );
+}
+
+uint qHash( const QUrl &url, uint seed )
+{
+    return QUrl::hash( url, seed );
 }
 
 static QUrl adjustFtpPath( QUrl url )
@@ -3105,7 +3104,7 @@ QUrl QUrl::fromUserInput( const QString &userInput )
     // Else, try the prepended one and adjust the scheme from the host name
     if ( urlPrepended.isValid() && ( !urlPrepended.host().isEmpty() || !urlPrepended.path().isEmpty() ) )
     {
-        int dotIndex = trimmedString.indexOf( QLatin1Char( '.' ) );
+        int dotIndex = trimmedString.indexOf( QChar( '.' ) );
         const QString hostscheme = trimmedString.left( dotIndex ).toLower();
 
         if ( hostscheme == ftpScheme() )

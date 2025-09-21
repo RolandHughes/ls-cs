@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,8 +21,8 @@
 *
 ***********************************************************************/
 
-#include <qstringlist.h>
-#include <qtimezone.h>
+#include <QStringList>
+#include <QTimeZone>
 
 #include "qbuiltintypes_p.h"
 #include "qitem_p.h"
@@ -280,18 +280,16 @@ void AbstractDateTime::setUtcOffset( QDateTime &result,
 {
     if ( zoResult == UTC )
     {
-        result.setTimeZone( QTimeZone::utc() );
-
+        result.setTimeSpec( Qt::UTC );
     }
     else if ( zoResult == LocalTime )
     {
-        result.setTimeZone( QTimeZone::systemTimeZone() );
-
+        result.setTimeSpec( Qt::LocalTime );
     }
     else
     {
         Q_ASSERT( zoResult == Offset );
-        result.setTimeZone( QTimeZone( zoOffset ) );
+        result.setOffsetFromUtc( zoOffset );
     }
 }
 
@@ -351,40 +349,64 @@ QString AbstractDateTime::timeToString() const
 
 QString AbstractDateTime::zoneOffsetToString() const
 {
-    if ( m_dateTime.timeZone() == QTimeZone::systemTimeZone() )
+    switch ( m_dateTime.timeSpec() )
     {
-        return QString();
+        case Qt::LocalTime:
+            return QString();
 
-    }
-    else if ( m_dateTime.timeZone() == QTimeZone::utc() )
-    {
-        return QString( "Z" );
+        case Qt::UTC:
+            return QLatin1String( "Z" );
 
-    }
-    else
-    {
-        const int zoneOffset = m_dateTime.offsetFromUtc();
-        Q_ASSERT( zoneOffset != 0 );
+        default:
+        {
+            Q_ASSERT( m_dateTime.timeSpec() == Qt::OffsetFromUTC );
 
-        const int posZoneOffset = qAbs( zoneOffset );
+            const int zoneOffset = m_dateTime.offsetFromUtc();
+            Q_ASSERT( zoneOffset != 0 );
 
-        /* zoneOffset is in seconds. */
-        const int hours   = posZoneOffset / ( 60 * 60 );
-        const int minutes = ( posZoneOffset % ( 60 * 60 ) ) / 60;
+            const int posZoneOffset = qAbs( zoneOffset );
 
-        QString result;
-        result.append( zoneOffset < 0 ? QLatin1Char( '-' ) : '+' );
-        result.append( QString::number( hours ).rightJustified( 2, '0' ) );
-        result.append( QLatin1Char( ':' ) );
-        result.append( QString::number( minutes ).rightJustified( 2, '0' ) );
+            /* zoneOffset is in seconds. */
+            const int hours = posZoneOffset / ( 60 * 60 );
+            const int minutes = ( posZoneOffset % ( 60 * 60 ) ) / 60;
 
-        return result;
+            QString result;
+            result.append( zoneOffset < 0 ? QLatin1Char( '-' ) : '+' );
+            result.append( QString::number( hours ).rightJustified( 2, '0' ) );
+            result.append( QLatin1Char( ':' ) );
+            result.append( QString::number( minutes ).rightJustified( 2, '0' ) );
+
+            return result;
+        }
     }
 }
 
-void AbstractDateTime::copyTimeSpec( const QDateTime &from, QDateTime &to )
+void AbstractDateTime::copyTimeSpec( const QDateTime &from,
+                                     QDateTime &to )
 {
-    to.setTimeZone( from.timeZone() );
+    switch ( from.timeSpec() )
+    {
+        case Qt::UTC:
+        case Qt::LocalTime:
+        {
+            to.setTimeSpec( from.timeSpec() );
+            return;
+        }
+
+        case Qt::OffsetFromUTC:
+        {
+            to.setOffsetFromUtc( from.offsetFromUtc() );
+            Q_ASSERT( to.timeSpec() == Qt::OffsetFromUTC );
+
+            return;
+        }
+
+        case Qt::TimeZone:
+        {
+            to.setTimeZone( from.timeZone() );
+            return;
+        }
+    }
 }
 
 Item AbstractDateTime::fromValue( const QDateTime & ) const

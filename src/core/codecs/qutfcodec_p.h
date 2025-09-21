@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,7 +25,6 @@
 #define QUTFCODEC_P_H
 
 #include <qtextcodec.h>
-
 #include <qtextcodec_p.h>
 
 enum DataEndianness
@@ -53,7 +52,7 @@ struct QUtf32
     static QByteArray convertFromUnicode( QStringView str, QTextCodec::ConverterState *, DataEndianness = DetectEndianness );
 };
 
-#ifndef LSCS_NO_TEXTCODEC
+#ifndef QT_NO_TEXTCODEC
 
 class QUtf8Codec : public QTextCodec
 {
@@ -162,6 +161,7 @@ public:
     int mibEnum() const override;
 };
 
-#endif // LSCS_NO_TEXTCODEC
+
+#endif // QT_NO_TEXTCODEC
 
 #endif // QUTFCODEC_P_H

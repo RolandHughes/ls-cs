@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,7 +27,7 @@
 #include <qpropertyanimation.h>
 #include <qvariantanimation_p.h>
 
-#ifndef LSCS_NO_ANIMATION
+#ifndef QT_NO_ANIMATION
 
 class QPropertyAnimationPrivate : public QVariantAnimationPrivate
 {
@@ -54,6 +54,6 @@ public:
     QString propertyName;
 };
 
-#endif //LSCS_NO_ANIMATION
+#endif //QT_NO_ANIMATION
 
 #endif

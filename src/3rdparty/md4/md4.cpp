@@ -19,7 +19,7 @@
 
 #include <string.h>
 
-LSCS_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 /*
  * The basic MD4 functions.
@@ -272,4 +272,4 @@ static void md4_final( struct md4_context *ctx, unsigned char result[MD4_RESULTL
 #undef G
 #undef H
 
-LSCS_END_NAMESPACE
+QT_END_NAMESPACE

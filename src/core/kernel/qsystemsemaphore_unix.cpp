@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,6 +22,7 @@
 ***********************************************************************/
 
 #include <qsystemsemaphore.h>
+#include <qsystemsemaphore_p.h>
 
 #include <qcoreapplication.h>
 #include <qdebug.h>
@@ -40,8 +41,6 @@
 
 #include <fcntl.h>
 #include <errno.h>
-
-#include <qcore_unix_p.h>
 
 // OpenBSD 4.2 does not define EIDRM, refer to BUGS section
 // http://www.openbsd.org/cgi-bin/man.cgi?query=semop&manpath=OpenBSD+4.2

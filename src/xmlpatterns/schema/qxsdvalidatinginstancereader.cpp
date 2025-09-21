@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,11 +21,7 @@
 *
 ***********************************************************************/
 
-#include <qxsdvalidatinginstancereader_p.h>
-
-#include <qfile.h>
-#include <qxmlquery.h>
-#include <qxmlresultitems.h>
+#include "qxsdvalidatinginstancereader_p.h"
 
 #include "qabstractdatetime_p.h"
 #include "qacceltreeresourceloader_p.h"
@@ -49,7 +45,12 @@
 #include "qxsdstatemachine_p.h"
 #include "qxsdstatemachinebuilder_p.h"
 #include "qxsdtypechecker_p.h"
+
 #include "qxsdschemadebugger_p.h"
+
+#include <QFile>
+#include <QXmlQuery>
+#include <QXmlResultItems>
 
 using namespace QPatternist;
 

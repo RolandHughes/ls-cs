@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -20,14 +20,14 @@
 * https://www.gnu.org/licenses/
 *
 ***********************************************************************/
+#include <qsocketnotifier.h>
 
 #include <qcfsocketnotifier_p.h>
 #include <qcoreapplication.h>
-#include <qsocketnotifier.h>
 #include <qthread.h>
 
 void lscs_mac_socket_callback( CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef,
-                             const void *, void *info )
+                               const void *, void *info )
 {
     QCFSocketNotifier *cfSocketNotifier = static_cast<QCFSocketNotifier *>( info );
     int nativeSocket = CFSocketGetNative( s );

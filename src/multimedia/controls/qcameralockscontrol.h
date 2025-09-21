@@ -44,7 +44,7 @@ public:
     virtual void unlock( QCamera::LockTypes locks ) = 0;
 
     MULTI_LSCS_SIGNAL_1( Public, void lockStatusChanged( QCamera::LockType lockType, QCamera::LockStatus status,
-                       QCamera::LockChangeReason reason ) )
+                         QCamera::LockChangeReason reason ) )
     MULTI_LSCS_SIGNAL_2( lockStatusChanged, lockType, status, reason )
 
 protected:

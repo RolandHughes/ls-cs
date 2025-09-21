@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -1089,39 +1089,39 @@ QDebug operator<<( QDebug debug, QIODevice::OpenMode modes )
 
     if ( modes == QIODevice::NotOpen )
     {
-        modeList << QLatin1String( "NotOpen" );
+        modeList.append( tr("NotOpen" ) );
 
     }
     else
     {
         if ( modes & QIODevice::ReadOnly )
         {
-            modeList << QLatin1String( "ReadOnly" );
+            modeList.append( tr("ReadOnly") );
         }
 
         if ( modes & QIODevice::WriteOnly )
         {
-            modeList << QLatin1String( "WriteOnly" );
+            modeList.append( tr("WriteOnly" ) );
         }
 
         if ( modes & QIODevice::Append )
         {
-            modeList << QLatin1String( "Append" );
+            modeList.append( tr("Append" ) );
         }
 
         if ( modes & QIODevice::Truncate )
         {
-            modeList << QLatin1String( "Truncate" );
+            modeList.append( tr("Truncate" ) );
         }
 
         if ( modes & QIODevice::Text )
         {
-            modeList << QLatin1String( "Text" );
+            modeList.append( tr("Text" ) );
         }
 
         if ( modes & QIODevice::Unbuffered )
         {
-            modeList << QLatin1String( "Unbuffered" );
+            modeList.append( tr("Unbuffered") );
         }
     }
 

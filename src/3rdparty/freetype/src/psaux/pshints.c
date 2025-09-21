@@ -1240,19 +1240,19 @@
           ( FT_MulFix( a.x, b.y ) - FT_MulFix( a.y, b.x ) )
 
   /* round and divide by 32 */
-#define CF2_LSCS_SCALE( x )         \
+#define CF2_CS_SCALE( x )         \
           ( ( (x) + 0x10 ) >> 5 )
 
     FT_Vector  u, v, w;      /* scaled vectors */
     CF2_Fixed  denominator, s;
 
 
-    u.x = CF2_LSCS_SCALE( SUB_INT32( u2->x, u1->x ) );
-    u.y = CF2_LSCS_SCALE( SUB_INT32( u2->y, u1->y ) );
-    v.x = CF2_LSCS_SCALE( SUB_INT32( v2->x, v1->x ) );
-    v.y = CF2_LSCS_SCALE( SUB_INT32( v2->y, v1->y ) );
-    w.x = CF2_LSCS_SCALE( SUB_INT32( v1->x, u1->x ) );
-    w.y = CF2_LSCS_SCALE( SUB_INT32( v1->y, u1->y ) );
+    u.x = CF2_CS_SCALE( SUB_INT32( u2->x, u1->x ) );
+    u.y = CF2_CS_SCALE( SUB_INT32( u2->y, u1->y ) );
+    v.x = CF2_CS_SCALE( SUB_INT32( v2->x, v1->x ) );
+    v.y = CF2_CS_SCALE( SUB_INT32( v2->y, v1->y ) );
+    w.x = CF2_CS_SCALE( SUB_INT32( v1->x, u1->x ) );
+    w.y = CF2_CS_SCALE( SUB_INT32( v1->y, u1->y ) );
 
     denominator = cf2_perp( u, v );
 

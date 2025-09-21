@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -96,7 +96,7 @@ void QSystemSemaphorePrivate::cleanHandle()
     {
 
 #if defined(LSCS_SHOW_DEBUG_CORE)
-        qDebug() << QLatin1String( "QSystemSemaphorePrivate::CloseHandle: sem failed" );
+        qDebug("QSystemSemaphorePrivate::CloseHandle: sem failed" );
 #endif
 
     }
@@ -115,10 +115,10 @@ bool QSystemSemaphorePrivate::modifySemaphore( int count )
     {
         if ( ReleaseSemaphore( semaphore, count, nullptr ) == 0 )
         {
-            setErrorString( QLatin1String( "QSystemSemaphore::modifySemaphore" ) );
+            setErrorString( "QSystemSemaphore::modifySemaphore" );
 
 #if defined(LSCS_SHOW_DEBUG_CORE)
-            qDebug() << QLatin1String( "QSystemSemaphore::modifySemaphore ReleaseSemaphore failed" );
+            qDebug( "QSystemSemaphore::modifySemaphore ReleaseSemaphore failed" );
 #endif
             return false;
         }
@@ -128,10 +128,10 @@ bool QSystemSemaphorePrivate::modifySemaphore( int count )
     {
         if ( WAIT_OBJECT_0 != WaitForSingleObject( semaphore, INFINITE ) )
         {
-            setErrorString( QLatin1String( "QSystemSemaphore::modifySemaphore" ) );
+            setErrorString( "QSystemSemaphore::modifySemaphore" );
 
 #if defined(LSCS_SHOW_DEBUG_CORE)
-            qDebug() << QLatin1String( "QSystemSemaphore::modifySemaphore WaitForSingleObject failed" );
+            qDebug( "QSystemSemaphore::modifySemaphore WaitForSingleObject failed" );
 #endif
             return false;
         }

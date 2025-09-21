@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,6 +29,7 @@
 #include <qtconcurrentfunctionwrappers.h>
 #include <qtconcurrentmapkernel.h>
 #include <qtconcurrentreducekernel.h>
+
 
 namespace QtConcurrent
 {
@@ -165,7 +166,6 @@ typename QtPrivate::MapResultType<InputSequence, MapFunctor>::ResultType blockin
         MapFunctor map )
 {
     using OutputSequence = typename QtPrivate::MapResultType<InputSequence, MapFunctor>::ResultType;
-
     return blockingMappedReduced<OutputSequence> ( sequence, QtPrivate::createFunctionWrapper( map ),
             QtPrivate::PushBackWrapper(), QtConcurrent::OrderedReduce );
 }
@@ -183,7 +183,6 @@ typename QtPrivate::MapResultType<Iterator, MapFunctor>::ResultType blockingMapp
         MapFunctor map )
 {
     using OutputSequence = typename QtPrivate::MapResultType<Iterator, MapFunctor>::ResultType;
-
     return blockingMappedReduced<OutputSequence> ( begin, end, QtPrivate::createFunctionWrapper( map ),
             QtPrivate::PushBackWrapper(), QtConcurrent::OrderedReduce );
 }

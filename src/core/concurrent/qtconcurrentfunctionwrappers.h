@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -86,7 +86,6 @@ public:
     {
         return functionPointer( u, v );
     }
-
 private:
     FunctionPointerType functionPointer;
 };
@@ -202,6 +201,7 @@ struct PushBackWrapper
     {
         return c.push_back( u );
     }
+
 };
 
 template <typename Functor, bool foo = HasResultType<Functor>::Value>

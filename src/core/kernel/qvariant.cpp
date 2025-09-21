@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -133,7 +133,13 @@ static const QVariant::NamesAndTypes builtinTypes[] =
     { "signed char",            QVariant::SChar,                typeid( signed char * ) },
     { "unsigned char",          QVariant::UChar,                typeid( unsigned char * ) },
 
-#if defined(__cpp_char8_t)
+#if defined( _LIBCPP_VERSION )
+    // libC++ does not support this typeid(), only used in getTypeId() for other
+    // standard libraries, dummy value is sufficient
+
+    { "char8_t",                QVariant::Char8_t,              typeid( char * ) },
+
+#else
     { "char8_t",                QVariant::Char8_t,              typeid( char8_t * ) },
 #endif
 
@@ -4560,8 +4566,9 @@ uint QVariant::getTypeId( const std::type_index &index )
     for ( const auto &item : builtinTypes )
     {
 
-#if defined(Q_OS_DARWIN) || defined(Q_OS_FREEBSD)
-        // does not support comparing hash_code()
+#if defined( _LIBCPP_VERSION )
+        // libC++ does not support comparing hash_code(), happens mostly when using clang
+        // prior testing: defined(Q_OS_DARWIN) || defined(Q_OS_FREEBSD)
 
         if ( strcmp( item.meta_typeT.name(), index.name() ) == 0 )
         {

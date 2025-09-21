@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,7 +22,6 @@
 ***********************************************************************/
 
 #include <qvariant.h>
-#include <qtimezone.h>
 
 #include "qabstractdatetime_p.h"
 #include "qabstractfloat_p.h"
@@ -31,7 +30,6 @@
 #include "qboolean_p.h"
 #include "qbuiltintypes_p.h"
 #include "qdate_p.h"
-#include "qitem_p.h"
 #include "qschemadatetime_p.h"
 #include "qderivedinteger_p.h"
 #include "qdynamiccontext_p.h"
@@ -42,6 +40,8 @@
 #include "qqnamevalue_p.h"
 #include "qschematime_p.h"
 #include "qvalidationerror_p.h"
+
+#include "qitem_p.h"
 
 using namespace QPatternist;
 
@@ -169,7 +169,7 @@ Item AtomicValue::toXDM( const QVariant &value )
             return SchemaTime::fromDateTime( value.toDateTime() );
 
         case QVariant::Date:
-            return Date::fromDateTime( QDateTime( value.toDate(), QTime(), QTimeZone::utc() ) );
+            return Date::fromDateTime( QDateTime( value.toDate(), QTime(), Qt::UTC ) );
 
         case QVariant::DateTime:
             return DateTime::fromDateTime( value.toDateTime() );
@@ -189,7 +189,7 @@ Item AtomicValue::toXDM( const QVariant &value )
             }
             else
             {
-                Q_ASSERT_X( false, Q_FUNC_INFO, lscsPrintable( QString( "QVariants of type %1 are not supported in Patternist" )
+                Q_ASSERT_X( false, Q_FUNC_INFO, csPrintable( QString( "QVariants of type %1 are not supported in Patternist" )
                             .formatArg( QString( value.typeName() ) ) ) );
 
                 return AtomicValue::Ptr();

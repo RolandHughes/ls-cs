@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,13 +24,13 @@
 #ifndef QTokenRevealer_P_H
 #define QTokenRevealer_P_H
 
-#include <qset.h>
-
+#include <QSet>
 #include <qtokenizer_p.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
-
 class TokenRevealer : public Tokenizer
 {
 public:
@@ -47,8 +47,9 @@ private:
     QString                 m_result;
     QString                 m_indentationString;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif
 

@@ -10,7 +10,7 @@ list(APPEND CORE_PUBLIC_INCLUDES
    QWeakPointer
 )
 
-if (false)
+if (LsCsPointer_FOUND)
    # use system headers
 
 else()
@@ -21,8 +21,13 @@ else()
    )
 
    list(APPEND CORE_INCLUDES
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_pointer/lscs_unique_pointer.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_pointer/lscs_enable_shared.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_pointer/lscs_pointer_traits.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_pointer/lscs_shared_array_pointer.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_pointer/lscs_shared_pointer.h
       ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_pointer/lscs_unique_array_pointer.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_pointer/lscs_unique_pointer.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_pointer/lscs_weak_pointer.h
    )
 endif()
 
@@ -35,7 +40,6 @@ list(APPEND CORE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/pointer/qshareddata.h
    ${CMAKE_CURRENT_SOURCE_DIR}/pointer/qshareddatapointer.h
    ${CMAKE_CURRENT_SOURCE_DIR}/pointer/qsharedpointer.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/pointer/qsharedpointer_impl.h
    ${CMAKE_CURRENT_SOURCE_DIR}/pointer/quniquepointer.h
    ${CMAKE_CURRENT_SOURCE_DIR}/pointer/qweakpointer.h
 )

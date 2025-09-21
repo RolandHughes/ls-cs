@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -23,7 +23,10 @@
 
 #include "qcommonsequencetypes_p.h"
 #include "qtypechecker_p.h"
+
 #include "qtreatas_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -68,3 +71,4 @@ SequenceType::List TreatAs::expectedOperandTypes() const
     return result;
 }
 
+QT_END_NAMESPACE

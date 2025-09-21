@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,14 +24,15 @@
 #ifndef QXsdElement_P_H
 #define QXsdElement_P_H
 
-#include <qlist.h>
-#include <qset.h>
-
 #include <qschemacomponent_p.h>
 #include <qschematype_p.h>
 #include <qxsdalternative_p.h>
 #include <qxsdidentityconstraint_p.h>
 #include <qxsdcomplextype_p.h>
+#include <QList>
+#include <QSet>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -350,7 +351,8 @@ private:
     XsdElement::List                  m_substitutionGroupAffiliations;
     QSet<XsdElement *>                m_substitutionGroups;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

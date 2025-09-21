@@ -157,13 +157,13 @@ Q_GLOBAL_STATIC( QTDSErrorHash, errs )
 
 extern "C" {
     static int LSCS_PUBLIC qTdsMsgHandler ( DBPROCESS *dbproc,
-                                          DBINT msgno,
-                                          int msgstate,
-                                          int severity,
-                                          char *msgtext,
-                                          char *srvname,
-                                          char * /*procname*/,
-                                          int line )
+                                            DBINT msgno,
+                                            int msgstate,
+                                            int severity,
+                                            char *msgtext,
+                                            char *srvname,
+                                            char * /*procname*/,
+                                            int line )
     {
         QTDSResultPrivate *p = errs()->value( dbproc );
 
@@ -198,11 +198,11 @@ extern "C" {
     }
 
     static int LSCS_PUBLIC qTdsErrHandler( DBPROCESS *dbproc,
-                                         int /*severity*/,
-                                         int dberr,
-                                         int /*oserr*/,
-                                         char *dberrstr,
-                                         char *oserrstr )
+                                           int /*severity*/,
+                                           int dberr,
+                                           int /*oserr*/,
+                                           char *dberrstr,
+                                           char *oserrstr )
     {
         QTDSResultPrivate *p = errs()->value( dbproc );
 

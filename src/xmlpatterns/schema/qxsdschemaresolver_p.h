@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -39,9 +39,10 @@
 #include <qxsdsimpletype_p.h>
 #include <QExplicitlySharedDataPointer>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class XsdSchemaContext;
 class XsdSchemaParserContext;
 
@@ -536,7 +537,8 @@ private:
     bool                                                 m_defaultOpenContentAppliesToEmpty;
     SchemaType::List                                     m_predefinedSchemaTypes;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

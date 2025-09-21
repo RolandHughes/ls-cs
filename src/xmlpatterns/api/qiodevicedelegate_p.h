@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -34,7 +34,7 @@ namespace QPatternist
  */
 class QIODeviceDelegate : public QNetworkReply
 {
-    XMLP_LSCS_OBJECT( QIODeviceDelegate )
+    XMLP_CS_OBJECT( QIODeviceDelegate )
 
 public:
     QIODeviceDelegate( QIODevice *const source );
@@ -59,8 +59,8 @@ protected:
     qint64 readData( char *data, qint64 maxSize ) override;
 
 private :
-    XMLP_LSCS_SLOT_1( Private, void networkTimeout() )
-    XMLP_LSCS_SLOT_2( networkTimeout )
+    XMLP_CS_SLOT_1( Private, void networkTimeout() )
+    XMLP_CS_SLOT_2( networkTimeout )
 
 private:
     enum

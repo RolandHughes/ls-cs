@@ -1,5 +1,3 @@
-/* $Id: tif_predict.h,v 1.8 2010-03-10 18:56:49 bfriesen Exp $ */
-
 /*
  * Copyright (c) 1995-1997 Sam Leffler
  * Copyright (c) 1995-1997 Silicon Graphics, Inc.
@@ -26,9 +24,15 @@
 
 #ifndef _TIFFPREDICT_
 #define _TIFFPREDICT_
+
+#include "tiffio.h"
+#include "tiffiop.h"
+
 /*
  * ``Library-private'' Support for the Predictor Tag
  */
+
+typedef int ( *TIFFEncodeDecodeMethod )( TIFF *tif, uint8_t *buf, tmsize_t size );
 
 /*
  * Codecs that want to support the Predictor tag must place
@@ -37,29 +41,30 @@
  */
 typedef struct
 {
-    int             predictor;  /* predictor tag value */
-    tmsize_t        stride;     /* sample stride over data */
-    tmsize_t        rowsize;    /* tile/strip row size */
+    int predictor;    /* predictor tag value */
+    tmsize_t stride;  /* sample stride over data */
+    tmsize_t rowsize; /* tile/strip row size */
 
-    TIFFCodeMethod  encoderow;  /* parent codec encode/decode row */
-    TIFFCodeMethod  encodestrip;    /* parent codec encode/decode strip */
-    TIFFCodeMethod  encodetile; /* parent codec encode/decode tile */
-    TIFFPostMethod  encodepfunc;    /* horizontal differencer */
+    TIFFCodeMethod encoderow;           /* parent codec encode/decode row */
+    TIFFCodeMethod encodestrip;         /* parent codec encode/decode strip */
+    TIFFCodeMethod encodetile;          /* parent codec encode/decode tile */
+    TIFFEncodeDecodeMethod encodepfunc; /* horizontal differencer */
 
-    TIFFCodeMethod  decoderow;  /* parent codec encode/decode row */
-    TIFFCodeMethod  decodestrip;    /* parent codec encode/decode strip */
-    TIFFCodeMethod  decodetile; /* parent codec encode/decode tile */
-    TIFFPostMethod  decodepfunc;    /* horizontal accumulator */
+    TIFFCodeMethod decoderow;           /* parent codec encode/decode row */
+    TIFFCodeMethod decodestrip;         /* parent codec encode/decode strip */
+    TIFFCodeMethod decodetile;          /* parent codec encode/decode tile */
+    TIFFEncodeDecodeMethod decodepfunc; /* horizontal accumulator */
 
-    TIFFVGetMethod  vgetparent; /* super-class method */
-    TIFFVSetMethod  vsetparent; /* super-class method */
+    TIFFVGetMethod vgetparent;  /* super-class method */
+    TIFFVSetMethod vsetparent;  /* super-class method */
     TIFFPrintMethod printdir;   /* super-class method */
-    TIFFBoolMethod  setupdecode;    /* super-class method */
-    TIFFBoolMethod  setupencode;    /* super-class method */
+    TIFFBoolMethod setupdecode; /* super-class method */
+    TIFFBoolMethod setupencode; /* super-class method */
 } TIFFPredictorState;
 
 #if defined(__cplusplus)
-extern "C" {
+extern "C"
+{
 #endif
 extern int TIFFPredictorInit( TIFF * );
 extern int TIFFPredictorCleanup( TIFF * );
@@ -67,12 +72,3 @@ extern int TIFFPredictorCleanup( TIFF * );
 }
 #endif
 #endif /* _TIFFPREDICT_ */
-
-/* vim: set ts=8 sts=8 sw=8 noet: */
-/*
- * Local Variables:
- * mode: c
- * c-basic-offset: 8
- * fill-column: 78
- * End:
- */

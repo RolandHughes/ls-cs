@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -398,8 +398,7 @@ Expression::Ptr createNumericLiteral( const QString &in,
  */
 static int XPatherror( YYLTYPE *sourceLocator, const ParserContext *const parseInfo, const char *const msg )
 {
-    ( void ) sourceLocator;
-
+    Q_UNUSED( sourceLocator );
     Q_ASSERT( parseInfo );
 
     parseInfo->staticContext->error( escape( QString::fromLatin1( msg ) ), ReportContext::XPST0003, fromYYLTYPE( *sourceLocator,
@@ -3371,9 +3370,20 @@ static YYSIZE_T yysyntax_error ( char *yyresult, int yystate, int yychar )
 | Release the memory associated to this symbol.  |
 `-----------------------------------------------*/
 
-static void yydestruct ( const char *yymsg, int yytype, YYSTYPE *yyvaluep, YYLTYPE *yylocationp, ParserContext *const parseInfo )
+/*ARGSUSED*/
+#if (defined __STDC__ || defined __C99__FUNC__ || defined __cplusplus)
+static void
+yydestruct ( const char *yymsg, int yytype, YYSTYPE *yyvaluep, YYLTYPE *yylocationp, ParserContext *const parseInfo )
+#else
+static void
+yydestruct ( yymsg, yytype, yyvaluep, yylocationp, parseInfo )
+const char *yymsg;
+int yytype;
+YYSTYPE *yyvaluep;
+YYLTYPE *yylocationp;
+ParserContext *const parseInfo;
+#endif
 {
-    ( void ) yytype;
     ( void ) yyvaluep;
     ( void ) yylocationp;
     ( void ) parseInfo;
@@ -3384,6 +3394,13 @@ static void yydestruct ( const char *yymsg, int yytype, YYSTYPE *yyvaluep, YYLTY
     }
 
     YY_SYMBOL_PRINT ( yymsg, yytype, yyvaluep, yylocationp );
+
+    switch ( yytype )
+    {
+
+        default:
+            break;
+    }
 }
 
 

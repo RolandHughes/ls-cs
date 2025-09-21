@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -548,7 +548,7 @@ struct lscs_is_flag : public std::integral_constant<bool, false>
 
 template <class T>
 struct lscs_is_flag<QFlags<T>>
-                              : public std::integral_constant<bool, true>
+                                : public std::integral_constant<bool, true>
 {
 };
 

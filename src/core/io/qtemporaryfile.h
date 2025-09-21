@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,8 @@
 #ifndef QTEMPORARYFILE_H
 #define QTEMPORARYFILE_H
 
-#include <qiodevice.h>
 #include <qfile.h>
+#include <qiodevice.h>
 
 #ifdef open
 #error qtemporaryfile.h must be included before any header file that defines open
@@ -33,8 +33,8 @@
 
 #ifndef LSCS_NO_TEMPORARYFILE
 
-class QTemporaryFilePrivate;
 class QLockFilePrivate;
+class QTemporaryFilePrivate;
 
 class Q_CORE_EXPORT QTemporaryFile : public QFile
 {
@@ -42,10 +42,10 @@ class Q_CORE_EXPORT QTemporaryFile : public QFile
 
 public:
     QTemporaryFile();
-    explicit QTemporaryFile( const QString &tempPath );
+    explicit QTemporaryFile( const QString &fileName );
 
     explicit QTemporaryFile( QObject *parent );
-    QTemporaryFile( const QString &tempPath, QObject *parent );
+    QTemporaryFile( const QString &fileName, QObject *parent );
 
     QTemporaryFile( const QTemporaryFile & ) = delete;
     QTemporaryFile &operator=( const QTemporaryFile & ) = delete;
@@ -63,7 +63,7 @@ public:
 
     QString fileName() const override;
     QString fileTemplate() const;
-    void setFileTemplate( const QString &name );
+    void setFileTemplate( const QString &fileName );
 
     static QTemporaryFile *createNativeFile( const QString &fileName )
     {

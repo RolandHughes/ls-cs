@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,32 +32,36 @@
 
 #include <lscs_windows.h>
 
-// template implementation of the parsing algorithm
-// used from qcoreapplication_win.cpp and the tools (rcc, uic...)
-
-template <typename Char>
-static QVector<Char *> qWinCmdLine( Char *cmdParam, int length, int &argc )
+template <typename CharType>
+static QVector<CharType *> qWinCmdLine( CharType *cmdParam, int length, int &argc )
 {
-    QVector<Char *> argv( 8 );
-    Char *p = cmdParam;
-    Char *p_end = p + length;
+    // called from qcoreapplication_win.cpp and the tools (rcc, uic, etc)
 
-    argc = 0;
+    QVector<CharType *> retval;
 
-    while ( *p && p < p_end )                                // parse cmd line arguments
+    CharType *p     = cmdParam;
+    CharType *p_end = p + length;
+
+    while ( *p && p < p_end )
     {
-        while ( QChar( ( short )( *p ) ).isSpace() )          // skip white space
+        // parse cmd line arguments
+
+        while ( QChar( ( char16_t )( *p ) ).isSpace() )
         {
+            // skip white space
             p++;
         }
 
-        if ( *p && p < p_end )                                // arg starts
+        if ( *p && p < p_end )
         {
             int quote;
-            Char *start, *r;
 
-            if ( *p == Char( '\"' ) || *p == Char( '\'' ) )    // " or ' quote
+            CharType *start;
+            CharType *r;
+
+            if ( *p == CharType( '\"' ) || *p == CharType( '\'' ) )
             {
+                // " or ' quote
                 quote = *p;
                 start = ++p;
             }
@@ -77,7 +81,7 @@ static QVector<Char *> qWinCmdLine( Char *cmdParam, int length, int &argc )
                     {
                         ++p;
 
-                        if ( QChar( ( short )( *p ) ).isSpace() )
+                        if ( QChar( ( char16_t )( *p ) ).isSpace() )
                         {
                             break;
                         }
@@ -86,8 +90,9 @@ static QVector<Char *> qWinCmdLine( Char *cmdParam, int length, int &argc )
                     }
                 }
 
-                if ( *p == '\\' )                // escape char?
+                if ( *p == '\\' )
                 {
+                    // escape char?
                     if ( *( p + 1 ) == quote )
                     {
                         ++p;
@@ -96,13 +101,14 @@ static QVector<Char *> qWinCmdLine( Char *cmdParam, int length, int &argc )
                 }
                 else
                 {
-                    if ( ! quote && ( *p == Char( '\"' ) || *p == Char( '\'' ) ) )  // " or ' quote
+                    if ( ! quote && ( *p == CharType( '\"' ) || *p == CharType( '\'' ) ) )
                     {
+                        // " or ' quote
                         quote = *p++;
                         continue;
 
                     }
-                    else if ( QChar( ( short )( *p ) ).isSpace() && !quote )
+                    else if ( QChar( ( char16_t )( *p ) ).isSpace() && ! quote )
                     {
                         break;
                     }
@@ -119,28 +125,21 @@ static QVector<Char *> qWinCmdLine( Char *cmdParam, int length, int &argc )
                 p++;
             }
 
-            *r = Char( '\0' );
+            *r = CharType( '\0' );
 
-            if ( argc >= ( int )argv.size() - 1 )  // expand array
-            {
-                argv.resize( argv.size() * 2 );
-            }
-
-            argv[argc++] = start;
+            retval.append( start );
         }
     }
 
-    argv[argc] = nullptr;
+    retval.append( nullptr );
+    argc = retval.size() - 1;
 
-    return argv;
+    return retval;
 }
 
-static inline QStringList qCmdLineArgs( int t1, char *t2[] )
+static inline QStringList qCmdLineArgs( int, char *[] )
 {
-    ( void ) t1;
-    ( void ) t2;
-
-    QStringList args;
+    QStringList argList;
     int argc = 0;
 
     std::wstring tmp( GetCommandLine() );
@@ -148,25 +147,25 @@ static inline QStringList qCmdLineArgs( int t1, char *t2[] )
 
     for ( int index = 0; index < argc; ++index )
     {
-        args << QString::fromStdWString( std::wstring( argv[index] ) );
+        argList.append( QString::fromStdWString( std::wstring( argv[index] ) ) );
     }
 
-    return args;
+    return argList;
 }
 
 #else
-// not windows
+// platforms other than windows
 
 static inline QStringList qCmdLineArgs( int argc, char *argv[] )
 {
-    QStringList args;
+    QStringList argList;
 
-    for ( int i = 0; i != argc; ++i )
+    for ( int index = 0; index < argc; ++index )
     {
-        args += QString::fromUtf8( argv[i] );
+        argList.append( QString::fromUtf8( argv[index] ) );
     }
 
-    return args;
+    return argList;
 }
 
 #endif

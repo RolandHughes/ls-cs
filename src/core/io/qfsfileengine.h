@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -67,7 +67,8 @@ public:
     QString fileName( FileName file ) const override;
     uint ownerId( FileOwner own ) const override;
     QString owner( FileOwner own ) const override;
-    QDateTime fileTime( FileTime time ) const override;
+    QDateTime fileTime( QFileDevice::FileTimeType type ) const override;
+    bool setFileTime( const QDateTime &newTime, QFileDevice::FileTimeType type ) override;
     void setFileName( const QString &file ) override;
     int handle() const override;
 

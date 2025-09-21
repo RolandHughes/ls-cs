@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -59,7 +59,6 @@ public:
     using OffsetDataList = QVector<OffsetData>;
 
     QTimeZone();
-
     explicit QTimeZone( const QByteArray &zoneId );
     explicit QTimeZone( int offsetSeconds );
 
@@ -68,7 +67,6 @@ public:
 
     QTimeZone( const QTimeZone &other );
     QTimeZone( QTimeZone &&other );
-
     ~QTimeZone();
 
     QTimeZone &operator=( const QTimeZone &other );
@@ -117,7 +115,6 @@ public:
     static QList<QByteArray> availableTimeZoneIds();
     static QList<QByteArray> availableTimeZoneIds( QLocale::Country country );
     static QList<QByteArray> availableTimeZoneIds( int offsetSeconds );
-
     static bool isTimeZoneIdAvailable( const QByteArray &zoneId );
 
     static QByteArray systemTimeZoneId();
@@ -128,18 +125,16 @@ public:
     static QByteArray windowsIdToDefaultIanaId( const QByteArray &windowsId, QLocale::Country country );
     static QList<QByteArray> windowsIdToIanaIds( const QByteArray &windowsId );
     static QList<QByteArray> windowsIdToIanaIds( const QByteArray &windowsId, QLocale::Country country );
-
     static QTimeZone utc();
 
 private:
     QTimeZone( QTimeZonePrivate &dd );
-
     QSharedDataPointer<QTimeZonePrivate> d;
 
     friend Q_CORE_EXPORT QDataStream &operator<<( QDataStream &stream, const QTimeZone &tz );
-
     friend class QDateTime;
     friend class QDateTimePrivate;
+
     friend class QTimeZonePrivate;
 };
 

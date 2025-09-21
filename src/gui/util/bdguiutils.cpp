@@ -19,12 +19,12 @@ bool shouldBeGrayScale( QString color )
 {
     bool retVal = false;
 
-    if (color.contains( QString("monochrome"), Qt::CaseInsensitive))
+    if ( color.contains( QString( "monochrome" ), Qt::CaseInsensitive ) )
     {
         retVal = true;
     }
 
-    if (color.contains( QString("gray"), Qt::CaseInsensitive))
+    if ( color.contains( QString( "gray" ), Qt::CaseInsensitive ) )
     {
         retVal = true;
     }

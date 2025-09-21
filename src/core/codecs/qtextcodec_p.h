@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,10 +24,10 @@
 #ifndef QTEXTCODEC_P_H
 #define QTEXTCODEC_P_H
 
-#include <string.h>
 #include <qtextcodec.h>
+#include <string.h>
 
-#ifndef LSCS_NO_TEXTCODEC
+#ifndef QT_NO_TEXTCODEC
 
 using QTextCodecStateFreeFunction = void ( * )( QTextCodec::ConverterState * );
 
@@ -82,6 +82,6 @@ public:
     };
 };
 
-#endif // LSCS_NO_TEXTCODEC
+#endif // QT_NO_TEXTCODEC
 
 #endif

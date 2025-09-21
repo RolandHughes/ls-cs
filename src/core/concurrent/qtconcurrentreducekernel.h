@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -43,14 +43,12 @@ namespace QtConcurrent
     MapReduce won't start any new threads, and when it exceeds
     ReduceQueueThrottleLimit running threads will be stopped.
 */
-
 static constexpr const int ReduceQueueStartLimit    = 20;
 static constexpr const int ReduceQueueThrottleLimit = 30;
 
 // IntermediateResults holds a block of intermediate results from a
 // map or filter functor. The begin/end offsets indicates the origin
 // and range of the block.
-
 template <typename T>
 class IntermediateResults
 {
@@ -61,12 +59,11 @@ public:
 
 enum ReduceOption
 {
-    UnorderedReduce   = 0x1,
-    OrderedReduce     = 0x2,
-    SequentialReduce  = 0x4,
-    // ParallelReduce = 0x8
+    UnorderedReduce = 0x1,
+    OrderedReduce = 0x2,
+    SequentialReduce = 0x4,
+// ParallelReduce = 0x8
 };
-
 using ReduceOptions = QFlags<ReduceOption>;
 Q_DECLARE_OPERATORS_FOR_FLAGS( ReduceOptions )
 
@@ -148,7 +145,6 @@ public:
             }
 
             progress = 0;
-
         }
         else
         {

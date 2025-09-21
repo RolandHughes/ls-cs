@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,7 +25,10 @@
 #include "qcommonvalues_p.h"
 #include "qitemmappingiterator_p.h"
 #include "qpatternistlocale_p.h"
+
 #include "qtracefn_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -54,22 +57,22 @@ public:
         {
             if ( item )
             {
-                out << lscsPrintable( m_msg )
+                out << qPrintable( m_msg )
                     << " : "
-                    << lscsPrintable( item.stringValue() );
+                    << qPrintable( item.stringValue() );
             }
             else
             {
-                out << lscsPrintable( m_msg )
+                out << qPrintable( m_msg )
                     << " : ("
-                    << lscsPrintable( formatType( context->namePool(), CommonSequenceTypes::Empty ) )
+                    << qPrintable( formatType( context->namePool(), CommonSequenceTypes::Empty ) )
                     << ")\n";
                 return Item();
             }
         }
         else
         {
-            out << lscsPrintable( item.stringValue() )
+            out << qPrintable( item.stringValue() )
                 << '['
                 << m_position
                 << "]\n";
@@ -105,3 +108,5 @@ SequenceType::Ptr TraceFN::staticType() const
 {
     return m_operands.first()->staticType();
 }
+
+QT_END_NAMESPACE

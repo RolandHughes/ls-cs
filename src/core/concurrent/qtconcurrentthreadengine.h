@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -120,6 +120,7 @@ private:
     void run() override;
     virtual void asynchronousFinish() = 0;
     void handleException( const QtConcurrent::Exception &exception );
+
 };
 
 template <typename T>
@@ -179,6 +180,7 @@ public:
         delete this;
     }
 
+
     void reportResult( const T *_result, int index = -1 )
     {
         if ( futureInterface )
@@ -224,6 +226,7 @@ protected:
     ThreadEngine<T> *threadEngine;
 };
 
+
 // factor out the code that dereferences the T pointer, with a specialization where T is void.
 // (code that dereferences a void * will not compile)
 template <typename T>
@@ -250,7 +253,7 @@ template <>
 class ThreadEngineStarter<void> : public ThreadEngineStarterBase<void>
 {
 public:
-    ThreadEngineStarter<void>( ThreadEngine<void> *_threadEngine )
+    ThreadEngineStarter( ThreadEngine<void> *_threadEngine )
         : ThreadEngineStarterBase<void>( _threadEngine )
     { }
 

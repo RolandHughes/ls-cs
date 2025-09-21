@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,8 +21,6 @@
 *
 ***********************************************************************/
 
-#include <qfilesystemengine_p.h>
-
 #include <qabstractfileengine.h>
 #include <qdatetime.h>
 #include <qdebug.h>
@@ -34,6 +32,7 @@
 #include <lscs_windows.h>
 #include <qvarlengtharray.h>
 
+#include <qfilesystemengine_p.h>
 #include <qfsfileengine_p.h>
 #include <qmutexpool_p.h>
 #include <qsystemlibrary_p.h>
@@ -1222,7 +1221,7 @@ bool QFileSystemEngine::fillMetaData( const QFileSystemEntry &entry, QFileSystem
         SetErrorMode( oldmode );
     }
 
-    if ( what & QFileSystemMetaData::Permissions )
+    if ( what & QFileSystemMetaData::MetaDataFlag::AllPermissions )
     {
         fillPermissions( fname, data, what );
     }
@@ -1262,7 +1261,7 @@ static bool isDirPath( const QString &dirPath, bool *existed )
 
     if ( path.length() == 2 && path.at( 1 ) == ':' )
     {
-        path += QLatin1Char( '\\' );
+        path += QChar( '\\' );
     }
 
     DWORD fileAttrib = ::GetFileAttributes( &QFSFileEnginePrivate::longFileName( path ).toStdWString()[0] );
@@ -1618,7 +1617,7 @@ bool QFileSystemEngine::removeFile( const QFileSystemEntry &entry, QSystemError 
     return retval;
 }
 
-bool QFileSystemEngine::setPermissions( const QFileSystemEntry &entry, QFile::Permissions permissions,
+bool QFileSystemEngine::setPermissions( const QFileSystemEntry &entry, QFileDevice::Permissions permissions,
                                         QSystemError &error, QFileSystemMetaData *data )
 {
     ( void ) data;
@@ -1655,11 +1654,59 @@ bool QFileSystemEngine::setPermissions( const QFileSystemEntry &entry, QFile::Pe
     return retval;
 }
 
+bool QFileSystemEngine::setFileTime( HANDLE fHandle, const QDateTime &newTime, QFileDevice::FileTimeType type,
+                                     QSystemError &error )
+{
+    FILETIME fileTime;
+
+    QDateTime utc = newTime.toUTC();
+
+    QDate tmpDate = utc.date();
+    QTime tmpTime = utc.time();
+
+    SYSTEMTIME sTime;
+    sTime.wYear   = tmpDate.year();
+    sTime.wMonth  = tmpDate.month();
+    sTime.wDay    = tmpDate.day();
+
+    sTime.wHour   = tmpTime.hour();
+    sTime.wMinute = tmpTime.minute();
+    sTime.wSecond = tmpTime.second();
+    sTime.wMilliseconds = tmpTime.msec();
+
+    SystemTimeToFileTime( &sTime, &fileTime );
+
+    bool retval = false;
+
+    switch ( type )
+    {
+        case QFileDevice::FileTimeType::CreateTime:
+            retval = SetFileTime( fHandle, &fileTime, nullptr, nullptr );
+            break;
+
+        case QFileDevice::FileTimeType::ModifiedTime:
+            retval = SetFileTime( fHandle, nullptr, nullptr, &fileTime );
+            break;
+
+        case QFileDevice::FileTimeType::AccessTime:
+            retval = SetFileTime( fHandle, nullptr, &fileTime, nullptr );
+            break;
+    }
+
+    if ( ! retval )
+    {
+        error = QSystemError( GetLastError(), QSystemError::NativeError );
+    }
+
+    return retval;
+}
 static inline QDateTime fileTimeToQDateTime( const FILETIME *time )
 {
     QDateTime retval;
 
-    SYSTEMTIME sTime, lTime;
+    SYSTEMTIME sTime;
+    SYSTEMTIME lTime;
+
     FileTimeToSystemTime( time, &sTime );
     SystemTimeToTzSpecificLocalTime( nullptr, &sTime, &lTime );
     retval.setDate( QDate( lTime.wYear, lTime.wMonth, lTime.wDay ) );

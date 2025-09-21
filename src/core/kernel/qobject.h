@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -258,7 +258,8 @@ private:
     QString m_objectName;
     int m_postedEvents;
 
-    mutable std::atomic<QtSharedPointer::ExternalRefCountData *> m_sharedRefCount;
+    // non owning smart pointer to this object
+    QSharedPointer<QObject> m_self;
 
     uint m_pendTimer           : 1;
     uint m_wasDeleted          : 1;
@@ -436,7 +437,8 @@ T QObject::property( const QString &name ) const
 
     if ( ! p.isReadable() )
     {
-        qWarning( "%s::property() Property \"%s\" is invalid or does not exist", lscsPrintable( meta->className() ), lscsPrintable( name ) );
+        qWarning( "%s::property() Property \"%s\" is invalid or does not exist", lscsPrintable( meta->className() ),
+                  lscsPrintable( name ) );
     }
 
     return p.read<T>( this );
@@ -572,14 +574,18 @@ class Q_CORE_EXPORT LSCSInternalRefCount
 {
 private:
     static bool get_m_wasDeleted( const QObject *object );
-    static std::atomic<QtSharedPointer::ExternalRefCountData *> &get_m_SharedRefCount( const QObject *object );
-
     static void set_m_wasDeleted( QObject *object, bool data );
+    static QSharedPointer<QObject> get_m_self( const QObject *object );
+
+    template <class T>
+    friend class QPointer;
+
+    template <class T>
+    friend class QWeakPointer;
 
     friend class QGraphicsItem;
     friend class QStackedLayout;
     friend class QtFriendlyLayoutWidget;
-    friend struct QtSharedPointer::ExternalRefCountData;
 };
 
 class Q_CORE_EXPORT LSCSInternalSender

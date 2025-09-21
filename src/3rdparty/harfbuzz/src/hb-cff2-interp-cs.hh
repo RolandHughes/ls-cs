@@ -23,8 +23,8 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF2_INTERP_LSCS_HH
-#define HB_CFF2_INTERP_LSCS_HH
+#ifndef HB_CFF2_INTERP_CS_HH
+#define HB_CFF2_INTERP_CS_HH
 
 #include "hb.hh"
 #include "hb-cff-interp-cs-common.hh"
@@ -66,10 +66,10 @@ struct blend_arg_t : number_t
 typedef biased_subrs_t<CFF2Subrs>   cff2_biased_subrs_t;
 
 template <typename ELEM>
-struct cff2_lscs_interp_env_t : lscs_interp_env_t<ELEM, CFF2Subrs>
+struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 {
   template <typename ACC>
-  cff2_lscs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
+  cff2_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
 			const int *coords_=nullptr, unsigned int num_coords_=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
   {
@@ -176,12 +176,12 @@ struct cff2_lscs_interp_env_t : lscs_interp_env_t<ELEM, CFF2Subrs>
   bool	  seen_vsindex_;
   bool	  seen_blend;
 
-  typedef lscs_interp_env_t<ELEM, CFF2Subrs> SUPER;
+  typedef cs_interp_env_t<ELEM, CFF2Subrs> SUPER;
 };
-template <typename OPSET, typename PARAM, typename ELEM, typename PATH=path_procs_null_t<cff2_lscs_interp_env_t<ELEM>, PARAM>>
-struct cff2_lscs_opset_t : lscs_opset_t<ELEM, OPSET, cff2_lscs_interp_env_t<ELEM>, PARAM, PATH>
+template <typename OPSET, typename PARAM, typename ELEM, typename PATH=path_procs_null_t<cff2_cs_interp_env_t<ELEM>, PARAM>>
+struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>
 {
-  static void process_op (op_code_t op, cff2_lscs_interp_env_t<ELEM> &env, PARAM& param)
+  static void process_op (op_code_t op, cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
     switch (op) {
       case OpCode_callsubr:
@@ -219,7 +219,7 @@ struct cff2_lscs_opset_t : lscs_opset_t<ELEM, OPSET, cff2_lscs_interp_env_t<ELEM
 
   template <typename T = ELEM,
 	    hb_enable_if (hb_is_same (T, blend_arg_t))>
-  static void process_arg_blend (cff2_lscs_interp_env_t<ELEM> &env,
+  static void process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
 				 ELEM &arg,
 				 const hb_array_t<const ELEM> blends,
 				 unsigned n, unsigned i)
@@ -231,7 +231,7 @@ struct cff2_lscs_opset_t : lscs_opset_t<ELEM, OPSET, cff2_lscs_interp_env_t<ELEM
   }
   template <typename T = ELEM,
 	    hb_enable_if (!hb_is_same (T, blend_arg_t))>
-  static void process_arg_blend (cff2_lscs_interp_env_t<ELEM> &env,
+  static void process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
 				 ELEM &arg,
 				 const hb_array_t<const ELEM> blends,
 				 unsigned n, unsigned i)
@@ -239,7 +239,7 @@ struct cff2_lscs_opset_t : lscs_opset_t<ELEM, OPSET, cff2_lscs_interp_env_t<ELEM
     arg.set_real (arg.to_real () + env.blend_deltas (blends));
   }
 
-  static void process_blend (cff2_lscs_interp_env_t<ELEM> &env, PARAM& param)
+  static void process_blend (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
     unsigned int n, k;
 
@@ -264,19 +264,19 @@ struct cff2_lscs_opset_t : lscs_opset_t<ELEM, OPSET, cff2_lscs_interp_env_t<ELEM
     env.argStack.pop (k * n);
   }
 
-  static void process_vsindex (cff2_lscs_interp_env_t<ELEM> &env, PARAM& param)
+  static void process_vsindex (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
     env.process_vsindex ();
     env.clear_args ();
   }
 
   private:
-  typedef lscs_opset_t<ELEM, OPSET, cff2_lscs_interp_env_t<ELEM>, PARAM, PATH>  SUPER;
+  typedef cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>  SUPER;
 };
 
 template <typename OPSET, typename PARAM, typename ELEM>
-using cff2_lscs_interpreter_t = lscs_interpreter_t<cff2_lscs_interp_env_t<ELEM>, OPSET, PARAM>;
+using cff2_cs_interpreter_t = cs_interpreter_t<cff2_cs_interp_env_t<ELEM>, OPSET, PARAM>;
 
 } /* namespace CFF */
 
-#endif /* HB_CFF2_INTERP_LSCS_HH */
+#endif /* HB_CFF2_INTERP_CS_HH */

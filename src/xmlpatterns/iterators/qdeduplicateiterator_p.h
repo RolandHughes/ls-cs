@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,13 +24,14 @@
 #ifndef QDeduplicateIterator_P_H
 #define QDeduplicateIterator_P_H
 
-#include <qlist.h>
-
+#include <QList>
 #include <qexpression_p.h>
 #include <qitem_p.h>
 #include <qatomiccomparator_p.h>
 #include <qcomparisonplatform_p.h>
 #include <qsourcelocationreflection_p.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -54,7 +55,8 @@ private:
      */
     int m_listPos;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

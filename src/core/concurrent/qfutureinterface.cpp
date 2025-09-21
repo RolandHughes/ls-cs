@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,9 +27,9 @@
 #include <qatomic.h>
 #include <qthread.h>
 #include <qthreadpool.h>
-
 #include <qfutureinterface_p.h>
 #include <qthreadpool_p.h>
+
 
 static constexpr const int MaxProgressEmitsPerSecond = 25;
 
@@ -125,6 +125,7 @@ void QFutureInterfaceBase::setThrottled( bool enable )
         }
     }
 }
+
 
 bool QFutureInterfaceBase::isRunning() const
 {
@@ -242,6 +243,7 @@ void QFutureInterfaceBase::reportCanceled()
     cancel();
 }
 
+
 void QFutureInterfaceBase::reportException( const QtConcurrent::Exception &exception )
 {
     QMutexLocker locker( &d->m_mutex );
@@ -257,6 +259,7 @@ void QFutureInterfaceBase::reportException( const QtConcurrent::Exception &excep
     d->pausedWaitCondition.wakeAll();
     d->sendCallOut( QFutureCallOutEvent( QFutureCallOutEvent::Canceled ) );
 }
+
 
 void QFutureInterfaceBase::reportFinished()
 {
@@ -417,7 +420,7 @@ QMutex *QFutureInterfaceBase::mutex() const
     return &d->m_mutex;
 }
 
-QtConcurrent::lscs_internal::ExceptionStore &QFutureInterfaceBase::exceptionStore()
+QtConcurrent::cs_internal::ExceptionStore &QFutureInterfaceBase::exceptionStore()
 {
     return d->m_exceptionStore;
 }
@@ -518,13 +521,12 @@ void QFutureInterfaceBasePrivate::internal_setThrottled( bool enable )
     if ( enable )
     {
         state  = QFutureInterfaceBase::State( state | QFutureInterfaceBase::Throttled );
-
     }
     else
     {
         state  = QFutureInterfaceBase::State( state & ~QFutureInterfaceBase::Throttled );
 
-        if ( ! ( state & QFutureInterfaceBase::Paused ) )
+        if ( !( state & QFutureInterfaceBase::Paused ) )
         {
             pausedWaitCondition.wakeAll();
         }
@@ -582,11 +584,9 @@ void QFutureInterfaceBasePrivate::connectOutputInterface( QFutureCallOutInterfac
     while ( it != m_results.end() )
     {
         const int begin = it.resultIndex();
-        const int end   = begin + it.batchSize();
-
+        const int end = begin + it.batchSize();
         interface_t->postCallOutEvent( QFutureCallOutEvent( QFutureCallOutEvent::ResultsReady,
                                        begin, end ) );
-
         it.batchedAdvance();
     }
 

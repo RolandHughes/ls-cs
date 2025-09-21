@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -50,6 +50,7 @@ public:
 
         using pointer           = Val *;
         using reference         = Val &;
+
         using difference_type   = typename std::unordered_multimap<Key, Val, Hash, KeyEqual>::difference_type;
         using size_type         = typename std::unordered_multimap<Key, Val, Hash, KeyEqual>::difference_type;
         using value_type        = Val;
@@ -147,6 +148,7 @@ public:
 
         using pointer           = const Val *;
         using reference         = const Val &;
+
         using difference_type   = typename std::unordered_multimap<Key, Val, Hash, KeyEqual>::difference_type;
         using size_type         = typename std::unordered_multimap<Key, Val, Hash, KeyEqual>::difference_type;
         using value_type        = Val;
@@ -254,7 +256,6 @@ public:
     };
 
     static constexpr int bucket_count = 1;
-
     using difference_type = typename std::unordered_multimap<Key, Val, Hash, KeyEqual>::difference_type;
     using pointer         = Val *;
     using reference       = Val &;
@@ -267,6 +268,7 @@ public:
     using key_equal       = typename std::unordered_multimap<Key, Val, Hash, KeyEqual>::key_equal;
 
     using allocator_type  = typename std::unordered_multimap<Key, Val, Hash, KeyEqual>::allocator_type;
+
     using const_pointer   = const Val *;
     using const_reference = const Val &;
 
@@ -279,7 +281,7 @@ public:
     QMultiHash( const QMultiHash<Key, Val, Hash, KeyEqual> &other ) = default;
     QMultiHash( QMultiHash<Key, Val, Hash, KeyEqual> &&other ) = default;
 
-    QMultiHash( std::initializer_list<std::pair<const Key, Val>> list, const Hash &hash = Hash(),
+    QMultiHash( std::initializer_list<std::pair<const Key, Val> > list, const Hash &hash = Hash(),
                 const KeyEqual &key = KeyEqual() )
         : m_data( list, bucket_count, hash, key )
     { }
@@ -296,7 +298,7 @@ public:
         : m_data( std::move( other ) )
     { }
 
-    template <typename Input_Iterator> QMultiHash( Input_Iterator first, Input_Iterator last, const Hash &hash = Hash(),
+    template<typename Input_Iterator> QMultiHash( Input_Iterator first, Input_Iterator last, const Hash &hash = Hash(),
             const KeyEqual &key = KeyEqual() )
         : m_data( first, last, hash, key )
     { }
@@ -361,6 +363,11 @@ public:
     QPair<const_iterator, const_iterator> equal_range( const Key &key ) const
     {
         return m_data.equal_range( key );
+    }
+
+    size_type erase( const Key &key )
+    {
+        return m_data.erase( key );
     }
 
     iterator erase( const_iterator iter )
@@ -429,10 +436,20 @@ public:
         return insertMulti( key, value );
     }
 
+    iterator insert( const Key &key, Val &&value )
+    {
+        return insertMulti( key, std::move( value ) );
+    }
     iterator insertMulti( const Key &key, const Val &value )
     {
         // emplace returns an iterator
         return m_data.emplace( key, value );
+    }
+
+    iterator insertMulti( const Key &key, Val &&value )
+    {
+        // emplace returns an iterator
+        return m_data.emplace( key, std::move( value ) );
     }
 
     const Key key( const Val &value ) const;
@@ -794,8 +811,7 @@ public:
     QMultiHashIterator( const QMultiHash<Key, Val, Hash, KeyEqual> &hash )
         : c( &hash ), i( c->constBegin() ), n( c->constEnd() ) {}
 
-    ~QMultiHashIterator()
-    { }
+    ~QMultiHashIterator() = default;
 
     QMultiHashIterator &operator=( const QMultiHash<Key, Val, Hash, KeyEqual> &hash )
     {
@@ -912,8 +928,7 @@ public:
         : c( &hash ), i( c->begin() ), n( c->end() )
     { }
 
-    ~QMutableMultiHashIterator()
-    { }
+    ~QMutableMultiHashIterator() = default;
 
     QMutableMultiHashIterator &operator=( QMultiHash<Key, Val, Hash, KeyEqual> &hash )
     {

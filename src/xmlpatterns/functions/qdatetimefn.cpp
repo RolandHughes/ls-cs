@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -20,8 +20,6 @@
 * https://www.gnu.org/licenses/
 *
 ***********************************************************************/
-
-#include <qtimezone.h>
 
 #include "qatomiccomparator_p.h"
 #include "qcommonvalues_p.h"
@@ -57,23 +55,18 @@ Item DateTimeFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
     QDateTime time( ti.as<AbstractDateTime>()->toDateTime() );
     Q_ASSERT( time.isValid() );
 
-    if ( ( date.timeZone() == time.timeZone() ) || ( time.timeZone() == QTimeZone::systemTimeZone() ) )
+    if ( date.timeSpec() == time.timeSpec() || /* Identical timezone properties. */
+            time.timeSpec() == Qt::LocalTime )  /* time has no timezone, but date do. */
     {
 
-        /* Identical timezone properties. */
-        /* time has no timezone, but dates do. */
-
         date.setTime( time.time() );
-
         Q_ASSERT( date.isValid() );
         return DateTime::fromDateTime( date );
 
     }
-    else if ( date.timeZone() == QTimeZone::systemTimeZone() )
+    else if ( date.timeSpec() == Qt::LocalTime )   /* date has no timezone, but time do. */
     {
-        /* date has no timezone, but times do. */
         time.setDate( date.date() );
-
         Q_ASSERT( time.isValid() );
         return DateTime::fromDateTime( time );
 

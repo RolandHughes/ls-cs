@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,17 +25,17 @@
 #define QFUTUREINTERFACE_H
 
 #include <qglobal.h>
-#include <qrunnable.h>
 #include <qmutex.h>
+#include <qrunnable.h>
 #include <qtconcurrentexception.h>
 #include <qtconcurrentresultstore.h>
 
 template <typename T>
 class QFuture;
 
+class QFutureWatcherBase;
 class QFutureInterfaceBasePrivate;
 
-class QFutureWatcherBase;
 class QFutureWatcherBasePrivate;
 
 class Q_CORE_EXPORT QFutureInterfaceBase
@@ -98,7 +98,7 @@ public:
     void waitForResume();
 
     QMutex *mutex() const;
-    QtConcurrent::lscs_internal::ExceptionStore &exceptionStore();
+    QtConcurrent::cs_internal::ExceptionStore &exceptionStore();
     QtConcurrent::ResultStoreBase &resultStoreBase();
     const QtConcurrent::ResultStoreBase &resultStoreBase() const;
 
@@ -106,12 +106,10 @@ public:
     {
         return d == other.d;
     }
-
     bool operator!=( const QFutureInterfaceBase &other ) const
     {
         return d != other.d;
     }
-
     QFutureInterfaceBase &operator=( const QFutureInterfaceBase &other );
 
 protected:
@@ -193,6 +191,7 @@ inline void QFutureInterface<T>::reportResult( const T *result, int index )
     }
 
     QtConcurrent::ResultStore<T> &store = resultStore();
+
 
     if ( store.filterMode() )
     {

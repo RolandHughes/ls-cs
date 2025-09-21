@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,14 +21,14 @@
 *
 ***********************************************************************/
 
-#include <qcardinalityverifier_p.h>
+#include "qcommonsequencetypes_p.h"
+#include "qcommonvalues_p.h"
+#include "qgenericpredicate_p.h"
+#include "qgenericsequencetype_p.h"
+#include "qinsertioniterator_p.h"
+#include "qpatternistlocale_p.h"
 
-#include <qcommonsequencetypes_p.h>
-#include <qcommonvalues_p.h>
-#include <qgenericpredicate_p.h>
-#include <qgenericsequencetype_p.h>
-#include <qinsertioniterator_p.h>
-#include <qpatternistlocale_p.h>
+#include "qcardinalityverifier_p.h"
 
 using namespace QPatternist;
 

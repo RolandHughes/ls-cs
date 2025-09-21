@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,6 +32,8 @@
 
 #include "qapplytemplate_p.h"
 
+QT_BEGIN_NAMESPACE
+
 using namespace QPatternist;
 
 ApplyTemplate::ApplyTemplate( const TemplateMode::Ptr &mode,
@@ -53,7 +55,7 @@ Item ApplyTemplate::mapToItem( const QXmlNodeModelIndex &node,
 Item::Iterator::Ptr ApplyTemplate::mapToSequence( const Item &item,
         const DynamicContext::Ptr &context ) const
 {
-    ( void ) item;
+    Q_UNUSED( item );
     return evaluateSequence( context );
 }
 
@@ -185,8 +187,7 @@ Expression::Properties ApplyTemplate::properties() const
 bool ApplyTemplate::configureRecursion( const CallTargetDescription::Ptr &sign )
 {
     Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
-    ( void ) sign;
-
+    Q_UNUSED( sign );
     return false;
 }
 
@@ -201,3 +202,5 @@ CallTargetDescription::Ptr ApplyTemplate::callTargetDescription() const
     Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
     return CallTargetDescription::Ptr();
 }
+
+QT_END_NAMESPACE

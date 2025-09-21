@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,9 +24,9 @@
 #include <qtldurl_p.h>
 
 #include <qplatformdefs.h>
-#include <qurl.h>
 #include <qstringlist.h>
 #include <qstringparser.h>
+#include <qurl.h>
 
 #include <qurltlds_p.h>
 

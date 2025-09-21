@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,6 +24,8 @@
 #include "qanyuri_p.h"
 
 #include "qunparsedtextavailablefn_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -71,3 +73,5 @@ bool UnparsedTextAvailableFN::evaluateEBV( const DynamicContext::Ptr &context ) 
     Q_ASSERT( uri.isValid() && !uri.isRelative() );
     return context->resourceLoader()->isUnparsedTextAvailable( uri, encoding );
 }
+
+QT_END_NAMESPACE

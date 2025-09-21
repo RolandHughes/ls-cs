@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -90,7 +90,7 @@ public:
 
         if ( device != nullptr )
         {
-            /* Force direct connection here so QTextStream can be used across 
+            /* Force direct connection here so QTextStream can be used across
              * multiple threads when the application code is handling
              * synchronization. If signal is queued to another thread we will
              * have a crash when another thread tries to write to the now

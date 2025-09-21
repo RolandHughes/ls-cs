@@ -67,14 +67,14 @@ public:
     GUI_LSCS_SIGNAL_2( itemsMissing, cacheId, itemIds )
 
     GUI_LSCS_SIGNAL_1( Public, void itemsAvailable( const QByteArray &cacheId, void *bufferId,
-                     const QVector <quint32> &itemIds, const QVector <QPoint> &positionsInBuffer ) )
+                       const QVector <quint32> &itemIds, const QVector <QPoint> &positionsInBuffer ) )
     GUI_LSCS_SIGNAL_2( itemsAvailable, cacheId, bufferId, itemIds, positionsInBuffer )
 
     GUI_LSCS_SIGNAL_1( Public, void itemsInvalidated( const QByteArray &cacheId, const QVector <quint32> &itemIds ) )
     GUI_LSCS_SIGNAL_2( itemsInvalidated, cacheId, itemIds )
 
     GUI_LSCS_SIGNAL_1( Public, void itemsUpdated( const QByteArray &cacheId, void *bufferId,
-                     const QVector <quint32> &itemIds, const QVector <QPoint> &positionsInBuffer ) )
+                       const QVector <quint32> &itemIds, const QVector <QPoint> &positionsInBuffer ) )
     GUI_LSCS_SIGNAL_2( itemsUpdated, cacheId, bufferId, itemIds, positionsInBuffer )
 };
 

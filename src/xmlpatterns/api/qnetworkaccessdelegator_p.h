@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,9 +24,11 @@
 #ifndef QNETWORKACCESSDELEGATOR_P_H
 #define QNETWORKACCESSDELEGATOR_P_H
 
-#include <qobject.h>
-#include <qpointer.h>
-#include <qshareddata.h>
+#include <QObject>
+#include <QPointer>
+#include <QSharedData>
+
+QT_BEGIN_NAMESPACE
 
 class QNetworkAccessManager;
 class QUrl;
@@ -51,5 +53,7 @@ private:
     NetworkAccessDelegator &operator=( const NetworkAccessDelegator & ) = delete;
 };
 }
+
+QT_END_NAMESPACE
 
 #endif

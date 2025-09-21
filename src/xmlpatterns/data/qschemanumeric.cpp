@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -36,6 +36,8 @@
  * @file Contains class Numeric. This file was originally called qnumeric.cpp,
  * but was renamed to stay consistent with qschemanumeric_p.h
  */
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -79,3 +81,5 @@ xsDouble Numeric::roundFloat( const xsDouble val )
 
     }
 }
+
+QT_END_NAMESPACE

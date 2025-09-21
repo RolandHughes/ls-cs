@@ -1,0 +1,18 @@
+
+// just wanted to hang onto this link so I could read up more.
+https://www.geeksforgeeks.org/cpp/cpp-11-atomic-header
+
+// ditto 
+https://caiorss.github.io/C-Cpp-Notes/passing-lambda.html
+
+
+https://github.com/nemtrif/utfcpp
+
+https://gnome.pages.gitlab.gnome.org/glibmm/classGlib_1_1ustring.html
+
+
+// libxml2 is released under MIT License
+//
+https://gitlab.gnome.org/GNOME/libxml2/-/wikis/home
+https://download.gnome.org/sources/libxml2/2.14
+

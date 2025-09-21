@@ -39,7 +39,7 @@ jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   if (which_tbl < 0 || which_tbl >= NUM_QUANT_TBLS)
-    ERREXIT1(cinfo, JERR_DLSCS_INDEX, which_tbl);
+    ERREXIT1(cinfo, JERR_DQT_INDEX, which_tbl);
 
   qtblptr = & cinfo->quant_tbl_ptrs[which_tbl];
 

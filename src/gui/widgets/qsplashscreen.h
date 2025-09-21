@@ -50,7 +50,7 @@ public:
     QString message() const;
 
     GUI_LSCS_SLOT_1( Public, void showMessage( const QString &message, int alignment = Qt::AlignLeft,
-                   const QColor &color = Qt::black ) )
+                     const QColor &color = Qt::black ) )
     GUI_LSCS_SLOT_2( showMessage )
 
     GUI_LSCS_SLOT_1( Public, void clearMessage() )

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,9 +26,10 @@
 
 #include <qcomparescaseaware_p.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class ContainsFN : public ComparesCaseAware
 {
 public:
@@ -59,7 +60,8 @@ class SubstringAfterFN : public FunctionCall
 public:
     Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

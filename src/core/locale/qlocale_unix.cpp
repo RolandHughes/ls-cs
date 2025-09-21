@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -244,12 +244,12 @@ QVariant QSystemLocale::query( QueryType type, QVariant in ) const
         {
             const QString meas_locale = QString::fromLatin1( d->lc_measurement_var.constData(), d->lc_measurement_var.size() );
 
-            if ( meas_locale.compare( QLatin1String( "Metric" ), Qt::CaseInsensitive ) == 0 )
+            if ( meas_locale.compare( "Metric", Qt::CaseInsensitive ) == 0 )
             {
                 return QLocale::MetricSystem;
             }
 
-            if ( meas_locale.compare( QLatin1String( "Other" ), Qt::CaseInsensitive ) == 0 )
+            if ( meas_locale.compare( "Other", Qt::CaseInsensitive ) == 0 )
             {
                 return QLocale::MetricSystem;
             }
@@ -263,7 +263,7 @@ QVariant QSystemLocale::query( QueryType type, QVariant in ) const
 
             if ( ! languages.isEmpty() )
             {
-                QStringList lst = languages.split( QLatin1Char( ':' ) );
+                QStringList lst = languages.split( QChar( ':' ) );
 
                 for ( int i = 0; i < lst.size(); )
                 {
@@ -288,7 +288,7 @@ QVariant QSystemLocale::query( QueryType type, QVariant in ) const
                 QString lang, script, cntry;
 
                 if ( lscs_splitLocaleName( QString::fromLatin1( d->lc_messages_var.constData(), d->lc_messages_var.size() ),
-                                         lang, script, cntry ) )
+                                           lang, script, cntry ) )
                 {
                     if ( !cntry.length() && lang.length() )
                     {

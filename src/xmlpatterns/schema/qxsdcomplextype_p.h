@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,6 +32,8 @@
 #include <qxsduserschematype_p.h>
 #include <qxsdwildcard_p.h>
 #include <QSet>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -350,8 +352,8 @@ private:
     BlockingConstraints       m_prohibitedSubstitutions;
     XsdAssertion::List        m_assertions;
 };
-
 }
 
+QT_END_NAMESPACE
 
 #endif

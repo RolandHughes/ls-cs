@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -219,11 +219,12 @@
 
 #endif
 
-#if defined(Q_OS_DARWIN) && ! defined(LSCS_LARGEFILE_SUPPORT)
+//
+#ifdef Q_OS_DARWIN
+
+#if ! defined(LSCS_LARGEFILE_SUPPORT)
 #  define LSCS_LARGEFILE_SUPPORT 64
 #endif
-
-#ifdef Q_OS_DARWIN
 
 #if ! defined (LSCS_DOXYPRESS)
 #  include <AvailabilityMacros.h>
@@ -279,6 +280,11 @@
 // Sonoma OS 14
 #  if ! defined(MAC_OS_X_VERSION_14)
 #     define MAC_OS_X_VERSION_14     140000
+#  endif
+
+// Sequoia OS 15
+#  if ! defined(MAC_OS_X_VERSION_15)
+#     define MAC_OS_X_VERSION_15     150000
 #  endif
 
 #endif
@@ -470,6 +476,12 @@ using qptrdiff = qintptr;
 #define Q_INT64_C(c)   static_cast<int64_t>(c ## LL)
 #define Q_UINT64_C(c)  static_cast<uint64_t>(c ## ULL)
 
+inline quint64 lscs_enum_cast( auto value )
+{
+    static_assert( std::is_enum_v<decltype( value )>, "Argument must be an enum" );
+    return quint64( value );
+}
+
 #ifndef LSCS_POINTER_SIZE
 #define LSCS_POINTER_SIZE  sizeof(void *)
 #endif
@@ -534,14 +546,19 @@ constexpr inline int qRound( float value )
     return value >= 0.0f ? int( value + 0.5f ) : int( value - float( int( value - 1 ) ) + 0.5f ) + int( value- 1 );
 }
 
-constexpr inline qint64 qRound64( double value )
+constexpr inline int16_t qRound16( double value )
 {
-    return value >= 0.0 ? qint64( value + 0.5 ) : qint64( value - double( qint64( value - 1 ) ) + 0.5 ) + qint64( value - 1 );
+    return value >= 0.0 ? int16_t( value + 0.5 ) : int16_t( value - double( int16_t( value - 1 ) ) + 0.5 ) + int16_t( value - 1 );
 }
 
-constexpr inline qint64 qRound64( float value )
+constexpr inline int64_t qRound64( double value )
 {
-    return value >= 0.0f ? qint64( value + 0.5f ) : qint64( value - float( qint64( value - 1 ) ) + 0.5f ) + qint64( value - 1 );
+    return value >= 0.0 ? int64_t( value + 0.5 ) : int64_t( value - double( int64_t( value - 1 ) ) + 0.5 ) + int64_t( value - 1 );
+}
+
+constexpr inline int64_t qRound64( float value )
+{
+    return value >= 0.0f ? int64_t( value + 0.5f ) : int64_t( value - float( int64_t( value - 1 ) ) + 0.5f ) + int64_t( value - 1 );
 }
 
 // enhanced to support size_type which can be 32 bit or 64 bit
@@ -663,6 +680,7 @@ public:
         MV_12    = 0x0007,
         MV_13    = 0x0008,
         MV_14    = 0x0009,
+        MV_15    = 0x000A,
 
         MV_EL_CAPITAN   = MV_10_11,                // current mimimum version
         MV_SIERRA       = MV_10_12,
@@ -674,6 +692,7 @@ public:
         MV_MONTEREY     = MV_12,
         MV_VENTURA      = MV_13,
         MV_SONOMA       = MV_14,
+        MV_SEQUOIA      = MV_15,
 
         MV_IOS       = 1 << 8,                     // unknown version
         MV_IOS_9_0   = MV_IOS | 9  << 4 | 0,       // 9.0

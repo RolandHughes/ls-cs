@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,13 +29,13 @@
 namespace QtPrivate
 {
 
-template <class T>
+template<class T>
 class HasResultType
 {
-    template <typename U>
+    template<typename U>
     static char test( int, const typename U::result_type * = nullptr );
 
-    template <typename U>
+    template<typename U>
     static void *test( double );
 
 public:

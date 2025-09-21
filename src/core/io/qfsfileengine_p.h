@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -40,56 +40,67 @@ class QFSFileEnginePrivate : public QAbstractFileEnginePrivate
     Q_DECLARE_PUBLIC( QFSFileEngine )
 
 public:
+    enum LastIOCommand
+    {
+        IOFlushCommand,
+        IOReadCommand,
+        IOWriteCommand
+    };
 
-#ifdef Q_OS_WIN
+    bool closeFdFh();
+    bool flushFh();
+    bool isSymlink() const;
+    bool nativeClose();
+    bool nativeFlush();
+
+    bool nativeOpen( QIODevice::OpenMode openMode );
+    bool nativeSyncToDisk();
+    bool openFd( QIODevice::OpenMode flags, int fd );
+    bool openFh( QIODevice::OpenMode flags, FILE *fh );
+    bool renameOverwrite( const QString &newName );
+    bool syncToDisk();
+
+    qint64 nativeSize() const;
+    qint64 nativePos() const;
+
+    qint64 posFdFh() const;
+
+    bool nativeSeek( qint64 );
+    bool nativeIsSequential() const;
+    bool seekFdFh( qint64 );
+
+    int nativeHandle() const;
+
+    qint64 nativeRead( char *data, qint64 maxlen );
+    qint64 nativeReadLine( char *data, qint64 maxlen );
+    qint64 nativeWrite( const char *data, qint64 len );
+    qint64 readFdFh( char *data, qint64 maxlen );
+    qint64 readLineFdFh( char *data, qint64 maxlen );
+    qint64 writeFdFh( const char *data, qint64 len );
+
+    uchar *map( qint64 offset, qint64 size, QFile::MemoryMapFlags flags );
+    bool unmap( uchar *ptr );
+
+#if defined(Q_OS_WIN)
+    bool doStat( QFileSystemMetaData::MetaDataFlags flags ) const;
+    int sysOpen( const QString &, int flags );
+
     static QString longFileName( const QString &path );
+
+#else
+    bool doStat( QFileSystemMetaData::MetaDataFlags flags = QFileSystemMetaData::PosixStatFlags ) const;
+    bool isSequentialFdFh() const;
+    qint64 sizeFdFh() const;
 #endif
 
     QFileSystemEntry fileEntry;
     QIODevice::OpenMode openMode;
 
-    bool renameOverwrite( const QString &newName );
-
-    bool nativeOpen( QIODevice::OpenMode openMode );
-    bool openFh( QIODevice::OpenMode flags, FILE *fh );
-    bool openFd( QIODevice::OpenMode flags, int fd );
-    bool nativeClose();
-    bool closeFdFh();
-    bool syncToDisk();
-    bool nativeFlush();
-    bool nativeSyncToDisk();
-    bool flushFh();
-    qint64 nativeSize() const;
-
-#ifndef Q_OS_WIN
-    qint64 sizeFdFh() const;
-#endif
-
-    qint64 nativePos() const;
-    qint64 posFdFh() const;
-    bool nativeSeek( qint64 );
-    bool seekFdFh( qint64 );
-    qint64 nativeRead( char *data, qint64 maxlen );
-    qint64 readFdFh( char *data, qint64 maxlen );
-    qint64 nativeReadLine( char *data, qint64 maxlen );
-    qint64 readLineFdFh( char *data, qint64 maxlen );
-    qint64 nativeWrite( const char *data, qint64 len );
-    qint64 writeFdFh( const char *data, qint64 len );
-    int nativeHandle() const;
-    bool nativeIsSequential() const;
-
-#ifndef Q_OS_WIN
-    bool isSequentialFdFh() const;
-#endif
-
-    uchar *map( qint64 offset, qint64 size, QFile::MemoryMapFlags flags );
-    bool unmap( uchar *ptr );
-
     mutable QFileSystemMetaData metaData;
 
     FILE *fh;
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN)
     HANDLE fileHandle;
     HANDLE mapHandle;
     QHash<uchar *, DWORD> maps;
@@ -104,13 +115,6 @@ public:
 
     int fd;
 
-    enum LastIOCommand
-    {
-        IOFlushCommand,
-        IOReadCommand,
-        IOWriteCommand
-    };
-
     LastIOCommand lastIOCommand;
 
     bool lastFlushFailed;
@@ -122,17 +126,6 @@ public:
     mutable uint need_lstat : 1;
     mutable uint is_link : 1;
 
-#if defined(Q_OS_WIN)
-    bool doStat( QFileSystemMetaData::MetaDataFlags flags ) const;
-#else
-    bool doStat( QFileSystemMetaData::MetaDataFlags flags = QFileSystemMetaData::PosixStatFlags ) const;
-#endif
-
-    bool isSymlink() const;
-
-#if defined(Q_OS_WIN)
-    int sysOpen( const QString &, int flags );
-#endif
 
 protected:
     QFSFileEnginePrivate();

@@ -3372,7 +3372,7 @@ static void lscs_restore_gl_state()
 }
 
 static void lscs_gl_draw_text( QPainter *p, int x, int y, const QString &str,
-                             const QFont &font )
+                               const QFont &font )
 {
     GLfloat color[4];
     qgl_functions()->glGetFloatv( GL_CURRENT_COLOR, &color[0] );

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,6 +26,8 @@
 
 #include <qabstractnodetest_p.h>
 #include <qcontainerfwd.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -55,7 +57,8 @@ private:
 
     const QXmlName::LocalNameCode m_ncName;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

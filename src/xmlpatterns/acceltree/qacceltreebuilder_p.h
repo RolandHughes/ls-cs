@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,24 +24,23 @@
 #ifndef QAccelTreeBuilder_P_H
 #define QAccelTreeBuilder_P_H
 
-#include <qdebug.h>
-#include <qset.h>
-#include <qstack.h>
+#include <QDebug>
+#include <QSet>
+#include <QStack>
 #include <qstringfwd.h>
 
-#include <qxmlutils_p.h>
-#include <qacceltree_p.h>
-#include <qbuiltintypes_p.h>
-#include <qcompressedwhitespace_p.h>
-#include <qnamepool_p.h>
-#include <qnodebuilder_p.h>
-#include <qreportcontext_p.h>
-#include <qsourcelocationreflection_p.h>
-#include <qpatternistlocale_p.h>
+#include "qxmlutils_p.h"
+#include "qacceltree_p.h"
+#include "qbuiltintypes_p.h"
+#include "qcompressedwhitespace_p.h"
+#include "qnamepool_p.h"
+#include "qnodebuilder_p.h"
+#include "qreportcontext_p.h"
+#include "qsourcelocationreflection_p.h"
+#include "qpatternistlocale_p.h"
 
 namespace QPatternist
 {
-
 template<bool FromDocument>
 class AccelTreeBuilder : public NodeBuilder, public SourceLocationReflection
 {
@@ -150,7 +149,6 @@ Q_DECLARE_OPERATORS_FOR_FLAGS( AccelTreeBuilder<true>::Features )
 Q_DECLARE_OPERATORS_FOR_FLAGS( AccelTreeBuilder<false>::Features )
 
 #include "qacceltreebuilder.cpp"
-
 }
 
 #endif

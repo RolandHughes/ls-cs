@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -40,7 +40,7 @@ template <typename TransitionType> XsdStateMachine<TransitionType>::XsdStateMach
 template <typename TransitionType>
 typename XsdStateMachine<TransitionType>::StateId XsdStateMachine<TransitionType>::addState( StateType type )
 {
-#if defined(LSCS_DEBUG)
+#ifndef QT_NO_DEBUG
 
     // make sure we don't have two start states
     if ( type == StartState )
@@ -54,7 +54,7 @@ typename XsdStateMachine<TransitionType>::StateId XsdStateMachine<TransitionType
         }
     }
 
-#endif
+#endif // QT_NO_DEBUG
 
     // reserve new state id
     const StateId id = ++m_counter;

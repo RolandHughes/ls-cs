@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -62,7 +62,7 @@ QStringList QLibraryHandle::suffixes_sys( const QString &fullVersion )
     }
     else
     {
-        suffixes << QLatin1String( ".so" );
+        suffixes << QString( ".so" );
     }
 
 # ifdef Q_OS_DARWIN
@@ -214,7 +214,7 @@ bool QLibraryHandle::load_sys()
 
             pHnd = dlopen( QFile::encodeName( attempt ).constData(), dlFlags );
 
-            if ( !pHnd && fileName.startsWith( QLatin1Char( '/' ) ) && QFile::exists( attempt ) )
+            if ( !pHnd && fileName.startsWith( QChar( '/' ) ) && QFile::exists( attempt ) )
             {
                 // We only want to continue if dlopen failed due to that the shared library did not exist.
                 // However, we are only able to apply this check for absolute filenames (since they are

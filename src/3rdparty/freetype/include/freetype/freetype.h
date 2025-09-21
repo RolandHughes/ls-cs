@@ -739,8 +739,8 @@ typedef struct FT_CharMapRec_  *FT_CharMap;
  *   `FT_ENCODING_NONE` is set by the BDF and PCF drivers if the charmap is
  *   neither Unicode nor ISO-8859-1 (otherwise it is set to
  *   `FT_ENCODING_UNICODE`).  Use @FT_Get_BDF_Charset_ID to find out which
- *   encoding is really present.  If, for example, the `lscs_registry` field
- *   is 'KOI8' and the `lscs_encoding` field is 'R', the font is encoded in
+ *   encoding is really present.  If, for example, the `cs_registry` field
+ *   is 'KOI8' and the `cs_encoding` field is 'R', the font is encoded in
  *   KOI8-R.
  *
  *   `FT_ENCODING_NONE` is always set (with a single exception) by the

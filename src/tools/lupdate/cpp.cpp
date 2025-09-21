@@ -2258,7 +2258,7 @@ void CppParser::handleCsMarkTr( Group kind, QString prefix )
                 functionContextUnresolved = stringifyNamespace( 0, unresolved );
 
                 yyMsg() << lscsPrintable( QString( "Trying to use unknown namespace or class %1 %2\n" )
-                                        .formatArg( stringifyNamespace( functionContext ) ).formatArg( unresolved.first().value() ) );
+                                          .formatArg( stringifyNamespace( functionContext ) ).formatArg( unresolved.first().value() ) );
             }
 
             pendingContext.clear();

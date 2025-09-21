@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,7 +24,10 @@
 #include "qcommonsequencetypes_p.h"
 #include "qgenericsequencetype_p.h"
 #include "qoptimizationpasses_p.h"
+
 #include "qifthenclause_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -140,3 +143,4 @@ Expression::Properties IfThenClause::properties() const
               | Expression::DisableElimination);
 }
 */
+QT_END_NAMESPACE

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,13 +21,15 @@
 *
 ***********************************************************************/
 
-#include <qhash.h>
+#include <QHash>
 
 #include "qbuiltintypes_p.h"
 #include "qitem_p.h"
 #include "qitem_p.h"
 
 #include "qnamespacenametest_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -71,3 +73,5 @@ PatternPriority NamespaceNameTest::patternPriority() const
 {
     return -0.25;
 }
+
+QT_END_NAMESPACE

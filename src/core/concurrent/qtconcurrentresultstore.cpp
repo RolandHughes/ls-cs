@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -40,7 +40,6 @@ int ResultIteratorBase::vectorIndex() const
 {
     return m_vectorIndex;
 }
-
 int ResultIteratorBase::resultIndex() const
 {
     return mapIterator.key() + m_vectorIndex;
@@ -231,7 +230,6 @@ ResultIteratorBase ResultStoreBase::resultAt( int index ) const
         {
             return ResultIteratorBase( m_results.end() );
         }
-
     }
     else
     {

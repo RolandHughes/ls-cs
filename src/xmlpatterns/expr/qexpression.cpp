@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,17 +21,19 @@
 *
 ***********************************************************************/
 
-#include <qboolean_p.h>
-#include <qcommonvalues_p.h>
-#include <qemptysequence_p.h>
-#include <qliteral_p.h>
-#include <qliteralsequence_p.h>
-#include <qoperandsiterator_p.h>
-#include <qoptimizerframework_p.h>
-#include <qstaticfocuscontext_p.h>
-#include <qtypechecker_p.h>
+#include "qboolean_p.h"
+#include "qcommonvalues_p.h"
+#include "qemptysequence_p.h"
+#include "qliteral_p.h"
+#include "qliteralsequence_p.h"
+#include "qoperandsiterator_p.h"
+#include "qoptimizerframework_p.h"
+#include "qstaticfocuscontext_p.h"
+#include "qtypechecker_p.h"
 
-#include <qexpression_p.h>
+#include "qexpression_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -47,7 +49,8 @@ StaticContext::Ptr Expression::finalizeStaticContext( const StaticContext::Ptr &
     return StaticContext::Ptr( new StaticFocusContext( focusType, context ) );
 }
 
-Expression::Ptr Expression::typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType )
+Expression::Ptr Expression::typeCheck( const StaticContext::Ptr &context,
+                                       const SequenceType::Ptr &reqType )
 {
     Q_ASSERT( reqType );
     typeCheckOperands( context );
@@ -61,7 +64,7 @@ void Expression::typeCheckOperands( const StaticContext::Ptr &context )
     /* Check if this expression has any operands at all. */
     if ( ops.isEmpty() )
     {
-        return;
+        return;   /* We're done, early exit. */
     }
 
     const SequenceType::List opTypes( expectedOperandTypes() );
@@ -104,19 +107,20 @@ void Expression::typeCheckOperands( const StaticContext::Ptr &context )
     setOperands( result );
 }
 
-Expression::Ptr Expression::invokeOptimizers( const Expression::Ptr &expr, const StaticContext::Ptr &context )
+Expression::Ptr Expression::invokeOptimizers( const Expression::Ptr &expr,
+        const StaticContext::Ptr &context )
 {
     Q_ASSERT( expr );
 
     const OptimizationPass::List opts( expr->optimizationPasses() );
 
-    if ( opts.isEmpty() )
+    if ( opts.isEmpty() ) /* Early exit. */
     {
         return expr;
     }
 
     const OptimizationPass::List::const_iterator passEnd( opts.constEnd() );
-
+    const OptimizationPass::List::const_iterator end( opts.constEnd() );
     OptimizationPass::List::const_iterator passIt( opts.constBegin() );
 
     for ( ; passIt != passEnd; ++passIt ) /* Invoke each optimization pass. */
@@ -131,6 +135,7 @@ Expression::Ptr Expression::invokeOptimizers( const Expression::Ptr &expr, const
             continue;
         }
 
+        const ExpressionIdentifier::List::const_iterator idEnd( pass->operandIdentifiers.constEnd() );
         ExpressionIdentifier::List::const_iterator idIt( pass->operandIdentifiers.constBegin() );
         const Expression::List ops( expr->operands() );
         const Expression::List::const_iterator opEnd( ops.constEnd() );
@@ -174,7 +179,6 @@ Expression::Ptr Expression::invokeOptimizers( const Expression::Ptr &expr, const
                         pass->operandIdentifiers.last()->matches( ops.last() ) )
                 {
                     break;
-
                 }
                 else if ( pass->operandIdentifiers.first()->matches( ops.last() ) &&
                           pass->operandIdentifiers.last()->matches( ops.first() ) )
@@ -182,7 +186,6 @@ Expression::Ptr Expression::invokeOptimizers( const Expression::Ptr &expr, const
                     sourceMarker.first() = 1;
                     sourceMarker[1] = 0;
                     break; /* This pass matched. */
-
                 }
                 else
                 {
@@ -283,7 +286,6 @@ Expression::Ptr Expression::constantPropagate( const StaticContext::Ptr &context
             default:
                 return rewrite( Expression::Ptr( new LiteralSequence( result ) ), context );
         }
-
     }
     else
     {
@@ -419,3 +421,5 @@ PatternPriority Expression::patternPriority() const
 {
     return 0.5;
 }
+
+QT_END_NAMESPACE

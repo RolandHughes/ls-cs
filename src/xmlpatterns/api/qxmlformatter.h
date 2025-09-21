@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,9 +24,10 @@
 #ifndef QXMLFORMATTER_H
 #define QXMLFORMATTER_H
 
+#include <QXmlSerializer>
 #include <qstringfwd.h>
-#include <qxmlserializer.h>
 
+QT_BEGIN_NAMESPACE
 class QIODevice;
 class QTextCodec;
 class QXmlQuery;
@@ -62,5 +63,8 @@ private:
     inline void startFormattingContent();
     Q_DECLARE_PRIVATE( QXmlFormatter )
 };
+
+QT_END_NAMESPACE
+
 
 #endif

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,11 +24,11 @@
 #ifndef QXQueryTokenizer_P_H
 #define QXQueryTokenizer_P_H
 
-#include <qhash.h>
-#include <qset.h>
-#include <qstack.h>
-#include <qstring.h>
-#include <qurl.h>
+#include <QHash>
+#include <QSet>
+#include <QStack>
+#include <QString>
+#include <QUrl>
 
 #include <qtokenizer_p.h>
 

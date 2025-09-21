@@ -17,7 +17,7 @@ list(APPEND XMLPATTERNS_PRIVATE_INCLUDES
     ${CMAKE_CURRENT_SOURCE_DIR}/iterators/qunioniterator_p.h
 )
 
-target_sources(LsCsXmlPatterns
+target_sources(CsXmlPatterns
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/iterators/qcachingiterator.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/iterators/qdeduplicateiterator.cpp

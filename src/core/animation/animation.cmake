@@ -29,7 +29,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/animation/qvariantanimation_p.h
 )
 
-target_sources(LsCsCore
+target_sources(CsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/animation/qabstractanimation.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/animation/qvariantanimation.cpp

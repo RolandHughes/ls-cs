@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,13 +24,14 @@
 #ifndef QNamespaceResolver_P_H
 #define QNamespaceResolver_P_H
 
+#include <QSharedData>
+#include <QXmlName>
 #include <qcontainerfwd.h>
-#include <qshareddata.h>
-#include <qxmlname.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
-
 class NamespaceResolver : public QSharedData
 {
 public:
@@ -70,7 +71,8 @@ public:
      */
     virtual Bindings bindings() const = 0;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

@@ -1,8 +1,7 @@
-#ifndef LSCS_XMLPATTERNS_H
-#define LSCS_XMLPATTERNS_H
+#ifndef QT_XMLPATTERNS_H
+#define QT_XMLPATTERNS_H
 
 #include <qtcore.h>
-
 #include <qabstractmessagehandler.h>
 #include <qabstracturiresolver.h>
 #include <qabstractxmlnodemodel.h>

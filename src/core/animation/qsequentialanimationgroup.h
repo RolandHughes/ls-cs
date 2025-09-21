@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,17 +26,17 @@
 
 #include <qanimationgroup.h>
 
-#ifndef LSCS_NO_ANIMATION
+#ifndef QT_NO_ANIMATION
 
 class QPauseAnimation;
 class QSequentialAnimationGroupPrivate;
 
 class Q_CORE_EXPORT QSequentialAnimationGroup : public QAnimationGroup
 {
-    CORE_LSCS_OBJECT( QSequentialAnimationGroup )
+    CORE_CS_OBJECT( QSequentialAnimationGroup )
 
-    CORE_LSCS_PROPERTY_READ( currentAnimation, currentAnimation )
-    CORE_LSCS_PROPERTY_NOTIFY( currentAnimation, currentAnimationChanged )
+    CORE_CS_PROPERTY_READ( currentAnimation, currentAnimation )
+    CORE_CS_PROPERTY_NOTIFY( currentAnimation, currentAnimationChanged )
 
 public:
     QSequentialAnimationGroup( QObject *parent = nullptr );
@@ -52,8 +52,8 @@ public:
     QAbstractAnimation *currentAnimation() const;
     int duration() const override;
 
-    CORE_LSCS_SIGNAL_1( Public, void currentAnimationChanged( QAbstractAnimation *current ) )
-    CORE_LSCS_SIGNAL_2( currentAnimationChanged, current )
+    CORE_CS_SIGNAL_1( Public, void currentAnimationChanged( QAbstractAnimation *current ) )
+    CORE_CS_SIGNAL_2( currentAnimationChanged, current )
 
 protected:
     QSequentialAnimationGroup( QSequentialAnimationGroupPrivate &dd, QObject *parent );
@@ -70,6 +70,6 @@ private:
     void _q_uncontrolledAnimationFinished() override;
 };
 
-#endif // LSCS_NO_ANIMATION
+#endif // QT_NO_ANIMATION
 
 #endif

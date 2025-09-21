@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -297,11 +297,19 @@ QString QAbstractFileEngine::owner( FileOwner owner ) const
     return QString();
 }
 
-QDateTime QAbstractFileEngine::fileTime( FileTime time ) const
+QDateTime QAbstractFileEngine::fileTime( QFileDevice::FileTimeType type ) const
 {
-    ( void ) time;
+    ( void ) type;
 
     return QDateTime();
+}
+
+bool QAbstractFileEngine::setFileTime( const QDateTime &newTime, QFileDevice::FileTimeType type )
+{
+    ( void ) newTime;
+    ( void ) type;
+
+    return false;
 }
 
 void QAbstractFileEngine::setFileName( const QString &file )

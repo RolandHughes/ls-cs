@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,9 +24,10 @@
 #ifndef QMultiItemType_P_H
 #define QMultiItemType_P_H
 
-#include <qlist.h>
-
+#include <QList>
 #include <qitemtype_p.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -93,7 +94,8 @@ private:
     const ItemType::List m_types;
     const ItemType::List::const_iterator m_end;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,7 +24,7 @@
 #include <qparallelanimationgroup.h>
 #include <qparallelanimationgroup_p.h>
 
-#ifndef LSCS_NO_ANIMATION
+#ifndef QT_NO_ANIMATION
 
 QParallelAnimationGroup::QParallelAnimationGroup( QObject *parent )
     : QAnimationGroup( *new QParallelAnimationGroupPrivate, parent )
@@ -40,6 +40,9 @@ QParallelAnimationGroup::~QParallelAnimationGroup()
 {
 }
 
+/*!
+    \reimp
+*/
 int QParallelAnimationGroup::duration() const
 {
     Q_D( const QParallelAnimationGroup );
@@ -61,6 +64,9 @@ int QParallelAnimationGroup::duration() const
     return ret;
 }
 
+/*!
+    \reimp
+*/
 void QParallelAnimationGroup::updateCurrentTime( int currentTime )
 {
     Q_D( QParallelAnimationGroup );
@@ -87,12 +93,10 @@ void QParallelAnimationGroup::updateCurrentTime( int currentTime )
                 }
             }
         }
-
     }
     else if ( d->currentLoop < d->lastLoop )
     {
         // simulate completion of the loop seeking backwards
-
         for ( int i = 0; i < d->animations.size(); ++i )
         {
             QAbstractAnimation *animation = d->animations.at( i );
@@ -117,8 +121,8 @@ void QParallelAnimationGroup::updateCurrentTime( int currentTime )
         //if the loopcount is bigger we should always start all animations
         if ( d->currentLoop > d->lastLoop || d->shouldAnimationStart( animation, d->lastCurrentTime > dura ) )
         {
-            // if we're at the end of the animation, we need to start it if it wasn't already started in this loop
-            // this happens in Backward direction where not all animations are started at the same time
+                //if we're at the end of the animation, we need to start it if it wasn't already started in this loop
+                //this happens in Backward direction where not all animations are started at the same time
             d->applyGroupState( animation );
         }
 
@@ -137,6 +141,9 @@ void QParallelAnimationGroup::updateCurrentTime( int currentTime )
     d->lastCurrentTime = currentTime;
 }
 
+/*!
+    \reimp
+*/
 void QParallelAnimationGroup::updateState( QAbstractAnimation::State newState,
         QAbstractAnimation::State oldState )
 {
@@ -309,6 +316,7 @@ void QParallelAnimationGroupPrivate::applyGroupState( QAbstractAnimation *animat
     }
 }
 
+
 bool QParallelAnimationGroupPrivate::isUncontrolledAnimationFinished( QAbstractAnimation *anim ) const
 {
     return uncontrolledFinishTime.value( anim, -1 ) >= 0;
@@ -321,6 +329,9 @@ void QParallelAnimationGroupPrivate::animationRemoved( int index, QAbstractAnima
     uncontrolledFinishTime.remove( anim );
 }
 
+/*!
+    \reimp
+*/
 void QParallelAnimationGroup::updateDirection( QAbstractAnimation::Direction direction )
 {
     Q_D( QParallelAnimationGroup );
@@ -351,9 +362,12 @@ void QParallelAnimationGroup::updateDirection( QAbstractAnimation::Direction dir
     }
 }
 
+/*!
+    \reimp
+*/
 bool QParallelAnimationGroup::event( QEvent *event )
 {
     return QAnimationGroup::event( event );
 }
 
-#endif //LSCS_NO_ANIMATION
+#endif //QT_NO_ANIMATION

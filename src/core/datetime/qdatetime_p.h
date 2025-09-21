@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -42,31 +42,33 @@ public:
         TimeZone      = 4
     };
 
+    // Daylight Time Status
     enum DaylightStatus
     {
-        NoDaylightTime      = -2,
+        NoDaylightTime = -2,
         UnknownDaylightTime = -1,
-        StandardTime        = 0,
-        DaylightTime        = 1
+        StandardTime = 0,
+        DaylightTime = 1
     };
 
+    // Status of date/time
     enum StatusFlag
     {
         NullDate            = 0x01,
         NullTime            = 0x02,
-
         ValidDate           = 0x04, // only the date field
         ValidTime           = 0x08, // only the time field
         ValidDateTime       = 0x10, // whole object (including timezone)
-
         SetToStandardTime   = 0x40,
         SetToDaylightTime   = 0x80
     };
     using StatusFlags = QFlags<StatusFlag>;
 
+
+
     QDateTimePrivate()
         : m_msecs( 0 ), m_tzUserDefined( false ), m_status( NullDate | NullTime )
-    { }
+    {}
 
     QDateTimePrivate( const QDate &toDate, const QTime &toTime, const QTimeZone &timeZone );
 
@@ -86,6 +88,7 @@ public:
 
     QPair<QDate, QTime> getDateTime() const;
 
+    // Get/set date and time status
     bool isNullDate() const
     {
         return m_status & NullDate;
@@ -105,6 +108,7 @@ public:
     {
         return m_status & ValidTime;
     }
+
 
     bool isValidDateTime() const
     {

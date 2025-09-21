@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -20,10 +20,11 @@
 * https://www.gnu.org/licenses/
 *
 ***********************************************************************/
+#include <qdir.h>
+#include <qdir_p.h>
 
 #include <qdatetime.h>
 #include <qdebug.h>
-#include <qdir.h>
 #include <qdiriterator.h>
 #include <qplatformdefs.h>
 #include <qregularexpression.h>
@@ -35,7 +36,6 @@
 
 #include <qabstractfileengine_p.h>
 #include <qcoreglobaldata_p.h>
-#include <qdir_p.h>
 #include <qfilesystemengine_p.h>
 #include <qfilesystementry_p.h>
 #include <qfilesystemmetadata_p.h>
@@ -989,9 +989,10 @@ bool QDir::removeRecursively()
         {
             ok = QFile::remove( filePath );
 
-            if ( !ok ) // Read-only files prevent directory deletion on Windows, retry with Write permission.
+            if ( !ok )
             {
-                const QFile::Permissions permissions = QFile::permissions( filePath );
+                // Read-only files prevent directory deletion on Windows, retry with Write permission.
+                const QFileDevice::Permissions permissions = QFile::permissions( filePath );
 
                 if ( !( permissions & QFile::WriteUser ) )
                 {

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,9 +24,11 @@
 #ifndef QXMLSCHEMA_H
 #define QXMLSCHEMA_H
 
-#include <qshareddatapointer.h>
-#include <qurl.h>
-#include <qxmlnamepool.h>
+#include <QSharedDataPointer>
+#include <QUrl>
+#include <QXmlNamePool>
+
+QT_BEGIN_NAMESPACE
 
 class QAbstractMessageHandler;
 class QAbstractUriResolver;
@@ -42,10 +44,8 @@ class Q_XMLPATTERNS_EXPORT QXmlSchema
 
 public:
     QXmlSchema();
+    QXmlSchema( const QXmlSchema &other );
     ~QXmlSchema();
-
-    QXmlSchema( const QXmlSchema &other ) = default;
-    QXmlSchema &operator=( const QXmlSchema &other ) = default;
 
     bool load( const QUrl &source );
     bool load( QIODevice *source, const QUrl &documentUri = QUrl() );
@@ -68,5 +68,7 @@ public:
 private:
     QSharedDataPointer<QXmlSchemaPrivate> d;
 };
+
+QT_END_NAMESPACE
 
 #endif

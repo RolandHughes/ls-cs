@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -57,6 +57,8 @@
 #include "qtracefn_p.h"
 
 #include "qxpath20corefunctions_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -736,3 +738,5 @@ FunctionSignature::Ptr XPath20CoreFunctions::retrieveFunctionSignature( const Na
     return s;
 }
 
+
+QT_END_NAMESPACE

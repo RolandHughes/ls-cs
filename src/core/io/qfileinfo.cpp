@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,12 +22,11 @@
 ***********************************************************************/
 
 #include <qfileinfo.h>
+#include <qfileinfo_p.h>
 
 #include <qdir.h>
 #include <qglobal.h>
 #include <qplatformdefs.h>
-
-#include <qfileinfo_p.h>
 
 QString QFileInfoPrivate::getFileName( QAbstractFileEngine::FileName name ) const
 {
@@ -49,8 +48,9 @@ QString QFileInfoPrivate::getFileName( QAbstractFileEngine::FileName name ) cons
             {
                 QFileSystemEntry entry = QFileSystemEngine::canonicalName( fileEntry, metaData );
 
-                if ( cache_enabled ) // be smart and store both
+                if ( cache_enabled )
                 {
+                    // be smart and store both
                     fileNames[QAbstractFileEngine::CanonicalName] = entry.filePath();
                     fileNames[QAbstractFileEngine::CanonicalPathName] = entry.path();
                 }
@@ -228,7 +228,7 @@ uint QFileInfoPrivate::getFileFlags( QAbstractFileEngine::FileFlags request ) co
     return fileFlags & request;
 }
 
-QDateTime &QFileInfoPrivate::getFileTime( QAbstractFileEngine::FileTime request ) const
+QDateTime &QFileInfoPrivate::getFileTime( QFileDevice::FileTimeType type ) const
 {
     Q_ASSERT( fileEngine );
     // should never be called when using the native FS
@@ -240,11 +240,11 @@ QDateTime &QFileInfoPrivate::getFileTime( QAbstractFileEngine::FileTime request 
 
     uint cf;
 
-    if ( request == QAbstractFileEngine::CreationTime )
+    if ( type == QFileDevice::FileTimeType::CreateTime )
     {
         cf = CachedCTime;
     }
-    else if ( request == QAbstractFileEngine::ModificationTime )
+    else if ( type == QFileDevice::FileTimeType::ModifiedTime )
     {
         cf = CachedMTime;
     }
@@ -255,11 +255,11 @@ QDateTime &QFileInfoPrivate::getFileTime( QAbstractFileEngine::FileTime request 
 
     if ( ! getCachedFlag( cf ) )
     {
-        fileTimes[request] = fileEngine->fileTime( request );
+        fileTimes[type] = fileEngine->fileTime( type );
         setCachedFlag( cf );
     }
 
-    return fileTimes[request];
+    return fileTimes[type];
 }
 
 QFileInfo::QFileInfo( QFileInfoPrivate *p )
@@ -300,9 +300,6 @@ bool QFileInfo::operator==( const QFileInfo &fileinfo ) const
 {
     Q_D( const QFileInfo );
 
-    // TODO: understand long and short file names on Windows
-    // ### (GetFullPathName())
-
     if ( fileinfo.d_ptr == d_ptr )
     {
         return true;
@@ -313,7 +310,7 @@ bool QFileInfo::operator==( const QFileInfo &fileinfo ) const
         return false;
     }
 
-    // Assume files are the same if path is the same
+    // assume files are the same if path is the same
     if ( d->fileEntry.filePath() == fileinfo.d_ptr->fileEntry.filePath() )
     {
         return true;
@@ -323,8 +320,9 @@ bool QFileInfo::operator==( const QFileInfo &fileinfo ) const
 
     if ( d->fileEngine == nullptr || fileinfo.d_ptr->fileEngine == nullptr )
     {
-        if ( d->fileEngine != fileinfo.d_ptr->fileEngine ) // one is native, the other is a custom file-engine
+        if ( d->fileEngine != fileinfo.d_ptr->fileEngine )
         {
+            // one is native, the other is a custom file-engine
             return false;
         }
 
@@ -341,13 +339,24 @@ bool QFileInfo::operator==( const QFileInfo &fileinfo ) const
         sensitive = d->fileEngine->caseSensitive() ? Qt::CaseSensitive : Qt::CaseInsensitive;
     }
 
-    if ( fileinfo.size() != size() ) //if the size isn't the same...
+    if ( fileinfo.size() != size() )
     {
+        // if the size is not the same
         return false;
     }
 
-    // Fallback to expensive canonical path computation
+    if ( fileinfo.exists() && exists() )
+    {
+        // both files must actually be there
+
+        // fallback to expensive canonical path computation
     return canonicalFilePath().compare( fileinfo.canonicalFilePath(), sensitive ) == 0;
+    }
+    else
+    {
+        return false;
+
+    }
 }
 
 QFileInfo &QFileInfo::operator=( const QFileInfo &fileinfo )
@@ -902,7 +911,7 @@ uint QFileInfo::groupId() const
     return d->fileEngine->ownerId( QAbstractFileEngine::OwnerGroup );
 }
 
-bool QFileInfo::permission( QFile::Permissions permissions ) const
+bool QFileInfo::permission( QFileDevice::Permissions permissions ) const
 {
     Q_D( const QFileInfo );
 
@@ -913,7 +922,7 @@ bool QFileInfo::permission( QFile::Permissions permissions ) const
 
     if ( d->fileEngine == nullptr )
     {
-        // QFileSystemMetaData::MetaDataFlag and QFile::Permissions overlap, so just static cast
+        // QFileSystemMetaData::MetaDataFlag and QFileDevice::Permissions overlap, so just static cast
         QFileSystemMetaData::MetaDataFlag permissionFlags = static_cast<QFileSystemMetaData::MetaDataFlag>( ( int )permissions );
 
         if ( ! d->cache_enabled || ! d->metaData.hasFlags( permissionFlags ) )
@@ -927,7 +936,7 @@ bool QFileInfo::permission( QFile::Permissions permissions ) const
     return d->getFileFlags( QAbstractFileEngine::FileFlags( ( int )permissions ) ) == ( uint )permissions;
 }
 
-QFile::Permissions QFileInfo::permissions() const
+QFileDevice::Permissions QFileInfo::permissions() const
 {
     Q_D( const QFileInfo );
 
@@ -938,15 +947,15 @@ QFile::Permissions QFileInfo::permissions() const
 
     if ( d->fileEngine == nullptr )
     {
-        if ( ! d->cache_enabled || !d->metaData.hasFlags( QFileSystemMetaData::Permissions ) )
+        if ( ! d->cache_enabled || ! d->metaData.hasFlags( QFileSystemMetaData::MetaDataFlag::AllPermissions ) )
         {
-            QFileSystemEngine::fillMetaData( d->fileEntry, d->metaData, QFileSystemMetaData::Permissions );
+            QFileSystemEngine::fillMetaData( d->fileEntry, d->metaData, QFileSystemMetaData::MetaDataFlag::AllPermissions );
         }
 
         return d->metaData.permissions();
     }
 
-    return QFile::Permissions( d->getFileFlags( QAbstractFileEngine::PermsMask ) & QAbstractFileEngine::PermsMask );
+    return QFileDevice::Permissions( d->getFileFlags( QAbstractFileEngine::PermsMask ) & QAbstractFileEngine::PermsMask );
 }
 
 qint64 QFileInfo::size() const
@@ -996,7 +1005,7 @@ QDateTime QFileInfo::created() const
         return d->metaData.creationTime();
     }
 
-    return d->getFileTime( QAbstractFileEngine::CreationTime );
+    return d->getFileTime( QFileDevice::FileTimeType::CreateTime );
 }
 
 QDateTime QFileInfo::lastModified() const
@@ -1018,7 +1027,7 @@ QDateTime QFileInfo::lastModified() const
         return d->metaData.modificationTime();
     }
 
-    return d->getFileTime( QAbstractFileEngine::ModificationTime );
+    return d->getFileTime( QFileDevice::FileTimeType::ModifiedTime );
 }
 
 QDateTime QFileInfo::lastRead() const
@@ -1040,7 +1049,7 @@ QDateTime QFileInfo::lastRead() const
         return d->metaData.accessTime();
     }
 
-    return d->getFileTime( QAbstractFileEngine::AccessTime );
+    return d->getFileTime( QFileDevice::FileTimeType::AccessTime );
 }
 
 void QFileInfo::detach()

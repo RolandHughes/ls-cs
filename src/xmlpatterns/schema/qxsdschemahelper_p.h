@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,6 +31,8 @@
 #include <qxsdparticle_p.h>
 #include <qxsdschemacontext_p.h>
 #include <qxsdwildcard_p.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -171,7 +173,8 @@ private:
     XsdSchemaHelper( const XsdSchemaHelper & ) = delete;
     XsdSchemaHelper &operator=( const XsdSchemaHelper & ) = delete;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

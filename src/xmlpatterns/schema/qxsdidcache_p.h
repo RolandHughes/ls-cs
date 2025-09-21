@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,12 +24,13 @@
 #ifndef QXsdIdCache_P_H
 #define QXsdIdCache_P_H
 
+#include <qschemacomponent_p.h>
 #include <QExplicitlySharedDataPointer>
 #include <QReadWriteLock>
 #include <QSet>
 #include <QString>
 
-#include <qschemacomponent_p.h>
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -53,7 +54,8 @@ private:
     QSet<QString>          m_ids;
     mutable QReadWriteLock m_lock;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

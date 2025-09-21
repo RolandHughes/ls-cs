@@ -75,8 +75,9 @@ bool QObject::connect( const Sender *sender, void ( SignalClass::*signalMethod )
         const QMetaObject *receiverMetaObject = receiver->metaObject();
         QString receiverClass = receiverMetaObject->className();
 
-        qWarning( "QObject::connect() Invalid Signal (signal & slot method one), sender: %s signalName: %s  receiver: %s", lscsPrintable( senderClass ),
-                  lscsPrintable( signalName),
+        qWarning( "QObject::connect() Invalid Signal (signal & slot method one), sender: %s signalName: %s  receiver: %s",
+                  lscsPrintable( senderClass ),
+                  lscsPrintable( signalName ),
                   lscsPrintable( receiverClass ) );
         return false;
     }
@@ -84,7 +85,8 @@ bool QObject::connect( const Sender *sender, void ( SignalClass::*signalMethod )
     // is signalMethod a signal
     if ( signalMetaMethod.methodType() != QMetaMethod::Signal )
     {
-        qWarning( "QObject::connect() Invalid Signal (signal method not signal), sender: %s signalName: %s  signature: %s", lscsPrintable( senderClass ), lscsPrintable( signalName), lscsPrintable( signature ) );
+        qWarning( "QObject::connect() Invalid Signal (signal method not signal), sender: %s signalName: %s  signature: %s",
+                  lscsPrintable( senderClass ), lscsPrintable( signalName ), lscsPrintable( signature ) );
         return false;
     }
 
@@ -143,7 +145,8 @@ bool QObject::connect( const Sender *sender, void ( SignalClass::*signalMethod )
         const QMetaObject *receiverMetaObject = receiver->metaObject();
         QString receiverClass = receiverMetaObject->className();
 
-        qWarning( "QObject::connect() Invalid Signal (146 lambda one), sender: %s signalName: %s receiver: %s", lscsPrintable( senderClass ),
+        qWarning( "QObject::connect() Invalid Signal (146 lambda one), sender: %s signalName: %s receiver: %s",
+                  lscsPrintable( senderClass ),
                   lscsPrintable( signalName ),
                   lscsPrintable( receiverClass ) );
         return false;

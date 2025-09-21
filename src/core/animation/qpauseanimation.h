@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,16 +26,16 @@
 
 #include <qanimationgroup.h>
 
-#ifndef LSCS_NO_ANIMATION
+#ifndef QT_NO_ANIMATION
 
 class QPauseAnimationPrivate;
 
 class Q_CORE_EXPORT QPauseAnimation : public QAbstractAnimation
 {
-    CORE_LSCS_OBJECT( QPauseAnimation )
+    CORE_CS_OBJECT( QPauseAnimation )
 
-    CORE_LSCS_PROPERTY_READ( duration, duration )
-    CORE_LSCS_PROPERTY_WRITE( duration, setDuration )
+    CORE_CS_PROPERTY_READ( duration, duration )
+    CORE_CS_PROPERTY_WRITE( duration, setDuration )
 
 public:
     QPauseAnimation( QObject *parent = nullptr );
@@ -57,6 +57,6 @@ private:
     Q_DECLARE_PRIVATE( QPauseAnimation )
 };
 
-#endif //LSCS_NO_ANIMATION
+#endif //QT_NO_ANIMATION
 
 #endif

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,15 +24,15 @@
 #ifndef QXsdAttributeGroup_P_H
 #define QXsdAttributeGroup_P_H
 
-#include <qlist.h>
-
 #include <qxsdannotated_p.h>
 #include <qxsdattributeuse_p.h>
 #include <qxsdwildcard_p.h>
+#include <QList>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
-
 class XsdAttributeGroup : public NamedSchemaComponent, public XsdAnnotated
 {
 public:
@@ -72,7 +72,8 @@ private:
     XsdAttributeUse::List m_attributeUses;
     XsdWildcard::Ptr      m_wildcard;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

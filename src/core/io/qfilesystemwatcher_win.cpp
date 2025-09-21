@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,8 +21,9 @@
 *
 ***********************************************************************/
 
-#include <qfilesystemwatcher.h>
 #include <qfilesystemwatcher_win_p.h>
+
+#include <qfilesystemwatcher.h>
 
 #ifndef LSCS_NO_FILESYSTEMWATCHER
 
@@ -179,16 +180,16 @@ QStringList QWindowsFileSystemWatcherEngine::addPaths( const QStringList &paths,
             // now look for a thread to insert
             bool found = false;
 
-            for ( QWindowsFileSystemWatcherEngineThread *thread : threads )
+            for ( QWindowsFileSystemWatcherEngineThread *threadItem : threads )
             {
-                QMutexLocker( &( thread->mutex ) );
+                QMutexLocker( &( threadItem->mutex ) );
 
-                if ( thread->handles.count() < MAXIMUM_WAIT_OBJECTS )
+                if ( threadItem->handles.count() < MAXIMUM_WAIT_OBJECTS )
                 {
-                    thread->handles.append( handle.handle );
-                    thread->handleForDir.insert( absolutePath, handle );
+                    threadItem->handles.append( handle.handle );
+                    threadItem->handleForDir.insert( absolutePath, handle );
 
-                    thread->pathInfoForHandle[handle.handle].insert( fileInfo.absoluteFilePath(), pathInfo );
+                    threadItem->pathInfoForHandle[handle.handle].insert( fileInfo.absoluteFilePath(), pathInfo );
 
                     if ( isDir )
                     {
@@ -201,19 +202,19 @@ QStringList QWindowsFileSystemWatcherEngine::addPaths( const QStringList &paths,
 
                     it.remove();
                     found = true;
-                    thread->wakeup();
+                    threadItem->wakeup();
                     break;
                 }
             }
 
             if ( !found )
             {
-                QWindowsFileSystemWatcherEngineThread *thread = new QWindowsFileSystemWatcherEngineThread();
+                QWindowsFileSystemWatcherEngineThread *threadItem = new QWindowsFileSystemWatcherEngineThread();
 
-                thread->handles.append( handle.handle );
-                thread->handleForDir.insert( absolutePath, handle );
+                threadItem->handles.append( handle.handle );
+                threadItem->handleForDir.insert( absolutePath, handle );
 
-                thread->pathInfoForHandle[handle.handle].insert( fileInfo.absoluteFilePath(), pathInfo );
+                threadItem->pathInfoForHandle[handle.handle].insert( fileInfo.absoluteFilePath(), pathInfo );
 
                 if ( isDir )
                 {
@@ -224,13 +225,14 @@ QStringList QWindowsFileSystemWatcherEngine::addPaths( const QStringList &paths,
                     files->append( path );
                 }
 
-                connect( thread, &QWindowsFileSystemWatcherEngineThread::fileChanged,      this, &QWindowsFileSystemWatcherEngine::fileChanged );
-                connect( thread, &QWindowsFileSystemWatcherEngineThread::directoryChanged, this,
+                connect( threadItem, &QWindowsFileSystemWatcherEngineThread::fileChanged,      this,
+                         &QWindowsFileSystemWatcherEngine::fileChanged );
+                connect( threadItem, &QWindowsFileSystemWatcherEngineThread::directoryChanged, this,
                          &QWindowsFileSystemWatcherEngine::directoryChanged );
 
-                thread->msg = '@';
-                thread->start();
-                threads.append( thread );
+                threadItem->msg = '@';
+                threadItem->start();
+                threads.append( threadItem );
                 it.remove();
             }
         }

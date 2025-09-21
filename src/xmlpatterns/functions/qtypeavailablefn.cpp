@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,6 +25,8 @@
 #include "qqnameconstructor_p.h"
 
 #include "qtypeavailablefn_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -50,3 +52,5 @@ Expression::Ptr TypeAvailableFN::typeCheck( const StaticContext::Ptr &context,
     m_schemaTypeFactory = context->schemaDefinitions();
     return StaticNamespacesContainer::typeCheck( context, reqType );
 }
+
+QT_END_NAMESPACE

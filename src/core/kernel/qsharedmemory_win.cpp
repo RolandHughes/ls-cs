@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -117,13 +117,13 @@ void QSharedMemoryPrivate::cleanHandle()
 {
     if ( hand != nullptr && ! CloseHandle( hand ) )
     {
-        setErrorString( QLatin1String( "QSharedMemory::cleanHandle" ) );
+        setErrorString( "QSharedMemory::cleanHandle" );
     }
 
     hand = nullptr;
 }
 
-bool QSharedMemoryPrivate::create( int size )
+bool QSharedMemoryPrivate::create( int newSize )
 {
     if ( nativeKey.isEmpty() )
     {
@@ -133,8 +133,8 @@ bool QSharedMemoryPrivate::create( int size )
     }
 
     // Create the file mapping
-    hand = CreateFileMapping( INVALID_HANDLE_VALUE, nullptr, PAGE_READWRITE, 0, size, &nativeKey.toStdWString()[0] );
-    setErrorString( QLatin1String( "QSharedMemory::create" ) );
+    hand = CreateFileMapping( INVALID_HANDLE_VALUE, nullptr, PAGE_READWRITE, 0, newSize, &nativeKey.toStdWString()[0] );
+    setErrorString( "QSharedMemory::create" );
 
     // hand is valid when it already exists unlike unix so explicitly check
     return !( error == QSharedMemory::AlreadyExists || !hand );
@@ -148,7 +148,7 @@ bool QSharedMemoryPrivate::attach( QSharedMemory::AccessMode mode )
 
     if ( memory == nullptr )
     {
-        setErrorString( QLatin1String( "QSharedMemory::attach" ) );
+        setErrorString( "QSharedMemory::attach" );
         cleanHandle();
         return false;
     }
@@ -175,7 +175,7 @@ bool QSharedMemoryPrivate::detach()
     // umap memory
     if ( ! UnmapViewOfFile( memory ) )
     {
-        setErrorString( QLatin1String( "QSharedMemory::detach" ) );
+        setErrorString( "QSharedMemory::detach" );
         return false;
     }
 

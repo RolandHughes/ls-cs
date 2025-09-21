@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,6 +27,8 @@
 
 #include "qdynamiccontext_p.h"
 
+QT_BEGIN_NAMESPACE
+
 using namespace QPatternist;
 
 DynamicContext::Ptr DynamicContext::createFocus()
@@ -44,3 +46,5 @@ DynamicContext::Ptr DynamicContext::createReceiverContext( QAbstractXmlReceiver 
     Q_ASSERT( receiver );
     return Ptr( new ReceiverDynamicContext( Ptr( this ), receiver ) );
 }
+
+QT_END_NAMESPACE

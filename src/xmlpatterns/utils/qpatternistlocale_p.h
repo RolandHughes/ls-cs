@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,13 +24,16 @@
 #ifndef QPatternistLocale_P_H
 #define QPatternistLocale_P_H
 
-#include <qcoreapplication.h>
-#include <qstringfwd.h>
-#include <qurl.h>
+#include <QCoreApplication>
+#include <QUrl>
 
 #include <qcardinality_p.h>
 #include <qnamepool_p.h>
 #include <qprimitives_p.h>
+
+#include <qstringfwd.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -220,4 +223,9 @@ static inline QString formatExpression( const QString &expr )
 
 }
 
+#ifdef Q_NO_TYPESAFE_FLAGS
+#error "Patternist does not compile with Q_NO_TYPESAFE_FLAGS set, because the code uses negative enum values. qglobal.h has typedef uint Flags."
+#endif
+
+QT_END_NAMESPACE
 #endif

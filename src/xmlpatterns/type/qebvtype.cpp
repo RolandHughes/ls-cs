@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,6 +26,8 @@
 #include "qitem_p.h"
 
 #include "qebvtype_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -100,3 +102,5 @@ ItemType::Ptr EBVType::atomizedType() const
     Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
     return AtomicType::Ptr();
 }
+
+QT_END_NAMESPACE

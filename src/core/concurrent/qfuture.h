@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -74,7 +74,6 @@ public:
     {
         d.cancel();
     }
-
     bool isCanceled() const
     {
         return d.isCanceled();
@@ -84,22 +83,18 @@ public:
     {
         d.setPaused( paused );
     }
-
     bool isPaused() const
     {
         return d.isPaused();
     }
-
     void pause()
     {
         setPaused( true );
     }
-
     void resume()
     {
         setPaused( false );
     }
-
     void togglePaused()
     {
         d.togglePaused();
@@ -109,12 +104,10 @@ public:
     {
         return d.isStarted();
     }
-
     bool isFinished() const
     {
         return d.isFinished();
     }
-
     bool isRunning() const
     {
         return d.isRunning();
@@ -124,12 +117,10 @@ public:
     {
         return d.resultCount();
     }
-
     int progressValue() const
     {
         return d.progressValue();
     }
-
     int progressMinimum() const
     {
         return d.progressMinimum();
@@ -138,12 +129,10 @@ public:
     {
         return d.progressMaximum();
     }
-
     QString progressText() const
     {
         return d.progressText();
     }
-
     void waitForFinished()
     {
         d.waitForFinished();
@@ -151,7 +140,6 @@ public:
 
     inline T result() const;
     inline T resultAt( int index ) const;
-
     bool isResultReadyAt( int index ) const
     {
         return d.isResultReadyAt( index );
@@ -161,7 +149,6 @@ public:
     {
         return result();
     }
-
     QList<T> results() const
     {
         return d.results();
@@ -232,6 +219,7 @@ public:
             ++index;
             return *this;
         }
+
 
         const_iterator operator++( int )
         {
@@ -341,7 +329,6 @@ template <class T>
 class QFutureIterator
 {
     using const_iterator = typename QFuture<T>::const_iterator;
-
     QFuture<T> c;
     const_iterator i;
 
@@ -361,37 +348,30 @@ public:
     {
         i = c.constBegin();
     }
-
     void toBack()
     {
         i = c.constEnd();
     }
-
     bool hasNext() const
     {
         return i != c.constEnd();
     }
-
     const T &next()
     {
         return *i++;
     }
-
     const T &peekNext() const
     {
         return *i;
     }
-
     bool hasPrevious() const
     {
         return i != c.constBegin();
     }
-
     const T &previous()
     {
         return *--i;
     }
-
     const T &peekPrevious() const
     {
         const_iterator p = i;
@@ -433,8 +413,6 @@ public:
         : d( QFutureInterface<void>::canceledResult() )
     {
     }
-
-    // internal
     explicit QFuture( QFutureInterfaceBase *p )
         : d( *p )
     {
@@ -461,6 +439,7 @@ public:
         return ( d != other.d );
     }
 
+
     template <typename T> QFuture( const QFuture<T> &other )
         : d( other.d )
     {
@@ -477,7 +456,6 @@ public:
     {
         d.cancel();
     }
-
     bool isCanceled() const
     {
         return d.isCanceled();
@@ -487,22 +465,18 @@ public:
     {
         d.setPaused( paused );
     }
-
     bool isPaused() const
     {
         return d.isPaused();
     }
-
     void pause()
     {
         setPaused( true );
     }
-
     void resume()
     {
         setPaused( false );
     }
-
     void togglePaused()
     {
         d.togglePaused();
@@ -512,12 +486,10 @@ public:
     {
         return d.isStarted();
     }
-
     bool isFinished() const
     {
         return d.isFinished();
     }
-
     bool isRunning() const
     {
         return d.isRunning();
@@ -527,27 +499,22 @@ public:
     {
         return d.resultCount();
     }
-
     int progressValue() const
     {
         return d.progressValue();
     }
-
     int progressMinimum() const
     {
         return d.progressMinimum();
     }
-
     int progressMaximum() const
     {
         return d.progressMaximum();
     }
-
     QString progressText() const
     {
         return d.progressText();
     }
-
     void waitForFinished()
     {
         d.waitForFinished();

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,24 +25,26 @@
 #define QABSTRACTFILEENGINE_H
 
 #include <qdir.h>
+#include <qfiledevice.h>
 
 #ifdef open
 #error qabstractfileengine.h must be included before any header file that defines open
 #endif
 
+class QAbstractFileEngineIterator;
 class QFileExtension;
 class QFileExtensionResult;
 class QVariant;
-class QAbstractFileEngineIterator;
-class QAbstractFileEnginePrivate;
 class QAbstractFileEngineIteratorPrivate;
+class QAbstractFileEnginePrivate;
+
 
 class Q_CORE_EXPORT QAbstractFileEngine
 {
 public:
     enum FileFlag
     {
-        //perms (overlaps the QFile::Permission)
+        //  overlaps the QFileDevice::Permission
         ReadOwnerPerm = 0x4000, WriteOwnerPerm = 0x2000, ExeOwnerPerm = 0x1000,
         ReadUserPerm  = 0x0400, WriteUserPerm  = 0x0200, ExeUserPerm  = 0x0100,
         ReadGroupPerm = 0x0040, WriteGroupPerm = 0x0020, ExeGroupPerm = 0x0010,
@@ -87,12 +89,6 @@ public:
         OwnerUser,
         OwnerGroup
     };
-    enum FileTime
-    {
-        CreationTime,
-        ModificationTime,
-        AccessTime
-    };
 
     QAbstractFileEngine( const QAbstractFileEngine & ) = delete;
     QAbstractFileEngine &operator=( const QAbstractFileEngine & ) = delete;
@@ -119,12 +115,13 @@ public:
     virtual bool isRelativePath() const;
     virtual QStringList entryList( QDir::Filters filters, const QStringList &filterNames ) const;
     virtual FileFlags fileFlags( FileFlags type = FileInfoAll ) const;
+    virtual QDateTime fileTime( QFileDevice::FileTimeType type ) const;
+    virtual bool setFileTime( const QDateTime &newTime, QFileDevice::FileTimeType type );
     virtual bool setPermissions( uint perms );
     virtual QString fileName( FileName file = DefaultName ) const;
+    virtual void setFileName( const QString &file );
     virtual uint ownerId( FileOwner owner ) const;
     virtual QString owner( FileOwner owner ) const;
-    virtual QDateTime fileTime( FileTime time ) const;
-    virtual void setFileName( const QString &file );
     virtual int handle() const;
 
     bool atEnd() const;

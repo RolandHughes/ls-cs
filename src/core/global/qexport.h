@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -127,18 +127,6 @@
 #      define Q_SVG_EXPORT           Q_DECL_IMPORT
 #    endif
 
-#    if defined(LSCS_BUILD_SCRIPT_LIB)
-#      define Q_SCRIPT_EXPORT        Q_DECL_EXPORT
-#    else
-#      define Q_SCRIPT_EXPORT        Q_DECL_IMPORT
-#    endif
-
-#    if defined(LSCS_BUILD_SCRIPTTOOLS_LIB)
-#      define Q_SCRIPTTOOLS_EXPORT   Q_DECL_EXPORT
-#    else
-#      define Q_SCRIPTTOOLS_EXPORT   Q_DECL_IMPORT
-#    endif
-
 #    if defined(LSCS_BUILD_VULKAN_LIB)
 #      define Q_VULKAN_EXPORT        Q_DECL_EXPORT
 #    else
@@ -155,12 +143,6 @@
 #      define Q_XMLPATTERNS_EXPORT   Q_DECL_EXPORT
 #    else
 #      define Q_XMLPATTERNS_EXPORT   Q_DECL_IMPORT
-#    endif
-
-#    if defined(LSCS_BUILD_DECLARATIVE_LIB)
-#      define Q_DECLARATIVE_EXPORT   Q_DECL_EXPORT
-#    else
-#      define Q_DECLARATIVE_EXPORT   Q_DECL_IMPORT
 #    endif
 
 #    if defined(LSCS_BUILD_DBUS_LIB)
@@ -180,14 +162,11 @@
 #    define Q_SQL_EXPORT            Q_DECL_EXPORT
 #    define Q_NETWORK_EXPORT        Q_DECL_EXPORT
 #    define Q_SVG_EXPORT            Q_DECL_EXPORT
-#    define Q_DECLARATIVE_EXPORT    Q_DECL_EXPORT
 #    define Q_OPENGL_EXPORT         Q_DECL_EXPORT
 #    define Q_MULTIMEDIA_EXPORT     Q_DECL_EXPORT
 #    define Q_VULKAN_EXPORT         Q_DECL_EXPORT
 #    define Q_XML_EXPORT            Q_DECL_EXPORT
 #    define Q_XMLPATTERNS_EXPORT    Q_DECL_EXPORT
-#    define Q_SCRIPT_EXPORT         Q_DECL_EXPORT
-#    define Q_SCRIPTTOOLS_EXPORT    Q_DECL_EXPORT
 #  else
 #    define Q_CORE_EXPORT
 #    define Q_DBUS_EXPORT
@@ -195,14 +174,11 @@
 #    define Q_SQL_EXPORT
 #    define Q_NETWORK_EXPORT
 #    define Q_SVG_EXPORT
-#    define Q_DECLARATIVE_EXPORT
 #    define Q_OPENGL_EXPORT
 #    define Q_MULTIMEDIA_EXPORT
 #    define Q_VULKAN_EXPORT
 #    define Q_XML_EXPORT
 #    define Q_XMLPATTERNS_EXPORT
-#    define Q_SCRIPT_EXPORT
-#    define Q_SCRIPTTOOLS_EXPORT
 #  endif
 
 #endif

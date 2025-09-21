@@ -32,7 +32,7 @@
 
             <xsl:text>#include &lt;QtCore/QString>&#xA;</xsl:text>
             <xsl:text>&#xA;</xsl:text>
-            <xsl:text>LSCS_BEGIN_NAMESPACE&#xA;</xsl:text>
+            <xsl:text>QT_BEGIN_NAMESPACE&#xA;</xsl:text>
             <xsl:text>&#xA;</xsl:text>
 
             <xsl:if test="@namespace">
@@ -104,7 +104,7 @@
                 </xsl:if>
 
                 <xsl:text>&#xA;</xsl:text>
-                <xsl:text>LSCS_END_NAMESPACE&#xA;</xsl:text>
+                <xsl:text>QT_END_NAMESPACE&#xA;</xsl:text>
                 <xsl:text>&#xA;</xsl:text>
 
                 <xsl:text>#endif&#xA;</xsl:text>
@@ -119,7 +119,7 @@
             <xsl:value-of select="@headerFile"/>
             <xsl:text>"&#xA;</xsl:text>
             <xsl:text>&#xA;</xsl:text>
-            <xsl:text>LSCS_BEGIN_NAMESPACE&#xA;</xsl:text>
+            <xsl:text>QT_BEGIN_NAMESPACE&#xA;</xsl:text>
 
             <xsl:if test="@namespace">
                 <xsl:text>&#xA;</xsl:text>
@@ -195,7 +195,7 @@
             </xsl:if>
 
             <xsl:text>&#xA;</xsl:text>
-            <xsl:text>LSCS_END_NAMESPACE&#xA;</xsl:text>
+            <xsl:text>QT_END_NAMESPACE&#xA;</xsl:text>
             <xsl:text>&#xA;</xsl:text>
         </xsl:result-document>
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -136,19 +136,19 @@ QString QCoreApplicationPrivate::macMenuBarName()
 
 QString QCoreApplicationPrivate::appName() const
 {
-    QString applicationName;
+    QString retval;
 
 #ifdef Q_OS_DARWIN
-    applicationName = macMenuBarName();
+    retval = macMenuBarName();
 #endif
 
-    if ( applicationName.isEmpty() && argv[0] )
+    if ( retval.isEmpty() && m_argv[0] )
     {
-        char *p = strrchr( argv[0], '/' );
-        applicationName = QString::fromUtf8( p ? p + 1 : argv[0] );
+        char *p = strrchr( m_argv[0], '/' );
+        retval = QString::fromUtf8( p ? p + 1 : m_argv[0] );
     }
 
-    return applicationName;
+    return retval;
 }
 #endif
 
@@ -164,56 +164,30 @@ bool QCoreApplicationPrivate::checkInstance( const char *function )
     return b;
 }
 
-static QString *qmljs_debug_arguments()
-{
-    static QString retval;
-    return &retval;
-}
-
 void QCoreApplicationPrivate::processCommandLineArguments()
 {
-    int j = argc ? 1 : 0;
+    int currentArg = m_argc ? 1 : 0;
 
-    for ( int i = 1; i < argc; ++i )
+    for ( int index = 1; index < m_argc; ++index )
     {
 
-        if ( ! argv[i] )
+        if ( ! m_argv[index] )
         {
             continue;
         }
 
-        if ( *argv[i] != '-' )
-        {
-            argv[j++] = argv[i];
-            continue;
+        m_argv[currentArg] = m_argv[index];
+        ++currentArg;
         }
 
-        QString arg = QString::fromUtf8( argv[i] );
-
-        if ( arg.startsWith( "-qmljsdebugger=" ) )
+    if ( currentArg < m_argc )
         {
 
-            *qmljs_debug_arguments() = arg.right( arg.length() - 15 );
-
-        }
-        else if ( arg == "-qmljsdebugger" && i < argc - 1 )
-        {
-            ++i;
-            *qmljs_debug_arguments() = QString::fromUtf8( argv[i] );
-
-        }
-        else
-        {
-            argv[j++] = argv[i];
+        m_argc = currentArg;
+        m_argv[currentArg] = nullptr;
         }
     }
 
-    if ( j < argc )
-    {
-        argv[j] = nullptr;
-        argc    = j;
-    }
-}
 
 extern "C" void Q_CORE_EXPORT lscs_startup_hook()
 {
@@ -398,18 +372,16 @@ static QCoreApplicationData *coreappdata()
 
 static bool quitLockRefEnabled = true;
 
-QCoreApplicationPrivate::QCoreApplicationPrivate( int &aargc, char **aargv, uint flags )
-    : argc( aargc ), argv( aargv ), application_type( QCoreApplicationPrivate::Tty ),
+QCoreApplicationPrivate::QCoreApplicationPrivate( int &argc, char **argv )
+    : m_argc( argc ), m_argv( argv ), application_type( QCoreApplicationPrivate::Tty ),
       in_exec( false ), aboutToQuitEmitted( false )
 {
-    ( void ) flags;
-
     static const char *const empty = "";
 
-    if ( argc == 0 || argv == nullptr )
+    if ( m_argc == 0 || m_argv == nullptr )
     {
-        argc = 0;
-        argv = const_cast<char **>( &empty );
+        m_argc = 0;
+        m_argv = const_cast<char **>( &empty );
     }
 
     QCoreApplicationPrivate::is_app_closing = false;
@@ -547,11 +519,6 @@ void QCoreApplicationPrivate::appendApplicationPathToLibraryPaths()
 #endif
 }
 
-QString QCoreApplicationPrivate::qmljsDebugArguments()
-{
-    return *qmljs_debug_arguments();
-}
-
 QString qAppName()
 {
     if ( ! QCoreApplicationPrivate::checkInstance( "qAppName" ) )
@@ -593,8 +560,8 @@ void QCoreApplication::flush()
     }
 }
 
-QCoreApplication::QCoreApplication( int &argc, char **argv, int _internal )
-    : QObject( nullptr ), d_ptr( new QCoreApplicationPrivate( argc, argv, _internal ) )
+QCoreApplication::QCoreApplication( int &argc, char **argv )
+    : QObject( nullptr ), d_ptr( new QCoreApplicationPrivate( argc, argv ) )
 {
     d_ptr->q_ptr = this;
     d_ptr->init();
@@ -1170,7 +1137,7 @@ void QCoreApplicationPrivate::sendPostedEvents( QObject *receiver, int event_typ
 {
     if ( event_type == -1 )
     {
-        // we were called by an obsolete event dispatcher.
+        // called by an obsolete event dispatcher
         event_type = 0;
     }
 
@@ -1186,14 +1153,13 @@ void QCoreApplicationPrivate::sendPostedEvents( QObject *receiver, int event_typ
 
     QMutexLocker locker( &data->postEventList.mutex );
 
-    // by default, we assume that the event dispatcher can go to sleep after
-    // processing all events. if any new events are posted while we send
-    // events, canWait will be set to false.
+    // by default, we assume that the event dispatcher can go to sleep after processing all events
+    // if any new events are posted while we send events, canWait will be set to false.
     data->canWait = ( data->postEventList.size() == 0 );
 
     int peCount = LSCSInternalEvents::get_m_PostedEvents( receiver );
 
-    if ( data->postEventList.size() == 0 || ( receiver && peCount == 0 ) )
+    if ( data->postEventList.size() == 0 || ( receiver != nullptr && peCount == 0 ) )
     {
         --data->postEventList.recursion;
         return;
@@ -1201,15 +1167,14 @@ void QCoreApplicationPrivate::sendPostedEvents( QObject *receiver, int event_typ
 
     data->canWait = true;
 
-    // okay. here is the tricky loop. be careful about optimizing
-    // this, it looks the way it does for good reasons.
+    // this is a tricky loop, careful about optimizing as there were good reason for this code
     int startOffset = data->postEventList.startOffset;
-    int &i = ( !event_type && !receiver ) ? data->postEventList.startOffset : startOffset;
+    int &i = ( event_type == 0 && receiver == nullptr ) ? data->postEventList.startOffset : startOffset;
     data->postEventList.insertionOffset = data->postEventList.size();
 
     while ( i < data->postEventList.size() )
     {
-        // avoid live-lock
+        // avoid live lock
         if ( i >= data->postEventList.insertionOffset )
         {
             break;
@@ -1223,7 +1188,7 @@ void QCoreApplicationPrivate::sendPostedEvents( QObject *receiver, int event_typ
             continue;
         }
 
-        if ( ( receiver && receiver != pe.receiver ) || ( event_type && event_type != pe.event->type() ) )
+        if ( ( receiver != nullptr && receiver != pe.receiver ) || ( event_type != 0 && event_type != pe.event->type() ) )
         {
             data->canWait = false;
             continue;
@@ -1231,13 +1196,14 @@ void QCoreApplicationPrivate::sendPostedEvents( QObject *receiver, int event_typ
 
         if ( pe.event->type() == QEvent::DeferredDelete )
         {
-            // DeferredDelete events are only sent when we are explicitly asked to
-            // (s.a. QEvent::DeferredDelete), and then only if the event loop that
-            // posted the event has returned.
+            // DeferredDelete events are only sent when there is an explicit QEvent::DeferredDelete
+            // and then only if the event loop that posted the event has returned
 
-            const bool tmp1 = quintptr( pe.event->d ) > unsigned( data->loopLevel );
-            const bool tmp2 = pe.event->d == nullptr && ( data->loopLevel > 0 );
-            const bool tmp3 = ( event_type == QEvent::DeferredDelete ) && ( quintptr( pe.event->d ) == unsigned( data->loopLevel ) );
+            int eventLoopLevel = static_cast<QDeferredDeleteEvent *>( pe.event )->loopLevel();
+
+            const bool tmp1 = eventLoopLevel > data->loopLevel;
+            const bool tmp2 = ( eventLoopLevel == 0 ) && ( data->loopLevel > 0 );
+            const bool tmp3 = ( event_type == QEvent::DeferredDelete ) && ( eventLoopLevel == data->loopLevel );
 
             const bool allowDeferredDelete = tmp1 || tmp2 || tmp3;
 
@@ -1250,8 +1216,7 @@ void QCoreApplicationPrivate::sendPostedEvents( QObject *receiver, int event_typ
                     // copy the event
                     QPostEvent pe_copy = pe;
 
-                    // null out the event so if sendPostedEvents recurses, it
-                    // will ignore this one, as it's been re-posted
+                    // null the event so if sendPostedEvents recurses, it will ignore this one, since it is has been re-posted
                     const_cast<QPostEvent &>( pe ).event = nullptr;
 
                     // re-post the copied event so it is not lost
@@ -1262,8 +1227,7 @@ void QCoreApplicationPrivate::sendPostedEvents( QObject *receiver, int event_typ
             }
         }
 
-        // first, adjust the event so that we can deliver it
-        // so no one will try to touch it later
+        // adjust the event so that we can deliver it and no one will try to touch it later
         pe.event->posted = false;
 
         QEvent *e  = pe.event;
@@ -1686,20 +1650,20 @@ QString QCoreApplication::applicationFilePath()
 
 #endif
 
-    QString argv0 = arguments().at( 0 );
+    QString firstItem = arguments().at( 0 );
 
     QString absPath;
 
-    if ( ! argv0.isEmpty() && argv0.at( 0 ) == '/' )
+    if ( firstItem.startsWith( '/' ) )
     {
-        // If argv0 starts with a slash, it is already an absolute file path.
-        absPath = argv0;
+        // it is already an absolute file path
+        absPath = firstItem;
 
     }
-    else if ( argv0.contains( '/' ) )
+    else if ( firstItem.contains( '/' ) )
     {
-        // If argv0 contains one or more slashes, it is a file path relative to the current directory.
-        absPath = QDir::current().absoluteFilePath( argv0 );
+        // if firstItem contains one or more slashes, it is a file path relative to the current directory.
+        absPath = QDir::current().absoluteFilePath( firstItem );
 
     }
     else
@@ -1716,7 +1680,7 @@ QString QCoreApplication::applicationFilePath()
                 continue;
             }
 
-            QString candidate = currentDir.absoluteFilePath( *p + QChar( '/' ) + argv0 );
+            QString candidate = currentDir.absoluteFilePath( *p + QChar( '/' ) + firstItem );
             QFileInfo candidate_fi( candidate );
 
             if ( candidate_fi.exists() && !candidate_fi.isDir() )
@@ -1759,36 +1723,37 @@ QStringList QCoreApplication::arguments()
 
     if ( m_self->d_func()->application_type )
     {
-        // GUI app? Skip known, refer to qapplication.cpp
+        // skip any which are known, refer to qapplication.cpp in gui
         QStringList stripped;
 
-        for ( int a = 0; a < list.count(); ++a )
+        for ( int index = 0; index < list.count(); ++index )
         {
-            QString arg      = list.at( a );
-            QByteArray l1arg = arg.toLatin1();
+            QString item = list.at( index );
 
-            if ( l1arg == "-qdevel" || l1arg == "-qdebug" || l1arg == "-reverse" ||
-                    l1arg == "-stylesheet" || l1arg == "-widgetcount" )
+            if ( item == "-qdevel" || item == "-qdebug" || item == "-reverse" )
             {
-
-                // no code should appear here
+                // do nothing
 
             }
-            else if ( l1arg.startsWith( "-style=" ) || l1arg.startsWith( "-qmljsdebugger=" ) )
+            else if ( item == "-stylesheet" || item == "-widgetcount" )
             {
-
-                // no code should appear here
+                // do nothing
 
             }
-            else if ( l1arg == "-style" || l1arg == "-qmljsdebugger" || l1arg == "-session" ||
-                      l1arg == "-graphicssystem" || l1arg == "-testability" )
+            else if ( item.startsWith( "-style=" ) )
             {
-                ++a;
+
+                // do nothing
+
+            }
+            else if ( item == "-style" || item == "-session" || item == "-graphicssystem" || item == "-testability" )
+            {
+                ++index;
 
             }
             else
             {
-                stripped += arg;
+                stripped += item;
 
             }
         }
@@ -1797,8 +1762,8 @@ QStringList QCoreApplication::arguments()
     }
 
 #else
-    const int ac = m_self->d_func()->argc;
-    char **const av = m_self->d_func()->argv;
+    const int ac = m_self->d_func()->m_argc;
+    char **const av = m_self->d_func()->m_argv;
 
     for ( int index = 0; index < ac; ++index )
     {

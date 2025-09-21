@@ -109,7 +109,7 @@ static QPixmap lscs_gtk_get_icon( const char *iconName, GtkIconSize size = GTK_I
 }
 
 static void lscs_gtk_draw_mdibutton( QPainter *painter, const QStyleOptionTitleBar *option,
-                                   const QRect &tmp, bool hover, bool sunken )
+                                     const QRect &tmp, bool hover, bool sunken )
 {
     QColor dark;
     dark.setHsv( option->palette.button().color().hue(),

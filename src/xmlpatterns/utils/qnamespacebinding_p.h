@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,10 +24,11 @@
 #ifndef QNamespaceBinding_P_H
 #define QNamespaceBinding_P_H
 
+template<typename T> class QVector;
+
 #include <qxmlname.h>
 
-template<typename T>
-class QVector;
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -100,5 +101,7 @@ static inline uint qHash( const NamespaceBinding nb )
 }
 
 }
+
+QT_END_NAMESPACE
 
 #endif

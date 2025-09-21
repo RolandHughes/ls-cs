@@ -173,7 +173,7 @@ DomUI *Uic::parseUiFile( QXmlStreamReader &reader )
         ui = nullptr;
 
         fprintf( stderr, "%s\n", lscsPrintable( QString( "Uic: Parse error on line %1, column %2 : %3" )
-                                              .formatArg( reader.lineNumber() ).formatArg( reader.columnNumber() ).formatArg( reader.errorString() ) ) );
+                                                .formatArg( reader.lineNumber() ).formatArg( reader.columnNumber() ).formatArg( reader.errorString() ) ) );
     }
 
     return ui;

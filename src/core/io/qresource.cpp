@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,6 +22,7 @@
 ***********************************************************************/
 
 #include <qresource.h>
+#include <qresource_p.h>
 
 #include <qbytearray.h>
 #include <qdatetime.h>
@@ -38,7 +39,6 @@
 #include <qvector.h>
 
 #include <qabstractfileengine_p.h>
-#include <qresource_p.h>
 #include <qresource_iterator_p.h>
 
 #ifdef Q_OS_UNIX
@@ -1208,7 +1208,7 @@ bool QResource::registerResource( const uchar *rccData, const QString &resourceR
 {
     QString r = lscs_resource_fixResourceRoot( resourceRoot );
 
-    if ( ! r.isEmpty() && r[0] != QLatin1Char( '/' ) )
+    if ( ! r.isEmpty() && r[0] != QChar( '/' ) )
     {
         qWarning( "QDir::registerResource() Registering resource %s requires an absolute path start with '/', current root is %s",
                   rccData, lscsPrintable( resourceRoot ) );
@@ -1532,7 +1532,7 @@ QString QResourceFileEngine::fileName( FileName file ) const
 
     if ( file == BaseName )
     {
-        int slash = d->resource.fileName().lastIndexOf( QLatin1Char( '/' ) );
+        int slash = d->resource.fileName().lastIndexOf( QChar( '/' ) );
 
         if ( slash == -1 )
         {
@@ -1545,15 +1545,15 @@ QString QResourceFileEngine::fileName( FileName file ) const
     else if ( file == PathName || file == AbsolutePathName )
     {
         const QString path = ( file == AbsolutePathName ) ? d->resource.absoluteFilePath() : d->resource.fileName();
-        const int slash = path.lastIndexOf( QLatin1Char( '/' ) );
+        const int slash    = path.lastIndexOf( QChar( '/' ) );
 
         if ( slash == -1 )
         {
-            return QLatin1String( ":" );
+            return QString( ":" );
         }
         else if ( slash <= 1 )
         {
-            return QLatin1String( ":/" );
+            return QString( ":/" );
         }
 
         return path.left( slash );
@@ -1565,7 +1565,7 @@ QString QResourceFileEngine::fileName( FileName file ) const
 
         if ( file == CanonicalPathName )
         {
-            const int slash = absoluteFilePath.lastIndexOf( QLatin1Char( '/' ) );
+            const int slash = absoluteFilePath.lastIndexOf( QChar( '/' ) );
 
             if ( slash != -1 )
             {
@@ -1595,7 +1595,7 @@ QString QResourceFileEngine::owner( FileOwner ) const
     return QString();
 }
 
-QDateTime QResourceFileEngine::fileTime( FileTime ) const
+QDateTime QResourceFileEngine::fileTime( QFileDevice::FileTimeType ) const
 {
     return QDateTime();
 }

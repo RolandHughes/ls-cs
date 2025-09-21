@@ -119,7 +119,7 @@ public:
     SQL_LSCS_SLOT_1( Public, virtual bool cancelQuery() )
     SQL_LSCS_SLOT_2( cancelQuery )
     SQL_LSCS_SIGNAL_1( Public, void notification( const QString &name, QSqlDriver::NotificationSource source,
-                     const QVariant &payload ) )
+                       const QVariant &payload ) )
     SQL_LSCS_SIGNAL_2( notification, name, source, payload )
 
 protected:

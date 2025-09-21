@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -85,7 +85,6 @@ class QFutureCallOutInterface
 public:
     virtual ~QFutureCallOutInterface()
     { }
-
     virtual void postCallOutEvent( const QFutureCallOutEvent & ) = 0;
     virtual void callOutInterfaceDisconnected() = 0;
 };
@@ -109,12 +108,11 @@ public:
     QtConcurrent::ResultStoreBase m_results;
     bool manualProgress;
     int m_expectedResultCount;
-    QtConcurrent::lscs_internal::ExceptionStore m_exceptionStore;
+    QtConcurrent::cs_internal::ExceptionStore m_exceptionStore;
     QString m_progressText;
     QRunnable *runnable;
 
-    // Internal functions that does not change the mutex state.
-    // The mutex must be locked when calling these.
+    // mutex must be locked when calling these.
     int internal_resultCount() const;
     bool internal_isResultReadyAt( int index ) const;
     bool internal_waitForNextResult();

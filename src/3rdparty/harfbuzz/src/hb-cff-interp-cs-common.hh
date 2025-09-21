@@ -23,8 +23,8 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF_INTERP_LSCS_COMMON_HH
-#define HB_CFF_INTERP_LSCS_COMMON_HH
+#ifndef HB_CFF_INTERP_CS_COMMON_HH
+#define HB_CFF_INTERP_CS_COMMON_HH
 
 #include "hb.hh"
 #include "hb-cff-interp-common.hh"
@@ -33,7 +33,7 @@ namespace CFF {
 
 using namespace OT;
 
-enum lscs_type_t {
+enum cs_type_t {
   CSType_CharString,
   CSType_GlobalSubr,
   CSType_LocalSubr
@@ -41,7 +41,7 @@ enum lscs_type_t {
 
 struct call_context_t
 {
-  void init (const byte_str_ref_t substr_=byte_str_ref_t (), lscs_type_t type_=CSType_CharString, unsigned int subr_num_=0)
+  void init (const byte_str_ref_t substr_=byte_str_ref_t (), cs_type_t type_=CSType_CharString, unsigned int subr_num_=0)
   {
     str_ref = substr_;
     type = type_;
@@ -51,7 +51,7 @@ struct call_context_t
   void fini () {}
 
   byte_str_ref_t  str_ref;
-  lscs_type_t	  type;
+  cs_type_t	  type;
   unsigned int    subr_num;
 };
 
@@ -110,9 +110,9 @@ struct point_t
 };
 
 template <typename ARG, typename SUBRS>
-struct lscs_interp_env_t : interp_env_t<ARG>
+struct cs_interp_env_t : interp_env_t<ARG>
 {
-  lscs_interp_env_t (const hb_ubytes_t &str, const SUBRS *globalSubrs_, const SUBRS *localSubrs_) :
+  cs_interp_env_t (const hb_ubytes_t &str, const SUBRS *globalSubrs_, const SUBRS *localSubrs_) :
     interp_env_t<ARG> (str)
   {
     context.init (str, CSType_CharString);
@@ -125,7 +125,7 @@ struct lscs_interp_env_t : interp_env_t<ARG>
     globalSubrs.init (globalSubrs_);
     localSubrs.init (localSubrs_);
   }
-  ~lscs_interp_env_t ()
+  ~cs_interp_env_t ()
   {
     globalSubrs.fini ();
     localSubrs.fini ();
@@ -148,7 +148,7 @@ struct lscs_interp_env_t : interp_env_t<ARG>
     return true;
   }
 
-  void call_subr (const biased_subrs_t<SUBRS>& biasedSubrs, lscs_type_t type)
+  void call_subr (const biased_subrs_t<SUBRS>& biasedSubrs, cs_type_t type)
   {
     unsigned int subr_num = 0;
 
@@ -237,7 +237,7 @@ struct path_procs_null_t
 };
 
 template <typename ARG, typename OPSET, typename ENV, typename PARAM, typename PATH=path_procs_null_t<ENV, PARAM>>
-struct lscs_opset_t : opset_t<ARG>
+struct cs_opset_t : opset_t<ARG>
 {
   static void process_op (op_code_t op, ENV &env, PARAM& param)
   {
@@ -873,9 +873,9 @@ struct path_procs_t
 };
 
 template <typename ENV, typename OPSET, typename PARAM>
-struct lscs_interpreter_t : interpreter_t<ENV>
+struct cs_interpreter_t : interpreter_t<ENV>
 {
-  lscs_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
+  cs_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
 
   bool interpret (PARAM& param)
   {
@@ -902,4 +902,4 @@ struct lscs_interpreter_t : interpreter_t<ENV>
 
 } /* namespace CFF */
 
-#endif /* HB_CFF_INTERP_LSCS_COMMON_HH */
+#endif /* HB_CFF_INTERP_CS_COMMON_HH */

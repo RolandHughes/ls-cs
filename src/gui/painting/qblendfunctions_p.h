@@ -29,11 +29,11 @@
 
 template <typename SRC, typename T>
 void lscs_scale_image_16bit( uchar *destPixels, int dbpl,
-                           const uchar *srcPixels, int sbpl, int srch,
-                           const QRectF &targetRect,
-                           const QRectF &srcRect,
-                           const QRect &clip,
-                           T blender )
+                             const uchar *srcPixels, int sbpl, int srch,
+                             const QRectF &targetRect,
+                             const QRectF &srcRect,
+                             const QRect &clip,
+                             T blender )
 {
     qreal sx = targetRect.width() / ( qreal ) srcRect.width();
     qreal sy = targetRect.height() / ( qreal ) srcRect.height();
@@ -177,7 +177,7 @@ void lscs_scale_image_16bit( uchar *destPixels, int dbpl,
 
 template <typename T>
 void lscs_scale_image_32bit( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl, int srch,
-                           const QRectF &targetRect, const QRectF &srcRect, const QRect &clip, T blender )
+                             const QRectF &targetRect, const QRectF &srcRect, const QRect &clip, T blender )
 {
     qreal sx = targetRect.width() / ( qreal ) srcRect.width();
     qreal sy = targetRect.height() / ( qreal ) srcRect.height();
@@ -311,14 +311,14 @@ struct QTransformImageVertex
 
 template <class SrcT, class DestT, class Blender>
 void lscs_transform_image_rasterize( DestT *destPixels, int dbpl,
-                                   const SrcT *srcPixels, int sbpl,
-                                   const QTransformImageVertex &topLeft, const QTransformImageVertex &bottomLeft,
-                                   const QTransformImageVertex &topRight, const QTransformImageVertex &bottomRight,
-                                   const QRect &sourceRect,
-                                   const QRect &clip,
-                                   qreal topY, qreal bottomY,
-                                   int dudx, int dvdx, int dudy, int dvdy, int u0, int v0,
-                                   Blender blender )
+                                     const SrcT *srcPixels, int sbpl,
+                                     const QTransformImageVertex &topLeft, const QTransformImageVertex &bottomLeft,
+                                     const QTransformImageVertex &topRight, const QTransformImageVertex &bottomRight,
+                                     const QRect &sourceRect,
+                                     const QRect &clip,
+                                     qreal topY, qreal bottomY,
+                                     int dudx, int dvdx, int dudy, int dvdy, int u0, int v0,
+                                     Blender blender )
 {
     int fromY = qMax( qRound( topY ), clip.top() );
     int toY = qMin( qRound( bottomY ), clip.top() + clip.height() );
@@ -543,12 +543,12 @@ void lscs_transform_image_rasterize( DestT *destPixels, int dbpl,
 
 template <class SrcT, class DestT, class Blender>
 void lscs_transform_image( DestT *destPixels, int dbpl,
-                         const SrcT *srcPixels, int sbpl,
-                         const QRectF &targetRect,
-                         const QRectF &sourceRect,
-                         const QRect &clip,
-                         const QTransform &targetRectTransform,
-                         Blender blender )
+                           const SrcT *srcPixels, int sbpl,
+                           const QRectF &targetRect,
+                           const QRectF &sourceRect,
+                           const QRect &clip,
+                           const QTransform &targetRectTransform,
+                           Blender blender )
 {
     enum Corner
     {
@@ -663,20 +663,20 @@ void lscs_transform_image( DestT *destPixels, int dbpl,
     if ( v[1].y < v[3].y )
     {
         lscs_transform_image_rasterize( destPixels, dbpl, srcPixels, sbpl, v[0], v[1], v[0], v[3], sourceRectI, clip, v[0].y,
-                                      v[1].y, dudx, dvdx, dudy, dvdy, u0, v0, blender );
+                                        v[1].y, dudx, dvdx, dudy, dvdy, u0, v0, blender );
         lscs_transform_image_rasterize( destPixels, dbpl, srcPixels, sbpl, v[1], v[2], v[0], v[3], sourceRectI, clip, v[1].y,
-                                      v[3].y, dudx, dvdx, dudy, dvdy, u0, v0, blender );
+                                        v[3].y, dudx, dvdx, dudy, dvdy, u0, v0, blender );
         lscs_transform_image_rasterize( destPixels, dbpl, srcPixels, sbpl, v[1], v[2], v[3], v[2], sourceRectI, clip, v[3].y,
-                                      v[2].y, dudx, dvdx, dudy, dvdy, u0, v0, blender );
+                                        v[2].y, dudx, dvdx, dudy, dvdy, u0, v0, blender );
     }
     else
     {
         lscs_transform_image_rasterize( destPixels, dbpl, srcPixels, sbpl, v[0], v[1], v[0], v[3], sourceRectI, clip, v[0].y,
-                                      v[3].y, dudx, dvdx, dudy, dvdy, u0, v0, blender );
+                                        v[3].y, dudx, dvdx, dudy, dvdy, u0, v0, blender );
         lscs_transform_image_rasterize( destPixels, dbpl, srcPixels, sbpl, v[0], v[1], v[3], v[2], sourceRectI, clip, v[3].y,
-                                      v[1].y, dudx, dvdx, dudy, dvdy, u0, v0, blender );
+                                        v[1].y, dudx, dvdx, dudy, dvdy, u0, v0, blender );
         lscs_transform_image_rasterize( destPixels, dbpl, srcPixels, sbpl, v[1], v[2], v[3], v[2], sourceRectI, clip, v[1].y,
-                                      v[2].y, dudx, dvdx, dudy, dvdy, u0, v0, blender );
+                                        v[2].y, dudx, dvdx, dudy, dvdy, u0, v0, blender );
     }
 }
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -152,13 +152,6 @@ static const uchar reservedMask[96] =
     0xff  // BSKP
 };
 
-static inline bool isHex( QChar c )
-{
-    return ( c >= 'a' && c <= 'f' ) ||
-           ( c >= 'A' && c <= 'F' ) ||
-           ( c >= '0' && c <= '9' );
-}
-
 static inline bool isUpperHex( QChar c )
 {
     return c < 0x60;
@@ -196,7 +189,7 @@ static inline int decodePercentEncoding( QString::const_iterator begin, QString:
 
     QChar c2 = *begin;
 
-    if ( ! isHex( c1 ) || ! isHex( c2 ) )
+    if ( ! c1.isHex() || ! c2.isHex() )
     {
         return -1;
     }
@@ -375,7 +368,7 @@ static int decode( QString &appendTo, QString::const_iterator begin, QString::co
             continue;
         }
 
-        if ( end - input < 3 || ! isHex( input[1] ) || ! isHex( input[2] ) )
+        if ( end - input < 3 || ! input[1].isHex() || ! input[2].isHex() )
         {
             // badly-encoded data
             return end - begin;
@@ -489,7 +482,7 @@ static void maskTable( uchar ( &table )[N], const uchar ( &mask )[N] )
 */
 
 int lscs_urlRecode( QString &appendTo, QString::const_iterator begin, QString::const_iterator end,
-                  QUrl::FormattingOptions encoding, const ushort *tableModifications )
+                    QUrl::FormattingOptions encoding, const ushort *tableModifications )
 {
     uchar actionTable[sizeof defaultActionTable];
 

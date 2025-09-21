@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -33,53 +33,7 @@ Q_XMLPATTERNS_EXPORT uint qHash( const QXmlName &name );
 
 class Q_XMLPATTERNS_EXPORT QXmlName
 {
-public:
-    typedef qint16 NamespaceCode;
-    typedef NamespaceCode PrefixCode;
-    typedef NamespaceCode LocalNameCode;
-
-    QXmlName();
-
-    QXmlName( QXmlNamePool &namePool, const QString &localName, const QString &namespaceURI = QString(),
-              const QString &prefix = QString() );
-
-    QXmlName( const QXmlName &other ) = default;
-    QXmlName &operator=( const QXmlName &other ) = default;
-
-    QString namespaceUri( const QXmlNamePool &namePool ) const;
-    QString prefix( const QXmlNamePool &namePool ) const;
-    QString localName( const QXmlNamePool &namePool ) const;
-    QString toClarkName( const QXmlNamePool &namePool ) const;
-
-    bool operator==( const QXmlName &other ) const;
-    bool operator!=( const QXmlName &other ) const;
-    bool isNull() const;
-
-    static bool isNCName( const QString &candidate );
-    static QXmlName fromClarkName( const QString &clarkName, const QXmlNamePool &namePool );
-
-    /* The members below are internal, not part of the public API, and
-     * unsupported. Using them is undefined behavior. */
-    typedef qint64 Code;
-
-    inline QXmlName( const NamespaceCode uri, const LocalNameCode ln, const PrefixCode p = 0 );
-
-    /* implementations are in utils/qnamepool_p.h. */
-    inline LocalNameCode localName() const;
-    inline PrefixCode prefix() const;
-    inline bool hasPrefix() const;
-    inline bool hasNamespace() const;
-    inline NamespaceCode namespaceURI() const;
-    inline bool isLexicallyEqual( const QXmlName &other ) const;
-    inline void setPrefix( const PrefixCode c );
-    inline void setNamespaceURI( const NamespaceCode c );
-    inline void setLocalName( const LocalNameCode c );
-    inline Code code() const;
-
-    friend Q_XMLPATTERNS_EXPORT uint qHash( const QXmlName &name );
-
 private:
-
     enum Constant
     {
         LocalNameOffset     = 0,
@@ -99,6 +53,50 @@ private:
         LexicalQNameMask    = LocalNameMask | PrefixMask
     };
 
+public:
+    typedef qint16 NamespaceCode;
+    typedef NamespaceCode PrefixCode;
+    typedef NamespaceCode LocalNameCode;
+
+    QXmlName();
+
+    QXmlName( QXmlNamePool &namePool, const QString &localName, const QString &namespaceURI = QString(),
+              const QString &prefix = QString() );
+
+    QString namespaceUri( const QXmlNamePool &namePool ) const;
+    QString prefix( const QXmlNamePool &namePool ) const;
+    QString localName( const QXmlNamePool &namePool ) const;
+    QString toClarkName( const QXmlNamePool &namePool ) const;
+
+    bool operator==( const QXmlName &other ) const;
+    bool operator!=( const QXmlName &other ) const;
+    QXmlName &operator=( const QXmlName &other );
+    bool isNull() const;
+
+    static bool isNCName( const QString &candidate );
+    static QXmlName fromClarkName( const QString &clarkName, const QXmlNamePool &namePool );
+
+    /* The members below are internal, not part of the public API, and
+     * unsupported. Using them leads to undefined behavior. */
+    typedef qint64 Code;
+
+    inline QXmlName( const NamespaceCode uri, const LocalNameCode ln, const PrefixCode p = 0 );
+
+    /* implementations are in utils/qnamepool_p.h. */
+    inline LocalNameCode localName() const;
+    inline PrefixCode prefix() const;
+    inline bool hasPrefix() const;
+    inline bool hasNamespace() const;
+    inline NamespaceCode namespaceURI() const;
+    inline bool isLexicallyEqual( const QXmlName &other ) const;
+    inline void setPrefix( const PrefixCode c );
+    inline void setNamespaceURI( const NamespaceCode c );
+    inline void setLocalName( const LocalNameCode c );
+    inline Code code() const;
+
+    friend Q_XMLPATTERNS_EXPORT uint qHash( const QXmlName &name );
+
+private:
     inline QXmlName( const int c )
         : m_qNameCode( c )
     {
@@ -107,6 +105,6 @@ private:
     Code m_qNameCode;
 };
 
-LSCS_DECLARE_METATYPE( QXmlName )
+CS_DECLARE_METATYPE( QXmlName )
 
 #endif

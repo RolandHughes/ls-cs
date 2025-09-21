@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,9 +25,9 @@
 #define QURL_H
 
 #include <qbytearray.h>
+#include <qhash.h>
 #include <qpair.h>
 #include <qstring.h>
-#include <qhash.h>
 
 class QDataStream;
 class QUrl;
@@ -316,6 +316,7 @@ public:
     static QList<QUrl> fromStringList( const QStringList &urls, ParsingMode mode = TolerantMode );
     static void setIdnWhitelist( const QStringList &list );
 
+    static uint hash( const QUrl &url, uint seed = 0 );
     using DataPtr = QUrlPrivate *;
 
     DataPtr &data_ptr()
@@ -324,12 +325,10 @@ public:
     }
 
 private:
-    friend class QUrlQuery;
-    friend Q_CORE_EXPORT uint qHash( const QUrl &url, uint seed );
-
     static QString fromEncodedComponent_helper( const QByteArray &ba );
 
     QUrlPrivate *d;
+    friend class QUrlQuery;
 };
 
 Q_DECLARE_SHARED( QUrl )

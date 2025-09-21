@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,11 +21,11 @@
 *
 ***********************************************************************/
 
+#include <qtextcodecplugin.h>
 #include <qstringlist.h>
 #include <qstringparser.h>
-#include <qtextcodecplugin.h>
 
-#ifndef LSCS_NO_TEXTCODECPLUGIN
+#ifndef QT_NO_TEXTCODECPLUGIN
 
 QTextCodecPlugin::QTextCodecPlugin( QObject *parent )
     : QObject( parent )
@@ -61,4 +61,4 @@ QTextCodec *QTextCodecPlugin::create( const QString &name )
     return createForName( name );
 }
 
-#endif // LSCS_NO_TEXTCODECPLUGIN
+#endif // QT_NO_TEXTCODECPLUGIN

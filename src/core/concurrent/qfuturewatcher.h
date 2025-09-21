@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -33,7 +33,7 @@ class QFutureWatcherBasePrivate;
 
 class Q_CORE_EXPORT QFutureWatcherBase : public QObject
 {
-    CORE_LSCS_OBJECT( QFutureWatcherBase )
+    CORE_CS_OBJECT( QFutureWatcherBase )
     Q_DECLARE_PRIVATE( QFutureWatcherBase )
 
 public:
@@ -57,37 +57,37 @@ public:
 
     bool event( QEvent *event ) override;
 
-    CORE_LSCS_SIGNAL_1( Public, void started() )
-    CORE_LSCS_SIGNAL_2( started )
-    CORE_LSCS_SIGNAL_1( Public, void finished() )
-    CORE_LSCS_SIGNAL_2( finished )
-    CORE_LSCS_SIGNAL_1( Public, void canceled() )
-    CORE_LSCS_SIGNAL_2( canceled )
-    CORE_LSCS_SIGNAL_1( Public, void paused() )
-    CORE_LSCS_SIGNAL_2( paused )
-    CORE_LSCS_SIGNAL_1( Public, void resumed() )
-    CORE_LSCS_SIGNAL_2( resumed )
-    CORE_LSCS_SIGNAL_1( Public, void resultReadyAt( int index ) )
-    CORE_LSCS_SIGNAL_2( resultReadyAt, index )
-    CORE_LSCS_SIGNAL_1( Public, void resultsReadyAt( int beginIndex, int endIndex ) )
-    CORE_LSCS_SIGNAL_2( resultsReadyAt, beginIndex, endIndex )
-    CORE_LSCS_SIGNAL_1( Public, void progressRangeChanged( int minimum, int maximum ) )
-    CORE_LSCS_SIGNAL_2( progressRangeChanged, minimum, maximum )
-    CORE_LSCS_SIGNAL_1( Public, void progressValueChanged( int progressValue ) )
-    CORE_LSCS_SIGNAL_2( progressValueChanged, progressValue )
-    CORE_LSCS_SIGNAL_1( Public, void progressTextChanged( const QString &progressText ) )
-    CORE_LSCS_SIGNAL_2( progressTextChanged, progressText )
+    CORE_CS_SIGNAL_1( Public, void started() )
+    CORE_CS_SIGNAL_2( started )
+    CORE_CS_SIGNAL_1( Public, void finished() )
+    CORE_CS_SIGNAL_2( finished )
+    CORE_CS_SIGNAL_1( Public, void canceled() )
+    CORE_CS_SIGNAL_2( canceled )
+    CORE_CS_SIGNAL_1( Public, void paused() )
+    CORE_CS_SIGNAL_2( paused )
+    CORE_CS_SIGNAL_1( Public, void resumed() )
+    CORE_CS_SIGNAL_2( resumed )
+    CORE_CS_SIGNAL_1( Public, void resultReadyAt( int index ) )
+    CORE_CS_SIGNAL_2( resultReadyAt, index )
+    CORE_CS_SIGNAL_1( Public, void resultsReadyAt( int beginIndex, int endIndex ) )
+    CORE_CS_SIGNAL_2( resultsReadyAt, beginIndex, endIndex )
+    CORE_CS_SIGNAL_1( Public, void progressRangeChanged( int minimum, int maximum ) )
+    CORE_CS_SIGNAL_2( progressRangeChanged, minimum, maximum )
+    CORE_CS_SIGNAL_1( Public, void progressValueChanged( int progressValue ) )
+    CORE_CS_SIGNAL_2( progressValueChanged, progressValue )
+    CORE_CS_SIGNAL_1( Public, void progressTextChanged( const QString &progressText ) )
+    CORE_CS_SIGNAL_2( progressTextChanged, progressText )
 
-    CORE_LSCS_SLOT_1( Public, void cancel() )
-    CORE_LSCS_SLOT_2( cancel )
-    CORE_LSCS_SLOT_1( Public, void setPaused( bool paused ) )
-    CORE_LSCS_SLOT_2( setPaused )
-    CORE_LSCS_SLOT_1( Public, void pause() )
-    CORE_LSCS_SLOT_2( pause )
-    CORE_LSCS_SLOT_1( Public, void resume() )
-    CORE_LSCS_SLOT_2( resume )
-    CORE_LSCS_SLOT_1( Public, void togglePaused() )
-    CORE_LSCS_SLOT_2( togglePaused )
+    CORE_CS_SLOT_1( Public, void cancel() )
+    CORE_CS_SLOT_2( cancel )
+    CORE_CS_SLOT_1( Public, void setPaused( bool paused ) )
+    CORE_CS_SLOT_2( setPaused )
+    CORE_CS_SLOT_1( Public, void pause() )
+    CORE_CS_SLOT_2( pause )
+    CORE_CS_SLOT_1( Public, void resume() )
+    CORE_CS_SLOT_2( resume )
+    CORE_CS_SLOT_1( Public, void togglePaused() )
+    CORE_CS_SLOT_2( togglePaused )
 
 protected:
     void connectNotify ( const QMetaMethod &signal ) const override;
@@ -140,7 +140,6 @@ private:
     {
         return m_future.d;
     }
-
     QFutureInterfaceBase &futureInterface() override
     {
         return m_future.d;

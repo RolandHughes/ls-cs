@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,19 +21,18 @@
 *
 ***********************************************************************/
 
-#include <qacceltree_p.h>
-
-#include <qabstractxmlreceiver.h>
 #include <qstack.h>
+#include "qabstractxmlreceiver.h"
 
-#include <qabstractxmlnodemodel_p.h>
-#include <qacceliterators_p.h>
-#include <qatomicstring_p.h>
-#include <qcommonvalues_p.h>
-#include <qcompressedwhitespace_p.h>
-#include <qxmlpatterns_debug_p.h>
-#include <quntypedatomic_p.h>
-#include <qxpathhelper_p.h>
+#include "qabstractxmlnodemodel_p.h"
+#include "qacceliterators_p.h"
+#include "qacceltree_p.h"
+#include "qatomicstring_p.h"
+#include "qcommonvalues_p.h"
+#include "qcompressedwhitespace_p.h"
+#include "qxmlpatterns_debug_p.h"
+#include "quntypedatomic_p.h"
+#include "qxpathhelper_p.h"
 
 using namespace QPatternist;
 
@@ -72,7 +71,7 @@ void AccelTree::printStats( const NamePool::Ptr &np ) const
 {
     Q_ASSERT( np );
 
-#if defined(LSCS_DEBUG)
+#if ! defined(QT_NO_DEBUG)
 
     const int len = basicData.count();
 
@@ -848,3 +847,5 @@ QVector<QXmlNodeModelIndex> AccelTree::nodesByIdref( const QXmlName & ) const
 {
     return QVector<QXmlNodeModelIndex>();
 }
+
+

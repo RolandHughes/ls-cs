@@ -4,6 +4,8 @@
    Text spooler has line numbers, number width in characters, and checkbox for wrapping
    Raw spooler has none
 
+*) merge in latest CopperSpice stuff for xml and other stuff that doesn't conflict.
+*) need to handle situation where system has no default printer defined.
 
 *) paperSource not being filled in for m_job
 
@@ -14,6 +16,9 @@
 
 *) Pages needs to default to all then show range widget
 *) Research Cups margin unit support
+
+*) Unable to load library /tmp/.mount_reddiagqtVOk/usr/bin/sqldrivers/CsSqlMySql1.8.so
+   if haven't done so yet, sqldrivers names need to change. 
 
 makeDefaultCurrentDestination()
 
@@ -33,4 +38,40 @@ document-format-supported = application/octet-stream,
                             application/pdf,
                             application/postscript,
                             text/plain     tag: 4
+
+
+/mnt/data6tb/github_projects/ls-cs/src/xmlpatterns/parser/qquerytransformparser.cpp:3469:18: note: declared here
+ 3469 |     yytype_int16 yyssa[YYINITDEPTH];
+      |                  ^~~~~
+
+*) have to diff the annex files against their lscs_ counterparts. Copperspice broke them out as individual libraries.
+
+*) have to grep for CS_ that is not LSCS_  and Cs_ that is not LsCs_ 
+   CsCore that is not LsCsCore
+   _NAMESPACE
+   cs_internal needs to be lscs_internal
+   csPrintable  
+   Must diff qt_windows.h against lscs_windows.h 
+   diff kernel/csmeta* csobject* csregister* against kernel lscs*
+   CS_DOXYPRESS
+   CsPointer
+   
+
+
+why does my global.cmake have qglobal_debug.h and lscs_windows.h when theirs only has qt_windows.h 
+
+qglobal.h needs a much closer look.
+
+*) replace QT_NO_DEBUG with LSCS_NO_DEBUG
+
+Must diff cs_ annex directories against lscs_ annex directories.
+
+Will probably have C++20 stuff to revert
+
+Did I leave in the XP stuff?
+
+grep -rl --exclude-dir=.git 'search_term' . | xargs sed -i 's/search_term/replace_term/g'
+
+
+C++ has had a regular expression library since C++11 so why have one in Basis Doctrina?
 

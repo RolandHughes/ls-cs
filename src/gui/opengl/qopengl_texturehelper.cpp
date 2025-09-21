@@ -234,7 +234,8 @@ QOpenGLTextureHelper::QOpenGLTextureHelper( QOpenGLContext *context )
 
     TexParameteriv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLint * )>( GetProcAddress( handle,
                      "glTexParameteriv" ) );
-    TexParameteri  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLint )>( GetProcAddress( handle, "glTexParameteri" ) );
+    TexParameteri  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLint )>( GetProcAddress( handle,
+                     "glTexParameteri" ) );
     TexParameterfv = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, const GLfloat * )>( GetProcAddress( handle,
                      "glTexParameterfv" ) );
     TexParameterf  = lscs_bitCast<void ( QOPENGLF_APIENTRYP )( GLenum, GLenum, GLfloat )>( GetProcAddress( handle,
@@ -708,7 +709,8 @@ private:
 
 } // namespace
 
-void QOpenGLTextureHelper::lscs_TextureParameteri( GLuint texture, GLenum target, GLenum bindingTarget, GLenum pname, GLint param )
+void QOpenGLTextureHelper::lscs_TextureParameteri( GLuint texture, GLenum target, GLenum bindingTarget, GLenum pname,
+        GLint param )
 {
     TextureBinder binder( this, texture, target, bindingTarget );
     glTexParameteri( target, pname, param );
@@ -798,21 +800,24 @@ void QOpenGLTextureHelper::lscs_TextureImage1D( GLuint texture, GLenum target, G
     glTexImage1D( target, level, internalFormat, width, border, format, type, pixels );
 }
 
-void QOpenGLTextureHelper::lscs_TextureSubImage3D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level, GLint xoffset,
+void QOpenGLTextureHelper::lscs_TextureSubImage3D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level,
+        GLint xoffset,
         GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid *pixels )
 {
     TextureBinder binder( this, texture, target, bindingTarget );
     glTexSubImage3D( target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels );
 }
 
-void QOpenGLTextureHelper::lscs_TextureSubImage2D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level, GLint xoffset,
+void QOpenGLTextureHelper::lscs_TextureSubImage2D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level,
+        GLint xoffset,
         GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels )
 {
     TextureBinder binder( this, texture, target, bindingTarget );
     glTexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, pixels );
 }
 
-void QOpenGLTextureHelper::lscs_TextureSubImage1D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level, GLint xoffset,
+void QOpenGLTextureHelper::lscs_TextureSubImage1D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level,
+        GLint xoffset,
         GLsizei width, GLenum format, GLenum type, const GLvoid *pixels )
 {
     TextureBinder binder( this, texture, target, bindingTarget );

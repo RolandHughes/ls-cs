@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,10 +21,12 @@
 *
 ***********************************************************************/
 
-#include <qnodenamespaceresolver_p.h>
+#include "qitem_p.h"
+#include "qnamepool_p.h"
 
-#include <qitem_p.h>
-#include <qnamepool_p.h>
+#include "qnodenamespaceresolver_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -35,7 +37,7 @@ NodeNamespaceResolver::NodeNamespaceResolver( const Item &item ) : m_node( item.
 
 void NodeNamespaceResolver::addBinding( const QXmlName nb )
 {
-    ( void ) nb;
+    Q_UNUSED( nb );
     Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
 }
 
@@ -65,3 +67,5 @@ NamespaceResolver::Bindings NodeNamespaceResolver::bindings() const
     Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
     return NamespaceResolver::Bindings();
 }
+
+QT_END_NAMESPACE

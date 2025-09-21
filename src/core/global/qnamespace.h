@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -423,7 +423,7 @@ public:
 
         WA_LayoutUsesWidgetRect = 92,
         WA_StyledBackground = 93, // internal
-        WA_MSWindowsUseDirect3D = 94, // Win only
+        WA_MSWindowsUseDirect3D = 94, // Windows only
         WA_CanHostQMdiSubWindowTitleBar = 95, // Internal
 
         WA_MacAlwaysShowToolWindow = 96, // Mac only
@@ -500,13 +500,12 @@ public:
         AA_EnableHighDpiScaling = 20,
         AA_DisableHighDpiScaling = 21,
         AA_UseSystemConf = 22,
-        
+
         // Add new attributes before this line
         AA_AttributeCount
     };
 
-    // Image conversion flags.  The unusual ordering is caused by
-    // compatibility and default requirements.
+    // Image conversion flags, unusual ordering is caused by compatibility and default requirements.
 
     enum ImageConversionFlag
     {

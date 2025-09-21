@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,10 +24,11 @@
 #ifndef QXsdParticle_P_H
 #define QXsdParticle_P_H
 
-#include <qlist.h>
-
 #include <qnamedschemacomponent_p.h>
 #include <qxsdterm_p.h>
+#include <QList>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -101,7 +102,8 @@ private:
     bool         m_maximumOccursUnbounded;
     XsdTerm::Ptr m_term;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

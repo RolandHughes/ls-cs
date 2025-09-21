@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -58,8 +58,7 @@ static inline QByteArray openModeToFopenMode( QIODevice::OpenMode flags, const Q
         {
             metaData.clearFlags( QFileSystemMetaData::FileType );
 
-            if ( !fileEntry.isEmpty()
-                    && QFileSystemEngine::fillMetaData( fileEntry, metaData, QFileSystemMetaData::FileType )
+            if ( !fileEntry.isEmpty() && QFileSystemEngine::fillMetaData( fileEntry, metaData, QFileSystemMetaData::FileType )
                     && metaData.isFile() )
             {
                 mode += '+';
@@ -136,13 +135,13 @@ static inline bool setCloseOnExec( int fd )
     return fd != -1 && fcntl( fd, F_SETFD, FD_CLOEXEC ) != -1;
 }
 
-bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
+bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode fileOpenMode )
 {
     Q_Q( QFSFileEngine );
 
-    if ( openMode & QIODevice::Unbuffered )
+    if ( fileOpenMode & QIODevice::Unbuffered )
     {
-        int flags = openModeToOpenFlags( openMode );
+        int flags = openModeToOpenFlags( fileOpenMode );
 
         // Try to open the file in unbuffered mode.
         do
@@ -159,14 +158,14 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
             return false;
         }
 
-        if ( ! ( openMode & QIODevice::WriteOnly ) )
+        if ( ! ( fileOpenMode & QIODevice::WriteOnly ) )
         {
-            // we don't need this check if we tried to open for writing because then
+            // do not need this check if we tried to open for writing because then
             // we had received EISDIR anyway.
-            if ( QFileSystemEngine::fillMetaData( fd, metaData )
-                    && metaData.isDirectory() )
+
+            if ( QFileSystemEngine::fillMetaData( fd, metaData ) && metaData.isDirectory() )
             {
-                q->setError( QFile::OpenError, QLatin1String( "file to open is a directory" ) );
+                q->setError( QFile::OpenError, tr( "file to open is a directory" ) );
                 LSCS_CLOSE( fd );
                 return false;
             }
@@ -195,7 +194,7 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
     }
     else
     {
-        QByteArray fopenMode = openModeToFopenMode( openMode, fileEntry, metaData );
+        QByteArray fopenMode = openModeToFopenMode( fileOpenMode, fileEntry, metaData );
 
         // Try to open the file in buffered mode.
         do
@@ -204,7 +203,7 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
         }
         while ( !fh && errno == EINTR );
 
-        // On failure, return and report the error.
+        // On failure return and report the error
         if ( !fh )
         {
             q->setError( errno == EMFILE ? QFile::ResourceError : QFile::OpenError,
@@ -212,14 +211,15 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
             return false;
         }
 
-        if ( ! ( openMode & QIODevice::WriteOnly ) )
+        if ( ! ( fileOpenMode & QIODevice::WriteOnly ) )
         {
-            // we don't need this check if we tried to open for writing because then
+            // do not need this check if we tried to open for writing because then
             // we had received EISDIR anyway.
+
             if ( QFileSystemEngine::fillMetaData( LSCS_FILENO( fh ), metaData )
                     && metaData.isDirectory() )
             {
-                q->setError( QFile::OpenError, QLatin1String( "file to open is a directory" ) );
+                q->setError( QFile::OpenError, tr( "file to open is a directory" ) );
                 fclose( fh );
                 return false;
             }
@@ -228,7 +228,7 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
         setCloseOnExec( fileno( fh ) ); // ignore failure
 
         // Seek to the end when in Append mode.
-        if ( openMode & QIODevice::Append )
+        if ( fileOpenMode & QIODevice::Append )
         {
             int ret;
 
@@ -404,15 +404,15 @@ bool QFSFileEngine::remove()
     Q_D( QFSFileEngine );
 
     QSystemError error;
-    bool ret = QFileSystemEngine::removeFile( d->fileEntry, error );
+    bool retval = QFileSystemEngine::removeFile( d->fileEntry, error );
     d->metaData.clear();
 
-    if ( !ret )
+    if ( ! retval )
     {
         setError( QFile::RemoveError, error.toString() );
     }
 
-    return ret;
+    return retval;
 }
 
 bool QFSFileEngine::copy( const QString &newName )
@@ -420,14 +420,14 @@ bool QFSFileEngine::copy( const QString &newName )
     Q_D( QFSFileEngine );
 
     QSystemError error;
-    bool ret = QFileSystemEngine::copyFile( d->fileEntry, QFileSystemEntry( newName ), error );
+    bool retval = QFileSystemEngine::copyFile( d->fileEntry, QFileSystemEntry( newName ), error );
 
-    if ( ! ret )
+    if ( ! retval )
     {
         setError( QFile::CopyError, error.toString() );
     }
 
-    return ret;
+    return retval;
 }
 
 bool QFSFileEngine::renameOverwrite( const QString &newName )
@@ -440,28 +440,28 @@ bool QFSFileEngine::rename( const QString &newName )
 {
     Q_D( QFSFileEngine );
     QSystemError error;
-    bool ret = QFileSystemEngine::renameFile( d->fileEntry, QFileSystemEntry( newName ), error );
+    bool retval = QFileSystemEngine::renameFile( d->fileEntry, QFileSystemEntry( newName ), error );
 
-    if ( !ret )
+    if ( ! retval )
     {
         setError( QFile::RenameError, error.toString() );
     }
 
-    return ret;
+    return retval;
 }
 
 bool QFSFileEngine::link( const QString &newName )
 {
     Q_D( QFSFileEngine );
     QSystemError error;
-    bool ret = QFileSystemEngine::createLink( d->fileEntry, QFileSystemEntry( newName ), error );
+    bool retval = QFileSystemEngine::createLink( d->fileEntry, QFileSystemEntry( newName ), error );
 
-    if ( !ret )
+    if ( ! retval )
     {
         setError( QFile::RenameError, error.toString() );
     }
 
-    return ret;
+    return retval;
 }
 
 qint64 QFSFileEnginePrivate::nativeSize() const
@@ -511,10 +511,10 @@ QString QFSFileEngine::tempPath()
 
 QFileInfoList QFSFileEngine::drives()
 {
-    QFileInfoList ret;
-    ret.append( QFileInfo( rootPath() ) );
+    QFileInfoList retval;
+    retval.append( QFileInfo( rootPath() ) );
 
-    return ret;
+    return retval;
 }
 
 bool QFSFileEnginePrivate::doStat( QFileSystemMetaData::MetaDataFlags flags ) const
@@ -575,8 +575,7 @@ QAbstractFileEngine::FileFlags QFSFileEngine::fileFlags( FileFlags type ) const
     {
         QFileSystemMetaData::MetaDataFlags queryFlags = Qt::EmptyFlag;
 
-        queryFlags |= QFileSystemMetaData::MetaDataFlags( uint( type ) )
-                      & QFileSystemMetaData::Permissions;
+        queryFlags |= QFileSystemMetaData::MetaDataFlags( uint( type ) ) & QFileSystemMetaData::MetaDataFlag::AllPermissions;
 
         if ( type & TypesMask )
         {
@@ -723,7 +722,7 @@ bool QFSFileEngine::isRelativePath() const
 {
     Q_D( const QFSFileEngine );
 
-    return d->fileEntry.filePath().length() ? d->fileEntry.filePath()[0] != QLatin1Char( '/' ) : true;
+    return d->fileEntry.filePath().length() ? d->fileEntry.filePath()[0] != QChar( '/' ) : true;
 
 }
 
@@ -756,9 +755,9 @@ bool QFSFileEngine::setPermissions( uint perms )
     Q_D( QFSFileEngine );
     QSystemError error;
 
-    if ( !QFileSystemEngine::setPermissions( d->fileEntry, QFile::Permissions( perms ), error, nullptr ) )
+    if ( ! QFileSystemEngine::setPermissions( d->fileEntry, QFileDevice::Permissions( perms ), error, nullptr ) )
     {
-        setError( QFile::PermissionsError, error.toString() );
+        setError( QFileDevice::PermissionsError, error.toString() );
         return false;
     }
 
@@ -768,39 +767,71 @@ bool QFSFileEngine::setPermissions( uint perms )
 bool QFSFileEngine::setSize( qint64 size )
 {
     Q_D( QFSFileEngine );
-    bool ret = false;
+    bool retval = false;
 
     if ( d->fd != -1 )
     {
-        ret = LSCS_FTRUNCATE( d->fd, size ) == 0;
+        retval = LSCS_FTRUNCATE( d->fd, size ) == 0;
     }
     else if ( d->fh )
     {
-        ret = LSCS_FTRUNCATE( LSCS_FILENO( d->fh ), size ) == 0;
+        retval = LSCS_FTRUNCATE( LSCS_FILENO( d->fh ), size ) == 0;
     }
     else
     {
-        ret = LSCS_TRUNCATE( d->fileEntry.nativeFilePath().constData(), size ) == 0;
+        retval = LSCS_TRUNCATE( d->fileEntry.nativeFilePath().constData(), size ) == 0;
     }
 
-    if ( !ret )
+    if ( !retval )
     {
         setError( QFile::ResizeError, lscs_error_string( errno ) );
     }
 
-    return ret;
+    return retval;
 }
 
-QDateTime QFSFileEngine::fileTime( FileTime time ) const
+QDateTime QFSFileEngine::fileTime( QFileDevice::FileTimeType type ) const
 {
     Q_D( const QFSFileEngine );
 
     if ( d->doStat( QFileSystemMetaData::Times ) )
     {
-        return d->metaData.fileTime( time );
+        return d->metaData.fileTime( type );
     }
 
     return QDateTime();
+}
+
+bool QFSFileEngine::setFileTime( const QDateTime &newTime, QFileDevice::FileTimeType type )
+{
+    Q_D( QFSFileEngine );
+
+    if ( d->openMode == QIODevice::NotOpen )
+    {
+        setError( QFileDevice::PermissionsError, qt_error_string( int( EACCES ) ) );
+        return false;
+    }
+
+    if ( ! newTime.isValid() )
+    {
+        setError( QFile::UnspecifiedError, qt_error_string( int( EINVAL ) ) );
+        return false;
+    }
+
+    QSystemError error;
+    bool ok = QFileSystemEngine::setFileTime( d->nativeHandle(), newTime, type, error );
+
+    if ( ok )
+    {
+        d->metaData.clearFlags( QFileSystemMetaData::Times );
+        return true;
+
+    }
+    else
+    {
+        setError( QFileDevice::PermissionsError, error.toString() );
+        return false;
+    }
 }
 
 uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFlags flags )
@@ -855,7 +886,7 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
     realOffset &= ~( LSCS_OFF_T( pageSize - 1 ) );
 
     void *mapAddress = LSCS_MMAP( ( void * )nullptr, realSize,
-                                access, MAP_SHARED, nativeHandle(), realOffset );
+                                  access, MAP_SHARED, nativeHandle(), realOffset );
 
     if ( MAP_FAILED != mapAddress )
     {
@@ -867,7 +898,7 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
     switch ( errno )
     {
         case EBADF:
-            q->setError( QFile::PermissionsError, lscs_error_string( int( EACCES ) ) );
+            q->setError( QFileDevice::PermissionsError, lscs_error_string( int( EACCES ) ) );
             break;
 
         case ENFILE:
@@ -876,9 +907,10 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
             break;
 
         case EINVAL:
+            [[fallthrough]];
 
-        // size are out of bounds
         default:
+        // size are out of bounds
             q->setError( QFile::UnspecifiedError, lscs_error_string( int( errno ) ) );
             break;
     }
@@ -892,7 +924,7 @@ bool QFSFileEnginePrivate::unmap( uchar *ptr )
 
     if ( ! maps.contains( ptr ) )
     {
-        q->setError( QFile::PermissionsError, lscs_error_string( EACCES ) );
+        q->setError( QFileDevice::PermissionsError, lscs_error_string( EACCES ) );
         return false;
     }
 
@@ -904,7 +936,6 @@ bool QFSFileEnginePrivate::unmap( uchar *ptr )
         q->setError( QFile::UnspecifiedError, lscs_error_string( errno ) );
         return false;
     }
-
 
     maps.remove( ptr );
     return true;

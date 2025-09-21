@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,10 +32,10 @@
 #include <qtimer.h>
 
 #ifdef Q_OS_WIN
-#include <lscs_windows.h>
+#include <qt_windows.h>
 #endif
 
-#ifndef LSCS_NO_ANIMATION
+#ifndef QT_NO_ANIMATION
 
 class QAbstractAnimation;
 class QAnimationGroup;
@@ -83,9 +83,10 @@ protected:
     QAbstractAnimation *q_ptr;
 };
 
+
 class QDefaultAnimationDriver : public QAnimationDriver
 {
-    CORE_LSCS_OBJECT( QDefaultAnimationDriver )
+    CORE_CS_OBJECT( QDefaultAnimationDriver )
 
 public:
     QDefaultAnimationDriver( QUnifiedTimer *timer );
@@ -98,6 +99,7 @@ private:
     QBasicTimer m_timer;
     QUnifiedTimer *m_unified_timer;
 };
+
 
 class Q_CORE_EXPORT QAnimationDriverPrivate
 {
@@ -147,7 +149,6 @@ public:
     {
         slowMode = enabled;
     }
-
     void setSlowdownFactor( double factor )
     {
         slowdownFactor = factor;
@@ -218,6 +219,6 @@ private:
     int closestPauseAnimationTimeToFinish();
 };
 
-#endif //LSCS_NO_ANIMATION
+#endif //QT_NO_ANIMATION
 
 #endif

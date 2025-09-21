@@ -74,7 +74,7 @@ MainWindow::MainWindow( QWidget *parent ) :
     QMainWindow( parent )
 {
 #if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN) || defined(Q_OS_BSD4) || defined(Q_OS_OPENBSD) || defined(Q_OS_FREEBSD)
-	m_cupsDest = nullptr;
+    m_cupsDest = nullptr;
 #endif
     setMinimumHeight( 600 );
     setMinimumWidth( 450 );
@@ -124,13 +124,15 @@ MainWindow::~MainWindow()
 
     delete m_tabWidget;
     delete m_layout;
-    
+
 #if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN) || defined(Q_OS_BSD4) || defined(Q_OS_OPENBSD) || defined(Q_OS_FREEBSD)
-    if ( m_cupsDest)
+
+    if ( m_cupsDest )
     {
-    	delete m_cupsDest;
-    	m_cupsDest = nullptr;
+        delete m_cupsDest;
+        m_cupsDest = nullptr;
     }
+
 #endif
     m_tabWidget = nullptr;
     m_layout    = nullptr;
@@ -148,11 +150,11 @@ void MainWindow::createMenus()
     m_actionSaveAs     = m_menuFile->addAction( tr( "SaveAs" ) );
     m_actionSep5       = m_menuFile->addSeparator();
     m_actionPrint      = m_menuFile->addAction( tr( "Print" ) );
-#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN) || defined(Q_OS_BSD4) || defined(Q_OS_OPENBSD) || defined(Q_OS_FREEBSD)    
+#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN) || defined(Q_OS_BSD4) || defined(Q_OS_OPENBSD) || defined(Q_OS_FREEBSD)
     m_actionSep6       = m_menuFile->addSeparator();
-    m_actionTestAPI	   = m_menuFile->addAction( tr( "Test API"));
+    m_actionTestAPI    = m_menuFile->addAction( tr( "Test API" ) );
 #endif
-    m_actionSep7	   = m_menuFile->addSeparator();
+    m_actionSep7       = m_menuFile->addSeparator();
     m_actionExit       = m_menuFile->addAction( tr( "Exit" ) );
 
     m_menuHelp         = menuBar()->addMenu( tr( "Help" ) );
@@ -168,7 +170,7 @@ void MainWindow::createMenus()
     m_actionSaveAs->setToolTip( tr( "Save File As" ) );
     m_actionPrint->setToolTip( tr( "Print current tab content" ) );
 #if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN) || defined(Q_OS_BSD4) || defined(Q_OS_OPENBSD) || defined(Q_OS_FREEBSD)
-    m_actionTestAPI->setToolTip( tr( "Test CUPS 3.x API"));
+    m_actionTestAPI->setToolTip( tr( "Test CUPS 3.x API" ) );
 #endif
     m_actionExit->setToolTip( tr( "Exit program" ) );
 
@@ -292,11 +294,11 @@ void MainWindow::createMenus()
             printCurrent();
         }
     } );
-    
-#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN) || defined(Q_OS_BSD4) || defined(Q_OS_OPENBSD) || defined(Q_OS_FREEBSD)    
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN) || defined(Q_OS_BSD4) || defined(Q_OS_OPENBSD) || defined(Q_OS_FREEBSD)
     connect( m_actionTestAPI, &QAction::triggered, this, [this]()
     {
-    	testAPI();
+        testAPI();
     } );
 #endif
 
@@ -574,14 +576,14 @@ void MainWindow::commandLineDialog()
     QPrinterInfo info = QPrinterInfo::printerInfo( printerName );
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN) || defined(Q_OS_BSD4) || defined(Q_OS_OPENBSD) || defined(Q_OS_FREEBSD)
-    
+
     QStringList duplexList = info.supportedDuplexModes();
 
-    QString str1("two-sided-long-edge");
-    
-    if ( duplexList.contains(str1, Qt::CaseInsensitive ) )
+    QString str1( "two-sided-long-edge" );
+
+    if ( duplexList.contains( str1, Qt::CaseInsensitive ) )
     {
-    	qDebug() << "duplex found";
+        qDebug() << "duplex found";
         duplexStr = "-o sides=two-sided-long-edge";
     }
 
@@ -613,41 +615,41 @@ void MainWindow::commandLineDialog()
 
 void MainWindow::guiDialog()
 {
-	qDebug() << "################ creating QPrinterInfo for default printer";
-	QPrinterInfo info( QPrinterInfo::defaultPrinter());
-	qDebug() << "################ finished creating QPrinterInfo for default printer" << endl;
-	
-#if TEST_YOUR_PLATFORM	
-	qDebug() << "printerName:           " << info.printerName();
-	qDebug() << "description:           " << info.description();
-	qDebug() << "location:              " << info.location();
-	qDebug() << "make and model:        " << info.makeAndModel();
-	qDebug() << "isNull:                " << info.isNull();
-	qDebug() << "isDefault:             " << info.isDefault();
-	qDebug() << "isRemote:              " << info.isRemote();
-	qDebug() << "state:                 " << static_cast<int>(info.state());
-	qDebug() << "default resolution:    " << info.defaultResolution();
-	qDebug() << "supported resolutions: " << info.supportedResolutions() << endl;
-	qDebug() << "defaultDuplexMode:     " << info.defaultDuplexMode();
-	qDebug() << "supportedDuplexModes:  " << info.supportedDuplexModes() << endl;
-	qDebug() << "defaultColorMode:      " << info.defaultColorMode();
-	qDebug() << "supportedColorModes:   " << info.supportedColorModes() << endl;
-	qDebug() << "default PageSize:      " << info.defaultPageSize();
-	qDebug() << "supported Page sizes:  " << info.supportedPageSizes();
-	qDebug() << "supports custom page:  " << info.supportsCustomPageSizes();
-	qDebug() << "minimum page size:     " << info.minimumPhysicalPageSize();
-	qDebug() << "maximum page size:     " << info.maximumPhysicalPageSize();
-	qDebug() << "default Media Source:  " << info.defaultMediaSource();
-	qDebug() << "media sources:         " << info.supportedMediaSources() << endl;
-	qDebug() << "default output bin:    " << info.defaultOutputBin();
-	qDebug() << "supported output bins: " << info.supportedOutputBins() << endl;
-	qDebug() << "supportedResolutions:  " << info.supportedResolutions() << endl;
-#endif	
+    qDebug() << "################ creating QPrinterInfo for default printer";
+    QPrinterInfo info( QPrinterInfo::defaultPrinter() );
+    qDebug() << "################ finished creating QPrinterInfo for default printer" << endl;
+
+#if TEST_YOUR_PLATFORM
+    qDebug() << "printerName:           " << info.printerName();
+    qDebug() << "description:           " << info.description();
+    qDebug() << "location:              " << info.location();
+    qDebug() << "make and model:        " << info.makeAndModel();
+    qDebug() << "isNull:                " << info.isNull();
+    qDebug() << "isDefault:             " << info.isDefault();
+    qDebug() << "isRemote:              " << info.isRemote();
+    qDebug() << "state:                 " << static_cast<int>( info.state() );
+    qDebug() << "default resolution:    " << info.defaultResolution();
+    qDebug() << "supported resolutions: " << info.supportedResolutions() << endl;
+    qDebug() << "defaultDuplexMode:     " << info.defaultDuplexMode();
+    qDebug() << "supportedDuplexModes:  " << info.supportedDuplexModes() << endl;
+    qDebug() << "defaultColorMode:      " << info.defaultColorMode();
+    qDebug() << "supportedColorModes:   " << info.supportedColorModes() << endl;
+    qDebug() << "default PageSize:      " << info.defaultPageSize();
+    qDebug() << "supported Page sizes:  " << info.supportedPageSizes();
+    qDebug() << "supports custom page:  " << info.supportsCustomPageSizes();
+    qDebug() << "minimum page size:     " << info.minimumPhysicalPageSize();
+    qDebug() << "maximum page size:     " << info.maximumPhysicalPageSize();
+    qDebug() << "default Media Source:  " << info.defaultMediaSource();
+    qDebug() << "media sources:         " << info.supportedMediaSources() << endl;
+    qDebug() << "default output bin:    " << info.defaultOutputBin();
+    qDebug() << "supported output bins: " << info.supportedOutputBins() << endl;
+    qDebug() << "supportedResolutions:  " << info.supportedResolutions() << endl;
+#endif
 
     QPrinter *printer = new QPrinter( info.defaultPrinter() );
-    
+
     QPrintDialog *dlg = new QPrintDialog( printer, this );
-    
+
     dlg->setWindowTitle( tr( "Print editor contents" ) );
 
     if ( dlg->exec() == QDialog::Accepted )
@@ -678,35 +680,35 @@ QString MainWindow::printerOption( const QString &key )
 
 void MainWindow::testAPI()
 {
-	QTextStream out(stdout);
-	m_cupsDest = cupsGetNamedDest( CUPS_HTTP_DEFAULT, cupsGetDefault(), NULL);
-	
-	if (!m_cupsDest)
-	{
-		out << "****unable to get default print destination" << endl;;
-		return;
-	}
+    QTextStream out( stdout );
+    m_cupsDest = cupsGetNamedDest( CUPS_HTTP_DEFAULT, cupsGetDefault(), NULL );
 
-    cups_dinfo_t *info = cupsCopyDestInfo(CUPS_HTTP_DEFAULT, m_cupsDest);
+    if ( !m_cupsDest )
+    {
+        out << "****unable to get default print destination" << endl;;
+        return;
+    }
 
-	m_name = QByteArray( m_cupsDest->name);
-	m_instance.clear();
-	
-	if (m_cupsDest->instance)
-	{
-		m_instance = QByteArray( m_cupsDest->instance);
-	}
-	
-	m_uri = printerOption( QString::fromUtf8( URI_OPTION ) ).toUtf8();
-	m_makeAndModel = printerOption( QString::fromUtf8( MAKE_AND_MODEL_OPTION) ).toUtf8();
-	m_location = printerOption( QString::fromUtf8( LOCATION_OPTION)).toUtf8();
-	
-	out << "Printer name: " << QString::fromUtf8(m_name) << endl;
-	out << "instance: " << QString::fromUtf8(m_instance) << endl;
-	out << "uri: " << QString::fromUtf8(m_uri) << endl;
-	out << "make and model: " << QString::fromUtf8( m_makeAndModel) << endl;
-	out << "location: " << QString::fromUtf8( m_location) << endl;
-	
+    cups_dinfo_t *info = cupsCopyDestInfo( CUPS_HTTP_DEFAULT, m_cupsDest );
+
+    m_name = QByteArray( m_cupsDest->name );
+    m_instance.clear();
+
+    if ( m_cupsDest->instance )
+    {
+        m_instance = QByteArray( m_cupsDest->instance );
+    }
+
+    m_uri = printerOption( QString::fromUtf8( URI_OPTION ) ).toUtf8();
+    m_makeAndModel = printerOption( QString::fromUtf8( MAKE_AND_MODEL_OPTION ) ).toUtf8();
+    m_location = printerOption( QString::fromUtf8( LOCATION_OPTION ) ).toUtf8();
+
+    out << "Printer name: " << QString::fromUtf8( m_name ) << endl;
+    out << "instance: " << QString::fromUtf8( m_instance ) << endl;
+    out << "uri: " << QString::fromUtf8( m_uri ) << endl;
+    out << "make and model: " << QString::fromUtf8( m_makeAndModel ) << endl;
+    out << "location: " << QString::fromUtf8( m_location ) << endl;
+
     static const char *const requested_attributes[] =
     {
         CUPS_PRINT_COLOR_MODE_SUPPORTED
@@ -724,9 +726,9 @@ void MainWindow::testAPI()
 
         if ( ( cupsLastError() >= IPP_STATUS_ERROR_BAD_REQUEST ) )
         {
-        	out << "request error: " << QString::fromUtf8( ippErrorString( cupsLastError())) << endl;
+            out << "request error: " << QString::fromUtf8( ippErrorString( cupsLastError() ) ) << endl;
             httpClose( http );
-            cupsFreeDestInfo(info);
+            cupsFreeDestInfo( info );
             return;
         }
 
@@ -734,11 +736,12 @@ void MainWindow::testAPI()
 
         if ( ( attr = ippFindAttribute( response, CUPS_PRINT_COLOR_MODE_SUPPORTED, IPP_TAG_ZERO ) ) != NULL )
         {
-            int binCount = ippGetCount(attr);
+            int binCount = ippGetCount( attr );
             out << "---supported color modes" << endl;
-            for (int uuu = 0; uuu < binCount; uuu++)
+
+            for ( int uuu = 0; uuu < binCount; uuu++ )
             {
-                out << QString::fromUtf8( ippGetString(attr, uuu, NULL)) << endl;
+                out << QString::fromUtf8( ippGetString( attr, uuu, NULL ) ) << endl;
             }
         }
 
@@ -746,11 +749,11 @@ void MainWindow::testAPI()
     }
     else
     {
-    	out << "ErrorString: " << QString::fromUtf8( ippErrorString( cupsLastError())) << endl;
+        out << "ErrorString: " << QString::fromUtf8( ippErrorString( cupsLastError() ) ) << endl;
         out << "unable to connect to printer" << endl;
     }
 
-    cupsFreeDestInfo(info);
+    cupsFreeDestInfo( info );
 
 }
 #endif

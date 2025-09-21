@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -325,7 +325,7 @@ bool QLibrary::isLibrary( const QString &fileName )
 {
 
 #if defined(Q_OS_WIN)
-    return fileName.endsWith( QLatin1String( ".dll" ), Qt::CaseInsensitive );
+    return fileName.endsWith( ".dll", Qt::CaseInsensitive );
 
 #else
     QString completeSuffix = QFileInfo( fileName ).completeSuffix();
@@ -335,7 +335,7 @@ bool QLibrary::isLibrary( const QString &fileName )
         return false;
     }
 
-    QStringList suffixes = completeSuffix.split( QLatin1Char( '.' ) );
+    QStringList suffixes = completeSuffix.split( QChar( '.' ) );
 
 # if defined(Q_OS_DARWIN)
 
@@ -351,7 +351,7 @@ bool QLibrary::isLibrary( const QString &fileName )
     QStringList validSuffixList;
 
 #  if defined(Q_OS_UNIX)
-    validSuffixList << QLatin1String( "so" );
+    validSuffixList << QString( "so" );
 #  endif
 
     // Examples of valid library names:
@@ -498,7 +498,7 @@ void QLibraryHandle::updatePluginState()
 
     if ( ( version & 0x00ff00 ) > ( LSCS_VERSION & 0x00ff00 ) || ( version & 0xff0000 ) != ( LSCS_VERSION & 0xff0000 ) )
     {
-        errorString = QLibrary::tr( "Plugin '%1' uses an incompatible CopperSpice library (%2.%3.%4)" )
+        errorString = QLibrary::tr( "Plugin '%1' uses an incompatible library (%2.%3.%4)" )
                       .formatArg( fileName ).formatArg( ( version & 0xff0000 ) >> 16 ).formatArg( ( version & 0xff00 ) >> 8 )
                       .formatArg( version & 0xff );
 

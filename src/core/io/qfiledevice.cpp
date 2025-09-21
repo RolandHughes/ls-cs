@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,9 +22,9 @@
 ***********************************************************************/
 
 #include <qfiledevice.h>
+#include <qfiledevice_p.h>
 #include <qplatformdefs.h>
 
-#include <qfiledevice_p.h>
 #include <qfsfileengine_p.h>
 
 static constexpr const int QFILE_WRITEBUFFER_SIZE = 16384;
@@ -509,16 +509,16 @@ bool QFileDevice::resize( qint64 sz )
     return false;
 }
 
-QFile::Permissions QFileDevice::permissions() const
+QFileDevice::Permissions QFileDevice::permissions() const
 {
     Q_D( const QFileDevice );
-    QAbstractFileEngine::FileFlags perms = d->engine()->fileFlags( QAbstractFileEngine::PermsMask ) &
-                                           QAbstractFileEngine::PermsMask;
 
-    return QFile::Permissions( ( int )perms );
+    QAbstractFileEngine::FileFlags perms = d->engine()->fileFlags( QAbstractFileEngine::PermsMask ) & QAbstractFileEngine::PermsMask;
+
+    return QFileDevice::Permissions( ( int )perms );
 }
 
-bool QFileDevice::setPermissions( Permissions permissions )
+bool QFileDevice::setPermissions( QFileDevice::Permissions permissions )
 {
     Q_D( QFileDevice );
 
@@ -528,7 +528,29 @@ bool QFileDevice::setPermissions( Permissions permissions )
         return true;
     }
 
-    d->setError( QFile::PermissionsError, d->fileEngine->errorString() );
+    d->setError( QFileDevice::PermissionsError, d->fileEngine->errorString() );
+
+    return false;
+}
+
+QDateTime QFileDevice::fileTime( QFileDevice::FileTimeType type )
+{
+    Q_D( const QFileDevice );
+
+    return d->engine()->fileTime( type );
+}
+
+bool QFileDevice::setFileTime( const QDateTime &newTime, QFileDevice::FileTimeType type )
+{
+    Q_D( QFileDevice );
+
+    if ( d->engine()->setFileTime( newTime, type ) )
+    {
+        unsetError();
+        return true;
+    }
+
+    d->setError( QFile::FileTimeError, d->fileEngine->errorString() );
 
     return false;
 }
@@ -537,8 +559,7 @@ uchar *QFileDevice::map( qint64 offset, qint64 size, MemoryMapFlags flags )
 {
     Q_D( QFileDevice );
 
-    if ( d->engine()
-            && d->fileEngine->supportsExtension( QAbstractFileEngine::MapExtension ) )
+    if ( d->engine() && d->fileEngine->supportsExtension( QAbstractFileEngine::MapExtension ) )
     {
         unsetError();
         uchar *address = d->fileEngine->map( offset, size, flags );

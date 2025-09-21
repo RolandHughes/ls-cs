@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,12 +24,12 @@
 #include <qassert.h>
 #include <qlog.h>
 
-void lscs_assert( const char *assertion, const char *file, int line )
+void qt_assert( const char *assertion, const char *file, int line )
 {
     qFatal( "ASSERT: \"%s\" in file %s, line %d", assertion, file, line );
 }
 
-void lscs_assert_x( const char *where, const char *what, const char *file, int line )
+void qt_assert_x( const char *where, const char *what, const char *file, int line )
 {
     qFatal( "ASSERT failure in %s \n\"%s\", file %s, line %d", where, what, file, line );
 }

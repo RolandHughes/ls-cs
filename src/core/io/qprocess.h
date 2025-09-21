@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,8 +25,9 @@
 #define QPROCESS_H
 
 #include <qiodevice.h>
-#include <qstringlist.h>
 #include <qshareddata.h>
+#include <qstringlist.h>
+
 
 #ifndef LSCS_NO_PROCESS
 

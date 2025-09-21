@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -28,6 +28,8 @@
 #include "qparentnodeaxis_p.h"
 
 #include "qaxisstep_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -84,8 +86,7 @@ Item AxisStep::mapToItem( const QXmlNodeModelIndex &node,
     Q_ASSERT( !node.isNull() );
     Q_ASSERT( Item( node ).isNode() );
     Q_ASSERT( Item( node ) );
-
-    ( void ) context;
+    Q_UNUSED( context );
 
     if ( m_nodeTest->itemMatches( Item( node ) ) )
     {
@@ -287,3 +288,5 @@ Expression::ID AxisStep::id() const
 {
     return IDAxisStep;
 }
+
+QT_END_NAMESPACE

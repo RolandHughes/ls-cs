@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -586,8 +586,8 @@ ElementDescription<XsdSchemaToken, XsdTagScope::Type>::Hash  XsdSchemaParserCont
     }
 
     Q_ASSERT_X( elementDescriptions.count() == ReservedForElements, Q_FUNC_INFO,
-                lscsPrintable( QString::fromLatin1( "Expected is %1, actual is %2." ).formatArg( ReservedForElements ).formatArg(
-                                 elementDescriptions.count() ) ) );
+                qPrintable( QString::fromLatin1( "Expected is %1, actual is %2." ).formatArg( ReservedForElements ).formatArg(
+                                elementDescriptions.count() ) ) );
 
     return elementDescriptions;
 }

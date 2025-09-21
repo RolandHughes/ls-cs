@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,7 +32,7 @@
 
 #include <algorithm>
 
-#ifndef LSCS_NO_ANIMATION
+#ifndef QT_NO_ANIMATION
 
 libguarded::shared_guarded<QHash<uint, QVariantAnimation::CustomFormula>> &QVariantAnimation::getFormulas()
 {
@@ -45,26 +45,26 @@ static bool animationValueLessThan( const QVariantAnimation::ValuePair &p1, cons
     return p1.first < p2.first;
 }
 
-static QVariant lscs_defaultFormula( const QVariant &, const QVariant &, double )
+static QVariant cs_defaultFormula( const QVariant &, const QVariant &, double )
 {
     return QVariant();
 }
 
-template <>
-inline QRect lscs_genericFormula( const QRect &from, const QRect &to, double progress )
+template<>
+inline QRect cs_genericFormula( const QRect &from, const QRect &to, double progress )
 {
     QRect retval;
 
-    retval.setCoords( lscs_genericFormula( from.left(), to.left(), progress ),
-                      lscs_genericFormula( from.top(),    to.top(),    progress ),
-                      lscs_genericFormula( from.right(),  to.right(),  progress ),
-                      lscs_genericFormula( from.bottom(), to.bottom(), progress ) );
+    retval.setCoords( cs_genericFormula( from.left(),   to.left(),   progress ),
+                      cs_genericFormula( from.top(),    to.top(),    progress ),
+                      cs_genericFormula( from.right(),  to.right(),  progress ),
+                      cs_genericFormula( from.bottom(), to.bottom(), progress ) );
 
     return retval;
 }
 
-template <>
-inline QRectF lscs_genericFormula( const QRectF &from, const QRectF &to, double progress )
+template<>
+inline QRectF cs_genericFormula( const QRectF &from, const QRectF &to, double progress )
 {
     double x1, y1, w1, h1;
     from.getRect( &x1, &y1, &w1, &h1 );
@@ -72,24 +72,24 @@ inline QRectF lscs_genericFormula( const QRectF &from, const QRectF &to, double 
     double x2, y2, w2, h2;
     to.getRect( &x2, &y2, &w2, &h2 );
 
-    return QRectF( lscs_genericFormula( x1, x2, progress ), lscs_genericFormula( y1, y2, progress ),
-                   lscs_genericFormula( w1, w2, progress ), lscs_genericFormula( h1, h2, progress ) );
+    return QRectF( cs_genericFormula( x1, x2, progress ), cs_genericFormula( y1, y2, progress ),
+                   cs_genericFormula( w1, w2, progress ), cs_genericFormula( h1, h2, progress ) );
 }
 
-template <>
-inline QLine lscs_genericFormula( const QLine &from, const QLine &to, double progress )
+template<>
+inline QLine cs_genericFormula( const QLine &from, const QLine &to, double progress )
 {
-    return QLine( lscs_genericFormula( from.p1(), to.p1(), progress ), lscs_genericFormula( from.p2(), to.p2(), progress ) );
+    return QLine( cs_genericFormula( from.p1(), to.p1(), progress ), cs_genericFormula( from.p2(), to.p2(), progress ) );
 }
 
-template <>
-inline QLineF lscs_genericFormula( const QLineF &from, const QLineF &to, double progress )
+template<>
+inline QLineF cs_genericFormula( const QLineF &from, const QLineF &to, double progress )
 {
-    return QLineF( lscs_genericFormula( from.p1(), to.p1(), progress ), lscs_genericFormula( from.p2(), to.p2(), progress ) );
+    return QLineF( cs_genericFormula( from.p1(), to.p1(), progress ), cs_genericFormula( from.p2(), to.p2(), progress ) );
 }
 
 QVariantAnimationPrivate::QVariantAnimationPrivate()
-    : m_duration( 250 ), m_callBack( &lscs_defaultFormula )
+    : m_duration( 250 ), m_callBack( &cs_defaultFormula )
 { }
 
 void QVariantAnimationPrivate::convertValues( uint typeId )
@@ -104,16 +104,16 @@ void QVariantAnimationPrivate::convertValues( uint typeId )
     m_currentInterval.start.second.convert( static_cast<QVariant::Type>( typeId ) );
     m_currentInterval.end.second.convert( static_cast<QVariant::Type>( typeId ) );
 
-    lscs_updateCustomType();
+    cs_updateCustomType();
 }
 
-void QVariantAnimationPrivate::lscs_updateCustomType()
+void QVariantAnimationPrivate::cs_updateCustomType()
 {
     uint type = m_currentInterval.start.second.userType();
 
     if ( type == m_currentInterval.end.second.userType() )
     {
-        m_callBack = lscs_getCustomType( type );
+        m_callBack = cs_getCustomType( type );
     }
     else
     {
@@ -122,7 +122,7 @@ void QVariantAnimationPrivate::lscs_updateCustomType()
 
     if ( m_callBack == nullptr )
     {
-        m_callBack = &lscs_defaultFormula;
+        m_callBack = &cs_defaultFormula;
     }
 }
 
@@ -199,7 +199,7 @@ void QVariantAnimationPrivate::recalculateCurrentInterval( bool force )
         }
 
         // update all the values of the currentInterval
-        lscs_updateCustomType();
+        cs_updateCustomType();
     }
 
     setCurrentValueForProgress( progress );
@@ -298,45 +298,46 @@ void QVariantAnimation::setEasingCurve( const QEasingCurve &easing )
     d->recalculateCurrentInterval();
 }
 
-QVariantAnimation::CustomFormula QVariantAnimationPrivate::lscs_getCustomType( uint typeId )
+
+QVariantAnimation::CustomFormula QVariantAnimationPrivate::cs_getCustomType( uint typeId )
 {
     switch ( typeId )
     {
         case QVariant::Int:
-            return lscs_variantFormula<int>;
+            return cs_variantFormula<int>;
 
         case QVariant::UInt:
-            return lscs_variantFormula<uint>;
+            return cs_variantFormula<uint>;
 
         case QVariant::Double:
-            return lscs_variantFormula<double>;
+            return cs_variantFormula<double>;
 
         case QVariant::Float:
-            return lscs_variantFormula<float>;
+            return cs_variantFormula<float>;
 
         case QVariant::Line:
-            return lscs_variantFormula<QLine>;
+            return cs_variantFormula<QLine>;
 
         case QVariant::LineF:
-            return lscs_variantFormula<QLineF>;
+            return cs_variantFormula<QLineF>;
 
         case QVariant::Point:
-            return lscs_variantFormula<QPoint>;
+            return cs_variantFormula<QPoint>;
 
         case QVariant::PointF:
-            return lscs_variantFormula<QPointF>;
+            return cs_variantFormula<QPointF>;
 
         case QVariant::Size:
-            return lscs_variantFormula<QSize>;
+            return cs_variantFormula<QSize>;
 
         case QVariant::SizeF:
-            return lscs_variantFormula<QSizeF>;
+            return cs_variantFormula<QSizeF>;
 
         case QVariant::Rect:
-            return lscs_variantFormula<QRect>;
+            return cs_variantFormula<QRect>;
 
         case QVariant::RectF:
-            return lscs_variantFormula<QRectF>;
+            return cs_variantFormula<QRectF>;
 
         default:
             break;

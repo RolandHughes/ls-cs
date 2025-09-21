@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -33,8 +33,6 @@
 #undef Expose
 #warning "QCoreEvent should be included before any X11 header, issue with enum Expose"
 #endif
-
-class QEventPrivate;
 
 class Q_CORE_EXPORT QEvent           // event base class
 {
@@ -88,7 +86,7 @@ public:
         ApplicationPaletteChange         = 38,  // application palette changed
 
         PaletteChange          = 39,            // widget palette changed
-        Clipboard              = 40,            // internal clipboard event
+        Clipboard              = 40,            // clipboard event
         Speech                 = 42,            // reserved for speech input
         MetaCall               = 43,            // meta call event
         SockAct                = 50,            // socket activation
@@ -115,10 +113,10 @@ public:
         ContextMenu            = 82,            // context popup menu
         InputMethod            = 83,            // input method
         TabletMove             = 87,            // Wacom tablet event
-        LocaleChange           = 88,            // the system locale changed
-        LanguageChange         = 89,            // the application language changed
-        LayoutDirectionChange  = 90,            // the layout direction changed
-        Style                  = 91,            // internal style event
+        LocaleChange           = 88,            // system locale changed
+        LanguageChange         = 89,            // application language changed
+        LayoutDirectionChange  = 90,            // layout direction changed
+        Style                  = 91,            // style event
         TabletPress            = 92,            // tablet press
         TabletRelease          = 93,            // tablet release
         OkRequest              = 94,            // CE (Ok) button pressed
@@ -166,20 +164,22 @@ public:
 #endif
 
         AcceptDropsChange                = 152,
-        ZeroTimerEvent                   = 154,           // Used for Windows Zero timer events
-        GraphicsSceneMouseMove           = 155,           // GraphicsView
-        GraphicsSceneMousePress          = 156,
-        GraphicsSceneMouseRelease        = 157,
-        GraphicsSceneMouseDoubleClick    = 158,
-        GraphicsSceneContextMenu         = 159,
-        GraphicsSceneHoverEnter          = 160,
-        GraphicsSceneHoverMove           = 161,
+        ZeroTimerEvent                   = 153,           // Used for Windows Zero timer events
+
+        GraphicsSceneLeave               = 154,           // GraphicsView
+        GraphicsSceneContextMenu         = 155,
+        GraphicsSceneDragEnter           = 156,
+        GraphicsSceneDragLeave           = 157,
+        GraphicsSceneDragMove            = 158,
+        GraphicsSceneDrop                = 159,
+        GraphicsSceneHelp                = 160,
+        GraphicsSceneHoverEnter          = 161,
         GraphicsSceneHoverLeave          = 162,
-        GraphicsSceneHelp                = 163,
-        GraphicsSceneDragEnter           = 164,
-        GraphicsSceneDragMove            = 165,
-        GraphicsSceneDragLeave           = 166,
-        GraphicsSceneDrop                = 167,
+        GraphicsSceneHoverMove           = 163,
+        GraphicsSceneMouseDoubleClick    = 164,
+        GraphicsSceneMouseMove           = 165,
+        GraphicsSceneMousePress          = 166,
+        GraphicsSceneMouseRelease        = 167,
         GraphicsSceneWheel               = 168,
         KeyboardLayoutChange             = 169,            // keyboard layout changed
         DynamicPropertyChange            = 170,            // A dynamic property was changed through setProperty/property
@@ -192,27 +192,27 @@ public:
         NonClientAreaMouseButtonDblClick = 176,
 
         MacSizeChange        = 177,             // when the Qt::WA_Mac{Normal,Small,Mini}Size changes
-        ContentsRectChange   = 178,             // sent by QWidget::setContentsMargins (internal)
-        MacGLWindowChange    = 179,             // Internal! the window of the GLWidget has changed
+        ContentsRectChange   = 178,             // sent by QWidget::setContentsMargins
+        MacGLWindowChange    = 179,             // window in GLWidget has changed
         FutureCallOut        = 180,
         GraphicsSceneResize  = 181,
         GraphicsSceneMove    = 182,
         CursorChange         = 183,
         ToolTipChange        = 184,
-        NetworkReplyUpdated  = 185,             // Internal for QNetworkReply
+        NetworkReplyUpdated  = 185,             // QNetworkReply
         GrabMouse            = 186,
         UngrabMouse          = 187,
         GrabKeyboard         = 188,
         UngrabKeyboard       = 189,
-        MacGLClearDrawable   = 191,             // Internal Cocoa, the window has changed, so we must clear
-        StateMachineSignal   = 192,
-        StateMachineWrapped  = 193,
-        TouchBegin           = 194,
-        TouchUpdate          = 195,
-        TouchEnd             = 196,
+        MacGLClearDrawable   = 190,             // Cocoa window has changed, must clear window
+        StateMachineSignal   = 191,
+        StateMachineWrapped  = 192,
+        TouchBegin           = 193,
+        TouchUpdate          = 194,
+        TouchEnd             = 195,
 
 #ifndef LSCS_NO_GESTURES
-        NativeGesture        = 197,             // Internal for platform gesture support
+        NativeGesture        = 197,             // platform gesture support
         Gesture              = 198,
         GestureOverride      = 202,
 #endif
@@ -232,7 +232,7 @@ public:
         PlatformPanel          = 212,
         StyleAnimationUpdate   = 213,           // style animation target should be updated
         ApplicationStateChange = 214,
-        WindowChangeInternal   = 215,           // internal for QQuickWidget
+        WindowChangeInternal   = 215,           // for QQuickWidget
         ScreenChangeInternal   = 216,
         PlatformSurface        = 217,           // Platform surface created or about to be destroyed
 
@@ -282,7 +282,6 @@ public:
     static int registerEventType( int hint = -1 );
 
 protected:
-    QEventPrivate *d;
     ushort t;
 
 private:

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,14 +21,13 @@
 *
 ***********************************************************************/
 
-#include <qstandardpaths.h>
-
 #include <qcoreapplication.h>
 #include <qdir.h>
 #include <qfile.h>
 #include <qhash.h>
-#include <qtextstream.h>
 #include <qregularexpression.h>
+#include <qstandardpaths.h>
+#include <qtextstream.h>
 
 #include <qfilesystemengine_p.h>
 
@@ -184,7 +183,7 @@ QString QStandardPaths::writableLocation( StandardLocation type )
             }
 
             // Unix access mode MUST be 0700
-            const QFile::Permissions wantedPerms = QFile::ReadUser | QFile::WriteUser | QFile::ExeUser
+            const QFileDevice::Permissions wantedPerms = QFile::ReadUser | QFile::WriteUser | QFile::ExeUser
                                                    | QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner;
 
             if ( fileInfo.permissions() != wantedPerms )

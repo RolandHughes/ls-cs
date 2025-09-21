@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,6 +29,8 @@
 #include <qunlimitedcontainer_p.h>
 #include <quserfunction_p.h>
 #include <qvariabledeclaration_p.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -121,8 +123,7 @@ private:
  */
 static inline QString formatFunction( const UserFunctionCallsite::Ptr &func )
 {
-    ( void ) func;
-
+    Q_UNUSED( func );
     // TODO TODO TODO
     // TODO Make UserFunctionCallsite always use a FunctionSignature
     return QLatin1String( "<span class='XQuery-function'>" )  +
@@ -131,5 +132,7 @@ static inline QString formatFunction( const UserFunctionCallsite::Ptr &func )
            QLatin1String( "</span>" );
 }
 }
+
+QT_END_NAMESPACE
 
 #endif

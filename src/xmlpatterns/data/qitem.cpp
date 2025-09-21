@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,14 +21,14 @@
 *
 ***********************************************************************/
 
-#include <qbuiltintypes_p.h>
-#include <qitem_p.h>
+#include "qbuiltintypes_p.h"
+#include "qitem_p.h"
 
 QPatternist::Item::Iterator::Ptr QPatternist::Item::sequencedTypedValue() const
 {
     if ( isAtomicValue() )
     {
-        return makeSingletonIterator( QPatternist::Item( std::get<const AtomicValue *>( m_data ) ) );
+        return makeSingletonIterator( QPatternist::Item( atomicValue ) );
     }
     else
     {

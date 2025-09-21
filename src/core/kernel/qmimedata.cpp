@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -164,26 +164,26 @@ QVariant QMimeDataPrivate::retrieveTypedData( const QString &format, QVariant::T
 
             case QVariant::Url:
             {
-                QByteArray ba = data.toByteArray();
+                QByteArray tmpData = data.toByteArray();
 
                 // legacy application will send text/uri-list with a trailing null-terminator
                 // not sent for any other text mime-type, remove it
 
-                if ( ba.endsWith( '\0' ) )
+                if ( tmpData.endsWith( '\0' ) )
                 {
-                    ba.chop( 1 );
+                    tmpData.chop( 1 );
                 }
 
-                QList<QByteArray> urls = ba.split( '\n' );
+                QList<QByteArray> urls = tmpData.split( '\n' );
                 QList<QVariant> list;
 
                 for ( int i = 0; i < urls.size(); ++i )
                 {
-                    QByteArray ba = urls.at( i ).trimmed();
+                    QByteArray urlData = urls.at( i ).trimmed();
 
-                    if ( !ba.isEmpty() )
+                    if ( ! urlData.isEmpty() )
                     {
-                        list.append( QUrl::fromEncoded( ba ) );
+                        list.append( QUrl::fromEncoded( urlData ) );
                     }
                 }
 
@@ -259,7 +259,7 @@ QList<QUrl> QMimeData::urls() const
 {
     Q_D( const QMimeData );
 
-    QVariant data = d->retrieveTypedData( QLatin1String( "text/uri-list" ), QVariant::List );
+    QVariant data = d->retrieveTypedData( "text/uri-list", QVariant::List );
     QList<QUrl> urls;
 
     if ( data.type() == QVariant::Url )

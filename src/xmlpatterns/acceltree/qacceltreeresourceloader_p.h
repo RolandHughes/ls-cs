@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,13 +27,13 @@
 #include <qeventloop.h>
 #include <qnetwork_reply.h>
 
-#include <qabstractxmlreceiver.h>
-#include <qacceltree_p.h>
-#include <qacceltreebuilder_p.h>
-#include <qdeviceresourceloader_p.h>
-#include <qnamepool_p.h>
-#include <qnetworkaccessdelegator_p.h>
-#include <qreportcontext_p.h>
+#include "qabstractxmlreceiver.h"
+#include "qacceltree_p.h"
+#include "qacceltreebuilder_p.h"
+#include "qdeviceresourceloader_p.h"
+#include "qnamepool_p.h"
+#include "qnetworkaccessdelegator_p.h"
+#include "qreportcontext_p.h"
 
 class QIODevice;
 
@@ -42,16 +42,16 @@ namespace QPatternist
 
 class NetworkLoop : public QEventLoop
 {
-    XMLP_LSCS_OBJECT( NetworkLoop )
+    XMLP_CS_OBJECT( NetworkLoop )
 
 public:
     NetworkLoop() : m_hasReceivedError( false ) { }
 
-    XMLP_LSCS_SLOT_1( Public, void error( QNetworkReply::NetworkError code ) )
-    XMLP_LSCS_SLOT_2( error )
+    XMLP_CS_SLOT_1( Public, void error( QNetworkReply::NetworkError code ) )
+    XMLP_CS_SLOT_2( error )
 
-    XMLP_LSCS_SLOT_1( Public, void finished() )
-    XMLP_LSCS_SLOT_2( finished )
+    XMLP_CS_SLOT_1( Public, void finished() )
+    XMLP_CS_SLOT_2( finished )
 
 private:
     bool m_hasReceivedError;
@@ -122,7 +122,6 @@ private:
     QHash<QPair<QUrl, QString>, QString>    m_unparsedTexts;
     AccelTreeBuilder<true>::Features        m_features;
 };
-
 }
 
 #endif

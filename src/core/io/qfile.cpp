@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,6 +22,7 @@
 ***********************************************************************/
 
 #include <qfile.h>
+#include <qfile_p.h>
 
 #include <qcoreapplication.h>
 #include <qdebug.h>
@@ -31,7 +32,6 @@
 #include <qplatformdefs.h>
 #include <qtemporaryfile.h>
 
-#include <qfile_p.h>
 #include <qfilesystemengine_p.h>
 #include <qiodevice_p.h>
 #include <qsystemerror_p.h>
@@ -68,11 +68,12 @@ QFilePrivate::~QFilePrivate()
 {
 }
 
-bool QFilePrivate::openExternalFile( int flags, int fd, QFile::FileHandleFlags handleFlags )
+bool QFilePrivate::openExternalFile( int flags, int fd, QFile::FileHandleFlags newHandleFlags )
 {
 #ifdef LSCS_NO_FSFILEENGINE
     ( void ) flags;
     ( void ) fd;
+    ( void ) newHandleFlags;
 
     return false;
 
@@ -82,15 +83,16 @@ bool QFilePrivate::openExternalFile( int flags, int fd, QFile::FileHandleFlags h
     QFSFileEngine *fe = new QFSFileEngine;
     fileEngine = fe;
 
-    return fe->open( QIODevice::OpenMode( flags ), fd, handleFlags );
+    return fe->open( QIODevice::OpenMode( flags ), fd, newHandleFlags );
 #endif
 }
 
-bool QFilePrivate::openExternalFile( int flags, FILE *fh, QFile::FileHandleFlags handleFlags )
+bool QFilePrivate::openExternalFile( int flags, FILE *fh, QFile::FileHandleFlags newHandleFlags )
 {
 #ifdef LSCS_NO_FSFILEENGINE
     ( void ) flags;
     ( void ) fh;
+    ( void ) newHandleFlags;
 
     return false;
 
@@ -101,7 +103,7 @@ bool QFilePrivate::openExternalFile( int flags, FILE *fh, QFile::FileHandleFlags
     QFSFileEngine *fe = new QFSFileEngine;
     fileEngine = fe;
 
-    return fe->open( QIODevice::OpenMode( flags ), fh, handleFlags );
+    return fe->open( QIODevice::OpenMode( flags ), fh, newHandleFlags );
 #endif
 }
 
@@ -755,22 +757,22 @@ bool QFile::resize( const QString &fileName, qint64 sz )
     return QFile( fileName ).resize( sz );
 }
 
-QFile::Permissions QFile::permissions() const
+QFileDevice::Permissions QFile::permissions() const
 {
     return QFileDevice::permissions();
 }
 
-QFile::Permissions QFile::permissions( const QString &fileName )
+QFileDevice::Permissions QFile::permissions( const QString &fileName )
 {
     return QFile( fileName ).permissions();
 }
 
-bool QFile::setPermissions( Permissions permissions )
+bool QFile::setPermissions( QFileDevice::Permissions permissions )
 {
     return QFileDevice::setPermissions( permissions );
 }
 
-bool QFile::setPermissions( const QString &fileName, Permissions permissions )
+bool QFile::setPermissions( const QString &fileName, QFileDevice::Permissions permissions )
 {
     return QFile( fileName ).setPermissions( permissions );
 }

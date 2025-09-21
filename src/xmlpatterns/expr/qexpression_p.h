@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -66,7 +66,7 @@ public:
      */
     typedef QVector<Expression::Ptr> Vector;
 
-    typedef LSCS_PREPEND_NAMESPACE( QAbstractXmlForwardIterator<Expression::Ptr> )
+    typedef QT_PREPEND_NAMESPACE( QAbstractXmlForwardIterator<Expression::Ptr> )
     QAbstractXmlForwardIterator;
 
     /**
@@ -642,7 +642,7 @@ public:
     /**
      * Reimplementation of SourceLocationReflection::description().
      */
-    QString description() const override;
+    virtual QString description() const override;
 
     /**
      * When this function is called, it signals that the parent will create

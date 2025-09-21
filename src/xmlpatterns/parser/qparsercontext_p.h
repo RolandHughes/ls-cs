@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,12 +25,10 @@
 #define QParserContext_P_H
 
 #include <qflags.h>
-#include <qglobal.h>
-#include <qhash.h>
-#include <qmultihash.h>
 #include <qshareddata.h>
 #include <qstack.h>
 #include <qstringlist.h>
+#include <qglobal.h>
 #include <qxmlquery.h>
 
 #include <qbuiltintypes_p.h>
@@ -40,6 +38,8 @@
 #include <quserfunctioncallsite_p.h>
 #include <quserfunction_p.h>
 #include <qvariabledeclaration_p.h>
+#include <qhash.h>
+#include <qmultihash.h>
 
 namespace QPatternist
 {

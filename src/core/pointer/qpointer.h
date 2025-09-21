@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -26,48 +26,49 @@
 
 #include <qsharedpointer.h>
 
+class CSInternalRefCount;
+class QObject;
 class QVariant;
 
 template <class T>
 class QPointer
 {
-    template<typename U>
-    struct TypeSelector
-    {
-        typedef QObject Type;
-    };
-
-    template<typename U>
-    struct TypeSelector<const U>
-    {
-        typedef const QObject Type;
-    };
-
-    typedef typename TypeSelector<T>::Type QObjectType;
-    QWeakPointer<QObjectType> wp;
 
 public:
     QPointer()
-    {
-    }
-
-    inline QPointer( T *ptr )
-        : wp( ptr, true )
     { }
+
+#if ! defined(CS_DOXYPRESS)
+    template <class X = CSInternalRefCount>
+#endif
+    explicit QPointer( T *ptr )
+        : wp( X::get_m_self( ptr ).template staticCast<T>() )
+    {
+        static_assert( std::is_base_of_v<QObject, T>, "T must be a class which inherits from QObject" );
+    }
 
     ~QPointer () = default;
 
-    // compiler-generated copy/move ctor/assignment operators are fine
+    QPointer( const QPointer &other ) = default;
+    QPointer &operator=( const QPointer &other ) = default;
 
-    inline QPointer<T> &operator=( T *ptr )
+    QPointer( QPointer &&other ) = default;
+    QPointer &operator=( QPointer &&other ) = default;
+
+#if ! defined(CS_DOXYPRESS)
+    template <class X = CSInternalRefCount>
+#endif
+    QPointer<T> &operator=( T *ptr )
     {
-        wp.assign( static_cast<QObjectType *>( ptr ) );
+        static_assert( std::is_base_of_v<QObject, T>, "T must be a class which inherits from QObject" );
+
+        wp = X::get_m_self( ptr ).template staticCast<T>();
         return *this;
     }
 
     T *data() const
     {
-        return static_cast<T *>( wp.data() );
+        return wp.data();
     }
 
     T *operator->() const
@@ -94,72 +95,14 @@ public:
     {
         return wp.isNull();
     }
+
+    bool operator==( const QPointer<T> &other ) const noexcept
+{
+        return this->data() == other.data();
+}
+
+private:
+    QWeakPointer<T> wp;
 };
-
-template <class T>
-inline bool operator==( const T *ptr1, const QPointer<T> &ptr2 )
-{
-    return ptr1 == ptr2.operator->();
-}
-
-template<class T>
-inline bool operator==( const QPointer<T> &ptr1, const T *ptr2 )
-{
-    return ptr1.operator->() == ptr2;
-}
-
-template <class T>
-inline bool operator==( T *o, const QPointer<T> &ptr2 )
-{
-    return o == ptr2.operator->();
-}
-
-template<class T>
-inline bool operator==( const QPointer<T> &ptr1, T *ptr2 )
-{
-    return ptr1.operator->() == ptr2;
-}
-
-template<class T>
-inline bool operator==( const QPointer<T> &ptr1, const QPointer<T> &ptr2 )
-{
-    return ptr1.operator->() == ptr2.operator->();
-}
-
-template <class T>
-inline bool operator!=( const T *ptr1, const QPointer<T> &ptr2 )
-{
-    return ptr1 != ptr2.operator->();
-}
-
-template<class T>
-inline bool operator!= ( const QPointer<T> &ptr1, const T *ptr2 )
-{
-    return ptr1.operator->() != ptr2;
-}
-
-template <class T>
-inline bool operator!=( T *ptr1, const QPointer<T> &ptr2 )
-{
-    return ptr1 != ptr2.operator->();
-}
-
-template<class T>
-inline bool operator!= ( const QPointer<T> &ptr1, T *ptr2 )
-{
-    return ptr1.operator->() != ptr2;
-}
-
-template<class T>
-inline bool operator!= ( const QPointer<T> &p1, const QPointer<T> &p2 )
-{
-    return p1.operator->() != p2.operator->() ;
-}
-
-template<typename T>
-QPointer<T> qPointerFromVariant( const QVariant &variant )
-{
-    return QPointer<T>( qobject_cast<T *>( QtSharedPointer::weakPointerFromVariant_internal( variant ).data() ) );
-}
 
 #endif

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -30,7 +30,10 @@
 #include "qreturnorderby_p.h"
 #include "qsorttuple_p.h"
 #include "qsequencemappingiterator_p.h"
+
 #include "qorderby_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -240,3 +243,5 @@ ExpressionVisitorResult::Ptr OrderBy::accept( const ExpressionVisitor::Ptr &visi
 {
     return visitor->visit( this );
 }
+
+QT_END_NAMESPACE

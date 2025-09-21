@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -36,6 +36,8 @@
 #include "qxsdschematoken_p.h"
 #include <QFile>
 #include <QXmlQuery>
+
+QT_BEGIN_NAMESPACE
 
 /**
  * @page schema_overview Overview
@@ -235,7 +237,7 @@ static XsdParticle::List collectGroupRef( const XsdModelGroup::Ptr &group )
  * Helper function that works around the limited facilities of
  * QUrl/AnyURI::fromLexical to detect invalid URIs
  */
-static inline bool isValidUri( const QString &string )
+inline static bool isValidUri( const QString &string )
 {
     // an empty URI points to the current document as defined in RFC 2396 (4.2)
     if ( string.isEmpty() )
@@ -7268,7 +7270,7 @@ QString XsdSchemaParser::readQNameAttribute( const QString &typeAttribute, const
 
     if ( ! XPathHelper::isQName( value ) )
     {
-        attributeContentError( lscsPrintable( typeAttribute ), elementName, value, BuiltinTypes::xsQName );
+        attributeContentError( csPrintable( typeAttribute ), elementName, value, BuiltinTypes::xsQName );
         return QString();
     }
     else
@@ -7283,7 +7285,7 @@ QString XsdSchemaParser::readNamespaceAttribute( const QString &attributeName, c
 
     if ( value.isEmpty() )
     {
-        attributeContentError( lscsPrintable( attributeName ), elementName, value, BuiltinTypes::xsAnyURI );
+        attributeContentError( csPrintable( attributeName ), elementName, value, BuiltinTypes::xsAnyURI );
         return QString();
     }
 
@@ -7565,7 +7567,7 @@ QString XsdSchemaParser::readXPathAttribute( const QString &attributeName, XPath
 
     if ( value.isEmpty() || value.startsWith( '/' ) )
     {
-        attributeContentError( lscsPrintable( attributeName ), elementName, value );
+        attributeContentError( csPrintable( attributeName ), elementName, value );
         return QString();
     }
 
@@ -7606,7 +7608,7 @@ QString XsdSchemaParser::readXPathAttribute( const QString &attributeName, XPath
 
     if ( !query.isValid() )
     {
-        attributeContentError( lscsPrintable( attributeName ), elementName, value );
+        attributeContentError( csPrintable( attributeName ), elementName, value );
         return QString();
     }
 
@@ -7793,3 +7795,5 @@ void XsdSchemaParser::addFacet( const XsdFacet::Ptr &facet, XsdFacet::Hash &face
 
     facets.insert( facet->type(), facet );
 }
+
+QT_END_NAMESPACE

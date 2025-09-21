@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -31,30 +31,30 @@
 #include <qvariant.h>
 #include <qvector.h>
 
-#include <lscs_shared_guarded.h>
+#include <cs_shared_guarded.h>
 
-#ifndef LSCS_NO_ANIMATION
+#ifndef QT_NO_ANIMATION
 
 class QVariantAnimationPrivate;
 
 class Q_CORE_EXPORT QVariantAnimation : public QAbstractAnimation
 {
-    CORE_LSCS_OBJECT( QVariantAnimation )
+    CORE_CS_OBJECT( QVariantAnimation )
 
-    CORE_LSCS_PROPERTY_READ( startValue, startValue )
-    CORE_LSCS_PROPERTY_WRITE( startValue, setStartValue )
+    CORE_CS_PROPERTY_READ( startValue, startValue )
+    CORE_CS_PROPERTY_WRITE( startValue, setStartValue )
 
-    CORE_LSCS_PROPERTY_READ( endValue, endValue )
-    CORE_LSCS_PROPERTY_WRITE( endValue, setEndValue )
+    CORE_CS_PROPERTY_READ( endValue, endValue )
+    CORE_CS_PROPERTY_WRITE( endValue, setEndValue )
 
-    CORE_LSCS_PROPERTY_READ( currentValue, currentValue )
-    CORE_LSCS_PROPERTY_NOTIFY( currentValue, valueChanged )
+    CORE_CS_PROPERTY_READ( currentValue, currentValue )
+    CORE_CS_PROPERTY_NOTIFY( currentValue, valueChanged )
 
-    CORE_LSCS_PROPERTY_READ( duration, duration )
-    CORE_LSCS_PROPERTY_WRITE( duration, setDuration )
+    CORE_CS_PROPERTY_READ( duration, duration )
+    CORE_CS_PROPERTY_WRITE( duration, setDuration )
 
-    CORE_LSCS_PROPERTY_READ( easingCurve, easingCurve )
-    CORE_LSCS_PROPERTY_WRITE( easingCurve, setEasingCurve )
+    CORE_CS_PROPERTY_READ( easingCurve, easingCurve )
+    CORE_CS_PROPERTY_WRITE( easingCurve, setEasingCurve )
 
 public:
     using ValuePair = QPair<double, QVariant>;
@@ -87,10 +87,10 @@ public:
     using CustomFormula = std::function<QVariant ( const QVariant &, const QVariant &, double )>;
 
     template <typename T>
-    static void lscs_addCustomType( CustomFormula callback );
+    static void cs_addCustomType( CustomFormula callback );
 
-    CORE_LSCS_SIGNAL_1( Public, void valueChanged( const QVariant &value ) )
-    CORE_LSCS_SIGNAL_2( valueChanged, value )
+    CORE_CS_SIGNAL_1( Public, void valueChanged( const QVariant &value ) )
+    CORE_CS_SIGNAL_2( valueChanged, value )
 
 protected:
     QVariantAnimation( QVariantAnimationPrivate &dd, QObject *parent = nullptr );
@@ -109,7 +109,7 @@ private:
 };
 
 template <typename T>
-void QVariantAnimation::lscs_addCustomType( CustomFormula callback )
+void QVariantAnimation::cs_addCustomType( CustomFormula callback )
 {
     // add a custom formula for a given T, this must occur before any annimation which uses this T is constructed
     // to remove and use the default formula, pass nulptr for func, overrides any existing formula
@@ -130,6 +130,6 @@ void QVariantAnimation::lscs_addCustomType( CustomFormula callback )
     }
 }
 
-#endif // LSCS_NO_ANIMATION
+#endif // QT_NO_ANIMATION
 
 #endif

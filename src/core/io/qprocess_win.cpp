@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,15 +21,13 @@
 *
 ***********************************************************************/
 
-#include <qprocess.h>
-#include <qprocess_p.h>
-
 #include <qdatetime.h>
 #include <qdebug.h>
 #include <qdir.h>
 #include <qelapsedtimer.h>
 #include <qfileinfo.h>
 #include <qmutex.h>
+#include <qprocess.h>
 #include <qregularexpression.h>
 #include <qthread.h>
 #include <qtimer.h>
@@ -37,6 +35,7 @@
 #include <qwineventnotifier.h>
 
 #include <qfsfileengine_p.h>
+#include <qprocess_p.h>
 #include <qsystemlibrary_p.h>
 #include <qthread_p.h>
 #include <qwindowspipereader_p.h>
@@ -401,25 +400,25 @@ static QString lscs_create_commandline( const QString &program, const QStringLis
         // Quotes are escaped and their preceding backslashes are doubled.
         tmp.replace( QRegularExpression8( "(\\\\*)\"" ), "\\1\\1\\\"" );
 
-        if ( tmp.isEmpty() || tmp.contains( QLatin1Char( ' ' ) ) || tmp.contains( '\t' ) )
+        if ( tmp.isEmpty() || tmp.contains( QChar( ' ' ) ) || tmp.contains( '\t' ) )
         {
 
             // The argument must not end with a \ since this would be interpreted
             // as escaping the quote -- rather put the \ behind the quote: e.g.
             // rather use "foo"\ than "foo\"
 
-            int i = tmp.length();
+            int j = tmp.length();
 
-            while ( i > 0 && tmp.at( i - 1 ) == '\\' )
+            while ( j > 0 && tmp.at( j - 1 ) == '\\' )
             {
-                --i;
+                --j;
             }
 
-            tmp.insert( i, QLatin1Char( '"' ) );
-            tmp.prepend( QLatin1Char( '"' ) );
+            tmp.insert( j, QChar( '"' ) );
+            tmp.prepend( QChar( '"' ) );
         }
 
-        args += QLatin1Char( ' ' ) + tmp;
+        args += QChar( ' ' ) + tmp;
     }
 
     return args;
@@ -600,12 +599,12 @@ void QProcessPrivate::startProcess()
                              workingDirectory.isEmpty() ? nullptr : &QDir::toNativeSeparators( workingDirectory ).toStdWString()[0],
                              &startupInfo, pid );
 
-    QString errorString;
+    QString errorMsg;
 
     if ( ! success )
     {
         // Capture the error string before we do CloseHandle below
-        errorString = QProcess::tr( "Process failed to start: %1" ).formatArg( lscs_error_string() );
+        errorMsg = QProcess::tr( "Process failed to start: %1" ).formatArg( qt_error_string() );
     }
 
     if ( stdinChannel.pipe[0] != INVALID_Q_PIPE )
@@ -629,7 +628,7 @@ void QProcessPrivate::startProcess()
     if ( !success )
     {
         cleanup();
-        setErrorAndEmit( QProcess::FailedToStart, errorString );
+        setErrorAndEmit( QProcess::FailedToStart, errorMsg );
 
         q->setProcessState( QProcess::NotRunning );
         return;

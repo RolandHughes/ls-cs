@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -21,13 +21,12 @@
 *
 ***********************************************************************/
 
-#include <qfilesystemiterator_p.h>
-
 #include <qplatformdefs.h>
 #include <qstringparser.h>
 #include <lscs_windows.h>
 
 #include <qfilesystemengine_p.h>
+#include <qfilesystemiterator_p.h>
 
 #ifndef  LSCS_NO_FILESYSTEMITERATOR
 
@@ -162,7 +161,7 @@ bool QFileSystemIterator::advance( QFileSystemEntry &fileEntry, QFileSystemMetaD
         fileEntry = QFileSystemEntry( dirPath + fileName );
         metaData  = QFileSystemMetaData();
 
-        if ( ! fileName.endsWith( QLatin1String( ".lnk" ) ) )
+        if ( ! fileName.endsWith( ".lnk" ) )
         {
             metaData.fillFromFindData( findData, true );
         }

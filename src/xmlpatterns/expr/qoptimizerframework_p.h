@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,9 +27,10 @@
 #include <QSharedData>
 #include <qexpression_p.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class ExpressionCreator : public QSharedData
 {
 public:
@@ -106,7 +107,8 @@ private:
     OptimizationPass( const OptimizationPass & ) = delete;
     OptimizationPass &operator=( const OptimizationPass & ) = delete;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

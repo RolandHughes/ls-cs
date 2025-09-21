@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -22,6 +22,7 @@
 ***********************************************************************/
 
 #include <qtemporaryfile.h>
+#include <qtemporaryfile_p.h>
 
 #ifndef LSCS_NO_TEMPORARYFILE
 
@@ -30,7 +31,6 @@
 #include <qregularexpression.h>
 
 #include <qfile_p.h>
-#include <qtemporaryfile_p.h>
 #include <qsystemerror_p.h>
 
 #if ! defined(Q_OS_WIN)
@@ -121,7 +121,7 @@ static bool createFileFromTemplate( NativeFileHandle &fHandle, QString &fName,
 
 #else
         fHandle = LSCS_OPEN( fName.constData(), LSCS_OPEN_CREAT | O_EXCL | LSCS_OPEN_RDWR | LSCS_OPEN_LARGEFILE,
-                           static_cast<mode_t>( mode ) );
+                             static_cast<mode_t>( mode ) );
 
         if ( fHandle != -1 )
         {
@@ -178,13 +178,13 @@ void QTemporaryFileEngine::setFileName( const QString &file )
     QFSFileEngine::setFileName( file );
 }
 
-void QTemporaryFileEngine::setFileTemplate( const QString &fileTemplate )
+void QTemporaryFileEngine::setFileTemplate( const QString &fileName )
 {
     Q_D( QFSFileEngine );
 
     if ( filePathIsTemplate )
     {
-        d->fileEntry = QFileSystemEntry( fileTemplate );
+        d->fileEntry = QFileSystemEntry( fileName );
     }
 }
 
@@ -369,11 +369,11 @@ QTemporaryFile::QTemporaryFile()
     // uses the form "c_temp.XXXXXX"
 }
 
-QTemporaryFile::QTemporaryFile( const QString &templateName )
+QTemporaryFile::QTemporaryFile( const QString &fileName )
     : QFile( *new QTemporaryFilePrivate, nullptr )
 {
     Q_D( QTemporaryFile );
-    d->templateName = templateName;
+    d->templateName = fileName;
 }
 
 QTemporaryFile::QTemporaryFile( QObject *parent )
@@ -385,11 +385,11 @@ QTemporaryFile::QTemporaryFile( QObject *parent )
     // uses the form "lscs_temp.XXXXXX"
 }
 
-QTemporaryFile::QTemporaryFile( const QString &templateName, QObject *parent )
+QTemporaryFile::QTemporaryFile( const QString &fileName, QObject *parent )
     : QFile( *new QTemporaryFilePrivate, parent )
 {
     Q_D( QTemporaryFile );
-    d->templateName = templateName;
+    d->templateName = fileName;
 }
 
 QTemporaryFile::~QTemporaryFile()
@@ -433,14 +433,14 @@ QString QTemporaryFile::fileTemplate() const
     return d->templateName;
 }
 
-void QTemporaryFile::setFileTemplate( const QString &name )
+void QTemporaryFile::setFileTemplate( const QString &fileName )
 {
     Q_D( QTemporaryFile );
-    d->templateName = name;
+    d->templateName = fileName;
 
     if ( d->fileEngine )
     {
-        static_cast<QTemporaryFileEngine *>( d->fileEngine )->setFileTemplate( name );
+        static_cast<QTemporaryFileEngine *>( d->fileEngine )->setFileTemplate( fileName );
     }
 }
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,15 +24,15 @@
 #ifndef QXMLQUERY_P_H
 #define QXMLQUERY_P_H
 
-#include <qabstractmessagehandler.h>
-#include <qabstracturiresolver.h>
-#include <qpointer.h>
-#include <qsourcelocation.h>
-#include <qurl.h>
-#include <qvariant.h>
-#include <qxmlname.h>
-#include <qxmlnamepool.h>
-#include <qxmlquery.h>
+#include <QAbstractMessageHandler>
+#include <QAbstractUriResolver>
+#include <QPointer>
+#include <QSourceLocation>
+#include <QUrl>
+#include <QVariant>
+#include <QXmlName>
+#include <QXmlNamePool>
+#include <QXmlQuery>
 
 #include "qacceltreebuilder_p.h"
 #include "qacceltreeresourceloader_p.h"

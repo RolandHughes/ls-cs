@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -894,7 +894,7 @@ bool QFileSystemEngine::removeFile( const QFileSystemEntry &entry, QSystemError 
     return false;
 }
 
-bool QFileSystemEngine::setPermissions( const QFileSystemEntry &entry, QFile::Permissions permissions,
+bool QFileSystemEngine::setPermissions( const QFileSystemEntry &entry, QFileDevice::Permissions permissions,
                                         QSystemError &error, QFileSystemMetaData *data )
 {
     mode_t mode = 0;
@@ -948,9 +948,9 @@ bool QFileSystemEngine::setPermissions( const QFileSystemEntry &entry, QFile::Pe
 
     if ( success && data )
     {
-        data->entryFlags &= ~QFileSystemMetaData::Permissions;
+        data->entryFlags &= ~QFileSystemMetaData::MetaDataFlag::AllPermissions;
         data->entryFlags |= QFileSystemMetaData::MetaDataFlag( uint( permissions ) );
-        data->knownFlagsMask |= QFileSystemMetaData::Permissions;
+        data->knownFlagsMask |= QFileSystemMetaData::MetaDataFlag::AllPermissions;
     }
 
     if ( !success )
@@ -959,6 +959,49 @@ bool QFileSystemEngine::setPermissions( const QFileSystemEntry &entry, QFile::Pe
     }
 
     return success;
+}
+
+bool QFileSystemEngine::setFileTime( int fd, const QDateTime &newTime, QFileDevice::FileTimeType type, QSystemError &error )
+{
+    bool retval = false;
+
+    struct timespec timeSpec[2];
+    qint64 ms = newTime.toMSecsSinceEpoch();
+
+    switch ( type )
+    {
+        case QFileDevice::FileTimeType::CreateTime:
+            // not supported by posix
+            error = QSystemError( EINVAL, QSystemError::StandardLibraryError );
+            return retval;
+
+        case QFileDevice::FileTimeType::ModifiedTime:
+            timeSpec[0].tv_sec  = 0;
+            timeSpec[0].tv_nsec = UTIME_OMIT;
+
+            timeSpec[1].tv_sec = ms/1000;
+            timeSpec[1].tv_nsec = ( ms % 1000 ) * 1000000;
+
+            break;
+
+        case QFileDevice::FileTimeType::AccessTime:
+            timeSpec[1].tv_sec  = 0;
+            timeSpec[1].tv_nsec = UTIME_OMIT;
+
+            timeSpec[0].tv_sec = ms/1000;
+            timeSpec[0].tv_nsec = ( ms % 1000 ) * 1000000;
+
+            break;
+    }
+
+    retval = futimens( fd, timeSpec ) != -1;
+
+    if ( ! retval )
+    {
+        error = QSystemError( errno, QSystemError::StandardLibraryError );
+    }
+
+    return retval;
 }
 
 QString QFileSystemEngine::homePath()

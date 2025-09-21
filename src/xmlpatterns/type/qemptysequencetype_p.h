@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,9 +27,10 @@
 #include <qatomictype_p.h>
 #include <qsequencetype_p.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 class EmptySequenceType : public ItemType, public SequenceType
 {
 public:
@@ -76,7 +77,8 @@ protected:
     friend class CommonSequenceTypes;
     EmptySequenceType();
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

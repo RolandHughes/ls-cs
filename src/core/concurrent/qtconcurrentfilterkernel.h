@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -93,6 +93,7 @@ public:
         results.end = end;
         results.vector.reserve( end - begin );
 
+
         typename Sequence::const_iterator it = sequenceBeginIterator;
         advance( it, begin );
 
@@ -139,7 +140,6 @@ class FilteredReducedKernel : public IterateKernel<Iterator, ReducedResultType>
     KeepFunctor keep;
     ReduceFunctor reduce;
     Reducer reducer;
-
     using IterateKernelType = IterateKernel<Iterator, ReducedResultType>;
 
 public:
@@ -153,7 +153,7 @@ public:
     {
         IntermediateResults<typename qValueType<Iterator>::value_type> results;
         results.begin = index;
-        results.end   = index + 1;
+        results.end = index + 1;
 
         if ( keep( *it ) )
         {
@@ -168,7 +168,7 @@ public:
     {
         IntermediateResults<typename qValueType<Iterator>::value_type> results;
         results.begin = begin;
-        results.end   = end;
+        results.end = end;
         results.vector.reserve( end - begin );
 
         Iterator it = sequenceBeginIterator;
@@ -205,7 +205,6 @@ public:
 
     using ReturnType = ReducedResultType;
     using ResultType = ReducedResultType;
-
     ReducedResultType *result()
     {
         return &reducedResult;
@@ -307,6 +306,7 @@ inline ThreadEngineStarter<ResultType> startFilteredReduced( const Sequence &seq
 
     return startThreadEngine( new SequenceHolderType( sequence, mapFunctor, reduceFunctor, options ) );
 }
+
 
 template <typename ResultType, typename Iterator, typename MapFunctor, typename ReduceFunctor>
 inline ThreadEngineStarter<ResultType> startFilteredReduced( Iterator begin, Iterator end, MapFunctor mapFunctor,

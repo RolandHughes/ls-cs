@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -82,7 +82,7 @@ public:
         m_futures.clear();
     }
 
-    QList<QFuture<T>> futures() const
+    QList<QFuture<T> > futures() const
     {
         return m_futures;
     }
@@ -98,7 +98,7 @@ public:
     }
 
 protected:
-    QList<QFuture<T>> m_futures;
+    QList<QFuture<T> > m_futures;
     bool m_cancelOnWait;
 };
 

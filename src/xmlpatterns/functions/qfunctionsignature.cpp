@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,12 +25,22 @@
 
 #include "qfunctionsignature_p.h"
 
+QT_BEGIN_NAMESPACE
+
 using namespace QPatternist;
 
-FunctionSignature::FunctionSignature( const QXmlName nameP, const Arity minArgs, const Arity maxArgs,
-                                      const SequenceType::Ptr &returnTypeP, const Expression::Properties props, const Expression::ID idP )
-    : CallTargetDescription( nameP ), m_minArgs( minArgs ), m_maxArgs( maxArgs ), m_returnType( returnTypeP ),
-      m_arguments(), m_props( props ), m_id( idP )
+FunctionSignature::FunctionSignature( const QXmlName nameP,
+                                      const Arity minArgs,
+                                      const Arity maxArgs,
+                                      const SequenceType::Ptr &returnTypeP,
+                                      const Expression::Properties props,
+                                      const Expression::ID idP ) : CallTargetDescription( nameP )
+    , m_minArgs( minArgs )
+    , m_maxArgs( maxArgs )
+    , m_returnType( returnTypeP )
+    , m_arguments()
+    , m_props( props )
+    , m_id( idP )
 {
     Q_ASSERT( minArgs <= maxArgs || maxArgs == FunctionSignature::UnlimitedArity );
     Q_ASSERT( m_maxArgs >= -1 );
@@ -131,3 +141,5 @@ Expression::ID FunctionSignature::id() const
 {
     return m_id;
 }
+
+QT_END_NAMESPACE

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -501,7 +501,7 @@ QUuid QUuid::createUuid()
 
     if ( ! devUrandom )
     {
-        devUrandom = new QFile( QLatin1String( "/dev/urandom" ) );
+        devUrandom = new QFile( "/dev/urandom" );
         devUrandom->open( QIODevice::ReadOnly | QIODevice::Unbuffered );
         devUrandomStorage()->setLocalData( devUrandom );
     }

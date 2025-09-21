@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -61,7 +61,7 @@ class QPollingFileSystemWatcherEngine : public QFileSystemWatcherEngine
     {
         uint ownerId;
         uint groupId;
-        QFile::Permissions permissions;
+        QFileDevice::Permissions permissions;
         QDateTime lastModified;
         QStringList entries;
 
@@ -129,15 +129,16 @@ void QPollingFileSystemWatcherEngine::run()
 }
 
 QStringList QPollingFileSystemWatcherEngine::addPaths( const QStringList &paths,
-        QStringList *files, QStringList *directories )
+        QStringList *newFiles, QStringList *newDirectories )
 {
     QMutexLocker locker( &mutex );
     QStringList p = paths;
-    QMutableListIterator<QString> it( p );
 
-    while ( it.hasNext() )
+    QMutableListIterator<QString> iter( p );
+
+    while ( iter.hasNext() )
     {
-        QString path = it.next();
+        QString path = iter.next();
         QFileInfo fi( path );
 
         if ( ! fi.exists() )
@@ -147,9 +148,9 @@ QStringList QPollingFileSystemWatcherEngine::addPaths( const QStringList &paths,
 
         if ( fi.isDir() )
         {
-            if ( !directories->contains( path ) )
+            if ( ! newDirectories->contains( path ) )
             {
-                directories->append( path );
+                newDirectories->append( path );
             }
 
             if ( !path.endsWith( '/' ) )
@@ -162,15 +163,15 @@ QStringList QPollingFileSystemWatcherEngine::addPaths( const QStringList &paths,
         }
         else
         {
-            if ( ! files->contains( path ) )
+            if ( ! newFiles->contains( path ) )
             {
-                files->append( path );
+                newFiles->append( path );
             }
 
             this->files.insert( path, fi );
         }
 
-        it.remove();
+        iter.remove();
     }
 
     start();
@@ -179,7 +180,7 @@ QStringList QPollingFileSystemWatcherEngine::addPaths( const QStringList &paths,
 }
 
 QStringList QPollingFileSystemWatcherEngine::removePaths( const QStringList &paths,
-        QStringList *files, QStringList *directories )
+        QStringList *newFiles, QStringList *newDirectories )
 {
     QMutexLocker locker( &mutex );
     QStringList p = paths;
@@ -191,12 +192,12 @@ QStringList QPollingFileSystemWatcherEngine::removePaths( const QStringList &pat
 
         if ( this->directories.remove( path ) )
         {
-            directories->removeAll( path );
+            newDirectories->removeAll( path );
             it.remove();
         }
         else if ( this->files.remove( path ) )
         {
-            files->removeAll( path );
+            newFiles->removeAll( path );
             it.remove();
         }
     }
@@ -247,9 +248,9 @@ void QPollingFileSystemWatcherEngine::timeout()
         QString path = x.key();
         QFileInfo fi( path );
 
-        if ( !path.endsWith( QLatin1Char( '/' ) ) )
+        if ( !path.endsWith( QChar( '/' ) ) )
         {
-            fi = QFileInfo( path + QLatin1Char( '/' ) );
+            fi = QFileInfo( path + QChar( '/' ) );
         }
 
         if ( !fi.exists() )
@@ -479,57 +480,20 @@ void QFileSystemWatcher::addPaths( const QStringList &paths )
     QStringList p = paths;
     QFileSystemWatcherEngine *engine = nullptr;
 
-    if ( ! objectName().startsWith( QLatin1String( "_lscs_autotest_force_engine_" ) ) )
-    {
-        // normal runtime case - search intelligently for best engine
-        if ( d->native )
-        {
-            engine = d->native;
-        }
-        else
+    if ( d->native == nullptr )
         {
             d_func()->initPollerEngine();
             engine = d->poller;
-        }
+
 
     }
     else
     {
-        // Autotest override case - use the explicitly selected engine only
-        QString forceName = objectName().mid( 26 );
-
-        if ( forceName == "poller" )
-        {
-#if defined(LSCS_SHOW_DEBUG_CORE)
-            qDebug( "QFileSystemWatcher::addPaths() Do not use native engine, use only polling engine" );
-#endif
-
-            d_func()->initPollerEngine();
-            engine = d->poller;
-
-        }
-        else if ( forceName == "native" )
-        {
-#if defined(LSCS_SHOW_DEBUG_CORE)
-            qDebug( "QFileSystemWatcher::addPaths() Do not use polling engine, use only native engine" );
-#endif
-
             engine = d->native;
 
         }
-        else
-        {
-#if defined(LSCS_SHOW_DEBUG_CORE)
-            qDebug() << "QFileSystemWatcher::addPaths() Do not use native engine or polling engine, using explicit"
-                     << forceName << "engine";
-#endif
 
-            d_func()->initForcedEngine( forceName );
-            engine = d->forced;
-        }
-    }
-
-    if ( engine )
+    if ( engine != nullptr )
     {
         p = engine->addPaths( p, &d->files, &d->directories );
     }

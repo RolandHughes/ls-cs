@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -47,7 +47,7 @@ public:
 
     enum MetaDataFlag
     {
-        // Permissions, overlaps with QFile::Permissions
+        // following permissions here overlap with QFileDevice::Permissions
         OtherReadPermission = 0x00000004,   OtherWritePermission = 0x00000002,  OtherExecutePermission = 0x00000001,
         GroupReadPermission = 0x00000040,   GroupWritePermission = 0x00000020,  GroupExecutePermission = 0x00000010,
         UserReadPermission  = 0x00000400,   UserWritePermission  = 0x00000200,  UserExecutePermission  = 0x00000100,
@@ -62,7 +62,7 @@ public:
         WritePermissions    = OtherWritePermission | GroupWritePermission | UserWritePermission | OwnerWritePermission,
         ExecutePermissions  = OtherExecutePermission | GroupExecutePermission | UserExecutePermission | OwnerExecutePermission,
 
-        Permissions         = OtherPermissions | GroupPermissions | UserPermissions | OwnerPermissions,
+        AllPermissions      = OtherPermissions | GroupPermissions | UserPermissions | OwnerPermissions,
 
         // Type
         LinkType            = 0x00010000,
@@ -109,7 +109,8 @@ public:
 
         OwnerIds            = UserId | GroupId,
 
-        PosixStatFlags      = QFileSystemMetaData::OtherPermissions
+        PosixStatFlags      =
+            QFileSystemMetaData::OtherPermissions
                               | QFileSystemMetaData::GroupPermissions
                               | QFileSystemMetaData::OwnerPermissions
                               | QFileSystemMetaData::FileType
@@ -120,7 +121,8 @@ public:
                               | QFileSystemMetaData::OwnerIds,
 
 #if defined(Q_OS_WIN)
-        WinStatFlags        = QFileSystemMetaData::FileType
+        WinStatFlags        =
+            QFileSystemMetaData::FileType
                               | QFileSystemMetaData::DirectoryType
                               | QFileSystemMetaData::HiddenAttribute
                               | QFileSystemMetaData::ExistsAttribute
@@ -209,16 +211,16 @@ public:
         return size_;
     }
 
-    QFile::Permissions permissions() const
+    QFileDevice::Permissions permissions() const
     {
-        return QFile::Permissions( Permissions & entryFlags );
+        return QFileDevice::Permissions( MetaDataFlag::AllPermissions & entryFlags );
     }
 
     QDateTime creationTime() const;
     QDateTime modificationTime() const;
     QDateTime accessTime() const;
 
-    QDateTime fileTime( QAbstractFileEngine::FileTime time ) const;
+    QDateTime fileTime( QFileDevice::FileTimeType type ) const;
     uint userId() const;
     uint groupId() const;
     uint ownerId( QAbstractFileEngine::FileOwner owner ) const;
@@ -284,18 +286,19 @@ inline bool QFileSystemMetaData::isAlias() const
 #endif
 
 #if (defined(Q_OS_UNIX)) || defined (Q_OS_WIN)
-inline QDateTime QFileSystemMetaData::fileTime( QAbstractFileEngine::FileTime time ) const
+inline QDateTime QFileSystemMetaData::fileTime( QFileDevice::FileTimeType type ) const
 {
-    switch ( time )
+    switch ( type )
     {
-        case QAbstractFileEngine::ModificationTime:
+        case QFileDevice::CreateTime:
+            return creationTime();
+
+        case QFileDevice::ModifiedTime:
             return modificationTime();
 
-        case QAbstractFileEngine::AccessTime:
+        case QFileDevice::AccessTime:
             return accessTime();
 
-        case QAbstractFileEngine::CreationTime:
-            return creationTime();
     }
 
     return QDateTime();

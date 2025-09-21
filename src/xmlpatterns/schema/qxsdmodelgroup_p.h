@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,11 +27,12 @@
 #include <qxsdparticle_p.h>
 #include <qxsdterm_p.h>
 
+QT_BEGIN_NAMESPACE
+
 template<typename N> class QList;
 
 namespace QPatternist
 {
-
 class XsdModelGroup : public XsdTerm
 {
 public:
@@ -86,7 +87,8 @@ private:
     ModelCompositor   m_compositor;
     XsdParticle::List m_particles;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

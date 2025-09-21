@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -35,6 +35,8 @@
 #include <qschematypefactory_p.h>
 #include <qstaticcontext_p.h>
 #include <qvalidationerror_p.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -96,5 +98,7 @@ private:
 #include "qcastingplatform.cpp"
 
 }
+
+QT_END_NAMESPACE
 
 #endif

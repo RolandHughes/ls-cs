@@ -160,7 +160,7 @@ struct lscs_is_enum_or_flag : public std::is_enum<T>
 
 template<class T>
 struct lscs_is_enum_or_flag<QFlags<T>>
-                                      : public std::integral_constant<bool, true>
+                                        : public std::integral_constant<bool, true>
 {
 };
 
@@ -172,7 +172,7 @@ struct lscs_underlying_type
 
 template<class T>
 struct lscs_underlying_type<QFlags<T>>
-                                      : public std::underlying_type<T>
+                                        : public std::underlying_type<T>
 {
 };
 

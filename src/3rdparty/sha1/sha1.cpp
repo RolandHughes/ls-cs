@@ -1,9 +1,9 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
-* Copyright (C) 2015 The Qt Company Ltd.
+* Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
 * Copyright (c) 2008-2012 Nokia Corporation and/or its subsidiary(-ies).
 *
@@ -28,7 +28,7 @@
 
 #include <qendian.h>
 
-LSCS_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 // Test Vectors (from FIPS PUB 180-1)
 //
@@ -308,4 +308,4 @@ static inline void sha1ToHash( Sha1State *state, unsigned char *buffer )
     qToBigEndian( state->h4, buffer + 16 );
 }
 
-LSCS_END_NAMESPACE
+QT_END_NAMESPACE

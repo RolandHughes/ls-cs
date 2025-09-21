@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -34,6 +34,7 @@
 #include <locale.h>
 #include <stdio.h>
 
+
 // unistd.h is needed for the _XOPEN_UNIX macro
 #include <unistd.h>
 #if defined(_XOPEN_UNIX)
@@ -65,7 +66,7 @@ static Ptr_iconv ptr_iconv = nullptr;
 static Ptr_iconv_close ptr_iconv_close = nullptr;
 #endif
 
-extern bool lscs_locale_initialized;
+extern bool qt_locale_initialized;
 
 QIconvCodec::QIconvCodec()
     : utf16Codec( nullptr )
@@ -89,21 +90,21 @@ QIconvCodec::QIconvCodec()
 
         ptr_iconv_open = reinterpret_cast<Ptr_iconv_open>( libiconv.resolve( "libiconv_open" ) );
 
-        if ( ! ptr_iconv_open )
+        if ( !ptr_iconv_open )
         {
             ptr_iconv_open = reinterpret_cast<Ptr_iconv_open>( libiconv.resolve( "iconv_open" ) );
         }
 
         ptr_iconv = reinterpret_cast<Ptr_iconv>( libiconv.resolve( "libiconv" ) );
 
-        if ( ! ptr_iconv )
+        if ( !ptr_iconv )
         {
             ptr_iconv = reinterpret_cast<Ptr_iconv>( libiconv.resolve( "iconv" ) );
         }
 
         ptr_iconv_close = reinterpret_cast<Ptr_iconv_close>( libiconv.resolve( "libiconv_close" ) );
 
-        if ( ! ptr_iconv_close )
+        if ( !ptr_iconv_close )
         {
             ptr_iconv_close = reinterpret_cast<Ptr_iconv_close>( libiconv.resolve( "iconv_close" ) );
         }
@@ -208,7 +209,7 @@ QString QIconvCodec::convertToUnicode( const char *chars, int len, ConverterStat
     {
         QThreadStorage<QIconvCodec::IconvState *> *ts = toUnicodeState();
 
-        if ( ! lscs_locale_initialized || ! ts )
+        if ( ! qt_locale_initialized || ! ts )
         {
             // might be running before the QCoreApplication initialization
 
@@ -408,7 +409,7 @@ QByteArray QIconvCodec::convertFromUnicode( QStringView str, ConverterState *con
 
     IconvState *temporaryState = nullptr;
     QThreadStorage<QIconvCodec::IconvState *> *ts = fromUnicodeState();
-    IconvState *&state = ( lscs_locale_initialized && ts ) ? ts->localData() : temporaryState;
+    IconvState *&state = ( qt_locale_initialized && ts ) ? ts->localData() : temporaryState;
 
     if ( ! state )
     {
@@ -445,7 +446,7 @@ QByteArray QIconvCodec::convertFromUnicode( QStringView str, ConverterState *con
 
     QByteArray ba;
 
-    // broom - resolve this code as soon as possible
+    // BROOM - resolve code as soon as possible
 
     /*
        size_t outBytesLeft = len;
@@ -544,6 +545,7 @@ iconv_t QIconvCodec::createIconv_t( const char *to, const char *from )
     iconv_t cd = ( iconv_t ) - 1;
 
 #if defined(__GLIBC__) || defined(GNU_LIBICONV)
+
     // both GLIBC and libgnuiconv will use the locale's encoding if from or to is an empty string
 
     const char *codeset = "";
@@ -551,7 +553,6 @@ iconv_t QIconvCodec::createIconv_t( const char *to, const char *from )
 
 #else
     char *codeset = nullptr;
-
 #endif
 
 #if defined(_XOPEN_UNIX)
@@ -584,7 +585,7 @@ iconv_t QIconvCodec::createIconv_t( const char *to, const char *from )
         // Get the first nonempty value from $LC_ALL, $LC_CTYPE, and $LANG environment variables.
         char *lang = qstrdup( qgetenv( "LC_ALL" ).constData() );
 
-        if ( ! lang || lang[0] == 0 || strcmp( lang, "C" ) == 0 )
+        if ( !lang || lang[0] == 0 || strcmp( lang, "C" ) == 0 )
         {
             if ( lang )
             {
@@ -594,7 +595,7 @@ iconv_t QIconvCodec::createIconv_t( const char *to, const char *from )
             lang = qstrdup( qgetenv( "LC_CTYPE" ).constData() );
         }
 
-        if ( ! lang || lang[0] == 0 || strcmp( lang, "C" ) == 0 )
+        if ( !lang || lang[0] == 0 || strcmp( lang, "C" ) == 0 )
         {
             if ( lang )
             {
@@ -634,6 +635,7 @@ iconv_t QIconvCodec::createIconv_t( const char *to, const char *from )
         {
             cd = iconv_open( to ? to : ctype, from ? from : ctype );
         }
+
 
         // 4. locale (ditto)
         if ( cd == ( iconv_t ) - 1 && lang && *lang != 0 )

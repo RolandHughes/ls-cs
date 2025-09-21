@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -120,7 +120,7 @@ int QAbstractEventDispatcher::registerTimer( int interval, Qt::TimerType timerTy
     return id;
 }
 
-// ### Are these called when the _application_ starts/stops or just when the current _event loop_ starts/stops?
+// ### are these called when the _application_ starts/stops or just when the current _event loop_ starts/stops?
 
 // internal
 void QAbstractEventDispatcher::startingUp()

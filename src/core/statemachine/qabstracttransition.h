@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,16 +25,17 @@
 #define QABSTRACTTRANSITION_H
 
 #include <qabstractstate.h>
-#include <qobject.h>
 #include <qlist.h>
+#include <qobject.h>
 #include <qscopedpointer.h>
 #include <qstate.h>
 
 #ifndef LSCS_NO_STATEMACHINE
 
-class QAbstractTransitionPrivate;
 class QEvent;
 class QStateMachine;
+
+class QAbstractTransitionPrivate;
 
 #ifndef LSCS_NO_ANIMATION
 class QAbstractAnimation;

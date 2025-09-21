@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -302,7 +302,7 @@ public:
         : m_data( std::move( other ) )
     { }
 
-    template <typename Input_Iterator> QHash( Input_Iterator first, Input_Iterator last, const Hash &hash = Hash(),
+    template<typename Input_Iterator> QHash( Input_Iterator first, Input_Iterator last, const Hash &hash = Hash(),
             const KeyEqual &key = KeyEqual() )
         : m_data( first, last, hash, key )
     { }
@@ -362,6 +362,11 @@ public:
         return m_data.equal_range( key );
     }
 
+    size_type erase( const Key &key )
+    {
+        return m_data.erase( key );
+    }
+
     iterator erase( const_iterator iter )
     {
         return m_data.erase( iter.m_iter );
@@ -393,6 +398,10 @@ public:
         return m_data.insert_or_assign( key, value ).first;
     }
 
+    iterator insert( const Key &key, Val &&value )
+    {
+        return m_data.insert_or_assign( key, std::move( value ) ).first;
+    }
     const Key key( const Val &value ) const;
     const Key key( const Val &value, const Key &defaultKey ) const;
 
@@ -632,9 +641,7 @@ public:
     {
     }
 
-    ~QHashIterator()
-    {
-    }
+    ~QHashIterator() = default;
 
     QHashIterator &operator=( const QHash<Key, Val, Hash, KeyEqual> &hash )
     {
@@ -754,8 +761,7 @@ public:
     {
     }
 
-    ~QMutableHashIterator()
-    { }
+    ~QMutableHashIterator() = default;
 
     QMutableHashIterator &operator=( QHash<Key, Val, Hash, KeyEqual> &hash )
     {

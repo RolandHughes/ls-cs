@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -50,7 +50,8 @@ public:
         PositionError = 11,
         ResizeError = 12,
         PermissionsError = 13,
-        CopyError = 14
+        CopyError        = 14,
+        FileTimeError    = 15
     };
 
     enum Permission
@@ -68,6 +69,18 @@ public:
         DontCloseHandle = 0
     };
     using FileHandleFlags = QFlags<FileHandleFlag>;
+
+    enum MemoryMapFlags
+    {
+        NoOptions = 0
+    };
+
+    enum FileTimeType
+    {
+        CreateTime,
+        ModifiedTime,
+        AccessTime
+    };
 
     QFileDevice( const QFileDevice & ) = delete;
     QFileDevice &operator=( const QFileDevice & ) = delete;
@@ -91,13 +104,11 @@ public:
     qint64 size() const override;
 
     virtual bool resize( qint64 size );
-    virtual Permissions permissions() const;
-    virtual bool setPermissions( Permissions permissionSpec );
+    virtual QFileDevice::Permissions permissions() const;
+    virtual bool setPermissions( QFileDevice::Permissions permissionSpec );
 
-    enum MemoryMapFlags
-    {
-        NoOptions = 0
-    };
+    QDateTime fileTime( QFileDevice::FileTimeType type );
+    bool setFileTime( const QDateTime &newTime, QFileDevice::FileTimeType type );
 
     uchar *map( qint64 offset, qint64 size, MemoryMapFlags flags = NoOptions );
     bool unmap( uchar *address );

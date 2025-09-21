@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -27,39 +27,42 @@
 #include <qatomicmathematician_p.h>
 #include <qsourcelocationreflection_p.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
 
-class DecimalMathematician : public AtomicMathematician, public DelegatingSourceLocationReflection
+class DecimalMathematician : public AtomicMathematician
+    , public DelegatingSourceLocationReflection
 {
 public:
-    inline DecimalMathematician( const SourceLocationReflection *const r )
-        : DelegatingSourceLocationReflection( r )
-    { }
+    inline DecimalMathematician( const SourceLocationReflection *const r ) : DelegatingSourceLocationReflection( r )
+    {
+    }
 
     Item calculate( const Item &o1, const Operator op, const Item &o2,
                     const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 
-class IntegerMathematician : public AtomicMathematician, public DelegatingSourceLocationReflection
+class IntegerMathematician : public AtomicMathematician
+    , public DelegatingSourceLocationReflection
 {
 public:
-    inline IntegerMathematician( const SourceLocationReflection *const r )
-        : DelegatingSourceLocationReflection( r )
-    { }
+    inline IntegerMathematician( const SourceLocationReflection *const r ) : DelegatingSourceLocationReflection( r ) { }
 
     Item calculate( const Item &o1, const Operator op, const Item &o2,
                     const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 
-class DurationNumericMathematician : public AtomicMathematician, public DelegatingSourceLocationReflection
+class DurationNumericMathematician : public AtomicMathematician
+    , public DelegatingSourceLocationReflection
 {
 public:
-    inline DurationNumericMathematician( const SourceLocationReflection *const r )
-        : DelegatingSourceLocationReflection( r )
-    { }
+    inline DurationNumericMathematician( const SourceLocationReflection *const r ) : DelegatingSourceLocationReflection( r )
+    {
+    }
 
     Item calculate( const Item &o1, const Operator op, const Item &o2,
                     const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
@@ -99,18 +102,18 @@ public:
      */
     Item calculate( const Item &o1, const Operator op, const Item &o2,
                     const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
-
 private:
     const AtomicMathematician::Ptr m_mather;
 };
 
-class DateTimeDurationMathematician : public AtomicMathematician, public DelegatingSourceLocationReflection
+class DateTimeDurationMathematician : public AtomicMathematician
+    , public DelegatingSourceLocationReflection
 {
 public:
 
-    inline DateTimeDurationMathematician( const SourceLocationReflection *const r )
-        : DelegatingSourceLocationReflection( r )
-    { }
+    inline DateTimeDurationMathematician( const SourceLocationReflection *const r ) : DelegatingSourceLocationReflection( r )
+    {
+    }
 
     /**
      * @p o1 is an AbstractDateTime and @p o2 is an AbstractDuration.
@@ -127,7 +130,8 @@ public:
     Item calculate( const Item &o1, const Operator op, const Item &o2,
                     const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
-
 }
+
+QT_END_NAMESPACE
 
 #endif

@@ -3834,7 +3834,7 @@ QRegion::QRegion( const QPolygon &a, Qt::FillRule fillRule )
     if ( a.count() > 2 )
     {
         QRegionPrivate *lscs_rgn = PolygonRegion( a.constData(), a.size(),
-                                                fillRule == Qt::WindingFill ? WindingRule : EvenOddRule );
+                                   fillRule == Qt::WindingFill ? WindingRule : EvenOddRule );
 
         if ( lscs_rgn )
         {

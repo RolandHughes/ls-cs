@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,11 +24,12 @@
 #ifndef QSourceLocationReflection_P_H
 #define QSourceLocationReflection_P_H
 
+QT_BEGIN_NAMESPACE
+
 #include <qstringfwd.h>
 
 namespace QPatternist
 {
-
 class SourceLocationReflection
 {
 public:
@@ -74,5 +75,7 @@ private:
 };
 
 }
+
+QT_END_NAMESPACE
 
 #endif

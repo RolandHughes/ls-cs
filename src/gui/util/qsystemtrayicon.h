@@ -107,7 +107,7 @@ public:
     GUI_LSCS_SLOT_2( hide )
 
     GUI_LSCS_SLOT_1( Public, void showMessage( const QString &title, const QString &msg,
-                   QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::Information, int msecs = 10000 ) )
+                     QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::Information, int msecs = 10000 ) )
     GUI_LSCS_SLOT_2( showMessage )
 
     GUI_LSCS_SIGNAL_1( Public, void activated( QSystemTrayIcon::ActivationReason reason ) )

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,17 +24,18 @@
 #ifndef QTokenizer_P_H
 #define QTokenizer_P_H
 
-#include <qpair.h>
-#include <qshareddata.h>
-#include <qstring.h>
-#include <qurl.h>
+#include <QPair>
+#include <QSharedData>
+#include <QString>
+#include <QUrl>
 
 #include <qparsercontext_p.h>
 #include <qtokensource_p.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace QPatternist
 {
-
 typedef QPair<QString, Expression::Ptr> AttributeHolder;
 typedef QVector<AttributeHolder> AttributeHolderVector;
 
@@ -92,6 +93,8 @@ public:
 };
 }
 
+QT_END_NAMESPACE
+
 /**
  * Macro for the data type of semantic values; int by default.
  * See section Data Types of Semantic Values.
@@ -99,6 +102,8 @@ public:
 #define YYSTYPE QPatternist::TokenValue
 
 #include "qquerytransformparser_p.h" /* This inclusion must be after TokenValue. */
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -161,5 +166,7 @@ private:
 }
 
 #undef Patternist_DEBUG_PARSER // disable it for now
+
+QT_END_NAMESPACE
 
 #endif

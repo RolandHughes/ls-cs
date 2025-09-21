@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -749,26 +749,26 @@ void QWinSettingsPrivate::remove( const QString &uKey )
         return;
     }
 
-    QString rKey = escapedKey( uKey );
+    QString regKey = escapedKey( uKey );
 
     // try to delete value bar in key foo
-    LONG res;
-    HKEY handle = openKey( writeHandle(), registryPermissions, keyPath( rKey ) );
+    LONG result;
+    HKEY handle = openKey( writeHandle(), registryPermissions, keyPath( regKey ) );
 
     if ( handle != nullptr )
     {
-        res = RegDeleteValue( handle, &keyName( rKey ).toStdWString()[0] );
+        result = RegDeleteValue( handle, &keyName( regKey ).toStdWString()[0] );
         RegCloseKey( handle );
     }
 
     // try to delete key foo/bar and all subkeys
-    handle = openKey( writeHandle(), registryPermissions, rKey );
+    handle = openKey( writeHandle(), registryPermissions, regKey );
 
     if ( handle != nullptr )
     {
         deleteChildGroups( handle );
 
-        if ( rKey.isEmpty() )
+        if ( regKey.isEmpty() )
         {
             QStringList childKeys = childKeysOrGroups( handle, QSettingsPrivate::ChildKeys );
 
@@ -776,24 +776,24 @@ void QWinSettingsPrivate::remove( const QString &uKey )
             {
                 QString group = childKeys.at( i );
 
-                LONG res = RegDeleteValue( handle, &group.toStdWString()[0] );
+                result = RegDeleteValue( handle, &group.toStdWString()[0] );
 
-                if ( res != ERROR_SUCCESS )
+                if ( result != ERROR_SUCCESS )
                 {
                     qWarning( "QWinSettings::remove() RegDeleteValue failed on subkey \"%s\": %s",
-                              lscsPrintable( group ), lscsPrintable( errorCodeToString( res ) ) );
+                              lscsPrintable( group ), lscsPrintable( errorCodeToString( result ) ) );
                 }
             }
 
         }
         else
         {
-            res = RegDeleteKey( writeHandle(), &rKey.toStdWString()[0] );
+            result = RegDeleteKey( writeHandle(), &regKey.toStdWString()[0] );
 
-            if ( res != ERROR_SUCCESS )
+            if ( result != ERROR_SUCCESS )
             {
                 qWarning( "QWinSettings::remove() RegDeleteKey failed on key \"%s\": %s",
-                          lscsPrintable( rKey ), lscsPrintable( errorCodeToString( res ) ) );
+                          lscsPrintable( regKey ), lscsPrintable( errorCodeToString( result ) ) );
             }
         }
 

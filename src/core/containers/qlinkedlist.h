@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -69,7 +69,7 @@ public:
         : m_data( args )
     { }
 
-    template <class Input_Iterator> QLinkedList( Input_Iterator first, Input_Iterator last )
+    template<class Input_Iterator> QLinkedList( Input_Iterator first, Input_Iterator last )
         : m_data( first, last )
     { }
 
@@ -127,7 +127,7 @@ public:
 
     bool endsWith( const T &value ) const
     {
-        return ! isEmpty() && m_data.back() == value;
+        return ! isEmpty() && m_data.back()== value;
     }
 
     reference first()
@@ -229,6 +229,7 @@ public:
 
     T takeFirst();
     T takeLast();
+
 
     // iterators
     iterator begin()
@@ -470,7 +471,6 @@ template <class T>
 class QLinkedListIterator
 {
     using const_iterator = typename QLinkedList<T>::const_iterator;
-
     QLinkedList<T> c;
     const_iterator i;
 
@@ -479,6 +479,8 @@ public:
         : c( list ), i( c.constBegin() )
     {
     }
+
+    ~QLinkedListIterator() = default;
 
     QLinkedListIterator &operator=( const QLinkedList<T> &list )
     {
@@ -491,37 +493,30 @@ public:
     {
         i = c.constBegin();
     }
-
     void toBack()
     {
         i = c.constEnd();
     }
-
     bool hasNext() const
     {
         return i != c.constEnd();
     }
-
     const T &next()
     {
         return *i++;
     }
-
     const T &peekNext() const
     {
         return *i;
     }
-
     bool hasPrevious() const
     {
         return i != c.constBegin();
     }
-
     const T &previous()
     {
         return *( --i );
     }
-
     const T &peekPrevious() const
     {
         const_iterator p = i;
@@ -560,10 +555,8 @@ class QMutableLinkedListIterator
 {
     using iterator       = typename QLinkedList<T>::iterator;
     using const_iterator = typename QLinkedList<T>::const_iterator;
-
     QLinkedList<T> *c;
     iterator i, n;
-
     bool item_exists() const
     {
         return const_iterator( n ) != c->constEnd();
@@ -577,9 +570,7 @@ public:
         n = c->end();
     }
 
-    ~QMutableLinkedListIterator()
-    {
-    }
+    ~QMutableLinkedListIterator() = default;
 
     QMutableLinkedListIterator &operator=( QLinkedList<T> &list )
     {
@@ -595,40 +586,33 @@ public:
         i = c->begin();
         n = c->end();
     }
-
     void toBack()
     {
         i = c->end();
         n = i;
     }
-
     bool hasNext() const
     {
         return c->constEnd() != const_iterator( i );
     }
-
     T &next()
     {
         n = i++;
         return *n;
     }
-
     T &peekNext() const
     {
         return *i;
     }
-
     bool hasPrevious() const
     {
         return c->constBegin() != const_iterator( i );
     }
-
     T &previous()
     {
         n = --i;
         return *n;
     }
-
     T &peekPrevious() const
     {
         iterator p = i;
@@ -651,19 +635,16 @@ public:
             *n = value;
         }
     }
-
     T &value()
     {
         Q_ASSERT( item_exists() );
         return *n;
     }
-
     const T &value() const
     {
         Q_ASSERT( item_exists() );
         return *n;
     }
-
     void insert( const T &value )
     {
         n = c->insert( i, value );
@@ -679,7 +660,7 @@ public:
             {
                 return true;
             }
-        }
+            }
 
         return false;
     }
@@ -694,7 +675,7 @@ public:
             {
                 return true;
             }
-        }
+            }
 
         n = c->end();
         return false;

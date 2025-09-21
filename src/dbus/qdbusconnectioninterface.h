@@ -89,8 +89,8 @@ public:
     LSCS_SLOT_2( unregisterService )
 
     LSCS_SLOT_1( Public, QDBusReply<QDBusConnectionInterface::RegisterServiceReply>
-               registerService( const QString &serviceName,ServiceQueueOptions qoption = DontQueueService,
-                                ServiceReplacementOptions roption = DontAllowReplacement ) )
+                 registerService( const QString &serviceName,ServiceQueueOptions qoption = DontQueueService,
+                                  ServiceReplacementOptions roption = DontAllowReplacement ) )
 
     LSCS_SLOT_2( registerService )
 
@@ -123,7 +123,7 @@ public:
     LSCS_SIGNAL_2( NameLost,un_named_arg1 )
 
     LSCS_SIGNAL_1( Public, void NameOwnerChanged( const QString &un_named_arg1,const QString &un_named_arg2,
-                 const QString &un_named_arg3 ) )
+                   const QString &un_named_arg3 ) )
     LSCS_SIGNAL_2( NameOwnerChanged,un_named_arg1,un_named_arg2,un_named_arg3 )
 
 protected:

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,17 +24,16 @@
 #ifndef QAccelTree_P_H
 #define QAccelTree_P_H
 
-#include <qhash.h>
-#include <qurl.h>
-#include <qvector.h>
-#include <qxmlname.h>
+#include <QHash>
+#include <QUrl>
+#include <QVector>
+#include <QXmlName>
 
 #include <qitem_p.h>
 #include <qnamepool_p.h>
 
 namespace QPatternist
 {
-
 template<bool> class AccelTreeBuilder;
 
 class AccelTree : public QAbstractXmlNodeModel
@@ -330,7 +329,6 @@ private:
      */
     QHash<QXmlName::LocalNameCode, PreNumber> m_IDs;
 };
-
 }
 
 #endif

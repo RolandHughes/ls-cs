@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -76,57 +76,51 @@ QFuture<T> run( T ( *functionPointer )( Param1, Param2, Param3, Param4, Param5 )
 
 template <typename Functor>
 auto run( Functor functor )
--> typename std::enable_if<! QtPrivate::HasResultType<Functor>::Value, QFuture<decltype( functor() )>>::type
+-> typename std::enable_if< ! QtPrivate::HasResultType<Functor>::Value, QFuture<decltype( functor() )> >::type
 {
     using result_type = decltype( functor() );
-
     return ( new StoredFunctorCall0<result_type, Functor>( functor ) )->start();
 }
 
 template <typename Functor, typename Arg1>
 auto run( Functor functor, const Arg1 &arg1 )
--> typename std::enable_if<! QtPrivate::HasResultType<Functor>::Value, QFuture<decltype( functor( arg1 ) )>>::type
+-> typename std::enable_if< !QtPrivate::HasResultType<Functor>::Value, QFuture<decltype( functor( arg1 ) )> >::type
 {
     using result_type = decltype( functor( arg1 ) );
-
     return ( new StoredFunctorCall1<result_type, Functor, Arg1>( functor, arg1 ) )->start();
 }
 
 template <typename Functor, typename Arg1, typename Arg2>
 auto run( Functor functor, const Arg1 &arg1, const Arg2 &arg2 )
--> typename std::enable_if<! QtPrivate::HasResultType<Functor>::Value, QFuture<decltype( functor( arg1, arg2 ) )>>::type
+-> typename std::enable_if< !QtPrivate::HasResultType<Functor>::Value,QFuture<decltype( functor( arg1, arg2 ) )> >::type
 {
     using result_type = decltype( functor( arg1, arg2 ) );
-
     return ( new StoredFunctorCall2<result_type, Functor, Arg1, Arg2>( functor, arg1, arg2 ) )->start();
 }
 
 template <typename Functor, typename Arg1, typename Arg2, typename Arg3>
 auto run( Functor functor, const Arg1 &arg1, const Arg2 &arg2, const Arg3 &arg3 )
--> typename std::enable_if<! QtPrivate::HasResultType<Functor>::Value, QFuture<decltype( functor( arg1, arg2, arg3 ) )>>::type
+-> typename std::enable_if< !QtPrivate::HasResultType<Functor>::Value, QFuture<decltype( functor( arg1, arg2, arg3 ) )> >::type
 {
     using result_type = decltype( functor( arg1, arg2, arg3 ) );
-
     return ( new StoredFunctorCall3<result_type, Functor, Arg1, Arg2, Arg3>( functor, arg1, arg2, arg3 ) )->start();
 }
 
 template <typename Functor, typename Arg1, typename Arg2, typename Arg3, typename Arg4>
 auto run( Functor functor, const Arg1 &arg1, const Arg2 &arg2, const Arg3 &arg3, const Arg4 &arg4 )
--> typename std::enable_if<! QtPrivate::HasResultType<Functor>::Value,
-QFuture<decltype( functor( arg1, arg2, arg3, arg4 ) )>>::type
+-> typename std::enable_if< !QtPrivate::HasResultType<Functor>::Value,
+QFuture<decltype( functor( arg1, arg2, arg3, arg4 ) )> >::type
 {
     using result_type = decltype( functor( arg1, arg2, arg3, arg4 ) );
-
     return ( new StoredFunctorCall4<result_type, Functor, Arg1, Arg2, Arg3, Arg4>( functor, arg1, arg2, arg3, arg4 ) )->start();
 }
 
 template <typename Functor, typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5>
 auto run( Functor functor, const Arg1 &arg1, const Arg2 &arg2, const Arg3 &arg3, const Arg4 &arg4, const Arg5 &arg5 )
--> typename std::enable_if<! QtPrivate::HasResultType<Functor>::Value,
-QFuture<decltype( functor( arg1, arg2, arg3, arg4, arg5 ) )>>::type
+-> typename std::enable_if< !QtPrivate::HasResultType<Functor>::Value,
+QFuture<decltype( functor( arg1, arg2, arg3, arg4, arg5 ) )> >::type
 {
     using result_type = decltype( functor( arg1, arg2, arg3, arg4, arg5 ) );
-
     return ( new StoredFunctorCall5<result_type, Functor, Arg1, Arg2, Arg3, Arg4, Arg5>( functor, arg1, arg2, arg3, arg4,
              arg5 ) )->start();
 }
@@ -323,6 +317,7 @@ QFuture<T> run( Class *object, T ( Class::*fn )() )
 {
     return ( new typename SelectStoredMemberFunctionPointerCall0<T, Class>::type( fn, object ) )->start();
 }
+
 
 template <typename T, typename Class, typename Param1, typename Arg1>
 QFuture<T> run( Class *object, T ( Class::*fn )( Param1 ), const Arg1 &arg1 )

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -173,9 +173,9 @@ void QMetaObject::connectSlotsByName( QObject *receiver )
                 if ( desiredSignal == testSignal )
                 {
                     // found a matching signal for our slot
-                    QMetaMethod slotMethod = metaObj->method( slotIndex );
+                    QMetaMethod newSlotMethod = metaObj->method( slotIndex );
 
-                    isConnected = QObject::connect( element, signalMethod, receiver, slotMethod );
+                    isConnected = QObject::connect( element, signalMethod, receiver, newSlotMethod );
 
                     if ( isConnected )
                     {
@@ -208,7 +208,7 @@ void QMetaObject::connectSlotsByName( QObject *receiver )
         else if ( ! ( metaObj->method( slotIndex ).attributes() & QMetaMethod::Cloned ) )
         {
             qWarning( "QMetaObject::connectSlotsByName() No matching signal for: %s::%s",
-                      lscsPrintable( metaObj->className() ), lscsPrintable( slotName ) );
+                      csPrintable( metaObj->className() ), csPrintable( slotName ) );
 
         }
     }
@@ -427,7 +427,7 @@ int QMetaObject::indexOfSlot( const QString &slot ) const
     return retval;
 }
 
-// internal method wrapping the global enum map
+// wraps the global enum map
 QMap<std::type_index, std::pair<QMetaObject *, QString>> &QMetaObject::m_enumsAll()
 {
     static QMap<std::type_index, std::pair<QMetaObject *, QString>> enums_All;

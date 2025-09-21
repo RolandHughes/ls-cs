@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -70,7 +70,7 @@ public:
     }
 
     int m_count;           // result is either a pointer to a result or to a vector of results,
-    const void *result;    // if count is 0 it's a result, otherwise it's a vector.
+    const void *result;   // if count is 0 it's a result, otherwise it's a vector.
 };
 
 class Q_CORE_EXPORT ResultIteratorBase
@@ -203,17 +203,17 @@ public:
 
     ResultIterator<T> begin() const
     {
-        return static_cast<ResultIterator<T>>( ResultStoreBase::begin() );
+        return static_cast<ResultIterator<T> >( ResultStoreBase::begin() );
     }
 
     ResultIterator<T> end() const
     {
-        return static_cast<ResultIterator<T>>( ResultStoreBase::end() );
+        return static_cast<ResultIterator<T> >( ResultStoreBase::end() );
     }
 
     ResultIterator<T> resultAt( int index ) const
     {
-        return static_cast<ResultIterator<T>>( ResultStoreBase::resultAt( index ) );
+        return static_cast<ResultIterator<T> >( ResultStoreBase::resultAt( index ) );
     }
 
     void clear()

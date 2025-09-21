@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -123,12 +123,20 @@ void QFactoryLoader::setup()
             continue;
         }
 
-        QStringList plugins = QDir( path ).entryList( QDir::Files | QDir::Readable );
+        // took out | QDir::Readable
+        QStringList plugins = QDir( path ).entryList( QDir::Files);
         QLibraryHandle *library = nullptr;
 
         for ( int j = 0; j < plugins.count(); ++j )
         {
             QString fname = QDir::cleanPath( path + '/' + plugins.at( j ) );
+
+            /*       if (j > 0) {
+                        mp_pluginsFound.append( PluginStatus{path} );
+                     }
+
+                     mp_pluginsFound.last().fileName = plugins.at(j);
+            */
 
             library = QLibraryHandle::findOrLoad( QFileInfo( fname ).canonicalFilePath() );
 
@@ -230,8 +238,8 @@ void QFactoryLoader::setup()
 
                 if ( lib_other )
                 {
-                    int index     = lib_other->m_metaObject->indexOfClassInfo( "plugin_version" );
-                    other_version = lib_other->m_metaObject->classInfo( index ).value().toInteger<int>();
+                    int versionIndex = lib_other->m_metaObject->indexOfClassInfo( "plugin_version" );
+                    other_version    = lib_other->m_metaObject->classInfo( versionIndex ).value().toInteger<int>();
                 }
 
                 int lib_version = version.toInteger<int>();

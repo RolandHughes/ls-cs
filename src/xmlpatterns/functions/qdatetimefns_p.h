@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -24,8 +24,6 @@
 #ifndef QDateTimeFNs_P_H
 #define QDateTimeFNs_P_H
 
-#include <qtimezone.h>
-
 #include <qatomiccomparator_p.h>
 #include <qcommonvalues_p.h>
 #include <qschemadatetime_p.h>
@@ -33,6 +31,8 @@
 #include <qdecimal_p.h>
 #include <qinteger_p.h>
 #include <qfunctioncall_p.h>
+
+QT_BEGIN_NAMESPACE
 
 namespace QPatternist
 {
@@ -152,5 +152,8 @@ public:
 #include "qdatetimefns.cpp"
 
 }
+
+QT_END_NAMESPACE
+
 
 #endif

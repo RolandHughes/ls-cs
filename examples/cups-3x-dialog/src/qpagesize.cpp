@@ -674,7 +674,7 @@ static QSizeF lscs_unitSize( QPageSize::PageSizeId pageSizeId, QPageSize::Unit u
         case QPageSize::Unit::Didot:
         case QPageSize::Unit::Cicero:
             return lscs_convertPointsToUnits( QSize( lscs_pageSizes[pageSizeId].widthPoints,
-                                                   lscs_pageSizes[pageSizeId].heightPoints ), units );
+                                              lscs_pageSizes[pageSizeId].heightPoints ), units );
 
         default:
             return QSizeF();

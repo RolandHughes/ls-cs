@@ -42,7 +42,7 @@ private:
     void    createMenus();
     void    guiDialog();
     void    removeTab( int index );
-    void	testAPI();
+    void    testAPI();
 
     QString printerOption( const QString &key );
     QString uniqueName();
@@ -66,22 +66,22 @@ private:
     QAction            *m_actionPrint;
 
     QAction            *m_actionExit;
-    
-    
-#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN) || defined(Q_OS_BSD4) || defined(Q_OS_OPENBSD) || defined(Q_OS_FREEBSD)    
-    QAction			   *m_actionSep7;
-    QAction			   *m_actionTestAPI;
-    
+
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN) || defined(Q_OS_BSD4) || defined(Q_OS_OPENBSD) || defined(Q_OS_FREEBSD)
+    QAction            *m_actionSep7;
+    QAction            *m_actionTestAPI;
+
     cups_dest_t *m_cupsDest;
     char        m_resource[ RESOURCE_SIZE];
     char        m_value[ VALUE_SIZE];
-    
+
     QByteArray  m_uri;
     QByteArray  m_makeAndModel;
     QByteArray  m_location;
     QByteArray  m_instance;
     QByteArray  m_name;
-#endif    
-    
+#endif
+
 };
 #endif /* MAINWINDOW_H */

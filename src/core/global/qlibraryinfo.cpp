@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -20,11 +20,11 @@
 * https://www.gnu.org/licenses/
 *
 ***********************************************************************/
+#include <qlibraryinfo.h>
 
 #include <qcoreapplication.h>
 #include <qdir.h>
 #include <qfile.h>
-#include <qlibraryinfo.h>
 #include <qregularexpression.h>
 #include <qscopedpointer.h>
 #include <qsettings.h>
@@ -120,12 +120,12 @@ void QLibrarySettings::load()
 
 QSettings *QLibraryInfoPrivate::findConfiguration()
 {
-    QString qtconfig( QString::fromUtf8(CONF_RESOURCE_PATH) );
+    QString qtconfig( QString::fromUtf8( CONF_RESOURCE_PATH ) );
 
-    if (QCoreApplication::testAttribute(Qt::AA_UseSystemConf))
+    if ( QCoreApplication::testAttribute( Qt::AA_UseSystemConf ) )
     {
-        QDir systemDataPath( QString::fromUtf8(LsCsLibraryInfo::lscsData ));
-        qtconfig = systemDataPath.filePath( QString::fromUtf8(CONF_FILE_NAME));
+        QDir systemDataPath( QString::fromUtf8( LsCsLibraryInfo::lscsData ) );
+        qtconfig = systemDataPath.filePath( QString::fromUtf8( CONF_FILE_NAME ) );
     }
 
     if ( ! QFile::exists( qtconfig ) && QCoreApplication::instance() )
@@ -150,7 +150,7 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
 #endif
         {
             QDir pwd( QCoreApplication::applicationDirPath() );
-            qtconfig = pwd.filePath( QString::fromUtf8(CONF_FILE_NAME ));
+            qtconfig = pwd.filePath( QString::fromUtf8( CONF_FILE_NAME ) );
         }
     }
 

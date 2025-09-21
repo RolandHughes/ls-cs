@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -32,12 +32,13 @@
 #include <qstringlist.h>
 #include <qtimezone.h>
 #include <qvariant.h>
+
 #include <qvector.h>
 
 #define QDATETIME_TIME_MIN            QTime(0, 0, 0, 0)
 #define QDATETIME_TIME_MAX            QTime(23, 59, 59, 999)
 #define QDATETIME_DATE_MIN            QDate(100, 1, 1)
-#define QDATETIME_DATE_MAX            QDate(9999, 12, 31)
+#define QDATETIME_DATE_MAX            QDate(3000, 12, 31)         // limit on Windows, refer to qt_mktime()
 
 #define QDATETIME_DATETIME_MIN        QDateTime(QDATETIME_DATE_MIN, QDATETIME_TIME_MIN)
 #define QDATETIME_DATETIME_MAX        QDateTime(QDATETIME_DATE_MAX, QDATETIME_TIME_MAX)
@@ -56,7 +57,6 @@ public:
         FromString,
         DateTimeEdit
     };
-
     QDateTimeParser( QVariant::Type t, Context ctx )
         : currentSectionIndex( -1 ), display( Qt::EmptyFlag ), cachedDay( -1 ), parserType( t ), fixday( false ),
           m_timeZone( QTimeZone::systemTimeZone() ), context( ctx )
@@ -108,10 +108,10 @@ public:
         LastSection           = 0x40000 | Internal,
         CalendarPopupSection  = 0x80000 | Internal,
 
-        NoSectionIndex        = -1,
-        FirstSectionIndex     = -2,
-        LastSectionIndex      = -3,
-        CalendarPopupIndex    = -4
+        NoSectionIndex     = -1,
+        FirstSectionIndex  = -2,
+        LastSectionIndex   = -3,
+        CalendarPopupIndex = -4
     };
 
     using Sections = QFlags<Section>;
@@ -124,12 +124,10 @@ public:
         int zeroesAdded;
 
         static QString name( Section s );
-
         QString name() const
         {
             return name( type );
         }
-
         QString format() const;
         int maxChange() const;
     };
@@ -146,7 +144,6 @@ public:
         StateNode()
             : state( Invalid ), conflicts( false )
         { }
-
         QString input;
         State state;
         bool conflicts;
@@ -209,15 +206,12 @@ protected:
 
     bool skipToNextSection( int section, const QDateTime &current, const QString &sectionText ) const;
     QString stateName( State s ) const;
-
     virtual QDateTime getMinimum() const;
     virtual QDateTime getMaximum() const;
-
     virtual int cursorPosition() const
     {
         return -1;
     }
-
     virtual QString getAmPmText( AmPm ap, Case cs ) const;
     virtual QLocale locale() const
     {
@@ -242,14 +236,11 @@ protected:
 
     mutable int cachedDay;
     mutable QString m_text;
-
     QVector<SectionNode> sectionNodes;
-
     SectionNode first;
     SectionNode last;
     SectionNode none;
     SectionNode popup;
-
     QStringList separators;
     QString displayFormat;
     QLocale defaultLocale;
@@ -274,11 +265,13 @@ private:
     int parseSection( const QDateTime &currentValue, int sectionIndex, QString &txt, int &cursorPosition,
                       int index, QDateTimeParser::State &state, int *used = nullptr ) const;
 
+
     int findMonth( const QString &str1, int monthstart, int sectionIndex,
                    QString *monthName = nullptr, int *used = nullptr ) const;
 
     int findDay( const QString &str1, int intDaystart, int sectionIndex,
                  QString *dayName = nullptr, int *used = nullptr ) const;
+
 
     AmPmFinder findAmPm( QString &str, int index, int *used = nullptr ) const;
     bool potentialValue( const QString &str, int min, int max, int index,

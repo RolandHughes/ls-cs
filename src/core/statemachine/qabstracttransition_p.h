@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -25,13 +25,13 @@
 #define QABSTRACTTRANSITION_P_H
 
 #include <qlist.h>
-#include <qvector.h>
 #include <qsharedpointer.h>
+#include <qvector.h>
 
 class QAbstractState;
+class QAbstractTransition;
 class QState;
 class QStateMachine;
-class QAbstractTransition;
 
 class Q_CORE_EXPORT QAbstractTransitionPrivate
 {

@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2022 Barbara Geller
+* Copyright (c) 2012-2022 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -29,6 +29,8 @@
 #include "qatomicstring_p.h"
 
 #include "qattributenamevalidator_p.h"
+
+QT_BEGIN_NAMESPACE
 
 using namespace QPatternist;
 
@@ -85,3 +87,5 @@ ExpressionVisitorResult::Ptr AttributeNameValidator::accept( const ExpressionVis
 {
     return visitor->visit( this );
 }
+
+QT_END_NAMESPACE

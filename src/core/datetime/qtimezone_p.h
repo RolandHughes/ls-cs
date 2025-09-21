@@ -1,7 +1,7 @@
 /***********************************************************************
 *
-* Copyright (c) 2012-2024 Barbara Geller
-* Copyright (c) 2012-2024 Ansel Sermersheim
+* Copyright (c) 2012-2025 Barbara Geller
+* Copyright (c) 2012-2025 Ansel Sermersheim
 *
 * Copyright (c) 2015 The Qt Company Ltd.
 * Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies).
@@ -41,7 +41,7 @@ class NSTimeZone;
 #endif
 
 #ifdef Q_OS_WIN
-#include <lscs_windows.h>
+#include <qt_windows.h>
 #endif
 
 #ifdef Q_OS_ANDROID
@@ -79,7 +79,6 @@ public:
     // Create null time zone
     QTimeZonePrivate();
     QTimeZonePrivate( const QTimeZonePrivate &other );
-
     virtual ~QTimeZonePrivate();
 
     virtual QTimeZonePrivate *clone();
@@ -95,7 +94,6 @@ public:
 
     virtual QString displayName( qint64 atMSecsSinceEpoch,
                                  QTimeZone::NameType nameType, const QLocale &locale ) const;
-
     virtual QString displayName( QTimeZone::TimeType timeType,
                                  QTimeZone::NameType nameType, const QLocale &locale ) const;
 
@@ -127,22 +125,18 @@ public:
     {
         return std::numeric_limits<qint64>::max();
     }
-
     static qint64 minMSecs()
     {
         return std::numeric_limits<qint64>::min() + 1;
     }
-
     static qint64 invalidMSecs()
     {
         return std::numeric_limits<qint64>::min();
     }
-
     static qint64 invalidSeconds()
     {
         return std::numeric_limits<int>::min();
     }
-
     static Data invalidData();
     static QTimeZone::OffsetData invalidOffsetData();
     static QTimeZone::OffsetData toOffsetData( const Data &data );
@@ -159,13 +153,13 @@ protected:
     QByteArray m_id;
 };
 
-template <>
+template<>
 inline QTimeZonePrivate *QSharedDataPointer<QTimeZonePrivate>::clone()
 {
     return d->clone();
 }
 
-class QUtcTimeZonePrivate final : public QTimeZonePrivate
+class  QUtcTimeZonePrivate final : public QTimeZonePrivate
 {
 public:
     // Create default UTC time zone
@@ -318,7 +312,6 @@ public:
 
     QString displayName( QTimeZone::TimeType timeType, QTimeZone::NameType nameType,
                          const QLocale &locale ) const override;
-
     QString abbreviation( qint64 atMSecsSinceEpoch ) const override;
 
     int offsetFromUtc( qint64 atMSecsSinceEpoch ) const override;
