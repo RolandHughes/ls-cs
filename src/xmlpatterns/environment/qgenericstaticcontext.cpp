@@ -224,7 +224,7 @@ void GenericStaticContext::setContextItemType( const ItemType::Ptr &type )
 StaticContext::Ptr GenericStaticContext::copy() const
 {
     GenericStaticContext *const retval = new GenericStaticContext( m_namePool, m_messageHandler, m_baseURI,
-            m_functionFactory, m_queryLanguage );
+        m_functionFactory, m_queryLanguage );
     const NamespaceResolver::Ptr newSolver( new GenericNamespaceResolver( m_namespaceResolver->bindings() ) );
 
     retval->setNamespaceBindings( newSolver );

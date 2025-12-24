@@ -214,41 +214,41 @@ static inline uint variantHash( const QVariant &variant )
 
     switch ( variant.userType() )
     {
-        case QVariant::String:
-            return qHash( variant.toString() );
+    case QVariant::String:
+        return qHash( variant.toString() );
 
-        case QVariant::Double:
-            return qHash( variant.toDouble() );
+    case QVariant::Double:
+        return qHash( variant.toDouble() );
 
-        case QVariant::Int:
-            return 0x811890 + variant.toInt();
+    case QVariant::Int:
+        return 0x811890 + variant.toInt();
 
-        case QVariant::Brush:
-            return 0x01010101 + hash( variant.value<QBrush>() );
+    case QVariant::Brush:
+        return 0x01010101 + hash( variant.value<QBrush>() );
 
-        case QVariant::Bool:
-            return 0x371818 + variant.toBool();
+    case QVariant::Bool:
+        return 0x371818 + variant.toBool();
 
-        case QVariant::Pen:
-            return 0x02020202 + hash( variant.value<QPen>() );
+    case QVariant::Pen:
+        return 0x02020202 + hash( variant.value<QPen>() );
 
-        case QVariant::List:
-            return 0x8377 + variant.value<QVariantList>().count();
+    case QVariant::List:
+        return 0x8377 + variant.value<QVariantList>().count();
 
-        case QVariant::Color:
-            return hash( variant.value<QColor>() );
+    case QVariant::Color:
+        return hash( variant.value<QColor>() );
 
-        case QVariant::TextLength:
-            return 0x377 + hash( variant.value<QTextLength>().rawValue() );
+    case QVariant::TextLength:
+        return 0x377 + hash( variant.value<QTextLength>().rawValue() );
 
-        case QVariant::Float:
-            return qHash( variant.toFloat() );
+    case QVariant::Float:
+        return qHash( variant.toFloat() );
 
-        case QVariant::Invalid:
-            return 0;
+    case QVariant::Invalid:
+        return 0;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return qHash( variant.typeName() );
@@ -313,109 +313,109 @@ void QTextFormatPrivate::recalcFont() const
     {
         switch ( props.at( i ).key )
         {
-            case QTextFormat::FontFamily:
-                f.setFamily( props.at( i ).value.toString() );
-                break;
+        case QTextFormat::FontFamily:
+            f.setFamily( props.at( i ).value.toString() );
+            break;
 
-            case QTextFormat::FontPointSize:
-                f.setPointSizeF( props.at( i ).value.toReal() );
-                break;
+        case QTextFormat::FontPointSize:
+            f.setPointSizeF( props.at( i ).value.toReal() );
+            break;
 
-            case  QTextFormat::FontPixelSize:
-                f.setPixelSize( props.at( i ).value.toInt() );
-                break;
+        case  QTextFormat::FontPixelSize:
+            f.setPixelSize( props.at( i ).value.toInt() );
+            break;
 
-            case QTextFormat::FontWeight:
+        case QTextFormat::FontWeight:
+        {
+            const QVariant weightValue = props.at( i ).value;
+            int weight = weightValue.toInt();
+
+            if ( weight >= 0 && weightValue.isValid() )
             {
-                const QVariant weightValue = props.at( i ).value;
-                int weight = weightValue.toInt();
-
-                if ( weight >= 0 && weightValue.isValid() )
-                {
-                    f.setWeight( weight );
-                }
-
-                break;
+                f.setWeight( weight );
             }
 
-            case QTextFormat::FontItalic:
-                f.setItalic( props.at( i ).value.toBool() );
-                break;
+            break;
+        }
 
-            case QTextFormat::FontUnderline:
-                if ( ! hasProperty( QTextFormat::TextUnderlineStyle ) )
-                {
-                    // don't use the old one if the new one is there.
-                    f.setUnderline( props.at( i ).value.toBool() );
-                }
+        case QTextFormat::FontItalic:
+            f.setItalic( props.at( i ).value.toBool() );
+            break;
 
-                break;
-
-            case QTextFormat::TextUnderlineStyle:
-                f.setUnderline( static_cast<QTextCharFormat::UnderlineStyle>( props.at( i ).value.toInt() ) ==
-                                QTextCharFormat::SingleUnderline );
-                break;
-
-            case QTextFormat::FontOverline:
-                f.setOverline( props.at( i ).value.toBool() );
-                break;
-
-            case QTextFormat::FontStrikeOut:
-                f.setStrikeOut( props.at( i ).value.toBool() );
-                break;
-
-            case QTextFormat::FontLetterSpacingType:
-                spacingType = static_cast<QFont::SpacingType>( props.at( i ).value.toInt() );
-                hasSpacingInformation = true;
-                break;
-
-            case QTextFormat::FontLetterSpacing:
-                letterSpacing = props.at( i ).value.toReal();
-                hasSpacingInformation = true;
-                break;
-
-            case QTextFormat::FontWordSpacing:
-                f.setWordSpacing( props.at( i ).value.toReal() );
-                break;
-
-            case QTextFormat::FontCapitalization:
-                f.setCapitalization( static_cast<QFont::Capitalization> ( props.at( i ).value.toInt() ) );
-                break;
-
-            case QTextFormat::FontFixedPitch:
+        case QTextFormat::FontUnderline:
+            if ( ! hasProperty( QTextFormat::TextUnderlineStyle ) )
             {
-                const bool value = props.at( i ).value.toBool();
-
-                if ( f.fixedPitch() != value )
-                {
-                    f.setFixedPitch( value );
-                }
-
-                break;
+                // don't use the old one if the new one is there.
+                f.setUnderline( props.at( i ).value.toBool() );
             }
 
-            case QTextFormat::FontStretch:
-                f.setStretch( props.at( i ).value.toInt() );
-                break;
+            break;
 
-            case QTextFormat::FontStyleHint:
-                f.setStyleHint( static_cast<QFont::StyleHint>( props.at( i ).value.toInt() ), f.styleStrategy() );
-                break;
+        case QTextFormat::TextUnderlineStyle:
+            f.setUnderline( static_cast<QTextCharFormat::UnderlineStyle>( props.at( i ).value.toInt() ) ==
+                            QTextCharFormat::SingleUnderline );
+            break;
 
-            case QTextFormat::FontHintingPreference:
-                f.setHintingPreference( static_cast<QFont::HintingPreference>( props.at( i ).value.toInt() ) );
-                break;
+        case QTextFormat::FontOverline:
+            f.setOverline( props.at( i ).value.toBool() );
+            break;
 
-            case QTextFormat::FontStyleStrategy:
-                f.setStyleStrategy( static_cast<QFont::StyleStrategy>( props.at( i ).value.toInt() ) );
-                break;
+        case QTextFormat::FontStrikeOut:
+            f.setStrikeOut( props.at( i ).value.toBool() );
+            break;
 
-            case QTextFormat::FontKerning:
-                f.setKerning( props.at( i ).value.toBool() );
-                break;
+        case QTextFormat::FontLetterSpacingType:
+            spacingType = static_cast<QFont::SpacingType>( props.at( i ).value.toInt() );
+            hasSpacingInformation = true;
+            break;
 
-            default:
-                break;
+        case QTextFormat::FontLetterSpacing:
+            letterSpacing = props.at( i ).value.toReal();
+            hasSpacingInformation = true;
+            break;
+
+        case QTextFormat::FontWordSpacing:
+            f.setWordSpacing( props.at( i ).value.toReal() );
+            break;
+
+        case QTextFormat::FontCapitalization:
+            f.setCapitalization( static_cast<QFont::Capitalization> ( props.at( i ).value.toInt() ) );
+            break;
+
+        case QTextFormat::FontFixedPitch:
+        {
+            const bool value = props.at( i ).value.toBool();
+
+            if ( f.fixedPitch() != value )
+            {
+                f.setFixedPitch( value );
+            }
+
+            break;
+        }
+
+        case QTextFormat::FontStretch:
+            f.setStretch( props.at( i ).value.toInt() );
+            break;
+
+        case QTextFormat::FontStyleHint:
+            f.setStyleHint( static_cast<QFont::StyleHint>( props.at( i ).value.toInt() ), f.styleStrategy() );
+            break;
+
+        case QTextFormat::FontHintingPreference:
+            f.setHintingPreference( static_cast<QFont::HintingPreference>( props.at( i ).value.toInt() ) );
+            break;
+
+        case QTextFormat::FontStyleStrategy:
+            f.setStyleStrategy( static_cast<QFont::StyleStrategy>( props.at( i ).value.toInt() ) );
+            break;
+
+        case QTextFormat::FontKerning:
+            f.setKerning( props.at( i ).value.toBool() );
+            break;
+
+        default:
+            break;
         }
     }
 

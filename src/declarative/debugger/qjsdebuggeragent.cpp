@@ -419,18 +419,18 @@ QList<JSAgentStackData> QJSDebuggerAgent::backtrace()
             {
                 switch ( info.functionType() )
                 {
-                    case QScriptContextInfo::ScriptFunction:
-                        frame.functionName = "<anonymous>";
-                        break;
+                case QScriptContextInfo::ScriptFunction:
+                    frame.functionName = "<anonymous>";
+                    break;
 
-                    case QScriptContextInfo::NativeFunction:
-                        frame.functionName = "<native>";
-                        break;
+                case QScriptContextInfo::NativeFunction:
+                    frame.functionName = "<native>";
+                    break;
 
-                    case QScriptContextInfo::QtFunction:
-                    case QScriptContextInfo::QtPropertyFunction:
-                        frame.functionName = "<native slot>";
-                        break;
+                case QScriptContextInfo::QtFunction:
+                case QScriptContextInfo::QtPropertyFunction:
+                    frame.functionName = "<native slot>";
+                    break;
                 }
             }
             else
@@ -617,28 +617,28 @@ void QJSDebuggerAgentPrivate::positionChange( qint64 scriptId, int lineNumber, i
 
     switch ( state )
     {
-        case NoState:
-        case StoppedState:
-            // Do nothing
+    case NoState:
+    case StoppedState:
+        // Do nothing
+        break;
+
+    case SteppingOutState:
+        if ( stepDepth >= 0 )
+        {
             break;
+        }
 
-        case SteppingOutState:
-            if ( stepDepth >= 0 )
-            {
-                break;
-            }
-
-        //fallthough
-        case SteppingOverState:
-            if ( stepDepth > 0 )
-            {
-                break;
-            }
-
-        //fallthough
-        case SteppingIntoState:
-            stopped();
+    //fallthough
+    case SteppingOverState:
+        if ( stepDepth > 0 )
+        {
             break;
+        }
+
+    //fallthough
+    case SteppingIntoState:
+        stopped();
+        break;
     }
 
 }

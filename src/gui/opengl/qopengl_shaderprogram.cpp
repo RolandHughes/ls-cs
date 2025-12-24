@@ -213,29 +213,29 @@ bool QOpenGLShaderPrivate::compile( QOpenGLShader *q )
 
         switch ( shaderType )
         {
-            case QOpenGLShader::Fragment:
-                type = types[0];
-                break;
+        case QOpenGLShader::Fragment:
+            type = types[0];
+            break;
 
-            case QOpenGLShader::Vertex:
-                type = types[1];
-                break;
+        case QOpenGLShader::Vertex:
+            type = types[1];
+            break;
 
-            case QOpenGLShader::Geometry:
-                type = types[2];
-                break;
+        case QOpenGLShader::Geometry:
+            type = types[2];
+            break;
 
-            case QOpenGLShader::TessellationControl:
-                type = types[3];
-                break;
+        case QOpenGLShader::TessellationControl:
+            type = types[3];
+            break;
 
-            case QOpenGLShader::TessellationEvaluation:
-                type = types[4];
-                break;
+        case QOpenGLShader::TessellationEvaluation:
+            type = types[4];
+            break;
 
-            case QOpenGLShader::Compute:
-                type = types[5];
-                break;
+        case QOpenGLShader::Compute:
+            type = types[5];
+            break;
         }
 
         // Get info and source code lengths
@@ -384,79 +384,79 @@ static QVersionDirectivePosition findVersionDirectivePosition( const char *sourc
 
         switch ( state )
         {
-            case Normal:
-                if ( c == '/' )
+        case Normal:
+            if ( c == '/' )
+            {
+                state = CommentStarting;
+            }
+
+            break;
+
+        case CommentStarting:
+            if ( c == '*' )
+            {
+                state = MultiLineComment;
+
+            }
+            else if ( c == '/' )
+            {
+                state = SingleLineComment;
+
+            }
+            else
+            {
+                state = Normal;
+
+            }
+
+            break;
+
+        case MultiLineComment:
+            if ( c == '*' )
+            {
+                state = CommentEnding;
+
+            }
+            else if ( c == '#' )
+            {
+                c = '_';
+            }
+
+            break;
+
+        case SingleLineComment:
+            if ( c == '\n' )
+            {
+                state = Normal;
+
+            }
+            else if ( c == '#' )
+            {
+                c = '_';
+            }
+
+            break;
+
+        case CommentEnding:
+            if ( c == '/' )
+            {
+                state = Normal;
+
+            }
+            else
+            {
+                if ( c == '#' )
                 {
-                    state = CommentStarting;
+                    c = '_';
                 }
 
-                break;
-
-            case CommentStarting:
-                if ( c == '*' )
+                if ( c != '*' )
                 {
                     state = MultiLineComment;
-
                 }
-                else if ( c == '/' )
-                {
-                    state = SingleLineComment;
+            }
 
-                }
-                else
-                {
-                    state = Normal;
-
-                }
-
-                break;
-
-            case MultiLineComment:
-                if ( c == '*' )
-                {
-                    state = CommentEnding;
-
-                }
-                else if ( c == '#' )
-                {
-                    c = '_';
-                }
-
-                break;
-
-            case SingleLineComment:
-                if ( c == '\n' )
-                {
-                    state = Normal;
-
-                }
-                else if ( c == '#' )
-                {
-                    c = '_';
-                }
-
-                break;
-
-            case CommentEnding:
-                if ( c == '/' )
-                {
-                    state = Normal;
-
-                }
-                else
-                {
-                    if ( c == '#' )
-                    {
-                        c = '_';
-                    }
-
-                    if ( c != '*' )
-                    {
-                        state = MultiLineComment;
-                    }
-                }
-
-                break;
+            break;
         }
 
         retval.append( c );

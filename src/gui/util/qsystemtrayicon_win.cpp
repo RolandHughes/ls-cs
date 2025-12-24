@@ -286,21 +286,21 @@ bool QSystemTrayIconSys::showMessage( const QString &title, const QString &messa
 
     switch ( type )
     {
-        case QSystemTrayIcon::Information:
-            tnd.dwInfoFlags = NIIF_INFO;
-            break;
+    case QSystemTrayIcon::Information:
+        tnd.dwInfoFlags = NIIF_INFO;
+        break;
 
-        case QSystemTrayIcon::Warning:
-            tnd.dwInfoFlags = NIIF_WARNING;
-            break;
+    case QSystemTrayIcon::Warning:
+        tnd.dwInfoFlags = NIIF_WARNING;
+        break;
 
-        case QSystemTrayIcon::Critical:
-            tnd.dwInfoFlags = NIIF_ERROR;
-            break;
+    case QSystemTrayIcon::Critical:
+        tnd.dwInfoFlags = NIIF_ERROR;
+        break;
 
-        case QSystemTrayIcon::NoIcon:
-            tnd.dwInfoFlags = hIcon ? NIIF_USER : NIIF_NONE;
-            break;
+    case QSystemTrayIcon::NoIcon:
+        tnd.dwInfoFlags = hIcon ? NIIF_USER : NIIF_NONE;
+        break;
     }
 
     if ( QSysInfo::windowsVersion() >= QSysInfo::WV_VISTA )
@@ -378,77 +378,77 @@ bool QSystemTrayIconSys::winEvent( MSG *m, long *result )
 
     switch ( m->message )
     {
-        case MYWM_NOTIFYICON:
-        {
-            int message = 0;
-            QPoint gpos;
+    case MYWM_NOTIFYICON:
+    {
+        int message = 0;
+        QPoint gpos;
 
-            if ( version == NOTIFYICON_VERSION_4 )
+        if ( version == NOTIFYICON_VERSION_4 )
+        {
+            Q_ASSERT( q_uNOTIFYICONID == HIWORD( m->lParam ) );
+            message = LOWORD( m->lParam );
+            gpos = QPoint( GET_X_LPARAM( m->wParam ), GET_Y_LPARAM( m->wParam ) );
+        }
+        else
+        {
+            Q_ASSERT( q_uNOTIFYICONID == m->wParam );
+            message = m->lParam;
+            gpos = QCursor::pos();
+        }
+
+        switch ( message )
+        {
+        case NIN_SELECT:
+        case NIN_KEYSELECT:
+            if ( ignoreNextMouseRelease )
             {
-                Q_ASSERT( q_uNOTIFYICONID == HIWORD( m->lParam ) );
-                message = LOWORD( m->lParam );
-                gpos = QPoint( GET_X_LPARAM( m->wParam ), GET_Y_LPARAM( m->wParam ) );
+                ignoreNextMouseRelease = false;
             }
             else
             {
-                Q_ASSERT( q_uNOTIFYICONID == m->wParam );
-                message = m->lParam;
-                gpos = QCursor::pos();
+                emit q->activated( QSystemTrayIcon::Trigger );
             }
 
-            switch ( message )
+            break;
+
+        case WM_LBUTTONDBLCLK:
+            ignoreNextMouseRelease = true; // Since DBLCLICK Generates a second mouse
+            // release we must ignore it
+            emit q->activated( QSystemTrayIcon::DoubleClick );
+            break;
+
+        case WM_CONTEXTMENU:
+            if ( q->contextMenu() )
             {
-                case NIN_SELECT:
-                case NIN_KEYSELECT:
-                    if ( ignoreNextMouseRelease )
-                    {
-                        ignoreNextMouseRelease = false;
-                    }
-                    else
-                    {
-                        emit q->activated( QSystemTrayIcon::Trigger );
-                    }
-
-                    break;
-
-                case WM_LBUTTONDBLCLK:
-                    ignoreNextMouseRelease = true; // Since DBLCLICK Generates a second mouse
-                    // release we must ignore it
-                    emit q->activated( QSystemTrayIcon::DoubleClick );
-                    break;
-
-                case WM_CONTEXTMENU:
-                    if ( q->contextMenu() )
-                    {
-                        q->contextMenu()->popup( gpos );
-                        q->contextMenu()->activateWindow();
-                    }
-
-                    emit q->activated( QSystemTrayIcon::Context );
-                    break;
-
-                case NIN_BALLOONUSERCLICK:
-                    emit q->messageClicked();
-                    break;
-
-                case WM_MBUTTONUP:
-                    emit q->activated( QSystemTrayIcon::MiddleClick );
-                    break;
-
-                default:
-                    break;
+                q->contextMenu()->popup( gpos );
+                q->contextMenu()->activateWindow();
             }
 
+            emit q->activated( QSystemTrayIcon::Context );
+            break;
+
+        case NIN_BALLOONUSERCLICK:
+            emit q->messageClicked();
+            break;
+
+        case WM_MBUTTONUP:
+            emit q->activated( QSystemTrayIcon::MiddleClick );
+            break;
+
+        default:
             break;
         }
 
-        default:
-            if ( m->message == MYWM_TASKBARCREATED )
-            {
-                trayMessage( NIM_ADD );
-            }
+        break;
+    }
 
-            break;
+    default:
+        if ( m->message == MYWM_TASKBARCREATED )
+        {
+            trayMessage( NIM_ADD );
+        }
+
+        break;
     }
 
     return false;

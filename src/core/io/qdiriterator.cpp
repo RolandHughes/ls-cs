@@ -171,7 +171,7 @@ void QDirIteratorPrivate::pushDirectory( const QFileInfo &fileInfo )
     {
 #ifndef LSCS_NO_FILESYSTEMITERATOR
         QFileSystemIterator *it = new QFileSystemIterator( fileInfo.d_ptr->fileEntry,
-                m_filters, m_nameFilters, m_iteratorFlags );
+            m_filters, m_nameFilters, m_iteratorFlags );
         m_nativeIterators << it;
 #endif
     }

@@ -1466,85 +1466,85 @@ int QDeclarativeObjectMethodScriptClass::matchScore( const QScriptValue &actual,
     {
         switch ( conversionType )
         {
-            case QMetaType::Double:
-                return 0;
+        case QMetaType::Double:
+            return 0;
 
-            case QMetaType::Float:
-                return 1;
+        case QMetaType::Float:
+            return 1;
 
-            case QMetaType::LongLong:
-            case QMetaType::ULongLong:
-                return 2;
+        case QMetaType::LongLong:
+        case QMetaType::ULongLong:
+            return 2;
 
-            case QMetaType::Long:
-            case QMetaType::ULong:
-                return 3;
+        case QMetaType::Long:
+        case QMetaType::ULong:
+            return 3;
 
-            case QMetaType::Int:
-            case QMetaType::UInt:
-                return 4;
+        case QMetaType::Int:
+        case QMetaType::UInt:
+            return 4;
 
-            case QMetaType::Short:
-            case QMetaType::UShort:
-                return 5;
-                break;
+        case QMetaType::Short:
+        case QMetaType::UShort:
+            return 5;
+            break;
 
-            case QMetaType::Char:
-            case QMetaType::UChar:
-                return 6;
+        case QMetaType::Char:
+        case QMetaType::UChar:
+            return 6;
 
-            default:
-                return 10;
+        default:
+            return 10;
         }
     }
     else if ( actual.isString() )
     {
         switch ( conversionType )
         {
-            case QMetaType::QString:
-                return 0;
+        case QMetaType::QString:
+            return 0;
 
-            default:
-                return 10;
+        default:
+            return 10;
         }
     }
     else if ( actual.isBoolean() )
     {
         switch ( conversionType )
         {
-            case QMetaType::Bool:
-                return 0;
+        case QMetaType::Bool:
+            return 0;
 
-            default:
-                return 10;
+        default:
+            return 10;
         }
     }
     else if ( actual.isDate() )
     {
         switch ( conversionType )
         {
-            case QMetaType::QDateTime:
-                return 0;
+        case QMetaType::QDateTime:
+            return 0;
 
-            case QMetaType::QDate:
-                return 1;
+        case QMetaType::QDate:
+            return 1;
 
-            case QMetaType::QTime:
-                return 2;
+        case QMetaType::QTime:
+            return 2;
 
-            default:
-                return 10;
+        default:
+            return 10;
         }
     }
     else if ( actual.isRegExp() )
     {
         switch ( conversionType )
         {
-            case QMetaType::QRegExp:
-                return 0;
+        case QMetaType::QRegExp:
+            return 0;
 
-            default:
-                return 10;
+        default:
+            return 10;
         }
     }
     else if ( actual.isVariant() )
@@ -1566,42 +1566,42 @@ int QDeclarativeObjectMethodScriptClass::matchScore( const QScriptValue &actual,
     {
         switch ( conversionType )
         {
-            case QMetaType::QStringList:
-            case QMetaType::QVariantList:
-                return 5;
+        case QMetaType::QStringList:
+        case QMetaType::QVariantList:
+            return 5;
 
-            default:
-                return 10;
+        default:
+            return 10;
         }
     }
     else if ( actual.isQObject() )
     {
         switch ( conversionType )
         {
-            case QMetaType::QObjectStar:
-                return 0;
+        case QMetaType::QObjectStar:
+            return 0;
 
-            default:
-                return 10;
+        default:
+            return 10;
         }
     }
     else if ( actual.isNull() )
     {
         switch ( conversionType )
         {
-            case QMetaType::VoidStar:
-            case QMetaType::QObjectStar:
-                return 0;
+        case QMetaType::VoidStar:
+        case QMetaType::QObjectStar:
+            return 0;
 
-            default:
-                if ( !conversionTypeName.endsWith( '*' ) )
-                {
-                    return 10;
-                }
-                else
-                {
-                    return 0;
-                }
+        default:
+            if ( !conversionTypeName.endsWith( '*' ) )
+            {
+                return 10;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
     else

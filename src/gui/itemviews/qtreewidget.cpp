@@ -288,14 +288,14 @@ bool QTreeModel::hasChildren( const QModelIndex &parent ) const
 
     switch ( itm->d->policy )
     {
-        case QTreeWidgetItem::ShowIndicator:
-            return true;
+    case QTreeWidgetItem::ShowIndicator:
+        return true;
 
-        case QTreeWidgetItem::DontShowIndicator:
-            return false;
+    case QTreeWidgetItem::DontShowIndicator:
+        return false;
 
-        case QTreeWidgetItem::DontShowIndicatorWhenChildless:
-            return ( itm->childCount() > 0 );
+    case QTreeWidgetItem::DontShowIndicatorWhenChildless:
+        return ( itm->childCount() > 0 );
     }
 
     return false;
@@ -1276,100 +1276,100 @@ void QTreeWidgetItem::setData( int column, int role, const QVariant &value )
 
     switch ( role )
     {
-        case Qt::EditRole:
-        case Qt::DisplayRole:
+    case Qt::EditRole:
+    case Qt::DisplayRole:
+    {
+        if ( values.count() <= column )
         {
-            if ( values.count() <= column )
+            if ( model && this == model->headerItem )
             {
-                if ( model && this == model->headerItem )
-                {
-                    model->setColumnCount( column + 1 );
-                }
-                else
-                {
-                    values.resize( column + 1 );
-                }
-            }
-
-            if ( d->display.count() <= column )
-            {
-                for ( int i = d->display.count() - 1; i < column - 1; ++i )
-                {
-                    d->display.append( QVariant() );
-                }
-
-                d->display.append( value );
-            }
-            else if ( d->display[column] != value )
-            {
-                d->display[column] = value;
+                model->setColumnCount( column + 1 );
             }
             else
             {
-                return; // value is unchanged
+                values.resize( column + 1 );
             }
         }
-        break;
 
-        case Qt::CheckStateRole:
-            if ( ( itemFlags & Qt::ItemIsAutoTristate ) && value != Qt::PartiallyChecked )
+        if ( d->display.count() <= column )
+        {
+            for ( int i = d->display.count() - 1; i < column - 1; ++i )
             {
-                for ( int i = 0; i < children.count(); ++i )
-                {
-                    QTreeWidgetItem *child = children.at( i );
+                d->display.append( QVariant() );
+            }
 
-                    if ( child->data( column, role ).isValid() ) // has a CheckState
+            d->display.append( value );
+        }
+        else if ( d->display[column] != value )
+        {
+            d->display[column] = value;
+        }
+        else
+        {
+            return; // value is unchanged
+        }
+    }
+    break;
+
+    case Qt::CheckStateRole:
+        if ( ( itemFlags & Qt::ItemIsAutoTristate ) && value != Qt::PartiallyChecked )
+        {
+            for ( int i = 0; i < children.count(); ++i )
+            {
+                QTreeWidgetItem *child = children.at( i );
+
+                if ( child->data( column, role ).isValid() ) // has a CheckState
+                {
+                    Qt::ItemFlags f = itemFlags; // a little hack to avoid multiple dataChanged signals
+                    itemFlags &= ~Qt::ItemIsAutoTristate;
+                    child->setData( column, role, value );
+                    itemFlags = f;
+                }
+            }
+        }
+
+        [[fallthrough]];
+
+    default:
+        if ( column < values.count() )
+        {
+            bool found = false;
+            QVector<QWidgetItemData> column_values = values.at( column );
+
+            for ( int i = 0; i < column_values.count(); ++i )
+            {
+                if ( column_values.at( i ).role == role )
+                {
+                    if ( column_values.at( i ).value == value )
                     {
-                        Qt::ItemFlags f = itemFlags; // a little hack to avoid multiple dataChanged signals
-                        itemFlags &= ~Qt::ItemIsAutoTristate;
-                        child->setData( column, role, value );
-                        itemFlags = f;
+                        return;   // value is unchanged
                     }
+
+                    values[column][i].value = value;
+                    found = true;
+                    break;
                 }
             }
 
-            [[fallthrough]];
-
-        default:
-            if ( column < values.count() )
+            if ( !found )
             {
-                bool found = false;
-                QVector<QWidgetItemData> column_values = values.at( column );
+                values[column].append( QWidgetItemData( role, value ) );
+            }
 
-                for ( int i = 0; i < column_values.count(); ++i )
-                {
-                    if ( column_values.at( i ).role == role )
-                    {
-                        if ( column_values.at( i ).value == value )
-                        {
-                            return;   // value is unchanged
-                        }
-
-                        values[column][i].value = value;
-                        found = true;
-                        break;
-                    }
-                }
-
-                if ( !found )
-                {
-                    values[column].append( QWidgetItemData( role, value ) );
-                }
-
+        }
+        else
+        {
+            if ( model && this == model->headerItem )
+            {
+                model->setColumnCount( column + 1 );
             }
             else
             {
-                if ( model && this == model->headerItem )
-                {
-                    model->setColumnCount( column + 1 );
-                }
-                else
-                {
-                    values.resize( column + 1 );
-                }
-
-                values[column].append( QWidgetItemData( role, value ) );
+                values.resize( column + 1 );
             }
+
+            values[column].append( QWidgetItemData( role, value ) );
+        }
     }
 
     if ( model )
@@ -1392,36 +1392,36 @@ QVariant QTreeWidgetItem::data( int column, int role ) const
 {
     switch ( role )
     {
-        case Qt::EditRole:
-        case Qt::DisplayRole:
-            if ( column >= 0 && column < d->display.count() )
-            {
-                return d->display.at( column );
-            }
+    case Qt::EditRole:
+    case Qt::DisplayRole:
+        if ( column >= 0 && column < d->display.count() )
+        {
+            return d->display.at( column );
+        }
 
-            break;
+        break;
 
-        case Qt::CheckStateRole:
+    case Qt::CheckStateRole:
 
-            // special case for check state in tristate
-            if ( children.count() && ( itemFlags & Qt::ItemIsAutoTristate ) )
-            {
-                return childrenCheckState( column );
-            }
+        // special case for check state in tristate
+        if ( children.count() && ( itemFlags & Qt::ItemIsAutoTristate ) )
+        {
+            return childrenCheckState( column );
+        }
 
-            [[fallthrough]];
+        [[fallthrough]];
 
-        default:
-            if ( column >= 0 && column < values.size() )
-            {
-                const QVector<QWidgetItemData> &column_values = values.at( column );
+    default:
+        if ( column >= 0 && column < values.size() )
+        {
+            const QVector<QWidgetItemData> &column_values = values.at( column );
 
-                for ( int i = 0; i < column_values.count(); ++i )
-                    if ( column_values.at( i ).role == role )
-                    {
-                        return column_values.at( i ).value;
-                    }
-            }
+            for ( int i = 0; i < column_values.count(); ++i )
+                if ( column_values.at( i ).role == role )
+                {
+                    return column_values.at( i ).value;
+                }
+        }
     }
 
     return QVariant();
@@ -1807,17 +1807,17 @@ QVariant QTreeWidgetItem::childrenCheckState( int column ) const
 
         switch ( static_cast<Qt::CheckState>( value.toInt() ) )
         {
-            case Qt::Unchecked:
-                uncheckedChildren = true;
-                break;
+        case Qt::Unchecked:
+            uncheckedChildren = true;
+            break;
 
-            case Qt::Checked:
-                checkedChildren = true;
-                break;
+        case Qt::Checked:
+            checkedChildren = true;
+            break;
 
-            case Qt::PartiallyChecked:
-            default:
-                return Qt::PartiallyChecked;
+        case Qt::PartiallyChecked:
+        default:
+            return Qt::PartiallyChecked;
         }
     }
 

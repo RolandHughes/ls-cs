@@ -146,7 +146,7 @@ Q_GUI_EXPORT HBITMAP lscs_pixmapToWinHBITMAP( const QPixmap &p, int hbitmapForma
     {
 
         QRasterPlatformPixmap *data = new QRasterPlatformPixmap( p.depth() == 1 ?
-                QRasterPlatformPixmap::BitmapType : QRasterPlatformPixmap::PixmapType );
+            QRasterPlatformPixmap::BitmapType : QRasterPlatformPixmap::PixmapType );
 
         data->fromImage( p.toImage(), Qt::AutoColor );
         return lscs_pixmapToWinHBITMAP( QPixmap( data ), hbitmapFormat );

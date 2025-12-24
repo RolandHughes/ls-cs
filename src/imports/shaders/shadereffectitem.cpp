@@ -549,50 +549,50 @@ void ShaderEffectItem::updateEffectState( const QMatrix4x4 &matrix )
 
         switch ( v.type() )
         {
-            case QVariant::Color:
-                m_program->setUniformValue( name.constData(), qvariant_cast<QColor>( v ) );
-                break;
-
-            case QVariant::Double:
-                m_program->setUniformValue( name.constData(), ( float ) qvariant_cast<double>( v ) );
-                break;
-
-            case QVariant::Transform:
-                m_program->setUniformValue( name.constData(), qvariant_cast<QTransform>( v ) );
-                break;
-
-            case QVariant::Int:
-                m_program->setUniformValue( name.constData(), GLint( v.toInt() ) );
-                break;
-
-            case QVariant::Bool:
-                m_program->setUniformValue( name.constData(), GLint( v.toBool() ) );
-                break;
-
-            case QVariant::Size:
-            case QVariant::SizeF:
-                m_program->setUniformValue( name.constData(), v.toSizeF() );
-                break;
-
-            case QVariant::Point:
-            case QVariant::PointF:
-                m_program->setUniformValue( name.constData(), v.toPointF() );
-                break;
-
-            case QVariant::Rect:
-            case QVariant::RectF:
-            {
-                QRectF r = v.toRectF();
-                m_program->setUniformValue( name.constData(), r.x(), r.y(), r.width(), r.height() );
-            }
+        case QVariant::Color:
+            m_program->setUniformValue( name.constData(), qvariant_cast<QColor>( v ) );
             break;
 
-            case QVariant::Vector3D:
-                m_program->setUniformValue( name.constData(), qvariant_cast<QVector3D>( v ) );
-                break;
+        case QVariant::Double:
+            m_program->setUniformValue( name.constData(), ( float ) qvariant_cast<double>( v ) );
+            break;
 
-            default:
-                break;
+        case QVariant::Transform:
+            m_program->setUniformValue( name.constData(), qvariant_cast<QTransform>( v ) );
+            break;
+
+        case QVariant::Int:
+            m_program->setUniformValue( name.constData(), GLint( v.toInt() ) );
+            break;
+
+        case QVariant::Bool:
+            m_program->setUniformValue( name.constData(), GLint( v.toBool() ) );
+            break;
+
+        case QVariant::Size:
+        case QVariant::SizeF:
+            m_program->setUniformValue( name.constData(), v.toSizeF() );
+            break;
+
+        case QVariant::Point:
+        case QVariant::PointF:
+            m_program->setUniformValue( name.constData(), v.toPointF() );
+            break;
+
+        case QVariant::Rect:
+        case QVariant::RectF:
+        {
+            QRectF r = v.toRectF();
+            m_program->setUniformValue( name.constData(), r.x(), r.y(), r.width(), r.height() );
+        }
+        break;
+
+        case QVariant::Vector3D:
+            m_program->setUniformValue( name.constData(), qvariant_cast<QVector3D>( v ) );
+            break;
+
+        default:
+            break;
         }
     }
 }

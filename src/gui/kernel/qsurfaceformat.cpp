@@ -499,19 +499,19 @@ QDebug operator<<( QDebug dbg, const QSurfaceFormat &f )
     QDebugStateSaver saver( dbg );
 
     dbg.nospace() << "QSurfaceFormat("
-                  << "version " << d->major << '.' << d->minor
-                  << ", options " << d->opts
-                  << ", depthBufferSize " << d->depthSize
-                  << ", redBufferSize " << d->redBufferSize
-                  << ", greenBufferSize " << d->greenBufferSize
-                  << ", blueBufferSize " << d->blueBufferSize
-                  << ", alphaBufferSize " << d->alphaBufferSize
-                  << ", stencilBufferSize " << d->stencilSize
-                  << ", samples " << d->numSamples
-                  << ", swapBehavior " << d->swapBehavior
-                  << ", swapInterval " << d->swapInterval
-                  << ", profile  " << d->profile
-                  << ')';
+       << "version " << d->major << '.' << d->minor
+       << ", options " << d->opts
+       << ", depthBufferSize " << d->depthSize
+       << ", redBufferSize " << d->redBufferSize
+       << ", greenBufferSize " << d->greenBufferSize
+       << ", blueBufferSize " << d->blueBufferSize
+       << ", alphaBufferSize " << d->alphaBufferSize
+       << ", stencilBufferSize " << d->stencilSize
+       << ", samples " << d->numSamples
+       << ", swapBehavior " << d->swapBehavior
+       << ", swapInterval " << d->swapInterval
+       << ", profile  " << d->profile
+       << ')';
 
     return dbg;
 }

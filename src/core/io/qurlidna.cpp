@@ -1448,37 +1448,37 @@ static bool isMappedToNothing( QChar32 uc )
 
     switch ( uc.unicode() )
     {
-        case 0x00AD:
-        case 0x034F:
-        case 0x1806:
-        case 0x180B:
-        case 0x180C:
-        case 0x180D:
-        case 0x200B:
-        case 0x200C:
-        case 0x200D:
-        case 0x2060:
-        case 0xFE00:
-        case 0xFE01:
-        case 0xFE02:
-        case 0xFE03:
-        case 0xFE04:
-        case 0xFE05:
-        case 0xFE06:
-        case 0xFE07:
-        case 0xFE08:
-        case 0xFE09:
-        case 0xFE0A:
-        case 0xFE0B:
-        case 0xFE0C:
-        case 0xFE0D:
-        case 0xFE0E:
-        case 0xFE0F:
-        case 0xFEFF:
-            return true;
+    case 0x00AD:
+    case 0x034F:
+    case 0x1806:
+    case 0x180B:
+    case 0x180C:
+    case 0x180D:
+    case 0x200B:
+    case 0x200C:
+    case 0x200D:
+    case 0x2060:
+    case 0xFE00:
+    case 0xFE01:
+    case 0xFE02:
+    case 0xFE03:
+    case 0xFE04:
+    case 0xFE05:
+    case 0xFE06:
+    case 0xFE07:
+    case 0xFE08:
+    case 0xFE09:
+    case 0xFE0A:
+    case 0xFE0B:
+    case 0xFE0C:
+    case 0xFE0D:
+    case 0xFE0E:
+    case 0xFE0F:
+    case 0xFEFF:
+        return true;
 
-        default:
-            return false;
+    default:
+        return false;
     }
 }
 

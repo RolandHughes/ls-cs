@@ -51,61 +51,61 @@ QString QJsonParseError::errorString() const
 
     switch ( error )
     {
-        case NoError:
-            sz = JSONERR_OK;
-            break;
+    case NoError:
+        sz = JSONERR_OK;
+        break;
 
-        case UnterminatedObject:
-            sz = JSONERR_UNTERM_OBJ;
-            break;
+    case UnterminatedObject:
+        sz = JSONERR_UNTERM_OBJ;
+        break;
 
-        case MissingNameSeparator:
-            sz = JSONERR_MISS_NSEP;
-            break;
+    case MissingNameSeparator:
+        sz = JSONERR_MISS_NSEP;
+        break;
 
-        case UnterminatedArray:
-            sz = JSONERR_UNTERM_AR;
-            break;
+    case UnterminatedArray:
+        sz = JSONERR_UNTERM_AR;
+        break;
 
-        case MissingValueSeparator:
-            sz = JSONERR_MISS_VSEP;
-            break;
+    case MissingValueSeparator:
+        sz = JSONERR_MISS_VSEP;
+        break;
 
-        case IllegalValue:
-            sz = JSONERR_ILLEGAL_VAL;
-            break;
+    case IllegalValue:
+        sz = JSONERR_ILLEGAL_VAL;
+        break;
 
-        case TerminationByNumber:
-            sz = JSONERR_END_OF_NUM;
-            break;
+    case TerminationByNumber:
+        sz = JSONERR_END_OF_NUM;
+        break;
 
-        case IllegalNumber:
-            sz = JSONERR_ILLEGAL_NUM;
-            break;
+    case IllegalNumber:
+        sz = JSONERR_ILLEGAL_NUM;
+        break;
 
-        case IllegalEscapeSequence:
-            sz = JSONERR_STR_ESC_SEQ;
-            break;
+    case IllegalEscapeSequence:
+        sz = JSONERR_STR_ESC_SEQ;
+        break;
 
-        case IllegalUTF8String:
-            sz = JSONERR_STR_UTF8;
-            break;
+    case IllegalUTF8String:
+        sz = JSONERR_STR_UTF8;
+        break;
 
-        case UnterminatedString:
-            sz = JSONERR_UTERM_STR;
-            break;
+    case UnterminatedString:
+        sz = JSONERR_UTERM_STR;
+        break;
 
-        case MissingObject:
-            sz = JSONERR_MISS_OBJ;
-            break;
+    case MissingObject:
+        sz = JSONERR_MISS_OBJ;
+        break;
 
-        case DeepNesting:
-            sz = JSONERR_DEEP_NEST;
-            break;
+    case DeepNesting:
+        sz = JSONERR_DEEP_NEST;
+        break;
 
-        case DocumentTooLarge:
-            sz = JSONERR_DOC_LARGE;
-            break;
+    case DocumentTooLarge:
+        sz = JSONERR_DOC_LARGE;
+        break;
     }
 
     return sz;
@@ -163,49 +163,49 @@ QJsonParser::TokenType QJsonParser::nextToken()
     switch ( ch.unicode() )
     {
 
-        case '[':
-            eatWhiteSpace();
+    case '[':
+        eatWhiteSpace();
 
-            token = TokenType::BeginArray;
-            break;
+        token = TokenType::BeginArray;
+        break;
 
-        case '{':
-            eatWhiteSpace();
+    case '{':
+        eatWhiteSpace();
 
-            token = TokenType::BeginObject;
-            break;
+        token = TokenType::BeginObject;
+        break;
 
-        case ':':
-            eatWhiteSpace();
+    case ':':
+        eatWhiteSpace();
 
-            token = TokenType::NameSeparator;
-            break;
+        token = TokenType::NameSeparator;
+        break;
 
-        case ',':
-            eatWhiteSpace();
+    case ',':
+        eatWhiteSpace();
 
-            token = TokenType::ValueSeparator;
-            break;
+        token = TokenType::ValueSeparator;
+        break;
 
-        case ']':
-            eatWhiteSpace();
+    case ']':
+        eatWhiteSpace();
 
-            token = TokenType::EndArray;
-            break;
+        token = TokenType::EndArray;
+        break;
 
-        case '}':
-            eatWhiteSpace();
+    case '}':
+        eatWhiteSpace();
 
-            token = TokenType::EndObject;
-            break;
+        token = TokenType::EndObject;
+        break;
 
-        case '"':
-            token = TokenType::Quote;
-            break;
+    case '"':
+        token = TokenType::Quote;
+        break;
 
-        default:
-            token = TokenType::Null;
-            break;
+    default:
+        token = TokenType::Null;
+        break;
     }
 
     return token;
@@ -416,111 +416,111 @@ bool QJsonParser::parseValue( QJsonValue &value )
     switch ( ch.unicode() )
     {
 
-        case 'n':
-            if ( m_data.end() - m_position < 4 )
-            {
-                lastError = QJsonParseError::IllegalValue;
-                return false;
-            }
-
-            if ( QStringView( m_position, m_data.end() ).startsWith( "ull" ) )
-            {
-                m_position += 3;
-
-                value = QJsonValue( QJsonValue::Null );
-                return true;
-            }
-
-            lastError = QJsonParseError::IllegalValue;
-            return false;
-
-        case 't':
-            if ( m_data.end() - m_position < 4 )
-            {
-                lastError = QJsonParseError::IllegalValue;
-                return false;
-            }
-
-            if ( QStringView( m_position, m_data.end() ).startsWith( "rue" ) )
-            {
-                m_position += 3;
-
-                value = QJsonValue( true );
-                return true;
-            }
-
-            lastError = QJsonParseError::IllegalValue;
-            return false;
-
-        case 'f':
-            if ( m_data.end() - m_position < 5 )
-            {
-                lastError = QJsonParseError::IllegalValue;
-                return false;
-            }
-
-            if ( QStringView( m_position, m_data.end() ).startsWith( "alse" ) )
-            {
-                m_position += 4;
-
-                value = QJsonValue( false );
-                return true;
-            }
-
-            lastError = QJsonParseError::IllegalValue;
-            return false;
-
-        case '"':
+    case 'n':
+        if ( m_data.end() - m_position < 4 )
         {
-            QString key;
+            lastError = QJsonParseError::IllegalValue;
+            return false;
+        }
 
-            if ( ! parseString( key ) )
-            {
-                return false;
-            }
+        if ( QStringView( m_position, m_data.end() ).startsWith( "ull" ) )
+        {
+            m_position += 3;
 
-            value = QJsonValue( key );
-
+            value = QJsonValue( QJsonValue::Null );
             return true;
         }
 
-        case '[':
+        lastError = QJsonParseError::IllegalValue;
+        return false;
+
+    case 't':
+        if ( m_data.end() - m_position < 4 )
         {
-            QJsonArray array;
-
-            if ( ! parseArray( array ) )
-            {
-                return false;
-            }
-
-            value = QJsonValue( array );
-            return true;
-        }
-
-        case '{':
-        {
-            QJsonObject object;
-
-            if ( ! parseObject( object ) )
-            {
-                return false;
-            }
-
-            value = QJsonValue( object );
-            return true;
-        }
-
-        case ']':
-            lastError = QJsonParseError::MissingObject;
+            lastError = QJsonParseError::IllegalValue;
             return false;
+        }
 
-        default:
-            --m_position;
+        if ( QStringView( m_position, m_data.end() ).startsWith( "rue" ) )
+        {
+            m_position += 3;
 
-            if ( ! parseNumber( value ) )
-            {
-                return false;
-            }
+            value = QJsonValue( true );
+            return true;
+        }
+
+        lastError = QJsonParseError::IllegalValue;
+        return false;
+
+    case 'f':
+        if ( m_data.end() - m_position < 5 )
+        {
+            lastError = QJsonParseError::IllegalValue;
+            return false;
+        }
+
+        if ( QStringView( m_position, m_data.end() ).startsWith( "alse" ) )
+        {
+            m_position += 4;
+
+            value = QJsonValue( false );
+            return true;
+        }
+
+        lastError = QJsonParseError::IllegalValue;
+        return false;
+
+    case '"':
+    {
+        QString key;
+
+        if ( ! parseString( key ) )
+        {
+            return false;
+        }
+
+        value = QJsonValue( key );
+
+        return true;
+    }
+
+    case '[':
+    {
+        QJsonArray array;
+
+        if ( ! parseArray( array ) )
+        {
+            return false;
+        }
+
+        value = QJsonValue( array );
+        return true;
+    }
+
+    case '{':
+    {
+        QJsonObject object;
+
+        if ( ! parseObject( object ) )
+        {
+            return false;
+        }
+
+        value = QJsonValue( object );
+        return true;
+    }
+
+    case ']':
+        lastError = QJsonParseError::MissingObject;
+        return false;
+
+    default:
+        --m_position;
+
+        if ( ! parseNumber( value ) )
+        {
+            return false;
+        }
     }
 
     return true;
@@ -608,66 +608,66 @@ static inline bool scanEscapeSequence( QString::const_iterator &m_position, QStr
 
     switch ( escaped.unicode() )
     {
-        case '"':
-            ch = '"';
-            break;
+    case '"':
+        ch = '"';
+        break;
 
-        case '\\':
-            ch = '\\';
-            break;
+    case '\\':
+        ch = '\\';
+        break;
 
-        case '/':
-            ch = '/';
-            break;
+    case '/':
+        ch = '/';
+        break;
 
-        case 'b':
-            ch = 0x8;
-            break;
+    case 'b':
+        ch = 0x8;
+        break;
 
-        case 'f':
-            ch = 0xc;
-            break;
+    case 'f':
+        ch = 0xc;
+        break;
 
-        case 'n':
-            ch = 0xa;
-            break;
+    case 'n':
+        ch = 0xa;
+        break;
 
-        case 'r':
-            ch = 0xd;
-            break;
+    case 'r':
+        ch = 0xd;
+        break;
 
-        case 't':
-            ch = 0x9;
-            break;
+    case 't':
+        ch = 0x9;
+        break;
 
-        case 'u':
+    case 'u':
+    {
+        char32_t tmp = 0;
+
+        for ( int i = 0; i < 4; ++i )
         {
-            char32_t tmp = 0;
 
-            for ( int i = 0; i < 4; ++i )
+            if ( ! addHexDigit( *m_position, tmp ) )
             {
-
-                if ( ! addHexDigit( *m_position, tmp ) )
-                {
-                    return false;
-                }
-
-                ++m_position;
-
-                if ( m_position == end && i != 3 )
-                {
-                    return false;
-                }
+                return false;
             }
 
-            ch = tmp;
-            return true;
+            ++m_position;
+
+            if ( m_position == end && i != 3 )
+            {
+                return false;
+            }
         }
 
-        default:
-            // not as strict, allows for more Json files to be parsed correctly
-            ch = escaped;
-            return true;
+        ch = tmp;
+        return true;
+    }
+
+    default:
+        // not as strict, allows for more Json files to be parsed correctly
+        ch = escaped;
+        return true;
     }
 
     return true;

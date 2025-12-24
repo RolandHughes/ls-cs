@@ -223,19 +223,19 @@ bool QLocalServerPrivate::addListener()
     {
         switch ( GetLastError() )
         {
-            case ERROR_IO_PENDING:
-                listener.connected = false;
-                break;
+        case ERROR_IO_PENDING:
+            listener.connected = false;
+            break;
 
-            case ERROR_PIPE_CONNECTED:
-                listener.connected = true;
-                break;
+        case ERROR_PIPE_CONNECTED:
+            listener.connected = true;
+            break;
 
-            default:
-                CloseHandle( listener.handle );
-                setError( QLatin1String( "QLocalServerPrivate::addListener" ) );
-                listeners.removeLast();
-                return false;
+        default:
+            CloseHandle( listener.handle );
+            setError( QLatin1String( "QLocalServerPrivate::addListener" ) );
+            listeners.removeLast();
+            return false;
         }
     }
     else

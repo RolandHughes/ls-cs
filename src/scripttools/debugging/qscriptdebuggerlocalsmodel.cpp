@@ -330,14 +330,14 @@ public:
     {
         switch ( m_state )
         {
-            case 0:
-                hibernateUntilEvaluateFinished();
-                ++m_state;
-                break;
+        case 0:
+            hibernateUntilEvaluateFinished();
+            ++m_state;
+            break;
 
-            case 1:
-                finish();
-                break;
+        case 1:
+            finish();
+            break;
         }
     }
 
@@ -443,28 +443,28 @@ public:
 
         switch ( m_state )
         {
-            case 0:
-            {
-                QScriptDebuggerLocalsModelNode *node = model()->nodeFromIndex( m_index );
-                Q_ASSERT( node->populationState == QScriptDebuggerLocalsModelNode::Populating );
-                node->snapshotId = response.resultAsInt();
-                QScriptDebuggerCommandSchedulerFrontend frontend( commandScheduler(), this );
-                frontend.scheduleScriptObjectSnapshotCapture( node->snapshotId, node->property.value() );
-                ++m_state;
-            }
-            break;
+        case 0:
+        {
+            QScriptDebuggerLocalsModelNode *node = model()->nodeFromIndex( m_index );
+            Q_ASSERT( node->populationState == QScriptDebuggerLocalsModelNode::Populating );
+            node->snapshotId = response.resultAsInt();
+            QScriptDebuggerCommandSchedulerFrontend frontend( commandScheduler(), this );
+            frontend.scheduleScriptObjectSnapshotCapture( node->snapshotId, node->property.value() );
+            ++m_state;
+        }
+        break;
 
-            case 1:
-            {
-                QScriptDebuggerObjectSnapshotDelta delta;
-                delta = qvariant_cast<QScriptDebuggerObjectSnapshotDelta>( response.result() );
-                Q_ASSERT( delta.removedProperties.isEmpty() );
-                Q_ASSERT( delta.changedProperties.isEmpty() );
-                QScriptDebuggerValuePropertyList props = delta.addedProperties;
-                model()->reallyPopulateIndex( m_index, props );
-                finish();
-            }
-            break;
+        case 1:
+        {
+            QScriptDebuggerObjectSnapshotDelta delta;
+            delta = qvariant_cast<QScriptDebuggerObjectSnapshotDelta>( response.result() );
+            Q_ASSERT( delta.removedProperties.isEmpty() );
+            Q_ASSERT( delta.changedProperties.isEmpty() );
+            QScriptDebuggerValuePropertyList props = delta.addedProperties;
+            model()->reallyPopulateIndex( m_index, props );
+            finish();
+        }
+        break;
         }
     }
 
@@ -593,40 +593,40 @@ public:
 
         switch ( m_state )
         {
-            case 0:
+        case 0:
+        {
+            QScriptDebuggerValueList scopeChain = response.resultAsScriptValueList();
+
+            for ( int i = 0; i < scopeChain.size(); ++i )
             {
-                QScriptDebuggerValueList scopeChain = response.resultAsScriptValueList();
+                const QScriptDebuggerValue &scopeObject = scopeChain.at( i );
+                QString name = QString::fromLatin1( "Scope" );
 
-                for ( int i = 0; i < scopeChain.size(); ++i )
+                if ( i > 0 )
                 {
-                    const QScriptDebuggerValue &scopeObject = scopeChain.at( i );
-                    QString name = QString::fromLatin1( "Scope" );
-
-                    if ( i > 0 )
-                    {
-                        name.append( QString::fromLatin1( " (%0)" ).arg( i ) );
-                    }
-
-                    QModelIndex index = model_d->addTopLevelObject( name, scopeObject );
-
-                    if ( i == 0 )
-                    {
-                        model_d->emitScopeObjectAvailable( index );
-                    }
+                    name.append( QString::fromLatin1( " (%0)" ).arg( i ) );
                 }
 
-                frontend.scheduleGetThisObject( m_frameIndex );
-                ++m_state;
-            }
-            break;
+                QModelIndex index = model_d->addTopLevelObject( name, scopeObject );
 
-            case 1:
-            {
-                QScriptDebuggerValue thisObject = response.resultAsScriptValue();
-                model_d->addTopLevelObject( QLatin1String( "this" ), thisObject );
-                finish();
+                if ( i == 0 )
+                {
+                    model_d->emitScopeObjectAvailable( index );
+                }
             }
-            break;
+
+            frontend.scheduleGetThisObject( m_frameIndex );
+            ++m_state;
+        }
+        break;
+
+        case 1:
+        {
+            QScriptDebuggerValue thisObject = response.resultAsScriptValue();
+            model_d->addTopLevelObject( QLatin1String( "this" ), thisObject );
+            finish();
+        }
+        break;
         }
     }
 
@@ -687,70 +687,70 @@ public:
 
         switch ( m_state )
         {
-            case 0:
+        case 0:
+        {
+            QScriptDebuggerValueList scopeChain = response.resultAsScriptValueList();
+            m_topLevelObjects << scopeChain;
+            frontend.scheduleGetThisObject( m_frameIndex );
+            ++m_state;
+        }
+        break;
+
+        case 1:
+        {
+            QScriptDebuggerLocalsModelPrivate *model_d = QScriptDebuggerLocalsModelPrivate::get( m_model );
+            QScriptDebuggerValue thisObject = response.resultAsScriptValue();
+            m_topLevelObjects.append( thisObject );
+            bool equal = ( m_topLevelObjects.size() == model_d->invisibleRootNode->children.size() );
+
+            for ( int i = 0; equal && ( i < m_topLevelObjects.size() ); ++i )
             {
-                QScriptDebuggerValueList scopeChain = response.resultAsScriptValueList();
-                m_topLevelObjects << scopeChain;
-                frontend.scheduleGetThisObject( m_frameIndex );
-                ++m_state;
+                const QScriptDebuggerValue &object = m_topLevelObjects.at( i );
+                equal = ( object == model_d->invisibleRootNode->children.at( i )->property.value() );
             }
-            break;
 
-            case 1:
+            if ( !equal )
             {
-                QScriptDebuggerLocalsModelPrivate *model_d = QScriptDebuggerLocalsModelPrivate::get( m_model );
-                QScriptDebuggerValue thisObject = response.resultAsScriptValue();
-                m_topLevelObjects.append( thisObject );
-                bool equal = ( m_topLevelObjects.size() == model_d->invisibleRootNode->children.size() );
+                // the scope chain and/or this-object changed, so invalidate the model.
+                // we could try to be more clever, i.e. figure out
+                // exactly which objects were popped/pushed
+                model_d->removeTopLevelNodes();
 
-                for ( int i = 0; equal && ( i < m_topLevelObjects.size() ); ++i )
+                for ( int j = 0; j < m_topLevelObjects.size(); ++j )
                 {
-                    const QScriptDebuggerValue &object = m_topLevelObjects.at( i );
-                    equal = ( object == model_d->invisibleRootNode->children.at( i )->property.value() );
-                }
+                    const QScriptDebuggerValue &object = m_topLevelObjects.at( j );
+                    QString name;
 
-                if ( !equal )
-                {
-                    // the scope chain and/or this-object changed, so invalidate the model.
-                    // we could try to be more clever, i.e. figure out
-                    // exactly which objects were popped/pushed
-                    model_d->removeTopLevelNodes();
-
-                    for ( int j = 0; j < m_topLevelObjects.size(); ++j )
+                    if ( j == m_topLevelObjects.size() - 1 )
                     {
-                        const QScriptDebuggerValue &object = m_topLevelObjects.at( j );
-                        QString name;
+                        name = QString::fromLatin1( "this" );
+                    }
+                    else
+                    {
+                        name = QString::fromLatin1( "Scope" );
 
-                        if ( j == m_topLevelObjects.size() - 1 )
+                        if ( j > 0 )
                         {
-                            name = QString::fromLatin1( "this" );
-                        }
-                        else
-                        {
-                            name = QString::fromLatin1( "Scope" );
-
-                            if ( j > 0 )
-                            {
-                                name.append( QString::fromLatin1( " (%0)" ).arg( j ) );
-                            }
-                        }
-
-                        QModelIndex index = model_d->addTopLevelObject( name, object );
-
-                        if ( j == 0 )
-                        {
-                            model_d->emitScopeObjectAvailable( index );
+                            name.append( QString::fromLatin1( " (%0)" ).arg( j ) );
                         }
                     }
-                }
-                else
-                {
-                    model_d->syncTopLevelNodes();
-                }
 
-                finish();
+                    QModelIndex index = model_d->addTopLevelObject( name, object );
+
+                    if ( j == 0 )
+                    {
+                        model_d->emitScopeObjectAvailable( index );
+                    }
+                }
             }
-            break;
+            else
+            {
+                model_d->syncTopLevelNodes();
+            }
+
+            finish();
+        }
+        break;
         }
     }
 

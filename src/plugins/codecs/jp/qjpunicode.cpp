@@ -969,26 +969,26 @@ QJpUnicodeConv *QJpUnicodeConv::newConverter( int rule )
 
     switch ( rule & 0x00ff )
     {
-        case Unicode_JISX0201:
-            return new QJpUnicodeConv_Unicode_JISX0201( rule );
+    case Unicode_JISX0201:
+        return new QJpUnicodeConv_Unicode_JISX0201( rule );
 
-        case Unicode_ASCII:
-            return new QJpUnicodeConv_Unicode_ASCII( rule );
+    case Unicode_ASCII:
+        return new QJpUnicodeConv_Unicode_ASCII( rule );
 
-        case JISX0221_JISX0201:
-            return new QJpUnicodeConv_JISX0221_JISX0201( rule );
+    case JISX0221_JISX0201:
+        return new QJpUnicodeConv_JISX0221_JISX0201( rule );
 
-        case JISX0221_ASCII:
-            return new QJpUnicodeConv_JISX0221_ASCII( rule );
+    case JISX0221_ASCII:
+        return new QJpUnicodeConv_JISX0221_ASCII( rule );
 
-        case Sun_JDK117:
-            return new QJpUnicodeConv_Sun( rule );
+    case Sun_JDK117:
+        return new QJpUnicodeConv_Sun( rule );
 
-        case Microsoft_CP932:
-            return new QJpUnicodeConv_Microsoft( rule );
+    case Microsoft_CP932:
+        return new QJpUnicodeConv_Microsoft( rule );
 
-        default:
-            return new QJpUnicodeConv_Unicode_ASCII( rule );
+    default:
+        return new QJpUnicodeConv_Unicode_ASCII( rule );
     }
 }
 

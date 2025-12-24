@@ -212,66 +212,66 @@ QString AxisStep::axisName( const QXmlNodeModelIndex::Axis axis )
 
     switch ( axis )
     {
-        /* These must not be translated. */
-        case QXmlNodeModelIndex::AxisAncestorOrSelf:
-            result = "ancestor-or-self";
-            break;
+    /* These must not be translated. */
+    case QXmlNodeModelIndex::AxisAncestorOrSelf:
+        result = "ancestor-or-self";
+        break;
 
-        case QXmlNodeModelIndex::AxisAncestor:
-            result = "ancestor";
-            break;
+    case QXmlNodeModelIndex::AxisAncestor:
+        result = "ancestor";
+        break;
 
-        case QXmlNodeModelIndex::AxisAttributeOrTop:
-            result = "attribute-or-top";
-            break;
+    case QXmlNodeModelIndex::AxisAttributeOrTop:
+        result = "attribute-or-top";
+        break;
 
-        case QXmlNodeModelIndex::AxisAttribute:
-            result = "attribute";
-            break;
+    case QXmlNodeModelIndex::AxisAttribute:
+        result = "attribute";
+        break;
 
-        case QXmlNodeModelIndex::AxisChildOrTop:
-            result = "child-or-top";
-            break;
+    case QXmlNodeModelIndex::AxisChildOrTop:
+        result = "child-or-top";
+        break;
 
-        case QXmlNodeModelIndex::AxisChild:
-            result = "child";
-            break;
+    case QXmlNodeModelIndex::AxisChild:
+        result = "child";
+        break;
 
-        case QXmlNodeModelIndex::AxisDescendantOrSelf:
-            result = "descendant-or-self";
-            break;
+    case QXmlNodeModelIndex::AxisDescendantOrSelf:
+        result = "descendant-or-self";
+        break;
 
-        case QXmlNodeModelIndex::AxisDescendant:
-            result = "descendant";
-            break;
+    case QXmlNodeModelIndex::AxisDescendant:
+        result = "descendant";
+        break;
 
-        case QXmlNodeModelIndex::AxisFollowing:
-            result = "following";
-            break;
+    case QXmlNodeModelIndex::AxisFollowing:
+        result = "following";
+        break;
 
-        case QXmlNodeModelIndex::AxisFollowingSibling:
-            result = "following-sibling";
-            break;
+    case QXmlNodeModelIndex::AxisFollowingSibling:
+        result = "following-sibling";
+        break;
 
-        case QXmlNodeModelIndex::AxisNamespace:
-            result = "namespace";
-            break;
+    case QXmlNodeModelIndex::AxisNamespace:
+        result = "namespace";
+        break;
 
-        case QXmlNodeModelIndex::AxisParent:
-            result = "parent";
-            break;
+    case QXmlNodeModelIndex::AxisParent:
+        result = "parent";
+        break;
 
-        case QXmlNodeModelIndex::AxisPreceding:
-            result = "preceding";
-            break;
+    case QXmlNodeModelIndex::AxisPreceding:
+        result = "preceding";
+        break;
 
-        case QXmlNodeModelIndex::AxisPrecedingSibling:
-            result = "preceding-sibling";
-            break;
+    case QXmlNodeModelIndex::AxisPrecedingSibling:
+        result = "preceding-sibling";
+        break;
 
-        case QXmlNodeModelIndex::AxisSelf:
-            result = "self";
-            break;
+    case QXmlNodeModelIndex::AxisSelf:
+        result = "self";
+        break;
     }
 
     Q_ASSERT_X( result, Q_FUNC_INFO, "An unknown axis type was apparently encountered." );

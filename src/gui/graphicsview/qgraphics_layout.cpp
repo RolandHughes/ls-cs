@@ -265,28 +265,28 @@ void QGraphicsLayout::widgetEvent( QEvent *e )
 {
     switch ( e->type() )
     {
-        case QEvent::GraphicsSceneResize:
-            if ( isActivated() )
-            {
-                setGeometry( parentLayoutItem()->contentsRect() );
-            }
-            else
-            {
-                activate(); // relies on that activate() will call updateGeometry()
-            }
+    case QEvent::GraphicsSceneResize:
+        if ( isActivated() )
+        {
+            setGeometry( parentLayoutItem()->contentsRect() );
+        }
+        else
+        {
+            activate(); // relies on that activate() will call updateGeometry()
+        }
 
-            break;
+        break;
 
-        case QEvent::LayoutRequest:
-            activate();
-            break;
+    case QEvent::LayoutRequest:
+        activate();
+        break;
 
-        case QEvent::LayoutDirectionChange:
-            invalidate();
-            break;
+    case QEvent::LayoutDirectionChange:
+        invalidate();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 

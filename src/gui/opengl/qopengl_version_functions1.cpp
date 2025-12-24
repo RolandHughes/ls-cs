@@ -59,82 +59,82 @@ QAbstractOpenGLFunctions *QOpenGLVersionFunctionsFactory::create( const QOpenGLV
         switch ( versionProfile.profile() )
         {
 
-            case QSurfaceFormat::CoreProfile:
-                if ( major == 4 && minor == 5 )
-                {
-                    return new QOpenGLFunctions_4_5_Core;
-                }
-                else if ( major == 4 && minor == 4 )
-                {
-                    return new QOpenGLFunctions_4_4_Core;
-                }
-                else if ( major == 4 && minor == 3 )
-                {
-                    return new QOpenGLFunctions_4_3_Core;
-                }
-                else if ( major == 4 && minor == 2 )
-                {
-                    return new QOpenGLFunctions_4_2_Core;
-                }
-                else if ( major == 4 && minor == 1 )
-                {
-                    return new QOpenGLFunctions_4_1_Core;
-                }
-                else if ( major == 4 && minor == 0 )
-                {
-                    return new QOpenGLFunctions_4_0_Core;
-                }
-                else if ( major == 3 && minor == 3 )
-                {
-                    return new QOpenGLFunctions_3_3_Core;
-                }
-                else if ( major == 3 && minor == 2 )
-                {
-                    return new QOpenGLFunctions_3_2_Core;
-                }
+        case QSurfaceFormat::CoreProfile:
+            if ( major == 4 && minor == 5 )
+            {
+                return new QOpenGLFunctions_4_5_Core;
+            }
+            else if ( major == 4 && minor == 4 )
+            {
+                return new QOpenGLFunctions_4_4_Core;
+            }
+            else if ( major == 4 && minor == 3 )
+            {
+                return new QOpenGLFunctions_4_3_Core;
+            }
+            else if ( major == 4 && minor == 2 )
+            {
+                return new QOpenGLFunctions_4_2_Core;
+            }
+            else if ( major == 4 && minor == 1 )
+            {
+                return new QOpenGLFunctions_4_1_Core;
+            }
+            else if ( major == 4 && minor == 0 )
+            {
+                return new QOpenGLFunctions_4_0_Core;
+            }
+            else if ( major == 3 && minor == 3 )
+            {
+                return new QOpenGLFunctions_3_3_Core;
+            }
+            else if ( major == 3 && minor == 2 )
+            {
+                return new QOpenGLFunctions_3_2_Core;
+            }
 
-                break;
+            break;
 
-            case QSurfaceFormat::CompatibilityProfile:
-                if ( major == 4 && minor == 5 )
-                {
-                    return new QOpenGLFunctions_4_5_Compatibility;
-                }
-                else if ( major == 4 && minor == 4 )
-                {
-                    return new QOpenGLFunctions_4_4_Compatibility;
-                }
-                else if ( major == 4 && minor == 3 )
-                {
-                    return new QOpenGLFunctions_4_3_Compatibility;
-                }
-                else if ( major == 4 && minor == 2 )
-                {
-                    return new QOpenGLFunctions_4_2_Compatibility;
-                }
-                else if ( major == 4 && minor == 1 )
-                {
-                    return new QOpenGLFunctions_4_1_Compatibility;
-                }
-                else if ( major == 4 && minor == 0 )
-                {
-                    return new QOpenGLFunctions_4_0_Compatibility;
-                }
-                else if ( major == 3 && minor == 3 )
-                {
-                    return new QOpenGLFunctions_3_3_Compatibility;
-                }
-                else if ( major == 3 && minor == 2 )
-                {
-                    return new QOpenGLFunctions_3_2_Compatibility;
-                }
+        case QSurfaceFormat::CompatibilityProfile:
+            if ( major == 4 && minor == 5 )
+            {
+                return new QOpenGLFunctions_4_5_Compatibility;
+            }
+            else if ( major == 4 && minor == 4 )
+            {
+                return new QOpenGLFunctions_4_4_Compatibility;
+            }
+            else if ( major == 4 && minor == 3 )
+            {
+                return new QOpenGLFunctions_4_3_Compatibility;
+            }
+            else if ( major == 4 && minor == 2 )
+            {
+                return new QOpenGLFunctions_4_2_Compatibility;
+            }
+            else if ( major == 4 && minor == 1 )
+            {
+                return new QOpenGLFunctions_4_1_Compatibility;
+            }
+            else if ( major == 4 && minor == 0 )
+            {
+                return new QOpenGLFunctions_4_0_Compatibility;
+            }
+            else if ( major == 3 && minor == 3 )
+            {
+                return new QOpenGLFunctions_3_3_Compatibility;
+            }
+            else if ( major == 3 && minor == 2 )
+            {
+                return new QOpenGLFunctions_3_2_Compatibility;
+            }
 
-                break;
+            break;
 
-            case QSurfaceFormat::NoProfile:
+        case QSurfaceFormat::NoProfile:
 
-            default:
-                break;
+        default:
+            break;
         };
 
     }

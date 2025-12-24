@@ -120,7 +120,7 @@ public:
     LSCS_SLOT_2( scheduleDeleteScriptValueIterator )
 
     LSCS_SLOT_1( Public, int scheduleEvaluate( int contextIndex, const QString &program, const QString &fileName = QString(),
-               intlineNumber = 1 ) )
+                 intlineNumber = 1 ) )
     LSCS_SLOT_2( scheduleEvaluate )
 
     LSCS_SLOT_1( Public, int scheduleScriptValueToString( const QScriptDebuggerValue &value ) )
@@ -134,13 +134,13 @@ public:
 
     // message handler
     LSCS_SLOT_1( Public, void message( const QString &text, const QString &fileName = QString(), intlineNumber = -1,
-                                     intcolumnNumber = -1 ) )
+                                       intcolumnNumber = -1 ) )
     LSCS_SLOT_2( message )
     LSCS_SLOT_1( Public, void warning( const QString &text, const QString &fileName = QString(), intlineNumber = -1,
-                                     intcolumnNumber = -1 ) )
+                                       intcolumnNumber = -1 ) )
     LSCS_SLOT_2( warning )
     LSCS_SLOT_1( Public, void error( const QString &text, const QString &fileName = QString(), intlineNumber = -1,
-                                   intcolumnNumber = -1 ) )
+                                     intcolumnNumber = -1 ) )
     LSCS_SLOT_2( error )
 
     // console state

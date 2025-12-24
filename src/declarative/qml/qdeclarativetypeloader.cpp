@@ -321,46 +321,46 @@ void QDeclarativeDataBlob::networkError( QNetworkReply::NetworkError networkErro
 
     switch ( networkError )
     {
-        default:
-            errorString = "Network error";
-            break;
+    default:
+        errorString = "Network error";
+        break;
 
-        case QNetworkReply::ConnectionRefusedError:
-            errorString = "Connection refused";
-            break;
+    case QNetworkReply::ConnectionRefusedError:
+        errorString = "Connection refused";
+        break;
 
-        case QNetworkReply::RemoteHostClosedError:
-            errorString = "Remote host closed the connection";
-            break;
+    case QNetworkReply::RemoteHostClosedError:
+        errorString = "Remote host closed the connection";
+        break;
 
-        case QNetworkReply::HostNotFoundError:
-            errorString = "Host not found";
-            break;
+    case QNetworkReply::HostNotFoundError:
+        errorString = "Host not found";
+        break;
 
-        case QNetworkReply::TimeoutError:
-            errorString = "Timeout";
-            break;
+    case QNetworkReply::TimeoutError:
+        errorString = "Timeout";
+        break;
 
-        case QNetworkReply::ProxyConnectionRefusedError:
-        case QNetworkReply::ProxyConnectionClosedError:
-        case QNetworkReply::ProxyNotFoundError:
-        case QNetworkReply::ProxyTimeoutError:
-        case QNetworkReply::ProxyAuthenticationRequiredError:
-        case QNetworkReply::UnknownProxyError:
-            errorString = "Proxy error";
-            break;
+    case QNetworkReply::ProxyConnectionRefusedError:
+    case QNetworkReply::ProxyConnectionClosedError:
+    case QNetworkReply::ProxyNotFoundError:
+    case QNetworkReply::ProxyTimeoutError:
+    case QNetworkReply::ProxyAuthenticationRequiredError:
+    case QNetworkReply::UnknownProxyError:
+        errorString = "Proxy error";
+        break;
 
-        case QNetworkReply::ContentAccessDenied:
-            errorString = "Access denied";
-            break;
+    case QNetworkReply::ContentAccessDenied:
+        errorString = "Access denied";
+        break;
 
-        case QNetworkReply::ContentNotFoundError:
-            errorString = "File not found";
-            break;
+    case QNetworkReply::ContentNotFoundError:
+        errorString = "File not found";
+        break;
 
-        case QNetworkReply::AuthenticationRequiredError:
-            errorString = "Authentication required";
-            break;
+    case QNetworkReply::AuthenticationRequiredError:
+        errorString = "Authentication required";
+        break;
     };
 
     error.setDescription( QLatin1String( errorString ) );

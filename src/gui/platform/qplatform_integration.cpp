@@ -144,59 +144,59 @@ QVariant QPlatformIntegration::styleHint( StyleHint hint ) const
 {
     switch ( hint )
     {
-        case CursorFlashTime:
-            return QPlatformTheme::defaultThemeHint( QPlatformTheme::CursorFlashTime );
+    case CursorFlashTime:
+        return QPlatformTheme::defaultThemeHint( QPlatformTheme::CursorFlashTime );
 
-        case KeyboardInputInterval:
-            return QPlatformTheme::defaultThemeHint( QPlatformTheme::KeyboardInputInterval );
+    case KeyboardInputInterval:
+        return QPlatformTheme::defaultThemeHint( QPlatformTheme::KeyboardInputInterval );
 
-        case KeyboardAutoRepeatRate:
-            return QPlatformTheme::defaultThemeHint( QPlatformTheme::KeyboardAutoRepeatRate );
+    case KeyboardAutoRepeatRate:
+        return QPlatformTheme::defaultThemeHint( QPlatformTheme::KeyboardAutoRepeatRate );
 
-        case MouseDoubleClickInterval:
-            return QPlatformTheme::defaultThemeHint( QPlatformTheme::MouseDoubleClickInterval );
+    case MouseDoubleClickInterval:
+        return QPlatformTheme::defaultThemeHint( QPlatformTheme::MouseDoubleClickInterval );
 
-        case StartDragDistance:
-            return QPlatformTheme::defaultThemeHint( QPlatformTheme::StartDragDistance );
+    case StartDragDistance:
+        return QPlatformTheme::defaultThemeHint( QPlatformTheme::StartDragDistance );
 
-        case StartDragTime:
-            return QPlatformTheme::defaultThemeHint( QPlatformTheme::StartDragTime );
+    case StartDragTime:
+        return QPlatformTheme::defaultThemeHint( QPlatformTheme::StartDragTime );
 
-        case ShowIsFullScreen:
-            return false;
+    case ShowIsFullScreen:
+        return false;
 
-        case ShowIsMaximized:
-            return false;
+    case ShowIsMaximized:
+        return false;
 
-        case PasswordMaskDelay:
-            return QPlatformTheme::defaultThemeHint( QPlatformTheme::PasswordMaskDelay );
+    case PasswordMaskDelay:
+        return QPlatformTheme::defaultThemeHint( QPlatformTheme::PasswordMaskDelay );
 
-        case PasswordMaskCharacter:
-            return QPlatformTheme::defaultThemeHint( QPlatformTheme::PasswordMaskCharacter );
+    case PasswordMaskCharacter:
+        return QPlatformTheme::defaultThemeHint( QPlatformTheme::PasswordMaskCharacter );
 
-        case FontSmoothingGamma:
-            return qreal( 1.7 );
+    case FontSmoothingGamma:
+        return qreal( 1.7 );
 
-        case StartDragVelocity:
-            return QPlatformTheme::defaultThemeHint( QPlatformTheme::StartDragVelocity );
+    case StartDragVelocity:
+        return QPlatformTheme::defaultThemeHint( QPlatformTheme::StartDragVelocity );
 
-        case UseRtlExtensions:
-            return QVariant( false );
+    case UseRtlExtensions:
+        return QVariant( false );
 
-        case SetFocusOnTouchRelease:
-            return QVariant( false );
+    case SetFocusOnTouchRelease:
+        return QVariant( false );
 
-        case MousePressAndHoldInterval:
-            return QPlatformTheme::defaultThemeHint( QPlatformTheme::MousePressAndHoldInterval );
+    case MousePressAndHoldInterval:
+        return QPlatformTheme::defaultThemeHint( QPlatformTheme::MousePressAndHoldInterval );
 
-        case TabFocusBehavior:
-            return QPlatformTheme::defaultThemeHint( QPlatformTheme::TabFocusBehavior );
+    case TabFocusBehavior:
+        return QPlatformTheme::defaultThemeHint( QPlatformTheme::TabFocusBehavior );
 
-        case ReplayMousePressOutsidePopup:
-            return true;
+    case ReplayMousePressOutsidePopup:
+        return true;
 
-        case ItemViewActivateItemOnSingleClick:
-            return QPlatformTheme::defaultThemeHint( QPlatformTheme::ItemViewActivateItemOnSingleClick );
+    case ItemViewActivateItemOnSingleClick:
+        return QPlatformTheme::defaultThemeHint( QPlatformTheme::ItemViewActivateItemOnSingleClick );
     }
 
     return 0;

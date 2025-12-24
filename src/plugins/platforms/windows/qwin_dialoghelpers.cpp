@@ -1193,31 +1193,31 @@ void QWindowsNativeFileDialogBase::setMode( QPlatformFileDialogOptions::FileMode
 
     switch ( mode )
     {
-        case QPlatformFileDialogOptions::AnyFile:
-            if ( acceptMode == QPlatformFileDialogOptions::AcceptSave )
-            {
-                flags |= FOS_NOREADONLYRETURN;
-            }
+    case QPlatformFileDialogOptions::AnyFile:
+        if ( acceptMode == QPlatformFileDialogOptions::AcceptSave )
+        {
+            flags |= FOS_NOREADONLYRETURN;
+        }
 
-            if ( ! ( options & QFileDialog::FileDialogOption::DontConfirmOverwrite ) )
-            {
-                flags |= FOS_OVERWRITEPROMPT;
-            }
+        if ( ! ( options & QFileDialog::FileDialogOption::DontConfirmOverwrite ) )
+        {
+            flags |= FOS_OVERWRITEPROMPT;
+        }
 
-            break;
+        break;
 
-        case QPlatformFileDialogOptions::ExistingFile:
-            flags |= FOS_FILEMUSTEXIST;
-            break;
+    case QPlatformFileDialogOptions::ExistingFile:
+        flags |= FOS_FILEMUSTEXIST;
+        break;
 
-        case QPlatformFileDialogOptions::Directory:
-        case QPlatformFileDialogOptions::DirectoryOnly:
-            flags |= FOS_PICKFOLDERS | FOS_FILEMUSTEXIST;
-            break;
+    case QPlatformFileDialogOptions::Directory:
+    case QPlatformFileDialogOptions::DirectoryOnly:
+        flags |= FOS_PICKFOLDERS | FOS_FILEMUSTEXIST;
+        break;
 
-        case QPlatformFileDialogOptions::ExistingFiles:
-            flags |= FOS_FILEMUSTEXIST | FOS_ALLOWMULTISELECT;
-            break;
+    case QPlatformFileDialogOptions::ExistingFiles:
+        flags |= FOS_FILEMUSTEXIST | FOS_ALLOWMULTISELECT;
+        break;
 
     }
 
@@ -1511,19 +1511,19 @@ void QWindowsNativeFileDialogBase::setLabelText( QPlatformFileDialogOptions::Dia
 
     switch ( dlabel )
     {
-        case QPlatformFileDialogOptions::FileName:
-            m_fileDialog->SetFileNameLabel( tmp.data() );
-            break;
+    case QPlatformFileDialogOptions::FileName:
+        m_fileDialog->SetFileNameLabel( tmp.data() );
+        break;
 
-        case QPlatformFileDialogOptions::Accept:
-            m_fileDialog->SetOkButtonLabel( tmp.data() );
-            break;
+    case QPlatformFileDialogOptions::Accept:
+        m_fileDialog->SetOkButtonLabel( tmp.data() );
+        break;
 
-        case QPlatformFileDialogOptions::LookIn:
-        case QPlatformFileDialogOptions::Reject:
-        case QPlatformFileDialogOptions::FileType:
-        case QPlatformFileDialogOptions::DialogLabelCount:
-            break;
+    case QPlatformFileDialogOptions::LookIn:
+    case QPlatformFileDialogOptions::Reject:
+    case QPlatformFileDialogOptions::FileType:
+    case QPlatformFileDialogOptions::DialogLabelCount:
+        break;
     }
 }
 
@@ -2173,29 +2173,29 @@ int QWindowsXpNativeFileDialog::existingDirCallback( HWND hwnd, UINT uMsg, LPARA
 {
     switch ( uMsg )
     {
-        case BFFM_INITIALIZED:
+    case BFFM_INITIALIZED:
+    {
+        if ( ! m_title.isEmpty() )
         {
-            if ( ! m_title.isEmpty() )
-            {
-                SetWindowText( hwnd, m_title.toStdWString().data() );
-            }
-
-            const QString initialFile = QDir::toNativeSeparators( m_data.directory().toLocalFile() );
-
-            if ( ! initialFile.isEmpty() )
-            {
-                SendMessage( hwnd, BFFM_SETSELECTION, TRUE, LPARAM( initialFile.toStdWString().data() ) );
-            }
+            SetWindowText( hwnd, m_title.toStdWString().data() );
         }
-        break;
 
-        case BFFM_SELCHANGED:
+        const QString initialFile = QDir::toNativeSeparators( m_data.directory().toLocalFile() );
+
+        if ( ! initialFile.isEmpty() )
         {
-            wchar_t path[MAX_PATH];
-            const bool ok = SHGetPathFromIDList( reinterpret_cast<lscs_LpItemIdList>( lParam ), path ) && path[0];
-            SendMessage( hwnd, BFFM_ENABLEOK, ok ? 1 : 0, 1 );
+            SendMessage( hwnd, BFFM_SETSELECTION, TRUE, LPARAM( initialFile.toStdWString().data() ) );
         }
-        break;
+    }
+    break;
+
+    case BFFM_SELCHANGED:
+    {
+        wchar_t path[MAX_PATH];
+        const bool ok = SHGetPathFromIDList( reinterpret_cast<lscs_LpItemIdList>( lParam ), path ) && path[0];
+        SendMessage( hwnd, BFFM_ENABLEOK, ok ? 1 : 0, 1 );
+    }
+    break;
     }
 
     return 0;
@@ -2603,22 +2603,22 @@ bool useHelper( QPlatformTheme::DialogType type )
 
     switch ( type )
     {
-        case QPlatformTheme::FileDialog:
-            return QSysInfo::windowsVersion() >= QSysInfo::WV_XP;
+    case QPlatformTheme::FileDialog:
+        return QSysInfo::windowsVersion() >= QSysInfo::WV_XP;
 
-        case QPlatformTheme::ColorDialog:
+    case QPlatformTheme::ColorDialog:
 #ifdef USE_NATIVE_COLOR_DIALOG
-            return true;
+        return true;
 #else
-            break;
+        break;
 #endif
 
-        case QPlatformTheme::FontDialog:
-        case QPlatformTheme::MessageDialog:
-            break;
+    case QPlatformTheme::FontDialog:
+    case QPlatformTheme::MessageDialog:
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return false;
@@ -2633,35 +2633,35 @@ QPlatformDialogHelper *createHelper( QPlatformTheme::DialogType type )
 
     switch ( type )
     {
-        case QPlatformTheme::FileDialog:
+    case QPlatformTheme::FileDialog:
 
-            // "Windows XP Professional x64 Edition has version number WV_5_2 (WV_2003)
-            if ( QWindowsIntegration::instance()->options() & QWindowsIntegration::XpNativeDialogs
-                    || QSysInfo::windowsVersion() <= QSysInfo::WV_2003 )
-            {
-                return new QWindowsXpFileDialogHelper();
-            }
+        // "Windows XP Professional x64 Edition has version number WV_5_2 (WV_2003)
+        if ( QWindowsIntegration::instance()->options() & QWindowsIntegration::XpNativeDialogs
+                || QSysInfo::windowsVersion() <= QSysInfo::WV_2003 )
+        {
+            return new QWindowsXpFileDialogHelper();
+        }
 
-            if ( QSysInfo::windowsVersion() > QSysInfo::WV_2003 )
-            {
-                return new QWindowsFileDialogHelper();
-            }
+        if ( QSysInfo::windowsVersion() > QSysInfo::WV_2003 )
+        {
+            return new QWindowsFileDialogHelper();
+        }
 
 
-        case QPlatformTheme::ColorDialog:
+    case QPlatformTheme::ColorDialog:
 
 #ifdef USE_NATIVE_COLOR_DIALOG
-            return new QWindowsColorDialogHelper();
+        return new QWindowsColorDialogHelper();
 #else
-            break;
+        break;
 #endif
 
-        case QPlatformTheme::FontDialog:
-        case QPlatformTheme::MessageDialog:
-            break;
+    case QPlatformTheme::FontDialog:
+    case QPlatformTheme::MessageDialog:
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return nullptr;

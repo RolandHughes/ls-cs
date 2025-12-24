@@ -1868,88 +1868,88 @@ bool QApplicationPrivate::isWindowBlocked( QWindow *window, QWindow **blockingWi
 
         switch ( windowModality )
         {
-            case Qt::ApplicationModal:
+        case Qt::ApplicationModal:
+        {
+            QWidgetWindow *widgetWindow = qobject_cast<QWidgetWindow *>( window );
+            QWidget *groupLeaderForWidget = widgetWindow ? widgetWindow->widget() : nullptr;
+
+            while ( groupLeaderForWidget && !groupLeaderForWidget->testAttribute( Qt::WA_GroupLeader ) )
             {
-                QWidgetWindow *widgetWindow = qobject_cast<QWidgetWindow *>( window );
-                QWidget *groupLeaderForWidget = widgetWindow ? widgetWindow->widget() : nullptr;
+                groupLeaderForWidget = groupLeaderForWidget->parentWidget();
+            }
 
-                while ( groupLeaderForWidget && !groupLeaderForWidget->testAttribute( Qt::WA_GroupLeader ) )
+            if ( groupLeaderForWidget )
+            {
+                // if widget has WA_GroupLeader, it can only be blocked by ApplicationModal children
+                QWidget *m = modalWidgetWindow ? modalWidgetWindow->widget() : nullptr;
+
+                while ( m && m != groupLeaderForWidget && ! m->testAttribute( Qt::WA_GroupLeader ) )
                 {
-                    groupLeaderForWidget = groupLeaderForWidget->parentWidget();
+                    m = m->parentWidget();
                 }
 
-                if ( groupLeaderForWidget )
+                if ( m == groupLeaderForWidget )
                 {
-                    // if widget has WA_GroupLeader, it can only be blocked by ApplicationModal children
-                    QWidget *m = modalWidgetWindow ? modalWidgetWindow->widget() : nullptr;
-
-                    while ( m && m != groupLeaderForWidget && ! m->testAttribute( Qt::WA_GroupLeader ) )
-                    {
-                        m = m->parentWidget();
-                    }
-
-                    if ( m == groupLeaderForWidget )
-                    {
-                        *blockingWindow = m->windowHandle();
-                        return true;
-                    }
-
-                }
-                else if ( modalWindow != window )
-                {
-                    *blockingWindow = modalWindow;
+                    *blockingWindow = m->windowHandle();
                     return true;
                 }
 
-                break;
+            }
+            else if ( modalWindow != window )
+            {
+                *blockingWindow = modalWindow;
+                return true;
             }
 
-            case Qt::WindowModal:
+            break;
+        }
+
+        case Qt::WindowModal:
+        {
+            QWindow *w = window;
+
+            do
             {
-                QWindow *w = window;
+                QWindow *m = modalWindow;
 
                 do
                 {
-                    QWindow *m = modalWindow;
-
-                    do
+                    if ( m == w )
                     {
-                        if ( m == w )
-                        {
-                            *blockingWindow = m;
-                            return true;
-                        }
-
-                        QWindow *p = m->parent();
-
-                        if ( ! p )
-                        {
-                            p = m->transientParent();
-                        }
-
-                        m = p;
-
+                        *blockingWindow = m;
+                        return true;
                     }
-                    while ( m );
 
-                    QWindow *p = w->parent();
+                    QWindow *p = m->parent();
 
                     if ( ! p )
                     {
-                        p = w->transientParent();
+                        p = m->transientParent();
                     }
 
-                    w = p;
+                    m = p;
 
                 }
-                while ( w );
+                while ( m );
 
-                break;
+                QWindow *p = w->parent();
+
+                if ( ! p )
+                {
+                    p = w->transientParent();
+                }
+
+                w = p;
+
             }
+            while ( w );
 
-            default:
-                Q_ASSERT_X( false, "QApplication", "internal error, a modal window cannot be modeless" );
-                break;
+            break;
+        }
+
+        default:
+            Q_ASSERT_X( false, "QApplication", "internal error, a modal window cannot be modeless" );
+            break;
         }
     }
 
@@ -1996,25 +1996,25 @@ bool lscs_try_modal( QWidget *widget, QEvent::Type type )
 
 #if 0
 
-        case QEvent::Focus:
-            if ( !static_cast<QWSFocusEvent *>( event )->simpleData.get_focus )
-            {
-                break;
-            }
+    case QEvent::Focus:
+        if ( !static_cast<QWSFocusEvent *>( event )->simpleData.get_focus )
+        {
+            break;
+        }
 
-            // drop through
+        // drop through
 #endif
 
-        case QEvent::MouseButtonPress:                        // disallow mouse/key events
-        case QEvent::MouseButtonRelease:
-        case QEvent::MouseMove:
-        case QEvent::KeyPress:
-        case QEvent::KeyRelease:
-            block_event = true;
-            break;
+    case QEvent::MouseButtonPress:                        // disallow mouse/key events
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseMove:
+    case QEvent::KeyPress:
+    case QEvent::KeyRelease:
+        block_event = true;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( block_event && top && top->parentWidget() == nullptr )
@@ -2377,54 +2377,54 @@ bool QApplication::notify( QObject *receiver, QEvent *e )
         // QGuiApplicationPrivate::process(Mouse|Wheel|Key|Touch|Tablet)Event();
         switch ( e->type() )
         {
-            case QEvent::MouseButtonPress:
-            {
-                QMouseEvent *me = static_cast<QMouseEvent *>( e );
-                QApplicationPrivate::modifier_buttons = me->modifiers();
-                QApplicationPrivate::mouse_buttons |= me->button();
-                break;
-            }
+        case QEvent::MouseButtonPress:
+        {
+            QMouseEvent *me = static_cast<QMouseEvent *>( e );
+            QApplicationPrivate::modifier_buttons = me->modifiers();
+            QApplicationPrivate::mouse_buttons |= me->button();
+            break;
+        }
 
-            case QEvent::MouseButtonDblClick:
-            {
-                QMouseEvent *me = static_cast<QMouseEvent *>( e );
-                QApplicationPrivate::modifier_buttons = me->modifiers();
-                QApplicationPrivate::mouse_buttons |= me->button();
-                break;
-            }
+        case QEvent::MouseButtonDblClick:
+        {
+            QMouseEvent *me = static_cast<QMouseEvent *>( e );
+            QApplicationPrivate::modifier_buttons = me->modifiers();
+            QApplicationPrivate::mouse_buttons |= me->button();
+            break;
+        }
 
-            case QEvent::MouseButtonRelease:
-            {
-                QMouseEvent *me = static_cast<QMouseEvent *>( e );
-                QApplicationPrivate::modifier_buttons = me->modifiers();
-                QApplicationPrivate::mouse_buttons &= ~me->button();
-                break;
-            }
+        case QEvent::MouseButtonRelease:
+        {
+            QMouseEvent *me = static_cast<QMouseEvent *>( e );
+            QApplicationPrivate::modifier_buttons = me->modifiers();
+            QApplicationPrivate::mouse_buttons &= ~me->button();
+            break;
+        }
 
-            case QEvent::KeyPress:
-            case QEvent::KeyRelease:
-            case QEvent::MouseMove:
+        case QEvent::KeyPress:
+        case QEvent::KeyRelease:
+        case QEvent::MouseMove:
 
 #ifndef LSCS_NO_WHEELEVENT
-            case QEvent::Wheel:
+        case QEvent::Wheel:
 #endif
-            case QEvent::TouchBegin:
-            case QEvent::TouchUpdate:
-            case QEvent::TouchEnd:
+        case QEvent::TouchBegin:
+        case QEvent::TouchUpdate:
+        case QEvent::TouchEnd:
 
 #ifndef LSCS_NO_TABLETEVENT
-            case QEvent::TabletMove:
-            case QEvent::TabletPress:
-            case QEvent::TabletRelease:
+        case QEvent::TabletMove:
+        case QEvent::TabletPress:
+        case QEvent::TabletRelease:
 #endif
-            {
-                QInputEvent *ie = static_cast<QInputEvent *>( e );
-                QApplicationPrivate::modifier_buttons = ie->modifiers();
-                break;
-            }
+        {
+            QInputEvent *ie = static_cast<QInputEvent *>( e );
+            QApplicationPrivate::modifier_buttons = ie->modifiers();
+            break;
+        }
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -2435,54 +2435,54 @@ bool QApplication::notify( QObject *receiver, QEvent *e )
     {
         switch ( e->type() )
         {
-            case QEvent::Paint:
-            case QEvent::MetaCall:
-            case QEvent::DeferredDelete:
-            case QEvent::DragEnter:
-            case QEvent::DragMove:
-            case QEvent::DragLeave:
-            case QEvent::Drop:
-            case QEvent::DragResponse:
-            case QEvent::ChildAdded:
-            case QEvent::ChildPolished:
-            case QEvent::ChildRemoved:
-            case QEvent::UpdateRequest:
-            case QEvent::UpdateLater:
-            case QEvent::LocaleChange:
-            case QEvent::Style:
-            case QEvent::IconDrag:
-            case QEvent::StyleChange:
-            case QEvent::GraphicsSceneDragEnter:
-            case QEvent::GraphicsSceneDragMove:
-            case QEvent::GraphicsSceneDragLeave:
-            case QEvent::GraphicsSceneDrop:
-            case QEvent::DynamicPropertyChange:
-            case QEvent::NetworkReplyUpdated:
-                break;
+        case QEvent::Paint:
+        case QEvent::MetaCall:
+        case QEvent::DeferredDelete:
+        case QEvent::DragEnter:
+        case QEvent::DragMove:
+        case QEvent::DragLeave:
+        case QEvent::Drop:
+        case QEvent::DragResponse:
+        case QEvent::ChildAdded:
+        case QEvent::ChildPolished:
+        case QEvent::ChildRemoved:
+        case QEvent::UpdateRequest:
+        case QEvent::UpdateLater:
+        case QEvent::LocaleChange:
+        case QEvent::Style:
+        case QEvent::IconDrag:
+        case QEvent::StyleChange:
+        case QEvent::GraphicsSceneDragEnter:
+        case QEvent::GraphicsSceneDragMove:
+        case QEvent::GraphicsSceneDragLeave:
+        case QEvent::GraphicsSceneDrop:
+        case QEvent::DynamicPropertyChange:
+        case QEvent::NetworkReplyUpdated:
+            break;
 
-            default:
-                if ( d->gestureManager->thread() == QThread::currentThread() )
+        default:
+            if ( d->gestureManager->thread() == QThread::currentThread() )
+            {
+                if ( receiver->isWidgetType() )
                 {
-                    if ( receiver->isWidgetType() )
+                    if ( d->gestureManager->filterEvent( static_cast<QWidget *>( receiver ), e ) )
                     {
-                        if ( d->gestureManager->filterEvent( static_cast<QWidget *>( receiver ), e ) )
-                        {
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        // a special case for events that go to QGesture objects.
-                        // We pass the object to the gesture manager and it'll figure
-                        // out if it's QGesture or not.
-                        if ( d->gestureManager->filterEvent( receiver, e ) )
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
+                else
+                {
+                    // a special case for events that go to QGesture objects.
+                    // We pass the object to the gesture manager and it'll figure
+                    // out if it's QGesture or not.
+                    if ( d->gestureManager->filterEvent( receiver, e ) )
+                    {
+                        return true;
+                    }
+                }
+            }
 
-                break;
+            break;
         }
     }
 
@@ -2490,46 +2490,46 @@ bool QApplication::notify( QObject *receiver, QEvent *e )
 
     switch ( e->type() )
     {
-        case QEvent::ApplicationDeactivate:
-            // Close all popups (triggers when switching applications
-            // by pressing ALT-TAB on Windows, which is not receive as key event.
-            closeAllPopups();
-            break;
+    case QEvent::ApplicationDeactivate:
+        // Close all popups (triggers when switching applications
+        // by pressing ALT-TAB on Windows, which is not receive as key event.
+        closeAllPopups();
+        break;
 
-        case QEvent::Wheel: // User input and window activation makes tooltips sleep
-        case QEvent::ActivationChange:
-        case QEvent::KeyPress:
-        case QEvent::KeyRelease:
-        case QEvent::FocusOut:
-        case QEvent::FocusIn:
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonRelease:
-        case QEvent::MouseButtonDblClick:
-            d->toolTipFallAsleep.stop();
+    case QEvent::Wheel: // User input and window activation makes tooltips sleep
+    case QEvent::ActivationChange:
+    case QEvent::KeyPress:
+    case QEvent::KeyRelease:
+    case QEvent::FocusOut:
+    case QEvent::FocusIn:
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonDblClick:
+        d->toolTipFallAsleep.stop();
 
-        // fall-through
-        case QEvent::Leave:
-            d->toolTipWakeUp.stop();
+    // fall-through
+    case QEvent::Leave:
+        d->toolTipWakeUp.stop();
 
-        default:
-            break;
+    default:
+        break;
     }
 
     switch ( e->type() )
     {
-        case QEvent::KeyPress:
-        {
-            int key = static_cast<QKeyEvent *>( e )->key();
-            lscs_in_tab_key_event = ( key == Qt::Key_Backtab
-                                    || key == Qt::Key_Tab
-                                    || key == Qt::Key_Left
-                                    || key == Qt::Key_Up
-                                    || key == Qt::Key_Right
-                                    || key == Qt::Key_Down );
-        }
+    case QEvent::KeyPress:
+    {
+        int key = static_cast<QKeyEvent *>( e )->key();
+        lscs_in_tab_key_event = ( key == Qt::Key_Backtab
+                                  || key == Qt::Key_Tab
+                                  || key == Qt::Key_Left
+                                  || key == Qt::Key_Up
+                                  || key == Qt::Key_Right
+                                  || key == Qt::Key_Down );
+    }
 
-        default:
-            break;
+    default:
+        break;
     }
 
     bool res = false;
@@ -2541,164 +2541,195 @@ bool QApplication::notify( QObject *receiver, QEvent *e )
     else
         switch ( e->type() )
         {
-            case QEvent::ShortcutOverride:
-            case QEvent::KeyPress:
-            case QEvent::KeyRelease:
+        case QEvent::ShortcutOverride:
+        case QEvent::KeyPress:
+        case QEvent::KeyRelease:
+        {
+            bool isWidget = receiver->isWidgetType();
+#ifndef LSCS_NO_GRAPHICSVIEW
+            const bool isGraphicsWidget = !isWidget && qobject_cast<QGraphicsWidget *>( receiver );
+#endif
+            QKeyEvent *key = static_cast<QKeyEvent *>( e );
+            bool def = key->isAccepted();
+            QPointer<QObject> pr = receiver;
+
+            while ( receiver )
             {
-                bool isWidget = receiver->isWidgetType();
-#ifndef LSCS_NO_GRAPHICSVIEW
-                const bool isGraphicsWidget = !isWidget && qobject_cast<QGraphicsWidget *>( receiver );
-#endif
-                QKeyEvent *key = static_cast<QKeyEvent *>( e );
-                bool def = key->isAccepted();
-                QPointer<QObject> pr = receiver;
-
-                while ( receiver )
+                if ( def )
                 {
-                    if ( def )
-                    {
-                        key->accept();
-                    }
-                    else
-                    {
-                        key->ignore();
-                    }
+                    key->accept();
+                }
+                else
+                {
+                    key->ignore();
+                }
 
-                    QWidget *w = isWidget ? static_cast<QWidget *>( receiver ) : nullptr;
+                QWidget *w = isWidget ? static_cast<QWidget *>( receiver ) : nullptr;
 
 #ifndef LSCS_NO_GRAPHICSVIEW
-                    QGraphicsWidget *gw = isGraphicsWidget ? static_cast<QGraphicsWidget *>( receiver ) : nullptr;
+                QGraphicsWidget *gw = isGraphicsWidget ? static_cast<QGraphicsWidget *>( receiver ) : nullptr;
 #endif
-                    res = d->notify_helper( receiver, e );
+                res = d->notify_helper( receiver, e );
 
-                    if ( ( res && key->isAccepted() )
-                            /*
-                               QLineEdit will emit a signal on Key_Return, but
-                               ignore the event, and sometimes the connected
-                               slot deletes the QLineEdit (common in itemview
-                               delegates), so we have to check if the widget
-                               was destroyed even if the event was ignored (to
-                               prevent a crash)
+                if ( ( res && key->isAccepted() )
+                        /*
+                           QLineEdit will emit a signal on Key_Return, but
+                           ignore the event, and sometimes the connected
+                           slot deletes the QLineEdit (common in itemview
+                           delegates), so we have to check if the widget
+                           was destroyed even if the event was ignored (to
+                           prevent a crash)
 
-                               note that we don't have to reset pw while
-                               propagating (because the original receiver will
-                               be destroyed if one of its ancestors is)
-                            */
+                           note that we don't have to reset pw while
+                           propagating (because the original receiver will
+                           be destroyed if one of its ancestors is)
+                        */
 
-                            || ! pr || ( isWidget && ( w->isWindow() || ! w->parentWidget() ) )
+                        || ! pr || ( isWidget && ( w->isWindow() || ! w->parentWidget() ) )
 
 #ifndef LSCS_NO_GRAPHICSVIEW
-                            || ( isGraphicsWidget && ( gw->isWindow() || ! gw->parentWidget() ) )
+                        || ( isGraphicsWidget && ( gw->isWindow() || ! gw->parentWidget() ) )
 #endif
-                       )
-                    {
-                        break;
-                    }
+                   )
+                {
+                    break;
+                }
 
 #ifndef LSCS_NO_GRAPHICSVIEW
-                    receiver = w ? ( QObject * )w->parentWidget() : ( QObject * )gw->parentWidget();
+                receiver = w ? ( QObject * )w->parentWidget() : ( QObject * )gw->parentWidget();
 #else
-                    receiver = w->parentWidget();
+                receiver = w->parentWidget();
 #endif
-                }
-
-                lscs_in_tab_key_event = false;
             }
-            break;
 
-            case QEvent::MouseButtonPress:
-            case QEvent::MouseButtonRelease:
-            case QEvent::MouseButtonDblClick:
-            case QEvent::MouseMove:
+            lscs_in_tab_key_event = false;
+        }
+        break;
+
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonRelease:
+        case QEvent::MouseButtonDblClick:
+        case QEvent::MouseMove:
+        {
+            QWidget *w = static_cast<QWidget *>( receiver );
+
+            QMouseEvent *mouse = static_cast<QMouseEvent *>( e );
+            QPoint relpos = mouse->pos();
+
+            if ( e->spontaneous() )
             {
-                QWidget *w = static_cast<QWidget *>( receiver );
-
-                QMouseEvent *mouse = static_cast<QMouseEvent *>( e );
-                QPoint relpos = mouse->pos();
-
-                if ( e->spontaneous() )
+                if ( e->type() != QEvent::MouseMove )
                 {
-                    if ( e->type() != QEvent::MouseMove )
-                    {
-                        QApplicationPrivate::giveFocusAccordingToFocusPolicy( w, e, relpos );
-                    }
-
-                    // ### These dynamic tool tips should be an OPT-IN feature. Some platforms
-                    // like OS X (probably others too), can optimize their views by not
-                    // dispatching mouse move events. We have attributes to control hover,
-                    // and mouse tracking, but as long as we are deciding to implement this
-                    // feature without choice of opting-in or out, you ALWAYS have to have
-                    // tracking enabled. Therefore, the other properties give a false sense of
-                    // performance enhancement.
-
-                    if ( e->type() == QEvent::MouseMove && mouse->buttons() == 0 && w->rect().contains( relpos ) )
-                    {
-                        // Outside due to mouse grab?
-                        d->toolTipWidget = w;
-                        d->toolTipPos = relpos;
-                        d->toolTipGlobalPos = mouse->globalPos();
-
-                        QStyle *s = d->toolTipWidget->style();
-                        int wakeDelay = s->styleHint( QStyle::SH_ToolTip_WakeUpDelay, nullptr, d->toolTipWidget, nullptr );
-                        d->toolTipWakeUp.start( d->toolTipFallAsleep.isActive() ? 20 : wakeDelay, this );
-                    }
+                    QApplicationPrivate::giveFocusAccordingToFocusPolicy( w, e, relpos );
                 }
 
-                bool eventAccepted = mouse->isAccepted();
-                QPointer<QWidget> pw = w;
+                // ### These dynamic tool tips should be an OPT-IN feature. Some platforms
+                // like OS X (probably others too), can optimize their views by not
+                // dispatching mouse move events. We have attributes to control hover,
+                // and mouse tracking, but as long as we are deciding to implement this
+                // feature without choice of opting-in or out, you ALWAYS have to have
+                // tracking enabled. Therefore, the other properties give a false sense of
+                // performance enhancement.
+
+                if ( e->type() == QEvent::MouseMove && mouse->buttons() == 0 && w->rect().contains( relpos ) )
+                {
+                    // Outside due to mouse grab?
+                    d->toolTipWidget = w;
+                    d->toolTipPos = relpos;
+                    d->toolTipGlobalPos = mouse->globalPos();
+
+                    QStyle *s = d->toolTipWidget->style();
+                    int wakeDelay = s->styleHint( QStyle::SH_ToolTip_WakeUpDelay, nullptr, d->toolTipWidget, nullptr );
+                    d->toolTipWakeUp.start( d->toolTipFallAsleep.isActive() ? 20 : wakeDelay, this );
+                }
+            }
+
+            bool eventAccepted = mouse->isAccepted();
+            QPointer<QWidget> pw = w;
+
+            while ( w )
+            {
+                QMouseEvent me( mouse->type(), relpos, mouse->windowPos(), mouse->globalPos(),
+                                mouse->button(), mouse->buttons(), mouse->modifiers(), mouse->source() );
+
+                me.spont = mouse->spontaneous();
+                me.setTimestamp( mouse->timestamp() );
+                QGuiApplicationPrivate::setMouseEventFlags( &me, mouse->flags() );
+
+                // throw away any mouse-tracking-only mouse events
+                if ( ! w->hasMouseTracking() && mouse->type() == QEvent::MouseMove && mouse->buttons() == 0 )
+                {
+
+                    // still send them through all application event filters (normally done by notify_helper)
+                    auto &eventFilters = LSCSInternalEvents::get_m_EventFilters( this );
+
+                    for ( int i = 0; i < eventFilters.size(); ++i )
+                    {
+                        QObject *obj = eventFilters.at( i );
+
+                        if ( ! obj )
+                        {
+                            continue;
+                        }
+
+                        if ( LSCSInternalThreadData::get_m_ThreadData( obj ) != LSCSInternalThreadData::get_m_ThreadData( w ) )
+                        {
+                            qWarning( "QApplication::notify() Event filter can not be in a different thread" );
+                            continue;
+                        }
+
+                        if ( obj->eventFilter( w, w == receiver ? mouse : &me ) )
+                        {
+                            break;
+                        }
+                    }
+
+                    res = true;
+
+                }
+                else
+                {
+                    w->setAttribute( Qt::WA_NoMouseReplay, false );
+                    res = d->notify_helper( w, w == receiver ? mouse : &me );
+                    e->spont = false;
+                }
+
+                eventAccepted = ( w == receiver ? mouse : &me )->isAccepted();
+
+                if ( res && eventAccepted )
+                {
+                    break;
+                }
+
+                if ( w->isWindow() || w->testAttribute( Qt::WA_NoMousePropagation ) )
+                {
+                    break;
+                }
+
+                relpos += w->pos();
+                w = w->parentWidget();
+            }
+
+            mouse->setAccepted( eventAccepted );
+
+            if ( e->type() == QEvent::MouseMove )
+            {
+                if ( !pw )
+                {
+                    break;
+                }
+
+                w = static_cast<QWidget *>( receiver );
+                relpos = mouse->pos();
+                QPoint diff = relpos - w->mapFromGlobal( d->hoverGlobalPos );
 
                 while ( w )
                 {
-                    QMouseEvent me( mouse->type(), relpos, mouse->windowPos(), mouse->globalPos(),
-                                    mouse->button(), mouse->buttons(), mouse->modifiers(), mouse->source() );
-
-                    me.spont = mouse->spontaneous();
-                    me.setTimestamp( mouse->timestamp() );
-                    QGuiApplicationPrivate::setMouseEventFlags( &me, mouse->flags() );
-
-                    // throw away any mouse-tracking-only mouse events
-                    if ( ! w->hasMouseTracking() && mouse->type() == QEvent::MouseMove && mouse->buttons() == 0 )
+                    if ( w->testAttribute( Qt::WA_Hover ) &&
+                            ( !QApplication::activePopupWidget() || QApplication::activePopupWidget() == w->window() ) )
                     {
-
-                        // still send them through all application event filters (normally done by notify_helper)
-                        auto &eventFilters = LSCSInternalEvents::get_m_EventFilters( this );
-
-                        for ( int i = 0; i < eventFilters.size(); ++i )
-                        {
-                            QObject *obj = eventFilters.at( i );
-
-                            if ( ! obj )
-                            {
-                                continue;
-                            }
-
-                            if ( LSCSInternalThreadData::get_m_ThreadData( obj ) != LSCSInternalThreadData::get_m_ThreadData( w ) )
-                            {
-                                qWarning( "QApplication::notify() Event filter can not be in a different thread" );
-                                continue;
-                            }
-
-                            if ( obj->eventFilter( w, w == receiver ? mouse : &me ) )
-                            {
-                                break;
-                            }
-                        }
-
-                        res = true;
-
-                    }
-                    else
-                    {
-                        w->setAttribute( Qt::WA_NoMouseReplay, false );
-                        res = d->notify_helper( w, w == receiver ? mouse : &me );
-                        e->spont = false;
-                    }
-
-                    eventAccepted = ( w == receiver ? mouse : &me )->isAccepted();
-
-                    if ( res && eventAccepted )
-                    {
-                        break;
+                        QHoverEvent he( QEvent::HoverMove, relpos, relpos - diff, mouse->modifiers() );
+                        d->notify_helper( w, &he );
                     }
 
                     if ( w->isWindow() || w->testAttribute( Qt::WA_NoMousePropagation ) )
@@ -2709,329 +2740,572 @@ bool QApplication::notify( QObject *receiver, QEvent *e )
                     relpos += w->pos();
                     w = w->parentWidget();
                 }
+            }
 
-                mouse->setAccepted( eventAccepted );
+            d->hoverGlobalPos = mouse->globalPos();
+        }
+        break;
+#ifndef LSCS_NO_WHEELEVENT
 
-                if ( e->type() == QEvent::MouseMove )
+        case QEvent::Wheel:
+        {
+            QWidget *w = static_cast<QWidget *>( receiver );
+
+            // QTBUG-40656, QTBUG-42731: ignore wheel events when a popup (QComboBox) is open.
+            if ( const QWidget *popup = QApplication::activePopupWidget() )
+            {
+                if ( w->window() != popup )
                 {
-                    if ( !pw )
+                    return true;
+                }
+            }
+
+            QWheelEvent *wheel = static_cast<QWheelEvent *>( e );
+            const bool spontaneous = wheel->spontaneous();
+            const Qt::ScrollPhase phase = wheel->phase();
+
+            // Ideally, we should lock on a widget when it starts receiving wheel
+            // events. This avoids other widgets to start receiving those events
+            // as the mouse cursor hovers them. However, given the way common
+            // wheeled mice work, there's no certain way of connecting different
+            // wheel events as a stream. This results in the NoScrollPhase case,
+            // where we just send the event from the original receiver and up its
+            // hierarchy until the event gets accepted.
+            //
+            // In the case of more evolved input devices, like Apple's trackpad or
+            // Magic Mouse, we receive the scroll phase information. This helps us
+            // connect wheel events as a stream and therefore makes it easier to
+            // lock on the widget onto which the scrolling was initiated.
+            //
+            // We assume that, when supported, the phase cycle follows the pattern:
+            //
+            //         ScrollBegin (ScrollUpdate* ScrollEnd)+
+            //
+            // This means that we can have scrolling sequences (starting with ScrollBegin)
+            // or partial sequences (after a ScrollEnd and starting with ScrollUpdate).
+            // If wheel_widget is null because it was deleted, we also take the same
+            // code path as an initial sequence.
+            if ( phase == Qt::NoScrollPhase || phase == Qt::ScrollBegin || !QApplicationPrivate::wheel_widget )
+            {
+
+                // A system-generated ScrollBegin event starts a new user scrolling
+                // sequence, so we reset wheel_widget in case no one accepts the event
+                // or if we didn't get (or missed) a ScrollEnd previously.
+                if ( spontaneous && phase == Qt::ScrollBegin )
+                {
+                    QApplicationPrivate::wheel_widget = nullptr;
+                }
+
+                const QPoint &relpos = wheel->pos();
+
+                if ( spontaneous && ( phase == Qt::NoScrollPhase || phase == Qt::ScrollUpdate ) )
+                {
+                    QApplicationPrivate::giveFocusAccordingToFocusPolicy( w, e, relpos );
+                }
+
+                QWheelEvent we( relpos, wheel->globalPos(), wheel->pixelDelta(), wheel->angleDelta(),
+                                wheel->buttons(), wheel->modifiers(), phase, wheel->source() );
+
+                bool eventAccepted = false;
+
+                while ( w )
+                {
+                    we.spont = spontaneous && w == receiver;
+                    we.ignore();
+                    res = d->notify_helper( w, &we );
+                    eventAccepted = we.isAccepted();
+
+                    if ( res && eventAccepted )
+                    {
+                        // A new scrolling sequence or partial sequence starts and w has accepted
+                        // the event. Therefore, we can set wheel_widget, but only if it's not
+                        // the end of a sequence.
+                        if ( spontaneous && ( phase == Qt::ScrollBegin || phase == Qt::ScrollUpdate ) &&
+                                QGuiApplicationPrivate::scrollNoPhaseAllowed )
+                        {
+                            QApplicationPrivate::wheel_widget = w;
+                        }
+
+                        break;
+                    }
+
+                    if ( w->isWindow() || w->testAttribute( Qt::WA_NoMousePropagation ) )
                     {
                         break;
                     }
 
-                    w = static_cast<QWidget *>( receiver );
-                    relpos = mouse->pos();
-                    QPoint diff = relpos - w->mapFromGlobal( d->hoverGlobalPos );
-
-                    while ( w )
-                    {
-                        if ( w->testAttribute( Qt::WA_Hover ) &&
-                                ( !QApplication::activePopupWidget() || QApplication::activePopupWidget() == w->window() ) )
-                        {
-                            QHoverEvent he( QEvent::HoverMove, relpos, relpos - diff, mouse->modifiers() );
-                            d->notify_helper( w, &he );
-                        }
-
-                        if ( w->isWindow() || w->testAttribute( Qt::WA_NoMousePropagation ) )
-                        {
-                            break;
-                        }
-
-                        relpos += w->pos();
-                        w = w->parentWidget();
-                    }
+                    we.p += w->pos();
+                    w = w->parentWidget();
                 }
 
-                d->hoverGlobalPos = mouse->globalPos();
-            }
-            break;
-#ifndef LSCS_NO_WHEELEVENT
+                wheel->setAccepted( eventAccepted );
 
-            case QEvent::Wheel:
+            }
+            else if ( !spontaneous )
             {
-                QWidget *w = static_cast<QWidget *>( receiver );
+                // wheel_widget may forward the wheel event to a delegate widget,
+                // either directly or indirectly (e.g. QAbstractScrollArea will
+                // forward to its QScrollBars through viewportEvent()). In that
+                // case, the event will not be spontaneous but synthesized, so
+                // we can send it straight to the receiver.
+                d->notify_helper( w, wheel );
 
-                // QTBUG-40656, QTBUG-42731: ignore wheel events when a popup (QComboBox) is open.
-                if ( const QWidget *popup = QApplication::activePopupWidget() )
+            }
+            else
+            {
+                // The phase is either ScrollUpdate or ScrollEnd, and wheel_widget
+                // is set. Since it accepted the wheel event previously, we continue
+                // sending those events until we get a ScrollEnd, which signifies
+                // the end of the natural scrolling sequence.
+                const QPoint &relpos = QApplicationPrivate::wheel_widget->mapFromGlobal( wheel->globalPos() );
+
+                QWheelEvent we( relpos, wheel->globalPos(), wheel->pixelDelta(), wheel->angleDelta(),
+                                wheel->buttons(), wheel->modifiers(), wheel->phase(), wheel->source() );
+
+                we.spont = true;
+                we.ignore();
+                d->notify_helper( QApplicationPrivate::wheel_widget, &we );
+                wheel->setAccepted( we.isAccepted() );
+
+                if ( phase == Qt::ScrollEnd )
                 {
-                    if ( w->window() != popup )
-                    {
-                        return true;
-                    }
-                }
-
-                QWheelEvent *wheel = static_cast<QWheelEvent *>( e );
-                const bool spontaneous = wheel->spontaneous();
-                const Qt::ScrollPhase phase = wheel->phase();
-
-                // Ideally, we should lock on a widget when it starts receiving wheel
-                // events. This avoids other widgets to start receiving those events
-                // as the mouse cursor hovers them. However, given the way common
-                // wheeled mice work, there's no certain way of connecting different
-                // wheel events as a stream. This results in the NoScrollPhase case,
-                // where we just send the event from the original receiver and up its
-                // hierarchy until the event gets accepted.
-                //
-                // In the case of more evolved input devices, like Apple's trackpad or
-                // Magic Mouse, we receive the scroll phase information. This helps us
-                // connect wheel events as a stream and therefore makes it easier to
-                // lock on the widget onto which the scrolling was initiated.
-                //
-                // We assume that, when supported, the phase cycle follows the pattern:
-                //
-                //         ScrollBegin (ScrollUpdate* ScrollEnd)+
-                //
-                // This means that we can have scrolling sequences (starting with ScrollBegin)
-                // or partial sequences (after a ScrollEnd and starting with ScrollUpdate).
-                // If wheel_widget is null because it was deleted, we also take the same
-                // code path as an initial sequence.
-                if ( phase == Qt::NoScrollPhase || phase == Qt::ScrollBegin || !QApplicationPrivate::wheel_widget )
-                {
-
-                    // A system-generated ScrollBegin event starts a new user scrolling
-                    // sequence, so we reset wheel_widget in case no one accepts the event
-                    // or if we didn't get (or missed) a ScrollEnd previously.
-                    if ( spontaneous && phase == Qt::ScrollBegin )
-                    {
-                        QApplicationPrivate::wheel_widget = nullptr;
-                    }
-
-                    const QPoint &relpos = wheel->pos();
-
-                    if ( spontaneous && ( phase == Qt::NoScrollPhase || phase == Qt::ScrollUpdate ) )
-                    {
-                        QApplicationPrivate::giveFocusAccordingToFocusPolicy( w, e, relpos );
-                    }
-
-                    QWheelEvent we( relpos, wheel->globalPos(), wheel->pixelDelta(), wheel->angleDelta(),
-                                    wheel->buttons(), wheel->modifiers(), phase, wheel->source() );
-
-                    bool eventAccepted = false;
-
-                    while ( w )
-                    {
-                        we.spont = spontaneous && w == receiver;
-                        we.ignore();
-                        res = d->notify_helper( w, &we );
-                        eventAccepted = we.isAccepted();
-
-                        if ( res && eventAccepted )
-                        {
-                            // A new scrolling sequence or partial sequence starts and w has accepted
-                            // the event. Therefore, we can set wheel_widget, but only if it's not
-                            // the end of a sequence.
-                            if ( spontaneous && ( phase == Qt::ScrollBegin || phase == Qt::ScrollUpdate ) &&
-                                    QGuiApplicationPrivate::scrollNoPhaseAllowed )
-                            {
-                                QApplicationPrivate::wheel_widget = w;
-                            }
-
-                            break;
-                        }
-
-                        if ( w->isWindow() || w->testAttribute( Qt::WA_NoMousePropagation ) )
-                        {
-                            break;
-                        }
-
-                        we.p += w->pos();
-                        w = w->parentWidget();
-                    }
-
-                    wheel->setAccepted( eventAccepted );
-
-                }
-                else if ( !spontaneous )
-                {
-                    // wheel_widget may forward the wheel event to a delegate widget,
-                    // either directly or indirectly (e.g. QAbstractScrollArea will
-                    // forward to its QScrollBars through viewportEvent()). In that
-                    // case, the event will not be spontaneous but synthesized, so
-                    // we can send it straight to the receiver.
-                    d->notify_helper( w, wheel );
-
-                }
-                else
-                {
-                    // The phase is either ScrollUpdate or ScrollEnd, and wheel_widget
-                    // is set. Since it accepted the wheel event previously, we continue
-                    // sending those events until we get a ScrollEnd, which signifies
-                    // the end of the natural scrolling sequence.
-                    const QPoint &relpos = QApplicationPrivate::wheel_widget->mapFromGlobal( wheel->globalPos() );
-
-                    QWheelEvent we( relpos, wheel->globalPos(), wheel->pixelDelta(), wheel->angleDelta(),
-                                    wheel->buttons(), wheel->modifiers(), wheel->phase(), wheel->source() );
-
-                    we.spont = true;
-                    we.ignore();
-                    d->notify_helper( QApplicationPrivate::wheel_widget, &we );
-                    wheel->setAccepted( we.isAccepted() );
-
-                    if ( phase == Qt::ScrollEnd )
-                    {
-                        QApplicationPrivate::wheel_widget = nullptr;
-                    }
+                    QApplicationPrivate::wheel_widget = nullptr;
                 }
             }
-            break;
+        }
+        break;
 #endif
 
 #ifndef LSCS_NO_CONTEXTMENU
 
-            case QEvent::ContextMenu:
+        case QEvent::ContextMenu:
+        {
+            QWidget *w = static_cast<QWidget *>( receiver );
+            QContextMenuEvent *context = static_cast<QContextMenuEvent *>( e );
+            QPoint relpos = context->pos();
+            bool eventAccepted = context->isAccepted();
+
+            while ( w )
             {
-                QWidget *w = static_cast<QWidget *>( receiver );
-                QContextMenuEvent *context = static_cast<QContextMenuEvent *>( e );
-                QPoint relpos = context->pos();
-                bool eventAccepted = context->isAccepted();
+                QContextMenuEvent ce( context->reason(), relpos, context->globalPos(), context->modifiers() );
+                ce.spont = e->spontaneous();
+                res = d->notify_helper( w, w == receiver ? context : &ce );
+                eventAccepted = ( ( w == receiver ) ? context : &ce )->isAccepted();
+                e->spont = false;
 
-                while ( w )
+                if ( ( res && eventAccepted )
+                        || w->isWindow() || w->testAttribute( Qt::WA_NoMousePropagation ) )
                 {
-                    QContextMenuEvent ce( context->reason(), relpos, context->globalPos(), context->modifiers() );
-                    ce.spont = e->spontaneous();
-                    res = d->notify_helper( w, w == receiver ? context : &ce );
-                    eventAccepted = ( ( w == receiver ) ? context : &ce )->isAccepted();
-                    e->spont = false;
-
-                    if ( ( res && eventAccepted )
-                            || w->isWindow() || w->testAttribute( Qt::WA_NoMousePropagation ) )
-                    {
-                        break;
-                    }
-
-                    relpos += w->pos();
-                    w = w->parentWidget();
+                    break;
                 }
 
-                context->setAccepted( eventAccepted );
+                relpos += w->pos();
+                w = w->parentWidget();
             }
-            break;
+
+            context->setAccepted( eventAccepted );
+        }
+        break;
 #endif // LSCS_NO_CONTEXTMENU
 
 #ifndef LSCS_NO_TABLETEVENT
 
-            case QEvent::TabletMove:
-            case QEvent::TabletPress:
-            case QEvent::TabletRelease:
+        case QEvent::TabletMove:
+        case QEvent::TabletPress:
+        case QEvent::TabletRelease:
+        {
+            QWidget *w = static_cast<QWidget *>( receiver );
+            QTabletEvent *tablet = static_cast<QTabletEvent *>( e );
+            QPointF relpos = tablet->posF();
+            bool eventAccepted = tablet->isAccepted();
+
+            while ( w )
             {
-                QWidget *w = static_cast<QWidget *>( receiver );
-                QTabletEvent *tablet = static_cast<QTabletEvent *>( e );
-                QPointF relpos = tablet->posF();
-                bool eventAccepted = tablet->isAccepted();
+                QTabletEvent te( tablet->type(), relpos, tablet->globalPosF(),
+                                 tablet->device(), tablet->pointerType(),
+                                 tablet->pressure(), tablet->xTilt(), tablet->yTilt(),
+                                 tablet->tangentialPressure(), tablet->rotation(), tablet->z(),
+                                 tablet->modifiers(), tablet->uniqueId(), tablet->button(), tablet->buttons() );
+                te.spont = e->spontaneous();
+                res = d->notify_helper( w, w == receiver ? tablet : &te );
+                eventAccepted = ( ( w == receiver ) ? tablet : &te )->isAccepted();
+                e->spont = false;
 
-                while ( w )
+                if ( ( res && eventAccepted )
+                        || w->isWindow()
+                        || w->testAttribute( Qt::WA_NoMousePropagation ) )
                 {
-                    QTabletEvent te( tablet->type(), relpos, tablet->globalPosF(),
-                                     tablet->device(), tablet->pointerType(),
-                                     tablet->pressure(), tablet->xTilt(), tablet->yTilt(),
-                                     tablet->tangentialPressure(), tablet->rotation(), tablet->z(),
-                                     tablet->modifiers(), tablet->uniqueId(), tablet->button(), tablet->buttons() );
-                    te.spont = e->spontaneous();
-                    res = d->notify_helper( w, w == receiver ? tablet : &te );
-                    eventAccepted = ( ( w == receiver ) ? tablet : &te )->isAccepted();
-                    e->spont = false;
-
-                    if ( ( res && eventAccepted )
-                            || w->isWindow()
-                            || w->testAttribute( Qt::WA_NoMousePropagation ) )
-                    {
-                        break;
-                    }
-
-                    relpos += w->pos();
-                    w = w->parentWidget();
+                    break;
                 }
 
-                tablet->setAccepted( eventAccepted );
-                lscs_tabletChokeMouse = tablet->isAccepted();
+                relpos += w->pos();
+                w = w->parentWidget();
             }
-            break;
+
+            tablet->setAccepted( eventAccepted );
+            lscs_tabletChokeMouse = tablet->isAccepted();
+        }
+        break;
 #endif // LSCS_NO_TABLETEVENT
 
 #if !defined(LSCS_NO_TOOLTIP) || !defined(LSCS_NO_WHATSTHIS)
 
-            case QEvent::ToolTip:
-            case QEvent::WhatsThis:
-            case QEvent::QueryWhatsThis:
+        case QEvent::ToolTip:
+        case QEvent::WhatsThis:
+        case QEvent::QueryWhatsThis:
+        {
+            QWidget *w = static_cast<QWidget *>( receiver );
+            QHelpEvent *help = static_cast<QHelpEvent *>( e );
+            QPoint relpos = help->pos();
+            bool eventAccepted = help->isAccepted();
+
+            while ( w )
             {
-                QWidget *w = static_cast<QWidget *>( receiver );
-                QHelpEvent *help = static_cast<QHelpEvent *>( e );
-                QPoint relpos = help->pos();
-                bool eventAccepted = help->isAccepted();
+                QHelpEvent he( help->type(), relpos, help->globalPos() );
+                he.spont = e->spontaneous();
+                res = d->notify_helper( w, w == receiver ? help : &he );
+                e->spont = false;
+                eventAccepted = ( w == receiver ? help : &he )->isAccepted();
 
-                while ( w )
+                if ( ( res && eventAccepted ) || w->isWindow() )
                 {
-                    QHelpEvent he( help->type(), relpos, help->globalPos() );
-                    he.spont = e->spontaneous();
-                    res = d->notify_helper( w, w == receiver ? help : &he );
-                    e->spont = false;
-                    eventAccepted = ( w == receiver ? help : &he )->isAccepted();
-
-                    if ( ( res && eventAccepted ) || w->isWindow() )
-                    {
-                        break;
-                    }
-
-                    relpos += w->pos();
-                    w = w->parentWidget();
+                    break;
                 }
 
-                help->setAccepted( eventAccepted );
+                relpos += w->pos();
+                w = w->parentWidget();
             }
-            break;
+
+            help->setAccepted( eventAccepted );
+        }
+        break;
 #endif
 #if !defined(LSCS_NO_STATUSTIP) || !defined(LSCS_NO_WHATSTHIS)
 
-            case QEvent::StatusTip:
-            case QEvent::WhatsThisClicked:
+        case QEvent::StatusTip:
+        case QEvent::WhatsThisClicked:
+        {
+            QWidget *w = static_cast<QWidget *>( receiver );
+
+            while ( w )
             {
-                QWidget *w = static_cast<QWidget *>( receiver );
+                res = d->notify_helper( w, e );
 
-                while ( w )
+                if ( ( res && e->isAccepted() ) || w->isWindow() )
                 {
-                    res = d->notify_helper( w, e );
-
-                    if ( ( res && e->isAccepted() ) || w->isWindow() )
-                    {
-                        break;
-                    }
-
-                    w = w->parentWidget();
+                    break;
                 }
+
+                w = w->parentWidget();
             }
-            break;
+        }
+        break;
 #endif
 
 #ifndef LSCS_NO_DRAGANDDROP
 
-            case QEvent::DragEnter:
-            {
-                QWidget *w = static_cast<QWidget *>( receiver );
-                QDragEnterEvent *dragEvent = static_cast<QDragEnterEvent *>( e );
+        case QEvent::DragEnter:
+        {
+            QWidget *w = static_cast<QWidget *>( receiver );
+            QDragEnterEvent *dragEvent = static_cast<QDragEnterEvent *>( e );
 #ifndef LSCS_NO_GRAPHICSVIEW
-                // QGraphicsProxyWidget handles its own propagation,
-                // and we must not change QDragManagers currentTarget.
-                QWExtra *extra = w->window()->d_func()->extra;
+            // QGraphicsProxyWidget handles its own propagation,
+            // and we must not change QDragManagers currentTarget.
+            QWExtra *extra = w->window()->d_func()->extra;
 
-                if ( extra && extra->proxyWidget )
+            if ( extra && extra->proxyWidget )
+            {
+                res = d->notify_helper( w, dragEvent );
+                break;
+            }
+
+#endif
+
+            while ( w )
+            {
+                if ( w->isEnabled() && w->acceptDrops() )
                 {
                     res = d->notify_helper( w, dragEvent );
+
+                    if ( res && dragEvent->isAccepted() )
+                    {
+                        QDragManager::self()->setCurrentTarget( w );
+                        break;
+                    }
+                }
+
+                if ( w->isWindow() )
+                {
                     break;
+                }
+
+                dragEvent->p = w->mapToParent( dragEvent->p.toPoint() );
+                w = w->parentWidget();
+            }
+        }
+        break;
+
+        case QEvent::DragMove:
+        case QEvent::Drop:
+        case QEvent::DragLeave:
+        {
+            QWidget *w = static_cast<QWidget *>( receiver );
+#ifndef LSCS_NO_GRAPHICSVIEW
+            // QGraphicsProxyWidget handles its own propagation,
+            // and we must not change QDragManagers currentTarget.
+            QWExtra *extra = w->window()->d_func()->extra;
+            bool isProxyWidget = extra && extra->proxyWidget;
+
+            if ( !isProxyWidget )
+#endif
+                w = qobject_cast<QWidget *>( QDragManager::self()->currentTarget() );
+
+            if ( !w )
+            {
+                break;
+            }
+
+            if ( e->type() == QEvent::DragMove || e->type() == QEvent::Drop )
+            {
+                QDropEvent *dragEvent = static_cast<QDropEvent *>( e );
+                QWidget *origReciver = static_cast<QWidget *>( receiver );
+
+                while ( origReciver && w != origReciver )
+                {
+                    dragEvent->p = origReciver->mapToParent( dragEvent->p.toPoint() );
+                    origReciver = origReciver->parentWidget();
+                }
+            }
+
+            res = d->notify_helper( w, e );
+
+            if ( e->type() != QEvent::DragMove
+#ifndef LSCS_NO_GRAPHICSVIEW
+                    && !isProxyWidget
+#endif
+               )
+            {
+                QDragManager::self()->setCurrentTarget( nullptr, e->type() == QEvent::Drop );
+            }
+        }
+        break;
+#endif
+
+        case QEvent::TouchBegin:
+            // Note: TouchUpdate and TouchEnd events are never propagated
+        {
+            QWidget *widget = static_cast<QWidget *>( receiver );
+            QTouchEvent *touchEvent = static_cast<QTouchEvent *>( e );
+            bool eventAccepted = touchEvent->isAccepted();
+            bool acceptTouchEvents = widget->testAttribute( Qt::WA_AcceptTouchEvents );
+
+            if ( acceptTouchEvents && e->spontaneous() )
+            {
+                const QPoint localPos = touchEvent->touchPoints()[0].pos().toPoint();
+                QApplicationPrivate::giveFocusAccordingToFocusPolicy( widget, e, localPos );
+            }
+
+#ifndef LSCS_NO_GESTURES
+            QPointer<QWidget> gesturePendingWidget;
+#endif
+
+            while ( widget )
+            {
+                // first, try to deliver the touch event
+                acceptTouchEvents = widget->testAttribute( Qt::WA_AcceptTouchEvents );
+                touchEvent->setTarget( widget );
+                touchEvent->setAccepted( acceptTouchEvents );
+                QPointer<QWidget> p = widget;
+                res = acceptTouchEvents && d->notify_helper( widget, touchEvent );
+                eventAccepted = touchEvent->isAccepted();
+
+                if ( p.isNull() )
+                {
+                    // widget was deleted
+                    widget = nullptr;
+
+                }
+                else
+                {
+                    widget->setAttribute( Qt::WA_WState_AcceptedTouchBeginEvent, res && eventAccepted );
+                }
+
+                touchEvent->spont = false;
+
+                if ( res && eventAccepted )
+                {
+                    // the first widget to accept the TouchBegin gets an implicit grab.
+                    d->activateImplicitTouchGrab( widget, touchEvent );
+                    break;
+                }
+
+#ifndef LSCS_NO_GESTURES
+
+                if ( gesturePendingWidget.isNull() && widget && QGestureManager::gesturePending( widget ) )
+                {
+                    gesturePendingWidget = widget;
                 }
 
 #endif
 
+                if ( p.isNull() || widget->isWindow() || widget->testAttribute( Qt::WA_NoMousePropagation ) )
+                {
+                    break;
+                }
+
+                QPoint offset = widget->pos();
+                widget = widget->parentWidget();
+                touchEvent->setTarget( widget );
+
+                for ( int i = 0; i < touchEvent->_touchPoints.size(); ++i )
+                {
+                    QTouchEvent::TouchPoint &pt = touchEvent->_touchPoints[i];
+                    QRectF rect = pt.rect();
+                    rect.translate( offset );
+                    pt.d->rect = rect;
+                    pt.d->startPos = pt.startPos() + offset;
+                    pt.d->lastPos = pt.lastPos() + offset;
+                }
+            }
+
+#ifndef LSCS_NO_GESTURES
+
+            if ( !eventAccepted && !gesturePendingWidget.isNull() )
+            {
+                // the first widget subscribed to a gesture gets an implicit grab
+                d->activateImplicitTouchGrab( gesturePendingWidget, touchEvent );
+            }
+
+#endif
+
+            touchEvent->setAccepted( eventAccepted );
+            break;
+        }
+
+        case QEvent::TouchUpdate:
+        case QEvent::TouchEnd:
+        {
+            QWidget *widget = static_cast<QWidget *>( receiver );
+
+            // We may get here if the widget is subscribed to a gesture,
+            // but has not accepted TouchBegin. Propagate touch events
+            // only if TouchBegin has been accepted.
+            if ( widget && widget->testAttribute( Qt::WA_WState_AcceptedTouchBeginEvent ) )
+            {
+                res = d->notify_helper( widget, e );
+            }
+
+            break;
+        }
+
+        case QEvent::RequestSoftwareInputPanel:
+            inputMethod()->show();
+            break;
+
+        case QEvent::CloseSoftwareInputPanel:
+            inputMethod()->hide();
+            break;
+
+#ifndef LSCS_NO_GESTURES
+
+        case QEvent::NativeGesture:
+        {
+            // only propagate the first gesture event (after the GID_BEGIN)
+            QWidget *w = static_cast<QWidget *>( receiver );
+
+            while ( w )
+            {
+                e->ignore();
+                res = d->notify_helper( w, e );
+
+                if ( ( res && e->isAccepted() ) || w->isWindow() )
+                {
+                    break;
+                }
+
+                w = w->parentWidget();
+            }
+
+            break;
+        }
+
+        case QEvent::Gesture:
+        case QEvent::GestureOverride:
+        {
+            if ( receiver->isWidgetType() )
+            {
+                QWidget *w = static_cast<QWidget *>( receiver );
+                QGestureEvent *gestureEvent = static_cast<QGestureEvent *>( e );
+                QList<QGesture *> allGestures = gestureEvent->gestures();
+
+                bool eventAccepted = gestureEvent->isAccepted();
+                bool wasAccepted = eventAccepted;
+
                 while ( w )
                 {
-                    if ( w->isEnabled() && w->acceptDrops() )
-                    {
-                        res = d->notify_helper( w, dragEvent );
+                    // send only gestures the widget expects
+                    QList<QGesture *> gestures;
+                    QWidgetPrivate *wd = w->d_func();
 
-                        if ( res && dragEvent->isAccepted() )
+                    for ( int i = 0; i < allGestures.size(); )
+                    {
+                        QGesture *g = allGestures.at( i );
+                        Qt::GestureType type = g->gestureType();
+                        QMap<Qt::GestureType, Qt::GestureFlags>::iterator contextit =
+                            wd->gestureContext.find( type );
+                        bool deliver = contextit != wd->gestureContext.end() &&
+                                       ( g->state() == Qt::GestureStarted || w == receiver ||
+                                         ( contextit.value() & Qt::ReceivePartialGestures ) );
+
+                        if ( deliver )
                         {
-                            QDragManager::self()->setCurrentTarget( w );
-                            break;
+                            allGestures.removeAt( i );
+                            gestures.append( g );
                         }
+                        else
+                        {
+                            ++i;
+                        }
+                    }
+
+                    if ( ! gestures.isEmpty() )
+                    {
+                        // we have gestures for this w
+
+                        QGestureEvent ge( gestures );
+                        ge.t = gestureEvent->t;
+                        ge.spont = gestureEvent->spont;
+                        ge.m_accept = wasAccepted;
+                        ge.m_accepted = gestureEvent->m_accepted;
+                        res = d->notify_helper( w, &ge );
+                        gestureEvent->spont = false;
+                        eventAccepted = ge.isAccepted();
+
+                        for ( int i = 0; i < gestures.size(); ++i )
+                        {
+                            QGesture *g = gestures.at( i );
+
+                            // Ignore res [event return value] because handling of multiple gestures
+                            // packed into a single QEvent depends on not consuming the event
+                            if ( eventAccepted || ge.isAccepted( g ) )
+                            {
+                                // if the gesture was accepted, mark the target widget for it
+                                gestureEvent->m_targetWidgets[g->gestureType()] = w;
+                                gestureEvent->setAccepted( g, true );
+
+                            }
+                            else
+                            {
+                                // if the gesture was explicitly ignored by the application,
+                                // put it back so a parent can get it
+                                allGestures.append( g );
+                            }
+                        }
+                    }
+
+                    if ( allGestures.isEmpty() ) // everything delivered
+                    {
+                        break;
                     }
 
                     if ( w->isWindow() )
@@ -3039,350 +3313,76 @@ bool QApplication::notify( QObject *receiver, QEvent *e )
                         break;
                     }
 
-                    dragEvent->p = w->mapToParent( dragEvent->p.toPoint() );
-                    w = w->parentWidget();
-                }
-            }
-            break;
-
-            case QEvent::DragMove:
-            case QEvent::Drop:
-            case QEvent::DragLeave:
-            {
-                QWidget *w = static_cast<QWidget *>( receiver );
-#ifndef LSCS_NO_GRAPHICSVIEW
-                // QGraphicsProxyWidget handles its own propagation,
-                // and we must not change QDragManagers currentTarget.
-                QWExtra *extra = w->window()->d_func()->extra;
-                bool isProxyWidget = extra && extra->proxyWidget;
-
-                if ( !isProxyWidget )
-#endif
-                    w = qobject_cast<QWidget *>( QDragManager::self()->currentTarget() );
-
-                if ( !w )
-                {
-                    break;
-                }
-
-                if ( e->type() == QEvent::DragMove || e->type() == QEvent::Drop )
-                {
-                    QDropEvent *dragEvent = static_cast<QDropEvent *>( e );
-                    QWidget *origReciver = static_cast<QWidget *>( receiver );
-
-                    while ( origReciver && w != origReciver )
-                    {
-                        dragEvent->p = origReciver->mapToParent( dragEvent->p.toPoint() );
-                        origReciver = origReciver->parentWidget();
-                    }
-                }
-
-                res = d->notify_helper( w, e );
-
-                if ( e->type() != QEvent::DragMove
-#ifndef LSCS_NO_GRAPHICSVIEW
-                        && !isProxyWidget
-#endif
-                   )
-                {
-                    QDragManager::self()->setCurrentTarget( nullptr, e->type() == QEvent::Drop );
-                }
-            }
-            break;
-#endif
-
-            case QEvent::TouchBegin:
-                // Note: TouchUpdate and TouchEnd events are never propagated
-            {
-                QWidget *widget = static_cast<QWidget *>( receiver );
-                QTouchEvent *touchEvent = static_cast<QTouchEvent *>( e );
-                bool eventAccepted = touchEvent->isAccepted();
-                bool acceptTouchEvents = widget->testAttribute( Qt::WA_AcceptTouchEvents );
-
-                if ( acceptTouchEvents && e->spontaneous() )
-                {
-                    const QPoint localPos = touchEvent->touchPoints()[0].pos().toPoint();
-                    QApplicationPrivate::giveFocusAccordingToFocusPolicy( widget, e, localPos );
-                }
-
-#ifndef LSCS_NO_GESTURES
-                QPointer<QWidget> gesturePendingWidget;
-#endif
-
-                while ( widget )
-                {
-                    // first, try to deliver the touch event
-                    acceptTouchEvents = widget->testAttribute( Qt::WA_AcceptTouchEvents );
-                    touchEvent->setTarget( widget );
-                    touchEvent->setAccepted( acceptTouchEvents );
-                    QPointer<QWidget> p = widget;
-                    res = acceptTouchEvents && d->notify_helper( widget, touchEvent );
-                    eventAccepted = touchEvent->isAccepted();
-
-                    if ( p.isNull() )
-                    {
-                        // widget was deleted
-                        widget = nullptr;
-
-                    }
-                    else
-                    {
-                        widget->setAttribute( Qt::WA_WState_AcceptedTouchBeginEvent, res && eventAccepted );
-                    }
-
-                    touchEvent->spont = false;
-
-                    if ( res && eventAccepted )
-                    {
-                        // the first widget to accept the TouchBegin gets an implicit grab.
-                        d->activateImplicitTouchGrab( widget, touchEvent );
-                        break;
-                    }
-
-#ifndef LSCS_NO_GESTURES
-
-                    if ( gesturePendingWidget.isNull() && widget && QGestureManager::gesturePending( widget ) )
-                    {
-                        gesturePendingWidget = widget;
-                    }
-
-#endif
-
-                    if ( p.isNull() || widget->isWindow() || widget->testAttribute( Qt::WA_NoMousePropagation ) )
-                    {
-                        break;
-                    }
-
-                    QPoint offset = widget->pos();
-                    widget = widget->parentWidget();
-                    touchEvent->setTarget( widget );
-
-                    for ( int i = 0; i < touchEvent->_touchPoints.size(); ++i )
-                    {
-                        QTouchEvent::TouchPoint &pt = touchEvent->_touchPoints[i];
-                        QRectF rect = pt.rect();
-                        rect.translate( offset );
-                        pt.d->rect = rect;
-                        pt.d->startPos = pt.startPos() + offset;
-                        pt.d->lastPos = pt.lastPos() + offset;
-                    }
-                }
-
-#ifndef LSCS_NO_GESTURES
-
-                if ( !eventAccepted && !gesturePendingWidget.isNull() )
-                {
-                    // the first widget subscribed to a gesture gets an implicit grab
-                    d->activateImplicitTouchGrab( gesturePendingWidget, touchEvent );
-                }
-
-#endif
-
-                touchEvent->setAccepted( eventAccepted );
-                break;
-            }
-
-            case QEvent::TouchUpdate:
-            case QEvent::TouchEnd:
-            {
-                QWidget *widget = static_cast<QWidget *>( receiver );
-
-                // We may get here if the widget is subscribed to a gesture,
-                // but has not accepted TouchBegin. Propagate touch events
-                // only if TouchBegin has been accepted.
-                if ( widget && widget->testAttribute( Qt::WA_WState_AcceptedTouchBeginEvent ) )
-                {
-                    res = d->notify_helper( widget, e );
-                }
-
-                break;
-            }
-
-            case QEvent::RequestSoftwareInputPanel:
-                inputMethod()->show();
-                break;
-
-            case QEvent::CloseSoftwareInputPanel:
-                inputMethod()->hide();
-                break;
-
-#ifndef LSCS_NO_GESTURES
-
-            case QEvent::NativeGesture:
-            {
-                // only propagate the first gesture event (after the GID_BEGIN)
-                QWidget *w = static_cast<QWidget *>( receiver );
-
-                while ( w )
-                {
-                    e->ignore();
-                    res = d->notify_helper( w, e );
-
-                    if ( ( res && e->isAccepted() ) || w->isWindow() )
-                    {
-                        break;
-                    }
-
                     w = w->parentWidget();
                 }
 
-                break;
-            }
+                for ( QGesture *g : allGestures )
+                {
+                    gestureEvent->setAccepted( g, false );
+                }
 
-            case QEvent::Gesture:
-            case QEvent::GestureOverride:
+                gestureEvent->m_accept = false; // to make sure we check individual gestures
+
+            }
+            else
             {
-                if ( receiver->isWidgetType() )
-                {
-                    QWidget *w = static_cast<QWidget *>( receiver );
-                    QGestureEvent *gestureEvent = static_cast<QGestureEvent *>( e );
-                    QList<QGesture *> allGestures = gestureEvent->gestures();
-
-                    bool eventAccepted = gestureEvent->isAccepted();
-                    bool wasAccepted = eventAccepted;
-
-                    while ( w )
-                    {
-                        // send only gestures the widget expects
-                        QList<QGesture *> gestures;
-                        QWidgetPrivate *wd = w->d_func();
-
-                        for ( int i = 0; i < allGestures.size(); )
-                        {
-                            QGesture *g = allGestures.at( i );
-                            Qt::GestureType type = g->gestureType();
-                            QMap<Qt::GestureType, Qt::GestureFlags>::iterator contextit =
-                                wd->gestureContext.find( type );
-                            bool deliver = contextit != wd->gestureContext.end() &&
-                                           ( g->state() == Qt::GestureStarted || w == receiver ||
-                                             ( contextit.value() & Qt::ReceivePartialGestures ) );
-
-                            if ( deliver )
-                            {
-                                allGestures.removeAt( i );
-                                gestures.append( g );
-                            }
-                            else
-                            {
-                                ++i;
-                            }
-                        }
-
-                        if ( ! gestures.isEmpty() )
-                        {
-                            // we have gestures for this w
-
-                            QGestureEvent ge( gestures );
-                            ge.t = gestureEvent->t;
-                            ge.spont = gestureEvent->spont;
-                            ge.m_accept = wasAccepted;
-                            ge.m_accepted = gestureEvent->m_accepted;
-                            res = d->notify_helper( w, &ge );
-                            gestureEvent->spont = false;
-                            eventAccepted = ge.isAccepted();
-
-                            for ( int i = 0; i < gestures.size(); ++i )
-                            {
-                                QGesture *g = gestures.at( i );
-
-                                // Ignore res [event return value] because handling of multiple gestures
-                                // packed into a single QEvent depends on not consuming the event
-                                if ( eventAccepted || ge.isAccepted( g ) )
-                                {
-                                    // if the gesture was accepted, mark the target widget for it
-                                    gestureEvent->m_targetWidgets[g->gestureType()] = w;
-                                    gestureEvent->setAccepted( g, true );
-
-                                }
-                                else
-                                {
-                                    // if the gesture was explicitly ignored by the application,
-                                    // put it back so a parent can get it
-                                    allGestures.append( g );
-                                }
-                            }
-                        }
-
-                        if ( allGestures.isEmpty() ) // everything delivered
-                        {
-                            break;
-                        }
-
-                        if ( w->isWindow() )
-                        {
-                            break;
-                        }
-
-                        w = w->parentWidget();
-                    }
-
-                    for ( QGesture *g : allGestures )
-                    {
-                        gestureEvent->setAccepted( g, false );
-                    }
-
-                    gestureEvent->m_accept = false; // to make sure we check individual gestures
-
-                }
-                else
-                {
-                    res = d->notify_helper( receiver, e );
-                }
-
-                break;
+                res = d->notify_helper( receiver, e );
             }
+
+            break;
+        }
 
 #endif // LSCS_NO_GESTURES
 
 #ifdef Q_OS_DARWIN
 
-                // Enable touch events on enter, disable on leave.
-            typedef void ( *RegisterTouchWindowFn )( QWindow *,  bool );
+            // Enable touch events on enter, disable on leave.
+        typedef void ( *RegisterTouchWindowFn )( QWindow *,  bool );
 
-            case QEvent::Enter:
-                if ( receiver->isWidgetType() )
+        case QEvent::Enter:
+            if ( receiver->isWidgetType() )
+            {
+                QWidget *w = static_cast<QWidget *>( receiver );
+
+                if ( w->testAttribute( Qt::WA_AcceptTouchEvents ) )
                 {
-                    QWidget *w = static_cast<QWidget *>( receiver );
+                    RegisterTouchWindowFn registerTouchWindow = reinterpret_cast<RegisterTouchWindowFn>
+                        ( platformNativeInterface()->nativeResourceFunctionForIntegration( "registertouchwindow" ) );
 
-                    if ( w->testAttribute( Qt::WA_AcceptTouchEvents ) )
+                    if ( registerTouchWindow )
                     {
-                        RegisterTouchWindowFn registerTouchWindow = reinterpret_cast<RegisterTouchWindowFn>
-                                ( platformNativeInterface()->nativeResourceFunctionForIntegration( "registertouchwindow" ) );
-
-                        if ( registerTouchWindow )
-                        {
-                            registerTouchWindow( w->window()->windowHandle(), true );
-                        }
+                        registerTouchWindow( w->window()->windowHandle(), true );
                     }
                 }
+            }
 
-                res = d->notify_helper( receiver, e );
-                break;
+            res = d->notify_helper( receiver, e );
+            break;
 
-            case QEvent::Leave:
-                if ( receiver->isWidgetType() )
+        case QEvent::Leave:
+            if ( receiver->isWidgetType() )
+            {
+                QWidget *w = static_cast<QWidget *>( receiver );
+
+                if ( w->testAttribute( Qt::WA_AcceptTouchEvents ) )
                 {
-                    QWidget *w = static_cast<QWidget *>( receiver );
+                    RegisterTouchWindowFn registerTouchWindow = reinterpret_cast<RegisterTouchWindowFn>
+                        ( platformNativeInterface()->nativeResourceFunctionForIntegration( "registertouchwindow" ) );
 
-                    if ( w->testAttribute( Qt::WA_AcceptTouchEvents ) )
+                    if ( registerTouchWindow )
                     {
-                        RegisterTouchWindowFn registerTouchWindow = reinterpret_cast<RegisterTouchWindowFn>
-                                ( platformNativeInterface()->nativeResourceFunctionForIntegration( "registertouchwindow" ) );
-
-                        if ( registerTouchWindow )
-                        {
-                            registerTouchWindow( w->window()->windowHandle(), false );
-                        }
+                        registerTouchWindow( w->window()->windowHandle(), false );
                     }
                 }
+            }
 
-                res = d->notify_helper( receiver, e );
-                break;
+            res = d->notify_helper( receiver, e );
+            break;
 #endif
 
-            default:
-                res = d->notify_helper( receiver, e );
-                break;
+        default:
+            res = d->notify_helper( receiver, e );
+            break;
         }
 
     return res;
@@ -3699,26 +3699,26 @@ static inline int uiEffectToFlag( Qt::UIEffect effect )
 {
     switch ( effect )
     {
-        case Qt::UI_General:
-            return QPlatformTheme::GeneralUiEffect;
+    case Qt::UI_General:
+        return QPlatformTheme::GeneralUiEffect;
 
-        case Qt::UI_AnimateMenu:
-            return QPlatformTheme::AnimateMenuUiEffect;
+    case Qt::UI_AnimateMenu:
+        return QPlatformTheme::AnimateMenuUiEffect;
 
-        case Qt::UI_FadeMenu:
-            return QPlatformTheme::FadeMenuUiEffect;
+    case Qt::UI_FadeMenu:
+        return QPlatformTheme::FadeMenuUiEffect;
 
-        case Qt::UI_AnimateCombo:
-            return QPlatformTheme::AnimateComboUiEffect;
+    case Qt::UI_AnimateCombo:
+        return QPlatformTheme::AnimateComboUiEffect;
 
-        case Qt::UI_AnimateTooltip:
-            return QPlatformTheme::AnimateTooltipUiEffect;
+    case Qt::UI_AnimateTooltip:
+        return QPlatformTheme::AnimateTooltipUiEffect;
 
-        case Qt::UI_FadeTooltip:
-            return QPlatformTheme::FadeTooltipUiEffect;
+    case Qt::UI_FadeTooltip:
+        return QPlatformTheme::FadeTooltipUiEffect;
 
-        case Qt::UI_AnimateToolBox:
-            return QPlatformTheme::AnimateToolBoxUiEffect;
+    case Qt::UI_AnimateToolBox:
+        return QPlatformTheme::AnimateToolBoxUiEffect;
     }
 
     return 0;
@@ -3785,40 +3785,40 @@ void QApplicationPrivate::giveFocusAccordingToFocusPolicy( QWidget *widget, QEve
 
     switch ( event->type() )
     {
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonDblClick:
-        case QEvent::TouchBegin:
-            focusedWidgetOnTouchBegin = QApplication::focusWidget();
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonDblClick:
+    case QEvent::TouchBegin:
+        focusedWidgetOnTouchBegin = QApplication::focusWidget();
 
-            if ( setFocusOnRelease )
-            {
-                return;
-            }
-
-            break;
-
-        case QEvent::MouseButtonRelease:
-        case QEvent::TouchEnd:
-            if ( !setFocusOnRelease )
-            {
-                return;
-            }
-
-            if ( focusedWidgetOnTouchBegin != QApplication::focusWidget() )
-            {
-                // Focus widget was changed while delivering press/move events.
-                // To not interfere with application logic, we leave focus as-is
-                return;
-            }
-
-            break;
-
-        case QEvent::Wheel:
-            focusPolicy = Qt::WheelFocus;
-            break;
-
-        default:
+        if ( setFocusOnRelease )
+        {
             return;
+        }
+
+        break;
+
+    case QEvent::MouseButtonRelease:
+    case QEvent::TouchEnd:
+        if ( !setFocusOnRelease )
+        {
+            return;
+        }
+
+        if ( focusedWidgetOnTouchBegin != QApplication::focusWidget() )
+        {
+            // Focus widget was changed while delivering press/move events.
+            // To not interfere with application logic, we leave focus as-is
+            return;
+        }
+
+        break;
+
+    case QEvent::Wheel:
+        focusPolicy = Qt::WheelFocus;
+        break;
+
+    default:
+        return;
     }
 
     QWidget *focusWidget = widget;
@@ -4091,21 +4091,21 @@ bool QApplicationPrivate::translateRawTouchEvent( QWidget *window, QTouchDevice 
 
         switch ( it.value().first )
         {
-            case Qt::TouchPointPressed:
-                eventType = QEvent::TouchBegin;
-                break;
+        case Qt::TouchPointPressed:
+            eventType = QEvent::TouchBegin;
+            break;
 
-            case Qt::TouchPointReleased:
-                eventType = QEvent::TouchEnd;
-                break;
+        case Qt::TouchPointReleased:
+            eventType = QEvent::TouchEnd;
+            break;
 
-            case Qt::TouchPointStationary:
-                // don't send the event if nothing changed
-                continue;
+        case Qt::TouchPointStationary:
+            // don't send the event if nothing changed
+            continue;
 
-            default:
-                eventType = QEvent::TouchUpdate;
-                break;
+        default:
+            eventType = QEvent::TouchUpdate;
+            break;
         }
 
         QTouchEvent touchEvent( eventType, device, QApplication::keyboardModifiers(), it.value().first, it.value().second );
@@ -4122,43 +4122,43 @@ bool QApplicationPrivate::translateRawTouchEvent( QWidget *window, QTouchDevice 
 
         switch ( touchEvent.type() )
         {
-            case QEvent::TouchBegin:
+        case QEvent::TouchBegin:
+        {
+            // if the TouchBegin handler recurses, we assume that means the event
+            // has been implicitly accepted and continue to send touch events
+            if ( QApplication::sendSpontaneousEvent( widget, &touchEvent ) && touchEvent.isAccepted() )
             {
-                // if the TouchBegin handler recurses, we assume that means the event
-                // has been implicitly accepted and continue to send touch events
+                accepted = true;
+
+                if ( ! widget.isNull() )
+                {
+                    widget->setAttribute( Qt::WA_WState_AcceptedTouchBeginEvent );
+                }
+            }
+
+            break;
+        }
+
+        default:
+            if ( widget->testAttribute( Qt::WA_WState_AcceptedTouchBeginEvent )
+#ifndef LSCS_NO_GESTURES
+                    || QGestureManager::gesturePending( widget )
+#endif
+               )
+            {
                 if ( QApplication::sendSpontaneousEvent( widget, &touchEvent ) && touchEvent.isAccepted() )
                 {
                     accepted = true;
-
-                    if ( ! widget.isNull() )
-                    {
-                        widget->setAttribute( Qt::WA_WState_AcceptedTouchBeginEvent );
-                    }
                 }
 
-                break;
+                // widget can be deleted on TouchEnd
+                if ( touchEvent.type() == QEvent::TouchEnd && !widget.isNull() )
+                {
+                    widget->setAttribute( Qt::WA_WState_AcceptedTouchBeginEvent, false );
+                }
             }
 
-            default:
-                if ( widget->testAttribute( Qt::WA_WState_AcceptedTouchBeginEvent )
-#ifndef LSCS_NO_GESTURES
-                        || QGestureManager::gesturePending( widget )
-#endif
-                   )
-                {
-                    if ( QApplication::sendSpontaneousEvent( widget, &touchEvent ) && touchEvent.isAccepted() )
-                    {
-                        accepted = true;
-                    }
-
-                    // widget can be deleted on TouchEnd
-                    if ( touchEvent.type() == QEvent::TouchEnd && !widget.isNull() )
-                    {
-                        widget->setAttribute( Qt::WA_WState_AcceptedTouchBeginEvent, false );
-                    }
-                }
-
-                break;
+            break;
         }
     }
 

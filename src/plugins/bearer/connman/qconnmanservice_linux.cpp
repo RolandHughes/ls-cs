@@ -245,8 +245,8 @@ void QConnmanManagerInterface::unregisterAgent( QDBusObjectPath /*path*/ )
 void QConnmanManagerInterface::registerCounter( const QString &path, quint32 interval )
 {
     QDBusReply<QList<QDBusObjectPath> > reply =  this->call( QLatin1String( "RegisterCounter" ),
-            QVariant::fromValue( path ),
-            QVariant::fromValue( interval ) );
+        QVariant::fromValue( path ),
+        QVariant::fromValue( interval ) );
 
     if ( reply.error().type() == QDBusError::InvalidArgs )
     {
@@ -257,7 +257,7 @@ void QConnmanManagerInterface::registerCounter( const QString &path, quint32 int
 void QConnmanManagerInterface::unregisterCounter( const QString &path )
 {
     QDBusReply<QList<QDBusObjectPath> > reply =  this->call( QLatin1String( "UnregisterCounter" ),
-            QVariant::fromValue( path ) );
+        QVariant::fromValue( path ) );
 
     if ( reply.error().type() == QDBusError::InvalidArgs )
     {
@@ -268,7 +268,7 @@ void QConnmanManagerInterface::unregisterCounter( const QString &path )
 QString QConnmanManagerInterface::requestSession( const QString &bearerName )
 {
     QDBusReply<QList<QDBusObjectPath> > reply =  this->call( QLatin1String( "RequestSession" ),
-            QVariant::fromValue( bearerName ) );
+        QVariant::fromValue( bearerName ) );
     return QString();
 }
 

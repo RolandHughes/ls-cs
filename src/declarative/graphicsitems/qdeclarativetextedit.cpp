@@ -539,16 +539,16 @@ QDeclarativeTextEdit::HAlignment QDeclarativeTextEdit::effectiveHAlign() const
     {
         switch ( d->hAlign )
         {
-            case QDeclarativeTextEdit::AlignLeft:
-                effectiveAlignment = QDeclarativeTextEdit::AlignRight;
-                break;
+        case QDeclarativeTextEdit::AlignLeft:
+            effectiveAlignment = QDeclarativeTextEdit::AlignRight;
+            break;
 
-            case QDeclarativeTextEdit::AlignRight:
-                effectiveAlignment = QDeclarativeTextEdit::AlignLeft;
-                break;
+        case QDeclarativeTextEdit::AlignRight:
+            effectiveAlignment = QDeclarativeTextEdit::AlignLeft;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 

@@ -243,24 +243,24 @@ void QDataWidgetMapperPrivate::_q_closeEditor( QWidget *currentWidget, QAbstract
 
     switch ( hint )
     {
-        case QAbstractItemDelegate::RevertModelCache:
-        {
-            populate( widgetMap[idx] );
-            break;
-        }
+    case QAbstractItemDelegate::RevertModelCache:
+    {
+        populate( widgetMap[idx] );
+        break;
+    }
 
-        case QAbstractItemDelegate::EditNextItem:
-            currentWidget->focusNextChild();
-            break;
+    case QAbstractItemDelegate::EditNextItem:
+        currentWidget->focusNextChild();
+        break;
 
-        case QAbstractItemDelegate::EditPreviousItem:
-            currentWidget->focusPreviousChild();
-            break;
+    case QAbstractItemDelegate::EditPreviousItem:
+        currentWidget->focusPreviousChild();
+        break;
 
-        case QAbstractItemDelegate::SubmitModelCache:
-        case QAbstractItemDelegate::NoHint:
-            // nothing
-            break;
+    case QAbstractItemDelegate::SubmitModelCache:
+    case QAbstractItemDelegate::NoHint:
+        // nothing
+        break;
     }
 }
 

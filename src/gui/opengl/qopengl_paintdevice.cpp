@@ -138,45 +138,45 @@ int QOpenGLPaintDevice::metric( QPaintDevice::PaintDeviceMetric metric ) const
 {
     switch ( metric )
     {
-        case PdmWidth:
-            return d_ptr->size.width();
+    case PdmWidth:
+        return d_ptr->size.width();
 
-        case PdmHeight:
-            return d_ptr->size.height();
+    case PdmHeight:
+        return d_ptr->size.height();
 
-        case PdmDepth:
-            return 32;
+    case PdmDepth:
+        return 32;
 
-        case PdmWidthMM:
-            return qRound( d_ptr->size.width() * 1000 / d_ptr->dpmx );
+    case PdmWidthMM:
+        return qRound( d_ptr->size.width() * 1000 / d_ptr->dpmx );
 
-        case PdmHeightMM:
-            return qRound( d_ptr->size.height() * 1000 / d_ptr->dpmy );
+    case PdmHeightMM:
+        return qRound( d_ptr->size.height() * 1000 / d_ptr->dpmy );
 
-        case PdmNumColors:
-            return 0;
+    case PdmNumColors:
+        return 0;
 
-        case PdmDpiX:
-            return qRound( d_ptr->dpmx * 0.0254 );
+    case PdmDpiX:
+        return qRound( d_ptr->dpmx * 0.0254 );
 
-        case PdmDpiY:
-            return qRound( d_ptr->dpmy * 0.0254 );
+    case PdmDpiY:
+        return qRound( d_ptr->dpmy * 0.0254 );
 
-        case PdmPhysicalDpiX:
-            return qRound( d_ptr->dpmx * 0.0254 );
+    case PdmPhysicalDpiX:
+        return qRound( d_ptr->dpmx * 0.0254 );
 
-        case PdmPhysicalDpiY:
-            return qRound( d_ptr->dpmy * 0.0254 );
+    case PdmPhysicalDpiY:
+        return qRound( d_ptr->dpmy * 0.0254 );
 
-        case PdmDevicePixelRatio:
-            return d_ptr->devicePixelRatio;
+    case PdmDevicePixelRatio:
+        return d_ptr->devicePixelRatio;
 
-        case PdmDevicePixelRatioScaled:
-            return d_ptr->devicePixelRatio * QPaintDevice::devicePixelRatioFScale();
+    case PdmDevicePixelRatioScaled:
+        return d_ptr->devicePixelRatio * QPaintDevice::devicePixelRatioFScale();
 
-        default:
-            qWarning( "QOpenGLPaintDevice::metric() - metric %d not known", metric );
-            return 0;
+    default:
+        qWarning( "QOpenGLPaintDevice::metric() - metric %d not known", metric );
+        return 0;
     }
 }
 

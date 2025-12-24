@@ -364,17 +364,17 @@ QDBusConnection QDBusConnection::connectToBus( BusType type, const QString &name
 
     switch ( type )
     {
-        case SystemBus:
-            c = q_dbus_bus_get_private( DBUS_BUS_SYSTEM, error );
-            break;
+    case SystemBus:
+        c = q_dbus_bus_get_private( DBUS_BUS_SYSTEM, error );
+        break;
 
-        case SessionBus:
-            c = q_dbus_bus_get_private( DBUS_BUS_SESSION, error );
-            break;
+    case SessionBus:
+        c = q_dbus_bus_get_private( DBUS_BUS_SESSION, error );
+        break;
 
-        case ActivationBus:
-            c = q_dbus_bus_get_private( DBUS_BUS_STARTER, error );
-            break;
+    case ActivationBus:
+        c = q_dbus_bus_get_private( DBUS_BUS_STARTER, error );
+        break;
     }
 
     d->setConnection( c, error ); //setConnection does the error handling for us

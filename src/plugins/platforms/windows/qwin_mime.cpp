@@ -460,41 +460,41 @@ QDebug operator<<( QDebug debug, const FORMATETC &tc )
 
     switch ( tc.cfFormat )
     {
-        case CF_TEXT:
-            debug << "CF_TEXT";
-            break;
+    case CF_TEXT:
+        debug << "CF_TEXT";
+        break;
 
-        case CF_BITMAP:
-            debug << "CF_BITMAP";
-            break;
+    case CF_BITMAP:
+        debug << "CF_BITMAP";
+        break;
 
-        case CF_TIFF:
-            debug << "CF_TIFF";
-            break;
+    case CF_TIFF:
+        debug << "CF_TIFF";
+        break;
 
-        case CF_OEMTEXT:
-            debug << "CF_OEMTEXT";
-            break;
+    case CF_OEMTEXT:
+        debug << "CF_OEMTEXT";
+        break;
 
-        case CF_DIB:
-            debug << "CF_DIB";
-            break;
+    case CF_DIB:
+        debug << "CF_DIB";
+        break;
 
-        case CF_DIBV5:
-            debug << "CF_DIBV5";
-            break;
+    case CF_DIBV5:
+        debug << "CF_DIBV5";
+        break;
 
-        case CF_UNICODETEXT:
-            debug << "CF_UNICODETEXT";
-            break;
+    case CF_UNICODETEXT:
+        debug << "CF_UNICODETEXT";
+        break;
 
-        case CF_ENHMETAFILE:
-            debug << "CF_ENHMETAFILE";
-            break;
+    case CF_ENHMETAFILE:
+        debug << "CF_ENHMETAFILE";
+        break;
 
-        default:
-            debug << QWindowsMimeConverter::clipboardFormatName( tc.cfFormat );
-            break;
+    default:
+        debug << QWindowsMimeConverter::clipboardFormatName( tc.cfFormat );
+        break;
     }
 
     debug << ", dwAspect =" << tc.dwAspect << ", lindex =" << tc.lindex

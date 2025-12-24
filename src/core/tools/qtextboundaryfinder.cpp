@@ -62,24 +62,24 @@ static void init( QTextBoundaryFinder::BoundaryType type, const QString &str, QC
 
     switch ( type )
     {
-        case QTextBoundaryFinder::Grapheme:
-            options |= QUnicodeTools::GraphemeBreaks;
-            break;
+    case QTextBoundaryFinder::Grapheme:
+        options |= QUnicodeTools::GraphemeBreaks;
+        break;
 
-        case QTextBoundaryFinder::Word:
-            options |= QUnicodeTools::WordBreaks;
-            break;
+    case QTextBoundaryFinder::Word:
+        options |= QUnicodeTools::WordBreaks;
+        break;
 
-        case QTextBoundaryFinder::Sentence:
-            options |= QUnicodeTools::SentenceBreaks;
-            break;
+    case QTextBoundaryFinder::Sentence:
+        options |= QUnicodeTools::SentenceBreaks;
+        break;
 
-        case QTextBoundaryFinder::Line:
-            options |= QUnicodeTools::LineBreaks;
-            break;
+    case QTextBoundaryFinder::Line:
+        options |= QUnicodeTools::LineBreaks;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     QUnicodeTools::initCharAttributes( str, scriptItems, attributes, options );
@@ -250,41 +250,41 @@ int QTextBoundaryFinder::toNextBoundary()
 
     switch ( m_type )
     {
-        case Grapheme:
-            while ( iter_pos != m_str.cend() && ! d->attributes[index].graphemeBoundary )
-            {
-                ++iter_pos;
-                ++index;
-            }
+    case Grapheme:
+        while ( iter_pos != m_str.cend() && ! d->attributes[index].graphemeBoundary )
+        {
+            ++iter_pos;
+            ++index;
+        }
 
-            break;
+        break;
 
-        case Word:
-            while ( iter_pos != m_str.cend() && ! d->attributes[index].wordBreak )
-            {
-                ++iter_pos;
-                ++index;
-            }
+    case Word:
+        while ( iter_pos != m_str.cend() && ! d->attributes[index].wordBreak )
+        {
+            ++iter_pos;
+            ++index;
+        }
 
-            break;
+        break;
 
-        case Sentence:
-            while ( iter_pos != m_str.cend() && ! d->attributes[index].sentenceBoundary )
-            {
-                ++iter_pos;
-                ++index;
-            }
+    case Sentence:
+        while ( iter_pos != m_str.cend() && ! d->attributes[index].sentenceBoundary )
+        {
+            ++iter_pos;
+            ++index;
+        }
 
-            break;
+        break;
 
-        case Line:
-            while ( iter_pos != m_str.cend() && ! d->attributes[index].lineBreak )
-            {
-                ++iter_pos;
-                ++index;
-            }
+    case Line:
+        while ( iter_pos != m_str.cend() && ! d->attributes[index].lineBreak )
+        {
+            ++iter_pos;
+            ++index;
+        }
 
-            break;
+        break;
     }
 
     return index;
@@ -314,41 +314,41 @@ int QTextBoundaryFinder::toPreviousBoundary()
 
     switch ( m_type )
     {
-        case Grapheme:
-            while ( iter_pos != m_str.cbegin() && ! d->attributes[index].graphemeBoundary )
-            {
-                --iter_pos;
-                --index;
-            }
+    case Grapheme:
+        while ( iter_pos != m_str.cbegin() && ! d->attributes[index].graphemeBoundary )
+        {
+            --iter_pos;
+            --index;
+        }
 
-            break;
+        break;
 
-        case Word:
-            while ( iter_pos != m_str.cbegin() && ! d->attributes[index].wordBreak )
-            {
-                --iter_pos;
-                --index;
-            }
+    case Word:
+        while ( iter_pos != m_str.cbegin() && ! d->attributes[index].wordBreak )
+        {
+            --iter_pos;
+            --index;
+        }
 
-            break;
+        break;
 
-        case Sentence:
-            while ( iter_pos != m_str.cbegin() && ! d->attributes[index].sentenceBoundary )
-            {
-                --iter_pos;
-                --index;
-            }
+    case Sentence:
+        while ( iter_pos != m_str.cbegin() && ! d->attributes[index].sentenceBoundary )
+        {
+            --iter_pos;
+            --index;
+        }
 
-            break;
+        break;
 
-        case Line:
-            while ( iter_pos != m_str.cbegin() && !d ->attributes[index].lineBreak )
-            {
-                --iter_pos;
-                --index;
-            }
+    case Line:
+        while ( iter_pos != m_str.cbegin() && !d ->attributes[index].lineBreak )
+        {
+            --iter_pos;
+            --index;
+        }
 
-            break;
+        break;
     }
 
     return index;
@@ -370,17 +370,17 @@ bool QTextBoundaryFinder::isAtBoundary() const
 
     switch ( m_type )
     {
-        case Grapheme:
-            return d->attributes[index].graphemeBoundary;
+    case Grapheme:
+        return d->attributes[index].graphemeBoundary;
 
-        case Word:
-            return d->attributes[index].wordBreak;
+    case Word:
+        return d->attributes[index].wordBreak;
 
-        case Sentence:
-            return d->attributes[index].sentenceBoundary;
+    case Sentence:
+        return d->attributes[index].sentenceBoundary;
 
-        case Line:
-            return d->attributes[index].lineBreak || index == 0;
+    case Line:
+        return d->attributes[index].lineBreak || index == 0;
     }
 
     return false;
@@ -401,10 +401,69 @@ QTextBoundaryFinder::BoundaryReasons QTextBoundaryFinder::boundaryReasons() cons
 
     switch ( m_type )
     {
-        case Grapheme:
-            if ( attr.graphemeBoundary )
+    case Grapheme:
+        if ( attr.graphemeBoundary )
+        {
+            reasons |= BreakOpportunity | StartOfItem | EndOfItem;
+
+            if ( index == 0 )
             {
-                reasons |= BreakOpportunity | StartOfItem | EndOfItem;
+                reasons &= ( ~EndOfItem );
+
+            }
+            else if ( iter_pos == m_str.cend() )
+            {
+                reasons &= ( ~StartOfItem );
+
+            }
+        }
+
+        break;
+
+    case Word:
+        if ( attr.wordBreak )
+        {
+            reasons |= BreakOpportunity;
+
+            if ( attr.wordStart )
+            {
+                reasons |= StartOfItem;
+            }
+
+            if ( attr.wordEnd )
+            {
+                reasons |= EndOfItem;
+            }
+        }
+
+        break;
+
+    case Sentence:
+        if ( attr.sentenceBoundary )
+        {
+            reasons |= BreakOpportunity | StartOfItem | EndOfItem;
+
+            if ( index == 0 )
+            {
+                reasons &= ( ~EndOfItem );
+
+            }
+            else if ( iter_pos == m_str.cend() )
+            {
+                reasons &= ( ~StartOfItem );
+            }
+        }
+
+        break;
+
+    case Line:
+        if ( attr.lineBreak || index == 0 )
+        {
+            reasons |= BreakOpportunity;
+
+            if ( attr.mandatoryBreak || index == 0 )
+            {
+                reasons |= MandatoryBreak | StartOfItem | EndOfItem;
 
                 if ( index == 0 )
                 {
@@ -414,78 +473,19 @@ QTextBoundaryFinder::BoundaryReasons QTextBoundaryFinder::boundaryReasons() cons
                 else if ( iter_pos == m_str.cend() )
                 {
                     reasons &= ( ~StartOfItem );
-
                 }
+
             }
-
-            break;
-
-        case Word:
-            if ( attr.wordBreak )
+            else if ( index > 0 && iter_pos[-1].unicode() == QChar::SoftHyphen )
             {
-                reasons |= BreakOpportunity;
-
-                if ( attr.wordStart )
-                {
-                    reasons |= StartOfItem;
-                }
-
-                if ( attr.wordEnd )
-                {
-                    reasons |= EndOfItem;
-                }
+                reasons |= SoftHyphen;
             }
+        }
 
-            break;
+        break;
 
-        case Sentence:
-            if ( attr.sentenceBoundary )
-            {
-                reasons |= BreakOpportunity | StartOfItem | EndOfItem;
-
-                if ( index == 0 )
-                {
-                    reasons &= ( ~EndOfItem );
-
-                }
-                else if ( iter_pos == m_str.cend() )
-                {
-                    reasons &= ( ~StartOfItem );
-                }
-            }
-
-            break;
-
-        case Line:
-            if ( attr.lineBreak || index == 0 )
-            {
-                reasons |= BreakOpportunity;
-
-                if ( attr.mandatoryBreak || index == 0 )
-                {
-                    reasons |= MandatoryBreak | StartOfItem | EndOfItem;
-
-                    if ( index == 0 )
-                    {
-                        reasons &= ( ~EndOfItem );
-
-                    }
-                    else if ( iter_pos == m_str.cend() )
-                    {
-                        reasons &= ( ~StartOfItem );
-                    }
-
-                }
-                else if ( index > 0 && iter_pos[-1].unicode() == QChar::SoftHyphen )
-                {
-                    reasons |= SoftHyphen;
-                }
-            }
-
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     return reasons;

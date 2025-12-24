@@ -110,14 +110,14 @@ public:
                     // We have to fill with the zero value..
                     switch ( format.sampleType() )
                     {
-                        case QAudioFormat::SignedInt:
-                            // Signed int means 0x80, 0x8000 is zero
-                            // XXX this is not right for > 8 bits(0x8080 vs 0x8000)
-                            memset( mBuffer, 0x80, numBytes );
-                            break;
+                    case QAudioFormat::SignedInt:
+                        // Signed int means 0x80, 0x8000 is zero
+                        // XXX this is not right for > 8 bits(0x8080 vs 0x8000)
+                        memset( mBuffer, 0x80, numBytes );
+                        break;
 
-                        default:
-                            memset( mBuffer, 0x0, numBytes );
+                    default:
+                        memset( mBuffer, 0x0, numBytes );
                     }
                 }
             }

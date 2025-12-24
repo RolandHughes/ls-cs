@@ -246,11 +246,11 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, simpleType?) : attribute
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::SimpleType, s2 );
@@ -265,15 +265,15 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, ((simpleType | complexType)?, alternative*, (unique | key | keyref)*)) : element
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s3 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s4 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::SimpleType, s2 );
@@ -313,21 +313,21 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, (simpleContent | complexContent | (openContent?, (group | all | choice | sequence)?, ((attribute | attributeGroup)*, anyAttribute?), assert*))) : complexType
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s3 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s4 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s5 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s6 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s7 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::SimpleContent, s2 );
@@ -386,11 +386,11 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, (restriction | extension)) : simpleContent/complexContent
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::InternalState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::InternalState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::Restriction, s2 );
@@ -408,19 +408,19 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, (simpleType?, (minExclusive | minInclusive | maxExclusive | maxInclusive | totalDigits | fractionDigits | length | minLength | maxLength | enumeration | whiteSpace | pattern | assertion)*)?, ((attribute | attributeGroup)*, anyAttribute?), assert*) : simpleContent restriction
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s3 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s4 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s5 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s6 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::SimpleType, s2 );
@@ -514,15 +514,15 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, ((attribute | attributeGroup)*, anyAttribute?), assert*) : simple content extension
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s3 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s4 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::Attribute, s2 );
@@ -552,19 +552,19 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, openContent?, ((group | all | choice | sequence)?, ((attribute | attributeGroup)*, anyAttribute?), assert*)) : complex content restriction/complex content extension
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s3 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s4 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s5 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s6 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::OpenContent, s2 );
@@ -619,13 +619,13 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, ((attribute | attributeGroup)*, anyAttribute?)) : named attribute group
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s3 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::Attribute, s2 );
@@ -648,11 +648,11 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, (all | choice | sequence)?) : group
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::All, s2 );
@@ -672,11 +672,11 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, (element | any)*) : all
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::Element, s2 );
@@ -697,11 +697,11 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, (element | group | choice | sequence | any)*) : choice sequence
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::Element, s2 );
@@ -733,9 +733,9 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?) : any/selector/field/notation/include/import/referred attribute group/anyAttribute/all facets/assert
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
 
@@ -768,13 +768,13 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, (selector, field+)) : unique/key/keyref
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::InternalState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::InternalState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::InternalState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::InternalState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s3 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::Selector, s2 );
@@ -793,11 +793,11 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, (simpleType | complexType)?) : alternative
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::SimpleType, s2 );
@@ -814,9 +814,9 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (appinfo | documentation)* : annotation
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Appinfo, s1 );
         machine.addTransition( startState, XsdSchemaToken::Documentation, s1 );
@@ -832,11 +832,11 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, (restriction | list | union)) : simpleType
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::InternalState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::InternalState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::Restriction, s2 );
@@ -856,13 +856,13 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, (simpleType?, (minExclusive | minInclusive | maxExclusive | maxInclusive | totalDigits | fractionDigits | length | minLength | maxLength | enumeration | whiteSpace | pattern | assertion)*)) : simple type restriction
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s3 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::SimpleType, s2 );
@@ -931,11 +931,11 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, simpleType?) : list
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::SimpleType, s2 );
@@ -950,11 +950,11 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, simpleType*) : union
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::SimpleType, s2 );
@@ -970,17 +970,17 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for ((include | import | redefine |i override |  annotation)*, (defaultOpenContent, annotation*)?, (((simpleType | complexType | group | attributeGroup) | element | attribute | notation), annotation*)*) : schema
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s3 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s4 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s5 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Include, s1 );
         machine.addTransition( startState, XsdSchemaToken::Import, s1 );
@@ -1053,11 +1053,11 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation?, any) : defaultOpenContent
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::InternalState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::InternalState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s2 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::Any, s2 );
@@ -1072,9 +1072,9 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation | (simpleType | complexType | group | attributeGroup))* : redefine
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::SimpleType, s1 );
@@ -1096,9 +1096,9 @@ void XsdSchemaParser::setupStateMachines()
 
         // setup state machine for (annotation | (simpleType | complexType | group | attributeGroup | element | attribute | notation))* : override
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId startState = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::StartEndState );
         const XsdStateMachine<XsdSchemaToken::NodeName>::StateId s1 = machine.addState(
-                    XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
+                XsdStateMachine<XsdSchemaToken::NodeName>::EndState );
 
         machine.addTransition( startState, XsdSchemaToken::Annotation, s1 );
         machine.addTransition( startState, XsdSchemaToken::SimpleType, s1 );

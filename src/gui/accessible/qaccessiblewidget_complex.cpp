@@ -130,20 +130,20 @@ public:
 
         switch ( t )
         {
-            case QAccessible::Name:
-                return lscs_accStripAmp( m_parent->tabText( m_index ) );
+        case QAccessible::Name:
+            return lscs_accStripAmp( m_parent->tabText( m_index ) );
 
-            case QAccessible::Accelerator:
-                return lscs_accHotKey( m_parent->tabText( m_index ) );
+        case QAccessible::Accelerator:
+            return lscs_accHotKey( m_parent->tabText( m_index ) );
 
-            case QAccessible::Description:
-                return m_parent->tabToolTip( m_index );
+        case QAccessible::Description:
+            return m_parent->tabToolTip( m_index );
 
-            case QAccessible::Help:
-                return m_parent->tabWhatsThis( m_index );
+        case QAccessible::Help:
+            return m_parent->tabWhatsThis( m_index );
 
-            default:
-                break;
+        default:
+            break;
         }
 
         return QString();
@@ -373,36 +373,36 @@ QString QAccessibleComboBox::text( QAccessible::Text t ) const
 
     switch ( t )
     {
-        case QAccessible::Name:
+    case QAccessible::Name:
 #ifdef Q_OS_UNIX
-            // on Linux we use relations, name is the text
-            [[fallthrough]];
+        // on Linux we use relations, name is the text
+        [[fallthrough]];
 #else
-            str = QAccessibleWidget::text( t );
-            break;
+        str = QAccessibleWidget::text( t );
+        break;
 #endif
 
-        case QAccessible::Value:
-            if ( comboBox()->isEditable() )
-            {
-                str = comboBox()->lineEdit()->text();
-            }
-            else
-            {
-                str = comboBox()->currentText();
-            }
+    case QAccessible::Value:
+        if ( comboBox()->isEditable() )
+        {
+            str = comboBox()->lineEdit()->text();
+        }
+        else
+        {
+            str = comboBox()->currentText();
+        }
 
-            break;
+        break;
 
 #ifndef LSCS_NO_SHORTCUT
 
-        case QAccessible::Accelerator:
-            str = QKeySequence( Qt::Key_Down ).toString( QKeySequence::NativeText );
-            break;
+    case QAccessible::Accelerator:
+        str = QKeySequence( Qt::Key_Down ).toString( QKeySequence::NativeText );
+        break;
 #endif
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( str.isEmpty() )

@@ -1403,26 +1403,26 @@ QString QCalendarModel::dayName( Qt::DayOfWeek day ) const
 {
     switch ( m_horizontalHeaderFormat )
     {
-        case QCalendarWidget::SingleLetterDayNames:
+    case QCalendarWidget::SingleLetterDayNames:
+    {
+        QString standaloneDayName = m_view->locale().standaloneDayName( day, QLocale::NarrowFormat );
+
+        if ( standaloneDayName == m_view->locale().dayName( day, QLocale::NarrowFormat ) )
         {
-            QString standaloneDayName = m_view->locale().standaloneDayName( day, QLocale::NarrowFormat );
-
-            if ( standaloneDayName == m_view->locale().dayName( day, QLocale::NarrowFormat ) )
-            {
-                return standaloneDayName.left( 1 );
-            }
-
-            return standaloneDayName;
+            return standaloneDayName.left( 1 );
         }
 
-        case QCalendarWidget::ShortDayNames:
-            return m_view->locale().dayName( day, QLocale::ShortFormat );
+        return standaloneDayName;
+    }
 
-        case QCalendarWidget::LongDayNames:
-            return m_view->locale().dayName( day, QLocale::LongFormat );
+    case QCalendarWidget::ShortDayNames:
+        return m_view->locale().dayName( day, QLocale::ShortFormat );
 
-        default:
-            break;
+    case QCalendarWidget::LongDayNames:
+        return m_view->locale().dayName( day, QLocale::LongFormat );
+
+    default:
+        break;
     }
 
     return QString();
@@ -1780,44 +1780,44 @@ QModelIndex QCalendarView::moveCursor( CursorAction cursorAction, Qt::KeyboardMo
 
     switch ( cursorAction )
     {
-        case QAbstractItemView::MoveUp:
-            currentDate = currentDate.addDays( -7 );
-            break;
+    case QAbstractItemView::MoveUp:
+        currentDate = currentDate.addDays( -7 );
+        break;
 
-        case QAbstractItemView::MoveDown:
-            currentDate = currentDate.addDays( 7 );
-            break;
+    case QAbstractItemView::MoveDown:
+        currentDate = currentDate.addDays( 7 );
+        break;
 
-        case QAbstractItemView::MoveLeft:
-            currentDate = currentDate.addDays( isRightToLeft() ? 1 : -1 );
-            break;
+    case QAbstractItemView::MoveLeft:
+        currentDate = currentDate.addDays( isRightToLeft() ? 1 : -1 );
+        break;
 
-        case QAbstractItemView::MoveRight:
-            currentDate = currentDate.addDays( isRightToLeft() ? -1 : 1 );
-            break;
+    case QAbstractItemView::MoveRight:
+        currentDate = currentDate.addDays( isRightToLeft() ? -1 : 1 );
+        break;
 
-        case QAbstractItemView::MoveHome:
-            currentDate = QDate( currentDate.year(), currentDate.month(), 1 );
-            break;
+    case QAbstractItemView::MoveHome:
+        currentDate = QDate( currentDate.year(), currentDate.month(), 1 );
+        break;
 
-        case QAbstractItemView::MoveEnd:
-            currentDate = QDate( currentDate.year(), currentDate.month(), currentDate.daysInMonth() );
-            break;
+    case QAbstractItemView::MoveEnd:
+        currentDate = QDate( currentDate.year(), currentDate.month(), currentDate.daysInMonth() );
+        break;
 
-        case QAbstractItemView::MovePageUp:
-            currentDate = currentDate.addMonths( -1 );
-            break;
+    case QAbstractItemView::MovePageUp:
+        currentDate = currentDate.addMonths( -1 );
+        break;
 
-        case QAbstractItemView::MovePageDown:
-            currentDate = currentDate.addMonths( 1 );
-            break;
+    case QAbstractItemView::MovePageDown:
+        currentDate = currentDate.addMonths( 1 );
+        break;
 
-        case QAbstractItemView::MoveNext:
-        case QAbstractItemView::MovePrevious:
-            return currentIndex();
+    case QAbstractItemView::MoveNext:
+    case QAbstractItemView::MovePrevious:
+        return currentIndex();
 
-        default:
-            break;
+    default:
+        break;
     }
 
     emit changeDate( currentDate, true );
@@ -1860,14 +1860,14 @@ void QCalendarView::keyPressEvent( QKeyEvent *event )
     {
         switch ( event->key() )
         {
-            case Qt::Key_Return:
-            case Qt::Key_Enter:
-            case Qt::Key_Select:
-                emit editingFinished();
-                return;
+        case Qt::Key_Return:
+        case Qt::Key_Enter:
+        case Qt::Key_Select:
+            emit editingFinished();
+            return;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -3243,30 +3243,30 @@ bool QCalendarWidget::event( QEvent *event )
 
     switch ( event->type() )
     {
-        case QEvent::LayoutDirectionChange:
-            d->updateButtonIcons();
-            break;
+    case QEvent::LayoutDirectionChange:
+        d->updateButtonIcons();
+        break;
 
-        case QEvent::LocaleChange:
-            d->m_model->setFirstColumnDay( locale().firstDayOfWeek() );
-            d->cachedSizeHint = QSize();
-            d->updateMonthMenuNames();
-            d->updateNavigationBar();
-            d->m_view->updateGeometry();
-            break;
+    case QEvent::LocaleChange:
+        d->m_model->setFirstColumnDay( locale().firstDayOfWeek() );
+        d->cachedSizeHint = QSize();
+        d->updateMonthMenuNames();
+        d->updateNavigationBar();
+        d->m_view->updateGeometry();
+        break;
 
-        case QEvent::FontChange:
-        case QEvent::ApplicationFontChange:
-            d->cachedSizeHint = QSize();
-            d->m_view->updateGeometry();
-            break;
+    case QEvent::FontChange:
+    case QEvent::ApplicationFontChange:
+        d->cachedSizeHint = QSize();
+        d->m_view->updateGeometry();
+        break;
 
-        case QEvent::StyleChange:
-            d->cachedSizeHint = QSize();
-            d->m_view->updateGeometry();
+    case QEvent::StyleChange:
+        d->cachedSizeHint = QSize();
+        d->m_view->updateGeometry();
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QWidget::event( event );

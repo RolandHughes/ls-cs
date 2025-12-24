@@ -334,7 +334,7 @@ QDebug operator<<( QDebug dbg, const QSqlField &f )
 
     if ( f.requiredStatus() != QSqlField::Unknown )
         dbg.nospace() << ", required: "
-                      << ( f.requiredStatus() == QSqlField::Required ? "yes" : "no" );
+           << ( f.requiredStatus() == QSqlField::Required ? "yes" : "no" );
 
     dbg.nospace() << ", generated: " << ( f.isGenerated() ? "yes" : "no" );
 

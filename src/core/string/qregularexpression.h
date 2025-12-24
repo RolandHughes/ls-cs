@@ -432,7 +432,7 @@ public:
     }
 
     QList<QRegularExpressionMatch<S>> globalMatch( const S &str, typename S::const_iterator offset,
-                                   QMatchType matchType = QMatchType::NormalMatch, QMatchOptionFlags matchOptions = QMatchOption::NoMatchOption ) const;
+            QMatchType matchType = QMatchType::NormalMatch, QMatchOptionFlags matchOptions = QMatchOption::NoMatchOption ) const;
 
     QList<QRegularExpressionMatch<S>> globalMatch( QStringView<S> str ) const
     {
@@ -440,7 +440,7 @@ public:
     }
 
     QList<QRegularExpressionMatch<S>> globalMatch( QStringView<S> str, typename S::const_iterator offset,
-                                   QMatchType matchType = QMatchType::NormalMatch, QMatchOptionFlags matchOptions = QMatchOption::NoMatchOption ) const;
+            QMatchType matchType = QMatchType::NormalMatch, QMatchOptionFlags matchOptions = QMatchOption::NoMatchOption ) const;
 
     bool isValid() const
     {
@@ -691,7 +691,7 @@ S QRegularExpression<S>::escape( const S &str )
 
 template <typename S>
 QList<QRegularExpressionMatch<S>> QRegularExpression<S>::globalMatch( const S &str, typename S::const_iterator offset,
-                               QMatchType matchType, QMatchOptionFlags matchOptions ) const
+        QMatchType matchType, QMatchOptionFlags matchOptions ) const
 {
     if ( m_valid )
     {
@@ -725,7 +725,7 @@ QList<QRegularExpressionMatch<S>> QRegularExpression<S>::globalMatch( const S &s
 
 template <typename S>
 QList<QRegularExpressionMatch<S>> QRegularExpression<S>::globalMatch( QStringView<S> str, typename S::const_iterator offset,
-                               QMatchType matchType, QMatchOptionFlags matchOptions ) const
+        QMatchType matchType, QMatchOptionFlags matchOptions ) const
 {
     if ( m_valid )
     {
@@ -1235,138 +1235,138 @@ S QRegularExpression<S>::convert_wildcard( const S &str, const bool enableEscapi
         switch ( c.unicode() )
         {
 
-            case '\\':
-                if ( enableEscaping )
-                {
+        case '\\':
+            if ( enableEscaping )
+            {
 
-                    if ( isEscaping )
-                    {
-                        retval += "\\\\";
-                    }
-
-                    // we insert the \\ later if necessary
-
-                    if ( iter == end )
-                    {
-                        // the end
-                        retval += "\\\\";
-                    }
-
-                }
-                else
+                if ( isEscaping )
                 {
                     retval += "\\\\";
                 }
 
-                isEscaping = true;
-                break;
+                // we insert the \\ later if necessary
 
-            case '*':
-                if ( isEscaping )
+                if ( iter == end )
                 {
-                    retval += "\\*";
-                    isEscaping = false;
-
-                }
-                else
-                {
-                    retval += ".*";
-                }
-
-                break;
-
-            case '?':
-                if ( isEscaping )
-                {
-                    retval += "\\?";
-                    isEscaping = false;
-
-                }
-                else
-                {
-                    retval += '.';
-                }
-
-                break;
-
-            case '$':
-            case '(':
-            case ')':
-            case '+':
-            case '.':
-            case '^':
-            case '{':
-            case '|':
-            case '}':
-                if ( isEscaping )
-                {
-                    isEscaping = false;
+                    // the end
                     retval += "\\\\";
                 }
 
-                retval += '\\';
+            }
+            else
+            {
+                retval += "\\\\";
+            }
+
+            isEscaping = true;
+            break;
+
+        case '*':
+            if ( isEscaping )
+            {
+                retval += "\\*";
+                isEscaping = false;
+
+            }
+            else
+            {
+                retval += ".*";
+            }
+
+            break;
+
+        case '?':
+            if ( isEscaping )
+            {
+                retval += "\\?";
+                isEscaping = false;
+
+            }
+            else
+            {
+                retval += '.';
+            }
+
+            break;
+
+        case '$':
+        case '(':
+        case ')':
+        case '+':
+        case '.':
+        case '^':
+        case '{':
+        case '|':
+        case '}':
+            if ( isEscaping )
+            {
+                isEscaping = false;
+                retval += "\\\\";
+            }
+
+            retval += '\\';
+            retval += c;
+            break;
+
+        case '[':
+            if ( isEscaping )
+            {
+                isEscaping = false;
+                retval += "\\[";
+
+            }
+            else
+            {
                 retval += c;
-                break;
 
-            case '[':
-                if ( isEscaping )
+                if ( *iter == '^' )
                 {
-                    isEscaping = false;
-                    retval += "\\[";
-
+                    retval += *iter;
+                    ++iter;
                 }
-                else
-                {
-                    retval += c;
 
-                    if ( *iter == '^' )
+                if ( iter != end )
+                {
+
+                    if ( *iter == ']' )
                     {
                         retval += *iter;
                         ++iter;
                     }
 
-                    if ( iter != end )
+                    while ( iter != end && *iter != ']' )
                     {
-
-                        if ( *iter == ']' )
+                        if ( *iter == '\\' )
                         {
-                            retval += *iter;
-                            ++iter;
+                            retval += '\\';
                         }
 
-                        while ( iter != end && *iter != ']' )
-                        {
-                            if ( *iter == '\\' )
-                            {
-                                retval += '\\';
-                            }
-
-                            retval += *iter;
-                            ++iter;
-                        }
+                        retval += *iter;
+                        ++iter;
                     }
                 }
+            }
 
-                break;
+            break;
 
-            case ']':
-                if ( isEscaping )
-                {
-                    isEscaping = false;
-                    retval += "\\";
-                }
+        case ']':
+            if ( isEscaping )
+            {
+                isEscaping = false;
+                retval += "\\";
+            }
 
-                retval += c;
-                break;
+            retval += c;
+            break;
 
-            default:
-                if ( isEscaping )
-                {
-                    isEscaping = false;
-                    retval += "\\\\";
-                }
+        default:
+            if ( isEscaping )
+            {
+                isEscaping = false;
+                retval += "\\\\";
+            }
 
-                retval += c;
+            retval += c;
         }
     }
 
@@ -1407,129 +1407,129 @@ static S wc2rx( const S &str, bool enableEscaping )
         switch ( c.unicode() )
         {
 
-            case '\\':
-                if ( enableEscaping )
-                {
-                    if ( isEscaping )
-                    {
-                        retval.append( "\\\\" );
-                    }
-
-                    // we insert the \\ later if necessary
-                    if ( iter == end )
-                    {
-                        retval.append( "\\\\" );
-                    }
-
-                }
-                else
+        case '\\':
+            if ( enableEscaping )
+            {
+                if ( isEscaping )
                 {
                     retval.append( "\\\\" );
                 }
 
-                isEscaping = true;
-                break;
-
-            case '*':
-                if ( isEscaping )
+                // we insert the \\ later if necessary
+                if ( iter == end )
                 {
-                    retval.append( "\\*" );
-                    isEscaping = false;
-
-                }
-                else
-                {
-                    retval.append( ".*" );
-                }
-
-                break;
-
-            case '?':
-                if ( isEscaping )
-                {
-                    retval.append( "\\?" );
-                    isEscaping = false;
-
-                }
-                else
-                {
-                    retval.append( '.' );
-                }
-
-                break;
-
-            case '$':
-            case '(':
-            case ')':
-            case '+':
-            case '.':
-            case '^':
-            case '{':
-            case '|':
-            case '}':
-                if ( isEscaping )
-                {
-                    isEscaping = false;
                     retval.append( "\\\\" );
                 }
 
-                retval.append( '\\' );
+            }
+            else
+            {
+                retval.append( "\\\\" );
+            }
+
+            isEscaping = true;
+            break;
+
+        case '*':
+            if ( isEscaping )
+            {
+                retval.append( "\\*" );
+                isEscaping = false;
+
+            }
+            else
+            {
+                retval.append( ".*" );
+            }
+
+            break;
+
+        case '?':
+            if ( isEscaping )
+            {
+                retval.append( "\\?" );
+                isEscaping = false;
+
+            }
+            else
+            {
+                retval.append( '.' );
+            }
+
+            break;
+
+        case '$':
+        case '(':
+        case ')':
+        case '+':
+        case '.':
+        case '^':
+        case '{':
+        case '|':
+        case '}':
+            if ( isEscaping )
+            {
+                isEscaping = false;
+                retval.append( "\\\\" );
+            }
+
+            retval.append( '\\' );
+            retval.append( c );
+            break;
+
+        case '[':
+            if ( isEscaping )
+            {
+                isEscaping = false;
+                retval.append( "\\[" );
+
+            }
+            else
+            {
                 retval.append( c );
-                break;
 
-            case '[':
-                if ( isEscaping )
+                if ( *iter == '^' )
                 {
-                    isEscaping = false;
-                    retval.append( "\\[" );
-
+                    retval.append( *iter );
+                    ++iter;
                 }
-                else
-                {
-                    retval.append( c );
 
-                    if ( *iter == '^' )
+                if ( iter != end )
+                {
+
+                    while ( iter != end && *iter != ']' )
                     {
+                        if ( *iter == '\\' )
+                        {
+                            retval.append( '\\' );
+                        }
+
                         retval.append( *iter );
                         ++iter;
                     }
-
-                    if ( iter != end )
-                    {
-
-                        while ( iter != end && *iter != ']' )
-                        {
-                            if ( *iter == '\\' )
-                            {
-                                retval.append( '\\' );
-                            }
-
-                            retval.append( *iter );
-                            ++iter;
-                        }
-                    }
                 }
+            }
 
-                break;
+            break;
 
-            case ']':
-                if ( isEscaping )
-                {
-                    isEscaping = false;
-                    retval.append( "\\" );
-                }
+        case ']':
+            if ( isEscaping )
+            {
+                isEscaping = false;
+                retval.append( "\\" );
+            }
 
-                retval.append( c );
-                break;
+            retval.append( c );
+            break;
 
-            default:
-                if ( isEscaping )
-                {
-                    isEscaping = false;
-                    retval.append( "\\\\" );
-                }
+        default:
+            if ( isEscaping )
+            {
+                isEscaping = false;
+                retval.append( "\\\\" );
+            }
 
-                retval.append( c );
+            retval.append( c );
         }
     }
 

@@ -98,43 +98,43 @@ void qMultiplySamples( qreal factor, const QAudioFormat &format, const void *src
     switch ( format.sampleSize() )
     {
 
-        case 8:
-            if ( format.sampleType() == QAudioFormat::SignedInt )
-            {
-                QAudioHelperInternal::adjustSamples<qint8>( factor,src,dest,samplesCount );
-            }
-            else if ( format.sampleType() == QAudioFormat::UnSignedInt )
-            {
-                QAudioHelperInternal::adjustUnsignedSamples<quint8>( factor,src,dest,samplesCount );
-            }
+    case 8:
+        if ( format.sampleType() == QAudioFormat::SignedInt )
+        {
+            QAudioHelperInternal::adjustSamples<qint8>( factor,src,dest,samplesCount );
+        }
+        else if ( format.sampleType() == QAudioFormat::UnSignedInt )
+        {
+            QAudioHelperInternal::adjustUnsignedSamples<quint8>( factor,src,dest,samplesCount );
+        }
 
-            break;
+        break;
 
-        case 16:
-            if ( format.sampleType() == QAudioFormat::SignedInt )
-            {
-                QAudioHelperInternal::adjustSamples<qint16>( factor,src,dest,samplesCount );
-            }
-            else if ( format.sampleType() == QAudioFormat::UnSignedInt )
-            {
-                QAudioHelperInternal::adjustUnsignedSamples<quint16>( factor,src,dest,samplesCount );
-            }
+    case 16:
+        if ( format.sampleType() == QAudioFormat::SignedInt )
+        {
+            QAudioHelperInternal::adjustSamples<qint16>( factor,src,dest,samplesCount );
+        }
+        else if ( format.sampleType() == QAudioFormat::UnSignedInt )
+        {
+            QAudioHelperInternal::adjustUnsignedSamples<quint16>( factor,src,dest,samplesCount );
+        }
 
-            break;
+        break;
 
-        default:
-            if ( format.sampleType() == QAudioFormat::SignedInt )
-            {
-                QAudioHelperInternal::adjustSamples<qint32>( factor,src,dest,samplesCount );
-            }
-            else if ( format.sampleType() == QAudioFormat::UnSignedInt )
-            {
-                QAudioHelperInternal::adjustUnsignedSamples<quint32>( factor,src,dest,samplesCount );
-            }
-            else if ( format.sampleType() == QAudioFormat::Float )
-            {
-                QAudioHelperInternal::adjustSamples<float>( factor,src,dest,samplesCount );
-            }
+    default:
+        if ( format.sampleType() == QAudioFormat::SignedInt )
+        {
+            QAudioHelperInternal::adjustSamples<qint32>( factor,src,dest,samplesCount );
+        }
+        else if ( format.sampleType() == QAudioFormat::UnSignedInt )
+        {
+            QAudioHelperInternal::adjustUnsignedSamples<quint32>( factor,src,dest,samplesCount );
+        }
+        else if ( format.sampleType() == QAudioFormat::Float )
+        {
+            QAudioHelperInternal::adjustSamples<float>( factor,src,dest,samplesCount );
+        }
     }
 }
 

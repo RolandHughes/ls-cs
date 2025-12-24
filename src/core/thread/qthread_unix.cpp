@@ -549,48 +549,48 @@ void QThread::start( Priority priority )
 
     switch ( priority )
     {
-        case InheritPriority:
+    case InheritPriority:
+    {
+        pthread_attr_setinheritsched( &attr, PTHREAD_INHERIT_SCHED );
+        break;
+    }
+
+    default:
+    {
+        int sched_policy;
+
+        if ( pthread_attr_getschedpolicy( &attr, &sched_policy ) != 0 )
         {
+            // failed to get the scheduling policy, do not bother setting the priority
+            qWarning( "QThread::start() Unable to determine default scheduler policy" );
+            break;
+        }
+
+        int prio;
+
+        if ( !calculateUnixPriority( priority, &sched_policy, &prio ) )
+        {
+            // failed to get the scheduling parameters, don't
+            // bother setting the priority
+            qWarning( "QThread::start() Unable to determine scheduler priority range" );
+            break;
+        }
+
+        sched_param sp;
+        sp.sched_priority = prio;
+
+        if ( pthread_attr_setinheritsched( &attr, PTHREAD_EXPLICIT_SCHED ) != 0
+                || pthread_attr_setschedpolicy( &attr, sched_policy ) != 0
+                || pthread_attr_setschedparam( &attr, &sp ) != 0 )
+        {
+            // could not set scheduling hints, fallback to inheriting them
+            // we'll try again from inside the thread
             pthread_attr_setinheritsched( &attr, PTHREAD_INHERIT_SCHED );
-            break;
+            d->priority = Priority( priority | ThreadPriorityResetFlag );
         }
 
-        default:
-        {
-            int sched_policy;
-
-            if ( pthread_attr_getschedpolicy( &attr, &sched_policy ) != 0 )
-            {
-                // failed to get the scheduling policy, do not bother setting the priority
-                qWarning( "QThread::start() Unable to determine default scheduler policy" );
-                break;
-            }
-
-            int prio;
-
-            if ( !calculateUnixPriority( priority, &sched_policy, &prio ) )
-            {
-                // failed to get the scheduling parameters, don't
-                // bother setting the priority
-                qWarning( "QThread::start() Unable to determine scheduler priority range" );
-                break;
-            }
-
-            sched_param sp;
-            sp.sched_priority = prio;
-
-            if ( pthread_attr_setinheritsched( &attr, PTHREAD_EXPLICIT_SCHED ) != 0
-                    || pthread_attr_setschedpolicy( &attr, sched_policy ) != 0
-                    || pthread_attr_setschedparam( &attr, &sp ) != 0 )
-            {
-                // could not set scheduling hints, fallback to inheriting them
-                // we'll try again from inside the thread
-                pthread_attr_setinheritsched( &attr, PTHREAD_INHERIT_SCHED );
-                d->priority = Priority( priority | ThreadPriorityResetFlag );
-            }
-
-            break;
-        }
+        break;
+    }
     }
 
 #endif // LSCS_HAS_THREAD_PRIORITY_SCHEDULING

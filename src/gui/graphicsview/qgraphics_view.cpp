@@ -203,18 +203,18 @@ void QGraphicsViewPrivate::recalculateContentSize()
 
         switch ( alignment & Qt::AlignHorizontal_Mask )
         {
-            case Qt::AlignLeft:
-                leftIndent = -viewRect.left();
-                break;
+        case Qt::AlignLeft:
+            leftIndent = -viewRect.left();
+            break;
 
-            case Qt::AlignRight:
-                leftIndent = width - viewRect.width() - viewRect.left() - 1;
-                break;
+        case Qt::AlignRight:
+            leftIndent = width - viewRect.width() - viewRect.left() - 1;
+            break;
 
-            case Qt::AlignHCenter:
-            default:
-                leftIndent = width / 2 - ( viewRect.left() + viewRect.right() ) / 2;
-                break;
+        case Qt::AlignHCenter:
+        default:
+            leftIndent = width / 2 - ( viewRect.left() + viewRect.right() ) / 2;
+            break;
         }
 
     }
@@ -237,18 +237,18 @@ void QGraphicsViewPrivate::recalculateContentSize()
 
         switch ( alignment & Qt::AlignVertical_Mask )
         {
-            case Qt::AlignTop:
-                topIndent = -viewRect.top();
-                break;
+        case Qt::AlignTop:
+            topIndent = -viewRect.top();
+            break;
 
-            case Qt::AlignBottom:
-                topIndent = height - viewRect.height() - viewRect.top() - 1;
-                break;
+        case Qt::AlignBottom:
+            topIndent = height - viewRect.height() - viewRect.top() - 1;
+            break;
 
-            case Qt::AlignVCenter:
-            default:
-                topIndent = height / 2 - ( viewRect.top() + viewRect.bottom() ) / 2;
-                break;
+        case Qt::AlignVCenter:
+        default:
+            topIndent = height / 2 - ( viewRect.top() + viewRect.bottom() ) / 2;
+            break;
         }
 
     }
@@ -293,30 +293,30 @@ void QGraphicsViewPrivate::centerView( QGraphicsView::ViewportAnchor anchor )
 
     switch ( anchor )
     {
-        case QGraphicsView::AnchorUnderMouse:
+    case QGraphicsView::AnchorUnderMouse:
+    {
+        if ( q->underMouse() )
         {
-            if ( q->underMouse() )
-            {
-                // Last scene pos: lastMouseMoveScenePoint
-                // Current mouse pos:
-                QPointF transformationDiff = q->mapToScene( viewport->rect().center() )
-                                             - q->mapToScene( viewport->mapFromGlobal( QCursor::pos() ) );
-                q->centerOn( lastMouseMoveScenePoint + transformationDiff );
-            }
-            else
-            {
-                q->centerOn( lastCenterPoint );
-            }
-
-            break;
+            // Last scene pos: lastMouseMoveScenePoint
+            // Current mouse pos:
+            QPointF transformationDiff = q->mapToScene( viewport->rect().center() )
+                                         - q->mapToScene( viewport->mapFromGlobal( QCursor::pos() ) );
+            q->centerOn( lastMouseMoveScenePoint + transformationDiff );
+        }
+        else
+        {
+            q->centerOn( lastCenterPoint );
         }
 
-        case QGraphicsView::AnchorViewCenter:
-            q->centerOn( lastCenterPoint );
-            break;
+        break;
+    }
 
-        case QGraphicsView::NoAnchor:
-            break;
+    case QGraphicsView::AnchorViewCenter:
+        q->centerOn( lastCenterPoint );
+        break;
+
+    case QGraphicsView::NoAnchor:
+        break;
     }
 }
 
@@ -479,8 +479,8 @@ void QGraphicsViewPrivate::mouseMoveEventHandler( QMouseEvent *event )
             && scene->d_func()->cachedItemsUnderMouse.isEmpty() )
     {
         scene->d_func()->cachedItemsUnderMouse = scene->d_func()->itemsAtPosition( mouseEvent.screenPos(),
-                mouseEvent.scenePos(),
-                mouseEvent.widget() );
+            mouseEvent.scenePos(),
+            mouseEvent.widget() );
     }
 
     // Find the topmost item under the mouse with a cursor.
@@ -936,44 +936,44 @@ bool QGraphicsViewPrivate::updateRect( const QRect &r )
 
     switch ( viewportUpdateMode )
     {
-        case QGraphicsView::FullViewportUpdate:
+    case QGraphicsView::FullViewportUpdate:
+        fullUpdatePending = true;
+        viewport->update();
+        break;
+
+    case QGraphicsView::BoundingRectViewportUpdate:
+        if ( hasUpdateClip )
+        {
+            QRect_unite( &dirtyBoundingRect, r & updateClip );
+        }
+        else
+        {
+            QRect_unite( &dirtyBoundingRect, r );
+        }
+
+        if ( containsViewport( dirtyBoundingRect, viewport->width(), viewport->height() ) )
+        {
             fullUpdatePending = true;
             viewport->update();
-            break;
+        }
 
-        case QGraphicsView::BoundingRectViewportUpdate:
-            if ( hasUpdateClip )
-            {
-                QRect_unite( &dirtyBoundingRect, r & updateClip );
-            }
-            else
-            {
-                QRect_unite( &dirtyBoundingRect, r );
-            }
+        break;
 
-            if ( containsViewport( dirtyBoundingRect, viewport->width(), viewport->height() ) )
-            {
-                fullUpdatePending = true;
-                viewport->update();
-            }
+    case QGraphicsView::SmartViewportUpdate:       // ### DEPRECATE
+    case QGraphicsView::MinimalViewportUpdate:
+        if ( hasUpdateClip )
+        {
+            dirtyRegion += r & updateClip;
+        }
+        else
+        {
+            dirtyRegion += r;
+        }
 
-            break;
+        break;
 
-        case QGraphicsView::SmartViewportUpdate:       // ### DEPRECATE
-        case QGraphicsView::MinimalViewportUpdate:
-            if ( hasUpdateClip )
-            {
-                dirtyRegion += r & updateClip;
-            }
-            else
-            {
-                dirtyRegion += r;
-            }
-
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     return true;
@@ -1737,16 +1737,16 @@ void QGraphicsView::fitInView( const QRectF &rect, Qt::AspectRatioMode aspectRat
     // Respect the aspect ratio mode.
     switch ( aspectRatioMode )
     {
-        case Qt::KeepAspectRatio:
-            xratio = yratio = qMin( xratio, yratio );
-            break;
+    case Qt::KeepAspectRatio:
+        xratio = yratio = qMin( xratio, yratio );
+        break;
 
-        case Qt::KeepAspectRatioByExpanding:
-            xratio = yratio = qMax( xratio, yratio );
-            break;
+    case Qt::KeepAspectRatioByExpanding:
+        xratio = yratio = qMax( xratio, yratio );
+        break;
 
-        case Qt::IgnoreAspectRatio:
-            break;
+    case Qt::IgnoreAspectRatio:
+        break;
     }
 
     // Scale and center on the center of \a rect.
@@ -1811,16 +1811,16 @@ void QGraphicsView::render( QPainter *painter, const QRectF &target, const QRect
     // Scale according to the aspect ratio mode.
     switch ( aspectRatioMode )
     {
-        case Qt::KeepAspectRatio:
-            xratio = yratio = qMin( xratio, yratio );
-            break;
+    case Qt::KeepAspectRatio:
+        xratio = yratio = qMin( xratio, yratio );
+        break;
 
-        case Qt::KeepAspectRatioByExpanding:
-            xratio = yratio = qMax( xratio, yratio );
-            break;
+    case Qt::KeepAspectRatioByExpanding:
+        xratio = yratio = qMax( xratio, yratio );
+        break;
 
-        case Qt::IgnoreAspectRatio:
-            break;
+    case Qt::IgnoreAspectRatio:
+        break;
     }
 
     // Find all items to draw, and reverse the list (we want to draw
@@ -2339,46 +2339,46 @@ bool QGraphicsView::event( QEvent *event )
     {
         switch ( event->type() )
         {
-            case QEvent::ShortcutOverride:
-                if ( d->scene )
+        case QEvent::ShortcutOverride:
+            if ( d->scene )
+            {
+                return QApplication::sendEvent( d->scene, event );
+            }
+
+            break;
+
+        case QEvent::KeyPress:
+            if ( d->scene )
+            {
+                QKeyEvent *k = static_cast<QKeyEvent *>( event );
+
+                if ( k->key() == Qt::Key_Tab || k->key() == Qt::Key_Backtab )
                 {
-                    return QApplication::sendEvent( d->scene, event );
-                }
+                    // Send the key events to the scene. This will invoke the
+                    // scene's tab focus handling, and if the event is
+                    // accepted, we return (prevent further event delivery),
+                    // and the base implementation will call QGraphicsView's
+                    // focusNextPrevChild() function. If the event is ignored,
+                    // we fall back to standard tab focus handling.
 
-                break;
+                    QApplication::sendEvent( d->scene, event );
 
-            case QEvent::KeyPress:
-                if ( d->scene )
-                {
-                    QKeyEvent *k = static_cast<QKeyEvent *>( event );
-
-                    if ( k->key() == Qt::Key_Tab || k->key() == Qt::Key_Backtab )
+                    if ( event->isAccepted() )
                     {
-                        // Send the key events to the scene. This will invoke the
-                        // scene's tab focus handling, and if the event is
-                        // accepted, we return (prevent further event delivery),
-                        // and the base implementation will call QGraphicsView's
-                        // focusNextPrevChild() function. If the event is ignored,
-                        // we fall back to standard tab focus handling.
-
-                        QApplication::sendEvent( d->scene, event );
-
-                        if ( event->isAccepted() )
-                        {
-                            return true;
-                        }
-
-                        // Ensure the event doesn't propagate just because the
-                        // scene ignored it. If the event propagates, then tab
-                        // handling will be called twice (this and parent).
-                        event->accept();
+                        return true;
                     }
+
+                    // Ensure the event doesn't propagate just because the
+                    // scene ignored it. If the event propagates, then tab
+                    // handling will be called twice (this and parent).
+                    event->accept();
                 }
+            }
 
-                break;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -2396,172 +2396,172 @@ bool QGraphicsView::viewportEvent( QEvent *event )
 
     switch ( event->type() )
     {
-        case QEvent::Enter:
-            QApplication::sendEvent( d->scene, event );
-            break;
+    case QEvent::Enter:
+        QApplication::sendEvent( d->scene, event );
+        break;
 
-        case QEvent::WindowActivate:
-            QApplication::sendEvent( d->scene, event );
-            break;
+    case QEvent::WindowActivate:
+        QApplication::sendEvent( d->scene, event );
+        break;
 
-        case QEvent::WindowDeactivate:
+    case QEvent::WindowDeactivate:
 
-            // ### This is a temporary fix until we have proper mouse grab events
-            // mouseGrabberItem should be set to 0 if we lose he mouse grab.
-            // Remove all popups when the scene loses focus.
+        // ### This is a temporary fix until we have proper mouse grab events
+        // mouseGrabberItem should be set to 0 if we lose he mouse grab.
+        // Remove all popups when the scene loses focus.
+
+        if ( ! d->scene->d_func()->popupWidgets.isEmpty() )
+        {
+            d->scene->d_func()->removePopup( d->scene->d_func()->popupWidgets.first() );
+        }
+
+        QApplication::sendEvent( d->scene, event );
+        break;
+
+    case QEvent::Show:
+        if ( d->scene && isActiveWindow() )
+        {
+            QEvent windowActivate( QEvent::WindowActivate );
+            QApplication::sendEvent( d->scene, &windowActivate );
+        }
+
+        break;
+
+    case QEvent::Hide:
+
+        // spontaneous event will generate a WindowDeactivate.
+        if ( !event->spontaneous() && d->scene && isActiveWindow() )
+        {
+            QEvent windowDeactivate( QEvent::WindowDeactivate );
+            QApplication::sendEvent( d->scene, &windowDeactivate );
+        }
+
+        break;
+
+    case QEvent::Leave:
+    {
+        // ### This is a temporary fix until we have proper mouse grab events
+        //  activeMouseGrabberItem should be set to 0 if we lose the mouse grab.
+
+        if ( ( QApplication::activePopupWidget() && QApplication::activePopupWidget() != window() )
+                || ( QApplication::activeModalWidget() && QApplication::activeModalWidget() != window() )
+                || ( QApplication::activeWindow() != window() ) )
+        {
 
             if ( ! d->scene->d_func()->popupWidgets.isEmpty() )
             {
                 d->scene->d_func()->removePopup( d->scene->d_func()->popupWidgets.first() );
             }
-
-            QApplication::sendEvent( d->scene, event );
-            break;
-
-        case QEvent::Show:
-            if ( d->scene && isActiveWindow() )
-            {
-                QEvent windowActivate( QEvent::WindowActivate );
-                QApplication::sendEvent( d->scene, &windowActivate );
-            }
-
-            break;
-
-        case QEvent::Hide:
-
-            // spontaneous event will generate a WindowDeactivate.
-            if ( !event->spontaneous() && d->scene && isActiveWindow() )
-            {
-                QEvent windowDeactivate( QEvent::WindowDeactivate );
-                QApplication::sendEvent( d->scene, &windowDeactivate );
-            }
-
-            break;
-
-        case QEvent::Leave:
-        {
-            // ### This is a temporary fix until we have proper mouse grab events
-            //  activeMouseGrabberItem should be set to 0 if we lose the mouse grab.
-
-            if ( ( QApplication::activePopupWidget() && QApplication::activePopupWidget() != window() )
-                    || ( QApplication::activeModalWidget() && QApplication::activeModalWidget() != window() )
-                    || ( QApplication::activeWindow() != window() ) )
-            {
-
-                if ( ! d->scene->d_func()->popupWidgets.isEmpty() )
-                {
-                    d->scene->d_func()->removePopup( d->scene->d_func()->popupWidgets.first() );
-                }
-            }
-
-            d->useLastMouseEvent = false;
-            // a hack to pass a viewport pointer to the scene inside the leave event
-            Q_ASSERT( event->d == nullptr );
-
-            QScopedValueRollback<QEventPrivate *> rb( event->d );
-            event->d = reinterpret_cast<QEventPrivate *>( viewport() );
-            QApplication::sendEvent( d->scene, event );
-
-            break;
         }
+
+        d->useLastMouseEvent = false;
+        // a hack to pass a viewport pointer to the scene inside the leave event
+        Q_ASSERT( event->d == nullptr );
+
+        QScopedValueRollback<QEventPrivate *> rb( event->d );
+        event->d = reinterpret_cast<QEventPrivate *>( viewport() );
+        QApplication::sendEvent( d->scene, event );
+
+        break;
+    }
 
 #ifndef LSCS_NO_TOOLTIP
 
-        case QEvent::ToolTip:
-        {
-            QHelpEvent *toolTip = static_cast<QHelpEvent *>( event );
-            QGraphicsSceneHelpEvent helpEvent( QEvent::GraphicsSceneHelp );
-            helpEvent.setWidget( viewport() );
-            helpEvent.setScreenPos( toolTip->globalPos() );
-            helpEvent.setScenePos( mapToScene( toolTip->pos() ) );
-            QApplication::sendEvent( d->scene, &helpEvent );
-            toolTip->setAccepted( helpEvent.isAccepted() );
-            return true;
-        }
+    case QEvent::ToolTip:
+    {
+        QHelpEvent *toolTip = static_cast<QHelpEvent *>( event );
+        QGraphicsSceneHelpEvent helpEvent( QEvent::GraphicsSceneHelp );
+        helpEvent.setWidget( viewport() );
+        helpEvent.setScreenPos( toolTip->globalPos() );
+        helpEvent.setScenePos( mapToScene( toolTip->pos() ) );
+        QApplication::sendEvent( d->scene, &helpEvent );
+        toolTip->setAccepted( helpEvent.isAccepted() );
+        return true;
+    }
 
 #endif
 
-        case QEvent::Paint:
-            // Reset full update
-            d->fullUpdatePending = false;
-            d->dirtyScrollOffset = QPoint();
+    case QEvent::Paint:
+        // Reset full update
+        d->fullUpdatePending = false;
+        d->dirtyScrollOffset = QPoint();
 
-            if ( d->scene )
+        if ( d->scene )
+        {
+            // Check if this view reimplements the updateScene slot. If it does we can not
+            // direct update delivery and have to fall back to connecting the changed signal.
+
+            if ( ! d->updateSceneSlotReimplementedChecked )
             {
-                // Check if this view reimplements the updateScene slot. If it does we can not
-                // direct update delivery and have to fall back to connecting the changed signal.
+                d->updateSceneSlotReimplementedChecked = true;
+                const QMetaObject *mo = metaObject();
 
-                if ( ! d->updateSceneSlotReimplementedChecked )
+                if ( mo != &QGraphicsView::staticMetaObject() )
                 {
-                    d->updateSceneSlotReimplementedChecked = true;
-                    const QMetaObject *mo = metaObject();
 
-                    if ( mo != &QGraphicsView::staticMetaObject() )
+                    if ( mo->indexOfSlot( "updateScene(const QList<QRectF> &)" ) !=
+                            QGraphicsView::staticMetaObject().indexOfSlot( "updateScene(const QList<QRectF> &)" ) )
                     {
 
-                        if ( mo->indexOfSlot( "updateScene(const QList<QRectF> &)" ) !=
-                                QGraphicsView::staticMetaObject().indexOfSlot( "updateScene(const QList<QRectF> &)" ) )
-                        {
-
-                            connect( d->scene.data(), &QGraphicsScene::changed, this, &QGraphicsView::updateScene );
-                        }
+                        connect( d->scene.data(), &QGraphicsScene::changed, this, &QGraphicsView::updateScene );
                     }
                 }
             }
-
-            break;
-
-        case QEvent::TouchBegin:
-        case QEvent::TouchUpdate:
-        case QEvent::TouchEnd:
-        {
-            if ( ! isEnabled() )
-            {
-                return false;
-            }
-
-            if ( d->scene && d->sceneInteractionAllowed )
-            {
-                // Convert and deliver the touch event to the scene.
-                QTouchEvent *touchEvent = static_cast<QTouchEvent *>( event );
-                touchEvent->setTarget( viewport() );
-
-                QGraphicsViewPrivate::translateTouchEvent( d, touchEvent );
-                ( void ) QApplication::sendEvent( d->scene, touchEvent );
-
-            }
-            else
-            {
-                event->ignore();
-            }
-
-            return true;
         }
+
+        break;
+
+    case QEvent::TouchBegin:
+    case QEvent::TouchUpdate:
+    case QEvent::TouchEnd:
+    {
+        if ( ! isEnabled() )
+        {
+            return false;
+        }
+
+        if ( d->scene && d->sceneInteractionAllowed )
+        {
+            // Convert and deliver the touch event to the scene.
+            QTouchEvent *touchEvent = static_cast<QTouchEvent *>( event );
+            touchEvent->setTarget( viewport() );
+
+            QGraphicsViewPrivate::translateTouchEvent( d, touchEvent );
+            ( void ) QApplication::sendEvent( d->scene, touchEvent );
+
+        }
+        else
+        {
+            event->ignore();
+        }
+
+        return true;
+    }
 
 #ifndef LSCS_NO_GESTURES
 
-        case QEvent::Gesture:
-        case QEvent::GestureOverride:
+    case QEvent::Gesture:
+    case QEvent::GestureOverride:
+    {
+        if ( ! isEnabled() )
         {
-            if ( ! isEnabled() )
-            {
-                return false;
-            }
-
-            if ( d->scene && d->sceneInteractionAllowed )
-            {
-                QGestureEvent *gestureEvent = static_cast<QGestureEvent *>( event );
-                gestureEvent->setWidget( viewport() );
-                ( void ) QApplication::sendEvent( d->scene, gestureEvent );
-            }
-
-            return true;
+            return false;
         }
+
+        if ( d->scene && d->sceneInteractionAllowed )
+        {
+            QGestureEvent *gestureEvent = static_cast<QGestureEvent *>( event );
+            gestureEvent->setWidget( viewport() );
+            ( void ) QApplication::sendEvent( d->scene, gestureEvent );
+        }
+
+        return true;
+    }
 
 #endif
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QAbstractScrollArea::viewportEvent( event );

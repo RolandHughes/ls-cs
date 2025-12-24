@@ -61,23 +61,23 @@ inline QString fixString( const QString &str, const QString &indent )
         {
             switch ( cbyte )
             {
-                case '\\':
-                    cursegment += "\\\\";
-                    break;
+            case '\\':
+                cursegment += "\\\\";
+                break;
 
-                case '\"':
-                    cursegment += "\\\"";
-                    break;
+            case '\"':
+                cursegment += "\\\"";
+                break;
 
-                case '\r':
-                    break;
+            case '\r':
+                break;
 
-                case '\n':
-                    cursegment += "\\n\"\n\"";
-                    break;
+            case '\n':
+                cursegment += "\\n\"\n\"";
+                break;
 
-                default:
-                    cursegment += cbyte;
+            default:
+                cursegment += cbyte;
             }
         }
 

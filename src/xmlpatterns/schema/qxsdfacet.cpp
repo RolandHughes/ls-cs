@@ -84,64 +84,64 @@ QString XsdFacet::typeName( Type type )
 {
     switch ( type )
     {
-        case Length:
-            return QString( "length" );
-            break;
+    case Length:
+        return QString( "length" );
+        break;
 
-        case MinimumLength:
-            return QString( "minLength" );
-            break;
+    case MinimumLength:
+        return QString( "minLength" );
+        break;
 
-        case MaximumLength:
-            return QString( "maxLength" );
-            break;
+    case MaximumLength:
+        return QString( "maxLength" );
+        break;
 
-        case Pattern:
-            return QString( "pattern" );
-            break;
+    case Pattern:
+        return QString( "pattern" );
+        break;
 
-        case WhiteSpace:
-            return QString( "whiteSpace" );
-            break;
+    case WhiteSpace:
+        return QString( "whiteSpace" );
+        break;
 
-        case MaximumInclusive:
-            return QString( "maxInclusive" );
-            break;
+    case MaximumInclusive:
+        return QString( "maxInclusive" );
+        break;
 
-        case MaximumExclusive:
-            return QString( "maxExclusive" );
-            break;
+    case MaximumExclusive:
+        return QString( "maxExclusive" );
+        break;
 
-        case MinimumInclusive:
-            return QString( "minInclusive" );
-            break;
+    case MinimumInclusive:
+        return QString( "minInclusive" );
+        break;
 
-        case MinimumExclusive:
-            return QString( "minExclusive" );
-            break;
+    case MinimumExclusive:
+        return QString( "minExclusive" );
+        break;
 
-        case TotalDigits:
-            return QString( "totalDigits" );
-            break;
+    case TotalDigits:
+        return QString( "totalDigits" );
+        break;
 
-        case FractionDigits:
-            return QString( "fractionDigits" );
-            break;
+    case FractionDigits:
+        return QString( "fractionDigits" );
+        break;
 
-        case Enumeration:
-            return QString( "enumeration" );
-            break;
+    case Enumeration:
+        return QString( "enumeration" );
+        break;
 
-        case Assertion:
-            return QString( "assertion" );
-            break;
+    case Assertion:
+        return QString( "assertion" );
+        break;
 
-        case None:
-            [[fallthrough]];
+    case None:
+        [[fallthrough]];
 
-        default:
-            return QString( "none" );
-            break;
+    default:
+        return QString( "none" );
+        break;
     }
 }
 

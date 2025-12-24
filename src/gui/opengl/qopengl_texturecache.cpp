@@ -222,161 +222,161 @@ GLuint QOpenGLTextureCache::bindTexture( QOpenGLContext *context, qint64 key, co
 
     switch ( image.format() )
     {
-        case QImage::Format_RGB32:
-        case QImage::Format_ARGB32:
-        case QImage::Format_ARGB32_Premultiplied:
-            if ( isOpenGL12orBetter )
+    case QImage::Format_RGB32:
+    case QImage::Format_ARGB32:
+    case QImage::Format_ARGB32_Premultiplied:
+        if ( isOpenGL12orBetter )
+        {
+            externalFormat = GL_BGRA;
+            internalFormat = GL_RGBA;
+            pixelType = GL_UNSIGNED_INT_8_8_8_8_REV;
+
+        }
+        else
+        {
+#if Q_BYTE_ORDER == Q_BIG_ENDIAN
+            // Without GL_UNSIGNED_INT_8_8_8_8_REV, BGRA only matches ARGB on little endian.
+            break;
+#endif
+
+            if ( static_cast<QOpenGLExtensions *>( context->functions() )->hasOpenGLExtension( QOpenGLExtensions::BGRATextureFormat ) )
             {
+                // GL_EXT_bgra or GL_EXT_texture_format_BGRA8888 extensions.
+                if ( context->isOpenGLES() )
+                {
+                    // The GL_EXT_texture_format_BGRA8888 extension requires the internal format to match the external.
+                    externalFormat = internalFormat = GL_BGRA;
+                }
+                else
+                {
+                    // OpenGL BGRA/BGR format is not allowed as an internal format
+                    externalFormat = GL_BGRA;
+                    internalFormat = GL_RGBA;
+                }
+
+                pixelType = GL_UNSIGNED_BYTE;
+
+            }
+            else if ( context->isOpenGLES() && context->hasExtension( "GL_APPLE_texture_format_BGRA8888" ) )
+            {
+                // Is only allowed as an external format like OpenGL.
                 externalFormat = GL_BGRA;
                 internalFormat = GL_RGBA;
-                pixelType = GL_UNSIGNED_INT_8_8_8_8_REV;
+                pixelType = GL_UNSIGNED_BYTE;
 
             }
             else
             {
-#if Q_BYTE_ORDER == Q_BIG_ENDIAN
-                // Without GL_UNSIGNED_INT_8_8_8_8_REV, BGRA only matches ARGB on little endian.
+                // No support for direct ARGB32 upload.
                 break;
-#endif
-
-                if ( static_cast<QOpenGLExtensions *>( context->functions() )->hasOpenGLExtension( QOpenGLExtensions::BGRATextureFormat ) )
-                {
-                    // GL_EXT_bgra or GL_EXT_texture_format_BGRA8888 extensions.
-                    if ( context->isOpenGLES() )
-                    {
-                        // The GL_EXT_texture_format_BGRA8888 extension requires the internal format to match the external.
-                        externalFormat = internalFormat = GL_BGRA;
-                    }
-                    else
-                    {
-                        // OpenGL BGRA/BGR format is not allowed as an internal format
-                        externalFormat = GL_BGRA;
-                        internalFormat = GL_RGBA;
-                    }
-
-                    pixelType = GL_UNSIGNED_BYTE;
-
-                }
-                else if ( context->isOpenGLES() && context->hasExtension( "GL_APPLE_texture_format_BGRA8888" ) )
-                {
-                    // Is only allowed as an external format like OpenGL.
-                    externalFormat = GL_BGRA;
-                    internalFormat = GL_RGBA;
-                    pixelType = GL_UNSIGNED_BYTE;
-
-                }
-                else
-                {
-                    // No support for direct ARGB32 upload.
-                    break;
-                }
             }
+        }
 
+        targetFormat = image.format();
+        break;
+
+    case QImage::Format_BGR30:
+    case QImage::Format_A2BGR30_Premultiplied:
+        if ( isOpenGL12orBetter || ( context->isOpenGLES() && context->format().majorVersion() >= 3 ) )
+        {
+            pixelType = GL_UNSIGNED_INT_2_10_10_10_REV;
+            externalFormat = GL_RGBA;
+            internalFormat = GL_RGB10_A2;
+            targetFormat =  image.format();
+        }
+
+        break;
+
+    case QImage::Format_RGB30:
+    case QImage::Format_A2RGB30_Premultiplied:
+        if ( isOpenGL12orBetter )
+        {
+            pixelType = GL_UNSIGNED_INT_2_10_10_10_REV;
+            externalFormat = GL_BGRA;
+            internalFormat = GL_RGB10_A2;
             targetFormat = image.format();
-            break;
+        }
+        else if ( context->isOpenGLES() && context->format().majorVersion() >= 3 )
+        {
+            pixelType = GL_UNSIGNED_INT_2_10_10_10_REV;
+            externalFormat = GL_RGBA;
+            internalFormat = GL_RGB10_A2;
+            targetFormat = QImage::Format_A2BGR30_Premultiplied;
+        }
 
-        case QImage::Format_BGR30:
-        case QImage::Format_A2BGR30_Premultiplied:
-            if ( isOpenGL12orBetter || ( context->isOpenGLES() && context->format().majorVersion() >= 3 ) )
-            {
-                pixelType = GL_UNSIGNED_INT_2_10_10_10_REV;
-                externalFormat = GL_RGBA;
-                internalFormat = GL_RGB10_A2;
-                targetFormat =  image.format();
-            }
+        break;
 
-            break;
-
-        case QImage::Format_RGB30:
-        case QImage::Format_A2RGB30_Premultiplied:
-            if ( isOpenGL12orBetter )
-            {
-                pixelType = GL_UNSIGNED_INT_2_10_10_10_REV;
-                externalFormat = GL_BGRA;
-                internalFormat = GL_RGB10_A2;
-                targetFormat = image.format();
-            }
-            else if ( context->isOpenGLES() && context->format().majorVersion() >= 3 )
-            {
-                pixelType = GL_UNSIGNED_INT_2_10_10_10_REV;
-                externalFormat = GL_RGBA;
-                internalFormat = GL_RGB10_A2;
-                targetFormat = QImage::Format_A2BGR30_Premultiplied;
-            }
-
-            break;
-
-        case QImage::Format_RGB444:
-        case QImage::Format_RGB555:
-        case QImage::Format_RGB16:
-            if ( isOpenGL12orBetter || context->isOpenGLES() )
-            {
-                externalFormat = internalFormat = GL_RGB;
-                pixelType = GL_UNSIGNED_SHORT_5_6_5;
-                targetFormat = QImage::Format_RGB16;
-            }
-
-            break;
-
-        case QImage::Format_RGB666:
-        case QImage::Format_RGB888:
+    case QImage::Format_RGB444:
+    case QImage::Format_RGB555:
+    case QImage::Format_RGB16:
+        if ( isOpenGL12orBetter || context->isOpenGLES() )
+        {
             externalFormat = internalFormat = GL_RGB;
-            pixelType = GL_UNSIGNED_BYTE;
-            targetFormat = QImage::Format_RGB888;
-            break;
+            pixelType = GL_UNSIGNED_SHORT_5_6_5;
+            targetFormat = QImage::Format_RGB16;
+        }
 
-        case QImage::Format_RGBX8888:
-        case QImage::Format_RGBA8888:
-        case QImage::Format_RGBA8888_Premultiplied:
-            externalFormat = internalFormat = GL_RGBA;
+        break;
+
+    case QImage::Format_RGB666:
+    case QImage::Format_RGB888:
+        externalFormat = internalFormat = GL_RGB;
+        pixelType = GL_UNSIGNED_BYTE;
+        targetFormat = QImage::Format_RGB888;
+        break;
+
+    case QImage::Format_RGBX8888:
+    case QImage::Format_RGBA8888:
+    case QImage::Format_RGBA8888_Premultiplied:
+        externalFormat = internalFormat = GL_RGBA;
+        pixelType = GL_UNSIGNED_BYTE;
+        targetFormat = image.format();
+        break;
+
+    case QImage::Format_Indexed8:
+        if ( options & UseRedFor8BitBindOption )
+        {
+            externalFormat = internalFormat = GL_RED;
             pixelType = GL_UNSIGNED_BYTE;
             targetFormat = image.format();
-            break;
+        }
 
-        case QImage::Format_Indexed8:
-            if ( options & UseRedFor8BitBindOption )
-            {
-                externalFormat = internalFormat = GL_RED;
-                pixelType = GL_UNSIGNED_BYTE;
-                targetFormat = image.format();
-            }
+        break;
 
-            break;
+    case QImage::Format_Alpha8:
+        if ( options & UseRedFor8BitBindOption )
+        {
+            externalFormat = internalFormat = GL_RED;
+            pixelType = GL_UNSIGNED_BYTE;
+            targetFormat = image.format();
+        }
+        else if ( context->isOpenGLES() || context->format().profile() != QSurfaceFormat::CoreProfile )
+        {
+            externalFormat = internalFormat = GL_ALPHA;
+            pixelType = GL_UNSIGNED_BYTE;
+            targetFormat = image.format();
+        }
 
-        case QImage::Format_Alpha8:
-            if ( options & UseRedFor8BitBindOption )
-            {
-                externalFormat = internalFormat = GL_RED;
-                pixelType = GL_UNSIGNED_BYTE;
-                targetFormat = image.format();
-            }
-            else if ( context->isOpenGLES() || context->format().profile() != QSurfaceFormat::CoreProfile )
-            {
-                externalFormat = internalFormat = GL_ALPHA;
-                pixelType = GL_UNSIGNED_BYTE;
-                targetFormat = image.format();
-            }
+        break;
 
-            break;
+    case QImage::Format_Grayscale8:
+        if ( options & UseRedFor8BitBindOption )
+        {
+            externalFormat = internalFormat = GL_RED;
+            pixelType = GL_UNSIGNED_BYTE;
+            targetFormat = image.format();
+        }
+        else if ( context->isOpenGLES() || context->format().profile() != QSurfaceFormat::CoreProfile )
+        {
+            externalFormat = internalFormat = GL_LUMINANCE;
+            pixelType = GL_UNSIGNED_BYTE;
+            targetFormat = image.format();
+        }
 
-        case QImage::Format_Grayscale8:
-            if ( options & UseRedFor8BitBindOption )
-            {
-                externalFormat = internalFormat = GL_RED;
-                pixelType = GL_UNSIGNED_BYTE;
-                targetFormat = image.format();
-            }
-            else if ( context->isOpenGLES() || context->format().profile() != QSurfaceFormat::CoreProfile )
-            {
-                externalFormat = internalFormat = GL_LUMINANCE;
-                pixelType = GL_UNSIGNED_BYTE;
-                targetFormat = image.format();
-            }
+        break;
 
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( targetFormat == QImage::Format_Invalid )

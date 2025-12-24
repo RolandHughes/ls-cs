@@ -57,64 +57,64 @@ void QCupsPrintEngine::setProperty( PrintEnginePropertyKey key, const QVariant &
 
     switch ( int( key ) )
     {
-        case PPK_PageSize:
-            d->setPageSize( QPageSize( QPageSize::PageSizeId( value.toInt() ) ) );
-            break;
+    case PPK_PageSize:
+        d->setPageSize( QPageSize( QPageSize::PageSizeId( value.toInt() ) ) );
+        break;
 
-        case PPK_WindowsPageSize:
-            d->setPageSize( QPageSize( QPageSize::id( value.toInt() ) ) );
-            break;
+    case PPK_WindowsPageSize:
+        d->setPageSize( QPageSize( QPageSize::id( value.toInt() ) ) );
+        break;
 
-        case PPK_CustomPaperSize:
-            d->setPageSize( QPageSize( value.toSizeF(), QPageSize::Point ) );
-            break;
+    case PPK_CustomPaperSize:
+        d->setPageSize( QPageSize( value.toSizeF(), QPageSize::Point ) );
+        break;
 
-        case PPK_PaperName:
-            // Get the named page size from the printer if supported
-            d->setPageSize( d->m_printDevice.supportedPageSize( value.toString() ) );
-            break;
+    case PPK_PaperName:
+        // Get the named page size from the printer if supported
+        d->setPageSize( d->m_printDevice.supportedPageSize( value.toString() ) );
+        break;
 
-        case PPK_Duplex:
+    case PPK_Duplex:
+    {
+        QPrint::DuplexMode mode = QPrint::DuplexMode( value.toInt() );
+
+        if ( mode != d->duplex && d->m_printDevice.supportedDuplexModes().contains( mode ) )
         {
-            QPrint::DuplexMode mode = QPrint::DuplexMode( value.toInt() );
-
-            if ( mode != d->duplex && d->m_printDevice.supportedDuplexModes().contains( mode ) )
-            {
-                d->duplex = mode;
-            }
-
-            break;
+            d->duplex = mode;
         }
 
-        case PPK_PrinterName:
-            d->changePrinter( value.toString() );
-            break;
+        break;
+    }
 
-        case PPK_CupsOptions:
-            d->cupsOptions = value.toStringList();
-            break;
+    case PPK_PrinterName:
+        d->changePrinter( value.toString() );
+        break;
 
-        case PPK_QPageSize:
-            d->setPageSize( value.value<QPageSize>() );
-            break;
+    case PPK_CupsOptions:
+        d->cupsOptions = value.toStringList();
+        break;
 
-        case PPK_QPageLayout:
+    case PPK_QPageSize:
+        d->setPageSize( value.value<QPageSize>() );
+        break;
+
+    case PPK_QPageLayout:
+    {
+        QPageLayout pageLayout = value.value<QPageLayout>();
+
+        if ( pageLayout.isValid() && d->m_printDevice.isValidPageLayout( pageLayout, d->resolution ) )
         {
-            QPageLayout pageLayout = value.value<QPageLayout>();
-
-            if ( pageLayout.isValid() && d->m_printDevice.isValidPageLayout( pageLayout, d->resolution ) )
-            {
-                d->m_pageLayout = pageLayout;
-                // Replace the page size with the CUPS page size
-                d->setPageSize( d->m_printDevice.supportedPageSize( pageLayout.pageSize() ) );
-            }
-
-            break;
+            d->m_pageLayout = pageLayout;
+            // Replace the page size with the CUPS page size
+            d->setPageSize( d->m_printDevice.supportedPageSize( pageLayout.pageSize() ) );
         }
 
-        default:
-            QPdfPrintEngine::setProperty( key, value );
-            break;
+        break;
+    }
+
+    default:
+        QPdfPrintEngine::setProperty( key, value );
+        break;
     }
 }
 
@@ -126,22 +126,22 @@ QVariant QCupsPrintEngine::property( PrintEnginePropertyKey key ) const
 
     switch ( int( key ) )
     {
-        case PPK_SupportsMultipleCopies:
-            // CUPS server always supports multiple copies, even if individual m_printDevice doesn't
-            ret = true;
-            break;
+    case PPK_SupportsMultipleCopies:
+        // CUPS server always supports multiple copies, even if individual m_printDevice doesn't
+        ret = true;
+        break;
 
-        case PPK_NumberOfCopies:
-            ret = 1;
-            break;
+    case PPK_NumberOfCopies:
+        ret = 1;
+        break;
 
-        case PPK_CupsOptions:
-            ret = d->cupsOptions;
-            break;
+    case PPK_CupsOptions:
+        ret = d->cupsOptions;
+        break;
 
-        default:
-            ret = QPdfPrintEngine::property( key );
-            break;
+    default:
+        ret = QPdfPrintEngine::property( key );
+        break;
     }
 
     return ret;
@@ -230,29 +230,29 @@ void QCupsPrintEnginePrivate::closePrintDevice()
 
         switch ( duplex )
         {
-            case QPrint::DuplexNone:
-                options.append( QPair<QByteArray, QByteArray>( "sides", "one-sided" ) );
-                break;
+        case QPrint::DuplexNone:
+            options.append( QPair<QByteArray, QByteArray>( "sides", "one-sided" ) );
+            break;
 
-            case QPrint::DuplexAuto:
-                if ( m_pageLayout.orientation() == QPageLayout::Portrait )
-                {
-                    options.append( QPair<QByteArray, QByteArray>( "sides", "two-sided-long-edge" ) );
-                }
-                else
-                {
-                    options.append( QPair<QByteArray, QByteArray>( "sides", "two-sided-short-edge" ) );
-                }
-
-                break;
-
-            case QPrint::DuplexLongSide:
+        case QPrint::DuplexAuto:
+            if ( m_pageLayout.orientation() == QPageLayout::Portrait )
+            {
                 options.append( QPair<QByteArray, QByteArray>( "sides", "two-sided-long-edge" ) );
-                break;
-
-            case QPrint::DuplexShortSide:
+            }
+            else
+            {
                 options.append( QPair<QByteArray, QByteArray>( "sides", "two-sided-short-edge" ) );
-                break;
+            }
+
+            break;
+
+        case QPrint::DuplexLongSide:
+            options.append( QPair<QByteArray, QByteArray>( "sides", "two-sided-long-edge" ) );
+            break;
+
+        case QPrint::DuplexShortSide:
+            options.append( QPair<QByteArray, QByteArray>( "sides", "two-sided-short-edge" ) );
+            break;
         }
 
         if ( m_pageLayout.orientation() == QPageLayout::Landscape )

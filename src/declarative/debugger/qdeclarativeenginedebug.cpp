@@ -273,25 +273,25 @@ void QDeclarativeEngineDebugPrivate::decode( QDataStream &ds, QDeclarativeDebugO
 
         switch ( data.type )
         {
-            case QDeclarativeEngineDebugService::QDeclarativeObjectProperty::Basic:
-            case QDeclarativeEngineDebugService::QDeclarativeObjectProperty::List:
-            case QDeclarativeEngineDebugService::QDeclarativeObjectProperty::SignalProperty:
-            case QDeclarativeEngineDebugService::QDeclarativeObjectProperty::Variant:
-            {
-                prop.m_value = data.value;
-                break;
-            }
+        case QDeclarativeEngineDebugService::QDeclarativeObjectProperty::Basic:
+        case QDeclarativeEngineDebugService::QDeclarativeObjectProperty::List:
+        case QDeclarativeEngineDebugService::QDeclarativeObjectProperty::SignalProperty:
+        case QDeclarativeEngineDebugService::QDeclarativeObjectProperty::Variant:
+        {
+            prop.m_value = data.value;
+            break;
+        }
 
-            case QDeclarativeEngineDebugService::QDeclarativeObjectProperty::Object:
-            {
-                QDeclarativeDebugObjectReference obj;
-                obj.m_debugId = prop.m_value.toInt();
-                prop.m_value = QVariant::fromValue( obj );
-                break;
-            }
+        case QDeclarativeEngineDebugService::QDeclarativeObjectProperty::Object:
+        {
+            QDeclarativeDebugObjectReference obj;
+            obj.m_debugId = prop.m_value.toInt();
+            prop.m_value = QVariant::fromValue( obj );
+            break;
+        }
 
-            case QDeclarativeEngineDebugService::QDeclarativeObjectProperty::Unknown:
-                break;
+        case QDeclarativeEngineDebugService::QDeclarativeObjectProperty::Unknown:
+            break;
         }
 
         o.m_properties << prop;
@@ -1117,7 +1117,7 @@ QDeclarativeDebugContextReference::QDeclarativeDebugContextReference( const QDec
 }
 
 QDeclarativeDebugContextReference &QDeclarativeDebugContextReference::operator=( const QDeclarativeDebugContextReference
-        &o )
+    &o )
 {
     m_debugId = o.m_debugId;
     m_name = o.m_name;
@@ -1207,7 +1207,7 @@ QDeclarativeDebugPropertyReference::QDeclarativeDebugPropertyReference( const QD
 }
 
 QDeclarativeDebugPropertyReference &QDeclarativeDebugPropertyReference::operator=( const
-        QDeclarativeDebugPropertyReference &o )
+    QDeclarativeDebugPropertyReference &o )
 {
     m_objectDebugId = o.m_objectDebugId;
     m_name = o.m_name;

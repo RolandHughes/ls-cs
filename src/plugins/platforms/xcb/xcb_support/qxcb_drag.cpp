@@ -234,7 +234,7 @@ static bool windowInteractsWithPosition( xcb_connection_t *connection, const QPo
 {
     bool interacts = false;
     xcb_shape_get_rectangles_reply_t *reply = xcb_shape_get_rectangles_reply( connection,
-            xcb_shape_get_rectangles( connection, w, shapeType ), nullptr );
+        xcb_shape_get_rectangles( connection, w, shapeType ), nullptr );
 
     if ( reply )
     {
@@ -686,21 +686,21 @@ xcb_atom_t QXcbDrag::toXdndAction( Qt::DropAction a ) const
 {
     switch ( a )
     {
-        case Qt::CopyAction:
-            return atom( QXcbAtom::XdndActionCopy );
+    case Qt::CopyAction:
+        return atom( QXcbAtom::XdndActionCopy );
 
-        case Qt::LinkAction:
-            return atom( QXcbAtom::XdndActionLink );
+    case Qt::LinkAction:
+        return atom( QXcbAtom::XdndActionLink );
 
-        case Qt::MoveAction:
-        case Qt::TargetMoveAction:
-            return atom( QXcbAtom::XdndActionMove );
+    case Qt::MoveAction:
+    case Qt::TargetMoveAction:
+        return atom( QXcbAtom::XdndActionMove );
 
-        case Qt::IgnoreAction:
-            return XCB_NONE;
+    case Qt::IgnoreAction:
+        return XCB_NONE;
 
-        default:
-            return atom( QXcbAtom::XdndActionCopy );
+    default:
+        return atom( QXcbAtom::XdndActionCopy );
     }
 }
 

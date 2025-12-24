@@ -130,68 +130,68 @@ QVariant QMimeDataPrivate::retrieveTypedData( const QString &format, QVariant::T
 
 #ifndef LSCS_NO_TEXTCODEC
 
-            case QVariant::String:
+        case QVariant::String:
+        {
+            const QByteArray ba = data.toByteArray();
+            QTextCodec *codec = QTextCodec::codecForName( "utf-8" );
+
+            if ( format == "text/html" )
             {
-                const QByteArray ba = data.toByteArray();
-                QTextCodec *codec = QTextCodec::codecForName( "utf-8" );
-
-                if ( format == "text/html" )
-                {
-                    codec = QTextCodec::codecForHtml( ba, codec );
-                }
-
-                return codec->toUnicode( ba );
+                codec = QTextCodec::codecForHtml( ba, codec );
             }
+
+            return codec->toUnicode( ba );
+        }
 
 #endif
 
-            case QVariant::Color:
+        case QVariant::Color:
+        {
+            QVariant newData = data;
+            newData.convert( QVariant::Color );
+            return newData;
+        }
+
+        [[fallthrough]];
+
+        case QVariant::List:
+            if ( format != "text/uri-list" )
             {
-                QVariant newData = data;
-                newData.convert( QVariant::Color );
-                return newData;
+                break;
             }
 
             [[fallthrough]];
 
-            case QVariant::List:
-                if ( format != "text/uri-list" )
-                {
-                    break;
-                }
+        case QVariant::Url:
+        {
+            QByteArray ba = data.toByteArray();
 
-                [[fallthrough]];
+            // legacy application will send text/uri-list with a trailing null-terminator
+            // not sent for any other text mime-type, remove it
 
-            case QVariant::Url:
+            if ( ba.endsWith( '\0' ) )
             {
-                QByteArray ba = data.toByteArray();
-
-                // legacy application will send text/uri-list with a trailing null-terminator
-                // not sent for any other text mime-type, remove it
-
-                if ( ba.endsWith( '\0' ) )
-                {
-                    ba.chop( 1 );
-                }
-
-                QList<QByteArray> urls = ba.split( '\n' );
-                QList<QVariant> list;
-
-                for ( int i = 0; i < urls.size(); ++i )
-                {
-                    QByteArray ba = urls.at( i ).trimmed();
-
-                    if ( !ba.isEmpty() )
-                    {
-                        list.append( QUrl::fromEncoded( ba ) );
-                    }
-                }
-
-                return list;
+                ba.chop( 1 );
             }
 
-            default:
-                break;
+            QList<QByteArray> urls = ba.split( '\n' );
+            QList<QVariant> list;
+
+            for ( int i = 0; i < urls.size(); ++i )
+            {
+                QByteArray ba = urls.at( i ).trimmed();
+
+                if ( !ba.isEmpty() )
+                {
+                    list.append( QUrl::fromEncoded( ba ) );
+                }
+            }
+
+            return list;
+        }
+
+        default:
+            break;
         }
 
     }
@@ -201,44 +201,44 @@ QVariant QMimeDataPrivate::retrieveTypedData( const QString &format, QVariant::T
         // try to convert to bytearray
         switch ( data.type() )
         {
-            case QVariant::ByteArray:
-            case QVariant::Color:
-                return data.toByteArray();
-                break;
+        case QVariant::ByteArray:
+        case QVariant::Color:
+            return data.toByteArray();
+            break;
 
-            case QVariant::String:
-                return data.toString().toUtf8();
-                break;
+        case QVariant::String:
+            return data.toString().toUtf8();
+            break;
 
-            case QVariant::Url:
-                return data.toUrl().toEncoded();
-                break;
+        case QVariant::Url:
+            return data.toUrl().toEncoded();
+            break;
 
-            case QVariant::List:
+        case QVariant::List:
+        {
+            // has to be list of URLs
+            QByteArray result;
+            QList<QVariant> list = data.toList();
+
+            for ( int i = 0; i < list.size(); ++i )
             {
-                // has to be list of URLs
-                QByteArray result;
-                QList<QVariant> list = data.toList();
-
-                for ( int i = 0; i < list.size(); ++i )
+                if ( list.at( i ).type() == QVariant::Url )
                 {
-                    if ( list.at( i ).type() == QVariant::Url )
-                    {
-                        result += list.at( i ).toUrl().toEncoded();
-                        result += "\r\n";
-                    }
+                    result += list.at( i ).toUrl().toEncoded();
+                    result += "\r\n";
                 }
-
-                if ( ! result.isEmpty() )
-                {
-                    return result;
-                }
-
-                break;
             }
 
-            default:
-                break;
+            if ( ! result.isEmpty() )
+            {
+                return result;
+            }
+
+            break;
+        }
+
+        default:
+            break;
         }
     }
 

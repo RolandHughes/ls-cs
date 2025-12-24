@@ -839,42 +839,42 @@ QPlatformDialogHelper::ButtonRole QPlatformDialogHelper::buttonRole( QPlatformDi
 {
     switch ( button )
     {
-        case Ok:
-        case Save:
-        case Open:
-        case SaveAll:
-        case Retry:
-        case Ignore:
-            return AcceptRole;
+    case Ok:
+    case Save:
+    case Open:
+    case SaveAll:
+    case Retry:
+    case Ignore:
+        return AcceptRole;
 
-        case Cancel:
-        case Close:
-        case Abort:
-            return RejectRole;
+    case Cancel:
+    case Close:
+    case Abort:
+        return RejectRole;
 
-        case Discard:
-            return DestructiveRole;
+    case Discard:
+        return DestructiveRole;
 
-        case Help:
-            return HelpRole;
+    case Help:
+        return HelpRole;
 
-        case Apply:
-            return ApplyRole;
+    case Apply:
+        return ApplyRole;
 
-        case Yes:
-        case YesToAll:
-            return YesRole;
+    case Yes:
+    case YesToAll:
+        return YesRole;
 
-        case No:
-        case NoToAll:
-            return NoRole;
+    case No:
+    case NoToAll:
+        return NoRole;
 
-        case RestoreDefaults:
-        case Reset:
-            return ResetRole;
+    case RestoreDefaults:
+    case Reset:
+        return ResetRole;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return InvalidRole;

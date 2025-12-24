@@ -710,152 +710,152 @@ static const char *eventClassName( QEvent::Type t )
 {
     switch ( t )
     {
-        case QEvent::ActionAdded:
-        case QEvent::ActionRemoved:
-        case QEvent::ActionChanged:
-            return "QActionEvent";
+    case QEvent::ActionAdded:
+    case QEvent::ActionRemoved:
+    case QEvent::ActionChanged:
+        return "QActionEvent";
 
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonRelease:
-        case QEvent::MouseButtonDblClick:
-        case QEvent::MouseMove:
-        case QEvent::NonClientAreaMouseMove:
-        case QEvent::NonClientAreaMouseButtonPress:
-        case QEvent::NonClientAreaMouseButtonRelease:
-        case QEvent::NonClientAreaMouseButtonDblClick:
-            return "QMouseEvent";
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonDblClick:
+    case QEvent::MouseMove:
+    case QEvent::NonClientAreaMouseMove:
+    case QEvent::NonClientAreaMouseButtonPress:
+    case QEvent::NonClientAreaMouseButtonRelease:
+    case QEvent::NonClientAreaMouseButtonDblClick:
+        return "QMouseEvent";
 
-        case QEvent::DragEnter:
-            return "QDragEnterEvent";
+    case QEvent::DragEnter:
+        return "QDragEnterEvent";
 
-        case QEvent::DragMove:
-            return "QDragMoveEvent";
+    case QEvent::DragMove:
+        return "QDragMoveEvent";
 
-        case QEvent::Drop:
-            return "QDropEvent";
+    case QEvent::Drop:
+        return "QDropEvent";
 
-        case QEvent::KeyPress:
-        case QEvent::KeyRelease:
-        case QEvent::ShortcutOverride:
-            return "QKeyEvent";
+    case QEvent::KeyPress:
+    case QEvent::KeyRelease:
+    case QEvent::ShortcutOverride:
+        return "QKeyEvent";
 
-        case QEvent::FocusIn:
-        case QEvent::FocusOut:
-        case QEvent::FocusAboutToChange:
-            return "QFocusEvent";
+    case QEvent::FocusIn:
+    case QEvent::FocusOut:
+    case QEvent::FocusAboutToChange:
+        return "QFocusEvent";
 
-        case QEvent::ChildAdded:
-        case QEvent::ChildPolished:
-        case QEvent::ChildRemoved:
-            return "QChildEvent";
+    case QEvent::ChildAdded:
+    case QEvent::ChildPolished:
+    case QEvent::ChildRemoved:
+        return "QChildEvent";
 
-        case QEvent::Paint:
-            return "QPaintEvent";
+    case QEvent::Paint:
+        return "QPaintEvent";
 
-        case QEvent::Move:
-            return "QMoveEvent";
+    case QEvent::Move:
+        return "QMoveEvent";
 
-        case QEvent::Resize:
-            return "QResizeEvent";
+    case QEvent::Resize:
+        return "QResizeEvent";
 
-        case QEvent::Show:
-            return "QShowEvent";
+    case QEvent::Show:
+        return "QShowEvent";
 
-        case QEvent::Hide:
-            return "QHideEvent";
+    case QEvent::Hide:
+        return "QHideEvent";
 
-        case QEvent::Enter:
-            return "QEnterEvent";
+    case QEvent::Enter:
+        return "QEnterEvent";
 
-        case QEvent::Close:
-            return "QCloseEvent";
+    case QEvent::Close:
+        return "QCloseEvent";
 
-        case QEvent::FileOpen:
-            return "QFileOpenEvent";
+    case QEvent::FileOpen:
+        return "QFileOpenEvent";
 
 #ifndef LSCS_NO_GESTURES
 
-        case QEvent::NativeGesture:
-            return "QNativeGestureEvent";
+    case QEvent::NativeGesture:
+        return "QNativeGestureEvent";
 
-        case QEvent::Gesture:
-        case QEvent::GestureOverride:
-            return "QGestureEvent";
+    case QEvent::Gesture:
+    case QEvent::GestureOverride:
+        return "QGestureEvent";
 #endif
 
-        case QEvent::HoverEnter:
-        case QEvent::HoverLeave:
-        case QEvent::HoverMove:
-            return "QHoverEvent";
+    case QEvent::HoverEnter:
+    case QEvent::HoverLeave:
+    case QEvent::HoverMove:
+        return "QHoverEvent";
 
-        case QEvent::TabletEnterProximity:
-        case QEvent::TabletLeaveProximity:
-        case QEvent::TabletPress:
-        case QEvent::TabletMove:
-        case QEvent::TabletRelease:
-            return "QTabletEvent";
+    case QEvent::TabletEnterProximity:
+    case QEvent::TabletLeaveProximity:
+    case QEvent::TabletPress:
+    case QEvent::TabletMove:
+    case QEvent::TabletRelease:
+        return "QTabletEvent";
 
-        case QEvent::StatusTip:
-            return "QStatusTipEvent";
+    case QEvent::StatusTip:
+        return "QStatusTipEvent";
 
-        case QEvent::ToolTip:
-            return "QHelpEvent";
+    case QEvent::ToolTip:
+        return "QHelpEvent";
 
-        case QEvent::WindowStateChange:
-            return "QWindowStateChangeEvent";
+    case QEvent::WindowStateChange:
+        return "QWindowStateChangeEvent";
 
-        case QEvent::Wheel:
-            return "QWheelEvent";
+    case QEvent::Wheel:
+        return "QWheelEvent";
 
-        case QEvent::TouchBegin:
-        case QEvent::TouchUpdate:
-        case QEvent::TouchEnd:
-            return "QTouchEvent";
+    case QEvent::TouchBegin:
+    case QEvent::TouchUpdate:
+    case QEvent::TouchEnd:
+        return "QTouchEvent";
 
-        case QEvent::Shortcut:
-            return "QShortcutEvent";
+    case QEvent::Shortcut:
+        return "QShortcutEvent";
 
-        case QEvent::InputMethod:
-            return "QInputMethodEvent";
+    case QEvent::InputMethod:
+        return "QInputMethodEvent";
 
-        case QEvent::InputMethodQuery:
-            return "QInputMethodQueryEvent";
+    case QEvent::InputMethodQuery:
+        return "QInputMethodQueryEvent";
 
-        case QEvent::OrientationChange:
-            return "QScreenOrientationChangeEvent";
+    case QEvent::OrientationChange:
+        return "QScreenOrientationChangeEvent";
 
-        case QEvent::ScrollPrepare:
-            return "QScrollPrepareEvent";
+    case QEvent::ScrollPrepare:
+        return "QScrollPrepareEvent";
 
-        case QEvent::Scroll:
-            return "QScrollEvent";
+    case QEvent::Scroll:
+        return "QScrollEvent";
 
-        case QEvent::GraphicsSceneMouseMove:
-        case QEvent::GraphicsSceneMousePress:
-        case QEvent::GraphicsSceneMouseRelease:
-        case QEvent::GraphicsSceneMouseDoubleClick:
-            return "QGraphicsSceneMouseEvent";
+    case QEvent::GraphicsSceneMouseMove:
+    case QEvent::GraphicsSceneMousePress:
+    case QEvent::GraphicsSceneMouseRelease:
+    case QEvent::GraphicsSceneMouseDoubleClick:
+        return "QGraphicsSceneMouseEvent";
 
-        case QEvent::GraphicsSceneContextMenu:
-        case QEvent::GraphicsSceneHoverEnter:
-        case QEvent::GraphicsSceneHoverMove:
-        case QEvent::GraphicsSceneHoverLeave:
-        case QEvent::GraphicsSceneHelp:
-        case QEvent::GraphicsSceneDragEnter:
-        case QEvent::GraphicsSceneDragMove:
-        case QEvent::GraphicsSceneDragLeave:
-        case QEvent::GraphicsSceneDrop:
-        case QEvent::GraphicsSceneWheel:
-            return "QGraphicsSceneEvent";
+    case QEvent::GraphicsSceneContextMenu:
+    case QEvent::GraphicsSceneHoverEnter:
+    case QEvent::GraphicsSceneHoverMove:
+    case QEvent::GraphicsSceneHoverLeave:
+    case QEvent::GraphicsSceneHelp:
+    case QEvent::GraphicsSceneDragEnter:
+    case QEvent::GraphicsSceneDragMove:
+    case QEvent::GraphicsSceneDragLeave:
+    case QEvent::GraphicsSceneDrop:
+    case QEvent::GraphicsSceneWheel:
+        return "QGraphicsSceneEvent";
 
-        case QEvent::Timer:
-            return "QTimerEvent";
+    case QEvent::Timer:
+        return "QTimerEvent";
 
-        case QEvent::PlatformSurface:
-            return "QPlatformSurfaceEvent";
+    case QEvent::PlatformSurface:
+        return "QPlatformSurfaceEvent";
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return "QEvent";
@@ -966,246 +966,246 @@ QDebug operator<<( QDebug debug, const QEvent *e )
 
     switch ( type )
     {
-        case QEvent::Expose:
-            debug << "QExposeEvent(" << static_cast<const QExposeEvent *>( e )->region() << ')';
-            break;
+    case QEvent::Expose:
+        debug << "QExposeEvent(" << static_cast<const QExposeEvent *>( e )->region() << ')';
+        break;
 
-        case QEvent::Paint:
-            debug << "QPaintEvent(" << static_cast<const QPaintEvent *>( e )->region() << ')';
-            break;
+    case QEvent::Paint:
+        debug << "QPaintEvent(" << static_cast<const QPaintEvent *>( e )->region() << ')';
+        break;
 
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseMove:
-        case QEvent::MouseButtonRelease:
-        case QEvent::MouseButtonDblClick:
-        case QEvent::NonClientAreaMouseButtonPress:
-        case QEvent::NonClientAreaMouseMove:
-        case QEvent::NonClientAreaMouseButtonRelease:
-        case QEvent::NonClientAreaMouseButtonDblClick:
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseMove:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonDblClick:
+    case QEvent::NonClientAreaMouseButtonPress:
+    case QEvent::NonClientAreaMouseMove:
+    case QEvent::NonClientAreaMouseButtonRelease:
+    case QEvent::NonClientAreaMouseButtonDblClick:
+    {
+        const QMouseEvent *me = static_cast<const QMouseEvent *>( e );
+        const Qt::MouseButton button   = me->button();
+        const Qt::MouseButtons buttons = me->buttons();
+
+        debug << "QMouseEvent(";
+        QtDebugUtils::formatQEnum( debug, type );
+
+        if ( type != QEvent::MouseMove && type != QEvent::NonClientAreaMouseMove )
         {
-            const QMouseEvent *me = static_cast<const QMouseEvent *>( e );
-            const Qt::MouseButton button   = me->button();
-            const Qt::MouseButtons buttons = me->buttons();
-
-            debug << "QMouseEvent(";
-            QtDebugUtils::formatQEnum( debug, type );
-
-            if ( type != QEvent::MouseMove && type != QEvent::NonClientAreaMouseMove )
-            {
-                debug << ", ";
-                QtDebugUtils::formatQEnum( debug, button );
-            }
-
-            if ( buttons && ( Qt::MouseButtons( button ) != buttons ) )
-            {
-                debug << ", buttons =";
-                QtDebugUtils::formatQFlags( debug, buttons );
-            }
-
-            QtDebugUtils::formatNonNullQFlags( debug, ", ", me->modifiers() );
-            debug << ", localPos =";
-
-            QtDebugUtils::formatQPoint( debug, me->localPos() );
-            debug << ", screenPos =";
-
-            QtDebugUtils::formatQPoint( debug, me->screenPos() );
-            QtDebugUtils::formatNonNullQEnum( debug, ", ", me->source() );
-            QtDebugUtils::formatNonNullQFlags( debug, ", flags =", me->flags() );
-            debug << ')';
+            debug << ", ";
+            QtDebugUtils::formatQEnum( debug, button );
         }
 
-        break;
+        if ( buttons && ( Qt::MouseButtons( button ) != buttons ) )
+        {
+            debug << ", buttons =";
+            QtDebugUtils::formatQFlags( debug, buttons );
+        }
+
+        QtDebugUtils::formatNonNullQFlags( debug, ", ", me->modifiers() );
+        debug << ", localPos =";
+
+        QtDebugUtils::formatQPoint( debug, me->localPos() );
+        debug << ", screenPos =";
+
+        QtDebugUtils::formatQPoint( debug, me->screenPos() );
+        QtDebugUtils::formatNonNullQEnum( debug, ", ", me->source() );
+        QtDebugUtils::formatNonNullQFlags( debug, ", flags =", me->flags() );
+        debug << ')';
+    }
+
+    break;
 
 #ifndef LSCS_NO_WHEELEVENT
 
-        case QEvent::Wheel:
-        {
-            const QWheelEvent *we = static_cast<const QWheelEvent *>( e );
-            debug << "QWheelEvent(" << "pixelDelta = " << we->pixelDelta() << ", angleDelta = " << we->angleDelta() << ')';
-        }
-        break;
+    case QEvent::Wheel:
+    {
+        const QWheelEvent *we = static_cast<const QWheelEvent *>( e );
+        debug << "QWheelEvent(" << "pixelDelta = " << we->pixelDelta() << ", angleDelta = " << we->angleDelta() << ')';
+    }
+    break;
 #endif
 
-        case QEvent::KeyPress:
-        case QEvent::KeyRelease:
-        case QEvent::ShortcutOverride:
+    case QEvent::KeyPress:
+    case QEvent::KeyRelease:
+    case QEvent::ShortcutOverride:
+    {
+        const QKeyEvent *ke = static_cast<const QKeyEvent *>( e );
+        debug << "QKeyEvent(";
+        QtDebugUtils::formatQEnum( debug, type );
+
+        debug << ", ";
+        QtDebugUtils::formatQEnum( debug, static_cast<Qt::Key>( ke->key() ) );
+        QtDebugUtils::formatNonNullQFlags( debug, ", ", ke->modifiers() );
+
+        if ( !ke->text().isEmpty() )
         {
-            const QKeyEvent *ke = static_cast<const QKeyEvent *>( e );
-            debug << "QKeyEvent(";
-            QtDebugUtils::formatQEnum( debug, type );
-
-            debug << ", ";
-            QtDebugUtils::formatQEnum( debug, static_cast<Qt::Key>( ke->key() ) );
-            QtDebugUtils::formatNonNullQFlags( debug, ", ", ke->modifiers() );
-
-            if ( !ke->text().isEmpty() )
-            {
-                debug << ", text = " << ke->text();
-            }
-
-            if ( ke->isAutoRepeat() )
-            {
-                debug << ", autorepeat, count = " << ke->count();
-            }
-
-            debug<< ')';
+            debug << ", text = " << ke->text();
         }
+
+        if ( ke->isAutoRepeat() )
+        {
+            debug << ", autorepeat, count = " << ke->count();
+        }
+
+        debug<< ')';
+    }
+    break;
+
+    case QEvent::Shortcut:
+    {
+        const QShortcutEvent *se = static_cast<const QShortcutEvent *>( e );
+        debug << "QShortcutEvent(" << se->key().toString() << ", id=" << se->shortcutId();
+
+        if ( se->isAmbiguous() )
+        {
+            debug << ", ambiguous";
+        }
+
+        debug << ')';
+    }
+    break;
+
+    case QEvent::FocusAboutToChange:
+    case QEvent::FocusIn:
+    case QEvent::FocusOut:
+        debug << "QFocusEvent(";
+        QtDebugUtils::formatQEnum( debug, type );
+
+        debug << ", ";
+        QtDebugUtils::formatQEnum( debug, static_cast<const QFocusEvent *>( e )->reason() );
+
+        debug << ')';
         break;
 
-        case QEvent::Shortcut:
+    case QEvent::Move:
+    {
+        const QMoveEvent *me = static_cast<const QMoveEvent *>( e );
+        debug << "QMoveEvent(";
+        QtDebugUtils::formatQPoint( debug, me->pos() );
+
+        if ( !me->spontaneous() )
         {
-            const QShortcutEvent *se = static_cast<const QShortcutEvent *>( e );
-            debug << "QShortcutEvent(" << se->key().toString() << ", id=" << se->shortcutId();
-
-            if ( se->isAmbiguous() )
-            {
-                debug << ", ambiguous";
-            }
-
-            debug << ')';
+            debug << ", non-spontaneous";
         }
-        break;
 
-        case QEvent::FocusAboutToChange:
-        case QEvent::FocusIn:
-        case QEvent::FocusOut:
-            debug << "QFocusEvent(";
-            QtDebugUtils::formatQEnum( debug, type );
+        debug << ')';
+    }
+    break;
 
-            debug << ", ";
-            QtDebugUtils::formatQEnum( debug, static_cast<const QFocusEvent *>( e )->reason() );
+    case QEvent::Resize:
+    {
+        const QResizeEvent *re = static_cast<const QResizeEvent *>( e );
+        debug << "QResizeEvent(";
+        QtDebugUtils::formatQSize( debug, re->size() );
 
-            debug << ')';
-            break;
-
-        case QEvent::Move:
+        if ( ! re->spontaneous() )
         {
-            const QMoveEvent *me = static_cast<const QMoveEvent *>( e );
-            debug << "QMoveEvent(";
-            QtDebugUtils::formatQPoint( debug, me->pos() );
-
-            if ( !me->spontaneous() )
-            {
-                debug << ", non-spontaneous";
-            }
-
-            debug << ')';
+            debug << ", non-spontaneous";
         }
-        break;
 
-        case QEvent::Resize:
-        {
-            const QResizeEvent *re = static_cast<const QResizeEvent *>( e );
-            debug << "QResizeEvent(";
-            QtDebugUtils::formatQSize( debug, re->size() );
-
-            if ( ! re->spontaneous() )
-            {
-                debug << ", non-spontaneous";
-            }
-
-            debug << ')';
-        }
-        break;
+        debug << ')';
+    }
+    break;
 
 #ifndef LSCS_NO_DRAGANDDROP
 
-        case QEvent::DragEnter:
-        case QEvent::DragMove:
-        case QEvent::Drop:
-            formatDropEvent( debug, static_cast<const QDropEvent *>( e ) );
-            break;
-#endif
-
-        case QEvent::InputMethod:
-            formatInputMethodEvent( debug, static_cast<const QInputMethodEvent *>( e ) );
-            break;
-
-        case QEvent::InputMethodQuery:
-            formatInputMethodQueryEvent( debug, static_cast<const QInputMethodQueryEvent *>( e ) );
-            break;
-
-        case QEvent::TouchBegin:
-        case QEvent::TouchUpdate:
-        case QEvent::TouchEnd:
-            formatTouchEvent( debug, *static_cast<const QTouchEvent *>( e ) );
-            break;
-
-        case QEvent::ChildAdded:
-        case QEvent::ChildPolished:
-        case QEvent::ChildRemoved:
-            debug << "QChildEvent(";
-            QtDebugUtils::formatQEnum( debug, type );
-            debug << ", " << ( static_cast<const QChildEvent *>( e ) )->child() << ')';
-            break;
-
-#ifndef LSCS_NO_GESTURES
-
-        case QEvent::NativeGesture:
-        {
-            const QNativeGestureEvent *ne = static_cast<const QNativeGestureEvent *>( e );
-            debug << "QNativeGestureEvent(";
-            QtDebugUtils::formatQEnum( debug, ne->gestureType() );
-
-            debug << "localPos = ";
-            QtDebugUtils::formatQPoint( debug, ne->localPos() );
-
-            debug << ", value = " << ne->value() << ')';
-        }
+    case QEvent::DragEnter:
+    case QEvent::DragMove:
+    case QEvent::Drop:
+        formatDropEvent( debug, static_cast<const QDropEvent *>( e ) );
         break;
 #endif
 
-        case QEvent::ApplicationStateChange:
-            debug << "QApplicationStateChangeEvent(";
-            QtDebugUtils::formatQEnum( debug, static_cast<const QApplicationStateChangeEvent *>( e )->applicationState() );
-            debug << ')';
-            break;
+    case QEvent::InputMethod:
+        formatInputMethodEvent( debug, static_cast<const QInputMethodEvent *>( e ) );
+        break;
 
-        case QEvent::ContextMenu:
-            debug << "QContextMenuEvent(" << static_cast<const QContextMenuEvent *>( e )->pos() << ')';
-            break;
+    case QEvent::InputMethodQuery:
+        formatInputMethodQueryEvent( debug, static_cast<const QInputMethodQueryEvent *>( e ) );
+        break;
+
+    case QEvent::TouchBegin:
+    case QEvent::TouchUpdate:
+    case QEvent::TouchEnd:
+        formatTouchEvent( debug, *static_cast<const QTouchEvent *>( e ) );
+        break;
+
+    case QEvent::ChildAdded:
+    case QEvent::ChildPolished:
+    case QEvent::ChildRemoved:
+        debug << "QChildEvent(";
+        QtDebugUtils::formatQEnum( debug, type );
+        debug << ", " << ( static_cast<const QChildEvent *>( e ) )->child() << ')';
+        break;
+
+#ifndef LSCS_NO_GESTURES
+
+    case QEvent::NativeGesture:
+    {
+        const QNativeGestureEvent *ne = static_cast<const QNativeGestureEvent *>( e );
+        debug << "QNativeGestureEvent(";
+        QtDebugUtils::formatQEnum( debug, ne->gestureType() );
+
+        debug << "localPos = ";
+        QtDebugUtils::formatQPoint( debug, ne->localPos() );
+
+        debug << ", value = " << ne->value() << ')';
+    }
+    break;
+#endif
+
+    case QEvent::ApplicationStateChange:
+        debug << "QApplicationStateChangeEvent(";
+        QtDebugUtils::formatQEnum( debug, static_cast<const QApplicationStateChangeEvent *>( e )->applicationState() );
+        debug << ')';
+        break;
+
+    case QEvent::ContextMenu:
+        debug << "QContextMenuEvent(" << static_cast<const QContextMenuEvent *>( e )->pos() << ')';
+        break;
 
 #ifndef LSCS_NO_TABLETEVENT
 
-        case QEvent::TabletEnterProximity:
-        case QEvent::TabletLeaveProximity:
-        case QEvent::TabletPress:
-        case QEvent::TabletMove:
-        case QEvent::TabletRelease:
-            formatTabletEvent( debug, static_cast<const QTabletEvent *>( e ) );
-            break;
+    case QEvent::TabletEnterProximity:
+    case QEvent::TabletLeaveProximity:
+    case QEvent::TabletPress:
+    case QEvent::TabletMove:
+    case QEvent::TabletRelease:
+        formatTabletEvent( debug, static_cast<const QTabletEvent *>( e ) );
+        break;
 #endif
 
-        case QEvent::Enter:
-            debug << "QEnterEvent(" << static_cast<const QEnterEvent *>( e )->pos() << ')';
+    case QEvent::Enter:
+        debug << "QEnterEvent(" << static_cast<const QEnterEvent *>( e )->pos() << ')';
+        break;
+
+    case QEvent::Timer:
+        debug << "QTimerEvent(id=" << static_cast<const QTimerEvent *>( e )->timerId() << ')';
+        break;
+
+    case QEvent::PlatformSurface:
+        debug << "QPlatformSurfaceEvent(surfaceEventType=";
+
+        switch ( static_cast<const QPlatformSurfaceEvent *>( e )->surfaceEventType() )
+        {
+        case QPlatformSurfaceEvent::SurfaceCreated:
+            debug << "SurfaceCreated";
             break;
 
-        case QEvent::Timer:
-            debug << "QTimerEvent(id=" << static_cast<const QTimerEvent *>( e )->timerId() << ')';
+        case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
+            debug << "SurfaceAboutToBeDestroyed";
             break;
+        }
 
-        case QEvent::PlatformSurface:
-            debug << "QPlatformSurfaceEvent(surfaceEventType=";
+        debug << ')';
+        break;
 
-            switch ( static_cast<const QPlatformSurfaceEvent *>( e )->surfaceEventType() )
-            {
-                case QPlatformSurfaceEvent::SurfaceCreated:
-                    debug << "SurfaceCreated";
-                    break;
-
-                case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
-                    debug << "SurfaceAboutToBeDestroyed";
-                    break;
-            }
-
-            debug << ')';
-            break;
-
-        default:
-            debug << eventClassName( type ) << '(';
-            QtDebugUtils::formatQEnum( debug, type );
-            debug << ", " << ( const void * )e << ')';
-            break;
+    default:
+        debug << eventClassName( type ) << '(';
+        QtDebugUtils::formatQEnum( debug, type );
+        debug << ", " << ( const void * )e << ')';
+        break;
     }
 
     return debug;

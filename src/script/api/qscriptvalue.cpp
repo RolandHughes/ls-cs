@@ -79,13 +79,13 @@ QScriptValue::QScriptValue( QScriptEngine *engine, QScriptValue::SpecialValue va
 {
     switch ( value )
     {
-        case NullValue:
-            d_ptr->initFrom( JSC::jsNull() );
-            break;
+    case NullValue:
+        d_ptr->initFrom( JSC::jsNull() );
+        break;
 
-        case UndefinedValue:
-            d_ptr->initFrom( JSC::jsUndefined() );
-            break;
+    case UndefinedValue:
+        d_ptr->initFrom( JSC::jsUndefined() );
+        break;
     }
 }
 
@@ -162,13 +162,13 @@ QScriptValue::QScriptValue( SpecialValue value )
 {
     switch ( value )
     {
-        case NullValue:
-            d_ptr->initFrom( JSC::jsNull() );
-            break;
+    case NullValue:
+        d_ptr->initFrom( JSC::jsNull() );
+        break;
 
-        case UndefinedValue:
-            d_ptr->initFrom( JSC::jsUndefined() );
-            break;
+    case UndefinedValue:
+        d_ptr->initFrom( JSC::jsUndefined() );
+        break;
     }
 }
 
@@ -472,21 +472,21 @@ static bool LessThan( QScriptValue lhs, QScriptValue rhs )
     {
         switch ( type( lhs ) )
         {
-            case Undefined:
-            case Null:
-                return false;
+        case Undefined:
+        case Null:
+            return false;
 
-            case Number:
-                return lhs.toNumber() < rhs.toNumber();
+        case Number:
+            return lhs.toNumber() < rhs.toNumber();
 
-            case Boolean:
-                return lhs.toBool() < rhs.toBool();
+        case Boolean:
+            return lhs.toBool() < rhs.toBool();
 
-            case String:
-                return lhs.toString() < rhs.toString();
+        case String:
+            return lhs.toString() < rhs.toString();
 
-            case Object:
-                break;
+        case Object:
+            break;
         } // switch
     }
 
@@ -514,34 +514,34 @@ static bool Equals( QScriptValue lhs, QScriptValue rhs )
     {
         switch ( type( lhs ) )
         {
-            case QScript::Undefined:
-            case QScript::Null:
-                return true;
+        case QScript::Undefined:
+        case QScript::Null:
+            return true;
 
-            case QScript::Number:
-                return lhs.toNumber() == rhs.toNumber();
+        case QScript::Number:
+            return lhs.toNumber() == rhs.toNumber();
 
-            case QScript::Boolean:
-                return lhs.toBool() == rhs.toBool();
+        case QScript::Boolean:
+            return lhs.toBool() == rhs.toBool();
 
-            case QScript::String:
-                return lhs.toString() == rhs.toString();
+        case QScript::String:
+            return lhs.toString() == rhs.toString();
 
-            case QScript::Object:
-                if ( lhs.isVariant() )
-                {
-                    return lhs.strictlyEquals( rhs ) || ( lhs.toVariant() == rhs.toVariant() );
-                }
+        case QScript::Object:
+            if ( lhs.isVariant() )
+            {
+                return lhs.strictlyEquals( rhs ) || ( lhs.toVariant() == rhs.toVariant() );
+            }
 
-                else if ( lhs.isQObject() )
-                {
-                    return ( lhs.strictlyEquals( rhs ) ) || ( lhs.toQObject() == rhs.toQObject() );
-                }
+            else if ( lhs.isQObject() )
+            {
+                return ( lhs.strictlyEquals( rhs ) ) || ( lhs.toQObject() == rhs.toQObject() );
+            }
 
-                else
-                {
-                    return lhs.strictlyEquals( rhs );
-                }
+            else
+            {
+                return lhs.strictlyEquals( rhs );
+            }
         }
     }
 
@@ -703,18 +703,18 @@ bool QScriptValue::strictlyEquals( const QScriptValue &other ) const
 
     switch ( d->type )
     {
-        case QScriptValuePrivate::JavaScriptCore:
-        {
-            QScriptEnginePrivate *eng_p = d->engine ? d->engine : other.d_ptr->engine;
-            JSC::ExecState *exec = eng_p ? eng_p->currentFrame : nullptr;
-            return JSC::JSValue::strictEqual( exec, d->jscValue, other.d_ptr->jscValue );
-        }
+    case QScriptValuePrivate::JavaScriptCore:
+    {
+        QScriptEnginePrivate *eng_p = d->engine ? d->engine : other.d_ptr->engine;
+        JSC::ExecState *exec = eng_p ? eng_p->currentFrame : nullptr;
+        return JSC::JSValue::strictEqual( exec, d->jscValue, other.d_ptr->jscValue );
+    }
 
-        case QScriptValuePrivate::Number:
-            return ( d->numberValue == other.d_ptr->numberValue );
+    case QScriptValuePrivate::Number:
+        return ( d->numberValue == other.d_ptr->numberValue );
 
-        case QScriptValuePrivate::String:
-            return ( d->stringValue == other.d_ptr->stringValue );
+    case QScriptValuePrivate::String:
+        return ( d->stringValue == other.d_ptr->stringValue );
     }
 
     return false;
@@ -731,25 +731,25 @@ QString QScriptValue::toString() const
 
     switch ( d->type )
     {
-        case QScriptValuePrivate::JavaScriptCore:
+    case QScriptValuePrivate::JavaScriptCore:
+    {
+        if ( d->engine )
         {
-            if ( d->engine )
-            {
-                QScript::APIShim shim( d->engine );
-                return QScriptEnginePrivate::toString( d->engine->currentFrame, d->jscValue );
+            QScript::APIShim shim( d->engine );
+            return QScriptEnginePrivate::toString( d->engine->currentFrame, d->jscValue );
 
-            }
-            else
-            {
-                return QScriptEnginePrivate::toString( nullptr, d->jscValue );
-            }
         }
+        else
+        {
+            return QScriptEnginePrivate::toString( nullptr, d->jscValue );
+        }
+    }
 
-        case QScriptValuePrivate::Number:
-            return QScript::ToString( d->numberValue );
+    case QScriptValuePrivate::Number:
+        return QScript::ToString( d->numberValue );
 
-        case QScriptValuePrivate::String:
-            return d->stringValue;
+    case QScriptValuePrivate::String:
+        return d->stringValue;
     }
 
     return QString();
@@ -766,25 +766,25 @@ qsreal QScriptValue::toNumber() const
 
     switch ( d->type )
     {
-        case QScriptValuePrivate::JavaScriptCore:
+    case QScriptValuePrivate::JavaScriptCore:
+    {
+        if ( d->engine )
         {
-            if ( d->engine )
-            {
-                QScript::APIShim shim( d->engine );
-                return QScriptEnginePrivate::toNumber( d->engine->currentFrame, d->jscValue );
+            QScript::APIShim shim( d->engine );
+            return QScriptEnginePrivate::toNumber( d->engine->currentFrame, d->jscValue );
 
-            }
-            else
-            {
-                return QScriptEnginePrivate::toNumber( nullptr, d->jscValue );
-            }
         }
+        else
+        {
+            return QScriptEnginePrivate::toNumber( nullptr, d->jscValue );
+        }
+    }
 
-        case QScriptValuePrivate::Number:
-            return d->numberValue;
+    case QScriptValuePrivate::Number:
+        return d->numberValue;
 
-        case QScriptValuePrivate::String:
-            return QScript::ToNumber( d->stringValue );
+    case QScriptValuePrivate::String:
+        return QScript::ToNumber( d->stringValue );
     }
 
     return 0;
@@ -802,25 +802,25 @@ bool QScriptValue::toBoolean() const
 
     switch ( d->type )
     {
-        case QScriptValuePrivate::JavaScriptCore:
+    case QScriptValuePrivate::JavaScriptCore:
+    {
+        if ( d->engine )
         {
-            if ( d->engine )
-            {
-                QScript::APIShim shim( d->engine );
-                return QScriptEnginePrivate::toBool( d->engine->currentFrame, d->jscValue );
+            QScript::APIShim shim( d->engine );
+            return QScriptEnginePrivate::toBool( d->engine->currentFrame, d->jscValue );
 
-            }
-            else
-            {
-                return QScriptEnginePrivate::toBool( nullptr, d->jscValue );
-            }
         }
+        else
+        {
+            return QScriptEnginePrivate::toBool( nullptr, d->jscValue );
+        }
+    }
 
-        case QScriptValuePrivate::Number:
-            return QScript::ToBool( d->numberValue );
+    case QScriptValuePrivate::Number:
+        return QScript::ToBool( d->numberValue );
 
-        case QScriptValuePrivate::String:
-            return QScript::ToBool( d->stringValue );
+    case QScriptValuePrivate::String:
+        return QScript::ToBool( d->stringValue );
     }
 
     return false;
@@ -837,24 +837,24 @@ bool QScriptValue::toBool() const
 
     switch ( d->type )
     {
-        case QScriptValuePrivate::JavaScriptCore:
+    case QScriptValuePrivate::JavaScriptCore:
+    {
+        if ( d->engine )
         {
-            if ( d->engine )
-            {
-                QScript::APIShim shim( d->engine );
-                return QScriptEnginePrivate::toBool( d->engine->currentFrame, d->jscValue );
-            }
-            else
-            {
-                return QScriptEnginePrivate::toBool( nullptr, d->jscValue );
-            }
+            QScript::APIShim shim( d->engine );
+            return QScriptEnginePrivate::toBool( d->engine->currentFrame, d->jscValue );
         }
+        else
+        {
+            return QScriptEnginePrivate::toBool( nullptr, d->jscValue );
+        }
+    }
 
-        case QScriptValuePrivate::Number:
-            return QScript::ToBool( d->numberValue );
+    case QScriptValuePrivate::Number:
+        return QScript::ToBool( d->numberValue );
 
-        case QScriptValuePrivate::String:
-            return QScript::ToBool( d->stringValue );
+    case QScriptValuePrivate::String:
+        return QScript::ToBool( d->stringValue );
     }
 
     return false;
@@ -871,25 +871,25 @@ qint32 QScriptValue::toInt32() const
 
     switch ( d->type )
     {
-        case QScriptValuePrivate::JavaScriptCore:
+    case QScriptValuePrivate::JavaScriptCore:
+    {
+        if ( d->engine )
         {
-            if ( d->engine )
-            {
-                QScript::APIShim shim( d->engine );
-                return QScriptEnginePrivate::toInt32( d->engine->currentFrame, d->jscValue );
+            QScript::APIShim shim( d->engine );
+            return QScriptEnginePrivate::toInt32( d->engine->currentFrame, d->jscValue );
 
-            }
-            else
-            {
-                return QScriptEnginePrivate::toInt32( nullptr, d->jscValue );
-            }
         }
+        else
+        {
+            return QScriptEnginePrivate::toInt32( nullptr, d->jscValue );
+        }
+    }
 
-        case QScriptValuePrivate::Number:
-            return QScript::ToInt32( d->numberValue );
+    case QScriptValuePrivate::Number:
+        return QScript::ToInt32( d->numberValue );
 
-        case QScriptValuePrivate::String:
-            return QScript::ToInt32( d->stringValue );
+    case QScriptValuePrivate::String:
+        return QScript::ToInt32( d->stringValue );
     }
 
     return 0;
@@ -906,24 +906,24 @@ quint32 QScriptValue::toUInt32() const
 
     switch ( d->type )
     {
-        case QScriptValuePrivate::JavaScriptCore:
+    case QScriptValuePrivate::JavaScriptCore:
+    {
+        if ( d->engine )
         {
-            if ( d->engine )
-            {
-                QScript::APIShim shim( d->engine );
-                return QScriptEnginePrivate::toUInt32( d->engine->currentFrame, d->jscValue );
-            }
-            else
-            {
-                return QScriptEnginePrivate::toUInt32( nullptr, d->jscValue );
-            }
+            QScript::APIShim shim( d->engine );
+            return QScriptEnginePrivate::toUInt32( d->engine->currentFrame, d->jscValue );
         }
+        else
+        {
+            return QScriptEnginePrivate::toUInt32( nullptr, d->jscValue );
+        }
+    }
 
-        case QScriptValuePrivate::Number:
-            return QScript::ToUInt32( d->numberValue );
+    case QScriptValuePrivate::Number:
+        return QScript::ToUInt32( d->numberValue );
 
-        case QScriptValuePrivate::String:
-            return QScript::ToUInt32( d->stringValue );
+    case QScriptValuePrivate::String:
+        return QScript::ToUInt32( d->stringValue );
     }
 
     return 0;
@@ -940,24 +940,24 @@ quint16 QScriptValue::toUInt16() const
 
     switch ( d->type )
     {
-        case QScriptValuePrivate::JavaScriptCore:
+    case QScriptValuePrivate::JavaScriptCore:
+    {
+        if ( d->engine )
         {
-            if ( d->engine )
-            {
-                QScript::APIShim shim( d->engine );
-                return QScriptEnginePrivate::toUInt16( d->engine->currentFrame, d->jscValue );
-            }
-            else
-            {
-                return QScriptEnginePrivate::toUInt16( nullptr, d->jscValue );
-            }
+            QScript::APIShim shim( d->engine );
+            return QScriptEnginePrivate::toUInt16( d->engine->currentFrame, d->jscValue );
         }
+        else
+        {
+            return QScriptEnginePrivate::toUInt16( nullptr, d->jscValue );
+        }
+    }
 
-        case QScriptValuePrivate::Number:
-            return QScript::ToUInt16( d->numberValue );
+    case QScriptValuePrivate::Number:
+        return QScript::ToUInt16( d->numberValue );
 
-        case QScriptValuePrivate::String:
-            return QScript::ToUInt16( d->stringValue );
+    case QScriptValuePrivate::String:
+        return QScript::ToUInt16( d->stringValue );
     }
 
     return 0;
@@ -974,24 +974,24 @@ qsreal QScriptValue::toInteger() const
 
     switch ( d->type )
     {
-        case QScriptValuePrivate::JavaScriptCore:
+    case QScriptValuePrivate::JavaScriptCore:
+    {
+        if ( d->engine )
         {
-            if ( d->engine )
-            {
-                QScript::APIShim shim( d->engine );
-                return QScriptEnginePrivate::toInteger( d->engine->currentFrame, d->jscValue );
-            }
-            else
-            {
-                return QScriptEnginePrivate::toInteger( nullptr, d->jscValue );
-            }
+            QScript::APIShim shim( d->engine );
+            return QScriptEnginePrivate::toInteger( d->engine->currentFrame, d->jscValue );
         }
+        else
+        {
+            return QScriptEnginePrivate::toInteger( nullptr, d->jscValue );
+        }
+    }
 
-        case QScriptValuePrivate::Number:
-            return QScript::ToInteger( d->numberValue );
+    case QScriptValuePrivate::Number:
+        return QScript::ToInteger( d->numberValue );
 
-        case QScriptValuePrivate::String:
-            return QScript::ToInteger( d->stringValue );
+    case QScriptValuePrivate::String:
+        return QScript::ToInteger( d->stringValue );
     }
 
     return 0;
@@ -1008,24 +1008,24 @@ QVariant QScriptValue::toVariant() const
 
     switch ( d->type )
     {
-        case QScriptValuePrivate::JavaScriptCore:
+    case QScriptValuePrivate::JavaScriptCore:
+    {
+        if ( d->engine )
         {
-            if ( d->engine )
-            {
-                QScript::APIShim shim( d->engine );
-                return QScriptEnginePrivate::toVariant( d->engine->currentFrame, d->jscValue );
-            }
-            else
-            {
-                return QScriptEnginePrivate::toVariant( nullptr, d->jscValue );
-            }
+            QScript::APIShim shim( d->engine );
+            return QScriptEnginePrivate::toVariant( d->engine->currentFrame, d->jscValue );
         }
+        else
+        {
+            return QScriptEnginePrivate::toVariant( nullptr, d->jscValue );
+        }
+    }
 
-        case QScriptValuePrivate::Number:
-            return QVariant( d->numberValue );
+    case QScriptValuePrivate::Number:
+        return QVariant( d->numberValue );
 
-        case QScriptValuePrivate::String:
-            return QVariant( d->stringValue );
+    case QScriptValuePrivate::String:
+        return QVariant( d->stringValue );
     }
 
     return QVariant();
@@ -1577,14 +1577,14 @@ bool QScriptValue::isNumber() const
 
     switch ( d->type )
     {
-        case QScriptValuePrivate::JavaScriptCore:
-            return d->jscValue.isNumber();
+    case QScriptValuePrivate::JavaScriptCore:
+        return d->jscValue.isNumber();
 
-        case QScriptValuePrivate::Number:
-            return true;
+    case QScriptValuePrivate::Number:
+        return true;
 
-        case QScriptValuePrivate::String:
-            return false;
+    case QScriptValuePrivate::String:
+        return false;
     }
 
     return false;
@@ -1601,14 +1601,14 @@ bool QScriptValue::isString() const
 
     switch ( d->type )
     {
-        case QScriptValuePrivate::JavaScriptCore:
-            return d->jscValue.isString();
+    case QScriptValuePrivate::JavaScriptCore:
+        return d->jscValue.isString();
 
-        case QScriptValuePrivate::Number:
-            return false;
+    case QScriptValuePrivate::Number:
+        return false;
 
-        case QScriptValuePrivate::String:
-            return true;
+    case QScriptValuePrivate::String:
+        return true;
     }
 
     return false;

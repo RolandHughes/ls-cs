@@ -43,8 +43,8 @@
 - ( BOOL )windowShouldZoom: ( NSWindow * )window toFrame: ( NSRect )newFrame;
 - ( BOOL )window: ( NSWindow * )window shouldPopUpDocumentPathMenu: ( NSMenu * )menu;
 - ( BOOL )window: ( NSWindow * )window shouldDragDocumentWithEvent: ( NSEvent * )event from:
-    ( NSPoint )dragImageLocation withPasteboard:
-    ( NSPasteboard * )pasteboard;
+( NSPoint )dragImageLocation withPasteboard:
+( NSPasteboard * )pasteboard;
 @end
 
 #endif

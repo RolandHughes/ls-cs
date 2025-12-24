@@ -1631,27 +1631,27 @@ static void readArabicShaping()
 
         switch ( joining )
         {
-            case Joining_Unassigned:
-                qFatal( "%x: unassigned or unhandled joining type: %s", codepoint, l[2].constData() );
-                break;
+        case Joining_Unassigned:
+            qFatal( "%x: unassigned or unhandled joining type: %s", codepoint, l[2].constData() );
+            break;
 
-            case Joining_Transparent:
-                if ( rowData.pFlags.category != QChar::Mark_NonSpacing &&
-                        rowData.pFlags.category != QChar::Mark_Enclosing &&
-                        rowData.pFlags.category != QChar::Other_Format &&
-                        rowData.pFlags.category != QChar::Letter_Modifier )
-                {
+        case Joining_Transparent:
+            if ( rowData.pFlags.category != QChar::Mark_NonSpacing &&
+                    rowData.pFlags.category != QChar::Mark_Enclosing &&
+                    rowData.pFlags.category != QChar::Other_Format &&
+                    rowData.pFlags.category != QChar::Letter_Modifier )
+            {
 
 
-                    qFatal( "%x: joining type '%s' was met, the current implementation needs to be revised",
-                            codepoint, l[2].constData() );
-                }
+                qFatal( "%x: joining type '%s' was met, the current implementation needs to be revised",
+                        codepoint, l[2].constData() );
+            }
 
-                [[fallthrough]];
+            [[fallthrough]];
 
-            default:
-                rowData.pFlags.joining = QChar::JoiningType( joining );
-                break;
+        default:
+            rowData.pFlags.joining = QChar::JoiningType( joining );
+            break;
         }
     }
 }
@@ -3534,7 +3534,7 @@ static std::pair<QByteArray, QByteArray> createCompositionInfo()
              "] + (ucs4 & 0x" + QByteArray::number( BMP_BLOCKSIZE - 1, 16 ) + ")]) \\\n"
              "        : (ucs4 < 0x" + QByteArray::number( SMP_END, 16 ) + " \\\n"
              "        ? QUnicodeTables::uc_decomposition_trie[QUnicodeTables::uc_decomposition_trie[((ucs4 - 0x" + QByteArray::number( BMP_END,
-                     16 ) +
+                 16 ) +
              ") >> " + QByteArray::number( SMP_SHIFT ) + ") + 0x" + QByteArray::number( BMP_END / BMP_BLOCKSIZE, 16 ) + "] + \\\n"
              "        (ucs4 & 0x" + QByteArray::number( SMP_BLOCKSIZE - 1, 16 ) + ")] : 0xffff))\n\n";
 

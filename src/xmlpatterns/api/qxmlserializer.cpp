@@ -234,7 +234,7 @@ void QXmlSerializer::startElement( const QXmlName &name )
         else if ( d->state != InsideDocumentElement )
         {
             d->query.d->staticContext()->error( QtXmlPatterns::tr( "Element %1 can not be serialized because it appears outside "
-                                                "the document element." ).formatArgs( formatKeyword( d->np, name ) ), ReportContext::SENR0001,
+                                                                   "the document element." ).formatArgs( formatKeyword( d->np, name ) ), ReportContext::SENR0001,
                                                 d->query.d->expression().data() );
         }
     }
@@ -288,7 +288,7 @@ void QXmlSerializer::attribute( const QXmlName &name, QStringView value )
     if ( atDocumentRoot() )
     {
         d->query.d->staticContext()->error( QtXmlPatterns::tr( "Attribute %1 can not be serialized because it appears at "
-                                            "the top level." ).formatArg( formatKeyword( d->np, name ) ),
+                                                               "the top level." ).formatArg( formatKeyword( d->np, name ) ),
                                             ReportContext::SENR0001, d->query.d->expression().data() );
 
     }

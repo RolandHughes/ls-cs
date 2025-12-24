@@ -434,30 +434,30 @@ bool QSpdyProtocolHandler::uncompressHeader( const QByteArray &input, QByteArray
 
         switch ( zlibRet )
         {
-            case Z_BUF_ERROR:
-            {
-                if ( m_inflateStream.avail_in == 0 )
-                {
-                    int outputSize = chunkSize - m_inflateStream.avail_out;
-                    output->append( outputRaw, outputSize );
-                    m_inflateStream.avail_out = chunkSize;
-                }
-
-                break;
-            }
-
-            case Z_OK:
+        case Z_BUF_ERROR:
+        {
+            if ( m_inflateStream.avail_in == 0 )
             {
                 int outputSize = chunkSize - m_inflateStream.avail_out;
                 output->append( outputRaw, outputSize );
-                break;
+                m_inflateStream.avail_out = chunkSize;
             }
 
-            default:
-            {
-                qWarning() << "QSpdyProtocolHandler::uncompressHeader() Unexpected zlib return value " << zlibRet;
-                return false;
-            }
+            break;
+        }
+
+        case Z_OK:
+        {
+            int outputSize = chunkSize - m_inflateStream.avail_out;
+            output->append( outputRaw, outputSize );
+            break;
+        }
+
+        default:
+        {
+            qWarning() << "QSpdyProtocolHandler::uncompressHeader() Unexpected zlib return value " << zlibRet;
+            return false;
+        }
         }
     }
     while ( m_inflateStream.avail_in > 0 && zlibRet != Z_STREAM_END );
@@ -599,14 +599,14 @@ void QSpdyProtocolHandler::sendControlFrame( FrameType type,
 
     switch ( type )
     {
-        case FrameType_CREDENTIAL:
-        {
-            qWarning( "QSpdyProtocolHandler::sendControlFrame() Sending SPDY CREDENTIAL frame is not implemented" );
-            return;
-        }
+    case FrameType_CREDENTIAL:
+    {
+        qWarning( "QSpdyProtocolHandler::sendControlFrame() Sending SPDY CREDENTIAL frame is not implemented" );
+        return;
+    }
 
-        default:
-            header[3] = type;
+    default:
+        header[3] = type;
     }
 
     // flags
@@ -677,17 +677,17 @@ void QSpdyProtocolHandler::sendSYN_STREAM( HttpMessagePair messagePair, qint32 s
 
     switch ( request.priority() )
     {
-        case QHttpNetworkRequest::HighPriority:
-            prioAndSlot[0] = 0x00;            // == prio 0 (highest)
-            break;
+    case QHttpNetworkRequest::HighPriority:
+        prioAndSlot[0] = 0x00;            // == prio 0 (highest)
+        break;
 
-        case QHttpNetworkRequest::NormalPriority:
-            prioAndSlot[0] = char( 0x80u );  // == prio 4
-            break;
+    case QHttpNetworkRequest::NormalPriority:
+        prioAndSlot[0] = char( 0x80u );  // == prio 4
+        break;
 
-        case QHttpNetworkRequest::LowPriority:
-            prioAndSlot[0] = char( 0xe0u );  // == prio 7 (lowest)
-            break;
+    case QHttpNetworkRequest::LowPriority:
+        prioAndSlot[0] = char( 0xe0u );  // == prio 7 (lowest)
+        break;
     }
 
     prioAndSlot[1] = 0x00; // slot in client certificates (not supported currently)
@@ -887,56 +887,56 @@ void QSpdyProtocolHandler::handleControlFrame( const QByteArray &frameHeaders )
 
     switch ( type )
     {
-        case FrameType_SYN_STREAM:
-        {
-            handleSYN_STREAM( flags, length, frameData );
-            break;
-        }
+    case FrameType_SYN_STREAM:
+    {
+        handleSYN_STREAM( flags, length, frameData );
+        break;
+    }
 
-        case FrameType_SYN_REPLY:
-        {
-            handleSYN_REPLY( flags, length, frameData );
-            break;
-        }
+    case FrameType_SYN_REPLY:
+    {
+        handleSYN_REPLY( flags, length, frameData );
+        break;
+    }
 
-        case FrameType_RST_STREAM:
-        {
-            handleRST_STREAM( flags, length, frameData );
-            break;
-        }
+    case FrameType_RST_STREAM:
+    {
+        handleRST_STREAM( flags, length, frameData );
+        break;
+    }
 
-        case FrameType_SETTINGS:
-        {
-            handleSETTINGS( flags, length, frameData );
-            break;
-        }
+    case FrameType_SETTINGS:
+    {
+        handleSETTINGS( flags, length, frameData );
+        break;
+    }
 
-        case FrameType_PING:
-        {
-            handlePING( flags, length, frameData );
-            break;
-        }
+    case FrameType_PING:
+    {
+        handlePING( flags, length, frameData );
+        break;
+    }
 
-        case FrameType_GOAWAY:
-        {
-            handleGOAWAY( flags, length, frameData );
-            break;
-        }
+    case FrameType_GOAWAY:
+    {
+        handleGOAWAY( flags, length, frameData );
+        break;
+    }
 
-        case FrameType_HEADERS:
-        {
-            handleHEADERS( flags, length, frameData );
-            break;
-        }
+    case FrameType_HEADERS:
+    {
+        handleHEADERS( flags, length, frameData );
+        break;
+    }
 
-        case FrameType_WINDOW_UPDATE:
-        {
-            handleWINDOW_UPDATE( flags, length, frameData );
-            break;
-        }
+    case FrameType_WINDOW_UPDATE:
+    {
+        handleWINDOW_UPDATE( flags, length, frameData );
+        break;
+    }
 
-        default:
-            qWarning( "QSpdyProtocolHandler::handleControlFrame() Unable to handle frame of type %d", type );
+    default:
+        qWarning( "QSpdyProtocolHandler::handleControlFrame() Unable to handle frame of type %d", type );
     }
 }
 
@@ -1105,65 +1105,65 @@ void QSpdyProtocolHandler::handleRST_STREAM( char, quint32 length, const QByteAr
 
     switch ( statusCode )
     {
-        case RST_STREAM_PROTOCOL_ERROR:
-            errorCode = QNetworkReply::ProtocolFailure;
-            errorMessage = "SPDY protocol error";
-            break;
+    case RST_STREAM_PROTOCOL_ERROR:
+        errorCode = QNetworkReply::ProtocolFailure;
+        errorMessage = "SPDY protocol error";
+        break;
 
-        case RST_STREAM_INVALID_STREAM:
-            errorCode = QNetworkReply::ProtocolFailure;
-            errorMessage = "SPDY stream is not active";
-            break;
+    case RST_STREAM_INVALID_STREAM:
+        errorCode = QNetworkReply::ProtocolFailure;
+        errorMessage = "SPDY stream is not active";
+        break;
 
-        case RST_STREAM_REFUSED_STREAM:
-            errorCode = QNetworkReply::ProtocolFailure;
-            errorMessage = "SPDY stream was refused";
-            break;
+    case RST_STREAM_REFUSED_STREAM:
+        errorCode = QNetworkReply::ProtocolFailure;
+        errorMessage = "SPDY stream was refused";
+        break;
 
-        case RST_STREAM_UNSUPPORTED_VERSION:
-            errorCode = QNetworkReply::ProtocolUnknownError;
-            errorMessage = "SPDY version is unknown to the server";
-            break;
+    case RST_STREAM_UNSUPPORTED_VERSION:
+        errorCode = QNetworkReply::ProtocolUnknownError;
+        errorMessage = "SPDY version is unknown to the server";
+        break;
 
-        case RST_STREAM_CANCEL:
-            errorCode = QNetworkReply::ProtocolFailure;
-            errorMessage = "SPDY stream is no longer needed";
-            break;
+    case RST_STREAM_CANCEL:
+        errorCode = QNetworkReply::ProtocolFailure;
+        errorMessage = "SPDY stream is no longer needed";
+        break;
 
-        case RST_STREAM_INTERNAL_ERROR:
-            errorCode = QNetworkReply::InternalServerError;
-            errorMessage = "Internal server error";
-            break;
+    case RST_STREAM_INTERNAL_ERROR:
+        errorCode = QNetworkReply::InternalServerError;
+        errorMessage = "Internal server error";
+        break;
 
-        case RST_STREAM_FLOW_CONTROL_ERROR:
-            errorCode = QNetworkReply::ProtocolFailure;
-            errorMessage = "peer violated the flow control protocol";
-            break;
+    case RST_STREAM_FLOW_CONTROL_ERROR:
+        errorCode = QNetworkReply::ProtocolFailure;
+        errorMessage = "peer violated the flow control protocol";
+        break;
 
-        case RST_STREAM_STREAM_IN_USE:
-            errorCode = QNetworkReply::ProtocolFailure;
-            errorMessage = "server received a SYN_REPLY for an already open stream";
-            break;
+    case RST_STREAM_STREAM_IN_USE:
+        errorCode = QNetworkReply::ProtocolFailure;
+        errorMessage = "server received a SYN_REPLY for an already open stream";
+        break;
 
-        case RST_STREAM_STREAM_ALREADY_CLOSED:
-            errorCode = QNetworkReply::ProtocolFailure;
-            errorMessage = "server received data or a SYN_REPLY for an already half-closed stream";
-            break;
+    case RST_STREAM_STREAM_ALREADY_CLOSED:
+        errorCode = QNetworkReply::ProtocolFailure;
+        errorMessage = "server received data or a SYN_REPLY for an already half-closed stream";
+        break;
 
-        case RST_STREAM_INVALID_CREDENTIALS:
-            errorCode = QNetworkReply::ContentAccessDenied;
-            errorMessage = "server received invalid credentials";
-            break;
+    case RST_STREAM_INVALID_CREDENTIALS:
+        errorCode = QNetworkReply::ContentAccessDenied;
+        errorMessage = "server received invalid credentials";
+        break;
 
-        case RST_STREAM_FRAME_TOO_LARGE:
-            errorCode = QNetworkReply::ProtocolFailure;
-            errorMessage = "server cannot process the frame because it is too large";
-            break;
+    case RST_STREAM_FRAME_TOO_LARGE:
+        errorCode = QNetworkReply::ProtocolFailure;
+        errorMessage = "server cannot process the frame because it is too large";
+        break;
 
-        default:
-            qWarning( "QSpdyProtocolHandler::handleRST_STREAM() Unable to parse servers RST_STREAM status code" );
-            errorCode = QNetworkReply::ProtocolFailure;
-            errorMessage = "got SPDY RST_STREAM message with unknown error code";
+    default:
+        qWarning( "QSpdyProtocolHandler::handleRST_STREAM() Unable to parse servers RST_STREAM status code" );
+        errorCode = QNetworkReply::ProtocolFailure;
+        errorMessage = "got SPDY RST_STREAM message with unknown error code";
     }
 
     if ( httpReply )
@@ -1203,56 +1203,56 @@ void QSpdyProtocolHandler::handleSETTINGS( char flags, quint32, const QByteArray
 
         switch ( uniqueID )
         {
-            case SETTINGS_UPLOAD_BANDWIDTH:
-            {
-                // ignored for now, just an estimated informative value
-                break;
-            }
+        case SETTINGS_UPLOAD_BANDWIDTH:
+        {
+            // ignored for now, just an estimated informative value
+            break;
+        }
 
-            case SETTINGS_DOWNLOAD_BANDWIDTH:
-            {
-                // ignored for now, just an estimated informative value
-                break;
-            }
+        case SETTINGS_DOWNLOAD_BANDWIDTH:
+        {
+            // ignored for now, just an estimated informative value
+            break;
+        }
 
-            case SETTINGS_ROUND_TRIP_TIME:
-            {
-                // ignored for now, just an estimated informative value
-                break;
-            }
+        case SETTINGS_ROUND_TRIP_TIME:
+        {
+            // ignored for now, just an estimated informative value
+            break;
+        }
 
-            case SETTINGS_MAX_CONCURRENT_STREAMS:
-            {
-                m_maxConcurrentStreams = value;
-                break;
-            }
+        case SETTINGS_MAX_CONCURRENT_STREAMS:
+        {
+            m_maxConcurrentStreams = value;
+            break;
+        }
 
-            case SETTINGS_CURRENT_CWND:
-            {
-                // ignored for now, just an informative value
-                break;
-            }
+        case SETTINGS_CURRENT_CWND:
+        {
+            // ignored for now, just an informative value
+            break;
+        }
 
-            case SETTINGS_DOWNLOAD_RETRANS_RATE:
-            {
-                // ignored for now, just an estimated informative value
-                break;
-            }
+        case SETTINGS_DOWNLOAD_RETRANS_RATE:
+        {
+            // ignored for now, just an estimated informative value
+            break;
+        }
 
-            case SETTINGS_INITIAL_WINDOW_SIZE:
-            {
-                m_initialWindowSize = value;
-                break;
-            }
+        case SETTINGS_INITIAL_WINDOW_SIZE:
+        {
+            m_initialWindowSize = value;
+            break;
+        }
 
-            case SETTINGS_CLIENT_CERTIFICATE_VECTOR_SIZE:
-            {
-                // client certificates are not supported
-                break;
-            }
+        case SETTINGS_CLIENT_CERTIFICATE_VECTOR_SIZE:
+        {
+            // client certificates are not supported
+            break;
+        }
 
-            default:
-                qWarning() << "QSpdyProtocolHandler::handleSETTINGS() Found unknown settings value of " << value;
+        default:
+            qWarning() << "QSpdyProtocolHandler::handleSETTINGS() Found unknown settings value of " << value;
         }
     }
 }
@@ -1282,27 +1282,27 @@ void QSpdyProtocolHandler::handleGOAWAY( char,  quint32, const QByteArray &frame
 
     switch ( statusCode )
     {
-        case GOAWAY_OK:
-        {
-            errorCode = QNetworkReply::NoError;
-            break;
-        }
+    case GOAWAY_OK:
+    {
+        errorCode = QNetworkReply::NoError;
+        break;
+    }
 
-        case GOAWAY_PROTOCOL_ERROR:
-        {
-            errorCode = QNetworkReply::ProtocolFailure;
-            break;
-        }
+    case GOAWAY_PROTOCOL_ERROR:
+    {
+        errorCode = QNetworkReply::ProtocolFailure;
+        break;
+    }
 
-        case GOAWAY_INTERNAL_ERROR:
-        {
-            errorCode = QNetworkReply::InternalServerError;
-            break;
-        }
+    case GOAWAY_INTERNAL_ERROR:
+    {
+        errorCode = QNetworkReply::InternalServerError;
+        break;
+    }
 
-        default:
-            qWarning() << "QSpdyProtocolHandler::handleGOAWAY() Unexpected status code " << statusCode;
-            errorCode = QNetworkReply::ProtocolUnknownError;
+    default:
+        qWarning() << "QSpdyProtocolHandler::handleGOAWAY() Unexpected status code " << statusCode;
+        errorCode = QNetworkReply::ProtocolUnknownError;
     }
 
     qint32 lastGoodStreamID = getStreamID( frameData.constData() );

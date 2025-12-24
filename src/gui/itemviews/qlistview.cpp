@@ -452,7 +452,7 @@ QItemViewPaintPairs QListViewPrivate::draggablePaintPairs( const QModelIndexList
 
     QItemViewPaintPairs ret;
     const QSet<QModelIndex> visibleIndexes = intersectingSet( viewportRect.translated( q->horizontalOffset(),
-            q->verticalOffset() ) ).toList().toSet();
+        q->verticalOffset() ) ).toList().toSet();
 
     for ( int i = 0; i < indexes.count(); ++i )
     {
@@ -773,7 +773,7 @@ void QListView::paintEvent( QPaintEvent *e )
     QPainter painter( d->viewport );
 
     const QVector<QModelIndex> toBeRendered = d->intersectingSet( e->rect().translated( horizontalOffset(), verticalOffset() ),
-            false );
+        false );
 
     const QModelIndex current = currentIndex();
     const QModelIndex hover = d->hover;
@@ -995,158 +995,158 @@ QModelIndex QListView::moveCursor( CursorAction cursorAction, Qt::KeyboardModifi
 
     switch ( cursorAction )
     {
-        case MoveLeft:
-            while ( intersectVector.isEmpty() )
+    case MoveLeft:
+        while ( intersectVector.isEmpty() )
+        {
+            rect.translate( -rect.width(), 0 );
+
+            if ( rect.right() <= 0 )
             {
-                rect.translate( -rect.width(), 0 );
-
-                if ( rect.right() <= 0 )
-                {
-                    return current;
-                }
-
-                if ( rect.left() < 0 )
-                {
-                    rect.setLeft( 0 );
-                }
-
-                intersectVector = d->intersectingSet( rect );
-                d->removeCurrentAndDisabled( &intersectVector, current );
+                return current;
             }
 
-            return d->closestIndex( initialRect, intersectVector );
-
-        case MoveRight:
-            while ( intersectVector.isEmpty() )
+            if ( rect.left() < 0 )
             {
-                rect.translate( rect.width(), 0 );
-
-                if ( rect.left() >= contents.width() )
-                {
-                    return current;
-                }
-
-                if ( rect.right() > contents.width() )
-                {
-                    rect.setRight( contents.width() );
-                }
-
-                intersectVector = d->intersectingSet( rect );
-                d->removeCurrentAndDisabled( &intersectVector, current );
+                rect.setLeft( 0 );
             }
 
-            return d->closestIndex( initialRect, intersectVector );
+            intersectVector = d->intersectingSet( rect );
+            d->removeCurrentAndDisabled( &intersectVector, current );
+        }
 
-        case MovePageUp:
-            // move current by (visibileRowCount - 1) items.
-            // rect.translate(0, -rect.height()); will happen in the switch fallthrough for MoveUp.
-            rect.moveTop( rect.top() - d->viewport->height() + 2 * rect.height() );
+        return d->closestIndex( initialRect, intersectVector );
 
-            if ( rect.top() < rect.height() )
+    case MoveRight:
+        while ( intersectVector.isEmpty() )
+        {
+            rect.translate( rect.width(), 0 );
+
+            if ( rect.left() >= contents.width() )
             {
-                rect.moveTop( rect.height() );
+                return current;
             }
 
-            [[fallthrough]];
-
-        case MovePrevious:
-        case MoveUp:
-            while ( intersectVector.isEmpty() )
+            if ( rect.right() > contents.width() )
             {
-                rect.translate( 0, -rect.height() );
+                rect.setRight( contents.width() );
+            }
 
-                if ( rect.bottom() <= 0 )
-                {
+            intersectVector = d->intersectingSet( rect );
+            d->removeCurrentAndDisabled( &intersectVector, current );
+        }
+
+        return d->closestIndex( initialRect, intersectVector );
+
+    case MovePageUp:
+        // move current by (visibileRowCount - 1) items.
+        // rect.translate(0, -rect.height()); will happen in the switch fallthrough for MoveUp.
+        rect.moveTop( rect.top() - d->viewport->height() + 2 * rect.height() );
+
+        if ( rect.top() < rect.height() )
+        {
+            rect.moveTop( rect.height() );
+        }
+
+        [[fallthrough]];
+
+    case MovePrevious:
+    case MoveUp:
+        while ( intersectVector.isEmpty() )
+        {
+            rect.translate( 0, -rect.height() );
+
+            if ( rect.bottom() <= 0 )
+            {
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-                    if ( QApplication::keypadNavigationEnabled() )
+                if ( QApplication::keypadNavigationEnabled() )
+                {
+                    int row = d->batchStartRow() - 1;
+
+                    while ( row >= 0 && d->isHiddenOrDisabled( row ) )
                     {
-                        int row = d->batchStartRow() - 1;
-
-                        while ( row >= 0 && d->isHiddenOrDisabled( row ) )
-                        {
-                            --row;
-                        }
-
-                        if ( row >= 0 )
-                        {
-                            return d->model->index( row, d->column, d->root );
-                        }
+                        --row;
                     }
 
+                    if ( row >= 0 )
+                    {
+                        return d->model->index( row, d->column, d->root );
+                    }
+                }
+
 #endif
-                    return current;
-                }
-
-                if ( rect.top() < 0 )
-                {
-                    rect.setTop( 0 );
-                }
-
-                intersectVector = d->intersectingSet( rect );
-                d->removeCurrentAndDisabled( &intersectVector, current );
+                return current;
             }
 
-            return d->closestIndex( initialRect, intersectVector );
-
-        case MovePageDown:
-            // move current by (visibileRowCount - 1) items.
-            // rect.translate(0, rect.height()); will happen in the switch fallthrough for MoveDown.
-            rect.moveTop( rect.top() + d->viewport->height() - 2 * rect.height() );
-
-            if ( rect.bottom() > contents.height() - rect.height() )
+            if ( rect.top() < 0 )
             {
-                rect.moveBottom( contents.height() - rect.height() );
+                rect.setTop( 0 );
             }
 
-            [[fallthrough]];
+            intersectVector = d->intersectingSet( rect );
+            d->removeCurrentAndDisabled( &intersectVector, current );
+        }
 
-        case MoveNext:
-        case MoveDown:
-            while ( intersectVector.isEmpty() )
+        return d->closestIndex( initialRect, intersectVector );
+
+    case MovePageDown:
+        // move current by (visibileRowCount - 1) items.
+        // rect.translate(0, rect.height()); will happen in the switch fallthrough for MoveDown.
+        rect.moveTop( rect.top() + d->viewport->height() - 2 * rect.height() );
+
+        if ( rect.bottom() > contents.height() - rect.height() )
+        {
+            rect.moveBottom( contents.height() - rect.height() );
+        }
+
+        [[fallthrough]];
+
+    case MoveNext:
+    case MoveDown:
+        while ( intersectVector.isEmpty() )
+        {
+            rect.translate( 0, rect.height() );
+
+            if ( rect.top() >= contents.height() )
             {
-                rect.translate( 0, rect.height() );
-
-                if ( rect.top() >= contents.height() )
-                {
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-                    if ( QApplication::keypadNavigationEnabled() )
+                if ( QApplication::keypadNavigationEnabled() )
+                {
+                    int rowCount = d->model->rowCount( d->root );
+                    int row = 0;
+
+                    while ( row < rowCount && d->isHiddenOrDisabled( row ) )
                     {
-                        int rowCount = d->model->rowCount( d->root );
-                        int row = 0;
-
-                        while ( row < rowCount && d->isHiddenOrDisabled( row ) )
-                        {
-                            ++row;
-                        }
-
-                        if ( row < rowCount )
-                        {
-                            return d->model->index( row, d->column, d->root );
-                        }
+                        ++row;
                     }
 
+                    if ( row < rowCount )
+                    {
+                        return d->model->index( row, d->column, d->root );
+                    }
+                }
+
 #endif
-                    return current;
-                }
-
-                if ( rect.bottom() > contents.height() )
-                {
-                    rect.setBottom( contents.height() );
-                }
-
-                intersectVector = d->intersectingSet( rect );
-                d->removeCurrentAndDisabled( &intersectVector, current );
+                return current;
             }
 
-            return d->closestIndex( initialRect, intersectVector );
+            if ( rect.bottom() > contents.height() )
+            {
+                rect.setBottom( contents.height() );
+            }
 
-        case MoveHome:
-            return d->model->index( 0, d->column, d->root );
+            intersectVector = d->intersectingSet( rect );
+            d->removeCurrentAndDisabled( &intersectVector, current );
+        }
 
-        case MoveEnd:
-            return d->model->index( d->batchStartRow() - 1, d->column, d->root );
+        return d->closestIndex( initialRect, intersectVector );
+
+    case MoveHome:
+        return d->model->index( 0, d->column, d->root );
+
+    case MoveEnd:
+        return d->model->index( d->batchStartRow() - 1, d->column, d->root );
     }
 
     return current;
@@ -2155,54 +2155,54 @@ void QListModeViewBase::dragMoveEvent( QDragMoveEvent *event )
             // if spacing, should try to draw between items, not just next to item.
             switch ( dd->dropIndicatorPosition )
             {
-                case QAbstractItemView::AboveItem:
-                    if ( dd->isIndexDropEnabled( index.parent() ) )
-                    {
-                        dd->dropIndicatorRect = QRect( rect.left() - dd->spacing(), rect.top(), 0, rect.height() );
-                        event->accept();
-                    }
-                    else
-                    {
-                        dd->dropIndicatorRect = QRect();
-                    }
-
-                    break;
-
-                case QAbstractItemView::BelowItem:
-                    if ( dd->isIndexDropEnabled( index.parent() ) )
-                    {
-                        dd->dropIndicatorRect = QRect( rect.right() + dd->spacing(), rect.top(), 0, rect.height() );
-                        event->accept();
-                    }
-                    else
-                    {
-                        dd->dropIndicatorRect = QRect();
-                    }
-
-                    break;
-
-                case QAbstractItemView::OnItem:
-                    if ( dd->isIndexDropEnabled( index ) )
-                    {
-                        dd->dropIndicatorRect = rect;
-                        event->accept();
-                    }
-                    else
-                    {
-                        dd->dropIndicatorRect = QRect();
-                    }
-
-                    break;
-
-                case QAbstractItemView::OnViewport:
+            case QAbstractItemView::AboveItem:
+                if ( dd->isIndexDropEnabled( index.parent() ) )
+                {
+                    dd->dropIndicatorRect = QRect( rect.left() - dd->spacing(), rect.top(), 0, rect.height() );
+                    event->accept();
+                }
+                else
+                {
                     dd->dropIndicatorRect = QRect();
+                }
 
-                    if ( dd->isIndexDropEnabled( qq->rootIndex() ) )
-                    {
-                        event->accept(); // allow dropping in empty areas
-                    }
+                break;
 
-                    break;
+            case QAbstractItemView::BelowItem:
+                if ( dd->isIndexDropEnabled( index.parent() ) )
+                {
+                    dd->dropIndicatorRect = QRect( rect.right() + dd->spacing(), rect.top(), 0, rect.height() );
+                    event->accept();
+                }
+                else
+                {
+                    dd->dropIndicatorRect = QRect();
+                }
+
+                break;
+
+            case QAbstractItemView::OnItem:
+                if ( dd->isIndexDropEnabled( index ) )
+                {
+                    dd->dropIndicatorRect = rect;
+                    event->accept();
+                }
+                else
+                {
+                    dd->dropIndicatorRect = QRect();
+                }
+
+                break;
+
+            case QAbstractItemView::OnViewport:
+                dd->dropIndicatorRect = QRect();
+
+                if ( dd->isIndexDropEnabled( qq->rootIndex() ) )
+                {
+                    event->accept(); // allow dropping in empty areas
+                }
+
+                break;
             }
 
         }
@@ -2265,21 +2265,21 @@ bool QListModeViewBase::dropOn( QDropEvent *event, int *dropRow, int *dropCol, Q
 
             switch ( dd->dropIndicatorPosition )
             {
-                case QAbstractItemView::AboveItem:
-                    row = index.row();
-                    col = index.column();
-                    index = index.parent();
-                    break;
+            case QAbstractItemView::AboveItem:
+                row = index.row();
+                col = index.column();
+                index = index.parent();
+                break;
 
-                case QAbstractItemView::BelowItem:
-                    row = index.row() + 1;
-                    col = index.column();
-                    index = index.parent();
-                    break;
+            case QAbstractItemView::BelowItem:
+                row = index.row() + 1;
+                col = index.column();
+                index = index.parent();
+                break;
 
-                case QAbstractItemView::OnItem:
-                case QAbstractItemView::OnViewport:
-                    break;
+            case QAbstractItemView::OnItem:
+            case QAbstractItemView::OnViewport:
+                break;
             }
 
         }
@@ -3041,17 +3041,17 @@ int QListModeViewBase::perItemScrollToValue( int index, int scrollValue, int vie
 
         switch ( hint )
         {
-            case QAbstractItemView::PositionAtTop:
-                return index;
+        case QAbstractItemView::PositionAtTop:
+            return index;
 
-            case QAbstractItemView::PositionAtBottom:
-                return index - itemCount + 1;
+        case QAbstractItemView::PositionAtBottom:
+            return index - itemCount + 1;
 
-            case QAbstractItemView::PositionAtCenter:
-                return index - ( itemCount / 2 );
+        case QAbstractItemView::PositionAtCenter:
+            return index - ( itemCount / 2 );
 
-            default:
-                break;
+        default:
+            break;
         }
     }
     else
@@ -3085,17 +3085,17 @@ int QListModeViewBase::perItemScrollToValue( int index, int scrollValue, int vie
 
             switch ( hint )
             {
-                case QAbstractItemView::PositionAtTop:
-                    return segment;
+            case QAbstractItemView::PositionAtTop:
+                return segment;
 
-                case QAbstractItemView::PositionAtBottom:
-                    return segment - segmentCount + 1;
+            case QAbstractItemView::PositionAtBottom:
+                return segment - segmentCount + 1;
 
-                case QAbstractItemView::PositionAtCenter:
-                    return segment - ( segmentCount / 2 );
+            case QAbstractItemView::PositionAtCenter:
+                return segment - ( segmentCount / 2 );
 
-                default:
-                    break;
+            default:
+                break;
             }
         }
     }

@@ -66,44 +66,44 @@ static inline QString jobHoldToString( const QCUPSSupport::JobHoldUntil jobHold,
 {
     switch ( jobHold )
     {
-        case QCUPSSupport::Indefinite:
-            return QString( "indefinite" );
+    case QCUPSSupport::Indefinite:
+        return QString( "indefinite" );
 
-        case QCUPSSupport::DayTime:
-            return QString( "day-time" );
+    case QCUPSSupport::DayTime:
+        return QString( "day-time" );
 
-        case QCUPSSupport::Night:
-            return QString( "night" );
+    case QCUPSSupport::Night:
+        return QString( "night" );
 
-        case QCUPSSupport::SecondShift:
-            return QString( "second-shift" );
+    case QCUPSSupport::SecondShift:
+        return QString( "second-shift" );
 
-        case QCUPSSupport::ThirdShift:
-            return QString( "third-shift" );
+    case QCUPSSupport::ThirdShift:
+        return QString( "third-shift" );
 
-        case QCUPSSupport::Weekend:
-            return QString( "weekend" );
+    case QCUPSSupport::Weekend:
+        return QString( "weekend" );
 
-        case QCUPSSupport::SpecificTime:
-            if ( ! holdUntilTime.isNull() )
+    case QCUPSSupport::SpecificTime:
+        if ( ! holdUntilTime.isNull() )
+        {
+            // CUPS expects the time in UTC, user has entered in local time, so get the UTS equivalent
+            QDateTime localDateTime = QDateTime::currentDateTime();
+
+            // Check if time is for tomorrow in case of DST change overnight
+            if ( holdUntilTime < localDateTime.time() )
             {
-                // CUPS expects the time in UTC, user has entered in local time, so get the UTS equivalent
-                QDateTime localDateTime = QDateTime::currentDateTime();
-
-                // Check if time is for tomorrow in case of DST change overnight
-                if ( holdUntilTime < localDateTime.time() )
-                {
-                    localDateTime = localDateTime.addDays( 1 );
-                }
-
-                localDateTime.setTime( holdUntilTime );
-                return localDateTime.toUTC().time().toString( "HH:mm" );
+                localDateTime = localDateTime.addDays( 1 );
             }
 
-            [[fallthrough]];
+            localDateTime.setTime( holdUntilTime );
+            return localDateTime.toUTC().time().toString( "HH:mm" );
+        }
 
-        case QCUPSSupport::NoHold:
-            return QString();
+        [[fallthrough]];
+
+    case QCUPSSupport::NoHold:
+        return QString();
     }
 
     // error, may want to throw
@@ -147,26 +147,26 @@ static inline QString bannerPageToString( const QCUPSSupport::BannerPage bannerP
 {
     switch ( bannerPage )
     {
-        case QCUPSSupport::NoBanner:
-            return QString( "none" );
+    case QCUPSSupport::NoBanner:
+        return QString( "none" );
 
-        case QCUPSSupport::Standard:
-            return QString( "standard" );
+    case QCUPSSupport::Standard:
+        return QString( "standard" );
 
-        case QCUPSSupport::Unclassified:
-            return QString( "unclassified" );
+    case QCUPSSupport::Unclassified:
+        return QString( "unclassified" );
 
-        case QCUPSSupport::Confidential:
-            return QString( "confidential" );
+    case QCUPSSupport::Confidential:
+        return QString( "confidential" );
 
-        case QCUPSSupport::Classified:
-            return QString( "classified" );
+    case QCUPSSupport::Classified:
+        return QString( "classified" );
 
-        case QCUPSSupport::Secret:
-            return QString( "secret" );
+    case QCUPSSupport::Secret:
+        return QString( "secret" );
 
-        case QCUPSSupport::TopSecret:
-            return QString( "topsecret" );
+    case QCUPSSupport::TopSecret:
+        return QString( "topsecret" );
     }
 
     // error, may want to throw
@@ -191,17 +191,17 @@ void QCUPSSupport::setPageSet( QPrinter *printer, const PageSet pageSet )
 
     switch ( pageSet )
     {
-        case OddPages:
-            pageSetString = "odd";
-            break;
+    case OddPages:
+        pageSetString = "odd";
+        break;
 
-        case EvenPages:
-            pageSetString = "even";
-            break;
+    case EvenPages:
+        pageSetString = "even";
+        break;
 
-        case AllPages:
-            pageSetString = "all";
-            break;
+    case AllPages:
+        pageSetString = "all";
+        break;
     }
 
     setCupsOption( cupsOptions, "page-set", pageSetString );

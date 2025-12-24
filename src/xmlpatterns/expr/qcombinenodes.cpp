@@ -49,17 +49,17 @@ Item::Iterator::Ptr CombineNodes::evaluateSequence( const DynamicContext::Ptr &c
 
     switch ( m_operator )
     {
-        case Intersect:
-            return Item::Iterator::Ptr( new IntersectIterator( op1, op2 ) );
+    case Intersect:
+        return Item::Iterator::Ptr( new IntersectIterator( op1, op2 ) );
 
-        case Except:
-            return Item::Iterator::Ptr( new ExceptIterator( op1, op2 ) );
+    case Except:
+        return Item::Iterator::Ptr( new ExceptIterator( op1, op2 ) );
 
-        default:
-        {
-            Q_ASSERT( m_operator == Union );
-            return Item::Iterator::Ptr( new UnionIterator( op1, op2 ) );
-        }
+    default:
+    {
+        Q_ASSERT( m_operator == Union );
+        return Item::Iterator::Ptr( new UnionIterator( op1, op2 ) );
+    }
     }
 }
 
@@ -100,17 +100,17 @@ QString CombineNodes::displayName( const Operator op )
 {
     switch ( op )
     {
-        case Intersect:
-            return QLatin1String( "intersect" );
+    case Intersect:
+        return QLatin1String( "intersect" );
 
-        case Except:
-            return QLatin1String( "except" );
+    case Except:
+        return QLatin1String( "except" );
 
-        default:
-        {
-            Q_ASSERT( op == Union );
-            return QLatin1String( "union" );
-        }
+    default:
+    {
+        Q_ASSERT( op == Union );
+        return QLatin1String( "union" );
+    }
     }
 }
 

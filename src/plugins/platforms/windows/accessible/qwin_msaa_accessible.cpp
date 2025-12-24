@@ -385,256 +385,256 @@ HRESULT STDMETHODCALLTYPE QWindowsMsaaAccessible::Invoke( long dispIdMember, con
 
     switch ( dispIdMember )
     {
-        case DISPID_ACC_PARENT:
-            if ( wFlags == DISPATCH_PROPERTYGET )
+    case DISPID_ACC_PARENT:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            if ( !pVarResult )
             {
-                if ( !pVarResult )
-                {
-                    return E_INVALIDARG;
-                }
-
-                hr = get_accParent( &pVarResult->pdispVal );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
+                return E_INVALIDARG;
             }
 
-            break;
-
-        case DISPID_ACC_CHILDCOUNT:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                if ( !pVarResult )
-                {
-                    return E_INVALIDARG;
-                }
-
-                hr = get_accChildCount( &pVarResult->lVal );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_CHILD:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                hr = get_accChild( pDispParams->rgvarg[0], &pVarResult->pdispVal );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_NAME:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                hr = get_accName( pDispParams->rgvarg[0], &pVarResult->bstrVal );
-            }
-            else if ( wFlags == DISPATCH_PROPERTYPUT )
-            {
-                hr = put_accName( pDispParams->rgvarg[0], pVarResult->bstrVal );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_VALUE:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                hr = get_accValue( pDispParams->rgvarg[0], &pVarResult->bstrVal );
-            }
-            else if ( wFlags == DISPATCH_PROPERTYPUT )
-            {
-                hr = put_accValue( pDispParams->rgvarg[0], pVarResult->bstrVal );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_DESCRIPTION:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                hr = get_accDescription( pDispParams->rgvarg[0], &pVarResult->bstrVal );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_ROLE:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                hr = get_accRole( pDispParams->rgvarg[0], pVarResult );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_STATE:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                hr = get_accState( pDispParams->rgvarg[0], pVarResult );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_HELP:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                hr = get_accHelp( pDispParams->rgvarg[0], &pVarResult->bstrVal );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_HELPTOPIC:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                hr = get_accHelpTopic( &pDispParams->rgvarg[2].bstrVal, pDispParams->rgvarg[1], &pDispParams->rgvarg[0].lVal );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_KEYBOARDSHORTCUT:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                hr = get_accKeyboardShortcut( pDispParams->rgvarg[0], &pVarResult->bstrVal );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_FOCUS:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                hr = get_accFocus( pVarResult );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_SELECTION:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                hr = get_accSelection( pVarResult );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_DEFAULTACTION:
-            if ( wFlags == DISPATCH_PROPERTYGET )
-            {
-                hr = get_accDefaultAction( pDispParams->rgvarg[0], &pVarResult->bstrVal );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_SELECT:
-            if ( wFlags == DISPATCH_METHOD )
-            {
-                hr = accSelect( pDispParams->rgvarg[1].lVal, pDispParams->rgvarg[0] );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_LOCATION:
-            if ( wFlags == DISPATCH_METHOD )
-            {
-                hr = accLocation( &pDispParams->rgvarg[4].lVal, &pDispParams->rgvarg[3].lVal, &pDispParams->rgvarg[2].lVal,
-                                  &pDispParams->rgvarg[1].lVal, pDispParams->rgvarg[0] );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_NAVIGATE:
-            if ( wFlags == DISPATCH_METHOD )
-            {
-                hr = accNavigate( pDispParams->rgvarg[1].lVal, pDispParams->rgvarg[0], pVarResult );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_HITTEST:
-            if ( wFlags == DISPATCH_METHOD )
-            {
-                hr = accHitTest( pDispParams->rgvarg[1].lVal, pDispParams->rgvarg[0].lVal, pVarResult );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        case DISPID_ACC_DODEFAULTACTION:
-            if ( wFlags == DISPATCH_METHOD )
-            {
-                hr = accDoDefaultAction( pDispParams->rgvarg[0] );
-            }
-            else
-            {
-                hr = DISP_E_MEMBERNOTFOUND;
-            }
-
-            break;
-
-        default:
+            hr = get_accParent( &pVarResult->pdispVal );
+        }
+        else
+        {
             hr = DISP_E_MEMBERNOTFOUND;
-            break;
+        }
+
+        break;
+
+    case DISPID_ACC_CHILDCOUNT:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            if ( !pVarResult )
+            {
+                return E_INVALIDARG;
+            }
+
+            hr = get_accChildCount( &pVarResult->lVal );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_CHILD:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            hr = get_accChild( pDispParams->rgvarg[0], &pVarResult->pdispVal );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_NAME:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            hr = get_accName( pDispParams->rgvarg[0], &pVarResult->bstrVal );
+        }
+        else if ( wFlags == DISPATCH_PROPERTYPUT )
+        {
+            hr = put_accName( pDispParams->rgvarg[0], pVarResult->bstrVal );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_VALUE:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            hr = get_accValue( pDispParams->rgvarg[0], &pVarResult->bstrVal );
+        }
+        else if ( wFlags == DISPATCH_PROPERTYPUT )
+        {
+            hr = put_accValue( pDispParams->rgvarg[0], pVarResult->bstrVal );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_DESCRIPTION:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            hr = get_accDescription( pDispParams->rgvarg[0], &pVarResult->bstrVal );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_ROLE:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            hr = get_accRole( pDispParams->rgvarg[0], pVarResult );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_STATE:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            hr = get_accState( pDispParams->rgvarg[0], pVarResult );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_HELP:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            hr = get_accHelp( pDispParams->rgvarg[0], &pVarResult->bstrVal );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_HELPTOPIC:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            hr = get_accHelpTopic( &pDispParams->rgvarg[2].bstrVal, pDispParams->rgvarg[1], &pDispParams->rgvarg[0].lVal );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_KEYBOARDSHORTCUT:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            hr = get_accKeyboardShortcut( pDispParams->rgvarg[0], &pVarResult->bstrVal );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_FOCUS:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            hr = get_accFocus( pVarResult );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_SELECTION:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            hr = get_accSelection( pVarResult );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_DEFAULTACTION:
+        if ( wFlags == DISPATCH_PROPERTYGET )
+        {
+            hr = get_accDefaultAction( pDispParams->rgvarg[0], &pVarResult->bstrVal );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_SELECT:
+        if ( wFlags == DISPATCH_METHOD )
+        {
+            hr = accSelect( pDispParams->rgvarg[1].lVal, pDispParams->rgvarg[0] );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_LOCATION:
+        if ( wFlags == DISPATCH_METHOD )
+        {
+            hr = accLocation( &pDispParams->rgvarg[4].lVal, &pDispParams->rgvarg[3].lVal, &pDispParams->rgvarg[2].lVal,
+                              &pDispParams->rgvarg[1].lVal, pDispParams->rgvarg[0] );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_NAVIGATE:
+        if ( wFlags == DISPATCH_METHOD )
+        {
+            hr = accNavigate( pDispParams->rgvarg[1].lVal, pDispParams->rgvarg[0], pVarResult );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_HITTEST:
+        if ( wFlags == DISPATCH_METHOD )
+        {
+            hr = accHitTest( pDispParams->rgvarg[1].lVal, pDispParams->rgvarg[0].lVal, pVarResult );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    case DISPID_ACC_DODEFAULTACTION:
+        if ( wFlags == DISPATCH_METHOD )
+        {
+            hr = accDoDefaultAction( pDispParams->rgvarg[0] );
+        }
+        else
+        {
+            hr = DISP_E_MEMBERNOTFOUND;
+        }
+
+        break;
+
+    default:
+        hr = DISP_E_MEMBERNOTFOUND;
+        break;
     }
 
     if ( !SUCCEEDED( hr ) )
@@ -763,151 +763,151 @@ HRESULT STDMETHODCALLTYPE QWindowsMsaaAccessible::accNavigate( long navDir, VARI
 
     switch ( navDir )
     {
-        case NAVDIR_FIRSTCHILD:
-            acc = accessible->child( 0 );
-            break;
+    case NAVDIR_FIRSTCHILD:
+        acc = accessible->child( 0 );
+        break;
 
-        case NAVDIR_LASTCHILD:
-            acc = accessible->child( accessible->childCount() - 1 );
-            break;
+    case NAVDIR_LASTCHILD:
+        acc = accessible->child( accessible->childCount() - 1 );
+        break;
 
-        case NAVDIR_NEXT:
-        case NAVDIR_PREVIOUS:
-            if ( ! varStart.lVal )
+    case NAVDIR_NEXT:
+    case NAVDIR_PREVIOUS:
+        if ( ! varStart.lVal )
+        {
+            QAccessibleInterface *parent = accessible->parent();
+
+            if ( parent && parent->isValid() )
             {
-                QAccessibleInterface *parent = accessible->parent();
-
-                if ( parent && parent->isValid() )
-                {
-                    int index = parent->indexOfChild( accessible );
-                    index += ( navDir == NAVDIR_NEXT ) ? 1 : -1;
-
-                    if ( index >= 0 && index < parent->childCount() )
-                    {
-                        acc = parent->child( index );
-                    }
-                }
-            }
-            else
-            {
-                int index = varStart.lVal;
+                int index = parent->indexOfChild( accessible );
                 index += ( navDir == NAVDIR_NEXT ) ? 1 : -1;
 
-                if ( index > 0 && index <= accessible->childCount() )
+                if ( index >= 0 && index < parent->childCount() )
                 {
-                    acc = accessible->child( index - 1 );
+                    acc = parent->child( index );
                 }
             }
-
-            break;
-
-        // Geometrical
-        case NAVDIR_UP:
-        case NAVDIR_DOWN:
-        case NAVDIR_LEFT:
-        case NAVDIR_RIGHT:
+        }
+        else
         {
-            QAccessibleInterface *pIface = accessible->parent();
+            int index = varStart.lVal;
+            index += ( navDir == NAVDIR_NEXT ) ? 1 : -1;
 
-            if ( pIface && pIface->isValid() )
+            if ( index > 0 && index <= accessible->childCount() )
             {
-                const int indexOfOurself = pIface->indexOfChild( accessible );
-                QRect startg = accessible->rect();
-                QPoint startc = startg.center();
-                QAccessibleInterface *candidate = nullptr;
-                unsigned mindist = UINT_MAX;    // will work on screen sizes at least up to 46340x46340
-                const int sibCount = pIface->childCount();
+                acc = accessible->child( index - 1 );
+            }
+        }
 
-                for ( int i = 0; i < sibCount; ++i )
+        break;
+
+    // Geometrical
+    case NAVDIR_UP:
+    case NAVDIR_DOWN:
+    case NAVDIR_LEFT:
+    case NAVDIR_RIGHT:
+    {
+        QAccessibleInterface *pIface = accessible->parent();
+
+        if ( pIface && pIface->isValid() )
+        {
+            const int indexOfOurself = pIface->indexOfChild( accessible );
+            QRect startg = accessible->rect();
+            QPoint startc = startg.center();
+            QAccessibleInterface *candidate = nullptr;
+            unsigned mindist = UINT_MAX;    // will work on screen sizes at least up to 46340x46340
+            const int sibCount = pIface->childCount();
+
+            for ( int i = 0; i < sibCount; ++i )
+            {
+                QAccessibleInterface *sibling = nullptr;
+                sibling = pIface->child( i );
+                Q_ASSERT( sibling );
+
+                if ( i == indexOfOurself || sibling->state().invisible )
                 {
-                    QAccessibleInterface *sibling = nullptr;
-                    sibling = pIface->child( i );
-                    Q_ASSERT( sibling );
+                    //ignore ourself and invisible siblings
+                    continue;
+                }
 
-                    if ( i == indexOfOurself || sibling->state().invisible )
+                QRect sibg = sibling->rect();
+                QPoint sibc = sibg.center();
+                QPoint sibp;
+                QPoint startp;
+                QPoint distp;
+
+                switch ( navDir )
+                {
+                case NAVDIR_LEFT:
+                    startp = QPoint( startg.left(), startg.top() + startg.height() / 2 );
+                    sibp = QPoint( sibg.right(), sibg.top() + sibg.height() / 2 );
+
+                    if ( QPoint( sibc - startc ).x() >= 0 )
                     {
-                        //ignore ourself and invisible siblings
                         continue;
                     }
 
-                    QRect sibg = sibling->rect();
-                    QPoint sibc = sibg.center();
-                    QPoint sibp;
-                    QPoint startp;
-                    QPoint distp;
+                    distp = sibp - startp;
+                    break;
 
-                    switch ( navDir )
+                case NAVDIR_RIGHT:
+                    startp = QPoint( startg.right(), startg.top() + startg.height() / 2 );
+                    sibp = QPoint( sibg.left(), sibg.top() + sibg.height() / 2 );
+
+                    if ( QPoint( sibc - startc ).x() <= 0 )
                     {
-                        case NAVDIR_LEFT:
-                            startp = QPoint( startg.left(), startg.top() + startg.height() / 2 );
-                            sibp = QPoint( sibg.right(), sibg.top() + sibg.height() / 2 );
-
-                            if ( QPoint( sibc - startc ).x() >= 0 )
-                            {
-                                continue;
-                            }
-
-                            distp = sibp - startp;
-                            break;
-
-                        case NAVDIR_RIGHT:
-                            startp = QPoint( startg.right(), startg.top() + startg.height() / 2 );
-                            sibp = QPoint( sibg.left(), sibg.top() + sibg.height() / 2 );
-
-                            if ( QPoint( sibc - startc ).x() <= 0 )
-                            {
-                                continue;
-                            }
-
-                            distp = sibp - startp;
-                            break;
-
-                        case NAVDIR_UP:
-                            startp = QPoint( startg.left() + startg.width() / 2, startg.top() );
-                            sibp = QPoint( sibg.left() + sibg.width() / 2, sibg.bottom() );
-
-                            if ( QPoint( sibc - startc ).y() >= 0 )
-                            {
-                                continue;
-                            }
-
-                            distp = sibp - startp;
-                            break;
-
-                        case NAVDIR_DOWN:
-                            startp = QPoint( startg.left() + startg.width() / 2, startg.bottom() );
-                            sibp = QPoint( sibg.left() + sibg.width() / 2, sibg.top() );
-
-                            if ( QPoint( sibc - startc ).y() <= 0 )
-                            {
-                                continue;
-                            }
-
-                            distp = sibp - startp;
-                            break;
-
-                        default:
-                            break;
+                        continue;
                     }
 
-                    // Since we're *comparing* (and not measuring) distances, we can compare the
-                    // squared distance, (thus, no need to take the sqrt()).
-                    unsigned dist = distp.x() * distp.x() + distp.y() * distp.y();
+                    distp = sibp - startp;
+                    break;
 
-                    if ( dist < mindist )
+                case NAVDIR_UP:
+                    startp = QPoint( startg.left() + startg.width() / 2, startg.top() );
+                    sibp = QPoint( sibg.left() + sibg.width() / 2, sibg.bottom() );
+
+                    if ( QPoint( sibc - startc ).y() >= 0 )
                     {
-                        candidate = sibling;
-                        mindist = dist;
+                        continue;
                     }
+
+                    distp = sibp - startp;
+                    break;
+
+                case NAVDIR_DOWN:
+                    startp = QPoint( startg.left() + startg.width() / 2, startg.bottom() );
+                    sibp = QPoint( sibg.left() + sibg.width() / 2, sibg.top() );
+
+                    if ( QPoint( sibc - startc ).y() <= 0 )
+                    {
+                        continue;
+                    }
+
+                    distp = sibp - startp;
+                    break;
+
+                default:
+                    break;
                 }
 
-                acc = candidate;
-            }
-        }
-        break;
+                // Since we're *comparing* (and not measuring) distances, we can compare the
+                // squared distance, (thus, no need to take the sqrt()).
+                unsigned dist = distp.x() * distp.x() + distp.y() * distp.y();
 
-        default:
-            break;
+                if ( dist < mindist )
+                {
+                    candidate = sibling;
+                    mindist = dist;
+                }
+            }
+
+            acc = candidate;
+        }
+    }
+    break;
+
+    default:
+        break;
     }
 
     if ( !acc )

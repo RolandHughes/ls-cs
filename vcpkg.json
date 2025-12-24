@@ -1,0 +1,10 @@
+{
+  "dependencies": [
+    "libmariadb",
+    "libpq",
+    "libpqxx",
+    "openssl",
+    "sqlite3",
+    "zlib"
+  ]
+}

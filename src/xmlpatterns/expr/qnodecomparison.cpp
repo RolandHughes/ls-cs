@@ -47,14 +47,14 @@ Item NodeComparison::evaluateSingleton( const DynamicContext::Ptr &context ) con
 {
     switch ( evaluate( context ) )
     {
-        case True:
-            return CommonValues::BooleanTrue;
+    case True:
+        return CommonValues::BooleanTrue;
 
-        case False:
-            return CommonValues::BooleanFalse;
+    case False:
+        return CommonValues::BooleanFalse;
 
-        default:
-            return Item();
+    default:
+        return Item();
     }
 }
 
@@ -62,12 +62,12 @@ bool NodeComparison::evaluateEBV( const DynamicContext::Ptr &context ) const
 {
     switch ( evaluate( context ) )
     {
-        case True:
-            return true;
+    case True:
+        return true;
 
-        default:
-            /* We include the empty sequence here. */
-            return false;
+    default:
+        /* We include the empty sequence here. */
+        return false;
     }
 }
 
@@ -96,17 +96,17 @@ NodeComparison::Result NodeComparison::evaluate( const DynamicContext::Ptr &cont
 
     switch ( m_op )
     {
-        case QXmlNodeModelIndex::Is:
-            return op1.asNode().is( op2.asNode() ) ? True : False;
+    case QXmlNodeModelIndex::Is:
+        return op1.asNode().is( op2.asNode() ) ? True : False;
 
-        case QXmlNodeModelIndex::Precedes:
-            return op1.asNode().compareOrder( op2.asNode() ) == QXmlNodeModelIndex::Precedes ? True : False;
+    case QXmlNodeModelIndex::Precedes:
+        return op1.asNode().compareOrder( op2.asNode() ) == QXmlNodeModelIndex::Precedes ? True : False;
 
-        default:
-        {
-            Q_ASSERT( m_op == QXmlNodeModelIndex::Follows );
-            return op1.asNode().compareOrder( op2.asNode() ) == QXmlNodeModelIndex::Follows ? True : False;
-        }
+    default:
+    {
+        Q_ASSERT( m_op == QXmlNodeModelIndex::Follows );
+        return op1.asNode().compareOrder( op2.asNode() ) == QXmlNodeModelIndex::Follows ? True : False;
+    }
     }
 }
 
@@ -145,17 +145,17 @@ QString NodeComparison::displayName( const QXmlNodeModelIndex::DocumentOrder op 
 {
     switch ( op )
     {
-        case QXmlNodeModelIndex::Is:
-            return QLatin1String( "is" );
+    case QXmlNodeModelIndex::Is:
+        return QLatin1String( "is" );
 
-        case QXmlNodeModelIndex::Precedes:
-            return QLatin1String( "<<" );
+    case QXmlNodeModelIndex::Precedes:
+        return QLatin1String( "<<" );
 
-        default:
-        {
-            Q_ASSERT( op == QXmlNodeModelIndex::Follows );
-            return QLatin1String( ">>" );
-        }
+    default:
+    {
+        Q_ASSERT( op == QXmlNodeModelIndex::Follows );
+        return QLatin1String( ">>" );
+    }
     }
 }
 

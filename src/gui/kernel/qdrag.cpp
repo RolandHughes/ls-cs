@@ -210,20 +210,20 @@ QPixmap QDrag::dragCursor( Qt::DropAction action ) const
 
     switch ( action )
     {
-        case Qt::MoveAction:
-            shape = Qt::DragMoveCursor;
-            break;
+    case Qt::MoveAction:
+        shape = Qt::DragMoveCursor;
+        break;
 
-        case Qt::CopyAction:
-            shape = Qt::DragCopyCursor;
-            break;
+    case Qt::CopyAction:
+        shape = Qt::DragCopyCursor;
+        break;
 
-        case Qt::LinkAction:
-            shape = Qt::DragLinkCursor;
-            break;
+    case Qt::LinkAction:
+        shape = Qt::DragLinkCursor;
+        break;
 
-        default:
-            shape = Qt::ForbiddenCursor;
+    default:
+        shape = Qt::ForbiddenCursor;
     }
 
     return QGuiApplicationPrivate::instance()->getPixmapCursor( shape );

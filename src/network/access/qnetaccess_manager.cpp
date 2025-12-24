@@ -545,7 +545,7 @@ QNetworkReply *QNetworkAccessManager::createRequest( QNetworkAccessManager::Oper
 
         // A request with QNetworkRequest::AlwaysCache does not need any bearer management
         QNetworkRequest::CacheLoadControl mode = static_cast<QNetworkRequest::CacheLoadControl>(
-                    req.attribute( QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferNetwork ).toInt() );
+                req.attribute( QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferNetwork ).toInt() );
 
         if ( mode == QNetworkRequest::AlwaysCache )
         {
@@ -1295,21 +1295,21 @@ QNetworkRequest QNetworkAccessManagerPrivate::prepareMultipart( const QNetworkRe
 
         switch ( multiPart->d_func()->contentType )
         {
-            case QHttpMultiPart::RelatedType:
-                contentType += "related";
-                break;
+        case QHttpMultiPart::RelatedType:
+            contentType += "related";
+            break;
 
-            case QHttpMultiPart::FormDataType:
-                contentType += "form-data";
-                break;
+        case QHttpMultiPart::FormDataType:
+            contentType += "form-data";
+            break;
 
-            case QHttpMultiPart::AlternativeType:
-                contentType += "alternative";
-                break;
+        case QHttpMultiPart::AlternativeType:
+            contentType += "alternative";
+            break;
 
-            default:
-                contentType += "mixed";
-                break;
+        default:
+            contentType += "mixed";
+            break;
         }
 
         // putting the boundary into quotes, recommended in RFC 2046 section 5.1.1

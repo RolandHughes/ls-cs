@@ -474,66 +474,66 @@ static int cursorIdForShape( int cshape )
 
     switch ( cshape )
     {
-        case Qt::ArrowCursor:
-            cursorId = XC_left_ptr;
-            break;
+    case Qt::ArrowCursor:
+        cursorId = XC_left_ptr;
+        break;
 
-        case Qt::UpArrowCursor:
-            cursorId = XC_center_ptr;
-            break;
+    case Qt::UpArrowCursor:
+        cursorId = XC_center_ptr;
+        break;
 
-        case Qt::CrossCursor:
-            cursorId = XC_crosshair;
-            break;
+    case Qt::CrossCursor:
+        cursorId = XC_crosshair;
+        break;
 
-        case Qt::WaitCursor:
-            cursorId = XC_watch;
-            break;
+    case Qt::WaitCursor:
+        cursorId = XC_watch;
+        break;
 
-        case Qt::IBeamCursor:
-            cursorId = XC_xterm;
-            break;
+    case Qt::IBeamCursor:
+        cursorId = XC_xterm;
+        break;
 
-        case Qt::SizeAllCursor:
-            cursorId = XC_fleur;
-            break;
+    case Qt::SizeAllCursor:
+        cursorId = XC_fleur;
+        break;
 
-        case Qt::PointingHandCursor:
-            cursorId = XC_hand2;
-            break;
+    case Qt::PointingHandCursor:
+        cursorId = XC_hand2;
+        break;
 
-        case Qt::SizeBDiagCursor:
-            cursorId = XC_top_right_corner;
-            break;
+    case Qt::SizeBDiagCursor:
+        cursorId = XC_top_right_corner;
+        break;
 
-        case Qt::SizeFDiagCursor:
-            cursorId = XC_bottom_right_corner;
-            break;
+    case Qt::SizeFDiagCursor:
+        cursorId = XC_bottom_right_corner;
+        break;
 
-        case Qt::SizeVerCursor:
-        case Qt::SplitVCursor:
-            cursorId = XC_sb_v_double_arrow;
-            break;
+    case Qt::SizeVerCursor:
+    case Qt::SplitVCursor:
+        cursorId = XC_sb_v_double_arrow;
+        break;
 
-        case Qt::SizeHorCursor:
-        case Qt::SplitHCursor:
-            cursorId = XC_sb_h_double_arrow;
-            break;
+    case Qt::SizeHorCursor:
+    case Qt::SplitHCursor:
+        cursorId = XC_sb_h_double_arrow;
+        break;
 
-        case Qt::WhatsThisCursor:
-            cursorId = XC_question_arrow;
-            break;
+    case Qt::WhatsThisCursor:
+        cursorId = XC_question_arrow;
+        break;
 
-        case Qt::ForbiddenCursor:
-            cursorId = XC_circle;
-            break;
+    case Qt::ForbiddenCursor:
+        cursorId = XC_circle;
+        break;
 
-        case Qt::BusyCursor:
-            cursorId = XC_watch;
-            break;
+    case Qt::BusyCursor:
+        cursorId = XC_watch;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return cursorId;
@@ -674,20 +674,20 @@ static xcb_cursor_t loadCursor( void *dpy, int cshape )
 
     switch ( cshape )
     {
-        case Qt::DragCopyCursor:
-            cursor = ptrXcursorLibraryLoadCursor( dpy, "dnd-copy" );
-            break;
+    case Qt::DragCopyCursor:
+        cursor = ptrXcursorLibraryLoadCursor( dpy, "dnd-copy" );
+        break;
 
-        case Qt::DragMoveCursor:
-            cursor = ptrXcursorLibraryLoadCursor( dpy, "dnd-move" );
-            break;
+    case Qt::DragMoveCursor:
+        cursor = ptrXcursorLibraryLoadCursor( dpy, "dnd-move" );
+        break;
 
-        case Qt::DragLinkCursor:
-            cursor = ptrXcursorLibraryLoadCursor( dpy, "dnd-link" );
-            break;
+    case Qt::DragLinkCursor:
+        cursor = ptrXcursorLibraryLoadCursor( dpy, "dnd-link" );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( !cursor )

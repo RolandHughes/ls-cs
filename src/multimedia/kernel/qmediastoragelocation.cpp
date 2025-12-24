@@ -40,20 +40,20 @@ QDir QMediaStorageLocation::defaultLocation( MediaType type ) const
 
     switch ( type )
     {
-        case Movies:
-            dirCandidates << QStandardPaths::writableLocation( QStandardPaths::MoviesLocation );
-            break;
+    case Movies:
+        dirCandidates << QStandardPaths::writableLocation( QStandardPaths::MoviesLocation );
+        break;
 
-        case Music:
-            dirCandidates << QStandardPaths::writableLocation( QStandardPaths::MusicLocation );
-            break;
+    case Music:
+        dirCandidates << QStandardPaths::writableLocation( QStandardPaths::MusicLocation );
+        break;
 
-        case Pictures:
-            dirCandidates << QStandardPaths::writableLocation( QStandardPaths::PicturesLocation );
-            break;
+    case Pictures:
+        dirCandidates << QStandardPaths::writableLocation( QStandardPaths::PicturesLocation );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     dirCandidates << QDir::homePath();

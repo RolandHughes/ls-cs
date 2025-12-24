@@ -93,7 +93,7 @@ XsdStateMachine<XsdTerm::Ptr>::StateId XsdStateMachineBuilder::addStartState( Xs
         state )
 {
     const XsdStateMachine<XsdTerm::Ptr>::StateId startState = m_stateMachine->addState(
-                XsdStateMachine<XsdTerm::Ptr>::StartState );
+            XsdStateMachine<XsdTerm::Ptr>::StartState );
     m_stateMachine->addEpsilonTransition( startState, state );
 
     return startState;
@@ -238,7 +238,7 @@ XsdStateMachine<XsdTerm::Ptr>::StateId XsdStateMachineBuilder::buildTerm( const 
         else if ( group->compositor() == XsdModelGroup::AllCompositor )
         {
             const XsdStateMachine<XsdTerm::Ptr>::StateId newStartState = m_stateMachine->addState(
-                        XsdStateMachine<XsdTerm::Ptr>::InternalState );
+                    XsdStateMachine<XsdTerm::Ptr>::InternalState );
 
             const QList<XsdParticle::List> list = allCombinations( group->particles() );
 

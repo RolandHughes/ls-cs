@@ -78,40 +78,40 @@ static qreal position( QGraphicsObject *item, QDeclarativeAnchorLine::AnchorLine
 
     switch ( anchorLine )
     {
-        case QDeclarativeAnchorLine::Left:
-            ret = item->x();
-            break;
+    case QDeclarativeAnchorLine::Left:
+        ret = item->x();
+        break;
 
-        case QDeclarativeAnchorLine::Right:
-            ret = item->x() + d->width();
-            break;
+    case QDeclarativeAnchorLine::Right:
+        ret = item->x() + d->width();
+        break;
 
-        case QDeclarativeAnchorLine::Top:
-            ret = item->y();
-            break;
+    case QDeclarativeAnchorLine::Top:
+        ret = item->y();
+        break;
 
-        case QDeclarativeAnchorLine::Bottom:
-            ret = item->y() + d->height();
-            break;
+    case QDeclarativeAnchorLine::Bottom:
+        ret = item->y() + d->height();
+        break;
 
-        case QDeclarativeAnchorLine::HCenter:
-            ret = item->x() + hcenter( item );
-            break;
+    case QDeclarativeAnchorLine::HCenter:
+        ret = item->x() + hcenter( item );
+        break;
 
-        case QDeclarativeAnchorLine::VCenter:
-            ret = item->y() + vcenter( item );
-            break;
+    case QDeclarativeAnchorLine::VCenter:
+        ret = item->y() + vcenter( item );
+        break;
 
-        case QDeclarativeAnchorLine::Baseline:
-            if ( d->isDeclarativeItem )
-            {
-                ret = item->y() + static_cast<QDeclarativeItem *>( item )->baselineOffset();
-            }
+    case QDeclarativeAnchorLine::Baseline:
+        if ( d->isDeclarativeItem )
+        {
+            ret = item->y() + static_cast<QDeclarativeItem *>( item )->baselineOffset();
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return ret;
@@ -125,40 +125,40 @@ static qreal adjustedPosition( QGraphicsObject *item, QDeclarativeAnchorLine::An
 
     switch ( anchorLine )
     {
-        case QDeclarativeAnchorLine::Left:
-            ret = 0.0;
-            break;
+    case QDeclarativeAnchorLine::Left:
+        ret = 0.0;
+        break;
 
-        case QDeclarativeAnchorLine::Right:
-            ret = d->width();
-            break;
+    case QDeclarativeAnchorLine::Right:
+        ret = d->width();
+        break;
 
-        case QDeclarativeAnchorLine::Top:
-            ret = 0.0;
-            break;
+    case QDeclarativeAnchorLine::Top:
+        ret = 0.0;
+        break;
 
-        case QDeclarativeAnchorLine::Bottom:
-            ret = d->height();
-            break;
+    case QDeclarativeAnchorLine::Bottom:
+        ret = d->height();
+        break;
 
-        case QDeclarativeAnchorLine::HCenter:
-            ret = hcenter( item );
-            break;
+    case QDeclarativeAnchorLine::HCenter:
+        ret = hcenter( item );
+        break;
 
-        case QDeclarativeAnchorLine::VCenter:
-            ret = vcenter( item );
-            break;
+    case QDeclarativeAnchorLine::VCenter:
+        ret = vcenter( item );
+        break;
 
-        case QDeclarativeAnchorLine::Baseline:
-            if ( d->isDeclarativeItem )
-            {
-                ret = static_cast<QDeclarativeItem *>( item )->baselineOffset();
-            }
+    case QDeclarativeAnchorLine::Baseline:
+        if ( d->isDeclarativeItem )
+        {
+            ret = static_cast<QDeclarativeItem *>( item )->baselineOffset();
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return ret;

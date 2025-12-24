@@ -68,24 +68,24 @@ QString toolBarAreaStringFromDOMAttributes( const CPP::WriteInitialization::DomP
 
     switch ( pstyle->kind() )
     {
-        case DomProperty::Number:
-        {
-            QString area = "static_cast<Qt::ToolBarArea>(";
-            area += QString::number( pstyle->elementNumber() );
-            area += "), ";
-            return area;
-        }
+    case DomProperty::Number:
+    {
+        QString area = "static_cast<Qt::ToolBarArea>(";
+        area += QString::number( pstyle->elementNumber() );
+        area += "), ";
+        return area;
+    }
 
-        case DomProperty::Enum:
-        {
-            QString area = pstyle->elementEnum();
-            fixQtEnumerationName( area );
-            area += ", ";
-            return area;
-        }
+    case DomProperty::Enum:
+    {
+        QString area = pstyle->elementEnum();
+        fixQtEnumerationName( area );
+        area += ", ";
+        return area;
+    }
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QString();
@@ -184,40 +184,40 @@ static bool checkProperty( const QString &fileName, const DomProperty *p )
 {
     switch ( p->kind() )
     {
-        case DomProperty::IconSet:
-            if ( const DomResourceIcon *dri = p->elementIconSet() )
+    case DomProperty::IconSet:
+        if ( const DomResourceIcon *dri = p->elementIconSet() )
+        {
+
+            if ( ! isIconFormat44( dri ) )
             {
-
-                if ( ! isIconFormat44( dri ) )
+                if ( dri->text().isEmpty() )
                 {
-                    if ( dri->text().isEmpty() )
-                    {
-                        const QString msg = QString( "%1: Warning, an invalid icon property '%2' was found" )
-                                            .formatArg( fileName ).formatArg( p->attributeName() );
-                        qWarning( "%s", lscsPrintable( msg ) );
-
-                        return false;
-                    }
-                }
-            }
-
-            break;
-
-        case DomProperty::Pixmap:
-            if ( const DomResourcePixmap *drp = p->elementPixmap() )
-                if ( drp->text().isEmpty() )
-                {
-                    const QString msg = QString( "%1: Warning, an invalid pixmap property '%2' was found" )
+                    const QString msg = QString( "%1: Warning, an invalid icon property '%2' was found" )
                                         .formatArg( fileName ).formatArg( p->attributeName() );
                     qWarning( "%s", lscsPrintable( msg ) );
 
                     return false;
                 }
+            }
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    case DomProperty::Pixmap:
+        if ( const DomResourcePixmap *drp = p->elementPixmap() )
+            if ( drp->text().isEmpty() )
+            {
+                const QString msg = QString( "%1: Warning, an invalid pixmap property '%2' was found" )
+                                    .formatArg( fileName ).formatArg( p->attributeName() );
+                qWarning( "%s", lscsPrintable( msg ) );
+
+                return false;
+            }
+
+        break;
+
+    default:
+        break;
     }
 
     return  true;
@@ -1036,7 +1036,7 @@ void WriteInitialization::acceptWidget( DomWidget *node )
         if ( DomProperty *ptoolTip = attributes.value( "toolTip" ) )
         {
             autoTrOutput( ptoolTip->elementString() ) << m_indent << parentWidget << "->setItemToolTip("
-                    << parentWidget << "->indexOf(" << varName << "), " << autoTrCall( ptoolTip->elementString() ) << ");\n";
+                << parentWidget << "->indexOf(" << varName << "), " << autoTrCall( ptoolTip->elementString() ) << ");\n";
         }
 
 #endif
@@ -1066,7 +1066,7 @@ void WriteInitialization::acceptWidget( DomWidget *node )
         if ( const DomProperty *ptoolTip = attributes.value( "toolTip" ) )
         {
             autoTrOutput( ptoolTip->elementString() ) << m_indent << parentWidget << "->setTabToolTip("
-                    << parentWidget << "->indexOf(" << varName << "), " << autoTrCall( ptoolTip->elementString() ) << ");\n";
+                << parentWidget << "->indexOf(" << varName << "), " << autoTrCall( ptoolTip->elementString() ) << ");\n";
         }
 
 #endif
@@ -1076,7 +1076,7 @@ void WriteInitialization::acceptWidget( DomWidget *node )
         if ( const DomProperty *pwhatsThis = attributes.value( "whatsThis" ) )
         {
             autoTrOutput( pwhatsThis->elementString() ) << m_indent << parentWidget << "->setTabWhatsThis("
-                    << parentWidget << "->indexOf(" << varName << "), " << autoTrCall( pwhatsThis->elementString() ) << ");\n";
+                << parentWidget << "->indexOf(" << varName << "), " << autoTrCall( pwhatsThis->elementString() ) << ");\n";
         }
 
 #endif
@@ -1460,21 +1460,21 @@ void WriteInitialization::acceptLayoutItem( DomLayoutItem *node )
 
     switch ( node->kind() )
     {
-        case DomLayoutItem::Widget:
-            m_output << methodPrefix << "Widget(" <<  addArgs;
-            break;
+    case DomLayoutItem::Widget:
+        m_output << methodPrefix << "Widget(" <<  addArgs;
+        break;
 
-        case DomLayoutItem::Layout:
-            m_output <<  methodPrefix << "Layout(" << addArgs;
-            break;
+    case DomLayoutItem::Layout:
+        m_output <<  methodPrefix << "Layout(" << addArgs;
+        break;
 
-        case DomLayoutItem::Spacer:
-            m_output << methodPrefix << "Item(" << addArgs;
-            break;
+    case DomLayoutItem::Spacer:
+        m_output << methodPrefix << "Item(" << addArgs;
+        break;
 
-        case DomLayoutItem::Unknown:
-            Q_ASSERT( 0 );
-            break;
+    case DomLayoutItem::Unknown:
+        Q_ASSERT( 0 );
+        break;
     }
 
     m_output << ");\n\n";
@@ -1802,262 +1802,262 @@ void WriteInitialization::writeProperties( const QString &varName,
 
         switch ( p->kind() )
         {
-            case DomProperty::Bool:
+        case DomProperty::Bool:
+        {
+            propertyValue = p->elementBool();
+            break;
+        }
+
+        case DomProperty::Color:
+            propertyValue = domColor2QString( p->elementColor() );
+            break;
+
+        case DomProperty::Cstring:
+            if ( propertyName == "buddy" && m_uic->customWidgetsInfo()->extends( className, "QLabel" ) )
             {
-                propertyValue = p->elementBool();
-                break;
+                m_buddies.append( Buddy( varName, p->elementCstring() ) );
+
             }
-
-            case DomProperty::Color:
-                propertyValue = domColor2QString( p->elementColor() );
-                break;
-
-            case DomProperty::Cstring:
-                if ( propertyName == "buddy" && m_uic->customWidgetsInfo()->extends( className, "QLabel" ) )
+            else
+            {
+                if ( stdset )
                 {
-                    m_buddies.append( Buddy( varName, p->elementCstring() ) );
-
+                    propertyValue = fixString( p->elementCstring(), m_dindent );
                 }
                 else
                 {
-                    if ( stdset )
-                    {
-                        propertyValue = fixString( p->elementCstring(), m_dindent );
-                    }
-                    else
-                    {
-                        propertyValue = "QByteArray(";
-                        propertyValue += fixString( p->elementCstring(), m_dindent );
-                        propertyValue += ')';
-                    }
+                    propertyValue = "QByteArray(";
+                    propertyValue += fixString( p->elementCstring(), m_dindent );
+                    propertyValue += ')';
                 }
+            }
 
-                break;
+            break;
 
-            case DomProperty::Cursor:
-                propertyValue = QString( "QCursor(static_cast<Qt::CursorShape>(%1))" ).formatArg( p->elementCursor() );
-                break;
+        case DomProperty::Cursor:
+            propertyValue = QString( "QCursor(static_cast<Qt::CursorShape>(%1))" ).formatArg( p->elementCursor() );
+            break;
 
-            case DomProperty::CursorShape:
-                if ( p->hasAttributeStdset() && ! p->attributeStdset() )
+        case DomProperty::CursorShape:
+            if ( p->hasAttributeStdset() && ! p->attributeStdset() )
+            {
+                varNewName += "->viewport()";
+            }
+
+            propertyValue = QString( "QCursor(Qt::%1)" ).formatArg( p->elementCursorShape() );
+            break;
+
+        case DomProperty::Enum:
+            propertyValue = p->elementEnum();
+
+            if ( !propertyValue.contains( "::" ) )
+            {
+                QString scope  = className;
+                scope += "::";
+                propertyValue.prepend( scope );
+            }
+
+            break;
+
+        case DomProperty::Set:
+            propertyValue = p->elementSet();
+            break;
+
+        case DomProperty::Font:
+            propertyValue = writeFontProperties( p->elementFont() );
+            break;
+
+        case DomProperty::IconSet:
+            propertyValue = writeIconProperties( p->elementIconSet() );
+            break;
+
+        case DomProperty::Pixmap:
+            propertyValue = pixCall( p );
+            break;
+
+        case DomProperty::Palette:
+        {
+            const DomPalette *pal = p->elementPalette();
+            const QString paletteName = m_driver->unique( "palette" );
+            m_output << m_indent << "QPalette " << paletteName << ";\n";
+
+            writeColorGroup( pal->elementActive(),   "QPalette::Active",   paletteName );
+            writeColorGroup( pal->elementInactive(), "QPalette::Inactive", paletteName );
+            writeColorGroup( pal->elementDisabled(), "QPalette::Disabled", paletteName );
+
+            propertyValue = paletteName;
+            break;
+        }
+
+        case DomProperty::Point:
+        {
+            const DomPoint *po = p->elementPoint();
+            propertyValue = QString( "QPoint(%1, %2)" ).formatArg( po->elementX() ).formatArg( po->elementY() );
+            break;
+        }
+
+        case DomProperty::PointF:
+        {
+            const DomPointF *pof = p->elementPointF();
+            propertyValue = QString( "QPointF(%1, %2)" ).formatArg( pof->elementX() ).formatArg( pof->elementY() );
+            break;
+        }
+
+        case DomProperty::Rect:
+        {
+            const DomRect *r = p->elementRect();
+            propertyValue = QString( "QRect(%1, %2, %3, %4)" )
+                            .formatArg( r->elementX() ).formatArg( r->elementY() )
+                            .formatArg( r->elementWidth() ).formatArg( r->elementHeight() );
+            break;
+        }
+
+        case DomProperty::RectF:
+        {
+            const DomRectF *rf = p->elementRectF();
+            propertyValue = QString( "QRectF(%1, %2, %3, %4)" )
+                            .formatArg( rf->elementX() ).formatArg( rf->elementY() )
+                            .formatArg( rf->elementWidth() ).formatArg( rf->elementHeight() );
+            break;
+        }
+
+        case DomProperty::Locale:
+        {
+            const DomLocale *locale = p->elementLocale();
+            propertyValue = QString( "QLocale(QLocale::%1, QLocale::%2)" )
+                            .formatArg( locale->attributeLanguage() ).formatArg( locale->attributeCountry() );
+            break;
+        }
+
+        case DomProperty::SizePolicy:
+        {
+            const QString spName = writeSizePolicy( p->elementSizePolicy() );
+            m_output << m_indent << spName
+                     << QString( ".setHeightForWidth(%1->sizePolicy().hasHeightForWidth());\n" ).formatArg( varName );
+
+            propertyValue = spName;
+            break;
+        }
+
+        case DomProperty::Size:
+        {
+            const DomSize *s = p->elementSize();
+            propertyValue = QString( "QSize(%1, %2)" ).formatArg( s->elementWidth() ).formatArg( s->elementHeight() );
+            break;
+        }
+
+        case DomProperty::SizeF:
+        {
+            const DomSizeF *sf = p->elementSizeF();
+            propertyValue = QString( "QSizeF(%1, %2)" ).formatArg( sf->elementWidth() ).formatArg( sf->elementHeight() );
+            break;
+        }
+
+        case DomProperty::String:
+        {
+            if ( propertyName == "objectName" )
+            {
+                const QString v = p->elementString()->text();
+
+                if ( v == varName )
                 {
-                    varNewName += "->viewport()";
+                    break;
                 }
 
-                propertyValue = QString( "QCursor(Qt::%1)" ).formatArg( p->elementCursorShape() );
-                break;
-
-            case DomProperty::Enum:
-                propertyValue = p->elementEnum();
-
-                if ( !propertyValue.contains( "::" ) )
-                {
-                    QString scope  = className;
-                    scope += "::";
-                    propertyValue.prepend( scope );
-                }
-
-                break;
-
-            case DomProperty::Set:
-                propertyValue = p->elementSet();
-                break;
-
-            case DomProperty::Font:
-                propertyValue = writeFontProperties( p->elementFont() );
-                break;
-
-            case DomProperty::IconSet:
-                propertyValue = writeIconProperties( p->elementIconSet() );
-                break;
-
-            case DomProperty::Pixmap:
-                propertyValue = pixCall( p );
-                break;
-
-            case DomProperty::Palette:
-            {
-                const DomPalette *pal = p->elementPalette();
-                const QString paletteName = m_driver->unique( "palette" );
-                m_output << m_indent << "QPalette " << paletteName << ";\n";
-
-                writeColorGroup( pal->elementActive(),   "QPalette::Active",   paletteName );
-                writeColorGroup( pal->elementInactive(), "QPalette::Inactive", paletteName );
-                writeColorGroup( pal->elementDisabled(), "QPalette::Disabled", paletteName );
-
-                propertyValue = paletteName;
-                break;
+                // ### qWarning("Deprecated: the property `objectName' is different from the variable name");
             }
 
-            case DomProperty::Point:
-            {
-                const DomPoint *po = p->elementPoint();
-                propertyValue = QString( "QPoint(%1, %2)" ).formatArg( po->elementX() ).formatArg( po->elementY() );
-                break;
-            }
+            propertyValue = autoTrCall( p->elementString() );
+            break;
+        }
 
-            case DomProperty::PointF:
-            {
-                const DomPointF *pof = p->elementPointF();
-                propertyValue = QString( "QPointF(%1, %2)" ).formatArg( pof->elementX() ).formatArg( pof->elementY() );
-                break;
-            }
+        case DomProperty::Number:
+            propertyValue = QString::number( p->elementNumber() );
+            break;
 
-            case DomProperty::Rect:
-            {
-                const DomRect *r = p->elementRect();
-                propertyValue = QString( "QRect(%1, %2, %3, %4)" )
-                                .formatArg( r->elementX() ).formatArg( r->elementY() )
-                                .formatArg( r->elementWidth() ).formatArg( r->elementHeight() );
-                break;
-            }
+        case DomProperty::UInt:
+            propertyValue = QString::number( p->elementUInt() );
+            propertyValue += 'u';
+            break;
 
-            case DomProperty::RectF:
-            {
-                const DomRectF *rf = p->elementRectF();
-                propertyValue = QString( "QRectF(%1, %2, %3, %4)" )
-                                .formatArg( rf->elementX() ).formatArg( rf->elementY() )
-                                .formatArg( rf->elementWidth() ).formatArg( rf->elementHeight() );
-                break;
-            }
+        case DomProperty::LongLong:
+            propertyValue = "Q_INT64_C(";
+            propertyValue += QString::number( p->elementLongLong() );
+            propertyValue += ')';
+            break;
 
-            case DomProperty::Locale:
-            {
-                const DomLocale *locale = p->elementLocale();
-                propertyValue = QString( "QLocale(QLocale::%1, QLocale::%2)" )
-                                .formatArg( locale->attributeLanguage() ).formatArg( locale->attributeCountry() );
-                break;
-            }
+        case DomProperty::ULongLong:
+            propertyValue = "Q_UINT64_C(";
+            propertyValue += QString::number( p->elementULongLong() );
+            propertyValue += ')';
+            break;
 
-            case DomProperty::SizePolicy:
-            {
-                const QString spName = writeSizePolicy( p->elementSizePolicy() );
-                m_output << m_indent << spName
-                         << QString( ".setHeightForWidth(%1->sizePolicy().hasHeightForWidth());\n" ).formatArg( varName );
+        case DomProperty::Float:
+            propertyValue = QString::number( p->elementFloat() );
+            break;
 
-                propertyValue = spName;
-                break;
-            }
+        case DomProperty::Double:
+            propertyValue = QString::number( p->elementDouble() );
+            break;
 
-            case DomProperty::Size:
-            {
-                const DomSize *s = p->elementSize();
-                propertyValue = QString( "QSize(%1, %2)" ).formatArg( s->elementWidth() ).formatArg( s->elementHeight() );
-                break;
-            }
+        case DomProperty::Char:
+        {
+            const DomChar *c = p->elementChar();
+            propertyValue = QString( "QChar(%1)" ).formatArg( c->elementUnicode() );
+            break;
+        }
 
-            case DomProperty::SizeF:
-            {
-                const DomSizeF *sf = p->elementSizeF();
-                propertyValue = QString( "QSizeF(%1, %2)" ).formatArg( sf->elementWidth() ).formatArg( sf->elementHeight() );
-                break;
-            }
+        case DomProperty::Date:
+        {
+            const DomDate *d = p->elementDate();
+            propertyValue = QString( "QDate(%1, %2, %3)" )
+                            .formatArg( d->elementYear() )
+                            .formatArg( d->elementMonth() )
+                            .formatArg( d->elementDay() );
+            break;
+        }
 
-            case DomProperty::String:
-            {
-                if ( propertyName == "objectName" )
-                {
-                    const QString v = p->elementString()->text();
+        case DomProperty::Time:
+        {
+            const DomTime *t = p->elementTime();
+            propertyValue = QString( "QTime(%1, %2, %3)" )
+                            .formatArg( t->elementHour() )
+                            .formatArg( t->elementMinute() )
+                            .formatArg( t->elementSecond() );
+            break;
+        }
 
-                    if ( v == varName )
-                    {
-                        break;
-                    }
+        case DomProperty::DateTime:
+        {
+            const DomDateTime *dt = p->elementDateTime();
+            propertyValue = QString( "QDateTime(QDate(%1, %2, %3), QTime(%4, %5, %6))" )
+                            .formatArg( dt->elementYear() )
+                            .formatArg( dt->elementMonth() )
+                            .formatArg( dt->elementDay() )
+                            .formatArg( dt->elementHour() )
+                            .formatArg( dt->elementMinute() )
+                            .formatArg( dt->elementSecond() );
+            break;
+        }
 
-                    // ### qWarning("Deprecated: the property `objectName' is different from the variable name");
-                }
+        case DomProperty::StringList:
+            propertyValue = writeStringListProperty( p->elementStringList() );
+            break;
 
-                propertyValue = autoTrCall( p->elementString() );
-                break;
-            }
+        case DomProperty::Url:
+        {
+            const DomUrl *u = p->elementUrl();
+            propertyValue = QString( "QUrl(QString::fromUtf8(%1))" )
+                            .formatArg( fixString( u->elementString()->text(), m_dindent ) );
+            break;
+        }
 
-            case DomProperty::Number:
-                propertyValue = QString::number( p->elementNumber() );
-                break;
+        case DomProperty::Brush:
+            propertyValue = writeBrushInitialization( p->elementBrush() );
+            break;
 
-            case DomProperty::UInt:
-                propertyValue = QString::number( p->elementUInt() );
-                propertyValue += 'u';
-                break;
-
-            case DomProperty::LongLong:
-                propertyValue = "Q_INT64_C(";
-                propertyValue += QString::number( p->elementLongLong() );
-                propertyValue += ')';
-                break;
-
-            case DomProperty::ULongLong:
-                propertyValue = "Q_UINT64_C(";
-                propertyValue += QString::number( p->elementULongLong() );
-                propertyValue += ')';
-                break;
-
-            case DomProperty::Float:
-                propertyValue = QString::number( p->elementFloat() );
-                break;
-
-            case DomProperty::Double:
-                propertyValue = QString::number( p->elementDouble() );
-                break;
-
-            case DomProperty::Char:
-            {
-                const DomChar *c = p->elementChar();
-                propertyValue = QString( "QChar(%1)" ).formatArg( c->elementUnicode() );
-                break;
-            }
-
-            case DomProperty::Date:
-            {
-                const DomDate *d = p->elementDate();
-                propertyValue = QString( "QDate(%1, %2, %3)" )
-                                .formatArg( d->elementYear() )
-                                .formatArg( d->elementMonth() )
-                                .formatArg( d->elementDay() );
-                break;
-            }
-
-            case DomProperty::Time:
-            {
-                const DomTime *t = p->elementTime();
-                propertyValue = QString( "QTime(%1, %2, %3)" )
-                                .formatArg( t->elementHour() )
-                                .formatArg( t->elementMinute() )
-                                .formatArg( t->elementSecond() );
-                break;
-            }
-
-            case DomProperty::DateTime:
-            {
-                const DomDateTime *dt = p->elementDateTime();
-                propertyValue = QString( "QDateTime(QDate(%1, %2, %3), QTime(%4, %5, %6))" )
-                                .formatArg( dt->elementYear() )
-                                .formatArg( dt->elementMonth() )
-                                .formatArg( dt->elementDay() )
-                                .formatArg( dt->elementHour() )
-                                .formatArg( dt->elementMinute() )
-                                .formatArg( dt->elementSecond() );
-                break;
-            }
-
-            case DomProperty::StringList:
-                propertyValue = writeStringListProperty( p->elementStringList() );
-                break;
-
-            case DomProperty::Url:
-            {
-                const DomUrl *u = p->elementUrl();
-                propertyValue = QString( "QUrl(QString::fromUtf8(%1))" )
-                                .formatArg( fixString( u->elementString()->text(), m_dindent ) );
-                break;
-            }
-
-            case DomProperty::Brush:
-                propertyValue = writeBrushInitialization( p->elementBrush() );
-                break;
-
-            case DomProperty::Unknown:
-                break;
+        case DomProperty::Unknown:
+            break;
         }
 
         if ( propertyValue.size() )
@@ -2632,19 +2632,19 @@ QString WriteInitialization::pixCall( const DomProperty *p ) const
 
     switch ( p->kind() )
     {
-        case DomProperty::IconSet:
-            type = "QIcon";
-            s = p->elementIconSet()->text();
-            break;
+    case DomProperty::IconSet:
+        type = "QIcon";
+        s = p->elementIconSet()->text();
+        break;
 
-        case DomProperty::Pixmap:
-            type = "QPixmap";
-            s = p->elementPixmap()->text();
-            break;
+    case DomProperty::Pixmap:
+        type = "QPixmap";
+        s = p->elementPixmap()->text();
+        break;
 
-        default:
-            qWarning( "%s: Warning: Unknown icon format found", lscsPrintable( m_option.messagePrefix() ) );
-            return "QIcon()";
+    default:
+        qWarning( "%s: Warning: Unknown icon format found", lscsPrintable( m_option.messagePrefix() ) );
+        return "QIcon()";
     }
 
     return pixCall( type, s );
@@ -3555,7 +3555,7 @@ void WriteInitialization::Item::writeRetranslateUi( const QString &parentPath )
 void WriteInitialization::Item::addSetter( const QString &setter, const QString &directive, bool translatable )
 {
     const ItemData::TemporaryVariableGeneratorPolicy newPolicy = directive.isEmpty() ?
-            ItemData::Generate : ItemData::GenerateWithMultiDirective;
+        ItemData::Generate : ItemData::GenerateWithMultiDirective;
 
     if ( translatable )
     {

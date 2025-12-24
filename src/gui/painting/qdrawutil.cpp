@@ -605,17 +605,17 @@ void qDrawBorderPixmap( QPainter *painter, const QRect &targetRect, const QMargi
 
     switch ( rules.horizontal )
     {
-        case Qt::StretchTile:
-            dx = targetCenterWidth;
-            break;
+    case Qt::StretchTile:
+        dx = targetCenterWidth;
+        break;
 
-        case Qt::RepeatTile:
-            dx = sourceCenterWidth;
-            break;
+    case Qt::RepeatTile:
+        dx = sourceCenterWidth;
+        break;
 
-        case Qt::RoundTile:
-            dx = targetCenterWidth / qreal( columns - 2 );
-            break;
+    case Qt::RoundTile:
+        dx = targetCenterWidth / qreal( columns - 2 );
+        break;
     }
 
     for ( int i = 2; i < columns - 1; ++i )
@@ -625,17 +625,17 @@ void qDrawBorderPixmap( QPainter *painter, const QRect &targetRect, const QMargi
 
     switch ( rules.vertical )
     {
-        case Qt::StretchTile:
-            dy = targetCenterHeight;
-            break;
+    case Qt::StretchTile:
+        dy = targetCenterHeight;
+        break;
 
-        case Qt::RepeatTile:
-            dy = sourceCenterHeight;
-            break;
+    case Qt::RepeatTile:
+        dy = sourceCenterHeight;
+        break;
 
-        case Qt::RoundTile:
-            dy = targetCenterHeight / qreal( rows - 2 );
-            break;
+    case Qt::RoundTile:
+        dy = targetCenterHeight / qreal( rows - 2 );
+        break;
     }
 
     for ( int i = 2; i < rows - 1; ++i )

@@ -37,7 +37,7 @@ void XsdSchemaDebugger::dumpParticle( const XsdParticle::Ptr &particle, int leve
 
     qDebug( "%s min=%s max=%s", lscsPrintable( prefix ), lscsPrintable( QString::number( particle->minimumOccurs() ) ),
             lscsPrintable( particle->maximumOccursUnbounded() ? QLatin1String( "unbounded" ) : QString::number(
-                             particle->maximumOccurs() ) ) );
+                               particle->maximumOccurs() ) ) );
 
     if ( particle->term()->isElement() )
     {

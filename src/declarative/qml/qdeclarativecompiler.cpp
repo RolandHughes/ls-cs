@@ -196,206 +196,206 @@ bool QDeclarativeCompiler::testLiteralAssignment( const QMetaProperty &prop,
 
     switch ( type )
     {
-        case -1:
-            break;
-
-        case QVariant::String:
-            if ( !v->value.isString() )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: string expected" ) );
-            }
-
-            break;
-
-        case QVariant::Url:
-            if ( !v->value.isString() )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: url expected" ) );
-            }
-
-            break;
-
-        case QVariant::UInt:
-        {
-            bool ok = v->value.isNumber();
-
-            if ( ok )
-            {
-                double n = v->value.asNumber();
-
-                if ( double( uint( n ) ) != n )
-                {
-                    ok = false;
-                }
-            }
-
-            if ( !ok )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: unsigned int expected" ) );
-            }
-        }
+    case -1:
         break;
 
-        case QVariant::Int:
+    case QVariant::String:
+        if ( !v->value.isString() )
         {
-            bool ok = v->value.isNumber();
-
-            if ( ok )
-            {
-                double n = v->value.asNumber();
-
-                if ( double( int( n ) ) != n )
-                {
-                    ok = false;
-                }
-            }
-
-            if ( !ok )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: int expected" ) );
-            }
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: string expected" ) );
         }
+
         break;
 
-        case QMetaType::Float:
-            if ( !v->value.isNumber() )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: number expected" ) );
-            }
-
-            break;
-
-        case QVariant::Double:
-            if ( !v->value.isNumber() )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: number expected" ) );
-            }
-
-            break;
-
-        case QVariant::Color:
+    case QVariant::Url:
+        if ( !v->value.isString() )
         {
-            bool ok;
-            QDeclarativeStringConverters::colorFromString( string, &ok );
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: url expected" ) );
+        }
 
-            if ( !ok )
+        break;
+
+    case QVariant::UInt:
+    {
+        bool ok = v->value.isNumber();
+
+        if ( ok )
+        {
+            double n = v->value.asNumber();
+
+            if ( double( uint( n ) ) != n )
             {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: color expected" ) );
+                ok = false;
             }
         }
+
+        if ( !ok )
+        {
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: unsigned int expected" ) );
+        }
+    }
+    break;
+
+    case QVariant::Int:
+    {
+        bool ok = v->value.isNumber();
+
+        if ( ok )
+        {
+            double n = v->value.asNumber();
+
+            if ( double( int( n ) ) != n )
+            {
+                ok = false;
+            }
+        }
+
+        if ( !ok )
+        {
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: int expected" ) );
+        }
+    }
+    break;
+
+    case QMetaType::Float:
+        if ( !v->value.isNumber() )
+        {
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: number expected" ) );
+        }
+
         break;
+
+    case QVariant::Double:
+        if ( !v->value.isNumber() )
+        {
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: number expected" ) );
+        }
+
+        break;
+
+    case QVariant::Color:
+    {
+        bool ok;
+        QDeclarativeStringConverters::colorFromString( string, &ok );
+
+        if ( !ok )
+        {
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: color expected" ) );
+        }
+    }
+    break;
 #ifndef LSCS_NO_DATESTRING
 
-        case QVariant::Date:
+    case QVariant::Date:
+    {
+        bool ok;
+        QDeclarativeStringConverters::dateFromString( string, &ok );
+
+        if ( !ok )
         {
-            bool ok;
-            QDeclarativeStringConverters::dateFromString( string, &ok );
-
-            if ( !ok )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: date expected" ) );
-            }
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: date expected" ) );
         }
-        break;
+    }
+    break;
 
-        case QVariant::Time:
+    case QVariant::Time:
+    {
+        bool ok;
+        QDeclarativeStringConverters::timeFromString( string, &ok );
+
+        if ( !ok )
         {
-            bool ok;
-            QDeclarativeStringConverters::timeFromString( string, &ok );
-
-            if ( !ok )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: time expected" ) );
-            }
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: time expected" ) );
         }
-        break;
+    }
+    break;
 
-        case QVariant::DateTime:
+    case QVariant::DateTime:
+    {
+        bool ok;
+        QDeclarativeStringConverters::dateTimeFromString( string, &ok );
+
+        if ( !ok )
         {
-            bool ok;
-            QDeclarativeStringConverters::dateTimeFromString( string, &ok );
-
-            if ( !ok )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: datetime expected" ) );
-            }
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: datetime expected" ) );
         }
-        break;
+    }
+    break;
 #endif // LSCS_NO_DATESTRING
 
-        case QVariant::Point:
-        case QVariant::PointF:
+    case QVariant::Point:
+    case QVariant::PointF:
+    {
+        bool ok;
+        QDeclarativeStringConverters::pointFFromString( string, &ok );
+
+        if ( !ok )
         {
-            bool ok;
-            QDeclarativeStringConverters::pointFFromString( string, &ok );
-
-            if ( !ok )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: point expected" ) );
-            }
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: point expected" ) );
         }
-        break;
+    }
+    break;
 
-        case QVariant::Size:
-        case QVariant::SizeF:
+    case QVariant::Size:
+    case QVariant::SizeF:
+    {
+        bool ok;
+        QDeclarativeStringConverters::sizeFFromString( string, &ok );
+
+        if ( !ok )
         {
-            bool ok;
-            QDeclarativeStringConverters::sizeFFromString( string, &ok );
-
-            if ( !ok )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: size expected" ) );
-            }
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: size expected" ) );
         }
-        break;
+    }
+    break;
 
-        case QVariant::Rect:
-        case QVariant::RectF:
+    case QVariant::Rect:
+    case QVariant::RectF:
+    {
+        bool ok;
+        QDeclarativeStringConverters::rectFFromString( string, &ok );
+
+        if ( !ok )
         {
-            bool ok;
-            QDeclarativeStringConverters::rectFFromString( string, &ok );
-
-            if ( !ok )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: rect expected" ) );
-            }
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: rect expected" ) );
         }
-        break;
+    }
+    break;
 
-        case QVariant::Bool:
+    case QVariant::Bool:
+    {
+        if ( !v->value.isBoolean() )
         {
-            if ( !v->value.isBoolean() )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: boolean expected" ) );
-            }
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: boolean expected" ) );
         }
-        break;
+    }
+    break;
 
-        case QVariant::Vector3D:
+    case QVariant::Vector3D:
+    {
+        bool ok;
+        QDeclarativeStringConverters::vector3DFromString( string, &ok );
+
+        if ( !ok )
         {
-            bool ok;
-            QDeclarativeStringConverters::vector3DFromString( string, &ok );
-
-            if ( !ok )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: 3D vector expected" ) );
-            }
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: 3D vector expected" ) );
         }
-        break;
+    }
+    break;
 
-        default:
+    default:
+    {
+        int t = prop.userType();
+        QDeclarativeMetaType::StringConverter converter =
+            QDeclarativeMetaType::customStringConverter( t );
+
+        if ( !converter )
         {
-            int t = prop.userType();
-            QDeclarativeMetaType::StringConverter converter =
-                QDeclarativeMetaType::customStringConverter( t );
-
-            if ( !converter )
-            {
-                COMPILE_EXCEPTION( v, tr( "Invalid property assignment: unsupported type \"%1\"" ).arg( QString::fromLatin1(
-                                       QVariant::typeToName( prop.type() ) ) ) );
-            }
+            COMPILE_EXCEPTION( v, tr( "Invalid property assignment: unsupported type \"%1\"" ).arg( QString::fromLatin1(
+                                   QVariant::typeToName( prop.type() ) ) ) );
         }
-        break;
+    }
+    break;
     }
 
     return true;
@@ -446,243 +446,243 @@ void QDeclarativeCompiler::genLiteralAssignment( const QMetaProperty &prop,
 
     switch ( type )
     {
-        case -1:
+    case -1:
+    {
+        if ( v->value.isNumber() )
         {
-            if ( v->value.isNumber() )
-            {
-                double n = v->value.asNumber();
+            double n = v->value.asNumber();
 
-                if ( double( int( n ) ) == n )
-                {
-                    instr.type = QDeclarativeInstruction::StoreVariantInteger;
-                    instr.storeInteger.propertyIndex = prop.propertyIndex();
-                    instr.storeInteger.value = int( n );
-                }
-                else
-                {
-                    instr.type = QDeclarativeInstruction::StoreVariantDouble;
-                    instr.storeDouble.propertyIndex = prop.propertyIndex();
-                    instr.storeDouble.value = n;
-                }
-            }
-            else if ( v->value.isBoolean() )
+            if ( double( int( n ) ) == n )
             {
-                instr.type = QDeclarativeInstruction::StoreVariantBool;
-                instr.storeBool.propertyIndex = prop.propertyIndex();
-                instr.storeBool.value = v->value.asBoolean();
+                instr.type = QDeclarativeInstruction::StoreVariantInteger;
+                instr.storeInteger.propertyIndex = prop.propertyIndex();
+                instr.storeInteger.value = int( n );
             }
             else
             {
-                instr.type = QDeclarativeInstruction::StoreVariant;
-                instr.storeString.propertyIndex = prop.propertyIndex();
-                instr.storeString.value = output->indexForString( string );
+                instr.type = QDeclarativeInstruction::StoreVariantDouble;
+                instr.storeDouble.propertyIndex = prop.propertyIndex();
+                instr.storeDouble.value = n;
             }
         }
-        break;
-
-        case QVariant::String:
+        else if ( v->value.isBoolean() )
         {
-            instr.type = QDeclarativeInstruction::StoreString;
+            instr.type = QDeclarativeInstruction::StoreVariantBool;
+            instr.storeBool.propertyIndex = prop.propertyIndex();
+            instr.storeBool.value = v->value.asBoolean();
+        }
+        else
+        {
+            instr.type = QDeclarativeInstruction::StoreVariant;
             instr.storeString.propertyIndex = prop.propertyIndex();
             instr.storeString.value = output->indexForString( string );
         }
-        break;
+    }
+    break;
 
-        case QVariant::Url:
-        {
-            instr.type = QDeclarativeInstruction::StoreUrl;
-            QUrl u = string.isEmpty() ? QUrl() : output->url.resolved( QUrl( string ) );
-            instr.storeUrl.propertyIndex = prop.propertyIndex();
-            instr.storeUrl.value = output->indexForUrl( u );
-        }
-        break;
+    case QVariant::String:
+    {
+        instr.type = QDeclarativeInstruction::StoreString;
+        instr.storeString.propertyIndex = prop.propertyIndex();
+        instr.storeString.value = output->indexForString( string );
+    }
+    break;
 
-        case QVariant::UInt:
-        {
-            instr.type = QDeclarativeInstruction::StoreInteger;
-            instr.storeInteger.propertyIndex = prop.propertyIndex();
-            instr.storeInteger.value = uint( v->value.asNumber() );
-        }
-        break;
+    case QVariant::Url:
+    {
+        instr.type = QDeclarativeInstruction::StoreUrl;
+        QUrl u = string.isEmpty() ? QUrl() : output->url.resolved( QUrl( string ) );
+        instr.storeUrl.propertyIndex = prop.propertyIndex();
+        instr.storeUrl.value = output->indexForUrl( u );
+    }
+    break;
 
-        case QVariant::Int:
-        {
-            instr.type = QDeclarativeInstruction::StoreInteger;
-            instr.storeInteger.propertyIndex = prop.propertyIndex();
-            instr.storeInteger.value = int( v->value.asNumber() );
-        }
-        break;
+    case QVariant::UInt:
+    {
+        instr.type = QDeclarativeInstruction::StoreInteger;
+        instr.storeInteger.propertyIndex = prop.propertyIndex();
+        instr.storeInteger.value = uint( v->value.asNumber() );
+    }
+    break;
 
-        case QMetaType::Float:
-        {
-            instr.type = QDeclarativeInstruction::StoreFloat;
-            instr.storeFloat.propertyIndex = prop.propertyIndex();
-            instr.storeFloat.value = float( v->value.asNumber() );
-        }
-        break;
+    case QVariant::Int:
+    {
+        instr.type = QDeclarativeInstruction::StoreInteger;
+        instr.storeInteger.propertyIndex = prop.propertyIndex();
+        instr.storeInteger.value = int( v->value.asNumber() );
+    }
+    break;
 
-        case QVariant::Double:
-        {
-            instr.type = QDeclarativeInstruction::StoreDouble;
-            instr.storeDouble.propertyIndex = prop.propertyIndex();
-            instr.storeDouble.value = v->value.asNumber();
-        }
-        break;
+    case QMetaType::Float:
+    {
+        instr.type = QDeclarativeInstruction::StoreFloat;
+        instr.storeFloat.propertyIndex = prop.propertyIndex();
+        instr.storeFloat.value = float( v->value.asNumber() );
+    }
+    break;
 
-        case QVariant::Color:
-        {
-            QColor c = QDeclarativeStringConverters::colorFromString( string );
-            instr.type = QDeclarativeInstruction::StoreColor;
-            instr.storeColor.propertyIndex = prop.propertyIndex();
-            instr.storeColor.value = c.rgba();
-        }
-        break;
+    case QVariant::Double:
+    {
+        instr.type = QDeclarativeInstruction::StoreDouble;
+        instr.storeDouble.propertyIndex = prop.propertyIndex();
+        instr.storeDouble.value = v->value.asNumber();
+    }
+    break;
+
+    case QVariant::Color:
+    {
+        QColor c = QDeclarativeStringConverters::colorFromString( string );
+        instr.type = QDeclarativeInstruction::StoreColor;
+        instr.storeColor.propertyIndex = prop.propertyIndex();
+        instr.storeColor.value = c.rgba();
+    }
+    break;
 #ifndef LSCS_NO_DATESTRING
 
-        case QVariant::Date:
-        {
-            QDate d = QDeclarativeStringConverters::dateFromString( string );
-            instr.type = QDeclarativeInstruction::StoreDate;
-            instr.storeDate.propertyIndex = prop.propertyIndex();
-            instr.storeDate.value = d.toJulianDay();
-        }
-        break;
+    case QVariant::Date:
+    {
+        QDate d = QDeclarativeStringConverters::dateFromString( string );
+        instr.type = QDeclarativeInstruction::StoreDate;
+        instr.storeDate.propertyIndex = prop.propertyIndex();
+        instr.storeDate.value = d.toJulianDay();
+    }
+    break;
 
-        case QVariant::Time:
-        {
-            QTime time = QDeclarativeStringConverters::timeFromString( string );
-            int data[] = { time.hour(), time.minute(),
-                           time.second(), time.msec()
-                         };
-            int index = output->indexForInt( data, 4 );
-            instr.type = QDeclarativeInstruction::StoreTime;
-            instr.storeTime.propertyIndex = prop.propertyIndex();
-            instr.storeTime.valueIndex = index;
-        }
-        break;
+    case QVariant::Time:
+    {
+        QTime time = QDeclarativeStringConverters::timeFromString( string );
+        int data[] = { time.hour(), time.minute(),
+                       time.second(), time.msec()
+                     };
+        int index = output->indexForInt( data, 4 );
+        instr.type = QDeclarativeInstruction::StoreTime;
+        instr.storeTime.propertyIndex = prop.propertyIndex();
+        instr.storeTime.valueIndex = index;
+    }
+    break;
 
-        case QVariant::DateTime:
-        {
-            QDateTime dateTime = QDeclarativeStringConverters::dateTimeFromString( string );
-            int data[] = { dateTime.date().toJulianDay(),
-                           dateTime.time().hour(),
-                           dateTime.time().minute(),
-                           dateTime.time().second(),
-                           dateTime.time().msec()
-                         };
-            int index = output->indexForInt( data, 5 );
-            instr.type = QDeclarativeInstruction::StoreDateTime;
-            instr.storeDateTime.propertyIndex = prop.propertyIndex();
-            instr.storeDateTime.valueIndex = index;
-        }
-        break;
+    case QVariant::DateTime:
+    {
+        QDateTime dateTime = QDeclarativeStringConverters::dateTimeFromString( string );
+        int data[] = { dateTime.date().toJulianDay(),
+                       dateTime.time().hour(),
+                       dateTime.time().minute(),
+                       dateTime.time().second(),
+                       dateTime.time().msec()
+                     };
+        int index = output->indexForInt( data, 5 );
+        instr.type = QDeclarativeInstruction::StoreDateTime;
+        instr.storeDateTime.propertyIndex = prop.propertyIndex();
+        instr.storeDateTime.valueIndex = index;
+    }
+    break;
 #endif // LSCS_NO_DATESTRING
 
-        case QVariant::Point:
-        case QVariant::PointF:
+    case QVariant::Point:
+    case QVariant::PointF:
+    {
+        bool ok;
+        QPointF point =
+            QDeclarativeStringConverters::pointFFromString( string, &ok );
+        float data[] = { float( point.x() ), float( point.y() ) };
+        int index = output->indexForFloat( data, 2 );
+
+        if ( type == QVariant::PointF )
         {
-            bool ok;
-            QPointF point =
-                QDeclarativeStringConverters::pointFFromString( string, &ok );
-            float data[] = { float( point.x() ), float( point.y() ) };
-            int index = output->indexForFloat( data, 2 );
-
-            if ( type == QVariant::PointF )
-            {
-                instr.type = QDeclarativeInstruction::StorePointF;
-            }
-            else
-            {
-                instr.type = QDeclarativeInstruction::StorePoint;
-            }
-
-            instr.storeRealPair.propertyIndex = prop.propertyIndex();
-            instr.storeRealPair.valueIndex = index;
+            instr.type = QDeclarativeInstruction::StorePointF;
         }
-        break;
-
-        case QVariant::Size:
-        case QVariant::SizeF:
+        else
         {
-            bool ok;
-            QSizeF size = QDeclarativeStringConverters::sizeFFromString( string, &ok );
-            float data[] = { float( size.width() ), float( size.height() ) };
-            int index = output->indexForFloat( data, 2 );
-
-            if ( type == QVariant::SizeF )
-            {
-                instr.type = QDeclarativeInstruction::StoreSizeF;
-            }
-            else
-            {
-                instr.type = QDeclarativeInstruction::StoreSize;
-            }
-
-            instr.storeRealPair.propertyIndex = prop.propertyIndex();
-            instr.storeRealPair.valueIndex = index;
+            instr.type = QDeclarativeInstruction::StorePoint;
         }
-        break;
 
-        case QVariant::Rect:
-        case QVariant::RectF:
+        instr.storeRealPair.propertyIndex = prop.propertyIndex();
+        instr.storeRealPair.valueIndex = index;
+    }
+    break;
+
+    case QVariant::Size:
+    case QVariant::SizeF:
+    {
+        bool ok;
+        QSizeF size = QDeclarativeStringConverters::sizeFFromString( string, &ok );
+        float data[] = { float( size.width() ), float( size.height() ) };
+        int index = output->indexForFloat( data, 2 );
+
+        if ( type == QVariant::SizeF )
         {
-            bool ok;
-            QRectF rect = QDeclarativeStringConverters::rectFFromString( string, &ok );
-            float data[] = { float( rect.x() ), float( rect.y() ),
-                             float( rect.width() ), float( rect.height() )
-                           };
-            int index = output->indexForFloat( data, 4 );
-
-            if ( type == QVariant::RectF )
-            {
-                instr.type = QDeclarativeInstruction::StoreRectF;
-            }
-            else
-            {
-                instr.type = QDeclarativeInstruction::StoreRect;
-            }
-
-            instr.storeRect.propertyIndex = prop.propertyIndex();
-            instr.storeRect.valueIndex = index;
+            instr.type = QDeclarativeInstruction::StoreSizeF;
         }
-        break;
-
-        case QVariant::Bool:
+        else
         {
-            bool b = v->value.asBoolean();
-            instr.type = QDeclarativeInstruction::StoreBool;
-            instr.storeBool.propertyIndex = prop.propertyIndex();
-            instr.storeBool.value = b;
+            instr.type = QDeclarativeInstruction::StoreSize;
         }
-        break;
 
-        case QVariant::Vector3D:
+        instr.storeRealPair.propertyIndex = prop.propertyIndex();
+        instr.storeRealPair.valueIndex = index;
+    }
+    break;
+
+    case QVariant::Rect:
+    case QVariant::RectF:
+    {
+        bool ok;
+        QRectF rect = QDeclarativeStringConverters::rectFFromString( string, &ok );
+        float data[] = { float( rect.x() ), float( rect.y() ),
+                         float( rect.width() ), float( rect.height() )
+                       };
+        int index = output->indexForFloat( data, 4 );
+
+        if ( type == QVariant::RectF )
         {
-            bool ok;
-            QVector3D vector =
-                QDeclarativeStringConverters::vector3DFromString( string, &ok );
-            float data[] = { float( vector.x() ), float( vector.y() ), float( vector.z() ) };
-            int index = output->indexForFloat( data, 3 );
-            instr.type = QDeclarativeInstruction::StoreVector3D;
-            instr.storeRealPair.propertyIndex = prop.propertyIndex();
-            instr.storeRealPair.valueIndex = index;
+            instr.type = QDeclarativeInstruction::StoreRectF;
         }
-        break;
-
-        default:
+        else
         {
-            int t = prop.userType();
-            int index = output->customTypeData.count();
-            instr.type = QDeclarativeInstruction::AssignCustomType;
-            instr.assignCustomType.propertyIndex = prop.propertyIndex();
-            instr.assignCustomType.valueIndex = index;
-
-            QDeclarativeCompiledData::CustomTypeData data;
-            data.index = output->indexForString( string );
-            data.type = t;
-            output->customTypeData << data;
+            instr.type = QDeclarativeInstruction::StoreRect;
         }
-        break;
+
+        instr.storeRect.propertyIndex = prop.propertyIndex();
+        instr.storeRect.valueIndex = index;
+    }
+    break;
+
+    case QVariant::Bool:
+    {
+        bool b = v->value.asBoolean();
+        instr.type = QDeclarativeInstruction::StoreBool;
+        instr.storeBool.propertyIndex = prop.propertyIndex();
+        instr.storeBool.value = b;
+    }
+    break;
+
+    case QVariant::Vector3D:
+    {
+        bool ok;
+        QVector3D vector =
+            QDeclarativeStringConverters::vector3DFromString( string, &ok );
+        float data[] = { float( vector.x() ), float( vector.y() ), float( vector.z() ) };
+        int index = output->indexForFloat( data, 3 );
+        instr.type = QDeclarativeInstruction::StoreVector3D;
+        instr.storeRealPair.propertyIndex = prop.propertyIndex();
+        instr.storeRealPair.valueIndex = index;
+    }
+    break;
+
+    default:
+    {
+        int t = prop.userType();
+        int index = output->customTypeData.count();
+        instr.type = QDeclarativeInstruction::AssignCustomType;
+        instr.assignCustomType.propertyIndex = prop.propertyIndex();
+        instr.assignCustomType.valueIndex = index;
+
+        QDeclarativeCompiledData::CustomTypeData data;
+        data.index = output->indexForString( string );
+        data.type = t;
+        output->customTypeData << data;
+    }
+    break;
     }
 
     output->bytecode << instr;
@@ -3194,104 +3194,104 @@ bool QDeclarativeCompiler::buildDynamicMeta( QDeclarativeParser::Object *obj, Dy
 
         switch ( p.type )
         {
-            case Object::DynamicProperty::Alias:
-                hasAlias = true;
-                continue;
-                break;
-
-            case Object::DynamicProperty::CustomList:
-            case Object::DynamicProperty::Custom:
-            {
-                QByteArray customTypeName;
-                QDeclarativeType *qmltype = 0;
-                QUrl url;
-
-                if ( !unit->imports().resolveType( p.customType, &qmltype, &url, 0, 0, 0 ) )
-                {
-                    COMPILE_EXCEPTION( &p, tr( "Invalid property type" ) );
-                }
-
-                if ( !qmltype )
-                {
-                    QDeclarativeTypeData *tdata = enginePrivate->typeLoader.get( url );
-                    Q_ASSERT( tdata );
-                    Q_ASSERT( tdata->isComplete() );
-
-                    QDeclarativeCompiledData *data = tdata->compiledData();
-                    customTypeName = data->root->className();
-                    data->release();
-                    tdata->release();
-                }
-                else
-                {
-                    customTypeName = qmltype->typeName();
-                }
-
-                if ( p.type == Object::DynamicProperty::Custom )
-                {
-                    type = customTypeName + '*';
-                    propertyType = QMetaType::QObjectStar;
-                }
-                else
-                {
-                    readonly = true;
-                    type = "QDeclarativeListProperty<";
-                    type.append( customTypeName );
-                    type.append( ">" );
-                    propertyType = qMetaTypeId<QDeclarativeListProperty<QObject> >();
-                }
-            }
+        case Object::DynamicProperty::Alias:
+            hasAlias = true;
+            continue;
             break;
 
-            case Object::DynamicProperty::Variant:
-                propertyType = -1;
-                type = "QVariant";
-                break;
+        case Object::DynamicProperty::CustomList:
+        case Object::DynamicProperty::Custom:
+        {
+            QByteArray customTypeName;
+            QDeclarativeType *qmltype = 0;
+            QUrl url;
 
-            case Object::DynamicProperty::Int:
-                propertyType = QVariant::Int;
-                type = "int";
-                break;
+            if ( !unit->imports().resolveType( p.customType, &qmltype, &url, 0, 0, 0 ) )
+            {
+                COMPILE_EXCEPTION( &p, tr( "Invalid property type" ) );
+            }
 
-            case Object::DynamicProperty::Bool:
-                propertyType = QVariant::Bool;
-                type = "bool";
-                break;
+            if ( !qmltype )
+            {
+                QDeclarativeTypeData *tdata = enginePrivate->typeLoader.get( url );
+                Q_ASSERT( tdata );
+                Q_ASSERT( tdata->isComplete() );
 
-            case Object::DynamicProperty::Real:
-                propertyType = QVariant::Double;
-                type = "double";
-                break;
+                QDeclarativeCompiledData *data = tdata->compiledData();
+                customTypeName = data->root->className();
+                data->release();
+                tdata->release();
+            }
+            else
+            {
+                customTypeName = qmltype->typeName();
+            }
 
-            case Object::DynamicProperty::String:
-                propertyType = QVariant::String;
-                type = "QString";
-                break;
+            if ( p.type == Object::DynamicProperty::Custom )
+            {
+                type = customTypeName + '*';
+                propertyType = QMetaType::QObjectStar;
+            }
+            else
+            {
+                readonly = true;
+                type = "QDeclarativeListProperty<";
+                type.append( customTypeName );
+                type.append( ">" );
+                propertyType = qMetaTypeId<QDeclarativeListProperty<QObject> >();
+            }
+        }
+        break;
 
-            case Object::DynamicProperty::Url:
-                propertyType = QVariant::Url;
-                type = "QUrl";
-                break;
+        case Object::DynamicProperty::Variant:
+            propertyType = -1;
+            type = "QVariant";
+            break;
 
-            case Object::DynamicProperty::Color:
-                propertyType = QVariant::Color;
-                type = "QColor";
-                break;
+        case Object::DynamicProperty::Int:
+            propertyType = QVariant::Int;
+            type = "int";
+            break;
 
-            case Object::DynamicProperty::Time:
-                propertyType = QVariant::Time;
-                type = "QTime";
-                break;
+        case Object::DynamicProperty::Bool:
+            propertyType = QVariant::Bool;
+            type = "bool";
+            break;
 
-            case Object::DynamicProperty::Date:
-                propertyType = QVariant::Date;
-                type = "QDate";
-                break;
+        case Object::DynamicProperty::Real:
+            propertyType = QVariant::Double;
+            type = "double";
+            break;
 
-            case Object::DynamicProperty::DateTime:
-                propertyType = QVariant::DateTime;
-                type = "QDateTime";
-                break;
+        case Object::DynamicProperty::String:
+            propertyType = QVariant::String;
+            type = "QString";
+            break;
+
+        case Object::DynamicProperty::Url:
+            propertyType = QVariant::Url;
+            type = "QUrl";
+            break;
+
+        case Object::DynamicProperty::Color:
+            propertyType = QVariant::Color;
+            type = "QColor";
+            break;
+
+        case Object::DynamicProperty::Time:
+            propertyType = QVariant::Time;
+            type = "QTime";
+            break;
+
+        case Object::DynamicProperty::Date:
+            propertyType = QVariant::Date;
+            type = "QDate";
+            break;
+
+        case Object::DynamicProperty::DateTime:
+            propertyType = QVariant::DateTime;
+            type = "QDateTime";
+            break;
         }
 
         ( ( QDeclarativeVMEMetaData * )dynamicData.data() )->propertyCount++;
@@ -3743,8 +3743,8 @@ int QDeclarativeCompiler::genValueTypeData( QDeclarativeParser::Property *valueT
 {
     QByteArray data =
         QDeclarativePropertyPrivate::saveValueType( prop->parent->metaObject(), prop->index,
-                enginePrivate->valueTypes[prop->type]->metaObject(),
-                valueTypeProp->index );
+            enginePrivate->valueTypes[prop->type]->metaObject(),
+            valueTypeProp->index );
     //                valueTypeProp->index, valueTypeProp->type);
 
     return output->indexForByteArray( data );

@@ -232,20 +232,20 @@ bool QDeclarativeListModelWorkerAgent::event( QEvent *e )
 
                 switch ( change.type )
                 {
-                    case Change::Inserted:
-                        orig->insertedNode( change.index );
-                        break;
+                case Change::Inserted:
+                    orig->insertedNode( change.index );
+                    break;
 
-                    case Change::Removed:
-                        orig->removedNode( change.index );
-                        break;
+                case Change::Removed:
+                    orig->removedNode( change.index );
+                    break;
 
-                    case Change::Moved:
-                        orig->moveNodes( change.index, change.to, change.count );
-                        break;
+                case Change::Moved:
+                    orig->moveNodes( change.index, change.to, change.count );
+                    break;
 
-                    case Change::Changed:
-                        break;
+                case Change::Changed:
+                    break;
                 }
             }
 
@@ -258,21 +258,21 @@ bool QDeclarativeListModelWorkerAgent::event( QEvent *e )
 
                 switch ( change.type )
                 {
-                    case Change::Inserted:
-                        emit m_orig->itemsInserted( change.index, change.count );
-                        break;
+                case Change::Inserted:
+                    emit m_orig->itemsInserted( change.index, change.count );
+                    break;
 
-                    case Change::Removed:
-                        emit m_orig->itemsRemoved( change.index, change.count );
-                        break;
+                case Change::Removed:
+                    emit m_orig->itemsRemoved( change.index, change.count );
+                    break;
 
-                    case Change::Moved:
-                        emit m_orig->itemsMoved( change.index, change.to, change.count );
-                        break;
+                case Change::Moved:
+                    emit m_orig->itemsMoved( change.index, change.to, change.count );
+                    break;
 
-                    case Change::Changed:
-                        emit m_orig->itemsChanged( change.index, change.count, change.roles );
-                        break;
+                case Change::Changed:
+                    emit m_orig->itemsChanged( change.index, change.count, change.roles );
+                    break;
                 }
             }
 

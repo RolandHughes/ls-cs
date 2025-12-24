@@ -64,7 +64,7 @@ private:
     LSCS_SLOT_2( _q_onBreakpointEnableRequest )
 
     LSCS_SLOT_1( Private, void _q_onBreakpointsAboutToBeRemoved( const QModelIndex &un_named_arg1, int un_named_arg2,
-               int un_named_arg3 ) )
+                 int un_named_arg3 ) )
     LSCS_SLOT_2( _q_onBreakpointsAboutToBeRemoved )
 
     LSCS_SLOT_1( Private, void _q_onBreakpointsInserted( const QModelIndex &un_named_arg1, int un_named_arg2, int un_named_arg3 ) )

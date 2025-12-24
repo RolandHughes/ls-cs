@@ -499,45 +499,45 @@ void QWellArray::keyPressEvent( QKeyEvent *e )
 {
     switch ( e->key() )                         // Look at the key code
     {
-        case Qt::Key_Left:                       // If 'left arrow'-key,
-            if ( curCol > 0 )                     // and cr't not in leftmost col
-            {
-                setCurrent( curRow, curCol - 1 );  // set cr't to next left column
-            }
+    case Qt::Key_Left:                       // If 'left arrow'-key,
+        if ( curCol > 0 )                     // and cr't not in leftmost col
+        {
+            setCurrent( curRow, curCol - 1 );  // set cr't to next left column
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Right:                      // Correspondingly...
-            if ( curCol < numCols() - 1 )
-            {
-                setCurrent( curRow, curCol + 1 );
-            }
+    case Qt::Key_Right:                      // Correspondingly...
+        if ( curCol < numCols() - 1 )
+        {
+            setCurrent( curRow, curCol + 1 );
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Up:
-            if ( curRow > 0 )
-            {
-                setCurrent( curRow - 1, curCol );
-            }
+    case Qt::Key_Up:
+        if ( curRow > 0 )
+        {
+            setCurrent( curRow - 1, curCol );
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Down:
-            if ( curRow < numRows() - 1 )
-            {
-                setCurrent( curRow + 1, curCol );
-            }
+    case Qt::Key_Down:
+        if ( curRow < numRows() - 1 )
+        {
+            setCurrent( curRow + 1, curCol );
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Space:
-            setSelected( curRow, curCol );
-            break;
+    case Qt::Key_Space:
+        setSelected( curRow, curCol );
+        break;
 
-        default:                                // If not an interesting key,
-            e->ignore();                        // we don't accept the event
-            return;
+    default:                                // If not an interesting key,
+        e->ignore();                        // we don't accept the event
+        return;
     }
 
 }
@@ -552,17 +552,17 @@ public:
     {
         switch ( event->type() )
         {
-            case QEvent::MouseMove:
-                return m_dp->handleColorPickingMouseMove( static_cast<QMouseEvent *>( event ) );
+        case QEvent::MouseMove:
+            return m_dp->handleColorPickingMouseMove( static_cast<QMouseEvent *>( event ) );
 
-            case QEvent::MouseButtonRelease:
-                return m_dp->handleColorPickingMouseButtonRelease( static_cast<QMouseEvent *>( event ) );
+        case QEvent::MouseButtonRelease:
+            return m_dp->handleColorPickingMouseButtonRelease( static_cast<QMouseEvent *>( event ) );
 
-            case QEvent::KeyPress:
-                return m_dp->handleColorPickingKeyPress( static_cast<QKeyEvent *>( event ) );
+        case QEvent::KeyPress:
+            return m_dp->handleColorPickingKeyPress( static_cast<QKeyEvent *>( event ) );
 
-            default:
-                break;
+        default:
+            break;
         }
 
         return false;

@@ -97,7 +97,7 @@ static bool isPackage( const QFileSystemMetaData &data, const QFileSystemEntry &
         // First step: is the extension known ?
         QCFType<CFStringRef> extensionRef = QCFString::toCFStringRef( suffix );
         QCFType<CFStringRef> uniformTypeIdentifier = UTTypeCreatePreferredIdentifierForTag( kUTTagClassFilenameExtension, extensionRef,
-                nullptr );
+            nullptr );
 
         if ( UTTypeConformsTo( uniformTypeIdentifier, kUTTypeBundle ) )
         {
@@ -251,7 +251,7 @@ QFileSystemEntry QFileSystemEngine::getLinkTarget( const QFileSystemEntry &link,
 
         QCFType<CFURLRef> resolvedUrl = CFURLCreateByResolvingBookmarkData( nullptr, bookmarkData,
                                         ( CFURLBookmarkResolutionOptions )( kCFBookmarkResolutionWithoutUIMask
-                                                | kCFBookmarkResolutionWithoutMountingMask ), nullptr, nullptr, nullptr, nullptr );
+                                            | kCFBookmarkResolutionWithoutMountingMask ), nullptr, nullptr, nullptr, nullptr );
 
         if ( ! resolvedUrl )
         {

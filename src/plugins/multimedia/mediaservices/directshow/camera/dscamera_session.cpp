@@ -364,50 +364,50 @@ bool DSCameraSession::isImageProcessingParameterValueSupported(
     switch ( parameter )
     {
 
-        case QCameraImageProcessingControl::WhiteBalancePreset:
+    case QCameraImageProcessingControl::WhiteBalancePreset:
+    {
+        const QCameraImageProcessing::WhiteBalanceMode checkedValue =
+            value.value<QCameraImageProcessing::WhiteBalanceMode>();
+
+        // Supports only the Manual and the Auto values
+        if ( checkedValue != QCameraImageProcessing::WhiteBalanceManual
+                && checkedValue != QCameraImageProcessing::WhiteBalanceAuto )
         {
-            const QCameraImageProcessing::WhiteBalanceMode checkedValue =
-                value.value<QCameraImageProcessing::WhiteBalanceMode>();
-
-            // Supports only the Manual and the Auto values
-            if ( checkedValue != QCameraImageProcessing::WhiteBalanceManual
-                    && checkedValue != QCameraImageProcessing::WhiteBalanceAuto )
-            {
-                return false;
-            }
-        }
-        break;
-
-        case QCameraImageProcessingControl::ColorTemperature:
-        {
-            const qint32 checkedValue = value.toInt();
-
-            if ( checkedValue < ( *sourceValueInfo ).minimumValue
-                    || checkedValue > ( *sourceValueInfo ).maximumValue )
-            {
-                return false;
-            }
-        }
-        break;
-
-        case QCameraImageProcessingControl::ContrastAdjustment: // falling back
-        case QCameraImageProcessingControl::SaturationAdjustment: // falling back
-        case QCameraImageProcessingControl::BrightnessAdjustment: // falling back
-        case QCameraImageProcessingControl::SharpeningAdjustment:
-        {
-            const qint32 sourceValue = sourceImageProcessingParameterValue(
-                                           value.toReal(), ( *sourceValueInfo ) );
-
-            if ( sourceValue < ( *sourceValueInfo ).minimumValue
-                    || sourceValue > ( *sourceValueInfo ).maximumValue )
-            {
-                return false;
-            }
-        }
-        break;
-
-        default:
             return false;
+        }
+    }
+    break;
+
+    case QCameraImageProcessingControl::ColorTemperature:
+    {
+        const qint32 checkedValue = value.toInt();
+
+        if ( checkedValue < ( *sourceValueInfo ).minimumValue
+                || checkedValue > ( *sourceValueInfo ).maximumValue )
+        {
+            return false;
+        }
+    }
+    break;
+
+    case QCameraImageProcessingControl::ContrastAdjustment: // falling back
+    case QCameraImageProcessingControl::SaturationAdjustment: // falling back
+    case QCameraImageProcessingControl::BrightnessAdjustment: // falling back
+    case QCameraImageProcessingControl::SharpeningAdjustment:
+    {
+        const qint32 sourceValue = sourceImageProcessingParameterValue(
+                                       value.toReal(), ( *sourceValueInfo ) );
+
+        if ( sourceValue < ( *sourceValueInfo ).minimumValue
+                || sourceValue > ( *sourceValueInfo ).maximumValue )
+        {
+            return false;
+        }
+    }
+    break;
+
+    default:
+        return false;
     }
 
     return true;
@@ -436,23 +436,23 @@ QVariant DSCameraSession::imageProcessingParameter( QCameraImageProcessingContro
     switch ( parameter )
     {
 
-        case QCameraImageProcessingControl::WhiteBalancePreset:
-            return QVariant::fromValue<QCameraImageProcessing::WhiteBalanceMode>(
-                       ( *sourceValueInfo ).capsFlags == VideoProcAmp_Flags_Auto
-                       ? QCameraImageProcessing::WhiteBalanceAuto
-                       : QCameraImageProcessing::WhiteBalanceManual );
+    case QCameraImageProcessingControl::WhiteBalancePreset:
+        return QVariant::fromValue<QCameraImageProcessing::WhiteBalanceMode>(
+                   ( *sourceValueInfo ).capsFlags == VideoProcAmp_Flags_Auto
+                   ? QCameraImageProcessing::WhiteBalanceAuto
+                   : QCameraImageProcessing::WhiteBalanceManual );
 
-        case QCameraImageProcessingControl::ColorTemperature:
-            return QVariant::fromValue<qint32>( ( *sourceValueInfo ).currentValue );
+    case QCameraImageProcessingControl::ColorTemperature:
+        return QVariant::fromValue<qint32>( ( *sourceValueInfo ).currentValue );
 
-        case QCameraImageProcessingControl::ContrastAdjustment: // falling back
-        case QCameraImageProcessingControl::SaturationAdjustment: // falling back
-        case QCameraImageProcessingControl::BrightnessAdjustment: // falling back
-        case QCameraImageProcessingControl::SharpeningAdjustment:
-            return scaledImageProcessingParameterValue( ( *sourceValueInfo ) );
+    case QCameraImageProcessingControl::ContrastAdjustment: // falling back
+    case QCameraImageProcessingControl::SaturationAdjustment: // falling back
+    case QCameraImageProcessingControl::BrightnessAdjustment: // falling back
+    case QCameraImageProcessingControl::SharpeningAdjustment:
+        return scaledImageProcessingParameterValue( ( *sourceValueInfo ) );
 
-        default:
-            return QVariant();
+    default:
+        return QVariant();
     }
 }
 
@@ -484,55 +484,55 @@ void DSCameraSession::setImageProcessingParameter(
     switch ( parameter )
     {
 
-        case QCameraImageProcessingControl::WhiteBalancePreset:
+    case QCameraImageProcessingControl::WhiteBalancePreset:
+    {
+        const QCameraImageProcessing::WhiteBalanceMode checkedValue =
+            value.value<QCameraImageProcessing::WhiteBalanceMode>();
+
+        // Supports only the Manual and the Auto values
+        if ( checkedValue == QCameraImageProcessing::WhiteBalanceManual )
         {
-            const QCameraImageProcessing::WhiteBalanceMode checkedValue =
-                value.value<QCameraImageProcessing::WhiteBalanceMode>();
-
-            // Supports only the Manual and the Auto values
-            if ( checkedValue == QCameraImageProcessing::WhiteBalanceManual )
-            {
-                capsFlags = VideoProcAmp_Flags_Manual;
-            }
-            else if ( checkedValue == QCameraImageProcessing::WhiteBalanceAuto )
-            {
-                capsFlags = VideoProcAmp_Flags_Auto;
-            }
-            else
-            {
-                return;
-            }
-
-            sourceValue = ( ( *sourceValueInfo ).hasBeenExplicitlySet )
-                          ? ( *sourceValueInfo ).currentValue
-                          : ( *sourceValueInfo ).defaultValue;
+            capsFlags = VideoProcAmp_Flags_Manual;
         }
+        else if ( checkedValue == QCameraImageProcessing::WhiteBalanceAuto )
+        {
+            capsFlags = VideoProcAmp_Flags_Auto;
+        }
+        else
+        {
+            return;
+        }
+
+        sourceValue = ( ( *sourceValueInfo ).hasBeenExplicitlySet )
+                      ? ( *sourceValueInfo ).currentValue
+                      : ( *sourceValueInfo ).defaultValue;
+    }
+    break;
+
+    case QCameraImageProcessingControl::ColorTemperature:
+        sourceValue = value.isValid() ?
+                      value.value<qint32>() : ( *sourceValueInfo ).defaultValue;
+        capsFlags = ( *sourceValueInfo ).capsFlags;
         break;
 
-        case QCameraImageProcessingControl::ColorTemperature:
-            sourceValue = value.isValid() ?
-                          value.value<qint32>() : ( *sourceValueInfo ).defaultValue;
-            capsFlags = ( *sourceValueInfo ).capsFlags;
-            break;
+    case QCameraImageProcessingControl::ContrastAdjustment:   // falling back
+    case QCameraImageProcessingControl::SaturationAdjustment: // falling back
+    case QCameraImageProcessingControl::BrightnessAdjustment: // falling back
+    case QCameraImageProcessingControl::SharpeningAdjustment:
+        if ( value.isValid() )
+        {
+            sourceValue = sourceImageProcessingParameterValue(
+                              value.toReal(), ( *sourceValueInfo ) );
+        }
+        else
+        {
+            sourceValue = ( *sourceValueInfo ).defaultValue;
+        }
 
-        case QCameraImageProcessingControl::ContrastAdjustment:   // falling back
-        case QCameraImageProcessingControl::SaturationAdjustment: // falling back
-        case QCameraImageProcessingControl::BrightnessAdjustment: // falling back
-        case QCameraImageProcessingControl::SharpeningAdjustment:
-            if ( value.isValid() )
-            {
-                sourceValue = sourceImageProcessingParameterValue(
-                                  value.toReal(), ( *sourceValueInfo ) );
-            }
-            else
-            {
-                sourceValue = ( *sourceValueInfo ).defaultValue;
-            }
+        break;
 
-            break;
-
-        default:
-            return;
+    default:
+        return;
     }
 
     IAMVideoProcAmp *pVideoProcAmp = nullptr;
@@ -1177,28 +1177,28 @@ void DSCameraSession::updateImageProcessingParametersInfos()
 
         switch ( property )
         {
-            case VideoProcAmp_Brightness:
-                processingParameter = QCameraImageProcessingControl::BrightnessAdjustment;
-                break;
+        case VideoProcAmp_Brightness:
+            processingParameter = QCameraImageProcessingControl::BrightnessAdjustment;
+            break;
 
-            case VideoProcAmp_Contrast:
-                processingParameter = QCameraImageProcessingControl::ContrastAdjustment;
-                break;
+        case VideoProcAmp_Contrast:
+            processingParameter = QCameraImageProcessingControl::ContrastAdjustment;
+            break;
 
-            case VideoProcAmp_Saturation:
-                processingParameter = QCameraImageProcessingControl::SaturationAdjustment;
-                break;
+        case VideoProcAmp_Saturation:
+            processingParameter = QCameraImageProcessingControl::SaturationAdjustment;
+            break;
 
-            case VideoProcAmp_Sharpness:
-                processingParameter = QCameraImageProcessingControl::SharpeningAdjustment;
-                break;
+        case VideoProcAmp_Sharpness:
+            processingParameter = QCameraImageProcessingControl::SharpeningAdjustment;
+            break;
 
-            case VideoProcAmp_WhiteBalance:
-                processingParameter = QCameraImageProcessingControl::ColorTemperature;
-                break;
+        case VideoProcAmp_WhiteBalance:
+            processingParameter = QCameraImageProcessingControl::ColorTemperature;
+            break;
 
-            default: // unsupported or not implemented yet parameter
-                continue;
+        default: // unsupported or not implemented yet parameter
+            continue;
         }
 
         ImageProcessingParameterInfo sourceValueInfo;

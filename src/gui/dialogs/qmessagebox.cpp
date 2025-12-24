@@ -540,35 +540,35 @@ static int oldButton( int button )
 {
     switch ( button & QMessageBox::ButtonMask )
     {
-        case QMessageBox::Ok:
-            return Old_Ok;
+    case QMessageBox::Ok:
+        return Old_Ok;
 
-        case QMessageBox::Cancel:
-            return Old_Cancel;
+    case QMessageBox::Cancel:
+        return Old_Cancel;
 
-        case QMessageBox::Yes:
-            return Old_Yes;
+    case QMessageBox::Yes:
+        return Old_Yes;
 
-        case QMessageBox::No:
-            return Old_No;
+    case QMessageBox::No:
+        return Old_No;
 
-        case QMessageBox::Abort:
-            return Old_Abort;
+    case QMessageBox::Abort:
+        return Old_Abort;
 
-        case QMessageBox::Retry:
-            return Old_Retry;
+    case QMessageBox::Retry:
+        return Old_Retry;
 
-        case QMessageBox::Ignore:
-            return Old_Ignore;
+    case QMessageBox::Ignore:
+        return Old_Ignore;
 
-        case QMessageBox::YesToAll:
-            return Old_YesAll;
+    case QMessageBox::YesToAll:
+        return Old_YesAll;
 
-        case QMessageBox::NoToAll:
-            return Old_NoAll;
+    case QMessageBox::NoToAll:
+        return Old_NoAll;
 
-        default:
-            return 0;
+    default:
+        return 0;
     }
 }
 
@@ -1014,16 +1014,16 @@ bool QMessageBox::event( QEvent *e )
 
     switch ( e->type() )
     {
-        case QEvent::LayoutRequest:
-            d_func()->updateSize();
-            break;
+    case QEvent::LayoutRequest:
+        d_func()->updateSize();
+        break;
 
-        case QEvent::LanguageChange:
-            d_func()->retranslateStrings();
-            break;
+    case QEvent::LanguageChange:
+        d_func()->retranslateStrings();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return result;
@@ -1056,38 +1056,38 @@ void QMessageBox::changeEvent( QEvent *ev )
 
     switch ( ev->type() )
     {
-        case QEvent::StyleChange:
+    case QEvent::StyleChange:
+    {
+        if ( d->icon != NoIcon )
         {
-            if ( d->icon != NoIcon )
-            {
-                setIcon( d->icon );
-            }
-
-            Qt::TextInteractionFlags flags( style()->styleHint( QStyle::SH_MessageBox_TextInteractionFlags, nullptr, this ) );
-            d->label->setTextInteractionFlags( flags );
-            d->buttonBox->setCenterButtons( style()->styleHint( QStyle::SH_MessageBox_CenterButtons, nullptr, this ) );
-
-            if ( d->informativeLabel )
-            {
-                d->informativeLabel->setTextInteractionFlags( flags );
-            }
+            setIcon( d->icon );
         }
 
-        [[fallthrough]];
+        Qt::TextInteractionFlags flags( style()->styleHint( QStyle::SH_MessageBox_TextInteractionFlags, nullptr, this ) );
+        d->label->setTextInteractionFlags( flags );
+        d->buttonBox->setCenterButtons( style()->styleHint( QStyle::SH_MessageBox_CenterButtons, nullptr, this ) );
 
-        case QEvent::FontChange:
-        case QEvent::ApplicationFontChange:
+        if ( d->informativeLabel )
+        {
+            d->informativeLabel->setTextInteractionFlags( flags );
+        }
+    }
+
+    [[fallthrough]];
+
+    case QEvent::FontChange:
+    case QEvent::ApplicationFontChange:
 #ifdef Q_OS_DARWIN
-        {
-            QFont f = font();
-            f.setBold( true );
-            d->label->setFont( f );
-        }
+    {
+        QFont f = font();
+        f.setBold( true );
+        d->label->setFont( f );
+    }
 
 #endif
 
-        default:
-            break;
+    default:
+        break;
     }
 
     QDialog::changeEvent( ev );
@@ -1813,23 +1813,23 @@ QPixmap QMessageBoxPrivate::standardIcon( QMessageBox::Icon icon, QMessageBox *m
 
     switch ( icon )
     {
-        case QMessageBox::Information:
-            tmpIcon = style->standardIcon( QStyle::SP_MessageBoxInformation, nullptr, mb );
-            break;
+    case QMessageBox::Information:
+        tmpIcon = style->standardIcon( QStyle::SP_MessageBoxInformation, nullptr, mb );
+        break;
 
-        case QMessageBox::Warning:
-            tmpIcon = style->standardIcon( QStyle::SP_MessageBoxWarning, nullptr, mb );
-            break;
+    case QMessageBox::Warning:
+        tmpIcon = style->standardIcon( QStyle::SP_MessageBoxWarning, nullptr, mb );
+        break;
 
-        case QMessageBox::Critical:
-            tmpIcon = style->standardIcon( QStyle::SP_MessageBoxCritical, nullptr, mb );
-            break;
+    case QMessageBox::Critical:
+        tmpIcon = style->standardIcon( QStyle::SP_MessageBoxCritical, nullptr, mb );
+        break;
 
-        case QMessageBox::Question:
-            tmpIcon = style->standardIcon( QStyle::SP_MessageBoxQuestion, nullptr, mb );
+    case QMessageBox::Question:
+        tmpIcon = style->standardIcon( QStyle::SP_MessageBoxQuestion, nullptr, mb );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( ! tmpIcon.isNull() )
@@ -1873,20 +1873,20 @@ static QMessageDialogOptions::Icon helperIcon( QMessageBox::Icon icon )
 {
     switch ( icon )
     {
-        case QMessageBox::NoIcon:
-            return QMessageDialogOptions::NoIcon;
+    case QMessageBox::NoIcon:
+        return QMessageDialogOptions::NoIcon;
 
-        case QMessageBox::Information:
-            return QMessageDialogOptions::Information;
+    case QMessageBox::Information:
+        return QMessageDialogOptions::Information;
 
-        case QMessageBox::Warning:
-            return QMessageDialogOptions::Warning;
+    case QMessageBox::Warning:
+        return QMessageDialogOptions::Warning;
 
-        case QMessageBox::Critical:
-            return QMessageDialogOptions::Critical;
+    case QMessageBox::Critical:
+        return QMessageDialogOptions::Critical;
 
-        case QMessageBox::Question:
-            return QMessageDialogOptions::Question;
+    case QMessageBox::Question:
+        return QMessageDialogOptions::Question;
     }
 
     return QMessageDialogOptions::NoIcon;

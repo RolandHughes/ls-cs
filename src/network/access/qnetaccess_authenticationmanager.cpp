@@ -106,26 +106,26 @@ static QByteArray proxyAuthenticationKey( const QNetworkProxy &proxy, const QStr
 
     switch ( proxy.type() )
     {
-        case QNetworkProxy::Socks5Proxy:
-            key.setScheme( QLatin1String( "proxy-socks5" ) );
-            break;
+    case QNetworkProxy::Socks5Proxy:
+        key.setScheme( QLatin1String( "proxy-socks5" ) );
+        break;
 
-        case QNetworkProxy::HttpProxy:
-        case QNetworkProxy::HttpCachingProxy:
-            key.setScheme( QLatin1String( "proxy-http" ) );
-            break;
+    case QNetworkProxy::HttpProxy:
+    case QNetworkProxy::HttpCachingProxy:
+        key.setScheme( QLatin1String( "proxy-http" ) );
+        break;
 
-        case QNetworkProxy::FtpCachingProxy:
-            key.setScheme( QLatin1String( "proxy-ftp" ) );
-            break;
+    case QNetworkProxy::FtpCachingProxy:
+        key.setScheme( QLatin1String( "proxy-ftp" ) );
+        break;
 
-        case QNetworkProxy::DefaultProxy:
-        case QNetworkProxy::NoProxy:
-            // shouldn't happen
-            return QByteArray();
+    case QNetworkProxy::DefaultProxy:
+    case QNetworkProxy::NoProxy:
+        // shouldn't happen
+        return QByteArray();
 
-            // no default:
-            // let there be errors if a new proxy type is added in the future
+        // no default:
+        // let there be errors if a new proxy type is added in the future
     }
 
     if ( key.scheme().isEmpty() )
@@ -343,7 +343,7 @@ QNetworkAuthenticationCredential QNetworkAccessAuthenticationManager::fetchCache
     }
 
     QNetworkAuthenticationCache *auth      = static_cast<QNetworkAuthenticationCache *>( authenticationCache.requestEntryNow(
-                cacheKey ) );
+            cacheKey ) );
     QNetworkAuthenticationCredential *cred = auth->findClosestMatch( url.path() );
     QNetworkAuthenticationCredential ret;
 

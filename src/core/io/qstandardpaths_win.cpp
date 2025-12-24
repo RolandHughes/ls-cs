@@ -164,63 +164,63 @@ QString QStandardPaths::writableLocation( StandardLocation type )
     switch ( type )
     {
 
-        case DownloadLocation:
-            result = sHGetKnownFolderPath( qCLSID_FOLDERID_Downloads, type );
+    case DownloadLocation:
+        result = sHGetKnownFolderPath( qCLSID_FOLDERID_Downloads, type );
 
-            if ( result.isEmpty() )
-            {
-                result = QStandardPaths::writableLocation( QStandardPaths::DocumentsLocation );
-            }
+        if ( result.isEmpty() )
+        {
+            result = QStandardPaths::writableLocation( QStandardPaths::DocumentsLocation );
+        }
 
-            break;
+        break;
 
-        case CacheLocation:
-            // Although Microsoft has a Cache key it is a pointer to IE's cache, not a cache
-            // location for everyone.  Most applications seem to be using a
-            // cache directory located in their AppData directory
+    case CacheLocation:
+        // Although Microsoft has a Cache key it is a pointer to IE's cache, not a cache
+        // location for everyone.  Most applications seem to be using a
+        // cache directory located in their AppData directory
 
-            result = sHGetSpecialFolderPath( writableSpecialFolderClsid( AppLocalDataLocation ), type, /* warn */ true );
+        result = sHGetSpecialFolderPath( writableSpecialFolderClsid( AppLocalDataLocation ), type, /* warn */ true );
 
-            if ( ! result.isEmpty() )
+        if ( ! result.isEmpty() )
+        {
+            appendOrganizationAndApp( result );
+            result += "/cache";
+        }
+
+        break;
+
+    case GenericCacheLocation:
+        result = sHGetSpecialFolderPath( writableSpecialFolderClsid( GenericDataLocation ), type, /* warn */ true );
+
+        if ( ! result.isEmpty() )
+        {
+            result += "/cache";
+        }
+
+        break;
+
+    case RuntimeLocation:
+    case HomeLocation:
+        result = QDir::homePath();
+        break;
+
+    case TempLocation:
+        result = QDir::tempPath();
+        break;
+
+    default:
+        result = sHGetSpecialFolderPath( writableSpecialFolderClsid( type ), type, /* warn */ isConfigLocation( type ) );
+
+        if ( ! result.isEmpty() && isConfigLocation( type ) )
+        {
+
+            if ( ! isGenericConfigLocation( type ) )
             {
                 appendOrganizationAndApp( result );
-                result += "/cache";
             }
+        }
 
-            break;
-
-        case GenericCacheLocation:
-            result = sHGetSpecialFolderPath( writableSpecialFolderClsid( GenericDataLocation ), type, /* warn */ true );
-
-            if ( ! result.isEmpty() )
-            {
-                result += "/cache";
-            }
-
-            break;
-
-        case RuntimeLocation:
-        case HomeLocation:
-            result = QDir::homePath();
-            break;
-
-        case TempLocation:
-            result = QDir::tempPath();
-            break;
-
-        default:
-            result = sHGetSpecialFolderPath( writableSpecialFolderClsid( type ), type, /* warn */ isConfigLocation( type ) );
-
-            if ( ! result.isEmpty() && isConfigLocation( type ) )
-            {
-
-                if ( ! isGenericConfigLocation( type ) )
-                {
-                    appendOrganizationAndApp( result );
-                }
-            }
-
-            break;
+        break;
     }
 
     return result;

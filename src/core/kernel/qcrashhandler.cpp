@@ -169,12 +169,12 @@ static void print_backtrace( FILE *outb )
      * process after we have detached.
      */
     if ( backtrace_command( outb, "gdb -q %s %d 2>/dev/null <<EOF\n"
-                            "set prompt\n"
-                            "where\n"
-                            "detach\n"
-                            "shell kill -CONT %d\n"
-                            "quit\n"
-                            "EOF\n",
+                                  "set prompt\n"
+                                  "where\n"
+                                  "detach\n"
+                                  "shell kill -CONT %d\n"
+                                  "quit\n"
+                                  "EOF\n",
                             globalProgName, ( int )getpid(), ( int )getpid() ) )
     {
         return;
@@ -194,20 +194,20 @@ static void print_backtrace( FILE *outb )
      * The final "y" is confirmation to the quit command.
      */
     if ( backtrace_command( outb, "xdb -P %d -L %s 2>&1 <<EOF\n"
-                            "T 50\n"
-                            "q\ny\n"
-                            "EOF\n",
+                                  "T 50\n"
+                                  "q\ny\n"
+                                  "EOF\n",
                             ( int )getpid(), globalProgName ) )
     {
         return;
     }
 
     if ( backtrace_command( outb, "gdb -q %s %d 2>/dev/null <<EOF\n"
-                            "set prompt\n"
-                            "where\n"
-                            "detach\n"
-                            "quit\n"
-                            "EOF\n",
+                                  "set prompt\n"
+                                  "where\n"
+                                  "detach\n"
+                                  "quit\n"
+                                  "EOF\n",
                             globalProgName, ( int )getpid() ) )
     {
         return;
@@ -216,29 +216,29 @@ static void print_backtrace( FILE *outb )
 #elif defined(Q_OS_SOLARIS)
 
     if ( backtrace_command( outb, "dbx %s %d 2>/dev/null <<EOF\n"
-                            "where\n"
-                            "detach\n"
-                            "EOF\n",
+                                  "where\n"
+                                  "detach\n"
+                                  "EOF\n",
                             globalProgName, ( int )getpid() ) )
     {
         return;
     }
 
     if ( backtrace_command( outb, "gdb -q %s %d 2>/dev/null <<EOF\n"
-                            "set prompt\n"
-                            "where\n"
-                            "echo ---\\n\n"
-                            "frame 5\n"      /* Skip signal handler frames */
-                            "set \\$x = 50\n"
-                            "while (\\$x)\n" /* Print local variables for each frame */
-                            "info locals\n"
-                            "up\n"
-                            "set \\$x--\n"
-                            "end\n"
-                            "echo ---\\n\n"
-                            "detach\n"
-                            "quit\n"
-                            "EOF\n",
+                                  "set prompt\n"
+                                  "where\n"
+                                  "echo ---\\n\n"
+                                  "frame 5\n"      /* Skip signal handler frames */
+                                  "set \\$x = 50\n"
+                                  "while (\\$x)\n" /* Print local variables for each frame */
+                                  "info locals\n"
+                                  "up\n"
+                                  "set \\$x--\n"
+                                  "end\n"
+                                  "echo ---\\n\n"
+                                  "detach\n"
+                                  "quit\n"
+                                  "EOF\n",
                             globalProgName, ( int )getpid() ) )
     {
         return;
@@ -254,11 +254,11 @@ static void print_backtrace( FILE *outb )
      * they seem unable to attach to a running process.)
      */
     if ( backtrace_command( outb, "adb %s 2>&1 <<EOF\n"
-                            "0t%d:A\n" /* Attach to pid */
-                            "\\$c\n"   /* print stacktrace */
-                            ":R\n"     /* Detach */
-                            "\\$q\n"   /* Quit */
-                            "EOF\n",
+                                  "0t%d:A\n" /* Attach to pid */
+                                  "\\$c\n"   /* print stacktrace */
+                                  ":R\n"     /* Detach */
+                                  "\\$q\n"   /* Quit */
+                                  "EOF\n",
                             globalProgName, ( int )getpid() ) )
     {
         return;
@@ -272,9 +272,9 @@ static void print_backtrace( FILE *outb )
 # if ! defined(__GNUC__)
 
     if ( backtrace_command( outb, "dbx %s %d 2>/dev/null <<EOF\n"
-                            "where\n"
-                            "detach\n"
-                            "EOF\n",
+                                  "where\n"
+                                  "detach\n"
+                                  "EOF\n",
                             globalProgName, ( int )getpid() ) )
     {
         return;
@@ -283,11 +283,11 @@ static void print_backtrace( FILE *outb )
 # endif
 
     if ( backtrace_command( outb, "gdb -q %s %d 2>/dev/null <<EOF\n"
-                            "set prompt\n"
-                            "where\n"
-                            "detach\n"
-                            "quit\n"
-                            "EOF\n",
+                                  "set prompt\n"
+                                  "where\n"
+                                  "detach\n"
+                                  "quit\n"
+                                  "EOF\n",
                             globalProgName, ( int )getpid() ) )
     {
         return;

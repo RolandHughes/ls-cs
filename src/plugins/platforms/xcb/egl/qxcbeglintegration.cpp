@@ -72,10 +72,10 @@ QPlatformOpenGLContext *QXcbEglIntegration::createPlatformOpenGLContext( QOpenGL
 {
     QXcbScreen *screen = static_cast<QXcbScreen *>( context->screen()->handle() );
     QXcbEglContext *platformContext = new QXcbEglContext( context->format(),
-            context->shareHandle(),
-            eglDisplay(),
-            screen->connection(),
-            context->nativeHandle() );
+        context->shareHandle(),
+        eglDisplay(),
+        screen->connection(),
+        context->nativeHandle() );
     context->setNativeHandle( platformContext->nativeHandle() );
     return platformContext;
 }

@@ -123,20 +123,20 @@ void QRubberBand::changeEvent( QEvent *e )
 
     switch ( e->type() )
     {
-        case QEvent::ParentChange:
-            if ( parent() )
-            {
-                setWindowFlags( windowFlags() & ~RUBBERBAND_WINDOW_TYPE );
-            }
-            else
-            {
-                setWindowFlags( windowFlags() | RUBBERBAND_WINDOW_TYPE );
-            }
+    case QEvent::ParentChange:
+        if ( parent() )
+        {
+            setWindowFlags( windowFlags() & ~RUBBERBAND_WINDOW_TYPE );
+        }
+        else
+        {
+            setWindowFlags( windowFlags() | RUBBERBAND_WINDOW_TYPE );
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( e->type() == QEvent::ZOrderChange )

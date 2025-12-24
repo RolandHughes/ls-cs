@@ -757,21 +757,21 @@ void QDeclarativeTextPrivate::checkImageCache()
 
         switch ( style )
         {
-            case QDeclarativeText::Outline:
-                imageCache = drawOutline( textImage, styledImage );
-                break;
+        case QDeclarativeText::Outline:
+            imageCache = drawOutline( textImage, styledImage );
+            break;
 
-            case QDeclarativeText::Sunken:
-                imageCache = drawOutline( textImage, styledImage, -1 );
-                break;
+        case QDeclarativeText::Sunken:
+            imageCache = drawOutline( textImage, styledImage, -1 );
+            break;
 
-            case QDeclarativeText::Raised:
-                imageCache = drawOutline( textImage, styledImage, 1 );
-                break;
+        case QDeclarativeText::Raised:
+            imageCache = drawOutline( textImage, styledImage, 1 );
+            break;
 
-            default:
-                imageCache = textImage;
-                break;
+        default:
+            imageCache = textImage;
+            break;
         }
 
     }
@@ -1158,16 +1158,16 @@ QDeclarativeText::HAlignment QDeclarativeText::effectiveHAlign() const
     {
         switch ( d->hAlign )
         {
-            case QDeclarativeText::AlignLeft:
-                effectiveAlignment = QDeclarativeText::AlignRight;
-                break;
+        case QDeclarativeText::AlignLeft:
+            effectiveAlignment = QDeclarativeText::AlignRight;
+            break;
 
-            case QDeclarativeText::AlignRight:
-                effectiveAlignment = QDeclarativeText::AlignLeft;
-                break;
+        case QDeclarativeText::AlignRight:
+            effectiveAlignment = QDeclarativeText::AlignLeft;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -1504,16 +1504,16 @@ QRectF QDeclarativeText::boundingRect() const
 
     switch ( d->vAlign )
     {
-        case AlignTop:
-            break;
+    case AlignTop:
+        break;
 
-        case AlignBottom:
-            rect.moveTop( h - rect.height() );
-            break;
+    case AlignBottom:
+        rect.moveTop( h - rect.height() );
+        break;
 
-        case AlignVCenter:
-            rect.moveTop( ( h - rect.height() ) / 2 );
-            break;
+    case AlignVCenter:
+        rect.moveTop( ( h - rect.height() ) / 2 );
+        break;
     }
 
     return QRectF( rect );

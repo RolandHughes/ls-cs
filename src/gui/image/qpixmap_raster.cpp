@@ -296,45 +296,45 @@ int QRasterPlatformPixmap::metric( QPaintDevice::PaintDeviceMetric metric ) cons
     // override the image dpi with the screen dpi when rendering to a pixmap
     switch ( metric )
     {
-        case QPaintDevice::PdmWidth:
-            return w;
+    case QPaintDevice::PdmWidth:
+        return w;
 
-        case QPaintDevice::PdmHeight:
-            return h;
+    case QPaintDevice::PdmHeight:
+        return h;
 
-        case QPaintDevice::PdmWidthMM:
-            return qRound( d->width * 25.4 / lscs_defaultDpiX() );
+    case QPaintDevice::PdmWidthMM:
+        return qRound( d->width * 25.4 / lscs_defaultDpiX() );
 
-        case QPaintDevice::PdmHeightMM:
-            return qRound( d->height * 25.4 / lscs_defaultDpiY() );
+    case QPaintDevice::PdmHeightMM:
+        return qRound( d->height * 25.4 / lscs_defaultDpiY() );
 
-        case QPaintDevice::PdmNumColors:
-            return d->colortable.size();
+    case QPaintDevice::PdmNumColors:
+        return d->colortable.size();
 
-        case QPaintDevice::PdmDepth:
-            return this->d;
+    case QPaintDevice::PdmDepth:
+        return this->d;
 
-        case QPaintDevice::PdmDpiX:
-            return lscs_defaultDpiX();
+    case QPaintDevice::PdmDpiX:
+        return lscs_defaultDpiX();
 
-        case QPaintDevice::PdmPhysicalDpiX:
-            return lscs_defaultDpiX();
+    case QPaintDevice::PdmPhysicalDpiX:
+        return lscs_defaultDpiX();
 
-        case QPaintDevice::PdmDpiY:
-            return lscs_defaultDpiX();
+    case QPaintDevice::PdmDpiY:
+        return lscs_defaultDpiX();
 
-        case QPaintDevice::PdmPhysicalDpiY:
-            return lscs_defaultDpiY();
+    case QPaintDevice::PdmPhysicalDpiY:
+        return lscs_defaultDpiY();
 
-        case QPaintDevice::PdmDevicePixelRatio:
-            return image.devicePixelRatio();
+    case QPaintDevice::PdmDevicePixelRatio:
+        return image.devicePixelRatio();
 
-        case QPaintDevice::PdmDevicePixelRatioScaled:
-            return image.devicePixelRatio() * QPaintDevice::devicePixelRatioFScale();
+    case QPaintDevice::PdmDevicePixelRatioScaled:
+        return image.devicePixelRatio() * QPaintDevice::devicePixelRatioFScale();
 
-        default:
-            qWarning( "QRasterPlatformPixmap::metric() Unhandled metric type %d", metric );
-            break;
+    default:
+        qWarning( "QRasterPlatformPixmap::metric() Unhandled metric type %d", metric );
+        break;
     }
 
     return 0;

@@ -713,8 +713,8 @@ void QXcbKeyboard::printKeymapError( const char *error ) const
     }
 
     qWarning() << "Use LSCS_XKB_CONFIG_ROOT environmental variable to provide an additional search path, "
-               "add ':' as separator to provide several search paths and/or make sure that XKB configuration data "
-               "directory contains recent enough contents, to update please see http://cgit.freedesktop.org/xkeyboard-config/ .";
+                  "add ':' as separator to provide several search paths and/or make sure that XKB configuration data "
+                  "directory contains recent enough contents, to update please see http://cgit.freedesktop.org/xkeyboard-config/ .";
 }
 
 void QXcbKeyboard::updateKeymap()
@@ -786,7 +786,7 @@ void QXcbKeyboard::updateKeymap()
         {
             // last fallback is to used hard-coded keymap name, see DEFAULT_XKB_* in xkbcommon.pri
             qWarning() << "Unable to determine keyboard configuration data"
-                       " from X server, using hard coded keymap configuration.";
+                          " from X server, using hard coded keymap configuration.";
 
             clearXKBConfig();
             xkb_keymap = xkb_keymap_new_from_names( xkb_context, &xkb_names, ( xkb_keymap_compile_flags )0 );

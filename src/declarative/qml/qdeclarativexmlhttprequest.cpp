@@ -349,17 +349,17 @@ QScriptValue Node::nodeName( QScriptContext *context, QScriptEngine *engine )
 
     switch ( node.d->type )
     {
-        case NodeImpl::Document:
-            return QScriptValue( QLatin1String( "#document" ) );
+    case NodeImpl::Document:
+        return QScriptValue( QLatin1String( "#document" ) );
 
-        case NodeImpl::CDATA:
-            return QScriptValue( QLatin1String( "#cdata-section" ) );
+    case NodeImpl::CDATA:
+        return QScriptValue( QLatin1String( "#cdata-section" ) );
 
-        case NodeImpl::Text:
-            return QScriptValue( QLatin1String( "#text" ) );
+    case NodeImpl::Text:
+        return QScriptValue( QLatin1String( "#text" ) );
 
-        default:
-            return QScriptValue( node.d->name );
+    default:
+        return QScriptValue( node.d->name );
     }
 }
 
@@ -584,31 +584,31 @@ QScriptValue Node::create( QScriptEngine *engine, NodeImpl *data )
 
     switch ( data->type )
     {
-        case NodeImpl::Attr:
-            instance.setPrototype( Attr::prototype( engine ) );
-            break;
+    case NodeImpl::Attr:
+        instance.setPrototype( Attr::prototype( engine ) );
+        break;
 
-        case NodeImpl::Comment:
-        case NodeImpl::Document:
-        case NodeImpl::DocumentFragment:
-        case NodeImpl::DocumentType:
-        case NodeImpl::Entity:
-        case NodeImpl::EntityReference:
-        case NodeImpl::Notation:
-        case NodeImpl::ProcessingInstruction:
-            return QScriptValue();
+    case NodeImpl::Comment:
+    case NodeImpl::Document:
+    case NodeImpl::DocumentFragment:
+    case NodeImpl::DocumentType:
+    case NodeImpl::Entity:
+    case NodeImpl::EntityReference:
+    case NodeImpl::Notation:
+    case NodeImpl::ProcessingInstruction:
+        return QScriptValue();
 
-        case NodeImpl::CDATA:
-            instance.setPrototype( CDATA::prototype( engine ) );
-            break;
+    case NodeImpl::CDATA:
+        instance.setPrototype( CDATA::prototype( engine ) );
+        break;
 
-        case NodeImpl::Text:
-            instance.setPrototype( Text::prototype( engine ) );
-            break;
+    case NodeImpl::Text:
+        instance.setPrototype( Text::prototype( engine ) );
+        break;
 
-        case NodeImpl::Element:
-            instance.setPrototype( Element::prototype( engine ) );
-            break;
+    case NodeImpl::Element:
+        instance.setPrototype( Element::prototype( engine ) );
+        break;
     }
 
     Node node;
@@ -783,84 +783,84 @@ QScriptValue Document::load( QScriptEngine *engine, const QByteArray &data )
     {
         switch ( reader.readNext() )
         {
-            case QXmlStreamReader::NoToken:
-                break;
-
-            case QXmlStreamReader::Invalid:
-                break;
-
-            case QXmlStreamReader::StartDocument:
-                Q_ASSERT( !document );
-                document = new DocumentImpl;
-                document->document = document;
-                document->version = reader.documentVersion().toString();
-                document->encoding = reader.documentEncoding().toString();
-                document->isStandalone = reader.isStandaloneDocument();
-                break;
-
-            case QXmlStreamReader::EndDocument:
-                break;
-
-            case QXmlStreamReader::StartElement:
-            {
-                Q_ASSERT( document );
-                NodeImpl *node = new NodeImpl;
-                node->document = document;
-                node->namespaceUri = reader.namespaceUri().toString();
-                node->name = reader.name().toString();
-
-                if ( nodeStack.isEmpty() )
-                {
-                    document->root = node;
-                }
-                else
-                {
-                    node->parent = nodeStack.top();
-                    node->parent->children.append( node );
-                }
-
-                nodeStack.append( node );
-
-                foreach ( const QXmlStreamAttribute &a, reader.attributes() )
-                {
-                    NodeImpl *attr = new NodeImpl;
-                    attr->document = document;
-                    attr->type = NodeImpl::Attr;
-                    attr->namespaceUri = a.namespaceUri().toString();
-                    attr->name = a.name().toString();
-                    attr->data = a.value().toString();
-                    attr->parent = node;
-                    node->attributes.append( attr );
-                }
-            }
+        case QXmlStreamReader::NoToken:
             break;
 
-            case QXmlStreamReader::EndElement:
-                nodeStack.pop();
-                break;
+        case QXmlStreamReader::Invalid:
+            break;
 
-            case QXmlStreamReader::Characters:
+        case QXmlStreamReader::StartDocument:
+            Q_ASSERT( !document );
+            document = new DocumentImpl;
+            document->document = document;
+            document->version = reader.documentVersion().toString();
+            document->encoding = reader.documentEncoding().toString();
+            document->isStandalone = reader.isStandaloneDocument();
+            break;
+
+        case QXmlStreamReader::EndDocument:
+            break;
+
+        case QXmlStreamReader::StartElement:
+        {
+            Q_ASSERT( document );
+            NodeImpl *node = new NodeImpl;
+            node->document = document;
+            node->namespaceUri = reader.namespaceUri().toString();
+            node->name = reader.name().toString();
+
+            if ( nodeStack.isEmpty() )
             {
-                NodeImpl *node = new NodeImpl;
-                node->document = document;
-                node->type = reader.isCDATA() ? NodeImpl::CDATA : NodeImpl::Text;
+                document->root = node;
+            }
+            else
+            {
                 node->parent = nodeStack.top();
                 node->parent->children.append( node );
-                node->data = reader.text().toString();
             }
+
+            nodeStack.append( node );
+
+            foreach ( const QXmlStreamAttribute &a, reader.attributes() )
+            {
+                NodeImpl *attr = new NodeImpl;
+                attr->document = document;
+                attr->type = NodeImpl::Attr;
+                attr->namespaceUri = a.namespaceUri().toString();
+                attr->name = a.name().toString();
+                attr->data = a.value().toString();
+                attr->parent = node;
+                node->attributes.append( attr );
+            }
+        }
+        break;
+
+        case QXmlStreamReader::EndElement:
+            nodeStack.pop();
             break;
 
-            case QXmlStreamReader::Comment:
-                break;
+        case QXmlStreamReader::Characters:
+        {
+            NodeImpl *node = new NodeImpl;
+            node->document = document;
+            node->type = reader.isCDATA() ? NodeImpl::CDATA : NodeImpl::Text;
+            node->parent = nodeStack.top();
+            node->parent->children.append( node );
+            node->data = reader.text().toString();
+        }
+        break;
 
-            case QXmlStreamReader::DTD:
-                break;
+        case QXmlStreamReader::Comment:
+            break;
 
-            case QXmlStreamReader::EntityReference:
-                break;
+        case QXmlStreamReader::DTD:
+            break;
 
-            case QXmlStreamReader::ProcessingInstruction:
-                break;
+        case QXmlStreamReader::EntityReference:
+            break;
+
+        case QXmlStreamReader::ProcessingInstruction:
+            break;
         }
     }
 

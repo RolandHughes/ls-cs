@@ -106,7 +106,7 @@ QDebug operator<<( QDebug dbg, const QSizePolicy &p )
 {
     QDebugStateSaver saver( dbg );
     dbg.nospace() << "QSizePolicy(horizontalPolicy = " << p.horizontalPolicy()
-                  << ", verticalPolicy = " << p.verticalPolicy() << ')';
+       << ", verticalPolicy = " << p.verticalPolicy() << ')';
     return dbg;
 }
 

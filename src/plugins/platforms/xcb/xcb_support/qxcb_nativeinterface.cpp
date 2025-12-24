@@ -186,32 +186,32 @@ void *QXcbNativeInterface::nativeResourceForIntegration( const QByteArray &resou
 
     switch ( resourceType( lowerCaseResource ) )
     {
-        case StartupId:
-            result = startupId();
-            break;
+    case StartupId:
+        result = startupId();
+        break;
 
-        case X11Screen:
-            result = x11Screen();
-            break;
+    case X11Screen:
+        result = x11Screen();
+        break;
 
-        case RootWindow:
-            result = rootWindow();
-            break;
+    case RootWindow:
+        result = rootWindow();
+        break;
 
-        case Display:
-            result = display();
-            break;
+    case Display:
+        result = display();
+        break;
 
-        case AtspiBus:
-            result = atspiBus();
-            break;
+    case AtspiBus:
+        result = atspiBus();
+        break;
 
-        case Connection:
-            result = connection();
-            break;
+    case Connection:
+        result = connection();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return result;
@@ -244,54 +244,54 @@ void *QXcbNativeInterface::nativeResourceForScreen( const QByteArray &resourceSt
 
     switch ( resourceType( lowerCaseResource ) )
     {
-        case Display:
+    case Display:
 #ifdef XCB_USE_XLIB
-            result = xcbScreen->connection()->xlib_display();
+        result = xcbScreen->connection()->xlib_display();
 #endif
-            break;
+        break;
 
-        case AppTime:
-            result = appTime( xcbScreen );
-            break;
+    case AppTime:
+        result = appTime( xcbScreen );
+        break;
 
-        case AppUserTime:
-            result = appUserTime( xcbScreen );
-            break;
+    case AppUserTime:
+        result = appUserTime( xcbScreen );
+        break;
 
-        case ScreenHintStyle:
-            result = reinterpret_cast<void *>( xcbScreen->hintStyle() + 1 );
-            break;
+    case ScreenHintStyle:
+        result = reinterpret_cast<void *>( xcbScreen->hintStyle() + 1 );
+        break;
 
-        case ScreenSubpixelType:
-            result = reinterpret_cast<void *>( xcbScreen->subpixelType() + 1 );
-            break;
+    case ScreenSubpixelType:
+        result = reinterpret_cast<void *>( xcbScreen->subpixelType() + 1 );
+        break;
 
-        case ScreenAntialiasingEnabled:
-            result = reinterpret_cast<void *>( xcbScreen->antialiasingEnabled() + 1 );
-            break;
+    case ScreenAntialiasingEnabled:
+        result = reinterpret_cast<void *>( xcbScreen->antialiasingEnabled() + 1 );
+        break;
 
-        case TrayWindow:
-            if ( QXcbSystemTrayTracker *s = systemTrayTracker( screen ) )
-            {
-                result = ( void * )quintptr( s->trayWindow() );
-            }
+    case TrayWindow:
+        if ( QXcbSystemTrayTracker *s = systemTrayTracker( screen ) )
+        {
+            result = ( void * )quintptr( s->trayWindow() );
+        }
 
-            break;
+        break;
 
-        case GetTimestamp:
-            result = getTimestamp( xcbScreen );
-            break;
+    case GetTimestamp:
+        result = getTimestamp( xcbScreen );
+        break;
 
-        case NoFontHinting:
-            result = xcbScreen->noFontHinting() ? this : nullptr;
-            break;
+    case NoFontHinting:
+        result = xcbScreen->noFontHinting() ? this : nullptr;
+        break;
 
-        case RootWindow:
-            result = reinterpret_cast<void *>( xcbScreen->root() );
-            break;
+    case RootWindow:
+        result = reinterpret_cast<void *>( xcbScreen->root() );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return result;
@@ -309,20 +309,20 @@ void *QXcbNativeInterface::nativeResourceForWindow( const QByteArray &resourceSt
 
     switch ( resourceType( lowerCaseResource ) )
     {
-        case Display:
-            result = displayForWindow( window );
-            break;
+    case Display:
+        result = displayForWindow( window );
+        break;
 
-        case Connection:
-            result = connectionForWindow( window );
-            break;
+    case Connection:
+        result = connectionForWindow( window );
+        break;
 
-        case Screen:
-            result = screenForWindow( window );
-            break;
+    case Screen:
+        result = screenForWindow( window );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return result;

@@ -208,7 +208,7 @@ private :
     DECL_LSCS_SLOT_1( Private, void _q_rowsRemoved( const QModelIndex &un_named_arg1, int un_named_arg2, int un_named_arg3 ) )
     DECL_LSCS_SLOT_2( _q_rowsRemoved )
     DECL_LSCS_SLOT_1( Private, void _q_rowsMoved( const QModelIndex &un_named_arg1, int un_named_arg2, int un_named_arg3,
-                    const QModelIndex &un_named_arg4, int un_named_arg5 ) )
+                      const QModelIndex &un_named_arg4, int un_named_arg5 ) )
     DECL_LSCS_SLOT_2( _q_rowsMoved )
     DECL_LSCS_SLOT_1( Private, void _q_dataChanged( const QModelIndex &un_named_arg1, const QModelIndex &un_named_arg2 ) )
     DECL_LSCS_SLOT_2( _q_dataChanged )

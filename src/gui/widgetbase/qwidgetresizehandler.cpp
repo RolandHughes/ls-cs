@@ -120,104 +120,48 @@ bool QWidgetResizeHandler::eventFilter( QObject *o, QEvent *ee )
 
     switch ( e->type() )
     {
-        case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonPress:
+    {
+        if ( w->isMaximized() )
         {
-            if ( w->isMaximized() )
-            {
-                break;
-            }
+            break;
+        }
 
-            if ( !widget->rect().contains( widget->mapFromGlobal( e->globalPos() ) ) )
-            {
-                return false;
-            }
+        if ( !widget->rect().contains( widget->mapFromGlobal( e->globalPos() ) ) )
+        {
+            return false;
+        }
 
-            if ( e->button() == Qt::LeftButton )
-            {
+        if ( e->button() == Qt::LeftButton )
+        {
 
 #if defined(Q_WS_X11)
 
-                /*
-                   Implicit grabs do not stop the X server from changing
-                   the cursor in children, which looks *really* bad when
-                   doing resizingk, so we grab the cursor. Note that we do
-                   not do this on Windows since double clicks are lost due
-                   to the grab (see change 198463).
-                */
+            /*
+               Implicit grabs do not stop the X server from changing
+               the cursor in children, which looks *really* bad when
+               doing resizingk, so we grab the cursor. Note that we do
+               not do this on Windows since double clicks are lost due
+               to the grab (see change 198463).
+            */
 
-                if ( e->spontaneous() )
+            if ( e->spontaneous() )
 #  if ! defined(LSCS_NO_CURSOR)
-                    widget->grabMouse( widget->cursor() );
+                widget->grabMouse( widget->cursor() );
 
 #  else
-                    widget->grabMouse();
+                widget->grabMouse();
 #  endif
 #endif
-                buttonDown = false;
-                emit activate();
-                bool me = movingEnabled;
-                movingEnabled = ( me && o == widget );
-                mouseMoveEvent( e );
-                movingEnabled = me;
-                buttonDown = true;
-                moveOffset = widget->mapFromGlobal( e->globalPos() );
-                invertedMoveOffset = widget->rect().bottomRight() - moveOffset;
-
-                if ( mode == Center )
-                {
-                    if ( movingEnabled )
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        }
-        break;
-
-        case QEvent::MouseButtonRelease:
-            if ( w->isMaximized() )
-            {
-                break;
-            }
-
-            if ( e->button() == Qt::LeftButton )
-            {
-                moveResizeMode = false;
-                buttonDown = false;
-                widget->releaseMouse();
-                widget->releaseKeyboard();
-
-                if ( mode == Center )
-                {
-                    if ( movingEnabled )
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    return true;
-                }
-            }
-
-            break;
-
-        case QEvent::MouseMove:
-        {
-            if ( w->isMaximized() )
-            {
-                break;
-            }
-
-            buttonDown = buttonDown && ( e->buttons() & Qt::LeftButton ); // safety, state machine broken!
+            buttonDown = false;
+            emit activate();
             bool me = movingEnabled;
-            movingEnabled = ( me && o == widget && ( buttonDown || moveResizeMode ) );
+            movingEnabled = ( me && o == widget );
             mouseMoveEvent( e );
             movingEnabled = me;
+            buttonDown = true;
+            moveOffset = widget->mapFromGlobal( e->globalPos() );
+            invertedMoveOffset = widget->rect().bottomRight() - moveOffset;
 
             if ( mode == Center )
             {
@@ -231,23 +175,79 @@ bool QWidgetResizeHandler::eventFilter( QObject *o, QEvent *ee )
                 return true;
             }
         }
-        break;
+    }
+    break;
 
-        case QEvent::KeyPress:
-            keyPressEvent( ( QKeyEvent * )e );
+    case QEvent::MouseButtonRelease:
+        if ( w->isMaximized() )
+        {
             break;
+        }
 
-        case QEvent::ShortcutOverride:
-            if ( buttonDown )
+        if ( e->button() == Qt::LeftButton )
+        {
+            moveResizeMode = false;
+            buttonDown = false;
+            widget->releaseMouse();
+            widget->releaseKeyboard();
+
+            if ( mode == Center )
             {
-                ( ( QKeyEvent * )ee )->accept();
+                if ( movingEnabled )
+                {
+                    return true;
+                }
+            }
+            else
+            {
                 return true;
             }
+        }
 
-            break;
+        break;
 
-        default:
+    case QEvent::MouseMove:
+    {
+        if ( w->isMaximized() )
+        {
             break;
+        }
+
+        buttonDown = buttonDown && ( e->buttons() & Qt::LeftButton ); // safety, state machine broken!
+        bool me = movingEnabled;
+        movingEnabled = ( me && o == widget && ( buttonDown || moveResizeMode ) );
+        mouseMoveEvent( e );
+        movingEnabled = me;
+
+        if ( mode == Center )
+        {
+            if ( movingEnabled )
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
+    break;
+
+    case QEvent::KeyPress:
+        keyPressEvent( ( QKeyEvent * )e );
+        break;
+
+    case QEvent::ShortcutOverride:
+        if ( buttonDown )
+        {
+            ( ( QKeyEvent * )ee )->accept();
+            return true;
+        }
+
+        break;
+
+    default:
+        break;
     }
 
     return false;
@@ -389,44 +389,44 @@ void QWidgetResizeHandler::mouseMoveEvent( QMouseEvent *e )
 
     switch ( mode )
     {
-        case TopLeft:
-            geom = QRect( mp, widget->geometry().bottomRight() ) ;
-            break;
+    case TopLeft:
+        geom = QRect( mp, widget->geometry().bottomRight() ) ;
+        break;
 
-        case BottomRight:
-            geom = QRect( widget->geometry().topLeft(), p ) ;
-            break;
+    case BottomRight:
+        geom = QRect( widget->geometry().topLeft(), p ) ;
+        break;
 
-        case BottomLeft:
-            geom = QRect( QPoint( mp.x(), widget->geometry().y() ), QPoint( widget->geometry().right(), p.y() ) ) ;
-            break;
+    case BottomLeft:
+        geom = QRect( QPoint( mp.x(), widget->geometry().y() ), QPoint( widget->geometry().right(), p.y() ) ) ;
+        break;
 
-        case TopRight:
-            geom = QRect( QPoint( widget->geometry().x(), mp.y() ), QPoint( p.x(), widget->geometry().bottom() ) ) ;
-            break;
+    case TopRight:
+        geom = QRect( QPoint( widget->geometry().x(), mp.y() ), QPoint( p.x(), widget->geometry().bottom() ) ) ;
+        break;
 
-        case Top:
-            geom = QRect( QPoint( widget->geometry().left(), mp.y() ), widget->geometry().bottomRight() ) ;
-            break;
+    case Top:
+        geom = QRect( QPoint( widget->geometry().left(), mp.y() ), widget->geometry().bottomRight() ) ;
+        break;
 
-        case Bottom:
-            geom = QRect( widget->geometry().topLeft(), QPoint( widget->geometry().right(), p.y() ) ) ;
-            break;
+    case Bottom:
+        geom = QRect( widget->geometry().topLeft(), QPoint( widget->geometry().right(), p.y() ) ) ;
+        break;
 
-        case Left:
-            geom = QRect( QPoint( mp.x(), widget->geometry().top() ), widget->geometry().bottomRight() ) ;
-            break;
+    case Left:
+        geom = QRect( QPoint( mp.x(), widget->geometry().top() ), widget->geometry().bottomRight() ) ;
+        break;
 
-        case Right:
-            geom = QRect( widget->geometry().topLeft(), QPoint( p.x(), widget->geometry().bottom() ) ) ;
-            break;
+    case Right:
+        geom = QRect( widget->geometry().topLeft(), QPoint( p.x(), widget->geometry().bottom() ) ) ;
+        break;
 
-        case Center:
-            geom.moveTopLeft( pp );
-            break;
+    case Center:
+        geom.moveTopLeft( pp );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     geom = QRect( geom.topLeft(), geom.size().expandedTo( widget->minimumSize() )
@@ -469,29 +469,29 @@ void QWidgetResizeHandler::setMouseCursor( MousePosition m )
 
     switch ( m )
     {
-        case TopLeft:
-        case BottomRight:
-            widget->setCursor( Qt::SizeFDiagCursor );
-            break;
+    case TopLeft:
+    case BottomRight:
+        widget->setCursor( Qt::SizeFDiagCursor );
+        break;
 
-        case BottomLeft:
-        case TopRight:
-            widget->setCursor( Qt::SizeBDiagCursor );
-            break;
+    case BottomLeft:
+    case TopRight:
+        widget->setCursor( Qt::SizeBDiagCursor );
+        break;
 
-        case Top:
-        case Bottom:
-            widget->setCursor( Qt::SizeVerCursor );
-            break;
+    case Top:
+    case Bottom:
+        widget->setCursor( Qt::SizeVerCursor );
+        break;
 
-        case Left:
-        case Right:
-            widget->setCursor( Qt::SizeHorCursor );
-            break;
+    case Left:
+    case Right:
+        widget->setCursor( Qt::SizeHorCursor );
+        break;
 
-        default:
-            widget->setCursor( Qt::ArrowCursor );
-            break;
+    default:
+        widget->setCursor( Qt::ArrowCursor );
+        break;
     }
 
 #endif
@@ -510,178 +510,178 @@ void QWidgetResizeHandler::keyPressEvent( QKeyEvent *e )
 
     switch ( e->key() )
     {
-        case Qt::Key_Left:
-            pos.rx() -= delta;
+    case Qt::Key_Left:
+        pos.rx() -= delta;
 
-            if ( pos.x() <= QApplication::desktop()->geometry().left() )
+        if ( pos.x() <= QApplication::desktop()->geometry().left() )
+        {
+            if ( mode == TopLeft || mode == BottomLeft )
             {
-                if ( mode == TopLeft || mode == BottomLeft )
-                {
-                    moveOffset.rx() += delta;
-                    invertedMoveOffset.rx() += delta;
-                }
-                else
-                {
-                    moveOffset.rx() -= delta;
-                    invertedMoveOffset.rx() -= delta;
-                }
+                moveOffset.rx() += delta;
+                invertedMoveOffset.rx() += delta;
             }
-
-            if ( isResize() && !resizeHorizontalDirectionFixed )
+            else
             {
-                resizeHorizontalDirectionFixed = true;
+                moveOffset.rx() -= delta;
+                invertedMoveOffset.rx() -= delta;
+            }
+        }
 
-                if ( mode == BottomRight )
-                {
-                    mode = BottomLeft;
-                }
-                else if ( mode == TopRight )
-                {
-                    mode = TopLeft;
-                }
+        if ( isResize() && !resizeHorizontalDirectionFixed )
+        {
+            resizeHorizontalDirectionFixed = true;
+
+            if ( mode == BottomRight )
+            {
+                mode = BottomLeft;
+            }
+            else if ( mode == TopRight )
+            {
+                mode = TopLeft;
+            }
 
 #ifndef LSCS_NO_CURSOR
-                setMouseCursor( mode );
-                widget->grabMouse( widget->cursor() );
+            setMouseCursor( mode );
+            widget->grabMouse( widget->cursor() );
 #else
-                widget->grabMouse();
+            widget->grabMouse();
 #endif
-            }
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Right:
-            pos.rx() += delta;
+    case Qt::Key_Right:
+        pos.rx() += delta;
 
-            if ( pos.x() >= QApplication::desktop()->geometry().right() )
+        if ( pos.x() >= QApplication::desktop()->geometry().right() )
+        {
+            if ( mode == TopRight || mode == BottomRight )
             {
-                if ( mode == TopRight || mode == BottomRight )
-                {
-                    moveOffset.rx() += delta;
-                    invertedMoveOffset.rx() += delta;
-                }
-                else
-                {
-                    moveOffset.rx() -= delta;
-                    invertedMoveOffset.rx() -= delta;
-                }
+                moveOffset.rx() += delta;
+                invertedMoveOffset.rx() += delta;
             }
-
-            if ( isResize() && !resizeHorizontalDirectionFixed )
+            else
             {
-                resizeHorizontalDirectionFixed = true;
+                moveOffset.rx() -= delta;
+                invertedMoveOffset.rx() -= delta;
+            }
+        }
 
-                if ( mode == BottomLeft )
-                {
-                    mode = BottomRight;
-                }
-                else if ( mode == TopLeft )
-                {
-                    mode = TopRight;
-                }
+        if ( isResize() && !resizeHorizontalDirectionFixed )
+        {
+            resizeHorizontalDirectionFixed = true;
+
+            if ( mode == BottomLeft )
+            {
+                mode = BottomRight;
+            }
+            else if ( mode == TopLeft )
+            {
+                mode = TopRight;
+            }
 
 #ifndef LSCS_NO_CURSOR
-                setMouseCursor( mode );
-                widget->grabMouse( widget->cursor() );
+            setMouseCursor( mode );
+            widget->grabMouse( widget->cursor() );
 #else
-                widget->grabMouse();
+            widget->grabMouse();
 #endif
-            }
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Up:
-            pos.ry() -= delta;
+    case Qt::Key_Up:
+        pos.ry() -= delta;
 
-            if ( pos.y() <= QApplication::desktop()->geometry().top() )
+        if ( pos.y() <= QApplication::desktop()->geometry().top() )
+        {
+            if ( mode == TopLeft || mode == TopRight )
             {
-                if ( mode == TopLeft || mode == TopRight )
-                {
-                    moveOffset.ry() += delta;
-                    invertedMoveOffset.ry() += delta;
-                }
-                else
-                {
-                    moveOffset.ry() -= delta;
-                    invertedMoveOffset.ry() -= delta;
-                }
+                moveOffset.ry() += delta;
+                invertedMoveOffset.ry() += delta;
             }
-
-            if ( isResize() && !resizeVerticalDirectionFixed )
+            else
             {
-                resizeVerticalDirectionFixed = true;
+                moveOffset.ry() -= delta;
+                invertedMoveOffset.ry() -= delta;
+            }
+        }
 
-                if ( mode == BottomLeft )
-                {
-                    mode = TopLeft;
-                }
-                else if ( mode == BottomRight )
-                {
-                    mode = TopRight;
-                }
+        if ( isResize() && !resizeVerticalDirectionFixed )
+        {
+            resizeVerticalDirectionFixed = true;
+
+            if ( mode == BottomLeft )
+            {
+                mode = TopLeft;
+            }
+            else if ( mode == BottomRight )
+            {
+                mode = TopRight;
+            }
 
 #ifndef LSCS_NO_CURSOR
-                setMouseCursor( mode );
-                widget->grabMouse( widget->cursor() );
+            setMouseCursor( mode );
+            widget->grabMouse( widget->cursor() );
 #else
-                widget->grabMouse();
+            widget->grabMouse();
 #endif
-            }
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Down:
-            pos.ry() += delta;
+    case Qt::Key_Down:
+        pos.ry() += delta;
 
-            if ( pos.y() >= QApplication::desktop()->geometry().bottom() )
+        if ( pos.y() >= QApplication::desktop()->geometry().bottom() )
+        {
+            if ( mode == BottomLeft || mode == BottomRight )
             {
-                if ( mode == BottomLeft || mode == BottomRight )
-                {
-                    moveOffset.ry() += delta;
-                    invertedMoveOffset.ry() += delta;
-                }
-                else
-                {
-                    moveOffset.ry() -= delta;
-                    invertedMoveOffset.ry() -= delta;
-                }
+                moveOffset.ry() += delta;
+                invertedMoveOffset.ry() += delta;
             }
-
-            if ( isResize() && !resizeVerticalDirectionFixed )
+            else
             {
-                resizeVerticalDirectionFixed = true;
+                moveOffset.ry() -= delta;
+                invertedMoveOffset.ry() -= delta;
+            }
+        }
 
-                if ( mode == TopLeft )
-                {
-                    mode = BottomLeft;
-                }
-                else if ( mode == TopRight )
-                {
-                    mode = BottomRight;
-                }
+        if ( isResize() && !resizeVerticalDirectionFixed )
+        {
+            resizeVerticalDirectionFixed = true;
+
+            if ( mode == TopLeft )
+            {
+                mode = BottomLeft;
+            }
+            else if ( mode == TopRight )
+            {
+                mode = BottomRight;
+            }
 
 #ifndef LSCS_NO_CURSOR
-                setMouseCursor( mode );
-                widget->grabMouse( widget->cursor() );
+            setMouseCursor( mode );
+            widget->grabMouse( widget->cursor() );
 #else
-                widget->grabMouse();
+            widget->grabMouse();
 #endif
-            }
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Space:
-        case Qt::Key_Return:
-        case Qt::Key_Enter:
-        case Qt::Key_Escape:
-            moveResizeMode = false;
-            widget->releaseMouse();
-            widget->releaseKeyboard();
-            buttonDown = false;
-            break;
+    case Qt::Key_Space:
+    case Qt::Key_Return:
+    case Qt::Key_Enter:
+    case Qt::Key_Escape:
+        moveResizeMode = false;
+        widget->releaseMouse();
+        widget->releaseKeyboard();
+        buttonDown = false;
+        break;
 
-        default:
-            return;
+    default:
+        return;
     }
 
     QCursor::setPos( pos );

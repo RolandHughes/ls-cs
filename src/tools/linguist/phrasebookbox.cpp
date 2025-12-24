@@ -89,11 +89,11 @@ bool PhraseBookBox::eventFilter( QObject *obj, QEvent *event )
 
         switch ( key )
         {
-            case Qt::Key_Down:
-            case Qt::Key_Up:
-            case Qt::Key_PageDown:
-            case Qt::Key_PageUp:
-                return QApplication::sendEvent( phraseList, event );
+        case Qt::Key_Down:
+        case Qt::Key_Up:
+        case Qt::Key_PageDown:
+        case Qt::Key_PageUp:
+            return QApplication::sendEvent( phraseList, event );
         }
     }
 

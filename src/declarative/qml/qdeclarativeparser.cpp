@@ -373,45 +373,45 @@ QString escapedString( const QString &string )
 
         switch ( c.unicode() )
         {
-            case 0x08:
-                tmp += QLatin1String( "\\b" );
-                break;
+        case 0x08:
+            tmp += QLatin1String( "\\b" );
+            break;
 
-            case 0x09:
-                tmp += QLatin1String( "\\t" );
-                break;
+        case 0x09:
+            tmp += QLatin1String( "\\t" );
+            break;
 
-            case 0x0A:
-                tmp += QLatin1String( "\\n" );
-                break;
+        case 0x0A:
+            tmp += QLatin1String( "\\n" );
+            break;
 
-            case 0x0B:
-                tmp += QLatin1String( "\\v" );
-                break;
+        case 0x0B:
+            tmp += QLatin1String( "\\v" );
+            break;
 
-            case 0x0C:
-                tmp += QLatin1String( "\\f" );
-                break;
+        case 0x0C:
+            tmp += QLatin1String( "\\f" );
+            break;
 
-            case 0x0D:
-                tmp += QLatin1String( "\\r" );
-                break;
+        case 0x0D:
+            tmp += QLatin1String( "\\r" );
+            break;
 
-            case 0x22:
-                tmp += QLatin1String( "\\\"" );
-                break;
+        case 0x22:
+            tmp += QLatin1String( "\\\"" );
+            break;
 
-            case 0x27:
-                tmp += QLatin1String( "\\\'" );
-                break;
+        case 0x27:
+            tmp += QLatin1String( "\\\'" );
+            break;
 
-            case 0x5C:
-                tmp += QLatin1String( "\\\\" );
-                break;
+        case 0x5C:
+            tmp += QLatin1String( "\\\\" );
+            break;
 
-            default:
-                tmp += c;
-                break;
+        default:
+            tmp += c;
+            break;
         }
     }
 
@@ -423,28 +423,28 @@ QString QDeclarativeParser::Variant::asScript() const
 {
     switch ( type() )
     {
-        default:
-        case Invalid:
-            return QString();
+    default:
+    case Invalid:
+        return QString();
 
-        case Boolean:
-            return b ? QLatin1String( "true" ) : QLatin1String( "false" );
+    case Boolean:
+        return b ? QLatin1String( "true" ) : QLatin1String( "false" );
 
-        case Number:
-            if ( s.isEmpty() )
-            {
-                return QString::number( d );
-            }
-            else
-            {
-                return s;
-            }
-
-        case String:
-            return escapedString( s );
-
-        case Script:
+    case Number:
+        if ( s.isEmpty() )
+        {
+            return QString::number( d );
+        }
+        else
+        {
             return s;
+        }
+
+    case String:
+        return escapedString( s );
+
+    case Script:
+        return s;
     }
 }
 

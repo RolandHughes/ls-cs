@@ -59,7 +59,7 @@ public:
 };
 
 static void lscs_win_setup_PRINTDLGEX( PRINTDLGEX *pd, QWidget *parent,
-                                     QPrintDialog *pdlg, QPrintDialogPrivate *d, HGLOBAL *tempDevNames )
+                                       QPrintDialog *pdlg, QPrintDialogPrivate *d, HGLOBAL *tempDevNames )
 {
     DEVMODE *devMode = d->ep->devMode;
 

@@ -136,7 +136,7 @@ FunctionReturn lscs_unpack_function_args_internal( FunctionReturn ( *functionPtr
 // (api) specialization function pointer
 template<typename ...FunctionArgTypes, typename FunctionReturn, typename ...TupleTypes>
 FunctionReturn lscs_unpack_function_args( FunctionReturn ( *functionPtr )( FunctionArgTypes... ),
-                                        const std::tuple<TupleTypes...> &data )
+        const std::tuple<TupleTypes...> &data )
 {
     return lscs_unpack_function_args_internal( functionPtr, data, std::index_sequence_for<TupleTypes...> {} );
 }
@@ -163,7 +163,7 @@ MethodReturn lscs_unpack_method_args_internal( MethodClass *obj, MethodReturn ( 
 // (api) specialization method pointer
 template<typename MethodClass, class MethodReturn, typename ...MethodArgTypes, typename ...TupleTypes>
 MethodReturn lscs_unpack_method_args( MethodClass *obj, MethodReturn ( MethodClass::*methodPtr )( MethodArgTypes... ),
-                                    const std::tuple<TupleTypes...> &data )
+                                      const std::tuple<TupleTypes...> &data )
 {
     return lscs_unpack_method_args_internal( obj, methodPtr, data, std::index_sequence_for<TupleTypes...> {} );
 }
@@ -171,7 +171,7 @@ MethodReturn lscs_unpack_method_args( MethodClass *obj, MethodReturn ( MethodCla
 // (api) specialization for method pointer, return type is void
 template<typename MethodClass, typename ...MethodArgTypes, typename ...TupleTypes>
 CSVoidReturn lscs_unpack_method_args( MethodClass *obj, void ( MethodClass::*methodPtr )( MethodArgTypes... ),
-                                    const std::tuple<TupleTypes...> &data )
+                                      const std::tuple<TupleTypes...> &data )
 {
     lscs_unpack_method_args_internal( obj, methodPtr, data, std::index_sequence_for<TupleTypes...> {} );
     return CSVoidReturn {};
@@ -190,8 +190,8 @@ MethodReturn lscs_unpack_method_args_internal( const MethodClass *obj,
 // (api) specialization for const method pointer
 template<typename MethodClass, class MethodReturn, typename ...MethodArgTypes, typename ...TupleTypes>
 MethodReturn lscs_unpack_method_args( const MethodClass *obj,
-                                    MethodReturn ( MethodClass::*methodPtr )( MethodArgTypes... ) const,
-                                    const std::tuple<TupleTypes...> &data )
+                                      MethodReturn ( MethodClass::*methodPtr )( MethodArgTypes... ) const,
+                                      const std::tuple<TupleTypes...> &data )
 {
     return lscs_unpack_method_args_internal( obj, methodPtr, data, std::index_sequence_for<TupleTypes...> {} );
 }
@@ -199,7 +199,7 @@ MethodReturn lscs_unpack_method_args( const MethodClass *obj,
 // (api) specialization for const method pointer, return type is void
 template<typename MethodClass, typename ...MethodArgTypes, typename ...TupleTypes>
 CSVoidReturn lscs_unpack_method_args( const MethodClass *obj, void ( MethodClass::*methodPtr )( MethodArgTypes... ) const,
-                                    const std::tuple<TupleTypes...> &data )
+                                      const std::tuple<TupleTypes...> &data )
 {
     lscs_unpack_method_args_internal( obj, methodPtr, data, std::index_sequence_for<TupleTypes...> {} );
     return CSVoidReturn {};
@@ -351,7 +351,7 @@ public:
 
 template<class ...Ts>
 template<class T> TeaCup<std::tuple<Ts...>>::TeaCup( T lambda )
-            : TeaCup<Ts...>( std::move( lambda ) )
+    : TeaCup<Ts...>( std::move( lambda ) )
 {
 }
 

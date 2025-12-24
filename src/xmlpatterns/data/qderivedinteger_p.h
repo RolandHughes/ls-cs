@@ -342,41 +342,41 @@ public:
     {
         switch ( DerivedType )
         {
-            case TypeByte:
-                return BuiltinTypes::xsByte;
+        case TypeByte:
+            return BuiltinTypes::xsByte;
 
-            case TypeInt:
-                return BuiltinTypes::xsInt;
+        case TypeInt:
+            return BuiltinTypes::xsInt;
 
-            case TypeLong:
-                return BuiltinTypes::xsLong;
+        case TypeLong:
+            return BuiltinTypes::xsLong;
 
-            case TypeNegativeInteger:
-                return BuiltinTypes::xsNegativeInteger;
+        case TypeNegativeInteger:
+            return BuiltinTypes::xsNegativeInteger;
 
-            case TypeNonNegativeInteger:
-                return BuiltinTypes::xsNonNegativeInteger;
+        case TypeNonNegativeInteger:
+            return BuiltinTypes::xsNonNegativeInteger;
 
-            case TypeNonPositiveInteger:
-                return BuiltinTypes::xsNonPositiveInteger;
+        case TypeNonPositiveInteger:
+            return BuiltinTypes::xsNonPositiveInteger;
 
-            case TypePositiveInteger:
-                return BuiltinTypes::xsPositiveInteger;
+        case TypePositiveInteger:
+            return BuiltinTypes::xsPositiveInteger;
 
-            case TypeShort:
-                return BuiltinTypes::xsShort;
+        case TypeShort:
+            return BuiltinTypes::xsShort;
 
-            case TypeUnsignedByte:
-                return BuiltinTypes::xsUnsignedByte;
+        case TypeUnsignedByte:
+            return BuiltinTypes::xsUnsignedByte;
 
-            case TypeUnsignedInt:
-                return BuiltinTypes::xsUnsignedInt;
+        case TypeUnsignedInt:
+            return BuiltinTypes::xsUnsignedInt;
 
-            case TypeUnsignedLong:
-                return BuiltinTypes::xsUnsignedLong;
+        case TypeUnsignedLong:
+            return BuiltinTypes::xsUnsignedLong;
 
-            case TypeUnsignedShort:
-                return BuiltinTypes::xsUnsignedShort;
+        case TypeUnsignedShort:
+            return BuiltinTypes::xsUnsignedShort;
         }
 
         Q_ASSERT( false );
@@ -430,32 +430,32 @@ public:
         /* Depending on the type, we need to call different conversion functions on QString. */
         switch ( DerivedType )
         {
-            case TypeUnsignedLong:
+        case TypeUnsignedLong:
+        {
+
+            /* flag '-' as invalid, so remove it before. */
+            if ( strNumeric.contains( QLatin1Char( '-' ) ) )
             {
+                num = QString( strNumeric ).remove( '-' ).toInteger<quint64>( &conversionOk );
 
-                /* flag '-' as invalid, so remove it before. */
-                if ( strNumeric.contains( QLatin1Char( '-' ) ) )
+                if ( num != 0 )
                 {
-                    num = QString( strNumeric ).remove( '-' ).toInteger<quint64>( &conversionOk );
-
-                    if ( num != 0 )
-                    {
-                        conversionOk = false;
-                    }
+                    conversionOk = false;
                 }
-                else
-                {
-                    num = strNumeric.toInteger<quint64>( &conversionOk );
-                }
-
-                break;
+            }
+            else
+            {
+                num = strNumeric.toInteger<quint64>( &conversionOk );
             }
 
-            default:
-            {
-                num = strNumeric.toInteger<qint64>( &conversionOk );
-                break;
-            }
+            break;
+        }
+
+        default:
+        {
+            num = strNumeric.toInteger<qint64>( &conversionOk );
+            break;
+        }
         }
 
         if ( conversionOk )
@@ -574,21 +574,21 @@ public:
     {
         switch ( DerivedType )
         {
-            case TypeByte:
-            case TypeInt:
-            case TypeLong:
-            case TypeNegativeInteger:
-            case TypeNonNegativeInteger:
-            case TypeNonPositiveInteger:
-            case TypePositiveInteger:
-            case TypeShort:
-                return true;
+        case TypeByte:
+        case TypeInt:
+        case TypeLong:
+        case TypeNegativeInteger:
+        case TypeNonNegativeInteger:
+        case TypeNonPositiveInteger:
+        case TypePositiveInteger:
+        case TypeShort:
+            return true;
 
-            case TypeUnsignedByte:
-            case TypeUnsignedInt:
-            case TypeUnsignedLong:
-            case TypeUnsignedShort:
-                return false;
+        case TypeUnsignedByte:
+        case TypeUnsignedInt:
+        case TypeUnsignedLong:
+        case TypeUnsignedShort:
+            return false;
         }
 
         return false;
@@ -599,23 +599,23 @@ public:
         switch ( DerivedType )
         {
 
-            case TypeByte:
-            case TypeInt:
-            case TypeLong:
-            case TypeNegativeInteger:
-            case TypeNonNegativeInteger:
-            case TypeNonPositiveInteger:
-            case TypePositiveInteger:
+        case TypeByte:
+        case TypeInt:
+        case TypeLong:
+        case TypeNegativeInteger:
+        case TypeNonNegativeInteger:
+        case TypeNonPositiveInteger:
+        case TypePositiveInteger:
 
-            case TypeShort:
-                Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
-                break;
+        case TypeShort:
+            Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
+            break;
 
-            case TypeUnsignedByte:
-            case TypeUnsignedInt:
-            case TypeUnsignedLong:
-            case TypeUnsignedShort:
-                return m_value;
+        case TypeUnsignedByte:
+        case TypeUnsignedInt:
+        case TypeUnsignedLong:
+        case TypeUnsignedShort:
+            return m_value;
         }
 
         return 0;

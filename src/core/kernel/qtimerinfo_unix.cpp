@@ -429,55 +429,55 @@ static void calculateNextTimeout( QTimerInfo_Unix *t, timespec currentTime )
 {
     switch ( t->timerType )
     {
-        case Qt::PreciseTimer:
-        case Qt::CoarseTimer:
+    case Qt::PreciseTimer:
+    case Qt::CoarseTimer:
+        t->timeout += t->interval;
+
+        if ( t->timeout < currentTime )
+        {
+            t->timeout = currentTime;
             t->timeout += t->interval;
-
-            if ( t->timeout < currentTime )
-            {
-                t->timeout = currentTime;
-                t->timeout += t->interval;
-            }
+        }
 
 #if defined(LSCS_SHOW_DEBUG_CORE)
+        t->expected += t->interval;
+
+        if ( t->expected < currentTime )
+        {
+            t->expected.tv_sec  = currentTime.tv_sec;
+            t->expected.tv_usec = currentTime.tv_nsec / 1000;
             t->expected += t->interval;
-
-            if ( t->expected < currentTime )
-            {
-                t->expected.tv_sec  = currentTime.tv_sec;
-                t->expected.tv_usec = currentTime.tv_nsec / 1000;
-                t->expected += t->interval;
-            }
+        }
 
 #endif
 
-            if ( t->timerType == Qt::CoarseTimer )
-            {
-                calculateCoarseTimerTimeout( t, currentTime );
-            }
+        if ( t->timerType == Qt::CoarseTimer )
+        {
+            calculateCoarseTimerTimeout( t, currentTime );
+        }
 
-            return;
+        return;
 
-        case Qt::VeryCoarseTimer:
-            // we do not need to take care of the microsecond component of t->interval
-            t->timeout.tv_sec += t->interval;
+    case Qt::VeryCoarseTimer:
+        // we do not need to take care of the microsecond component of t->interval
+        t->timeout.tv_sec += t->interval;
 
-            if ( t->timeout.tv_sec <= currentTime.tv_sec )
-            {
-                t->timeout.tv_sec = currentTime.tv_sec + t->interval;
-            }
+        if ( t->timeout.tv_sec <= currentTime.tv_sec )
+        {
+            t->timeout.tv_sec = currentTime.tv_sec + t->interval;
+        }
 
 #if defined(LSCS_SHOW_DEBUG_CORE)
-            t->expected.tv_sec += t->interval;
+        t->expected.tv_sec += t->interval;
 
-            if ( t->expected.tv_sec <= currentTime.tv_sec )
-            {
-                t->expected.tv_sec = currentTime.tv_sec + t->interval;
-            }
+        if ( t->expected.tv_sec <= currentTime.tv_sec )
+        {
+            t->expected.tv_sec = currentTime.tv_sec + t->interval;
+        }
 
 #endif
 
-            return;
+        return;
     }
 
 #if defined(LSCS_SHOW_DEBUG_CORE)
@@ -580,58 +580,58 @@ void QTimerInfoList::registerTimer( int timerId, int interval, Qt::TimerType tim
 
     switch ( timerType )
     {
-        case Qt::PreciseTimer:
-            // high precision timer is based on millisecond precision
-            // so no adjustment is necessary
+    case Qt::PreciseTimer:
+        // high precision timer is based on millisecond precision
+        // so no adjustment is necessary
+        t->timeout = expected;
+        break;
+
+    case Qt::CoarseTimer:
+
+        // this timer has up to 5% coarseness so the boundaries are 20 ms and 20 s
+        // below 20 ms, 5% inaccuracy is below 1 ms, so we convert to high precision
+        // above 20 s, 5% inaccuracy is above 1 s, so we convert to VeryCoarseTimer
+
+        if ( interval >= 20000 )
+        {
+            t->timerType = Qt::VeryCoarseTimer;
+            // do nothing
+
+        }
+        else
+        {
             t->timeout = expected;
+
+            if ( interval <= 20 )
+            {
+                t->timerType = Qt::PreciseTimer;
+                // no adjustment is necessary
+
+            }
+            else if ( interval <= 20000 )
+            {
+                calculateCoarseTimerTimeout( t, currentTime );
+            }
+
             break;
+        }
 
-        case Qt::CoarseTimer:
+        [[fallthrough]];
 
-            // this timer has up to 5% coarseness so the boundaries are 20 ms and 20 s
-            // below 20 ms, 5% inaccuracy is below 1 ms, so we convert to high precision
-            // above 20 s, 5% inaccuracy is above 1 s, so we convert to VeryCoarseTimer
+    case Qt::VeryCoarseTimer:
+        // the very coarse timer is based on full second precision,
+        // so we keep the interval in seconds (round to closest second)
+        t->interval /= 500;
+        t->interval += 1;
+        t->interval >>= 1;
+        t->timeout.tv_sec = currentTime.tv_sec + t->interval;
+        t->timeout.tv_nsec = 0;
 
-            if ( interval >= 20000 )
-            {
-                t->timerType = Qt::VeryCoarseTimer;
-                // do nothing
-
-            }
-            else
-            {
-                t->timeout = expected;
-
-                if ( interval <= 20 )
-                {
-                    t->timerType = Qt::PreciseTimer;
-                    // no adjustment is necessary
-
-                }
-                else if ( interval <= 20000 )
-                {
-                    calculateCoarseTimerTimeout( t, currentTime );
-                }
-
-                break;
-            }
-
-            [[fallthrough]];
-
-        case Qt::VeryCoarseTimer:
-            // the very coarse timer is based on full second precision,
-            // so we keep the interval in seconds (round to closest second)
-            t->interval /= 500;
-            t->interval += 1;
-            t->interval >>= 1;
-            t->timeout.tv_sec = currentTime.tv_sec + t->interval;
-            t->timeout.tv_nsec = 0;
-
-            // if we're past the half-second mark, increase the timeout again
-            if ( currentTime.tv_nsec > 500 * 1000 * 1000 )
-            {
-                ++t->timeout.tv_sec;
-            }
+        // if we're past the half-second mark, increase the timeout again
+        if ( currentTime.tv_nsec > 500 * 1000 * 1000 )
+        {
+            ++t->timeout.tv_sec;
+        }
     }
 
     timerInsert( t );

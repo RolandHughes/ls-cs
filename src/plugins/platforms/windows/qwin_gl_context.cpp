@@ -743,17 +743,17 @@ static int choosePixelFormat( HDC hdc, const QOpenGLStaticContext &staticContext
 
     switch ( format.swapBehavior() )
     {
-        case QSurfaceFormat::SingleBuffer:
-            iAttributes[i++] = WGL_DOUBLE_BUFFER_ARB;
-            iAttributes[i++] = FALSE;
-            break;
+    case QSurfaceFormat::SingleBuffer:
+        iAttributes[i++] = WGL_DOUBLE_BUFFER_ARB;
+        iAttributes[i++] = FALSE;
+        break;
 
-        case QSurfaceFormat::DefaultSwapBehavior:
-        case QSurfaceFormat::DoubleBuffer:
-        case QSurfaceFormat::TripleBuffer:
-            iAttributes[i++] = WGL_DOUBLE_BUFFER_ARB;
-            iAttributes[i++] = TRUE;
-            break;
+    case QSurfaceFormat::DefaultSwapBehavior:
+    case QSurfaceFormat::DoubleBuffer:
+    case QSurfaceFormat::TripleBuffer:
+        iAttributes[i++] = WGL_DOUBLE_BUFFER_ARB;
+        iAttributes[i++] = TRUE;
+        break;
     }
 
     if ( format.stereo() )
@@ -1021,18 +1021,18 @@ static HGLRC createContext( const QOpenGLStaticContext &staticContext, HDC hdc,
     {
         switch ( format.profile() )
         {
-            case QSurfaceFormat::NoProfile:
-                break;
+        case QSurfaceFormat::NoProfile:
+            break;
 
-            case QSurfaceFormat::CoreProfile:
-                attributes[attribIndex++] = WGL_CONTEXT_PROFILE_MASK_ARB;
-                attributes[attribIndex++] = WGL_CONTEXT_CORE_PROFILE_BIT_ARB;
-                break;
+        case QSurfaceFormat::CoreProfile:
+            attributes[attribIndex++] = WGL_CONTEXT_PROFILE_MASK_ARB;
+            attributes[attribIndex++] = WGL_CONTEXT_CORE_PROFILE_BIT_ARB;
+            break;
 
-            case QSurfaceFormat::CompatibilityProfile:
-                attributes[attribIndex++] = WGL_CONTEXT_PROFILE_MASK_ARB;
-                attributes[attribIndex++] = WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB;
-                break;
+        case QSurfaceFormat::CompatibilityProfile:
+            attributes[attribIndex++] = WGL_CONTEXT_PROFILE_MASK_ARB;
+            attributes[attribIndex++] = WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB;
+            break;
         }
     }
 

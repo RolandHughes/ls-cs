@@ -741,50 +741,50 @@ void QToolBar::actionEvent( QActionEvent *event )
 
     switch ( event->type() )
     {
-        case QEvent::ActionAdded:
+    case QEvent::ActionAdded:
+    {
+        Q_ASSERT_X( widgetAction == nullptr || d->layout->indexOf( widgetAction ) == -1,
+                    "QToolBar", "Widgets can not be inserted multiple times" );
+
+        // reparent the action to this toolbar if it has been created
+        // using the addAction(text) etc. convenience functions to preserve backwards compatibility
+        // The widget is already reparented to us due to the createWidget call inside createItem()
+
+        if ( widgetAction != nullptr && widgetAction->d_func()->autoCreated )
         {
-            Q_ASSERT_X( widgetAction == nullptr || d->layout->indexOf( widgetAction ) == -1,
-                        "QToolBar", "Widgets can not be inserted multiple times" );
-
-            // reparent the action to this toolbar if it has been created
-            // using the addAction(text) etc. convenience functions to preserve backwards compatibility
-            // The widget is already reparented to us due to the createWidget call inside createItem()
-
-            if ( widgetAction != nullptr && widgetAction->d_func()->autoCreated )
-            {
-                widgetAction->setParent( this );
-            }
-
-            int index = d->layout->count();
-
-            if ( event->before() )
-            {
-                index = d->layout->indexOf( event->before() );
-                Q_ASSERT_X( index != -1, "QToolBar::insertAction", "internal error" );
-            }
-
-            d->layout->insertAction( index, action );
-            break;
+            widgetAction->setParent( this );
         }
 
-        case QEvent::ActionChanged:
-            d->layout->invalidate();
-            break;
+        int index = d->layout->count();
 
-        case QEvent::ActionRemoved:
+        if ( event->before() )
         {
-            int index = d->layout->indexOf( action );
-
-            if ( index != -1 )
-            {
-                delete d->layout->takeAt( index );
-            }
-
-            break;
+            index = d->layout->indexOf( event->before() );
+            Q_ASSERT_X( index != -1, "QToolBar::insertAction", "internal error" );
         }
 
-        default:
-            Q_ASSERT_X( false, "QToolBar::actionEvent", "internal error" );
+        d->layout->insertAction( index, action );
+        break;
+    }
+
+    case QEvent::ActionChanged:
+        d->layout->invalidate();
+        break;
+
+    case QEvent::ActionRemoved:
+    {
+        int index = d->layout->indexOf( action );
+
+        if ( index != -1 )
+        {
+            delete d->layout->takeAt( index );
+        }
+
+        break;
+    }
+
+    default:
+        Q_ASSERT_X( false, "QToolBar::actionEvent", "internal error" );
     }
 }
 
@@ -794,27 +794,27 @@ void QToolBar::changeEvent( QEvent *event )
 
     switch ( event->type() )
     {
-        case QEvent::WindowTitleChange:
-            d->toggleViewAction->setText( windowTitle() );
-            break;
+    case QEvent::WindowTitleChange:
+        d->toggleViewAction->setText( windowTitle() );
+        break;
 
-        case QEvent::StyleChange:
-            d->layout->invalidate();
+    case QEvent::StyleChange:
+        d->layout->invalidate();
 
-            if ( !d->explicitIconSize )
-            {
-                setIconSize( QSize() );
-            }
+        if ( !d->explicitIconSize )
+        {
+            setIconSize( QSize() );
+        }
 
-            d->layout->updateMarginAndSpacing();
-            break;
+        d->layout->updateMarginAndSpacing();
+        break;
 
-        case QEvent::LayoutDirectionChange:
-            d->layout->invalidate();
-            break;
+    case QEvent::LayoutDirectionChange:
+        d->layout->invalidate();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     QWidget::changeEvent( event );
@@ -919,130 +919,130 @@ bool QToolBar::event( QEvent *event )
 
     switch ( event->type() )
     {
-        case QEvent::Timer:
-            if ( d->waitForPopupTimer.timerId() == static_cast<QTimerEvent *>( event )->timerId() )
+    case QEvent::Timer:
+        if ( d->waitForPopupTimer.timerId() == static_cast<QTimerEvent *>( event )->timerId() )
+        {
+            QWidget *w = QApplication::activePopupWidget();
+
+            if ( !waitForPopup( this, w ) )
             {
-                QWidget *w = QApplication::activePopupWidget();
+                d->waitForPopupTimer.stop();
 
-                if ( !waitForPopup( this, w ) )
+                if ( !this->underMouse() )
                 {
-                    d->waitForPopupTimer.stop();
-
-                    if ( !this->underMouse() )
-                    {
-                        d->layout->setExpanded( false );
-                    }
+                    d->layout->setExpanded( false );
                 }
             }
+        }
 
+        break;
+
+    case QEvent::Hide:
+        if ( ! isHidden() )
+        {
             break;
+        }
 
-        case QEvent::Hide:
-            if ( ! isHidden() )
-            {
-                break;
-            }
+        [[fallthrough]];
 
-            [[fallthrough]];
-
-        case QEvent::Show:
-            d->toggleViewAction->setChecked( event->type() == QEvent::Show );
+    case QEvent::Show:
+        d->toggleViewAction->setChecked( event->type() == QEvent::Show );
 #ifdef Q_OS_DARWIN
-            enableMacToolBar( this, event->type() == QEvent::Show );
+        enableMacToolBar( this, event->type() == QEvent::Show );
 #endif
-            emit visibilityChanged( event->type() == QEvent::Show );
-            break;
+        emit visibilityChanged( event->type() == QEvent::Show );
+        break;
 
-        case QEvent::ParentChange:
-            d->layout->checkUsePopupMenu();
-            break;
+    case QEvent::ParentChange:
+        d->layout->checkUsePopupMenu();
+        break;
 
-        case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonPress:
+    {
+        if ( d->mousePressEvent( static_cast<QMouseEvent *>( event ) ) )
         {
-            if ( d->mousePressEvent( static_cast<QMouseEvent *>( event ) ) )
-            {
-                return true;
-            }
-
-            break;
-        }
-
-        case QEvent::MouseButtonRelease:
-            if ( d->mouseReleaseEvent( static_cast<QMouseEvent *>( event ) ) )
-            {
-                return true;
-            }
-
-            break;
-
-        case QEvent::HoverEnter:
-        case QEvent::HoverLeave:
-            // there is nothing special to do here and we do not want to update the whole widget
             return true;
-
-        case QEvent::HoverMove:
-        {
-#ifndef LSCS_NO_CURSOR
-            QHoverEvent *e = static_cast<QHoverEvent *>( event );
-            QStyleOptionToolBar opt;
-            initStyleOption( &opt );
-
-            if ( style()->subElementRect( QStyle::SE_ToolBarHandle, &opt, this ).contains( e->pos() ) )
-            {
-                setCursor( Qt::SizeAllCursor );
-            }
-            else
-            {
-                unsetCursor();
-            }
-
-#endif
-            break;
         }
 
-        case QEvent::MouseMove:
-            if ( d->mouseMoveEvent( static_cast<QMouseEvent *>( event ) ) )
-            {
-                return true;
-            }
+        break;
+    }
 
-            break;
+    case QEvent::MouseButtonRelease:
+        if ( d->mouseReleaseEvent( static_cast<QMouseEvent *>( event ) ) )
+        {
+            return true;
+        }
 
-        case QEvent::Leave:
-            if ( d->state != nullptr && d->state->dragging )
-            {
+        break;
+
+    case QEvent::HoverEnter:
+    case QEvent::HoverLeave:
+        // there is nothing special to do here and we do not want to update the whole widget
+        return true;
+
+    case QEvent::HoverMove:
+    {
+#ifndef LSCS_NO_CURSOR
+        QHoverEvent *e = static_cast<QHoverEvent *>( event );
+        QStyleOptionToolBar opt;
+        initStyleOption( &opt );
+
+        if ( style()->subElementRect( QStyle::SE_ToolBarHandle, &opt, this ).contains( e->pos() ) )
+        {
+            setCursor( Qt::SizeAllCursor );
+        }
+        else
+        {
+            unsetCursor();
+        }
+
+#endif
+        break;
+    }
+
+    case QEvent::MouseMove:
+        if ( d->mouseMoveEvent( static_cast<QMouseEvent *>( event ) ) )
+        {
+            return true;
+        }
+
+        break;
+
+    case QEvent::Leave:
+        if ( d->state != nullptr && d->state->dragging )
+        {
 
 #ifdef Q_OS_WIN
-                // This is a workaround for loosing the mouse on Vista.
-                QPoint pos = QCursor::pos();
-                QMouseEvent fake( QEvent::MouseMove, mapFromGlobal( pos ), pos, Qt::NoButton,
-                                  QApplication::mouseButtons(), QApplication::keyboardModifiers() );
-                d->mouseMoveEvent( &fake );
+            // This is a workaround for loosing the mouse on Vista.
+            QPoint pos = QCursor::pos();
+            QMouseEvent fake( QEvent::MouseMove, mapFromGlobal( pos ), pos, Qt::NoButton,
+                              QApplication::mouseButtons(), QApplication::keyboardModifiers() );
+            d->mouseMoveEvent( &fake );
 #endif
 
-            }
-            else
+        }
+        else
+        {
+            if ( !d->layout->expanded )
             {
-                if ( !d->layout->expanded )
-                {
-                    break;
-                }
-
-                QWidget *w = QApplication::activePopupWidget();
-
-                if ( waitForPopup( this, w ) )
-                {
-                    d->waitForPopupTimer.start( POPUP_TIMER_INTERVAL, this );
-                    break;
-                }
-
-                d->waitForPopupTimer.stop();
-                d->layout->setExpanded( false );
                 break;
             }
 
-        default:
+            QWidget *w = QApplication::activePopupWidget();
+
+            if ( waitForPopup( this, w ) )
+            {
+                d->waitForPopupTimer.start( POPUP_TIMER_INTERVAL, this );
+                break;
+            }
+
+            d->waitForPopupTimer.stop();
+            d->layout->setExpanded( false );
             break;
+        }
+
+    default:
+        break;
     }
 
     return QWidget::event( event );

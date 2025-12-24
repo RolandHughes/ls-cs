@@ -36,9 +36,9 @@ static inline quint32 qYUVToARGB32( int y, int rv, int guv, int bu, int a = 0xff
 {
     int yy = ( y - 16 ) * 298;
     return ( a << 24 )
-           | CLAMP( ( yy + rv ) >> 8 ) << 16
-           | CLAMP( ( yy - guv ) >> 8 ) << 8
-           | CLAMP( ( yy + bu ) >> 8 );
+    | CLAMP( ( yy + rv ) >> 8 ) << 16
+                                | CLAMP( ( yy - guv ) >> 8 ) << 8
+                                | CLAMP( ( yy + bu ) >> 8 );
 }
 
 static inline void planarYUV420_to_ARGB32( const uchar *y, int yStride,

@@ -697,101 +697,101 @@ int QOpenGLWidget::metric( QPaintDevice::PaintDeviceMetric metric ) const
     switch ( metric )
     {
 
-        case PdmWidth:
-            return width();
+    case PdmWidth:
+        return width();
 
-        case PdmHeight:
-            return height();
+    case PdmHeight:
+        return height();
 
-        case PdmDepth:
-            return 32;
+    case PdmDepth:
+        return 32;
 
-        case PdmWidthMM:
-            if ( screen )
-            {
-                return width() * screen->physicalSize().width() / screen->geometry().width();
-            }
-            else
-            {
-                return width() * 1000 / dpmx;
-            }
+    case PdmWidthMM:
+        if ( screen )
+        {
+            return width() * screen->physicalSize().width() / screen->geometry().width();
+        }
+        else
+        {
+            return width() * 1000 / dpmx;
+        }
 
-        case PdmHeightMM:
-            if ( screen )
-            {
-                return height() * screen->physicalSize().height() / screen->geometry().height();
-            }
-            else
-            {
-                return height() * 1000 / dpmy;
-            }
+    case PdmHeightMM:
+        if ( screen )
+        {
+            return height() * screen->physicalSize().height() / screen->geometry().height();
+        }
+        else
+        {
+            return height() * 1000 / dpmy;
+        }
 
-        case PdmNumColors:
-            return 0;
+    case PdmNumColors:
+        return 0;
 
-        case PdmDpiX:
-            if ( screen )
-            {
-                return qRound( screen->logicalDotsPerInchX() );
-            }
-            else
-            {
-                return qRound( dpmx * 0.0254 );
-            }
+    case PdmDpiX:
+        if ( screen )
+        {
+            return qRound( screen->logicalDotsPerInchX() );
+        }
+        else
+        {
+            return qRound( dpmx * 0.0254 );
+        }
 
-        case PdmDpiY:
-            if ( screen )
-            {
-                return qRound( screen->logicalDotsPerInchY() );
-            }
-            else
-            {
-                return qRound( dpmy * 0.0254 );
-            }
+    case PdmDpiY:
+        if ( screen )
+        {
+            return qRound( screen->logicalDotsPerInchY() );
+        }
+        else
+        {
+            return qRound( dpmy * 0.0254 );
+        }
 
-        case PdmPhysicalDpiX:
-            if ( screen )
-            {
-                return qRound( screen->physicalDotsPerInchX() );
-            }
-            else
-            {
-                return qRound( dpmx * 0.0254 );
-            }
+    case PdmPhysicalDpiX:
+        if ( screen )
+        {
+            return qRound( screen->physicalDotsPerInchX() );
+        }
+        else
+        {
+            return qRound( dpmx * 0.0254 );
+        }
 
-        case PdmPhysicalDpiY:
-            if ( screen )
-            {
-                return qRound( screen->physicalDotsPerInchY() );
-            }
-            else
-            {
-                return qRound( dpmy * 0.0254 );
-            }
+    case PdmPhysicalDpiY:
+        if ( screen )
+        {
+            return qRound( screen->physicalDotsPerInchY() );
+        }
+        else
+        {
+            return qRound( dpmy * 0.0254 );
+        }
 
-        case PdmDevicePixelRatio:
-            if ( window )
-            {
-                return int( window->devicePixelRatio() );
-            }
-            else
-            {
-                return 1.0;
-            }
+    case PdmDevicePixelRatio:
+        if ( window )
+        {
+            return int( window->devicePixelRatio() );
+        }
+        else
+        {
+            return 1.0;
+        }
 
-        case PdmDevicePixelRatioScaled:
-            if ( window )
-            {
-                return int( window->devicePixelRatio() * devicePixelRatioFScale() );
-            }
-            else
-            {
-                return 1.0;
-            }
+    case PdmDevicePixelRatioScaled:
+        if ( window )
+        {
+            return int( window->devicePixelRatio() * devicePixelRatioFScale() );
+        }
+        else
+        {
+            return 1.0;
+        }
 
-        default:
-            qWarning( "QOpenGLWidget::metric() Unknown metric %d", metric );
-            return 0;
+    default:
+        qWarning( "QOpenGLWidget::metric() Unknown metric %d", metric );
+        return 0;
     }
 }
 
@@ -836,42 +836,42 @@ bool QOpenGLWidget::event( QEvent *e )
 
     switch ( e->type() )
     {
-        case QEvent::WindowChangeInternal:
-            if ( qGuiApp->testAttribute( Qt::AA_ShareOpenGLContexts ) )
-            {
-                break;
-            }
+    case QEvent::WindowChangeInternal:
+        if ( qGuiApp->testAttribute( Qt::AA_ShareOpenGLContexts ) )
+        {
+            break;
+        }
+
+        if ( d->initialized )
+        {
+            d->reset();
+        }
+
+        [[fallthrough]];
+
+    case QEvent::Show: // reparenting may not lead to a resize so reinitalize on Show too
+        if ( ! d->initialized && !size().isEmpty() && window() && window()->windowHandle() )
+        {
+            d->initialize();
 
             if ( d->initialized )
             {
-                d->reset();
-            }
-
-            [[fallthrough]];
-
-        case QEvent::Show: // reparenting may not lead to a resize so reinitalize on Show too
-            if ( ! d->initialized && !size().isEmpty() && window() && window()->windowHandle() )
-            {
-                d->initialize();
-
-                if ( d->initialized )
-                {
-                    d->recreateFbo();
-                }
-            }
-
-            break;
-
-        case QEvent::ScreenChangeInternal:
-            if ( d->initialized && d->paintDevice->devicePixelRatioF() != devicePixelRatioF() )
-            {
                 d->recreateFbo();
             }
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    case QEvent::ScreenChangeInternal:
+        if ( d->initialized && d->paintDevice->devicePixelRatioF() != devicePixelRatioF() )
+        {
+            d->recreateFbo();
+        }
+
+        break;
+
+    default:
+        break;
     }
 
     return QWidget::event( e );

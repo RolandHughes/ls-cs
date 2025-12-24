@@ -85,21 +85,21 @@ static QByteArray lscs_prettyDebug( const char *data, int len, int maxSize )
         {
             switch ( c )
             {
-                case '\n':
-                    out += "\\n";
-                    break;
+            case '\n':
+                out += "\\n";
+                break;
 
-                case '\r':
-                    out += "\\r";
-                    break;
+            case '\r':
+                out += "\\r";
+                break;
 
-                case '\t':
-                    out += "\\t";
-                    break;
+            case '\t':
+                out += "\\t";
+                break;
 
-                default:
-                    QString tmp = QString( "\\%1" ).formatArg( c, 0, 8 );
-                    out += tmp.toLatin1();
+            default:
+                QString tmp = QString( "\\%1" ).formatArg( c, 0, 8 );
+                out += tmp.toLatin1();
             }
         }
     }

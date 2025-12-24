@@ -41,53 +41,53 @@ static void copyArgument( void *to, int id, const QVariant &arg )
     {
         switch ( id )
         {
-            case QVariant::Bool:
-                *reinterpret_cast<bool *>( to ) = arg.toBool();
-                return;
+        case QVariant::Bool:
+            *reinterpret_cast<bool *>( to ) = arg.toBool();
+            return;
 
-            case QMetaType::UChar:
-                *reinterpret_cast<uchar *>( to ) = arg.value<uchar>();
-                return;
+        case QMetaType::UChar:
+            *reinterpret_cast<uchar *>( to ) = arg.value<uchar>();
+            return;
 
-            case QMetaType::Short:
-                *reinterpret_cast<short *>( to ) = arg.value<short>();
-                return;
+        case QMetaType::Short:
+            *reinterpret_cast<short *>( to ) = arg.value<short>();
+            return;
 
-            case QMetaType::UShort:
-                *reinterpret_cast<ushort *>( to ) = arg.value<ushort>();
-                return;
+        case QMetaType::UShort:
+            *reinterpret_cast<ushort *>( to ) = arg.value<ushort>();
+            return;
 
-            case QVariant::Int:
-                *reinterpret_cast<int *>( to ) = arg.toInt();
-                return;
+        case QVariant::Int:
+            *reinterpret_cast<int *>( to ) = arg.toInt();
+            return;
 
-            case QVariant::UInt:
-                *reinterpret_cast<uint *>( to ) = arg.toUInt();
-                return;
+        case QVariant::UInt:
+            *reinterpret_cast<uint *>( to ) = arg.toUInt();
+            return;
 
-            case QVariant::LongLong:
-                *reinterpret_cast<qint64 *>( to ) = arg.toLongLong();
-                return;
+        case QVariant::LongLong:
+            *reinterpret_cast<qint64 *>( to ) = arg.toLongLong();
+            return;
 
-            case QVariant::ULongLong:
-                *reinterpret_cast<quint64 *>( to ) = arg.toULongLong();
-                return;
+        case QVariant::ULongLong:
+            *reinterpret_cast<quint64 *>( to ) = arg.toULongLong();
+            return;
 
-            case QVariant::Double:
-                *reinterpret_cast<double *>( to ) = arg.toDouble();
-                return;
+        case QVariant::Double:
+            *reinterpret_cast<double *>( to ) = arg.toDouble();
+            return;
 
-            case QVariant::String:
-                *reinterpret_cast<QString *>( to ) = arg.toString();
-                return;
+        case QVariant::String:
+            *reinterpret_cast<QString *>( to ) = arg.toString();
+            return;
 
-            case QVariant::ByteArray:
-                *reinterpret_cast<QByteArray *>( to ) = arg.toByteArray();
-                return;
+        case QVariant::ByteArray:
+            *reinterpret_cast<QByteArray *>( to ) = arg.toByteArray();
+            return;
 
-            case QVariant::StringList:
-                *reinterpret_cast<QStringList *>( to ) = arg.toStringList();
-                return;
+        case QVariant::StringList:
+            *reinterpret_cast<QStringList *>( to ) = arg.toStringList();
+            return;
         }
 
         if ( id == QDBusMetaTypeId::variant )

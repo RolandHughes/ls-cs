@@ -106,29 +106,29 @@ Q_GUI_EXPORT void lscs_setMainWindowTitleWidget( QMainWindow *mainWindow, Qt::Do
 
     switch ( area )
     {
-        case Qt::LeftDockWidgetArea:
-            row = 1;
-            column = 0;
-            break;
+    case Qt::LeftDockWidgetArea:
+        row = 1;
+        column = 0;
+        break;
 
-        case Qt::TopDockWidgetArea:
-            row = 0;
-            column = 1;
-            break;
+    case Qt::TopDockWidgetArea:
+        row = 0;
+        column = 1;
+        break;
 
-        case Qt::BottomDockWidgetArea:
-            row = 2;
-            column = 1;
-            break;
+    case Qt::BottomDockWidgetArea:
+        row = 2;
+        column = 1;
+        break;
 
-        case Qt::RightDockWidgetArea:
-            row = 1;
-            column = 2;
-            break;
+    case Qt::RightDockWidgetArea:
+        row = 1;
+        column = 2;
+        break;
 
-        default:
-            Q_ASSERT_X( false, "lscs_setMainWindowTitleWidget", "Unknown area" );
-            return;
+    default:
+        Q_ASSERT_X( false, "lscs_setMainWindowTitleWidget", "Unknown area" );
+        return;
     }
 
     if ( QLayoutItem *oldItem = topLayout->itemAtPosition( row, column ) )
@@ -400,21 +400,21 @@ void QMainWindow::setCorner( Qt::Corner corner, Qt::DockWidgetArea area )
 
     switch ( corner )
     {
-        case Qt::TopLeftCorner:
-            valid = ( area == Qt::TopDockWidgetArea || area == Qt::LeftDockWidgetArea );
-            break;
+    case Qt::TopLeftCorner:
+        valid = ( area == Qt::TopDockWidgetArea || area == Qt::LeftDockWidgetArea );
+        break;
 
-        case Qt::TopRightCorner:
-            valid = ( area == Qt::TopDockWidgetArea || area == Qt::RightDockWidgetArea );
-            break;
+    case Qt::TopRightCorner:
+        valid = ( area == Qt::TopDockWidgetArea || area == Qt::RightDockWidgetArea );
+        break;
 
-        case Qt::BottomLeftCorner:
-            valid = ( area == Qt::BottomDockWidgetArea || area == Qt::LeftDockWidgetArea );
-            break;
+    case Qt::BottomLeftCorner:
+        valid = ( area == Qt::BottomDockWidgetArea || area == Qt::LeftDockWidgetArea );
+        break;
 
-        case Qt::BottomRightCorner:
-            valid = ( area == Qt::BottomDockWidgetArea || area == Qt::RightDockWidgetArea );
-            break;
+    case Qt::BottomRightCorner:
+        valid = ( area == Qt::BottomDockWidgetArea || area == Qt::RightDockWidgetArea );
+        break;
     }
 
     if ( ! valid )
@@ -439,14 +439,14 @@ static bool checkToolBarArea( Qt::ToolBarArea area, const char *where )
 {
     switch ( area )
     {
-        case Qt::LeftToolBarArea:
-        case Qt::RightToolBarArea:
-        case Qt::TopToolBarArea:
-        case Qt::BottomToolBarArea:
-            return true;
+    case Qt::LeftToolBarArea:
+    case Qt::RightToolBarArea:
+    case Qt::TopToolBarArea:
+    case Qt::BottomToolBarArea:
+        return true;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     qWarning( "%s Invalid 'area' argument", where );
@@ -626,14 +626,14 @@ static bool checkDockWidgetArea( Qt::DockWidgetArea area, const char *where )
 {
     switch ( area )
     {
-        case Qt::LeftDockWidgetArea:
-        case Qt::RightDockWidgetArea:
-        case Qt::TopDockWidgetArea:
-        case Qt::BottomDockWidgetArea:
-            return true;
+    case Qt::LeftDockWidgetArea:
+    case Qt::RightDockWidgetArea:
+    case Qt::TopDockWidgetArea:
+    case Qt::BottomDockWidgetArea:
+        return true;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     qWarning( "%s: invalid 'area' argument", where );
@@ -693,13 +693,13 @@ void QMainWindow::addDockWidget( Qt::DockWidgetArea area, QDockWidget *dockwidge
 
     switch ( area )
     {
-        case Qt::TopDockWidgetArea:
-        case Qt::BottomDockWidgetArea:
-            orientation = Qt::Horizontal;
-            break;
+    case Qt::TopDockWidgetArea:
+    case Qt::BottomDockWidgetArea:
+        orientation = Qt::Horizontal;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     d_func()->layout->removeWidget( dockwidget ); // in case it was already in here
@@ -840,16 +840,16 @@ QCursor QMainWindowPrivate::separatorCursor( const QList<int> &path ) const
         // from the central widget?
         switch ( path.first() )
         {
-            case QInternal::LeftDock:
-            case QInternal::RightDock:
-                return Qt::SplitHCursor;
+        case QInternal::LeftDock:
+        case QInternal::RightDock:
+            return Qt::SplitHCursor;
 
-            case QInternal::TopDock:
-            case QInternal::BottomDock:
-                return Qt::SplitVCursor;
+        case QInternal::TopDock:
+        case QInternal::BottomDock:
+            return Qt::SplitVCursor;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -949,147 +949,147 @@ bool QMainWindow::event( QEvent *event )
 
 #ifndef LSCS_NO_DOCKWIDGET
 
-        case QEvent::Paint:
-        {
-            QPainter p( this );
-            QRegion r = static_cast<QPaintEvent *>( event )->region();
-            d->layout->layoutState.dockAreaLayout.paintSeparators( &p, this, r, d->hoverPos );
-            break;
-        }
+    case QEvent::Paint:
+    {
+        QPainter p( this );
+        QRegion r = static_cast<QPaintEvent *>( event )->region();
+        d->layout->layoutState.dockAreaLayout.paintSeparators( &p, this, r, d->hoverPos );
+        break;
+    }
 
 #ifndef LSCS_NO_CURSOR
 
-        case QEvent::HoverMove:
-        {
-            d->adjustCursor( static_cast<QHoverEvent *>( event )->pos() );
-            break;
-        }
+    case QEvent::HoverMove:
+    {
+        d->adjustCursor( static_cast<QHoverEvent *>( event )->pos() );
+        break;
+    }
 
-        // do not want QWidget to call update() on the entire QMainWindow
-        // on HoverEnter and HoverLeave, hence accept the event (return true).
-        case QEvent::HoverEnter:
-            return true;
+    // do not want QWidget to call update() on the entire QMainWindow
+    // on HoverEnter and HoverLeave, hence accept the event (return true).
+    case QEvent::HoverEnter:
+        return true;
 
-        case QEvent::HoverLeave:
-            d->adjustCursor( QPoint( 0, 0 ) );
-            return true;
+    case QEvent::HoverLeave:
+        d->adjustCursor( QPoint( 0, 0 ) );
+        return true;
 
-        case QEvent::ShortcutOverride: // when a menu pops up
-            d->adjustCursor( QPoint( 0, 0 ) );
-            break;
+    case QEvent::ShortcutOverride: // when a menu pops up
+        d->adjustCursor( QPoint( 0, 0 ) );
+        break;
 #endif
 
-        case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonPress:
+    {
+        QMouseEvent *e = static_cast<QMouseEvent *>( event );
+
+        if ( e->button() == Qt::LeftButton && d->layout->startSeparatorMove( e->pos() ) )
         {
-            QMouseEvent *e = static_cast<QMouseEvent *>( event );
-
-            if ( e->button() == Qt::LeftButton && d->layout->startSeparatorMove( e->pos() ) )
-            {
-                // The click was on a separator, eat this event
-                e->accept();
-                return true;
-            }
-
-            break;
+            // The click was on a separator, eat this event
+            e->accept();
+            return true;
         }
 
-        case QEvent::MouseMove:
-        {
-            QMouseEvent *e = static_cast<QMouseEvent *>( event );
+        break;
+    }
+
+    case QEvent::MouseMove:
+    {
+        QMouseEvent *e = static_cast<QMouseEvent *>( event );
 
 #ifndef LSCS_NO_CURSOR
-            d->adjustCursor( e->pos() );
+        d->adjustCursor( e->pos() );
 #endif
 
-            if ( e->buttons() & Qt::LeftButton )
-            {
-                if ( d->layout->separatorMove( e->pos() ) )
-                {
-                    // We're moving a separator, eat this event
-                    e->accept();
-                    return true;
-                }
-            }
-
-            break;
-        }
-
-        case QEvent::MouseButtonRelease:
+        if ( e->buttons() & Qt::LeftButton )
         {
-            QMouseEvent *e = static_cast<QMouseEvent *>( event );
-
-            if ( d->layout->endSeparatorMove( e->pos() ) )
+            if ( d->layout->separatorMove( e->pos() ) )
             {
-                // We've released a separator, eat this event
+                // We're moving a separator, eat this event
                 e->accept();
                 return true;
             }
-
-            break;
         }
+
+        break;
+    }
+
+    case QEvent::MouseButtonRelease:
+    {
+        QMouseEvent *e = static_cast<QMouseEvent *>( event );
+
+        if ( d->layout->endSeparatorMove( e->pos() ) )
+        {
+            // We've released a separator, eat this event
+            e->accept();
+            return true;
+        }
+
+        break;
+    }
 
 #endif
 
 #ifndef LSCS_NO_TOOLBAR
 
-        case QEvent::ToolBarChange:
-        {
-            d->layout->toggleToolBarsVisible();
-            return true;
-        }
+    case QEvent::ToolBarChange:
+    {
+        d->layout->toggleToolBarsVisible();
+        return true;
+    }
 
 #endif
 
 #ifndef LSCS_NO_STATUSTIP
 
-        case QEvent::StatusTip:
+    case QEvent::StatusTip:
 
 #ifndef LSCS_NO_STATUSBAR
-            if ( QStatusBar *sb = d->layout->statusBar() )
-            {
-                sb->showMessage( static_cast<QStatusTipEvent *>( event )->tip() );
-            }
-            else
+        if ( QStatusBar *sb = d->layout->statusBar() )
+        {
+            sb->showMessage( static_cast<QStatusTipEvent *>( event )->tip() );
+        }
+        else
 #endif
-                static_cast<QStatusTipEvent *>( event )->ignore();
+            static_cast<QStatusTipEvent *>( event )->ignore();
 
-            return true;
+        return true;
 #endif
 
-        case QEvent::StyleChange:
+    case QEvent::StyleChange:
 
 #ifndef LSCS_NO_DOCKWIDGET
-            d->layout->layoutState.dockAreaLayout.styleChangedEvent();
+        d->layout->layoutState.dockAreaLayout.styleChangedEvent();
 #endif
 
-            if ( !d->explicitIconSize )
-            {
-                setIconSize( QSize() );
-            }
+        if ( !d->explicitIconSize )
+        {
+            setIconSize( QSize() );
+        }
 
-            break;
+        break;
 
 #if !defined(LSCS_NO_DOCKWIDGET) && !defined(LSCS_NO_CURSOR)
 
-        case QEvent::CursorChange:
+    case QEvent::CursorChange:
 
-            // CursorChange events are triggered as mouse moves to new widgets even
-            // if the cursor doesn't actually change, so do not change oldCursor if
-            // the "changed" cursor has same shape as adjusted cursor.
-            if ( d->cursorAdjusted && d->adjustedCursor.shape() != cursor().shape() )
-            {
-                d->oldCursor = cursor();
-                d->hasOldCursor = testAttribute( Qt::WA_SetCursor );
+        // CursorChange events are triggered as mouse moves to new widgets even
+        // if the cursor doesn't actually change, so do not change oldCursor if
+        // the "changed" cursor has same shape as adjusted cursor.
+        if ( d->cursorAdjusted && d->adjustedCursor.shape() != cursor().shape() )
+        {
+            d->oldCursor = cursor();
+            d->hasOldCursor = testAttribute( Qt::WA_SetCursor );
 
-                // Ensure our adjusted cursor stays visible
-                setCursor( d->adjustedCursor );
-            }
+            // Ensure our adjusted cursor stays visible
+            setCursor( d->adjustedCursor );
+        }
 
-            break;
+        break;
 #endif
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QWidget::event( event );

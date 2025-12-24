@@ -553,11 +553,11 @@ QString QTextDocument::metaInformation( MetaInformation info ) const
 
     switch ( info )
     {
-        case DocumentTitle:
-            return d->title;
+    case DocumentTitle:
+        return d->title;
 
-        case DocumentUrl:
-            return d->url;
+    case DocumentUrl:
+        return d->url;
     }
 
     return QString();
@@ -569,13 +569,13 @@ void QTextDocument::setMetaInformation( MetaInformation info, const QString &str
 
     switch ( info )
     {
-        case DocumentTitle:
-            d->title = string;
-            break;
+    case DocumentTitle:
+        d->title = string;
+        break;
 
-        case DocumentUrl:
-            d->url = string;
-            break;
+    case DocumentUrl:
+        d->url = string;
+        break;
     }
 }
 
@@ -591,19 +591,19 @@ QString QTextDocument::toPlainText() const
         switch ( c.unicode() )
         {
 
-            case 0xfdd0:    // QTextBeginningOfFrame
-            case 0xfdd1:    // QTextEndOfFrame
-            case QChar::ParagraphSeparator:
-            case QChar::LineSeparator:
-                retval.append( '\n' );
-                break;
+        case 0xfdd0:    // QTextBeginningOfFrame
+        case 0xfdd1:    // QTextEndOfFrame
+        case QChar::ParagraphSeparator:
+        case QChar::LineSeparator:
+            retval.append( '\n' );
+            break;
 
-            case QChar::Nbsp:
-                retval.append( ' ' );
-                break;
+        case QChar::Nbsp:
+            retval.append( ' ' );
+            break;
 
-            default:
-                retval.append( c );
+        default:
+            retval.append( c );
         }
     }
 
@@ -1810,53 +1810,53 @@ void QTextHtmlExporter::emitBorderStyle( QTextFrameFormat::BorderStyle style )
 
     switch ( style )
     {
-        case QTextFrameFormat::BorderStyle_None:
-            html += "none";
-            break;
+    case QTextFrameFormat::BorderStyle_None:
+        html += "none";
+        break;
 
-        case QTextFrameFormat::BorderStyle_Dotted:
-            html += "dotted";
-            break;
+    case QTextFrameFormat::BorderStyle_Dotted:
+        html += "dotted";
+        break;
 
-        case QTextFrameFormat::BorderStyle_Dashed:
-            html += "dashed";
-            break;
+    case QTextFrameFormat::BorderStyle_Dashed:
+        html += "dashed";
+        break;
 
-        case QTextFrameFormat::BorderStyle_Solid:
-            html += "solid";
-            break;
+    case QTextFrameFormat::BorderStyle_Solid:
+        html += "solid";
+        break;
 
-        case QTextFrameFormat::BorderStyle_Double:
-            html += "double";
-            break;
+    case QTextFrameFormat::BorderStyle_Double:
+        html += "double";
+        break;
 
-        case QTextFrameFormat::BorderStyle_DotDash:
-            html += "dot-dash";
-            break;
+    case QTextFrameFormat::BorderStyle_DotDash:
+        html += "dot-dash";
+        break;
 
-        case QTextFrameFormat::BorderStyle_DotDotDash:
-            html += "dot-dot-dash";
-            break;
+    case QTextFrameFormat::BorderStyle_DotDotDash:
+        html += "dot-dot-dash";
+        break;
 
-        case QTextFrameFormat::BorderStyle_Groove:
-            html += "groove";
-            break;
+    case QTextFrameFormat::BorderStyle_Groove:
+        html += "groove";
+        break;
 
-        case QTextFrameFormat::BorderStyle_Ridge:
-            html += "ridge";
-            break;
+    case QTextFrameFormat::BorderStyle_Ridge:
+        html += "ridge";
+        break;
 
-        case QTextFrameFormat::BorderStyle_Inset:
-            html += "inset";
-            break;
+    case QTextFrameFormat::BorderStyle_Inset:
+        html += "inset";
+        break;
 
-        case QTextFrameFormat::BorderStyle_Outset:
-            html += "outset";
-            break;
+    case QTextFrameFormat::BorderStyle_Outset:
+        html += "outset";
+        break;
 
-        default:
-            Q_ASSERT( false );
-            break;
+    default:
+        Q_ASSERT( false );
+        break;
     };
 
     html += ';';
@@ -2095,22 +2095,22 @@ void QTextHtmlExporter::emitBlockAttributes( const QTextBlock &block )
     {
         switch ( format.lineHeightType() )
         {
-            case QTextBlockFormat::ProportionalHeight:
-            case QTextBlockFormat::FixedHeight:
-                html += " line-height:";
-                break;
+        case QTextBlockFormat::ProportionalHeight:
+        case QTextBlockFormat::FixedHeight:
+            html += " line-height:";
+            break;
 
-            case QTextBlockFormat::MinimumHeight:
-                html += " min-height:";
-                break;
+        case QTextBlockFormat::MinimumHeight:
+            html += " min-height:";
+            break;
 
-            case QTextBlockFormat::LineDistanceHeight:
-                html += " line-spacing:";
-                break;
+        case QTextBlockFormat::LineDistanceHeight:
+            html += " line-spacing:";
+            break;
 
-            case QTextBlockFormat::SingleHeight:
-            default:
-                break; // Should never reach here
+        case QTextBlockFormat::SingleHeight:
+        default:
+            break; // Should never reach here
         }
 
         html += QString::number( format.lineHeight() );
@@ -2195,40 +2195,40 @@ void QTextHtmlExporter::emitBlock( const QTextBlock &block )
 
             switch ( style )
             {
-                case QTextListFormat::ListDecimal:
-                    html += "<ol";
-                    break;
+            case QTextListFormat::ListDecimal:
+                html += "<ol";
+                break;
 
-                case QTextListFormat::ListDisc:
-                    html += "<ul";
-                    break;
+            case QTextListFormat::ListDisc:
+                html += "<ul";
+                break;
 
-                case QTextListFormat::ListCircle:
-                    html += "<ul type=\"circle\"";
-                    break;
+            case QTextListFormat::ListCircle:
+                html += "<ul type=\"circle\"";
+                break;
 
-                case QTextListFormat::ListSquare:
-                    html += "<ul type=\"square\"";
-                    break;
+            case QTextListFormat::ListSquare:
+                html += "<ul type=\"square\"";
+                break;
 
-                case QTextListFormat::ListLowerAlpha:
-                    html += "<ol type=\"a\"";
-                    break;
+            case QTextListFormat::ListLowerAlpha:
+                html += "<ol type=\"a\"";
+                break;
 
-                case QTextListFormat::ListUpperAlpha:
-                    html += "<ol type=\"A\"";
-                    break;
+            case QTextListFormat::ListUpperAlpha:
+                html += "<ol type=\"A\"";
+                break;
 
-                case QTextListFormat::ListLowerRoman:
-                    html += "<ol type=\"i\"";
-                    break;
+            case QTextListFormat::ListLowerRoman:
+                html += "<ol type=\"i\"";
+                break;
 
-                case QTextListFormat::ListUpperRoman:
-                    html += "<ol type=\"I\"";
-                    break;
+            case QTextListFormat::ListUpperRoman:
+                html += "<ol type=\"I\"";
+                break;
 
-                default:
-                    html += "<ul";       // should not happen
+            default:
+                html += "<ul";       // should not happen
             }
 
             QString styleString = QString::fromLatin1( "margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px;" );
@@ -2586,20 +2586,20 @@ void QTextHtmlExporter::emitTable( const QTextTable *table )
 
                 switch ( valign )
                 {
-                    case QTextCharFormat::AlignMiddle:
-                        styleString += QLatin1String( "middle" );
-                        break;
+                case QTextCharFormat::AlignMiddle:
+                    styleString += QLatin1String( "middle" );
+                    break;
 
-                    case QTextCharFormat::AlignTop:
-                        styleString += QLatin1String( "top" );
-                        break;
+                case QTextCharFormat::AlignTop:
+                    styleString += QLatin1String( "top" );
+                    break;
 
-                    case QTextCharFormat::AlignBottom:
-                        styleString += QLatin1String( "bottom" );
-                        break;
+                case QTextCharFormat::AlignBottom:
+                    styleString += QLatin1String( "bottom" );
+                    break;
 
-                    default:
-                        break;
+                default:
+                    break;
                 }
 
                 styleString += QLatin1Char( ';' );

@@ -121,36 +121,36 @@ void TSReader::handleError()
 
     switch ( tokenType() )
     {
-        case NoToken:
-        case Invalid:
-        default:
-            raiseError( QString( "Parse error %1: \n%2" ).formatArg( loc ).formatArg( errorString() ) );
-            break;
-
-        case StartElement:
-            raiseError( QString( "Unexpected tag <%1> \n%2" ).formatArg( name().toString() ).formatArg( loc ) );
-            break;
-
-        case Characters:
-        {
-            QString tok = text().toString();
-
-            if ( tok.length() > 30 )
-            {
-                tok = tok.left( 30 ) + "[...]";
-            }
-
-            raiseError( QString( "Unexpected characters '%1' %2" ).formatArg( tok ).formatArg( loc ) );
-        }
+    case NoToken:
+    case Invalid:
+    default:
+        raiseError( QString( "Parse error %1: \n%2" ).formatArg( loc ).formatArg( errorString() ) );
         break;
 
-        case EntityReference:
-            raiseError( QString( "Unexpected entity '&%1;' %2" ).formatArg( name().toString() ).formatArg( loc ) );
-            break;
+    case StartElement:
+        raiseError( QString( "Unexpected tag <%1> \n%2" ).formatArg( name().toString() ).formatArg( loc ) );
+        break;
 
-        case ProcessingInstruction:
-            raiseError( QString( "Unexpected processing instruction %1" ).formatArg( loc ) );
-            break;
+    case Characters:
+    {
+        QString tok = text().toString();
+
+        if ( tok.length() > 30 )
+        {
+            tok = tok.left( 30 ) + "[...]";
+        }
+
+        raiseError( QString( "Unexpected characters '%1' %2" ).formatArg( tok ).formatArg( loc ) );
+    }
+    break;
+
+    case EntityReference:
+        raiseError( QString( "Unexpected entity '&%1;' %2" ).formatArg( name().toString() ).formatArg( loc ) );
+        break;
+
+    case ProcessingInstruction:
+        raiseError( QString( "Unexpected processing instruction %1" ).formatArg( loc ) );
+        break;
     }
 }
 
@@ -631,36 +631,36 @@ static QString protect( const QString &str )
 
         switch ( c.unicode() )
         {
-            case '\"':
-                result += "&quot;";
-                break;
+        case '\"':
+            result += "&quot;";
+            break;
 
-            case '&':
-                result += "&amp;";
-                break;
+        case '&':
+            result += "&amp;";
+            break;
 
-            case '>':
-                result += "&gt;";
-                break;
+        case '>':
+            result += "&gt;";
+            break;
 
-            case '<':
-                result += "&lt;";
-                break;
+        case '<':
+            result += "&lt;";
+            break;
 
-            case '\'':
-                result += "&apos;";
-                break;
+        case '\'':
+            result += "&apos;";
+            break;
 
-            default:
-                if ( c < 0x20 && c != '\r' && c != '\n' && c != '\t' )
-                {
-                    result += numericEntity( c.unicode() );
+        default:
+            if ( c < 0x20 && c != '\r' && c != '\n' && c != '\t' )
+            {
+                result += numericEntity( c.unicode() );
 
-                }
-                else
-                {
-                    result += c;
-                }
+            }
+            else
+            {
+                result += c;
+            }
         }
     }
 
@@ -805,7 +805,7 @@ bool saveTS( const Translator &translator, QIODevice &dev, ConversionData &cd )
     {
 
         t << "<context>\n"
-          "    <name>";
+             "    <name>";
 
         t << protect( context )
           << "</name>\n";

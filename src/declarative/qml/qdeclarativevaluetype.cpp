@@ -111,60 +111,60 @@ QDeclarativeValueType *QDeclarativeValueTypeFactory::valueType( int t )
 
     switch ( t )
     {
-        case QVariant::Point:
-            rv = new QDeclarativePointValueType;
-            break;
+    case QVariant::Point:
+        rv = new QDeclarativePointValueType;
+        break;
 
-        case QVariant::PointF:
-            rv = new QDeclarativePointFValueType;
-            break;
+    case QVariant::PointF:
+        rv = new QDeclarativePointFValueType;
+        break;
 
-        case QVariant::Size:
-            rv = new QDeclarativeSizeValueType;
-            break;
+    case QVariant::Size:
+        rv = new QDeclarativeSizeValueType;
+        break;
 
-        case QVariant::SizeF:
-            rv = new QDeclarativeSizeFValueType;
-            break;
+    case QVariant::SizeF:
+        rv = new QDeclarativeSizeFValueType;
+        break;
 
-        case QVariant::Rect:
-            rv = new QDeclarativeRectValueType;
-            break;
+    case QVariant::Rect:
+        rv = new QDeclarativeRectValueType;
+        break;
 
-        case QVariant::RectF:
-            rv = new QDeclarativeRectFValueType;
-            break;
+    case QVariant::RectF:
+        rv = new QDeclarativeRectFValueType;
+        break;
 
-        case QVariant::Vector2D:
-            rv = new QDeclarativeVector2DValueType;
-            break;
+    case QVariant::Vector2D:
+        rv = new QDeclarativeVector2DValueType;
+        break;
 
-        case QVariant::Vector3D:
-            rv = new QDeclarativeVector3DValueType;
-            break;
+    case QVariant::Vector3D:
+        rv = new QDeclarativeVector3DValueType;
+        break;
 
-        case QVariant::Vector4D:
-            rv = new QDeclarativeVector4DValueType;
-            break;
+    case QVariant::Vector4D:
+        rv = new QDeclarativeVector4DValueType;
+        break;
 
-        case QVariant::Quaternion:
-            rv = new QDeclarativeQuaternionValueType;
-            break;
+    case QVariant::Quaternion:
+        rv = new QDeclarativeQuaternionValueType;
+        break;
 
-        case QVariant::Matrix4x4:
-            rv = new QDeclarativeMatrix4x4ValueType;
-            break;
+    case QVariant::Matrix4x4:
+        rv = new QDeclarativeMatrix4x4ValueType;
+        break;
 
-        case QVariant::EasingCurve:
-            rv = new QDeclarativeEasingValueType;
-            break;
+    case QVariant::EasingCurve:
+        rv = new QDeclarativeEasingValueType;
+        break;
 
-        case QVariant::Font:
-            rv = new QDeclarativeFontValueType;
-            break;
+    case QVariant::Font:
+        rv = new QDeclarativeFontValueType;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     Q_ASSERT( !rv || rv->metaObject()->propertyCount() < 32 );

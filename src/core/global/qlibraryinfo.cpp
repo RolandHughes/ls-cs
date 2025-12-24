@@ -201,39 +201,39 @@ QString QLibraryInfo::location( LibraryLocation loc )
 
         switch ( loc )
         {
-            // TODO:: see if this needs to be LsCsLibraryInfo::install_prefix
-            case PrefixPath:
-                key = "Prefix";
-                defaultValue = ".";
-                break;
+        // TODO:: see if this needs to be LsCsLibraryInfo::install_prefix
+        case PrefixPath:
+            key = "Prefix";
+            defaultValue = ".";
+            break;
 
-            case PluginsPath:
-                key = "Plugins";
-                defaultValue = ".";  //LsCsLibraryInfo::plugins;
-                break;
+        case PluginsPath:
+            key = "Plugins";
+            defaultValue = ".";  //LsCsLibraryInfo::plugins;
+            break;
 
-            case TranslationsPath:
-                key = "Translations";
-                defaultValue = "translations";
-                break;
+        case TranslationsPath:
+            key = "Translations";
+            defaultValue = "translations";
+            break;
 
-            case SettingsPath:
-                key = "Settings";
-                defaultValue = ".";
-                break;
+        case SettingsPath:
+            key = "Settings";
+            defaultValue = ".";
+            break;
 
-            case LibrariesPath:
-                key = "Libraries";
-                defaultValue = ".";    //LsCsLibraryInfo::libraries;
-                break;
+        case LibrariesPath:
+            key = "Libraries";
+            defaultValue = ".";    //LsCsLibraryInfo::libraries;
+            break;
 
-            case BinariesPath:
-                key = "Binaries";
-                defaultValue = ".";    //LsCsLibraryInfo::binaries;
-                break;
+        case BinariesPath:
+            key = "Binaries";
+            defaultValue = ".";    //LsCsLibraryInfo::binaries;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         if ( ! key.isEmpty() )
@@ -265,32 +265,32 @@ QString QLibraryInfo::location( LibraryLocation loc )
         switch ( loc )
         {
 
-            case PrefixPath:
-                retval = ".";
-                break;
+        case PrefixPath:
+            retval = ".";
+            break;
 
-            case PluginsPath:
-                retval = ".";    //LsCsLibraryInfo::plugins;
-                break;
+        case PluginsPath:
+            retval = ".";    //LsCsLibraryInfo::plugins;
+            break;
 
-            case TranslationsPath:
-                retval = "translations";
-                break;
+        case TranslationsPath:
+            retval = "translations";
+            break;
 
-            case SettingsPath:
-                retval = "settings";
-                break;
+        case SettingsPath:
+            retval = "settings";
+            break;
 
-            case LibrariesPath:
-                retval = ".";    //LsCsLibraryInfo::libraries;
-                break;
+        case LibrariesPath:
+            retval = ".";    //LsCsLibraryInfo::libraries;
+            break;
 
-            case BinariesPath:
-                retval = ".";    //LsCsLibraryInfo::binaries;
-                break;
+        case BinariesPath:
+            retval = ".";    //LsCsLibraryInfo::binaries;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 

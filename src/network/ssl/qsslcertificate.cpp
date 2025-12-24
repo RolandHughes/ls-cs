@@ -294,41 +294,41 @@ QByteArray QSslCertificatePrivate::subjectInfoToString( QSslCertificate::Subject
 
     switch ( info )
     {
-        case QSslCertificate::Organization:
-            str = QByteArray( "O" );
-            break;
+    case QSslCertificate::Organization:
+        str = QByteArray( "O" );
+        break;
 
-        case QSslCertificate::CommonName:
-            str = QByteArray( "CN" );
-            break;
+    case QSslCertificate::CommonName:
+        str = QByteArray( "CN" );
+        break;
 
-        case QSslCertificate::LocalityName:
-            str = QByteArray( "L" );
-            break;
+    case QSslCertificate::LocalityName:
+        str = QByteArray( "L" );
+        break;
 
-        case QSslCertificate::OrganizationalUnitName:
-            str = QByteArray( "OU" );
-            break;
+    case QSslCertificate::OrganizationalUnitName:
+        str = QByteArray( "OU" );
+        break;
 
-        case QSslCertificate::CountryName:
-            str = QByteArray( "C" );
-            break;
+    case QSslCertificate::CountryName:
+        str = QByteArray( "C" );
+        break;
 
-        case QSslCertificate::StateOrProvinceName:
-            str = QByteArray( "ST" );
-            break;
+    case QSslCertificate::StateOrProvinceName:
+        str = QByteArray( "ST" );
+        break;
 
-        case QSslCertificate::DistinguishedNameQualifier:
-            str = QByteArray( "dnQualifier" );
-            break;
+    case QSslCertificate::DistinguishedNameQualifier:
+        str = QByteArray( "dnQualifier" );
+        break;
 
-        case QSslCertificate::SerialNumber:
-            str = QByteArray( "serialNumber" );
-            break;
+    case QSslCertificate::SerialNumber:
+        str = QByteArray( "serialNumber" );
+        break;
 
-        case QSslCertificate::EmailAddress:
-            str = QByteArray( "emailAddress" );
-            break;
+    case QSslCertificate::EmailAddress:
+        str = QByteArray( "emailAddress" );
+        break;
     }
 
     return str;
@@ -357,41 +357,41 @@ QDebug operator<<( QDebug debug, QSslCertificate::SubjectInfo info )
 {
     switch ( info )
     {
-        case QSslCertificate::Organization:
-            debug << "Organization";
-            break;
+    case QSslCertificate::Organization:
+        debug << "Organization";
+        break;
 
-        case QSslCertificate::CommonName:
-            debug << "CommonName";
-            break;
+    case QSslCertificate::CommonName:
+        debug << "CommonName";
+        break;
 
-        case QSslCertificate::CountryName:
-            debug << "CountryName";
-            break;
+    case QSslCertificate::CountryName:
+        debug << "CountryName";
+        break;
 
-        case QSslCertificate::LocalityName:
-            debug << "LocalityName";
-            break;
+    case QSslCertificate::LocalityName:
+        debug << "LocalityName";
+        break;
 
-        case QSslCertificate::OrganizationalUnitName:
-            debug << "OrganizationalUnitName";
-            break;
+    case QSslCertificate::OrganizationalUnitName:
+        debug << "OrganizationalUnitName";
+        break;
 
-        case QSslCertificate::StateOrProvinceName:
-            debug << "StateOrProvinceName";
-            break;
+    case QSslCertificate::StateOrProvinceName:
+        debug << "StateOrProvinceName";
+        break;
 
-        case QSslCertificate::DistinguishedNameQualifier:
-            debug << "DistinguishedNameQualifier";
-            break;
+    case QSslCertificate::DistinguishedNameQualifier:
+        debug << "DistinguishedNameQualifier";
+        break;
 
-        case QSslCertificate::SerialNumber:
-            debug << "SerialNumber";
-            break;
+    case QSslCertificate::SerialNumber:
+        debug << "SerialNumber";
+        break;
 
-        case QSslCertificate::EmailAddress:
-            debug << "EmailAddress";
-            break;
+    case QSslCertificate::EmailAddress:
+        debug << "EmailAddress";
+        break;
     }
 
     return debug;

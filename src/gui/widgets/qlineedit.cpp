@@ -1066,51 +1066,51 @@ void QLineEdit::keyPressEvent( QKeyEvent *event )
 
     switch ( event->key() )
     {
-        case Qt::Key_Select:
-            if ( QApplication::keypadNavigationEnabled() )
+    case Qt::Key_Select:
+        if ( QApplication::keypadNavigationEnabled() )
+        {
+            if ( hasEditFocus() )
             {
-                if ( hasEditFocus() )
+                setEditFocus( false );
+
+                if ( d->control->completer() && d->control->completer()->popup()->isVisible() )
                 {
-                    setEditFocus( false );
+                    d->control->completer()->popup()->hide();
+                }
 
-                    if ( d->control->completer() && d->control->completer()->popup()->isVisible() )
-                    {
-                        d->control->completer()->popup()->hide();
-                    }
+                select = true;
+            }
+        }
 
-                    select = true;
+        break;
+
+    case Qt::Key_Back:
+    case Qt::Key_No:
+        if ( ! QApplication::keypadNavigationEnabled() || !hasEditFocus() )
+        {
+            event->ignore();
+            return;
+        }
+
+        break;
+
+    default:
+        if ( QApplication::keypadNavigationEnabled() )
+        {
+            if ( ! hasEditFocus() && !( event->modifiers() & Qt::ControlModifier ) )
+            {
+                if ( !event->text().isEmpty() && event->text().at( 0 ).isPrint()
+                        && !isReadOnly() )
+                {
+                    setEditFocus( true );
+                }
+                else
+                {
+                    event->ignore();
+                    return;
                 }
             }
-
-            break;
-
-        case Qt::Key_Back:
-        case Qt::Key_No:
-            if ( ! QApplication::keypadNavigationEnabled() || !hasEditFocus() )
-            {
-                event->ignore();
-                return;
-            }
-
-            break;
-
-        default:
-            if ( QApplication::keypadNavigationEnabled() )
-            {
-                if ( ! hasEditFocus() && !( event->modifiers() & Qt::ControlModifier ) )
-                {
-                    if ( !event->text().isEmpty() && event->text().at( 0 ).isPrint()
-                            && !isReadOnly() )
-                    {
-                        setEditFocus( true );
-                    }
-                    else
-                    {
-                        event->ignore();
-                        return;
-                    }
-                }
-            }
+        }
     }
 
     if ( QApplication::keypadNavigationEnabled() && !select && !hasEditFocus() )
@@ -1195,40 +1195,40 @@ QVariant QLineEdit::inputMethodQuery( Qt::InputMethodQuery property ) const
 
     switch ( property )
     {
-        case Qt::ImCursorRectangle:
-            return d->cursorRect();
+    case Qt::ImCursorRectangle:
+        return d->cursorRect();
 
-        case Qt::ImFont:
-            return font();
+    case Qt::ImFont:
+        return font();
 
-        case Qt::ImCursorPosition:
+    case Qt::ImCursorPosition:
+        return QVariant( d->control->cursor() );
+
+    case Qt::ImSurroundingText:
+        return QVariant( d->control->text() );
+
+    case Qt::ImCurrentSelection:
+        return QVariant( selectedText() );
+
+    case Qt::ImMaximumTextLength:
+        return QVariant( maxLength() );
+
+    case Qt::ImAnchorPosition:
+        if ( d->control->selectionStart() == d->control->selectionEnd() )
+        {
             return QVariant( d->control->cursor() );
+        }
+        else if ( d->control->selectionStart() == d->control->cursor() )
+        {
+            return QVariant( d->control->selectionEnd() );
+        }
+        else
+        {
+            return QVariant( d->control->selectionStart() );
+        }
 
-        case Qt::ImSurroundingText:
-            return QVariant( d->control->text() );
-
-        case Qt::ImCurrentSelection:
-            return QVariant( selectedText() );
-
-        case Qt::ImMaximumTextLength:
-            return QVariant( maxLength() );
-
-        case Qt::ImAnchorPosition:
-            if ( d->control->selectionStart() == d->control->selectionEnd() )
-            {
-                return QVariant( d->control->cursor() );
-            }
-            else if ( d->control->selectionStart() == d->control->cursor() )
-            {
-                return QVariant( d->control->selectionEnd() );
-            }
-            else
-            {
-                return QVariant( d->control->selectionStart() );
-            }
-
-        default:
-            return QWidget::inputMethodQuery( property );
+    default:
+        return QWidget::inputMethodQuery( property );
     }
 }
 
@@ -1369,18 +1369,18 @@ void QLineEdit::paintEvent( QPaintEvent * )
 
     switch ( va & Qt::AlignVertical_Mask )
     {
-        case Qt::AlignBottom:
-            d->vscroll = r.y() + r.height() - fm.height() - d->verticalMargin;
-            break;
+    case Qt::AlignBottom:
+        d->vscroll = r.y() + r.height() - fm.height() - d->verticalMargin;
+        break;
 
-        case Qt::AlignTop:
-            d->vscroll = r.y() + d->verticalMargin;
-            break;
+    case Qt::AlignTop:
+        d->vscroll = r.y() + d->verticalMargin;
+        break;
 
-        default:
-            //center
-            d->vscroll = r.y() + ( r.height() - fm.height() + 1 ) / 2;
-            break;
+    default:
+        //center
+        d->vscroll = r.y() + ( r.height() - fm.height() + 1 ) / 2;
+        break;
     }
 
     QRect lineRect( r.x() + d->horizontalMargin, d->vscroll, r.width() - 2 * d->horizontalMargin, fm.height() );
@@ -1416,18 +1416,18 @@ void QLineEdit::paintEvent( QPaintEvent * )
         // text fits in lineRect; use hscroll for alignment
         switch ( va & ~( Qt::AlignAbsolute | Qt::AlignVertical_Mask ) )
         {
-            case Qt::AlignRight:
-                d->hscroll = widthUsed - lineRect.width() + 1;
-                break;
+        case Qt::AlignRight:
+            d->hscroll = widthUsed - lineRect.width() + 1;
+            break;
 
-            case Qt::AlignHCenter:
-                d->hscroll = ( widthUsed - lineRect.width() ) / 2;
-                break;
+        case Qt::AlignHCenter:
+            d->hscroll = ( widthUsed - lineRect.width() ) / 2;
+            break;
 
-            default:
-                // Left
-                d->hscroll = 0;
-                break;
+        default:
+            // Left
+            d->hscroll = 0;
+            break;
         }
 
     }
@@ -1693,45 +1693,45 @@ void QLineEdit::changeEvent( QEvent *ev )
 
     switch ( ev->type() )
     {
-        case QEvent::ActivationChange:
-            if ( !palette().isEqual( QPalette::Active, QPalette::Inactive ) )
-            {
-                update();
-            }
-
-            break;
-
-        case QEvent::FontChange:
-            d->control->setFont( font() );
-            break;
-
-        case QEvent::StyleChange:
+    case QEvent::ActivationChange:
+        if ( !palette().isEqual( QPalette::Active, QPalette::Inactive ) )
         {
-            QStyleOptionFrame opt;
-            initStyleOption( &opt );
-            d->control->setPasswordCharacter( style()->styleHint( QStyle::SH_LineEdit_PasswordCharacter, &opt, this ) );
-            d->control->setPasswordMaskDelay( style()->styleHint( QStyle::SH_LineEdit_PasswordMaskDelay, &opt, this ) );
+            update();
         }
 
-        update();
         break;
 
-        case QEvent::LayoutDirectionChange:
-            for ( const QLineEditPrivate::SideWidgetEntry &e : d->trailingSideWidgets )
+    case QEvent::FontChange:
+        d->control->setFont( font() );
+        break;
+
+    case QEvent::StyleChange:
+    {
+        QStyleOptionFrame opt;
+        initStyleOption( &opt );
+        d->control->setPasswordCharacter( style()->styleHint( QStyle::SH_LineEdit_PasswordCharacter, &opt, this ) );
+        d->control->setPasswordMaskDelay( style()->styleHint( QStyle::SH_LineEdit_PasswordMaskDelay, &opt, this ) );
+    }
+
+    update();
+    break;
+
+    case QEvent::LayoutDirectionChange:
+        for ( const QLineEditPrivate::SideWidgetEntry &e : d->trailingSideWidgets )
+        {
+            // Refresh icon to show arrow in right direction.
+
+            if ( e.flags & QLineEditPrivate::SideWidgetClearButton )
             {
-                // Refresh icon to show arrow in right direction.
-
-                if ( e.flags & QLineEditPrivate::SideWidgetClearButton )
-                {
-                    static_cast<QLineEditIconButton *>( e.widget )->setIcon( d->clearButtonIcon() );
-                }
+                static_cast<QLineEditIconButton *>( e.widget )->setIcon( d->clearButtonIcon() );
             }
+        }
 
-            d->positionSideWidgets();
-            break;
+        d->positionSideWidgets();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     QWidget::changeEvent( ev );

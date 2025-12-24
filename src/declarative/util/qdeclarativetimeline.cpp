@@ -203,95 +203,95 @@ qreal QDeclarativeTimeLinePrivate::value( const Op &op, int time, qreal base, bo
 
     switch ( op.type )
     {
-        case Op::Pause:
-            *changed = false;
+    case Op::Pause:
+        *changed = false;
+        return base;
+
+    case Op::Set:
+        return op.value;
+
+    case Op::Move:
+        if ( time == 0 )
+        {
             return base;
-
-        case Op::Set:
+        }
+        else if ( time == ( op.length ) )
+        {
             return op.value;
+        }
+        else
+        {
+            qreal delta = op.value - base;
+            qreal pTime = ( qreal )( time ) / ( qreal )op.length;
 
-        case Op::Move:
-            if ( time == 0 )
+            if ( op.easing.type() == QEasingCurve::Linear )
             {
-                return base;
-            }
-            else if ( time == ( op.length ) )
-            {
-                return op.value;
+                return base + delta * pTime;
             }
             else
             {
-                qreal delta = op.value - base;
-                qreal pTime = ( qreal )( time ) / ( qreal )op.length;
-
-                if ( op.easing.type() == QEasingCurve::Linear )
-                {
-                    return base + delta * pTime;
-                }
-                else
-                {
-                    return base + delta * op.easing.valueForProgress( pTime );
-                }
+                return base + delta * op.easing.valueForProgress( pTime );
             }
+        }
 
-        case Op::MoveBy:
-            if ( time == 0 )
+    case Op::MoveBy:
+        if ( time == 0 )
+        {
+            return base;
+        }
+        else if ( time == ( op.length ) )
+        {
+            return base + op.value;
+        }
+        else
+        {
+            qreal delta = op.value;
+            qreal pTime = ( qreal )( time ) / ( qreal )op.length;
+
+            if ( op.easing.type() == QEasingCurve::Linear )
             {
-                return base;
-            }
-            else if ( time == ( op.length ) )
-            {
-                return base + op.value;
+                return base + delta * pTime;
             }
             else
             {
-                qreal delta = op.value;
-                qreal pTime = ( qreal )( time ) / ( qreal )op.length;
+                return base + delta * op.easing.valueForProgress( pTime );
+            }
+        }
 
-                if ( op.easing.type() == QEasingCurve::Linear )
-                {
-                    return base + delta * pTime;
-                }
-                else
-                {
-                    return base + delta * op.easing.valueForProgress( pTime );
-                }
-            }
+    case Op::Accel:
+        if ( time == 0 )
+        {
+            return base;
+        }
+        else
+        {
+            qreal t = ( qreal )( time ) / 1000.0f;
+            qreal delta = op.value * t + 0.5f * op.value2 * t * t;
+            return base + delta;
+        }
 
-        case Op::Accel:
-            if ( time == 0 )
-            {
-                return base;
-            }
-            else
-            {
-                qreal t = ( qreal )( time ) / 1000.0f;
-                qreal delta = op.value * t + 0.5f * op.value2 * t * t;
-                return base + delta;
-            }
+    case Op::AccelDistance:
+        if ( time == 0 )
+        {
+            return base;
+        }
+        else if ( time == ( op.length ) )
+        {
+            return base + op.value2;
+        }
+        else
+        {
+            qreal t = ( qreal )( time ) / 1000.0f;
+            qreal accel = -1.0f * 1000.0f * op.value / ( qreal )op.length;
+            qreal delta = op.value * t + 0.5f * accel * t * t;
+            return base + delta;
 
-        case Op::AccelDistance:
-            if ( time == 0 )
-            {
-                return base;
-            }
-            else if ( time == ( op.length ) )
-            {
-                return base + op.value2;
-            }
-            else
-            {
-                qreal t = ( qreal )( time ) / 1000.0f;
-                qreal accel = -1.0f * 1000.0f * op.value / ( qreal )op.length;
-                qreal delta = op.value * t + 0.5f * accel * t * t;
-                return base + delta;
+        }
 
-            }
-
-        case Op::Execute:
-            op.event.d0( op.event.d1 );
-            *changed = false;
-            return -1;
+    case Op::Execute:
+        op.event.d0( op.event.d1 );
+        *changed = false;
+        return -1;
     }
 
     return base;

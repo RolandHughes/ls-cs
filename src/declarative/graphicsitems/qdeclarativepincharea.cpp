@@ -264,41 +264,41 @@ bool QDeclarativePinchArea::event( QEvent *event )
 
     switch ( event->type() )
     {
-        case QEvent::TouchBegin:
-            d->touchEventsActive = true;
+    case QEvent::TouchBegin:
+        d->touchEventsActive = true;
 
-        // No break, continue to next case.
-        case QEvent::TouchUpdate:
-            if ( d->touchEventsActive )
+    // No break, continue to next case.
+    case QEvent::TouchUpdate:
+        if ( d->touchEventsActive )
+        {
+            QTouchEvent *touch = static_cast<QTouchEvent *>( event );
+            d->touchPoints.clear();
+
+            for ( int i = 0; i < touch->touchPoints().count(); ++i )
             {
-                QTouchEvent *touch = static_cast<QTouchEvent *>( event );
-                d->touchPoints.clear();
-
-                for ( int i = 0; i < touch->touchPoints().count(); ++i )
+                if ( !( touch->touchPoints().at( i ).state() & Qt::TouchPointReleased ) )
                 {
-                    if ( !( touch->touchPoints().at( i ).state() & Qt::TouchPointReleased ) )
-                    {
-                        d->touchPoints << touch->touchPoints().at( i );
-                    }
+                    d->touchPoints << touch->touchPoints().at( i );
                 }
-
-                updatePinch();
-                return true;
             }
 
-            break;
-
-        case QEvent::WindowDeactivate:
-
-        // No break, continue to next case.
-        case QEvent::TouchEnd:
-            d->touchEventsActive = false;
-            d->touchPoints.clear();
             updatePinch();
-            break;
+            return true;
+        }
 
-        default:
-            return QDeclarativeItem::event( event );
+        break;
+
+    case QEvent::WindowDeactivate:
+
+    // No break, continue to next case.
+    case QEvent::TouchEnd:
+        d->touchEventsActive = false;
+        d->touchPoints.clear();
+        updatePinch();
+        break;
+
+    default:
+        return QDeclarativeItem::event( event );
     }
 
     return QDeclarativeItem::event( event );
@@ -616,20 +616,20 @@ bool QDeclarativePinchArea::sendMouseEvent( QGraphicsSceneMouseEvent *event )
 
         switch ( mouseEvent.type() )
         {
-            case QEvent::GraphicsSceneMouseMove:
-                mouseMoveEvent( &mouseEvent );
-                break;
+        case QEvent::GraphicsSceneMouseMove:
+            mouseMoveEvent( &mouseEvent );
+            break;
 
-            case QEvent::GraphicsSceneMousePress:
-                mousePressEvent( &mouseEvent );
-                break;
+        case QEvent::GraphicsSceneMousePress:
+            mousePressEvent( &mouseEvent );
+            break;
 
-            case QEvent::GraphicsSceneMouseRelease:
-                mouseReleaseEvent( &mouseEvent );
-                break;
+        case QEvent::GraphicsSceneMouseRelease:
+            mouseReleaseEvent( &mouseEvent );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         grabber = qobject_cast<QDeclarativeItem *>( s->mouseGrabberItem() );
@@ -668,36 +668,36 @@ bool QDeclarativePinchArea::sceneEventFilter( QGraphicsItem *i, QEvent *e )
 
     switch ( e->type() )
     {
-        case QEvent::GraphicsSceneMousePress:
-        case QEvent::GraphicsSceneMouseMove:
-        case QEvent::GraphicsSceneMouseRelease:
-            return sendMouseEvent( static_cast<QGraphicsSceneMouseEvent *>( e ) );
-            break;
+    case QEvent::GraphicsSceneMousePress:
+    case QEvent::GraphicsSceneMouseMove:
+    case QEvent::GraphicsSceneMouseRelease:
+        return sendMouseEvent( static_cast<QGraphicsSceneMouseEvent *>( e ) );
+        break;
 
-        case QEvent::TouchBegin:
-        case QEvent::TouchUpdate:
-        {
-            QTouchEvent *touch = static_cast<QTouchEvent *>( e );
-            d->touchPoints.clear();
+    case QEvent::TouchBegin:
+    case QEvent::TouchUpdate:
+    {
+        QTouchEvent *touch = static_cast<QTouchEvent *>( e );
+        d->touchPoints.clear();
 
-            for ( int i = 0; i < touch->touchPoints().count(); ++i )
-                if ( !( touch->touchPoints().at( i ).state() & Qt::TouchPointReleased ) )
-                {
-                    d->touchPoints << touch->touchPoints().at( i );
-                }
+        for ( int i = 0; i < touch->touchPoints().count(); ++i )
+            if ( !( touch->touchPoints().at( i ).state() & Qt::TouchPointReleased ) )
+            {
+                d->touchPoints << touch->touchPoints().at( i );
+            }
 
-            updatePinch();
-        }
+        updatePinch();
+    }
 
-        return d->inPinch;
+    return d->inPinch;
 
-        case QEvent::TouchEnd:
-            d->touchPoints.clear();
-            updatePinch();
-            break;
+    case QEvent::TouchEnd:
+        d->touchPoints.clear();
+        updatePinch();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QDeclarativeItem::sceneEventFilter( i, e );

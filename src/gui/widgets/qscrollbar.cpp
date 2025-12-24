@@ -131,32 +131,32 @@ void QScrollBarPrivate::activateControl( uint control, int threshold )
 
     switch ( control )
     {
-        case QStyle::SC_ScrollBarAddPage:
-            action = QAbstractSlider::SliderPageStepAdd;
-            break;
+    case QStyle::SC_ScrollBarAddPage:
+        action = QAbstractSlider::SliderPageStepAdd;
+        break;
 
-        case QStyle::SC_ScrollBarSubPage:
-            action = QAbstractSlider::SliderPageStepSub;
-            break;
+    case QStyle::SC_ScrollBarSubPage:
+        action = QAbstractSlider::SliderPageStepSub;
+        break;
 
-        case QStyle::SC_ScrollBarAddLine:
-            action = QAbstractSlider::SliderSingleStepAdd;
-            break;
+    case QStyle::SC_ScrollBarAddLine:
+        action = QAbstractSlider::SliderSingleStepAdd;
+        break;
 
-        case QStyle::SC_ScrollBarSubLine:
-            action = QAbstractSlider::SliderSingleStepSub;
-            break;
+    case QStyle::SC_ScrollBarSubLine:
+        action = QAbstractSlider::SliderSingleStepSub;
+        break;
 
-        case QStyle::SC_ScrollBarFirst:
-            action = QAbstractSlider::SliderToMinimum;
-            break;
+    case QStyle::SC_ScrollBarFirst:
+        action = QAbstractSlider::SliderToMinimum;
+        break;
 
-        case QStyle::SC_ScrollBarLast:
-            action = QAbstractSlider::SliderToMaximum;
-            break;
+    case QStyle::SC_ScrollBarLast:
+        action = QAbstractSlider::SliderToMaximum;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( action )
@@ -366,37 +366,37 @@ bool QScrollBar::event( QEvent *event )
 
     switch ( event->type() )
     {
-        case QEvent::HoverEnter:
-        case QEvent::HoverLeave:
-        case QEvent::HoverMove:
-            if ( const QHoverEvent *he = static_cast<const QHoverEvent *>( event ) )
+    case QEvent::HoverEnter:
+    case QEvent::HoverLeave:
+    case QEvent::HoverMove:
+        if ( const QHoverEvent *he = static_cast<const QHoverEvent *>( event ) )
+        {
+            d_func()->updateHoverControl( he->pos() );
+        }
+
+        break;
+
+    case QEvent::StyleChange:
+        d_func()->setTransient( style()->styleHint( QStyle::SH_ScrollBar_Transient, nullptr, this ) );
+        break;
+
+    case QEvent::Timer:
+        if ( static_cast<QTimerEvent *>( event )->timerId() == d->flashTimer )
+        {
+            if ( d->flashed && style()->styleHint( QStyle::SH_ScrollBar_Transient, nullptr, this ) )
             {
-                d_func()->updateHoverControl( he->pos() );
+                d->flashed = false;
+                update();
             }
 
-            break;
+            killTimer( d->flashTimer );
+            d->flashTimer = 0;
+        }
 
-        case QEvent::StyleChange:
-            d_func()->setTransient( style()->styleHint( QStyle::SH_ScrollBar_Transient, nullptr, this ) );
-            break;
+        break;
 
-        case QEvent::Timer:
-            if ( static_cast<QTimerEvent *>( event )->timerId() == d->flashTimer )
-            {
-                if ( d->flashed && style()->styleHint( QStyle::SH_ScrollBar_Transient, nullptr, this ) )
-                {
-                    d->flashed = false;
-                    update();
-                }
-
-                killTimer( d->flashTimer );
-                d->flashTimer = 0;
-            }
-
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     return QAbstractSlider::event( event );

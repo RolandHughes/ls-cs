@@ -178,8 +178,8 @@ QVector4D::operator QVariant() const
 QDebug operator<<( QDebug dbg, const QVector4D &vector )
 {
     dbg.nospace() << "QVector4D("
-                  << vector.x() << ", " << vector.y() << ", "
-                  << vector.z() << ", " << vector.w() << ')';
+       << vector.x() << ", " << vector.y() << ", "
+       << vector.z() << ", " << vector.w() << ')';
     return dbg.space();
 }
 

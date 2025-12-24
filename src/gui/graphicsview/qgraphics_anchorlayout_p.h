@@ -239,33 +239,33 @@ inline QString AnchorVertex::toString() const
 
     switch ( m_edge )
     {
-        case Qt::AnchorLeft:
-            edge = QLatin1String( "Left" );
-            break;
+    case Qt::AnchorLeft:
+        edge = QLatin1String( "Left" );
+        break;
 
-        case Qt::AnchorHorizontalCenter:
-            edge = QLatin1String( "HorizontalCenter" );
-            break;
+    case Qt::AnchorHorizontalCenter:
+        edge = QLatin1String( "HorizontalCenter" );
+        break;
 
-        case Qt::AnchorRight:
-            edge = QLatin1String( "Right" );
-            break;
+    case Qt::AnchorRight:
+        edge = QLatin1String( "Right" );
+        break;
 
-        case Qt::AnchorTop:
-            edge = QLatin1String( "Top" );
-            break;
+    case Qt::AnchorTop:
+        edge = QLatin1String( "Top" );
+        break;
 
-        case Qt::AnchorVerticalCenter:
-            edge = QLatin1String( "VerticalCenter" );
-            break;
+    case Qt::AnchorVerticalCenter:
+        edge = QLatin1String( "VerticalCenter" );
+        break;
 
-        case Qt::AnchorBottom:
-            edge = QLatin1String( "Bottom" );
-            break;
+    case Qt::AnchorBottom:
+        edge = QLatin1String( "Bottom" );
+        break;
 
-        default:
-            edge = QLatin1String( "None" );
-            break;
+    default:
+        edge = QLatin1String( "None" );
+        break;
     }
 
     QString itemName;

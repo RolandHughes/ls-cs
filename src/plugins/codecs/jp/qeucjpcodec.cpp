@@ -188,92 +188,40 @@ QString QEucJpCodec::convertToUnicode( const char *chars, int len, ConverterStat
 
         switch ( nbuf )
         {
-            case 0:
-                if ( ch < 0x80 )
-                {
-                    // ASCII
-                    result += QLatin1Char( ch );
-                }
-                else if ( ch == Ss2 || ch == Ss3 )
-                {
-                    // JIS X 0201 Kana or JIS X 0212
-                    buf[0] = ch;
-                    nbuf = 1;
-                }
-                else if ( IsEucChar( ch ) )
-                {
-                    // JIS X 0208
-                    buf[0] = ch;
-                    nbuf = 1;
-                }
-                else
-                {
-                    // Invalid
-                    result += replacement;
-                    ++invalid;
-                }
+        case 0:
+            if ( ch < 0x80 )
+            {
+                // ASCII
+                result += QLatin1Char( ch );
+            }
+            else if ( ch == Ss2 || ch == Ss3 )
+            {
+                // JIS X 0201 Kana or JIS X 0212
+                buf[0] = ch;
+                nbuf = 1;
+            }
+            else if ( IsEucChar( ch ) )
+            {
+                // JIS X 0208
+                buf[0] = ch;
+                nbuf = 1;
+            }
+            else
+            {
+                // Invalid
+                result += replacement;
+                ++invalid;
+            }
 
-                break;
+            break;
 
-            case 1:
-                if ( buf[0] == Ss2 )
+        case 1:
+            if ( buf[0] == Ss2 )
+            {
+                // JIS X 0201 Kana
+                if ( IsKana( ch ) )
                 {
-                    // JIS X 0201 Kana
-                    if ( IsKana( ch ) )
-                    {
-                        uint u = conv->jisx0201ToUnicode( ch );
-                        result += QValidChar( u );
-                    }
-                    else
-                    {
-                        result += replacement;
-                        ++invalid;
-                    }
-
-                    nbuf = 0;
-                }
-                else if ( buf[0] == Ss3 )
-                {
-                    // JIS X 0212-1990
-                    if ( IsEucChar( ch ) )
-                    {
-                        buf[1] = ch;
-                        nbuf = 2;
-                    }
-                    else
-                    {
-                        // Error
-                        result += replacement;
-                        ++invalid;
-                        nbuf = 0;
-                    }
-                }
-                else
-                {
-                    // JIS X 0208-1990
-                    if ( IsEucChar( ch ) )
-                    {
-                        uint u = conv->jisx0208ToUnicode( buf[0] & 0x7f, ch & 0x7f );
-                        result += QValidChar( u );
-                    }
-                    else
-                    {
-                        // Error
-                        result += replacement;
-                        ++invalid;
-                    }
-
-                    nbuf = 0;
-                }
-
-                break;
-
-            case 2:
-
-                // JIS X 0212
-                if ( IsEucChar( ch ) )
-                {
-                    uint u = conv->jisx0212ToUnicode( buf[1] & 0x7f, ch & 0x7f );
+                    uint u = conv->jisx0201ToUnicode( ch );
                     result += QValidChar( u );
                 }
                 else
@@ -283,6 +231,58 @@ QString QEucJpCodec::convertToUnicode( const char *chars, int len, ConverterStat
                 }
 
                 nbuf = 0;
+            }
+            else if ( buf[0] == Ss3 )
+            {
+                // JIS X 0212-1990
+                if ( IsEucChar( ch ) )
+                {
+                    buf[1] = ch;
+                    nbuf = 2;
+                }
+                else
+                {
+                    // Error
+                    result += replacement;
+                    ++invalid;
+                    nbuf = 0;
+                }
+            }
+            else
+            {
+                // JIS X 0208-1990
+                if ( IsEucChar( ch ) )
+                {
+                    uint u = conv->jisx0208ToUnicode( buf[0] & 0x7f, ch & 0x7f );
+                    result += QValidChar( u );
+                }
+                else
+                {
+                    // Error
+                    result += replacement;
+                    ++invalid;
+                }
+
+                nbuf = 0;
+            }
+
+            break;
+
+        case 2:
+
+            // JIS X 0212
+            if ( IsEucChar( ch ) )
+            {
+                uint u = conv->jisx0212ToUnicode( buf[1] & 0x7f, ch & 0x7f );
+                result += QValidChar( u );
+            }
+            else
+            {
+                result += replacement;
+                ++invalid;
+            }
+
+            nbuf = 0;
         }
     }
 

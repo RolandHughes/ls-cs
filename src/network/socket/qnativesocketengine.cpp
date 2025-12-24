@@ -105,122 +105,122 @@ void QNativeSocketEnginePrivate::setError( QAbstractSocket::SocketError error, E
 
     switch ( errorString )
     {
-        case NonBlockingInitFailedErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Unable to initialize non-blocking socket" );
-            break;
+    case NonBlockingInitFailedErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Unable to initialize non-blocking socket" );
+        break;
 
-        case BroadcastingInitFailedErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Unable to initialize broadcast socket" );
-            break;
+    case BroadcastingInitFailedErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Unable to initialize broadcast socket" );
+        break;
 
-        // should not happen anymore
-        case NoIpV6ErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Attempt to use IPv6 socket on a platform with no IPv6 support" );
-            break;
+    // should not happen anymore
+    case NoIpV6ErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Attempt to use IPv6 socket on a platform with no IPv6 support" );
+        break;
 
-        case RemoteHostClosedErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "The remote host closed the connection" );
-            break;
+    case RemoteHostClosedErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "The remote host closed the connection" );
+        break;
 
-        case TimeOutErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Network operation timed out" );
-            break;
+    case TimeOutErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Network operation timed out" );
+        break;
 
-        case ResourceErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Out of resources" );
-            break;
+    case ResourceErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Out of resources" );
+        break;
 
-        case OperationUnsupportedErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Unsupported socket operation" );
-            break;
+    case OperationUnsupportedErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Unsupported socket operation" );
+        break;
 
-        case ProtocolUnsupportedErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Protocol type not supported" );
-            break;
+    case ProtocolUnsupportedErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Protocol type not supported" );
+        break;
 
-        case InvalidSocketErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Invalid socket descriptor" );
-            break;
+    case InvalidSocketErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Invalid socket descriptor" );
+        break;
 
-        case HostUnreachableErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Host unreachable" );
-            break;
+    case HostUnreachableErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Host unreachable" );
+        break;
 
-        case NetworkUnreachableErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Network unreachable" );
-            break;
+    case NetworkUnreachableErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Network unreachable" );
+        break;
 
-        case AccessErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Permission denied" );
-            break;
+    case AccessErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Permission denied" );
+        break;
 
-        case ConnectionTimeOutErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Connection timed out" );
-            break;
+    case ConnectionTimeOutErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Connection timed out" );
+        break;
 
-        case ConnectionRefusedErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Connection refused" );
-            break;
+    case ConnectionRefusedErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Connection refused" );
+        break;
 
-        case AddressInuseErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "The bound address is already in use" );
-            break;
+    case AddressInuseErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "The bound address is already in use" );
+        break;
 
-        case AddressNotAvailableErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "The address is not available" );
-            break;
+    case AddressNotAvailableErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "The address is not available" );
+        break;
 
-        case AddressProtectedErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "The address is protected" );
-            break;
+    case AddressProtectedErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "The address is protected" );
+        break;
 
-        case DatagramTooLargeErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Datagram was too large to send" );
-            break;
+    case DatagramTooLargeErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Datagram was too large to send" );
+        break;
 
-        case SendDatagramErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Unable to send a message" );
-            break;
+    case SendDatagramErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Unable to send a message" );
+        break;
 
-        case ReceiveDatagramErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Unable to receive a message" );
-            break;
+    case ReceiveDatagramErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Unable to receive a message" );
+        break;
 
-        case WriteErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Unable to write" );
-            break;
+    case WriteErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Unable to write" );
+        break;
 
-        case ReadErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Network error" );
-            break;
+    case ReadErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Network error" );
+        break;
 
-        case PortInuseErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Another socket is already listening on the same port" );
-            break;
+    case PortInuseErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Another socket is already listening on the same port" );
+        break;
 
-        case NotSocketErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Operation on non-socket" );
-            break;
+    case NotSocketErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Operation on non-socket" );
+        break;
 
-        case InvalidProxyTypeString:
-            socketErrorString = QNativeSocketEngine::tr( "The proxy type is invalid for this operation" );
-            break;
+    case InvalidProxyTypeString:
+        socketErrorString = QNativeSocketEngine::tr( "The proxy type is invalid for this operation" );
+        break;
 
-        case TemporaryErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Temporary error" );
-            break;
+    case TemporaryErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Temporary error" );
+        break;
 
-        case NetworkDroppedConnectionErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Network dropped connection on reset" );
-            break;
+    case NetworkDroppedConnectionErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Network dropped connection on reset" );
+        break;
 
-        case ConnectionResetErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Connection reset by peer" );
-            break;
+    case ConnectionResetErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Connection reset by peer" );
+        break;
 
-        case UnknownSocketErrorString:
-            socketErrorString = QNativeSocketEngine::tr( "Unknown error" );
-            break;
+    case UnknownSocketErrorString:
+        socketErrorString = QNativeSocketEngine::tr( "Unknown error" );
+        break;
     }
 }
 

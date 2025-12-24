@@ -175,25 +175,25 @@ bool QSimplex::setConstraints( const QList<QSimplexConstraint *> &newConstraints
 
         switch ( constraints[i]->ratio )
         {
-            case QSimplexConstraint::LessOrEqual:
-                slack = new QSimplexVariable;
-                slack->index = ++variableIndex;
-                constraints[i]->helper.first = slack;
-                constraints[i]->helper.second = 1.0;
-                break;
+        case QSimplexConstraint::LessOrEqual:
+            slack = new QSimplexVariable;
+            slack->index = ++variableIndex;
+            constraints[i]->helper.first = slack;
+            constraints[i]->helper.second = 1.0;
+            break;
 
-            case QSimplexConstraint::MoreOrEqual:
-                surplus = new QSimplexVariable;
-                surplus->index = ++variableIndex;
-                constraints[i]->helper.first = surplus;
-                constraints[i]->helper.second = -1.0;
-                [[fallthrough]];
+        case QSimplexConstraint::MoreOrEqual:
+            surplus = new QSimplexVariable;
+            surplus->index = ++variableIndex;
+            constraints[i]->helper.first = surplus;
+            constraints[i]->helper.second = -1.0;
+            [[fallthrough]];
 
-            case QSimplexConstraint::Equal:
-                artificial = new QSimplexVariable;
-                constraints[i]->artificial = artificial;
-                artificialList += constraints[i]->artificial;
-                break;
+        case QSimplexConstraint::Equal:
+            artificial = new QSimplexVariable;
+            constraints[i]->artificial = artificial;
+            artificialList += constraints[i]->artificial;
+            break;
         }
     }
 

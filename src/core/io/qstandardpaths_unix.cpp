@@ -58,154 +58,154 @@ QString QStandardPaths::writableLocation( StandardLocation type )
 {
     switch ( type )
     {
-        case HomeLocation:
-            return QDir::homePath();
+    case HomeLocation:
+        return QDir::homePath();
 
-        case TempLocation:
-            return QDir::tempPath();
+    case TempLocation:
+        return QDir::tempPath();
 
-        case CacheLocation:
-        case GenericCacheLocation:
+    case CacheLocation:
+    case GenericCacheLocation:
+    {
+        // http://standards.freedesktop.org/basedir-spec/basedir-spec-0.6.html
+        QString xdgCacheHome = QFile::decodeName( qgetenv( "XDG_CACHE_HOME" ) );
+
+        if ( xdgCacheHome.isEmpty() )
         {
-            // http://standards.freedesktop.org/basedir-spec/basedir-spec-0.6.html
-            QString xdgCacheHome = QFile::decodeName( qgetenv( "XDG_CACHE_HOME" ) );
-
-            if ( xdgCacheHome.isEmpty() )
-            {
-                xdgCacheHome = QDir::homePath() + "/.cache";
-            }
-
-            if ( type == QStandardPaths::CacheLocation )
-            {
-                appendOrganizationAndApp( xdgCacheHome );
-            }
-
-            return xdgCacheHome;
+            xdgCacheHome = QDir::homePath() + "/.cache";
         }
 
-        case AppDataLocation:
-        case AppLocalDataLocation:
-        case GenericDataLocation:
+        if ( type == QStandardPaths::CacheLocation )
         {
-            QString xdgDataHome = QFile::decodeName( qgetenv( "XDG_DATA_HOME" ) );
-
-            if ( xdgDataHome.isEmpty() )
-            {
-                xdgDataHome = QDir::homePath() + "/.local/share";
-            }
-
-            if ( type == AppDataLocation || type == AppLocalDataLocation )
-            {
-                appendOrganizationAndApp( xdgDataHome );
-            }
-
-            return xdgDataHome;
+            appendOrganizationAndApp( xdgCacheHome );
         }
 
-        case AppConfigLocation:
-        case ConfigLocation:
-        case GenericConfigLocation:
+        return xdgCacheHome;
+    }
+
+    case AppDataLocation:
+    case AppLocalDataLocation:
+    case GenericDataLocation:
+    {
+        QString xdgDataHome = QFile::decodeName( qgetenv( "XDG_DATA_HOME" ) );
+
+        if ( xdgDataHome.isEmpty() )
         {
-            // http://standards.freedesktop.org/basedir-spec/latest/
-            QString xdgConfigHome = QFile::decodeName( qgetenv( "XDG_CONFIG_HOME" ) );
-
-            if ( xdgConfigHome.isEmpty() )
-            {
-                xdgConfigHome = QDir::homePath() + "/.config";
-            }
-
-            if ( type == AppConfigLocation )
-            {
-                appendOrganizationAndApp( xdgConfigHome );
-            }
-
-            return xdgConfigHome;
+            xdgDataHome = QDir::homePath() + "/.local/share";
         }
 
-        case RuntimeLocation:
+        if ( type == AppDataLocation || type == AppLocalDataLocation )
         {
-            const uid_t myUid = geteuid();
-            // http://standards.freedesktop.org/basedir-spec/latest/
+            appendOrganizationAndApp( xdgDataHome );
+        }
 
-            QFileInfo fileInfo;
+        return xdgDataHome;
+    }
 
-            QString xdgRuntimeDir = QFile::decodeName( qgetenv( "XDG_RUNTIME_DIR" ) );
+    case AppConfigLocation:
+    case ConfigLocation:
+    case GenericConfigLocation:
+    {
+        // http://standards.freedesktop.org/basedir-spec/latest/
+        QString xdgConfigHome = QFile::decodeName( qgetenv( "XDG_CONFIG_HOME" ) );
 
-            if ( xdgRuntimeDir.isEmpty() )
+        if ( xdgConfigHome.isEmpty() )
+        {
+            xdgConfigHome = QDir::homePath() + "/.config";
+        }
+
+        if ( type == AppConfigLocation )
+        {
+            appendOrganizationAndApp( xdgConfigHome );
+        }
+
+        return xdgConfigHome;
+    }
+
+    case RuntimeLocation:
+    {
+        const uid_t myUid = geteuid();
+        // http://standards.freedesktop.org/basedir-spec/latest/
+
+        QFileInfo fileInfo;
+
+        QString xdgRuntimeDir = QFile::decodeName( qgetenv( "XDG_RUNTIME_DIR" ) );
+
+        if ( xdgRuntimeDir.isEmpty() )
+        {
+            const QString userName = QFileSystemEngine::resolveUserName( myUid );
+            xdgRuntimeDir = QDir::tempPath() + "/runtime-" + userName;
+
+            fileInfo.setFile( xdgRuntimeDir );
+
+            if ( ! fileInfo.isDir() )
             {
-                const QString userName = QFileSystemEngine::resolveUserName( myUid );
-                xdgRuntimeDir = QDir::tempPath() + "/runtime-" + userName;
-
-                fileInfo.setFile( xdgRuntimeDir );
-
-                if ( ! fileInfo.isDir() )
+                if ( ! QDir().mkdir( xdgRuntimeDir ) )
                 {
-                    if ( ! QDir().mkdir( xdgRuntimeDir ) )
-                    {
-                        qWarning( "QStandardPaths::writableLocation() Error creating runtime directory %s: %s",
-                                  lscsPrintable( xdgRuntimeDir ), lscsPrintable( lscs_error_string( errno ) ) );
-                        return QString();
-                    }
-                }
-
-                qWarning( "QStandardPaths::writableLocation() XDG_RUNTIME_DIR not set, defaulting to %s",
-                          lscsPrintable( xdgRuntimeDir ) );
-
-            }
-            else
-            {
-                fileInfo.setFile( xdgRuntimeDir );
-
-                if ( ! fileInfo.exists() )
-                {
-                    qWarning( "QStandardPaths::writableLocation() XDG_RUNTIME_DIR points to an invalid path of %s, "
-                              "create using permissions of 0700", lscsPrintable( xdgRuntimeDir ) );
-
-                    return QString();
-                }
-
-                if ( ! fileInfo.isDir() )
-                {
-                    qWarning( "QStandardPaths::writableLocation() XDG_RUNTIME_DIR points to %s which is not a directory",
-                              lscsPrintable( xdgRuntimeDir ) );
-
+                    qWarning( "QStandardPaths::writableLocation() Error creating runtime directory %s: %s",
+                              lscsPrintable( xdgRuntimeDir ), lscsPrintable( lscs_error_string( errno ) ) );
                     return QString();
                 }
             }
 
-            // the directory MUST be owned by the user
+            qWarning( "QStandardPaths::writableLocation() XDG_RUNTIME_DIR not set, defaulting to %s",
+                      lscsPrintable( xdgRuntimeDir ) );
 
-            if ( fileInfo.ownerId() != myUid )
+        }
+        else
+        {
+            fileInfo.setFile( xdgRuntimeDir );
+
+            if ( ! fileInfo.exists() )
             {
-                qWarning( "QStandardPaths::writableLocation() Incorrect ownership on runtime directory %s, %d instead of %d",
-                          lscsPrintable( xdgRuntimeDir ), fileInfo.ownerId(), myUid );
+                qWarning( "QStandardPaths::writableLocation() XDG_RUNTIME_DIR points to an invalid path of %s, "
+                          "create using permissions of 0700", lscsPrintable( xdgRuntimeDir ) );
 
                 return QString();
             }
 
-            // Unix access mode MUST be 0700
-            const QFile::Permissions wantedPerms = QFile::ReadUser | QFile::WriteUser | QFile::ExeUser
-                                                   | QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner;
-
-            if ( fileInfo.permissions() != wantedPerms )
+            if ( ! fileInfo.isDir() )
             {
-                QFile file( xdgRuntimeDir );
+                qWarning( "QStandardPaths::writableLocation() XDG_RUNTIME_DIR points to %s which is not a directory",
+                          lscsPrintable( xdgRuntimeDir ) );
 
-                if ( ! file.setPermissions( wantedPerms ) )
-                {
-                    qWarning( "QStandardPaths::writableLocation() Unable to set permissions on runtime directory %s: %s",
-                              lscsPrintable( xdgRuntimeDir ), lscsPrintable( file.errorString() ) );
-
-                    return QString();
-                }
+                return QString();
             }
-
-            return xdgRuntimeDir;
-
         }
 
-        default:
-            break;
+        // the directory MUST be owned by the user
+
+        if ( fileInfo.ownerId() != myUid )
+        {
+            qWarning( "QStandardPaths::writableLocation() Incorrect ownership on runtime directory %s, %d instead of %d",
+                      lscsPrintable( xdgRuntimeDir ), fileInfo.ownerId(), myUid );
+
+            return QString();
+        }
+
+        // Unix access mode MUST be 0700
+        const QFile::Permissions wantedPerms = QFile::ReadUser | QFile::WriteUser | QFile::ExeUser
+                                               | QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner;
+
+        if ( fileInfo.permissions() != wantedPerms )
+        {
+            QFile file( xdgRuntimeDir );
+
+            if ( ! file.setPermissions( wantedPerms ) )
+            {
+                qWarning( "QStandardPaths::writableLocation() Unable to set permissions on runtime directory %s: %s",
+                          lscsPrintable( xdgRuntimeDir ), lscsPrintable( file.errorString() ) );
+
+                return QString();
+            }
+        }
+
+        return xdgRuntimeDir;
+
+    }
+
+    default:
+        break;
     }
 
     // http://www.freedesktop.org/wiki/Software/xdg-user-dirs
@@ -251,32 +251,32 @@ QString QStandardPaths::writableLocation( StandardLocation type )
 
         switch ( type )
         {
-            case DesktopLocation:
-                key = "DESKTOP";
-                break;
+        case DesktopLocation:
+            key = "DESKTOP";
+            break;
 
-            case DocumentsLocation:
-                key = "DOCUMENTS";
-                break;
+        case DocumentsLocation:
+            key = "DOCUMENTS";
+            break;
 
-            case PicturesLocation:
-                key = "PICTURES";
-                break;
+        case PicturesLocation:
+            key = "PICTURES";
+            break;
 
-            case MusicLocation:
-                key = "MUSIC";
-                break;
+        case MusicLocation:
+            key = "MUSIC";
+            break;
 
-            case MoviesLocation:
-                key = "VIDEOS";
-                break;
+        case MoviesLocation:
+            key = "VIDEOS";
+            break;
 
-            case DownloadLocation:
-                key = "DOWNLOAD";
-                break;
+        case DownloadLocation:
+            key = "DOWNLOAD";
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         if ( ! key.isEmpty() )
@@ -306,40 +306,40 @@ QString QStandardPaths::writableLocation( StandardLocation type )
 
     switch ( type )
     {
-        case DesktopLocation:
-            path = QDir::homePath() + "/Desktop";
-            break;
+    case DesktopLocation:
+        path = QDir::homePath() + "/Desktop";
+        break;
 
-        case DocumentsLocation:
-            path = QDir::homePath() + "/Documents";
-            break;
+    case DocumentsLocation:
+        path = QDir::homePath() + "/Documents";
+        break;
 
-        case PicturesLocation:
-            path = QDir::homePath() + "/Pictures";
-            break;
+    case PicturesLocation:
+        path = QDir::homePath() + "/Pictures";
+        break;
 
-        case FontsLocation:
-            path = QDir::homePath() + "/.fonts";
-            break;
+    case FontsLocation:
+        path = QDir::homePath() + "/.fonts";
+        break;
 
-        case MusicLocation:
-            path = QDir::homePath() + "/Music";
-            break;
+    case MusicLocation:
+        path = QDir::homePath() + "/Music";
+        break;
 
-        case MoviesLocation:
-            path = QDir::homePath() + "/Videos";
-            break;
+    case MoviesLocation:
+        path = QDir::homePath() + "/Videos";
+        break;
 
-        case DownloadLocation:
-            path = QDir::homePath() + "/Downloads";
-            break;
+    case DownloadLocation:
+        path = QDir::homePath() + "/Downloads";
+        break;
 
-        case ApplicationsLocation:
-            path = writableLocation( GenericDataLocation ) + "/applications";
-            break;
+    case ApplicationsLocation:
+        path = writableLocation( GenericDataLocation ) + "/applications";
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return path;
@@ -410,48 +410,48 @@ QStringList QStandardPaths::standardLocations( StandardLocation type )
 
     switch ( type )
     {
-        case ConfigLocation:
-        case GenericConfigLocation:
-            dirs = xdgConfigDirs();
-            break;
+    case ConfigLocation:
+    case GenericConfigLocation:
+        dirs = xdgConfigDirs();
+        break;
 
-        case AppConfigLocation:
-            dirs = xdgConfigDirs();
+    case AppConfigLocation:
+        dirs = xdgConfigDirs();
 
-            for ( int i = 0; i < dirs.count(); ++i )
-            {
-                appendOrganizationAndApp( dirs[i] );
-            }
+        for ( int i = 0; i < dirs.count(); ++i )
+        {
+            appendOrganizationAndApp( dirs[i] );
+        }
 
-            break;
+        break;
 
-        case GenericDataLocation:
-            dirs = xdgDataDirs();
-            break;
+    case GenericDataLocation:
+        dirs = xdgDataDirs();
+        break;
 
-        case ApplicationsLocation:
-            dirs = xdgDataDirs();
+    case ApplicationsLocation:
+        dirs = xdgDataDirs();
 
-            for ( int i = 0; i < dirs.count(); ++i )
-            {
-                dirs[i].append( "/applications" );
-            }
+        for ( int i = 0; i < dirs.count(); ++i )
+        {
+            dirs[i].append( "/applications" );
+        }
 
-            break;
+        break;
 
-        case AppDataLocation:
-        case AppLocalDataLocation:
-            dirs = xdgDataDirs();
+    case AppDataLocation:
+    case AppLocalDataLocation:
+        dirs = xdgDataDirs();
 
-            for ( int i = 0; i < dirs.count(); ++i )
-            {
-                appendOrganizationAndApp( dirs[i] );
-            }
+        for ( int i = 0; i < dirs.count(); ++i )
+        {
+            appendOrganizationAndApp( dirs[i] );
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     const QString localDir = writableLocation( type );

@@ -69,7 +69,7 @@ private :
     DECL_LSCS_SLOT_1( Private, void componentFinalized() )
     DECL_LSCS_SLOT_2( componentFinalized )
     DECL_LSCS_SLOT_1( Private, void qtAnimationStateChanged( QAbstractAnimation::State un_named_arg1,
-                    QAbstractAnimation::State un_named_arg2 ) )
+                      QAbstractAnimation::State un_named_arg2 ) )
     DECL_LSCS_SLOT_2( qtAnimationStateChanged )
 };
 

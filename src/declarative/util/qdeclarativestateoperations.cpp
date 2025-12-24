@@ -1557,10 +1557,10 @@ void QDeclarativeAnchorChanges::reverse( Reason reason )
     //restore any absolute geometry changed by the state's anchors
     QDeclarativeAnchors::Anchors stateVAnchors = d->anchorSet->d_func()->usedAnchors & QDeclarativeAnchors::Vertical_Mask;
     QDeclarativeAnchors::Anchors origVAnchors = targetPrivate->anchors()->usedAnchors() &
-            QDeclarativeAnchors::Vertical_Mask;
+        QDeclarativeAnchors::Vertical_Mask;
     QDeclarativeAnchors::Anchors stateHAnchors = d->anchorSet->d_func()->usedAnchors & QDeclarativeAnchors::Horizontal_Mask;
     QDeclarativeAnchors::Anchors origHAnchors = targetPrivate->anchors()->usedAnchors() &
-            QDeclarativeAnchors::Horizontal_Mask;
+        QDeclarativeAnchors::Horizontal_Mask;
 
     bool stateSetWidth = ( stateHAnchors &&
                            stateHAnchors != QDeclarativeAnchors::LeftAnchor &&

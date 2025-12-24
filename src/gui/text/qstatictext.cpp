@@ -377,42 +377,42 @@ public:
 
         switch ( m )
         {
-            case PdmWidth:
-            case PdmHeight:
-            case PdmWidthMM:
-            case PdmHeightMM:
-                val = 0;
-                break;
+        case PdmWidth:
+        case PdmHeight:
+        case PdmWidthMM:
+        case PdmHeightMM:
+            val = 0;
+            break;
 
-            case PdmDpiX:
-            case PdmPhysicalDpiX:
-                val = lscs_defaultDpiX();
-                break;
+        case PdmDpiX:
+        case PdmPhysicalDpiX:
+            val = lscs_defaultDpiX();
+            break;
 
-            case PdmDpiY:
-            case PdmPhysicalDpiY:
-                val = lscs_defaultDpiY();
-                break;
+        case PdmDpiY:
+        case PdmPhysicalDpiY:
+            val = lscs_defaultDpiY();
+            break;
 
-            case PdmNumColors:
-                val = 16777216;
-                break;
+        case PdmNumColors:
+            val = 16777216;
+            break;
 
-            case PdmDepth:
-                val = 24;
-                break;
+        case PdmDepth:
+            val = 24;
+            break;
 
-            case PdmDevicePixelRatio:
-                val = 1;
-                break;
+        case PdmDevicePixelRatio:
+            val = 1;
+            break;
 
-            case PdmDevicePixelRatioScaled:
-                val = devicePixelRatioFScale();
-                break;
+        case PdmDevicePixelRatioScaled:
+            val = devicePixelRatioFScale();
+            break;
 
-            default:
-                val = 0;
-                qWarning( "DrawTextItemDevice::metric() Invalid metric command" );
+        default:
+            val = 0;
+            qWarning( "DrawTextItemDevice::metric() Invalid metric command" );
         }
 
         return val;

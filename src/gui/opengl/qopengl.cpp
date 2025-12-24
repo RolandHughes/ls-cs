@@ -263,23 +263,23 @@ bool VersionTerm::matches( const QVersionNumber &other ) const
 
     switch ( op )
     {
-        case NotEqual:
-            return other != number;
+    case NotEqual:
+        return other != number;
 
-        case LessThan:
-            return other < number;
+    case LessThan:
+        return other < number;
 
-        case LessEqualThan:
-            return other <= number;
+    case LessEqualThan:
+        return other <= number;
 
-        case Equals:
-            return other == number;
+    case Equals:
+        return other == number;
 
-        case GreaterThan:
-            return other > number;
+    case GreaterThan:
+        return other > number;
 
-        case GreaterEqualThan:
-            return other >= number;
+    case GreaterEqualThan:
+        return other >= number;
     }
 
     return false;
@@ -325,33 +325,33 @@ struct OsTypeTerm
 
         switch ( QSysInfo::windowsVersion() )
         {
-            case QSysInfo::WV_XP:
-            case QSysInfo::WV_2003:
-                ver = "xp";
-                break;
+        case QSysInfo::WV_XP:
+        case QSysInfo::WV_2003:
+            ver = "xp";
+            break;
 
-            case QSysInfo::WV_VISTA:
-                ver = "vista";
-                break;
+        case QSysInfo::WV_VISTA:
+            ver = "vista";
+            break;
 
-            case QSysInfo::WV_WINDOWS7:
-                ver = "7";
-                break;
+        case QSysInfo::WV_WINDOWS7:
+            ver = "7";
+            break;
 
-            case QSysInfo::WV_WINDOWS8:
-                ver = "8";
-                break;
+        case QSysInfo::WV_WINDOWS8:
+            ver = "8";
+            break;
 
-            case QSysInfo::WV_WINDOWS8_1:
-                ver = "8.1";
-                break;
+        case QSysInfo::WV_WINDOWS8_1:
+            ver = "8.1";
+            break;
 
-            case QSysInfo::WV_WINDOWS10:
-                ver = "10";
-                break;
+        case QSysInfo::WV_WINDOWS10:
+            ver = "10";
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
 #endif
@@ -498,22 +498,22 @@ static bool matches( const QJsonObject &object,
 
         switch ( deviceIdV.type() )
         {
-            case QJsonValue::Array:
-                if ( !contains( deviceIdV.toArray(), gpu.deviceId ) )
-                {
-                    return false;
-                }
+        case QJsonValue::Array:
+            if ( !contains( deviceIdV.toArray(), gpu.deviceId ) )
+            {
+                return false;
+            }
 
-                break;
+            break;
 
-            case QJsonValue::Undefined:
-            case QJsonValue::Null:
-                break;
+        case QJsonValue::Undefined:
+        case QJsonValue::Null:
+            break;
 
-            default:
-                qWarning().noquote()
-                        << msgSyntaxWarning( object,
-                                             QLatin1String( "Device ID must be of type array." ) );
+        default:
+            qWarning().noquote()
+                    << msgSyntaxWarning( object,
+                                         QLatin1String( "Device ID must be of type array." ) );
         }
     }
 
@@ -523,22 +523,22 @@ static bool matches( const QJsonObject &object,
 
         switch ( driverVersionV.type() )
         {
-            case QJsonValue::Object:
-                if ( !VersionTerm::fromJson( driverVersionV ).matches( gpu.driverVersion ) )
-                {
-                    return false;
-                }
+        case QJsonValue::Object:
+            if ( !VersionTerm::fromJson( driverVersionV ).matches( gpu.driverVersion ) )
+            {
+                return false;
+            }
 
-                break;
+            break;
 
-            case QJsonValue::Undefined:
-            case QJsonValue::Null:
-                break;
+        case QJsonValue::Undefined:
+        case QJsonValue::Null:
+            break;
 
-            default:
-                qWarning().noquote()
-                        << msgSyntaxWarning( object,
-                                             QLatin1String( "Driver version must be of type object." ) );
+        default:
+            qWarning().noquote()
+                    << msgSyntaxWarning( object,
+                                         QLatin1String( "Driver version must be of type object." ) );
         }
     }
 

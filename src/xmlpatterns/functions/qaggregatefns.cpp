@@ -150,9 +150,9 @@ Item AvgFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
         }
 
         sum = ArithmeticExpression::flexiblyCalculate( sum, AtomicMathematician::Add,
-                next, m_adder, context,
-                this,
-                ReportContext::FORG0006 );
+              next, m_adder, context,
+              this,
+              ReportContext::FORG0006 );
     };
 
     if ( !sum )
@@ -253,7 +253,7 @@ Item SumFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
         }
 
         sum = ArithmeticExpression::flexiblyCalculate( sum, AtomicMathematician::Add, next, m_mather, context, this,
-                ReportContext::FORG0006 );
+              ReportContext::FORG0006 );
     };
 
     if ( ! sum )

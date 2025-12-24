@@ -481,38 +481,38 @@ void QThread::start( Priority priority )
 
     switch ( d->priority )
     {
-        case IdlePriority:
-            prio = THREAD_PRIORITY_IDLE;
-            break;
+    case IdlePriority:
+        prio = THREAD_PRIORITY_IDLE;
+        break;
 
-        case LowestPriority:
-            prio = THREAD_PRIORITY_LOWEST;
-            break;
+    case LowestPriority:
+        prio = THREAD_PRIORITY_LOWEST;
+        break;
 
-        case LowPriority:
-            prio = THREAD_PRIORITY_BELOW_NORMAL;
-            break;
+    case LowPriority:
+        prio = THREAD_PRIORITY_BELOW_NORMAL;
+        break;
 
-        case NormalPriority:
-            prio = THREAD_PRIORITY_NORMAL;
-            break;
+    case NormalPriority:
+        prio = THREAD_PRIORITY_NORMAL;
+        break;
 
-        case HighPriority:
-            prio = THREAD_PRIORITY_ABOVE_NORMAL;
-            break;
+    case HighPriority:
+        prio = THREAD_PRIORITY_ABOVE_NORMAL;
+        break;
 
-        case HighestPriority:
-            prio = THREAD_PRIORITY_HIGHEST;
-            break;
+    case HighestPriority:
+        prio = THREAD_PRIORITY_HIGHEST;
+        break;
 
-        case TimeCriticalPriority:
-            prio = THREAD_PRIORITY_TIME_CRITICAL;
-            break;
+    case TimeCriticalPriority:
+        prio = THREAD_PRIORITY_TIME_CRITICAL;
+        break;
 
-        case InheritPriority:
-        default:
-            prio = GetThreadPriority( GetCurrentThread() );
-            break;
+    case InheritPriority:
+    default:
+        prio = GetThreadPriority( GetCurrentThread() );
+        break;
     }
 
     if ( !SetThreadPriority( d->handle, prio ) )
@@ -569,18 +569,18 @@ bool QThread::wait( unsigned long time )
 
     switch ( WaitForSingleObject( d->handle, time ) )
     {
-        case WAIT_OBJECT_0:
-            ret = true;
-            break;
+    case WAIT_OBJECT_0:
+        ret = true;
+        break;
 
-        case WAIT_FAILED:
-            qErrnoWarning( "QThread::wait: Thread wait failure" );
-            break;
+    case WAIT_FAILED:
+        qErrnoWarning( "QThread::wait: Thread wait failure" );
+        break;
 
-        case WAIT_ABANDONED:
-        case WAIT_TIMEOUT:
-        default:
-            break;
+    case WAIT_ABANDONED:
+    case WAIT_TIMEOUT:
+    default:
+        break;
     }
 
     locker.mutex()->lock();
@@ -628,38 +628,38 @@ void QThreadPrivate::setPriority( QThread::Priority threadPriority )
 
     switch ( priority )
     {
-        case QThread::IdlePriority:
-            prio = THREAD_PRIORITY_IDLE;
-            break;
+    case QThread::IdlePriority:
+        prio = THREAD_PRIORITY_IDLE;
+        break;
 
-        case QThread::LowestPriority:
-            prio = THREAD_PRIORITY_LOWEST;
-            break;
+    case QThread::LowestPriority:
+        prio = THREAD_PRIORITY_LOWEST;
+        break;
 
-        case QThread::LowPriority:
-            prio = THREAD_PRIORITY_BELOW_NORMAL;
-            break;
+    case QThread::LowPriority:
+        prio = THREAD_PRIORITY_BELOW_NORMAL;
+        break;
 
-        case QThread::NormalPriority:
-            prio = THREAD_PRIORITY_NORMAL;
-            break;
+    case QThread::NormalPriority:
+        prio = THREAD_PRIORITY_NORMAL;
+        break;
 
-        case QThread::HighPriority:
-            prio = THREAD_PRIORITY_ABOVE_NORMAL;
-            break;
+    case QThread::HighPriority:
+        prio = THREAD_PRIORITY_ABOVE_NORMAL;
+        break;
 
-        case QThread::HighestPriority:
-            prio = THREAD_PRIORITY_HIGHEST;
-            break;
+    case QThread::HighestPriority:
+        prio = THREAD_PRIORITY_HIGHEST;
+        break;
 
-        case QThread::TimeCriticalPriority:
-            prio = THREAD_PRIORITY_TIME_CRITICAL;
-            break;
+    case QThread::TimeCriticalPriority:
+        prio = THREAD_PRIORITY_TIME_CRITICAL;
+        break;
 
-        case QThread::InheritPriority:
-        default:
-            qWarning( "QThread::setPriority() Thread priority can not be QThread::InheritPriority" );
-            return;
+    case QThread::InheritPriority:
+    default:
+        qWarning( "QThread::setPriority() Thread priority can not be QThread::InheritPriority" );
+        return;
     }
 
     if ( !SetThreadPriority( handle, prio ) )

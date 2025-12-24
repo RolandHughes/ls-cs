@@ -551,54 +551,54 @@ bool lscs_splitLocaleName( const QString &name, QString &lang, QString &script, 
 
         switch ( state )
         {
-            case LangState:
+        case LangState:
 
-                if ( ! sep.isNull() && ! separators.contains( sep ) )
-                {
-                    state = NoState;
-                    break;
-                }
-
-                lang = value;
-
-                if ( i == length )
-                {
-                    // just language was specified
-                    state = NoState;
-                    break;
-                }
-
-                state = ScriptState;
-                break;
-
-            case ScriptState:
+            if ( ! sep.isNull() && ! separators.contains( sep ) )
             {
-                QString scripts = QString::fromLatin1( ( const char * )script_code_list, sizeof( script_code_list ) - 1 );
-
-                if ( value.length() == 4 && scripts.indexOf( value ) % 4 == 0 )
-                {
-                    // script name is always 4 characters
-                    script = value;
-                    state = CountryState;
-                }
-                else
-                {
-                    // it wasn't a script, maybe it is a country then?
-                    cntry = value;
-                    state = NoState;
-                }
-
+                state = NoState;
                 break;
             }
 
-            case CountryState:
-                cntry = value;
+            lang = value;
+
+            if ( i == length )
+            {
+                // just language was specified
                 state = NoState;
                 break;
+            }
 
-            case NoState:
-                qWarning( "QLocale() Invalid state" );
-                break;
+            state = ScriptState;
+            break;
+
+        case ScriptState:
+        {
+            QString scripts = QString::fromLatin1( ( const char * )script_code_list, sizeof( script_code_list ) - 1 );
+
+            if ( value.length() == 4 && scripts.indexOf( value ) % 4 == 0 )
+            {
+                // script name is always 4 characters
+                script = value;
+                state = CountryState;
+            }
+            else
+            {
+                // it wasn't a script, maybe it is a country then?
+                cntry = value;
+                state = NoState;
+            }
+
+            break;
+        }
+
+        case CountryState:
+            cntry = value;
+            state = NoState;
+            break;
+
+        case NoState:
+            qWarning( "QLocale() Invalid state" );
+            break;
         }
 
         ++i;
@@ -1449,15 +1449,15 @@ QString QLocale::dateFormat( FormatType formatType ) const
 
     switch ( formatType )
     {
-        case LongFormat:
-            idx  = d->m_data->m_long_date_format_idx;
-            size = d->m_data->m_long_date_format_size;
-            break;
+    case LongFormat:
+        idx  = d->m_data->m_long_date_format_idx;
+        size = d->m_data->m_long_date_format_size;
+        break;
 
-        default:
-            idx  = d->m_data->m_short_date_format_idx;
-            size = d->m_data->m_short_date_format_size;
-            break;
+    default:
+        idx  = d->m_data->m_short_date_format_idx;
+        size = d->m_data->m_short_date_format_size;
+        break;
     }
 
     return getLocaleData( date_format_data + idx, size );
@@ -1485,15 +1485,15 @@ QString QLocale::timeFormat( FormatType formatType ) const
 
     switch ( formatType )
     {
-        case LongFormat:
-            idx  = d->m_data->m_long_time_format_idx;
-            size = d->m_data->m_long_time_format_size;
-            break;
+    case LongFormat:
+        idx  = d->m_data->m_long_time_format_idx;
+        size = d->m_data->m_long_time_format_size;
+        break;
 
-        default:
-            idx  = d->m_data->m_short_time_format_idx;
-            size = d->m_data->m_short_time_format_size;
-            break;
+    default:
+        idx  = d->m_data->m_short_time_format_idx;
+        size = d->m_data->m_short_time_format_size;
+        break;
     }
 
     return getLocaleData( time_format_data + idx, size );
@@ -1649,20 +1649,20 @@ QString QLocale::toString( double value, char f, int prec ) const
 
     switch ( f )
     {
-        case 'f':
-            form = QLocaleData::DFDecimal;
-            break;
+    case 'f':
+        form = QLocaleData::DFDecimal;
+        break;
 
-        case 'e':
-            form = QLocaleData::DFExponent;
-            break;
+    case 'e':
+        form = QLocaleData::DFExponent;
+        break;
 
-        case 'g':
-            form = QLocaleData::DFSignificantDigits;
-            break;
+    case 'g':
+        form = QLocaleData::DFSignificantDigits;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( ! ( d->m_numberOptions & OmitGroupSeparator ) )
@@ -1739,23 +1739,23 @@ QString QLocale::monthName( int month, FormatType type ) const
 
     switch ( type )
     {
-        case QLocale::LongFormat:
-            idx = d->m_data->m_long_month_names_idx;
-            size = d->m_data->m_long_month_names_size;
-            break;
+    case QLocale::LongFormat:
+        idx = d->m_data->m_long_month_names_idx;
+        size = d->m_data->m_long_month_names_size;
+        break;
 
-        case QLocale::ShortFormat:
-            idx = d->m_data->m_short_month_names_idx;
-            size = d->m_data->m_short_month_names_size;
-            break;
+    case QLocale::ShortFormat:
+        idx = d->m_data->m_short_month_names_idx;
+        size = d->m_data->m_short_month_names_size;
+        break;
 
-        case QLocale::NarrowFormat:
-            idx = d->m_data->m_narrow_month_names_idx;
-            size = d->m_data->m_narrow_month_names_size;
-            break;
+    case QLocale::NarrowFormat:
+        idx = d->m_data->m_narrow_month_names_idx;
+        size = d->m_data->m_narrow_month_names_size;
+        break;
 
-        default:
-            return QString();
+    default:
+        return QString();
     }
 
     return getLocaleListData( months_data + idx, size, month - 1 );
@@ -1787,23 +1787,23 @@ QString QLocale::standaloneMonthName( int month, FormatType type ) const
 
     switch ( type )
     {
-        case QLocale::LongFormat:
-            idx = d->m_data->m_standalone_long_month_names_idx;
-            size = d->m_data->m_standalone_long_month_names_size;
-            break;
+    case QLocale::LongFormat:
+        idx = d->m_data->m_standalone_long_month_names_idx;
+        size = d->m_data->m_standalone_long_month_names_size;
+        break;
 
-        case QLocale::ShortFormat:
-            idx = d->m_data->m_standalone_short_month_names_idx;
-            size = d->m_data->m_standalone_short_month_names_size;
-            break;
+    case QLocale::ShortFormat:
+        idx = d->m_data->m_standalone_short_month_names_idx;
+        size = d->m_data->m_standalone_short_month_names_size;
+        break;
 
-        case QLocale::NarrowFormat:
-            idx = d->m_data->m_standalone_narrow_month_names_idx;
-            size = d->m_data->m_standalone_narrow_month_names_size;
-            break;
+    case QLocale::NarrowFormat:
+        idx = d->m_data->m_standalone_narrow_month_names_idx;
+        size = d->m_data->m_standalone_narrow_month_names_size;
+        break;
 
-        default:
-            return QString();
+    default:
+        return QString();
     }
 
     QString name = getLocaleListData( months_data + idx, size, month - 1 );
@@ -1847,23 +1847,23 @@ QString QLocale::dayName( int day, FormatType type ) const
 
     switch ( type )
     {
-        case QLocale::LongFormat:
-            idx = d->m_data->m_long_day_names_idx;
-            size = d->m_data->m_long_day_names_size;
-            break;
+    case QLocale::LongFormat:
+        idx = d->m_data->m_long_day_names_idx;
+        size = d->m_data->m_long_day_names_size;
+        break;
 
-        case QLocale::ShortFormat:
-            idx = d->m_data->m_short_day_names_idx;
-            size = d->m_data->m_short_day_names_size;
-            break;
+    case QLocale::ShortFormat:
+        idx = d->m_data->m_short_day_names_idx;
+        size = d->m_data->m_short_day_names_size;
+        break;
 
-        case QLocale::NarrowFormat:
-            idx = d->m_data->m_narrow_day_names_idx;
-            size = d->m_data->m_narrow_day_names_size;
-            break;
+    case QLocale::NarrowFormat:
+        idx = d->m_data->m_narrow_day_names_idx;
+        size = d->m_data->m_narrow_day_names_size;
+        break;
 
-        default:
-            return QString();
+    default:
+        return QString();
     }
 
     return getLocaleListData( days_data + idx, size, day );
@@ -1900,23 +1900,23 @@ QString QLocale::standaloneDayName( int day, FormatType type ) const
 
     switch ( type )
     {
-        case QLocale::LongFormat:
-            idx = d->m_data->m_standalone_long_day_names_idx;
-            size = d->m_data->m_standalone_long_day_names_size;
-            break;
+    case QLocale::LongFormat:
+        idx = d->m_data->m_standalone_long_day_names_idx;
+        size = d->m_data->m_standalone_long_day_names_size;
+        break;
 
-        case QLocale::ShortFormat:
-            idx = d->m_data->m_standalone_short_day_names_idx;
-            size = d->m_data->m_standalone_short_day_names_size;
-            break;
+    case QLocale::ShortFormat:
+        idx = d->m_data->m_standalone_short_day_names_idx;
+        size = d->m_data->m_standalone_short_day_names_size;
+        break;
 
-        case QLocale::NarrowFormat:
-            idx = d->m_data->m_standalone_narrow_day_names_idx;
-            size = d->m_data->m_standalone_narrow_day_names_size;
-            break;
+    case QLocale::NarrowFormat:
+        idx = d->m_data->m_standalone_narrow_day_names_idx;
+        size = d->m_data->m_standalone_narrow_day_names_size;
+        break;
 
-        default:
-            return QString();
+    default:
+        return QString();
     }
 
     QString name = getLocaleListData( days_data + idx, size, day );
@@ -2017,35 +2017,35 @@ Qt::LayoutDirection QLocale::textDirection() const
 {
     switch ( script() )
     {
-        case QLocale::ArabicScript:
-        case QLocale::AvestanScript:
-        case QLocale::CypriotScript:
-        case QLocale::HebrewScript:
-        case QLocale::ImperialAramaicScript:
-        case QLocale::InscriptionalPahlaviScript:
-        case QLocale::InscriptionalParthianScript:
-        case QLocale::KharoshthiScript:
-        case QLocale::LydianScript:
-        case QLocale::MandaeanScript:
-        case QLocale::ManichaeanScript:
-        case QLocale::MendeKikakuiScript:
-        case QLocale::MeroiticCursiveScript:
-        case QLocale::MeroiticScript:
-        case QLocale::NabataeanScript:
-        case QLocale::NkoScript:
-        case QLocale::OldNorthArabianScript:
-        case QLocale::OldSouthArabianScript:
-        case QLocale::OrkhonScript:
-        case QLocale::PalmyreneScript:
-        case QLocale::PhoenicianScript:
-        case QLocale::PsalterPahlaviScript:
-        case QLocale::SamaritanScript:
-        case QLocale::SyriacScript:
-        case QLocale::ThaanaScript:
-            return Qt::RightToLeft;
+    case QLocale::ArabicScript:
+    case QLocale::AvestanScript:
+    case QLocale::CypriotScript:
+    case QLocale::HebrewScript:
+    case QLocale::ImperialAramaicScript:
+    case QLocale::InscriptionalPahlaviScript:
+    case QLocale::InscriptionalParthianScript:
+    case QLocale::KharoshthiScript:
+    case QLocale::LydianScript:
+    case QLocale::MandaeanScript:
+    case QLocale::ManichaeanScript:
+    case QLocale::MendeKikakuiScript:
+    case QLocale::MeroiticCursiveScript:
+    case QLocale::MeroiticScript:
+    case QLocale::NabataeanScript:
+    case QLocale::NkoScript:
+    case QLocale::OldNorthArabianScript:
+    case QLocale::OldSouthArabianScript:
+    case QLocale::OrkhonScript:
+    case QLocale::PalmyreneScript:
+    case QLocale::PhoenicianScript:
+    case QLocale::PsalterPahlaviScript:
+    case QLocale::SamaritanScript:
+    case QLocale::SyriacScript:
+    case QLocale::ThaanaScript:
+        return Qt::RightToLeft;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return Qt::LeftToRight;
@@ -2154,92 +2154,92 @@ QString QLocalePrivate::dateTimeToString( const QString &format, const QDateTime
         {
             switch ( c.unicode() )
             {
-                case 'y':
-                    used = true;
+            case 'y':
+                used = true;
 
-                    if ( repeat >= 4 )
-                    {
-                        repeat = 4;
-                    }
-                    else if ( repeat >= 2 )
-                    {
-                        repeat = 2;
-                    }
+                if ( repeat >= 4 )
+                {
+                    repeat = 4;
+                }
+                else if ( repeat >= 2 )
+                {
+                    repeat = 2;
+                }
 
-                    switch ( repeat )
-                    {
-                        case 4:
-                        {
-                            const int yr = date.year();
-                            const int len = ( yr < 0 ) ? 5 : 4;
-                            result.append( m_data->longLongToString( yr, -1, 10, len, QLocaleData::ZeroPadded ) );
-                            break;
-                        }
-
-                        case 2:
-                            result.append( m_data->longLongToString( date.year() % 100, -1, 10, 2, QLocaleData::ZeroPadded ) );
-                            break;
-
-                        default:
-                            repeat = 1;
-                            result.append( c );
-                            break;
-                    }
-
+                switch ( repeat )
+                {
+                case 4:
+                {
+                    const int yr = date.year();
+                    const int len = ( yr < 0 ) ? 5 : 4;
+                    result.append( m_data->longLongToString( yr, -1, 10, len, QLocaleData::ZeroPadded ) );
                     break;
+                }
 
-                case 'M':
-                    used = true;
-                    repeat = qMin( repeat, 4 );
-
-                    switch ( repeat )
-                    {
-                        case 1:
-                            result.append( m_data->longLongToString( date.month() ) );
-                            break;
-
-                        case 2:
-                            result.append( m_data->longLongToString( date.month(), -1, 10, 2, QLocaleData::ZeroPadded ) );
-                            break;
-
-                        case 3:
-                            result.append( q->monthName( date.month(), QLocale::ShortFormat ) );
-                            break;
-
-                        case 4:
-                            result.append( q->monthName( date.month(), QLocale::LongFormat ) );
-                            break;
-                    }
-
-                    break;
-
-                case 'd':
-                    used = true;
-                    repeat = qMin( repeat, 4 );
-
-                    switch ( repeat )
-                    {
-                        case 1:
-                            result.append( m_data->longLongToString( date.day() ) );
-                            break;
-
-                        case 2:
-                            result.append( m_data->longLongToString( date.day(), -1, 10, 2, QLocaleData::ZeroPadded ) );
-                            break;
-
-                        case 3:
-                            result.append( q->dayName( date.dayOfWeek(), QLocale::ShortFormat ) );
-                            break;
-
-                        case 4:
-                            result.append( q->dayName( date.dayOfWeek(), QLocale::LongFormat ) );
-                            break;
-                    }
-
+                case 2:
+                    result.append( m_data->longLongToString( date.year() % 100, -1, 10, 2, QLocaleData::ZeroPadded ) );
                     break;
 
                 default:
+                    repeat = 1;
+                    result.append( c );
                     break;
+                }
+
+                break;
+
+            case 'M':
+                used = true;
+                repeat = qMin( repeat, 4 );
+
+                switch ( repeat )
+                {
+                case 1:
+                    result.append( m_data->longLongToString( date.month() ) );
+                    break;
+
+                case 2:
+                    result.append( m_data->longLongToString( date.month(), -1, 10, 2, QLocaleData::ZeroPadded ) );
+                    break;
+
+                case 3:
+                    result.append( q->monthName( date.month(), QLocale::ShortFormat ) );
+                    break;
+
+                case 4:
+                    result.append( q->monthName( date.month(), QLocale::LongFormat ) );
+                    break;
+                }
+
+                break;
+
+            case 'd':
+                used = true;
+                repeat = qMin( repeat, 4 );
+
+                switch ( repeat )
+                {
+                case 1:
+                    result.append( m_data->longLongToString( date.day() ) );
+                    break;
+
+                case 2:
+                    result.append( m_data->longLongToString( date.day(), -1, 10, 2, QLocaleData::ZeroPadded ) );
+                    break;
+
+                case 3:
+                    result.append( q->dayName( date.dayOfWeek(), QLocale::ShortFormat ) );
+                    break;
+
+                case 4:
+                    result.append( q->dayName( date.dayOfWeek(), QLocale::LongFormat ) );
+                    break;
+                }
+
+                break;
+
+            default:
+                break;
             }
         }
 
@@ -2247,161 +2247,161 @@ QString QLocalePrivate::dateTimeToString( const QString &format, const QDateTime
         {
             switch ( c.unicode() )
             {
-                case 'h':
+            case 'h':
+            {
+                used = true;
+                repeat = qMin( repeat, 2 );
+                int hour = time.hour();
+
+                if ( timeFormatContainsAP( format ) )
                 {
-                    used = true;
-                    repeat = qMin( repeat, 2 );
-                    int hour = time.hour();
-
-                    if ( timeFormatContainsAP( format ) )
+                    if ( hour > 12 )
                     {
-                        if ( hour > 12 )
-                        {
-                            hour -= 12;
-                        }
-                        else if ( hour == 0 )
-                        {
-                            hour = 12;
-                        }
+                        hour -= 12;
                     }
-
-                    switch ( repeat )
+                    else if ( hour == 0 )
                     {
-                        case 1:
-                            result.append( m_data->longLongToString( hour ) );
-                            break;
-
-                        case 2:
-                            result.append( m_data->longLongToString( hour, -1, 10, 2, QLocaleData::ZeroPadded ) );
-                            break;
+                        hour = 12;
                     }
+                }
 
+                switch ( repeat )
+                {
+                case 1:
+                    result.append( m_data->longLongToString( hour ) );
+                    break;
+
+                case 2:
+                    result.append( m_data->longLongToString( hour, -1, 10, 2, QLocaleData::ZeroPadded ) );
                     break;
                 }
 
-                case 'H':
-                    used = true;
-                    repeat = qMin( repeat, 2 );
+                break;
+            }
 
-                    switch ( repeat )
-                    {
-                        case 1:
-                            result.append( m_data->longLongToString( time.hour() ) );
-                            break;
+            case 'H':
+                used = true;
+                repeat = qMin( repeat, 2 );
 
-                        case 2:
-                            result.append( m_data->longLongToString( time.hour(), -1, 10, 2, QLocaleData::ZeroPadded ) );
-                            break;
-                    }
-
+                switch ( repeat )
+                {
+                case 1:
+                    result.append( m_data->longLongToString( time.hour() ) );
                     break;
 
-                case 'm':
-                    used = true;
-                    repeat = qMin( repeat, 2 );
+                case 2:
+                    result.append( m_data->longLongToString( time.hour(), -1, 10, 2, QLocaleData::ZeroPadded ) );
+                    break;
+                }
 
-                    switch ( repeat )
-                    {
-                        case 1:
-                            result.append( m_data->longLongToString( time.minute() ) );
-                            break;
+                break;
 
-                        case 2:
-                            result.append( m_data->longLongToString( time.minute(), -1, 10, 2, QLocaleData::ZeroPadded ) );
-                            break;
-                    }
+            case 'm':
+                used = true;
+                repeat = qMin( repeat, 2 );
 
+                switch ( repeat )
+                {
+                case 1:
+                    result.append( m_data->longLongToString( time.minute() ) );
                     break;
 
-                case 's':
-                    used = true;
-                    repeat = qMin( repeat, 2 );
+                case 2:
+                    result.append( m_data->longLongToString( time.minute(), -1, 10, 2, QLocaleData::ZeroPadded ) );
+                    break;
+                }
 
-                    switch ( repeat )
-                    {
-                        case 1:
-                            result.append( m_data->longLongToString( time.second() ) );
-                            break;
+                break;
 
-                        case 2:
-                            result.append( m_data->longLongToString( time.second(), -1, 10, 2, QLocaleData::ZeroPadded ) );
-                            break;
-                    }
+            case 's':
+                used = true;
+                repeat = qMin( repeat, 2 );
 
+                switch ( repeat )
+                {
+                case 1:
+                    result.append( m_data->longLongToString( time.second() ) );
                     break;
 
-                case 'a':
-                    used = true;
-
-                    if ( i + 1 < format.length() && format.at( i + 1 ).unicode() == 'p' )
-                    {
-                        repeat = 2;
-                    }
-                    else
-                    {
-                        repeat = 1;
-                    }
-
-                    result.append( time.hour() < 12 ? q->amText().toLower() : q->pmText().toLower() );
+                case 2:
+                    result.append( m_data->longLongToString( time.second(), -1, 10, 2, QLocaleData::ZeroPadded ) );
                     break;
+                }
 
-                case 'A':
-                    used = true;
+                break;
 
-                    if ( i + 1 < format.length() && format.at( i + 1 ).unicode() == 'P' )
-                    {
-                        repeat = 2;
-                    }
-                    else
-                    {
-                        repeat = 1;
-                    }
+            case 'a':
+                used = true;
 
-                    result.append( time.hour() < 12 ? q->amText().toUpper() : q->pmText().toUpper() );
-                    break;
-
-                case 'z':
-                    used = true;
-
-                    if ( repeat >= 3 )
-                    {
-                        repeat = 3;
-                    }
-                    else
-                    {
-                        repeat = 1;
-                    }
-
-                    switch ( repeat )
-                    {
-                        case 1:
-                            result.append( m_data->longLongToString( time.msec() ) );
-                            break;
-
-                        case 3:
-                            result.append( m_data->longLongToString( time.msec(), -1, 10, 3, QLocaleData::ZeroPadded ) );
-                            break;
-                    }
-
-                    break;
-
-                case 't':
-                    used = true;
+                if ( i + 1 < format.length() && format.at( i + 1 ).unicode() == 'p' )
+                {
+                    repeat = 2;
+                }
+                else
+                {
                     repeat = 1;
+                }
 
-                    if ( formatDate )
-                    {
-                        result.append( datetime.timeZoneAbbreviation() );
-                    }
-                    else
-                    {
-                        result.append( QDateTime::currentDateTime().timeZoneAbbreviation() );
-                    }
+                result.append( time.hour() < 12 ? q->amText().toLower() : q->pmText().toLower() );
+                break;
 
+            case 'A':
+                used = true;
+
+                if ( i + 1 < format.length() && format.at( i + 1 ).unicode() == 'P' )
+                {
+                    repeat = 2;
+                }
+                else
+                {
+                    repeat = 1;
+                }
+
+                result.append( time.hour() < 12 ? q->amText().toUpper() : q->pmText().toUpper() );
+                break;
+
+            case 'z':
+                used = true;
+
+                if ( repeat >= 3 )
+                {
+                    repeat = 3;
+                }
+                else
+                {
+                    repeat = 1;
+                }
+
+                switch ( repeat )
+                {
+                case 1:
+                    result.append( m_data->longLongToString( time.msec() ) );
                     break;
 
-                default:
+                case 3:
+                    result.append( m_data->longLongToString( time.msec(), -1, 10, 3, QLocaleData::ZeroPadded ) );
                     break;
+                }
+
+                break;
+
+            case 't':
+                used = true;
+                repeat = 1;
+
+                if ( formatDate )
+                {
+                    result.append( datetime.timeZoneAbbreviation() );
+                }
+                else
+                {
+                    result.append( QDateTime::currentDateTime().timeZoneAbbreviation() );
+                }
+
+                break;
+
+            default:
+                break;
             }
         }
 
@@ -2525,38 +2525,38 @@ QString QLocaleData::doubleToString( const QChar _zero, const QChar plus, const 
 
         switch ( form )
         {
-            case DFExponent:
+        case DFExponent:
+        {
+            num_str = exponentForm( _zero, decimal, exponential, group, plus, minus,
+                                    digits, decpt, precision, PMDecimalDigits, always_show_decpt );
+            break;
+        }
+
+        case DFDecimal:
+        {
+            num_str = decimalForm( _zero, decimal, group,
+                                   digits, decpt, precision, PMDecimalDigits, always_show_decpt, flags & ThousandsGroup );
+            break;
+        }
+
+        case DFSignificantDigits:
+        {
+            PrecisionMode mode = ( flags & Alternate ) ? PMSignificantDigits : PMChopTrailingZeros;
+
+            if ( decpt != digits.length() && ( decpt <= -4 || decpt > precision ) )
             {
+
                 num_str = exponentForm( _zero, decimal, exponential, group, plus, minus,
-                                        digits, decpt, precision, PMDecimalDigits, always_show_decpt );
-                break;
+                                        digits, decpt, precision, mode, always_show_decpt );
             }
-
-            case DFDecimal:
+            else
             {
-                num_str = decimalForm( _zero, decimal, group,
-                                       digits, decpt, precision, PMDecimalDigits, always_show_decpt, flags & ThousandsGroup );
-                break;
+                num_str = decimalForm( _zero, decimal, group, digits, decpt, precision, mode,
+                                       always_show_decpt, flags & ThousandsGroup );
             }
 
-            case DFSignificantDigits:
-            {
-                PrecisionMode mode = ( flags & Alternate ) ? PMSignificantDigits : PMChopTrailingZeros;
-
-                if ( decpt != digits.length() && ( decpt <= -4 || decpt > precision ) )
-                {
-
-                    num_str = exponentForm( _zero, decimal, exponential, group, plus, minus,
-                                            digits, decpt, precision, mode, always_show_decpt );
-                }
-                else
-                {
-                    num_str = decimalForm( _zero, decimal, group, digits, decpt, precision, mode,
-                                           always_show_decpt, flags & ThousandsGroup );
-                }
-
-                break;
-            }
+            break;
+        }
         }
 
         negative = sign != 0 && ! isZero( d );
@@ -2997,81 +2997,81 @@ bool QLocaleData::validateChars( const QString &str, NumberMode numMode, QByteAr
         {
             switch ( c )
             {
-                case '.':
-                    if ( numMode == IntegerMode )
-                    {
-                        // If an integer has a decimal point, it shall be Invalid.
-                        return false;
-                    }
-                    else
-                    {
-                        // If a double has more than one decimal point, it shall be Invalid.
-                        if ( ++decPointCnt > 1 )
-                        {
-                            return false;
-                        }
-
-                        dec = true;
-                    }
-
-                    break;
-
-                case '+':
-                case '-':
-                    if ( scientific )
-                    {
-                        // If a scientific has a sign that's not at the beginning or after
-                        // an 'e', it shall be Invalid.
-                        if ( i != 0 && !lastWasE )
-                        {
-                            return false;
-                        }
-
-                    }
-                    else
-                    {
-                        // If a non-scientific has a sign that's not at the beginning,
-                        // it shall be Invalid.
-                        if ( i != 0 )
-                        {
-                            return false;
-                        }
-                    }
-
-                    break;
-
-                case ',':
-
-                    //it can only be placed after a digit which is before the decimal point
-                    if ( rejectGroupSeparators || !lastWasDigit || decPointCnt > 0 )
-                    {
-                        return false;
-                    }
-
-                    break;
-
-                case 'e':
-                    if ( scientific )
-                    {
-                        // If a scientific has more than one 'e', it shall be Invalid.
-                        if ( ++eCnt > 1 )
-                        {
-                            return false;
-                        }
-
-                        dec = false;
-                    }
-                    else
-                    {
-                        // If a non-scientific has an 'e', it shall be Invalid.
-                        return false;
-                    }
-
-                    break;
-
-                default:
-                    // If it's not a valid digit, it shall be Invalid.
+            case '.':
+                if ( numMode == IntegerMode )
+                {
+                    // If an integer has a decimal point, it shall be Invalid.
                     return false;
+                }
+                else
+                {
+                    // If a double has more than one decimal point, it shall be Invalid.
+                    if ( ++decPointCnt > 1 )
+                    {
+                        return false;
+                    }
+
+                    dec = true;
+                }
+
+                break;
+
+            case '+':
+            case '-':
+                if ( scientific )
+                {
+                    // If a scientific has a sign that's not at the beginning or after
+                    // an 'e', it shall be Invalid.
+                    if ( i != 0 && !lastWasE )
+                    {
+                        return false;
+                    }
+
+                }
+                else
+                {
+                    // If a non-scientific has a sign that's not at the beginning,
+                    // it shall be Invalid.
+                    if ( i != 0 )
+                    {
+                        return false;
+                    }
+                }
+
+                break;
+
+            case ',':
+
+                //it can only be placed after a digit which is before the decimal point
+                if ( rejectGroupSeparators || !lastWasDigit || decPointCnt > 0 )
+                {
+                    return false;
+                }
+
+                break;
+
+            case 'e':
+                if ( scientific )
+                {
+                    // If a scientific has more than one 'e', it shall be Invalid.
+                    if ( ++eCnt > 1 )
+                    {
+                        return false;
+                    }
+
+                    dec = false;
+                }
+                else
+                {
+                    // If a non-scientific has an 'e', it shall be Invalid.
+                    return false;
+                }
+
+                break;
+
+            default:
+                // If it's not a valid digit, it shall be Invalid.
+                return false;
             }
 
             lastWasDigit = false;
@@ -3338,31 +3338,31 @@ QString QLocale::currencySymbol( QLocale::CurrencySymbolFormat symbolFormat ) co
 
     switch ( symbolFormat )
     {
-        case CurrencySymbol:
-            idx = d->m_data->m_currency_symbol_idx;
-            size = d->m_data->m_currency_symbol_size;
-            return getLocaleData( currency_symbol_data + idx, size );
+    case CurrencySymbol:
+        idx = d->m_data->m_currency_symbol_idx;
+        size = d->m_data->m_currency_symbol_size;
+        return getLocaleData( currency_symbol_data + idx, size );
 
-        case CurrencyDisplayName:
-            idx = d->m_data->m_currency_display_name_idx;
-            size = d->m_data->m_currency_display_name_size;
-            return getLocaleListData( currency_display_name_data + idx, size, 0 );
+    case CurrencyDisplayName:
+        idx = d->m_data->m_currency_display_name_idx;
+        size = d->m_data->m_currency_display_name_size;
+        return getLocaleListData( currency_display_name_data + idx, size, 0 );
 
-        case CurrencyIsoCode:
+    case CurrencyIsoCode:
+    {
+        int len = 0;
+        const QLocaleData *data = this->d->m_data;
+
+        for ( ; len < 3; ++len )
         {
-            int len = 0;
-            const QLocaleData *data = this->d->m_data;
-
-            for ( ; len < 3; ++len )
+            if ( !data->m_currency_iso_code[len] )
             {
-                if ( !data->m_currency_iso_code[len] )
-                {
-                    break;
-                }
+                break;
             }
-
-            return len ? QString::fromLatin1( data->m_currency_iso_code, len ) : QString();
         }
+
+        return len ? QString::fromLatin1( data->m_currency_iso_code, len ) : QString();
+    }
     }
 
     return QString();

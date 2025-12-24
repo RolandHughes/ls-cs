@@ -1868,76 +1868,76 @@ bool QHeaderView::event( QEvent *e )
 
     switch ( e->type() )
     {
-        case QEvent::HoverEnter:
+    case QEvent::HoverEnter:
+    {
+        QHoverEvent *he = static_cast<QHoverEvent *>( e );
+        d->hover = logicalIndexAt( he->pos() );
+
+        if ( d->hover != -1 )
         {
-            QHoverEvent *he = static_cast<QHoverEvent *>( e );
-            d->hover = logicalIndexAt( he->pos() );
+            updateSection( d->hover );
+        }
+
+        break;
+    }
+
+    case QEvent::Leave:
+    case QEvent::HoverLeave:
+    {
+        if ( d->hover != -1 )
+        {
+            updateSection( d->hover );
+        }
+
+        d->hover = -1;
+        break;
+    }
+
+    case QEvent::HoverMove:
+    {
+        QHoverEvent *he = static_cast<QHoverEvent *>( e );
+        int oldHover = d->hover;
+        d->hover = logicalIndexAt( he->pos() );
+
+        if ( d->hover != oldHover )
+        {
+            if ( oldHover != -1 )
+            {
+                updateSection( oldHover );
+            }
 
             if ( d->hover != -1 )
             {
                 updateSection( d->hover );
             }
-
-            break;
         }
 
-        case QEvent::Leave:
-        case QEvent::HoverLeave:
+        break;
+    }
+
+    case QEvent::Timer:
+    {
+        QTimerEvent *te = static_cast<QTimerEvent *>( e );
+
+        if ( te->timerId() == d->delayedResize.timerId() )
         {
-            if ( d->hover != -1 )
-            {
-                updateSection( d->hover );
-            }
-
-            d->hover = -1;
-            break;
+            d->delayedResize.stop();
+            resizeSections();
         }
 
-        case QEvent::HoverMove:
+        break;
+    }
+
+    case QEvent::StyleChange:
+        if ( !d->customDefaultSectionSize )
         {
-            QHoverEvent *he = static_cast<QHoverEvent *>( e );
-            int oldHover = d->hover;
-            d->hover = logicalIndexAt( he->pos() );
-
-            if ( d->hover != oldHover )
-            {
-                if ( oldHover != -1 )
-                {
-                    updateSection( oldHover );
-                }
-
-                if ( d->hover != -1 )
-                {
-                    updateSection( d->hover );
-                }
-            }
-
-            break;
+            d->updateDefaultSectionSizeFromStyle();
         }
 
-        case QEvent::Timer:
-        {
-            QTimerEvent *te = static_cast<QTimerEvent *>( e );
+        break;
 
-            if ( te->timerId() == d->delayedResize.timerId() )
-            {
-                d->delayedResize.stop();
-                resizeSections();
-            }
-
-            break;
-        }
-
-        case QEvent::StyleChange:
-            if ( !d->customDefaultSectionSize )
-            {
-                d->updateDefaultSectionSizeFromStyle();
-            }
-
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     return QAbstractItemView::event( e );
@@ -2151,140 +2151,140 @@ void QHeaderView::mouseMoveEvent( QMouseEvent *e )
 
     switch ( d->state )
     {
-        case QHeaderViewPrivate::ResizeSection:
+    case QHeaderViewPrivate::ResizeSection:
+    {
+        Q_ASSERT( d->originalSize != -1 );
+
+        if ( d->cascadingResizing )
         {
-            Q_ASSERT( d->originalSize != -1 );
-
-            if ( d->cascadingResizing )
-            {
-                int delta = d->reverse() ? d->lastPos - pos : pos - d->lastPos;
-                int visual = visualIndex( d->section );
-                d->cascadingResize( visual, d->headerSectionSize( visual ) + delta );
-            }
-            else
-            {
-                int delta = d->reverse() ? d->firstPos - pos : pos - d->firstPos;
-                int newsize = qBound( minimumSectionSize(), d->originalSize + delta, maximumSectionSize() );
-                resizeSection( d->section, newsize );
-            }
-
-            d->lastPos = pos;
-            return;
+            int delta = d->reverse() ? d->lastPos - pos : pos - d->lastPos;
+            int visual = visualIndex( d->section );
+            d->cascadingResize( visual, d->headerSectionSize( visual ) + delta );
+        }
+        else
+        {
+            int delta = d->reverse() ? d->firstPos - pos : pos - d->firstPos;
+            int newsize = qBound( minimumSectionSize(), d->originalSize + delta, maximumSectionSize() );
+            resizeSection( d->section, newsize );
         }
 
-        case QHeaderViewPrivate::MoveSection:
+        d->lastPos = pos;
+        return;
+    }
+
+    case QHeaderViewPrivate::MoveSection:
+    {
+        if ( d->shouldAutoScroll( e->pos() ) )
         {
-            if ( d->shouldAutoScroll( e->pos() ) )
+            d->startAutoScroll();
+        }
+
+        if ( qAbs( pos - d->firstPos ) >= QApplication::startDragDistance()
+                || !d->sectionIndicator->isHidden() )
+        {
+            int visual = visualIndexAt( pos );
+
+            if ( visual == -1 )
             {
-                d->startAutoScroll();
+                return;
             }
 
-            if ( qAbs( pos - d->firstPos ) >= QApplication::startDragDistance()
-                    || !d->sectionIndicator->isHidden() )
+            if ( visual == 0 && logicalIndex( 0 ) == 0 && !d->allowUserMoveOfSection0 )
             {
-                int visual = visualIndexAt( pos );
+                return;
+            }
 
-                if ( visual == -1 )
+            int posThreshold = d->headerSectionPosition( visual ) - d->offset + d->headerSectionSize( visual ) / 2;
+            int moving = visualIndex( d->section );
+
+            if ( visual < moving )
+            {
+                if ( pos < posThreshold )
                 {
-                    return;
-                }
-
-                if ( visual == 0 && logicalIndex( 0 ) == 0 && !d->allowUserMoveOfSection0 )
-                {
-                    return;
-                }
-
-                int posThreshold = d->headerSectionPosition( visual ) - d->offset + d->headerSectionSize( visual ) / 2;
-                int moving = visualIndex( d->section );
-
-                if ( visual < moving )
-                {
-                    if ( pos < posThreshold )
-                    {
-                        d->target = d->logicalIndex( visual );
-                    }
-                    else
-                    {
-                        d->target = d->logicalIndex( visual + 1 );
-                    }
-                }
-                else if ( visual > moving )
-                {
-                    if ( pos > posThreshold )
-                    {
-                        d->target = d->logicalIndex( visual );
-                    }
-                    else
-                    {
-                        d->target = d->logicalIndex( visual - 1 );
-                    }
-
+                    d->target = d->logicalIndex( visual );
                 }
                 else
                 {
-                    d->target = d->section;
+                    d->target = d->logicalIndex( visual + 1 );
+                }
+            }
+            else if ( visual > moving )
+            {
+                if ( pos > posThreshold )
+                {
+                    d->target = d->logicalIndex( visual );
+                }
+                else
+                {
+                    d->target = d->logicalIndex( visual - 1 );
                 }
 
-                d->updateSectionIndicator( d->section, pos );
+            }
+            else
+            {
+                d->target = d->section;
             }
 
-            return;
+            d->updateSectionIndicator( d->section, pos );
         }
 
-        case QHeaderViewPrivate::SelectSections:
+        return;
+    }
+
+    case QHeaderViewPrivate::SelectSections:
+    {
+        int logical = logicalIndexAt( qMax( -d->offset, pos ) );
+
+        if ( logical == -1 && pos > 0 )
         {
-            int logical = logicalIndexAt( qMax( -d->offset, pos ) );
-
-            if ( logical == -1 && pos > 0 )
-            {
-                logical = logicalIndex( d->lastVisibleVisualIndex() );
-            }
-
-            if ( logical == d->pressed )
-            {
-                return;   // nothing to do
-            }
-            else if ( d->pressed != -1 )
-            {
-                updateSection( d->pressed );
-            }
-
-            d->pressed = logical;
-
-            if ( d->clickableSections && logical != -1 )
-            {
-                emit sectionEntered( d->pressed );
-                updateSection( d->pressed );
-            }
-
-            return;
+            logical = logicalIndex( d->lastVisibleVisualIndex() );
         }
 
-        case QHeaderViewPrivate::NoState:
+        if ( logical == d->pressed )
         {
+            return;   // nothing to do
+        }
+        else if ( d->pressed != -1 )
+        {
+            updateSection( d->pressed );
+        }
+
+        d->pressed = logical;
+
+        if ( d->clickableSections && logical != -1 )
+        {
+            emit sectionEntered( d->pressed );
+            updateSection( d->pressed );
+        }
+
+        return;
+    }
+
+    case QHeaderViewPrivate::NoState:
+    {
 
 #ifndef LSCS_NO_CURSOR
-            int handle = d->sectionHandleAt( pos );
-            bool hasCursor = testAttribute( Qt::WA_SetCursor );
+        int handle = d->sectionHandleAt( pos );
+        bool hasCursor = testAttribute( Qt::WA_SetCursor );
 
-            if ( handle != -1 && ( sectionResizeMode( handle ) == Interactive ) )
+        if ( handle != -1 && ( sectionResizeMode( handle ) == Interactive ) )
+        {
+            if ( !hasCursor )
             {
-                if ( !hasCursor )
-                {
-                    setCursor( d->orientation == Qt::Horizontal ? Qt::SplitHCursor : Qt::SplitVCursor );
-                }
+                setCursor( d->orientation == Qt::Horizontal ? Qt::SplitHCursor : Qt::SplitVCursor );
             }
-            else if ( hasCursor )
-            {
-                unsetCursor();
-            }
-
-#endif
-            return;
+        }
+        else if ( hasCursor )
+        {
+            unsetCursor();
         }
 
-        default:
-            break;
+#endif
+        return;
+    }
+
+    default:
+        break;
     }
 }
 
@@ -2296,59 +2296,59 @@ void QHeaderView::mouseReleaseEvent( QMouseEvent *e )
 
     switch ( d->state )
     {
-        case QHeaderViewPrivate::MoveSection:
-            if ( ! d->sectionIndicator->isHidden() )
+    case QHeaderViewPrivate::MoveSection:
+        if ( ! d->sectionIndicator->isHidden() )
+        {
+            // moving
+            int from = visualIndex( d->section );
+            Q_ASSERT( from != -1 );
+
+            int to = visualIndex( d->target );
+            Q_ASSERT( to != -1 );
+
+            moveSection( from, to );
+            d->section = d->target = -1;
+            d->updateSectionIndicator( d->section, pos );
+            break;
+        }
+
+        [[fallthrough]];
+
+    case QHeaderViewPrivate::SelectSections:
+        if ( !d->clickableSections )
+        {
+            int section = logicalIndexAt( pos );
+            updateSection( section );
+        }
+
+        [[fallthrough]];
+
+    case QHeaderViewPrivate::NoState:
+        if ( d->clickableSections )
+        {
+            int section = logicalIndexAt( pos );
+
+            if ( section != -1 && section == d->pressed )
             {
-                // moving
-                int from = visualIndex( d->section );
-                Q_ASSERT( from != -1 );
-
-                int to = visualIndex( d->target );
-                Q_ASSERT( to != -1 );
-
-                moveSection( from, to );
-                d->section = d->target = -1;
-                d->updateSectionIndicator( d->section, pos );
-                break;
+                d->flipSortIndicator( section );
+                emit sectionClicked( section );
             }
 
-            [[fallthrough]];
-
-        case QHeaderViewPrivate::SelectSections:
-            if ( !d->clickableSections )
+            if ( d->pressed != -1 )
             {
-                int section = logicalIndexAt( pos );
-                updateSection( section );
+                updateSection( d->pressed );
             }
+        }
 
-            [[fallthrough]];
+        break;
 
-        case QHeaderViewPrivate::NoState:
-            if ( d->clickableSections )
-            {
-                int section = logicalIndexAt( pos );
+    case QHeaderViewPrivate::ResizeSection:
+        d->originalSize = -1;
+        d->clearCascadingSections();
+        break;
 
-                if ( section != -1 && section == d->pressed )
-                {
-                    d->flipSortIndicator( section );
-                    emit sectionClicked( section );
-                }
-
-                if ( d->pressed != -1 )
-                {
-                    updateSection( d->pressed );
-                }
-            }
-
-            break;
-
-        case QHeaderViewPrivate::ResizeSection:
-            d->originalSize = -1;
-            d->clearCascadingSections();
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     d->state = QHeaderViewPrivate::NoState;
@@ -2398,128 +2398,128 @@ bool QHeaderView::viewportEvent( QEvent *e )
 
 #ifndef LSCS_NO_TOOLTIP
 
-        case QEvent::ToolTip:
+    case QEvent::ToolTip:
+    {
+        QHelpEvent *he = static_cast<QHelpEvent *>( e );
+        int logical = logicalIndexAt( he->pos() );
+
+        if ( logical != -1 )
         {
-            QHelpEvent *he = static_cast<QHelpEvent *>( e );
-            int logical = logicalIndexAt( he->pos() );
+            QVariant variant = d->model->headerData( logical, d->orientation, Qt::ToolTipRole );
 
-            if ( logical != -1 )
+            if ( variant.isValid() )
             {
-                QVariant variant = d->model->headerData( logical, d->orientation, Qt::ToolTipRole );
-
-                if ( variant.isValid() )
-                {
-                    QToolTip::showText( he->globalPos(), variant.toString(), this );
-                    return true;
-                }
+                QToolTip::showText( he->globalPos(), variant.toString(), this );
+                return true;
             }
-
-            break;
         }
+
+        break;
+    }
 
 #endif
 
 #ifndef LSCS_NO_WHATSTHIS
 
-        case QEvent::QueryWhatsThis:
-        {
-            QHelpEvent *he = static_cast<QHelpEvent *>( e );
-            int logical = logicalIndexAt( he->pos() );
+    case QEvent::QueryWhatsThis:
+    {
+        QHelpEvent *he = static_cast<QHelpEvent *>( e );
+        int logical = logicalIndexAt( he->pos() );
 
-            if ( logical != -1
-                    && d->model->headerData( logical, d->orientation, Qt::WhatsThisRole ).isValid() )
+        if ( logical != -1
+                && d->model->headerData( logical, d->orientation, Qt::WhatsThisRole ).isValid() )
+        {
+            return true;
+        }
+
+        break;
+    }
+
+    case QEvent::WhatsThis:
+    {
+        QHelpEvent *he = static_cast<QHelpEvent *>( e );
+        int logical = logicalIndexAt( he->pos() );
+
+        if ( logical != -1 )
+        {
+            QVariant whatsthis = d->model->headerData( logical, d->orientation,
+                                 Qt::WhatsThisRole );
+
+            if ( whatsthis.isValid() )
             {
+                QWhatsThis::showText( he->globalPos(), whatsthis.toString(), this );
                 return true;
             }
-
-            break;
         }
 
-        case QEvent::WhatsThis:
-        {
-            QHelpEvent *he = static_cast<QHelpEvent *>( e );
-            int logical = logicalIndexAt( he->pos() );
-
-            if ( logical != -1 )
-            {
-                QVariant whatsthis = d->model->headerData( logical, d->orientation,
-                                     Qt::WhatsThisRole );
-
-                if ( whatsthis.isValid() )
-                {
-                    QWhatsThis::showText( he->globalPos(), whatsthis.toString(), this );
-                    return true;
-                }
-            }
-
-            break;
-        }
+        break;
+    }
 
 #endif
 
 #ifndef LSCS_NO_STATUSTIP
 
-        case QEvent::StatusTip:
+    case QEvent::StatusTip:
+    {
+        QHelpEvent *he = static_cast<QHelpEvent *>( e );
+        int logical = logicalIndexAt( he->pos() );
+
+        if ( logical != -1 )
         {
-            QHelpEvent *he = static_cast<QHelpEvent *>( e );
-            int logical = logicalIndexAt( he->pos() );
+            QString statustip = d->model->headerData( logical, d->orientation, Qt::StatusTipRole ).toString();
 
-            if ( logical != -1 )
+            if ( ! statustip.isEmpty() )
             {
-                QString statustip = d->model->headerData( logical, d->orientation, Qt::StatusTipRole ).toString();
-
-                if ( ! statustip.isEmpty() )
-                {
-                    setStatusTip( statustip );
-                }
+                setStatusTip( statustip );
             }
-
-            return true;
         }
+
+        return true;
+    }
 
 #endif
 
-        case QEvent::FontChange:
-        case QEvent::StyleChange:
-            d->invalidateCachedSizeHint();
-            [[fallthrough]];
+    case QEvent::FontChange:
+    case QEvent::StyleChange:
+        d->invalidateCachedSizeHint();
+        [[fallthrough]];
 
-        case QEvent::Hide:
-        case QEvent::Show:
+    case QEvent::Hide:
+    case QEvent::Show:
+    {
+        QAbstractScrollArea *parent = qobject_cast<QAbstractScrollArea *>( parentWidget() );
+
+        if ( parent && parent->isVisible() ) // Only resize if we have a visible parent
         {
-            QAbstractScrollArea *parent = qobject_cast<QAbstractScrollArea *>( parentWidget() );
-
-            if ( parent && parent->isVisible() ) // Only resize if we have a visible parent
-            {
-                resizeSections();
-            }
-
-            emit geometriesChanged();
-            break;
+            resizeSections();
         }
 
-        case QEvent::ContextMenu:
+        emit geometriesChanged();
+        break;
+    }
+
+    case QEvent::ContextMenu:
+    {
+        d->state = QHeaderViewPrivate::NoState;
+        d->pressed = d->section = d->target = -1;
+        d->updateSectionIndicator( d->section, -1 );
+        break;
+    }
+
+    case QEvent::Wheel:
+    {
+        QAbstractScrollArea *asa = qobject_cast<QAbstractScrollArea *>( parentWidget() );
+
+        if ( asa )
         {
-            d->state = QHeaderViewPrivate::NoState;
-            d->pressed = d->section = d->target = -1;
-            d->updateSectionIndicator( d->section, -1 );
-            break;
+            return QApplication::sendEvent( asa->viewport(), e );
         }
 
-        case QEvent::Wheel:
-        {
-            QAbstractScrollArea *asa = qobject_cast<QAbstractScrollArea *>( parentWidget() );
+        break;
+    }
 
-            if ( asa )
-            {
-                return QApplication::sendEvent( asa->viewport(), e );
-            }
-
-            break;
-        }
-
-        default:
-            break;
+    default:
+        break;
     }
 
     return QAbstractItemView::viewportEvent( e );
@@ -2596,7 +2596,7 @@ void QHeaderView::paintSection( QPainter *painter, const QRect &rect, int logica
     int margin = 2 * style()->pixelMetric( QStyle::PM_HeaderMargin, nullptr, this );
 
     const Qt::Alignment headerArrowAlignment = static_cast<Qt::Alignment>( style()->styleHint( QStyle::SH_Header_ArrowAlignment,
-            nullptr, this ) );
+        nullptr, this ) );
     const bool isHeaderArrowOnTheSide = headerArrowAlignment & Qt::AlignVCenter;
 
     if ( isSortIndicatorShown() && sortIndicatorSection() == logicalIndex && isHeaderArrowOnTheSide )

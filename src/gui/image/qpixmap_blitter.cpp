@@ -90,38 +90,38 @@ int QBlittablePlatformPixmap::metric( QPaintDevice::PaintDeviceMetric metric ) c
 {
     switch ( metric )
     {
-        case QPaintDevice::PdmWidth:
-            return w;
+    case QPaintDevice::PdmWidth:
+        return w;
 
-        case QPaintDevice::PdmHeight:
-            return h;
+    case QPaintDevice::PdmHeight:
+        return h;
 
-        case QPaintDevice::PdmWidthMM:
-            return qRound( w * 25.4 / lscs_defaultDpiX() );
+    case QPaintDevice::PdmWidthMM:
+        return qRound( w * 25.4 / lscs_defaultDpiX() );
 
-        case QPaintDevice::PdmHeightMM:
-            return qRound( h * 25.4 / lscs_defaultDpiY() );
+    case QPaintDevice::PdmHeightMM:
+        return qRound( h * 25.4 / lscs_defaultDpiY() );
 
-        case QPaintDevice::PdmDepth:
-            return 32;
+    case QPaintDevice::PdmDepth:
+        return 32;
 
-        case QPaintDevice::PdmDpiX:
-        case QPaintDevice::PdmPhysicalDpiX:
-            return lscs_defaultDpiX();
+    case QPaintDevice::PdmDpiX:
+    case QPaintDevice::PdmPhysicalDpiX:
+        return lscs_defaultDpiX();
 
-        case QPaintDevice::PdmDpiY:
-        case QPaintDevice::PdmPhysicalDpiY:
-            return lscs_defaultDpiY();
+    case QPaintDevice::PdmDpiY:
+    case QPaintDevice::PdmPhysicalDpiY:
+        return lscs_defaultDpiY();
 
-        case QPaintDevice::PdmDevicePixelRatio:
-            return devicePixelRatio();
+    case QPaintDevice::PdmDevicePixelRatio:
+        return devicePixelRatio();
 
-        case QPaintDevice::PdmDevicePixelRatioScaled:
-            return devicePixelRatio() * QPaintDevice::devicePixelRatioFScale();
+    case QPaintDevice::PdmDevicePixelRatioScaled:
+        return devicePixelRatio() * QPaintDevice::devicePixelRatioFScale();
 
-        default:
-            qWarning( "QRasterPlatformPixmap::metric() Unhandled metric type %d", metric );
-            break;
+    default:
+        qWarning( "QRasterPlatformPixmap::metric() Unhandled metric type %d", metric );
+        break;
     }
 
     return 0;

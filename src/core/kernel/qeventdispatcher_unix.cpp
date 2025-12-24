@@ -181,17 +181,17 @@ int QEventDispatcherUNIXPrivate::doSelect( QEventLoop::ProcessEventsFlags flags,
                     {
                         switch ( type )
                         {
-                            case 0: // read
-                                ret = select( sn->fd + 1, &fdset, nullptr, nullptr, &tm );
-                                break;
+                        case 0: // read
+                            ret = select( sn->fd + 1, &fdset, nullptr, nullptr, &tm );
+                            break;
 
-                            case 1: // write
-                                ret = select( sn->fd + 1, nullptr, &fdset, nullptr, &tm );
-                                break;
+                        case 1: // write
+                            ret = select( sn->fd + 1, nullptr, &fdset, nullptr, &tm );
+                            break;
 
-                            case 2: // except
-                                ret = select( sn->fd + 1, nullptr, nullptr, &fdset, &tm );
-                                break;
+                        case 2: // except
+                            ret = select( sn->fd + 1, nullptr, nullptr, &fdset, &tm );
+                            break;
                         }
 
                     }

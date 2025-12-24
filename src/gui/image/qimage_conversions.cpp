@@ -679,25 +679,25 @@ static inline uint qUnpremultiplyRgb30( uint rgb30 )
 
     switch ( a )
     {
-        case 0:
-            return 0;
+    case 0:
+        return 0;
 
-        case 1:
-        {
-            uint rgb = rgb30 & 0x3fffffff;
-            rgb *= 3;
-            return ( a << 30 ) | rgb;
-        }
+    case 1:
+    {
+        uint rgb = rgb30 & 0x3fffffff;
+        rgb *= 3;
+        return ( a << 30 ) | rgb;
+    }
 
-        case 2:
-        {
-            uint rgb = rgb30 & 0x3fffffff;
-            rgb += ( rgb >> 1 ) & 0x5ff7fdff;
-            return ( a << 30 ) | rgb;
-        }
+    case 2:
+    {
+        uint rgb = rgb30 & 0x3fffffff;
+        rgb += ( rgb >> 1 ) & 0x5ff7fdff;
+        return ( a << 30 ) | rgb;
+    }
 
-        case 3:
-            return rgb30;
+    case 3:
+        return rgb30;
     }
 
     // error, may want to throw
@@ -822,26 +822,26 @@ static bool convert_BGR30_to_RGB30_inplace( QImageData *data, Qt::ImageConversio
 
     switch ( data->format )
     {
-        case QImage::Format_BGR30:
-            data->format = QImage::Format_RGB30;
-            break;
+    case QImage::Format_BGR30:
+        data->format = QImage::Format_RGB30;
+        break;
 
-        case QImage::Format_A2BGR30_Premultiplied:
-            data->format = QImage::Format_A2RGB30_Premultiplied;
-            break;
+    case QImage::Format_A2BGR30_Premultiplied:
+        data->format = QImage::Format_A2RGB30_Premultiplied;
+        break;
 
-        case QImage::Format_RGB30:
-            data->format = QImage::Format_BGR30;
-            break;
+    case QImage::Format_RGB30:
+        data->format = QImage::Format_BGR30;
+        break;
 
-        case QImage::Format_A2RGB30_Premultiplied:
-            data->format = QImage::Format_A2BGR30_Premultiplied;
-            break;
+    case QImage::Format_A2RGB30_Premultiplied:
+        data->format = QImage::Format_A2BGR30_Premultiplied;
+        break;
 
-        default:
-            // error, may want to throw
-            data->format = QImage::Format_Invalid;
-            return false;
+    default:
+        // error, may want to throw
+        data->format = QImage::Format_Invalid;
+        return false;
     }
 
     return true;
@@ -1500,219 +1500,166 @@ void dither_to_Mono( QImageData *dst, const QImageData *src, Qt::ImageConversion
 
     switch ( dithermode )
     {
-        case Diffuse:
+    case Diffuse:
+    {
+        QScopedArrayPointer<int> lineBuffer( new int[w * 2] );
+
+        int *line1 = lineBuffer.data();
+        int *line2 = lineBuffer.data() + w;
+        int bmwidth = ( w + 7 ) / 8;
+
+        int *b1, *b2;
+        int wbytes = w * ( d / 8 );
+
+        const uchar *p = src->data;
+        const uchar *end = p + wbytes;
+
+        b2 = line2;
+
+        if ( use_gray )                        // 8 bit image
         {
-            QScopedArrayPointer<int> lineBuffer( new int[w * 2] );
+            while ( p < end )
+            {
+                *b2++ = gray[*p++];
+            }
 
-            int *line1 = lineBuffer.data();
-            int *line2 = lineBuffer.data() + w;
-            int bmwidth = ( w + 7 ) / 8;
-
-            int *b1, *b2;
-            int wbytes = w * ( d / 8 );
-
-            const uchar *p = src->data;
-            const uchar *end = p + wbytes;
-
-            b2 = line2;
-
-            if ( use_gray )                        // 8 bit image
+        }
+        else                                    // 32 bit image
+        {
+            if ( fromalpha )
             {
                 while ( p < end )
                 {
-                    *b2++ = gray[*p++];
-                }
-
-            }
-            else                                    // 32 bit image
-            {
-                if ( fromalpha )
-                {
-                    while ( p < end )
-                    {
-                        *b2++ = 255 - ( *( const uint * )p >> 24 );
-                        p += 4;
-                    }
-                }
-                else
-                {
-                    while ( p < end )
-                    {
-                        *b2++ = qGray( *( const uint * )p );
-                        p += 4;
-                    }
+                    *b2++ = 255 - ( *( const uint * )p >> 24 );
+                    p += 4;
                 }
             }
-
-            for ( int y = 0; y < h; y++ )                    // for each scan line...
+            else
             {
-                int *tmp = line1;
-                line1 = line2;
-                line2 = tmp;
-                bool not_last_line = y < h - 1;
-
-                if ( not_last_line )                // calc. grayvals for next line
+                while ( p < end )
                 {
-                    p = src->data + ( y + 1 ) * src->bytes_per_line;
-                    end = p + wbytes;
-                    b2 = line2;
-
-                    if ( use_gray )                // 8 bit image
-                    {
-                        while ( p < end )
-                        {
-                            *b2++ = gray[*p++];
-                        }
-                    }
-                    else                            // 24 bit image
-                    {
-                        if ( fromalpha )
-                        {
-                            while ( p < end )
-                            {
-                                *b2++ = 255 - ( *( const uint * )p >> 24 );
-                                p += 4;
-                            }
-                        }
-                        else
-                        {
-                            while ( p < end )
-                            {
-                                *b2++ = qGray( *( const uint * )p );
-                                p += 4;
-                            }
-                        }
-                    }
-                }
-
-                int err;
-                uchar *p = dst->data + y * dst->bytes_per_line;
-                memset( p, 0, bmwidth );
-                b1 = line1;
-                b2 = line2;
-                int bit = 7;
-
-                for ( int x = 1; x <= w; x++ )
-                {
-                    if ( *b1 < 128 )                // black pixel
-                    {
-                        err = *b1++;
-                        *p |= 1 << bit;
-                    }
-                    else                            // white pixel
-                    {
-                        err = *b1++ - 255;
-                    }
-
-                    if ( bit == 0 )
-                    {
-                        p++;
-                        bit = 7;
-                    }
-                    else
-                    {
-                        bit--;
-                    }
-
-                    if ( x < w )
-                    {
-                        *b1 += ( err * 7 ) >> 4; // spread error to right pixel
-                    }
-
-                    if ( not_last_line )
-                    {
-                        b2[0] += ( err * 5 ) >> 4;  // pixel below
-
-                        if ( x > 1 )
-                        {
-                            b2[-1] += ( err * 3 ) >> 4; // pixel below left
-                        }
-
-                        if ( x < w )
-                        {
-                            b2[1] += err >> 4;   // pixel below right
-                        }
-                    }
-
-                    b2++;
+                    *b2++ = qGray( *( const uint * )p );
+                    p += 4;
                 }
             }
         }
-        break;
 
-        case Ordered:
+        for ( int y = 0; y < h; y++ )                    // for each scan line...
         {
+            int *tmp = line1;
+            line1 = line2;
+            line2 = tmp;
+            bool not_last_line = y < h - 1;
 
-            memset( dst->data, 0, dst->nbytes );
-
-            if ( d == 32 )
+            if ( not_last_line )                // calc. grayvals for next line
             {
-                for ( int i = 0; i < h; i++ )
-                {
-                    const uint *p = ( const uint * )src_data;
-                    const uint *end = p + w;
-                    uchar *m = dst_data;
-                    int bit = 7;
-                    int j = 0;
+                p = src->data + ( y + 1 ) * src->bytes_per_line;
+                end = p + wbytes;
+                b2 = line2;
 
+                if ( use_gray )                // 8 bit image
+                {
+                    while ( p < end )
+                    {
+                        *b2++ = gray[*p++];
+                    }
+                }
+                else                            // 24 bit image
+                {
                     if ( fromalpha )
                     {
                         while ( p < end )
                         {
-                            if ( ( *p++ >> 24 ) >= lscs_bayer_matrix[j++ & 15][i & 15] )
-                            {
-                                *m |= 1 << bit;
-                            }
-
-                            if ( bit == 0 )
-                            {
-                                m++;
-                                bit = 7;
-                            }
-                            else
-                            {
-                                bit--;
-                            }
+                            *b2++ = 255 - ( *( const uint * )p >> 24 );
+                            p += 4;
                         }
                     }
                     else
                     {
                         while ( p < end )
                         {
-                            if ( ( uint )qGray( *p++ ) < lscs_bayer_matrix[j++ & 15][i & 15] )
-                            {
-                                *m |= 1 << bit;
-                            }
-
-                            if ( bit == 0 )
-                            {
-                                m++;
-                                bit = 7;
-                            }
-                            else
-                            {
-                                bit--;
-                            }
+                            *b2++ = qGray( *( const uint * )p );
+                            p += 4;
                         }
                     }
-
-                    dst_data += dst_bpl;
-                    src_data += src_bpl;
                 }
             }
-            else if ( d == 8 )
-            {
-                for ( int i = 0; i < h; i++ )
-                {
-                    const uchar *p = src_data;
-                    const uchar *end = p + w;
-                    uchar *m = dst_data;
-                    int bit = 7;
-                    int j = 0;
 
+            int err;
+            uchar *p = dst->data + y * dst->bytes_per_line;
+            memset( p, 0, bmwidth );
+            b1 = line1;
+            b2 = line2;
+            int bit = 7;
+
+            for ( int x = 1; x <= w; x++ )
+            {
+                if ( *b1 < 128 )                // black pixel
+                {
+                    err = *b1++;
+                    *p |= 1 << bit;
+                }
+                else                            // white pixel
+                {
+                    err = *b1++ - 255;
+                }
+
+                if ( bit == 0 )
+                {
+                    p++;
+                    bit = 7;
+                }
+                else
+                {
+                    bit--;
+                }
+
+                if ( x < w )
+                {
+                    *b1 += ( err * 7 ) >> 4; // spread error to right pixel
+                }
+
+                if ( not_last_line )
+                {
+                    b2[0] += ( err * 5 ) >> 4;  // pixel below
+
+                    if ( x > 1 )
+                    {
+                        b2[-1] += ( err * 3 ) >> 4; // pixel below left
+                    }
+
+                    if ( x < w )
+                    {
+                        b2[1] += err >> 4;   // pixel below right
+                    }
+                }
+
+                b2++;
+            }
+        }
+    }
+    break;
+
+    case Ordered:
+    {
+
+        memset( dst->data, 0, dst->nbytes );
+
+        if ( d == 32 )
+        {
+            for ( int i = 0; i < h; i++ )
+            {
+                const uint *p = ( const uint * )src_data;
+                const uint *end = p + w;
+                uchar *m = dst_data;
+                int bit = 7;
+                int j = 0;
+
+                if ( fromalpha )
+                {
                     while ( p < end )
                     {
-                        if ( ( uint )gray[*p++] < lscs_bayer_matrix[j++ & 15][i & 15] )
+                        if ( ( *p++ >> 24 ) >= lscs_bayer_matrix[j++ & 15][i & 15] )
                         {
                             *m |= 1 << bit;
                         }
@@ -1727,86 +1674,14 @@ void dither_to_Mono( QImageData *dst, const QImageData *src, Qt::ImageConversion
                             bit--;
                         }
                     }
-
-                    dst_data += dst_bpl;
-                    src_data += src_bpl;
                 }
-            }
-        }
-        break;
-
-        default:   // Threshold:
-        {
-            memset( dst->data, 0, dst->nbytes );
-
-            if ( d == 32 )
-            {
-                for ( int i = 0; i < h; i++ )
+                else
                 {
-                    const uint *p = ( const uint * )src_data;
-                    const uint *end = p + w;
-                    uchar *m = dst_data;
-                    int bit = 7;
-
-                    if ( fromalpha )
-                    {
-                        while ( p < end )
-                        {
-                            if ( ( *p++ >> 24 ) >= 128 )
-                            {
-                                *m |= 1 << bit;   // Set mask "on"
-                            }
-
-                            if ( bit == 0 )
-                            {
-                                m++;
-                                bit = 7;
-                            }
-                            else
-                            {
-                                bit--;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        while ( p < end )
-                        {
-                            if ( qGray( *p++ ) < 128 )
-                            {
-                                *m |= 1 << bit;   // Set pixel "black"
-                            }
-
-                            if ( bit == 0 )
-                            {
-                                m++;
-                                bit = 7;
-                            }
-                            else
-                            {
-                                bit--;
-                            }
-                        }
-                    }
-
-                    dst_data += dst_bpl;
-                    src_data += src_bpl;
-                }
-            }
-            else if ( d == 8 )
-            {
-                for ( int i = 0; i < h; i++ )
-                {
-                    const uchar *p = src_data;
-                    const uchar *end = p + w;
-                    uchar *m = dst_data;
-                    int bit = 7;
-
                     while ( p < end )
                     {
-                        if ( gray[*p++] < 128 )
+                        if ( ( uint )qGray( *p++ ) < lscs_bayer_matrix[j++ & 15][i & 15] )
                         {
-                            *m |= 1 << bit;   // Set mask "on"/ pixel "black"
+                            *m |= 1 << bit;
                         }
 
                         if ( bit == 0 )
@@ -1819,12 +1694,137 @@ void dither_to_Mono( QImageData *dst, const QImageData *src, Qt::ImageConversion
                             bit--;
                         }
                     }
-
-                    dst_data += dst_bpl;
-                    src_data += src_bpl;
                 }
+
+                dst_data += dst_bpl;
+                src_data += src_bpl;
             }
         }
+        else if ( d == 8 )
+        {
+            for ( int i = 0; i < h; i++ )
+            {
+                const uchar *p = src_data;
+                const uchar *end = p + w;
+                uchar *m = dst_data;
+                int bit = 7;
+                int j = 0;
+
+                while ( p < end )
+                {
+                    if ( ( uint )gray[*p++] < lscs_bayer_matrix[j++ & 15][i & 15] )
+                    {
+                        *m |= 1 << bit;
+                    }
+
+                    if ( bit == 0 )
+                    {
+                        m++;
+                        bit = 7;
+                    }
+                    else
+                    {
+                        bit--;
+                    }
+                }
+
+                dst_data += dst_bpl;
+                src_data += src_bpl;
+            }
+        }
+    }
+    break;
+
+    default:   // Threshold:
+    {
+        memset( dst->data, 0, dst->nbytes );
+
+        if ( d == 32 )
+        {
+            for ( int i = 0; i < h; i++ )
+            {
+                const uint *p = ( const uint * )src_data;
+                const uint *end = p + w;
+                uchar *m = dst_data;
+                int bit = 7;
+
+                if ( fromalpha )
+                {
+                    while ( p < end )
+                    {
+                        if ( ( *p++ >> 24 ) >= 128 )
+                        {
+                            *m |= 1 << bit;   // Set mask "on"
+                        }
+
+                        if ( bit == 0 )
+                        {
+                            m++;
+                            bit = 7;
+                        }
+                        else
+                        {
+                            bit--;
+                        }
+                    }
+                }
+                else
+                {
+                    while ( p < end )
+                    {
+                        if ( qGray( *p++ ) < 128 )
+                        {
+                            *m |= 1 << bit;   // Set pixel "black"
+                        }
+
+                        if ( bit == 0 )
+                        {
+                            m++;
+                            bit = 7;
+                        }
+                        else
+                        {
+                            bit--;
+                        }
+                    }
+                }
+
+                dst_data += dst_bpl;
+                src_data += src_bpl;
+            }
+        }
+        else if ( d == 8 )
+        {
+            for ( int i = 0; i < h; i++ )
+            {
+                const uchar *p = src_data;
+                const uchar *end = p + w;
+                uchar *m = dst_data;
+                int bit = 7;
+
+                while ( p < end )
+                {
+                    if ( gray[*p++] < 128 )
+                    {
+                        *m |= 1 << bit;   // Set mask "on"/ pixel "black"
+                    }
+
+                    if ( bit == 0 )
+                    {
+                        m++;
+                        bit = 7;
+                    }
+                    else
+                    {
+                        bit--;
+                    }
+                }
+
+                dst_data += dst_bpl;
+                src_data += src_bpl;
+            }
+        }
+    }
     }
 
     if ( dst->format == QImage::Format_MonoLSB )

@@ -77,50 +77,50 @@ void lscs_memfill32( quint32 *dest, quint32 value, int count )
 
     switch ( epilogueSize )
     {
-        case 15:
-            *dest++ = value;
+    case 15:
+        *dest++ = value;
 
-        case 14:
-            *dest++ = value;
+    case 14:
+        *dest++ = value;
 
-        case 13:
-            *dest++ = value;
+    case 13:
+        *dest++ = value;
 
-        case 12:
-            *dest++ = value;
+    case 12:
+        *dest++ = value;
 
-        case 11:
-            *dest++ = value;
+    case 11:
+        *dest++ = value;
 
-        case 10:
-            *dest++ = value;
+    case 10:
+        *dest++ = value;
 
-        case 9:
-            *dest++ = value;
+    case 9:
+        *dest++ = value;
 
-        case 8:
-            *dest++ = value;
+    case 8:
+        *dest++ = value;
 
-        case 7:
-            *dest++ = value;
+    case 7:
+        *dest++ = value;
 
-        case 6:
-            *dest++ = value;
+    case 6:
+        *dest++ = value;
 
-        case 5:
-            *dest++ = value;
+    case 5:
+        *dest++ = value;
 
-        case 4:
-            *dest++ = value;
+    case 4:
+        *dest++ = value;
 
-        case 3:
-            *dest++ = value;
+    case 3:
+        *dest++ = value;
 
-        case 2:
-            *dest++ = value;
+    case 2:
+        *dest++ = value;
 
-        case 1:
-            *dest++ = value;
+    case 1:
+        *dest++ = value;
     }
 }
 
@@ -213,9 +213,9 @@ void lscs_blend_argb32_on_rgb16_const_alpha( uchar *destPixels, int dbpl,
         int const_alpha );
 
 void lscs_blend_rgb16_on_argb32_neon( uchar *destPixels, int dbpl,
-                                    const uchar *srcPixels, int sbpl,
-                                    int w, int h,
-                                    int const_alpha )
+                                      const uchar *srcPixels, int sbpl,
+                                      int w, int h,
+                                      int const_alpha )
 {
     dbpl /= 4;
     sbpl /= 2;
@@ -247,9 +247,9 @@ void lscs_blend_rgb16_on_argb32_neon( uchar *destPixels, int dbpl,
 
 // qblendfunctions.cpp
 void lscs_blend_rgb16_on_rgb16( uchar *dst, int dbpl,
-                              const uchar *src, int sbpl,
-                              int w, int h,
-                              int const_alpha );
+                                const uchar *src, int sbpl,
+                                int w, int h,
+                                int const_alpha );
 
 template <int N>
 static inline void scanLineBlit16( quint16 *dst, quint16 *src, int dstride )
@@ -311,9 +311,9 @@ static inline void blockBlit16( quint16 *dst, quint16 *src, int dstride, int sst
 }
 
 void lscs_blend_rgb16_on_rgb16_neon( uchar *destPixels, int dbpl,
-                                   const uchar *srcPixels, int sbpl,
-                                   int w, int h,
-                                   int const_alpha )
+                                     const uchar *srcPixels, int sbpl,
+                                     int w, int h,
+                                     int const_alpha )
 {
     // testing show that the default memcpy is faster for widths 150 and up
     if ( const_alpha != 256 || w >= 150 )
@@ -331,25 +331,25 @@ void lscs_blend_rgb16_on_rgb16_neon( uchar *destPixels, int dbpl,
     switch ( w )
     {
 #define BLOCKBLIT(n) case n: blockBlit16<n>(dst, src, dstride, sstride, h); return;
-            BLOCKBLIT( 1 );
-            BLOCKBLIT( 2 );
-            BLOCKBLIT( 3 );
-            BLOCKBLIT( 4 );
-            BLOCKBLIT( 5 );
-            BLOCKBLIT( 6 );
-            BLOCKBLIT( 7 );
-            BLOCKBLIT( 8 );
-            BLOCKBLIT( 9 );
-            BLOCKBLIT( 10 );
-            BLOCKBLIT( 11 );
-            BLOCKBLIT( 12 );
-            BLOCKBLIT( 13 );
-            BLOCKBLIT( 14 );
-            BLOCKBLIT( 15 );
+        BLOCKBLIT( 1 );
+        BLOCKBLIT( 2 );
+        BLOCKBLIT( 3 );
+        BLOCKBLIT( 4 );
+        BLOCKBLIT( 5 );
+        BLOCKBLIT( 6 );
+        BLOCKBLIT( 7 );
+        BLOCKBLIT( 8 );
+        BLOCKBLIT( 9 );
+        BLOCKBLIT( 10 );
+        BLOCKBLIT( 11 );
+        BLOCKBLIT( 12 );
+        BLOCKBLIT( 13 );
+        BLOCKBLIT( 14 );
+        BLOCKBLIT( 15 );
 #undef BLOCKBLIT
 
-        default:
-            break;
+    default:
+        break;
     }
 
     pixman_composite_src_0565_0565_asm_neon ( w, h, dst, dstride, src, sstride );
@@ -358,9 +358,9 @@ void lscs_blend_rgb16_on_rgb16_neon( uchar *destPixels, int dbpl,
 extern "C" void blend_8_pixels_argb32_on_rgb16_neon( quint16 *dst, const quint32 *src, int const_alpha );
 
 void lscs_blend_argb32_on_rgb16_neon( uchar *destPixels, int dbpl,
-                                    const uchar *srcPixels, int sbpl,
-                                    int w, int h,
-                                    int const_alpha )
+                                      const uchar *srcPixels, int sbpl,
+                                      int w, int h,
+                                      int const_alpha )
 {
     quint16 *dst = ( quint16 * ) destPixels;
     quint32 *src = ( quint32 * ) srcPixels;
@@ -421,14 +421,14 @@ void lscs_blend_argb32_on_argb32_scanline_neon( uint *dest, const uint *src, int
     else
     {
         lscs_blend_argb32_on_argb32_neon( ( uchar * )dest, 4 * length, ( uchar * )src, 4 * length, length, 1,
-                                        ( const_alpha * 256 ) / 255 );
+                                          ( const_alpha * 256 ) / 255 );
     }
 }
 
 void lscs_blend_argb32_on_argb32_neon( uchar *destPixels, int dbpl,
-                                     const uchar *srcPixels, int sbpl,
-                                     int w, int h,
-                                     int const_alpha )
+                                       const uchar *srcPixels, int sbpl,
+                                       int w, int h,
+                                       int const_alpha )
 {
     const uint *src = ( const uint * ) srcPixels;
     uint *dst = ( uint * ) destPixels;
@@ -560,14 +560,14 @@ void lscs_blend_argb32_on_argb32_neon( uchar *destPixels, int dbpl,
 
 // qblendfunctions.cpp
 void lscs_blend_rgb32_on_rgb32( uchar *destPixels, int dbpl,
-                              const uchar *srcPixels, int sbpl,
-                              int w, int h,
-                              int const_alpha );
+                                const uchar *srcPixels, int sbpl,
+                                int w, int h,
+                                int const_alpha );
 
 void lscs_blend_rgb32_on_rgb32_neon( uchar *destPixels, int dbpl,
-                                   const uchar *srcPixels, int sbpl,
-                                   int w, int h,
-                                   int const_alpha )
+                                     const uchar *srcPixels, int sbpl,
+                                     int w, int h,
+                                     int const_alpha )
 {
     if ( const_alpha != 256 )
     {
@@ -636,9 +636,9 @@ void lscs_blend_rgb32_on_rgb32_neon( uchar *destPixels, int dbpl,
 
 #if defined(ENABLE_PIXMAN_DRAWHELPERS)
 void lscs_alphamapblit_quint16_neon( QRasterBuffer *rasterBuffer, int x, int y, const QRgba64 &color,
-                                   const uchar *bitmap,
-                                   int mapWidth, int mapHeight, int mapStride,
-                                   const QClipData * )
+                                     const uchar *bitmap,
+                                     int mapWidth, int mapHeight, int mapStride,
+                                     const QClipData * )
 {
     quint16 *dest = reinterpret_cast<quint16 *>( rasterBuffer->scanLine( y ) ) + x;
     const int destStride = rasterBuffer->bytesPerLine() / sizeof( quint16 );
@@ -721,15 +721,15 @@ void lscs_scale_image_argb32_on_rgb16_neon( uchar *destPixels, int dbpl,
     }
 
     lscs_scale_image_16bit<quint32>( destPixels, dbpl, srcPixels, sbpl, srch, targetRect, sourceRect, clip,
-                                   Blend_on_RGB16_SourceAndConstAlpha_Neon_create<quint32>( blend_8_pixels_argb32_on_rgb16_neon, const_alpha ) );
+                                     Blend_on_RGB16_SourceAndConstAlpha_Neon_create<quint32>( blend_8_pixels_argb32_on_rgb16_neon, const_alpha ) );
 }
 
 void lscs_scale_image_rgb16_on_rgb16( uchar *destPixels, int dbpl,
-                                    const uchar *srcPixels, int sbpl, int sh,
-                                    const QRectF &targetRect,
-                                    const QRectF &sourceRect,
-                                    const QRect &clip,
-                                    int const_alpha );
+                                      const uchar *srcPixels, int sbpl, int sh,
+                                      const QRectF &targetRect,
+                                      const QRectF &sourceRect,
+                                      const QRect &clip,
+                                      int const_alpha );
 
 void lscs_scale_image_rgb16_on_rgb16_neon( uchar *destPixels, int dbpl,
         const uchar *srcPixels, int sbpl, int srch,
@@ -750,7 +750,7 @@ void lscs_scale_image_rgb16_on_rgb16_neon( uchar *destPixels, int dbpl,
     }
 
     lscs_scale_image_16bit<quint16>( destPixels, dbpl, srcPixels, sbpl, srch, targetRect, sourceRect, clip,
-                                   Blend_on_RGB16_SourceAndConstAlpha_Neon_create<quint16>( blend_8_pixels_rgb16_on_rgb16_neon, const_alpha ) );
+                                     Blend_on_RGB16_SourceAndConstAlpha_Neon_create<quint16>( blend_8_pixels_rgb16_on_rgb16_neon, const_alpha ) );
 }
 
 extern void lscs_transform_image_rgb16_on_rgb16( uchar *destPixels, int dbpl,
@@ -777,13 +777,13 @@ void lscs_transform_image_rgb16_on_rgb16_neon( uchar *destPixels, int dbpl,
     if ( const_alpha == 256 )
     {
         lscs_transform_image_rgb16_on_rgb16( destPixels, dbpl, srcPixels, sbpl, targetRect, sourceRect, clip, targetRectTransform,
-                                           const_alpha );
+                                             const_alpha );
         return;
     }
 
     lscs_transform_image( reinterpret_cast<quint16 *>( destPixels ), dbpl,
-                        reinterpret_cast<const quint16 *>( srcPixels ), sbpl, targetRect, sourceRect, clip, targetRectTransform,
-                        Blend_on_RGB16_SourceAndConstAlpha_Neon_create<quint16>( blend_8_pixels_rgb16_on_rgb16_neon, const_alpha ) );
+                          reinterpret_cast<const quint16 *>( srcPixels ), sbpl, targetRect, sourceRect, clip, targetRectTransform,
+                          Blend_on_RGB16_SourceAndConstAlpha_Neon_create<quint16>( blend_8_pixels_rgb16_on_rgb16_neon, const_alpha ) );
 }
 
 void lscs_transform_image_argb32_on_rgb16_neon( uchar *destPixels, int dbpl,
@@ -800,8 +800,8 @@ void lscs_transform_image_argb32_on_rgb16_neon( uchar *destPixels, int dbpl,
     }
 
     lscs_transform_image( reinterpret_cast<quint16 *>( destPixels ), dbpl,
-                        reinterpret_cast<const quint32 *>( srcPixels ), sbpl, targetRect, sourceRect, clip, targetRectTransform,
-                        Blend_on_RGB16_SourceAndConstAlpha_Neon_create<quint32>( blend_8_pixels_argb32_on_rgb16_neon, const_alpha ) );
+                          reinterpret_cast<const quint32 *>( srcPixels ), sbpl, targetRect, sourceRect, clip, targetRectTransform,
+                          Blend_on_RGB16_SourceAndConstAlpha_Neon_create<quint32>( blend_8_pixels_argb32_on_rgb16_neon, const_alpha ) );
 }
 
 static inline void convert_8_pixels_rgb16_to_argb32( quint32 *dst, const quint16 *src )
@@ -1122,8 +1122,8 @@ void lscs_memrotate90_16_neon( const uchar *srcPixels, int w, int h, int sstride
 extern "C" void lscs_rotate270_16_neon( quint16 *dst, const quint16 *src, int sstride, int dstride, int count );
 
 void lscs_memrotate270_16_neon( const uchar *srcPixels, int w, int h,
-                              int sstride,
-                              uchar *destPixels, int dstride )
+                                int sstride,
+                                uchar *destPixels, int dstride )
 {
     const ushort *src = ( const ushort * )srcPixels;
     ushort *dest = ( ushort * )destPixels;

@@ -160,99 +160,99 @@ QWidget *QDefaultItemEditorFactory::createEditor( QVariant::Type type, QWidget *
     {
 #ifndef LSCS_NO_COMBOBOX
 
-        case QVariant::Bool:
-        {
-            QBooleanComboBox *cb = new QBooleanComboBox( parent );
-            cb->setFrame( false );
-            return cb;
-        }
+    case QVariant::Bool:
+    {
+        QBooleanComboBox *cb = new QBooleanComboBox( parent );
+        cb->setFrame( false );
+        return cb;
+    }
 
 #endif
 
 #ifndef LSCS_NO_SPINBOX
 
-        case QVariant::UInt:
-        {
-            QSpinBox *sb = new QUIntSpinBox( parent );
-            sb->setFrame( false );
-            sb->setMinimum( 0 );
-            sb->setMaximum( INT_MAX );
-            return sb;
-        }
+    case QVariant::UInt:
+    {
+        QSpinBox *sb = new QUIntSpinBox( parent );
+        sb->setFrame( false );
+        sb->setMinimum( 0 );
+        sb->setMaximum( INT_MAX );
+        return sb;
+    }
 
-        case QVariant::Int:
-        {
-            QSpinBox *sb = new QSpinBox( parent );
-            sb->setFrame( false );
-            sb->setMinimum( INT_MIN );
-            sb->setMaximum( INT_MAX );
-            return sb;
-        }
+    case QVariant::Int:
+    {
+        QSpinBox *sb = new QSpinBox( parent );
+        sb->setFrame( false );
+        sb->setMinimum( INT_MIN );
+        sb->setMaximum( INT_MAX );
+        return sb;
+    }
 
 #endif
 
 #ifndef LSCS_NO_DATETIMEEDIT
 
-        case QVariant::Date:
-        {
-            QDateTimeEdit *ed = new QDateEdit( parent );
-            ed->setFrame( false );
-            return ed;
-        }
+    case QVariant::Date:
+    {
+        QDateTimeEdit *ed = new QDateEdit( parent );
+        ed->setFrame( false );
+        return ed;
+    }
 
-        case QVariant::Time:
-        {
-            QDateTimeEdit *ed = new QTimeEdit( parent );
-            ed->setFrame( false );
-            return ed;
-        }
+    case QVariant::Time:
+    {
+        QDateTimeEdit *ed = new QTimeEdit( parent );
+        ed->setFrame( false );
+        return ed;
+    }
 
-        case QVariant::DateTime:
-        {
-            QDateTimeEdit *ed = new QDateTimeEdit( parent );
-            ed->setFrame( false );
-            return ed;
-        }
+    case QVariant::DateTime:
+    {
+        QDateTimeEdit *ed = new QDateTimeEdit( parent );
+        ed->setFrame( false );
+        return ed;
+    }
 
 #endif
 
-        case QVariant::Pixmap:
-            return new QLabel( parent );
+    case QVariant::Pixmap:
+        return new QLabel( parent );
 
 #ifndef LSCS_NO_SPINBOX
 
-        case QVariant::Double:
-        {
-            QDoubleSpinBox *sb = new QDoubleSpinBox( parent );
-            sb->setFrame( false );
-            sb->setMinimum( -DBL_MAX );
-            sb->setMaximum( DBL_MAX );
-            return sb;
-        }
+    case QVariant::Double:
+    {
+        QDoubleSpinBox *sb = new QDoubleSpinBox( parent );
+        sb->setFrame( false );
+        sb->setMinimum( -DBL_MAX );
+        sb->setMaximum( DBL_MAX );
+        return sb;
+    }
 
 #endif
 
 #ifndef LSCS_NO_LINEEDIT
 
-        case QVariant::String:
-        default:
+    case QVariant::String:
+    default:
+    {
+        // the default editor is a lineedit
+        QExpandingLineEdit *le = new QExpandingLineEdit( parent );
+        le->setFrame( le->style()->styleHint( QStyle::SH_ItemView_DrawDelegateFrame, nullptr, le ) );
+
+        if ( !le->style()->styleHint( QStyle::SH_ItemView_ShowDecorationSelected, nullptr, le ) )
         {
-            // the default editor is a lineedit
-            QExpandingLineEdit *le = new QExpandingLineEdit( parent );
-            le->setFrame( le->style()->styleHint( QStyle::SH_ItemView_DrawDelegateFrame, nullptr, le ) );
-
-            if ( !le->style()->styleHint( QStyle::SH_ItemView_ShowDecorationSelected, nullptr, le ) )
-            {
-                le->setWidgetOwnsGeometry( true );
-            }
-
-            return le;
+            le->setWidgetOwnsGeometry( true );
         }
+
+        return le;
+    }
 
 #else
 
-        default:
-            break;
+    default:
+        break;
 #endif
     }
 
@@ -266,34 +266,34 @@ QString QDefaultItemEditorFactory::valuePropertyName( QVariant::Type type ) cons
 
 #ifndef LSCS_NO_COMBOBOX
 
-        case QVariant::Bool:
-            return QString( "currentIndex" );
+    case QVariant::Bool:
+        return QString( "currentIndex" );
 #endif
 
 #ifndef LSCS_NO_SPINBOX
 
-        case QVariant::UInt:
-        case QVariant::Int:
-        case QVariant::Double:
-            return QString( "value" );
+    case QVariant::UInt:
+    case QVariant::Int:
+    case QVariant::Double:
+        return QString( "value" );
 #endif
 
 #ifndef LSCS_NO_DATETIMEEDIT
 
-        case QVariant::Date:
-            return QString( "date" );
+    case QVariant::Date:
+        return QString( "date" );
 
-        case QVariant::Time:
-            return QString( "time" );
+    case QVariant::Time:
+        return QString( "time" );
 
-        case QVariant::DateTime:
-            return QString( "dateTime" );
+    case QVariant::DateTime:
+        return QString( "dateTime" );
 #endif
 
-        case QVariant::String:
-        default:
-            // the default editor is a lineedit
-            return QString( "text" );
+    case QVariant::String:
+    default:
+        // the default editor is a lineedit
+        return QString( "text" );
     }
 }
 
@@ -346,14 +346,14 @@ void QExpandingLineEdit::changeEvent( QEvent *e )
 {
     switch ( e->type() )
     {
-        case QEvent::FontChange:
-        case QEvent::StyleChange:
-        case QEvent::ContentsRectChange:
-            updateMinimumWidth();
-            break;
+    case QEvent::FontChange:
+    case QEvent::StyleChange:
+    case QEvent::ContentsRectChange:
+        updateMinimumWidth();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     QLineEdit::changeEvent( e );

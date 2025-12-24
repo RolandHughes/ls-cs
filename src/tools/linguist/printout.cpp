@@ -209,26 +209,26 @@ void PrintOut::drawRule( Rule rule )
 
     switch ( rule )
     {
-        case NoRule:
-            voffset += 5;
-            break;
+    case NoRule:
+        voffset += 5;
+        break;
 
-        case ThinRule:
-            pen.setColor( QColor( 192, 192, 192 ) );
-            pen.setStyle( Qt::DotLine );
-            pen.setWidth( 0 );
-            p.setPen( pen );
-            voffset += 5;
+    case ThinRule:
+        pen.setColor( QColor( 192, 192, 192 ) );
+        pen.setStyle( Qt::DotLine );
+        pen.setWidth( 0 );
+        p.setPen( pen );
+        voffset += 5;
 
-            p.drawLine( QPoint( hmargin, voffset ), QPoint( hmargin + hsize, voffset ) );
-            p.setPen( QPen() );
-            voffset += 2;
-            break;
+        p.drawLine( QPoint( hmargin, voffset ), QPoint( hmargin + hsize, voffset ) );
+        p.setPen( QPen() );
+        voffset += 2;
+        break;
 
-        case ThickRule:
-            voffset += 7;
-            p.drawLine( QPoint( hmargin, voffset ), QPoint( hmargin + hsize, voffset ) );
-            voffset += 4;
+    case ThickRule:
+        voffset += 7;
+        p.drawLine( QPoint( hmargin, voffset ), QPoint( hmargin + hsize, voffset ) );
+        voffset += 4;
     }
 }
 

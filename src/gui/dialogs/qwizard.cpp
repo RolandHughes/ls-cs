@@ -159,33 +159,33 @@ static QString changed_signal( int which )
 
     switch ( which )
     {
-        case 0:
-            retval = "toggled(bool)";
-            break;
+    case 0:
+        retval = "toggled(bool)";
+        break;
 
-        case 1:
-            retval = "valueChanged(int)";
-            break;
+    case 1:
+        retval = "valueChanged(int)";
+        break;
 
-        case 2:
-            retval = "currentIndexChanged(int)";
-            break;
+    case 2:
+        retval = "currentIndexChanged(int)";
+        break;
 
-        case 3:
-            retval = "dateTimeChanged(QDateTime)";
-            break;
+    case 3:
+        retval = "dateTimeChanged(QDateTime)";
+        break;
 
-        case 4:
-            retval = "textChanged(QString)";
-            break;
+    case 4:
+        retval = "textChanged(QString)";
+        break;
 
-        case 5:
-            retval = "currentRowChanged(int)";
-            break;
+    case 5:
+        retval = "currentRowChanged(int)";
+        break;
 
-        case 6:
-            retval = "valueChanged(int)";
-            break;
+    case 6:
+        retval = "valueChanged(int)";
+        break;
     };
 
     static_assert( 7 == NFallbackDefaultProperties, "Incorrect values" );
@@ -812,34 +812,34 @@ static QString buttonDefaultText( int wstyle, int which, const QWizardPrivate *w
 
     switch ( which )
     {
-        case QWizard::BackButton:
-            return macStyle ? QWizard::tr( "Go Back" ) : QWizard::tr( "< &Back" );
+    case QWizard::BackButton:
+        return macStyle ? QWizard::tr( "Go Back" ) : QWizard::tr( "< &Back" );
 
-        case QWizard::NextButton:
-            if ( macStyle )
-            {
-                return QWizard::tr( "Continue" );
-            }
-            else
-            {
-                return wizardPrivate->isVistaThemeEnabled()
-                       ? QWizard::tr( "&Next" ) : QWizard::tr( "&Next >" );
-            }
+    case QWizard::NextButton:
+        if ( macStyle )
+        {
+            return QWizard::tr( "Continue" );
+        }
+        else
+        {
+            return wizardPrivate->isVistaThemeEnabled()
+                   ? QWizard::tr( "&Next" ) : QWizard::tr( "&Next >" );
+        }
 
-        case QWizard::CommitButton:
-            return QWizard::tr( "Commit" );
+    case QWizard::CommitButton:
+        return QWizard::tr( "Commit" );
 
-        case QWizard::FinishButton:
-            return macStyle ? QWizard::tr( "Done" ) : QWizard::tr( "&Finish" );
+    case QWizard::FinishButton:
+        return macStyle ? QWizard::tr( "Done" ) : QWizard::tr( "&Finish" );
 
-        case QWizard::CancelButton:
-            return QWizard::tr( "Cancel" );
+    case QWizard::CancelButton:
+        return QWizard::tr( "Cancel" );
 
-        case QWizard::HelpButton:
-            return macStyle ? QWizard::tr( "Help" ) : QWizard::tr( "&Help" );
+    case QWizard::HelpButton:
+        return macStyle ? QWizard::tr( "Help" ) : QWizard::tr( "&Help" );
 
-        default:
-            return QString();
+    default:
+        return QString();
     }
 }
 
@@ -1073,29 +1073,29 @@ static QString buttonSlots( QWizard::WizardButton which )
 {
     switch ( which )
     {
-        case QWizard::BackButton:
-            return QString( "back()" );
+    case QWizard::BackButton:
+        return QString( "back()" );
 
-        case QWizard::NextButton:
-        case QWizard::CommitButton:
-            return QString( "next()" );
+    case QWizard::NextButton:
+    case QWizard::CommitButton:
+        return QString( "next()" );
 
-        case QWizard::FinishButton:
-            return QString( "accept()" );
+    case QWizard::FinishButton:
+        return QString( "accept()" );
 
-        case QWizard::CancelButton:
-            return QString( "reject()" );
+    case QWizard::CancelButton:
+        return QString( "reject()" );
 
-        case QWizard::HelpButton:
-            return QString( "helpRequested()" );
+    case QWizard::HelpButton:
+        return QString( "helpRequested()" );
 
-        case QWizard::CustomButton1:
-        case QWizard::CustomButton2:
-        case QWizard::CustomButton3:
-        case QWizard::Stretch:
-        case QWizard::NoButton:
-            // error, may want to throw
-            break;
+    case QWizard::CustomButton1:
+    case QWizard::CustomButton2:
+    case QWizard::CustomButton3:
+    case QWizard::Stretch:
+    case QWizard::NoButton:
+        // error, may want to throw
+        break;
     }
 
     return QString();
@@ -1737,29 +1737,29 @@ static QString object_name_for_button( QWizard::WizardButton which )
 {
     switch ( which )
     {
-        case QWizard::CommitButton:
-            return QString( "lscs_wizard_commit" );
+    case QWizard::CommitButton:
+        return QString( "lscs_wizard_commit" );
 
-        case QWizard::FinishButton:
-            return QString( "lscs_wizard_finish" );
+    case QWizard::FinishButton:
+        return QString( "lscs_wizard_finish" );
 
-        case QWizard::CancelButton:
-            return QString( "lscs_wizard_cancel" );
+    case QWizard::CancelButton:
+        return QString( "lscs_wizard_cancel" );
 
-        case QWizard::BackButton:
-        case QWizard::NextButton:
-        case QWizard::HelpButton:
-        case QWizard::CustomButton1:
-        case QWizard::CustomButton2:
-        case QWizard::CustomButton3:
-            // Make navigation buttons detectable as passive interactor in designer
-            return QString( "__lscs__passive_wizardbutton" ) + QString::number( which );
+    case QWizard::BackButton:
+    case QWizard::NextButton:
+    case QWizard::HelpButton:
+    case QWizard::CustomButton1:
+    case QWizard::CustomButton2:
+    case QWizard::CustomButton3:
+        // Make navigation buttons detectable as passive interactor in designer
+        return QString( "__lscs__passive_wizardbutton" ) + QString::number( which );
 
-        case QWizard::Stretch:
-        case QWizard::NoButton:
+    case QWizard::Stretch:
+    case QWizard::NoButton:
 //    case QWizard::NStandardButtons:
 //    case QWizard::NButtons:
-            break;
+        break;
     }
 
     // error, may want to throw

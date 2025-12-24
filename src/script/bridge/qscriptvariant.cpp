@@ -87,29 +87,29 @@ static JSC::JSValue JSC_HOST_CALL variantProtoFuncValueOf( JSC::ExecState *exec,
 
     switch ( v.type() )
     {
-        case QVariant::Invalid:
-            return JSC::jsUndefined();
+    case QVariant::Invalid:
+        return JSC::jsUndefined();
 
-        case QVariant::String:
-            return JSC::jsString( exec, v.toString() );
+    case QVariant::String:
+        return JSC::jsString( exec, v.toString() );
 
-        case QVariant::Int:
-            return JSC::jsNumber( exec, v.toInt() );
+    case QVariant::Int:
+        return JSC::jsNumber( exec, v.toInt() );
 
-        case QVariant::Bool:
-            return JSC::jsBoolean( v.toBool() );
+    case QVariant::Bool:
+        return JSC::jsBoolean( v.toBool() );
 
-        case QVariant::Double:
-            return JSC::jsNumber( exec, v.toDouble() );
+    case QVariant::Double:
+        return JSC::jsNumber( exec, v.toDouble() );
 
-        //    case QVariant::Char:
-        //        return JSC::jsNumber(exec, v.toChar().unicode());
+    //    case QVariant::Char:
+    //        return JSC::jsNumber(exec, v.toChar().unicode());
 
-        case QVariant::UInt:
-            return JSC::jsNumber( exec, v.toUInt() );
+    case QVariant::UInt:
+        return JSC::jsNumber( exec, v.toUInt() );
 
-        default:
-            ;
+    default:
+        ;
     }
 
     return thisValue;

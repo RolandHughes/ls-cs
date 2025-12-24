@@ -394,17 +394,17 @@ bool QUrlInfo::greaterThan( const QUrlInfo &i1, const QUrlInfo &i2, int sortBy )
 {
     switch ( sortBy )
     {
-        case QDir::Name:
-            return i1.name() > i2.name();
+    case QDir::Name:
+        return i1.name() > i2.name();
 
-        case QDir::Time:
-            return i1.lastModified() > i2.lastModified();
+    case QDir::Time:
+        return i1.lastModified() > i2.lastModified();
 
-        case QDir::Size:
-            return i1.size() > i2.size();
+    case QDir::Size:
+        return i1.size() > i2.size();
 
-        default:
-            return false;
+    default:
+        return false;
     }
 }
 
@@ -417,17 +417,17 @@ bool QUrlInfo::equal( const QUrlInfo &i1, const QUrlInfo &i2, int sortBy )
 {
     switch ( sortBy )
     {
-        case QDir::Name:
-            return i1.name() == i2.name();
+    case QDir::Name:
+        return i1.name() == i2.name();
 
-        case QDir::Time:
-            return i1.lastModified() == i2.lastModified();
+    case QDir::Time:
+        return i1.lastModified() == i2.lastModified();
 
-        case QDir::Size:
-            return i1.size() == i2.size();
+    case QDir::Size:
+        return i1.size() == i2.size();
 
-        default:
-            return false;
+    default:
+        return false;
     }
 }
 

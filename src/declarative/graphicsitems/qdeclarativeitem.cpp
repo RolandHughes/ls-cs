@@ -732,80 +732,80 @@ void QDeclarativeKeyNavigationAttached::keyPressed( QKeyEvent *event, bool post 
 
     switch ( event->key() )
     {
-        case Qt::Key_Left:
+    case Qt::Key_Left:
+    {
+        if ( QDeclarativeItem *parentItem = qobject_cast<QDeclarativeItem *>( parent() ) )
         {
-            if ( QDeclarativeItem *parentItem = qobject_cast<QDeclarativeItem *>( parent() ) )
-            {
-                mirror = QDeclarativeItemPrivate::get( parentItem )->effectiveLayoutMirror;
-            }
-
-            QDeclarativeItem *leftItem = mirror ? d->right : d->left;
-
-            if ( leftItem )
-            {
-                setFocusNavigation( leftItem, mirror ? "right" : "left" );
-                event->accept();
-            }
-
-            break;
+            mirror = QDeclarativeItemPrivate::get( parentItem )->effectiveLayoutMirror;
         }
 
-        case Qt::Key_Right:
+        QDeclarativeItem *leftItem = mirror ? d->right : d->left;
+
+        if ( leftItem )
         {
-            if ( QDeclarativeItem *parentItem = qobject_cast<QDeclarativeItem *>( parent() ) )
-            {
-                mirror = QDeclarativeItemPrivate::get( parentItem )->effectiveLayoutMirror;
-            }
-
-            QDeclarativeItem *rightItem = mirror ? d->left : d->right;
-
-            if ( rightItem )
-            {
-                setFocusNavigation( rightItem, mirror ? "left" : "right" );
-                event->accept();
-            }
-
-            break;
+            setFocusNavigation( leftItem, mirror ? "right" : "left" );
+            event->accept();
         }
 
-        case Qt::Key_Up:
-            if ( d->up )
-            {
-                setFocusNavigation( d->up, "up" );
-                event->accept();
-            }
+        break;
+    }
 
-            break;
+    case Qt::Key_Right:
+    {
+        if ( QDeclarativeItem *parentItem = qobject_cast<QDeclarativeItem *>( parent() ) )
+        {
+            mirror = QDeclarativeItemPrivate::get( parentItem )->effectiveLayoutMirror;
+        }
 
-        case Qt::Key_Down:
-            if ( d->down )
-            {
-                setFocusNavigation( d->down, "down" );
-                event->accept();
-            }
+        QDeclarativeItem *rightItem = mirror ? d->left : d->right;
 
-            break;
+        if ( rightItem )
+        {
+            setFocusNavigation( rightItem, mirror ? "left" : "right" );
+            event->accept();
+        }
 
-        case Qt::Key_Tab:
-            if ( d->tab )
-            {
-                setFocusNavigation( d->tab, "tab" );
-                event->accept();
-            }
+        break;
+    }
 
-            break;
+    case Qt::Key_Up:
+        if ( d->up )
+        {
+            setFocusNavigation( d->up, "up" );
+            event->accept();
+        }
 
-        case Qt::Key_Backtab:
-            if ( d->backtab )
-            {
-                setFocusNavigation( d->backtab, "backtab" );
-                event->accept();
-            }
+        break;
 
-            break;
+    case Qt::Key_Down:
+        if ( d->down )
+        {
+            setFocusNavigation( d->down, "down" );
+            event->accept();
+        }
 
-        default:
-            break;
+        break;
+
+    case Qt::Key_Tab:
+        if ( d->tab )
+        {
+            setFocusNavigation( d->tab, "tab" );
+            event->accept();
+        }
+
+        break;
+
+    case Qt::Key_Backtab:
+        if ( d->backtab )
+        {
+            setFocusNavigation( d->backtab, "backtab" );
+            event->accept();
+        }
+
+        break;
+
+    default:
+        break;
     }
 
     if ( !event->isAccepted() )
@@ -829,66 +829,66 @@ void QDeclarativeKeyNavigationAttached::keyReleased( QKeyEvent *event, bool post
 
     switch ( event->key() )
     {
-        case Qt::Key_Left:
-            if ( QDeclarativeItem *parentItem = qobject_cast<QDeclarativeItem *>( parent() ) )
-            {
-                mirror = QDeclarativeItemPrivate::get( parentItem )->effectiveLayoutMirror;
-            }
+    case Qt::Key_Left:
+        if ( QDeclarativeItem *parentItem = qobject_cast<QDeclarativeItem *>( parent() ) )
+        {
+            mirror = QDeclarativeItemPrivate::get( parentItem )->effectiveLayoutMirror;
+        }
 
-            if ( mirror ? d->right : d->left )
-            {
-                event->accept();
-            }
+        if ( mirror ? d->right : d->left )
+        {
+            event->accept();
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Right:
-            if ( QDeclarativeItem *parentItem = qobject_cast<QDeclarativeItem *>( parent() ) )
-            {
-                mirror = QDeclarativeItemPrivate::get( parentItem )->effectiveLayoutMirror;
-            }
+    case Qt::Key_Right:
+        if ( QDeclarativeItem *parentItem = qobject_cast<QDeclarativeItem *>( parent() ) )
+        {
+            mirror = QDeclarativeItemPrivate::get( parentItem )->effectiveLayoutMirror;
+        }
 
-            if ( mirror ? d->left : d->right )
-            {
-                event->accept();
-            }
+        if ( mirror ? d->left : d->right )
+        {
+            event->accept();
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Up:
-            if ( d->up )
-            {
-                event->accept();
-            }
+    case Qt::Key_Up:
+        if ( d->up )
+        {
+            event->accept();
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Down:
-            if ( d->down )
-            {
-                event->accept();
-            }
+    case Qt::Key_Down:
+        if ( d->down )
+        {
+            event->accept();
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Tab:
-            if ( d->tab )
-            {
-                event->accept();
-            }
+    case Qt::Key_Tab:
+        if ( d->tab )
+        {
+            event->accept();
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Backtab:
-            if ( d->backtab )
-            {
-                event->accept();
-            }
+    case Qt::Key_Backtab:
+        if ( d->backtab )
+        {
+            event->accept();
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( !event->isAccepted() )
@@ -2118,7 +2118,7 @@ void QDeclarativeItemPrivate::data_append( QDeclarativeListProperty<QObject> *pr
     {
         QGraphicsObject *graphicsObject = static_cast<QGraphicsObject *>( o );
         QDeclarativeItemPrivate *contentItemPrivate = static_cast<QDeclarativeItemPrivate *>( QGraphicsItemPrivate::get(
-                    graphicsObject ) );
+                graphicsObject ) );
 
         if ( contentItemPrivate->componentComplete )
         {
@@ -3534,33 +3534,33 @@ QPointF QDeclarativeItemPrivate::computeTransformOrigin() const
 
     switch ( origin )
     {
-        default:
-        case QDeclarativeItem::TopLeft:
-            return QPointF( 0, 0 );
+    default:
+    case QDeclarativeItem::TopLeft:
+        return QPointF( 0, 0 );
 
-        case QDeclarativeItem::Top:
-            return QPointF( br.width() / 2., 0 );
+    case QDeclarativeItem::Top:
+        return QPointF( br.width() / 2., 0 );
 
-        case QDeclarativeItem::TopRight:
-            return QPointF( br.width(), 0 );
+    case QDeclarativeItem::TopRight:
+        return QPointF( br.width(), 0 );
 
-        case QDeclarativeItem::Left:
-            return QPointF( 0, br.height() / 2. );
+    case QDeclarativeItem::Left:
+        return QPointF( 0, br.height() / 2. );
 
-        case QDeclarativeItem::Center:
-            return QPointF( br.width() / 2., br.height() / 2. );
+    case QDeclarativeItem::Center:
+        return QPointF( br.width() / 2., br.height() / 2. );
 
-        case QDeclarativeItem::Right:
-            return QPointF( br.width(), br.height() / 2. );
+    case QDeclarativeItem::Right:
+        return QPointF( br.width(), br.height() / 2. );
 
-        case QDeclarativeItem::BottomLeft:
-            return QPointF( 0, br.height() );
+    case QDeclarativeItem::BottomLeft:
+        return QPointF( 0, br.height() );
 
-        case QDeclarativeItem::Bottom:
-            return QPointF( br.width() / 2., br.height() );
+    case QDeclarativeItem::Bottom:
+        return QPointF( br.width() / 2., br.height() );
 
-        case QDeclarativeItem::BottomRight:
-            return QPointF( br.width(), br.height() );
+    case QDeclarativeItem::BottomRight:
+        return QPointF( br.width(), br.height() );
     }
 }
 
@@ -3620,56 +3620,56 @@ QVariant QDeclarativeItem::itemChange( GraphicsItemChange change,
 
     switch ( change )
     {
-        case ItemParentHasChanged:
-            d->resolveLayoutMirror();
-            emit parentChanged( parentItem() );
-            d->parentNotifier.notify();
-            break;
-
-        case ItemVisibleHasChanged:
-        {
-            for ( int ii = 0; ii < d->changeListeners.count(); ++ii )
-            {
-                const QDeclarativeItemPrivate::ChangeListener &change = d->changeListeners.at( ii );
-
-                if ( change.types & QDeclarativeItemPrivate::Visibility )
-                {
-                    change.listener->itemVisibilityChanged( this );
-                }
-            }
-        }
+    case ItemParentHasChanged:
+        d->resolveLayoutMirror();
+        emit parentChanged( parentItem() );
+        d->parentNotifier.notify();
         break;
 
-        case ItemOpacityHasChanged:
+    case ItemVisibleHasChanged:
+    {
+        for ( int ii = 0; ii < d->changeListeners.count(); ++ii )
         {
-            for ( int ii = 0; ii < d->changeListeners.count(); ++ii )
-            {
-                const QDeclarativeItemPrivate::ChangeListener &change = d->changeListeners.at( ii );
+            const QDeclarativeItemPrivate::ChangeListener &change = d->changeListeners.at( ii );
 
-                if ( change.types & QDeclarativeItemPrivate::Opacity )
-                {
-                    change.listener->itemOpacityChanged( this );
-                }
+            if ( change.types & QDeclarativeItemPrivate::Visibility )
+            {
+                change.listener->itemVisibilityChanged( this );
             }
         }
+    }
+    break;
+
+    case ItemOpacityHasChanged:
+    {
+        for ( int ii = 0; ii < d->changeListeners.count(); ++ii )
+        {
+            const QDeclarativeItemPrivate::ChangeListener &change = d->changeListeners.at( ii );
+
+            if ( change.types & QDeclarativeItemPrivate::Opacity )
+            {
+                change.listener->itemOpacityChanged( this );
+            }
+        }
+    }
+    break;
+
+    case ItemChildAddedChange:
+        if ( d->_contents && d->componentComplete )
+            d->_contents->childAdded( qobject_cast<QDeclarativeItem *>(
+                                          value.value<QGraphicsItem *>() ) );
+
         break;
 
-        case ItemChildAddedChange:
-            if ( d->_contents && d->componentComplete )
-                d->_contents->childAdded( qobject_cast<QDeclarativeItem *>(
-                                              value.value<QGraphicsItem *>() ) );
+    case ItemChildRemovedChange:
+        if ( d->_contents && d->componentComplete )
+            d->_contents->childRemoved( qobject_cast<QDeclarativeItem *>(
+                                            value.value<QGraphicsItem *>() ) );
 
-            break;
+        break;
 
-        case ItemChildRemovedChange:
-            if ( d->_contents && d->componentComplete )
-                d->_contents->childRemoved( qobject_cast<QDeclarativeItem *>(
-                                                value.value<QGraphicsItem *>() ) );
-
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     return QGraphicsItem::itemChange( change, value );
@@ -4332,14 +4332,14 @@ bool QDeclarativeItem::event( QEvent *ev )
 
     switch ( ev->type() )
     {
-        case QEvent::KeyPress:
-        case QEvent::KeyRelease:
-        case QEvent::InputMethod:
-            d->doneEventPreHandler = false;
-            break;
+    case QEvent::KeyPress:
+    case QEvent::KeyRelease:
+    case QEvent::InputMethod:
+        d->doneEventPreHandler = false;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QGraphicsObject::event( ev );

@@ -12,7 +12,9 @@ class SomeClass
 {
     LSCS_GADGET( SomeClass )
 public:
-    QString name() { return m_name;}
+    QString name() {
+        return m_name;
+    }
 
 private:
     QString m_name;
@@ -22,9 +24,13 @@ class Task : public QObject
 {
     LSCS_OBJECT( Task )
 public:
-    Task( QObject *parent = 0 ) : QObject( parent ) {m_ptr = new SomeClass();}
+    Task( QObject *parent = 0 ) : QObject( parent ) {
+        m_ptr = new SomeClass();
+    }
 
-    ~Task() { delete m_ptr;}
+    ~Task() {
+        delete m_ptr;
+    }
 
     LSCS_SLOT_1( Public, void run() )
     LSCS_SLOT_2( run )
@@ -63,8 +69,8 @@ void Task::run()
     out << "     float              " << sizeof( float ) << endl;
     out << "     double             " << sizeof( double ) << endl;
     out << "     long double        " << sizeof( long double) << endl;
-    
-    
+
+
     out << "\n\nNext we will do some regular expression matching.\n";
     out << "This section can be useful if you want to try out some\n";
     out << "regular expressions for your own programs.\n" << endl;  // use endl to flush
@@ -76,7 +82,7 @@ void Task::run()
     // extra slashes due to string escape sequences
     out << "rangeExpression( \"(\\\\d+ THRU \\\\d+)|(\\\\d+:\\\\d+)\", QPatternOption::CaseInsensitiveOption )\n\n";
 
-        
+
     // Some regular expression experiments.
     //
     QString str1 = "MOVE =fred 1234 thru 5678 TO =Ethyl 5";

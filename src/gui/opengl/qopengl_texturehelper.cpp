@@ -676,19 +676,19 @@ public:
         // target and binding target to the cubemap values in this case.
         switch ( target )
         {
-            case GL_TEXTURE_CUBE_MAP_NEGATIVE_X:
-            case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
-            case GL_TEXTURE_CUBE_MAP_NEGATIVE_Y:
-            case GL_TEXTURE_CUBE_MAP_POSITIVE_Y:
-            case GL_TEXTURE_CUBE_MAP_NEGATIVE_Z:
-            case GL_TEXTURE_CUBE_MAP_POSITIVE_Z:
-                bindingTarget = GL_TEXTURE_BINDING_CUBE_MAP;
-                m_target = GL_TEXTURE_CUBE_MAP;
-                break;
+        case GL_TEXTURE_CUBE_MAP_NEGATIVE_X:
+        case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
+        case GL_TEXTURE_CUBE_MAP_NEGATIVE_Y:
+        case GL_TEXTURE_CUBE_MAP_POSITIVE_Y:
+        case GL_TEXTURE_CUBE_MAP_NEGATIVE_Z:
+        case GL_TEXTURE_CUBE_MAP_POSITIVE_Z:
+            bindingTarget = GL_TEXTURE_BINDING_CUBE_MAP;
+            m_target = GL_TEXTURE_CUBE_MAP;
+            break;
 
-            default:
-                m_target = target;
-                break;
+        default:
+            m_target = target;
+            break;
         }
 
         m_textureFunctions->glGetIntegerv( bindingTarget, &m_oldTexture );

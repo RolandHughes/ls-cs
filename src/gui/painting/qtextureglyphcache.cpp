@@ -300,14 +300,14 @@ QImage QTextureGlyphCache::textureMapForGlyph( glyph_t g, QFixed subPixelPositio
 {
     switch ( m_format )
     {
-        case QFontEngine::Format_A32:
-            return m_current_fontengine->alphaRGBMapForGlyph( g, subPixelPosition, m_transform );
+    case QFontEngine::Format_A32:
+        return m_current_fontengine->alphaRGBMapForGlyph( g, subPixelPosition, m_transform );
 
-        case QFontEngine::Format_ARGB:
-            return m_current_fontengine->bitmapForGlyph( g, subPixelPosition, m_transform );
+    case QFontEngine::Format_ARGB:
+        return m_current_fontengine->bitmapForGlyph( g, subPixelPosition, m_transform );
 
-        default:
-            return m_current_fontengine->alphaMapForGlyph( g, subPixelPosition, m_transform );
+    default:
+        return m_current_fontengine->alphaMapForGlyph( g, subPixelPosition, m_transform );
     }
 }
 QImageTextureGlyphCache::~QImageTextureGlyphCache()
@@ -323,25 +323,25 @@ void QImageTextureGlyphCache::createTextureData( int width, int height )
 {
     switch ( m_format )
     {
-        case QFontEngine::Format_Mono:
-            m_image = QImage( width, height, QImage::Format_Mono );
-            break;
+    case QFontEngine::Format_Mono:
+        m_image = QImage( width, height, QImage::Format_Mono );
+        break;
 
-        case QFontEngine::Format_A8:
-            m_image = QImage( width, height, QImage::Format_Alpha8 );
-            break;
+    case QFontEngine::Format_A8:
+        m_image = QImage( width, height, QImage::Format_Alpha8 );
+        break;
 
-        case QFontEngine::Format_A32:
-            m_image = QImage( width, height, QImage::Format_RGB32 );
-            break;
+    case QFontEngine::Format_A32:
+        m_image = QImage( width, height, QImage::Format_RGB32 );
+        break;
 
-        case QFontEngine::Format_ARGB:
-            m_image = QImage( width, height, QImage::Format_ARGB32_Premultiplied );
-            break;
+    case QFontEngine::Format_ARGB:
+        m_image = QImage( width, height, QImage::Format_ARGB32_Premultiplied );
+        break;
 
-        default:
-            // may want to throw here
-            break;
+    default:
+        // may want to throw here
+        break;
     }
 }
 

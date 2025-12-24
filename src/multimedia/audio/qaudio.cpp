@@ -31,25 +31,25 @@ QDebug operator<<( QDebug dbg, QAudio::Error error )
 
     switch ( error )
     {
-        case QAudio::NoError:
-            dbg << "NoError";
-            break;
+    case QAudio::NoError:
+        dbg << "NoError";
+        break;
 
-        case QAudio::OpenError:
-            dbg << "OpenError";
-            break;
+    case QAudio::OpenError:
+        dbg << "OpenError";
+        break;
 
-        case QAudio::IOError:
-            dbg << "IOError";
-            break;
+    case QAudio::IOError:
+        dbg << "IOError";
+        break;
 
-        case QAudio::UnderrunError:
-            dbg << "UnderrunError";
-            break;
+    case QAudio::UnderrunError:
+        dbg << "UnderrunError";
+        break;
 
-        case QAudio::FatalError:
-            dbg << "FatalError";
-            break;
+    case QAudio::FatalError:
+        dbg << "FatalError";
+        break;
     }
 
     return dbg;
@@ -61,21 +61,21 @@ QDebug operator<<( QDebug dbg, QAudio::State state )
 
     switch ( state )
     {
-        case QAudio::ActiveState:
-            dbg << "ActiveState";
-            break;
+    case QAudio::ActiveState:
+        dbg << "ActiveState";
+        break;
 
-        case QAudio::SuspendedState:
-            dbg << "SuspendedState";
-            break;
+    case QAudio::SuspendedState:
+        dbg << "SuspendedState";
+        break;
 
-        case QAudio::StoppedState:
-            dbg << "StoppedState";
-            break;
+    case QAudio::StoppedState:
+        dbg << "StoppedState";
+        break;
 
-        case QAudio::IdleState:
-            dbg << "IdleState";
-            break;
+    case QAudio::IdleState:
+        dbg << "IdleState";
+        break;
     }
 
     return dbg;
@@ -87,13 +87,13 @@ QDebug operator<<( QDebug dbg, QAudio::Mode mode )
 
     switch ( mode )
     {
-        case QAudio::AudioInput:
-            dbg << "AudioInput";
-            break;
+    case QAudio::AudioInput:
+        dbg << "AudioInput";
+        break;
 
-        case QAudio::AudioOutput:
-            dbg << "AudioOutput";
-            break;
+    case QAudio::AudioOutput:
+        dbg << "AudioOutput";
+        break;
     }
 
     return dbg;
@@ -105,45 +105,45 @@ QDebug operator<<( QDebug dbg, QAudio::Role role )
 
     switch ( role )
     {
-        case QAudio::UnknownRole:
-            dbg << "UnknownRole";
-            break;
+    case QAudio::UnknownRole:
+        dbg << "UnknownRole";
+        break;
 
-        case QAudio::AccessibilityRole:
-            dbg << "AccessibilityRole";
-            break;
+    case QAudio::AccessibilityRole:
+        dbg << "AccessibilityRole";
+        break;
 
-        case QAudio::AlarmRole:
-            dbg << "AlarmRole";
-            break;
+    case QAudio::AlarmRole:
+        dbg << "AlarmRole";
+        break;
 
-        case QAudio::GameRole:
-            dbg << "GameRole";
-            break;
+    case QAudio::GameRole:
+        dbg << "GameRole";
+        break;
 
-        case QAudio::MusicRole:
-            dbg << "MusicRole";
-            break;
+    case QAudio::MusicRole:
+        dbg << "MusicRole";
+        break;
 
-        case QAudio::NotificationRole:
-            dbg << "NotificationRole";
-            break;
+    case QAudio::NotificationRole:
+        dbg << "NotificationRole";
+        break;
 
-        case QAudio::RingtoneRole:
-            dbg << "RingtoneRole";
-            break;
+    case QAudio::RingtoneRole:
+        dbg << "RingtoneRole";
+        break;
 
-        case QAudio::SonificationRole:
-            dbg << "SonificationRole";
-            break;
+    case QAudio::SonificationRole:
+        dbg << "SonificationRole";
+        break;
 
-        case QAudio::VideoRole:
-            dbg << "VideoRole";
-            break;
+    case QAudio::VideoRole:
+        dbg << "VideoRole";
+        break;
 
-        case QAudio::VoiceCommunicationRole:
-            dbg << "VoiceCommunicationRole";
-            break;
+    case QAudio::VoiceCommunicationRole:
+        dbg << "VoiceCommunicationRole";
+        break;
     }
 
     return dbg;

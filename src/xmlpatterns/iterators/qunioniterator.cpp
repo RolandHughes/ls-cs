@@ -53,27 +53,27 @@ Item UnionIterator::next()
 
         switch ( m_node1.asNode().compareOrder( m_node2.asNode() ) )
         {
-            case QXmlNodeModelIndex::Precedes:
-            {
-                m_current = m_node1;
-                m_node1 = m_it1->next();
-                return m_current;
-            }
+        case QXmlNodeModelIndex::Precedes:
+        {
+            m_current = m_node1;
+            m_node1 = m_it1->next();
+            return m_current;
+        }
 
-            case QXmlNodeModelIndex::Follows:
-            {
-                m_current = m_node2;
-                m_node2 = m_it2->next();
-                return m_current;
-            }
+        case QXmlNodeModelIndex::Follows:
+        {
+            m_current = m_node2;
+            m_node2 = m_it2->next();
+            return m_current;
+        }
 
-            default:
-            {
-                m_current = m_node2;
-                m_node1 = m_it1->next();
-                m_node2 = m_it2->next();
-                return m_current;
-            }
+        default:
+        {
+            m_current = m_node2;
+            m_node1 = m_it1->next();
+            m_node2 = m_it2->next();
+            return m_current;
+        }
         }
     }
 

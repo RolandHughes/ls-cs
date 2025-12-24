@@ -393,76 +393,76 @@ bool QCommandLineParserPrivate::parse( const QStringList &args )
 
             switch ( singleDashWordOptionMode )
             {
-                case QCommandLineParser::ParseAsCompactedShortOptions:
+            case QCommandLineParser::ParseAsCompactedShortOptions:
+            {
+                QString optionName;
+                bool valueFound = false;
+
+                for ( int pos = 1 ; pos < argument.size(); ++pos )
                 {
-                    QString optionName;
-                    bool valueFound = false;
+                    optionName = argument.mid( pos, 1 );
 
-                    for ( int pos = 1 ; pos < argument.size(); ++pos )
-                    {
-                        optionName = argument.mid( pos, 1 );
-
-                        if ( !registerFoundOption( optionName ) )
-                        {
-                            error = true;
-                        }
-                        else
-                        {
-                            const NameHash_t::const_iterator nameHashIt = nameHash.constFind( optionName );
-                            Q_ASSERT( nameHashIt != nameHash.constEnd() ); // checked by registerFoundOption
-                            const NameHash_t::mapped_type optionOffset = *nameHashIt;
-                            const bool withValue = !commandLineOptionList.at( optionOffset ).valueName().isEmpty();
-
-                            if ( withValue )
-                            {
-                                if ( pos + 1 < argument.size() )
-                                {
-                                    if ( argument.at( pos + 1 ) == assignChar )
-                                    {
-                                        ++pos;
-                                    }
-
-                                    optionValuesHash[optionOffset].append( argument.mid( pos + 1 ) );
-                                    valueFound = true;
-                                }
-
-                                break;
-                            }
-
-                            if ( pos + 1 < argument.size() && argument.at( pos + 1 ) == assignChar )
-                            {
-                                break;
-                            }
-                        }
-                    }
-
-                    if ( ! valueFound && !parseOptionValue( optionName, argument, &argumentIterator, args.end() ) )
+                    if ( !registerFoundOption( optionName ) )
                     {
                         error = true;
-                    }
-
-                    break;
-                }
-
-                case QCommandLineParser::ParseAsLongOptions:
-                {
-                    const QString optionName = argument.mid( 1 ).section( assignChar, 0, 0 );
-
-                    if ( registerFoundOption( optionName ) )
-                    {
-                        if ( ! parseOptionValue( optionName, argument, &argumentIterator, args.end() ) )
-                        {
-                            error = true;
-                        }
-
                     }
                     else
                     {
+                        const NameHash_t::const_iterator nameHashIt = nameHash.constFind( optionName );
+                        Q_ASSERT( nameHashIt != nameHash.constEnd() ); // checked by registerFoundOption
+                        const NameHash_t::mapped_type optionOffset = *nameHashIt;
+                        const bool withValue = !commandLineOptionList.at( optionOffset ).valueName().isEmpty();
+
+                        if ( withValue )
+                        {
+                            if ( pos + 1 < argument.size() )
+                            {
+                                if ( argument.at( pos + 1 ) == assignChar )
+                                {
+                                    ++pos;
+                                }
+
+                                optionValuesHash[optionOffset].append( argument.mid( pos + 1 ) );
+                                valueFound = true;
+                            }
+
+                            break;
+                        }
+
+                        if ( pos + 1 < argument.size() && argument.at( pos + 1 ) == assignChar )
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if ( ! valueFound && !parseOptionValue( optionName, argument, &argumentIterator, args.end() ) )
+                {
+                    error = true;
+                }
+
+                break;
+            }
+
+            case QCommandLineParser::ParseAsLongOptions:
+            {
+                const QString optionName = argument.mid( 1 ).section( assignChar, 0, 0 );
+
+                if ( registerFoundOption( optionName ) )
+                {
+                    if ( ! parseOptionValue( optionName, argument, &argumentIterator, args.end() ) )
+                    {
                         error = true;
                     }
 
-                    break;
                 }
+                else
+                {
+                    error = true;
+                }
+
+                break;
+            }
             }
         }
         else

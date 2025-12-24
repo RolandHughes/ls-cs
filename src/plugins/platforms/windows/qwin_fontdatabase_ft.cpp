@@ -40,48 +40,48 @@ static inline QFontDatabase::WritingSystem writingSystemFromCharSet( uchar charS
 {
     switch ( charSet )
     {
-        case ANSI_CHARSET:
-        case EASTEUROPE_CHARSET:
-        case BALTIC_CHARSET:
-        case TURKISH_CHARSET:
-            return QFontDatabase::Latin;
+    case ANSI_CHARSET:
+    case EASTEUROPE_CHARSET:
+    case BALTIC_CHARSET:
+    case TURKISH_CHARSET:
+        return QFontDatabase::Latin;
 
-        case GREEK_CHARSET:
-            return QFontDatabase::Greek;
+    case GREEK_CHARSET:
+        return QFontDatabase::Greek;
 
-        case RUSSIAN_CHARSET:
-            return QFontDatabase::Cyrillic;
+    case RUSSIAN_CHARSET:
+        return QFontDatabase::Cyrillic;
 
-        case HEBREW_CHARSET:
-            return QFontDatabase::Hebrew;
+    case HEBREW_CHARSET:
+        return QFontDatabase::Hebrew;
 
-        case ARABIC_CHARSET:
-            return QFontDatabase::Arabic;
+    case ARABIC_CHARSET:
+        return QFontDatabase::Arabic;
 
-        case THAI_CHARSET:
-            return QFontDatabase::Thai;
+    case THAI_CHARSET:
+        return QFontDatabase::Thai;
 
-        case GB2312_CHARSET:
-            return QFontDatabase::SimplifiedChinese;
+    case GB2312_CHARSET:
+        return QFontDatabase::SimplifiedChinese;
 
-        case CHINESEBIG5_CHARSET:
-            return QFontDatabase::TraditionalChinese;
+    case CHINESEBIG5_CHARSET:
+        return QFontDatabase::TraditionalChinese;
 
-        case SHIFTJIS_CHARSET:
-            return QFontDatabase::Japanese;
+    case SHIFTJIS_CHARSET:
+        return QFontDatabase::Japanese;
 
-        case HANGUL_CHARSET:
-        case JOHAB_CHARSET:
-            return QFontDatabase::Korean;
+    case HANGUL_CHARSET:
+    case JOHAB_CHARSET:
+        return QFontDatabase::Korean;
 
-        case VIETNAMESE_CHARSET:
-            return QFontDatabase::Vietnamese;
+    case VIETNAMESE_CHARSET:
+        return QFontDatabase::Vietnamese;
 
-        case SYMBOL_CHARSET:
-            return QFontDatabase::Symbol;
+    case SYMBOL_CHARSET:
+        return QFontDatabase::Symbol;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QFontDatabase::Any;

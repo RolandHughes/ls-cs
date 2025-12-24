@@ -288,16 +288,16 @@ static QWindow::Visibility windowVisibility_sys( HWND hwnd )
     {
         switch ( windowPlacement.showCmd )
         {
-            case SW_SHOWMINIMIZED:
-            case SW_MINIMIZE:
-            case SW_FORCEMINIMIZE:
-                return QWindow::Minimized;
+        case SW_SHOWMINIMIZED:
+        case SW_MINIMIZE:
+        case SW_FORCEMINIMIZE:
+            return QWindow::Minimized;
 
-            case SW_SHOWMAXIMIZED:
-                return QWindow::Maximized;
+        case SW_SHOWMAXIMIZED:
+            return QWindow::Maximized;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -308,14 +308,14 @@ static inline bool windowIsOpenGL( const QWindow *w )
 {
     switch ( w->surfaceType() )
     {
-        case QSurface::OpenGLSurface:
-            return true;
+    case QSurface::OpenGLSurface:
+        return true;
 
-        case QSurface::RasterGLSurface:
-            return lscs_window_private( const_cast<QWindow *>( w ) )->compositing;
+    case QSurface::RasterGLSurface:
+        return lscs_window_private( const_cast<QWindow *>( w ) )->compositing;
 
-        default:
-            return false;
+    default:
+        return false;
     }
 }
 
@@ -541,21 +541,21 @@ static inline void fixTopLevelWindowFlags( Qt::WindowFlags &flags )
 
     switch ( flags )
     {
-        case Qt::Window:
-            flags |= Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint
-                     | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint;
-            break;
+    case Qt::Window:
+        flags |= Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint
+                 | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint;
+        break;
 
-        case Qt::Dialog:
-            flags |= Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint;
-            break;
+    case Qt::Dialog:
+        flags |= Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint;
+        break;
 
-        case Qt::Tool:
-            flags |= Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint;
-            break;
+    case Qt::Tool:
+        flags |= Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( ( flags & Qt::WindowType_Mask ) == Qt::SplashScreen )
@@ -604,26 +604,26 @@ void WindowCreationData::fromWindow( const QWindow *w, const Qt::WindowFlags fla
 
     switch ( type )
     {
-        case Qt::Dialog:
-        case Qt::Sheet:
-            dialog = true;
-            break;
+    case Qt::Dialog:
+    case Qt::Sheet:
+        dialog = true;
+        break;
 
-        case Qt::Drawer:
-        case Qt::Tool:
-            tool = true;
-            break;
+    case Qt::Drawer:
+    case Qt::Tool:
+        tool = true;
+        break;
 
-        case Qt::Popup:
-            popup = true;
-            break;
+    case Qt::Popup:
+        popup = true;
+        break;
 
-        case Qt::Desktop:
-            desktop = true;
-            break;
+    case Qt::Desktop:
+        desktop = true;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( ( flags & Qt::MSWindowsFixedSizeDialogHint ) )
@@ -1261,17 +1261,17 @@ void QWindowsWindow::updateDropSite( bool topLevel )
     {
         switch ( window()->type() )
         {
-            case Qt::Window:
-            case Qt::Dialog:
-            case Qt::Sheet:
-            case Qt::Drawer:
-            case Qt::Popup:
-            case Qt::Tool:
-                enabled = true;
-                break;
+        case Qt::Window:
+        case Qt::Dialog:
+        case Qt::Sheet:
+        case Qt::Drawer:
+        case Qt::Popup:
+        case Qt::Tool:
+            enabled = true;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -1774,31 +1774,31 @@ void QWindowsWindow::handleResized( int wParam )
 {
     switch ( wParam )
     {
-        case SIZE_MAXHIDE: // Some other window affected.
-        case SIZE_MAXSHOW:
-            return;
+    case SIZE_MAXHIDE: // Some other window affected.
+    case SIZE_MAXSHOW:
+        return;
 
-        case SIZE_MINIMIZED:
-            handleWindowStateChange( Qt::WindowMinimized );
-            return;
+    case SIZE_MINIMIZED:
+        handleWindowStateChange( Qt::WindowMinimized );
+        return;
 
-        case SIZE_MAXIMIZED:
-            handleWindowStateChange( Qt::WindowMaximized );
-            handleGeometryChange();
-            break;
+    case SIZE_MAXIMIZED:
+        handleWindowStateChange( Qt::WindowMaximized );
+        handleGeometryChange();
+        break;
 
-        case SIZE_RESTORED:
-            if ( isFullScreen_sys() )
-            {
-                handleWindowStateChange( Qt::WindowFullScreen );
-            }
-            else if ( m_windowState != Qt::WindowNoState && !testFlag( MaximizeToFullScreen ) )
-            {
-                handleWindowStateChange( Qt::WindowNoState );
-            }
+    case SIZE_RESTORED:
+        if ( isFullScreen_sys() )
+        {
+            handleWindowStateChange( Qt::WindowFullScreen );
+        }
+        else if ( m_windowState != Qt::WindowNoState && !testFlag( MaximizeToFullScreen ) )
+        {
+            handleWindowStateChange( Qt::WindowNoState );
+        }
 
-            handleGeometryChange();
-            break;
+        handleGeometryChange();
+        break;
     }
 }
 
@@ -2024,49 +2024,49 @@ void QWindowsWindow::handleWindowStateChange( Qt::WindowState state )
 
     switch ( state )
     {
-        case Qt::WindowMinimized:
-            handleHidden();
-            QWindowSystemInterface::flushWindowSystemEvents( QEventLoop::ExcludeUserInputEvents ); // Tell QQuickWindow to stop rendering now.
-            break;
-
-        case Qt::WindowMaximized:
-        case Qt::WindowFullScreen:
-        case Qt::WindowNoState:
-        {
-            // QTBUG-17548: We send expose events when receiving WM_Paint, but for
-            // layered windows and transient children, we won't receive any WM_Paint.
-            QWindow *w = window();
-            bool exposeEventsSent = false;
-
-            if ( isLayered() )
-            {
-                fireExpose( QRegion( 0, 0, w->width(), w->height() ) );
-                exposeEventsSent = true;
-            }
-
-            for ( QWindow *child : QApplication::allWindows() )
-            {
-                if ( child != w && child->isVisible() && child->transientParent() == w )
-                {
-                    QWindowsWindow *platformWindow = QWindowsWindow::baseWindowOf( child );
-
-                    if ( platformWindow->isLayered() )
-                    {
-                        platformWindow->fireExpose( QRegion( 0, 0, child->width(), child->height() ) );
-                        exposeEventsSent = true;
-                    }
-                }
-            }
-
-            if ( exposeEventsSent && !QWindowsContext::instance()->asyncExpose() )
-            {
-                QWindowSystemInterface::flushWindowSystemEvents( QEventLoop::ExcludeUserInputEvents );
-            }
-        }
+    case Qt::WindowMinimized:
+        handleHidden();
+        QWindowSystemInterface::flushWindowSystemEvents( QEventLoop::ExcludeUserInputEvents ); // Tell QQuickWindow to stop rendering now.
         break;
 
-        default:
-            break;
+    case Qt::WindowMaximized:
+    case Qt::WindowFullScreen:
+    case Qt::WindowNoState:
+    {
+        // QTBUG-17548: We send expose events when receiving WM_Paint, but for
+        // layered windows and transient children, we won't receive any WM_Paint.
+        QWindow *w = window();
+        bool exposeEventsSent = false;
+
+        if ( isLayered() )
+        {
+            fireExpose( QRegion( 0, 0, w->width(), w->height() ) );
+            exposeEventsSent = true;
+        }
+
+        for ( QWindow *child : QApplication::allWindows() )
+        {
+            if ( child != w && child->isVisible() && child->transientParent() == w )
+            {
+                QWindowsWindow *platformWindow = QWindowsWindow::baseWindowOf( child );
+
+                if ( platformWindow->isLayered() )
+                {
+                    platformWindow->fireExpose( QRegion( 0, 0, child->width(), child->height() ) );
+                    exposeEventsSent = true;
+                }
+            }
+        }
+
+        if ( exposeEventsSent && !QWindowsContext::instance()->asyncExpose() )
+        {
+            QWindowSystemInterface::flushWindowSystemEvents( QEventLoop::ExcludeUserInputEvents );
+        }
+    }
+    break;
+
+    default:
+        break;
     }
 }
 
@@ -2293,24 +2293,24 @@ void QWindowsWindow::windowEvent( QEvent *event )
 {
     switch ( event->type() )
     {
-        case QEvent::WindowBlocked: // Blocked by another modal window.
-            setEnabled( false );
-            setFlag( BlockedByModal );
+    case QEvent::WindowBlocked: // Blocked by another modal window.
+        setEnabled( false );
+        setFlag( BlockedByModal );
 
-            if ( hasMouseCapture() )
-            {
-                ReleaseCapture();
-            }
+        if ( hasMouseCapture() )
+        {
+            ReleaseCapture();
+        }
 
-            break;
+        break;
 
-        case QEvent::WindowUnblocked:
-            setEnabled( true );
-            clearFlag( BlockedByModal );
-            break;
+    case QEvent::WindowUnblocked:
+        setEnabled( true );
+        clearFlag( BlockedByModal );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -2543,17 +2543,17 @@ static inline DWORD cornerToWinOrientation( Qt::Corner corner )
 {
     switch ( corner )
     {
-        case Qt::TopLeftCorner:
-            return 0xf004; // SZ_SIZETOPLEFT;
+    case Qt::TopLeftCorner:
+        return 0xf004; // SZ_SIZETOPLEFT;
 
-        case Qt::TopRightCorner:
-            return 0xf005; // SZ_SIZETOPRIGHT
+    case Qt::TopRightCorner:
+        return 0xf005; // SZ_SIZETOPRIGHT
 
-        case Qt::BottomLeftCorner:
-            return 0xf007; // SZ_SIZEBOTTOMLEFT
+    case Qt::BottomLeftCorner:
+        return 0xf007; // SZ_SIZEBOTTOMLEFT
 
-        case Qt::BottomRightCorner:
-            return 0xf008; // SZ_SIZEBOTTOMRIGHT
+    case Qt::BottomRightCorner:
+        return 0xf008; // SZ_SIZEBOTTOMRIGHT
     }
 
     return 0;

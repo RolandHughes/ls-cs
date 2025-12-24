@@ -891,7 +891,7 @@ bool QDeclarativeMetaType::isModule( const QByteArray &module, int versionMajor,
         if ( !qt47Registered )
         {
             qWarning() << Q_FUNC_INFO <<
-                       "Qt 4.7 import detected; please note that Qt 4.7 is directly reusable as QtQuick 1.x with no code changes. Continuing, but startup time will be slower.";
+            "Qt 4.7 import detected; please note that Qt 4.7 is directly reusable as QtQuick 1.x with no code changes. Continuing, but startup time will be slower.";
             qt47Registered = true;
             QDeclarativeEnginePrivate::defineModuleCompat();
             QDeclarativeItemModule::defineModuleCompat();
@@ -1348,83 +1348,83 @@ bool QDeclarativeMetaType::canCopy( int type )
 {
     switch ( type )
     {
-        case QMetaType::VoidStar:
-        case QMetaType::QObjectStar:
-        case QMetaType::QWidgetStar:
-        case QMetaType::Long:
-        case QMetaType::Int:
-        case QMetaType::Short:
-        case QMetaType::Char:
-        case QMetaType::ULong:
-        case QMetaType::UInt:
-        case QMetaType::LongLong:
-        case QMetaType::ULongLong:
-        case QMetaType::UShort:
-        case QMetaType::UChar:
-        case QMetaType::Bool:
-        case QMetaType::Float:
-        case QMetaType::Double:
-        case QMetaType::QChar:
-        case QMetaType::QVariantMap:
-        case QMetaType::QVariantHash:
-        case QMetaType::QVariantList:
-        case QMetaType::QByteArray:
-        case QMetaType::QString:
-        case QMetaType::QStringList:
-        case QMetaType::QBitArray:
-        case QMetaType::QDate:
-        case QMetaType::QTime:
-        case QMetaType::QDateTime:
-        case QMetaType::QUrl:
-        case QMetaType::QLocale:
-        case QMetaType::QRect:
-        case QMetaType::QRectF:
-        case QMetaType::QSize:
-        case QMetaType::QSizeF:
-        case QMetaType::QLine:
-        case QMetaType::QLineF:
-        case QMetaType::QPoint:
-        case QMetaType::QPointF:
-        case QMetaType::QVector3D:
+    case QMetaType::VoidStar:
+    case QMetaType::QObjectStar:
+    case QMetaType::QWidgetStar:
+    case QMetaType::Long:
+    case QMetaType::Int:
+    case QMetaType::Short:
+    case QMetaType::Char:
+    case QMetaType::ULong:
+    case QMetaType::UInt:
+    case QMetaType::LongLong:
+    case QMetaType::ULongLong:
+    case QMetaType::UShort:
+    case QMetaType::UChar:
+    case QMetaType::Bool:
+    case QMetaType::Float:
+    case QMetaType::Double:
+    case QMetaType::QChar:
+    case QMetaType::QVariantMap:
+    case QMetaType::QVariantHash:
+    case QMetaType::QVariantList:
+    case QMetaType::QByteArray:
+    case QMetaType::QString:
+    case QMetaType::QStringList:
+    case QMetaType::QBitArray:
+    case QMetaType::QDate:
+    case QMetaType::QTime:
+    case QMetaType::QDateTime:
+    case QMetaType::QUrl:
+    case QMetaType::QLocale:
+    case QMetaType::QRect:
+    case QMetaType::QRectF:
+    case QMetaType::QSize:
+    case QMetaType::QSizeF:
+    case QMetaType::QLine:
+    case QMetaType::QLineF:
+    case QMetaType::QPoint:
+    case QMetaType::QPointF:
+    case QMetaType::QVector3D:
 #ifndef LSCS_NO_REGEXP
-        case QMetaType::QRegExp:
+    case QMetaType::QRegExp:
 #endif
-        case QMetaType::Void:
-        case QMetaType::QFont:
-        case QMetaType::QPixmap:
-        case QMetaType::QBrush:
-        case QMetaType::QColor:
-        case QMetaType::QPalette:
-        case QMetaType::QIcon:
-        case QMetaType::QImage:
-        case QMetaType::QPolygon:
-        case QMetaType::QRegion:
-        case QMetaType::QBitmap:
+    case QMetaType::Void:
+    case QMetaType::QFont:
+    case QMetaType::QPixmap:
+    case QMetaType::QBrush:
+    case QMetaType::QColor:
+    case QMetaType::QPalette:
+    case QMetaType::QIcon:
+    case QMetaType::QImage:
+    case QMetaType::QPolygon:
+    case QMetaType::QRegion:
+    case QMetaType::QBitmap:
 #ifndef LSCS_NO_CURSOR
-        case QMetaType::QCursor:
+    case QMetaType::QCursor:
 #endif
-        case QMetaType::QSizePolicy:
-        case QMetaType::QKeySequence:
-        case QMetaType::QPen:
-        case QMetaType::QTextLength:
-        case QMetaType::QTextFormat:
-        case QMetaType::QMatrix:
-        case QMetaType::QTransform:
-        case QMetaType::QMatrix4x4:
-        case QMetaType::QVector2D:
-        case QMetaType::QVector4D:
-        case QMetaType::QQuaternion:
+    case QMetaType::QSizePolicy:
+    case QMetaType::QKeySequence:
+    case QMetaType::QPen:
+    case QMetaType::QTextLength:
+    case QMetaType::QTextFormat:
+    case QMetaType::QMatrix:
+    case QMetaType::QTransform:
+    case QMetaType::QMatrix4x4:
+    case QMetaType::QVector2D:
+    case QMetaType::QVector4D:
+    case QMetaType::QQuaternion:
+        return true;
+
+    default:
+        if ( type == qMetaTypeId<QVariant>() ||
+                type == qMetaTypeId<QScriptValue>() ||
+                typeCategory( type ) != Unknown )
+        {
             return true;
+        }
 
-        default:
-            if ( type == qMetaTypeId<QVariant>() ||
-                    type == qMetaTypeId<QScriptValue>() ||
-                    typeCategory( type ) != Unknown )
-            {
-                return true;
-            }
-
-            break;
+        break;
     }
 
     return false;
@@ -1444,538 +1444,538 @@ bool QDeclarativeMetaType::copy( int type, void *data, const void *copy )
     {
         switch ( type )
         {
-            case QMetaType::VoidStar:
-            case QMetaType::QObjectStar:
-            case QMetaType::QWidgetStar:
-                *static_cast<void **>( data ) = *static_cast<void *const *>( copy );
-                return true;
+        case QMetaType::VoidStar:
+        case QMetaType::QObjectStar:
+        case QMetaType::QWidgetStar:
+            *static_cast<void **>( data ) = *static_cast<void *const *>( copy );
+            return true;
 
-            case QMetaType::Long:
-                *static_cast<long *>( data ) = *static_cast<const long *>( copy );
-                return true;
+        case QMetaType::Long:
+            *static_cast<long *>( data ) = *static_cast<const long *>( copy );
+            return true;
 
-            case QMetaType::Int:
-                *static_cast<int *>( data ) = *static_cast<const int *>( copy );
-                return true;
+        case QMetaType::Int:
+            *static_cast<int *>( data ) = *static_cast<const int *>( copy );
+            return true;
 
-            case QMetaType::Short:
-                *static_cast<short *>( data ) = *static_cast<const short *>( copy );
-                return true;
+        case QMetaType::Short:
+            *static_cast<short *>( data ) = *static_cast<const short *>( copy );
+            return true;
 
-            case QMetaType::Char:
-                *static_cast<char *>( data ) = *static_cast<const char *>( copy );
-                return true;
+        case QMetaType::Char:
+            *static_cast<char *>( data ) = *static_cast<const char *>( copy );
+            return true;
 
-            case QMetaType::ULong:
-                *static_cast<ulong *>( data ) = *static_cast<const ulong *>( copy );
-                return true;
+        case QMetaType::ULong:
+            *static_cast<ulong *>( data ) = *static_cast<const ulong *>( copy );
+            return true;
 
-            case QMetaType::UInt:
-                *static_cast<uint *>( data ) = *static_cast<const uint *>( copy );
-                return true;
+        case QMetaType::UInt:
+            *static_cast<uint *>( data ) = *static_cast<const uint *>( copy );
+            return true;
 
-            case QMetaType::LongLong:
-                *static_cast<qint64 *>( data ) = *static_cast<const qint64 *>( copy );
-                return true;
+        case QMetaType::LongLong:
+            *static_cast<qint64 *>( data ) = *static_cast<const qint64 *>( copy );
+            return true;
 
-            case QMetaType::ULongLong:
-                *static_cast<quint64 *>( data ) = *static_cast<const quint64 *>( copy );
-                return true;
+        case QMetaType::ULongLong:
+            *static_cast<quint64 *>( data ) = *static_cast<const quint64 *>( copy );
+            return true;
 
-            case QMetaType::UShort:
-                *static_cast<ushort *>( data ) = *static_cast<const ushort *>( copy );
-                return true;
+        case QMetaType::UShort:
+            *static_cast<ushort *>( data ) = *static_cast<const ushort *>( copy );
+            return true;
 
-            case QMetaType::UChar:
-                *static_cast<uchar *>( data ) = *static_cast<const uchar *>( copy );
-                return true;
+        case QMetaType::UChar:
+            *static_cast<uchar *>( data ) = *static_cast<const uchar *>( copy );
+            return true;
 
-            case QMetaType::Bool:
-                *static_cast<bool *>( data ) = *static_cast<const bool *>( copy );
-                return true;
+        case QMetaType::Bool:
+            *static_cast<bool *>( data ) = *static_cast<const bool *>( copy );
+            return true;
 
-            case QMetaType::Float:
-                *static_cast<float *>( data ) = *static_cast<const float *>( copy );
-                return true;
+        case QMetaType::Float:
+            *static_cast<float *>( data ) = *static_cast<const float *>( copy );
+            return true;
 
-            case QMetaType::Double:
-                *static_cast<double *>( data ) = *static_cast<const double *>( copy );
-                return true;
+        case QMetaType::Double:
+            *static_cast<double *>( data ) = *static_cast<const double *>( copy );
+            return true;
 
-            case QMetaType::QChar:
-                *static_cast<NS( QChar ) *>( data ) = *static_cast<const NS( QChar ) *>( copy );
-                return true;
+        case QMetaType::QChar:
+            *static_cast<NS( QChar ) *>( data ) = *static_cast<const NS( QChar ) *>( copy );
+            return true;
 
-            case QMetaType::QVariantMap:
-                *static_cast<NS( QVariantMap ) *>( data ) = *static_cast<const NS( QVariantMap ) *>( copy );
-                return true;
+        case QMetaType::QVariantMap:
+            *static_cast<NS( QVariantMap ) *>( data ) = *static_cast<const NS( QVariantMap ) *>( copy );
+            return true;
 
-            case QMetaType::QVariantHash:
-                *static_cast<NS( QVariantHash ) *>( data ) = *static_cast<const NS( QVariantHash ) *>( copy );
-                return true;
+        case QMetaType::QVariantHash:
+            *static_cast<NS( QVariantHash ) *>( data ) = *static_cast<const NS( QVariantHash ) *>( copy );
+            return true;
 
-            case QMetaType::QVariantList:
-                *static_cast<NS( QVariantList ) *>( data ) = *static_cast<const NS( QVariantList ) *>( copy );
-                return true;
+        case QMetaType::QVariantList:
+            *static_cast<NS( QVariantList ) *>( data ) = *static_cast<const NS( QVariantList ) *>( copy );
+            return true;
 
-            case QMetaType::QByteArray:
-                *static_cast<NS( QByteArray ) *>( data ) = *static_cast<const NS( QByteArray ) *>( copy );
-                return true;
+        case QMetaType::QByteArray:
+            *static_cast<NS( QByteArray ) *>( data ) = *static_cast<const NS( QByteArray ) *>( copy );
+            return true;
 
-            case QMetaType::QString:
-                *static_cast<NS( QString ) *>( data ) = *static_cast<const NS( QString ) *>( copy );
-                return true;
+        case QMetaType::QString:
+            *static_cast<NS( QString ) *>( data ) = *static_cast<const NS( QString ) *>( copy );
+            return true;
 
-            case QMetaType::QStringList:
-                *static_cast<NS( QStringList ) *>( data ) = *static_cast<const NS( QStringList ) *>( copy );
-                return true;
+        case QMetaType::QStringList:
+            *static_cast<NS( QStringList ) *>( data ) = *static_cast<const NS( QStringList ) *>( copy );
+            return true;
 
-            case QMetaType::QBitArray:
-                *static_cast<NS( QBitArray ) *>( data ) = *static_cast<const NS( QBitArray ) *>( copy );
-                return true;
+        case QMetaType::QBitArray:
+            *static_cast<NS( QBitArray ) *>( data ) = *static_cast<const NS( QBitArray ) *>( copy );
+            return true;
 
-            case QMetaType::QDate:
-                *static_cast<NS( QDate ) *>( data ) = *static_cast<const NS( QDate ) *>( copy );
-                return true;
+        case QMetaType::QDate:
+            *static_cast<NS( QDate ) *>( data ) = *static_cast<const NS( QDate ) *>( copy );
+            return true;
 
-            case QMetaType::QTime:
-                *static_cast<NS( QTime ) *>( data ) = *static_cast<const NS( QTime ) *>( copy );
-                return true;
+        case QMetaType::QTime:
+            *static_cast<NS( QTime ) *>( data ) = *static_cast<const NS( QTime ) *>( copy );
+            return true;
 
-            case QMetaType::QDateTime:
-                *static_cast<NS( QDateTime ) *>( data ) = *static_cast<const NS( QDateTime ) *>( copy );
-                return true;
+        case QMetaType::QDateTime:
+            *static_cast<NS( QDateTime ) *>( data ) = *static_cast<const NS( QDateTime ) *>( copy );
+            return true;
 
-            case QMetaType::QUrl:
-                *static_cast<NS( QUrl ) *>( data ) = *static_cast<const NS( QUrl ) *>( copy );
-                return true;
+        case QMetaType::QUrl:
+            *static_cast<NS( QUrl ) *>( data ) = *static_cast<const NS( QUrl ) *>( copy );
+            return true;
 
-            case QMetaType::QLocale:
-                *static_cast<NS( QLocale ) *>( data ) = *static_cast<const NS( QLocale ) *>( copy );
-                return true;
+        case QMetaType::QLocale:
+            *static_cast<NS( QLocale ) *>( data ) = *static_cast<const NS( QLocale ) *>( copy );
+            return true;
 
-            case QMetaType::QRect:
-                *static_cast<NS( QRect ) *>( data ) = *static_cast<const NS( QRect ) *>( copy );
-                return true;
+        case QMetaType::QRect:
+            *static_cast<NS( QRect ) *>( data ) = *static_cast<const NS( QRect ) *>( copy );
+            return true;
 
-            case QMetaType::QRectF:
-                *static_cast<NS( QRectF ) *>( data ) = *static_cast<const NS( QRectF ) *>( copy );
-                return true;
+        case QMetaType::QRectF:
+            *static_cast<NS( QRectF ) *>( data ) = *static_cast<const NS( QRectF ) *>( copy );
+            return true;
 
-            case QMetaType::QSize:
-                *static_cast<NS( QSize ) *>( data ) = *static_cast<const NS( QSize ) *>( copy );
-                return true;
+        case QMetaType::QSize:
+            *static_cast<NS( QSize ) *>( data ) = *static_cast<const NS( QSize ) *>( copy );
+            return true;
 
-            case QMetaType::QSizeF:
-                *static_cast<NS( QSizeF ) *>( data ) = *static_cast<const NS( QSizeF ) *>( copy );
-                return true;
+        case QMetaType::QSizeF:
+            *static_cast<NS( QSizeF ) *>( data ) = *static_cast<const NS( QSizeF ) *>( copy );
+            return true;
 
-            case QMetaType::QLine:
-                *static_cast<NS( QLine ) *>( data ) = *static_cast<const NS( QLine ) *>( copy );
-                return true;
+        case QMetaType::QLine:
+            *static_cast<NS( QLine ) *>( data ) = *static_cast<const NS( QLine ) *>( copy );
+            return true;
 
-            case QMetaType::QLineF:
-                *static_cast<NS( QLineF ) *>( data ) = *static_cast<const NS( QLineF ) *>( copy );
-                return true;
+        case QMetaType::QLineF:
+            *static_cast<NS( QLineF ) *>( data ) = *static_cast<const NS( QLineF ) *>( copy );
+            return true;
 
-            case QMetaType::QPoint:
-                *static_cast<NS( QPoint ) *>( data ) = *static_cast<const NS( QPoint ) *>( copy );
-                return true;
+        case QMetaType::QPoint:
+            *static_cast<NS( QPoint ) *>( data ) = *static_cast<const NS( QPoint ) *>( copy );
+            return true;
 
-            case QMetaType::QPointF:
-                *static_cast<NS( QPointF ) *>( data ) = *static_cast<const NS( QPointF ) *>( copy );
-                return true;
+        case QMetaType::QPointF:
+            *static_cast<NS( QPointF ) *>( data ) = *static_cast<const NS( QPointF ) *>( copy );
+            return true;
 
-            case QMetaType::QVector3D:
-                *static_cast<NS( QVector3D ) *>( data ) = *static_cast<const NS( QVector3D ) *>( copy );
-                return true;
+        case QMetaType::QVector3D:
+            *static_cast<NS( QVector3D ) *>( data ) = *static_cast<const NS( QVector3D ) *>( copy );
+            return true;
 #ifndef LSCS_NO_REGEXP
 
-            case QMetaType::QRegExp:
-                *static_cast<NS( QRegExp ) *>( data ) = *static_cast<const NS( QRegExp ) *>( copy );
-                return true;
+        case QMetaType::QRegExp:
+            *static_cast<NS( QRegExp ) *>( data ) = *static_cast<const NS( QRegExp ) *>( copy );
+            return true;
 #endif
 
-            case QMetaType::Void:
-                return true;
+        case QMetaType::Void:
+            return true;
 
-            case QMetaType::QFont:
-                *static_cast<NS( QFont ) *>( data ) = *static_cast<const NS( QFont ) *>( copy );
-                return true;
+        case QMetaType::QFont:
+            *static_cast<NS( QFont ) *>( data ) = *static_cast<const NS( QFont ) *>( copy );
+            return true;
 
-            case QMetaType::QPixmap:
-                *static_cast<NS( QPixmap ) *>( data ) = *static_cast<const NS( QPixmap ) *>( copy );
-                return true;
+        case QMetaType::QPixmap:
+            *static_cast<NS( QPixmap ) *>( data ) = *static_cast<const NS( QPixmap ) *>( copy );
+            return true;
 
-            case QMetaType::QBrush:
-                *static_cast<NS( QBrush ) *>( data ) = *static_cast<const NS( QBrush ) *>( copy );
-                return true;
+        case QMetaType::QBrush:
+            *static_cast<NS( QBrush ) *>( data ) = *static_cast<const NS( QBrush ) *>( copy );
+            return true;
 
-            case QMetaType::QColor:
-                *static_cast<NS( QColor ) *>( data ) = *static_cast<const NS( QColor ) *>( copy );
-                return true;
+        case QMetaType::QColor:
+            *static_cast<NS( QColor ) *>( data ) = *static_cast<const NS( QColor ) *>( copy );
+            return true;
 
-            case QMetaType::QPalette:
-                *static_cast<NS( QPalette ) *>( data ) = *static_cast<const NS( QPalette ) *>( copy );
-                return true;
+        case QMetaType::QPalette:
+            *static_cast<NS( QPalette ) *>( data ) = *static_cast<const NS( QPalette ) *>( copy );
+            return true;
 
-            case QMetaType::QIcon:
-                *static_cast<NS( QIcon ) *>( data ) = *static_cast<const NS( QIcon ) *>( copy );
-                return true;
+        case QMetaType::QIcon:
+            *static_cast<NS( QIcon ) *>( data ) = *static_cast<const NS( QIcon ) *>( copy );
+            return true;
 
-            case QMetaType::QImage:
-                *static_cast<NS( QImage ) *>( data ) = *static_cast<const NS( QImage ) *>( copy );
-                return true;
+        case QMetaType::QImage:
+            *static_cast<NS( QImage ) *>( data ) = *static_cast<const NS( QImage ) *>( copy );
+            return true;
 
-            case QMetaType::QPolygon:
-                *static_cast<NS( QPolygon ) *>( data ) = *static_cast<const NS( QPolygon ) *>( copy );
-                return true;
+        case QMetaType::QPolygon:
+            *static_cast<NS( QPolygon ) *>( data ) = *static_cast<const NS( QPolygon ) *>( copy );
+            return true;
 
-            case QMetaType::QRegion:
-                *static_cast<NS( QRegion ) *>( data ) = *static_cast<const NS( QRegion ) *>( copy );
-                return true;
+        case QMetaType::QRegion:
+            *static_cast<NS( QRegion ) *>( data ) = *static_cast<const NS( QRegion ) *>( copy );
+            return true;
 
-            case QMetaType::QBitmap:
-                *static_cast<NS( QBitmap ) *>( data ) = *static_cast<const NS( QBitmap ) *>( copy );
-                return true;
+        case QMetaType::QBitmap:
+            *static_cast<NS( QBitmap ) *>( data ) = *static_cast<const NS( QBitmap ) *>( copy );
+            return true;
 #ifndef LSCS_NO_CURSOR
 
-            case QMetaType::QCursor:
-                *static_cast<NS( QCursor ) *>( data ) = *static_cast<const NS( QCursor ) *>( copy );
-                return true;
+        case QMetaType::QCursor:
+            *static_cast<NS( QCursor ) *>( data ) = *static_cast<const NS( QCursor ) *>( copy );
+            return true;
 #endif
 
-            case QMetaType::QSizePolicy:
-                *static_cast<NS( QSizePolicy ) *>( data ) = *static_cast<const NS( QSizePolicy ) *>( copy );
+        case QMetaType::QSizePolicy:
+            *static_cast<NS( QSizePolicy ) *>( data ) = *static_cast<const NS( QSizePolicy ) *>( copy );
+            return true;
+
+        case QMetaType::QKeySequence:
+            *static_cast<NS( QKeySequence ) *>( data ) = *static_cast<const NS( QKeySequence ) *>( copy );
+            return true;
+
+        case QMetaType::QPen:
+            *static_cast<NS( QPen ) *>( data ) = *static_cast<const NS( QPen ) *>( copy );
+            return true;
+
+        case QMetaType::QTextLength:
+            *static_cast<NS( QTextLength ) *>( data ) = *static_cast<const NS( QTextLength ) *>( copy );
+            return true;
+
+        case QMetaType::QTextFormat:
+            *static_cast<NS( QTextFormat ) *>( data ) = *static_cast<const NS( QTextFormat ) *>( copy );
+            return true;
+
+        case QMetaType::QMatrix:
+            *static_cast<NS( QMatrix ) *>( data ) = *static_cast<const NS( QMatrix ) *>( copy );
+            return true;
+
+        case QMetaType::QTransform:
+            *static_cast<NS( QTransform ) *>( data ) = *static_cast<const NS( QTransform ) *>( copy );
+            return true;
+
+        case QMetaType::QMatrix4x4:
+            *static_cast<NS( QMatrix4x4 ) *>( data ) = *static_cast<const NS( QMatrix4x4 ) *>( copy );
+            return true;
+
+        case QMetaType::QVector2D:
+            *static_cast<NS( QVector2D ) *>( data ) = *static_cast<const NS( QVector2D ) *>( copy );
+            return true;
+
+        case QMetaType::QVector4D:
+            *static_cast<NS( QVector4D ) *>( data ) = *static_cast<const NS( QVector4D ) *>( copy );
+            return true;
+
+        case QMetaType::QQuaternion:
+            *static_cast<NS( QQuaternion ) *>( data ) = *static_cast<const NS( QQuaternion ) *>( copy );
+            return true;
+
+        default:
+            if ( type == qMetaTypeId<QVariant>() )
+            {
+                *static_cast<NS( QVariant ) *>( data ) = *static_cast<const NS( QVariant ) *>( copy );
                 return true;
-
-            case QMetaType::QKeySequence:
-                *static_cast<NS( QKeySequence ) *>( data ) = *static_cast<const NS( QKeySequence ) *>( copy );
+            }
+            else if ( type == qMetaTypeId<QScriptValue>() )
+            {
+                *static_cast<NS( QScriptValue ) *>( data ) = *static_cast<const NS( QScriptValue ) *>( copy );
                 return true;
-
-            case QMetaType::QPen:
-                *static_cast<NS( QPen ) *>( data ) = *static_cast<const NS( QPen ) *>( copy );
+            }
+            else if ( typeCategory( type ) != Unknown )
+            {
+                *static_cast<void **>( data ) = *static_cast<void *const *>( copy );
                 return true;
+            }
 
-            case QMetaType::QTextLength:
-                *static_cast<NS( QTextLength ) *>( data ) = *static_cast<const NS( QTextLength ) *>( copy );
-                return true;
-
-            case QMetaType::QTextFormat:
-                *static_cast<NS( QTextFormat ) *>( data ) = *static_cast<const NS( QTextFormat ) *>( copy );
-                return true;
-
-            case QMetaType::QMatrix:
-                *static_cast<NS( QMatrix ) *>( data ) = *static_cast<const NS( QMatrix ) *>( copy );
-                return true;
-
-            case QMetaType::QTransform:
-                *static_cast<NS( QTransform ) *>( data ) = *static_cast<const NS( QTransform ) *>( copy );
-                return true;
-
-            case QMetaType::QMatrix4x4:
-                *static_cast<NS( QMatrix4x4 ) *>( data ) = *static_cast<const NS( QMatrix4x4 ) *>( copy );
-                return true;
-
-            case QMetaType::QVector2D:
-                *static_cast<NS( QVector2D ) *>( data ) = *static_cast<const NS( QVector2D ) *>( copy );
-                return true;
-
-            case QMetaType::QVector4D:
-                *static_cast<NS( QVector4D ) *>( data ) = *static_cast<const NS( QVector4D ) *>( copy );
-                return true;
-
-            case QMetaType::QQuaternion:
-                *static_cast<NS( QQuaternion ) *>( data ) = *static_cast<const NS( QQuaternion ) *>( copy );
-                return true;
-
-            default:
-                if ( type == qMetaTypeId<QVariant>() )
-                {
-                    *static_cast<NS( QVariant ) *>( data ) = *static_cast<const NS( QVariant ) *>( copy );
-                    return true;
-                }
-                else if ( type == qMetaTypeId<QScriptValue>() )
-                {
-                    *static_cast<NS( QScriptValue ) *>( data ) = *static_cast<const NS( QScriptValue ) *>( copy );
-                    return true;
-                }
-                else if ( typeCategory( type ) != Unknown )
-                {
-                    *static_cast<void **>( data ) = *static_cast<void *const *>( copy );
-                    return true;
-                }
-
-                break;
+            break;
         }
     }
     else
     {
         switch ( type )
         {
-            case QMetaType::VoidStar:
-            case QMetaType::QObjectStar:
-            case QMetaType::QWidgetStar:
-                *static_cast<void **>( data ) = 0;
-                return true;
+        case QMetaType::VoidStar:
+        case QMetaType::QObjectStar:
+        case QMetaType::QWidgetStar:
+            *static_cast<void **>( data ) = 0;
+            return true;
 
-            case QMetaType::Long:
-                *static_cast<long *>( data ) = long( 0 );
-                return true;
+        case QMetaType::Long:
+            *static_cast<long *>( data ) = long( 0 );
+            return true;
 
-            case QMetaType::Int:
-                *static_cast<int *>( data ) = int( 0 );
-                return true;
+        case QMetaType::Int:
+            *static_cast<int *>( data ) = int( 0 );
+            return true;
 
-            case QMetaType::Short:
-                *static_cast<short *>( data ) = short( 0 );
-                return true;
+        case QMetaType::Short:
+            *static_cast<short *>( data ) = short( 0 );
+            return true;
 
-            case QMetaType::Char:
-                *static_cast<char *>( data ) = char( 0 );
-                return true;
+        case QMetaType::Char:
+            *static_cast<char *>( data ) = char( 0 );
+            return true;
 
-            case QMetaType::ULong:
-                *static_cast<ulong *>( data ) = ulong( 0 );
-                return true;
+        case QMetaType::ULong:
+            *static_cast<ulong *>( data ) = ulong( 0 );
+            return true;
 
-            case QMetaType::UInt:
-                *static_cast<uint *>( data ) = uint( 0 );
-                return true;
+        case QMetaType::UInt:
+            *static_cast<uint *>( data ) = uint( 0 );
+            return true;
 
-            case QMetaType::LongLong:
-                *static_cast<qint64 *>( data ) = qint64( 0 );
-                return true;
+        case QMetaType::LongLong:
+            *static_cast<qint64 *>( data ) = qint64( 0 );
+            return true;
 
-            case QMetaType::ULongLong:
-                *static_cast<quint64 *>( data ) = quint64( 0 );
-                return true;
+        case QMetaType::ULongLong:
+            *static_cast<quint64 *>( data ) = quint64( 0 );
+            return true;
 
-            case QMetaType::UShort:
-                *static_cast<ushort *>( data ) = ushort( 0 );
-                return true;
+        case QMetaType::UShort:
+            *static_cast<ushort *>( data ) = ushort( 0 );
+            return true;
 
-            case QMetaType::UChar:
-                *static_cast<uchar *>( data ) = uchar( 0 );
-                return true;
+        case QMetaType::UChar:
+            *static_cast<uchar *>( data ) = uchar( 0 );
+            return true;
 
-            case QMetaType::Bool:
-                *static_cast<bool *>( data ) = bool( false );
-                return true;
+        case QMetaType::Bool:
+            *static_cast<bool *>( data ) = bool( false );
+            return true;
 
-            case QMetaType::Float:
-                *static_cast<float *>( data ) = float( 0 );
-                return true;
+        case QMetaType::Float:
+            *static_cast<float *>( data ) = float( 0 );
+            return true;
 
-            case QMetaType::Double:
-                *static_cast<double *>( data ) = double( 0 );
-                return true;
+        case QMetaType::Double:
+            *static_cast<double *>( data ) = double( 0 );
+            return true;
 
-            case QMetaType::QChar:
-                *static_cast<NS( QChar ) *>( data ) = NS( QChar )();
-                return true;
+        case QMetaType::QChar:
+            *static_cast<NS( QChar ) *>( data ) = NS( QChar )();
+            return true;
 
-            case QMetaType::QVariantMap:
-                *static_cast<NS( QVariantMap ) *>( data ) = NS( QVariantMap )();
-                return true;
+        case QMetaType::QVariantMap:
+            *static_cast<NS( QVariantMap ) *>( data ) = NS( QVariantMap )();
+            return true;
 
-            case QMetaType::QVariantHash:
-                *static_cast<NS( QVariantHash ) *>( data ) = NS( QVariantHash )();
-                return true;
+        case QMetaType::QVariantHash:
+            *static_cast<NS( QVariantHash ) *>( data ) = NS( QVariantHash )();
+            return true;
 
-            case QMetaType::QVariantList:
-                *static_cast<NS( QVariantList ) *>( data ) = NS( QVariantList )();
-                return true;
+        case QMetaType::QVariantList:
+            *static_cast<NS( QVariantList ) *>( data ) = NS( QVariantList )();
+            return true;
 
-            case QMetaType::QByteArray:
-                *static_cast<NS( QByteArray ) *>( data ) = NS( QByteArray )();
-                return true;
+        case QMetaType::QByteArray:
+            *static_cast<NS( QByteArray ) *>( data ) = NS( QByteArray )();
+            return true;
 
-            case QMetaType::QString:
-                *static_cast<NS( QString ) *>( data ) = NS( QString )();
-                return true;
+        case QMetaType::QString:
+            *static_cast<NS( QString ) *>( data ) = NS( QString )();
+            return true;
 
-            case QMetaType::QStringList:
-                *static_cast<NS( QStringList ) *>( data ) = NS( QStringList )();
-                return true;
+        case QMetaType::QStringList:
+            *static_cast<NS( QStringList ) *>( data ) = NS( QStringList )();
+            return true;
 
-            case QMetaType::QBitArray:
-                *static_cast<NS( QBitArray ) *>( data ) = NS( QBitArray )();
-                return true;
+        case QMetaType::QBitArray:
+            *static_cast<NS( QBitArray ) *>( data ) = NS( QBitArray )();
+            return true;
 
-            case QMetaType::QDate:
-                *static_cast<NS( QDate ) *>( data ) = NS( QDate )();
-                return true;
+        case QMetaType::QDate:
+            *static_cast<NS( QDate ) *>( data ) = NS( QDate )();
+            return true;
 
-            case QMetaType::QTime:
-                *static_cast<NS( QTime ) *>( data ) = NS( QTime )();
-                return true;
+        case QMetaType::QTime:
+            *static_cast<NS( QTime ) *>( data ) = NS( QTime )();
+            return true;
 
-            case QMetaType::QDateTime:
-                *static_cast<NS( QDateTime ) *>( data ) = NS( QDateTime )();
-                return true;
+        case QMetaType::QDateTime:
+            *static_cast<NS( QDateTime ) *>( data ) = NS( QDateTime )();
+            return true;
 
-            case QMetaType::QUrl:
-                *static_cast<NS( QUrl ) *>( data ) = NS( QUrl )();
-                return true;
+        case QMetaType::QUrl:
+            *static_cast<NS( QUrl ) *>( data ) = NS( QUrl )();
+            return true;
 
-            case QMetaType::QLocale:
-                *static_cast<NS( QLocale ) *>( data ) = NS( QLocale )();
-                return true;
+        case QMetaType::QLocale:
+            *static_cast<NS( QLocale ) *>( data ) = NS( QLocale )();
+            return true;
 
-            case QMetaType::QRect:
-                *static_cast<NS( QRect ) *>( data ) = NS( QRect )();
-                return true;
+        case QMetaType::QRect:
+            *static_cast<NS( QRect ) *>( data ) = NS( QRect )();
+            return true;
 
-            case QMetaType::QRectF:
-                *static_cast<NS( QRectF ) *>( data ) = NS( QRectF )();
-                return true;
+        case QMetaType::QRectF:
+            *static_cast<NS( QRectF ) *>( data ) = NS( QRectF )();
+            return true;
 
-            case QMetaType::QSize:
-                *static_cast<NS( QSize ) *>( data ) = NS( QSize )();
-                return true;
+        case QMetaType::QSize:
+            *static_cast<NS( QSize ) *>( data ) = NS( QSize )();
+            return true;
 
-            case QMetaType::QSizeF:
-                *static_cast<NS( QSizeF ) *>( data ) = NS( QSizeF )();
-                return true;
+        case QMetaType::QSizeF:
+            *static_cast<NS( QSizeF ) *>( data ) = NS( QSizeF )();
+            return true;
 
-            case QMetaType::QLine:
-                *static_cast<NS( QLine ) *>( data ) = NS( QLine )();
-                return true;
+        case QMetaType::QLine:
+            *static_cast<NS( QLine ) *>( data ) = NS( QLine )();
+            return true;
 
-            case QMetaType::QLineF:
-                *static_cast<NS( QLineF ) *>( data ) = NS( QLineF )();
-                return true;
+        case QMetaType::QLineF:
+            *static_cast<NS( QLineF ) *>( data ) = NS( QLineF )();
+            return true;
 
-            case QMetaType::QPoint:
-                *static_cast<NS( QPoint ) *>( data ) = NS( QPoint )();
-                return true;
+        case QMetaType::QPoint:
+            *static_cast<NS( QPoint ) *>( data ) = NS( QPoint )();
+            return true;
 
-            case QMetaType::QPointF:
-                *static_cast<NS( QPointF ) *>( data ) = NS( QPointF )();
-                return true;
+        case QMetaType::QPointF:
+            *static_cast<NS( QPointF ) *>( data ) = NS( QPointF )();
+            return true;
 
-            case QMetaType::QVector3D:
-                *static_cast<NS( QVector3D ) *>( data ) = NS( QVector3D )();
-                return true;
+        case QMetaType::QVector3D:
+            *static_cast<NS( QVector3D ) *>( data ) = NS( QVector3D )();
+            return true;
 #ifndef LSCS_NO_REGEXP
 
-            case QMetaType::QRegExp:
-                *static_cast<NS( QRegExp ) *>( data ) = NS( QRegExp )();
-                return true;
+        case QMetaType::QRegExp:
+            *static_cast<NS( QRegExp ) *>( data ) = NS( QRegExp )();
+            return true;
 #endif
 
-            case QMetaType::Void:
-                return true;
+        case QMetaType::Void:
+            return true;
 
-            case QMetaType::QFont:
-                *static_cast<NS( QFont ) *>( data ) = NS( QFont )();
-                return true;
+        case QMetaType::QFont:
+            *static_cast<NS( QFont ) *>( data ) = NS( QFont )();
+            return true;
 
-            case QMetaType::QPixmap:
-                *static_cast<NS( QPixmap ) *>( data ) = NS( QPixmap )();
-                return true;
+        case QMetaType::QPixmap:
+            *static_cast<NS( QPixmap ) *>( data ) = NS( QPixmap )();
+            return true;
 
-            case QMetaType::QBrush:
-                *static_cast<NS( QBrush ) *>( data ) = NS( QBrush )();
-                return true;
+        case QMetaType::QBrush:
+            *static_cast<NS( QBrush ) *>( data ) = NS( QBrush )();
+            return true;
 
-            case QMetaType::QColor:
-                *static_cast<NS( QColor ) *>( data ) = NS( QColor )();
-                return true;
+        case QMetaType::QColor:
+            *static_cast<NS( QColor ) *>( data ) = NS( QColor )();
+            return true;
 
-            case QMetaType::QPalette:
-                *static_cast<NS( QPalette ) *>( data ) = NS( QPalette )();
-                return true;
+        case QMetaType::QPalette:
+            *static_cast<NS( QPalette ) *>( data ) = NS( QPalette )();
+            return true;
 
-            case QMetaType::QIcon:
-                *static_cast<NS( QIcon ) *>( data ) = NS( QIcon )();
-                return true;
+        case QMetaType::QIcon:
+            *static_cast<NS( QIcon ) *>( data ) = NS( QIcon )();
+            return true;
 
-            case QMetaType::QImage:
-                *static_cast<NS( QImage ) *>( data ) = NS( QImage )();
-                return true;
+        case QMetaType::QImage:
+            *static_cast<NS( QImage ) *>( data ) = NS( QImage )();
+            return true;
 
-            case QMetaType::QPolygon:
-                *static_cast<NS( QPolygon ) *>( data ) = NS( QPolygon )();
-                return true;
+        case QMetaType::QPolygon:
+            *static_cast<NS( QPolygon ) *>( data ) = NS( QPolygon )();
+            return true;
 
-            case QMetaType::QRegion:
-                *static_cast<NS( QRegion ) *>( data ) = NS( QRegion )();
-                return true;
+        case QMetaType::QRegion:
+            *static_cast<NS( QRegion ) *>( data ) = NS( QRegion )();
+            return true;
 
-            case QMetaType::QBitmap:
-                *static_cast<NS( QBitmap ) *>( data ) = NS( QBitmap )();
-                return true;
+        case QMetaType::QBitmap:
+            *static_cast<NS( QBitmap ) *>( data ) = NS( QBitmap )();
+            return true;
 #ifndef LSCS_NO_CURSOR
 
-            case QMetaType::QCursor:
-                *static_cast<NS( QCursor ) *>( data ) = NS( QCursor )();
-                return true;
+        case QMetaType::QCursor:
+            *static_cast<NS( QCursor ) *>( data ) = NS( QCursor )();
+            return true;
 #endif
 
-            case QMetaType::QSizePolicy:
-                *static_cast<NS( QSizePolicy ) *>( data ) = NS( QSizePolicy )();
+        case QMetaType::QSizePolicy:
+            *static_cast<NS( QSizePolicy ) *>( data ) = NS( QSizePolicy )();
+            return true;
+
+        case QMetaType::QKeySequence:
+            *static_cast<NS( QKeySequence ) *>( data ) = NS( QKeySequence )();
+            return true;
+
+        case QMetaType::QPen:
+            *static_cast<NS( QPen ) *>( data ) = NS( QPen )();
+            return true;
+
+        case QMetaType::QTextLength:
+            *static_cast<NS( QTextLength ) *>( data ) = NS( QTextLength )();
+            return true;
+
+        case QMetaType::QTextFormat:
+            *static_cast<NS( QTextFormat ) *>( data ) = NS( QTextFormat )();
+            return true;
+
+        case QMetaType::QMatrix:
+            *static_cast<NS( QMatrix ) *>( data ) = NS( QMatrix )();
+            return true;
+
+        case QMetaType::QTransform:
+            *static_cast<NS( QTransform ) *>( data ) = NS( QTransform )();
+            return true;
+
+        case QMetaType::QMatrix4x4:
+            *static_cast<NS( QMatrix4x4 ) *>( data ) = NS( QMatrix4x4 )();
+            return true;
+
+        case QMetaType::QVector2D:
+            *static_cast<NS( QVector2D ) *>( data ) = NS( QVector2D )();
+            return true;
+
+        case QMetaType::QVector4D:
+            *static_cast<NS( QVector4D ) *>( data ) = NS( QVector4D )();
+            return true;
+
+        case QMetaType::QQuaternion:
+            *static_cast<NS( QQuaternion ) *>( data ) = NS( QQuaternion )();
+            return true;
+
+        default:
+            if ( type == qMetaTypeId<QVariant>() )
+            {
+                *static_cast<NS( QVariant ) *>( data ) = NS( QVariant )();
                 return true;
-
-            case QMetaType::QKeySequence:
-                *static_cast<NS( QKeySequence ) *>( data ) = NS( QKeySequence )();
+            }
+            else if ( type == qMetaTypeId<QScriptValue>() )
+            {
+                *static_cast<NS( QScriptValue ) *>( data ) = NS( QScriptValue )();
                 return true;
-
-            case QMetaType::QPen:
-                *static_cast<NS( QPen ) *>( data ) = NS( QPen )();
+            }
+            else if ( typeCategory( type ) != Unknown )
+            {
+                *static_cast<void **>( data ) = 0;
                 return true;
+            }
 
-            case QMetaType::QTextLength:
-                *static_cast<NS( QTextLength ) *>( data ) = NS( QTextLength )();
-                return true;
-
-            case QMetaType::QTextFormat:
-                *static_cast<NS( QTextFormat ) *>( data ) = NS( QTextFormat )();
-                return true;
-
-            case QMetaType::QMatrix:
-                *static_cast<NS( QMatrix ) *>( data ) = NS( QMatrix )();
-                return true;
-
-            case QMetaType::QTransform:
-                *static_cast<NS( QTransform ) *>( data ) = NS( QTransform )();
-                return true;
-
-            case QMetaType::QMatrix4x4:
-                *static_cast<NS( QMatrix4x4 ) *>( data ) = NS( QMatrix4x4 )();
-                return true;
-
-            case QMetaType::QVector2D:
-                *static_cast<NS( QVector2D ) *>( data ) = NS( QVector2D )();
-                return true;
-
-            case QMetaType::QVector4D:
-                *static_cast<NS( QVector4D ) *>( data ) = NS( QVector4D )();
-                return true;
-
-            case QMetaType::QQuaternion:
-                *static_cast<NS( QQuaternion ) *>( data ) = NS( QQuaternion )();
-                return true;
-
-            default:
-                if ( type == qMetaTypeId<QVariant>() )
-                {
-                    *static_cast<NS( QVariant ) *>( data ) = NS( QVariant )();
-                    return true;
-                }
-                else if ( type == qMetaTypeId<QScriptValue>() )
-                {
-                    *static_cast<NS( QScriptValue ) *>( data ) = NS( QScriptValue )();
-                    return true;
-                }
-                else if ( typeCategory( type ) != Unknown )
-                {
-                    *static_cast<void **>( data ) = 0;
-                    return true;
-                }
-
-                break;
+            break;
         }
     }
 

@@ -198,21 +198,21 @@ void Vmr9VideoWindowControl::setAspectRatioMode( Qt::AspectRatioMode mode )
     {
         switch ( mode )
         {
-            case Qt::IgnoreAspectRatio:
-                control->SetAspectRatioMode( VMR9ARMode_None );
-                break;
+        case Qt::IgnoreAspectRatio:
+            control->SetAspectRatioMode( VMR9ARMode_None );
+            break;
 
-            case Qt::KeepAspectRatio:
-                control->SetAspectRatioMode( VMR9ARMode_LetterBox );
-                break;
+        case Qt::KeepAspectRatio:
+            control->SetAspectRatioMode( VMR9ARMode_LetterBox );
+            break;
 
-            case Qt::KeepAspectRatioByExpanding:
-                control->SetAspectRatioMode( VMR9ARMode_LetterBox );
-                setDisplayRect( m_displayRect );
-                break;
+        case Qt::KeepAspectRatioByExpanding:
+            control->SetAspectRatioMode( VMR9ARMode_LetterBox );
+            setDisplayRect( m_displayRect );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         control->Release();

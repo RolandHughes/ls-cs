@@ -38,7 +38,7 @@ MyEditWidget::MyEditWidget( QWidget *parent ) :
     setAcceptDrops( true );
 
     connect( this, &QTextEdit::undoAvailable, this, &MyEditWidget::savePointReached);
-    
+
     // Set a default font that should be available everywhere
     //
     QString defaultFont = "Monospace";
@@ -99,19 +99,19 @@ bool MyEditWidget::closeDoc()
 
         switch ( btn )
         {
-            case QMessageBox::Save:
-                save();
-                clearEditWidget();
-                break;
+        case QMessageBox::Save:
+            save();
+            clearEditWidget();
+            break;
 
-            case QMessageBox::Cancel:
-                retVal = false;
-                break;
+        case QMessageBox::Cancel:
+            retVal = false;
+            break;
 
-            case QMessageBox::Discard:
-            default:
-                clearEditWidget();
-                break;
+        case QMessageBox::Discard:
+        default:
+            clearEditWidget();
+            break;
         }
     }
 

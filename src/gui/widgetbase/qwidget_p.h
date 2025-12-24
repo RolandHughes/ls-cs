@@ -583,7 +583,7 @@ public:
         if ( button == Qt::LeftButton && qApp->autoSipEnabled() )
         {
             QStyle::RequestSoftwareInputPanel behavior = QStyle::RequestSoftwareInputPanel(
-                        q->style()->styleHint( QStyle::SH_RequestSoftwareInputPanel ) );
+                    q->style()->styleHint( QStyle::SH_RequestSoftwareInputPanel ) );
 
             if ( ! clickCausedFocus || behavior == QStyle::RSIP_OnMouseClick )
             {

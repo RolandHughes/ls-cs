@@ -109,15 +109,15 @@ QImageData *QImageData::create( const QSize &size, QImage::Format format )
 
     switch ( format )
     {
-        case QImage::Format_Mono:
-        case QImage::Format_MonoLSB:
-            d->colortable.resize( 2 );
-            d->colortable[0] = QColor( Qt::black ).rgba();
-            d->colortable[1] = QColor( Qt::white ).rgba();
-            break;
+    case QImage::Format_Mono:
+    case QImage::Format_MonoLSB:
+        d->colortable.resize( 2 );
+        d->colortable[0] = QColor( Qt::black ).rgba();
+        d->colortable[1] = QColor( Qt::white ).rgba();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     d->width  = width;
@@ -171,141 +171,141 @@ bool QImageData::checkForAlphaPixels() const
     switch ( format )
     {
 
-        case QImage::Format_Mono:
-        case QImage::Format_MonoLSB:
-        case QImage::Format_Indexed8:
-            has_alpha_pixels = has_alpha_clut;
-            break;
-
-        case QImage::Format_Alpha8:
-            has_alpha_pixels = true;
-            break;
-
-        case QImage::Format_ARGB32:
-        case QImage::Format_ARGB32_Premultiplied:
-        {
-            uchar *bits = data;
-
-            for ( int y = 0; y < height && !has_alpha_pixels; ++y )
-            {
-                for ( int x = 0; x < width; ++x )
-                {
-                    has_alpha_pixels |= ( ( ( uint * )bits )[x] & 0xff000000 ) != 0xff000000;
-                }
-
-                bits += bytes_per_line;
-            }
-        }
+    case QImage::Format_Mono:
+    case QImage::Format_MonoLSB:
+    case QImage::Format_Indexed8:
+        has_alpha_pixels = has_alpha_clut;
         break;
 
-        case QImage::Format_RGBA8888:
-        case QImage::Format_RGBA8888_Premultiplied:
-        {
-            uchar *bits = data;
-
-            for ( int y = 0; y < height && !has_alpha_pixels; ++y )
-            {
-                for ( int x = 0; x < width; ++x )
-                {
-                    has_alpha_pixels |= bits[x * 4 + 3] != 0xff;
-                }
-
-                bits += bytes_per_line;
-            }
-        }
+    case QImage::Format_Alpha8:
+        has_alpha_pixels = true;
         break;
 
-        case QImage::Format_A2BGR30_Premultiplied:
-        case QImage::Format_A2RGB30_Premultiplied:
+    case QImage::Format_ARGB32:
+    case QImage::Format_ARGB32_Premultiplied:
+    {
+        uchar *bits = data;
+
+        for ( int y = 0; y < height && !has_alpha_pixels; ++y )
         {
-            uchar *bits = data;
-
-            for ( int y = 0; y < height && !has_alpha_pixels; ++y )
+            for ( int x = 0; x < width; ++x )
             {
-                for ( int x = 0; x < width; ++x )
-                {
-                    has_alpha_pixels |= ( ( ( uint * )bits )[x] & 0xc0000000 ) != 0xc0000000;
-                }
-
-                bits += bytes_per_line;
+                has_alpha_pixels |= ( ( ( uint * )bits )[x] & 0xff000000 ) != 0xff000000;
             }
+
+            bits += bytes_per_line;
         }
+    }
+    break;
+
+    case QImage::Format_RGBA8888:
+    case QImage::Format_RGBA8888_Premultiplied:
+    {
+        uchar *bits = data;
+
+        for ( int y = 0; y < height && !has_alpha_pixels; ++y )
+        {
+            for ( int x = 0; x < width; ++x )
+            {
+                has_alpha_pixels |= bits[x * 4 + 3] != 0xff;
+            }
+
+            bits += bytes_per_line;
+        }
+    }
+    break;
+
+    case QImage::Format_A2BGR30_Premultiplied:
+    case QImage::Format_A2RGB30_Premultiplied:
+    {
+        uchar *bits = data;
+
+        for ( int y = 0; y < height && !has_alpha_pixels; ++y )
+        {
+            for ( int x = 0; x < width; ++x )
+            {
+                has_alpha_pixels |= ( ( ( uint * )bits )[x] & 0xc0000000 ) != 0xc0000000;
+            }
+
+            bits += bytes_per_line;
+        }
+    }
+    break;
+
+    case QImage::Format_ARGB8555_Premultiplied:
+    case QImage::Format_ARGB8565_Premultiplied:
+    {
+        uchar *bits = data;
+        uchar *end_bits = data + bytes_per_line;
+
+        for ( int y = 0; y < height && !has_alpha_pixels; ++y )
+        {
+            while ( bits < end_bits )
+            {
+                has_alpha_pixels |= bits[0] != 0;
+                bits += 3;
+            }
+
+            bits = end_bits;
+            end_bits += bytes_per_line;
+        }
+    }
+    break;
+
+    case QImage::Format_ARGB6666_Premultiplied:
+    {
+        uchar *bits = data;
+        uchar *end_bits = data + bytes_per_line;
+
+        for ( int y = 0; y < height && !has_alpha_pixels; ++y )
+        {
+            while ( bits < end_bits )
+            {
+                has_alpha_pixels |= ( bits[0] & 0xfc ) != 0;
+                bits += 3;
+            }
+
+            bits = end_bits;
+            end_bits += bytes_per_line;
+        }
+    }
+    break;
+
+    case QImage::Format_ARGB4444_Premultiplied:
+    {
+        uchar *bits = data;
+        uchar *end_bits = data + bytes_per_line;
+
+        for ( int y = 0; y < height && !has_alpha_pixels; ++y )
+        {
+            while ( bits < end_bits )
+            {
+                has_alpha_pixels |= ( bits[0] & 0xf0 ) != 0;
+                bits += 2;
+            }
+
+            bits = end_bits;
+            end_bits += bytes_per_line;
+        }
+    }
+    break;
+
+    case QImage::Format_RGB32:
+    case QImage::Format_RGB16:
+    case QImage::Format_RGB444:
+    case QImage::Format_RGB555:
+    case QImage::Format_RGB666:
+    case QImage::Format_RGB888:
+    case QImage::Format_RGBX8888:
+    case QImage::Format_BGR30:
+    case QImage::Format_RGB30:
+    case QImage::Format_Grayscale8:
         break;
 
-        case QImage::Format_ARGB8555_Premultiplied:
-        case QImage::Format_ARGB8565_Premultiplied:
-        {
-            uchar *bits = data;
-            uchar *end_bits = data + bytes_per_line;
-
-            for ( int y = 0; y < height && !has_alpha_pixels; ++y )
-            {
-                while ( bits < end_bits )
-                {
-                    has_alpha_pixels |= bits[0] != 0;
-                    bits += 3;
-                }
-
-                bits = end_bits;
-                end_bits += bytes_per_line;
-            }
-        }
+    case QImage::Format_Invalid:
+    case QImage::NImageFormats:
+        // error, may want to throw
         break;
-
-        case QImage::Format_ARGB6666_Premultiplied:
-        {
-            uchar *bits = data;
-            uchar *end_bits = data + bytes_per_line;
-
-            for ( int y = 0; y < height && !has_alpha_pixels; ++y )
-            {
-                while ( bits < end_bits )
-                {
-                    has_alpha_pixels |= ( bits[0] & 0xfc ) != 0;
-                    bits += 3;
-                }
-
-                bits = end_bits;
-                end_bits += bytes_per_line;
-            }
-        }
-        break;
-
-        case QImage::Format_ARGB4444_Premultiplied:
-        {
-            uchar *bits = data;
-            uchar *end_bits = data + bytes_per_line;
-
-            for ( int y = 0; y < height && !has_alpha_pixels; ++y )
-            {
-                while ( bits < end_bits )
-                {
-                    has_alpha_pixels |= ( bits[0] & 0xf0 ) != 0;
-                    bits += 2;
-                }
-
-                bits = end_bits;
-                end_bits += bytes_per_line;
-            }
-        }
-        break;
-
-        case QImage::Format_RGB32:
-        case QImage::Format_RGB16:
-        case QImage::Format_RGB444:
-        case QImage::Format_RGB555:
-        case QImage::Format_RGB666:
-        case QImage::Format_RGB888:
-        case QImage::Format_RGBX8888:
-        case QImage::Format_BGR30:
-        case QImage::Format_RGB30:
-        case QImage::Format_Grayscale8:
-            break;
-
-        case QImage::Format_Invalid:
-        case QImage::NImageFormats:
-            // error, may want to throw
-            break;
     }
 
     return has_alpha_pixels;
@@ -959,14 +959,14 @@ void QImage::fill( uint pixel )
     else if ( d->depth == 16 )
     {
         lscs_rectfill<quint16>( reinterpret_cast<quint16 *>( d->data ), pixel,
-                              0, 0, d->width, d->height, d->bytes_per_line );
+                                0, 0, d->width, d->height, d->bytes_per_line );
         return;
 
     }
     else if ( d->depth == 24 )
     {
         lscs_rectfill<quint24>( reinterpret_cast<quint24 *>( d->data ), pixel,
-                              0, 0, d->width, d->height, d->bytes_per_line );
+                                0, 0, d->width, d->height, d->bytes_per_line );
         return;
     }
 
@@ -989,7 +989,7 @@ void QImage::fill( uint pixel )
     }
 
     lscs_rectfill<uint>( reinterpret_cast<uint *>( d->data ), pixel,
-                       0, 0, d->width, d->height, d->bytes_per_line );
+                         0, 0, d->width, d->height, d->bytes_per_line );
 }
 
 void QImage::fill( Qt::GlobalColor color )
@@ -1014,77 +1014,77 @@ void QImage::fill( const QColor &color )
 
     switch ( d->format )
     {
-        case QImage::Format_RGB32:
-        case QImage::Format_ARGB32:
-            fill( color.rgba() );
-            break;
+    case QImage::Format_RGB32:
+    case QImage::Format_ARGB32:
+        fill( color.rgba() );
+        break;
 
-        case QImage::Format_ARGB32_Premultiplied:
-            fill( qPremultiply( color.rgba() ) );
-            break;
+    case QImage::Format_ARGB32_Premultiplied:
+        fill( qPremultiply( color.rgba() ) );
+        break;
 
-        case QImage::Format_RGBX8888:
-            fill( ARGB2RGBA( color.rgba() | 0xff000000 ) );
-            break;
+    case QImage::Format_RGBX8888:
+        fill( ARGB2RGBA( color.rgba() | 0xff000000 ) );
+        break;
 
-        case QImage::Format_RGBA8888:
-            fill( ARGB2RGBA( color.rgba() ) );
-            break;
+    case QImage::Format_RGBA8888:
+        fill( ARGB2RGBA( color.rgba() ) );
+        break;
 
-        case QImage::Format_RGBA8888_Premultiplied:
-            fill( ARGB2RGBA( qPremultiply( color.rgba() ) ) );
-            break;
+    case QImage::Format_RGBA8888_Premultiplied:
+        fill( ARGB2RGBA( qPremultiply( color.rgba() ) ) );
+        break;
 
-        case QImage::Format_BGR30:
-        case QImage::Format_A2BGR30_Premultiplied:
-            fill( qConvertRgb64ToRgb30<PixelOrderBGR>( color.rgba64() ) );
-            break;
+    case QImage::Format_BGR30:
+    case QImage::Format_A2BGR30_Premultiplied:
+        fill( qConvertRgb64ToRgb30<PixelOrderBGR>( color.rgba64() ) );
+        break;
 
-        case QImage::Format_RGB30:
-        case QImage::Format_A2RGB30_Premultiplied:
-            fill( qConvertRgb64ToRgb30<PixelOrderRGB>( color.rgba64() ) );
-            break;
+    case QImage::Format_RGB30:
+    case QImage::Format_A2RGB30_Premultiplied:
+        fill( qConvertRgb64ToRgb30<PixelOrderRGB>( color.rgba64() ) );
+        break;
 
-        case QImage::Format_RGB16:
-            fill( ( uint ) qConvertRgb32To16( color.rgba() ) );
-            break;
+    case QImage::Format_RGB16:
+        fill( ( uint ) qConvertRgb32To16( color.rgba() ) );
+        break;
 
-        case QImage::Format_Indexed8:
+    case QImage::Format_Indexed8:
+    {
+        uint pixel = 0;
+
+        for ( int i = 0; i < d->colortable.size(); ++i )
         {
-            uint pixel = 0;
-
-            for ( int i = 0; i < d->colortable.size(); ++i )
+            if ( color.rgba() == d->colortable.at( i ) )
             {
-                if ( color.rgba() == d->colortable.at( i ) )
-                {
-                    pixel = i;
-                    break;
-                }
+                pixel = i;
+                break;
             }
-
-            fill( pixel );
-            break;
         }
 
-        case QImage::Format_Mono:
-        case QImage::Format_MonoLSB:
-            if ( color == Qt::color1 )
-            {
-                fill( ( uint ) 1 );
-            }
-            else
-            {
-                fill( ( uint ) 0 );
-            }
+        fill( pixel );
+        break;
+    }
 
-            break;
-
-        default:
+    case QImage::Format_Mono:
+    case QImage::Format_MonoLSB:
+        if ( color == Qt::color1 )
         {
-            QPainter p( this );
-            p.setCompositionMode( QPainter::CompositionMode_Source );
-            p.fillRect( rect(), color );
+            fill( ( uint ) 1 );
         }
+        else
+        {
+            fill( ( uint ) 0 );
+        }
+
+        break;
+
+    default:
+    {
+        QPainter p( this );
+        p.setCompositionMode( QPainter::CompositionMode_Source );
+        p.fillRect( rect(), color );
+    }
     }
 }
 
@@ -1140,45 +1140,45 @@ void QImage::invertPixels( InvertMode mode )
 
         switch ( d->format )
         {
-            case QImage::Format_RGBA8888:
-                if ( mode == InvertRgba )
-                {
-                    break;
-                }
+        case QImage::Format_RGBA8888:
+            if ( mode == InvertRgba )
+            {
+                break;
+            }
 
-                [[fallthrough]];
+            [[fallthrough]];
 
-            case QImage::Format_RGBX8888:
+        case QImage::Format_RGBX8888:
 
 #if Q_BYTE_ORDER == Q_BIG_ENDIAN
-                xorbits = 0xffffff00;
-                break;
+            xorbits = 0xffffff00;
+            break;
 #else
-                xorbits = 0x00ffffff;
-                break;
+            xorbits = 0x00ffffff;
+            break;
 #endif
 
-            case QImage::Format_ARGB32:
-                if ( mode == InvertRgba )
-                {
-                    break;
-                }
-
-                [[fallthrough]];
-
-            case QImage::Format_RGB32:
-                xorbits = 0x00ffffff;
+        case QImage::Format_ARGB32:
+            if ( mode == InvertRgba )
+            {
                 break;
+            }
 
-            case QImage::Format_BGR30:
-            case QImage::Format_RGB30:
-                xorbits = 0x3fffffff;
-                break;
+            [[fallthrough]];
 
-            default:
-                // error, should not reach here
-                xorbits = 0;
-                break;
+        case QImage::Format_RGB32:
+            xorbits = 0x00ffffff;
+            break;
+
+        case QImage::Format_BGR30:
+        case QImage::Format_RGB30:
+            xorbits = 0x3fffffff;
+            break;
+
+        default:
+            // error, should not reach here
+            xorbits = 0;
+            break;
         }
 
         while ( p < end )
@@ -1455,17 +1455,17 @@ int QImage::pixelIndex( int x, int y ) const
 
     switch ( d->format )
     {
-        case Format_Mono:
-            return ( *( s + ( x >> 3 ) ) >> ( 7 - ( x & 7 ) ) ) & 1;
+    case Format_Mono:
+        return ( *( s + ( x >> 3 ) ) >> ( 7 - ( x & 7 ) ) ) & 1;
 
-        case Format_MonoLSB:
-            return ( *( s + ( x >> 3 ) ) >> ( x & 7 ) ) & 1;
+    case Format_MonoLSB:
+        return ( *( s + ( x >> 3 ) ) >> ( x & 7 ) ) & 1;
 
-        case Format_Indexed8:
-            return ( int )s[x];
+    case Format_Indexed8:
+        return ( int )s[x];
 
-        default:
-            qWarning( "QImage::pixelIndex() No palette for %d bits per pixel images", d->depth );
+    default:
+        qWarning( "QImage::pixelIndex() No palette for %d bits per pixel images", d->depth );
     }
 
     return 0;
@@ -1484,20 +1484,20 @@ QRgb QImage::pixel( int x, int y ) const
 
     switch ( d->format )
     {
-        case Format_Mono:
-            index = ( *( s + ( x >> 3 ) ) >> ( ~x & 7 ) ) & 1;
-            break;
+    case Format_Mono:
+        index = ( *( s + ( x >> 3 ) ) >> ( ~x & 7 ) ) & 1;
+        break;
 
-        case Format_MonoLSB:
-            index = ( *( s + ( x >> 3 ) ) >> ( x & 7 ) ) & 1;
-            break;
+    case Format_MonoLSB:
+        index = ( *( s + ( x >> 3 ) ) >> ( x & 7 ) ) & 1;
+        break;
 
-        case Format_Indexed8:
-            index = s[x];
-            break;
+    case Format_Indexed8:
+        index = s[x];
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( index >= 0 )    // Indexed format
@@ -1513,31 +1513,31 @@ QRgb QImage::pixel( int x, int y ) const
 
     switch ( d->format )
     {
-        case Format_RGB32:
-            return 0xff000000 | reinterpret_cast<const QRgb *>( s )[x];
+    case Format_RGB32:
+        return 0xff000000 | reinterpret_cast<const QRgb *>( s )[x];
 
-        case Format_ARGB32: // Keep old behaviour.
-        case Format_ARGB32_Premultiplied:
-            return reinterpret_cast<const QRgb *>( s )[x];
+    case Format_ARGB32: // Keep old behaviour.
+    case Format_ARGB32_Premultiplied:
+        return reinterpret_cast<const QRgb *>( s )[x];
 
-        case Format_RGBX8888:
-        case Format_RGBA8888: // Match ARGB32 behavior.
-        case Format_RGBA8888_Premultiplied:
-            return RGBA2ARGB( reinterpret_cast<const quint32 *>( s )[x] );
+    case Format_RGBX8888:
+    case Format_RGBA8888: // Match ARGB32 behavior.
+    case Format_RGBA8888_Premultiplied:
+        return RGBA2ARGB( reinterpret_cast<const quint32 *>( s )[x] );
 
-        case Format_BGR30:
-        case Format_A2BGR30_Premultiplied:
-            return qConvertA2rgb30ToArgb32<PixelOrderBGR>( reinterpret_cast<const quint32 *>( s )[x] );
+    case Format_BGR30:
+    case Format_A2BGR30_Premultiplied:
+        return qConvertA2rgb30ToArgb32<PixelOrderBGR>( reinterpret_cast<const quint32 *>( s )[x] );
 
-        case Format_RGB30:
-        case Format_A2RGB30_Premultiplied:
-            return qConvertA2rgb30ToArgb32<PixelOrderRGB>( reinterpret_cast<const quint32 *>( s )[x] );
+    case Format_RGB30:
+    case Format_A2RGB30_Premultiplied:
+        return qConvertA2rgb30ToArgb32<PixelOrderRGB>( reinterpret_cast<const quint32 *>( s )[x] );
 
-        case Format_RGB16:
-            return qConvertRgb16To32( reinterpret_cast<const quint16 *>( s )[x] );
+    case Format_RGB16:
+        return qConvertRgb16To32( reinterpret_cast<const quint16 *>( s )[x] );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     const QPixelLayout *layout = &qPixelLayouts[d->format];
@@ -1560,95 +1560,95 @@ void QImage::setPixel( int x, int y, uint index_or_rgb )
 
     switch ( d->format )
     {
-        case Format_Mono:
-        case Format_MonoLSB:
-            if ( index_or_rgb > 1 )
-            {
-                qWarning( "QImage::setPixel() Index %d is out of range", index_or_rgb );
+    case Format_Mono:
+    case Format_MonoLSB:
+        if ( index_or_rgb > 1 )
+        {
+            qWarning( "QImage::setPixel() Index %d is out of range", index_or_rgb );
 
-            }
-            else if ( format() == Format_MonoLSB )
+        }
+        else if ( format() == Format_MonoLSB )
+        {
+            if ( index_or_rgb == 0 )
             {
-                if ( index_or_rgb == 0 )
-                {
-                    *( s + ( x >> 3 ) ) &= ~( 1 << ( x & 7 ) );
-                }
-                else
-                {
-                    *( s + ( x >> 3 ) ) |= ( 1 << ( x & 7 ) );
-                }
+                *( s + ( x >> 3 ) ) &= ~( 1 << ( x & 7 ) );
             }
             else
             {
-                if ( index_or_rgb == 0 )
-                {
-                    *( s + ( x >> 3 ) ) &= ~( 1 << ( 7 - ( x & 7 ) ) );
-                }
-                else
-                {
-                    *( s + ( x >> 3 ) ) |= ( 1 << ( 7 - ( x & 7 ) ) );
-                }
+                *( s + ( x >> 3 ) ) |= ( 1 << ( x & 7 ) );
             }
-
-            return;
-
-        case Format_Indexed8:
-            if ( index_or_rgb >= ( uint )d->colortable.size() )
+        }
+        else
+        {
+            if ( index_or_rgb == 0 )
             {
-                qWarning( "QImage::setPixel() Index %d is out of range", index_or_rgb );
-                return;
+                *( s + ( x >> 3 ) ) &= ~( 1 << ( 7 - ( x & 7 ) ) );
             }
+            else
+            {
+                *( s + ( x >> 3 ) ) |= ( 1 << ( 7 - ( x & 7 ) ) );
+            }
+        }
 
-            s[x] = index_or_rgb;
+        return;
+
+    case Format_Indexed8:
+        if ( index_or_rgb >= ( uint )d->colortable.size() )
+        {
+            qWarning( "QImage::setPixel() Index %d is out of range", index_or_rgb );
             return;
+        }
 
-        case Format_RGB32:
-            //make sure alpha is 255, we depend on it in qdrawhelper for cases
-            // when image is set as a texture pattern on a qbrush
-            ( ( uint * )s )[x] = 0xff000000 | index_or_rgb;
-            return;
+        s[x] = index_or_rgb;
+        return;
 
-        case Format_ARGB32:
-        case Format_ARGB32_Premultiplied:
-            ( ( uint * )s )[x] = index_or_rgb;
-            return;
+    case Format_RGB32:
+        //make sure alpha is 255, we depend on it in qdrawhelper for cases
+        // when image is set as a texture pattern on a qbrush
+        ( ( uint * )s )[x] = 0xff000000 | index_or_rgb;
+        return;
 
-        case Format_RGB16:
-            ( ( quint16 * )s )[x] = qConvertRgb32To16( qUnpremultiply( index_or_rgb ) );
-            return;
+    case Format_ARGB32:
+    case Format_ARGB32_Premultiplied:
+        ( ( uint * )s )[x] = index_or_rgb;
+        return;
 
-        case Format_RGBX8888:
-            ( ( uint * )s )[x] = ARGB2RGBA( 0xff000000 | index_or_rgb );
-            return;
+    case Format_RGB16:
+        ( ( quint16 * )s )[x] = qConvertRgb32To16( qUnpremultiply( index_or_rgb ) );
+        return;
 
-        case Format_RGBA8888:
-        case Format_RGBA8888_Premultiplied:
-            ( ( uint * )s )[x] = ARGB2RGBA( index_or_rgb );
-            return;
+    case Format_RGBX8888:
+        ( ( uint * )s )[x] = ARGB2RGBA( 0xff000000 | index_or_rgb );
+        return;
 
-        case Format_BGR30:
-            ( ( uint * )s )[x] = qConvertRgb32ToRgb30<PixelOrderBGR>( index_or_rgb );
-            return;
+    case Format_RGBA8888:
+    case Format_RGBA8888_Premultiplied:
+        ( ( uint * )s )[x] = ARGB2RGBA( index_or_rgb );
+        return;
 
-        case Format_A2BGR30_Premultiplied:
-            ( ( uint * )s )[x] = qConvertArgb32ToA2rgb30<PixelOrderBGR>( index_or_rgb );
-            return;
+    case Format_BGR30:
+        ( ( uint * )s )[x] = qConvertRgb32ToRgb30<PixelOrderBGR>( index_or_rgb );
+        return;
 
-        case Format_RGB30:
-            ( ( uint * )s )[x] = qConvertRgb32ToRgb30<PixelOrderRGB>( index_or_rgb );
-            return;
+    case Format_A2BGR30_Premultiplied:
+        ( ( uint * )s )[x] = qConvertArgb32ToA2rgb30<PixelOrderBGR>( index_or_rgb );
+        return;
 
-        case Format_A2RGB30_Premultiplied:
-            ( ( uint * )s )[x] = qConvertArgb32ToA2rgb30<PixelOrderRGB>( index_or_rgb );
-            return;
+    case Format_RGB30:
+        ( ( uint * )s )[x] = qConvertRgb32ToRgb30<PixelOrderRGB>( index_or_rgb );
+        return;
 
-        case Format_Invalid:
-        case NImageFormats:
-            Q_ASSERT( false );
-            return;
+    case Format_A2RGB30_Premultiplied:
+        ( ( uint * )s )[x] = qConvertArgb32ToA2rgb30<PixelOrderRGB>( index_or_rgb );
+        return;
 
-        default:
-            break;
+    case Format_Invalid:
+    case NImageFormats:
+        Q_ASSERT( false );
+        return;
+
+    default:
+        break;
     }
 
     const QPixelLayout *layout = &qPixelLayouts[d->format];
@@ -1670,19 +1670,19 @@ QColor QImage::pixelColor( int x, int y ) const
 
     switch ( d->format )
     {
-        case Format_BGR30:
-        case Format_A2BGR30_Premultiplied:
-            c = qConvertA2rgb30ToRgb64<PixelOrderBGR>( reinterpret_cast<const quint32 *>( s )[x] );
-            break;
+    case Format_BGR30:
+    case Format_A2BGR30_Premultiplied:
+        c = qConvertA2rgb30ToRgb64<PixelOrderBGR>( reinterpret_cast<const quint32 *>( s )[x] );
+        break;
 
-        case Format_RGB30:
-        case Format_A2RGB30_Premultiplied:
-            c = qConvertA2rgb30ToRgb64<PixelOrderRGB>( reinterpret_cast<const quint32 *>( s )[x] );
-            break;
+    case Format_RGB30:
+    case Format_A2RGB30_Premultiplied:
+        c = qConvertA2rgb30ToRgb64<PixelOrderRGB>( reinterpret_cast<const quint32 *>( s )[x] );
+        break;
 
-        default:
-            c = QRgba64::fromArgb32( pixel( x, y ) );
-            break;
+    default:
+        c = QRgba64::fromArgb32( pixel( x, y ) );
+        break;
     }
 
     // QColor is always unpremultiplied
@@ -1718,31 +1718,31 @@ void QImage::setPixelColor( int x, int y, const QColor &color )
 
     switch ( d->format )
     {
-        case Format_Mono:
-        case Format_MonoLSB:
-        case Format_Indexed8:
-            qWarning( "QImage::setPixelColor() Unable to set the color for a monochrome or indexed format" );
-            return;
+    case Format_Mono:
+    case Format_MonoLSB:
+    case Format_Indexed8:
+        qWarning( "QImage::setPixelColor() Unable to set the color for a monochrome or indexed format" );
+        return;
 
-        case Format_BGR30:
-            ( ( uint * )s )[x] = qConvertRgb64ToRgb30<PixelOrderBGR>( c ) | 0xc0000000;
-            return;
+    case Format_BGR30:
+        ( ( uint * )s )[x] = qConvertRgb64ToRgb30<PixelOrderBGR>( c ) | 0xc0000000;
+        return;
 
-        case Format_A2BGR30_Premultiplied:
-            ( ( uint * )s )[x] = qConvertRgb64ToRgb30<PixelOrderBGR>( c );
-            return;
+    case Format_A2BGR30_Premultiplied:
+        ( ( uint * )s )[x] = qConvertRgb64ToRgb30<PixelOrderBGR>( c );
+        return;
 
-        case Format_RGB30:
-            ( ( uint * )s )[x] = qConvertRgb64ToRgb30<PixelOrderRGB>( c ) | 0xc0000000;
-            return;
+    case Format_RGB30:
+        ( ( uint * )s )[x] = qConvertRgb64ToRgb30<PixelOrderRGB>( c ) | 0xc0000000;
+        return;
 
-        case Format_A2RGB30_Premultiplied:
-            ( ( uint * )s )[x] = qConvertRgb64ToRgb30<PixelOrderRGB>( c );
-            return;
+    case Format_A2RGB30_Premultiplied:
+        ( ( uint * )s )[x] = qConvertRgb64ToRgb30<PixelOrderRGB>( c );
+        return;
 
-        default:
-            setPixel( x, y, c.toArgb32() );
-            return;
+    default:
+        setPixel( x, y, c.toArgb32() );
+        return;
     }
 }
 
@@ -1756,68 +1756,68 @@ bool QImage::allGray() const
     switch ( d->format )
     {
 
-        case Format_Mono:
-        case Format_MonoLSB:
-        case Format_Indexed8:
-            for ( int i = 0; i < d->colortable.size(); ++i )
+    case Format_Mono:
+    case Format_MonoLSB:
+    case Format_Indexed8:
+        for ( int i = 0; i < d->colortable.size(); ++i )
+        {
+            if ( !qIsGray( d->colortable.at( i ) ) )
             {
-                if ( !qIsGray( d->colortable.at( i ) ) )
+                return false;
+            }
+        }
+
+        return true;
+
+    case Format_Alpha8:
+        return false;
+
+    case Format_Grayscale8:
+        return true;
+
+    case Format_RGB32:
+    case Format_ARGB32:
+    case Format_ARGB32_Premultiplied:
+
+#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
+    case Format_RGBX8888:
+    case Format_RGBA8888:
+    case Format_RGBA8888_Premultiplied:
+#endif
+
+        for ( int j = 0; j < d->height; ++j )
+        {
+            const QRgb *b = ( const QRgb * )constScanLine( j );
+
+            for ( int i = 0; i < d->width; ++i )
+            {
+                if ( !qIsGray( b[i] ) )
                 {
                     return false;
                 }
             }
+        }
 
-            return true;
+        return true;
 
-        case Format_Alpha8:
-            return false;
+    case Format_RGB16:
+        for ( int j = 0; j < d->height; ++j )
+        {
+            const quint16 *b = ( const quint16 * )constScanLine( j );
 
-        case Format_Grayscale8:
-            return true;
-
-        case Format_RGB32:
-        case Format_ARGB32:
-        case Format_ARGB32_Premultiplied:
-
-#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-        case Format_RGBX8888:
-        case Format_RGBA8888:
-        case Format_RGBA8888_Premultiplied:
-#endif
-
-            for ( int j = 0; j < d->height; ++j )
+            for ( int i = 0; i < d->width; ++i )
             {
-                const QRgb *b = ( const QRgb * )constScanLine( j );
-
-                for ( int i = 0; i < d->width; ++i )
+                if ( !qIsGray( qConvertRgb16To32( b[i] ) ) )
                 {
-                    if ( !qIsGray( b[i] ) )
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
+        }
 
-            return true;
+        return true;
 
-        case Format_RGB16:
-            for ( int j = 0; j < d->height; ++j )
-            {
-                const quint16 *b = ( const quint16 * )constScanLine( j );
-
-                for ( int i = 0; i < d->width; ++i )
-                {
-                    if ( !qIsGray( qConvertRgb16To32( b[i] ) ) )
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     const int buffer_size = 2048;
@@ -1870,23 +1870,23 @@ bool QImage::isGrayscale() const
 
     switch ( depth() )
     {
-        case 32:
-        case 24:
-        case 16:
-            return allGray();
+    case 32:
+    case 24:
+    case 16:
+        return allGray();
 
-        case 8:
-        {
-            Q_ASSERT( d->format == QImage::Format_Indexed8 );
+    case 8:
+    {
+        Q_ASSERT( d->format == QImage::Format_Indexed8 );
 
-            for ( int i = 0; i < colorCount(); i++ )
-                if ( d->colortable.at( i ) != qRgb( i, i, i ) )
-                {
-                    return false;
-                }
+        for ( int i = 0; i < colorCount(); i++ )
+            if ( d->colortable.at( i ) != qRgb( i, i, i ) )
+            {
+                return false;
+            }
 
-            return true;
-        }
+        return true;
+    }
     }
 
     return false;
@@ -2254,25 +2254,25 @@ inline void do_mirror( QImageData *dst, QImageData *src, bool horizontal, bool v
 
     switch ( depth )
     {
-        case 32:
-            do_mirror_data<quint32>( dst, src, dstX0, dstY0, dstXIncr, dstYIncr, w, h );
-            break;
+    case 32:
+        do_mirror_data<quint32>( dst, src, dstX0, dstY0, dstXIncr, dstYIncr, w, h );
+        break;
 
-        case 24:
-            do_mirror_data<quint24>( dst, src, dstX0, dstY0, dstXIncr, dstYIncr, w, h );
-            break;
+    case 24:
+        do_mirror_data<quint24>( dst, src, dstX0, dstY0, dstXIncr, dstYIncr, w, h );
+        break;
 
-        case 16:
-            do_mirror_data<quint16>( dst, src, dstX0, dstY0, dstXIncr, dstYIncr, w, h );
-            break;
+    case 16:
+        do_mirror_data<quint16>( dst, src, dstX0, dstY0, dstXIncr, dstYIncr, w, h );
+        break;
 
-        case 8:
-            do_mirror_data<quint8>( dst, src, dstX0, dstY0, dstXIncr, dstYIncr, w, h );
-            break;
+    case 8:
+        do_mirror_data<quint8>( dst, src, dstX0, dstY0, dstXIncr, dstYIncr, w, h );
+        break;
 
-        default:
-            Q_ASSERT( false );
-            break;
+    default:
+        Q_ASSERT( false );
+        break;
     }
 
     // The bytes are now all in the correct place. In addition, the bits in the individual
@@ -2429,106 +2429,106 @@ QImage QImage::rgbSwapped_helper() const
 
     switch ( d->format )
     {
-        case Format_Invalid:
-        case NImageFormats:
-            Q_ASSERT( false );
-            break;
+    case Format_Invalid:
+    case NImageFormats:
+        Q_ASSERT( false );
+        break;
 
-        case Format_Alpha8:
-        case Format_Grayscale8:
-            return *this;
+    case Format_Alpha8:
+    case Format_Grayscale8:
+        return *this;
 
-        case Format_Mono:
-        case Format_MonoLSB:
-        case Format_Indexed8:
-            res = copy();
+    case Format_Mono:
+    case Format_MonoLSB:
+    case Format_Indexed8:
+        res = copy();
 
-            for ( int i = 0; i < res.d->colortable.size(); i++ )
-            {
-                QRgb c = res.d->colortable.at( i );
-                res.d->colortable[i] = QRgb( ( ( c << 16 ) & 0xff0000 ) | ( ( c >> 16 ) & 0xff ) | ( c & 0xff00ff00 ) );
-            }
+        for ( int i = 0; i < res.d->colortable.size(); i++ )
+        {
+            QRgb c = res.d->colortable.at( i );
+            res.d->colortable[i] = QRgb( ( ( c << 16 ) & 0xff0000 ) | ( ( c >> 16 ) & 0xff ) | ( c & 0xff00ff00 ) );
+        }
 
-            break;
+        break;
 
-        case Format_RGB32:
-        case Format_ARGB32:
-        case Format_ARGB32_Premultiplied:
+    case Format_RGB32:
+    case Format_ARGB32:
+    case Format_ARGB32_Premultiplied:
 
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-        case Format_RGBX8888:
-        case Format_RGBA8888:
-        case Format_RGBA8888_Premultiplied:
+    case Format_RGBX8888:
+    case Format_RGBA8888:
+    case Format_RGBA8888_Premultiplied:
 #endif
-            res = QImage( d->width, d->height, d->format );
-            QIMAGE_SANITYCHECK_MEMORY( res );
+        res = QImage( d->width, d->height, d->format );
+        QIMAGE_SANITYCHECK_MEMORY( res );
 
-            for ( int i = 0; i < d->height; i++ )
+        for ( int i = 0; i < d->height; i++ )
+        {
+            uint *q = ( uint * )res.scanLine( i );
+            const uint *p = ( const uint * )constScanLine( i );
+            const uint *end = p + d->width;
+
+            while ( p < end )
             {
-                uint *q = ( uint * )res.scanLine( i );
-                const uint *p = ( const uint * )constScanLine( i );
-                const uint *end = p + d->width;
-
-                while ( p < end )
-                {
-                    uint c = *p;
-                    *q = ( ( c << 16 ) & 0xff0000 ) | ( ( c >> 16 ) & 0xff ) | ( c & 0xff00ff00 );
-                    p++;
-                    q++;
-                }
+                uint c = *p;
+                *q = ( ( c << 16 ) & 0xff0000 ) | ( ( c >> 16 ) & 0xff ) | ( c & 0xff00ff00 );
+                p++;
+                q++;
             }
+        }
 
-            break;
+        break;
 
-        case Format_RGB16:
-            res = QImage( d->width, d->height, d->format );
-            QIMAGE_SANITYCHECK_MEMORY( res );
+    case Format_RGB16:
+        res = QImage( d->width, d->height, d->format );
+        QIMAGE_SANITYCHECK_MEMORY( res );
 
-            for ( int i = 0; i < d->height; i++ )
+        for ( int i = 0; i < d->height; i++ )
+        {
+            ushort *q = ( ushort * )res.scanLine( i );
+            const ushort *p = ( const ushort * )constScanLine( i );
+            const ushort *end = p + d->width;
+
+            while ( p < end )
             {
-                ushort *q = ( ushort * )res.scanLine( i );
-                const ushort *p = ( const ushort * )constScanLine( i );
-                const ushort *end = p + d->width;
-
-                while ( p < end )
-                {
-                    ushort c = *p;
-                    *q = ( ( c << 11 ) & 0xf800 ) | ( ( c >> 11 ) & 0x1f ) | ( c & 0x07e0 );
-                    p++;
-                    q++;
-                }
+                ushort c = *p;
+                *q = ( ( c << 11 ) & 0xf800 ) | ( ( c >> 11 ) & 0x1f ) | ( c & 0x07e0 );
+                p++;
+                q++;
             }
+        }
 
-            break;
+        break;
 
-        case Format_BGR30:
-        case Format_A2BGR30_Premultiplied:
-        case Format_RGB30:
-        case Format_A2RGB30_Premultiplied:
-            res = QImage( d->width, d->height, d->format );
-            QIMAGE_SANITYCHECK_MEMORY( res );
+    case Format_BGR30:
+    case Format_A2BGR30_Premultiplied:
+    case Format_RGB30:
+    case Format_A2RGB30_Premultiplied:
+        res = QImage( d->width, d->height, d->format );
+        QIMAGE_SANITYCHECK_MEMORY( res );
 
-            for ( int i = 0; i < d->height; i++ )
+        for ( int i = 0; i < d->height; i++ )
+        {
+            uint *q = ( uint * )res.scanLine( i );
+            const uint *p = ( const uint * )constScanLine( i );
+            const uint *end = p + d->width;
+
+            while ( p < end )
             {
-                uint *q = ( uint * )res.scanLine( i );
-                const uint *p = ( const uint * )constScanLine( i );
-                const uint *end = p + d->width;
+                *q = qRgbSwapRgb30( *p );
+                p++;
+                q++;
 
-                while ( p < end )
-                {
-                    *q = qRgbSwapRgb30( *p );
-                    p++;
-                    q++;
-
-                }
             }
+        }
 
-            break;
+        break;
 
-        default:
-            res = QImage( d->width, d->height, d->format );
-            rgbSwapped_generic( d->width, d->height, this, &res, &qPixelLayouts[d->format] );
-            break;
+    default:
+        res = QImage( d->width, d->height, d->format );
+        rgbSwapped_generic( d->width, d->height, this, &res, &qPixelLayouts[d->format] );
+        break;
     }
 
     copyMetadata( res.d, d );
@@ -2551,86 +2551,86 @@ void QImage::rgbSwapped_inplace()
 
     switch ( d->format )
     {
-        case Format_Invalid:
-        case NImageFormats:
-            Q_ASSERT( false );
-            break;
+    case Format_Invalid:
+    case NImageFormats:
+        Q_ASSERT( false );
+        break;
 
-        case Format_Alpha8:
-        case Format_Grayscale8:
-            return;
+    case Format_Alpha8:
+    case Format_Grayscale8:
+        return;
 
-        case Format_Mono:
-        case Format_MonoLSB:
-        case Format_Indexed8:
-            for ( int i = 0; i < d->colortable.size(); i++ )
-            {
-                QRgb c = d->colortable.at( i );
-                d->colortable[i] = QRgb( ( ( c << 16 ) & 0xff0000 ) | ( ( c >> 16 ) & 0xff ) | ( c & 0xff00ff00 ) );
-            }
+    case Format_Mono:
+    case Format_MonoLSB:
+    case Format_Indexed8:
+        for ( int i = 0; i < d->colortable.size(); i++ )
+        {
+            QRgb c = d->colortable.at( i );
+            d->colortable[i] = QRgb( ( ( c << 16 ) & 0xff0000 ) | ( ( c >> 16 ) & 0xff ) | ( c & 0xff00ff00 ) );
+        }
 
-            break;
+        break;
 
-        case Format_RGB32:
-        case Format_ARGB32:
-        case Format_ARGB32_Premultiplied:
+    case Format_RGB32:
+    case Format_ARGB32:
+    case Format_ARGB32_Premultiplied:
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-        case Format_RGBX8888:
-        case Format_RGBA8888:
-        case Format_RGBA8888_Premultiplied:
+    case Format_RGBX8888:
+    case Format_RGBA8888:
+    case Format_RGBA8888_Premultiplied:
 #endif
-            for ( int i = 0; i < d->height; i++ )
+        for ( int i = 0; i < d->height; i++ )
+        {
+            uint *p = ( uint * )scanLine( i );
+            uint *end = p + d->width;
+
+            while ( p < end )
             {
-                uint *p = ( uint * )scanLine( i );
-                uint *end = p + d->width;
-
-                while ( p < end )
-                {
-                    uint c = *p;
-                    *p = ( ( c << 16 ) & 0xff0000 ) | ( ( c >> 16 ) & 0xff ) | ( c & 0xff00ff00 );
-                    p++;
-                }
+                uint c = *p;
+                *p = ( ( c << 16 ) & 0xff0000 ) | ( ( c >> 16 ) & 0xff ) | ( c & 0xff00ff00 );
+                p++;
             }
+        }
 
-            break;
+        break;
 
-        case Format_RGB16:
-            for ( int i = 0; i < d->height; i++ )
+    case Format_RGB16:
+        for ( int i = 0; i < d->height; i++ )
+        {
+            ushort *p = ( ushort * )scanLine( i );
+            ushort *end = p + d->width;
+
+            while ( p < end )
             {
-                ushort *p = ( ushort * )scanLine( i );
-                ushort *end = p + d->width;
-
-                while ( p < end )
-                {
-                    ushort c = *p;
-                    *p = ( ( c << 11 ) & 0xf800 ) | ( ( c >> 11 ) & 0x1f ) | ( c & 0x07e0 );
-                    p++;
-                }
+                ushort c = *p;
+                *p = ( ( c << 11 ) & 0xf800 ) | ( ( c >> 11 ) & 0x1f ) | ( c & 0x07e0 );
+                p++;
             }
+        }
 
-            break;
+        break;
 
-        case Format_BGR30:
-        case Format_A2BGR30_Premultiplied:
-        case Format_RGB30:
-        case Format_A2RGB30_Premultiplied:
-            for ( int i = 0; i < d->height; i++ )
+    case Format_BGR30:
+    case Format_A2BGR30_Premultiplied:
+    case Format_RGB30:
+    case Format_A2RGB30_Premultiplied:
+        for ( int i = 0; i < d->height; i++ )
+        {
+            uint *p = ( uint * )scanLine( i );
+            uint *end = p + d->width;
+
+            while ( p < end )
             {
-                uint *p = ( uint * )scanLine( i );
-                uint *end = p + d->width;
-
-                while ( p < end )
-                {
-                    *p = qRgbSwapRgb30( *p );
-                    p++;
-                }
+                *p = qRgbSwapRgb30( *p );
+                p++;
             }
+        }
 
-            break;
+        break;
 
-        default:
-            rgbSwapped_generic( d->width, d->height, this, this, &qPixelLayouts[d->format] );
-            break;
+    default:
+        rgbSwapped_generic( d->width, d->height, this, this, &qPixelLayouts[d->format] );
+        break;
     }
 }
 
@@ -2972,46 +2972,46 @@ int QImage::metric( PaintDeviceMetric metric ) const
 
     switch ( metric )
     {
-        case PdmWidth:
-            return d->width;
+    case PdmWidth:
+        return d->width;
 
-        case PdmHeight:
-            return d->height;
+    case PdmHeight:
+        return d->height;
 
-        case PdmWidthMM:
-            return qRound( d->width * 1000 / d->dpmx );
+    case PdmWidthMM:
+        return qRound( d->width * 1000 / d->dpmx );
 
-        case PdmHeightMM:
-            return qRound( d->height * 1000 / d->dpmy );
+    case PdmHeightMM:
+        return qRound( d->height * 1000 / d->dpmy );
 
-        case PdmNumColors:
-            return d->colortable.size();
+    case PdmNumColors:
+        return d->colortable.size();
 
-        case PdmDepth:
-            return d->depth;
+    case PdmDepth:
+        return d->depth;
 
-        case PdmDpiX:
-            return qRound( d->dpmx * 0.0254 );
+    case PdmDpiX:
+        return qRound( d->dpmx * 0.0254 );
 
-        case PdmDpiY:
-            return qRound( d->dpmy * 0.0254 );
+    case PdmDpiY:
+        return qRound( d->dpmy * 0.0254 );
 
-        case PdmPhysicalDpiX:
-            return qRound( d->dpmx * 0.0254 );
+    case PdmPhysicalDpiX:
+        return qRound( d->dpmx * 0.0254 );
 
-        case PdmPhysicalDpiY:
-            return qRound( d->dpmy * 0.0254 );
+    case PdmPhysicalDpiY:
+        return qRound( d->dpmy * 0.0254 );
 
-        case PdmDevicePixelRatio:
-            return d->devicePixelRatio;
+    case PdmDevicePixelRatio:
+        return d->devicePixelRatio;
 
-        case PdmDevicePixelRatioScaled:
-            return d->devicePixelRatio * QPaintDevice::devicePixelRatioFScale();
+    case PdmDevicePixelRatioScaled:
+        return d->devicePixelRatio * QPaintDevice::devicePixelRatioFScale();
 
 
-        default:
-            qWarning( "QImage::metric() Unhandled metric type %d", metric );
-            break;
+    default:
+        qWarning( "QImage::metric() Unhandled metric type %d", metric );
+        break;
     }
 
     return 0;
@@ -3045,7 +3045,7 @@ int QImage::metric( PaintDeviceMetric metric ) const
                         trigy += m12;
 // END OF MACRO
 bool lscs_xForm_helper( const QTransform &trueMat, int xoffset, int type, int depth,
-                      uchar *dptr, int dbpl, int p_inc, int dHeight, const uchar *sptr, int sbpl, int sWidth, int sHeight )
+                        uchar *dptr, int dbpl, int p_inc, int dHeight, const uchar *sptr, int sbpl, int sWidth, int sHeight )
 {
     int m11 = int( trueMat.m11() * 4096.0 );
     int m12 = int( trueMat.m12() * 4096.0 );
@@ -3071,109 +3071,109 @@ bool lscs_xForm_helper( const QTransform &trueMat, int xoffset, int type, int de
         {
             switch ( depth )
             {
-                case 8:                                // 8 bpp transform
-                    while ( dptr < maxp )
-                    {
-                        if ( trigx < maxws && trigy < maxhs )
-                        {
-                            *dptr = *( sptr + sbpl * ( trigy >> 12 ) + ( trigx >> 12 ) );
-                        }
-
-                        trigx += m11;
-                        trigy += m12;
-                        dptr++;
-                    }
-
-                    break;
-
-                case 16:                        // 16 bpp transform
-                    while ( dptr < maxp )
-                    {
-                        if ( trigx < maxws && trigy < maxhs )
-                            *( ( ushort * )dptr ) = *( ( const ushort * )( sptr + sbpl * ( trigy >> 12 ) +
-                                                       ( ( trigx >> 12 ) << 1 ) ) );
-
-                        trigx += m11;
-                        trigy += m12;
-                        dptr++;
-                        dptr++;
-                    }
-
-                    break;
-
-                case 24:                        // 24 bpp transform
-                    while ( dptr < maxp )
-                    {
-                        if ( trigx < maxws && trigy < maxhs )
-                        {
-                            const uchar *p2 = sptr + sbpl * ( trigy >> 12 ) + ( ( trigx >> 12 ) * 3 );
-                            dptr[0] = p2[0];
-                            dptr[1] = p2[1];
-                            dptr[2] = p2[2];
-                        }
-
-                        trigx += m11;
-                        trigy += m12;
-                        dptr += 3;
-                    }
-
-                    break;
-
-                case 32:                        // 32 bpp transform
-                    while ( dptr < maxp )
-                    {
-                        if ( trigx < maxws && trigy < maxhs )
-                            *( ( uint * )dptr ) = *( ( const uint * )( sptr + sbpl * ( trigy >> 12 ) +
-                                                     ( ( trigx >> 12 ) << 2 ) ) );
-
-                        trigx += m11;
-                        trigy += m12;
-                        dptr += 4;
-                    }
-
-                    break;
-
-                default:
+            case 8:                                // 8 bpp transform
+                while ( dptr < maxp )
                 {
-                    return false;
+                    if ( trigx < maxws && trigy < maxhs )
+                    {
+                        *dptr = *( sptr + sbpl * ( trigy >> 12 ) + ( trigx >> 12 ) );
+                    }
+
+                    trigx += m11;
+                    trigy += m12;
+                    dptr++;
                 }
+
+                break;
+
+            case 16:                        // 16 bpp transform
+                while ( dptr < maxp )
+                {
+                    if ( trigx < maxws && trigy < maxhs )
+                        *( ( ushort * )dptr ) = *( ( const ushort * )( sptr + sbpl * ( trigy >> 12 ) +
+                                                   ( ( trigx >> 12 ) << 1 ) ) );
+
+                    trigx += m11;
+                    trigy += m12;
+                    dptr++;
+                    dptr++;
+                }
+
+                break;
+
+            case 24:                        // 24 bpp transform
+                while ( dptr < maxp )
+                {
+                    if ( trigx < maxws && trigy < maxhs )
+                    {
+                        const uchar *p2 = sptr + sbpl * ( trigy >> 12 ) + ( ( trigx >> 12 ) * 3 );
+                        dptr[0] = p2[0];
+                        dptr[1] = p2[1];
+                        dptr[2] = p2[2];
+                    }
+
+                    trigx += m11;
+                    trigy += m12;
+                    dptr += 3;
+                }
+
+                break;
+
+            case 32:                        // 32 bpp transform
+                while ( dptr < maxp )
+                {
+                    if ( trigx < maxws && trigy < maxhs )
+                        *( ( uint * )dptr ) = *( ( const uint * )( sptr + sbpl * ( trigy >> 12 ) +
+                                                 ( ( trigx >> 12 ) << 2 ) ) );
+
+                    trigx += m11;
+                    trigy += m12;
+                    dptr += 4;
+                }
+
+                break;
+
+            default:
+            {
+                return false;
+            }
             }
         }
         else
         {
             switch ( type )
             {
-                case LSCS_XFORM_TYPE_MSBFIRST:
-                    while ( dptr < maxp )
-                    {
-                        IWX_MSB( 128 );
-                        IWX_MSB( 64 );
-                        IWX_MSB( 32 );
-                        IWX_MSB( 16 );
-                        IWX_MSB( 8 );
-                        IWX_MSB( 4 );
-                        IWX_MSB( 2 );
-                        IWX_MSB( 1 );
-                        dptr++;
-                    }
+            case LSCS_XFORM_TYPE_MSBFIRST:
+                while ( dptr < maxp )
+                {
+                    IWX_MSB( 128 );
+                    IWX_MSB( 64 );
+                    IWX_MSB( 32 );
+                    IWX_MSB( 16 );
+                    IWX_MSB( 8 );
+                    IWX_MSB( 4 );
+                    IWX_MSB( 2 );
+                    IWX_MSB( 1 );
+                    dptr++;
+                }
 
-                    break;
+                break;
 
-                case LSCS_XFORM_TYPE_LSBFIRST:
-                    while ( dptr < maxp )
-                    {
-                        IWX_LSB( 1 );
-                        IWX_LSB( 2 );
-                        IWX_LSB( 4 );
-                        IWX_LSB( 8 );
-                        IWX_LSB( 16 );
-                        IWX_LSB( 32 );
-                        IWX_LSB( 64 );
-                        IWX_LSB( 128 );
-                        dptr++;
-                    }
+            case LSCS_XFORM_TYPE_LSBFIRST:
+                while ( dptr < maxp )
+                {
+                    IWX_LSB( 1 );
+                    IWX_LSB( 2 );
+                    IWX_LSB( 4 );
+                    IWX_LSB( 8 );
+                    IWX_LSB( 16 );
+                    IWX_LSB( 32 );
+                    IWX_LSB( 64 );
+                    IWX_LSB( 128 );
+                    dptr++;
+                }
 
-                    break;
+                break;
             }
         }
 
@@ -3432,38 +3432,38 @@ int QImage::bitPlaneCount() const
 
     switch ( d->format )
     {
-        case QImage::Format_Invalid:
-            break;
+    case QImage::Format_Invalid:
+        break;
 
-        case QImage::Format_BGR30:
-        case QImage::Format_RGB30:
-            bpc = 30;
-            break;
+    case QImage::Format_BGR30:
+    case QImage::Format_RGB30:
+        bpc = 30;
+        break;
 
-        case QImage::Format_RGB32:
-        case QImage::Format_RGBX8888:
-            bpc = 24;
-            break;
+    case QImage::Format_RGB32:
+    case QImage::Format_RGBX8888:
+        bpc = 24;
+        break;
 
-        case QImage::Format_RGB666:
-            bpc = 18;
-            break;
+    case QImage::Format_RGB666:
+        bpc = 18;
+        break;
 
-        case QImage::Format_RGB555:
-            bpc = 15;
-            break;
+    case QImage::Format_RGB555:
+        bpc = 15;
+        break;
 
-        case QImage::Format_ARGB8555_Premultiplied:
-            bpc = 23;
-            break;
+    case QImage::Format_ARGB8555_Premultiplied:
+        bpc = 23;
+        break;
 
-        case QImage::Format_RGB444:
-            bpc = 12;
-            break;
+    case QImage::Format_RGB444:
+        bpc = 12;
+        break;
 
-        default:
-            bpc = lscs_depthForFormat( d->format );
-            break;
+    default:
+        bpc = lscs_depthForFormat( d->format );
+        break;
     }
 
     return bpc;
@@ -3475,25 +3475,25 @@ QImage QImage::smoothScaled( int w, int h ) const
 
     switch ( src.format() )
     {
-        case QImage::Format_RGB32:
-        case QImage::Format_ARGB32_Premultiplied:
+    case QImage::Format_RGB32:
+    case QImage::Format_ARGB32_Premultiplied:
 
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-        case QImage::Format_RGBX8888:
+    case QImage::Format_RGBX8888:
 #endif
 
-        case QImage::Format_RGBA8888_Premultiplied:
-            break;
+    case QImage::Format_RGBA8888_Premultiplied:
+        break;
 
-        default:
-            if ( src.hasAlphaChannel() )
-            {
-                src = src.convertToFormat( QImage::Format_ARGB32_Premultiplied );
-            }
-            else
-            {
-                src = src.convertToFormat( QImage::Format_RGB32 );
-            }
+    default:
+        if ( src.hasAlphaChannel() )
+        {
+            src = src.convertToFormat( QImage::Format_ARGB32_Premultiplied );
+        }
+        else
+        {
+            src = src.convertToFormat( QImage::Format_RGB32 );
+        }
     }
 
     src = qSmoothScaleImage( src, w, h );
@@ -3523,67 +3523,67 @@ static QImage rotated90( const QImage &image )
 
     switch ( image.format() )
     {
-        case QImage::Format_RGB32:
-        case QImage::Format_ARGB32:
-        case QImage::Format_ARGB32_Premultiplied:
-        case QImage::Format_RGBX8888:
-        case QImage::Format_RGBA8888:
-        case QImage::Format_RGBA8888_Premultiplied:
-        case QImage::Format_BGR30:
-        case QImage::Format_A2BGR30_Premultiplied:
-        case QImage::Format_RGB30:
-        case QImage::Format_A2RGB30_Premultiplied:
-            lscs_memrotate270( reinterpret_cast<const quint32 *>( image.bits() ),
-                             w, h, image.bytesPerLine(),
-                             reinterpret_cast<quint32 *>( out.bits() ),
-                             out.bytesPerLine() );
-            break;
+    case QImage::Format_RGB32:
+    case QImage::Format_ARGB32:
+    case QImage::Format_ARGB32_Premultiplied:
+    case QImage::Format_RGBX8888:
+    case QImage::Format_RGBA8888:
+    case QImage::Format_RGBA8888_Premultiplied:
+    case QImage::Format_BGR30:
+    case QImage::Format_A2BGR30_Premultiplied:
+    case QImage::Format_RGB30:
+    case QImage::Format_A2RGB30_Premultiplied:
+        lscs_memrotate270( reinterpret_cast<const quint32 *>( image.bits() ),
+                           w, h, image.bytesPerLine(),
+                           reinterpret_cast<quint32 *>( out.bits() ),
+                           out.bytesPerLine() );
+        break;
 
-        case QImage::Format_RGB666:
-        case QImage::Format_ARGB6666_Premultiplied:
-        case QImage::Format_ARGB8565_Premultiplied:
-        case QImage::Format_ARGB8555_Premultiplied:
-        case QImage::Format_RGB888:
-            lscs_memrotate270( reinterpret_cast<const quint24 *>( image.bits() ),
-                             w, h, image.bytesPerLine(),
-                             reinterpret_cast<quint24 *>( out.bits() ),
-                             out.bytesPerLine() );
-            break;
+    case QImage::Format_RGB666:
+    case QImage::Format_ARGB6666_Premultiplied:
+    case QImage::Format_ARGB8565_Premultiplied:
+    case QImage::Format_ARGB8555_Premultiplied:
+    case QImage::Format_RGB888:
+        lscs_memrotate270( reinterpret_cast<const quint24 *>( image.bits() ),
+                           w, h, image.bytesPerLine(),
+                           reinterpret_cast<quint24 *>( out.bits() ),
+                           out.bytesPerLine() );
+        break;
 
-        case QImage::Format_RGB555:
-        case QImage::Format_RGB16:
-        case QImage::Format_ARGB4444_Premultiplied:
-            lscs_memrotate270( reinterpret_cast<const quint16 *>( image.bits() ),
-                             w, h, image.bytesPerLine(),
-                             reinterpret_cast<quint16 *>( out.bits() ),
-                             out.bytesPerLine() );
-            break;
+    case QImage::Format_RGB555:
+    case QImage::Format_RGB16:
+    case QImage::Format_ARGB4444_Premultiplied:
+        lscs_memrotate270( reinterpret_cast<const quint16 *>( image.bits() ),
+                           w, h, image.bytesPerLine(),
+                           reinterpret_cast<quint16 *>( out.bits() ),
+                           out.bytesPerLine() );
+        break;
 
-        case QImage::Format_Alpha8:
-        case QImage::Format_Grayscale8:
-        case QImage::Format_Indexed8:
-            lscs_memrotate270( reinterpret_cast<const quint8 *>( image.bits() ),
-                             w, h, image.bytesPerLine(),
-                             reinterpret_cast<quint8 *>( out.bits() ),
-                             out.bytesPerLine() );
-            break;
+    case QImage::Format_Alpha8:
+    case QImage::Format_Grayscale8:
+    case QImage::Format_Indexed8:
+        lscs_memrotate270( reinterpret_cast<const quint8 *>( image.bits() ),
+                           w, h, image.bytesPerLine(),
+                           reinterpret_cast<quint8 *>( out.bits() ),
+                           out.bytesPerLine() );
+        break;
 
-        default:
-            for ( int y = 0; y < h; ++y )
-            {
-                if ( image.colorCount() )
-                    for ( int x = 0; x < w; ++x )
-                    {
-                        out.setPixel( h - y - 1, x, image.pixelIndex( x, y ) );
-                    }
-                else
-                    for ( int x = 0; x < w; ++x )
-                    {
-                        out.setPixel( h - y - 1, x, image.pixel( x, y ) );
-                    }
-            }
+    default:
+        for ( int y = 0; y < h; ++y )
+        {
+            if ( image.colorCount() )
+                for ( int x = 0; x < w; ++x )
+                {
+                    out.setPixel( h - y - 1, x, image.pixelIndex( x, y ) );
+                }
+            else
+                for ( int x = 0; x < w; ++x )
+                {
+                    out.setPixel( h - y - 1, x, image.pixel( x, y ) );
+                }
+        }
 
-            break;
+        break;
     }
 
     return out;
@@ -3610,67 +3610,67 @@ static QImage rotated270( const QImage &image )
 
     switch ( image.format() )
     {
-        case QImage::Format_RGB32:
-        case QImage::Format_ARGB32:
-        case QImage::Format_ARGB32_Premultiplied:
-        case QImage::Format_RGBX8888:
-        case QImage::Format_RGBA8888:
-        case QImage::Format_RGBA8888_Premultiplied:
-        case QImage::Format_BGR30:
-        case QImage::Format_A2BGR30_Premultiplied:
-        case QImage::Format_RGB30:
-        case QImage::Format_A2RGB30_Premultiplied:
-            lscs_memrotate90( reinterpret_cast<const quint32 *>( image.bits() ),
-                            w, h, image.bytesPerLine(),
-                            reinterpret_cast<quint32 *>( out.bits() ),
-                            out.bytesPerLine() );
-            break;
+    case QImage::Format_RGB32:
+    case QImage::Format_ARGB32:
+    case QImage::Format_ARGB32_Premultiplied:
+    case QImage::Format_RGBX8888:
+    case QImage::Format_RGBA8888:
+    case QImage::Format_RGBA8888_Premultiplied:
+    case QImage::Format_BGR30:
+    case QImage::Format_A2BGR30_Premultiplied:
+    case QImage::Format_RGB30:
+    case QImage::Format_A2RGB30_Premultiplied:
+        lscs_memrotate90( reinterpret_cast<const quint32 *>( image.bits() ),
+                          w, h, image.bytesPerLine(),
+                          reinterpret_cast<quint32 *>( out.bits() ),
+                          out.bytesPerLine() );
+        break;
 
-        case QImage::Format_RGB666:
-        case QImage::Format_ARGB6666_Premultiplied:
-        case QImage::Format_ARGB8565_Premultiplied:
-        case QImage::Format_ARGB8555_Premultiplied:
-        case QImage::Format_RGB888:
-            lscs_memrotate90( reinterpret_cast<const quint24 *>( image.bits() ),
-                            w, h, image.bytesPerLine(),
-                            reinterpret_cast<quint24 *>( out.bits() ),
-                            out.bytesPerLine() );
-            break;
+    case QImage::Format_RGB666:
+    case QImage::Format_ARGB6666_Premultiplied:
+    case QImage::Format_ARGB8565_Premultiplied:
+    case QImage::Format_ARGB8555_Premultiplied:
+    case QImage::Format_RGB888:
+        lscs_memrotate90( reinterpret_cast<const quint24 *>( image.bits() ),
+                          w, h, image.bytesPerLine(),
+                          reinterpret_cast<quint24 *>( out.bits() ),
+                          out.bytesPerLine() );
+        break;
 
-        case QImage::Format_RGB555:
-        case QImage::Format_RGB16:
-        case QImage::Format_ARGB4444_Premultiplied:
-            lscs_memrotate90( reinterpret_cast<const quint16 *>( image.bits() ),
-                            w, h, image.bytesPerLine(),
-                            reinterpret_cast<quint16 *>( out.bits() ),
-                            out.bytesPerLine() );
-            break;
+    case QImage::Format_RGB555:
+    case QImage::Format_RGB16:
+    case QImage::Format_ARGB4444_Premultiplied:
+        lscs_memrotate90( reinterpret_cast<const quint16 *>( image.bits() ),
+                          w, h, image.bytesPerLine(),
+                          reinterpret_cast<quint16 *>( out.bits() ),
+                          out.bytesPerLine() );
+        break;
 
-        case QImage::Format_Alpha8:
-        case QImage::Format_Grayscale8:
-        case QImage::Format_Indexed8:
-            lscs_memrotate90( reinterpret_cast<const quint8 *>( image.bits() ),
-                            w, h, image.bytesPerLine(),
-                            reinterpret_cast<quint8 *>( out.bits() ),
-                            out.bytesPerLine() );
-            break;
+    case QImage::Format_Alpha8:
+    case QImage::Format_Grayscale8:
+    case QImage::Format_Indexed8:
+        lscs_memrotate90( reinterpret_cast<const quint8 *>( image.bits() ),
+                          w, h, image.bytesPerLine(),
+                          reinterpret_cast<quint8 *>( out.bits() ),
+                          out.bytesPerLine() );
+        break;
 
-        default:
-            for ( int y = 0; y < h; ++y )
-            {
-                if ( image.colorCount() )
-                    for ( int x = 0; x < w; ++x )
-                    {
-                        out.setPixel( y, w - x - 1, image.pixelIndex( x, y ) );
-                    }
-                else
-                    for ( int x = 0; x < w; ++x )
-                    {
-                        out.setPixel( y, w - x - 1, image.pixel( x, y ) );
-                    }
-            }
+    default:
+        for ( int y = 0; y < h; ++y )
+        {
+            if ( image.colorCount() )
+                for ( int x = 0; x < w; ++x )
+                {
+                    out.setPixel( y, w - x - 1, image.pixelIndex( x, y ) );
+                }
+            else
+                for ( int x = 0; x < w; ++x )
+                {
+                    out.setPixel( y, w - x - 1, image.pixel( x, y ) );
+                }
+        }
 
-            break;
+        break;
     }
 
     return out;
@@ -3932,316 +3932,316 @@ static constexpr QPixelFormat pixelformats[] =
     QPixelFormat(),
     //QImage::Format_Mono:
     QPixelFormat( QPixelFormat::Indexed,
-                  /*RED*/            1,
-                  /*GREEN*/          0,
-                  /*BLUE*/           0,
-                  /*FOURTH*/         0,
-                  /*FIFTH*/          0,
-                  /*ALPHA*/          0,
-                  /*ALPHA USAGE*/    QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/ QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/  QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/ QPixelFormat::UnsignedByte,
-                  /*BYTE ORDER*/     QPixelFormat::CurrentSystemEndian ),
+    /*RED*/            1,
+    /*GREEN*/          0,
+    /*BLUE*/           0,
+    /*FOURTH*/         0,
+    /*FIFTH*/          0,
+    /*ALPHA*/          0,
+    /*ALPHA USAGE*/    QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/ QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/  QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/ QPixelFormat::UnsignedByte,
+    /*BYTE ORDER*/     QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_MonoLSB:
     QPixelFormat( QPixelFormat::Indexed,
-                  /*RED*/            1,
-                  /*GREEN*/          0,
-                  /*BLUE*/           0,
-                  /*FOURTH*/         0,
-                  /*FIFTH*/          0,
-                  /*ALPHA*/          0,
-                  /*ALPHA USAGE*/    QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/ QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/  QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/ QPixelFormat::UnsignedByte,
-                  /*BYTE ORDER*/     QPixelFormat::CurrentSystemEndian ),
+    /*RED*/            1,
+    /*GREEN*/          0,
+    /*BLUE*/           0,
+    /*FOURTH*/         0,
+    /*FIFTH*/          0,
+    /*ALPHA*/          0,
+    /*ALPHA USAGE*/    QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/ QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/  QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/ QPixelFormat::UnsignedByte,
+    /*BYTE ORDER*/     QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_Indexed8:
     QPixelFormat( QPixelFormat::Indexed,
-                  /*RED*/            8,
-                  /*GREEN*/          0,
-                  /*BLUE*/           0,
-                  /*FOURTH*/         0,
-                  /*FIFTH*/          0,
-                  /*ALPHA*/          0,
-                  /*ALPHA USAGE*/    QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/ QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/  QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/ QPixelFormat::UnsignedByte,
-                  /*BYTE ORDER*/     QPixelFormat::CurrentSystemEndian ),
+    /*RED*/            8,
+    /*GREEN*/          0,
+    /*BLUE*/           0,
+    /*FOURTH*/         0,
+    /*FIFTH*/          0,
+    /*ALPHA*/          0,
+    /*ALPHA USAGE*/    QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/ QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/  QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/ QPixelFormat::UnsignedByte,
+    /*BYTE ORDER*/     QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_RGB32:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                8,
-                  /*GREEN*/              8,
-                  /*BLUE*/               8,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              8,
-                  /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                8,
+    /*GREEN*/              8,
+    /*BLUE*/               8,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              8,
+    /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_ARGB32:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                8,
-                  /*GREEN*/              8,
-                  /*BLUE*/               8,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              8,
-                  /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                8,
+    /*GREEN*/              8,
+    /*BLUE*/               8,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              8,
+    /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_ARGB32_Premultiplied:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                8,
-                  /*GREEN*/              8,
-                  /*BLUE*/               8,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              8,
-                  /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                8,
+    /*GREEN*/              8,
+    /*BLUE*/               8,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              8,
+    /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_RGB16:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                5,
-                  /*GREEN*/              6,
-                  /*BLUE*/               5,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              0,
-                  /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedShort,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                5,
+    /*GREEN*/              6,
+    /*BLUE*/               5,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              0,
+    /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedShort,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_ARGB8565_Premultiplied:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                5,
-                  /*GREEN*/              6,
-                  /*BLUE*/               5,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              8,
-                  /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                5,
+    /*GREEN*/              6,
+    /*BLUE*/               5,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              8,
+    /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_RGB666:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                6,
-                  /*GREEN*/              6,
-                  /*BLUE*/               6,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              0,
-                  /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                6,
+    /*GREEN*/              6,
+    /*BLUE*/               6,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              0,
+    /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_ARGB6666_Premultiplied:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                6,
-                  /*GREEN*/              6,
-                  /*BLUE*/               6,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              6,
-                  /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtEnd,
-                  /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                6,
+    /*GREEN*/              6,
+    /*BLUE*/               6,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              6,
+    /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtEnd,
+    /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_RGB555:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                5,
-                  /*GREEN*/              5,
-                  /*BLUE*/               5,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              0,
-                  /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedShort,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                5,
+    /*GREEN*/              5,
+    /*BLUE*/               5,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              0,
+    /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedShort,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_ARGB8555_Premultiplied:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                5,
-                  /*GREEN*/              5,
-                  /*BLUE*/               5,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              8,
-                  /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                5,
+    /*GREEN*/              5,
+    /*BLUE*/               5,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              8,
+    /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_RGB888:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                8,
-                  /*GREEN*/              8,
-                  /*BLUE*/               8,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              0,
-                  /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedByte,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                8,
+    /*GREEN*/              8,
+    /*BLUE*/               8,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              0,
+    /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedByte,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_RGB444:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                4,
-                  /*GREEN*/              4,
-                  /*BLUE*/               4,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              0,
-                  /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedShort,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                4,
+    /*GREEN*/              4,
+    /*BLUE*/               4,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              0,
+    /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedShort,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_ARGB4444_Premultiplied:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                4,
-                  /*GREEN*/              4,
-                  /*BLUE*/               4,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              4,
-                  /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtEnd,
-                  /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedShort,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                4,
+    /*GREEN*/              4,
+    /*BLUE*/               4,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              4,
+    /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtEnd,
+    /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedShort,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_RGBX8888:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                8,
-                  /*GREEN*/              8,
-                  /*BLUE*/               8,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              8,
-                  /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtEnd,
-                  /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedByte,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                8,
+    /*GREEN*/              8,
+    /*BLUE*/               8,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              8,
+    /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtEnd,
+    /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedByte,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_RGBA8888:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                8,
-                  /*GREEN*/              8,
-                  /*BLUE*/               8,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              8,
-                  /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtEnd,
-                  /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedByte,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                8,
+    /*GREEN*/              8,
+    /*BLUE*/               8,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              8,
+    /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtEnd,
+    /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedByte,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_RGBA8888_Premultiplied:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                8,
-                  /*GREEN*/              8,
-                  /*BLUE*/               8,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              8,
-                  /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtEnd,
-                  /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedByte,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                8,
+    /*GREEN*/              8,
+    /*BLUE*/               8,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              8,
+    /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtEnd,
+    /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedByte,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_BGR30:
     QPixelFormat( QPixelFormat::BGR,
-                  /*RED*/                10,
-                  /*GREEN*/              10,
-                  /*BLUE*/               10,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              2,
-                  /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                10,
+    /*GREEN*/              10,
+    /*BLUE*/               10,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              2,
+    /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_A2BGR30_Premultiplied:
     QPixelFormat( QPixelFormat::BGR,
-                  /*RED*/                10,
-                  /*GREEN*/              10,
-                  /*BLUE*/               10,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              2,
-                  /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                10,
+    /*GREEN*/              10,
+    /*BLUE*/               10,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              2,
+    /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_RGB30:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                10,
-                  /*GREEN*/              10,
-                  /*BLUE*/               10,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              2,
-                  /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                10,
+    /*GREEN*/              10,
+    /*BLUE*/               10,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              2,
+    /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_A2RGB30_Premultiplied:
     QPixelFormat( QPixelFormat::RGB,
-                  /*RED*/                10,
-                  /*GREEN*/              10,
-                  /*BLUE*/               10,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              2,
-                  /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*RED*/                10,
+    /*GREEN*/              10,
+    /*BLUE*/               10,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              2,
+    /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedInteger,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_Alpha8:
     QPixelFormat( QPixelFormat::Alpha,
-                  /*First*/              0,
-                  /*SECOND*/             0,
-                  /*THIRD*/              0,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              8,
-                  /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedByte,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*First*/              0,
+    /*SECOND*/             0,
+    /*THIRD*/              0,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              8,
+    /*ALPHA USAGE*/       QPixelFormat::UsesAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::Premultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedByte,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
     //QImage::Format_Grayscale8:
     QPixelFormat( QPixelFormat::Grayscale,
-                  /*GRAY*/               8,
-                  /*SECOND*/             0,
-                  /*THIRD*/              0,
-                  /*FOURTH*/             0,
-                  /*FIFTH*/              0,
-                  /*ALPHA*/              0,
-                  /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
-                  /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
-                  /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
-                  /*INTERPRETATION*/    QPixelFormat::UnsignedByte,
-                  /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
+    /*GRAY*/               8,
+    /*SECOND*/             0,
+    /*THIRD*/              0,
+    /*FOURTH*/             0,
+    /*FIFTH*/              0,
+    /*ALPHA*/              0,
+    /*ALPHA USAGE*/       QPixelFormat::IgnoresAlpha,
+    /*ALPHA POSITION*/    QPixelFormat::AtBeginning,
+    /*PREMULTIPLIED*/     QPixelFormat::NotPremultiplied,
+    /*INTERPRETATION*/    QPixelFormat::UnsignedByte,
+    /*BYTE ORDER*/        QPixelFormat::CurrentSystemEndian ),
 };
 static_assert( sizeof( pixelformats ) / sizeof( *pixelformats ) == QImage::NImageFormats, "Type mismatch" );
 

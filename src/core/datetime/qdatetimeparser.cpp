@@ -42,38 +42,38 @@ int QDateTimeParser::getDigit( const QDateTime &t, int index ) const
 
     switch ( node.type )
     {
-        case Hour24Section:
-        case Hour12Section:
-            return t.time().hour();
+    case Hour24Section:
+    case Hour12Section:
+        return t.time().hour();
 
-        case MinuteSection:
-            return t.time().minute();
+    case MinuteSection:
+        return t.time().minute();
 
-        case SecondSection:
-            return t.time().second();
+    case SecondSection:
+        return t.time().second();
 
-        case MSecSection:
-            return t.time().msec();
+    case MSecSection:
+        return t.time().msec();
 
-        case YearSection2Digits:
-        case YearSection:
-            return t.date().year();
+    case YearSection2Digits:
+    case YearSection:
+        return t.date().year();
 
-        case MonthSection:
-            return t.date().month();
+    case MonthSection:
+        return t.date().month();
 
-        case DaySection:
-            return t.date().day();
+    case DaySection:
+        return t.date().day();
 
-        case DayOfWeekSectionShort:
-        case DayOfWeekSectionLong:
-            return t.date().day();
+    case DayOfWeekSectionShort:
+    case DayOfWeekSectionLong:
+        return t.date().day();
 
-        case AmPmSection:
-            return t.time().hour() > 11 ? 1 : 0;
+    case AmPmSection:
+        return t.time().hour() > 11 ? 1 : 0;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     qWarning( "QDateTimeParser::getDigit() Internal error 2 (%s %d)", lscsPrintable( t.toString() ), index );
@@ -101,53 +101,53 @@ bool QDateTimeParser::setDigit( QDateTime &v, int index, int newVal ) const
 
     switch ( node.type )
     {
-        case Hour24Section:
-        case Hour12Section:
-            hour = newVal;
-            break;
+    case Hour24Section:
+    case Hour12Section:
+        hour = newVal;
+        break;
 
-        case MinuteSection:
-            minute = newVal;
-            break;
+    case MinuteSection:
+        minute = newVal;
+        break;
 
-        case SecondSection:
-            second = newVal;
-            break;
+    case SecondSection:
+        second = newVal;
+        break;
 
-        case MSecSection:
-            msec = newVal;
-            break;
+    case MSecSection:
+        msec = newVal;
+        break;
 
-        case YearSection2Digits:
-        case YearSection:
-            year = newVal;
-            break;
+    case YearSection2Digits:
+    case YearSection:
+        year = newVal;
+        break;
 
-        case MonthSection:
-            month = newVal;
-            break;
+    case MonthSection:
+        month = newVal;
+        break;
 
-        case DaySection:
-        case DayOfWeekSectionShort:
-        case DayOfWeekSectionLong:
-            if ( newVal > 31 )
-            {
-                // have to keep legacy behavior. setting the
-                // date to 32 should return false. Setting it
-                // to 31 for february should return true
-                return false;
-            }
+    case DaySection:
+    case DayOfWeekSectionShort:
+    case DayOfWeekSectionLong:
+        if ( newVal > 31 )
+        {
+            // have to keep legacy behavior. setting the
+            // date to 32 should return false. Setting it
+            // to 31 for february should return true
+            return false;
+        }
 
-            day = newVal;
-            break;
+        day = newVal;
+        break;
 
-        case AmPmSection:
-            hour = ( newVal == 0 ? hour % 12 : ( hour % 12 ) + 12 );
-            break;
+    case AmPmSection:
+        hour = ( newVal == 0 ? hour % 12 : ( hour % 12 ) + 12 );
+        break;
 
-        default:
-            qWarning( "QDateTimeParser::setDigit() Internal error (%s)", lscsPrintable( node.name() ) );
-            break;
+    default:
+        qWarning( "QDateTimeParser::setDigit() Internal error (%s)", lscsPrintable( node.name() ) );
+        break;
     }
 
     if ( ! ( node.type & DaySectionMask ) )
@@ -180,37 +180,37 @@ int QDateTimeParser::absoluteMax( int s, const QDateTime &cur ) const
 
     switch ( sn.type )
     {
-        case Hour24Section:
-        case Hour12Section:
-            return 23; // special-cased in parseSection, want it to be 23 for the stepBy case.
+    case Hour24Section:
+    case Hour12Section:
+        return 23; // special-cased in parseSection, want it to be 23 for the stepBy case.
 
-        case MinuteSection:
-        case SecondSection:
-            return 59;
+    case MinuteSection:
+    case SecondSection:
+        return 59;
 
-        case MSecSection:
-            return 999;
+    case MSecSection:
+        return 999;
 
-        case YearSection2Digits:
-        case YearSection:
-            return 9999;
+    case YearSection2Digits:
+    case YearSection:
+        return 9999;
 
-        // sectionMaxSize will prevent people from typing in a larger number in count == 2 sections.
-        // stepBy() will work on real years anyway
+    // sectionMaxSize will prevent people from typing in a larger number in count == 2 sections.
+    // stepBy() will work on real years anyway
 
-        case MonthSection:
-            return 12;
+    case MonthSection:
+        return 12;
 
-        case DaySection:
-        case DayOfWeekSectionShort:
-        case DayOfWeekSectionLong:
-            return cur.isValid() ? cur.date().daysInMonth() : 31;
+    case DaySection:
+    case DayOfWeekSectionShort:
+    case DayOfWeekSectionLong:
+        return cur.isValid() ? cur.date().daysInMonth() : 31;
 
-        case AmPmSection:
-            return 1;
+    case AmPmSection:
+        return 1;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     qWarning( "QDateTimeParser::absoluteMax() Internal error (%s)", lscsPrintable( sn.name() ) );
@@ -225,26 +225,26 @@ int QDateTimeParser::absoluteMin( int s ) const
 
     switch ( sn.type )
     {
-        case Hour24Section:
-        case Hour12Section:
-        case MinuteSection:
-        case SecondSection:
-        case MSecSection:
-        case YearSection2Digits:
-        case YearSection:
-            return 0;
+    case Hour24Section:
+    case Hour12Section:
+    case MinuteSection:
+    case SecondSection:
+    case MSecSection:
+    case YearSection2Digits:
+    case YearSection:
+        return 0;
 
-        case MonthSection:
-        case DaySection:
-        case DayOfWeekSectionShort:
-        case DayOfWeekSectionLong:
-            return 1;
+    case MonthSection:
+    case DaySection:
+    case DayOfWeekSectionShort:
+    case DayOfWeekSectionLong:
+        return 1;
 
-        case AmPmSection:
-            return 0;
+    case AmPmSection:
+        return 0;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     qWarning( "QDateTimeParser::absoluteMin() Internal error (%s, %0x)", lscsPrintable( sn.name() ), sn.type );
@@ -258,14 +258,14 @@ const QDateTimeParser::SectionNode &QDateTimeParser::sectionNode( int sectionInd
     {
         switch ( sectionIndex )
         {
-            case FirstSectionIndex:
-                return first;
+        case FirstSectionIndex:
+            return first;
 
-            case LastSectionIndex:
-                return last;
+        case LastSectionIndex:
+            return last;
 
-            case NoSectionIndex:
-                return none;
+        case NoSectionIndex:
+            return none;
         }
 
     }
@@ -293,14 +293,14 @@ int QDateTimeParser::sectionPos( const SectionNode &sn ) const
 {
     switch ( sn.type )
     {
-        case FirstSection:
-            return 0;
+    case FirstSection:
+        return 0;
 
-        case LastSection:
-            return displayText().size() - 1;
+    case LastSection:
+        return displayText().size() - 1;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( sn.pos == -1 )
@@ -425,133 +425,133 @@ bool QDateTimeParser::parseFormat( const QString &newFormat )
 
             switch ( sect )
             {
-                case 'H':
-                case 'h':
-                    if ( parserType != QVariant::Date )
+            case 'H':
+            case 'h':
+                if ( parserType != QVariant::Date )
+                {
+                    const Section hour = ( sect == 'h' ) ? Hour12Section : Hour24Section;
+                    const SectionNode sn = { hour, i - add, countRepeat( newFormat, i, 2 ), 0 };
+                    newSectionNodes.append( sn );
+                    appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
+                    i += sn.count - 1;
+                    index = i + 1;
+                    newDisplay |= hour;
+                }
+
+                break;
+
+            case 'm':
+                if ( parserType != QVariant::Date )
+                {
+                    const SectionNode sn = { MinuteSection, i - add, countRepeat( newFormat, i, 2 ), 0 };
+                    newSectionNodes.append( sn );
+                    appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
+                    i += sn.count - 1;
+                    index = i + 1;
+                    newDisplay |= MinuteSection;
+                }
+
+                break;
+
+            case 's':
+                if ( parserType != QVariant::Date )
+                {
+                    const SectionNode sn = { SecondSection, i - add, countRepeat( newFormat, i, 2 ), 0 };
+                    newSectionNodes.append( sn );
+                    appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
+                    i += sn.count - 1;
+                    index = i + 1;
+                    newDisplay |= SecondSection;
+                }
+
+                break;
+
+            case 'z':
+                if ( parserType != QVariant::Date )
+                {
+                    const SectionNode sn = { MSecSection, i - add, countRepeat( newFormat, i, 3 ) < 3 ? 1 : 3, 0 };
+                    newSectionNodes.append( sn );
+                    appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
+                    i += sn.count - 1;
+                    index = i + 1;
+                    newDisplay |= MSecSection;
+                }
+
+                break;
+
+            case 'A':
+            case 'a':
+                if ( parserType != QVariant::Date )
+                {
+                    const bool cap = ( sect == 'A' );
+                    const SectionNode sn = { AmPmSection, i - add, ( cap ? 1 : 0 ), 0 };
+                    newSectionNodes.append( sn );
+                    appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
+                    newDisplay |= AmPmSection;
+
+                    if ( i + 1 < newFormat.size() && newFormat.at( i + 1 ) == ( cap ? QChar( 'P' ) : QChar( 'p' ) ) )
                     {
-                        const Section hour = ( sect == 'h' ) ? Hour12Section : Hour24Section;
-                        const SectionNode sn = { hour, i - add, countRepeat( newFormat, i, 2 ), 0 };
-                        newSectionNodes.append( sn );
-                        appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
-                        i += sn.count - 1;
-                        index = i + 1;
-                        newDisplay |= hour;
+                        ++i;
                     }
 
-                    break;
+                    index = i + 1;
+                }
 
-                case 'm':
-                    if ( parserType != QVariant::Date )
+                break;
+
+            case 'y':
+                if ( parserType != QVariant::Time )
+                {
+                    const int repeat = countRepeat( newFormat, i, 4 );
+
+                    if ( repeat >= 2 )
                     {
-                        const SectionNode sn = { MinuteSection, i - add, countRepeat( newFormat, i, 2 ), 0 };
-                        newSectionNodes.append( sn );
-                        appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
-                        i += sn.count - 1;
-                        index = i + 1;
-                        newDisplay |= MinuteSection;
-                    }
+                        const SectionNode sn = { repeat == 4 ? YearSection : YearSection2Digits,
+                                                 i - add, repeat == 4 ? 4 : 2, 0
+                                               };
 
-                    break;
-
-                case 's':
-                    if ( parserType != QVariant::Date )
-                    {
-                        const SectionNode sn = { SecondSection, i - add, countRepeat( newFormat, i, 2 ), 0 };
-                        newSectionNodes.append( sn );
-                        appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
-                        i += sn.count - 1;
-                        index = i + 1;
-                        newDisplay |= SecondSection;
-                    }
-
-                    break;
-
-                case 'z':
-                    if ( parserType != QVariant::Date )
-                    {
-                        const SectionNode sn = { MSecSection, i - add, countRepeat( newFormat, i, 3 ) < 3 ? 1 : 3, 0 };
-                        newSectionNodes.append( sn );
-                        appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
-                        i += sn.count - 1;
-                        index = i + 1;
-                        newDisplay |= MSecSection;
-                    }
-
-                    break;
-
-                case 'A':
-                case 'a':
-                    if ( parserType != QVariant::Date )
-                    {
-                        const bool cap = ( sect == 'A' );
-                        const SectionNode sn = { AmPmSection, i - add, ( cap ? 1 : 0 ), 0 };
-                        newSectionNodes.append( sn );
-                        appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
-                        newDisplay |= AmPmSection;
-
-                        if ( i + 1 < newFormat.size() && newFormat.at( i + 1 ) == ( cap ? QChar( 'P' ) : QChar( 'p' ) ) )
-                        {
-                            ++i;
-                        }
-
-                        index = i + 1;
-                    }
-
-                    break;
-
-                case 'y':
-                    if ( parserType != QVariant::Time )
-                    {
-                        const int repeat = countRepeat( newFormat, i, 4 );
-
-                        if ( repeat >= 2 )
-                        {
-                            const SectionNode sn = { repeat == 4 ? YearSection : YearSection2Digits,
-                                                     i - add, repeat == 4 ? 4 : 2, 0
-                                                   };
-
-                            newSectionNodes.append( sn );
-                            appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
-                            i += sn.count - 1;
-                            index = i + 1;
-                            newDisplay |= sn.type;
-                        }
-                    }
-
-                    break;
-
-                case 'M':
-                    if ( parserType != QVariant::Time )
-                    {
-                        const SectionNode sn = { MonthSection, i - add, countRepeat( newFormat, i, 4 ), 0 };
-                        newSectionNodes.append( sn );
-                        newSeparators.append( unquote( newFormat.mid( index, i - index ) ) );
-                        i += sn.count - 1;
-                        index = i + 1;
-                        newDisplay |= MonthSection;
-                    }
-
-                    break;
-
-                case 'd':
-                    if ( parserType != QVariant::Time )
-                    {
-                        const int repeat = countRepeat( newFormat, i, 4 );
-                        const Section sectionType = ( repeat == 4 ? DayOfWeekSectionLong
-                                                      : ( repeat == 3 ? DayOfWeekSectionShort : DaySection ) );
-
-                        const SectionNode sn = { sectionType, i - add, repeat, 0 };
                         newSectionNodes.append( sn );
                         appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
                         i += sn.count - 1;
                         index = i + 1;
                         newDisplay |= sn.type;
                     }
+                }
 
-                    break;
+                break;
 
-                default:
-                    break;
+            case 'M':
+                if ( parserType != QVariant::Time )
+                {
+                    const SectionNode sn = { MonthSection, i - add, countRepeat( newFormat, i, 4 ), 0 };
+                    newSectionNodes.append( sn );
+                    newSeparators.append( unquote( newFormat.mid( index, i - index ) ) );
+                    i += sn.count - 1;
+                    index = i + 1;
+                    newDisplay |= MonthSection;
+                }
+
+                break;
+
+            case 'd':
+                if ( parserType != QVariant::Time )
+                {
+                    const int repeat = countRepeat( newFormat, i, 4 );
+                    const Section sectionType = ( repeat == 4 ? DayOfWeekSectionLong
+                                                  : ( repeat == 3 ? DayOfWeekSectionShort : DaySection ) );
+
+                    const SectionNode sn = { sectionType, i - add, repeat, 0 };
+                    newSectionNodes.append( sn );
+                    appendSeparator( &newSeparators, newFormat, index, i - index, lastQuote );
+                    i += sn.count - 1;
+                    index = i + 1;
+                    newDisplay |= sn.type;
+                }
+
+                break;
+
+            default:
+                break;
             }
         }
     }
@@ -647,81 +647,81 @@ int QDateTimeParser::sectionMaxSize( Section s, int count ) const
 
     switch ( s )
     {
-        case FirstSection:
-        case NoSection:
-        case LastSection:
-            return 0;
+    case FirstSection:
+    case NoSection:
+    case LastSection:
+        return 0;
 
-        case AmPmSection:
+    case AmPmSection:
+    {
+        const int lowerMax = qMin( getAmPmText( AmText, LowerCase ).size(),
+                                   getAmPmText( PmText, LowerCase ).size() );
+
+        const int upperMax = qMin( getAmPmText( AmText, UpperCase ).size(),
+                                   getAmPmText( PmText, UpperCase ).size() );
+
+        return qMin( 4, qMin( lowerMax, upperMax ) );
+    }
+
+    case Hour24Section:
+    case Hour12Section:
+    case MinuteSection:
+    case SecondSection:
+    case DaySection:
+        return 2;
+
+    case DayOfWeekSectionShort:
+    case DayOfWeekSectionLong:
+        mcount = 7;
+
+        [[fallthrough]];
+
+    case MonthSection:
+
+        if ( count <= 2 )
         {
-            const int lowerMax = qMin( getAmPmText( AmText, LowerCase ).size(),
-                                       getAmPmText( PmText, LowerCase ).size() );
-
-            const int upperMax = qMin( getAmPmText( AmText, UpperCase ).size(),
-                                       getAmPmText( PmText, UpperCase ).size() );
-
-            return qMin( 4, qMin( lowerMax, upperMax ) );
+            return 2;
         }
 
-        case Hour24Section:
-        case Hour12Section:
-        case MinuteSection:
-        case SecondSection:
-        case DaySection:
-            return 2;
+        {
+            int retval = 0;
+            const QLocale l = locale();
+            const QLocale::FormatType format = count == 4 ? QLocale::LongFormat : QLocale::ShortFormat;
 
-        case DayOfWeekSectionShort:
-        case DayOfWeekSectionLong:
-            mcount = 7;
-
-            [[fallthrough]];
-
-        case MonthSection:
-
-            if ( count <= 2 )
+            for ( int i = 1; i <= mcount; ++i )
             {
-                return 2;
+                const QString str = ( s == MonthSection ? l.monthName( i, format ) : l.dayName( i, format ) );
+                retval = qMax( str.size(), retval );
             }
 
-            {
-                int retval = 0;
-                const QLocale l = locale();
-                const QLocale::FormatType format = count == 4 ? QLocale::LongFormat : QLocale::ShortFormat;
+            return retval;
+        }
 
-                for ( int i = 1; i <= mcount; ++i )
-                {
-                    const QString str = ( s == MonthSection ? l.monthName( i, format ) : l.dayName( i, format ) );
-                    retval = qMax( str.size(), retval );
-                }
+    case MSecSection:
+        return 3;
 
-                return retval;
-            }
+    case YearSection:
+        return 4;
 
-        case MSecSection:
-            return 3;
+    case YearSection2Digits:
+        return 2;
 
-        case YearSection:
-            return 4;
+    case CalendarPopupSection:
+    case Internal:
+    case TimeSectionMask:
+    case DateSectionMask:
+    case HourSectionMask:
+    case YearSectionMask:
+    case DayOfWeekSectionMask:
+    case DaySectionMask:
+        qWarning( "QDateTimeParser::sectionMaxSize() Invalid section %s", lscsPrintable( SectionNode::name( s ) ) );
 
-        case YearSection2Digits:
-            return 2;
-
-        case CalendarPopupSection:
-        case Internal:
-        case TimeSectionMask:
-        case DateSectionMask:
-        case HourSectionMask:
-        case YearSectionMask:
-        case DayOfWeekSectionMask:
-        case DaySectionMask:
-            qWarning( "QDateTimeParser::sectionMaxSize() Invalid section %s", lscsPrintable( SectionNode::name( s ) ) );
-
-        case NoSectionIndex:
-        case FirstSectionIndex:
-        case LastSectionIndex:
-        case CalendarPopupIndex:
-            // these cases can not happen
-            break;
+    case NoSectionIndex:
+    case FirstSectionIndex:
+    case LastSectionIndex:
+    case CalendarPopupIndex:
+        // these cases can not happen
+        break;
     }
 
     return -1;
@@ -739,13 +739,13 @@ QString QDateTimeParser::sectionText( const QString &text, int sectionIndex, int
 
     switch ( sn.type )
     {
-        case NoSectionIndex:
-        case FirstSectionIndex:
-        case LastSectionIndex:
-            return QString();
+    case NoSectionIndex:
+    case FirstSectionIndex:
+    case LastSectionIndex:
+        return QString();
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return text.mid( index, sectionSize( sectionIndex ) );
@@ -780,232 +780,232 @@ int QDateTimeParser::parseSection( const QDateTime &currentValue, int sectionInd
 
     switch ( sn.type )
     {
-        case AmPmSection:
+    case AmPmSection:
+    {
+        const int ampm = findAmPm( sectiontext, sectionIndex, &used );
+
+        switch ( ampm )
         {
-            const int ampm = findAmPm( sectiontext, sectionIndex, &used );
+        case AM: // sectiontext == AM
+        case PM: // sectiontext == PM
+            num = ampm;
+            state = Acceptable;
+            break;
 
-            switch ( ampm )
-            {
-                case AM: // sectiontext == AM
-                case PM: // sectiontext == PM
-                    num = ampm;
-                    state = Acceptable;
-                    break;
+        case PossibleAM: // sectiontext => AM
+        case PossiblePM: // sectiontext => PM
+            num = ampm - 2;
+            state = Intermediate;
+            break;
 
-                case PossibleAM: // sectiontext => AM
-                case PossiblePM: // sectiontext => PM
-                    num = ampm - 2;
-                    state = Intermediate;
-                    break;
+        case PossibleBoth: // sectiontext => AM|PM
+            num = 0;
+            state = Intermediate;
+            break;
 
-                case PossibleBoth: // sectiontext => AM|PM
-                    num = 0;
-                    state = Intermediate;
-                    break;
-
-                case Neither:
-                    state = Invalid;
+        case Neither:
+            state = Invalid;
 
 #if defined(LSCS_SHOW_DEBUG_CORE)
-                    qDebug() << "QDateTimeParser::parseSection() Invalid findAmPm(" << sectiontext << ") returned -1";
+            qDebug() << "QDateTimeParser::parseSection() Invalid findAmPm(" << sectiontext << ") returned -1";
 #endif
 
-                    break;
+            break;
 
-                default:
-                    break;
-            }
-
-            if ( state != Invalid )
-            {
-                text.replace( index, used, sectiontext.left( used ) );
-            }
-
+        default:
             break;
         }
 
-        case MonthSection:
-        case DayOfWeekSectionShort:
-        case DayOfWeekSectionLong:
-            if ( sn.count >= 3 )
-            {
-                if ( sn.type == MonthSection )
-                {
-                    int min = 1;
-                    const QDate minDate = getMinimum().date();
-
-                    if ( currentValue.date().year() == minDate.year() )
-                    {
-                        min = minDate.month();
-                    }
-
-                    num = findMonth( sectiontext.toLower(), min, sectionIndex, &sectiontext, &used );
-
-                }
-                else
-                {
-                    num = findDay( sectiontext.toLower(), 1, sectionIndex, &sectiontext, &used );
-                }
-
-                if ( num != -1 )
-                {
-                    state = ( used == sectiontext.size() ? Acceptable : Intermediate );
-                    text.replace( index, used, sectiontext.left( used ) );
-                }
-                else
-                {
-                    state = Intermediate;
-                }
-
-                break;
-            }
-
-            [[fallthrough]];
-
-        case DaySection:
-        case YearSection:
-        case YearSection2Digits:
-        case Hour12Section:
-        case Hour24Section:
-        case MinuteSection:
-        case SecondSection:
-        case MSecSection:
+        if ( state != Invalid )
         {
-            if ( sectiontextSize == 0 )
+            text.replace( index, used, sectiontext.left( used ) );
+        }
+
+        break;
+    }
+
+    case MonthSection:
+    case DayOfWeekSectionShort:
+    case DayOfWeekSectionLong:
+        if ( sn.count >= 3 )
+        {
+            if ( sn.type == MonthSection )
             {
-                num   = 0;
-                used  = 0;
-                state = Intermediate;
+                int min = 1;
+                const QDate minDate = getMinimum().date();
+
+                if ( currentValue.date().year() == minDate.year() )
+                {
+                    min = minDate.month();
+                }
+
+                num = findMonth( sectiontext.toLower(), min, sectionIndex, &sectiontext, &used );
 
             }
             else
             {
-                const int absMax = absoluteMax( sectionIndex );
-                QLocale loc;
+                num = findDay( sectiontext.toLower(), 1, sectionIndex, &sectiontext, &used );
+            }
 
-                bool ok = true;
-                int lastNode = -1;
-
-                used = -1;
-
-                QString digitsStr( sectiontext );
-
-                for ( int i = 0; i < sectiontextSize; ++i )
-                {
-                    if ( digitsStr.at( i ).isSpace() )
-                    {
-                        sectiontextSize = i;
-                        break;
-                    }
-                }
-
-                const int max = qMin( sectionmaxsize, sectiontextSize );
-
-                for ( int digits = max; digits >= 1; --digits )
-                {
-                    digitsStr.truncate( digits );
-
-                    int tmp = ( int )loc.toUInt( digitsStr, &ok, 10 );
-
-                    if ( ok && sn.type == Hour12Section )
-                    {
-                        if ( tmp > 12 )
-                        {
-                            tmp = -1;
-                            ok  = false;
-
-                        }
-                        else if ( tmp == 12 )
-                        {
-                            tmp = 0;
-                        }
-                    }
-
-                    if ( ok && tmp <= absMax )
-                    {
-                        lastNode = tmp;
-                        used = digits;
-                        break;
-                    }
-                }
-
-                if ( lastNode == -1 )
-                {
-                    QChar firstCh( sectiontext.at( 0 ) );
-
-                    if ( separators.at( sectionIndex + 1 ).startsWith( firstCh ) )
-                    {
-                        used  = 0;
-                        state = Intermediate;
-
-                    }
-                    else
-                    {
-                        state = Invalid;
-                    }
-
-                }
-                else
-                {
-                    num += lastNode;
-                    const FieldInfo fi = fieldInfo( sectionIndex );
-                    const bool done = ( used == sectionmaxsize );
-
-                    if ( ! done && fi & Fraction )
-                    {
-                        // typing 2 in a zzz field should be .200, not .002
-
-                        for ( int i = used; i < sectionmaxsize; ++i )
-                        {
-                            num *= 10;
-                        }
-                    }
-
-                    const int absMin = absoluteMin( sectionIndex );
-
-                    if ( num < absMin )
-                    {
-                        state = done ? Invalid : Intermediate;
-
-                    }
-                    else if ( num > absMax )
-                    {
-                        state = Intermediate;
-
-                    }
-                    else if ( !done && ( fi & ( FixedWidth | Numeric ) ) == ( FixedWidth | Numeric ) )
-                    {
-                        if ( skipToNextSection( sectionIndex, currentValue, digitsStr ) )
-                        {
-                            state = Acceptable;
-
-                            const int missingZeroes = sectionmaxsize - digitsStr.size();
-                            text.insert( index, QString().fill( QChar( '0' ), missingZeroes ) );
-                            used = sectionmaxsize;
-
-                            cursorPosition += missingZeroes;
-                            ++( const_cast<QDateTimeParser *>( this )->sectionNodes[sectionIndex].zeroesAdded );
-
-                        }
-                        else
-                        {
-                            state = Intermediate;
-                        }
-
-                    }
-                    else
-                    {
-                        state = Acceptable;
-                    }
-                }
+            if ( num != -1 )
+            {
+                state = ( used == sectiontext.size() ? Acceptable : Intermediate );
+                text.replace( index, used, sectiontext.left( used ) );
+            }
+            else
+            {
+                state = Intermediate;
             }
 
             break;
         }
 
-        default:
-            qWarning( "QDateTimeParser::parseSection() Internal error (%s %d)", lscsPrintable( sn.name() ), sectionIndex );
-            return -1;
+        [[fallthrough]];
+
+    case DaySection:
+    case YearSection:
+    case YearSection2Digits:
+    case Hour12Section:
+    case Hour24Section:
+    case MinuteSection:
+    case SecondSection:
+    case MSecSection:
+    {
+        if ( sectiontextSize == 0 )
+        {
+            num   = 0;
+            used  = 0;
+            state = Intermediate;
+
+        }
+        else
+        {
+            const int absMax = absoluteMax( sectionIndex );
+            QLocale loc;
+
+            bool ok = true;
+            int lastNode = -1;
+
+            used = -1;
+
+            QString digitsStr( sectiontext );
+
+            for ( int i = 0; i < sectiontextSize; ++i )
+            {
+                if ( digitsStr.at( i ).isSpace() )
+                {
+                    sectiontextSize = i;
+                    break;
+                }
+            }
+
+            const int max = qMin( sectionmaxsize, sectiontextSize );
+
+            for ( int digits = max; digits >= 1; --digits )
+            {
+                digitsStr.truncate( digits );
+
+                int tmp = ( int )loc.toUInt( digitsStr, &ok, 10 );
+
+                if ( ok && sn.type == Hour12Section )
+                {
+                    if ( tmp > 12 )
+                    {
+                        tmp = -1;
+                        ok  = false;
+
+                    }
+                    else if ( tmp == 12 )
+                    {
+                        tmp = 0;
+                    }
+                }
+
+                if ( ok && tmp <= absMax )
+                {
+                    lastNode = tmp;
+                    used = digits;
+                    break;
+                }
+            }
+
+            if ( lastNode == -1 )
+            {
+                QChar firstCh( sectiontext.at( 0 ) );
+
+                if ( separators.at( sectionIndex + 1 ).startsWith( firstCh ) )
+                {
+                    used  = 0;
+                    state = Intermediate;
+
+                }
+                else
+                {
+                    state = Invalid;
+                }
+
+            }
+            else
+            {
+                num += lastNode;
+                const FieldInfo fi = fieldInfo( sectionIndex );
+                const bool done = ( used == sectionmaxsize );
+
+                if ( ! done && fi & Fraction )
+                {
+                    // typing 2 in a zzz field should be .200, not .002
+
+                    for ( int i = used; i < sectionmaxsize; ++i )
+                    {
+                        num *= 10;
+                    }
+                }
+
+                const int absMin = absoluteMin( sectionIndex );
+
+                if ( num < absMin )
+                {
+                    state = done ? Invalid : Intermediate;
+
+                }
+                else if ( num > absMax )
+                {
+                    state = Intermediate;
+
+                }
+                else if ( !done && ( fi & ( FixedWidth | Numeric ) ) == ( FixedWidth | Numeric ) )
+                {
+                    if ( skipToNextSection( sectionIndex, currentValue, digitsStr ) )
+                    {
+                        state = Acceptable;
+
+                        const int missingZeroes = sectionmaxsize - digitsStr.size();
+                        text.insert( index, QString().fill( QChar( '0' ), missingZeroes ) );
+                        used = sectionmaxsize;
+
+                        cursorPosition += missingZeroes;
+                        ++( const_cast<QDateTimeParser *>( this )->sectionNodes[sectionIndex].zeroesAdded );
+
+                    }
+                    else
+                    {
+                        state = Intermediate;
+                    }
+
+                }
+                else
+                {
+                    state = Acceptable;
+                }
+            }
+        }
+
+        break;
+    }
+
+    default:
+        qWarning( "QDateTimeParser::parseSection() Internal error (%s %d)", lscsPrintable( sn.name() ), sectionIndex );
+        return -1;
     }
 
     if ( usedptr )
@@ -1091,55 +1091,55 @@ QDateTimeParser::StateNode QDateTimeParser::parse( QString &input, int &cursorPo
             {
                 switch ( sn.type )
                 {
-                    case Hour24Section:
-                        current = &hour;
-                        break;
+                case Hour24Section:
+                    current = &hour;
+                    break;
 
-                    case Hour12Section:
-                        current = &hour12;
-                        break;
+                case Hour12Section:
+                    current = &hour12;
+                    break;
 
-                    case MinuteSection:
-                        current = &minute;
-                        break;
+                case MinuteSection:
+                    current = &minute;
+                    break;
 
-                    case SecondSection:
-                        current = &second;
-                        break;
+                case SecondSection:
+                    current = &second;
+                    break;
 
-                    case MSecSection:
-                        current = &msec;
-                        break;
+                case MSecSection:
+                    current = &msec;
+                    break;
 
-                    case YearSection:
-                        current = &year;
-                        break;
+                case YearSection:
+                    current = &year;
+                    break;
 
-                    case YearSection2Digits:
-                        current = &year2digits;
-                        break;
+                case YearSection2Digits:
+                    current = &year2digits;
+                    break;
 
-                    case MonthSection:
-                        current = &month;
-                        break;
+                case MonthSection:
+                    current = &month;
+                    break;
 
-                    case DayOfWeekSectionShort:
-                    case DayOfWeekSectionLong:
-                        current = &dayofweek;
-                        break;
+                case DayOfWeekSectionShort:
+                case DayOfWeekSectionLong:
+                    current = &dayofweek;
+                    break;
 
-                    case DaySection:
-                        current = &day;
-                        num = qMax<int>( 1, num );
-                        break;
+                case DaySection:
+                    current = &day;
+                    num = qMax<int>( 1, num );
+                    break;
 
-                    case AmPmSection:
-                        current = &ampm;
-                        break;
+                case AmPmSection:
+                    current = &ampm;
+                    break;
 
-                    default:
-                        qWarning( "QDateTimeParser::parse() Internal error (%s)", lscsPrintable( sn.name() ) );
-                        break;
+                default:
+                    qWarning( "QDateTimeParser::parse() Internal error (%s)", lscsPrintable( sn.name() ) );
+                    break;
                 }
 
                 if ( ! current )
@@ -1377,132 +1377,56 @@ end:
 
                     switch ( sn.type )
                     {
-                        case AmPmSection:
-                            switch ( findAmPm( t, i ) )
+                    case AmPmSection:
+                        switch ( findAmPm( t, i ) )
+                        {
+                        case AM:
+                        case PM:
+                            state = Acceptable;
+                            done = true;
+                            break;
+
+                        case Neither:
+                            state = Invalid;
+                            done = true;
+                            break;
+
+                        case PossibleAM:
+                        case PossiblePM:
+                        case PossibleBoth:
+                        {
+                            const QDateTime copy( newCurrentValue.addSecs( 12 * 60 * 60 ) );
+
+                            if ( copy >= minimum && copy <= maximum )
                             {
-                                case AM:
-                                case PM:
-                                    state = Acceptable;
-                                    done = true;
-                                    break;
-
-                                case Neither:
-                                    state = Invalid;
-                                    done = true;
-                                    break;
-
-                                case PossibleAM:
-                                case PossiblePM:
-                                case PossibleBoth:
-                                {
-                                    const QDateTime copy( newCurrentValue.addSecs( 12 * 60 * 60 ) );
-
-                                    if ( copy >= minimum && copy <= maximum )
-                                    {
-                                        state = Intermediate;
-                                        done = true;
-                                    }
-
-                                    break;
-                                }
-                            }
-
-                            [[fallthrough]];
-
-                        case MonthSection:
-                            if ( sn.count >= 3 )
-                            {
-                                int tmp = newCurrentValue.date().month();
-
-                                // the first possible month makes the date too early
-                                while ( ( tmp = findMonth( t, tmp + 1, i ) ) != -1 )
-                                {
-                                    const QDateTime copy( newCurrentValue.addMonths( tmp - newCurrentValue.date().month() ) );
-
-                                    if ( copy >= minimum && copy <= maximum )
-                                    {
-                                        break;   // break out of while
-                                    }
-                                }
-
-                                if ( tmp == -1 )
-                                {
-                                    break;
-                                }
-
                                 state = Intermediate;
                                 done = true;
-                                break;
                             }
 
-                            [[fallthrough]];
+                            break;
+                        }
+                        }
 
-                        default:
+                        [[fallthrough]];
+
+                    case MonthSection:
+                        if ( sn.count >= 3 )
                         {
-                            int toMin;
-                            int toMax;
+                            int tmp = newCurrentValue.date().month();
 
-                            if ( sn.type & TimeSectionMask )
+                            // the first possible month makes the date too early
+                            while ( ( tmp = findMonth( t, tmp + 1, i ) ) != -1 )
                             {
-                                if ( newCurrentValue.daysTo( minimum ) != 0 )
+                                const QDateTime copy( newCurrentValue.addMonths( tmp - newCurrentValue.date().month() ) );
+
+                                if ( copy >= minimum && copy <= maximum )
                                 {
-                                    break;
+                                    break;   // break out of while
                                 }
-
-                                toMin = newCurrentValue.time().msecsTo( minimum.time() );
-
-                                if ( newCurrentValue.daysTo( maximum ) > 0 )
-                                {
-                                    toMax = -1; // can't get to max
-                                }
-                                else
-                                {
-                                    toMax = newCurrentValue.time().msecsTo( maximum.time() );
-                                }
-
-                            }
-                            else
-                            {
-                                toMin = newCurrentValue.daysTo( minimum );
-                                toMax = newCurrentValue.daysTo( maximum );
                             }
 
-                            const int maxChange = sn.maxChange();
-
-                            if ( toMin > maxChange )
+                            if ( tmp == -1 )
                             {
-                                state = Invalid;
-                                done = true;
-                                break;
-
-                            }
-                            else if ( toMax > maxChange )
-                            {
-                                toMax = -1; // can't get to max
-                            }
-
-                            const int min = getDigit( minimum, i );
-
-                            if ( min == -1 )
-                            {
-                                qWarning( "QDateTimeParser::parse() Internal error 4 (%s)", lscsPrintable( sn.name() ) );
-                                state = Invalid;
-                                done  = true;
-                                break;
-                            }
-
-                            int max = toMax != -1 ? getDigit( maximum, i ) : absoluteMax( i, newCurrentValue );
-                            int pos = cursorPosition - sn.pos;
-
-                            if ( pos < 0 || pos >= t.size() )
-                            {
-                                pos = -1;
-                            }
-
-                            if ( ! potentialValue( t.simplified(), min, max, i, newCurrentValue, pos ) )
-                            {
-                                state = Invalid;
-                                done = true;
                                 break;
                             }
 
@@ -1510,6 +1434,82 @@ end:
                             done = true;
                             break;
                         }
+
+                        [[fallthrough]];
+
+                    default:
+                    {
+                        int toMin;
+                        int toMax;
+
+                        if ( sn.type & TimeSectionMask )
+                        {
+                            if ( newCurrentValue.daysTo( minimum ) != 0 )
+                            {
+                                break;
+                            }
+
+                            toMin = newCurrentValue.time().msecsTo( minimum.time() );
+
+                            if ( newCurrentValue.daysTo( maximum ) > 0 )
+                            {
+                                toMax = -1; // can't get to max
+                            }
+                            else
+                            {
+                                toMax = newCurrentValue.time().msecsTo( maximum.time() );
+                            }
+
+                        }
+                        else
+                        {
+                            toMin = newCurrentValue.daysTo( minimum );
+                            toMax = newCurrentValue.daysTo( maximum );
+                        }
+
+                        const int maxChange = sn.maxChange();
+
+                        if ( toMin > maxChange )
+                        {
+                            state = Invalid;
+                            done = true;
+                            break;
+
+                        }
+                        else if ( toMax > maxChange )
+                        {
+                            toMax = -1; // can't get to max
+                        }
+
+                        const int min = getDigit( minimum, i );
+
+                        if ( min == -1 )
+                        {
+                            qWarning( "QDateTimeParser::parse() Internal error 4 (%s)", lscsPrintable( sn.name() ) );
+                            state = Invalid;
+                            done  = true;
+                            break;
+                        }
+
+                        int max = toMax != -1 ? getDigit( maximum, i ) : absoluteMax( i, newCurrentValue );
+                        int pos = cursorPosition - sn.pos;
+
+                        if ( pos < 0 || pos >= t.size() )
+                        {
+                            pos = -1;
+                        }
+
+                        if ( ! potentialValue( t.simplified(), min, max, i, newCurrentValue, pos ) )
+                        {
+                            state = Invalid;
+                            done = true;
+                            break;
+                        }
+
+                        state = Intermediate;
+                        done = true;
+                        break;
+                    }
                     }
                 }
             }
@@ -1809,39 +1809,39 @@ int QDateTimeParser::SectionNode::maxChange() const
 {
     switch ( type )
     {
-        // Time unit is msec
-        case MSecSection:
-            return 999;
+    // Time unit is msec
+    case MSecSection:
+        return 999;
 
-        case SecondSection:
-            return 59 * 1000;
+    case SecondSection:
+        return 59 * 1000;
 
-        case MinuteSection:
-            return 59 * 60 * 1000;
+    case MinuteSection:
+        return 59 * 60 * 1000;
 
-        case Hour24Section:
-        case Hour12Section:
-            return 59 * 60 * 60 * 1000;
+    case Hour24Section:
+    case Hour12Section:
+        return 59 * 60 * 60 * 1000;
 
-        // Date unit is day
-        case DayOfWeekSectionShort:
-        case DayOfWeekSectionLong:
-            return 7;
+    // Date unit is day
+    case DayOfWeekSectionShort:
+    case DayOfWeekSectionLong:
+        return 7;
 
-        case DaySection:
-            return 30;
+    case DaySection:
+        return 30;
 
-        case MonthSection:
-            return 365 - 31;
+    case MonthSection:
+        return 365 - 31;
 
-        case YearSection:
-            return 9999 * 365;
+    case YearSection:
+        return 9999 * 365;
 
-        case YearSection2Digits:
-            return 100 * 365;
+    case YearSection2Digits:
+        return 100 * 365;
 
-        default:
-            qWarning( "QDateTimeParser::maxChange() Internal error (%s)", lscsPrintable( name() ) );
+    default:
+        qWarning( "QDateTimeParser::maxChange() Internal error (%s)", lscsPrintable( name() ) );
     }
 
     return -1;
@@ -1855,63 +1855,63 @@ QDateTimeParser::FieldInfo QDateTimeParser::fieldInfo( int index ) const
 
     switch ( sn.type )
     {
-        case MSecSection:
-            ret |= Fraction;
+    case MSecSection:
+        ret |= Fraction;
+        [[fallthrough]];
+
+    case SecondSection:
+    case MinuteSection:
+    case Hour24Section:
+    case Hour12Section:
+    case YearSection:
+    case YearSection2Digits:
+        ret |= Numeric;
+
+        if ( sn.type != YearSection )
+        {
+            ret |= AllowPartial;
+        }
+
+        if ( sn.count != 1 )
+        {
+            ret |= FixedWidth;
+        }
+
+        break;
+
+    case MonthSection:
+    case DaySection:
+        switch ( sn.count )
+        {
+        case 2:
+            ret |= FixedWidth;
             [[fallthrough]];
 
-        case SecondSection:
-        case MinuteSection:
-        case Hour24Section:
-        case Hour12Section:
-        case YearSection:
-        case YearSection2Digits:
-            ret |= Numeric;
-
-            if ( sn.type != YearSection )
-            {
-                ret |= AllowPartial;
-            }
-
-            if ( sn.count != 1 )
-            {
-                ret |= FixedWidth;
-            }
-
+        case 1:
+            ret |= ( Numeric | AllowPartial );
             break;
+        }
 
-        case MonthSection:
-        case DaySection:
-            switch ( sn.count )
-            {
-                case 2:
-                    ret |= FixedWidth;
-                    [[fallthrough]];
+        break;
 
-                case 1:
-                    ret |= ( Numeric | AllowPartial );
-                    break;
-            }
-
-            break;
-
-        case DayOfWeekSectionShort:
-        case DayOfWeekSectionLong:
-            if ( sn.count == 3 )
-            {
-                ret |= FixedWidth;
-            }
-
-            break;
-
-        case AmPmSection:
+    case DayOfWeekSectionShort:
+    case DayOfWeekSectionLong:
+        if ( sn.count == 3 )
+        {
             ret |= FixedWidth;
-            break;
+        }
 
-        default:
-            qWarning( "QDateTimeParser::fieldInfo() Internal error 2 (%d %s %d)",
-                      index, lscsPrintable( sn.name() ), sn.count );
+        break;
 
-            break;
+    case AmPmSection:
+        ret |= FixedWidth;
+        break;
+
+    default:
+        qWarning( "QDateTimeParser::fieldInfo() Internal error 2 (%d %s %d)",
+                  index, lscsPrintable( sn.name() ), sn.count );
+
+        break;
     }
 
     return ret;
@@ -1923,47 +1923,47 @@ QString QDateTimeParser::SectionNode::format() const
 
     switch ( type )
     {
-        case AmPmSection:
-            return count == 1 ? QString( "AP" ) : QString( "ap" );
+    case AmPmSection:
+        return count == 1 ? QString( "AP" ) : QString( "ap" );
 
-        case MSecSection:
-            fillChar = QChar( 'z' );
-            break;
+    case MSecSection:
+        fillChar = QChar( 'z' );
+        break;
 
-        case SecondSection:
-            fillChar = QChar( 's' );
-            break;
+    case SecondSection:
+        fillChar = QChar( 's' );
+        break;
 
-        case MinuteSection:
-            fillChar = QChar( 'm' );
-            break;
+    case MinuteSection:
+        fillChar = QChar( 'm' );
+        break;
 
-        case Hour24Section:
-            fillChar = QChar( 'H' );
-            break;
+    case Hour24Section:
+        fillChar = QChar( 'H' );
+        break;
 
-        case Hour12Section:
-            fillChar = QChar( 'h' );
-            break;
+    case Hour12Section:
+        fillChar = QChar( 'h' );
+        break;
 
-        case DayOfWeekSectionShort:
-        case DayOfWeekSectionLong:
-        case DaySection:
-            fillChar = QChar( 'd' );
-            break;
+    case DayOfWeekSectionShort:
+    case DayOfWeekSectionLong:
+    case DaySection:
+        fillChar = QChar( 'd' );
+        break;
 
-        case MonthSection:
-            fillChar = QChar( 'M' );
-            break;
+    case MonthSection:
+        fillChar = QChar( 'M' );
+        break;
 
-        case YearSection2Digits:
-        case YearSection:
-            fillChar = QChar( 'y' );
-            break;
+    case YearSection2Digits:
+    case YearSection:
+        fillChar = QChar( 'y' );
+        break;
 
-        default:
-            qWarning( "QDateTimeParser::sectionFormat() Internal error (%s)", lscsPrintable( name( type ) ) );
-            return QString();
+    default:
+        qWarning( "QDateTimeParser::sectionFormat() Internal error (%s)", lscsPrintable( name( type ) ) );
+        return QString();
     }
 
     if ( fillChar.isNull() )
@@ -2083,53 +2083,53 @@ QString QDateTimeParser::SectionNode::name( QDateTimeParser::Section s )
 {
     switch ( s )
     {
-        case QDateTimeParser::AmPmSection:
-            return QString( "AmPmSection" );
+    case QDateTimeParser::AmPmSection:
+        return QString( "AmPmSection" );
 
-        case QDateTimeParser::DaySection:
-            return QString( "DaySection" );
+    case QDateTimeParser::DaySection:
+        return QString( "DaySection" );
 
-        case QDateTimeParser::DayOfWeekSectionShort:
-            return QString( "DayOfWeekSectionShort" );
+    case QDateTimeParser::DayOfWeekSectionShort:
+        return QString( "DayOfWeekSectionShort" );
 
-        case QDateTimeParser::DayOfWeekSectionLong:
-            return QString( "DayOfWeekSectionLong" );
+    case QDateTimeParser::DayOfWeekSectionLong:
+        return QString( "DayOfWeekSectionLong" );
 
-        case QDateTimeParser::Hour24Section:
-            return QString( "Hour24Section" );
+    case QDateTimeParser::Hour24Section:
+        return QString( "Hour24Section" );
 
-        case QDateTimeParser::Hour12Section:
-            return QString( "Hour12Section" );
+    case QDateTimeParser::Hour12Section:
+        return QString( "Hour12Section" );
 
-        case QDateTimeParser::MSecSection:
-            return QString( "MSecSection" );
+    case QDateTimeParser::MSecSection:
+        return QString( "MSecSection" );
 
-        case QDateTimeParser::MinuteSection:
-            return QString( "MinuteSection" );
+    case QDateTimeParser::MinuteSection:
+        return QString( "MinuteSection" );
 
-        case QDateTimeParser::MonthSection:
-            return QString( "MonthSection" );
+    case QDateTimeParser::MonthSection:
+        return QString( "MonthSection" );
 
-        case QDateTimeParser::SecondSection:
-            return QString( "SecondSection" );
+    case QDateTimeParser::SecondSection:
+        return QString( "SecondSection" );
 
-        case QDateTimeParser::YearSection:
-            return QString( "YearSection" );
+    case QDateTimeParser::YearSection:
+        return QString( "YearSection" );
 
-        case QDateTimeParser::YearSection2Digits:
-            return QString( "YearSection2Digits" );
+    case QDateTimeParser::YearSection2Digits:
+        return QString( "YearSection2Digits" );
 
-        case QDateTimeParser::NoSection:
-            return QString( "NoSection" );
+    case QDateTimeParser::NoSection:
+        return QString( "NoSection" );
 
-        case QDateTimeParser::FirstSection:
-            return QString( "FirstSection" );
+    case QDateTimeParser::FirstSection:
+        return QString( "FirstSection" );
 
-        case QDateTimeParser::LastSection:
-            return QString( "LastSection" );
+    case QDateTimeParser::LastSection:
+        return QString( "LastSection" );
 
-        default:
-            return QString( "Unknown section " ) + QString::number( int( s ) );
+    default:
+        return QString( "Unknown section " ) + QString::number( int( s ) );
     }
 }
 
@@ -2137,17 +2137,17 @@ QString QDateTimeParser::stateName( State s ) const
 {
     switch ( s )
     {
-        case Invalid:
-            return QString( "Invalid" );
+    case Invalid:
+        return QString( "Invalid" );
 
-        case Intermediate:
-            return QString( "Intermediate" );
+    case Intermediate:
+        return QString( "Intermediate" );
 
-        case Acceptable:
-            return QString( "Acceptable" );
+    case Acceptable:
+        return QString( "Acceptable" );
 
-        default:
-            return QString( "Unknown state " ) + QString::number( s );
+    default:
+        return QString( "Unknown state " ) + QString::number( s );
     }
 }
 

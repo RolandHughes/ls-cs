@@ -1158,7 +1158,7 @@ EGLConfig QWindowsEGLContext::chooseConfig( const QSurfaceFormat &format )
 
         QVector<EGLConfig> configs( matching );
         QWindowsEGLStaticContext::libEGL.eglChooseConfig( display, configureAttributes.constData(),
-                configs.data(), configs.size(), &matching );
+                                        configs.data(), configs.size(), &matching );
 
         if ( !cfg && matching > 0 )
         {

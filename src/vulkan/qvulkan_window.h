@@ -111,7 +111,7 @@ private:
     };
 
     std::pair<vk::UniqueHandle<vk::Device, vk::DispatchLoaderDynamic>, QVector<vk::Queue>>
-            createLogicalDevice( std::pair<const vk::QueueFamilyProperties &, uint32_t> deviceProperties, QStringList extensions );
+    createLogicalDevice( std::pair<const vk::QueueFamilyProperties &, uint32_t> deviceProperties, QStringList extensions );
 
     void startFrame();
     void endFrame();
@@ -119,8 +119,8 @@ private:
 
     bool initialize();
     std::pair<QDynamicUniqueHandle<vk::Image>, QDynamicUniqueHandle<vk::DeviceMemory>> createTransientImage(
-                vk::ImageCreateFlags imageFlags, vk::ImageUsageFlags usageFlags, vk::Format imageFormat, uint32_t imageWidth,
-                uint32_t imageHeight );
+        vk::ImageCreateFlags imageFlags, vk::ImageUsageFlags usageFlags, vk::Format imageFormat, uint32_t imageWidth,
+        uint32_t imageHeight );
     bool createSurface() const;
     bool populatePhysicalDevices() const;
     bool populateRenderPass() const;

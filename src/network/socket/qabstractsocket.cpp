@@ -82,20 +82,20 @@ static QByteArray lscs_prettyDebug( const char *data, int len, int maxLength )
         else
             switch ( c )
             {
-                case '\n':
-                    out += "\\n";
-                    break;
+            case '\n':
+                out += "\\n";
+                break;
 
-                case '\r':
-                    out += "\\r";
-                    break;
+            case '\r':
+                out += "\\r";
+                break;
 
-                case '\t':
-                    out += "\\t";
-                    break;
+            case '\t':
+                out += "\\t";
+                break;
 
-                default:
-                    out += QString( "\\%1" ).formatArgs( c, 8 ).toLatin1();
+            default:
+                out += QString( "\\%1" ).formatArgs( c, 8 ).toLatin1();
             }
     }
 
@@ -112,16 +112,16 @@ static bool isProxyError( QAbstractSocket::SocketError error )
 {
     switch ( error )
     {
-        case QAbstractSocket::ProxyAuthenticationRequiredError:
-        case QAbstractSocket::ProxyConnectionRefusedError:
-        case QAbstractSocket::ProxyConnectionClosedError:
-        case QAbstractSocket::ProxyConnectionTimeoutError:
-        case QAbstractSocket::ProxyNotFoundError:
-        case QAbstractSocket::ProxyProtocolError:
-            return true;
+    case QAbstractSocket::ProxyAuthenticationRequiredError:
+    case QAbstractSocket::ProxyConnectionRefusedError:
+    case QAbstractSocket::ProxyConnectionClosedError:
+    case QAbstractSocket::ProxyConnectionTimeoutError:
+    case QAbstractSocket::ProxyNotFoundError:
+    case QAbstractSocket::ProxyProtocolError:
+        return true;
 
-        default:
-            return false;
+    default:
+        return false;
     }
 }
 
@@ -1501,33 +1501,33 @@ void QAbstractSocket::setSocketOption( QAbstractSocket::SocketOption option, con
 
     switch ( option )
     {
-        case LowDelayOption:
-            d_func()->socketEngine->setOption( QAbstractSocketEngine::LowDelayOption, value.toInt() );
-            break;
+    case LowDelayOption:
+        d_func()->socketEngine->setOption( QAbstractSocketEngine::LowDelayOption, value.toInt() );
+        break;
 
-        case KeepAliveOption:
-            d_func()->socketEngine->setOption( QAbstractSocketEngine::KeepAliveOption, value.toInt() );
-            break;
+    case KeepAliveOption:
+        d_func()->socketEngine->setOption( QAbstractSocketEngine::KeepAliveOption, value.toInt() );
+        break;
 
-        case MulticastTtlOption:
-            d_func()->socketEngine->setOption( QAbstractSocketEngine::MulticastTtlOption, value.toInt() );
-            break;
+    case MulticastTtlOption:
+        d_func()->socketEngine->setOption( QAbstractSocketEngine::MulticastTtlOption, value.toInt() );
+        break;
 
-        case MulticastLoopbackOption:
-            d_func()->socketEngine->setOption( QAbstractSocketEngine::MulticastLoopbackOption, value.toInt() );
-            break;
+    case MulticastLoopbackOption:
+        d_func()->socketEngine->setOption( QAbstractSocketEngine::MulticastLoopbackOption, value.toInt() );
+        break;
 
-        case TypeOfServiceOption:
-            d_func()->socketEngine->setOption( QAbstractSocketEngine::TypeOfServiceOption, value.toInt() );
-            break;
+    case TypeOfServiceOption:
+        d_func()->socketEngine->setOption( QAbstractSocketEngine::TypeOfServiceOption, value.toInt() );
+        break;
 
-        case SendBufferSizeSocketOption:
-            d_func()->socketEngine->setOption( QAbstractSocketEngine::SendBufferSocketOption, value.toInt() );
-            break;
+    case SendBufferSizeSocketOption:
+        d_func()->socketEngine->setOption( QAbstractSocketEngine::SendBufferSocketOption, value.toInt() );
+        break;
 
-        case ReceiveBufferSizeSocketOption:
-            d_func()->socketEngine->setOption( QAbstractSocketEngine::ReceiveBufferSocketOption, value.toInt() );
-            break;
+    case ReceiveBufferSizeSocketOption:
+        d_func()->socketEngine->setOption( QAbstractSocketEngine::ReceiveBufferSocketOption, value.toInt() );
+        break;
     }
 }
 
@@ -1542,33 +1542,33 @@ QVariant QAbstractSocket::socketOption( QAbstractSocket::SocketOption option )
 
     switch ( option )
     {
-        case LowDelayOption:
-            ret = d_func()->socketEngine->option( QAbstractSocketEngine::LowDelayOption );
-            break;
+    case LowDelayOption:
+        ret = d_func()->socketEngine->option( QAbstractSocketEngine::LowDelayOption );
+        break;
 
-        case KeepAliveOption:
-            ret = d_func()->socketEngine->option( QAbstractSocketEngine::KeepAliveOption );
-            break;
+    case KeepAliveOption:
+        ret = d_func()->socketEngine->option( QAbstractSocketEngine::KeepAliveOption );
+        break;
 
-        case MulticastTtlOption:
-            ret = d_func()->socketEngine->option( QAbstractSocketEngine::MulticastTtlOption );
-            break;
+    case MulticastTtlOption:
+        ret = d_func()->socketEngine->option( QAbstractSocketEngine::MulticastTtlOption );
+        break;
 
-        case MulticastLoopbackOption:
-            ret = d_func()->socketEngine->option( QAbstractSocketEngine::MulticastLoopbackOption );
-            break;
+    case MulticastLoopbackOption:
+        ret = d_func()->socketEngine->option( QAbstractSocketEngine::MulticastLoopbackOption );
+        break;
 
-        case TypeOfServiceOption:
-            ret = d_func()->socketEngine->option( QAbstractSocketEngine::TypeOfServiceOption );
-            break;
+    case TypeOfServiceOption:
+        ret = d_func()->socketEngine->option( QAbstractSocketEngine::TypeOfServiceOption );
+        break;
 
-        case SendBufferSizeSocketOption:
-            ret = d_func()->socketEngine->option( QAbstractSocketEngine::SendBufferSocketOption );
-            break;
+    case SendBufferSizeSocketOption:
+        ret = d_func()->socketEngine->option( QAbstractSocketEngine::SendBufferSocketOption );
+        break;
 
-        case ReceiveBufferSizeSocketOption:
-            ret = d_func()->socketEngine->option( QAbstractSocketEngine::ReceiveBufferSocketOption );
-            break;
+    case ReceiveBufferSizeSocketOption:
+        ret = d_func()->socketEngine->option( QAbstractSocketEngine::ReceiveBufferSocketOption );
+        break;
     }
 
     if ( ret == -1 )
@@ -2453,85 +2453,85 @@ Q_NETWORK_EXPORT QDebug operator<<( QDebug debug, QAbstractSocket::SocketError e
 
     switch ( error )
     {
-        case QAbstractSocket::ConnectionRefusedError:
-            debug << "QAbstractSocket::ConnectionRefusedError";
-            break;
+    case QAbstractSocket::ConnectionRefusedError:
+        debug << "QAbstractSocket::ConnectionRefusedError";
+        break;
 
-        case QAbstractSocket::RemoteHostClosedError:
-            debug << "QAbstractSocket::RemoteHostClosedError";
-            break;
+    case QAbstractSocket::RemoteHostClosedError:
+        debug << "QAbstractSocket::RemoteHostClosedError";
+        break;
 
-        case QAbstractSocket::HostNotFoundError:
-            debug << "QAbstractSocket::HostNotFoundError";
-            break;
+    case QAbstractSocket::HostNotFoundError:
+        debug << "QAbstractSocket::HostNotFoundError";
+        break;
 
-        case QAbstractSocket::SocketAccessError:
-            debug << "QAbstractSocket::SocketAccessError";
-            break;
+    case QAbstractSocket::SocketAccessError:
+        debug << "QAbstractSocket::SocketAccessError";
+        break;
 
-        case QAbstractSocket::SocketResourceError:
-            debug << "QAbstractSocket::SocketResourceError";
-            break;
+    case QAbstractSocket::SocketResourceError:
+        debug << "QAbstractSocket::SocketResourceError";
+        break;
 
-        case QAbstractSocket::SocketTimeoutError:
-            debug << "QAbstractSocket::SocketTimeoutError";
-            break;
+    case QAbstractSocket::SocketTimeoutError:
+        debug << "QAbstractSocket::SocketTimeoutError";
+        break;
 
-        case QAbstractSocket::DatagramTooLargeError:
-            debug << "QAbstractSocket::DatagramTooLargeError";
-            break;
+    case QAbstractSocket::DatagramTooLargeError:
+        debug << "QAbstractSocket::DatagramTooLargeError";
+        break;
 
-        case QAbstractSocket::NetworkError:
-            debug << "QAbstractSocket::NetworkError";
-            break;
+    case QAbstractSocket::NetworkError:
+        debug << "QAbstractSocket::NetworkError";
+        break;
 
-        case QAbstractSocket::AddressInUseError:
-            debug << "QAbstractSocket::AddressInUseError";
-            break;
+    case QAbstractSocket::AddressInUseError:
+        debug << "QAbstractSocket::AddressInUseError";
+        break;
 
-        case QAbstractSocket::SocketAddressNotAvailableError:
-            debug << "QAbstractSocket::SocketAddressNotAvailableError";
-            break;
+    case QAbstractSocket::SocketAddressNotAvailableError:
+        debug << "QAbstractSocket::SocketAddressNotAvailableError";
+        break;
 
-        case QAbstractSocket::UnsupportedSocketOperationError:
-            debug << "QAbstractSocket::UnsupportedSocketOperationError";
-            break;
+    case QAbstractSocket::UnsupportedSocketOperationError:
+        debug << "QAbstractSocket::UnsupportedSocketOperationError";
+        break;
 
-        case QAbstractSocket::UnfinishedSocketOperationError:
-            debug << "QAbstractSocket::UnfinishedSocketOperationError";
-            break;
+    case QAbstractSocket::UnfinishedSocketOperationError:
+        debug << "QAbstractSocket::UnfinishedSocketOperationError";
+        break;
 
-        case QAbstractSocket::ProxyAuthenticationRequiredError:
-            debug << "QAbstractSocket::ProxyAuthenticationRequiredError";
-            break;
+    case QAbstractSocket::ProxyAuthenticationRequiredError:
+        debug << "QAbstractSocket::ProxyAuthenticationRequiredError";
+        break;
 
-        case QAbstractSocket::UnknownSocketError:
-            debug << "QAbstractSocket::UnknownSocketError";
-            break;
+    case QAbstractSocket::UnknownSocketError:
+        debug << "QAbstractSocket::UnknownSocketError";
+        break;
 
-        case QAbstractSocket::ProxyConnectionRefusedError:
-            debug << "QAbstractSocket::ProxyConnectionRefusedError";
-            break;
+    case QAbstractSocket::ProxyConnectionRefusedError:
+        debug << "QAbstractSocket::ProxyConnectionRefusedError";
+        break;
 
-        case QAbstractSocket::ProxyConnectionClosedError:
-            debug << "QAbstractSocket::ProxyConnectionClosedError";
-            break;
+    case QAbstractSocket::ProxyConnectionClosedError:
+        debug << "QAbstractSocket::ProxyConnectionClosedError";
+        break;
 
-        case QAbstractSocket::ProxyConnectionTimeoutError:
-            debug << "QAbstractSocket::ProxyConnectionTimeoutError";
-            break;
+    case QAbstractSocket::ProxyConnectionTimeoutError:
+        debug << "QAbstractSocket::ProxyConnectionTimeoutError";
+        break;
 
-        case QAbstractSocket::ProxyNotFoundError:
-            debug << "QAbstractSocket::ProxyNotFoundError";
-            break;
+    case QAbstractSocket::ProxyNotFoundError:
+        debug << "QAbstractSocket::ProxyNotFoundError";
+        break;
 
-        case QAbstractSocket::ProxyProtocolError:
-            debug << "QAbstractSocket::ProxyProtocolError";
-            break;
+    case QAbstractSocket::ProxyProtocolError:
+        debug << "QAbstractSocket::ProxyProtocolError";
+        break;
 
-        default:
-            debug << "QAbstractSocket::SocketError(" << int( error ) << ')';
-            break;
+    default:
+        debug << "QAbstractSocket::SocketError(" << int( error ) << ')';
+        break;
     }
 
     return debug;
@@ -2544,37 +2544,37 @@ Q_NETWORK_EXPORT QDebug operator<<( QDebug debug, QAbstractSocket::SocketState s
 
     switch ( state )
     {
-        case QAbstractSocket::UnconnectedState:
-            debug << "QAbstractSocket::UnconnectedState";
-            break;
+    case QAbstractSocket::UnconnectedState:
+        debug << "QAbstractSocket::UnconnectedState";
+        break;
 
-        case QAbstractSocket::HostLookupState:
-            debug << "QAbstractSocket::HostLookupState";
-            break;
+    case QAbstractSocket::HostLookupState:
+        debug << "QAbstractSocket::HostLookupState";
+        break;
 
-        case QAbstractSocket::ConnectingState:
-            debug << "QAbstractSocket::ConnectingState";
-            break;
+    case QAbstractSocket::ConnectingState:
+        debug << "QAbstractSocket::ConnectingState";
+        break;
 
-        case QAbstractSocket::ConnectedState:
-            debug << "QAbstractSocket::ConnectedState";
-            break;
+    case QAbstractSocket::ConnectedState:
+        debug << "QAbstractSocket::ConnectedState";
+        break;
 
-        case QAbstractSocket::BoundState:
-            debug << "QAbstractSocket::BoundState";
-            break;
+    case QAbstractSocket::BoundState:
+        debug << "QAbstractSocket::BoundState";
+        break;
 
-        case QAbstractSocket::ListeningState:
-            debug << "QAbstractSocket::ListeningState";
-            break;
+    case QAbstractSocket::ListeningState:
+        debug << "QAbstractSocket::ListeningState";
+        break;
 
-        case QAbstractSocket::ClosingState:
-            debug << "QAbstractSocket::ClosingState";
-            break;
+    case QAbstractSocket::ClosingState:
+        debug << "QAbstractSocket::ClosingState";
+        break;
 
-        default:
-            debug << "QAbstractSocket::SocketState(" << int( state ) << ')';
-            break;
+    default:
+        debug << "QAbstractSocket::SocketState(" << int( state ) << ')';
+        break;
     }
 
     return debug;

@@ -503,7 +503,7 @@ bool QMetaMethod::invoke( QObject *object, Qt::ConnectionType type, LSCSReturnAr
 
         // store the signal data, true indicates the data will be copied into a TeaCup Object (stored on the heap)
         CSMetaCallEvent *event = new CSMetaCallEvent( m_bento,
-                new LsCsSignal::Internal::TeaCup_Data<Ts...>( true, std::forward<Ts>( Vs )... ), nullptr, -1 );
+            new LsCsSignal::Internal::TeaCup_Data<Ts...>( true, std::forward<Ts>( Vs )... ), nullptr, -1 );
 
         QCoreApplication::postEvent( object, event );
 
@@ -525,7 +525,7 @@ bool QMetaMethod::invoke( QObject *object, Qt::ConnectionType type, LSCSReturnAr
 
         // store the signal data, false indicates the data will not be copied
         CSMetaCallEvent *event = new CSMetaCallEvent( m_bento,
-                new LsCsSignal::Internal::TeaCup_Data<Ts...>( false, std::forward<Ts>( Vs )... ), nullptr, -1, &semaphore );
+            new LsCsSignal::Internal::TeaCup_Data<Ts...>( false, std::forward<Ts>( Vs )... ), nullptr, -1, &semaphore );
 
         QCoreApplication::postEvent( object, event );
 
@@ -588,7 +588,7 @@ bool QMetaMethod::invoke( QObject *object, Qt::ConnectionType type, Ts &&...Vs )
 
         // store the signal data, false indicates the data will not be copied
         CSMetaCallEvent *event = new CSMetaCallEvent( m_bento,
-                new LsCsSignal::Internal::TeaCup_Data<Ts...>( true, std::forward<Ts>( Vs )... ), nullptr, -1 );
+            new LsCsSignal::Internal::TeaCup_Data<Ts...>( true, std::forward<Ts>( Vs )... ), nullptr, -1 );
         QCoreApplication::postEvent( object, event );
 
     }
@@ -606,7 +606,7 @@ bool QMetaMethod::invoke( QObject *object, Qt::ConnectionType type, Ts &&...Vs )
 
         // store the signal data, false indicates the data will not be copied
         CSMetaCallEvent *event = new CSMetaCallEvent( m_bento,
-                new LsCsSignal::Internal::TeaCup_Data<Ts...>( false, std::forward<Ts>( Vs )... ), nullptr, -1, &semaphore );
+            new LsCsSignal::Internal::TeaCup_Data<Ts...>( false, std::forward<Ts>( Vs )... ), nullptr, -1, &semaphore );
         QCoreApplication::postEvent( object, event );
 
         semaphore.acquire();

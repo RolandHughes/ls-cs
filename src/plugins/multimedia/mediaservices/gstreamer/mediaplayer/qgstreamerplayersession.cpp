@@ -492,20 +492,20 @@ int QGstreamerPlayerSession::activeStream( QMediaStreamsControl::StreamType stre
     {
         switch ( streamType )
         {
-            case QMediaStreamsControl::AudioStream:
-                g_object_get( G_OBJECT( m_playbin ), "current-audio", &streamNumber, nullptr );
-                break;
+        case QMediaStreamsControl::AudioStream:
+            g_object_get( G_OBJECT( m_playbin ), "current-audio", &streamNumber, nullptr );
+            break;
 
-            case QMediaStreamsControl::VideoStream:
-                g_object_get( G_OBJECT( m_playbin ), "current-video", &streamNumber, nullptr );
-                break;
+        case QMediaStreamsControl::VideoStream:
+            g_object_get( G_OBJECT( m_playbin ), "current-video", &streamNumber, nullptr );
+            break;
 
-            case QMediaStreamsControl::SubPictureStream:
-                g_object_get( G_OBJECT( m_playbin ), "current-text", &streamNumber, nullptr );
-                break;
+        case QMediaStreamsControl::SubPictureStream:
+            g_object_get( G_OBJECT( m_playbin ), "current-text", &streamNumber, nullptr );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -532,20 +532,20 @@ void QGstreamerPlayerSession::setActiveStream( QMediaStreamsControl::StreamType 
     {
         switch ( streamType )
         {
-            case QMediaStreamsControl::AudioStream:
-                g_object_set( G_OBJECT( m_playbin ), "current-audio", streamNumber, nullptr );
-                break;
+        case QMediaStreamsControl::AudioStream:
+            g_object_set( G_OBJECT( m_playbin ), "current-audio", streamNumber, nullptr );
+            break;
 
-            case QMediaStreamsControl::VideoStream:
-                g_object_set( G_OBJECT( m_playbin ), "current-video", streamNumber, nullptr );
-                break;
+        case QMediaStreamsControl::VideoStream:
+            g_object_set( G_OBJECT( m_playbin ), "current-video", streamNumber, nullptr );
+            break;
 
-            case QMediaStreamsControl::SubPictureStream:
-                g_object_set( G_OBJECT( m_playbin ), "current-text", streamNumber, nullptr );
-                break;
+        case QMediaStreamsControl::SubPictureStream:
+            g_object_set( G_OBJECT( m_playbin ), "current-text", streamNumber, nullptr );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 }
@@ -734,16 +734,16 @@ void QGstreamerPlayerSession::setVideoRenderer( QObject *videoOutput )
 
         switch ( m_pendingState )
         {
-            case QMediaPlayer::PausedState:
-                gst_element_set_state( m_playbin, GST_STATE_PAUSED );
-                break;
+        case QMediaPlayer::PausedState:
+            gst_element_set_state( m_playbin, GST_STATE_PAUSED );
+            break;
 
-            case QMediaPlayer::PlayingState:
-                gst_element_set_state( m_playbin, GST_STATE_PLAYING );
-                break;
+        case QMediaPlayer::PlayingState:
+            gst_element_set_state( m_playbin, GST_STATE_PLAYING );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         resumeVideoProbes();
@@ -904,17 +904,17 @@ void QGstreamerPlayerSession::finishVideoOutputChange()
 
     switch ( m_pendingState )
     {
-        case QMediaPlayer::StoppedState:
-            state = GST_STATE_NULL;
-            break;
+    case QMediaPlayer::StoppedState:
+        state = GST_STATE_NULL;
+        break;
 
-        case QMediaPlayer::PausedState:
-            state = GST_STATE_PAUSED;
-            break;
+    case QMediaPlayer::PausedState:
+        state = GST_STATE_PAUSED;
+        break;
 
-        case QMediaPlayer::PlayingState:
-            state = GST_STATE_PLAYING;
-            break;
+    case QMediaPlayer::PlayingState:
+        state = GST_STATE_PLAYING;
+        break;
     }
 
 #if !GST_CHECK_VERSION(1,0,0)
@@ -997,17 +997,17 @@ void QGstreamerPlayerSession::insertColorSpaceElement( GstElement *element, gpoi
 
     switch ( session->m_pendingState )
     {
-        case QMediaPlayer::StoppedState:
-            state = GST_STATE_NULL;
-            break;
+    case QMediaPlayer::StoppedState:
+        state = GST_STATE_NULL;
+        break;
 
-        case QMediaPlayer::PausedState:
-            state = GST_STATE_PAUSED;
-            break;
+    case QMediaPlayer::PausedState:
+        state = GST_STATE_PAUSED;
+        break;
 
-        case QMediaPlayer::PlayingState:
-            state = GST_STATE_PLAYING;
-            break;
+    case QMediaPlayer::PlayingState:
+        state = GST_STATE_PLAYING;
+        break;
     }
 
     gst_element_set_state( session->m_colorSpace, state );
@@ -1274,217 +1274,217 @@ bool QGstreamerPlayerSession::processBusMessage( const QGstreamerMessage &messag
         {
             switch ( GST_MESSAGE_TYPE( gm ) )
             {
-                case GST_MESSAGE_STATE_CHANGED:
-                {
-                    GstState    oldState;
-                    GstState    newState;
-                    GstState    pending;
+            case GST_MESSAGE_STATE_CHANGED:
+            {
+                GstState    oldState;
+                GstState    newState;
+                GstState    pending;
 
-                    gst_message_parse_state_changed( gm, &oldState, &newState, &pending );
+                gst_message_parse_state_changed( gm, &oldState, &newState, &pending );
 
 #ifdef DEBUG_PLAYBIN
-                    QStringList states;
-                    states << "GST_STATE_VOID_PENDING" <<  "GST_STATE_NULL" << "GST_STATE_READY" << "GST_STATE_PAUSED" << "GST_STATE_PLAYING";
+                QStringList states;
+                states << "GST_STATE_VOID_PENDING" <<  "GST_STATE_NULL" << "GST_STATE_READY" << "GST_STATE_PAUSED" << "GST_STATE_PLAYING";
 
-                    qDebug() << QString( "state changed: old: %1  new: %2  pending: %3" ) \
-                             .formatArg( states[oldState] ) \
-                             .formatArg( states[newState] ) \
-                             .formatArg( states[pending] );
+                qDebug() << QString( "state changed: old: %1  new: %2  pending: %3" ) \
+                         .formatArg( states[oldState] ) \
+                         .formatArg( states[newState] ) \
+                         .formatArg( states[pending] );
 #endif
 
-                    switch ( newState )
+                switch ( newState )
+                {
+                case GST_STATE_VOID_PENDING:
+                case GST_STATE_NULL:
+                    setSeekable( false );
+                    finishVideoOutputChange();
+
+                    if ( m_state != QMediaPlayer::StoppedState )
                     {
-                        case GST_STATE_VOID_PENDING:
-                        case GST_STATE_NULL:
-                            setSeekable( false );
-                            finishVideoOutputChange();
+                        emit stateChanged( m_state = QMediaPlayer::StoppedState );
+                    }
 
-                            if ( m_state != QMediaPlayer::StoppedState )
-                            {
-                                emit stateChanged( m_state = QMediaPlayer::StoppedState );
-                            }
+                    break;
 
-                            break;
+                case GST_STATE_READY:
+                    setSeekable( false );
 
-                        case GST_STATE_READY:
-                            setSeekable( false );
+                    if ( m_state != QMediaPlayer::StoppedState )
+                    {
+                        emit stateChanged( m_state = QMediaPlayer::StoppedState );
+                    }
 
-                            if ( m_state != QMediaPlayer::StoppedState )
-                            {
-                                emit stateChanged( m_state = QMediaPlayer::StoppedState );
-                            }
+                    break;
 
-                            break;
+                case GST_STATE_PAUSED:
+                {
+                    QMediaPlayer::State prevState = m_state;
+                    m_state = QMediaPlayer::PausedState;
 
-                        case GST_STATE_PAUSED:
+                    //check for seekable
+                    if ( oldState == GST_STATE_READY )
+                    {
+                        if ( m_sourceType == SoupHTTPSrc || m_sourceType == MMSSrc )
                         {
-                            QMediaPlayer::State prevState = m_state;
-                            m_state = QMediaPlayer::PausedState;
-
-                            //check for seekable
-                            if ( oldState == GST_STATE_READY )
-                            {
-                                if ( m_sourceType == SoupHTTPSrc || m_sourceType == MMSSrc )
-                                {
-                                    //since udpsrc is a live source, it is not applicable here
-                                    m_everPlayed = true;
-                                }
-
-                                getStreamsInfo();
-                                updateVideoResolutionTag();
-
-                                //gstreamer doesn't give a reliable indication the duration
-                                //information is ready, GST_MESSAGE_DURATION is not sent by most elements
-                                //the duration is queried up to 5 times with increasing delay
-                                m_durationQueries = 5;
-                                // This should also update the seekable flag.
-                                updateDuration();
-
-                                if ( !qFuzzyCompare( m_playbackRate, qreal( 1.0 ) ) )
-                                {
-                                    qreal rate = m_playbackRate;
-                                    m_playbackRate = 1.0;
-                                    setPlaybackRate( rate );
-                                }
-                            }
-
-                            if ( m_state != prevState )
-                            {
-                                emit stateChanged( m_state );
-                            }
-
-                            break;
+                            //since udpsrc is a live source, it is not applicable here
+                            m_everPlayed = true;
                         }
 
-                        case GST_STATE_PLAYING:
-                            m_everPlayed = true;
+                        getStreamsInfo();
+                        updateVideoResolutionTag();
 
-                            if ( m_state != QMediaPlayer::PlayingState )
-                            {
-                                emit stateChanged( m_state = QMediaPlayer::PlayingState );
+                        //gstreamer doesn't give a reliable indication the duration
+                        //information is ready, GST_MESSAGE_DURATION is not sent by most elements
+                        //the duration is queried up to 5 times with increasing delay
+                        m_durationQueries = 5;
+                        // This should also update the seekable flag.
+                        updateDuration();
 
-                                // For rtsp streams duration information might not be available
-                                // until playback starts.
-                                if ( m_duration <= 0 )
-                                {
-                                    m_durationQueries = 5;
-                                    updateDuration();
-                                }
-                            }
-
-                            break;
+                        if ( !qFuzzyCompare( m_playbackRate, qreal( 1.0 ) ) )
+                        {
+                            qreal rate = m_playbackRate;
+                            m_playbackRate = 1.0;
+                            setPlaybackRate( rate );
+                        }
                     }
-                }
-                break;
 
-                case GST_MESSAGE_EOS:
-                    emit playbackFinished();
-                    break;
-
-                case GST_MESSAGE_TAG:
-                case GST_MESSAGE_STREAM_STATUS:
-                case GST_MESSAGE_UNKNOWN:
-                    break;
-
-                case GST_MESSAGE_ERROR:
-                {
-                    GError *err;
-                    gchar *debug;
-                    gst_message_parse_error( gm, &err, &debug );
-
-                    if ( err->domain == GST_STREAM_ERROR && err->code == GST_STREAM_ERROR_CODEC_NOT_FOUND )
+                    if ( m_state != prevState )
                     {
-                        processInvalidMedia( QMediaPlayer::FormatError, tr( "Cannot play stream of type: <unknown>" ) );
+                        emit stateChanged( m_state );
                     }
-                    else
+
+                    break;
+                }
+
+                case GST_STATE_PLAYING:
+                    m_everPlayed = true;
+
+                    if ( m_state != QMediaPlayer::PlayingState )
                     {
-                        processInvalidMedia( QMediaPlayer::ResourceError, QString::fromUtf8( err->message ) );
+                        emit stateChanged( m_state = QMediaPlayer::PlayingState );
+
+                        // For rtsp streams duration information might not be available
+                        // until playback starts.
+                        if ( m_duration <= 0 )
+                        {
+                            m_durationQueries = 5;
+                            updateDuration();
+                        }
                     }
 
-                    qWarning() << "Error:" << QString::fromUtf8( err->message );
-                    g_error_free( err );
-                    g_free( debug );
+                    break;
                 }
+            }
+            break;
+
+            case GST_MESSAGE_EOS:
+                emit playbackFinished();
                 break;
 
-                case GST_MESSAGE_WARNING:
+            case GST_MESSAGE_TAG:
+            case GST_MESSAGE_STREAM_STATUS:
+            case GST_MESSAGE_UNKNOWN:
+                break;
+
+            case GST_MESSAGE_ERROR:
+            {
+                GError *err;
+                gchar *debug;
+                gst_message_parse_error( gm, &err, &debug );
+
+                if ( err->domain == GST_STREAM_ERROR && err->code == GST_STREAM_ERROR_CODEC_NOT_FOUND )
                 {
-                    GError *err;
-                    gchar *debug;
-                    gst_message_parse_warning ( gm, &err, &debug );
-                    qWarning() << "Warning:" << QString::fromUtf8( err->message );
-                    g_error_free ( err );
-                    g_free ( debug );
+                    processInvalidMedia( QMediaPlayer::FormatError, tr( "Cannot play stream of type: <unknown>" ) );
                 }
-                break;
+                else
+                {
+                    processInvalidMedia( QMediaPlayer::ResourceError, QString::fromUtf8( err->message ) );
+                }
 
-                case GST_MESSAGE_INFO:
+                qWarning() << "Error:" << QString::fromUtf8( err->message );
+                g_error_free( err );
+                g_free( debug );
+            }
+            break;
+
+            case GST_MESSAGE_WARNING:
+            {
+                GError *err;
+                gchar *debug;
+                gst_message_parse_warning ( gm, &err, &debug );
+                qWarning() << "Warning:" << QString::fromUtf8( err->message );
+                g_error_free ( err );
+                g_free ( debug );
+            }
+            break;
+
+            case GST_MESSAGE_INFO:
 #ifdef DEBUG_PLAYBIN
-                {
-                    GError *err;
-                    gchar *debug;
-                    gst_message_parse_info ( gm, &err, &debug );
-                    qDebug() << "Info:" << QString::fromUtf8( err->message );
-                    g_error_free ( err );
-                    g_free ( debug );
-                }
+            {
+                GError *err;
+                gchar *debug;
+                gst_message_parse_info ( gm, &err, &debug );
+                qDebug() << "Info:" << QString::fromUtf8( err->message );
+                g_error_free ( err );
+                g_free ( debug );
+            }
 
 #endif
+            break;
+
+            case GST_MESSAGE_BUFFERING:
+            case GST_MESSAGE_STATE_DIRTY:
+            case GST_MESSAGE_STEP_DONE:
+            case GST_MESSAGE_CLOCK_PROVIDE:
+            case GST_MESSAGE_CLOCK_LOST:
+            case GST_MESSAGE_NEW_CLOCK:
+            case GST_MESSAGE_STRUCTURE_CHANGE:
+            case GST_MESSAGE_APPLICATION:
+            case GST_MESSAGE_ELEMENT:
                 break;
 
-                case GST_MESSAGE_BUFFERING:
-                case GST_MESSAGE_STATE_DIRTY:
-                case GST_MESSAGE_STEP_DONE:
-                case GST_MESSAGE_CLOCK_PROVIDE:
-                case GST_MESSAGE_CLOCK_LOST:
-                case GST_MESSAGE_NEW_CLOCK:
-                case GST_MESSAGE_STRUCTURE_CHANGE:
-                case GST_MESSAGE_APPLICATION:
-                case GST_MESSAGE_ELEMENT:
-                    break;
+            case GST_MESSAGE_SEGMENT_START:
+            {
+                const GstStructure *structure = gst_message_get_structure( gm );
+                qint64 position = g_value_get_int64( gst_structure_get_value( structure, "position" ) );
+                position /= 1000000;
+                m_lastPosition = position;
+                emit positionChanged( position );
+            }
+            break;
 
-                case GST_MESSAGE_SEGMENT_START:
+            case GST_MESSAGE_SEGMENT_DONE:
+                break;
+
+            case GST_MESSAGE_LATENCY:
+#if GST_CHECK_VERSION(0,10,13)
+            case GST_MESSAGE_ASYNC_START:
+                break;
+
+            case GST_MESSAGE_ASYNC_DONE:
+            {
+                gint64      position = 0;
+
+                if ( lscs_gst_element_query_position( m_playbin, GST_FORMAT_TIME, &position ) )
                 {
-                    const GstStructure *structure = gst_message_get_structure( gm );
-                    qint64 position = g_value_get_int64( gst_structure_get_value( structure, "position" ) );
                     position /= 1000000;
                     m_lastPosition = position;
                     emit positionChanged( position );
                 }
+
                 break;
-
-                case GST_MESSAGE_SEGMENT_DONE:
-                    break;
-
-                case GST_MESSAGE_LATENCY:
-#if GST_CHECK_VERSION(0,10,13)
-                case GST_MESSAGE_ASYNC_START:
-                    break;
-
-                case GST_MESSAGE_ASYNC_DONE:
-                {
-                    gint64      position = 0;
-
-                    if ( lscs_gst_element_query_position( m_playbin, GST_FORMAT_TIME, &position ) )
-                    {
-                        position /= 1000000;
-                        m_lastPosition = position;
-                        emit positionChanged( position );
-                    }
-
-                    break;
-                }
+            }
 
 #if GST_CHECK_VERSION(0,10,23)
 
-                case GST_MESSAGE_REQUEST_STATE:
+            case GST_MESSAGE_REQUEST_STATE:
 #endif
 #endif
-                case GST_MESSAGE_ANY:
-                    break;
+            case GST_MESSAGE_ANY:
+                break;
 
-                default:
-                    break;
+            default:
+                break;
             }
         }
         else if ( GST_MESSAGE_TYPE( gm ) == GST_MESSAGE_ERROR )
@@ -1666,20 +1666,20 @@ void QGstreamerPlayerSession::getStreamsInfo()
 
         switch ( streamType )
         {
-            case QMediaStreamsControl::AudioStream:
-                g_signal_emit_by_name( G_OBJECT( m_playbin ), "get-audio-tags", streamIndex, &tags );
-                break;
+        case QMediaStreamsControl::AudioStream:
+            g_signal_emit_by_name( G_OBJECT( m_playbin ), "get-audio-tags", streamIndex, &tags );
+            break;
 
-            case QMediaStreamsControl::VideoStream:
-                g_signal_emit_by_name( G_OBJECT( m_playbin ), "get-video-tags", streamIndex, &tags );
-                break;
+        case QMediaStreamsControl::VideoStream:
+            g_signal_emit_by_name( G_OBJECT( m_playbin ), "get-video-tags", streamIndex, &tags );
+            break;
 
-            case QMediaStreamsControl::SubPictureStream:
-                g_signal_emit_by_name( G_OBJECT( m_playbin ), "get-text-tags", streamIndex, &tags );
-                break;
+        case QMediaStreamsControl::SubPictureStream:
+            g_signal_emit_by_name( G_OBJECT( m_playbin ), "get-text-tags", streamIndex, &tags );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
 #if GST_CHECK_VERSION(1,0,0)

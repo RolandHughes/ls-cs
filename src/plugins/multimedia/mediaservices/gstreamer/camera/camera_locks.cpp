@@ -74,29 +74,29 @@ QCamera::LockStatus CameraBinLocks::lockStatus( QCamera::LockType lock ) const
 {
     switch ( lock )
     {
-        case QCamera::LockFocus:
-            return m_focus->focusStatus();
+    case QCamera::LockFocus:
+        return m_focus->focusStatus();
 #if GST_CHECK_VERSION(1, 2, 0)
 
-        case QCamera::LockExposure:
-            if ( m_pendingLocks & QCamera::LockExposure )
-            {
-                return QCamera::Searching;
-            }
+    case QCamera::LockExposure:
+        if ( m_pendingLocks & QCamera::LockExposure )
+        {
+            return QCamera::Searching;
+        }
 
-            return isExposureLocked() ? QCamera::Locked : QCamera::Unlocked;
+        return isExposureLocked() ? QCamera::Locked : QCamera::Unlocked;
 
-        case QCamera::LockWhiteBalance:
-            if ( m_pendingLocks & QCamera::LockWhiteBalance )
-            {
-                return QCamera::Searching;
-            }
+    case QCamera::LockWhiteBalance:
+        if ( m_pendingLocks & QCamera::LockWhiteBalance )
+        {
+            return QCamera::Searching;
+        }
 
-            return isWhiteBalanceLocked() ? QCamera::Locked : QCamera::Unlocked;
+        return isWhiteBalanceLocked() ? QCamera::Locked : QCamera::Unlocked;
 #endif
 
-        default:
-            return QCamera::Unlocked;
+    default:
+        return QCamera::Unlocked;
     }
 
     return lock == QCamera::LockFocus ? m_focus->focusStatus() : QCamera::Unlocked;

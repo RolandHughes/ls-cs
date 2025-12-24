@@ -57,8 +57,8 @@ static QPlatformTextureList *lscs_dummy_platformTextureList()
 #endif
 
 void QWidgetBackingStore::lscs_flush( QWidget *widget, const QRegion &region, QBackingStore *backingStore,
-                                    QWidget *tlw, const QPoint &tlwOffset, QPlatformTextureList *widgetTextures,
-                                    QWidgetBackingStore *widgetBackingStore )
+                                      QWidget *tlw, const QPoint &tlwOffset, QPlatformTextureList *widgetTextures,
+                                      QWidgetBackingStore *widgetBackingStore )
 {
     ( void ) widgetBackingStore;
 
@@ -384,17 +384,17 @@ void QWidgetBackingStore::sendUpdateRequest( QWidget *widget, UpdateTime updateT
 
     switch ( updateTime )
     {
-        case UpdateLater:
-            updateRequestSent = true;
-            QApplication::postEvent( widget, new QEvent( QEvent::UpdateRequest ), Qt::LowEventPriority );
-            break;
+    case UpdateLater:
+        updateRequestSent = true;
+        QApplication::postEvent( widget, new QEvent( QEvent::UpdateRequest ), Qt::LowEventPriority );
+        break;
 
-        case UpdateNow:
-        {
-            QEvent event( QEvent::UpdateRequest );
-            QApplication::sendEvent( widget, &event );
-            break;
-        }
+    case UpdateNow:
+    {
+        QEvent event( QEvent::UpdateRequest );
+        QApplication::sendEvent( widget, &event );
+        break;
+    }
     }
 }
 
@@ -1124,7 +1124,7 @@ static QPlatformTextureList *widgetTexturesFor( QWidget *tlw, QWidget *widget )
         // their windows so it has to be opt-in.
 
         static bool switchableWidgetComposition = QGuiApplicationPrivate::instance()->platformIntegration()
-                ->hasCapability( QPlatformIntegration::SwitchableWidgetComposition );
+            ->hasCapability( QPlatformIntegration::SwitchableWidgetComposition );
 
 #if defined(Q_OS_WIN)
         // Windows compositor handles fullscreen OpenGL window specially. It has

@@ -86,12 +86,12 @@ QImage::Format lscs_xcb_imageFormatForVisual( QXcbConnection *connection, uint8_
 }
 
 QPixmap lscs_xcb_pixmapFromXPixmap( QXcbConnection *connection, xcb_pixmap_t pixmap,
-                                  int width, int height, int depth, const xcb_visualtype_t *visual )
+                                    int width, int height, int depth, const xcb_visualtype_t *visual )
 {
     xcb_connection_t *conn = connection->xcb_connection();
 
     xcb_get_image_cookie_t get_image_cookie = xcb_get_image_unchecked( conn, XCB_IMAGE_FORMAT_Z_PIXMAP,
-            pixmap, 0, 0, width, height, 0xffffffff );
+        pixmap, 0, 0, width, height, 0xffffffff );
 
     xcb_get_image_reply_t *image_reply = xcb_get_image_reply( conn, get_image_cookie, nullptr );
 
@@ -121,38 +121,38 @@ QPixmap lscs_xcb_pixmapFromXPixmap( QXcbConnection *connection, xcb_pixmap_t pix
             {
                 switch ( format )
                 {
-                    case QImage::Format_RGB16:
+                case QImage::Format_RGB16:
+                {
+                    ushort *p = ( ushort * )image.scanLine( i );
+                    ushort *end = p + image.width();
+
+                    while ( p < end )
                     {
-                        ushort *p = ( ushort * )image.scanLine( i );
-                        ushort *end = p + image.width();
-
-                        while ( p < end )
-                        {
-                            *p = ( ( *p << 8 ) & 0xff00 ) | ( ( *p >> 8 ) & 0x00ff );
-                            p++;
-                        }
-
-                        break;
+                        *p = ( ( *p << 8 ) & 0xff00 ) | ( ( *p >> 8 ) & 0x00ff );
+                        p++;
                     }
 
-                    case QImage::Format_RGB32:
-                    case QImage::Format_ARGB32_Premultiplied:
+                    break;
+                }
+
+                case QImage::Format_RGB32:
+                case QImage::Format_ARGB32_Premultiplied:
+                {
+                    uint *p = ( uint * )image.scanLine( i );
+                    uint *end = p + image.width();
+
+                    while ( p < end )
                     {
-                        uint *p = ( uint * )image.scanLine( i );
-                        uint *end = p + image.width();
-
-                        while ( p < end )
-                        {
-                            *p = ( ( *p << 24 ) & 0xff000000 ) | ( ( *p << 8 ) & 0x00ff0000 )
-                                 | ( ( *p >> 8 ) & 0x0000ff00 ) | ( ( *p >> 24 ) & 0x000000ff );
-                            p++;
-                        }
-
-                        break;
+                        *p = ( ( *p << 24 ) & 0xff000000 ) | ( ( *p << 8 ) & 0x00ff0000 )
+                             | ( ( *p >> 8 ) & 0x0000ff00 ) | ( ( *p >> 24 ) & 0x000000ff );
+                        p++;
                     }
 
-                    default:
-                        Q_ASSERT( false );
+                    break;
+                }
+
+                default:
+                    Q_ASSERT( false );
                 }
             }
         }
@@ -243,7 +243,7 @@ xcb_cursor_t lscs_xcb_createCursorXRender( QXcbScreen *screen, const QImage &ima
     xcb_generic_error_t *error = nullptr;
     xcb_render_query_pict_formats_cookie_t formatsCookie = xcb_render_query_pict_formats( conn );
     xcb_render_query_pict_formats_reply_t *formatsReply  = xcb_render_query_pict_formats_reply( conn,
-            formatsCookie, &error );
+        formatsCookie, &error );
 
     if ( !formatsReply || error )
     {

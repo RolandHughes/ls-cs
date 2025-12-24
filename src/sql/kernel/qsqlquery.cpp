@@ -369,40 +369,40 @@ bool QSqlQuery::seek( int index, bool relative )
         switch ( at() ) // relative seek
         {
 
-            case QSql::BeforeFirstRow:
-                if ( index > 0 )
-                {
-                    actualIdx = index - 1;
-                }
-                else
-                {
-                    return false;
-                }
+        case QSql::BeforeFirstRow:
+            if ( index > 0 )
+            {
+                actualIdx = index - 1;
+            }
+            else
+            {
+                return false;
+            }
 
-                break;
+            break;
 
-            case QSql::AfterLastRow:
-                if ( index < 0 )
-                {
-                    d->sqlResult->fetchLast();
-                    actualIdx = at() + index  + 1;
-                }
-                else
-                {
-                    return false;
-                }
+        case QSql::AfterLastRow:
+            if ( index < 0 )
+            {
+                d->sqlResult->fetchLast();
+                actualIdx = at() + index  + 1;
+            }
+            else
+            {
+                return false;
+            }
 
-                break;
+            break;
 
-            default:
-                if ( ( at() + index ) < 0 )
-                {
-                    d->sqlResult->setAt( QSql::BeforeFirstRow );
-                    return false;
-                }
+        default:
+            if ( ( at() + index ) < 0 )
+            {
+                d->sqlResult->setAt( QSql::BeforeFirstRow );
+                return false;
+            }
 
-                actualIdx = at() + index;
-                break;
+            actualIdx = at() + index;
+            break;
         }
     }
 
@@ -484,21 +484,21 @@ bool QSqlQuery::next()
 
     switch ( at() )
     {
-        case QSql::BeforeFirstRow:
-            b = d->sqlResult->fetchFirst();
-            return b;
+    case QSql::BeforeFirstRow:
+        b = d->sqlResult->fetchFirst();
+        return b;
 
-        case QSql::AfterLastRow:
+    case QSql::AfterLastRow:
+        return false;
+
+    default:
+        if ( !d->sqlResult->fetchNext() )
+        {
+            d->sqlResult->setAt( QSql::AfterLastRow );
             return false;
+        }
 
-        default:
-            if ( !d->sqlResult->fetchNext() )
-            {
-                d->sqlResult->setAt( QSql::AfterLastRow );
-                return false;
-            }
-
-            return true;
+        return true;
     }
 }
 
@@ -548,21 +548,21 @@ bool QSqlQuery::previous()
 
     switch ( at() )
     {
-        case QSql::BeforeFirstRow:
+    case QSql::BeforeFirstRow:
+        return false;
+
+    case QSql::AfterLastRow:
+        b = d->sqlResult->fetchLast();
+        return b;
+
+    default:
+        if ( !d->sqlResult->fetchPrevious() )
+        {
+            d->sqlResult->setAt( QSql::BeforeFirstRow );
             return false;
+        }
 
-        case QSql::AfterLastRow:
-            b = d->sqlResult->fetchLast();
-            return b;
-
-        default:
-            if ( !d->sqlResult->fetchPrevious() )
-            {
-                d->sqlResult->setAt( QSql::BeforeFirstRow );
-                return false;
-            }
-
-            return true;
+        return true;
     }
 }
 

@@ -855,7 +855,7 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
     realOffset &= ~( LSCS_OFF_T( pageSize - 1 ) );
 
     void *mapAddress = LSCS_MMAP( ( void * )nullptr, realSize,
-                                access, MAP_SHARED, nativeHandle(), realOffset );
+                                  access, MAP_SHARED, nativeHandle(), realOffset );
 
     if ( MAP_FAILED != mapAddress )
     {
@@ -866,21 +866,21 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
 
     switch ( errno )
     {
-        case EBADF:
-            q->setError( QFile::PermissionsError, lscs_error_string( int( EACCES ) ) );
-            break;
+    case EBADF:
+        q->setError( QFile::PermissionsError, lscs_error_string( int( EACCES ) ) );
+        break;
 
-        case ENFILE:
-        case ENOMEM:
-            q->setError( QFile::ResourceError, lscs_error_string( int( errno ) ) );
-            break;
+    case ENFILE:
+    case ENOMEM:
+        q->setError( QFile::ResourceError, lscs_error_string( int( errno ) ) );
+        break;
 
-        case EINVAL:
+    case EINVAL:
 
-        // size are out of bounds
-        default:
-            q->setError( QFile::UnspecifiedError, lscs_error_string( int( errno ) ) );
-            break;
+    // size are out of bounds
+    default:
+        q->setError( QFile::UnspecifiedError, lscs_error_string( int( errno ) ) );
+        break;
     }
 
     return nullptr;

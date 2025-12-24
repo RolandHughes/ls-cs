@@ -50,22 +50,22 @@ QScriptDebuggerConsoleCommandManagerPrivate::QScriptDebuggerConsoleCommandManage
 {
     groups[QLatin1String( "breakpoints" )] =
         QScriptDebuggerConsoleCommandGroupData( QLatin1String( "Making program stop at certain points" ),
-                QLatin1String( "" ) );
+            QLatin1String( "" ) );
     groups[QLatin1String( "files" )] =
         QScriptDebuggerConsoleCommandGroupData( QLatin1String( "Examining files" ),
-                QLatin1String( "" ) );
+            QLatin1String( "" ) );
     groups[QLatin1String( "stack" )] =
         QScriptDebuggerConsoleCommandGroupData( QLatin1String( "Examining the stack" ),
-                QLatin1String( "" ) );
+            QLatin1String( "" ) );
     groups[QLatin1String( "running" )] =
         QScriptDebuggerConsoleCommandGroupData( QLatin1String( "Running the program" ),
-                QLatin1String( "" ) );
+            QLatin1String( "" ) );
     groups[QLatin1String( "status" )] =
         QScriptDebuggerConsoleCommandGroupData( QLatin1String( "Status inquiries" ),
-                QLatin1String( "" ) );
+            QLatin1String( "" ) );
     groups[QLatin1String( "void" )] =
         QScriptDebuggerConsoleCommandGroupData( QLatin1String( "No such group" ),
-                QLatin1String( "It's a secret to everyone" ) );
+            QLatin1String( "It's a secret to everyone" ) );
 }
 
 QScriptDebuggerConsoleCommandManagerPrivate::~QScriptDebuggerConsoleCommandManagerPrivate()

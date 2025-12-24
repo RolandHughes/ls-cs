@@ -128,91 +128,91 @@ static inline QImage::Format imageFormatForVisual( int depth, quint32 red_mask, 
 
     switch ( depth )
     {
-        case 32:
-            if ( blue_mask == 0xff )
+    case 32:
+        if ( blue_mask == 0xff )
+        {
+            return QImage::Format_ARGB32_Premultiplied;
+        }
+
+        if ( red_mask == 0x3ff )
+        {
+            return QImage::Format_A2BGR30_Premultiplied;
+        }
+
+        if ( blue_mask == 0x3ff )
+        {
+            return QImage::Format_A2RGB30_Premultiplied;
+        }
+
+        if ( red_mask == 0xff )
+        {
+            if ( rgbSwap )
             {
-                return QImage::Format_ARGB32_Premultiplied;
+                *rgbSwap = true;
             }
 
-            if ( red_mask == 0x3ff )
+            return QImage::Format_ARGB32_Premultiplied;
+        }
+
+        break;
+
+    case 30:
+        if ( red_mask == 0x3ff )
+        {
+            return QImage::Format_BGR30;
+        }
+
+        if ( blue_mask == 0x3ff )
+        {
+            return QImage::Format_RGB30;
+        }
+
+        break;
+
+    case 24:
+        if ( blue_mask == 0xff )
+        {
+            return QImage::Format_RGB32;
+        }
+
+        if ( red_mask == 0xff )
+        {
+            if ( rgbSwap )
             {
-                return QImage::Format_A2BGR30_Premultiplied;
+                *rgbSwap = true;
             }
 
-            if ( blue_mask == 0x3ff )
-            {
-                return QImage::Format_A2RGB30_Premultiplied;
-            }
+            return QImage::Format_RGB32;
+        }
 
-            if ( red_mask == 0xff )
-            {
-                if ( rgbSwap )
-                {
-                    *rgbSwap = true;
-                }
+        break;
 
-                return QImage::Format_ARGB32_Premultiplied;
-            }
+    case 16:
+        if ( blue_mask == 0x1f )
+        {
+            return QImage::Format_RGB16;
+        }
 
-            break;
+        break;
 
-        case 30:
-            if ( red_mask == 0x3ff )
-            {
-                return QImage::Format_BGR30;
-            }
-
-            if ( blue_mask == 0x3ff )
-            {
-                return QImage::Format_RGB30;
-            }
-
-            break;
-
-        case 24:
-            if ( blue_mask == 0xff )
-            {
-                return QImage::Format_RGB32;
-            }
-
-            if ( red_mask == 0xff )
-            {
-                if ( rgbSwap )
-                {
-                    *rgbSwap = true;
-                }
-
-                return QImage::Format_RGB32;
-            }
-
-            break;
-
-        case 16:
-            if ( blue_mask == 0x1f )
-            {
-                return QImage::Format_RGB16;
-            }
-
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     qWarning( "Unsupported screen format: depth: %d, red_mask: %x, blue_mask: %x", depth, red_mask, blue_mask );
 
     switch ( depth )
     {
-        case 24:
-            qWarning( "Using RGB32 fallback, if this works your X11 server is reporting a bad screen format." );
-            return QImage::Format_RGB32;
+    case 24:
+        qWarning( "Using RGB32 fallback, if this works your X11 server is reporting a bad screen format." );
+        return QImage::Format_RGB32;
 
-        case 16:
-            qWarning( "Using RGB16 fallback, if this works your X11 server is reporting a bad screen format." );
-            return QImage::Format_RGB16;
+    case 16:
+        qWarning( "Using RGB16 fallback, if this works your X11 server is reporting a bad screen format." );
+        return QImage::Format_RGB16;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QImage::Format_Invalid;
@@ -1588,62 +1588,62 @@ void QXcbWindow::setWindowState( Qt::WindowState state )
     // unset old state
     switch ( m_windowState )
     {
-        case Qt::WindowMinimized:
-            Q_XCB_CALL( xcb_map_window( xcb_connection(), m_window ) );
-            break;
+    case Qt::WindowMinimized:
+        Q_XCB_CALL( xcb_map_window( xcb_connection(), m_window ) );
+        break;
 
-        case Qt::WindowMaximized:
-            changeNetWmState( false,
-                              atom( QXcbAtom::_NET_WM_STATE_MAXIMIZED_HORZ ),
-                              atom( QXcbAtom::_NET_WM_STATE_MAXIMIZED_VERT ) );
-            break;
+    case Qt::WindowMaximized:
+        changeNetWmState( false,
+                          atom( QXcbAtom::_NET_WM_STATE_MAXIMIZED_HORZ ),
+                          atom( QXcbAtom::_NET_WM_STATE_MAXIMIZED_VERT ) );
+        break;
 
-        case Qt::WindowFullScreen:
-            changeNetWmState( false, atom( QXcbAtom::_NET_WM_STATE_FULLSCREEN ) );
-            break;
+    case Qt::WindowFullScreen:
+        changeNetWmState( false, atom( QXcbAtom::_NET_WM_STATE_FULLSCREEN ) );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     // set new state
     switch ( state )
     {
-        case Qt::WindowMinimized:
-        {
-            xcb_client_message_event_t event;
+    case Qt::WindowMinimized:
+    {
+        xcb_client_message_event_t event;
 
-            event.response_type = XCB_CLIENT_MESSAGE;
-            event.format = 32;
-            event.sequence = 0;
-            event.window = m_window;
-            event.type = atom( QXcbAtom::WM_CHANGE_STATE );
-            event.data.data32[0] = XCB_ICCCM_WM_STATE_ICONIC;
-            event.data.data32[1] = 0;
-            event.data.data32[2] = 0;
-            event.data.data32[3] = 0;
-            event.data.data32[4] = 0;
+        event.response_type = XCB_CLIENT_MESSAGE;
+        event.format = 32;
+        event.sequence = 0;
+        event.window = m_window;
+        event.type = atom( QXcbAtom::WM_CHANGE_STATE );
+        event.data.data32[0] = XCB_ICCCM_WM_STATE_ICONIC;
+        event.data.data32[1] = 0;
+        event.data.data32[2] = 0;
+        event.data.data32[3] = 0;
+        event.data.data32[4] = 0;
 
-            Q_XCB_CALL( xcb_send_event( xcb_connection(), 0, xcbScreen()->root(),
-                                        XCB_EVENT_MASK_STRUCTURE_NOTIFY | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT, ( const char * )&event ) );
-        }
+        Q_XCB_CALL( xcb_send_event( xcb_connection(), 0, xcbScreen()->root(),
+                                    XCB_EVENT_MASK_STRUCTURE_NOTIFY | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT, ( const char * )&event ) );
+    }
+    break;
+
+    case Qt::WindowMaximized:
+        changeNetWmState( true,
+                          atom( QXcbAtom::_NET_WM_STATE_MAXIMIZED_HORZ ),
+                          atom( QXcbAtom::_NET_WM_STATE_MAXIMIZED_VERT ) );
         break;
 
-        case Qt::WindowMaximized:
-            changeNetWmState( true,
-                              atom( QXcbAtom::_NET_WM_STATE_MAXIMIZED_HORZ ),
-                              atom( QXcbAtom::_NET_WM_STATE_MAXIMIZED_VERT ) );
-            break;
+    case Qt::WindowFullScreen:
+        changeNetWmState( true, atom( QXcbAtom::_NET_WM_STATE_FULLSCREEN ) );
+        break;
 
-        case Qt::WindowFullScreen:
-            changeNetWmState( true, atom( QXcbAtom::_NET_WM_STATE_FULLSCREEN ) );
-            break;
+    case Qt::WindowNoState:
+        break;
 
-        case Qt::WindowNoState:
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     connection()->sync();
@@ -1659,14 +1659,14 @@ void QXcbWindow::updateMotifWmHintsBeforeMap()
     {
         switch ( window()->modality() )
         {
-            case Qt::WindowModal:
-                mwmhints.input_mode = MWM_INPUT_PRIMARY_APPLICATION_MODAL;
-                break;
+        case Qt::WindowModal:
+            mwmhints.input_mode = MWM_INPUT_PRIMARY_APPLICATION_MODAL;
+            break;
 
-            case Qt::ApplicationModal:
-            default:
-                mwmhints.input_mode = MWM_INPUT_FULL_APPLICATION_MODAL;
-                break;
+        case Qt::ApplicationModal:
+        default:
+            mwmhints.input_mode = MWM_INPUT_FULL_APPLICATION_MODAL;
+            break;
         }
 
         mwmhints.flags |= MWM_HINTS_INPUT_MODE;
@@ -2197,68 +2197,68 @@ QXcbWindowFunctions::WmWindowTypes QXcbWindow::wmWindowTypes() const
 
             switch ( type )
             {
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_NORMAL:
-                    result |= QXcbWindowFunctions::Normal;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_NORMAL:
+                result |= QXcbWindowFunctions::Normal;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_DESKTOP:
-                    result |= QXcbWindowFunctions::Desktop;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_DESKTOP:
+                result |= QXcbWindowFunctions::Desktop;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_DOCK:
-                    result |= QXcbWindowFunctions::Dock;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_DOCK:
+                result |= QXcbWindowFunctions::Dock;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_TOOLBAR:
-                    result |= QXcbWindowFunctions::Toolbar;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_TOOLBAR:
+                result |= QXcbWindowFunctions::Toolbar;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_MENU:
-                    result |= QXcbWindowFunctions::Menu;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_MENU:
+                result |= QXcbWindowFunctions::Menu;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_UTILITY:
-                    result |= QXcbWindowFunctions::Utility;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_UTILITY:
+                result |= QXcbWindowFunctions::Utility;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_SPLASH:
-                    result |= QXcbWindowFunctions::Splash;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_SPLASH:
+                result |= QXcbWindowFunctions::Splash;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_DIALOG:
-                    result |= QXcbWindowFunctions::Dialog;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_DIALOG:
+                result |= QXcbWindowFunctions::Dialog;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_DROPDOWN_MENU:
-                    result |= QXcbWindowFunctions::DropDownMenu;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_DROPDOWN_MENU:
+                result |= QXcbWindowFunctions::DropDownMenu;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_POPUP_MENU:
-                    result |= QXcbWindowFunctions::PopupMenu;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_POPUP_MENU:
+                result |= QXcbWindowFunctions::PopupMenu;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_TOOLTIP:
-                    result |= QXcbWindowFunctions::Tooltip;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_TOOLTIP:
+                result |= QXcbWindowFunctions::Tooltip;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_NOTIFICATION:
-                    result |= QXcbWindowFunctions::Notification;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_NOTIFICATION:
+                result |= QXcbWindowFunctions::Notification;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_COMBO:
-                    result |= QXcbWindowFunctions::Combo;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_COMBO:
+                result |= QXcbWindowFunctions::Combo;
+                break;
 
-                case QXcbAtom::_NET_WM_WINDOW_TYPE_DND:
-                    result |= QXcbWindowFunctions::Dnd;
-                    break;
+            case QXcbAtom::_NET_WM_WINDOW_TYPE_DND:
+                result |= QXcbWindowFunctions::Dnd;
+                break;
 
-                case QXcbAtom::_KDE_NET_WM_WINDOW_TYPE_OVERRIDE:
-                    result |= QXcbWindowFunctions::KdeOverride;
-                    break;
+            case QXcbAtom::_KDE_NET_WM_WINDOW_TYPE_OVERRIDE:
+                result |= QXcbWindowFunctions::KdeOverride;
+                break;
 
-                default:
-                    break;
+            default:
+                break;
             }
         }
 
@@ -2357,42 +2357,42 @@ void QXcbWindow::setWmWindowType( QXcbWindowFunctions::WmWindowTypes types, Qt::
 
     switch ( type )
     {
-        case Qt::Dialog:
-        case Qt::Sheet:
-            if ( !( types & QXcbWindowFunctions::Dialog ) )
-            {
-                atoms.append( atom( QXcbAtom::_NET_WM_WINDOW_TYPE_DIALOG ) );
-            }
+    case Qt::Dialog:
+    case Qt::Sheet:
+        if ( !( types & QXcbWindowFunctions::Dialog ) )
+        {
+            atoms.append( atom( QXcbAtom::_NET_WM_WINDOW_TYPE_DIALOG ) );
+        }
 
-            break;
+        break;
 
-        case Qt::Tool:
-        case Qt::Drawer:
-            if ( !( types & QXcbWindowFunctions::Utility ) )
-            {
-                atoms.append( atom( QXcbAtom::_NET_WM_WINDOW_TYPE_UTILITY ) );
-            }
+    case Qt::Tool:
+    case Qt::Drawer:
+        if ( !( types & QXcbWindowFunctions::Utility ) )
+        {
+            atoms.append( atom( QXcbAtom::_NET_WM_WINDOW_TYPE_UTILITY ) );
+        }
 
-            break;
+        break;
 
-        case Qt::ToolTip:
-            if ( !( types & QXcbWindowFunctions::Tooltip ) )
-            {
-                atoms.append( atom( QXcbAtom::_NET_WM_WINDOW_TYPE_TOOLTIP ) );
-            }
+    case Qt::ToolTip:
+        if ( !( types & QXcbWindowFunctions::Tooltip ) )
+        {
+            atoms.append( atom( QXcbAtom::_NET_WM_WINDOW_TYPE_TOOLTIP ) );
+        }
 
-            break;
+        break;
 
-        case Qt::SplashScreen:
-            if ( !( types & QXcbWindowFunctions::Splash ) )
-            {
-                atoms.append( atom( QXcbAtom::_NET_WM_WINDOW_TYPE_SPLASH ) );
-            }
+    case Qt::SplashScreen:
+        if ( !( types & QXcbWindowFunctions::Splash ) )
+        {
+            atoms.append( atom( QXcbAtom::_NET_WM_WINDOW_TYPE_SPLASH ) );
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( ( flags & Qt::FramelessWindowHint ) && !( type & QXcbWindowFunctions::KdeOverride ) )
@@ -2697,7 +2697,7 @@ void QXcbWindow::handleConfigureNotifyEvent( const xcb_configure_notify_event_t 
     {
         // Do not trust the position, query it instead.
         xcb_translate_coordinates_cookie_t cookie = xcb_translate_coordinates( xcb_connection(), xcb_window(),
-                xcbScreen()->root(), 0, 0 );
+            xcbScreen()->root(), 0, 0 );
         xcb_translate_coordinates_reply_t *reply = xcb_translate_coordinates_reply( xcb_connection(), cookie, nullptr );
 
         if ( reply )
@@ -3093,38 +3093,38 @@ void QXcbWindow::handleXIMouseEvent( xcb_ge_event_t *event, Qt::MouseEventSource
 
     switch ( ev->evtype )
     {
-        case XI_ButtonPress:
+    case XI_ButtonPress:
 
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-            qDebug( "QXcbWindow::handleXIMouseEvent() XI2 mouse press, button = %d, time = %d", button, ev->time );
+        qDebug( "QXcbWindow::handleXIMouseEvent() XI2 mouse press, button = %d, time = %d", button, ev->time );
 #endif
 
-            conn->setButton( button, true );
-            handleButtonPressEvent( event_x, event_y, root_x, root_y, ev->detail, modifiers, ev->time, source );
-            break;
+        conn->setButton( button, true );
+        handleButtonPressEvent( event_x, event_y, root_x, root_y, ev->detail, modifiers, ev->time, source );
+        break;
 
-        case XI_ButtonRelease:
+    case XI_ButtonRelease:
 
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-            qDebug( "QXcbWindow::handleXIMouseEvent() XI2 mouse release, button = %d, time = %d", button, ev->time );
+        qDebug( "QXcbWindow::handleXIMouseEvent() XI2 mouse release, button = %d, time = %d", button, ev->time );
 #endif
 
-            conn->setButton( button, false );
-            handleButtonReleaseEvent( event_x, event_y, root_x, root_y, ev->detail, modifiers, ev->time, source );
-            break;
+        conn->setButton( button, false );
+        handleButtonReleaseEvent( event_x, event_y, root_x, root_y, ev->detail, modifiers, ev->time, source );
+        break;
 
-        case XI_Motion:
+    case XI_Motion:
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-            qDebug( "QXcbWindow::handleXIMouseEvent() XI2 mouse motion, postion = %d,%d, time = %d",
-                    event_x, event_y, ev->time );
+        qDebug( "QXcbWindow::handleXIMouseEvent() XI2 mouse motion, postion = %d,%d, time = %d",
+                event_x, event_y, ev->time );
 #endif
 
-            handleMotionNotifyEvent( event_x, event_y, root_x, root_y, modifiers, ev->time, source );
-            break;
+        handleMotionNotifyEvent( event_x, event_y, root_x, root_y, modifiers, ev->time, source );
+        break;
 
-        default:
-            qWarning() << "QXcbWindow::handleXIMouseEvent() Unrecognized XI2 mouse event" << ev->evtype;
-            break;
+    default:
+        qWarning() << "QXcbWindow::handleXIMouseEvent() Unrecognized XI2 mouse event" << ev->evtype;
+        break;
     }
 }
 
@@ -3148,28 +3148,28 @@ void QXcbWindow::handleXIEnterLeave( xcb_ge_event_t *event )
 
     switch ( ev->evtype )
     {
-        case XI_Enter:
-        {
-            const int event_x = fixed1616ToInt( ev->event_x );
-            const int event_y = fixed1616ToInt( ev->event_y );
+    case XI_Enter:
+    {
+        const int event_x = fixed1616ToInt( ev->event_x );
+        const int event_y = fixed1616ToInt( ev->event_y );
 
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-            qDebug( "QXcbWindow::handleXIEnterLeave() XI2 mouse enter, position = %d,%d, mode = %d, detail = %d, time = %d",
-                    event_x, event_y, ev->mode, ev->detail, ev->time );
+        qDebug( "QXcbWindow::handleXIEnterLeave() XI2 mouse enter, position = %d,%d, mode = %d, detail = %d, time = %d",
+                event_x, event_y, ev->mode, ev->detail, ev->time );
 #endif
 
-            handleEnterNotifyEvent( event_x, event_y, root_x, root_y, ev->mode, ev->detail, ev->time );
-            break;
-        }
+        handleEnterNotifyEvent( event_x, event_y, root_x, root_y, ev->mode, ev->detail, ev->time );
+        break;
+    }
 
-        case XI_Leave:
+    case XI_Leave:
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-            qDebug( "QXcbWindow::handleXIEnterLeave() XI2 mouse leave, mode = %d, detail = %d, time = %d",
-                    ev->mode, ev->detail, ev->time );
+        qDebug( "QXcbWindow::handleXIEnterLeave() XI2 mouse leave, mode = %d, detail = %d, time = %d",
+                ev->mode, ev->detail, ev->time );
 #endif
-            connection()->keyboard()->updateXKBStateFromXI( &ev->mods, &ev->group );
-            handleLeaveNotifyEvent( root_x, root_y, ev->mode, ev->detail, ev->time );
-            break;
+        connection()->keyboard()->updateXKBStateFromXI( &ev->mods, &ev->group );
+        handleLeaveNotifyEvent( root_x, root_y, ev->mode, ev->detail, ev->time );
+        break;
     }
 }
 #endif
@@ -3215,7 +3215,7 @@ void QXcbWindow::handlePropertyNotifyEvent( const xcb_property_notify_event_t *e
         {
             // WM_STATE: Quick check for 'Minimize'
             const xcb_get_property_cookie_t get_cookie = xcb_get_property( xcb_connection(), 0, m_window,
-                    atom( QXcbAtom::WM_STATE ), XCB_ATOM_ANY, 0, 1024 );
+                atom( QXcbAtom::WM_STATE ), XCB_ATOM_ANY, 0, 1024 );
 
             xcb_get_property_reply_t *reply = xcb_get_property_reply( xcb_connection(), get_cookie, nullptr );
 
@@ -3427,34 +3427,34 @@ void QXcbWindow::windowEvent( QEvent *event )
 {
     switch ( event->type() )
     {
-        case QEvent::FocusIn:
-            if ( m_embedded && !event->spontaneous() )
+    case QEvent::FocusIn:
+        if ( m_embedded && !event->spontaneous() )
+        {
+            QFocusEvent *focusEvent = static_cast<QFocusEvent *>( event );
+
+            switch ( focusEvent->reason() )
             {
-                QFocusEvent *focusEvent = static_cast<QFocusEvent *>( event );
-
-                switch ( focusEvent->reason() )
-                {
-                    case Qt::TabFocusReason:
-                    case Qt::BacktabFocusReason:
-                    {
-                        const QXcbWindow *container =
-                            static_cast<const QXcbWindow *>( parent() );
-                        sendXEmbedMessage( container->xcb_window(),
-                                           focusEvent->reason() == Qt::TabFocusReason ?
-                                           XEMBED_FOCUS_NEXT : XEMBED_FOCUS_PREV );
-                        event->accept();
-                    }
-                    break;
-
-                    default:
-                        break;
-                }
+            case Qt::TabFocusReason:
+            case Qt::BacktabFocusReason:
+            {
+                const QXcbWindow *container =
+                    static_cast<const QXcbWindow *>( parent() );
+                sendXEmbedMessage( container->xcb_window(),
+                                   focusEvent->reason() == Qt::TabFocusReason ?
+                                   XEMBED_FOCUS_NEXT : XEMBED_FOCUS_PREV );
+                event->accept();
             }
-
             break;
 
-        default:
-            break;
+            default:
+                break;
+            }
+        }
+
+        break;
+
+    default:
+        break;
     }
 
     QPlatformWindow::windowEvent( event );
@@ -3537,52 +3537,52 @@ void QXcbWindow::handleXEmbedMessage( const xcb_client_message_event_t *event )
 
     switch ( event->data.data32[1] )
     {
-        case XEMBED_WINDOW_ACTIVATE:
-        case XEMBED_WINDOW_DEACTIVATE:
+    case XEMBED_WINDOW_ACTIVATE:
+    case XEMBED_WINDOW_DEACTIVATE:
+        break;
+
+    case XEMBED_EMBEDDED_NOTIFY:
+        Q_XCB_CALL( xcb_map_window( xcb_connection(), m_window ) );
+        xcbScreen()->windowShown( this );
+        // Without Qt::WA_TranslucentBackground, we use a ParentRelative BackPixmap.
+        // Clear the whole tray icon window to its background color as early as possible
+        // so that we can get a clean result from grabWindow() later.
+        Q_XCB_CALL( xcb_clear_area( xcb_connection(), false, m_window, 0, 0, geometry().width(), geometry().height() ) );
+        xcb_flush( xcb_connection() );
+        break;
+
+    case XEMBED_FOCUS_IN:
+        Qt::FocusReason reason;
+
+        switch ( event->data.data32[2] )
+        {
+        case XEMBED_FOCUS_FIRST:
+            reason = Qt::TabFocusReason;
             break;
 
-        case XEMBED_EMBEDDED_NOTIFY:
-            Q_XCB_CALL( xcb_map_window( xcb_connection(), m_window ) );
-            xcbScreen()->windowShown( this );
-            // Without Qt::WA_TranslucentBackground, we use a ParentRelative BackPixmap.
-            // Clear the whole tray icon window to its background color as early as possible
-            // so that we can get a clean result from grabWindow() later.
-            Q_XCB_CALL( xcb_clear_area( xcb_connection(), false, m_window, 0, 0, geometry().width(), geometry().height() ) );
-            xcb_flush( xcb_connection() );
+        case XEMBED_FOCUS_LAST:
+            reason = Qt::BacktabFocusReason;
             break;
 
-        case XEMBED_FOCUS_IN:
-            Qt::FocusReason reason;
-
-            switch ( event->data.data32[2] )
-            {
-                case XEMBED_FOCUS_FIRST:
-                    reason = Qt::TabFocusReason;
-                    break;
-
-                case XEMBED_FOCUS_LAST:
-                    reason = Qt::BacktabFocusReason;
-                    break;
-
-                case XEMBED_FOCUS_CURRENT:
-                default:
-                    reason = Qt::OtherFocusReason;
-                    break;
-            }
-
-            connection()->setFocusWindow( static_cast<QXcbWindow *>( window()->handle() ) );
-            QWindowSystemInterface::handleWindowActivated( window(), reason );
+        case XEMBED_FOCUS_CURRENT:
+        default:
+            reason = Qt::OtherFocusReason;
             break;
+        }
 
-        case XEMBED_FOCUS_OUT:
-            if ( window() == QApplication::focusWindow()
-                    && ! activeWindowChangeQueued( window() ) )
-            {
-                connection()->setFocusWindow( nullptr );
-                QWindowSystemInterface::handleWindowActivated( nullptr );
-            }
+        connection()->setFocusWindow( static_cast<QXcbWindow *>( window()->handle() ) );
+        QWindowSystemInterface::handleWindowActivated( window(), reason );
+        break;
 
-            break;
+    case XEMBED_FOCUS_OUT:
+        if ( window() == QApplication::focusWindow()
+                && ! activeWindowChangeQueued( window() ) )
+        {
+            connection()->setFocusWindow( nullptr );
+            QWindowSystemInterface::handleWindowActivated( nullptr );
+        }
+
+        break;
     }
 }
 

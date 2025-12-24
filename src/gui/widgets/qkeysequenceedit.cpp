@@ -183,15 +183,15 @@ bool QKeySequenceEdit::event( QEvent *e )
 {
     switch ( e->type() )
     {
-        case QEvent::Shortcut:
-            return true;
+    case QEvent::Shortcut:
+        return true;
 
-        case QEvent::ShortcutOverride:
-            e->accept();
-            return true;
+    case QEvent::ShortcutOverride:
+        e->accept();
+        return true;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QWidget::event( e );

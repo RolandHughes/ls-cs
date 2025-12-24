@@ -75,7 +75,7 @@ QDataStream &operator>>( QDataStream &stream, QMarginsF &marginF )
 QDebug operator<<( QDebug dbg, const QMargins &m )
 {
     dbg.nospace() << "QMargins(" << m.left() << ", "
-                  << m.top() << ", " << m.right() << ", " << m.bottom() << ')';
+       << m.top() << ", " << m.right() << ", " << m.bottom() << ')';
 
     return dbg.space();
 }

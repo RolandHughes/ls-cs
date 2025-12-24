@@ -340,33 +340,33 @@ void QSequentialAnimationGroup::updateState( QAbstractAnimation::State newState,
 
     switch ( newState )
     {
-        case Stopped:
-            d->currentAnimation->stop();
-            break;
+    case Stopped:
+        d->currentAnimation->stop();
+        break;
 
-        case Paused:
-            if ( oldState == d->currentAnimation->state() && oldState == QSequentialAnimationGroup::Running )
-            {
-                d->currentAnimation->pause();
-            }
-            else
-            {
-                d->restart();
-            }
+    case Paused:
+        if ( oldState == d->currentAnimation->state() && oldState == QSequentialAnimationGroup::Running )
+        {
+            d->currentAnimation->pause();
+        }
+        else
+        {
+            d->restart();
+        }
 
-            break;
+        break;
 
-        case Running:
-            if ( oldState == d->currentAnimation->state() && oldState == QSequentialAnimationGroup::Paused )
-            {
-                d->currentAnimation->start();
-            }
-            else
-            {
-                d->restart();
-            }
+    case Running:
+        if ( oldState == d->currentAnimation->state() && oldState == QSequentialAnimationGroup::Paused )
+        {
+            d->currentAnimation->start();
+        }
+        else
+        {
+            d->restart();
+        }
 
-            break;
+        break;
     }
 }
 

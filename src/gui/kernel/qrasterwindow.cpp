@@ -79,11 +79,11 @@ int QRasterWindow::metric( PaintDeviceMetric metric ) const
 
     switch ( metric )
     {
-        case PdmDepth:
-            return d->backingstore->paintDevice()->depth();
+    case PdmDepth:
+        return d->backingstore->paintDevice()->depth();
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QPaintDeviceWindow::metric( metric );

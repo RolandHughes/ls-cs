@@ -96,66 +96,66 @@ QString ReplaceFN::parseReplacement( const int, const DynamicContext::Ptr &conte
 
         switch ( ch.toLatin1() )
         {
-            case '$':
+        case '$':
+        {
+            /* QRegularExpression uses '\' as opposed to '$' for marking sub groups. */
+            retval.append( QLatin1Char( '\\' ) );
+
+            ++i;
+
+            if ( i == len )
             {
-                /* QRegularExpression uses '\' as opposed to '$' for marking sub groups. */
-                retval.append( QLatin1Char( '\\' ) );
+                context->error( errorAtEnd( '$' ), ReportContext::FORX0004, this );
+                return QString();
+            }
 
-                ++i;
+            const QChar nextCh( input.at( i ) );
 
-                if ( i == len )
-                {
-                    context->error( errorAtEnd( '$' ), ReportContext::FORX0004, this );
-                    return QString();
-                }
+            if ( nextCh.isDigit() )
+            {
+                retval.append( nextCh );
+            }
+            else
+            {
+                context->error( QtXmlPatterns::tr( "In the replacement string, %1 must be followed by at least one digit when not escaped." )
+                                .formatArg( formatKeyword( QLatin1Char( '$' ) ) ), ReportContext::FORX0004, this );
+                return QString();
+            }
 
-                const QChar nextCh( input.at( i ) );
+            break;
+        }
 
-                if ( nextCh.isDigit() )
-                {
-                    retval.append( nextCh );
-                }
-                else
-                {
-                    context->error( QtXmlPatterns::tr( "In the replacement string, %1 must be followed by at least one digit when not escaped." )
-                                    .formatArg( formatKeyword( QLatin1Char( '$' ) ) ), ReportContext::FORX0004, this );
-                    return QString();
-                }
+        case '\\':
+        {
+            ++i;
 
+            if ( i == len )
+            {
+                /* error, we've reached the end. */;
+                context->error( errorAtEnd( '\\' ), ReportContext::FORX0004, this );
+            }
+
+            const QChar nextCh( input.at( i ) );
+
+            if ( nextCh == QLatin1Char( '\\' ) || nextCh == QLatin1Char( '$' ) )
+            {
+                retval.append( ch );
                 break;
             }
-
-            case '\\':
+            else
             {
-                ++i;
-
-                if ( i == len )
-                {
-                    /* error, we've reached the end. */;
-                    context->error( errorAtEnd( '\\' ), ReportContext::FORX0004, this );
-                }
-
-                const QChar nextCh( input.at( i ) );
-
-                if ( nextCh == QLatin1Char( '\\' ) || nextCh == QLatin1Char( '$' ) )
-                {
-                    retval.append( ch );
-                    break;
-                }
-                else
-                {
-                    context->error( QtXmlPatterns::tr( "In the replacement string, %1 can only be used to "
-                                                       "escape itself or %2, not %3" )
-                                    .formatArg( formatKeyword( QLatin1Char( '\\' ) ) )
-                                    .formatArg( formatKeyword( QLatin1Char( '$' ) ) )
-                                    .formatArg( formatKeyword( nextCh ) ),
-                                    ReportContext::FORX0004, this );
-                    return QString();
-                }
+                context->error( QtXmlPatterns::tr( "In the replacement string, %1 can only be used to "
+                                                   "escape itself or %2, not %3" )
+                                .formatArg( formatKeyword( QLatin1Char( '\\' ) ) )
+                                .formatArg( formatKeyword( QLatin1Char( '$' ) ) )
+                                .formatArg( formatKeyword( nextCh ) ),
+                                ReportContext::FORX0004, this );
+                return QString();
             }
+        }
 
-            default:
-                retval.append( ch );
+        default:
+            retval.append( ch );
         }
     }
 

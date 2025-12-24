@@ -54,18 +54,18 @@ void qNotificationCallback( WLAN_NOTIFICATION_DATA *data, QNativeWifiEngine *d )
     {
         switch ( data->NotificationCode )
         {
-            case wlan_notification_acm_connection_complete:
-            case wlan_notification_acm_disconnected:
-            case wlan_notification_acm_scan_complete:
-            case wlan_notification_acm_scan_fail:
-                QMetaObject::invokeMethod( d, "scanComplete", Qt::QueuedConnection );
-                break;
+        case wlan_notification_acm_connection_complete:
+        case wlan_notification_acm_disconnected:
+        case wlan_notification_acm_scan_complete:
+        case wlan_notification_acm_scan_fail:
+            QMetaObject::invokeMethod( d, "scanComplete", Qt::QueuedConnection );
+            break;
 
-            default:
+        default:
 #ifdef BEARER_MANAGEMENT_DEBUG
-                qDebug() << "wlan acm notification" << ( int )data->NotificationCode;
+            qDebug() << "wlan acm notification" << ( int )data->NotificationCode;
 #endif
-                break;
+            break;
         }
     }
     else

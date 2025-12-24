@@ -244,56 +244,56 @@ bool QDockWidgetGroupWindow::event( QEvent *e )
 {
     switch ( e->type() )
     {
-        case QEvent::Close:
+    case QEvent::Close:
 
-            // Forward the close to the QDockWidget just as if its close button was pressed
-            if ( QDockWidget *dw = topDockWidget() )
-            {
-                e->ignore();
-                dw->close();
-                adjustFlags();
-            }
+        // Forward the close to the QDockWidget just as if its close button was pressed
+        if ( QDockWidget *dw = topDockWidget() )
+        {
+            e->ignore();
+            dw->close();
+            adjustFlags();
+        }
 
-            return true;
+        return true;
 
-        case QEvent::Move:
+    case QEvent::Move:
 
-            // Let QDockWidgetPrivate::moseEvent handle the dragging
-            if ( QDockWidget *dw = topDockWidget() )
-            {
-                static_cast<QDockWidgetPrivate *>( QWidgetPrivate::get( dw ) )->moveEvent( static_cast<QMoveEvent *>( e ) );
-            }
+        // Let QDockWidgetPrivate::moseEvent handle the dragging
+        if ( QDockWidget *dw = topDockWidget() )
+        {
+            static_cast<QDockWidgetPrivate *>( QWidgetPrivate::get( dw ) )->moveEvent( static_cast<QMoveEvent *>( e ) );
+        }
 
-            return true;
+        return true;
 
-        case QEvent::NonClientAreaMouseMove:
-        case QEvent::NonClientAreaMouseButtonPress:
-        case QEvent::NonClientAreaMouseButtonRelease:
-        case QEvent::NonClientAreaMouseButtonDblClick:
+    case QEvent::NonClientAreaMouseMove:
+    case QEvent::NonClientAreaMouseButtonPress:
+    case QEvent::NonClientAreaMouseButtonRelease:
+    case QEvent::NonClientAreaMouseButtonDblClick:
 
-            // Let the QDockWidgetPrivate of the currently visible dock widget handle the drag and drop
-            if ( QDockWidget *dw = topDockWidget() )
-            {
-                static_cast<QDockWidgetPrivate *>( QWidgetPrivate::get( dw ) )->nonClientAreaMouseEvent( static_cast<QMouseEvent *>( e ) );
-            }
+        // Let the QDockWidgetPrivate of the currently visible dock widget handle the drag and drop
+        if ( QDockWidget *dw = topDockWidget() )
+        {
+            static_cast<QDockWidgetPrivate *>( QWidgetPrivate::get( dw ) )->nonClientAreaMouseEvent( static_cast<QMouseEvent *>( e ) );
+        }
 
-            return true;
+        return true;
 
-        case QEvent::ChildAdded:
-            if ( qobject_cast<QDockWidget *>( static_cast<QChildEvent *>( e )->child() ) )
-            {
-                adjustFlags();
-            }
+    case QEvent::ChildAdded:
+        if ( qobject_cast<QDockWidget *>( static_cast<QChildEvent *>( e )->child() ) )
+        {
+            adjustFlags();
+        }
 
-            break;
+        break;
 
-        case QEvent::LayoutRequest:
-            // We might need to show the widget again
-            destroyOrHideIfEmpty();
-            break;
+    case QEvent::LayoutRequest:
+        // We might need to show the widget again
+        destroyOrHideIfEmpty();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QWidget::event( e );
@@ -1085,45 +1085,45 @@ bool QMainWindowLayoutState::checkFormat( QDataStream &stream )
 
 #ifndef LSCS_NO_DOCKWIDGET
 
-            case QDockAreaLayout::DockWidgetStateMarker:
+        case QDockAreaLayout::DockWidgetStateMarker:
+        {
+            QList<QDockWidget *> dockWidgets = findChildrenHelper<QDockWidget *>( mainWindow );
+
+            for ( QDockWidgetGroupWindow *floating : findChildrenHelper<QDockWidgetGroupWindow *>( mainWindow ) )
             {
-                QList<QDockWidget *> dockWidgets = findChildrenHelper<QDockWidget *>( mainWindow );
-
-                for ( QDockWidgetGroupWindow *floating : findChildrenHelper<QDockWidgetGroupWindow *>( mainWindow ) )
-                {
-                    dockWidgets += findChildrenHelper<QDockWidget *>( floating );
-                }
-
-                // true indicates test mode
-                if ( ! dockAreaLayout.restoreState( stream, dockWidgets, true ) )
-                {
-                    return false;
-                }
+                dockWidgets += findChildrenHelper<QDockWidget *>( floating );
             }
-            break;
+
+            // true indicates test mode
+            if ( ! dockAreaLayout.restoreState( stream, dockWidgets, true ) )
+            {
+                return false;
+            }
+        }
+        break;
 
 #ifndef LSCS_NO_TABBAR
 
-            case QDockAreaLayout::FloatingDockWidgetTabMarker:
+        case QDockAreaLayout::FloatingDockWidgetTabMarker:
+        {
+            QRect geom;
+            stream >> geom;
+
+            QDockAreaLayoutInfo info;
+            QList<QDockWidget *> dockWidgets = findChildrenHelper<QDockWidget *>( mainWindow );
+
+            for ( QDockWidgetGroupWindow *floating : findChildrenHelper<QDockWidgetGroupWindow *>( mainWindow ) )
             {
-                QRect geom;
-                stream >> geom;
-
-                QDockAreaLayoutInfo info;
-                QList<QDockWidget *> dockWidgets = findChildrenHelper<QDockWidget *>( mainWindow );
-
-                for ( QDockWidgetGroupWindow *floating : findChildrenHelper<QDockWidgetGroupWindow *>( mainWindow ) )
-                {
-                    dockWidgets += findChildrenHelper<QDockWidget *>( floating );
-                }
-
-                // true indicates test mode
-                if ( ! info.restoreState( stream, dockWidgets, true ) )
-                {
-                    return false;
-                }
+                dockWidgets += findChildrenHelper<QDockWidget *>( floating );
             }
-            break;
+
+            // true indicates test mode
+            if ( ! info.restoreState( stream, dockWidgets, true ) )
+            {
+                return false;
+            }
+        }
+        break;
 #endif
 
 #endif // LSCS_NO_DOCKWIDGET
@@ -1131,23 +1131,23 @@ bool QMainWindowLayoutState::checkFormat( QDataStream &stream )
 
 #ifndef LSCS_NO_TOOLBAR
 
-            case QToolBarAreaLayout::ToolBarStateMarker:
-            case QToolBarAreaLayout::ToolBarStateMarkerEx:
-            {
-                QList<QToolBar *> toolBars = findChildrenHelper<QToolBar *>( mainWindow );
+        case QToolBarAreaLayout::ToolBarStateMarker:
+        case QToolBarAreaLayout::ToolBarStateMarkerEx:
+        {
+            QList<QToolBar *> toolBars = findChildrenHelper<QToolBar *>( mainWindow );
 
-                // true indicates test mode
-                if ( ! toolBarAreaLayout.restoreState( stream, toolBars, marker, true ) )
-                {
-                    return false;
-                }
+            // true indicates test mode
+            if ( ! toolBarAreaLayout.restoreState( stream, toolBars, marker, true ) )
+            {
+                return false;
             }
-            break;
+        }
+        break;
 #endif
 
-            default:
-                // there was an error during the parsing
-                return false;
+        default:
+            // there was an error during the parsing
+            return false;
         }
     }
 
@@ -1190,114 +1190,114 @@ bool QMainWindowLayoutState::restoreState( QDataStream &dataStream, const QMainW
 
 #ifndef LSCS_NO_DOCKWIDGET
 
-            case QDockAreaLayout::DockWidgetStateMarker:
+        case QDockAreaLayout::DockWidgetStateMarker:
+        {
+            QList<QDockWidget *> dockWidgets = findChildrenHelper<QDockWidget *>( mainWindow );
+
+            for ( QDockWidgetGroupWindow *floating : findChildrenHelper<QDockWidgetGroupWindow *>( mainWindow ) )
             {
-                QList<QDockWidget *> dockWidgets = findChildrenHelper<QDockWidget *>( mainWindow );
+                dockWidgets += findChildrenHelper<QDockWidget *>( floating );
+            }
 
-                for ( QDockWidgetGroupWindow *floating : findChildrenHelper<QDockWidgetGroupWindow *>( mainWindow ) )
+            if ( ! dockAreaLayout.restoreState( stream, dockWidgets ) )
+            {
+                return false;
+            }
+
+            for ( auto item : dockWidgets )
+            {
+                QList<int> path = dockAreaLayout.indexOf( item );
+
+                if ( path.isEmpty() )
                 {
-                    dockWidgets += findChildrenHelper<QDockWidget *>( floating );
-                }
+                    QList<int> oldPath = oldState.dockAreaLayout.indexOf( item );
 
-                if ( ! dockAreaLayout.restoreState( stream, dockWidgets ) )
-                {
-                    return false;
-                }
-
-                for ( auto item : dockWidgets )
-                {
-                    QList<int> path = dockAreaLayout.indexOf( item );
-
-                    if ( path.isEmpty() )
+                    if ( oldPath.isEmpty() )
                     {
-                        QList<int> oldPath = oldState.dockAreaLayout.indexOf( item );
-
-                        if ( oldPath.isEmpty() )
-                        {
-                            continue;
-                        }
-
-                        QDockAreaLayoutInfo *info = dockAreaLayout.info( oldPath );
-
-                        if ( info == nullptr )
-                        {
-                            continue;
-                        }
-
-                        info->item_list.append( QDockAreaLayoutItem( new QDockWidgetItem( item ) ) );
+                        continue;
                     }
+
+                    QDockAreaLayoutInfo *info = dockAreaLayout.info( oldPath );
+
+                    if ( info == nullptr )
+                    {
+                        continue;
+                    }
+
+                    info->item_list.append( QDockAreaLayoutItem( new QDockWidgetItem( item ) ) );
                 }
             }
-            break;
+        }
+        break;
 
 #ifndef LSCS_NO_TABBAR
 
-            case QDockAreaLayout::FloatingDockWidgetTabMarker:
+        case QDockAreaLayout::FloatingDockWidgetTabMarker:
+        {
+            QList<QDockWidget *> dockWidgets = findChildrenHelper<QDockWidget *>( mainWindow );
+
+            for ( QDockWidgetGroupWindow *floating : findChildrenHelper<QDockWidgetGroupWindow *>( mainWindow ) )
             {
-                QList<QDockWidget *> dockWidgets = findChildrenHelper<QDockWidget *>( mainWindow );
-
-                for ( QDockWidgetGroupWindow *floating : findChildrenHelper<QDockWidgetGroupWindow *>( mainWindow ) )
-                {
-                    dockWidgets += findChildrenHelper<QDockWidget *>( floating );
-                }
-
-                QDockWidgetGroupWindow *floatingTab = lscs_mainwindow_layout( mainWindow )->createTabbedDockWindow();
-                *floatingTab->layoutInfo() = QDockAreaLayoutInfo( &dockAreaLayout.sep, QInternal::LeftDock,
-                                             Qt::Horizontal, QTabBar::RoundedSouth, mainWindow );
-
-                QRect geometry;
-                stream >> geometry;
-
-                if ( ! floatingTab->layoutInfo()->restoreState( stream, dockWidgets, false ) )
-                {
-                    return false;
-                }
-
-                geometry = QDockAreaLayout::constrainedRect( geometry, floatingTab );
-                floatingTab->move( geometry.topLeft() );
-                floatingTab->resize( geometry.size() );
-                floatingTab->show();
+                dockWidgets += findChildrenHelper<QDockWidget *>( floating );
             }
-            break;
+
+            QDockWidgetGroupWindow *floatingTab = lscs_mainwindow_layout( mainWindow )->createTabbedDockWindow();
+            *floatingTab->layoutInfo() = QDockAreaLayoutInfo( &dockAreaLayout.sep, QInternal::LeftDock,
+                                         Qt::Horizontal, QTabBar::RoundedSouth, mainWindow );
+
+            QRect geometry;
+            stream >> geometry;
+
+            if ( ! floatingTab->layoutInfo()->restoreState( stream, dockWidgets, false ) )
+            {
+                return false;
+            }
+
+            geometry = QDockAreaLayout::constrainedRect( geometry, floatingTab );
+            floatingTab->move( geometry.topLeft() );
+            floatingTab->resize( geometry.size() );
+            floatingTab->show();
+        }
+        break;
 
 #endif
 #endif // LSCS_NO_DOCKWIDGET
 
 #ifndef LSCS_NO_TOOLBAR
 
-            case QToolBarAreaLayout::ToolBarStateMarker:
-            case QToolBarAreaLayout::ToolBarStateMarkerEx:
+        case QToolBarAreaLayout::ToolBarStateMarker:
+        case QToolBarAreaLayout::ToolBarStateMarkerEx:
+        {
+            QList<QToolBar *> toolBars = findChildrenHelper<QToolBar *>( mainWindow );
+
+            if ( ! toolBarAreaLayout.restoreState( stream, toolBars, marker ) )
             {
-                QList<QToolBar *> toolBars = findChildrenHelper<QToolBar *>( mainWindow );
+                return false;
+            }
 
-                if ( ! toolBarAreaLayout.restoreState( stream, toolBars, marker ) )
+            for ( int i = 0; i < toolBars.size(); ++i )
+            {
+                QToolBar *w = toolBars.at( i );
+                QList<int> path = toolBarAreaLayout.indexOf( w );
+
+                if ( path.isEmpty() )
                 {
-                    return false;
-                }
+                    QList<int> oldPath = oldState.toolBarAreaLayout.indexOf( w );
 
-                for ( int i = 0; i < toolBars.size(); ++i )
-                {
-                    QToolBar *w = toolBars.at( i );
-                    QList<int> path = toolBarAreaLayout.indexOf( w );
-
-                    if ( path.isEmpty() )
+                    if ( oldPath.isEmpty() )
                     {
-                        QList<int> oldPath = oldState.toolBarAreaLayout.indexOf( w );
-
-                        if ( oldPath.isEmpty() )
-                        {
-                            continue;
-                        }
-
-                        toolBarAreaLayout.docks[oldPath.at( 0 )].insertToolBar( nullptr, w );
+                        continue;
                     }
+
+                    toolBarAreaLayout.docks[oldPath.at( 0 )].insertToolBar( nullptr, w );
                 }
             }
-            break;
+        }
+        break;
 #endif
 
-            default:
-                return false;
+        default:
+            return false;
         }
     }
 
@@ -1310,14 +1310,14 @@ static inline void validateToolBarArea( Qt::ToolBarArea &area )
 {
     switch ( area )
     {
-        case Qt::LeftToolBarArea:
-        case Qt::RightToolBarArea:
-        case Qt::TopToolBarArea:
-        case Qt::BottomToolBarArea:
-            break;
+    case Qt::LeftToolBarArea:
+    case Qt::RightToolBarArea:
+    case Qt::TopToolBarArea:
+    case Qt::BottomToolBarArea:
+        break;
 
-        default:
-            area = Qt::TopToolBarArea;
+    default:
+        area = Qt::TopToolBarArea;
     }
 }
 
@@ -1325,20 +1325,20 @@ static QInternal::DockPosition toDockPos( Qt::ToolBarArea area )
 {
     switch ( area )
     {
-        case Qt::LeftToolBarArea:
-            return QInternal::LeftDock;
+    case Qt::LeftToolBarArea:
+        return QInternal::LeftDock;
 
-        case Qt::RightToolBarArea:
-            return QInternal::RightDock;
+    case Qt::RightToolBarArea:
+        return QInternal::RightDock;
 
-        case Qt::TopToolBarArea:
-            return QInternal::TopDock;
+    case Qt::TopToolBarArea:
+        return QInternal::TopDock;
 
-        case Qt::BottomToolBarArea:
-            return QInternal::BottomDock;
+    case Qt::BottomToolBarArea:
+        return QInternal::BottomDock;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QInternal::DockCount;
@@ -1348,20 +1348,20 @@ static Qt::ToolBarArea toToolBarArea( QInternal::DockPosition pos )
 {
     switch ( pos )
     {
-        case QInternal::LeftDock:
-            return Qt::LeftToolBarArea;
+    case QInternal::LeftDock:
+        return Qt::LeftToolBarArea;
 
-        case QInternal::RightDock:
-            return Qt::RightToolBarArea;
+    case QInternal::RightDock:
+        return Qt::RightToolBarArea;
 
-        case QInternal::TopDock:
-            return Qt::TopToolBarArea;
+    case QInternal::TopDock:
+        return Qt::TopToolBarArea;
 
-        case QInternal::BottomDock:
-            return Qt::BottomToolBarArea;
+    case QInternal::BottomDock:
+        return Qt::BottomToolBarArea;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return Qt::NoToolBarArea;
@@ -1491,20 +1491,20 @@ Qt::ToolBarArea QMainWindowLayout::toolBarArea( QToolBar *toolbar ) const
 
     switch ( pos )
     {
-        case QInternal::LeftDock:
-            return Qt::LeftToolBarArea;
+    case QInternal::LeftDock:
+        return Qt::LeftToolBarArea;
 
-        case QInternal::RightDock:
-            return Qt::RightToolBarArea;
+    case QInternal::RightDock:
+        return Qt::RightToolBarArea;
 
-        case QInternal::TopDock:
-            return Qt::TopToolBarArea;
+    case QInternal::TopDock:
+        return Qt::TopToolBarArea;
 
-        case QInternal::BottomDock:
-            return Qt::BottomToolBarArea;
+    case QInternal::BottomDock:
+        return Qt::BottomToolBarArea;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return Qt::NoToolBarArea;
@@ -1553,20 +1553,20 @@ static QInternal::DockPosition toDockPos( Qt::DockWidgetArea area )
 {
     switch ( area )
     {
-        case Qt::LeftDockWidgetArea:
-            return QInternal::LeftDock;
+    case Qt::LeftDockWidgetArea:
+        return QInternal::LeftDock;
 
-        case Qt::RightDockWidgetArea:
-            return QInternal::RightDock;
+    case Qt::RightDockWidgetArea:
+        return QInternal::RightDock;
 
-        case Qt::TopDockWidgetArea:
-            return QInternal::TopDock;
+    case Qt::TopDockWidgetArea:
+        return QInternal::TopDock;
 
-        case Qt::BottomDockWidgetArea:
-            return QInternal::BottomDock;
+    case Qt::BottomDockWidgetArea:
+        return QInternal::BottomDock;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QInternal::DockCount;
@@ -1576,20 +1576,20 @@ static Qt::DockWidgetArea toDockWidgetArea( QInternal::DockPosition pos )
 {
     switch ( pos )
     {
-        case QInternal::LeftDock :
-            return Qt::LeftDockWidgetArea;
+    case QInternal::LeftDock :
+        return Qt::LeftDockWidgetArea;
 
-        case QInternal::RightDock :
-            return Qt::RightDockWidgetArea;
+    case QInternal::RightDock :
+        return Qt::RightDockWidgetArea;
 
-        case QInternal::TopDock :
-            return Qt::TopDockWidgetArea;
+    case QInternal::TopDock :
+        return Qt::TopDockWidgetArea;
 
-        case QInternal::BottomDock :
-            return Qt::BottomDockWidgetArea;
+    case QInternal::BottomDock :
+        return Qt::BottomDockWidgetArea;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return Qt::NoDockWidgetArea;

@@ -39,101 +39,101 @@ static QFontDatabase::WritingSystem writingSystemFromScript( QLocale::Script scr
 {
     switch ( script )
     {
-        case QLocale::ArabicScript:
-            return QFontDatabase::Arabic;
+    case QLocale::ArabicScript:
+        return QFontDatabase::Arabic;
 
-        case QLocale::CyrillicScript:
-            return QFontDatabase::Cyrillic;
+    case QLocale::CyrillicScript:
+        return QFontDatabase::Cyrillic;
 
-        case QLocale::GurmukhiScript:
-            return QFontDatabase::Gurmukhi;
+    case QLocale::GurmukhiScript:
+        return QFontDatabase::Gurmukhi;
 
-        case QLocale::SimplifiedHanScript:
-            return QFontDatabase::SimplifiedChinese;
+    case QLocale::SimplifiedHanScript:
+        return QFontDatabase::SimplifiedChinese;
 
-        case QLocale::TraditionalHanScript:
-            return QFontDatabase::TraditionalChinese;
+    case QLocale::TraditionalHanScript:
+        return QFontDatabase::TraditionalChinese;
 
-        case QLocale::LatinScript:
-            return QFontDatabase::Latin;
+    case QLocale::LatinScript:
+        return QFontDatabase::Latin;
 
-        case QLocale::ArmenianScript:
-            return QFontDatabase::Armenian;
+    case QLocale::ArmenianScript:
+        return QFontDatabase::Armenian;
 
-        case QLocale::BengaliScript:
-            return QFontDatabase::Bengali;
+    case QLocale::BengaliScript:
+        return QFontDatabase::Bengali;
 
-        case QLocale::DevanagariScript:
-            return QFontDatabase::Devanagari;
+    case QLocale::DevanagariScript:
+        return QFontDatabase::Devanagari;
 
-        case QLocale::GeorgianScript:
-            return QFontDatabase::Georgian;
+    case QLocale::GeorgianScript:
+        return QFontDatabase::Georgian;
 
-        case QLocale::GreekScript:
-            return QFontDatabase::Greek;
+    case QLocale::GreekScript:
+        return QFontDatabase::Greek;
 
-        case QLocale::GujaratiScript:
-            return QFontDatabase::Gujarati;
+    case QLocale::GujaratiScript:
+        return QFontDatabase::Gujarati;
 
-        case QLocale::HebrewScript:
-            return QFontDatabase::Hebrew;
+    case QLocale::HebrewScript:
+        return QFontDatabase::Hebrew;
 
-        case QLocale::JapaneseScript:
-            return QFontDatabase::Japanese;
+    case QLocale::JapaneseScript:
+        return QFontDatabase::Japanese;
 
-        case QLocale::KhmerScript:
-            return QFontDatabase::Khmer;
+    case QLocale::KhmerScript:
+        return QFontDatabase::Khmer;
 
-        case QLocale::KannadaScript:
-            return QFontDatabase::Kannada;
+    case QLocale::KannadaScript:
+        return QFontDatabase::Kannada;
 
-        case QLocale::KoreanScript:
-            return QFontDatabase::Korean;
+    case QLocale::KoreanScript:
+        return QFontDatabase::Korean;
 
-        case QLocale::LaoScript:
-            return QFontDatabase::Lao;
+    case QLocale::LaoScript:
+        return QFontDatabase::Lao;
 
-        case QLocale::MalayalamScript:
-            return QFontDatabase::Malayalam;
+    case QLocale::MalayalamScript:
+        return QFontDatabase::Malayalam;
 
-        case QLocale::MyanmarScript:
-            return QFontDatabase::Myanmar;
+    case QLocale::MyanmarScript:
+        return QFontDatabase::Myanmar;
 
-        case QLocale::TamilScript:
-            return QFontDatabase::Tamil;
+    case QLocale::TamilScript:
+        return QFontDatabase::Tamil;
 
-        case QLocale::TeluguScript:
-            return QFontDatabase::Telugu;
+    case QLocale::TeluguScript:
+        return QFontDatabase::Telugu;
 
-        case QLocale::ThaanaScript:
-            return QFontDatabase::Thaana;
+    case QLocale::ThaanaScript:
+        return QFontDatabase::Thaana;
 
-        case QLocale::ThaiScript:
-            return QFontDatabase::Thai;
+    case QLocale::ThaiScript:
+        return QFontDatabase::Thai;
 
-        case QLocale::TibetanScript:
-            return QFontDatabase::Tibetan;
+    case QLocale::TibetanScript:
+        return QFontDatabase::Tibetan;
 
-        case QLocale::SinhalaScript:
-            return QFontDatabase::Sinhala;
+    case QLocale::SinhalaScript:
+        return QFontDatabase::Sinhala;
 
-        case QLocale::SyriacScript:
-            return QFontDatabase::Syriac;
+    case QLocale::SyriacScript:
+        return QFontDatabase::Syriac;
 
-        case QLocale::OriyaScript:
-            return QFontDatabase::Oriya;
+    case QLocale::OriyaScript:
+        return QFontDatabase::Oriya;
 
-        case QLocale::OghamScript:
-            return QFontDatabase::Ogham;
+    case QLocale::OghamScript:
+        return QFontDatabase::Ogham;
 
-        case QLocale::RunicScript:
-            return QFontDatabase::Runic;
+    case QLocale::RunicScript:
+        return QFontDatabase::Runic;
 
-        case QLocale::NkoScript:
-            return QFontDatabase::Nko;
+    case QLocale::NkoScript:
+        return QFontDatabase::Nko;
 
-        default:
-            return QFontDatabase::Any;
+    default:
+        return QFontDatabase::Any;
     }
 }
 

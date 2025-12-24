@@ -233,22 +233,22 @@ void QSmoothedAnimation::init()
     {
         switch ( reversingMode )
         {
-            default:
-            case QDeclarativeSmoothedAnimation::Eased:
-                initialVelocity = -trackVelocity;
-                break;
+        default:
+        case QDeclarativeSmoothedAnimation::Eased:
+            initialVelocity = -trackVelocity;
+            break;
 
-            case QDeclarativeSmoothedAnimation::Sync:
-                QDeclarativePropertyPrivate::write( target, to,
-                                                    QDeclarativePropertyPrivate::BypassInterceptor
-                                                    | QDeclarativePropertyPrivate::DontRemoveBinding );
-                trackVelocity = 0;
-                stop();
-                return;
+        case QDeclarativeSmoothedAnimation::Sync:
+            QDeclarativePropertyPrivate::write( target, to,
+                                                QDeclarativePropertyPrivate::BypassInterceptor
+                                                | QDeclarativePropertyPrivate::DontRemoveBinding );
+            trackVelocity = 0;
+            stop();
+            return;
 
-            case QDeclarativeSmoothedAnimation::Immediate:
-                initialVelocity = 0;
-                break;
+        case QDeclarativeSmoothedAnimation::Immediate:
+            initialVelocity = 0;
+            break;
         }
     }
 

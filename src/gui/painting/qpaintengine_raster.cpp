@@ -188,7 +188,7 @@ static void lscs_ft_outline_line_to( qfixed x, qfixed y, void *data )
 }
 
 static void lscs_ft_outline_cubic_to( qfixed c1x, qfixed c1y,
-                                    qfixed c2x, qfixed c2y, qfixed ex, qfixed ey, void *data )
+                                      qfixed c2x, qfixed c2y, qfixed ex, qfixed ey, void *data )
 {
     ( ( QOutlineMapper * ) data )->curveTo( QPointF( lscs_fixed_to_real( c1x ), lscs_fixed_to_real( c1y ) ),
                                             QPointF( lscs_fixed_to_real( c2x ), lscs_fixed_to_real( c2y ) ),
@@ -261,34 +261,34 @@ void QRasterPaintEngine::init()
 
     switch ( d->device->devType() )
     {
-        case QInternal::Pixmap:
-            qWarning( "QRasterPaintEngine::init() Unsupported for pixmaps" );
-            break;
+    case QInternal::Pixmap:
+        qWarning( "QRasterPaintEngine::init() Unsupported for pixmaps" );
+        break;
 
-        case QInternal::Image:
-            format = d->rasterBuffer->prepare( static_cast<QImage *>( d->device ) );
-            break;
+    case QInternal::Image:
+        format = d->rasterBuffer->prepare( static_cast<QImage *>( d->device ) );
+        break;
 
-        default:
-            qWarning( "QRasterPaintEngine::init() Unsupported target device %d\n", d->device->devType() );
-            d->device = nullptr;
-            return;
+    default:
+        qWarning( "QRasterPaintEngine::init() Unsupported target device %d\n", d->device->devType() );
+        d->device = nullptr;
+        return;
     }
 
     switch ( format )
     {
-        case QImage::Format_MonoLSB:
-        case QImage::Format_Mono:
-            d->mono_surface = true;
-            break;
+    case QImage::Format_MonoLSB:
+    case QImage::Format_Mono:
+        d->mono_surface = true;
+        break;
 
-        default:
-            if ( QImage::toPixelFormat( format ).alphaUsage() == QPixelFormat::UsesAlpha )
-            {
-                gccaps |= PorterDuff;
-            }
+    default:
+        if ( QImage::toPixelFormat( format ).alphaUsage() == QPixelFormat::UsesAlpha )
+        {
+            gccaps |= PorterDuff;
+        }
 
-            break;
+        break;
     }
 }
 
@@ -425,25 +425,25 @@ void QRasterPaintEngine::updateMatrix( const QTransform &matrix )
     switch ( txop )
     {
 
-        case QTransform::TxNone:
-            s->flags.int_xform = true;
-            break;
+    case QTransform::TxNone:
+        s->flags.int_xform = true;
+        break;
 
-        case QTransform::TxTranslate:
-            s->flags.int_xform = qreal( int( s->matrix.dx() ) ) == s->matrix.dx()
-                                 && qreal( int( s->matrix.dy() ) ) == s->matrix.dy();
-            break;
+    case QTransform::TxTranslate:
+        s->flags.int_xform = qreal( int( s->matrix.dx() ) ) == s->matrix.dx()
+                             && qreal( int( s->matrix.dy() ) ) == s->matrix.dy();
+        break;
 
-        case QTransform::TxScale:
-            s->flags.int_xform = qreal( int( s->matrix.dx() ) ) == s->matrix.dx()
-                                 && qreal( int( s->matrix.dy() ) ) == s->matrix.dy()
-                                 && qreal( int( s->matrix.m11() ) ) == s->matrix.m11()
-                                 && qreal( int( s->matrix.m22() ) ) == s->matrix.m22();
-            break;
+    case QTransform::TxScale:
+        s->flags.int_xform = qreal( int( s->matrix.dx() ) ) == s->matrix.dx()
+                             && qreal( int( s->matrix.dy() ) ) == s->matrix.dy()
+                             && qreal( int( s->matrix.m11() ) ) == s->matrix.m11()
+                             && qreal( int( s->matrix.m22() ) ) == s->matrix.m22();
+        break;
 
-        default: // shear / perspective...
-            s->flags.int_xform = false;
-            break;
+    default: // shear / perspective...
+        s->flags.int_xform = false;
+        break;
     }
 
     s->flags.tx_noshear = lscs_scaleForTransform( s->matrix, &s->txscale );
@@ -2141,7 +2141,7 @@ void QRasterPaintEngine::drawImage( const QPointF &p, const QImage &img )
 {
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug() << "QRasterPaintEngine::drawImage() pointf =" <<  p <<
-             " image =" << img.size() << " depth=" << img.depth();
+                " image =" << img.size() << " depth=" << img.depth();
 #endif
 
     Q_D( QRasterPaintEngine );
@@ -2288,21 +2288,21 @@ void QRasterPaintEngine::drawImage( const QRectF &r, const QImage &img, const QR
 
         switch ( img.format() )
         {
-            case QImage::Format_ARGB32_Premultiplied:
-            case QImage::Format_ARGB8565_Premultiplied:
-            case QImage::Format_ARGB6666_Premultiplied:
-            case QImage::Format_ARGB8555_Premultiplied:
-            case QImage::Format_ARGB4444_Premultiplied:
-            case QImage::Format_RGBA8888_Premultiplied:
-            case QImage::Format_A2BGR30_Premultiplied:
-            case QImage::Format_A2RGB30_Premultiplied:
-                // Combine premultiplied color with the opacity set on the painter.
-                d->solid_color_filler.solid.color = multiplyAlpha256( QRgba64::fromArgb32( color ), s->intOpacity );
-                break;
+        case QImage::Format_ARGB32_Premultiplied:
+        case QImage::Format_ARGB8565_Premultiplied:
+        case QImage::Format_ARGB6666_Premultiplied:
+        case QImage::Format_ARGB8555_Premultiplied:
+        case QImage::Format_ARGB4444_Premultiplied:
+        case QImage::Format_RGBA8888_Premultiplied:
+        case QImage::Format_A2BGR30_Premultiplied:
+        case QImage::Format_A2RGB30_Premultiplied:
+            // Combine premultiplied color with the opacity set on the painter.
+            d->solid_color_filler.solid.color = multiplyAlpha256( QRgba64::fromArgb32( color ), s->intOpacity );
+            break;
 
-            default:
-                d->solid_color_filler.solid.color = qPremultiply( combineAlpha256( QRgba64::fromArgb32( color ), s->intOpacity ) );
-                break;
+        default:
+            d->solid_color_filler.solid.color = qPremultiply( combineAlpha256( QRgba64::fromArgb32( color ), s->intOpacity ) );
+            break;
         }
 
         if ( d->solid_color_filler.solid.color.isTransparent() && s->composition_mode == QPainter::CompositionMode_SourceOver )
@@ -3884,8 +3884,8 @@ void QRasterPaintEnginePrivate::rasterize( LSCS_FT_Outline *outline, ProcessSpan
     void *data = userData;
 
     LSCS_FT_BBox clip_box = { deviceRect.x(), deviceRect.y(),
-                            deviceRect.x() + deviceRect.width(), deviceRect.y() + deviceRect.height()
-                          };
+                              deviceRect.x() + deviceRect.width(), deviceRect.y() + deviceRect.height()
+                            };
 
     LSCS_FT_Raster_Params rasterParams;
     rasterParams.target      = nullptr;
@@ -4336,7 +4336,7 @@ void QClipData::setClipRegion( const QRegion &region )
 }
 
 static const QSpan *lscs_intersect_spans( const QClipData *clip, int *currentClip,
-                                        const QSpan *spans, const QSpan *end, QSpan **outSpans, int available )
+        const QSpan *spans, const QSpan *end, QSpan **outSpans, int available )
 {
     const_cast<QClipData *>( clip )->initialize();
 
@@ -4493,7 +4493,7 @@ static int lscs_intersect_spans( LSCS_FT_Span *spans, int numSpans, const QRect 
 
 
 static void lscs_span_fill_clipRect( int count, const QSpan *spans,
-                                   void *userData )
+                                     void *userData )
 {
     QSpanData *fillData = reinterpret_cast<QSpanData *>( userData );
     Q_ASSERT( fillData->blend && fillData->unclipped_blend );
@@ -4503,7 +4503,7 @@ static void lscs_span_fill_clipRect( int count, const QSpan *spans,
 
     // hw: check if this const_cast<> is safe!!!
     count = lscs_intersect_spans( const_cast<QSpan *>( spans ), count,
-                                fillData->clip->clipRect );
+                                  fillData->clip->clipRect );
 
     if ( count > 0 )
     {
@@ -4518,36 +4518,36 @@ static void lscs_span_clip( int count, const QSpan *spans, void *userData )
     switch ( clipData->operation )
     {
 
-        case Qt::IntersectClip:
+    case Qt::IntersectClip:
+    {
+        QClipData *newClip = clipData->newClip;
+        newClip->initialize();
+
+        int currentClip  = 0;
+        const QSpan *end = spans + count;
+
+        while ( spans < end )
         {
-            QClipData *newClip = clipData->newClip;
-            newClip->initialize();
+            QSpan *newspans = newClip->m_spans + newClip->count;
+            spans = lscs_intersect_spans( clipData->oldClip, &currentClip, spans, end,
+                                          &newspans, newClip->allocated - newClip->count );
+            newClip->count = newspans - newClip->m_spans;
 
-            int currentClip  = 0;
-            const QSpan *end = spans + count;
-
-            while ( spans < end )
+            if ( spans < end )
             {
-                QSpan *newspans = newClip->m_spans + newClip->count;
-                spans = lscs_intersect_spans( clipData->oldClip, &currentClip, spans, end,
-                                            &newspans, newClip->allocated - newClip->count );
-                newClip->count = newspans - newClip->m_spans;
-
-                if ( spans < end )
-                {
-                    newClip->m_spans = q_check_ptr( ( QSpan * )realloc( newClip->m_spans, newClip->allocated * 2 * sizeof( QSpan ) ) );
-                    newClip->allocated *= 2;
-                }
+                newClip->m_spans = q_check_ptr( ( QSpan * )realloc( newClip->m_spans, newClip->allocated * 2 * sizeof( QSpan ) ) );
+                newClip->allocated *= 2;
             }
         }
+    }
+    break;
+
+    case Qt::ReplaceClip:
+        clipData->newClip->appendSpans( spans, count );
         break;
 
-        case Qt::ReplaceClip:
-            clipData->newClip->appendSpans( spans, count );
-            break;
-
-        case Qt::NoClip:
-            break;
+    case Qt::NoClip:
+        break;
     }
 }
 
@@ -4956,133 +4956,133 @@ void QSpanData::setup( const QBrush &brush, int alpha, QPainter::CompositionMode
 
     switch ( brushStyle )
     {
-        case Qt::SolidPattern:
+    case Qt::SolidPattern:
+    {
+        type = Solid;
+        QColor c = qbrush_color( brush );
+        solid.color = qPremultiply( combineAlpha256( c.rgba64(), alpha ) );
+
+        if ( solid.color.isTransparent() && compositionMode == QPainter::CompositionMode_SourceOver )
         {
-            type = Solid;
-            QColor c = qbrush_color( brush );
-            solid.color = qPremultiply( combineAlpha256( c.rgba64(), alpha ) );
-
-            if ( solid.color.isTransparent() && compositionMode == QPainter::CompositionMode_SourceOver )
-            {
-                type = None;
-            }
-
-            break;
-        }
-
-        case Qt::LinearGradientPattern:
-        {
-            type = LinearGradient;
-            const QLinearGradient *g = static_cast<const QLinearGradient *>( brush.gradient() );
-            gradient.alphaColor = !brush.isOpaque() || alpha != 256;
-            QSharedPointer<const QGradientCache::CacheInfo> cacheInfo = lscs_gradient_cache()->getBuffer( *g, alpha );
-            cachedGradient = cacheInfo;
-            gradient.colorTable32 = cacheInfo->buffer32;
-            gradient.colorTable64 = cacheInfo->buffer64;
-            gradient.spread = g->spread();
-
-            QLinearGradientData &linearData = gradient.linear;
-
-            linearData.origin.x = g->start().x();
-            linearData.origin.y = g->start().y();
-            linearData.end.x = g->finalStop().x();
-            linearData.end.y = g->finalStop().y();
-            break;
-        }
-
-        case Qt::RadialGradientPattern:
-        {
-            type = RadialGradient;
-            const QRadialGradient *g = static_cast<const QRadialGradient *>( brush.gradient() );
-            gradient.alphaColor = !brush.isOpaque() || alpha != 256;
-            QSharedPointer<const QGradientCache::CacheInfo> cacheInfo = lscs_gradient_cache()->getBuffer( *g, alpha );
-            cachedGradient = cacheInfo;
-            gradient.colorTable32 = cacheInfo->buffer32;
-            gradient.colorTable64 = cacheInfo->buffer64;
-
-            gradient.spread = g->spread();
-
-            QRadialGradientData &radialData = gradient.radial;
-
-            QPointF center = g->center();
-            radialData.center.x = center.x();
-            radialData.center.y = center.y();
-            radialData.center.radius = g->centerRadius();
-            QPointF focal = g->focalPoint();
-            radialData.focal.x = focal.x();
-            radialData.focal.y = focal.y();
-            radialData.focal.radius = g->focalRadius();
-        }
-        break;
-
-        case Qt::ConicalGradientPattern:
-        {
-            type = ConicalGradient;
-            const QConicalGradient *g = static_cast<const QConicalGradient *>( brush.gradient() );
-            gradient.alphaColor = !brush.isOpaque() || alpha != 256;
-            QSharedPointer<const QGradientCache::CacheInfo> cacheInfo = lscs_gradient_cache()->getBuffer( *g, alpha );
-            cachedGradient = cacheInfo;
-            gradient.colorTable32 = cacheInfo->buffer32;
-            gradient.colorTable64 = cacheInfo->buffer64;
-            gradient.spread = QGradient::RepeatSpread;
-
-            QConicalGradientData &conicalData = gradient.conical;
-
-            QPointF center = g->center();
-            conicalData.center.x = center.x();
-            conicalData.center.y = center.y();
-            conicalData.angle = qDegreesToRadians( g->angle() );
-        }
-        break;
-
-        case Qt::Dense1Pattern:
-        case Qt::Dense2Pattern:
-        case Qt::Dense3Pattern:
-        case Qt::Dense4Pattern:
-        case Qt::Dense5Pattern:
-        case Qt::Dense6Pattern:
-        case Qt::Dense7Pattern:
-        case Qt::HorPattern:
-        case Qt::VerPattern:
-        case Qt::CrossPattern:
-        case Qt::BDiagPattern:
-        case Qt::FDiagPattern:
-        case Qt::DiagCrossPattern:
-            type = Texture;
-
-            if ( ! tempImage )
-            {
-                tempImage = new QImage();
-            }
-
-            *tempImage = rasterBuffer->colorizeBitmap( lscs_imageForBrush( brushStyle, true ), brush.color() );
-            initTexture( tempImage, alpha, QTextureData::Tiled );
-            break;
-
-        case Qt::TexturePattern:
-            type = Texture;
-
-            if ( !tempImage )
-            {
-                tempImage = new QImage();
-            }
-
-            if ( qHasPixmapTexture( brush ) && brush.texture().isQBitmap() )
-            {
-                *tempImage = rasterBuffer->colorizeBitmap( brush.textureImage(), brush.color() );
-            }
-            else
-            {
-                *tempImage = brush.textureImage();
-            }
-
-            initTexture( tempImage, alpha, QTextureData::Tiled, tempImage->rect() );
-            break;
-
-        case Qt::NoBrush:
-        default:
             type = None;
-            break;
+        }
+
+        break;
+    }
+
+    case Qt::LinearGradientPattern:
+    {
+        type = LinearGradient;
+        const QLinearGradient *g = static_cast<const QLinearGradient *>( brush.gradient() );
+        gradient.alphaColor = !brush.isOpaque() || alpha != 256;
+        QSharedPointer<const QGradientCache::CacheInfo> cacheInfo = lscs_gradient_cache()->getBuffer( *g, alpha );
+        cachedGradient = cacheInfo;
+        gradient.colorTable32 = cacheInfo->buffer32;
+        gradient.colorTable64 = cacheInfo->buffer64;
+        gradient.spread = g->spread();
+
+        QLinearGradientData &linearData = gradient.linear;
+
+        linearData.origin.x = g->start().x();
+        linearData.origin.y = g->start().y();
+        linearData.end.x = g->finalStop().x();
+        linearData.end.y = g->finalStop().y();
+        break;
+    }
+
+    case Qt::RadialGradientPattern:
+    {
+        type = RadialGradient;
+        const QRadialGradient *g = static_cast<const QRadialGradient *>( brush.gradient() );
+        gradient.alphaColor = !brush.isOpaque() || alpha != 256;
+        QSharedPointer<const QGradientCache::CacheInfo> cacheInfo = lscs_gradient_cache()->getBuffer( *g, alpha );
+        cachedGradient = cacheInfo;
+        gradient.colorTable32 = cacheInfo->buffer32;
+        gradient.colorTable64 = cacheInfo->buffer64;
+
+        gradient.spread = g->spread();
+
+        QRadialGradientData &radialData = gradient.radial;
+
+        QPointF center = g->center();
+        radialData.center.x = center.x();
+        radialData.center.y = center.y();
+        radialData.center.radius = g->centerRadius();
+        QPointF focal = g->focalPoint();
+        radialData.focal.x = focal.x();
+        radialData.focal.y = focal.y();
+        radialData.focal.radius = g->focalRadius();
+    }
+    break;
+
+    case Qt::ConicalGradientPattern:
+    {
+        type = ConicalGradient;
+        const QConicalGradient *g = static_cast<const QConicalGradient *>( brush.gradient() );
+        gradient.alphaColor = !brush.isOpaque() || alpha != 256;
+        QSharedPointer<const QGradientCache::CacheInfo> cacheInfo = lscs_gradient_cache()->getBuffer( *g, alpha );
+        cachedGradient = cacheInfo;
+        gradient.colorTable32 = cacheInfo->buffer32;
+        gradient.colorTable64 = cacheInfo->buffer64;
+        gradient.spread = QGradient::RepeatSpread;
+
+        QConicalGradientData &conicalData = gradient.conical;
+
+        QPointF center = g->center();
+        conicalData.center.x = center.x();
+        conicalData.center.y = center.y();
+        conicalData.angle = qDegreesToRadians( g->angle() );
+    }
+    break;
+
+    case Qt::Dense1Pattern:
+    case Qt::Dense2Pattern:
+    case Qt::Dense3Pattern:
+    case Qt::Dense4Pattern:
+    case Qt::Dense5Pattern:
+    case Qt::Dense6Pattern:
+    case Qt::Dense7Pattern:
+    case Qt::HorPattern:
+    case Qt::VerPattern:
+    case Qt::CrossPattern:
+    case Qt::BDiagPattern:
+    case Qt::FDiagPattern:
+    case Qt::DiagCrossPattern:
+        type = Texture;
+
+        if ( ! tempImage )
+        {
+            tempImage = new QImage();
+        }
+
+        *tempImage = rasterBuffer->colorizeBitmap( lscs_imageForBrush( brushStyle, true ), brush.color() );
+        initTexture( tempImage, alpha, QTextureData::Tiled );
+        break;
+
+    case Qt::TexturePattern:
+        type = Texture;
+
+        if ( !tempImage )
+        {
+            tempImage = new QImage();
+        }
+
+        if ( qHasPixmapTexture( brush ) && brush.texture().isQBitmap() )
+        {
+            *tempImage = rasterBuffer->colorizeBitmap( brush.textureImage(), brush.color() );
+        }
+        else
+        {
+            *tempImage = brush.textureImage();
+        }
+
+        initTexture( tempImage, alpha, QTextureData::Tiled, tempImage->rect() );
+        break;
+
+    case Qt::NoBrush:
+    default:
+        type = None;
+        break;
     }
 
     adjustSpanMethods();
@@ -5097,33 +5097,33 @@ void QSpanData::adjustSpanMethods()
 
     switch ( type )
     {
-        case None:
-            unclipped_blend = nullptr;
-            break;
+    case None:
+        unclipped_blend = nullptr;
+        break;
 
-        case Solid:
-            unclipped_blend = rasterBuffer->drawHelper->blendColor;
-            bitmapBlit      = rasterBuffer->drawHelper->bitmapBlit;
-            alphamapBlit    = rasterBuffer->drawHelper->alphamapBlit;
-            alphaRGBBlit    = rasterBuffer->drawHelper->alphaRGBBlit;
-            fillRect        = rasterBuffer->drawHelper->fillRect;
-            break;
+    case Solid:
+        unclipped_blend = rasterBuffer->drawHelper->blendColor;
+        bitmapBlit      = rasterBuffer->drawHelper->bitmapBlit;
+        alphamapBlit    = rasterBuffer->drawHelper->alphamapBlit;
+        alphaRGBBlit    = rasterBuffer->drawHelper->alphaRGBBlit;
+        fillRect        = rasterBuffer->drawHelper->fillRect;
+        break;
 
-        case LinearGradient:
-        case RadialGradient:
-        case ConicalGradient:
-            unclipped_blend = rasterBuffer->drawHelper->blendGradient;
-            break;
+    case LinearGradient:
+    case RadialGradient:
+    case ConicalGradient:
+        unclipped_blend = rasterBuffer->drawHelper->blendGradient;
+        break;
 
-        case Texture:
-            unclipped_blend = qBlendTexture;
+    case Texture:
+        unclipped_blend = qBlendTexture;
 
-            if ( ! texture.imageData )
-            {
-                unclipped_blend = nullptr;;
-            }
+        if ( ! texture.imageData )
+        {
+            unclipped_blend = nullptr;;
+        }
 
-            break;
+        break;
     }
 
     // setup clipping

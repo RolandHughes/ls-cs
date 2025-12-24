@@ -83,37 +83,37 @@ QString QAccessibleButton::text( QAccessible::Text t ) const
 
     switch ( t )
     {
-        case QAccessible::Accelerator:
-        {
+    case QAccessible::Accelerator:
+    {
 #ifndef LSCS_NO_SHORTCUT
-            QPushButton *pb = qobject_cast<QPushButton *>( object() );
+        QPushButton *pb = qobject_cast<QPushButton *>( object() );
 
-            if ( pb && pb->isDefault() )
-            {
-                str = QKeySequence( Qt::Key_Enter ).toString( QKeySequence::NativeText );
-            }
+        if ( pb && pb->isDefault() )
+        {
+            str = QKeySequence( Qt::Key_Enter ).toString( QKeySequence::NativeText );
+        }
 
 #endif
 
-            if ( str.isEmpty() )
-            {
-                str = lscs_accHotKey( button()->text() );
-            }
+        if ( str.isEmpty() )
+        {
+            str = lscs_accHotKey( button()->text() );
         }
+    }
+    break;
+
+    case QAccessible::Name:
+        str = widget()->accessibleName();
+
+        if ( str.isEmpty() )
+        {
+            str = lscs_accStripAmp( button()->text() );
+        }
+
         break;
 
-        case QAccessible::Name:
-            str = widget()->accessibleName();
-
-            if ( str.isEmpty() )
-            {
-                str = lscs_accStripAmp( button()->text() );
-            }
-
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( str.isEmpty() )
@@ -232,25 +232,25 @@ QStringList QAccessibleButton::actionNames() const
     {
         switch ( role() )
         {
-            case QAccessible::ButtonMenu:
-                names << showMenuAction();
-                break;
+        case QAccessible::ButtonMenu:
+            names << showMenuAction();
+            break;
 
-            case QAccessible::RadioButton:
-                names << toggleAction();
-                break;
+        case QAccessible::RadioButton:
+            names << toggleAction();
+            break;
 
-            default:
-                if ( button()->isCheckable() )
-                {
-                    names <<  toggleAction();
-                }
-                else
-                {
-                    names << pressAction();
-                }
+        default:
+            if ( button()->isCheckable() )
+            {
+                names <<  toggleAction();
+            }
+            else
+            {
+                names << pressAction();
+            }
 
-                break;
+            break;
         }
     }
 
@@ -490,71 +490,71 @@ QString QAccessibleDisplay::text( QAccessible::Text t ) const
 
     switch ( t )
     {
-        case QAccessible::Name:
-            str = widget()->accessibleName();
+    case QAccessible::Name:
+        str = widget()->accessibleName();
 
-            if ( str.isEmpty() )
+        if ( str.isEmpty() )
+        {
+            if ( qobject_cast<QLabel *>( object() ) )
             {
-                if ( qobject_cast<QLabel *>( object() ) )
-                {
-                    QLabel *label = qobject_cast<QLabel *>( object() );
-                    str = label->text();
+                QLabel *label = qobject_cast<QLabel *>( object() );
+                str = label->text();
 
 #ifndef LSCS_NO_TEXTHTMLPARSER
 
-                    if ( label->textFormat() == Qt::RichText
-                            || ( label->textFormat() == Qt::AutoText && Qt::mightBeRichText( str ) ) )
-                    {
-                        QTextDocument doc;
-                        doc.setHtml( str );
-                        str = doc.toPlainText();
-                    }
+                if ( label->textFormat() == Qt::RichText
+                        || ( label->textFormat() == Qt::AutoText && Qt::mightBeRichText( str ) ) )
+                {
+                    QTextDocument doc;
+                    doc.setHtml( str );
+                    str = doc.toPlainText();
+                }
 
 #endif
 
-                    if ( label->buddy() )
-                    {
-                        str = lscs_accStripAmp( str );
-                    }
+                if ( label->buddy() )
+                {
+                    str = lscs_accStripAmp( str );
+                }
 
 #ifndef LSCS_NO_LCDNUMBER
-                }
-                else if ( qobject_cast<QLCDNumber *>( object() ) )
-                {
-                    QLCDNumber *l = qobject_cast<QLCDNumber *>( object() );
-
-                    if ( l->digitCount() )
-                    {
-                        str = QString::number( l->value() );
-                    }
-                    else
-                    {
-                        str = QString::number( l->intValue() );
-                    }
-
-#endif
-
-                }
-                else if ( qobject_cast<QStatusBar *>( object() ) )
-                {
-                    return qobject_cast<QStatusBar *>( object() )->currentMessage();
-                }
             }
-
-            break;
-
-        case QAccessible::Value:
-#ifndef LSCS_NO_PROGRESSBAR
-            if ( qobject_cast<QProgressBar *>( object() ) )
+            else if ( qobject_cast<QLCDNumber *>( object() ) )
             {
-                str = QString::number( qobject_cast<QProgressBar *>( object() )->value() );
-            }
+                QLCDNumber *l = qobject_cast<QLCDNumber *>( object() );
+
+                if ( l->digitCount() )
+                {
+                    str = QString::number( l->value() );
+                }
+                else
+                {
+                    str = QString::number( l->intValue() );
+                }
 
 #endif
-            break;
 
-        default:
-            break;
+            }
+            else if ( qobject_cast<QStatusBar *>( object() ) )
+            {
+                return qobject_cast<QStatusBar *>( object() )->currentMessage();
+            }
+        }
+
+        break;
+
+    case QAccessible::Value:
+#ifndef LSCS_NO_PROGRESSBAR
+        if ( qobject_cast<QProgressBar *>( object() ) )
+        {
+            str = QString::number( qobject_cast<QProgressBar *>( object() )->value() );
+        }
+
+#endif
+        break;
+
+    default:
+        break;
     }
 
     if ( str.isEmpty() )
@@ -672,20 +672,20 @@ QString QAccessibleGroupBox::text( QAccessible::Text t ) const
     {
         switch ( t )
         {
-            case QAccessible::Name:
-                txt = lscs_accStripAmp( groupBox()->title() );
-                break;
+        case QAccessible::Name:
+            txt = lscs_accStripAmp( groupBox()->title() );
+            break;
 
-            case QAccessible::Description:
-                txt = groupBox()->toolTip();
-                break;
+        case QAccessible::Description:
+            txt = groupBox()->toolTip();
+            break;
 
-            case QAccessible::Accelerator:
-                txt = lscs_accHotKey( groupBox()->title() );
-                break;
+        case QAccessible::Accelerator:
+            txt = lscs_accHotKey( groupBox()->title() );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -774,20 +774,20 @@ QString QAccessibleLineEdit::text( QAccessible::Text t ) const
 
     switch ( t )
     {
-        case QAccessible::Value:
-            if ( lineEdit()->echoMode() == QLineEdit::Normal )
-            {
-                str = lineEdit()->text();
-            }
-            else if ( lineEdit()->echoMode() != QLineEdit::NoEcho )
-            {
-                str = QString( lineEdit()->text().length(), QChar::fromLatin1( '*' ) );
-            }
+    case QAccessible::Value:
+        if ( lineEdit()->echoMode() == QLineEdit::Normal )
+        {
+            str = lineEdit()->text();
+        }
+        else if ( lineEdit()->echoMode() != QLineEdit::NoEcho )
+        {
+            str = QString( lineEdit()->text().length(), QChar::fromLatin1( '*' ) );
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( str.isEmpty() )

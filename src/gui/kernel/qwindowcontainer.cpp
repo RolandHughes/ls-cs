@@ -218,91 +218,91 @@ bool QWindowContainer::event( QEvent *e )
 
     switch ( type )
     {
-        case QEvent::ChildRemoved:
+    case QEvent::ChildRemoved:
+    {
+        QChildEvent *ce = static_cast<QChildEvent *>( e );
+
+        if ( ce->child() == d->window )
         {
-            QChildEvent *ce = static_cast<QChildEvent *>( e );
-
-            if ( ce->child() == d->window )
-            {
-                d->window = nullptr;
-            }
-
-            break;
+            d->window = nullptr;
         }
 
-        // The only thing we are interested in is making sure our sizes stay
-        // in sync, so do a catch-all case.
-        case QEvent::Resize:
-            d->updateGeometry();
-            break;
+        break;
+    }
 
-        case QEvent::Move:
-            d->updateGeometry();
-            break;
+    // The only thing we are interested in is making sure our sizes stay
+    // in sync, so do a catch-all case.
+    case QEvent::Resize:
+        d->updateGeometry();
+        break;
 
-        case QEvent::PolishRequest:
-            d->updateGeometry();
-            break;
+    case QEvent::Move:
+        d->updateGeometry();
+        break;
 
-        case QEvent::Show:
-            d->updateUsesNativeWidgets();
+    case QEvent::PolishRequest:
+        d->updateGeometry();
+        break;
 
-            if ( d->isStillAnOrphan() )
+    case QEvent::Show:
+        d->updateUsesNativeWidgets();
+
+        if ( d->isStillAnOrphan() )
+        {
+            d->window->setParent( d->usesNativeWidgets
+                                  ? windowHandle()
+                                  : window()->windowHandle() );
+        }
+
+        if ( d->window->parent() )
+        {
+            d->markParentChain();
+            d->window->show();
+        }
+
+        break;
+
+    case QEvent::Hide:
+        if ( d->window->parent() )
+        {
+            d->window->hide();
+        }
+
+        break;
+
+    case QEvent::FocusIn:
+        if ( d->window->parent() )
+        {
+            if ( d->oldFocusWindow != d->window )
             {
-                d->window->setParent( d->usesNativeWidgets
-                                      ? windowHandle()
-                                      : window()->windowHandle() );
+                d->window->requestActivate();
             }
-
-            if ( d->window->parent() )
+            else
             {
-                d->markParentChain();
-                d->window->show();
+                QWidget *next = nextInFocusChain();
+                next->setFocus();
             }
+        }
 
-            break;
-
-        case QEvent::Hide:
-            if ( d->window->parent() )
-            {
-                d->window->hide();
-            }
-
-            break;
-
-        case QEvent::FocusIn:
-            if ( d->window->parent() )
-            {
-                if ( d->oldFocusWindow != d->window )
-                {
-                    d->window->requestActivate();
-                }
-                else
-                {
-                    QWidget *next = nextInFocusChain();
-                    next->setFocus();
-                }
-            }
-
-            break;
+        break;
 #ifndef LSCS_NO_DRAGANDDROP
 
-        case QEvent::Drop:
-        case QEvent::DragMove:
-        case QEvent::DragLeave:
-            QCoreApplication::sendEvent( d->window, e );
-            return e->isAccepted();
+    case QEvent::Drop:
+    case QEvent::DragMove:
+    case QEvent::DragLeave:
+        QCoreApplication::sendEvent( d->window, e );
+        return e->isAccepted();
 
-        case QEvent::DragEnter:
-            // Don't reject drag events for the entire widget when one
-            // item rejects the drag enter
-            QCoreApplication::sendEvent( d->window, e );
-            e->accept();
-            return true;
+    case QEvent::DragEnter:
+        // Don't reject drag events for the entire widget when one
+        // item rejects the drag enter
+        QCoreApplication::sendEvent( d->window, e );
+        e->accept();
+        return true;
 #endif
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QWidget::event( e );

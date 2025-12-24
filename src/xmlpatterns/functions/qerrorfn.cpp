@@ -35,39 +35,39 @@ Item ErrorFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 
     switch ( m_operands.count() )
     {
-        case 0:   /* No args. */
+    case 0:   /* No args. */
+    {
+        context->error( QtXmlPatterns::tr( "%1 was called." ).formatArg( formatFunction( context->namePool(), signature() ) ),
+                        ReportContext::FOER0000, this );
+        return Item();
+    }
+
+    case 3:
+    case 2:
+        msg = m_operands.at( 1 )->evaluateSingleton( context ).stringValue();
+        [[fallthrough]];
+
+    case 1:
+    {
+        const QNameValue::Ptr qName( m_operands.first()->evaluateSingleton( context ).as<QNameValue>() );
+
+        if ( qName )
         {
-            context->error( QtXmlPatterns::tr( "%1 was called." ).formatArg( formatFunction( context->namePool(), signature() ) ),
-                            ReportContext::FOER0000, this );
-            return Item();
+            context->error( msg, qName->qName(), this );
+        }
+        else
+        {
+            context->error( msg, ReportContext::FOER0000, this );
         }
 
-        case 3:
-        case 2:
-            msg = m_operands.at( 1 )->evaluateSingleton( context ).stringValue();
-            [[fallthrough]];
+        return Item();
+    }
 
-        case 1:
-        {
-            const QNameValue::Ptr qName( m_operands.first()->evaluateSingleton( context ).as<QNameValue>() );
-
-            if ( qName )
-            {
-                context->error( msg, qName->qName(), this );
-            }
-            else
-            {
-                context->error( msg, ReportContext::FOER0000, this );
-            }
-
-            return Item();
-        }
-
-        default:
-        {
-            Q_ASSERT_X( false, Q_FUNC_INFO, "Invalid number of arguments passed to fn:error." );
-            return Item();
-        }
+    default:
+    {
+        Q_ASSERT_X( false, Q_FUNC_INFO, "Invalid number of arguments passed to fn:error." );
+        return Item();
+    }
     }
 }
 

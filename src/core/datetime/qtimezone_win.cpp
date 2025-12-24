@@ -476,14 +476,14 @@ QString QWinTimeZonePrivate::displayName( QTimeZone::TimeType timeType,
 
     switch ( timeType )
     {
-        case  QTimeZone::DaylightTime:
-            return m_daylightName;
+    case  QTimeZone::DaylightTime:
+        return m_daylightName;
 
-        case  QTimeZone::GenericTime:
-            return m_displayName;
+    case  QTimeZone::GenericTime:
+        return m_displayName;
 
-        case  QTimeZone::StandardTime:
-            return m_standardName;
+    case  QTimeZone::StandardTime:
+        return m_standardName;
     }
 
     return m_standardName;

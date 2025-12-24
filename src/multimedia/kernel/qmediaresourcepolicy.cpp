@@ -89,7 +89,7 @@ QObject *QMediaResourcePolicy::createResourceSet( const QString &interfaceId )
     if ( factoryObj != nullptr )
     {
         QMediaResourceSetFactoryInterface *plugin = dynamic_cast<QMediaResourceSetFactoryInterface *>
-                ( factoryObj->instance( "default" ) );
+            ( factoryObj->instance( "default" ) );
 
         if ( plugin )
         {
@@ -126,7 +126,7 @@ void QMediaResourcePolicy::destroyResourceSet( QObject *resourceSet )
     }
 
     QMediaResourceSetFactoryInterface *plugin = dynamic_cast<QMediaResourceSetFactoryInterface *>
-            ( factoryObj->instance( "default" ) );
+        ( factoryObj->instance( "default" ) );
     Q_ASSERT( plugin );
 
     if ( plugin == nullptr )

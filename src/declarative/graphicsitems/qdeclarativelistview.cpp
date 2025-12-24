@@ -4124,52 +4124,52 @@ void QDeclarativeListViewPrivate::positionViewAtIndex( int index, int mode )
 
         switch ( mode )
         {
-            case QDeclarativeListView::Beginning:
-                pos = itemPos;
+        case QDeclarativeListView::Beginning:
+            pos = itemPos;
 
-                if ( index < 0 && header )
-                {
-                    pos -= header->size();
-                }
+            if ( index < 0 && header )
+            {
+                pos -= header->size();
+            }
 
-                break;
+            break;
 
-            case QDeclarativeListView::Center:
-                pos = itemPos - ( size() - item->size() ) / 2;
-                break;
+        case QDeclarativeListView::Center:
+            pos = itemPos - ( size() - item->size() ) / 2;
+            break;
 
-            case QDeclarativeListView::End:
+        case QDeclarativeListView::End:
+            pos = itemPos - size() + item->size();
+
+            if ( index >= model->count() && footer )
+            {
+                pos += footer->size();
+            }
+
+            break;
+
+        case QDeclarativeListView::Visible:
+            if ( itemPos > pos + size() )
+            {
                 pos = itemPos - size() + item->size();
+            }
+            else if ( item->endPosition() < pos )
+            {
+                pos = itemPos;
+            }
 
-                if ( index >= model->count() && footer )
-                {
-                    pos += footer->size();
-                }
+            break;
 
-                break;
+        case QDeclarativeListView::Contain:
+            if ( item->endPosition() > pos + size() )
+            {
+                pos = itemPos - size() + item->size();
+            }
 
-            case QDeclarativeListView::Visible:
-                if ( itemPos > pos + size() )
-                {
-                    pos = itemPos - size() + item->size();
-                }
-                else if ( item->endPosition() < pos )
-                {
-                    pos = itemPos;
-                }
-
-                break;
-
-            case QDeclarativeListView::Contain:
-                if ( item->endPosition() > pos + size() )
-                {
-                    pos = itemPos - size() + item->size();
-                }
-
-                if ( itemPos < pos )
-                {
-                    pos = itemPos;
-                }
+            if ( itemPos < pos )
+            {
+                pos = itemPos;
+            }
         }
 
         pos = qMin( pos, maxExtent );

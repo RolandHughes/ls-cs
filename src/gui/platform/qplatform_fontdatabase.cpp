@@ -37,10 +37,10 @@
 #include <iterator>
 
 void lscs_registerFont( const QString &familyname, const QString &stylename,
-                      const QString &foundryname, int weight,
-                      QFont::Style style, int stretch, bool antialiased,
-                      bool scalable, int pixelSize, bool fixedPitch,
-                      const QSupportedWritingSystems &writingSystems, void *hanlde );
+                        const QString &foundryname, int weight,
+                        QFont::Style style, int stretch, bool antialiased,
+                        bool scalable, int pixelSize, bool fixedPitch,
+                        const QSupportedWritingSystems &writingSystems, void *hanlde );
 
 void lscs_registerFontFamily( const QString &familyName );
 void lscs_registerAliasToFontFamily( const QString &familyName, const QString &alias );
@@ -118,8 +118,8 @@ void QPlatformFontDatabase::registerFont( const QString &familyname, const QStri
     }
 
     lscs_registerFont( familyname, stylename, foundryname, weight, style,
-                     stretch, antialiased, scalable, pixelSize,
-                     fixedPitch, writingSystems, usrPtr );
+                       stretch, antialiased, scalable, pixelSize,
+                       fixedPitch, writingSystems, usrPtr );
 }
 
 void QPlatformFontDatabase::registerFontFamily( const QString &familyName )

@@ -92,24 +92,24 @@ void *QWindowsNativeInterface::nativeResourceForWindow( const QByteArray &resour
 
     switch ( window->surfaceType() )
     {
-        case QWindow::RasterSurface:
-        case QWindow::RasterGLSurface:
-            if ( type == GetDCType )
-            {
-                return bw->getDC();
-            }
+    case QWindow::RasterSurface:
+    case QWindow::RasterGLSurface:
+        if ( type == GetDCType )
+        {
+            return bw->getDC();
+        }
 
-            if ( type == ReleaseDCType )
-            {
-                bw->releaseDC();
-                return nullptr;
-            }
+        if ( type == ReleaseDCType )
+        {
+            bw->releaseDC();
+            return nullptr;
+        }
 
-            break;
+        break;
 
-        case QWindow::OpenGLSurface:
-        case QWindow::VulkanSurface:
-            break;
+    case QWindow::OpenGLSurface:
+    case QWindow::VulkanSurface:
+        break;
     }
 
     qWarning( "QWindowsNativeInterface::nativeResourceForWindow() Invalid key, %s", resource.constData() );
@@ -185,18 +185,18 @@ void *QWindowsNativeInterface::nativeResourceForContext( const QByteArray &resou
 
     switch ( resourceType( resource ) )
     {
-        case RenderingContextType:
-        case EglContextType:
-            return glcontext->nativeContext();
+    case RenderingContextType:
+    case EglContextType:
+        return glcontext->nativeContext();
 
-        case EglDisplayType:
-            return glcontext->nativeDisplay();
+    case EglDisplayType:
+        return glcontext->nativeDisplay();
 
-        case EglConfigType:
-            return glcontext->nativeConfig();
+    case EglConfigType:
+        return glcontext->nativeConfig();
 
-        default:
-            break;
+    default:
+        break;
     }
 
     qWarning( "nativeResourceForContext() Invalid key, %s", resource.constData() );

@@ -905,22 +905,22 @@ bool QImageReader::autoTransform() const
 {
     switch ( d->autoTransform )
     {
-        case QImageReaderPrivate::ApplyTransform:
-            return true;
+    case QImageReaderPrivate::ApplyTransform:
+        return true;
 
-        case QImageReaderPrivate::DoNotApplyTransform:
-            return false;
+    case QImageReaderPrivate::DoNotApplyTransform:
+        return false;
 
-        case QImageReaderPrivate::UsePluginDefault:
-            if ( d->initHandler() )
-            {
-                return d->handler->supportsOption( QImageIOHandler::TransformedByDefault );
-            }
+    case QImageReaderPrivate::UsePluginDefault:
+        if ( d->initHandler() )
+        {
+            return d->handler->supportsOption( QImageIOHandler::TransformedByDefault );
+        }
 
-        // no break
+    // no break
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return false;

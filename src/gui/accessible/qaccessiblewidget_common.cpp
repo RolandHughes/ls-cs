@@ -965,42 +965,42 @@ QString QAccessibleTextWidget::attributes( int offset, int *startOffset, int *en
 
     switch ( underlineStyle )
     {
-        case QTextCharFormat::NoUnderline:
-            break;
+    case QTextCharFormat::NoUnderline:
+        break;
 
-        case QTextCharFormat::SingleUnderline:
-            underlineStyleValue = "solid";
-            break;
+    case QTextCharFormat::SingleUnderline:
+        underlineStyleValue = "solid";
+        break;
 
-        case QTextCharFormat::DashUnderline:
-            underlineStyleValue = "dash";
-            break;
+    case QTextCharFormat::DashUnderline:
+        underlineStyleValue = "dash";
+        break;
 
-        case QTextCharFormat::DotLine:
-            underlineStyleValue = "dash";
-            break;
+    case QTextCharFormat::DotLine:
+        underlineStyleValue = "dash";
+        break;
 
-        case QTextCharFormat::DashDotLine:
-            underlineStyleValue = "dot-dash";
-            break;
+    case QTextCharFormat::DashDotLine:
+        underlineStyleValue = "dot-dash";
+        break;
 
-        case QTextCharFormat::DashDotDotLine:
-            underlineStyleValue = "dot-dot-dash";
-            break;
+    case QTextCharFormat::DashDotDotLine:
+        underlineStyleValue = "dot-dot-dash";
+        break;
 
-        case QTextCharFormat::WaveUnderline:
-            underlineStyleValue = "wave";
-            break;
+    case QTextCharFormat::WaveUnderline:
+        underlineStyleValue = "wave";
+        break;
 
-        case QTextCharFormat::SpellCheckUnderline:
-            // this is not correct, but provides good approximation at least
-            underlineStyleValue = "wave";
-            break;
+    case QTextCharFormat::SpellCheckUnderline:
+        // this is not correct, but provides good approximation at least
+        underlineStyleValue = "wave";
+        break;
 
-        default:
-            qWarning() << "QAccessibleTextWidget::attributes() Unknown QTextCharFormat::UnderlineStyle value "
-                       << underlineStyle << " could not be translated to IAccessible2 value";
-            break;
+    default:
+        qWarning() << "QAccessibleTextWidget::attributes() Unknown QTextCharFormat::UnderlineStyle value "
+                   << underlineStyle << " could not be translated to IAccessible2 value";
+        break;
     }
 
     if ( ! underlineStyleValue.isEmpty() )
@@ -1052,21 +1052,21 @@ QString QAccessibleTextWidget::attributes( int offset, int *startOffset, int *en
     switch ( blockFormat.alignment() & ( Qt::AlignLeft | Qt::AlignRight | Qt::AlignHCenter | Qt::AlignJustify ) )
     {
 
-        case Qt::AlignLeft:
-            attrs["text-align"] = "left";
-            break;
+    case Qt::AlignLeft:
+        attrs["text-align"] = "left";
+        break;
 
-        case Qt::AlignRight:
-            attrs["text-align"] = "right";
-            break;
+    case Qt::AlignRight:
+        attrs["text-align"] = "right";
+        break;
 
-        case Qt::AlignHCenter:
-            attrs["text-align"] = "center";
-            break;
+    case Qt::AlignHCenter:
+        attrs["text-align"] = "center";
+        break;
 
-        case Qt::AlignJustify:
-            attrs["text-align"] = "justify";
-            break;
+    case Qt::AlignJustify:
+        attrs["text-align"] = "justify";
+        break;
     }
 
     QString result;

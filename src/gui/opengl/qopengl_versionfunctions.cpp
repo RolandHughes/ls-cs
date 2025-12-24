@@ -1711,7 +1711,7 @@ QOpenGLFunctions_4_5_CoreBackend::QOpenGLFunctions_4_5_CoreBackend( QOpenGLConte
     CreateRenderbuffers = reinterpret_cast<void ( QOPENGLF_APIENTRYP )( GLsizei, GLuint * )>
                           ( context->getProcAddress( "glCreateRenderbuffers" ) );
     GetNamedFramebufferAttachmentParameteriv = reinterpret_cast<void ( QOPENGLF_APIENTRYP )( GLuint, GLenum, GLenum, GLint * )>
-            ( context->getProcAddress( "glGetNamedFramebufferAttachmentParameteriv" ) );
+        ( context->getProcAddress( "glGetNamedFramebufferAttachmentParameteriv" ) );
     GetNamedFramebufferParameteriv = reinterpret_cast<void ( QOPENGLF_APIENTRYP )( GLuint, GLenum, GLint * )>
                                      ( context->getProcAddress( "glGetNamedFramebufferParameteriv" ) );
     CheckNamedFramebufferStatus = reinterpret_cast<GLenum ( QOPENGLF_APIENTRYP )( GLuint, GLenum )>

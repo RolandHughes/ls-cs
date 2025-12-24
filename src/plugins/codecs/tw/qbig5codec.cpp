@@ -1748,44 +1748,37 @@ QString QBig5Codec::convertToUnicode( const char *chars, int len, ConverterState
 
         switch ( nbuf )
         {
-            case 0:
-                if ( IsLatin( ch ) )
-                {
-                    // ASCII
-                    result += QLatin1Char( ch );
-                }
-                else if ( IsFirstByte( ch ) )
-                {
-                    // Big5-ETen
-                    buf[0] = ch;
-                    nbuf = 1;
-                }
-                else
-                {
-                    // Invalid
-                    result += replacement;
-                    ++invalid;
-                }
+        case 0:
+            if ( IsLatin( ch ) )
+            {
+                // ASCII
+                result += QLatin1Char( ch );
+            }
+            else if ( IsFirstByte( ch ) )
+            {
+                // Big5-ETen
+                buf[0] = ch;
+                nbuf = 1;
+            }
+            else
+            {
+                // Invalid
+                result += replacement;
+                ++invalid;
+            }
 
-                break;
+            break;
 
-            case 1:
-                if ( IsSecondByte( ch ) )
+        case 1:
+            if ( IsSecondByte( ch ) )
+            {
+                // Big5-ETen
+                uint u;
+                buf[1] = ch;
+
+                if ( lscs_Big5ToUnicode( buf, &u ) == 2 )
                 {
-                    // Big5-ETen
-                    uint u;
-                    buf[1] = ch;
-
-                    if ( lscs_Big5ToUnicode( buf, &u ) == 2 )
-                    {
-                        result += QValidChar( u );
-                    }
-                    else
-                    {
-                        // Error
-                        result += replacement;
-                        ++invalid;
-                    }
+                    result += QValidChar( u );
                 }
                 else
                 {
@@ -1793,9 +1786,16 @@ QString QBig5Codec::convertToUnicode( const char *chars, int len, ConverterState
                     result += replacement;
                     ++invalid;
                 }
+            }
+            else
+            {
+                // Error
+                result += replacement;
+                ++invalid;
+            }
 
-                nbuf = 0;
-                break;
+            nbuf = 0;
+            break;
         }
     }
 
@@ -1911,44 +1911,37 @@ QString QBig5hkscsCodec::convertToUnicode( const char *chars, int len, Converter
 
         switch ( nbuf )
         {
-            case 0:
-                if ( IsLatin( ch ) )
-                {
-                    // ASCII
-                    result += QLatin1Char( ch );
-                }
-                else if ( IsFirstByte( ch ) )
-                {
-                    // Big5-HKSCS
-                    buf[0] = ch;
-                    nbuf = 1;
-                }
-                else
-                {
-                    // Invalid
-                    result += replacement;
-                    ++invalid;
-                }
+        case 0:
+            if ( IsLatin( ch ) )
+            {
+                // ASCII
+                result += QLatin1Char( ch );
+            }
+            else if ( IsFirstByte( ch ) )
+            {
+                // Big5-HKSCS
+                buf[0] = ch;
+                nbuf = 1;
+            }
+            else
+            {
+                // Invalid
+                result += replacement;
+                ++invalid;
+            }
 
-                break;
+            break;
 
-            case 1:
-                if ( IsSecondByte( ch ) )
+        case 1:
+            if ( IsSecondByte( ch ) )
+            {
+                // Big5-HKSCS
+                uint u;
+                buf[1] = ch;
+
+                if ( lscs_Big5hkscsToUnicode( buf, &u ) == 2 )
                 {
-                    // Big5-HKSCS
-                    uint u;
-                    buf[1] = ch;
-
-                    if ( lscs_Big5hkscsToUnicode( buf, &u ) == 2 )
-                    {
-                        result += QValidChar( u );
-                    }
-                    else
-                    {
-                        // Error
-                        result += replacement;
-                        ++invalid;
-                    }
+                    result += QValidChar( u );
                 }
                 else
                 {
@@ -1956,9 +1949,16 @@ QString QBig5hkscsCodec::convertToUnicode( const char *chars, int len, Converter
                     result += replacement;
                     ++invalid;
                 }
+            }
+            else
+            {
+                // Error
+                result += replacement;
+                ++invalid;
+            }
 
-                nbuf = 0;
-                break;
+            nbuf = 0;
+            break;
         }
     }
 

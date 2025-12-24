@@ -6248,48 +6248,48 @@ QDomNodePrivate *QDomDocumentPrivate::importNode( const QDomNodePrivate *importe
 
     switch ( importedNode->nodeType() )
     {
-        case QDomNode::AttributeNode:
-            node = new QDomAttrPrivate( ( QDomAttrPrivate * )importedNode, true );
-            break;
+    case QDomNode::AttributeNode:
+        node = new QDomAttrPrivate( ( QDomAttrPrivate * )importedNode, true );
+        break;
 
-        case QDomNode::DocumentFragmentNode:
-            node = new QDomDocumentFragmentPrivate( ( QDomDocumentFragmentPrivate * )importedNode, deep );
-            break;
+    case QDomNode::DocumentFragmentNode:
+        node = new QDomDocumentFragmentPrivate( ( QDomDocumentFragmentPrivate * )importedNode, deep );
+        break;
 
-        case QDomNode::ElementNode:
-            node = new QDomElementPrivate( ( QDomElementPrivate * )importedNode, deep );
-            break;
+    case QDomNode::ElementNode:
+        node = new QDomElementPrivate( ( QDomElementPrivate * )importedNode, deep );
+        break;
 
-        case QDomNode::EntityNode:
-            node = new QDomEntityPrivate( ( QDomEntityPrivate * )importedNode, deep );
-            break;
+    case QDomNode::EntityNode:
+        node = new QDomEntityPrivate( ( QDomEntityPrivate * )importedNode, deep );
+        break;
 
-        case QDomNode::EntityReferenceNode:
-            node = new QDomEntityReferencePrivate( ( QDomEntityReferencePrivate * )importedNode, false );
-            break;
+    case QDomNode::EntityReferenceNode:
+        node = new QDomEntityReferencePrivate( ( QDomEntityReferencePrivate * )importedNode, false );
+        break;
 
-        case QDomNode::NotationNode:
-            node = new QDomNotationPrivate( ( QDomNotationPrivate * )importedNode, deep );
-            break;
+    case QDomNode::NotationNode:
+        node = new QDomNotationPrivate( ( QDomNotationPrivate * )importedNode, deep );
+        break;
 
-        case QDomNode::ProcessingInstructionNode:
-            node = new QDomProcessingInstructionPrivate( ( QDomProcessingInstructionPrivate * )importedNode, deep );
-            break;
+    case QDomNode::ProcessingInstructionNode:
+        node = new QDomProcessingInstructionPrivate( ( QDomProcessingInstructionPrivate * )importedNode, deep );
+        break;
 
-        case QDomNode::TextNode:
-            node = new QDomTextPrivate( ( QDomTextPrivate * )importedNode, deep );
-            break;
+    case QDomNode::TextNode:
+        node = new QDomTextPrivate( ( QDomTextPrivate * )importedNode, deep );
+        break;
 
-        case QDomNode::CDATASectionNode:
-            node = new QDomCDATASectionPrivate( ( QDomCDATASectionPrivate * )importedNode, deep );
-            break;
+    case QDomNode::CDATASectionNode:
+        node = new QDomCDATASectionPrivate( ( QDomCDATASectionPrivate * )importedNode, deep );
+        break;
 
-        case QDomNode::CommentNode:
-            node = new QDomCommentPrivate( ( QDomCommentPrivate * )importedNode, deep );
-            break;
+    case QDomNode::CommentNode:
+        node = new QDomCommentPrivate( ( QDomCommentPrivate * )importedNode, deep );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ( node )
@@ -7315,7 +7315,7 @@ bool QDomHandler::unparsedEntityDecl( const QString &name, const QString &public
                                       const QString &notationName )
 {
     QDomEntityPrivate *e = new QDomEntityPrivate( doc, nullptr, name,
-            publicId, systemId, notationName );
+        publicId, systemId, notationName );
 
     // keep the refcount balanced: appendChild() does a ref anyway.
     e->ref.deref();

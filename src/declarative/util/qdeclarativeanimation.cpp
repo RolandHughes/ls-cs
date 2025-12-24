@@ -1621,21 +1621,21 @@ void QDeclarativeRotationAnimation::setDirection( QDeclarativeRotationAnimation:
 
     switch ( d->direction )
     {
-        case Clockwise:
-            d->interpolator = reinterpret_cast<QVariantAnimation::Interpolator>( &_q_interpolateClockwiseRotation );
-            break;
+    case Clockwise:
+        d->interpolator = reinterpret_cast<QVariantAnimation::Interpolator>( &_q_interpolateClockwiseRotation );
+        break;
 
-        case Counterclockwise:
-            d->interpolator = reinterpret_cast<QVariantAnimation::Interpolator>( &_q_interpolateCounterclockwiseRotation );
-            break;
+    case Counterclockwise:
+        d->interpolator = reinterpret_cast<QVariantAnimation::Interpolator>( &_q_interpolateCounterclockwiseRotation );
+        break;
 
-        case Shortest:
-            d->interpolator = reinterpret_cast<QVariantAnimation::Interpolator>( &_q_interpolateShortestRotation );
-            break;
+    case Shortest:
+        d->interpolator = reinterpret_cast<QVariantAnimation::Interpolator>( &_q_interpolateShortestRotation );
+        break;
 
-        default:
-            d->interpolator = QVariantAnimationPrivate::getInterpolator( d->interpolatorType );
-            break;
+    default:
+        d->interpolator = QVariantAnimationPrivate::getInterpolator( d->interpolatorType );
+        break;
     }
 
     emit directionChanged();
@@ -1854,70 +1854,70 @@ void QDeclarativePropertyAnimationPrivate::convertVariant( QVariant &variant, in
 
     switch ( type )
     {
-        case QVariant::Rect:
-        {
-            variant.setValue( QDeclarativeStringConverters::rectFFromString( variant.toString() ).toRect() );
-            break;
-        }
+    case QVariant::Rect:
+    {
+        variant.setValue( QDeclarativeStringConverters::rectFFromString( variant.toString() ).toRect() );
+        break;
+    }
 
-        case QVariant::RectF:
-        {
-            variant.setValue( QDeclarativeStringConverters::rectFFromString( variant.toString() ) );
-            break;
-        }
+    case QVariant::RectF:
+    {
+        variant.setValue( QDeclarativeStringConverters::rectFFromString( variant.toString() ) );
+        break;
+    }
 
-        case QVariant::Point:
-        {
-            variant.setValue( QDeclarativeStringConverters::pointFFromString( variant.toString() ).toPoint() );
-            break;
-        }
+    case QVariant::Point:
+    {
+        variant.setValue( QDeclarativeStringConverters::pointFFromString( variant.toString() ).toPoint() );
+        break;
+    }
 
-        case QVariant::PointF:
-        {
-            variant.setValue( QDeclarativeStringConverters::pointFFromString( variant.toString() ) );
-            break;
-        }
+    case QVariant::PointF:
+    {
+        variant.setValue( QDeclarativeStringConverters::pointFFromString( variant.toString() ) );
+        break;
+    }
 
-        case QVariant::Size:
-        {
-            variant.setValue( QDeclarativeStringConverters::sizeFFromString( variant.toString() ).toSize() );
-            break;
-        }
+    case QVariant::Size:
+    {
+        variant.setValue( QDeclarativeStringConverters::sizeFFromString( variant.toString() ).toSize() );
+        break;
+    }
 
-        case QVariant::SizeF:
-        {
-            variant.setValue( QDeclarativeStringConverters::sizeFFromString( variant.toString() ) );
-            break;
-        }
+    case QVariant::SizeF:
+    {
+        variant.setValue( QDeclarativeStringConverters::sizeFFromString( variant.toString() ) );
+        break;
+    }
 
-        case QVariant::Color:
-        {
-            variant.setValue( QDeclarativeStringConverters::colorFromString( variant.toString() ) );
-            break;
-        }
+    case QVariant::Color:
+    {
+        variant.setValue( QDeclarativeStringConverters::colorFromString( variant.toString() ) );
+        break;
+    }
 
-        case QVariant::Vector3D:
-        {
-            variant.setValue( QDeclarativeStringConverters::vector3DFromString( variant.toString() ) );
-            break;
-        }
+    case QVariant::Vector3D:
+    {
+        variant.setValue( QDeclarativeStringConverters::vector3DFromString( variant.toString() ) );
+        break;
+    }
 
-        default:
-            if ( QDeclarativeValueTypeFactory::isValueType( ( uint )type ) )
+    default:
+        if ( QDeclarativeValueTypeFactory::isValueType( ( uint )type ) )
+        {
+            variant.convert( ( QVariant::Type )type );
+        }
+        else
+        {
+            QDeclarativeMetaType::StringConverter converter = QDeclarativeMetaType::customStringConverter( type );
+
+            if ( converter )
             {
-                variant.convert( ( QVariant::Type )type );
+                variant = converter( variant.toString() );
             }
-            else
-            {
-                QDeclarativeMetaType::StringConverter converter = QDeclarativeMetaType::customStringConverter( type );
+        }
 
-                if ( converter )
-                {
-                    variant = converter( variant.toString() );
-                }
-            }
-
-            break;
+        break;
     }
 }
 
@@ -2853,33 +2853,33 @@ QPointF QDeclarativeParentAnimationPrivate::computeTransformOrigin( QDeclarative
 {
     switch ( origin )
     {
-        default:
-        case QDeclarativeItem::TopLeft:
-            return QPointF( 0, 0 );
+    default:
+    case QDeclarativeItem::TopLeft:
+        return QPointF( 0, 0 );
 
-        case QDeclarativeItem::Top:
-            return QPointF( width / 2., 0 );
+    case QDeclarativeItem::Top:
+        return QPointF( width / 2., 0 );
 
-        case QDeclarativeItem::TopRight:
-            return QPointF( width, 0 );
+    case QDeclarativeItem::TopRight:
+        return QPointF( width, 0 );
 
-        case QDeclarativeItem::Left:
-            return QPointF( 0, height / 2. );
+    case QDeclarativeItem::Left:
+        return QPointF( 0, height / 2. );
 
-        case QDeclarativeItem::Center:
-            return QPointF( width / 2., height / 2. );
+    case QDeclarativeItem::Center:
+        return QPointF( width / 2., height / 2. );
 
-        case QDeclarativeItem::Right:
-            return QPointF( width, height / 2. );
+    case QDeclarativeItem::Right:
+        return QPointF( width, height / 2. );
 
-        case QDeclarativeItem::BottomLeft:
-            return QPointF( 0, height );
+    case QDeclarativeItem::BottomLeft:
+        return QPointF( 0, height );
 
-        case QDeclarativeItem::Bottom:
-            return QPointF( width / 2., height );
+    case QDeclarativeItem::Bottom:
+        return QPointF( width / 2., height );
 
-        case QDeclarativeItem::BottomRight:
-            return QPointF( width, height );
+    case QDeclarativeItem::BottomRight:
+        return QPointF( width, height );
     }
 }
 

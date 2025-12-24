@@ -77,7 +77,7 @@ static bool intersect_rect( const QGraphicsItem *item, const QRectF &exposeRect,
         Q_ASSERT( !itemd->dirtySceneTransform );
         const QRectF itemSceneBoundingRect = itemd->sceneTransformTranslateOnly
                                              ? brect.translated( itemd->sceneTransform.dx(),
-                                                     itemd->sceneTransform.dy() )
+                                                 itemd->sceneTransform.dy() )
                                              : itemd->sceneTransform.mapRect( brect );
 
         if ( mode == Qt::ContainsItemShape || mode == Qt::ContainsItemBoundingRect )
@@ -143,7 +143,7 @@ static bool intersect_point( const QGraphicsItem *item, const QRectF &exposeRect
         Q_ASSERT( !itemd->dirtySceneTransform );
         QRectF sceneBoundingRect = itemd->sceneTransformTranslateOnly
                                    ? brect.translated( itemd->sceneTransform.dx(),
-                                           itemd->sceneTransform.dy() )
+                                       itemd->sceneTransform.dy() )
                                    : itemd->sceneTransform.mapRect( brect );
         keep = sceneBoundingRect.intersects( QRectF( scenePoint, QSizeF( 1, 1 ) ) );
 
@@ -197,7 +197,7 @@ static bool intersect_path( const QGraphicsItem *item, const QRectF &exposeRect,
         Q_ASSERT( !itemd->dirtySceneTransform );
         const QRectF itemSceneBoundingRect = itemd->sceneTransformTranslateOnly
                                              ? brect.translated( itemd->sceneTransform.dx(),
-                                                     itemd->sceneTransform.dy() )
+                                                 itemd->sceneTransform.dy() )
                                              : itemd->sceneTransform.mapRect( brect );
 
         if ( mode == Qt::ContainsItemShape || mode == Qt::ContainsItemBoundingRect )
@@ -213,7 +213,7 @@ static bool intersect_path( const QGraphicsItem *item, const QRectF &exposeRect,
         {
             QPainterPath itemPath = itemd->sceneTransformTranslateOnly
                                     ? scenePath.translated( -itemd->sceneTransform.dx(),
-                                            -itemd->sceneTransform.dy() )
+                                        -itemd->sceneTransform.dy() )
                                     : itemd->sceneTransform.inverted().map( scenePath );
             keep = QGraphicsSceneIndexPrivate::itemCollidesWithPath( item, itemPath, mode );
         }
@@ -327,7 +327,7 @@ void QGraphicsSceneIndexPrivate::recursive_items_helper( QGraphicsItem *item, QR
         {
             QPainterPath mappedShape = item->d_ptr->sceneTransformTranslateOnly
                                        ? item->shape().translated( item->d_ptr->sceneTransform.dx(),
-                                               item->d_ptr->sceneTransform.dy() )
+                                           item->d_ptr->sceneTransform.dy() )
                                        : item->d_ptr->sceneTransform.map( item->shape() );
             exposeRect &= mappedShape.controlPointRect();
         }

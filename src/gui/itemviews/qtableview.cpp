@@ -1778,295 +1778,295 @@ QModelIndex QTableView::moveCursor( CursorAction cursorAction, Qt::KeyboardModif
 
     switch ( cursorAction )
     {
-        case MoveUp:
-        {
-            int originalRow = visualRow;
+    case MoveUp:
+    {
+        int originalRow = visualRow;
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-            if ( QApplication::keypadNavigationEnabled() && visualRow == 0 )
-            {
-                visualRow = d->visualRow( model()->rowCount() - 1 ) + 1;
-            }
-
-            // FIXME? visualRow = bottom + 1;
-#endif
-            int r = d->logicalRow( visualRow );
-            int c = d->logicalColumn( visualColumn );
-
-            if ( r != -1 && d->hasSpans() )
-            {
-                QSpanCollection::Span span = d->span( r, c );
-
-                if ( span.width() > 1 || span.height() > 1 )
-                {
-                    visualRow = d->visualRow( span.top() );
-                }
-            }
-
-            while ( visualRow >= 0 )
-            {
-                --visualRow;
-                r = d->logicalRow( visualRow );
-                c = d->logicalColumn( visualColumn );
-
-                if ( r == -1 || ( !isRowHidden( r ) && d->isCellEnabled( r, c ) ) )
-                {
-                    break;
-                }
-            }
-
-            if ( visualRow < 0 )
-            {
-                visualRow = originalRow;
-            }
-
-            break;
+        if ( QApplication::keypadNavigationEnabled() && visualRow == 0 )
+        {
+            visualRow = d->visualRow( model()->rowCount() - 1 ) + 1;
         }
 
-        case MoveDown:
-        {
-            int originalRow = visualRow;
+        // FIXME? visualRow = bottom + 1;
+#endif
+        int r = d->logicalRow( visualRow );
+        int c = d->logicalColumn( visualColumn );
 
-            if ( d->hasSpans() )
+        if ( r != -1 && d->hasSpans() )
+        {
+            QSpanCollection::Span span = d->span( r, c );
+
+            if ( span.width() > 1 || span.height() > 1 )
             {
-                QSpanCollection::Span span = d->span( current.row(), current.column() );
+                visualRow = d->visualRow( span.top() );
+            }
+        }
+
+        while ( visualRow >= 0 )
+        {
+            --visualRow;
+            r = d->logicalRow( visualRow );
+            c = d->logicalColumn( visualColumn );
+
+            if ( r == -1 || ( !isRowHidden( r ) && d->isCellEnabled( r, c ) ) )
+            {
+                break;
+            }
+        }
+
+        if ( visualRow < 0 )
+        {
+            visualRow = originalRow;
+        }
+
+        break;
+    }
+
+    case MoveDown:
+    {
+        int originalRow = visualRow;
+
+        if ( d->hasSpans() )
+        {
+            QSpanCollection::Span span = d->span( current.row(), current.column() );
+            visualRow = d->visualRow( d->rowSpanEndLogical( span.top(), span.height() ) );
+        }
+
+#ifdef LSCS_KEYPAD_NAVIGATION
+
+        if ( QApplication::keypadNavigationEnabled() && visualRow >= bottom )
+        {
+            visualRow = -1;
+        }
+
+#endif
+        int r = d->logicalRow( visualRow );
+        int c = d->logicalColumn( visualColumn );
+
+        if ( r != -1 && d->hasSpans() )
+        {
+            QSpanCollection::Span span = d->span( r, c );
+
+            if ( span.width() > 1 || span.height() > 1 )
+            {
                 visualRow = d->visualRow( d->rowSpanEndLogical( span.top(), span.height() ) );
             }
+        }
 
-#ifdef LSCS_KEYPAD_NAVIGATION
+        while ( visualRow <= bottom )
+        {
+            ++visualRow;
+            r = d->logicalRow( visualRow );
+            c = d->logicalColumn( visualColumn );
 
-            if ( QApplication::keypadNavigationEnabled() && visualRow >= bottom )
+            if ( r == -1 || ( !isRowHidden( r ) && d->isCellEnabled( r, c ) ) )
             {
-                visualRow = -1;
+                break;
             }
+        }
 
-#endif
+        if ( visualRow > bottom )
+        {
+            visualRow = originalRow;
+        }
+
+        break;
+    }
+
+    case MovePrevious:
+    case MoveLeft:
+    {
+        int originalRow = visualRow;
+        int originalColumn = visualColumn;
+        bool firstTime = true;
+        bool looped = false;
+        bool wrapped = false;
+
+        do
+        {
             int r = d->logicalRow( visualRow );
             int c = d->logicalColumn( visualColumn );
 
-            if ( r != -1 && d->hasSpans() )
+            if ( firstTime && c != -1 && d->hasSpans() )
             {
+                firstTime = false;
                 QSpanCollection::Span span = d->span( r, c );
 
                 if ( span.width() > 1 || span.height() > 1 )
                 {
-                    visualRow = d->visualRow( d->rowSpanEndLogical( span.top(), span.height() ) );
+                    visualColumn = d->visualColumn( span.left() );
                 }
             }
 
-            while ( visualRow <= bottom )
+            while ( visualColumn >= 0 )
             {
-                ++visualRow;
+                --visualColumn;
                 r = d->logicalRow( visualRow );
                 c = d->logicalColumn( visualColumn );
 
-                if ( r == -1 || ( !isRowHidden( r ) && d->isCellEnabled( r, c ) ) )
-                {
-                    break;
-                }
-            }
-
-            if ( visualRow > bottom )
-            {
-                visualRow = originalRow;
-            }
-
-            break;
-        }
-
-        case MovePrevious:
-        case MoveLeft:
-        {
-            int originalRow = visualRow;
-            int originalColumn = visualColumn;
-            bool firstTime = true;
-            bool looped = false;
-            bool wrapped = false;
-
-            do
-            {
-                int r = d->logicalRow( visualRow );
-                int c = d->logicalColumn( visualColumn );
-
-                if ( firstTime && c != -1 && d->hasSpans() )
-                {
-                    firstTime = false;
-                    QSpanCollection::Span span = d->span( r, c );
-
-                    if ( span.width() > 1 || span.height() > 1 )
-                    {
-                        visualColumn = d->visualColumn( span.left() );
-                    }
-                }
-
-                while ( visualColumn >= 0 )
-                {
-                    --visualColumn;
-                    r = d->logicalRow( visualRow );
-                    c = d->logicalColumn( visualColumn );
-
-                    if ( r == -1 || c == -1 || ( !isRowHidden( r ) && !isColumnHidden( c ) && d->isCellEnabled( r, c ) ) )
-                    {
-                        break;
-                    }
-
-                    if ( wrapped && ( originalRow < visualRow || ( originalRow == visualRow && originalColumn <= visualColumn ) ) )
-                    {
-                        looped = true;
-                        break;
-                    }
-                }
-
-                if ( cursorAction == MoveLeft || visualColumn >= 0 )
+                if ( r == -1 || c == -1 || ( !isRowHidden( r ) && !isColumnHidden( c ) && d->isCellEnabled( r, c ) ) )
                 {
                     break;
                 }
 
-                visualColumn = right + 1;
-
-                if ( visualRow == 0 )
+                if ( wrapped && ( originalRow < visualRow || ( originalRow == visualRow && originalColumn <= visualColumn ) ) )
                 {
-                    wrapped = true;
-                    visualRow = bottom;
-                }
-                else
-                {
-                    --visualRow;
-                }
-            }
-            while ( !looped );
-
-            if ( visualColumn < 0 )
-            {
-                visualColumn = originalColumn;
-            }
-
-            break;
-        }
-
-        case MoveNext:
-        case MoveRight:
-        {
-            int originalRow = visualRow;
-            int originalColumn = visualColumn;
-            bool firstTime = true;
-            bool looped = false;
-            bool wrapped = false;
-
-            do
-            {
-                int r = d->logicalRow( visualRow );
-                int c = d->logicalColumn( visualColumn );
-
-                if ( firstTime && c != -1 && d->hasSpans() )
-                {
-                    firstTime = false;
-                    QSpanCollection::Span span = d->span( r, c );
-
-                    if ( span.width() > 1 || span.height() > 1 )
-                    {
-                        visualColumn = d->visualColumn( d->columnSpanEndLogical( span.left(), span.width() ) );
-                    }
-                }
-
-                while ( visualColumn <= right )
-                {
-                    ++visualColumn;
-                    r = d->logicalRow( visualRow );
-                    c = d->logicalColumn( visualColumn );
-
-                    if ( r == -1 || c == -1 || ( !isRowHidden( r ) && !isColumnHidden( c ) && d->isCellEnabled( r, c ) ) )
-                    {
-                        break;
-                    }
-
-                    if ( wrapped && ( originalRow > visualRow || ( originalRow == visualRow && originalColumn >= visualColumn ) ) )
-                    {
-                        looped = true;
-                        break;
-                    }
-                }
-
-                if ( cursorAction == MoveRight || visualColumn <= right )
-                {
+                    looped = true;
                     break;
                 }
-
-                visualColumn = -1;
-
-                if ( visualRow == bottom )
-                {
-                    wrapped = true;
-                    visualRow = 0;
-                }
-                else
-                {
-                    ++visualRow;
-                }
-            }
-            while ( !looped );
-
-            if ( visualColumn > right )
-            {
-                visualColumn = originalColumn;
             }
 
-            break;
-        }
-
-        case MoveHome:
-            visualColumn = 0;
-
-            while ( visualColumn < right && d->isVisualColumnHiddenOrDisabled( visualRow, visualColumn ) )
+            if ( cursorAction == MoveLeft || visualColumn >= 0 )
             {
-                ++visualColumn;
+                break;
             }
 
-            if ( modifiers & Qt::ControlModifier )
+            visualColumn = right + 1;
+
+            if ( visualRow == 0 )
             {
-                visualRow = 0;
-
-                while ( visualRow < bottom && d->isVisualRowHiddenOrDisabled( visualRow, visualColumn ) )
-                {
-                    ++visualRow;
-                }
-            }
-
-            break;
-
-        case MoveEnd:
-            visualColumn = right;
-
-            if ( modifiers & Qt::ControlModifier )
-            {
+                wrapped = true;
                 visualRow = bottom;
             }
-
-            break;
-
-        case MovePageUp:
-        {
-            int newRow = rowAt( visualRect( current ).bottom() - d->viewport->height() );
-
-            if ( newRow == -1 )
+            else
             {
-                newRow = d->logicalRow( 0 );
+                --visualRow;
             }
+        }
+        while ( !looped );
 
-            return d->model->index( newRow, current.column(), d->root );
+        if ( visualColumn < 0 )
+        {
+            visualColumn = originalColumn;
         }
 
-        case MovePageDown:
-        {
-            int newRow = rowAt( visualRect( current ).top() + d->viewport->height() );
+        break;
+    }
 
-            if ( newRow == -1 )
+    case MoveNext:
+    case MoveRight:
+    {
+        int originalRow = visualRow;
+        int originalColumn = visualColumn;
+        bool firstTime = true;
+        bool looped = false;
+        bool wrapped = false;
+
+        do
+        {
+            int r = d->logicalRow( visualRow );
+            int c = d->logicalColumn( visualColumn );
+
+            if ( firstTime && c != -1 && d->hasSpans() )
             {
-                newRow = d->logicalRow( bottom );
+                firstTime = false;
+                QSpanCollection::Span span = d->span( r, c );
+
+                if ( span.width() > 1 || span.height() > 1 )
+                {
+                    visualColumn = d->visualColumn( d->columnSpanEndLogical( span.left(), span.width() ) );
+                }
             }
 
-            return d->model->index( newRow, current.column(), d->root );
+            while ( visualColumn <= right )
+            {
+                ++visualColumn;
+                r = d->logicalRow( visualRow );
+                c = d->logicalColumn( visualColumn );
+
+                if ( r == -1 || c == -1 || ( !isRowHidden( r ) && !isColumnHidden( c ) && d->isCellEnabled( r, c ) ) )
+                {
+                    break;
+                }
+
+                if ( wrapped && ( originalRow > visualRow || ( originalRow == visualRow && originalColumn >= visualColumn ) ) )
+                {
+                    looped = true;
+                    break;
+                }
+            }
+
+            if ( cursorAction == MoveRight || visualColumn <= right )
+            {
+                break;
+            }
+
+            visualColumn = -1;
+
+            if ( visualRow == bottom )
+            {
+                wrapped = true;
+                visualRow = 0;
+            }
+            else
+            {
+                ++visualRow;
+            }
         }
+        while ( !looped );
+
+        if ( visualColumn > right )
+        {
+            visualColumn = originalColumn;
+        }
+
+        break;
+    }
+
+    case MoveHome:
+        visualColumn = 0;
+
+        while ( visualColumn < right && d->isVisualColumnHiddenOrDisabled( visualRow, visualColumn ) )
+        {
+            ++visualColumn;
+        }
+
+        if ( modifiers & Qt::ControlModifier )
+        {
+            visualRow = 0;
+
+            while ( visualRow < bottom && d->isVisualRowHiddenOrDisabled( visualRow, visualColumn ) )
+            {
+                ++visualRow;
+            }
+        }
+
+        break;
+
+    case MoveEnd:
+        visualColumn = right;
+
+        if ( modifiers & Qt::ControlModifier )
+        {
+            visualRow = bottom;
+        }
+
+        break;
+
+    case MovePageUp:
+    {
+        int newRow = rowAt( visualRect( current ).bottom() - d->viewport->height() );
+
+        if ( newRow == -1 )
+        {
+            newRow = d->logicalRow( 0 );
+        }
+
+        return d->model->index( newRow, current.column(), d->root );
+    }
+
+    case MovePageDown:
+    {
+        int newRow = rowAt( visualRect( current ).top() + d->viewport->height() );
+
+        if ( newRow == -1 )
+        {
+            newRow = d->logicalRow( bottom );
+        }
+
+        return d->model->index( newRow, current.column(), d->root );
+    }
     }
 
     d->visualCursor = QPoint( visualColumn, visualRow );

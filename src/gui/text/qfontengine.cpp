@@ -630,7 +630,7 @@ static void collectSingleContour( qreal x0, qreal y0, uint *grid, int x, int y, 
 }
 
 Q_GUI_EXPORT void lscs_addBitmapToPath( qreal x0, qreal y0, const uchar *image_data, int bpl,
-                                      int w, int h, QPainterPath *path )
+                                        int w, int h, QPainterPath *path )
 {
     uint *grid = new uint[( w + 1 ) * ( h + 1 )];
 
@@ -759,7 +759,7 @@ void QFontEngine::addBitmapFontToPath( qreal x, qreal y, const QGlyphLayout &gly
         advanceY += offset.y;
 
         lscs_addBitmapToPath( ( advanceX + metrics.x ).toReal(), ( advanceY + metrics.y ).toReal(), bitmap_data, bitmap.bytesPerLine(),
-                            w, h, path );
+                              w, h, path );
         advanceX += glyphs.advances[i];
     }
 }
@@ -1334,70 +1334,70 @@ const uchar *QFontEngine::getCMap( const uchar *table, uint tableSize, bool *isS
 
         switch ( platformId )
         {
-            case 0: // Unicode
-                if ( score < Unicode &&
-                        ( platformSpecificId == 0 ||
-                          platformSpecificId == 2 ||
-                          platformSpecificId == 3 ) )
+        case 0: // Unicode
+            if ( score < Unicode &&
+                    ( platformSpecificId == 0 ||
+                      platformSpecificId == 2 ||
+                      platformSpecificId == 3 ) )
+            {
+                tableToUse = n;
+                score = Unicode;
+            }
+            else if ( score < Unicode11 && platformSpecificId == 1 )
+            {
+                tableToUse = n;
+                score = Unicode11;
+            }
+
+            break;
+
+        case 1: // Apple
+            if ( score < AppleRoman && platformSpecificId == 0 ) // Apple Roman
+            {
+                tableToUse = n;
+                score = AppleRoman;
+            }
+
+            break;
+
+        case 3: // Microsoft
+            switch ( platformSpecificId )
+            {
+            case 0:
+                symbolTable = n;
+
+                if ( score < Symbol )
                 {
                     tableToUse = n;
-                    score = Unicode;
-                }
-                else if ( score < Unicode11 && platformSpecificId == 1 )
-                {
-                    tableToUse = n;
-                    score = Unicode11;
+                    score = Symbol;
                 }
 
                 break;
 
-            case 1: // Apple
-                if ( score < AppleRoman && platformSpecificId == 0 ) // Apple Roman
+            case 1:
+                if ( score < MicrosoftUnicode )
                 {
                     tableToUse = n;
-                    score = AppleRoman;
+                    score = MicrosoftUnicode;
                 }
 
                 break;
 
-            case 3: // Microsoft
-                switch ( platformSpecificId )
+            case 0xa:
+                if ( score < MicrosoftUnicodeExtended )
                 {
-                    case 0:
-                        symbolTable = n;
-
-                        if ( score < Symbol )
-                        {
-                            tableToUse = n;
-                            score = Symbol;
-                        }
-
-                        break;
-
-                    case 1:
-                        if ( score < MicrosoftUnicode )
-                        {
-                            tableToUse = n;
-                            score = MicrosoftUnicode;
-                        }
-
-                        break;
-
-                    case 0xa:
-                        if ( score < MicrosoftUnicodeExtended )
-                        {
-                            tableToUse = n;
-                            score = MicrosoftUnicodeExtended;
-                        }
-
-                        break;
-
-                    default:
-                        break;
+                    tableToUse = n;
+                    score = MicrosoftUnicodeExtended;
                 }
+
+                break;
 
             default:
                 break;
+            }
+
+        default:
+            break;
         }
     }
 

@@ -69,28 +69,28 @@ QScriptValue QScriptContext::throwError( Error error, const QString &text )
 
     switch ( error )
     {
-        case UnknownError:
-            break;
+    case UnknownError:
+        break;
 
-        case ReferenceError:
-            jscError = JSC::ReferenceError;
-            break;
+    case ReferenceError:
+        jscError = JSC::ReferenceError;
+        break;
 
-        case SyntaxError:
-            jscError = JSC::SyntaxError;
-            break;
+    case SyntaxError:
+        jscError = JSC::SyntaxError;
+        break;
 
-        case TypeError:
-            jscError = JSC::TypeError;
-            break;
+    case TypeError:
+        jscError = JSC::TypeError;
+        break;
 
-        case RangeError:
-            jscError = JSC::RangeError;
-            break;
+    case RangeError:
+        jscError = JSC::RangeError;
+        break;
 
-        case URIError:
-            jscError = JSC::URIError;
-            break;
+    case URIError:
+        jscError = JSC::URIError;
+        break;
     }
 
     JSC::JSObject *result = JSC::throwError( frame, jscError, text );

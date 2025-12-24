@@ -405,24 +405,24 @@ void DirectShowPlayerService::doSetUrlSource( QMutexLocker *locker )
 
         switch ( hr )
         {
-            case VFW_E_UNKNOWN_FILE_TYPE:
-                m_error = QMediaPlayer::FormatError;
-                m_errorString = QString();
-                break;
+        case VFW_E_UNKNOWN_FILE_TYPE:
+            m_error = QMediaPlayer::FormatError;
+            m_errorString = QString();
+            break;
 
-            case E_FAIL:
-            case E_OUTOFMEMORY:
-            case VFW_E_CANNOT_LOAD_SOURCE_FILTER:
-            case VFW_E_NOT_FOUND:
-                m_error = QMediaPlayer::ResourceError;
-                m_errorString = QString();
-                break;
+        case E_FAIL:
+        case E_OUTOFMEMORY:
+        case VFW_E_CANNOT_LOAD_SOURCE_FILTER:
+        case VFW_E_NOT_FOUND:
+            m_error = QMediaPlayer::ResourceError;
+            m_errorString = QString();
+            break;
 
-            default:
-                m_error = QMediaPlayer::ResourceError;
-                m_errorString = QString();
-                qWarning( "DirectShowPlayerService::doSetUrlSource: Unresolved error code %x", uint( hr ) );
-                break;
+        default:
+            m_error = QMediaPlayer::ResourceError;
+            m_errorString = QString();
+            qWarning( "DirectShowPlayerService::doSetUrlSource: Unresolved error code %x", uint( hr ) );
+            break;
         }
 
         QCoreApplication::postEvent( this, new QEvent( QEvent::Type( Error ) ) );
@@ -613,17 +613,17 @@ void DirectShowPlayerService::doRender( QMutexLocker *locker )
             {
                 switch ( renderHr )
                 {
-                    case VFW_E_UNSUPPORTED_AUDIO:
-                    case VFW_E_UNSUPPORTED_VIDEO:
-                    case VFW_E_UNSUPPORTED_STREAM:
-                        m_error = QMediaPlayer::FormatError;
-                        m_errorString = QString();
-                        break;
+                case VFW_E_UNSUPPORTED_AUDIO:
+                case VFW_E_UNSUPPORTED_VIDEO:
+                case VFW_E_UNSUPPORTED_STREAM:
+                    m_error = QMediaPlayer::FormatError;
+                    m_errorString = QString();
+                    break;
 
-                    default:
-                        m_error = QMediaPlayer::ResourceError;
-                        m_errorString = QString();
-                        qWarning( "DirectShowPlayerService::doRender: Unresolved error code %x", uint( renderHr ) );
+                default:
+                    m_error = QMediaPlayer::ResourceError;
+                    m_errorString = QString();
+                    qWarning( "DirectShowPlayerService::doRender: Unresolved error code %x", uint( renderHr ) );
                 }
             }
 
@@ -1524,52 +1524,52 @@ void DirectShowPlayerService::graphEvent( QMutexLocker *locker )
         {
             switch ( eventCode )
             {
-                case EC_BUFFERING_DATA:
-                    m_buffering = param1;
+            case EC_BUFFERING_DATA:
+                m_buffering = param1;
 
-                    QCoreApplication::postEvent( this, new QEvent( QEvent::Type( StatusChange ) ) );
-                    break;
+                QCoreApplication::postEvent( this, new QEvent( QEvent::Type( StatusChange ) ) );
+                break;
 
-                case EC_COMPLETE:
-                    m_executedTasks &= ~( Play | Pause );
-                    m_executedTasks |= Stop;
+            case EC_COMPLETE:
+                m_executedTasks &= ~( Play | Pause );
+                m_executedTasks |= Stop;
 
-                    m_buffering = false;
-                    m_atEnd = true;
+                m_buffering = false;
+                m_atEnd = true;
 
-                    if ( IMediaSeeking *seeking = com_cast<IMediaSeeking>( m_graph, IID_IMediaSeeking ) )
-                    {
-                        LONGLONG position = 0;
+                if ( IMediaSeeking *seeking = com_cast<IMediaSeeking>( m_graph, IID_IMediaSeeking ) )
+                {
+                    LONGLONG position = 0;
 
-                        seeking->GetCurrentPosition( &position );
-                        seeking->Release();
+                    seeking->GetCurrentPosition( &position );
+                    seeking->Release();
 
-                        m_position = position / lscs_directShowTimeScale;
-                    }
+                    m_position = position / lscs_directShowTimeScale;
+                }
 
-                    QCoreApplication::postEvent( this, new QEvent( QEvent::Type( EndOfMedia ) ) );
-                    break;
+                QCoreApplication::postEvent( this, new QEvent( QEvent::Type( EndOfMedia ) ) );
+                break;
 
-                case EC_LENGTH_CHANGED:
-                    if ( IMediaSeeking *seeking = com_cast<IMediaSeeking>( m_graph, IID_IMediaSeeking ) )
-                    {
-                        LONGLONG duration = 0;
-                        seeking->GetDuration( &duration );
-                        m_duration = duration / lscs_directShowTimeScale;
+            case EC_LENGTH_CHANGED:
+                if ( IMediaSeeking *seeking = com_cast<IMediaSeeking>( m_graph, IID_IMediaSeeking ) )
+                {
+                    LONGLONG duration = 0;
+                    seeking->GetDuration( &duration );
+                    m_duration = duration / lscs_directShowTimeScale;
 
-                        DWORD capabilities = 0;
-                        seeking->GetCapabilities( &capabilities );
-                        m_seekable = capabilities & AM_SEEKING_CanSeekAbsolute;
+                    DWORD capabilities = 0;
+                    seeking->GetCapabilities( &capabilities );
+                    m_seekable = capabilities & AM_SEEKING_CanSeekAbsolute;
 
-                        seeking->Release();
+                    seeking->Release();
 
-                        QCoreApplication::postEvent( this, new QEvent( QEvent::Type( DurationChange ) ) );
-                    }
+                    QCoreApplication::postEvent( this, new QEvent( QEvent::Type( DurationChange ) ) );
+                }
 
-                    break;
+                break;
 
-                default:
-                    break;
+            default:
+                break;
             }
 
             event->FreeEventParams( eventCode, param1, param2 );
@@ -1583,39 +1583,39 @@ void DirectShowPlayerService::updateStatus()
 {
     switch ( m_graphStatus )
     {
-        case NoMedia:
-            m_playerControl->updateStatus( QMediaPlayer::NoMedia );
-            break;
+    case NoMedia:
+        m_playerControl->updateStatus( QMediaPlayer::NoMedia );
+        break;
 
-        case Loading:
-            m_playerControl->updateStatus( QMediaPlayer::LoadingMedia );
-            break;
+    case Loading:
+        m_playerControl->updateStatus( QMediaPlayer::LoadingMedia );
+        break;
 
-        case Loaded:
-            if ( ( m_pendingTasks | m_executingTask | m_executedTasks ) & ( Play | Pause ) )
+    case Loaded:
+        if ( ( m_pendingTasks | m_executingTask | m_executedTasks ) & ( Play | Pause ) )
+        {
+            if ( m_buffering )
             {
-                if ( m_buffering )
-                {
-                    m_playerControl->updateStatus( QMediaPlayer::BufferingMedia );
-                }
-                else
-                {
-                    m_playerControl->updateStatus( QMediaPlayer::BufferedMedia );
-                }
+                m_playerControl->updateStatus( QMediaPlayer::BufferingMedia );
             }
             else
             {
-                m_playerControl->updateStatus( QMediaPlayer::LoadedMedia );
+                m_playerControl->updateStatus( QMediaPlayer::BufferedMedia );
             }
+        }
+        else
+        {
+            m_playerControl->updateStatus( QMediaPlayer::LoadedMedia );
+        }
 
-            break;
+        break;
 
-        case InvalidMedia:
-            m_playerControl->updateStatus( QMediaPlayer::InvalidMedia );
-            break;
+    case InvalidMedia:
+        m_playerControl->updateStatus( QMediaPlayer::InvalidMedia );
+        break;
 
-        default:
-            m_playerControl->updateStatus( QMediaPlayer::UnknownMediaStatus );
+    default:
+        m_playerControl->updateStatus( QMediaPlayer::UnknownMediaStatus );
     }
 }
 

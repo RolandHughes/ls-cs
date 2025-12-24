@@ -283,45 +283,45 @@ int QGLPixelBuffer::metric( PaintDeviceMetric metric ) const
 
     switch ( metric )
     {
-        case PdmWidth:
-            return w;
+    case PdmWidth:
+        return w;
 
-        case PdmHeight:
-            return h;
+    case PdmHeight:
+        return h;
 
-        case PdmWidthMM:
-            return qRound( w * 1000 / dpmx );
+    case PdmWidthMM:
+        return qRound( w * 1000 / dpmx );
 
-        case PdmHeightMM:
-            return qRound( h * 1000 / dpmy );
+    case PdmHeightMM:
+        return qRound( h * 1000 / dpmy );
 
-        case PdmNumColors:
-            return 0;
+    case PdmNumColors:
+        return 0;
 
-        case PdmDepth:
-            return 32;//d->depth;
+    case PdmDepth:
+        return 32;//d->depth;
 
-        case PdmDpiX:
-            return qRound( dpmx * 0.0254 );
+    case PdmDpiX:
+        return qRound( dpmx * 0.0254 );
 
-        case PdmDpiY:
-            return qRound( dpmy * 0.0254 );
+    case PdmDpiY:
+        return qRound( dpmy * 0.0254 );
 
-        case PdmPhysicalDpiX:
-            return qRound( dpmx * 0.0254 );
+    case PdmPhysicalDpiX:
+        return qRound( dpmx * 0.0254 );
 
-        case PdmPhysicalDpiY:
-            return qRound( dpmy * 0.0254 );
+    case PdmPhysicalDpiY:
+        return qRound( dpmy * 0.0254 );
 
-        case QPaintDevice::PdmDevicePixelRatio:
-            return 1;
+    case QPaintDevice::PdmDevicePixelRatio:
+        return 1;
 
-        case QPaintDevice::PdmDevicePixelRatioScaled:
-            return QPaintDevice::devicePixelRatioFScale();
+    case QPaintDevice::PdmDevicePixelRatioScaled:
+        return QPaintDevice::devicePixelRatioFScale();
 
-        default:
-            qWarning( "QGLPixelBuffer::metric(), Unhandled metric type: %d\n", metric );
-            break;
+    default:
+        qWarning( "QGLPixelBuffer::metric(), Unhandled metric type: %d\n", metric );
+        break;
     }
 
     return 0;

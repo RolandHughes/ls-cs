@@ -44,7 +44,7 @@ class named_subexpressions;
 }
 
 template <typename Traits, typename Allocator = std::allocator<sub_match<typename Traits::string_type::const_iterator>>>
-          class match_results
+class match_results
 {
 public:
     using string_type        = typename Traits::string_type;

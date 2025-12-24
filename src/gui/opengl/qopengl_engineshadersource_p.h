@@ -532,7 +532,7 @@ static const char *const qopenglslImageSrcFragmentShader_core = "\n\
         uniform sampler2D imageTexture; \n\
         vec4 srcPixel() \n\
         { \n"
-        "return texture(imageTexture, textureCoords); \n"
-        "}\n";
+            "return texture(imageTexture, textureCoords); \n"
+            "}\n";
 
 #endif // GLGC_SHADER_SOURCE_H

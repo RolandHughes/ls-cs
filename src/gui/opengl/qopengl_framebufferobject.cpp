@@ -246,94 +246,94 @@ bool QOpenGLFramebufferObjectPrivate::checkFramebufferStatus( QOpenGLContext *ct
     switch ( status )
     {
 
-        case GL_NO_ERROR:
-        case GL_FRAMEBUFFER_COMPLETE:
-            return true;
+    case GL_NO_ERROR:
+    case GL_FRAMEBUFFER_COMPLETE:
+        return true;
 
-        case GL_FRAMEBUFFER_UNSUPPORTED:
+    case GL_FRAMEBUFFER_UNSUPPORTED:
 #if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
-            qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Unsupported framebuffer format" );
+        qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Unsupported framebuffer format" );
 #endif
 
-            break;
+        break;
 
-        case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+    case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
 #if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
-            qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete attachment" );
+        qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete attachment" );
 #endif
-            break;
+        break;
 
-        case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+    case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
 #if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
-            qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, missing attachment" );
+        qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, missing attachment" );
 #endif
-            break;
+        break;
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT
 
-        case GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT:
+    case GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT:
 #if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
-            qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, duplicate attachment" );
+        qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, duplicate attachment" );
 #endif
 
-            break;
+        break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS
 
-        case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
+    case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
 #if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
-            qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, attached images must have same dimensions" );
+        qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, attached images must have same dimensions" );
 #endif
 
-            break;
+        break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_FORMATS
 
-        case GL_FRAMEBUFFER_INCOMPLETE_FORMATS:
+    case GL_FRAMEBUFFER_INCOMPLETE_FORMATS:
 #if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
-            qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, attached images must have same format" );
+        qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, attached images must have same format" );
 #endif
-            break;
+        break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER
 
-        case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+    case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
 #if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
-            qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, missing draw buffer" );
+        qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, missing draw buffer" );
 #endif
 
-            break;
+        break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER
 
-        case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+    case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
 #if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
-            qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, missing read buffer" );
+        qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, missing read buffer" );
 #endif
 
-            break;
+        break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE
 
-        case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+    case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
 #if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
-            qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, attachments "
-                    "must have same number of samples per pixel" );
+        qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, attachments "
+                "must have same number of samples per pixel" );
 #endif
-            break;
+        break;
 #endif
 
-        default:
+    default:
 #if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
-            qDebug() <<"QOpenGLFramebufferObject::checkFramebufferStatus() An undefined error has occurred: " << status;
+        qDebug() <<"QOpenGLFramebufferObject::checkFramebufferStatus() An undefined error has occurred: " << status;
 #endif
 
-            break;
+        break;
     }
 
     return false;
@@ -1139,20 +1139,20 @@ static QImage lscs_gl_read_framebuffer( const QSize &size, GLenum internal_forma
 
     switch ( internal_format )
     {
-        case GL_RGB:
-        case GL_RGB8:
-            return lscs_gl_read_framebuffer_rgba8( size, false, ctx ).mirrored( false, flip );
+    case GL_RGB:
+    case GL_RGB8:
+        return lscs_gl_read_framebuffer_rgba8( size, false, ctx ).mirrored( false, flip );
 
-        case GL_RGB10:
-            return lscs_gl_read_framebuffer_rgb10a2( size, false, ctx ).mirrored( false, flip );
+    case GL_RGB10:
+        return lscs_gl_read_framebuffer_rgb10a2( size, false, ctx ).mirrored( false, flip );
 
-        case GL_RGB10_A2:
-            return lscs_gl_read_framebuffer_rgb10a2( size, include_alpha, ctx ).mirrored( false, flip );
+    case GL_RGB10_A2:
+        return lscs_gl_read_framebuffer_rgb10a2( size, include_alpha, ctx ).mirrored( false, flip );
 
-        case GL_RGBA:
-        case GL_RGBA8:
-        default:
-            return lscs_gl_read_framebuffer_rgba8( size, include_alpha, ctx ).mirrored( false, flip );
+    case GL_RGBA:
+    case GL_RGBA8:
+    default:
+        return lscs_gl_read_framebuffer_rgba8( size, include_alpha, ctx ).mirrored( false, flip );
     }
 
     // error, may want to throw
@@ -1240,7 +1240,7 @@ QImage QOpenGLFramebufferObject::toImage( bool flipped, int colorAttachmentIndex
         {
             extraFuncs->glReadBuffer( GL_COLOR_ATTACHMENT0 + colorAttachmentIndex );
             image = lscs_gl_read_framebuffer( d->colorAttachments[colorAttachmentIndex].size,
-                                            d->colorAttachments[colorAttachmentIndex].internalFormat, true, flipped );
+                                              d->colorAttachments[colorAttachmentIndex].internalFormat, true, flipped );
 
             extraFuncs->glReadBuffer( GL_COLOR_ATTACHMENT0 );
 
@@ -1248,7 +1248,7 @@ QImage QOpenGLFramebufferObject::toImage( bool flipped, int colorAttachmentIndex
         else
         {
             image = lscs_gl_read_framebuffer( d->colorAttachments[0].size,
-                                            d->colorAttachments[0].internalFormat, true, flipped );
+                                              d->colorAttachments[0].internalFormat, true, flipped );
         }
     }
 

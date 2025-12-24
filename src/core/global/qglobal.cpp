@@ -138,44 +138,44 @@ QString QSysInfo::macEdition( MacVersion macVersion )
 
     switch ( macVersion )
     {
-        case QSysInfo::MacVersion::MV_10_11:
-            retval = "El Capitan";
-            break;
+    case QSysInfo::MacVersion::MV_10_11:
+        retval = "El Capitan";
+        break;
 
-        case QSysInfo::MacVersion::MV_10_12:
-            retval = "Sierra";
-            break;
+    case QSysInfo::MacVersion::MV_10_12:
+        retval = "Sierra";
+        break;
 
-        case QSysInfo::MacVersion::MV_10_13:
-            retval = "High Sierra";
-            break;
+    case QSysInfo::MacVersion::MV_10_13:
+        retval = "High Sierra";
+        break;
 
-        case QSysInfo::MacVersion::MV_10_14:
-            retval = "Mojave";
-            break;
+    case QSysInfo::MacVersion::MV_10_14:
+        retval = "Mojave";
+        break;
 
-        case QSysInfo::MacVersion::MV_10_15:
-            retval = "Catalina";
-            break;
+    case QSysInfo::MacVersion::MV_10_15:
+        retval = "Catalina";
+        break;
 
-        case QSysInfo::MacVersion::MV_11:
-            retval = "Big Sur";
-            break;
+    case QSysInfo::MacVersion::MV_11:
+        retval = "Big Sur";
+        break;
 
-        case QSysInfo::MacVersion::MV_12:
-            retval = "Monterey";
-            break;
+    case QSysInfo::MacVersion::MV_12:
+        retval = "Monterey";
+        break;
 
-        case QSysInfo::MacVersion::MV_13:
-            retval = "Ventura";
-            break;
+    case QSysInfo::MacVersion::MV_13:
+        retval = "Ventura";
+        break;
 
-        case QSysInfo::MacVersion::MV_14:
-            retval = "Sonoma";
-            break;
+    case QSysInfo::MacVersion::MV_14:
+        retval = "Sonoma";
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return retval;
@@ -210,85 +210,85 @@ QSysInfo::WinVersion QSysInfo::windowsVersion()
     switch ( osVersion.dwPlatformId )
     {
 
-        case VER_PLATFORM_WIN32_WINDOWS:
-            if ( osVersion.dwMinorVersion == 90 )
-            {
-                winVersion = QSysInfo::WV_Me;
+    case VER_PLATFORM_WIN32_WINDOWS:
+        if ( osVersion.dwMinorVersion == 90 )
+        {
+            winVersion = QSysInfo::WV_Me;
 
-            }
-            else if ( osVersion.dwMinorVersion == 10 )
-            {
-                winVersion = QSysInfo::WV_98;
+        }
+        else if ( osVersion.dwMinorVersion == 10 )
+        {
+            winVersion = QSysInfo::WV_98;
 
-            }
-            else
-            {
-                winVersion = QSysInfo::WV_95;
-            }
+        }
+        else
+        {
+            winVersion = QSysInfo::WV_95;
+        }
 
-            break;
+        break;
 
-        default:
+    default:
 
-            // VER_PLATFORM_WIN32_NT
+        // VER_PLATFORM_WIN32_NT
 
-            if ( osVersion.dwMajorVersion < 5 )
-            {
-                winVersion = QSysInfo::WV_NT;
+        if ( osVersion.dwMajorVersion < 5 )
+        {
+            winVersion = QSysInfo::WV_NT;
 
-            }
-            else if ( osVersion.dwMajorVersion == 5 && osVersion.dwMinorVersion == 0 )
-            {
-                winVersion = QSysInfo::WV_2000;
+        }
+        else if ( osVersion.dwMajorVersion == 5 && osVersion.dwMinorVersion == 0 )
+        {
+            winVersion = QSysInfo::WV_2000;
 
-            }
-            else if ( osVersion.dwMajorVersion == 5 && osVersion.dwMinorVersion == 1 )
-            {
-                winVersion = QSysInfo::WV_XP;
+        }
+        else if ( osVersion.dwMajorVersion == 5 && osVersion.dwMinorVersion == 1 )
+        {
+            winVersion = QSysInfo::WV_XP;
 
-            }
-            else if ( osVersion.dwMajorVersion == 5 && osVersion.dwMinorVersion == 2 )
-            {
-                winVersion = QSysInfo::WV_2003;
+        }
+        else if ( osVersion.dwMajorVersion == 5 && osVersion.dwMinorVersion == 2 )
+        {
+            winVersion = QSysInfo::WV_2003;
 
-            }
-            else if ( osVersion.dwMajorVersion == 6 && osVersion.dwMinorVersion == 0 )
-            {
-                winVersion = QSysInfo::WV_VISTA;
+        }
+        else if ( osVersion.dwMajorVersion == 6 && osVersion.dwMinorVersion == 0 )
+        {
+            winVersion = QSysInfo::WV_VISTA;
 
-            }
-            else if ( osVersion.dwMajorVersion == 6 && osVersion.dwMinorVersion == 1 )
-            {
-                winVersion = QSysInfo::WV_WINDOWS7;
+        }
+        else if ( osVersion.dwMajorVersion == 6 && osVersion.dwMinorVersion == 1 )
+        {
+            winVersion = QSysInfo::WV_WINDOWS7;
 
-            }
-            else if ( osVersion.dwMajorVersion == 6 && osVersion.dwMinorVersion == 2 )
-            {
-                winVersion = QSysInfo::WV_WINDOWS8;
+        }
+        else if ( osVersion.dwMajorVersion == 6 && osVersion.dwMinorVersion == 2 )
+        {
+            winVersion = QSysInfo::WV_WINDOWS8;
 
-            }
-            else if ( osVersion.dwMajorVersion == 6 && osVersion.dwMinorVersion == 3 )
-            {
-                winVersion = QSysInfo::WV_WINDOWS8_1;
+        }
+        else if ( osVersion.dwMajorVersion == 6 && osVersion.dwMinorVersion == 3 )
+        {
+            winVersion = QSysInfo::WV_WINDOWS8_1;
 
-            }
-            else if ( osVersion.dwMajorVersion == 10 && osVersion.dwMinorVersion == 0 )
-            {
-                winVersion = QSysInfo::WV_WINDOWS10;
+        }
+        else if ( osVersion.dwMajorVersion == 10 && osVersion.dwMinorVersion == 0 )
+        {
+            winVersion = QSysInfo::WV_WINDOWS10;
 
-            }
-            else if ( osVersion.dwMajorVersion == 11 && osVersion.dwMinorVersion == 0 )
-            {
-                winVersion = QSysInfo::WV_WINDOWS11;
+        }
+        else if ( osVersion.dwMajorVersion == 11 && osVersion.dwMinorVersion == 0 )
+        {
+            winVersion = QSysInfo::WV_WINDOWS11;
 
-            }
-            else
-            {
-                qWarning( "QSysInfo::windowsVersion() Untested Windows version %d.%d detected",
-                          int( osVersion.dwMajorVersion ), int( osVersion.dwMinorVersion ) );
+        }
+        else
+        {
+            qWarning( "QSysInfo::windowsVersion() Untested Windows version %d.%d detected",
+                      int( osVersion.dwMajorVersion ), int( osVersion.dwMinorVersion ) );
 
-                winVersion = QSysInfo::WV_NT_based;
-            }
+            winVersion = QSysInfo::WV_NT_based;
+        }
 
     }
 
@@ -363,61 +363,61 @@ QString QSysInfo::windowsEdition( WinVersion winVersion )
 
     switch ( winVersion )
     {
-        case QSysInfo::WV_95:
-            retval = "Windows 95";
-            break;
+    case QSysInfo::WV_95:
+        retval = "Windows 95";
+        break;
 
-        case QSysInfo::WV_98:
-            retval = "Windows 98";
-            break;
+    case QSysInfo::WV_98:
+        retval = "Windows 98";
+        break;
 
-        case QSysInfo::WV_Me:
-            retval = "Windows ME";
-            break;
+    case QSysInfo::WV_Me:
+        retval = "Windows ME";
+        break;
 
-        case QSysInfo::WV_NT:
-            retval = "Windows NT";
-            break;
+    case QSysInfo::WV_NT:
+        retval = "Windows NT";
+        break;
 
-        case QSysInfo::WV_2000:
-            retval = "Windows 2000";
-            break;
+    case QSysInfo::WV_2000:
+        retval = "Windows 2000";
+        break;
 
-        case  QSysInfo::WV_2003:
-            retval = "Windows Server 2003";
-            break;
+    case  QSysInfo::WV_2003:
+        retval = "Windows Server 2003";
+        break;
 
-        case QSysInfo::WV_XP:
-            retval = "Windows XP";
-            break;
+    case QSysInfo::WV_XP:
+        retval = "Windows XP";
+        break;
 
-        case QSysInfo::WV_VISTA:
-            retval = "Windows Vista";
-            break;
+    case QSysInfo::WV_VISTA:
+        retval = "Windows Vista";
+        break;
 
-        case QSysInfo::WV_WINDOWS7:
-            retval = "Windows 7";
-            break;
+    case QSysInfo::WV_WINDOWS7:
+        retval = "Windows 7";
+        break;
 
-        case QSysInfo::WV_WINDOWS8:
-            retval = "Windows 8";
-            break;
+    case QSysInfo::WV_WINDOWS8:
+        retval = "Windows 8";
+        break;
 
-        case QSysInfo::WV_WINDOWS8_1:
-            retval = "Windows 8.1";
-            break;
+    case QSysInfo::WV_WINDOWS8_1:
+        retval = "Windows 8.1";
+        break;
 
-        case QSysInfo::WV_WINDOWS10:
-            retval = "Windows 10";
-            break;
+    case QSysInfo::WV_WINDOWS10:
+        retval = "Windows 10";
+        break;
 
-        case QSysInfo::WV_WINDOWS11:
-            retval = "Windows 11";
-            break;
+    case QSysInfo::WV_WINDOWS11:
+        retval = "Windows 11";
+        break;
 
-        case QSysInfo::WV_NT_based:
-            retval = "Unknown NT Kernel";
-            break;
+    case QSysInfo::WV_NT_based:
+        retval = "Unknown NT Kernel";
+        break;
     }
 
     return retval;

@@ -51,26 +51,26 @@ Item IntersectIterator::next()
         {
             switch ( m_node1.asNode().compareOrder( m_node2.asNode() ) )
             {
-                case QXmlNodeModelIndex::Precedes:
-                {
-                    m_node1 = m_it1->next();
-                    break;
-                }
+            case QXmlNodeModelIndex::Precedes:
+            {
+                m_node1 = m_it1->next();
+                break;
+            }
 
-                case QXmlNodeModelIndex::Follows:
-                {
-                    m_node2 = m_it2->next();
-                    break;
-                }
+            case QXmlNodeModelIndex::Follows:
+            {
+                m_node2 = m_it2->next();
+                break;
+            }
 
-                default:
-                {
-                    m_current = m_node2;
-                    m_node1 = m_it1->next();
-                    m_node2 = m_it2->next();
-                    ++m_position;
-                    return m_current;
-                }
+            default:
+            {
+                m_current = m_node2;
+                m_node1 = m_it1->next();
+                m_node2 = m_it2->next();
+                ++m_position;
+                return m_current;
+            }
             }
         }
         else

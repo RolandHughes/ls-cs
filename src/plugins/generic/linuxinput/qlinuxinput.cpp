@@ -341,17 +341,17 @@ void QLinuxInputMouseHandler::readMouseData()
 
             switch ( data->code )
             {
-                case BTN_LEFT:
-                    button = Qt::LeftButton;
-                    break;
+            case BTN_LEFT:
+                button = Qt::LeftButton;
+                break;
 
-                case BTN_MIDDLE:
-                    button = Qt::MiddleButton;
-                    break;
+            case BTN_MIDDLE:
+                button = Qt::MiddleButton;
+                break;
 
-                case BTN_RIGHT:
-                    button = Qt::RightButton;
-                    break;
+            case BTN_RIGHT:
+                button = Qt::RightButton;
+                break;
             }
 
             if ( data->value )
@@ -682,24 +682,24 @@ void QLinuxInputKeyboardHandler::readKeycode()
 
         switch ( ka )
         {
-            case QWSKeyboardHandler::CapsLockOn:
-            case QWSKeyboardHandler::CapsLockOff:
-                switchLed( LED_CAPSL, ka == QWSKeyboardHandler::CapsLockOn );
-                break;
+        case QWSKeyboardHandler::CapsLockOn:
+        case QWSKeyboardHandler::CapsLockOff:
+            switchLed( LED_CAPSL, ka == QWSKeyboardHandler::CapsLockOn );
+            break;
 
-            case QWSKeyboardHandler::NumLockOn:
-            case QWSKeyboardHandler::NumLockOff:
-                switchLed( LED_NUML, ka == QWSKeyboardHandler::NumLockOn );
-                break;
+        case QWSKeyboardHandler::NumLockOn:
+        case QWSKeyboardHandler::NumLockOff:
+            switchLed( LED_NUML, ka == QWSKeyboardHandler::NumLockOn );
+            break;
 
-            case QWSKeyboardHandler::ScrollLockOn:
-            case QWSKeyboardHandler::ScrollLockOff:
-                switchLed( LED_SCROLLL, ka == QWSKeyboardHandler::ScrollLockOn );
-                break;
+        case QWSKeyboardHandler::ScrollLockOn:
+        case QWSKeyboardHandler::ScrollLockOff:
+            switchLed( LED_SCROLLL, ka == QWSKeyboardHandler::ScrollLockOn );
+            break;
 
-            default:
-                // ignore console switching and reboot
-                break;
+        default:
+            // ignore console switching and reboot
+            break;
         }
     }
 }

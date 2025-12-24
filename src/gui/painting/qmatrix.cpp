@@ -612,12 +612,12 @@ QDebug operator<<( QDebug dbg, const QMatrix &m )
 {
     QDebugStateSaver saver( dbg );
     dbg.nospace() << "QMatrix("
-                  << "11=" << m.m11()
-                  << " 12=" << m.m12()
-                  << " 21=" << m.m21()
-                  << " 22=" << m.m22()
-                  << " dx=" << m.dx()
-                  << " dy=" << m.dy()
-                  << ')';
+       << "11=" << m.m11()
+       << " 12=" << m.m12()
+       << " 21=" << m.m21()
+       << " 22=" << m.m22()
+       << " dx=" << m.dx()
+       << " dy=" << m.dy()
+       << ')';
     return dbg;
 }

@@ -7,19 +7,28 @@ if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.19.0")
    cmake_policy(SET CMP0110 NEW)
 endif()
 
-if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.20.0")
-   # enable RTTI on MSVC
-   cmake_policy(SET CMP0117 OLD)
-endif()
-
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 set(BUILD_MAJOR "0")
-set(BUILD_MINOR "1")
+set(BUILD_MINOR "2")
 set(BUILD_MICRO "1")
 
 project(LsCs VERSION ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO} DESCRIPTION "A C++ Cross Platform Application Framework" )
 
+function(dump_cmake_variables)
+    get_cmake_property(_variableNames VARIABLES)
+    list (SORT _variableNames)
+    foreach (_variableName ${_variableNames})
+        if (ARGV0)
+            unset(MATCHED)
+            string(REGEX MATCH ${ARGV0} MATCHED ${_variableName})
+            if (NOT MATCHED)
+                continue()
+            endif()
+        endif()
+        message(STATUS "${_variableName}=${${_variableName}}")
+    endforeach()
+endfunction()
 
 # used to control cmake/pc variables when building
 # installation packages
@@ -76,7 +85,7 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    #  One single RPATH definition works for all. Really only need RPATH
    #  for a development install into a non-system directory.
    #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-     
+
    # set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/:$ORIGIN/..")
    set(CMAKE_INSTALL_INCLUDEDIR "include/${CMAKE_PROJECT_NAME}")
    set(CMAKE_INSTALL_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
@@ -91,14 +100,14 @@ endif()
 
 message( STATUS, "CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
 #
-# When building for a package we install to /usr under a 
+# When building for a package we install to /usr under a
 # fakeroot or buildroot during build. We don't want
 # the build install path but the system target path.
 #
 if (BUILDING_DEBIAN)
     message(STATUS "** We are building Debian package ***")
     add_compile_definitions(LSCS_PACKAGE_BUILD)
-    set(LSCS_INST_PREFIX  "/usr")    
+    set(LSCS_INST_PREFIX  "/usr")
     set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
     set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
     set(CMAKE_INSTALL_FULL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" )
@@ -107,28 +116,26 @@ if (BUILDING_DEBIAN)
 elseif (BUILDING_RPM)
     message(STATUS "** We are building RPM package ***")
     add_compile_definitions(LSCS_PACKAGE_BUILD)
-    set(LSCS_INST_PREFIX  "/usr")    
+    set(LSCS_INST_PREFIX  "/usr")
     set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
     set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
     set(LSCS_INST_BIN     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_BINDIR}")
     set(LSCS_INST_SHARE   "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME}")
 else()
-    set(LSCS_INST_PREFIX  "${CMAKE_INSTALL_PREFIX}")    
+    set(LSCS_INST_PREFIX  "${CMAKE_INSTALL_PREFIX}")
     set(LSCS_INST_LIB     "${CMAKE_INSTALL_FULL_LIBDIR}")
     set(LSCS_INST_INCLUDE "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
     set(LSCS_INST_BIN     "${CMAKE_INSTALL_FULL_BINDIR}")
     set(LSCS_INST_SHARE   "${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME}")
 endif()
 
-# Note: webkit2.pc.in also uses prefix
-#
 set(prefix "${LSCS_INST_PREFIX}")
 
 # required libraries
 set(BUILD_COMPONENTS "Core Xml")
 
 # unused at this time: DBus, Declarative, and ScriptTools
-set(LSCS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Script Sql Svg Vulkan WebKit XmlPatterns)
+set(LSCS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Sql Svg XmlPatterns)
 
 set(PACKAGE           "lscs")
 set(PACKAGE_NAME      "LsCs")
@@ -352,6 +359,7 @@ set_package_properties(ZLIB PROPERTIES
 )
 
 if (ZLIB_FOUND)
+   include_directories(${ZLIB_INCLUDE_DIRS})
    message(STATUS "ZLIB was found, path is ${ZLIB_LIBRARIES}\n")
 else()
    message(STATUS "ZLIB was not found, bundled library will be used\n")
@@ -409,6 +417,10 @@ set_package_properties(PostgreSQL PROPERTIES
    URL "https://www.postgresql.org"
    TYPE RECOMMENDED
 )
+
+if (PosgreSQL_FOUND)
+   set(HAVE_PG_CONFIG_H TRUE)
+endif()
 
 if (CMAKE_DISABLE_FIND_PACKAGE_PostgreSQL)
    message(STATUS "PostgreSQL disabled, lscs plugin will not be built\n")
@@ -878,7 +890,7 @@ install(
   FILES
      ${CMAKE_BINARY_DIR}/LsCs-library.conf
      DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/ld.so.conf.d
-)     
+)
 else()
 install(
    FILES

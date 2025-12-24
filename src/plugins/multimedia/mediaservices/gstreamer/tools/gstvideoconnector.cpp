@@ -431,16 +431,16 @@ static GstStateChangeReturn gst_video_connector_change_state ( GstElement *eleme
 
     switch ( transition )
     {
-        case GST_STATE_CHANGE_PAUSED_TO_READY:
-            gst_video_connector_reset ( connector );
-            break;
+    case GST_STATE_CHANGE_PAUSED_TO_READY:
+        gst_video_connector_reset ( connector );
+        break;
 
-        case GST_STATE_CHANGE_READY_TO_PAUSED:
-            connector->relinked = FALSE;
-            break;
+    case GST_STATE_CHANGE_READY_TO_PAUSED:
+        connector->relinked = FALSE;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return result;

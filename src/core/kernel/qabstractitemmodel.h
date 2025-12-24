@@ -297,19 +297,19 @@ public:
     using QObject::parent;
 
     CORE_LSCS_SIGNAL_1( Public, void dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight,
-                      const QVector<int> &roles = QVector<int>() ) )
+                        const QVector<int> &roles = QVector<int>() ) )
     CORE_LSCS_SIGNAL_2( dataChanged, topLeft, bottomRight, roles )
 
     CORE_LSCS_SIGNAL_1( Public, void headerDataChanged( Qt::Orientation orientation, int first, int last ) )
     CORE_LSCS_SIGNAL_2( headerDataChanged, orientation, first, last )
 
     CORE_LSCS_SIGNAL_1( Public, void layoutChanged( const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(),
-                      QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint ) )
+                        QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint ) )
     CORE_LSCS_SIGNAL_2( layoutChanged, parents, hint )
 
     CORE_LSCS_SIGNAL_1( Public, void layoutAboutToBeChanged( const QList<QPersistentModelIndex> &parents =
-                          QList<QPersistentModelIndex>(),
-                      QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint ) )
+                            QList<QPersistentModelIndex>(),
+                        QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint ) )
     CORE_LSCS_SIGNAL_2( layoutAboutToBeChanged, parents, hint )
 
     CORE_LSCS_SIGNAL_1( Public, void rowsAboutToBeInserted( const QModelIndex &parent, int first, int last ) )
@@ -343,19 +343,19 @@ public:
     CORE_LSCS_SIGNAL_2( modelReset )
 
     CORE_LSCS_SIGNAL_1( Public, void rowsAboutToBeMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
-                      const QModelIndex &destinationParent, int destinationRow ) )
+                        const QModelIndex &destinationParent, int destinationRow ) )
     CORE_LSCS_SIGNAL_2( rowsAboutToBeMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationRow )
 
     CORE_LSCS_SIGNAL_1( Public, void rowsMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
-                      const QModelIndex &destinationParent, int destinationRow ) )
+                        const QModelIndex &destinationParent, int destinationRow ) )
     CORE_LSCS_SIGNAL_2( rowsMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationRow )
 
     CORE_LSCS_SIGNAL_1( Public, void columnsAboutToBeMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
-                      const QModelIndex &destinationParent, int destinationColumn ) )
+                        const QModelIndex &destinationParent, int destinationColumn ) )
     CORE_LSCS_SIGNAL_2( columnsAboutToBeMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationColumn )
 
     CORE_LSCS_SIGNAL_1( Public, void columnsMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
-                      const QModelIndex &destinationParent, int destinationColumn ) )
+                        const QModelIndex &destinationParent, int destinationColumn ) )
     CORE_LSCS_SIGNAL_2( columnsMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationColumn )
 
     //

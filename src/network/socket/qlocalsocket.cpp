@@ -107,49 +107,49 @@ QDebug operator<<( QDebug debug, QLocalSocket::LocalSocketError error )
 
     switch ( error )
     {
-        case QLocalSocket::ConnectionRefusedError:
-            debug << "QLocalSocket::ConnectionRefusedError";
-            break;
+    case QLocalSocket::ConnectionRefusedError:
+        debug << "QLocalSocket::ConnectionRefusedError";
+        break;
 
-        case QLocalSocket::PeerClosedError:
-            debug << "QLocalSocket::PeerClosedError";
-            break;
+    case QLocalSocket::PeerClosedError:
+        debug << "QLocalSocket::PeerClosedError";
+        break;
 
-        case QLocalSocket::ServerNotFoundError:
-            debug << "QLocalSocket::ServerNotFoundError";
-            break;
+    case QLocalSocket::ServerNotFoundError:
+        debug << "QLocalSocket::ServerNotFoundError";
+        break;
 
-        case QLocalSocket::SocketAccessError:
-            debug << "QLocalSocket::SocketAccessError";
-            break;
+    case QLocalSocket::SocketAccessError:
+        debug << "QLocalSocket::SocketAccessError";
+        break;
 
-        case QLocalSocket::SocketResourceError:
-            debug << "QLocalSocket::SocketResourceError";
-            break;
+    case QLocalSocket::SocketResourceError:
+        debug << "QLocalSocket::SocketResourceError";
+        break;
 
-        case QLocalSocket::SocketTimeoutError:
-            debug << "QLocalSocket::SocketTimeoutError";
-            break;
+    case QLocalSocket::SocketTimeoutError:
+        debug << "QLocalSocket::SocketTimeoutError";
+        break;
 
-        case QLocalSocket::DatagramTooLargeError:
-            debug << "QLocalSocket::DatagramTooLargeError";
-            break;
+    case QLocalSocket::DatagramTooLargeError:
+        debug << "QLocalSocket::DatagramTooLargeError";
+        break;
 
-        case QLocalSocket::ConnectionError:
-            debug << "QLocalSocket::ConnectionError";
-            break;
+    case QLocalSocket::ConnectionError:
+        debug << "QLocalSocket::ConnectionError";
+        break;
 
-        case QLocalSocket::UnsupportedSocketOperationError:
-            debug << "QLocalSocket::UnsupportedSocketOperationError";
-            break;
+    case QLocalSocket::UnsupportedSocketOperationError:
+        debug << "QLocalSocket::UnsupportedSocketOperationError";
+        break;
 
-        case QLocalSocket::UnknownSocketError:
-            debug << "QLocalSocket::UnknownSocketError";
-            break;
+    case QLocalSocket::UnknownSocketError:
+        debug << "QLocalSocket::UnknownSocketError";
+        break;
 
-        default:
-            debug << "QLocalSocket::SocketError(" << int( error ) << ')';
-            break;
+    default:
+        debug << "QLocalSocket::SocketError(" << int( error ) << ')';
+        break;
     }
 
     return debug;
@@ -162,25 +162,25 @@ QDebug operator<<( QDebug debug, QLocalSocket::LocalSocketState state )
 
     switch ( state )
     {
-        case QLocalSocket::UnconnectedState:
-            debug << "QLocalSocket::UnconnectedState";
-            break;
+    case QLocalSocket::UnconnectedState:
+        debug << "QLocalSocket::UnconnectedState";
+        break;
 
-        case QLocalSocket::ConnectingState:
-            debug << "QLocalSocket::ConnectingState";
-            break;
+    case QLocalSocket::ConnectingState:
+        debug << "QLocalSocket::ConnectingState";
+        break;
 
-        case QLocalSocket::ConnectedState:
-            debug << "QLocalSocket::ConnectedState";
-            break;
+    case QLocalSocket::ConnectedState:
+        debug << "QLocalSocket::ConnectedState";
+        break;
 
-        case QLocalSocket::ClosingState:
-            debug << "QLocalSocket::ClosingState";
-            break;
+    case QLocalSocket::ClosingState:
+        debug << "QLocalSocket::ClosingState";
+        break;
 
-        default:
-            debug << "QLocalSocket::SocketState(" << int( state ) << ')';
-            break;
+    default:
+        debug << "QLocalSocket::SocketState(" << int( state ) << ')';
+        break;
     }
 
     return debug;

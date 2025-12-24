@@ -57,14 +57,14 @@ QPlatformNativeInterface::FP_Context QXcbGlxNativeInterfaceHandler::nativeResour
 {
     switch ( resourceType( resource ) )
     {
-        case GLXConfig:
-            return glxConfigForContext;
+    case GLXConfig:
+        return glxConfigForContext;
 
-        case GLXContext:
-            return glxContextForContext;
+    case GLXContext:
+        return glxContextForContext;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return nullptr;

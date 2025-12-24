@@ -62,79 +62,79 @@ static void addTagToMap( const GstTagList *list, const gchar *tag, gpointer user
 
     switch ( G_VALUE_TYPE( &val ) )
     {
-        case G_TYPE_STRING:
+    case G_TYPE_STRING:
+    {
+        const gchar *str_value = g_value_get_string( &val );
+        map->insert( QByteArray( tag ), QString::fromUtf8( str_value ) );
+        break;
+    }
+
+    case G_TYPE_INT:
+        map->insert( QByteArray( tag ), g_value_get_int( &val ) );
+        break;
+
+    case G_TYPE_UINT:
+        map->insert( QByteArray( tag ), g_value_get_uint( &val ) );
+        break;
+
+    case G_TYPE_LONG:
+        map->insert( QByteArray( tag ), qint64( g_value_get_long( &val ) ) );
+        break;
+
+    case G_TYPE_BOOLEAN:
+        map->insert( QByteArray( tag ), g_value_get_boolean( &val ) );
+        break;
+
+    case G_TYPE_CHAR:
+#if GLIB_CHECK_VERSION(2,32,0)
+        map->insert( QByteArray( tag ), g_value_get_schar( &val ) );
+#else
+        map->insert( QByteArray( tag ), g_value_get_char( &val ) );
+#endif
+        break;
+
+    case G_TYPE_DOUBLE:
+        map->insert( QByteArray( tag ), g_value_get_double( &val ) );
+        break;
+
+    default:
+        // GST_TYPE_DATE is a function, not a constant, so pull it out of the switch
+#if GST_CHECK_VERSION(1,0,0)
+        if ( G_VALUE_TYPE( &val ) == G_TYPE_DATE )
         {
-            const gchar *str_value = g_value_get_string( &val );
-            map->insert( QByteArray( tag ), QString::fromUtf8( str_value ) );
-            break;
+            const GDate *date = ( const GDate * )g_value_get_boxed( &val );
+#else
+
+        if ( G_VALUE_TYPE( &val ) == GST_TYPE_DATE )
+        {
+            const GDate *date = gst_value_get_date( &val );
+#endif
+
+            if ( g_date_valid( date ) )
+            {
+                int year = g_date_get_year( date );
+                int month = g_date_get_month( date );
+                int day = g_date_get_day( date );
+                map->insert( QByteArray( tag ), QDate( year, month, day ) );
+
+                if ( !map->contains( "year" ) )
+                {
+                    map->insert( "year", year );
+                }
+            }
+        }
+        else if ( G_VALUE_TYPE( &val ) == GST_TYPE_FRACTION )
+        {
+            int nom = gst_value_get_fraction_numerator( &val );
+            int denom = gst_value_get_fraction_denominator( &val );
+
+            if ( denom > 0 )
+            {
+                map->insert( QByteArray( tag ), double( nom ) / denom );
+            }
         }
 
-        case G_TYPE_INT:
-            map->insert( QByteArray( tag ), g_value_get_int( &val ) );
-            break;
-
-        case G_TYPE_UINT:
-            map->insert( QByteArray( tag ), g_value_get_uint( &val ) );
-            break;
-
-        case G_TYPE_LONG:
-            map->insert( QByteArray( tag ), qint64( g_value_get_long( &val ) ) );
-            break;
-
-        case G_TYPE_BOOLEAN:
-            map->insert( QByteArray( tag ), g_value_get_boolean( &val ) );
-            break;
-
-        case G_TYPE_CHAR:
-#if GLIB_CHECK_VERSION(2,32,0)
-            map->insert( QByteArray( tag ), g_value_get_schar( &val ) );
-#else
-            map->insert( QByteArray( tag ), g_value_get_char( &val ) );
-#endif
-            break;
-
-        case G_TYPE_DOUBLE:
-            map->insert( QByteArray( tag ), g_value_get_double( &val ) );
-            break;
-
-        default:
-            // GST_TYPE_DATE is a function, not a constant, so pull it out of the switch
-#if GST_CHECK_VERSION(1,0,0)
-            if ( G_VALUE_TYPE( &val ) == G_TYPE_DATE )
-            {
-                const GDate *date = ( const GDate * )g_value_get_boxed( &val );
-#else
-
-            if ( G_VALUE_TYPE( &val ) == GST_TYPE_DATE )
-            {
-                const GDate *date = gst_value_get_date( &val );
-#endif
-
-                if ( g_date_valid( date ) )
-                {
-                    int year = g_date_get_year( date );
-                    int month = g_date_get_month( date );
-                    int day = g_date_get_day( date );
-                    map->insert( QByteArray( tag ), QDate( year, month, day ) );
-
-                    if ( !map->contains( "year" ) )
-                    {
-                        map->insert( "year", year );
-                    }
-                }
-            }
-            else if ( G_VALUE_TYPE( &val ) == GST_TYPE_FRACTION )
-            {
-                int nom = gst_value_get_fraction_numerator( &val );
-                int denom = gst_value_get_fraction_denominator( &val );
-
-                if ( denom > 0 )
-                {
-                    map->insert( QByteArray( tag ), double( nom ) / denom );
-                }
-            }
-
-            break;
+        break;
     }
 
     g_value_unset( &val );
@@ -1487,50 +1487,50 @@ void QGstUtils::setMetaData( GstElement *element, const QMap<QByteArray, QVarian
 
         switch ( tagValue.type() )
         {
-            case QVariant::String:
-                gst_tag_setter_add_tags( GST_TAG_SETTER( element ),
-                                         GST_TAG_MERGE_REPLACE,
-                                         tagName.toUtf8().constData(),
-                                         tagValue.toString().toUtf8().constData(),
-                                         nullptr );
-                break;
+        case QVariant::String:
+            gst_tag_setter_add_tags( GST_TAG_SETTER( element ),
+                                     GST_TAG_MERGE_REPLACE,
+                                     tagName.toUtf8().constData(),
+                                     tagValue.toString().toUtf8().constData(),
+                                     nullptr );
+            break;
 
-            case QVariant::Int:
-            case QVariant::LongLong:
-                gst_tag_setter_add_tags( GST_TAG_SETTER( element ),
-                                         GST_TAG_MERGE_REPLACE,
-                                         tagName.toUtf8().constData(),
-                                         tagValue.toInt(),
-                                         nullptr );
-                break;
+        case QVariant::Int:
+        case QVariant::LongLong:
+            gst_tag_setter_add_tags( GST_TAG_SETTER( element ),
+                                     GST_TAG_MERGE_REPLACE,
+                                     tagName.toUtf8().constData(),
+                                     tagValue.toInt(),
+                                     nullptr );
+            break;
 
-            case QVariant::Double:
-                gst_tag_setter_add_tags( GST_TAG_SETTER( element ),
-                                         GST_TAG_MERGE_REPLACE,
-                                         tagName.toUtf8().constData(),
-                                         tagValue.toDouble(),
-                                         nullptr );
-                break;
+        case QVariant::Double:
+            gst_tag_setter_add_tags( GST_TAG_SETTER( element ),
+                                     GST_TAG_MERGE_REPLACE,
+                                     tagName.toUtf8().constData(),
+                                     tagValue.toDouble(),
+                                     nullptr );
+            break;
 
 #if GST_CHECK_VERSION(0, 10, 31)
 
-            case QVariant::DateTime:
-            {
-                QDateTime date = tagValue.toDateTime().toLocalTime();
-                gst_tag_setter_add_tags( GST_TAG_SETTER( element ),
-                                         GST_TAG_MERGE_REPLACE,
-                                         tagName.toUtf8().constData(),
-                                         gst_date_time_new_local_time(
-                                             date.date().year(), date.date().month(), date.date().day(),
-                                             date.time().hour(), date.time().minute(), date.time().second() ),
-                                         nullptr );
-                break;
-            }
+        case QVariant::DateTime:
+        {
+            QDateTime date = tagValue.toDateTime().toLocalTime();
+            gst_tag_setter_add_tags( GST_TAG_SETTER( element ),
+                                     GST_TAG_MERGE_REPLACE,
+                                     tagName.toUtf8().constData(),
+                                     gst_date_time_new_local_time(
+                                         date.date().year(), date.date().month(), date.date().day(),
+                                         date.time().hour(), date.time().minute(), date.time().second() ),
+                                     nullptr );
+            break;
+        }
 
 #endif
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 }
@@ -1885,7 +1885,7 @@ GList *lscs_gst_video_sinks()
 
 #if GST_CHECK_VERSION(0, 10, 31)
     list = gst_element_factory_list_get_elements( GST_ELEMENT_FACTORY_TYPE_SINK | GST_ELEMENT_FACTORY_TYPE_MEDIA_VIDEO,
-            GST_RANK_MARGINAL );
+           GST_RANK_MARGINAL );
 #else
     list = gst_registry_feature_filter( gst_registry_get_default(),
                                         ( GstPluginFeatureFilter )lscs_gst_videosink_factory_filter,

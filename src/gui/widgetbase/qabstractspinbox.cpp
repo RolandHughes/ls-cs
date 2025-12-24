@@ -401,16 +401,16 @@ QVariant QAbstractSpinBox::inputMethodQuery( Qt::InputMethodQuery query ) const
 
     switch ( query )
     {
-        case Qt::ImHints:
-            if ( const int hints = inputMethodHints() )
-            {
-                return QVariant( hints | lineEditValue.toInt() );
-            }
+    case Qt::ImHints:
+        if ( const int hints = inputMethodHints() )
+        {
+            return QVariant( hints | lineEditValue.toInt() );
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return lineEditValue;
@@ -422,58 +422,58 @@ bool QAbstractSpinBox::event( QEvent *event )
 
     switch ( event->type() )
     {
-        case QEvent::FontChange:
-        case QEvent::StyleChange:
-            d->cachedSizeHint = d->cachedMinimumSizeHint = QSize();
-            break;
+    case QEvent::FontChange:
+    case QEvent::StyleChange:
+        d->cachedSizeHint = d->cachedMinimumSizeHint = QSize();
+        break;
 
-        case QEvent::ApplicationLayoutDirectionChange:
-        case QEvent::LayoutDirectionChange:
-            d->updateEditFieldGeometry();
-            break;
+    case QEvent::ApplicationLayoutDirectionChange:
+    case QEvent::LayoutDirectionChange:
+        d->updateEditFieldGeometry();
+        break;
 
-        case QEvent::HoverEnter:
-        case QEvent::HoverLeave:
-        case QEvent::HoverMove:
-            d->updateHoverControl( static_cast<const QHoverEvent *>( event )->pos() );
-            break;
+    case QEvent::HoverEnter:
+    case QEvent::HoverLeave:
+    case QEvent::HoverMove:
+        d->updateHoverControl( static_cast<const QHoverEvent *>( event )->pos() );
+        break;
 
-        case QEvent::ShortcutOverride:
-            if ( d->edit->event( event ) )
-            {
-                return true;
-            }
+    case QEvent::ShortcutOverride:
+        if ( d->edit->event( event ) )
+        {
+            return true;
+        }
 
-            break;
+        break;
 
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-        case QEvent::EnterEditFocus:
-        case QEvent::LeaveEditFocus:
-            if ( QApplication::keypadNavigationEnabled() )
+    case QEvent::EnterEditFocus:
+    case QEvent::LeaveEditFocus:
+        if ( QApplication::keypadNavigationEnabled() )
+        {
+            const bool b = d->edit->event( event );
+            d->edit->setSelection( d->edit->displayText().size() - d->suffix.size(), 0 );
+
+            if ( event->type() == QEvent::LeaveEditFocus )
             {
-                const bool b = d->edit->event( event );
-                d->edit->setSelection( d->edit->displayText().size() - d->suffix.size(), 0 );
-
-                if ( event->type() == QEvent::LeaveEditFocus )
-                {
-                    emit editingFinished();
-                }
-
-                if ( b )
-                {
-                    return true;
-                }
+                emit editingFinished();
             }
 
-            break;
+            if ( b )
+            {
+                return true;
+            }
+        }
+
+        break;
 #endif
 
-        case QEvent::InputMethod:
-            return d->edit->event( event );
+    case QEvent::InputMethod:
+        return d->edit->event( event );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QWidget::event( event );
@@ -500,37 +500,37 @@ void QAbstractSpinBox::changeEvent( QEvent *event )
 
     switch ( event->type() )
     {
-        case QEvent::StyleChange:
-            d->spinClickTimerInterval = style()->styleHint( QStyle::SH_SpinBox_ClickAutoRepeatRate, nullptr, this );
-            d->spinClickThresholdTimerInterval = style()->styleHint( QStyle::SH_SpinBox_ClickAutoRepeatThreshold, nullptr, this );
+    case QEvent::StyleChange:
+        d->spinClickTimerInterval = style()->styleHint( QStyle::SH_SpinBox_ClickAutoRepeatRate, nullptr, this );
+        d->spinClickThresholdTimerInterval = style()->styleHint( QStyle::SH_SpinBox_ClickAutoRepeatThreshold, nullptr, this );
+        d->reset();
+        d->updateEditFieldGeometry();
+        break;
+
+    case QEvent::EnabledChange:
+        if ( !isEnabled() )
+        {
             d->reset();
-            d->updateEditFieldGeometry();
-            break;
+        }
 
-        case QEvent::EnabledChange:
-            if ( !isEnabled() )
+        break;
+
+    case QEvent::ActivationChange:
+        if ( !isActiveWindow() )
+        {
+            d->reset();
+
+            if ( d->pendingEmit )
             {
-                d->reset();
+                // pendingEmit can be true even if it has npt changed.
+                d->interpret( EmitIfChanged ); // E.g. 10 to 10.0
             }
+        }
 
-            break;
+        break;
 
-        case QEvent::ActivationChange:
-            if ( !isActiveWindow() )
-            {
-                d->reset();
-
-                if ( d->pendingEmit )
-                {
-                    // pendingEmit can be true even if it has npt changed.
-                    d->interpret( EmitIfChanged ); // E.g. 10 to 10.0
-                }
-            }
-
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     QWidget::changeEvent( event );
@@ -654,175 +654,175 @@ void QAbstractSpinBox::keyPressEvent( QKeyEvent *event )
 
     switch ( event->key() )
     {
-        case Qt::Key_PageUp:
-        case Qt::Key_PageDown:
-            steps *= 10;
-            isPgUpOrDown = true;
-            [[fallthrough]];
+    case Qt::Key_PageUp:
+    case Qt::Key_PageDown:
+        steps *= 10;
+        isPgUpOrDown = true;
+        [[fallthrough]];
 
-        case Qt::Key_Up:
-        case Qt::Key_Down:
-        {
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+    {
 
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-            if ( QApplication::keypadNavigationEnabled() )
+        if ( QApplication::keypadNavigationEnabled() )
+        {
+            // Reserve up/down for nav - use left/right for edit.
+            if ( !hasEditFocus() && ( event->key() == Qt::Key_Up
+                                      || event->key() == Qt::Key_Down ) )
             {
-                // Reserve up/down for nav - use left/right for edit.
-                if ( !hasEditFocus() && ( event->key() == Qt::Key_Up
-                                          || event->key() == Qt::Key_Down ) )
-                {
-                    event->ignore();
-                    return;
-                }
-            }
-
-#endif
-            event->accept();
-            const bool up = ( event->key() == Qt::Key_PageUp || event->key() == Qt::Key_Up );
-
-            if ( ! ( stepEnabled() & ( up ? StepUpEnabled : StepDownEnabled ) ) )
-            {
+                event->ignore();
                 return;
             }
+        }
 
-            if ( !up )
-            {
-                steps *= -1;
-            }
-
-            if ( style()->styleHint( QStyle::SH_SpinBox_AnimateButton, nullptr, this ) )
-            {
-                d->buttonState = ( Keyboard | ( up ? Up : Down ) );
-            }
-
-            if ( d->spinClickTimerId == -1 )
-            {
-                stepBy( steps );
-            }
-
-            if ( event->isAutoRepeat() && !isPgUpOrDown )
-            {
-                if ( d->spinClickThresholdTimerId == -1 && d->spinClickTimerId == -1 )
-                {
-                    d->updateState( up, true );
-                }
-            }
-
-#ifndef LSCS_NO_ACCESSIBILITY
-            QAccessibleValueChangeEvent event( this, d->value );
-            QAccessible::updateAccessibility( &event );
 #endif
+        event->accept();
+        const bool up = ( event->key() == Qt::Key_PageUp || event->key() == Qt::Key_Up );
+
+        if ( ! ( stepEnabled() & ( up ? StepUpEnabled : StepDownEnabled ) ) )
+        {
             return;
         }
 
+        if ( !up )
+        {
+            steps *= -1;
+        }
+
+        if ( style()->styleHint( QStyle::SH_SpinBox_AnimateButton, nullptr, this ) )
+        {
+            d->buttonState = ( Keyboard | ( up ? Up : Down ) );
+        }
+
+        if ( d->spinClickTimerId == -1 )
+        {
+            stepBy( steps );
+        }
+
+        if ( event->isAutoRepeat() && !isPgUpOrDown )
+        {
+            if ( d->spinClickThresholdTimerId == -1 && d->spinClickTimerId == -1 )
+            {
+                d->updateState( up, true );
+            }
+        }
+
+#ifndef LSCS_NO_ACCESSIBILITY
+        QAccessibleValueChangeEvent event( this, d->value );
+        QAccessible::updateAccessibility( &event );
+#endif
+        return;
+    }
+
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-        case Qt::Key_Left:
-        case Qt::Key_Right:
-            if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
-            {
-                event->ignore();
-                return;
-            }
-
-            break;
-
-        case Qt::Key_Back:
-            if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
-            {
-                event->ignore();
-                return;
-            }
-
-            break;
-#endif
-
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-            d->edit->d_func()->control->clearUndo();
-            d->interpret( d->keyboardTracking ? AlwaysEmit : EmitIfChanged );
-            selectAll();
+    case Qt::Key_Left:
+    case Qt::Key_Right:
+        if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
+        {
             event->ignore();
-            emit editingFinished();
-            emit d->edit->returnPressed();
             return;
+        }
+
+        break;
+
+    case Qt::Key_Back:
+        if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
+        {
+            event->ignore();
+            return;
+        }
+
+        break;
+#endif
+
+    case Qt::Key_Enter:
+    case Qt::Key_Return:
+        d->edit->d_func()->control->clearUndo();
+        d->interpret( d->keyboardTracking ? AlwaysEmit : EmitIfChanged );
+        selectAll();
+        event->ignore();
+        emit editingFinished();
+        emit d->edit->returnPressed();
+        return;
 
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-        case Qt::Key_Select:
-            if ( QApplication::keypadNavigationEnabled() )
+    case Qt::Key_Select:
+        if ( QApplication::keypadNavigationEnabled() )
+        {
+            // Toggles between left/right moving cursor and inc/dec.
+            setEditFocus( !hasEditFocus() );
+        }
+
+        return;
+#endif
+
+    case Qt::Key_U:
+        if ( event->modifiers() & Qt::ControlModifier && QGuiApplication::platformName() == "xcb" )
+        {
+            // only X11
+            event->accept();
+
+            if ( !isReadOnly() )
             {
-                // Toggles between left/right moving cursor and inc/dec.
-                setEditFocus( !hasEditFocus() );
+                clear();
             }
 
             return;
-#endif
+        }
 
-        case Qt::Key_U:
-            if ( event->modifiers() & Qt::ControlModifier && QGuiApplication::platformName() == "xcb" )
+        break;
+
+    case Qt::Key_End:
+    case Qt::Key_Home:
+        if ( event->modifiers() & Qt::ShiftModifier )
+        {
+            int currentPos = d->edit->cursorPosition();
+            const QString text = d->edit->displayText();
+
+            if ( event->key() == Qt::Key_End )
             {
-                // only X11
-                event->accept();
-
-                if ( !isReadOnly() )
+                if ( ( currentPos == 0 && !d->prefix.isEmpty() ) || text.size() - d->suffix.size() <= currentPos )
                 {
-                    clear();
-                }
-
-                return;
-            }
-
-            break;
-
-        case Qt::Key_End:
-        case Qt::Key_Home:
-            if ( event->modifiers() & Qt::ShiftModifier )
-            {
-                int currentPos = d->edit->cursorPosition();
-                const QString text = d->edit->displayText();
-
-                if ( event->key() == Qt::Key_End )
-                {
-                    if ( ( currentPos == 0 && !d->prefix.isEmpty() ) || text.size() - d->suffix.size() <= currentPos )
-                    {
-                        break; // let lineedit handle this
-                    }
-                    else
-                    {
-                        d->edit->setSelection( currentPos, text.size() - d->suffix.size() - currentPos );
-                    }
+                    break; // let lineedit handle this
                 }
                 else
                 {
-                    if ( ( currentPos == text.size() && !d->suffix.isEmpty() ) || currentPos <= d->prefix.size() )
-                    {
-                        break; // let lineedit handle this
-                    }
-                    else
-                    {
-                        d->edit->setSelection( currentPos, d->prefix.size() - currentPos );
-                    }
+                    d->edit->setSelection( currentPos, text.size() - d->suffix.size() - currentPos );
                 }
-
-                event->accept();
-                return;
             }
-
-            break;
-
-        default:
-#ifndef LSCS_NO_SHORTCUT
-            if ( event == QKeySequence::SelectAll )
+            else
             {
-                selectAll();
-                event->accept();
-                return;
+                if ( ( currentPos == text.size() && !d->suffix.isEmpty() ) || currentPos <= d->prefix.size() )
+                {
+                    break; // let lineedit handle this
+                }
+                else
+                {
+                    d->edit->setSelection( currentPos, d->prefix.size() - currentPos );
+                }
             }
+
+            event->accept();
+            return;
+        }
+
+        break;
+
+    default:
+#ifndef LSCS_NO_SHORTCUT
+        if ( event == QKeySequence::SelectAll )
+        {
+            selectAll();
+            event->accept();
+            return;
+        }
 
 #endif
-            break;
+        break;
     }
 
     d->edit->event( event );
@@ -1569,16 +1569,16 @@ QVariant QAbstractSpinBoxPrivate::getZeroVariant() const
 
     switch ( type )
     {
-        case QVariant::Int:
-            ret = QVariant( ( int )0 );
-            break;
+    case QVariant::Int:
+        ret = QVariant( ( int )0 );
+        break;
 
-        case QVariant::Double:
-            ret = QVariant( ( double )0.0 );
-            break;
+    case QVariant::Double:
+        ret = QVariant( ( double )0.0 );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return ret;
@@ -1695,46 +1695,46 @@ QVariant operator+( const QVariant &arg1, const QVariant &arg2 )
 
     switch ( arg1.type() )
     {
-        case QVariant::Int:
+    case QVariant::Int:
+    {
+        const int int1 = arg1.toInt();
+        const int int2 = arg2.toInt();
+
+        if ( int1 > 0 && ( int2 >= INT_MAX - int1 ) )
         {
-            const int int1 = arg1.toInt();
-            const int int2 = arg2.toInt();
+            // The increment overflows
+            ret = QVariant( INT_MAX );
 
-            if ( int1 > 0 && ( int2 >= INT_MAX - int1 ) )
-            {
-                // The increment overflows
-                ret = QVariant( INT_MAX );
+        }
+        else if ( int1 < 0 && ( int2 <= INT_MIN - int1 ) )
+        {
+            // The increment underflows
+            ret = QVariant( INT_MIN );
 
-            }
-            else if ( int1 < 0 && ( int2 <= INT_MIN - int1 ) )
-            {
-                // The increment underflows
-                ret = QVariant( INT_MIN );
-
-            }
-            else
-            {
-                ret = QVariant( int1 + int2 );
-            }
-
-            break;
+        }
+        else
+        {
+            ret = QVariant( int1 + int2 );
         }
 
-        case QVariant::Double:
-            ret = QVariant( arg1.toDouble() + arg2.toDouble() );
-            break;
+        break;
+    }
 
-        case QVariant::DateTime:
-        {
-            QDateTime a2 = arg2.toDateTime();
-            QDateTime a1 = arg1.toDateTime().addDays( QDATETIME_DATETIME_MIN.daysTo( a2 ) );
-            a1.setTime( a1.time().addMSecs( QTime().msecsTo( a2.time() ) ) );
-            ret = QVariant( a1 );
-        }
+    case QVariant::Double:
+        ret = QVariant( arg1.toDouble() + arg2.toDouble() );
         break;
 
-        default:
-            break;
+    case QVariant::DateTime:
+    {
+        QDateTime a2 = arg2.toDateTime();
+        QDateTime a1 = arg1.toDateTime().addDays( QDATETIME_DATETIME_MIN.daysTo( a2 ) );
+        a1.setTime( a1.time().addMSecs( QTime().msecsTo( a2.time() ) ) );
+        ret = QVariant( a1 );
+    }
+    break;
+
+    default:
+        break;
     }
 
     return ret;
@@ -1752,44 +1752,44 @@ QVariant operator-( const QVariant &arg1, const QVariant &arg2 )
 
     switch ( arg1.type() )
     {
-        case QVariant::Int:
-            ret = QVariant( arg1.toInt() - arg2.toInt() );
-            break;
-
-        case QVariant::Double:
-            ret = QVariant( arg1.toDouble() - arg2.toDouble() );
-            break;
-
-        case QVariant::DateTime:
-        {
-            QDateTime a1 = arg1.toDateTime();
-            QDateTime a2 = arg2.toDateTime();
-
-            int days = a2.daysTo( a1 );
-            int secs = a2.secsTo( a1 );
-            int msecs = qMax( 0, a1.time().msec() - a2.time().msec() );
-
-            if ( days < 0 || secs < 0 || msecs < 0 )
-            {
-                ret = arg1;
-
-            }
-            else
-            {
-                QDateTime dt = a2.addDays( days ).addSecs( secs );
-
-                if ( msecs > 0 )
-                {
-                    dt.setTime( dt.time().addMSecs( msecs ) );
-                }
-
-                ret = QVariant( dt );
-            }
-        }
+    case QVariant::Int:
+        ret = QVariant( arg1.toInt() - arg2.toInt() );
         break;
 
-        default:
-            break;
+    case QVariant::Double:
+        ret = QVariant( arg1.toDouble() - arg2.toDouble() );
+        break;
+
+    case QVariant::DateTime:
+    {
+        QDateTime a1 = arg1.toDateTime();
+        QDateTime a2 = arg2.toDateTime();
+
+        int days = a2.daysTo( a1 );
+        int secs = a2.secsTo( a1 );
+        int msecs = qMax( 0, a1.time().msec() - a2.time().msec() );
+
+        if ( days < 0 || secs < 0 || msecs < 0 )
+        {
+            ret = arg1;
+
+        }
+        else
+        {
+            QDateTime dt = a2.addDays( days ).addSecs( secs );
+
+            if ( msecs > 0 )
+            {
+                dt.setTime( dt.time().addMSecs( msecs ) );
+            }
+
+            ret = QVariant( dt );
+        }
+    }
+    break;
+
+    default:
+        break;
     }
 
     return ret;
@@ -1801,30 +1801,30 @@ QVariant operator*( const QVariant &arg1, double multiplier )
 
     switch ( arg1.type() )
     {
-        case QVariant::Int:
-            ret = static_cast<int>( qBound<double>( INT_MIN, arg1.toInt() * multiplier, INT_MAX ) );
-            break;
+    case QVariant::Int:
+        ret = static_cast<int>( qBound<double>( INT_MIN, arg1.toInt() * multiplier, INT_MAX ) );
+        break;
 
-        case QVariant::Double:
-            ret = QVariant( arg1.toDouble() * multiplier );
-            break;
+    case QVariant::Double:
+        ret = QVariant( arg1.toDouble() * multiplier );
+        break;
 
-        case QVariant::DateTime:
-        {
-            double days = QDATETIME_DATE_MIN.daysTo( arg1.toDateTime().date() ) * multiplier;
-            int daysInt = ( int )days;
-            days -= daysInt;
+    case QVariant::DateTime:
+    {
+        double days = QDATETIME_DATE_MIN.daysTo( arg1.toDateTime().date() ) * multiplier;
+        int daysInt = ( int )days;
+        days -= daysInt;
 
-            long msecs = ( long )( ( QDATETIME_TIME_MIN.msecsTo( arg1.toDateTime().time() ) * multiplier )
-                                   + ( days * ( 24 * 3600 * 1000 ) ) );
+        long msecs = ( long )( ( QDATETIME_TIME_MIN.msecsTo( arg1.toDateTime().time() ) * multiplier )
+                               + ( days * ( 24 * 3600 * 1000 ) ) );
 
-            ret = QDateTime( QDate().addDays( int( days ) ), QTime().addMSecs( msecs ) );
-            break;
-        }
+        ret = QDateTime( QDate().addDays( int( days ) ), QTime().addMSecs( msecs ) );
+        break;
+    }
 
-        default:
-            ret = arg1;
-            break;
+    default:
+        ret = arg1;
+        break;
     }
 
     return ret;
@@ -1837,24 +1837,24 @@ double operator/( const QVariant &arg1, const QVariant &arg2 )
 
     switch ( arg1.type() )
     {
-        case QVariant::Int:
-            a1 = ( double )arg1.toInt();
-            a2 = ( double )arg2.toInt();
-            break;
+    case QVariant::Int:
+        a1 = ( double )arg1.toInt();
+        a2 = ( double )arg2.toInt();
+        break;
 
-        case QVariant::Double:
-            a1 = arg1.toDouble();
-            a2 = arg2.toDouble();
-            break;
+    case QVariant::Double:
+        a1 = arg1.toDouble();
+        a2 = arg2.toDouble();
+        break;
 
-        case QVariant::DateTime:
-            a1 = QDATETIME_DATE_MIN.daysTo( arg1.toDate() );
-            a2 = QDATETIME_DATE_MIN.daysTo( arg2.toDate() );
-            a1 += ( double )QDATETIME_TIME_MIN.msecsTo( arg1.toDateTime().time() ) / ( long )( 3600 * 24 * 1000 );
-            a2 += ( double )QDATETIME_TIME_MIN.msecsTo( arg2.toDateTime().time() ) / ( long )( 3600 * 24 * 1000 );
+    case QVariant::DateTime:
+        a1 = QDATETIME_DATE_MIN.daysTo( arg1.toDate() );
+        a2 = QDATETIME_DATE_MIN.daysTo( arg2.toDate() );
+        a1 += ( double )QDATETIME_TIME_MIN.msecsTo( arg1.toDateTime().time() ) / ( long )( 3600 * 24 * 1000 );
+        a2 += ( double )QDATETIME_TIME_MIN.msecsTo( arg2.toDateTime().time() ) / ( long )( 3600 * 24 * 1000 );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return ( a1 != 0 && a2 != 0 ) ? ( a1 / a2 ) : 0.0;
@@ -1864,93 +1864,93 @@ int QAbstractSpinBoxPrivate::variantCompare( const QVariant &arg1, const QVarian
 {
     switch ( arg2.type() )
     {
-        case QVariant::Date:
-            Q_ASSERT_X( arg1.type() == QVariant::Date, "QAbstractSpinBoxPrivate::variantCompare",
-                        lscsPrintable( QString( "Internal error 1 (%1)" ).formatArg( arg1.typeName() ) ) );
+    case QVariant::Date:
+        Q_ASSERT_X( arg1.type() == QVariant::Date, "QAbstractSpinBoxPrivate::variantCompare",
+                    lscsPrintable( QString( "Internal error 1 (%1)" ).formatArg( arg1.typeName() ) ) );
 
-            if ( arg1.toDate() == arg2.toDate() )
-            {
-                return 0;
-            }
-            else if ( arg1.toDate() < arg2.toDate() )
-            {
-                return -1;
-            }
-            else
-            {
-                return 1;
-            }
+        if ( arg1.toDate() == arg2.toDate() )
+        {
+            return 0;
+        }
+        else if ( arg1.toDate() < arg2.toDate() )
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
 
-        case QVariant::Time:
-            Q_ASSERT_X( arg1.type() == QVariant::Time, "QAbstractSpinBoxPrivate::variantCompare",
-                        lscsPrintable( QString( "Internal error 2 (%1)" ).formatArg( arg1.typeName() ) ) );
+    case QVariant::Time:
+        Q_ASSERT_X( arg1.type() == QVariant::Time, "QAbstractSpinBoxPrivate::variantCompare",
+                    lscsPrintable( QString( "Internal error 2 (%1)" ).formatArg( arg1.typeName() ) ) );
 
-            if ( arg1.toTime() == arg2.toTime() )
-            {
-                return 0;
-            }
-            else if ( arg1.toTime() < arg2.toTime() )
-            {
-                return -1;
-            }
-            else
-            {
-                return 1;
-            }
+        if ( arg1.toTime() == arg2.toTime() )
+        {
+            return 0;
+        }
+        else if ( arg1.toTime() < arg2.toTime() )
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
 
-        case QVariant::DateTime:
-            if ( arg1.toDateTime() == arg2.toDateTime() )
-            {
-                return 0;
-            }
-            else if ( arg1.toDateTime() < arg2.toDateTime() )
-            {
-                return -1;
-            }
-            else
-            {
-                return 1;
-            }
+    case QVariant::DateTime:
+        if ( arg1.toDateTime() == arg2.toDateTime() )
+        {
+            return 0;
+        }
+        else if ( arg1.toDateTime() < arg2.toDateTime() )
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
 
-        case QVariant::Int:
-            if ( arg1.toInt() == arg2.toInt() )
-            {
-                return 0;
-            }
-            else if ( arg1.toInt() < arg2.toInt() )
-            {
-                return -1;
-            }
-            else
-            {
-                return 1;
-            }
+    case QVariant::Int:
+        if ( arg1.toInt() == arg2.toInt() )
+        {
+            return 0;
+        }
+        else if ( arg1.toInt() < arg2.toInt() )
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
 
-        case QVariant::Double:
-            if ( arg1.toDouble() == arg2.toDouble() )
-            {
-                return 0;
-            }
-            else if ( arg1.toDouble() < arg2.toDouble() )
-            {
-                return -1;
-            }
-            else
-            {
-                return 1;
-            }
+    case QVariant::Double:
+        if ( arg1.toDouble() == arg2.toDouble() )
+        {
+            return 0;
+        }
+        else if ( arg1.toDouble() < arg2.toDouble() )
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
 
-        case QVariant::Invalid:
-            if ( arg2.type() == QVariant::Invalid )
-            {
-                return 0;
-            }
+    case QVariant::Invalid:
+        if ( arg2.type() == QVariant::Invalid )
+        {
+            return 0;
+        }
 
-            [[fallthrough]];
+        [[fallthrough]];
 
-        default:
-            Q_ASSERT_X( 0, "QAbstractSpinBoxPrivate::variantCompare", lscsPrintable( QString( "Internal error 3 (%1 %2)" )
-                        .formatArg( arg1.typeName() ).formatArg( arg2.typeName() ) ) );
+    default:
+        Q_ASSERT_X( 0, "QAbstractSpinBoxPrivate::variantCompare", lscsPrintable( QString( "Internal error 3 (%1 %2)" )
+                    .formatArg( arg1.typeName() ).formatArg( arg2.typeName() ) ) );
     }
 
     return -2;

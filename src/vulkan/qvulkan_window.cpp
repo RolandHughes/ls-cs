@@ -307,7 +307,7 @@ bool QVulkanWindow::initialize()
 }
 
 std::pair<vk::UniqueHandle<vk::Device, vk::DispatchLoaderDynamic>, QVector<vk::Queue>> QVulkanWindow::createLogicalDevice(
-            std::pair<const vk::QueueFamilyProperties &, uint32_t> deviceProperties, QStringList extensions )
+    std::pair<const vk::QueueFamilyProperties &, uint32_t> deviceProperties, QStringList extensions )
 {
     auto instance = vulkanInstance();
     vk::UniqueHandle<vk::Device, vk::DispatchLoaderDynamic> device;
@@ -348,8 +348,8 @@ std::pair<vk::UniqueHandle<vk::Device, vk::DispatchLoaderDynamic>, QVector<vk::Q
 }
 
 std::pair<QDynamicUniqueHandle<vk::Image>, QDynamicUniqueHandle<vk::DeviceMemory>> QVulkanWindow::createTransientImage(
-            vk::ImageCreateFlags imageFlags, vk::ImageUsageFlags usageFlags, vk::Format imageFormat,
-            uint32_t imageWidth, uint32_t imageHeight )
+    vk::ImageCreateFlags imageFlags, vk::ImageUsageFlags usageFlags, vk::Format imageFormat,
+    uint32_t imageWidth, uint32_t imageHeight )
 {
     auto instance        = vulkanInstance();
     auto &physicalDevice = m_physicalDevices[m_physicalDeviceIndex];
@@ -781,12 +781,12 @@ bool QVulkanWindow::event( QEvent *e )
 {
     switch ( e->type() )
     {
-        case QEvent::UpdateRequest:
-            startFrame();
-            break;
+    case QEvent::UpdateRequest:
+        startFrame();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QWindow::event( e );
@@ -837,28 +837,28 @@ void QVulkanWindow::startFrame()
 
         switch ( imageResult.result )
         {
-            case vk::Result::eSuccess:
-            case vk::Result::eSuboptimalKHR:
-                frameData->imageSemaphoreActive = true;
-                frameData->imageAcquired        = true;
-                frameData->frameFenceActive     = true;
-                m_imageIndex                    = imageResult.value;
-                break;
+        case vk::Result::eSuccess:
+        case vk::Result::eSuboptimalKHR:
+            frameData->imageSemaphoreActive = true;
+            frameData->imageAcquired        = true;
+            frameData->frameFenceActive     = true;
+            m_imageIndex                    = imageResult.value;
+            break;
 
-            case vk::Result::eErrorOutOfDateKHR:
-                // stale swapchain, regenerate and try again next frame
-                recreateSwapChain();
-                requestUpdate();
-                break;
+        case vk::Result::eErrorOutOfDateKHR:
+            // stale swapchain, regenerate and try again next frame
+            recreateSwapChain();
+            requestUpdate();
+            break;
 
-            case vk::Result::eErrorDeviceLost:
-                handleDeviceLost();
-                break;
+        case vk::Result::eErrorDeviceLost:
+            handleDeviceLost();
+            break;
 
-            default:
-                // some other error occurred, drop this frame
-                requestUpdate();
-                break;
+        default:
+            // some other error occurred, drop this frame
+            requestUpdate();
+            break;
 
         }
     }
@@ -940,7 +940,7 @@ void QVulkanWindow::startFrame()
         }
 
         frameData->commandBuffer.value()->beginRenderPass( renderPassInfo, vk::SubpassContents::eInline,
-                m_deviceFunctions->dynamicLoader() );
+                                m_deviceFunctions->dynamicLoader() );
         frameData->commandBuffer.value()->endRenderPass( m_deviceFunctions->dynamicLoader() );
 
         endFrame();
@@ -1330,33 +1330,33 @@ void QVulkanWindow::setSampleCount( int sampleCount )
 
     switch ( m_requestedSampleCount )
     {
-        case 1:
-            m_sampleCount = vk::SampleCountFlagBits::e1;
-            break;
+    case 1:
+        m_sampleCount = vk::SampleCountFlagBits::e1;
+        break;
 
-        case 2:
-            m_sampleCount = vk::SampleCountFlagBits::e2;
-            break;
+    case 2:
+        m_sampleCount = vk::SampleCountFlagBits::e2;
+        break;
 
-        case 4:
-            m_sampleCount = vk::SampleCountFlagBits::e4;
-            break;
+    case 4:
+        m_sampleCount = vk::SampleCountFlagBits::e4;
+        break;
 
-        case 8:
-            m_sampleCount = vk::SampleCountFlagBits::e8;
-            break;
+    case 8:
+        m_sampleCount = vk::SampleCountFlagBits::e8;
+        break;
 
-        case 16:
-            m_sampleCount = vk::SampleCountFlagBits::e16;
-            break;
+    case 16:
+        m_sampleCount = vk::SampleCountFlagBits::e16;
+        break;
 
-        case 32:
-            m_sampleCount = vk::SampleCountFlagBits::e32;
-            break;
+    case 32:
+        m_sampleCount = vk::SampleCountFlagBits::e32;
+        break;
 
-        case 64:
-            m_sampleCount = vk::SampleCountFlagBits::e64;
-            break;
+    case 64:
+        m_sampleCount = vk::SampleCountFlagBits::e64;
+        break;
     }
 }
 

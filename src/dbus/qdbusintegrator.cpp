@@ -87,10 +87,10 @@ static inline QDebug operator<<( QDebug dbg, const QThread *th )
 static inline QDebug operator<<( QDebug dbg, const QDBusConnectionPrivate *conn )
 {
     dbg.nospace() << "QDBusConnection("
-                  << "ptr=" << ( void * )conn
-                  << ", name=" << conn->name
-                  << ", baseService=" << conn->baseService
-                  << ", thread=";
+       << "ptr=" << ( void * )conn
+       << ", name=" << conn->name
+       << ", baseService=" << conn->baseService
+       << ", thread=";
 
     if ( conn->thread() == QThread::currentThread() )
     {
@@ -435,7 +435,7 @@ extern "C" {
         //qDBusDebug() << "Updating dispatcher status" << slotId;
         if ( new_status == DBUS_DISPATCH_DATA_REMAINS )
             QDBusConnectionPrivate::staticMetaObject.method( slotId ).
-            invoke( d, Qt::QueuedConnection );
+                                                    invoke( d, Qt::QueuedConnection );
     }
 
     static void qDBusNewConnection( DBusServer *server, DBusConnection *connection, void *data )
@@ -687,20 +687,20 @@ bool QDBusConnectionPrivate::handleMessage( const QDBusMessage &amsg )
 
     switch ( amsg.type() )
     {
-        case QDBusMessage::SignalMessage:
-            handleSignal( amsg );
-            // if there are any other filters in this DBusConnection,
-            // let them see the signal too
-            return false;
+    case QDBusMessage::SignalMessage:
+        handleSignal( amsg );
+        // if there are any other filters in this DBusConnection,
+        // let them see the signal too
+        return false;
 
-        case QDBusMessage::MethodCallMessage:
-            handleObjectCall( amsg );
-            return true;
+    case QDBusMessage::MethodCallMessage:
+        handleObjectCall( amsg );
+        return true;
 
-        case QDBusMessage::ReplyMessage:
-        case QDBusMessage::ErrorMessage:
-        case QDBusMessage::InvalidMessage:
-            return false;           // we don't handle those here
+    case QDBusMessage::ReplyMessage:
+    case QDBusMessage::ErrorMessage:
+    case QDBusMessage::InvalidMessage:
+        return false;           // we don't handle those here
     }
 
     return false;
@@ -1190,7 +1190,7 @@ void QDBusConnectionPrivate::deliverCall( QObject *object, int /*flags*/, const 
 
         QPointer<QObject> ptr = object;
         fail = object->lscs_metacall( QMetaObject::InvokeMetaMethod,
-                                    slotIdx, params.data() ) >= 0;
+                                      slotIdx, params.data() ) >= 0;
         QDBusConnectionPrivate::setSender( 0 );
 
         // the object might be deleted in the slot
@@ -1377,30 +1377,30 @@ void QDBusConnectionPrivate::customEvent( QEvent *e )
 
     switch ( ev->subtype )
     {
-        case QDBusConnectionCallbackEvent::AddTimeout:
+    case QDBusConnectionCallbackEvent::AddTimeout:
+    {
+        QDBusWatchAndTimeoutLocker locker( RealAddTimeoutAction, this );
+
+        while ( !timeoutsPendingAdd.isEmpty() )
         {
-            QDBusWatchAndTimeoutLocker locker( RealAddTimeoutAction, this );
-
-            while ( !timeoutsPendingAdd.isEmpty() )
-            {
-                QPair<DBusTimeout *, int> entry = timeoutsPendingAdd.takeFirst();
-                qDBusRealAddTimeout( this, entry.first, entry.second );
-            }
-
-            break;
+            QPair<DBusTimeout *, int> entry = timeoutsPendingAdd.takeFirst();
+            qDBusRealAddTimeout( this, entry.first, entry.second );
         }
 
-        case QDBusConnectionCallbackEvent::KillTimer:
-            killTimer( ev->timerId );
-            break;
+        break;
+    }
 
-        case QDBusConnectionCallbackEvent::AddWatch:
-            qDBusRealAddWatch( this, ev->watch, ev->extra, ev->fd );
-            break;
+    case QDBusConnectionCallbackEvent::KillTimer:
+        killTimer( ev->timerId );
+        break;
 
-        case QDBusConnectionCallbackEvent::ToggleWatch:
-            qDBusRealToggleWatch( this, ev->watch, ev->fd );
-            break;
+    case QDBusConnectionCallbackEvent::AddWatch:
+        qDBusRealAddWatch( this, ev->watch, ev->extra, ev->fd );
+        break;
+
+    case QDBusConnectionCallbackEvent::ToggleWatch:
+        qDBusRealToggleWatch( this, ev->watch, ev->fd );
+        break;
     }
 
     QDBusLockerBase::reportThreadAction( int( AddTimeoutAction ) + int( ev->subtype ),

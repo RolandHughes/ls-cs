@@ -349,24 +349,24 @@ QSize QDockAreaLayoutInfo::minimumSize() const
     {
         switch ( tabBarShape )
         {
-            case QTabBar::RoundedNorth:
-            case QTabBar::RoundedSouth:
-            case QTabBar::TriangularNorth:
-            case QTabBar::TriangularSouth:
-                result.rheight() += tbm.height();
-                result.rwidth() = qMax( tbm.width(), result.width() );
-                break;
+        case QTabBar::RoundedNorth:
+        case QTabBar::RoundedSouth:
+        case QTabBar::TriangularNorth:
+        case QTabBar::TriangularSouth:
+            result.rheight() += tbm.height();
+            result.rwidth() = qMax( tbm.width(), result.width() );
+            break;
 
-            case QTabBar::RoundedEast:
-            case QTabBar::RoundedWest:
-            case QTabBar::TriangularEast:
-            case QTabBar::TriangularWest:
-                result.rheight() = qMax( tbm.height(), result.height() );
-                result.rwidth() += tbm.width();
-                break;
+        case QTabBar::RoundedEast:
+        case QTabBar::RoundedWest:
+        case QTabBar::TriangularEast:
+        case QTabBar::TriangularWest:
+            result.rheight() = qMax( tbm.height(), result.height() );
+            result.rwidth() += tbm.width();
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -446,18 +446,18 @@ QSize QDockAreaLayoutInfo::maximumSize() const
     {
         switch ( tabBarShape )
         {
-            case QTabBar::RoundedNorth:
-            case QTabBar::RoundedSouth:
-                result.rheight() += tbh.height();
-                break;
+        case QTabBar::RoundedNorth:
+        case QTabBar::RoundedSouth:
+            result.rheight() += tbh.height();
+            break;
 
-            case QTabBar::RoundedEast:
-            case QTabBar::RoundedWest:
-                result.rwidth() += tbh.width();
-                break;
+        case QTabBar::RoundedEast:
+        case QTabBar::RoundedWest:
+            result.rwidth() += tbh.width();
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -532,24 +532,24 @@ QSize QDockAreaLayoutInfo::sizeHint() const
 
         switch ( tabBarShape )
         {
-            case QTabBar::RoundedNorth:
-            case QTabBar::RoundedSouth:
-            case QTabBar::TriangularNorth:
-            case QTabBar::TriangularSouth:
-                result.rheight() += tbh.height();
-                result.rwidth() = qMax( tbh.width(), result.width() );
-                break;
+        case QTabBar::RoundedNorth:
+        case QTabBar::RoundedSouth:
+        case QTabBar::TriangularNorth:
+        case QTabBar::TriangularSouth:
+            result.rheight() += tbh.height();
+            result.rwidth() = qMax( tbh.width(), result.width() );
+            break;
 
-            case QTabBar::RoundedEast:
-            case QTabBar::RoundedWest:
-            case QTabBar::TriangularEast:
-            case QTabBar::TriangularWest:
-                result.rheight() = qMax( tbh.height(), result.height() );
-                result.rwidth() += tbh.width();
-                break;
+        case QTabBar::RoundedEast:
+        case QTabBar::RoundedWest:
+        case QTabBar::TriangularEast:
+        case QTabBar::TriangularWest:
+            result.rheight() = qMax( tbh.height(), result.height() );
+            result.rwidth() += tbh.width();
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -1008,63 +1008,63 @@ QList<int> QDockAreaLayoutInfo::gapIndex( const QPoint &_pos,
 
     switch ( dock_pos )
     {
-        case QInternal::LeftDock:
-            if ( o == Qt::Horizontal )
-            {
-                result << item_index;
-            }
-            else
-            {
-                result << item_index << 0;   // this subinfo doesn't exist yet, but insertGap()
-            }
+    case QInternal::LeftDock:
+        if ( o == Qt::Horizontal )
+        {
+            result << item_index;
+        }
+        else
+        {
+            result << item_index << 0;   // this subinfo doesn't exist yet, but insertGap()
+        }
 
-            // handles this by inserting it
-            break;
+        // handles this by inserting it
+        break;
 
-        case QInternal::RightDock:
-            if ( o == Qt::Horizontal )
-            {
-                result << item_index + 1;
-            }
-            else
-            {
-                result << item_index << 1;
-            }
+    case QInternal::RightDock:
+        if ( o == Qt::Horizontal )
+        {
+            result << item_index + 1;
+        }
+        else
+        {
+            result << item_index << 1;
+        }
 
-            break;
+        break;
 
-        case QInternal::TopDock:
-            if ( o == Qt::Horizontal )
-            {
-                result << item_index << 0;
-            }
-            else
-            {
-                result << item_index;
-            }
+    case QInternal::TopDock:
+        if ( o == Qt::Horizontal )
+        {
+            result << item_index << 0;
+        }
+        else
+        {
+            result << item_index;
+        }
 
-            break;
+        break;
 
-        case QInternal::BottomDock:
-            if ( o == Qt::Horizontal )
-            {
-                result << item_index << 1;
-            }
-            else
-            {
-                result << item_index + 1;
-            }
+    case QInternal::BottomDock:
+        if ( o == Qt::Horizontal )
+        {
+            result << item_index << 1;
+        }
+        else
+        {
+            result << item_index + 1;
+        }
 
-            break;
+        break;
 
-        case  QInternal::DockCount:
-            result << ( -item_index - 1 ) << 0; // negative item_index means "on top of"
-            // -item_index - 1, insertGap()
-            // will insert a tabbed subinfo
-            break;
+    case  QInternal::DockCount:
+        result << ( -item_index - 1 ) << 0; // negative item_index means "on top of"
+        // -item_index - 1, insertGap()
+        // will insert a tabbed subinfo
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return result;
@@ -1617,34 +1617,34 @@ bool QDockAreaLayoutInfo::insertGap( const QList<int> &path, QLayoutItem *dockWi
             // I am an empty dock area, therefore I am a top-level dock area.
             switch ( dockPos )
             {
-                case QInternal::LeftDock:
-                case QInternal::RightDock:
-                    if ( o == Qt::Vertical )
-                    {
-                        // the "size" is the height of the dock area (remember we are empty)
-                        space = pick( Qt::Vertical, rect.size() );
-                    }
-                    else
-                    {
-                        space = pick( Qt::Horizontal, dockWidgetItem->widget()->size() );
-                    }
+            case QInternal::LeftDock:
+            case QInternal::RightDock:
+                if ( o == Qt::Vertical )
+                {
+                    // the "size" is the height of the dock area (remember we are empty)
+                    space = pick( Qt::Vertical, rect.size() );
+                }
+                else
+                {
+                    space = pick( Qt::Horizontal, dockWidgetItem->widget()->size() );
+                }
 
-                    break;
+                break;
 
-                case QInternal::TopDock:
-                case QInternal::BottomDock:
-                default:
-                    if ( o == Qt::Horizontal )
-                    {
-                        // the "size" is width of the dock area
-                        space = pick( Qt::Horizontal, rect.size() );
-                    }
-                    else
-                    {
-                        space = pick( Qt::Vertical, dockWidgetItem->widget()->size() );
-                    }
+            case QInternal::TopDock:
+            case QInternal::BottomDock:
+            default:
+                if ( o == Qt::Horizontal )
+                {
+                    // the "size" is width of the dock area
+                    space = pick( Qt::Horizontal, rect.size() );
+                }
+                else
+                {
+                    space = pick( Qt::Vertical, dockWidgetItem->widget()->size() );
+                }
 
-                    break;
+                break;
             }
 
         }
@@ -2013,31 +2013,31 @@ void QDockAreaLayoutInfo::apply( bool animate )
         {
             switch ( tabBarShape )
             {
-                case QTabBar::RoundedNorth:
-                case QTabBar::TriangularNorth:
-                    tab_rect = QRect( rect.left(), rect.top(), rect.width(), tbh.height() );
-                    break;
+            case QTabBar::RoundedNorth:
+            case QTabBar::TriangularNorth:
+                tab_rect = QRect( rect.left(), rect.top(), rect.width(), tbh.height() );
+                break;
 
-                case QTabBar::RoundedSouth:
-                case QTabBar::TriangularSouth:
-                    tab_rect = QRect( rect.left(), rect.bottom() - tbh.height() + 1,
-                                      rect.width(), tbh.height() );
-                    break;
+            case QTabBar::RoundedSouth:
+            case QTabBar::TriangularSouth:
+                tab_rect = QRect( rect.left(), rect.bottom() - tbh.height() + 1,
+                                  rect.width(), tbh.height() );
+                break;
 
-                case QTabBar::RoundedEast:
-                case QTabBar::TriangularEast:
-                    tab_rect = QRect( rect.right() - tbh.width() + 1, rect.top(),
-                                      tbh.width(), rect.height() );
-                    break;
+            case QTabBar::RoundedEast:
+            case QTabBar::TriangularEast:
+                tab_rect = QRect( rect.right() - tbh.width() + 1, rect.top(),
+                                  tbh.width(), rect.height() );
+                break;
 
-                case QTabBar::RoundedWest:
-                case QTabBar::TriangularWest:
-                    tab_rect = QRect( rect.left(), rect.top(),
-                                      tbh.width(), rect.height() );
-                    break;
+            case QTabBar::RoundedWest:
+            case QTabBar::TriangularWest:
+                tab_rect = QRect( rect.left(), rect.top(),
+                                  tbh.width(), rect.height() );
+                break;
 
-                default:
-                    break;
+            default:
+                break;
             }
         }
 
@@ -2540,20 +2540,20 @@ static Qt::DockWidgetArea toDockWidgetArea( QInternal::DockPosition pos )
 {
     switch ( pos )
     {
-        case QInternal::LeftDock:
-            return Qt::LeftDockWidgetArea;
+    case QInternal::LeftDock:
+        return Qt::LeftDockWidgetArea;
 
-        case QInternal::RightDock:
-            return Qt::RightDockWidgetArea;
+    case QInternal::RightDock:
+        return Qt::RightDockWidgetArea;
 
-        case QInternal::TopDock:
-            return Qt::TopDockWidgetArea;
+    case QInternal::TopDock:
+        return Qt::TopDockWidgetArea;
 
-        case QInternal::BottomDock:
-            return Qt::BottomDockWidgetArea;
+    case QInternal::BottomDock:
+        return Qt::BottomDockWidgetArea;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return Qt::NoDockWidgetArea;
@@ -3098,28 +3098,28 @@ QRect QDockAreaLayoutInfo::tabContentRect() const
     {
         switch ( tabBarShape )
         {
-            case QTabBar::RoundedNorth:
-            case QTabBar::TriangularNorth:
-                result.adjust( 0, tbh.height(), 0, 0 );
-                break;
+        case QTabBar::RoundedNorth:
+        case QTabBar::TriangularNorth:
+            result.adjust( 0, tbh.height(), 0, 0 );
+            break;
 
-            case QTabBar::RoundedSouth:
-            case QTabBar::TriangularSouth:
-                result.adjust( 0, 0, 0, -tbh.height() );
-                break;
+        case QTabBar::RoundedSouth:
+        case QTabBar::TriangularSouth:
+            result.adjust( 0, 0, 0, -tbh.height() );
+            break;
 
-            case QTabBar::RoundedEast:
-            case QTabBar::TriangularEast:
-                result.adjust( 0, 0, -tbh.width(), 0 );
-                break;
+        case QTabBar::RoundedEast:
+        case QTabBar::TriangularEast:
+            result.adjust( 0, 0, -tbh.width(), 0 );
+            break;
 
-            case QTabBar::RoundedWest:
-            case QTabBar::TriangularWest:
-                result.adjust( tbh.width(), 0, 0, 0 );
-                break;
+        case QTabBar::RoundedWest:
+        case QTabBar::TriangularWest:
+            result.adjust( tbh.width(), 0, 0, 0 );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -3362,23 +3362,23 @@ QList<int> QDockAreaLayout::gapIndex( const QPoint &pos ) const
 
             switch ( i )
             {
-                case QInternal::LeftDock:
-                    r = QRect( rect.left(), rect.top(), EmptyDropAreaSize, rect.height() );
-                    break;
+            case QInternal::LeftDock:
+                r = QRect( rect.left(), rect.top(), EmptyDropAreaSize, rect.height() );
+                break;
 
-                case QInternal::RightDock:
-                    r = QRect( rect.right() - EmptyDropAreaSize, rect.top(),
-                               EmptyDropAreaSize, rect.height() );
-                    break;
+            case QInternal::RightDock:
+                r = QRect( rect.right() - EmptyDropAreaSize, rect.top(),
+                           EmptyDropAreaSize, rect.height() );
+                break;
 
-                case QInternal::TopDock:
-                    r = QRect( rect.left(), rect.top(), rect.width(), EmptyDropAreaSize );
-                    break;
+            case QInternal::TopDock:
+                r = QRect( rect.left(), rect.top(), rect.width(), EmptyDropAreaSize );
+                break;
 
-                case QInternal::BottomDock:
-                    r = QRect( rect.left(), rect.bottom() - EmptyDropAreaSize,
-                               rect.width(), EmptyDropAreaSize );
-                    break;
+            case QInternal::BottomDock:
+                r = QRect( rect.left(), rect.bottom() - EmptyDropAreaSize,
+                           rect.width(), EmptyDropAreaSize );
+                break;
             }
 
             if ( r.contains( pos ) )
@@ -3503,20 +3503,20 @@ QRect QDockAreaLayout::separatorRect( int index ) const
 
     switch ( index )
     {
-        case QInternal::LeftDock:
-            return QRect( r.right() + 1, r.top(), sep, r.height() );
+    case QInternal::LeftDock:
+        return QRect( r.right() + 1, r.top(), sep, r.height() );
 
-        case QInternal::RightDock:
-            return QRect( r.left() - sep, r.top(), sep, r.height() );
+    case QInternal::RightDock:
+        return QRect( r.left() - sep, r.top(), sep, r.height() );
 
-        case QInternal::TopDock:
-            return QRect( r.left(), r.bottom() + 1, r.width(), sep );
+    case QInternal::TopDock:
+        return QRect( r.left(), r.bottom() + 1, r.width(), sep );
 
-        case QInternal::BottomDock:
-            return QRect( r.left(), r.top() - sep, r.width(), sep );
+    case QInternal::BottomDock:
+        return QRect( r.left(), r.top() - sep, r.width(), sep );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QRect();

@@ -489,7 +489,7 @@ static void maskTable( uchar ( &table )[N], const uchar ( &mask )[N] )
 */
 
 int lscs_urlRecode( QString &appendTo, QString::const_iterator begin, QString::const_iterator end,
-                  QUrl::FormattingOptions encoding, const ushort *tableModifications )
+                    QUrl::FormattingOptions encoding, const ushort *tableModifications )
 {
     uchar actionTable[sizeof defaultActionTable];
 

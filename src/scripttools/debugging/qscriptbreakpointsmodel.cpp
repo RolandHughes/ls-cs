@@ -574,24 +574,24 @@ Qt::ItemFlags QScriptBreakpointsModel::flags( const QModelIndex &index ) const
 
     switch ( index.column() )
     {
-        case 0:
-            ret |= Qt::ItemIsUserCheckable;
-            break;
+    case 0:
+        ret |= Qt::ItemIsUserCheckable;
+        break;
 
-        case 1:
-            break;
+    case 1:
+        break;
 
-        case 2:
-            ret |= Qt::ItemIsEditable;
-            break;
+    case 2:
+        ret |= Qt::ItemIsEditable;
+        break;
 
-        case 3:
-            ret |= Qt::ItemIsEditable;
-            break;
+    case 3:
+        ret |= Qt::ItemIsEditable;
+        break;
 
-        case 4:
-            ret |= Qt::ItemIsUserCheckable;
-            break;
+    case 4:
+        ret |= Qt::ItemIsUserCheckable;
+        break;
     }
 
     return ret;

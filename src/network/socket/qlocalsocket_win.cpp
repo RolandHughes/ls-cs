@@ -58,35 +58,35 @@ void QLocalSocketPrivate::_q_winError( ulong windowsError, const QString &functi
 
     switch ( windowsError )
     {
-        case ERROR_PIPE_NOT_CONNECTED:
-        case ERROR_BROKEN_PIPE:
-        case ERROR_NO_DATA:
-            error = QLocalSocket::ConnectionError;
-            errorString = QLocalSocket::tr( "%1: Connection error" ).formatArg( function );
-            state = QLocalSocket::UnconnectedState;
-            break;
+    case ERROR_PIPE_NOT_CONNECTED:
+    case ERROR_BROKEN_PIPE:
+    case ERROR_NO_DATA:
+        error = QLocalSocket::ConnectionError;
+        errorString = QLocalSocket::tr( "%1: Connection error" ).formatArg( function );
+        state = QLocalSocket::UnconnectedState;
+        break;
 
-        case ERROR_FILE_NOT_FOUND:
-            error = QLocalSocket::ServerNotFoundError;
-            errorString = QLocalSocket::tr( "%1: Invalid name" ).formatArg( function );
-            state = QLocalSocket::UnconnectedState;
-            break;
+    case ERROR_FILE_NOT_FOUND:
+        error = QLocalSocket::ServerNotFoundError;
+        errorString = QLocalSocket::tr( "%1: Invalid name" ).formatArg( function );
+        state = QLocalSocket::UnconnectedState;
+        break;
 
-        case ERROR_ACCESS_DENIED:
-            error = QLocalSocket::SocketAccessError;
-            errorString = QLocalSocket::tr( "%1: Access denied" ).formatArg( function );
-            state = QLocalSocket::UnconnectedState;
-            break;
+    case ERROR_ACCESS_DENIED:
+        error = QLocalSocket::SocketAccessError;
+        errorString = QLocalSocket::tr( "%1: Access denied" ).formatArg( function );
+        state = QLocalSocket::UnconnectedState;
+        break;
 
-        default:
-            error = QLocalSocket::UnknownSocketError;
-            errorString = QLocalSocket::tr( "%1: Unknown error %2" ).formatArg( function ).formatArg( windowsError );
+    default:
+        error = QLocalSocket::UnknownSocketError;
+        errorString = QLocalSocket::tr( "%1: Unknown error %2" ).formatArg( function ).formatArg( windowsError );
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
-            qDebug() << "QLocalSocket::_q_winError() Error not handled, " << errorString;
+        qDebug() << "QLocalSocket::_q_winError() Error not handled, " << errorString;
 #endif
 
-            state = QLocalSocket::UnconnectedState;
+        state = QLocalSocket::UnconnectedState;
     }
 
     if ( currentState != state )
@@ -223,14 +223,14 @@ qint64 QLocalSocket::readData( char *data, qint64 maxSize )
 
     switch ( ret )
     {
-        case 0:     // EOF -> transform to error
-            return -1;
+    case 0:     // EOF -> transform to error
+        return -1;
 
-        case -2:    // EWOULDBLOCK -> no error, just no bytes
-            return 0;
+    case -2:    // EWOULDBLOCK -> no error, just no bytes
+        return 0;
 
-        default:
-            return ret;
+    default:
+        return ret;
     }
 }
 

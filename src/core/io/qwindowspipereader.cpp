@@ -154,32 +154,32 @@ void QWindowsPipeReader::notified( DWORD errorCode, DWORD numberOfBytesRead )
 
     switch ( errorCode )
     {
-        case ERROR_SUCCESS:
+    case ERROR_SUCCESS:
+        break;
+
+    case ERROR_MORE_DATA:
+        // This is not an error. We're connected to a message mode
+        // pipe and the message didn't fit into the pipe's system
+        // buffer. We will read the remaining data in the next call.
+        break;
+
+    case ERROR_BROKEN_PIPE:
+    case ERROR_PIPE_NOT_CONNECTED:
+        pipeBroken = true;
+        break;
+
+    case ERROR_OPERATION_ABORTED:
+        if ( stopped )
+        {
             break;
+        }
 
-        case ERROR_MORE_DATA:
-            // This is not an error. We're connected to a message mode
-            // pipe and the message didn't fit into the pipe's system
-            // buffer. We will read the remaining data in the next call.
-            break;
+        [[fallthrough]];
 
-        case ERROR_BROKEN_PIPE:
-        case ERROR_PIPE_NOT_CONNECTED:
-            pipeBroken = true;
-            break;
-
-        case ERROR_OPERATION_ABORTED:
-            if ( stopped )
-            {
-                break;
-            }
-
-            [[fallthrough]];
-
-        default:
-            emit winError( errorCode, QString( "QWindowsPipeReader::notified" ) );
-            pipeBroken = true;
-            break;
+    default:
+        emit winError( errorCode, QString( "QWindowsPipeReader::notified" ) );
+        pipeBroken = true;
+        break;
     }
 
     // After the reader was stopped, the only reason why this function can be called is the
@@ -243,17 +243,17 @@ void QWindowsPipeReader::startAsyncRead()
 
         switch ( dwError )
         {
-            case ERROR_BROKEN_PIPE:
-            case ERROR_PIPE_NOT_CONNECTED:
-                // It may happen, that the other side closes the connection directly
-                // after writing data. Then we must set the appropriate socket state.
-                pipeBroken = true;
-                emit pipeClosed();
-                break;
+        case ERROR_BROKEN_PIPE:
+        case ERROR_PIPE_NOT_CONNECTED:
+            // It may happen, that the other side closes the connection directly
+            // after writing data. Then we must set the appropriate socket state.
+            pipeBroken = true;
+            emit pipeClosed();
+            break;
 
-            default:
-                emit winError( dwError, QString( "QWindowsPipeReader::startAsyncRead" ) );
-                break;
+        default:
+            emit winError( dwError, QString( "QWindowsPipeReader::startAsyncRead" ) );
+            break;
         }
     }
 }

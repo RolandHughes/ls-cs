@@ -192,7 +192,7 @@ QDeclarativeCustomParserProperty::QDeclarativeCustomParserProperty( const QDecla
 }
 
 QDeclarativeCustomParserProperty &QDeclarativeCustomParserProperty::operator=( const QDeclarativeCustomParserProperty
-        &other )
+    &other )
 {
     d->name = other.d->name;
     d->isList = other.d->isList;

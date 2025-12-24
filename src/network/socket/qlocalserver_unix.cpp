@@ -364,31 +364,31 @@ void QLocalServerPrivate::setError( const QString &function )
 
     switch ( errno )
     {
-        case EACCES:
-            errorString = QLocalServer::tr( "%1: Permission denied" ).formatArg( function );
-            error = QAbstractSocket::SocketAccessError;
-            break;
+    case EACCES:
+        errorString = QLocalServer::tr( "%1: Permission denied" ).formatArg( function );
+        error = QAbstractSocket::SocketAccessError;
+        break;
 
-        case ELOOP:
-        case ENOENT:
-        case ENAMETOOLONG:
-        case EROFS:
-        case ENOTDIR:
-            errorString = QLocalServer::tr( "%1: Name error" ).formatArg( function );
-            error = QAbstractSocket::HostNotFoundError;
-            break;
+    case ELOOP:
+    case ENOENT:
+    case ENAMETOOLONG:
+    case EROFS:
+    case ENOTDIR:
+        errorString = QLocalServer::tr( "%1: Name error" ).formatArg( function );
+        error = QAbstractSocket::HostNotFoundError;
+        break;
 
-        case EADDRINUSE:
-            errorString = QLocalServer::tr( "%1: Address in use" ).formatArg( function );
-            error = QAbstractSocket::AddressInUseError;
-            break;
+    case EADDRINUSE:
+        errorString = QLocalServer::tr( "%1: Address in use" ).formatArg( function );
+        error = QAbstractSocket::AddressInUseError;
+        break;
 
-        default:
-            errorString = QLocalServer::tr( "%1: Unknown error %2" ).formatArg( function ).formatArg( errno );
-            error = QAbstractSocket::UnknownSocketError;
+    default:
+        errorString = QLocalServer::tr( "%1: Unknown error %2" ).formatArg( function ).formatArg( errno );
+        error = QAbstractSocket::UnknownSocketError;
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
-            qDebug() << "QLocalServer::setError() Server Name = " << fullServerName << "Error = " << errorString;
+        qDebug() << "QLocalServer::setError() Server Name = " << fullServerName << "Error = " << errorString;
 #endif
     }
 }

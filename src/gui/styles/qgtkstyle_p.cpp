@@ -637,13 +637,13 @@ static bool resolveGConf()
     if ( ! QGtkStylePrivate::gconf_client_get_default )
     {
         QGtkStylePrivate::gconf_client_get_default = ( Ptr_gconf_client_get_default )QLibrary::resolve( "gconf-2", 4,
-                "gconf_client_get_default" );
+            "gconf_client_get_default" );
 
         QGtkStylePrivate::gconf_client_get_string =  ( Ptr_gconf_client_get_string )QLibrary::resolve( "gconf-2", 4,
-                "gconf_client_get_string" );
+            "gconf_client_get_string" );
 
         QGtkStylePrivate::gconf_client_get_bool =  ( Ptr_gconf_client_get_bool )QLibrary::resolve( "gconf-2", 4,
-                "gconf_client_get_bool" );
+            "gconf_client_get_bool" );
     }
 
     return ( QGtkStylePrivate::gconf_client_get_default != 0 );

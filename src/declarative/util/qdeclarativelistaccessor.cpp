@@ -88,24 +88,24 @@ int QDeclarativeListAccessor::count() const
 {
     switch ( m_type )
     {
-        case StringList:
-            return qvariant_cast<QStringList>( d ).count();
+    case StringList:
+        return qvariant_cast<QStringList>( d ).count();
 
-        case VariantList:
-            return qvariant_cast<QVariantList>( d ).count();
+    case VariantList:
+        return qvariant_cast<QVariantList>( d ).count();
 
-        case ListProperty:
-            return ( ( QDeclarativeListReference * )d.constData() )->count();
+    case ListProperty:
+        return ( ( QDeclarativeListReference * )d.constData() )->count();
 
-        case Instance:
-            return 1;
+    case Instance:
+        return 1;
 
-        case Integer:
-            return d.toInt();
+    case Integer:
+        return d.toInt();
 
-        default:
-        case Invalid:
-            return 0;
+    default:
+    case Invalid:
+        return 0;
     }
 }
 
@@ -115,24 +115,24 @@ QVariant QDeclarativeListAccessor::at( int idx ) const
 
     switch ( m_type )
     {
-        case StringList:
-            return QVariant::fromValue( qvariant_cast<QStringList>( d ).at( idx ) );
+    case StringList:
+        return QVariant::fromValue( qvariant_cast<QStringList>( d ).at( idx ) );
 
-        case VariantList:
-            return qvariant_cast<QVariantList>( d ).at( idx );
+    case VariantList:
+        return qvariant_cast<QVariantList>( d ).at( idx );
 
-        case ListProperty:
-            return QVariant::fromValue( ( ( QDeclarativeListReference * )d.constData() )->at( idx ) );
+    case ListProperty:
+        return QVariant::fromValue( ( ( QDeclarativeListReference * )d.constData() )->at( idx ) );
 
-        case Instance:
-            return d;
+    case Instance:
+        return d;
 
-        case Integer:
-            return QVariant( idx );
+    case Integer:
+        return QVariant( idx );
 
-        default:
-        case Invalid:
-            return QVariant();
+    default:
+    case Invalid:
+        return QVariant();
     }
 }
 

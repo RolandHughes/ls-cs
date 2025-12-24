@@ -94,7 +94,7 @@ using QNSViewMouseMoveHelper = struct objc_object;
 - ( void )windowNotification: ( NSNotification * ) windowNotification;
 - ( void )notifyWindowWillZoom: ( BOOL )willZoom;
 - ( void )textInputContextKeyboardSelectionDidChangeNotification: ( NSNotification * )
-    textInputContextKeyboardSelectionDidChangeNotification;
+textInputContextKeyboardSelectionDidChangeNotification;
 - ( void )viewDidHide;
 - ( void )viewDidUnhide;
 - ( void )removeFromSuperview;
@@ -106,7 +106,7 @@ using QNSViewMouseMoveHelper = struct objc_object;
 - ( BOOL )isOpaque;
 
 - ( void )convertFromScreen: ( NSPoint )mouseLocation toWindowPoint: ( QPointF * )qtWindowPoint andScreenPoint:
-    ( QPointF * )qtScreenPoint;
+( QPointF * )qtScreenPoint;
 
 - ( void )resetMouseButtons;
 

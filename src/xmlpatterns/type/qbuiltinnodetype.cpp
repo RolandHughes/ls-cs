@@ -52,21 +52,21 @@ ItemType::Ptr BuiltinNodeType<kind>::atomizedType() const
 {
     switch ( kind )
     {
-        case QXmlNodeModelIndex::Attribute:
-        case QXmlNodeModelIndex::Document:
-        case QXmlNodeModelIndex::Element:
-        case QXmlNodeModelIndex::Text:
-            return BuiltinTypes::xsUntypedAtomic;
+    case QXmlNodeModelIndex::Attribute:
+    case QXmlNodeModelIndex::Document:
+    case QXmlNodeModelIndex::Element:
+    case QXmlNodeModelIndex::Text:
+        return BuiltinTypes::xsUntypedAtomic;
 
-        case QXmlNodeModelIndex::ProcessingInstruction:
-        case QXmlNodeModelIndex::Comment:
-            return BuiltinTypes::xsString;
+    case QXmlNodeModelIndex::ProcessingInstruction:
+    case QXmlNodeModelIndex::Comment:
+        return BuiltinTypes::xsString;
 
-        default:
-        {
-            Q_ASSERT_X( false, Q_FUNC_INFO, "Encountered invalid XPath Data Model node type." );
-            return BuiltinTypes::xsUntypedAtomic;
-        }
+    default:
+    {
+        Q_ASSERT_X( false, Q_FUNC_INFO, "Encountered invalid XPath Data Model node type." );
+        return BuiltinTypes::xsUntypedAtomic;
+    }
     }
 }
 
@@ -75,29 +75,29 @@ QString BuiltinNodeType<kind>::displayName( const NamePool::Ptr & ) const
 {
     switch ( kind )
     {
-        case QXmlNodeModelIndex::Element:
-            return QLatin1String( "element()" );
+    case QXmlNodeModelIndex::Element:
+        return QLatin1String( "element()" );
 
-        case QXmlNodeModelIndex::Document:
-            return QLatin1String( "document()" );
+    case QXmlNodeModelIndex::Document:
+        return QLatin1String( "document()" );
 
-        case QXmlNodeModelIndex::Attribute:
-            return QLatin1String( "attribute()" );
+    case QXmlNodeModelIndex::Attribute:
+        return QLatin1String( "attribute()" );
 
-        case QXmlNodeModelIndex::Text:
-            return QLatin1String( "text()" );
+    case QXmlNodeModelIndex::Text:
+        return QLatin1String( "text()" );
 
-        case QXmlNodeModelIndex::ProcessingInstruction:
-            return QLatin1String( "processing-instruction()" );
+    case QXmlNodeModelIndex::ProcessingInstruction:
+        return QLatin1String( "processing-instruction()" );
 
-        case QXmlNodeModelIndex::Comment:
-            return QLatin1String( "comment()" );
+    case QXmlNodeModelIndex::Comment:
+        return QLatin1String( "comment()" );
 
-        default:
-        {
-            Q_ASSERT_X( false, Q_FUNC_INFO, "Encountered invalid XPath Data Model node type." );
-            return QString();
-        }
+    default:
+    {
+        Q_ASSERT_X( false, Q_FUNC_INFO, "Encountered invalid XPath Data Model node type." );
+        return QString();
+    }
     }
 }
 
@@ -121,19 +121,19 @@ PatternPriority BuiltinNodeType<kind>::patternPriority() const
 
     switch ( kind )
     {
-        case QXmlNodeModelIndex::Text:
-        case QXmlNodeModelIndex::ProcessingInstruction:
-        case QXmlNodeModelIndex::Comment:
-        case QXmlNodeModelIndex::Attribute:
-        case QXmlNodeModelIndex::Element:
-        case QXmlNodeModelIndex::Document:
-            return -0.5;
+    case QXmlNodeModelIndex::Text:
+    case QXmlNodeModelIndex::ProcessingInstruction:
+    case QXmlNodeModelIndex::Comment:
+    case QXmlNodeModelIndex::Attribute:
+    case QXmlNodeModelIndex::Element:
+    case QXmlNodeModelIndex::Document:
+        return -0.5;
 
-        default:
-        {
-            Q_ASSERT_X( false, Q_FUNC_INFO, "Unknown node type" );
-            return 0;
-        }
+    default:
+    {
+        Q_ASSERT_X( false, Q_FUNC_INFO, "Unknown node type" );
+        return 0;
+    }
     }
 
 }

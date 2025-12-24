@@ -74,70 +74,70 @@ int QPaintDeviceWindow::metric( PaintDeviceMetric metric ) const
 
     switch ( metric )
     {
-        case PdmWidth:
-            return width();
+    case PdmWidth:
+        return width();
 
-        case PdmWidthMM:
-            if ( screen )
-            {
-                return width() * screen->physicalSize().width() / screen->geometry().width();
-            }
+    case PdmWidthMM:
+        if ( screen )
+        {
+            return width() * screen->physicalSize().width() / screen->geometry().width();
+        }
 
-            break;
+        break;
 
-        case PdmHeight:
-            return height();
+    case PdmHeight:
+        return height();
 
-        case PdmHeightMM:
-            if ( screen )
-            {
-                return height() * screen->physicalSize().height() / screen->geometry().height();
-            }
+    case PdmHeightMM:
+        if ( screen )
+        {
+            return height() * screen->physicalSize().height() / screen->geometry().height();
+        }
 
-            break;
+        break;
 
-        case PdmDpiX:
-            if ( screen )
-            {
-                return qRound( screen->logicalDotsPerInchX() );
-            }
+    case PdmDpiX:
+        if ( screen )
+        {
+            return qRound( screen->logicalDotsPerInchX() );
+        }
 
-            break;
+        break;
 
-        case PdmDpiY:
-            if ( screen )
-            {
-                return qRound( screen->logicalDotsPerInchY() );
-            }
+    case PdmDpiY:
+        if ( screen )
+        {
+            return qRound( screen->logicalDotsPerInchY() );
+        }
 
-            break;
+        break;
 
-        case PdmPhysicalDpiX:
-            if ( screen )
-            {
-                return qRound( screen->physicalDotsPerInchX() );
-            }
+    case PdmPhysicalDpiX:
+        if ( screen )
+        {
+            return qRound( screen->physicalDotsPerInchX() );
+        }
 
-            break;
+        break;
 
-        case PdmPhysicalDpiY:
-            if ( screen )
-            {
-                return qRound( screen->physicalDotsPerInchY() );
-            }
+    case PdmPhysicalDpiY:
+        if ( screen )
+        {
+            return qRound( screen->physicalDotsPerInchY() );
+        }
 
-            break;
+        break;
 
-        case PdmDevicePixelRatio:
-            return int( QWindow::devicePixelRatio() );
-            break;
+    case PdmDevicePixelRatio:
+        return int( QWindow::devicePixelRatio() );
+        break;
 
-        case PdmDevicePixelRatioScaled:
-            return int( QWindow::devicePixelRatio() * devicePixelRatioFScale() );
-            break;
+    case PdmDevicePixelRatioScaled:
+        return int( QWindow::devicePixelRatio() * devicePixelRatioFScale() );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QPaintDevice::metric( metric );

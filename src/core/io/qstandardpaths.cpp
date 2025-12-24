@@ -215,60 +215,60 @@ QString QStandardPaths::displayName( StandardLocation type )
 {
     switch ( type )
     {
-        case DesktopLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Desktop" );
+    case DesktopLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Desktop" );
 
-        case DocumentsLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Documents" );
+    case DocumentsLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Documents" );
 
-        case FontsLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Fonts" );
+    case FontsLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Fonts" );
 
-        case ApplicationsLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Applications" );
+    case ApplicationsLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Applications" );
 
-        case MusicLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Music" );
+    case MusicLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Music" );
 
-        case MoviesLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Movies" );
+    case MoviesLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Movies" );
 
-        case PicturesLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Pictures" );
+    case PicturesLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Pictures" );
 
-        case TempLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Temporary Directory" );
+    case TempLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Temporary Directory" );
 
-        case HomeLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Home" );
+    case HomeLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Home" );
 
-        case CacheLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Cache" );
+    case CacheLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Cache" );
 
-        case GenericDataLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Shared Data" );
+    case GenericDataLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Shared Data" );
 
-        case RuntimeLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Runtime" );
+    case RuntimeLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Runtime" );
 
-        case ConfigLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Configuration" );
+    case ConfigLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Configuration" );
 
-        case GenericConfigLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Shared Configuration" );
+    case GenericConfigLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Shared Configuration" );
 
-        case GenericCacheLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Shared Cache" );
+    case GenericCacheLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Shared Cache" );
 
-        case DownloadLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Download" );
+    case DownloadLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Download" );
 
-        case AppDataLocation:
-        case AppLocalDataLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Application Data" );
+    case AppDataLocation:
+    case AppLocalDataLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Application Data" );
 
-        case AppConfigLocation:
-            return QCoreApplication::translate( "QStandardPaths", "Application Configuration" );
+    case AppConfigLocation:
+        return QCoreApplication::translate( "QStandardPaths", "Application Configuration" );
     }
 
     // not reached

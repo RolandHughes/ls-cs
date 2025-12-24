@@ -298,7 +298,7 @@ static inline int lscs_safe_close( int fd )
 #define LSCS_CLOSE lscs_safe_close
 
 static inline int lscs_safe_execve( const char *filename, char *const argv[],
-                                  char *const envp[] )
+                                    char *const envp[] )
 {
     int ret;
     EINTR_LOOP( ret, ::execve( filename, argv, envp ) );
@@ -336,7 +336,7 @@ timespec lscs_gettime();
 void lscs_nanosleep( timespec amount );
 
 Q_CORE_EXPORT int lscs_safe_select( int nfds, fd_set *fdread, fd_set *fdwrite, fd_set *fdexcept,
-                                  const struct timespec *tv );
+                                    const struct timespec *tv );
 
 int lscs_select_msecs( int nfds, fd_set *fdread, fd_set *fdwrite, int timeout );
 

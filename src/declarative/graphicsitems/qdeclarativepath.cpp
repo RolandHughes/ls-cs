@@ -380,32 +380,32 @@ static inline QBezier nextBezier( const QPainterPath &path, int *from, qreal *be
 
         switch ( e.type )
         {
-            case QPainterPath::MoveToElement:
-                break;
+        case QPainterPath::MoveToElement:
+            break;
 
-            case QPainterPath::LineToElement:
-            {
-                QLineF line( path.elementAt( i - 1 ), e );
-                *bezLength = line.length();
-                QPointF a = path.elementAt( i - 1 );
-                QPointF delta = e - a;
-                *from = i + 1;
-                return QBezier::fromPoints( a, a + delta / 3, a + 2 * delta / 3, e );
-            }
+        case QPainterPath::LineToElement:
+        {
+            QLineF line( path.elementAt( i - 1 ), e );
+            *bezLength = line.length();
+            QPointF a = path.elementAt( i - 1 );
+            QPointF delta = e - a;
+            *from = i + 1;
+            return QBezier::fromPoints( a, a + delta / 3, a + 2 * delta / 3, e );
+        }
 
-            case QPainterPath::CurveToElement:
-            {
-                QBezier b = QBezier::fromPoints( path.elementAt( i - 1 ),
-                                                 e,
-                                                 path.elementAt( i + 1 ),
-                                                 path.elementAt( i + 2 ) );
-                *bezLength = b.length();
-                *from = i + 3;
-                return b;
-            }
+        case QPainterPath::CurveToElement:
+        {
+            QBezier b = QBezier::fromPoints( path.elementAt( i - 1 ),
+                                             e,
+                                             path.elementAt( i + 1 ),
+                                             path.elementAt( i + 2 ) );
+            *bezLength = b.length();
+            *from = i + 3;
+            return b;
+        }
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 

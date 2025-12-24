@@ -310,21 +310,21 @@ QVariant QDirModel::data( const QModelIndex &index, int role ) const
     {
         switch ( index.column() )
         {
-            case 0:
-                return d->name( index );
+        case 0:
+            return d->name( index );
 
-            case 1:
-                return d->size( index );
+        case 1:
+            return d->size( index );
 
-            case 2:
-                return d->type( index );
+        case 2:
+            return d->type( index );
 
-            case 3:
-                return d->time( index );
+        case 3:
+            return d->time( index );
 
-            default:
-                qWarning( "QDirModel::data() Display value column %d is invalid", index.column() );
-                return QVariant();
+        default:
+            qWarning( "QDirModel::data() Display value column %d is invalid", index.column() );
+            return QVariant();
         }
     }
 
@@ -394,29 +394,29 @@ QVariant QDirModel::headerData( int section, Qt::Orientation orientation, int ro
 
         switch ( section )
         {
-            case 0:
-                return tr( "Name" );
+        case 0:
+            return tr( "Name" );
 
-            case 1:
-                return tr( "Size" );
+        case 1:
+            return tr( "Size" );
 
-            case 2:
-                return
+        case 2:
+            return
 #ifdef Q_OS_DARWIN
-                    tr( "Kind", "Match OS X Finder" );
+                tr( "Kind", "Match OS X Finder" );
 #else
-                    tr( "Type", "All other platforms" );
+                tr( "Type", "All other platforms" );
 #endif
 
-            // Windows   - Type
-            // OS X      - Kind
-            // Konqueror - File Type
-            // Nautilus  - Type
-            case 3:
-                return tr( "Date Modified" );
+        // Windows   - Type
+        // OS X      - Kind
+        // Konqueror - File Type
+        // Nautilus  - Type
+        case 3:
+            return tr( "Date Modified" );
 
-            default:
-                return QVariant();
+        default:
+            return QVariant();
         }
     }
 
@@ -492,24 +492,24 @@ void QDirModel::sort( int column, Qt::SortOrder order )
 
     switch ( column )
     {
-        case 0:
-            sort |= QDir::Name;
-            break;
+    case 0:
+        sort |= QDir::Name;
+        break;
 
-        case 1:
-            sort |= QDir::Size;
-            break;
+    case 1:
+        sort |= QDir::Size;
+        break;
 
-        case 2:
-            sort |= QDir::Type;
-            break;
+    case 2:
+        sort |= QDir::Type;
+        break;
 
-        case 3:
-            sort |= QDir::Time;
-            break;
+    case 3:
+        sort |= QDir::Time;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     setSorting( sort );
@@ -558,51 +558,51 @@ bool QDirModel::dropMimeData( const QMimeData *data, Qt::DropAction action,
 
     switch ( action )
     {
-        case Qt::CopyAction:
-            for ( ; it != urls.constEnd(); ++it )
+    case Qt::CopyAction:
+        for ( ; it != urls.constEnd(); ++it )
+        {
+            QString path = ( *it ).toLocalFile();
+            success = QFile::copy( path, to + QFileInfo( path ).fileName() ) && success;
+        }
+
+        break;
+
+    case Qt::LinkAction:
+        for ( ; it != urls.constEnd(); ++it )
+        {
+            QString path = ( *it ).toLocalFile();
+            success = QFile::link( path, to + QFileInfo( path ).fileName() ) && success;
+        }
+
+        break;
+
+    case Qt::MoveAction:
+        for ( ; it != urls.constEnd(); ++it )
+        {
+            QString path = ( *it ).toLocalFile();
+
+            if ( QFile::copy( path, to + QFileInfo( path ).fileName() ) && QFile::remove( path ) )
             {
-                QString path = ( *it ).toLocalFile();
-                success = QFile::copy( path, to + QFileInfo( path ).fileName() ) && success;
-            }
+                QModelIndex idx = index( QFileInfo( path ).path() );
 
-            break;
-
-        case Qt::LinkAction:
-            for ( ; it != urls.constEnd(); ++it )
-            {
-                QString path = ( *it ).toLocalFile();
-                success = QFile::link( path, to + QFileInfo( path ).fileName() ) && success;
-            }
-
-            break;
-
-        case Qt::MoveAction:
-            for ( ; it != urls.constEnd(); ++it )
-            {
-                QString path = ( *it ).toLocalFile();
-
-                if ( QFile::copy( path, to + QFileInfo( path ).fileName() ) && QFile::remove( path ) )
+                if ( idx.isValid() )
                 {
-                    QModelIndex idx = index( QFileInfo( path ).path() );
-
-                    if ( idx.isValid() )
-                    {
-                        refresh( idx );
-                        //the previous call to refresh may invalidate the _parent. so recreate a new QModelIndex
-                        _parent = index( to );
-                    }
-
+                    refresh( idx );
+                    //the previous call to refresh may invalidate the _parent. so recreate a new QModelIndex
+                    _parent = index( to );
                 }
-                else
-                {
-                    success = false;
-                }
+
             }
+            else
+            {
+                success = false;
+            }
+        }
 
-            break;
+        break;
 
-        default:
-            return false;
+    default:
+        return false;
     }
 
     if ( success )

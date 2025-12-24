@@ -192,23 +192,23 @@ LRESULT LSCS_WIN_CALLBACK lscs_internal_proc( HWND hwnd, UINT message, WPARAM wp
 
         switch ( WSAGETSELECTEVENT( lp ) )
         {
-            case FD_READ:
-            case FD_ACCEPT:
-                type = 0;
-                break;
+        case FD_READ:
+        case FD_ACCEPT:
+            type = 0;
+            break;
 
-            case FD_WRITE:
-            case FD_CONNECT:
-                type = 1;
-                break;
+        case FD_WRITE:
+        case FD_CONNECT:
+            type = 1;
+            break;
 
-            case FD_OOB:
-                type = 2;
-                break;
+        case FD_OOB:
+            type = 2;
+            break;
 
-            case FD_CLOSE:
-                type = 3;
-                break;
+        case FD_CLOSE:
+            type = 3;
+            break;
         }
 
         if ( type >= 0 )

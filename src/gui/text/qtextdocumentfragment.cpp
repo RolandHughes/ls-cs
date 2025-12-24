@@ -741,149 +741,149 @@ QTextHtmlImporter::ProcessNodeResult QTextHtmlImporter::processSpecialNodes()
 {
     switch ( currentNode->id )
     {
-        case Html_body:
-            if ( currentNode->charFormat.background().style() != Qt::NoBrush )
-            {
-                QTextFrameFormat fmt = doc->rootFrame()->frameFormat();
-                fmt.setBackground( currentNode->charFormat.background() );
-                doc->rootFrame()->setFrameFormat( fmt );
-                const_cast<QTextHtmlParserNode *>( currentNode )->charFormat.clearProperty( QTextFormat::BackgroundBrush );
-            }
-
-            compressNextWhitespace = RemoveWhiteSpace;
-            break;
-
-        case Html_ol:
-        case Html_ul:
+    case Html_body:
+        if ( currentNode->charFormat.background().style() != Qt::NoBrush )
         {
-            QTextListFormat::Style style = currentNode->listStyle;
+            QTextFrameFormat fmt = doc->rootFrame()->frameFormat();
+            fmt.setBackground( currentNode->charFormat.background() );
+            doc->rootFrame()->setFrameFormat( fmt );
+            const_cast<QTextHtmlParserNode *>( currentNode )->charFormat.clearProperty( QTextFormat::BackgroundBrush );
+        }
 
-            if ( currentNode->id == Html_ul && !currentNode->hasOwnListStyle && currentNode->parent )
+        compressNextWhitespace = RemoveWhiteSpace;
+        break;
+
+    case Html_ol:
+    case Html_ul:
+    {
+        QTextListFormat::Style style = currentNode->listStyle;
+
+        if ( currentNode->id == Html_ul && !currentNode->hasOwnListStyle && currentNode->parent )
+        {
+            const QTextHtmlParserNode *n = &at( currentNode->parent );
+
+            while ( n )
             {
-                const QTextHtmlParserNode *n = &at( currentNode->parent );
-
-                while ( n )
+                if ( n->id == Html_ul )
                 {
-                    if ( n->id == Html_ul )
-                    {
-                        style = nextListStyle( currentNode->listStyle );
-                    }
+                    style = nextListStyle( currentNode->listStyle );
+                }
 
-                    if ( n->parent )
-                    {
-                        n = &at( n->parent );
-                    }
-                    else
-                    {
-                        n = nullptr;
-                    }
+                if ( n->parent )
+                {
+                    n = &at( n->parent );
+                }
+                else
+                {
+                    n = nullptr;
                 }
             }
-
-            QTextListFormat listFmt;
-            listFmt.setStyle( style );
-
-            if ( ! currentNode->textListNumberPrefix.isEmpty() )
-            {
-                listFmt.setNumberPrefix( currentNode->textListNumberPrefix );
-            }
-
-            if ( !currentNode->textListNumberSuffix.isEmpty() )
-            {
-                listFmt.setNumberSuffix( currentNode->textListNumberSuffix );
-            }
-
-            ++indent;
-
-            if ( currentNode->hasCssListIndent )
-            {
-                listFmt.setIndent( currentNode->cssListIndent );
-            }
-            else
-            {
-                listFmt.setIndent( indent );
-            }
-
-            List l;
-            l.format = listFmt;
-            l.listNode = currentNodeIdx;
-            lists.append( l );
-            compressNextWhitespace = RemoveWhiteSpace;
-
-            // broken html: <ul>Text here<li>Foo
-            const QString simpl = currentNode->text.simplified();
-
-            if ( simpl.isEmpty() || simpl.at( 0 ).isSpace() )
-            {
-                return ContinueWithNextNode;
-            }
-
-            break;
         }
 
-        case Html_table:
+        QTextListFormat listFmt;
+        listFmt.setStyle( style );
+
+        if ( ! currentNode->textListNumberPrefix.isEmpty() )
         {
-            Table t = scanTable( currentNodeIdx );
-            tables.append( t );
-            hasBlock = false;
-            compressNextWhitespace = RemoveWhiteSpace;
-            return ContinueWithNextNode;
+            listFmt.setNumberPrefix( currentNode->textListNumberPrefix );
         }
 
-        case Html_tr:
-            return ContinueWithNextNode;
-
-        case Html_img:
+        if ( !currentNode->textListNumberSuffix.isEmpty() )
         {
-            QTextImageFormat fmt;
-            fmt.setName( currentNode->imageName );
-
-            fmt.merge( currentNode->charFormat );
-
-            if ( currentNode->imageWidth != -1 )
-            {
-                fmt.setWidth( currentNode->imageWidth );
-            }
-
-            if ( currentNode->imageHeight != -1 )
-            {
-                fmt.setHeight( currentNode->imageHeight );
-            }
-
-            cursor.insertImage( fmt, QTextFrameFormat::Position( currentNode->cssFloat ) );
-
-            cursor.movePosition( QTextCursor::Left, QTextCursor::KeepAnchor );
-            cursor.mergeCharFormat( currentNode->charFormat );
-            cursor.movePosition( QTextCursor::Right );
-            compressNextWhitespace = CollapseWhiteSpace;
-
-            hasBlock = false;
-            return ContinueWithNextNode;
+            listFmt.setNumberSuffix( currentNode->textListNumberSuffix );
         }
 
-        case Html_hr:
+        ++indent;
+
+        if ( currentNode->hasCssListIndent )
         {
-            QTextBlockFormat blockFormat = currentNode->blockFormat;
-            blockFormat.setTopMargin( topMargin( currentNodeIdx ) );
-            blockFormat.setBottomMargin( bottomMargin( currentNodeIdx ) );
-            blockFormat.setProperty( QTextFormat::BlockTrailingHorizontalRulerWidth, currentNode->width );
+            listFmt.setIndent( currentNode->cssListIndent );
+        }
+        else
+        {
+            listFmt.setIndent( indent );
+        }
 
-            if ( hasBlock && importMode == ImportToDocument )
-            {
-                cursor.mergeBlockFormat( blockFormat );
-            }
-            else
-            {
-                appendBlock( blockFormat );
-            }
+        List l;
+        l.format = listFmt;
+        l.listNode = currentNodeIdx;
+        lists.append( l );
+        compressNextWhitespace = RemoveWhiteSpace;
 
-            hasBlock = false;
-            compressNextWhitespace = RemoveWhiteSpace;
+        // broken html: <ul>Text here<li>Foo
+        const QString simpl = currentNode->text.simplified();
+
+        if ( simpl.isEmpty() || simpl.at( 0 ).isSpace() )
+        {
             return ContinueWithNextNode;
         }
 
-        default:
-            break;
+        break;
+    }
+
+    case Html_table:
+    {
+        Table t = scanTable( currentNodeIdx );
+        tables.append( t );
+        hasBlock = false;
+        compressNextWhitespace = RemoveWhiteSpace;
+        return ContinueWithNextNode;
+    }
+
+    case Html_tr:
+        return ContinueWithNextNode;
+
+    case Html_img:
+    {
+        QTextImageFormat fmt;
+        fmt.setName( currentNode->imageName );
+
+        fmt.merge( currentNode->charFormat );
+
+        if ( currentNode->imageWidth != -1 )
+        {
+            fmt.setWidth( currentNode->imageWidth );
+        }
+
+        if ( currentNode->imageHeight != -1 )
+        {
+            fmt.setHeight( currentNode->imageHeight );
+        }
+
+        cursor.insertImage( fmt, QTextFrameFormat::Position( currentNode->cssFloat ) );
+
+        cursor.movePosition( QTextCursor::Left, QTextCursor::KeepAnchor );
+        cursor.mergeCharFormat( currentNode->charFormat );
+        cursor.movePosition( QTextCursor::Right );
+        compressNextWhitespace = CollapseWhiteSpace;
+
+        hasBlock = false;
+        return ContinueWithNextNode;
+    }
+
+    case Html_hr:
+    {
+        QTextBlockFormat blockFormat = currentNode->blockFormat;
+        blockFormat.setTopMargin( topMargin( currentNodeIdx ) );
+        blockFormat.setBottomMargin( bottomMargin( currentNodeIdx ) );
+        blockFormat.setProperty( QTextFormat::BlockTrailingHorizontalRulerWidth, currentNode->width );
+
+        if ( hasBlock && importMode == ImportToDocument )
+        {
+            cursor.mergeBlockFormat( blockFormat );
+        }
+        else
+        {
+            appendBlock( blockFormat );
+        }
+
+        hasBlock = false;
+        compressNextWhitespace = RemoveWhiteSpace;
+        return ContinueWithNextNode;
+    }
+
+    default:
+        break;
     }
 
     return ContinueWithCurrentNode;
@@ -908,99 +908,99 @@ bool QTextHtmlImporter::closeTag()
 
         switch ( closedNode->id )
         {
-            case Html_tr:
-                if ( t && !t->isTextFrame )
-                {
-                    ++t->currentRow;
+        case Html_tr:
+            if ( t && !t->isTextFrame )
+            {
+                ++t->currentRow;
 
-                    // for broken html with rowspans but missing tr tags
-                    while ( !t->currentCell.atEnd() && t->currentCell.row < t->currentRow )
-                    {
-                        ++t->currentCell;
-                    }
-                }
-
-                blockTagClosed = true;
-                break;
-
-            case Html_table:
-                if ( !t )
-                {
-                    break;
-                }
-
-                indent = t->lastIndent;
-
-                tables.resize( tables.size() - 1 );
-                t = nullptr;
-
-                if ( tables.isEmpty() )
-                {
-                    cursor = doc->rootFrame()->lastCursorPosition();
-                }
-                else
-                {
-                    t = &tables.last();
-
-                    if ( t->isTextFrame )
-                    {
-                        cursor = t->frame->lastCursorPosition();
-                    }
-                    else if ( !t->currentCell.atEnd() )
-                    {
-                        cursor = t->currentCell.cell().lastCursorPosition();
-                    }
-                }
-
-                // we don't need an extra block after tables, so we don't
-                // claim to have closed one for the creation of a new one
-                // in import()
-                blockTagClosed = false;
-                compressNextWhitespace = RemoveWhiteSpace;
-                break;
-
-            case Html_th:
-            case Html_td:
-                if ( t && !t->isTextFrame )
+                // for broken html with rowspans but missing tr tags
+                while ( !t->currentCell.atEnd() && t->currentCell.row < t->currentRow )
                 {
                     ++t->currentCell;
                 }
+            }
 
+            blockTagClosed = true;
+            break;
+
+        case Html_table:
+            if ( !t )
+            {
+                break;
+            }
+
+            indent = t->lastIndent;
+
+            tables.resize( tables.size() - 1 );
+            t = nullptr;
+
+            if ( tables.isEmpty() )
+            {
+                cursor = doc->rootFrame()->lastCursorPosition();
+            }
+            else
+            {
+                t = &tables.last();
+
+                if ( t->isTextFrame )
+                {
+                    cursor = t->frame->lastCursorPosition();
+                }
+                else if ( !t->currentCell.atEnd() )
+                {
+                    cursor = t->currentCell.cell().lastCursorPosition();
+                }
+            }
+
+            // we don't need an extra block after tables, so we don't
+            // claim to have closed one for the creation of a new one
+            // in import()
+            blockTagClosed = false;
+            compressNextWhitespace = RemoveWhiteSpace;
+            break;
+
+        case Html_th:
+        case Html_td:
+            if ( t && !t->isTextFrame )
+            {
+                ++t->currentCell;
+            }
+
+            blockTagClosed = true;
+            compressNextWhitespace = RemoveWhiteSpace;
+            break;
+
+        case Html_ol:
+        case Html_ul:
+            if ( lists.isEmpty() )
+            {
+                break;
+            }
+
+            lists.resize( lists.size() - 1 );
+            --indent;
+            blockTagClosed = true;
+            break;
+
+        case Html_br:
+            compressNextWhitespace = RemoveWhiteSpace;
+            break;
+
+        case Html_div:
+            if ( closedNode->children.isEmpty() )
+            {
+                break;
+            }
+
+            [[fallthrough]];
+
+        default:
+            if ( closedNode->isBlock() )
+            {
                 blockTagClosed = true;
-                compressNextWhitespace = RemoveWhiteSpace;
-                break;
+            }
 
-            case Html_ol:
-            case Html_ul:
-                if ( lists.isEmpty() )
-                {
-                    break;
-                }
-
-                lists.resize( lists.size() - 1 );
-                --indent;
-                blockTagClosed = true;
-                break;
-
-            case Html_br:
-                compressNextWhitespace = RemoveWhiteSpace;
-                break;
-
-            case Html_div:
-                if ( closedNode->children.isEmpty() )
-                {
-                    break;
-                }
-
-                [[fallthrough]];
-
-            default:
-                if ( closedNode->isBlock() )
-                {
-                    blockTagClosed = true;
-                }
-
-                break;
+            break;
         }
 
         closedNode = &at( closedNode->parent );
@@ -1025,30 +1025,30 @@ QTextHtmlImporter::Table QTextHtmlImporter::scanTable( int tableNodeIdx )
     {
         switch ( at( row ).id )
         {
-            case Html_tr:
-                rowNodes += row;
-                break;
+        case Html_tr:
+            rowNodes += row;
+            break;
 
-            case Html_thead:
-            case Html_tbody:
-            case Html_tfoot:
-                for ( int potentialRow : at( row ).children )
+        case Html_thead:
+        case Html_tbody:
+        case Html_tfoot:
+            for ( int potentialRow : at( row ).children )
+            {
+                if ( at( potentialRow ).id == Html_tr )
                 {
-                    if ( at( potentialRow ).id == Html_tr )
-                    {
-                        rowNodes += potentialRow;
+                    rowNodes += potentialRow;
 
-                        if ( at( row ).id == Html_thead )
-                        {
-                            ++tableHeaderRowCount;
-                        }
+                    if ( at( row ).id == Html_thead )
+                    {
+                        ++tableHeaderRowCount;
                     }
                 }
+            }
 
-                break;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 

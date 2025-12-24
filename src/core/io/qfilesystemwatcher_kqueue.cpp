@@ -319,14 +319,14 @@ void QKqueueFileSystemWatcherEngine::run()
                 // handle the command
                 switch ( cmd )
                 {
-                    case 'q':
-                        return;
+                case 'q':
+                    return;
 
-                    case '@':
-                        break;
+                case '@':
+                    break;
 
-                    default:
-                        break;
+                default:
+                    break;
                 }
 
             }

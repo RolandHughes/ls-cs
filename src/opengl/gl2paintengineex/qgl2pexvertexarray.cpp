@@ -114,60 +114,60 @@ void QGL2PEXVertexArray::addPath( const QVectorPath &path, GLfloat curveInverseS
         {
             switch ( elements[i] )
             {
-                case QPainterPath::MoveToElement:
-                    if ( !outline )
-                    {
-                        addClosingLine( lastMoveTo );
-                    }
-
-                    vertexArrayStops.append( vertexArray.size() );
-
-                    if ( !outline )
-                    {
-                        if ( !path.isConvex() )
-                        {
-                            addCentroid( path, i );
-                        }
-
-                        lastMoveTo = vertexArray.size();
-                    }
-
-                    lineToArray( points[i].x(), points[i].y() ); // Add the moveTo as a new vertex
-                    break;
-
-                case QPainterPath::LineToElement:
-                    lineToArray( points[i].x(), points[i].y() );
-                    break;
-
-                case QPainterPath::CurveToElement:
+            case QPainterPath::MoveToElement:
+                if ( !outline )
                 {
-                    QBezier b = QBezier::fromPoints( *( ( ( const QPointF * ) points ) + i - 1 ),
-                                                     points[i], points[i + 1], points[i + 2] );
-
-                    QRectF bounds = b.bounds();
-
-                    // threshold based on same algorithm as in qtriangulatingstroker.cpp
-                    int threshold = qMin( 64, qMax( bounds.width(), bounds.height() ) * M_PI / ( curveInverseScale * 6 ) );
-
-                    if ( threshold < 3 )
-                    {
-                        threshold = 3;
-                    }
-
-                    qreal one_over_threshold_minus_1 = qreal( 1 ) / ( threshold - 1 );
-
-                    for ( int t = 0; t < threshold; ++t )
-                    {
-                        QPointF pt = b.pointAt( t * one_over_threshold_minus_1 );
-                        lineToArray( pt.x(), pt.y() );
-                    }
-
-                    i += 2;
-                    break;
+                    addClosingLine( lastMoveTo );
                 }
 
-                default:
-                    break;
+                vertexArrayStops.append( vertexArray.size() );
+
+                if ( !outline )
+                {
+                    if ( !path.isConvex() )
+                    {
+                        addCentroid( path, i );
+                    }
+
+                    lastMoveTo = vertexArray.size();
+                }
+
+                lineToArray( points[i].x(), points[i].y() ); // Add the moveTo as a new vertex
+                break;
+
+            case QPainterPath::LineToElement:
+                lineToArray( points[i].x(), points[i].y() );
+                break;
+
+            case QPainterPath::CurveToElement:
+            {
+                QBezier b = QBezier::fromPoints( *( ( ( const QPointF * ) points ) + i - 1 ),
+                                                 points[i], points[i + 1], points[i + 2] );
+
+                QRectF bounds = b.bounds();
+
+                // threshold based on same algorithm as in qtriangulatingstroker.cpp
+                int threshold = qMin( 64, qMax( bounds.width(), bounds.height() ) * M_PI / ( curveInverseScale * 6 ) );
+
+                if ( threshold < 3 )
+                {
+                    threshold = 3;
+                }
+
+                qreal one_over_threshold_minus_1 = qreal( 1 ) / ( threshold - 1 );
+
+                for ( int t = 0; t < threshold; ++t )
+                {
+                    QPointF pt = b.pointAt( t * one_over_threshold_minus_1 );
+                    lineToArray( pt.x(), pt.y() );
+                }
+
+                i += 2;
+                break;
+            }
+
+            default:
+                break;
             }
         }
     }

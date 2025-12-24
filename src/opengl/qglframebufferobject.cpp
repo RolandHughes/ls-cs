@@ -271,87 +271,87 @@ bool QGLFramebufferObjectPrivate::checkFramebufferStatus() const
 
     switch ( status )
     {
-        case GL_NO_ERROR:
-        case GL_FRAMEBUFFER_COMPLETE:
-            return true;
+    case GL_NO_ERROR:
+    case GL_FRAMEBUFFER_COMPLETE:
+        return true;
 
-        case GL_FRAMEBUFFER_UNSUPPORTED:
+    case GL_FRAMEBUFFER_UNSUPPORTED:
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLFramebufferObject() Unsupported framebuffer format." );
+        qDebug( "QGLFramebufferObject() Unsupported framebuffer format." );
 #endif
-            break;
+        break;
 
-        case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+    case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLFramebufferObject() Framebuffer incomplete attachment." );
+        qDebug( "QGLFramebufferObject() Framebuffer incomplete attachment." );
 #endif
-            break;
+        break;
 
-        case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+    case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLFramebufferObject() Framebuffer incomplete, missing attachment." );
+        qDebug( "QGLFramebufferObject() Framebuffer incomplete, missing attachment." );
 #endif
-            break;
+        break;
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT
 
-        case GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT:
+    case GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT:
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLFramebufferObject() Framebuffer incomplete, duplicate attachment." );
+        qDebug( "QGLFramebufferObject() Framebuffer incomplete, duplicate attachment." );
 #endif
-            break;
+        break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS
 
-        case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
+    case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLFramebufferObject() Framebuffer incomplete, attached images must have same dimensions." );
+        qDebug( "QGLFramebufferObject() Framebuffer incomplete, attached images must have same dimensions." );
 #endif
-            break;
+        break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_FORMATS
 
-        case GL_FRAMEBUFFER_INCOMPLETE_FORMATS:
+    case GL_FRAMEBUFFER_INCOMPLETE_FORMATS:
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLFramebufferObject() Framebuffer incomplete, attached images must have same format." );
+        qDebug( "QGLFramebufferObject() Framebuffer incomplete, attached images must have same format." );
 #endif
-            break;
+        break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER
 
-        case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+    case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLFramebufferObject() Framebuffer incomplete, missing draw buffer." );
+        qDebug( "QGLFramebufferObject() Framebuffer incomplete, missing draw buffer." );
 #endif
-            break;
+        break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER
 
-        case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+    case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLFramebufferObject() Framebuffer incomplete, missing read buffer." );
+        qDebug( "QGLFramebufferObject() Framebuffer incomplete, missing read buffer." );
 #endif
-            break;
+        break;
 #endif
 
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE
 
-        case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+    case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLFramebufferObject() Framebuffer incomplete, attachments must have same number of samples per pixel." );
+        qDebug( "QGLFramebufferObject() Framebuffer incomplete, attachments must have same number of samples per pixel." );
 #endif
-            break;
+        break;
 #endif
 
-        default:
+    default:
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug() << "QGLFramebufferObject() An undefined error has occurred: " << status;
+        qDebug() << "QGLFramebufferObject() An undefined error has occurred: " << status;
 #endif
-            break;
+        break;
     }
 
     return false;
@@ -1045,45 +1045,45 @@ int QGLFramebufferObject::metric( PaintDeviceMetric metric ) const
 
     switch ( metric )
     {
-        case PdmWidth:
-            return w;
+    case PdmWidth:
+        return w;
 
-        case PdmHeight:
-            return h;
+    case PdmHeight:
+        return h;
 
-        case PdmWidthMM:
-            return qRound( w * 1000 / dpmx );
+    case PdmWidthMM:
+        return qRound( w * 1000 / dpmx );
 
-        case PdmHeightMM:
-            return qRound( h * 1000 / dpmy );
+    case PdmHeightMM:
+        return qRound( h * 1000 / dpmy );
 
-        case PdmNumColors:
-            return 0;
+    case PdmNumColors:
+        return 0;
 
-        case PdmDepth:
-            return 32;//d->depth;
+    case PdmDepth:
+        return 32;//d->depth;
 
-        case PdmDpiX:
-            return qRound( dpmx * 0.0254 );
+    case PdmDpiX:
+        return qRound( dpmx * 0.0254 );
 
-        case PdmDpiY:
-            return qRound( dpmy * 0.0254 );
+    case PdmDpiY:
+        return qRound( dpmy * 0.0254 );
 
-        case PdmPhysicalDpiX:
-            return qRound( dpmx * 0.0254 );
+    case PdmPhysicalDpiX:
+        return qRound( dpmx * 0.0254 );
 
-        case PdmPhysicalDpiY:
-            return qRound( dpmy * 0.0254 );
+    case PdmPhysicalDpiY:
+        return qRound( dpmy * 0.0254 );
 
-        case QPaintDevice::PdmDevicePixelRatio:
-            return 1;
+    case QPaintDevice::PdmDevicePixelRatio:
+        return 1;
 
-        case QPaintDevice::PdmDevicePixelRatioScaled:
-            return 1 * QPaintDevice::devicePixelRatioFScale();
+    case QPaintDevice::PdmDevicePixelRatioScaled:
+        return 1 * QPaintDevice::devicePixelRatioFScale();
 
-        default:
-            qWarning( "QGLFramebufferObject::metric(), Unhandled metric type: %d.\n", metric );
-            break;
+    default:
+        qWarning( "QGLFramebufferObject::metric(), Unhandled metric type: %d.\n", metric );
+        break;
     }
 
     return 0;

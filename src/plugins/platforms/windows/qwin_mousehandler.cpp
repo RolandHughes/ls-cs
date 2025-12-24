@@ -162,7 +162,7 @@ static inline QTouchDevice *createTouchDevice()
                      ? QTouchDevice::TouchScreen : QTouchDevice::TouchPad );
 
     QTouchDevice::Capabilities capabilities = QTouchDevice::Position |
-            QTouchDevice::Area | QTouchDevice::NormalizedPosition;
+        QTouchDevice::Area | QTouchDevice::NormalizedPosition;
 
     if ( result->type() == QTouchDevice::TouchPad )
     {
@@ -555,24 +555,24 @@ bool QWindowsMouseHandler::translateScrollEvent( QWindow *window, HWND, MSG msg,
 
     switch ( LOWORD( msg.wParam ) )
     {
-        case SB_LINELEFT:
-            delta = 120;
-            break;
+    case SB_LINELEFT:
+        delta = 120;
+        break;
 
-        case SB_LINERIGHT:
-            delta = -120;
-            break;
+    case SB_LINERIGHT:
+        delta = -120;
+        break;
 
-        case SB_PAGELEFT:
-            delta = 240;
-            break;
+    case SB_PAGELEFT:
+        delta = 240;
+        break;
 
-        case SB_PAGERIGHT:
-            delta = -240;
-            break;
+    case SB_PAGERIGHT:
+        delta = -240;
+        break;
 
-        default:
-            return false;
+    default:
+        return false;
     }
 
     redirectWheelEvent( window, QCursor::pos(), delta, Qt::Horizontal, Qt::NoModifier );
@@ -615,7 +615,7 @@ bool QWindowsMouseHandler::translateTouchEvent( QWindow *window, HWND,
     Qt::TouchPointStates allStates = Qt::EmptyFlag;
 
     QWindowsContext::user32dll.getTouchInputInfo( reinterpret_cast<HANDLE>( msg.lParam ),
-            UINT( msg.wParam ), winTouchInputs.data(), sizeof( TOUCHINPUT ) );
+                              UINT( msg.wParam ), winTouchInputs.data(), sizeof( TOUCHINPUT ) );
 
     for ( int i = 0; i < winTouchPointCount; ++i )
     {

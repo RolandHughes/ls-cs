@@ -602,246 +602,246 @@ restart:
             switch ( yyCh.unicode() )
             {
 
-                case 'd':
+            case 'd':
 
-                    // skip over the name of the define
+                // skip over the name of the define
 
-                    do
-                    {
-                        // Rest of "define"
-                        yyCh = getChar();
-
-                        if ( yyCh == EOF )
-                        {
-                            return Tok_Eof;
-                        }
-
-                        if ( yyCh == '\n' )
-                        {
-                            goto restart;
-                        }
-
-                    }
-                    while ( ! yyCh.isSpace() );
-
-                    do
-                    {
-                        // Space beween "define" and macro name
-                        yyCh = getChar();
-
-                        if ( yyCh == EOF )
-                        {
-                            return Tok_Eof;
-                        }
-
-                        if ( yyCh == '\n' )
-                        {
-                            goto restart;
-                        }
-
-                    }
-                    while ( yyCh.isSpace() );
-
-                    do
-                    {
-                        // Macro name
-
-                        if ( yyCh == '(' )
-                        {
-                            // Argument list. Follows the name without a space, and no paren nesting is possible.
-
-                            do
-                            {
-                                yyCh = getChar();
-
-                                if ( yyCh == EOF )
-                                {
-                                    return Tok_Eof;
-                                }
-
-                                if ( yyCh == '\n' )
-                                {
-                                    goto restart;
-                                }
-                            }
-                            while ( yyCh != ')' );
-
-                            break;
-                        }
-
-                        yyCh = getChar();
-
-                        if ( yyCh == EOF )
-                        {
-                            return Tok_Eof;
-                        }
-
-                        if ( yyCh == '\n' )
-                        {
-                            goto restart;
-                        }
-
-                    }
-                    while ( ! yyCh.isSpace() );
-
-                    do
-                    {
-                        // Shortcut the immediate newline case if no comments follow
-
-                        yyCh = getChar();
-
-                        if ( yyCh == EOF )
-                        {
-                            return Tok_Eof;
-                        }
-
-                        if ( yyCh == '\n' )
-                        {
-                            goto restart;
-                        }
-
-                    }
-                    while ( yyCh.isSpace() );
-
-                    saveState( &savedState );
-                    yyMinBraceDepth = yyBraceDepth;
-                    inDefine = true;
-
-                    goto restart;
-
-                case 'i':
+                do
+                {
+                    // Rest of "define"
                     yyCh = getChar();
 
-                    if ( yyCh == 'f' )
+                    if ( yyCh == EOF )
                     {
-                        // if, ifdef, ifndef
-                        yyIfdefStack.push( IfdefState( yyBracketDepth, yyBraceDepth, yyParenDepth ) );
-                        yyCh = getChar();
-
+                        return Tok_Eof;
                     }
-                    else if ( yyCh == 'n' )
+
+                    if ( yyCh == '\n' )
                     {
-                        // include
+                        goto restart;
+                    }
+
+                }
+                while ( ! yyCh.isSpace() );
+
+                do
+                {
+                    // Space beween "define" and macro name
+                    yyCh = getChar();
+
+                    if ( yyCh == EOF )
+                    {
+                        return Tok_Eof;
+                    }
+
+                    if ( yyCh == '\n' )
+                    {
+                        goto restart;
+                    }
+
+                }
+                while ( yyCh.isSpace() );
+
+                do
+                {
+                    // Macro name
+
+                    if ( yyCh == '(' )
+                    {
+                        // Argument list. Follows the name without a space, and no paren nesting is possible.
+
                         do
                         {
                             yyCh = getChar();
-                        }
-                        while ( yyCh != EOF && ! yyCh.isSpace() && yyCh != '"' && yyCh != '<' );
 
-                        while ( yyCh.isSpace() )
+                            if ( yyCh == EOF )
+                            {
+                                return Tok_Eof;
+                            }
+
+                            if ( yyCh == '\n' )
+                            {
+                                goto restart;
+                            }
+                        }
+                        while ( yyCh != ')' );
+
+                        break;
+                    }
+
+                    yyCh = getChar();
+
+                    if ( yyCh == EOF )
+                    {
+                        return Tok_Eof;
+                    }
+
+                    if ( yyCh == '\n' )
+                    {
+                        goto restart;
+                    }
+
+                }
+                while ( ! yyCh.isSpace() );
+
+                do
+                {
+                    // Shortcut the immediate newline case if no comments follow
+
+                    yyCh = getChar();
+
+                    if ( yyCh == EOF )
+                    {
+                        return Tok_Eof;
+                    }
+
+                    if ( yyCh == '\n' )
+                    {
+                        goto restart;
+                    }
+
+                }
+                while ( yyCh.isSpace() );
+
+                saveState( &savedState );
+                yyMinBraceDepth = yyBraceDepth;
+                inDefine = true;
+
+                goto restart;
+
+            case 'i':
+                yyCh = getChar();
+
+                if ( yyCh == 'f' )
+                {
+                    // if, ifdef, ifndef
+                    yyIfdefStack.push( IfdefState( yyBracketDepth, yyBraceDepth, yyParenDepth ) );
+                    yyCh = getChar();
+
+                }
+                else if ( yyCh == 'n' )
+                {
+                    // include
+                    do
+                    {
+                        yyCh = getChar();
+                    }
+                    while ( yyCh != EOF && ! yyCh.isSpace() && yyCh != '"' && yyCh != '<' );
+
+                    while ( yyCh.isSpace() )
+                    {
+                        yyCh = getChar();
+                    }
+
+                    int tChar;
+
+                    if ( yyCh == '"' )
+                    {
+                        tChar = '"';
+
+                    }
+                    else if ( yyCh == '<' )
+                    {
+                        tChar = '>';
+
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                    yyWord.clear();
+
+                    while ( true )
+                    {
+                        yyCh = getChar();
+
+                        if ( yyCh == EOF || yyCh == '\n' )
+                        {
+                            break;
+                        }
+
+                        if ( yyCh == tChar )
                         {
                             yyCh = getChar();
+                            break;
                         }
 
-                        int tChar;
+                        yyWord.append( yyCh );
+                    }
 
-                        if ( yyCh == '"' )
-                        {
-                            tChar = '"';
+                    return ( tChar == '"' ) ? Tok_QuotedInclude : Tok_AngledInclude;
+                }
 
-                        }
-                        else if ( yyCh == '<' )
+                break;
+
+            case 'e':
+                yyCh = getChar();
+
+                if ( yyCh == 'l' )
+                {
+                    // elif, else
+                    if ( !yyIfdefStack.isEmpty() )
+                    {
+                        IfdefState &is = yyIfdefStack.top();
+
+                        if ( is.elseLine != -1 )
                         {
-                            tChar = '>';
+
+                            if ( yyBracketDepth != is.bracketDepth1st || yyBraceDepth != is.braceDepth1st
+                                    || yyParenDepth != is.parenDepth1st )
+                            {
+
+                                yyMsg( is.elseLine ) << "Parenthesis/bracket/brace mismatch between "
+                                                        "#if and #else branches; using #if branch\n";
+                            }
 
                         }
                         else
                         {
-                            break;
+                            is.bracketDepth1st = yyBracketDepth;
+                            is.braceDepth1st = yyBraceDepth;
+                            is.parenDepth1st = yyParenDepth;
+                            saveState( &is.state );
                         }
 
-                        yyWord.clear();
-
-                        while ( true )
-                        {
-                            yyCh = getChar();
-
-                            if ( yyCh == EOF || yyCh == '\n' )
-                            {
-                                break;
-                            }
-
-                            if ( yyCh == tChar )
-                            {
-                                yyCh = getChar();
-                                break;
-                            }
-
-                            yyWord.append( yyCh );
-                        }
-
-                        return ( tChar == '"' ) ? Tok_QuotedInclude : Tok_AngledInclude;
+                        is.elseLine = yyLineNo;
+                        yyBracketDepth = is.bracketDepth;
+                        yyBraceDepth = is.braceDepth;
+                        yyParenDepth = is.parenDepth;
                     }
 
-                    break;
-
-                case 'e':
                     yyCh = getChar();
 
-                    if ( yyCh == 'l' )
+                }
+                else if ( yyCh == 'n' )
+                {
+                    // endif
+                    if ( ! yyIfdefStack.isEmpty() )
                     {
-                        // elif, else
-                        if ( !yyIfdefStack.isEmpty() )
+                        IfdefState is = yyIfdefStack.pop();
+
+                        if ( is.elseLine != -1 )
                         {
-                            IfdefState &is = yyIfdefStack.top();
-
-                            if ( is.elseLine != -1 )
+                            if ( yyBracketDepth != is.bracketDepth1st || yyBraceDepth != is.braceDepth1st
+                                    || yyParenDepth != is.parenDepth1st )
                             {
 
-                                if ( yyBracketDepth != is.bracketDepth1st || yyBraceDepth != is.braceDepth1st
-                                        || yyParenDepth != is.parenDepth1st )
-                                {
-
-                                    yyMsg( is.elseLine ) << "Parenthesis/bracket/brace mismatch between "
-                                                         "#if and #else branches; using #if branch\n";
-                                }
-
-                            }
-                            else
-                            {
-                                is.bracketDepth1st = yyBracketDepth;
-                                is.braceDepth1st = yyBraceDepth;
-                                is.parenDepth1st = yyParenDepth;
-                                saveState( &is.state );
+                                yyMsg( is.elseLine ) << "Parenthesis/brace mismatch between "
+                                                        "#if and #else branches; using #if branch\n";
                             }
 
-                            is.elseLine = yyLineNo;
-                            yyBracketDepth = is.bracketDepth;
-                            yyBraceDepth = is.braceDepth;
-                            yyParenDepth = is.parenDepth;
+                            yyBracketDepth = is.bracketDepth1st;
+                            yyBraceDepth = is.braceDepth1st;
+                            yyParenDepth = is.parenDepth1st;
+                            loadState( &is.state );
                         }
-
-                        yyCh = getChar();
-
-                    }
-                    else if ( yyCh == 'n' )
-                    {
-                        // endif
-                        if ( ! yyIfdefStack.isEmpty() )
-                        {
-                            IfdefState is = yyIfdefStack.pop();
-
-                            if ( is.elseLine != -1 )
-                            {
-                                if ( yyBracketDepth != is.bracketDepth1st || yyBraceDepth != is.braceDepth1st
-                                        || yyParenDepth != is.parenDepth1st )
-                                {
-
-                                    yyMsg( is.elseLine ) << "Parenthesis/brace mismatch between "
-                                                         "#if and #else branches; using #if branch\n";
-                                }
-
-                                yyBracketDepth = is.bracketDepth1st;
-                                yyBraceDepth = is.braceDepth1st;
-                                yyParenDepth = is.parenDepth1st;
-                                loadState( &is.state );
-                            }
-                        }
-
-                        yyCh = getChar();
                     }
 
-                    break;
+                    yyCh = getChar();
+                }
+
+                break;
             }
 
             // skip remaining preprocessor directives
@@ -923,104 +923,104 @@ restart:
 
             switch ( yyWord[0].unicode() )
             {
-                case 'N':
-                    if ( yyWord == text_null )
+            case 'N':
+                if ( yyWord == text_null )
+                {
+                    return Tok_Null;
+                }
+
+                break;
+
+            case 'C':
+                if ( yyWord == text_LSCS_OBJECT )
+                {
+                    return Tok_LSCS_OBJECT;
+                }
+
+                break;
+
+            case 'c':
+                if ( yyWord == text_class )
+                {
+                    return Tok_Class;
+                }
+
+                break;
+
+            case 'f':
+                if ( yyWord == text_friend )
+                {
+                    return Tok_Friend;
+                }
+
+                break;
+
+            case 'n':
+                if ( yyWord == text_namespace )
+                {
+                    return Tok_Namespace;
+                }
+
+                if ( yyWord == text_nullptr )
+                {
+                    return Tok_Null;
+                }
+
+                break;
+
+            case 'o':
+                if ( yyWord == text_operator )
+                {
+                    // Operator overload declaration/definition
+                    // need to prevent those characters from confusing the followup parsing
+
+                    while ( yyCh.isSpace() )
                     {
-                        return Tok_Null;
+                        yyCh = getChar();
                     }
 
-                    break;
-
-                case 'C':
-                    if ( yyWord == text_LSCS_OBJECT )
+                    while ( yyCh == '+' || yyCh == '-' || yyCh == '*' || yyCh == '/' || yyCh == '%'
+                            || yyCh == '=' || yyCh == '<' || yyCh == '>' || yyCh == '!'
+                            || yyCh == '&' || yyCh == '|' || yyCh == '~' || yyCh == '^'
+                            || yyCh == '[' || yyCh == ']' )
                     {
-                        return Tok_LSCS_OBJECT;
+                        yyCh = getChar();
                     }
+                }
 
-                    break;
+                break;
 
-                case 'c':
-                    if ( yyWord == text_class )
-                    {
-                        return Tok_Class;
-                    }
+            case 'p':
+                if ( yyWord == text_public || yyWord == text_protected || yyWord == text_private )
+                {
+                    return Tok_Access;
+                }
 
-                    break;
+                break;
 
-                case 'f':
-                    if ( yyWord == text_friend )
-                    {
-                        return Tok_Friend;
-                    }
+            case 'r':
+                if ( yyWord == text_return )
+                {
+                    return Tok_Return;
+                }
 
-                    break;
+                break;
 
-                case 'n':
-                    if ( yyWord == text_namespace )
-                    {
-                        return Tok_Namespace;
-                    }
+            case 's':
+                if ( yyWord == text_struct )
+                {
+                    return Tok_Class;
+                }
 
-                    if ( yyWord == text_nullptr )
-                    {
-                        return Tok_Null;
-                    }
+                break;
 
-                    break;
+            case 'u':
+                if ( yyWord == text_using )
+                {
+                    return Tok_Using;
+                }
 
-                case 'o':
-                    if ( yyWord == text_operator )
-                    {
-                        // Operator overload declaration/definition
-                        // need to prevent those characters from confusing the followup parsing
-
-                        while ( yyCh.isSpace() )
-                        {
-                            yyCh = getChar();
-                        }
-
-                        while ( yyCh == '+' || yyCh == '-' || yyCh == '*' || yyCh == '/' || yyCh == '%'
-                                || yyCh == '=' || yyCh == '<' || yyCh == '>' || yyCh == '!'
-                                || yyCh == '&' || yyCh == '|' || yyCh == '~' || yyCh == '^'
-                                || yyCh == '[' || yyCh == ']' )
-                        {
-                            yyCh = getChar();
-                        }
-                    }
-
-                    break;
-
-                case 'p':
-                    if ( yyWord == text_public || yyWord == text_protected || yyWord == text_private )
-                    {
-                        return Tok_Access;
-                    }
-
-                    break;
-
-                case 'r':
-                    if ( yyWord == text_return )
-                    {
-                        return Tok_Return;
-                    }
-
-                    break;
-
-                case 's':
-                    if ( yyWord == text_struct )
-                    {
-                        return Tok_Class;
-                    }
-
-                    break;
-
-                case 'u':
-                    if ( yyWord == text_using )
-                    {
-                        return Tok_Using;
-                    }
-
-                    break;
+                break;
             }
 
             // gui_lscs_object, net_lscs_object, etc
@@ -1037,322 +1037,322 @@ restart:
             switch ( yyCh.unicode() )
             {
 
-                case '\n':
-                    if ( inDefine )
-                    {
-                        loadState( &savedState );
-                        prospectiveContext.clear();
-                        yyBraceDepth = yyMinBraceDepth;
-                        yyMinBraceDepth = 0;
-                        inDefine = false;
+            case '\n':
+                if ( inDefine )
+                {
+                    loadState( &savedState );
+                    prospectiveContext.clear();
+                    yyBraceDepth = yyMinBraceDepth;
+                    yyMinBraceDepth = 0;
+                    inDefine = false;
 
-                        metaExpected = true;
+                    metaExpected = true;
+                    yyCh = getChar();
+
+                    // break out of any multi-token constructs
+                    return Tok_Cancel;
+                }
+
+                yyCh = getChar();
+                break;
+
+            case '/':
+                yyCh = getChar();
+
+                if ( yyCh == '/' )
+                {
+                    yyWord.clear();
+
+                    do
+                    {
                         yyCh = getChar();
 
-                        // break out of any multi-token constructs
-                        return Tok_Cancel;
-                    }
-
-                    yyCh = getChar();
-                    break;
-
-                case '/':
-                    yyCh = getChar();
-
-                    if ( yyCh == '/' )
-                    {
-                        yyWord.clear();
-
-                        do
+                        if ( yyCh == EOF )
                         {
-                            yyCh = getChar();
+                            break;
+                        }
 
-                            if ( yyCh == EOF )
-                            {
-                                break;
-                            }
+                        yyWord.append( yyCh );
 
-                            yyWord.append( yyCh );
+                    }
+                    while ( yyCh != '\n' );
+
+                    processComment();
+
+                }
+                else if ( yyCh == '*' )
+                {
+                    bool metAster = false;
+                    yyWord.clear();
+
+                    while ( true )
+                    {
+                        yyCh = getChar();
+
+                        if ( yyCh == EOF )
+                        {
+                            yyMsg() << "Unterminated C++ comment\n";
+                            break;
+                        }
+
+                        yyWord.append( yyCh );
+
+                        if ( yyCh == '*' )
+                        {
+                            metAster = true;
 
                         }
-                        while ( yyCh != '\n' );
+                        else if ( metAster && yyCh == '/' )
+                        {
+                            break;
+
+                        }
+                        else
+                        {
+                            metAster = false;
+                        }
 
                         processComment();
 
                     }
-                    else if ( yyCh == '*' )
-                    {
-                        bool metAster = false;
-                        yyWord.clear();
 
-                        while ( true )
-                        {
-                            yyCh = getChar();
-
-                            if ( yyCh == EOF )
-                            {
-                                yyMsg() << "Unterminated C++ comment\n";
-                                break;
-                            }
-
-                            yyWord.append( yyCh );
-
-                            if ( yyCh == '*' )
-                            {
-                                metAster = true;
-
-                            }
-                            else if ( metAster && yyCh == '/' )
-                            {
-                                break;
-
-                            }
-                            else
-                            {
-                                metAster = false;
-                            }
-
-                            processComment();
-
-                        }
-
-                        yyCh = getChar();
-                    }
-
-                    break;
-
-                case '"':
-                {
-                    // literal strings
-
-                    yyWord.clear();
                     yyCh = getChar();
-
-                    while ( yyCh != EOF && yyCh != '\n' && yyCh != '"' )
-                    {
-                        if ( yyCh == '\\' )
-                        {
-                            yyCh = getChar();
-
-                            if ( yyCh == EOF || yyCh == '\n' )
-                            {
-                                break;
-                            }
-
-                            yyWord.append( '\\' );
-                        }
-
-                        yyWord.append( yyCh );
-                        yyCh = getChar();
-                    }
-
-                    if ( yyCh != '"' )
-                    {
-                        yyMsg() << "Unterminated C++ string\n";
-
-                    }
-                    else
-                    {
-                        yyCh = getChar();
-                    }
-
-                    return Tok_String;
                 }
 
-                case '-':
-                    yyCh = getChar();
+                break;
 
-                    if ( yyCh == '>' )
-                    {
-                        yyCh = getChar();
-                        return Tok_Arrow;
-                    }
+            case '"':
+            {
+                // literal strings
 
-                    break;
+                yyWord.clear();
+                yyCh = getChar();
 
-                case ':':
-                    yyCh = getChar();
-
-                    if ( yyCh == ':' )
-                    {
-                        yyCh = getChar();
-                        return Tok_ColonColon;
-                    }
-
-                    return Tok_Colon;
-
-                // Incomplete: '<' might be part of '<=' or of template syntax.
-                // The main intent of not completely ignoring it is to break
-                // parsing of things like   std::cout << QObject::tr() as context std::cout::QObject
-
-                case '=':
-                    yyCh = getChar();
-                    return Tok_Equals;
-
-                case '>':
-                case '<':
-                    yyCh = getChar();
-                    return Tok_Other;
-
-                case '\'':
-                    yyCh = getChar();
-
+                while ( yyCh != EOF && yyCh != '\n' && yyCh != '"' )
+                {
                     if ( yyCh == '\\' )
                     {
                         yyCh = getChar();
-                    }
 
-                    while ( true )
-                    {
                         if ( yyCh == EOF || yyCh == '\n' )
                         {
-                            yyMsg() << "Unterminated C++ character\n";
                             break;
                         }
 
+                        yyWord.append( '\\' );
+                    }
+
+                    yyWord.append( yyCh );
+                    yyCh = getChar();
+                }
+
+                if ( yyCh != '"' )
+                {
+                    yyMsg() << "Unterminated C++ string\n";
+
+                }
+                else
+                {
+                    yyCh = getChar();
+                }
+
+                return Tok_String;
+            }
+
+            case '-':
+                yyCh = getChar();
+
+                if ( yyCh == '>' )
+                {
+                    yyCh = getChar();
+                    return Tok_Arrow;
+                }
+
+                break;
+
+            case ':':
+                yyCh = getChar();
+
+                if ( yyCh == ':' )
+                {
+                    yyCh = getChar();
+                    return Tok_ColonColon;
+                }
+
+                return Tok_Colon;
+
+            // Incomplete: '<' might be part of '<=' or of template syntax.
+            // The main intent of not completely ignoring it is to break
+            // parsing of things like   std::cout << QObject::tr() as context std::cout::QObject
+
+            case '=':
+                yyCh = getChar();
+                return Tok_Equals;
+
+            case '>':
+            case '<':
+                yyCh = getChar();
+                return Tok_Other;
+
+            case '\'':
+                yyCh = getChar();
+
+                if ( yyCh == '\\' )
+                {
+                    yyCh = getChar();
+                }
+
+                while ( true )
+                {
+                    if ( yyCh == EOF || yyCh == '\n' )
+                    {
+                        yyMsg() << "Unterminated C++ character\n";
+                        break;
+                    }
+
+                    yyCh = getChar();
+
+                    if ( yyCh == '\'' )
+                    {
                         yyCh = getChar();
-
-                        if ( yyCh == '\'' )
-                        {
-                            yyCh = getChar();
-                            break;
-                        }
+                        break;
                     }
+                }
 
-                    break;
+                break;
 
-                case '{':
-                    if ( yyBraceDepth == 0 )
+            case '{':
+                if ( yyBraceDepth == 0 )
+                {
+                    yyBraceLineNo = yyCurLineNo;
+                }
+
+                yyBraceDepth++;
+                yyCh = getChar();
+                return Tok_LeftBrace;
+
+            case '}':
+                if ( yyBraceDepth == yyMinBraceDepth )
+                {
+                    if ( ! inDefine )
                     {
-                        yyBraceLineNo = yyCurLineNo;
+                        yyMsg( yyCurLineNo ) << "Excess closing brace in C++ code"
+                                                " (or misuse of the preprocessor)\n";
                     }
 
-                    yyBraceDepth++;
-                    yyCh = getChar();
-                    return Tok_LeftBrace;
-
-                case '}':
-                    if ( yyBraceDepth == yyMinBraceDepth )
-                    {
-                        if ( ! inDefine )
-                        {
-                            yyMsg( yyCurLineNo ) << "Excess closing brace in C++ code"
-                                                 " (or misuse of the preprocessor)\n";
-                        }
-
-                        yyCh = getChar();
-                        return Tok_Semicolon;
-                    }
-
-                    --yyBraceDepth;
-
-                    yyCh = getChar();
-                    return Tok_RightBrace;
-
-                case '(':
-                    if ( yyParenDepth == 0 )
-                    {
-                        yyParenLineNo = yyCurLineNo;
-                    }
-
-                    ++yyParenDepth;
-                    yyCh = getChar();
-                    return Tok_LeftParen;
-
-                case ')':
-                    if ( yyParenDepth == 0 )
-                    {
-                        yyMsg( yyCurLineNo ) << "Excess closing parenthesis in C++ code"
-                                             " (or misuse of the preprocessor)\n";
-
-                    }
-                    else
-                    {
-                        --yyParenDepth;
-                    }
-
-                    yyCh = getChar();
-                    return Tok_RightParen;
-
-                case '[':
-                    if ( yyBracketDepth == 0 )
-                    {
-                        yyBracketLineNo = yyCurLineNo;
-                    }
-
-                    ++yyBracketDepth;
-                    yyCh = getChar();
-                    return Tok_LeftBracket;
-
-                case ']':
-                    if ( yyBracketDepth == 0 )
-                    {
-                        yyMsg( yyCurLineNo ) << "Excess closing bracket in C++ code"
-                                             " (or misuse of the preprocessor)\n";
-
-                    }
-                    else
-                    {
-                        --yyBracketDepth;
-                    }
-
-                    yyCh = getChar();
-                    return Tok_RightBracket;
-
-                case ',':
-                    yyCh = getChar();
-                    return Tok_Comma;
-
-                case ';':
                     yyCh = getChar();
                     return Tok_Semicolon;
+                }
 
-                case '?':
-                    yyCh = getChar();
-                    return Tok_QuestionMark;
+                --yyBraceDepth;
 
-                case '0':
-                    yyCh = getChar();
+                yyCh = getChar();
+                return Tok_RightBrace;
 
-                    if ( yyCh == 'x' )
-                    {
-                        do
-                        {
-                            yyCh = getChar();
+            case '(':
+                if ( yyParenDepth == 0 )
+                {
+                    yyParenLineNo = yyCurLineNo;
+                }
 
-                        }
-                        while ( ( yyCh >= '0' && yyCh <= '9' ) || ( yyCh >= 'a' && yyCh <= 'f' ) || ( yyCh >= 'A' && yyCh <= 'F' ) );
+                ++yyParenDepth;
+                yyCh = getChar();
+                return Tok_LeftParen;
 
-                        return Tok_Integer;
-                    }
+            case ')':
+                if ( yyParenDepth == 0 )
+                {
+                    yyMsg( yyCurLineNo ) << "Excess closing parenthesis in C++ code"
+                                            " (or misuse of the preprocessor)\n";
 
-                    if ( yyCh < '0' || yyCh > '9' )
-                    {
-                        return Tok_Null;
-                    }
+                }
+                else
+                {
+                    --yyParenDepth;
+                }
 
-                    [[fallthrough]];
+                yyCh = getChar();
+                return Tok_RightParen;
 
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
+            case '[':
+                if ( yyBracketDepth == 0 )
+                {
+                    yyBracketLineNo = yyCurLineNo;
+                }
+
+                ++yyBracketDepth;
+                yyCh = getChar();
+                return Tok_LeftBracket;
+
+            case ']':
+                if ( yyBracketDepth == 0 )
+                {
+                    yyMsg( yyCurLineNo ) << "Excess closing bracket in C++ code"
+                                            " (or misuse of the preprocessor)\n";
+
+                }
+                else
+                {
+                    --yyBracketDepth;
+                }
+
+                yyCh = getChar();
+                return Tok_RightBracket;
+
+            case ',':
+                yyCh = getChar();
+                return Tok_Comma;
+
+            case ';':
+                yyCh = getChar();
+                return Tok_Semicolon;
+
+            case '?':
+                yyCh = getChar();
+                return Tok_QuestionMark;
+
+            case '0':
+                yyCh = getChar();
+
+                if ( yyCh == 'x' )
+                {
                     do
                     {
                         yyCh = getChar();
+
                     }
-                    while ( yyCh >= '0' && yyCh <= '9' );
+                    while ( ( yyCh >= '0' && yyCh <= '9' ) || ( yyCh >= 'a' && yyCh <= 'f' ) || ( yyCh >= 'A' && yyCh <= 'F' ) );
 
                     return Tok_Integer;
+                }
 
-                default:
+                if ( yyCh < '0' || yyCh > '9' )
+                {
+                    return Tok_Null;
+                }
+
+                [[fallthrough]];
+
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                do
+                {
                     yyCh = getChar();
-                    break;
+                }
+                while ( yyCh >= '0' && yyCh <= '9' );
+
+                return Tok_Integer;
+
+            default:
+                yyCh = getChar();
+                break;
             }
         }
     }
@@ -2184,56 +2184,56 @@ void CppParser::handleCsMarkTr( Group kind, QString prefix )
 
     switch ( listLen )
     {
-        case 4:
+    case 4:
+        context = list.takeFirst();
+        text    = list.takeFirst();
+        comment = list.takeFirst();
+        plural  = true;
+
+        break;
+
+    case 3:
+        if ( kind == Group::Translate || kind == Group::CsMarkTr )
+        {
             context = list.takeFirst();
+            text    = list.takeFirst();
+            comment = list.takeFirst();
+
+            kind = Group::Translate;
+
+        }
+        else
+        {
             text    = list.takeFirst();
             comment = list.takeFirst();
             plural  = true;
 
-            break;
+        }
 
-        case 3:
-            if ( kind == Group::Translate || kind == Group::CsMarkTr )
-            {
-                context = list.takeFirst();
-                text    = list.takeFirst();
-                comment = list.takeFirst();
+        break;
 
-                kind = Group::Translate;
+    case 2:
+        if ( kind == Group::Translate || kind == Group::CsMarkTr )
+        {
+            context = list.takeFirst();
+            text    = list.takeFirst();
 
-            }
-            else
-            {
-                text    = list.takeFirst();
-                comment = list.takeFirst();
-                plural  = true;
+            kind = Group::Translate;
 
-            }
+        }
+        else
+        {
+            text    = list.takeFirst();
+            comment = list.takeFirst();
+        }
 
-            break;
+        break;
 
-        case 2:
-            if ( kind == Group::Translate || kind == Group::CsMarkTr )
-            {
-                context = list.takeFirst();
-                text    = list.takeFirst();
+    case 1:
+        text = list.takeFirst();
+        kind = Group::Tr;
 
-                kind = Group::Translate;
-
-            }
-            else
-            {
-                text    = list.takeFirst();
-                comment = list.takeFirst();
-            }
-
-            break;
-
-        case 1:
-            text = list.takeFirst();
-            kind = Group::Tr;
-
-            break;
+        break;
     }
 
     if ( text.isEmpty() )
@@ -2258,7 +2258,7 @@ void CppParser::handleCsMarkTr( Group kind, QString prefix )
                 functionContextUnresolved = stringifyNamespace( 0, unresolved );
 
                 yyMsg() << lscsPrintable( QString( "Trying to use unknown namespace or class %1 %2\n" )
-                                        .formatArg( stringifyNamespace( functionContext ) ).formatArg( unresolved.first().value() ) );
+                                          .formatArg( stringifyNamespace( functionContext ) ).formatArg( unresolved.first().value() ) );
             }
 
             pendingContext.clear();
@@ -2491,274 +2491,201 @@ void CppParser::parseInternal( ConversionData &cd, const QStringList &includeSta
 
         switch ( yyTok )
         {
-            case Tok_QuotedInclude:
+        case Tok_QuotedInclude:
+        {
+            text = QDir( QFileInfo( yyFileName ).absolutePath() ).absoluteFilePath( yyWord );
+
+            if ( QFileInfo( text ).isFile() )
             {
-                text = QDir( QFileInfo( yyFileName ).absolutePath() ).absoluteFilePath( yyWord );
+                processInclude( text, cd, includeStack, inclusions );
+                yyTok = getToken();
+                break;
+            }
+        }
+
+        [[fallthrough]];
+
+        case Tok_AngledInclude:
+        {
+            QStringList cSources = cd.m_allCSources.values( yyWord );
+
+            if ( ! cSources.isEmpty() )
+            {
+                for ( const QString &cSource : cSources )
+                {
+                    processInclude( cSource, cd, includeStack, inclusions );
+                }
+
+                goto incOk;
+            }
+
+            for ( const QString &incPath : cd.m_includePath )
+            {
+                text = QDir( incPath ).absoluteFilePath( yyWord );
 
                 if ( QFileInfo( text ).isFile() )
                 {
                     processInclude( text, cd, includeStack, inclusions );
-                    yyTok = getToken();
-                    break;
-                }
-            }
-
-            [[fallthrough]];
-
-            case Tok_AngledInclude:
-            {
-                QStringList cSources = cd.m_allCSources.values( yyWord );
-
-                if ( ! cSources.isEmpty() )
-                {
-                    for ( const QString &cSource : cSources )
-                    {
-                        processInclude( cSource, cd, includeStack, inclusions );
-                    }
-
                     goto incOk;
                 }
-
-                for ( const QString &incPath : cd.m_includePath )
-                {
-                    text = QDir( incPath ).absoluteFilePath( yyWord );
-
-                    if ( QFileInfo( text ).isFile() )
-                    {
-                        processInclude( text, cd, includeStack, inclusions );
-                        goto incOk;
-                    }
-                }
-
-incOk:
-                yyTok = getToken();
-                break;
             }
 
-            case Tok_Friend:
-                yyTok = getToken();
+incOk:
+            yyTok = getToken();
+            break;
+        }
 
-                // these are forward declarations so ignore them
-                if ( yyTok == Tok_Class )
+        case Tok_Friend:
+            yyTok = getToken();
+
+            // these are forward declarations so ignore them
+            if ( yyTok == Tok_Class )
+            {
+                yyTok = getToken();
+            }
+
+            break;
+
+        case Tok_Class:
+            // Partial support for inlined functions
+
+            yyTok = getToken();
+
+            if ( yyBraceDepth == namespaceDepths.count() && yyParenDepth == 0 )
+            {
+                QList<HashString> quali;
+                HashString fct;
+
+                // Find class name including qualification
+
+                while ( true )
                 {
+                    text = yyWord;
+
+                    fct.setValue( text );
                     yyTok = getToken();
-                }
 
-                break;
-
-            case Tok_Class:
-                // Partial support for inlined functions
-
-                yyTok = getToken();
-
-                if ( yyBraceDepth == namespaceDepths.count() && yyParenDepth == 0 )
-                {
-                    QList<HashString> quali;
-                    HashString fct;
-
-                    // Find class name including qualification
-
-                    while ( true )
+                    if ( yyTok == Tok_ColonColon )
                     {
-                        text = yyWord;
-
-                        fct.setValue( text );
+                        quali << fct;
                         yyTok = getToken();
 
-                        if ( yyTok == Tok_ColonColon )
-                        {
-                            quali << fct;
-                            yyTok = getToken();
-
-                        }
-                        else if ( yyTok == Tok_Identifier )
-                        {
-                            if ( yyWord == text_final )
-                            {
-                                // final may appear immediately after the name of the class
-                                yyTok = getToken();
-                                break;
-                            }
-
-                            // Handle impure definitions such as 'class Q_EXPORT QMessageBox', in
-                            // which case 'QMessageBox' is the class name, not 'Q_EXPORT', by
-                            // abandoning any qualification collected so far.
-                            quali.clear();
-
-                        }
-                        else
-                        {
-                            break;
-
-                        }
                     }
-
-                    if ( yyTok == Tok_Colon || yyTok == Tok_Other )
+                    else if ( yyTok == Tok_Identifier )
                     {
-                        // Skip any token until '{' since we might do things wrong if we find
-                        // a '::' token here
-
-                        do
+                        if ( yyWord == text_final )
                         {
+                            // final may appear immediately after the name of the class
                             yyTok = getToken();
-
-                            if ( yyTok == Tok_Eof )
-                            {
-                                goto goteof;
-                            }
-
-                            if ( yyTok == Tok_Cancel )
-                            {
-                                goto case_default;
-                            }
-
+                            break;
                         }
-                        while ( yyTok != Tok_LeftBrace && yyTok != Tok_Semicolon );
+
+                        // Handle impure definitions such as 'class Q_EXPORT QMessageBox', in
+                        // which case 'QMessageBox' is the class name, not 'Q_EXPORT', by
+                        // abandoning any qualification collected so far.
+                        quali.clear();
 
                     }
                     else
                     {
-                        if ( yyTok != Tok_LeftBrace )
-                        {
-                            // forward declaration, skip those, as they do not create actually usable namespaces
-                            break;
-                        }
-                    }
+                        break;
 
-                    if ( ! quali.isEmpty() )
+                    }
+                }
+
+                if ( yyTok == Tok_Colon || yyTok == Tok_Other )
+                {
+                    // Skip any token until '{' since we might do things wrong if we find
+                    // a '::' token here
+
+                    do
                     {
-                        // Forward-declared class definitions can be namespaced
-                        QList<HashString> nsl;
+                        yyTok = getToken();
 
-                        if ( ! fullyQualify( namespaces, quali, true, &nsl, nullptr ) )
+                        if ( yyTok == Tok_Eof )
                         {
-                            yyMsg() << "Ignoring definition of undeclared qualified class\n";
-                            break;
+                            goto goteof;
                         }
 
-                        namespaceDepths.push( namespaces.count() );
-                        namespaces = nsl;
+                        if ( yyTok == Tok_Cancel )
+                        {
+                            goto case_default;
+                        }
 
                     }
-                    else
+                    while ( yyTok != Tok_LeftBrace && yyTok != Tok_Semicolon );
+
+                }
+                else
+                {
+                    if ( yyTok != Tok_LeftBrace )
                     {
-                        namespaceDepths.push( namespaces.count() );
+                        // forward declaration, skip those, as they do not create actually usable namespaces
+                        break;
+                    }
+                }
+
+                if ( ! quali.isEmpty() )
+                {
+                    // Forward-declared class definitions can be namespaced
+                    QList<HashString> nsl;
+
+                    if ( ! fullyQualify( namespaces, quali, true, &nsl, nullptr ) )
+                    {
+                        yyMsg() << "Ignoring definition of undeclared qualified class\n";
+                        break;
                     }
 
-                    enterNamespace( &namespaces, fct );
+                    namespaceDepths.push( namespaces.count() );
+                    namespaces = nsl;
+
+                }
+                else
+                {
+                    namespaceDepths.push( namespaces.count() );
+                }
+
+                enterNamespace( &namespaces, fct );
+
+                functionContext = namespaces;
+                functionContextUnresolved.clear();
+                prospectiveContext.clear();
+                pendingContext.clear();
+
+                metaExpected = true;
+                yyTok = getToken();
+            }
+
+            break;
+
+        case Tok_Namespace:
+            yyTok = getToken();
+
+            if ( yyTok == Tok_Identifier )
+            {
+                text = yyWord;
+
+                HashString ns = HashString( text );
+                yyTok = getToken();
+
+                if ( yyTok == Tok_LeftBrace )
+                {
+                    namespaceDepths.push( namespaces.count() );
+                    enterNamespace( &namespaces, ns );
 
                     functionContext = namespaces;
                     functionContextUnresolved.clear();
                     prospectiveContext.clear();
                     pendingContext.clear();
-
                     metaExpected = true;
                     yyTok = getToken();
-                }
-
-                break;
-
-            case Tok_Namespace:
-                yyTok = getToken();
-
-                if ( yyTok == Tok_Identifier )
-                {
-                    text = yyWord;
-
-                    HashString ns = HashString( text );
-                    yyTok = getToken();
-
-                    if ( yyTok == Tok_LeftBrace )
-                    {
-                        namespaceDepths.push( namespaces.count() );
-                        enterNamespace( &namespaces, ns );
-
-                        functionContext = namespaces;
-                        functionContextUnresolved.clear();
-                        prospectiveContext.clear();
-                        pendingContext.clear();
-                        metaExpected = true;
-                        yyTok = getToken();
-
-                    }
-                    else if ( yyTok == Tok_Equals )
-                    {
-                        // for example, namespace Is = OuterSpace::InnerSpace;
-                        QList<HashString> fullName;
-                        yyTok = getToken();
-
-                        if ( yyTok == Tok_ColonColon )
-                        {
-                            fullName.append( HashString( QString() ) );
-                        }
-
-                        while ( yyTok == Tok_ColonColon || yyTok == Tok_Identifier )
-                        {
-                            if ( yyTok == Tok_Identifier )
-                            {
-                                text = yyWord;
-                                fullName.append( HashString( text ) );
-                            }
-
-                            yyTok = getToken();
-                        }
-
-                        if ( fullName.isEmpty() )
-                        {
-                            break;
-                        }
-
-                        fullName.append( HashString( QString() ) ); // Mark as unresolved
-                        modifyNamespace( &namespaces )->aliases[ns] = fullName;
-                    }
 
                 }
-                else if ( yyTok == Tok_LeftBrace )
+                else if ( yyTok == Tok_Equals )
                 {
-                    // Anonymous namespace
-                    namespaceDepths.push( namespaces.count() );
-                    metaExpected = true;
-                    yyTok = getToken();
-                }
-
-                break;
-
-            case Tok_Using:
-                yyTok = getToken();
-
-                // should affect only the current scope, not the entire current namespace
-                if ( yyTok == Tok_Namespace )
-                {
+                    // for example, namespace Is = OuterSpace::InnerSpace;
                     QList<HashString> fullName;
                     yyTok = getToken();
-
-                    if ( yyTok == Tok_ColonColon )
-                    {
-                        fullName.append( HashString( QString() ) );
-                    }
-
-                    while ( yyTok == Tok_ColonColon || yyTok == Tok_Identifier )
-                    {
-                        if ( yyTok == Tok_Identifier )
-                        {
-                            text = yyWord;
-                            fullName.append( HashString( text ) );
-                        }
-
-                        yyTok = getToken();
-                    }
-
-                    QList<HashString> nsl;
-
-                    if ( fullyQualify( namespaces, fullName, false, &nsl, nullptr ) )
-                    {
-                        modifyNamespace( &namespaces )->usings << HashStringList( nsl );
-                    }
-
-                }
-                else
-                {
-                    QList<HashString> fullName;
 
                     if ( yyTok == Tok_ColonColon )
                     {
@@ -2781,270 +2708,343 @@ incOk:
                         break;
                     }
 
-                    // using-declarations can not rename classes, so the last element of
-                    // fullName is already the resolved name we actually want.
-                    // As we do no resolution here, we'll collect useless usings of data
-                    // members and methods as well. This is no big deal.
-
                     fullName.append( HashString( QString() ) ); // Mark as unresolved
-                    const HashString &ns = *( fullName.constEnd() - 2 );
                     modifyNamespace( &namespaces )->aliases[ns] = fullName;
                 }
 
-                break;
-
-            case Tok_LSCS_OBJECT:
-                modifyNamespace( &namespaces )->hasTrFunctions = true;
+            }
+            else if ( yyTok == Tok_LeftBrace )
+            {
+                // Anonymous namespace
+                namespaceDepths.push( namespaces.count() );
+                metaExpected = true;
                 yyTok = getToken();
-                break;
+            }
 
-            case Tok_Identifier:
-                if ( yyTokColonSeen && yyBraceDepth == namespaceDepths.count() && yyParenDepth == 0 )
-                {
-                    // member or base class identifier
-                    yyTokIdentSeen = true;
-                }
+            break;
 
+        case Tok_Using:
+            yyTok = getToken();
+
+            // should affect only the current scope, not the entire current namespace
+            if ( yyTok == Tok_Namespace )
+            {
+                QList<HashString> fullName;
                 yyTok = getToken();
-
-                if ( yyTok == Tok_LeftParen )
-                {
-
-                    if ( yyWord == text_Q_DECLARE_TR_FUNCTIONS )
-                    {
-                        handleDeclareTrFunctions();
-
-                    }
-                    else if ( yyWord == text_lscs_mark_tr || yyWord == text_lscs_mark_string_tr )
-                    {
-
-                        if ( m_translator != nullptr )
-                        {
-                            handleCsMarkTr( Group::CsMarkTr, prefix );
-                        }
-
-                    }
-                    else if ( yyWord == text_tr || yyWord == text_LSCS_TR_NOOP )
-                    {
-
-                        if ( m_translator != nullptr )
-                        {
-                            handleCsMarkTr( Group::Tr, prefix );
-                        }
-
-                    }
-                    else if ( yyWord == text_findMessage || yyWord == text_translate ||
-                              yyWord == text_LSCS_TRANSLATE_NOOP || yyWord == text_LSCS_TRANSLATE_NOOP3 )
-                    {
-
-                        if ( m_translator != nullptr )
-                        {
-                            handleCsMarkTr( Group::Translate );
-                        }
-
-                    }
-                    else if ( yyWord == text_qtTrId || yyWord == text_LSCS_TRID_NOOP || yyWord == text_lscs_mark_tr_id )
-                    {
-
-                        if ( m_translator != nullptr )
-                        {
-                            handleTrId();
-                        }
-
-                    }
-                    else
-                    {
-                        goto notrfunc;
-                    }
-
-                    yyTok = getToken();
-                    break;
-                }
 
                 if ( yyTok == Tok_ColonColon )
                 {
-                    prefix += yyWord;
+                    fullName.append( HashString( QString() ) );
+                }
+
+                while ( yyTok == Tok_ColonColon || yyTok == Tok_Identifier )
+                {
+                    if ( yyTok == Tok_Identifier )
+                    {
+                        text = yyWord;
+                        fullName.append( HashString( text ) );
+                    }
+
+                    yyTok = getToken();
+                }
+
+                QList<HashString> nsl;
+
+                if ( fullyQualify( namespaces, fullName, false, &nsl, nullptr ) )
+                {
+                    modifyNamespace( &namespaces )->usings << HashStringList( nsl );
+                }
+
+            }
+            else
+            {
+                QList<HashString> fullName;
+
+                if ( yyTok == Tok_ColonColon )
+                {
+                    fullName.append( HashString( QString() ) );
+                }
+
+                while ( yyTok == Tok_ColonColon || yyTok == Tok_Identifier )
+                {
+                    if ( yyTok == Tok_Identifier )
+                    {
+                        text = yyWord;
+                        fullName.append( HashString( text ) );
+                    }
+
+                    yyTok = getToken();
+                }
+
+                if ( fullName.isEmpty() )
+                {
+                    break;
+                }
+
+                // using-declarations can not rename classes, so the last element of
+                // fullName is already the resolved name we actually want.
+                // As we do no resolution here, we'll collect useless usings of data
+                // members and methods as well. This is no big deal.
+
+                fullName.append( HashString( QString() ) ); // Mark as unresolved
+                const HashString &ns = *( fullName.constEnd() - 2 );
+                modifyNamespace( &namespaces )->aliases[ns] = fullName;
+            }
+
+            break;
+
+        case Tok_LSCS_OBJECT:
+            modifyNamespace( &namespaces )->hasTrFunctions = true;
+            yyTok = getToken();
+            break;
+
+        case Tok_Identifier:
+            if ( yyTokColonSeen && yyBraceDepth == namespaceDepths.count() && yyParenDepth == 0 )
+            {
+                // member or base class identifier
+                yyTokIdentSeen = true;
+            }
+
+            yyTok = getToken();
+
+            if ( yyTok == Tok_LeftParen )
+            {
+
+                if ( yyWord == text_Q_DECLARE_TR_FUNCTIONS )
+                {
+                    handleDeclareTrFunctions();
+
+                }
+                else if ( yyWord == text_lscs_mark_tr || yyWord == text_lscs_mark_string_tr )
+                {
+
+                    if ( m_translator != nullptr )
+                    {
+                        handleCsMarkTr( Group::CsMarkTr, prefix );
+                    }
+
+                }
+                else if ( yyWord == text_tr || yyWord == text_LSCS_TR_NOOP )
+                {
+
+                    if ( m_translator != nullptr )
+                    {
+                        handleCsMarkTr( Group::Tr, prefix );
+                    }
+
+                }
+                else if ( yyWord == text_findMessage || yyWord == text_translate ||
+                          yyWord == text_LSCS_TRANSLATE_NOOP || yyWord == text_LSCS_TRANSLATE_NOOP3 )
+                {
+
+                    if ( m_translator != nullptr )
+                    {
+                        handleCsMarkTr( Group::Translate );
+                    }
+
+                }
+                else if ( yyWord == text_qtTrId || yyWord == text_LSCS_TRID_NOOP || yyWord == text_lscs_mark_tr_id )
+                {
+
+                    if ( m_translator != nullptr )
+                    {
+                        handleTrId();
+                    }
 
                 }
                 else
                 {
+                    goto notrfunc;
+                }
+
+                yyTok = getToken();
+                break;
+            }
+
+            if ( yyTok == Tok_ColonColon )
+            {
+                prefix += yyWord;
+
+            }
+            else
+            {
 
 notrfunc:
-                    prefix.clear();
-
-                    if ( yyTok == Tok_Identifier && ! yyParenDepth )
-                    {
-                        prospectiveContext.clear();
-                    }
-                }
-
-                metaExpected = false;
-
-                break;
-
-            case Tok_Arrow:
-                yyTok = getToken();
-
-                if ( yyTok == Tok_Identifier )
-                {
-                    if ( yyWord == text_tr )
-                    {
-                        yyMsg() << "Unable to invoke tr()\n";
-                    }
-                }
-
-                break;
-
-            case Tok_ColonColon:
-                if ( yyTokIdentSeen )
-                {
-                    // member or base class identifier
-
-                    yyTok = getToken();
-                    break;
-                }
-
-                if ( yyBraceDepth == namespaceDepths.count() && yyParenDepth == 0 && ! yyTokColonSeen )
-                {
-                    prospectiveContext = prefix;
-                }
-
-                prefix += strColons;
-                yyTok = getToken();
-                break;
-
-            case Tok_RightBrace:
-                if ( ! yyTokColonSeen )
-                {
-                    if ( yyBraceDepth + 1 == namespaceDepths.count() )
-                    {
-                        // class or namespace
-                        truncateNamespaces( &namespaces, namespaceDepths.pop() );
-                    }
-
-                    if ( yyBraceDepth == namespaceDepths.count() )
-                    {
-                        // function, class or namespace
-
-                        if ( ! yyBraceDepth && !directInclude )
-                        {
-                            truncateNamespaces( &functionContext, 1 );
-
-                        }
-                        else
-                        {
-                            functionContext = namespaces;
-                            functionContextUnresolved.clear();
-                        }
-
-                        pendingContext.clear();
-                    }
-                }
-
-                [[fallthrough]];
-
-            case Tok_Semicolon:
-                prospectiveContext.clear();
                 prefix.clear();
 
-                if ( ! sourcetext.isEmpty() || !extracomment.isEmpty() || !msgid.isEmpty() || !extra.isEmpty() )
-                {
-                    yyMsg() << "Discarding unconsumed meta data\n";
-                    sourcetext.clear();
-                    extracomment.clear();
-                    msgid.clear();
-                    extra.clear();
-                }
-
-                metaExpected = true;
-                yyTok = getToken();
-                break;
-
-            case Tok_Access:
-
-                // consume access specifiers so their colons are not mistaken for ctor initializer list starts
-                do
-                {
-                    yyTok = getToken();
-                }
-                while ( yyTok == Tok_Access );   // Multiple specifiers are possible
-
-                metaExpected = true;
-
-                if ( yyTok == Tok_Colon )
-                {
-                    goto case_default;
-                }
-
-                break;
-
-            case Tok_Colon:
-            case Tok_Equals:
-                if ( yyBraceDepth == namespaceDepths.count() && yyParenDepth == 0 )
-                {
-
-                    if ( ! prospectiveContext.isEmpty() )
-                    {
-                        pendingContext = prospectiveContext;
-                        prospectiveContext.clear();
-                    }
-
-                    if ( yyTok == Tok_Colon )
-                    {
-                        yyTokColonSeen = true;
-                    }
-                }
-
-                metaExpected = true;
-                yyTok = getToken();
-                break;
-
-            case Tok_LeftBrace:
-                if ( yyBraceDepth == namespaceDepths.count() + 1 && yyParenDepth == 0 )
-                {
-
-                    if ( ! prospectiveContext.isEmpty() )
-                    {
-                        pendingContext = prospectiveContext;
-                        prospectiveContext.clear();
-                    }
-
-                    if ( ! yyTokIdentSeen )
-                    {
-                        // Function body
-                        yyTokColonSeen = false;
-                    }
-                }
-
-                [[fallthrough]];
-
-            case Tok_LeftParen:
-                yyTokIdentSeen = false;
-                [[fallthrough]];
-
-            case Tok_Comma:
-            case Tok_QuestionMark:
-                metaExpected = true;
-                yyTok = getToken();
-                break;
-
-            case Tok_RightParen:
-                metaExpected = false;
-                yyTok = getToken();
-                break;
-
-            default:
-                if ( ! yyParenDepth )
+                if ( yyTok == Tok_Identifier && ! yyParenDepth )
                 {
                     prospectiveContext.clear();
                 }
+            }
 
-                [[fallthrough]];
+            metaExpected = false;
 
-            case Tok_RightBracket:
-case_default:
+            break;
+
+        case Tok_Arrow:
+            yyTok = getToken();
+
+            if ( yyTok == Tok_Identifier )
+            {
+                if ( yyWord == text_tr )
+                {
+                    yyMsg() << "Unable to invoke tr()\n";
+                }
+            }
+
+            break;
+
+        case Tok_ColonColon:
+            if ( yyTokIdentSeen )
+            {
+                // member or base class identifier
+
                 yyTok = getToken();
                 break;
+            }
+
+            if ( yyBraceDepth == namespaceDepths.count() && yyParenDepth == 0 && ! yyTokColonSeen )
+            {
+                prospectiveContext = prefix;
+            }
+
+            prefix += strColons;
+            yyTok = getToken();
+            break;
+
+        case Tok_RightBrace:
+            if ( ! yyTokColonSeen )
+            {
+                if ( yyBraceDepth + 1 == namespaceDepths.count() )
+                {
+                    // class or namespace
+                    truncateNamespaces( &namespaces, namespaceDepths.pop() );
+                }
+
+                if ( yyBraceDepth == namespaceDepths.count() )
+                {
+                    // function, class or namespace
+
+                    if ( ! yyBraceDepth && !directInclude )
+                    {
+                        truncateNamespaces( &functionContext, 1 );
+
+                    }
+                    else
+                    {
+                        functionContext = namespaces;
+                        functionContextUnresolved.clear();
+                    }
+
+                    pendingContext.clear();
+                }
+            }
+
+            [[fallthrough]];
+
+        case Tok_Semicolon:
+            prospectiveContext.clear();
+            prefix.clear();
+
+            if ( ! sourcetext.isEmpty() || !extracomment.isEmpty() || !msgid.isEmpty() || !extra.isEmpty() )
+            {
+                yyMsg() << "Discarding unconsumed meta data\n";
+                sourcetext.clear();
+                extracomment.clear();
+                msgid.clear();
+                extra.clear();
+            }
+
+            metaExpected = true;
+            yyTok = getToken();
+            break;
+
+        case Tok_Access:
+
+            // consume access specifiers so their colons are not mistaken for ctor initializer list starts
+            do
+            {
+                yyTok = getToken();
+            }
+            while ( yyTok == Tok_Access );   // Multiple specifiers are possible
+
+            metaExpected = true;
+
+            if ( yyTok == Tok_Colon )
+            {
+                goto case_default;
+            }
+
+            break;
+
+        case Tok_Colon:
+        case Tok_Equals:
+            if ( yyBraceDepth == namespaceDepths.count() && yyParenDepth == 0 )
+            {
+
+                if ( ! prospectiveContext.isEmpty() )
+                {
+                    pendingContext = prospectiveContext;
+                    prospectiveContext.clear();
+                }
+
+                if ( yyTok == Tok_Colon )
+                {
+                    yyTokColonSeen = true;
+                }
+            }
+
+            metaExpected = true;
+            yyTok = getToken();
+            break;
+
+        case Tok_LeftBrace:
+            if ( yyBraceDepth == namespaceDepths.count() + 1 && yyParenDepth == 0 )
+            {
+
+                if ( ! prospectiveContext.isEmpty() )
+                {
+                    pendingContext = prospectiveContext;
+                    prospectiveContext.clear();
+                }
+
+                if ( ! yyTokIdentSeen )
+                {
+                    // Function body
+                    yyTokColonSeen = false;
+                }
+            }
+
+            [[fallthrough]];
+
+        case Tok_LeftParen:
+            yyTokIdentSeen = false;
+            [[fallthrough]];
+
+        case Tok_Comma:
+        case Tok_QuestionMark:
+            metaExpected = true;
+            yyTok = getToken();
+            break;
+
+        case Tok_RightParen:
+            metaExpected = false;
+            yyTok = getToken();
+            break;
+
+        default:
+            if ( ! yyParenDepth )
+            {
+                prospectiveContext.clear();
+            }
+
+            [[fallthrough]];
+
+        case Tok_RightBracket:
+case_default:
+            yyTok = getToken();
+            break;
         }
     }
 
@@ -3053,19 +3053,19 @@ goteof:
     if ( yyBraceDepth != 0 )
     {
         yyMsg( yyBraceLineNo ) << "Unbalanced opening brace in C++ code"
-                               " (or misuse of the preprocessor)\n";
+                                  " (or misuse of the preprocessor)\n";
 
     }
     else if ( yyParenDepth != 0 )
     {
         yyMsg( yyParenLineNo ) << "Unbalanced opening parenthesis in C++ code"
-                               " (or misuse of the preprocessor)\n";
+                                  " (or misuse of the preprocessor)\n";
 
     }
     else if ( yyBracketDepth != 0 )
     {
         yyMsg( yyBracketLineNo ) << "Unbalanced opening bracket in C++ code"
-                                 " (or misuse of the preprocessor)\n";
+                                    " (or misuse of the preprocessor)\n";
     }
 }
 

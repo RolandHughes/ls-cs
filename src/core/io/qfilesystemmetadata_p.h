@@ -288,14 +288,14 @@ inline QDateTime QFileSystemMetaData::fileTime( QAbstractFileEngine::FileTime ti
 {
     switch ( time )
     {
-        case QAbstractFileEngine::ModificationTime:
-            return modificationTime();
+    case QAbstractFileEngine::ModificationTime:
+        return modificationTime();
 
-        case QAbstractFileEngine::AccessTime:
-            return accessTime();
+    case QAbstractFileEngine::AccessTime:
+        return accessTime();
 
-        case QAbstractFileEngine::CreationTime:
-            return creationTime();
+    case QAbstractFileEngine::CreationTime:
+        return creationTime();
     }
 
     return QDateTime();

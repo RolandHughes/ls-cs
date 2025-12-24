@@ -928,65 +928,65 @@ void QDeclarativeListModelParser::setCustomData( QObject *obj, const QByteArray 
 
         switch ( instr.type )
         {
-            case ListInstruction::Push:
-            {
-                ModelNode *n = nodes.top();
-                ModelNode *n2 = new ModelNode( rv->m_nested );
-                n->values << QVariant::fromValue( n2 );
-                nodes.push( n2 );
+        case ListInstruction::Push:
+        {
+            ModelNode *n = nodes.top();
+            ModelNode *n2 = new ModelNode( rv->m_nested );
+            n->values << QVariant::fromValue( n2 );
+            nodes.push( n2 );
 
-                if ( processingSet )
-                {
-                    n->isArray = true;
-                }
+            if ( processingSet )
+            {
+                n->isArray = true;
             }
+        }
+        break;
+
+        case ListInstruction::Pop:
+            nodes.pop();
             break;
 
-            case ListInstruction::Pop:
-                nodes.pop();
+        case ListInstruction::Value:
+        {
+            ModelNode *n = nodes.top();
+
+            switch ( QDeclarativeParser::Variant::Type( data[instr.dataIdx] ) )
+            {
+            case QDeclarativeParser::Variant::Invalid:
+                n->isArray = true;
                 break;
 
-            case ListInstruction::Value:
-            {
-                ModelNode *n = nodes.top();
+            case QDeclarativeParser::Variant::Boolean:
+                n->values.append( bool( data[1 + instr.dataIdx] ) );
+                break;
 
-                switch ( QDeclarativeParser::Variant::Type( data[instr.dataIdx] ) )
-                {
-                    case QDeclarativeParser::Variant::Invalid:
-                        n->isArray = true;
-                        break;
+            case QDeclarativeParser::Variant::Number:
+                double temp;
+                ::memcpy( &temp, data + 1 + instr.dataIdx, sizeof( double ) );
+                n->values.append( temp );
+                break;
 
-                    case QDeclarativeParser::Variant::Boolean:
-                        n->values.append( bool( data[1 + instr.dataIdx] ) );
-                        break;
+            case QDeclarativeParser::Variant::String:
+                n->values.append( QString::fromUtf8( data + 1 + instr.dataIdx ) );
+                break;
 
-                    case QDeclarativeParser::Variant::Number:
-                        double temp;
-                        ::memcpy( &temp, data + 1 + instr.dataIdx, sizeof( double ) );
-                        n->values.append( temp );
-                        break;
-
-                    case QDeclarativeParser::Variant::String:
-                        n->values.append( QString::fromUtf8( data + 1 + instr.dataIdx ) );
-                        break;
-
-                    default:
-                        Q_ASSERT( "Format error in ListInstruction" );
-                }
-
-                processingSet = false;
+            default:
+                Q_ASSERT( "Format error in ListInstruction" );
             }
-            break;
 
-            case ListInstruction::Set:
-            {
-                ModelNode *n = nodes.top();
-                ModelNode *n2 = new ModelNode( rv->m_nested );
-                n->properties.insert( QString::fromUtf8( data + instr.dataIdx ), n2 );
-                nodes.push( n2 );
-                processingSet = true;
-            }
-            break;
+            processingSet = false;
+        }
+        break;
+
+        case ListInstruction::Set:
+        {
+            ModelNode *n = nodes.top();
+            ModelNode *n2 = new ModelNode( rv->m_nested );
+            n->properties.insert( QString::fromUtf8( data + instr.dataIdx ), n2 );
+            nodes.push( n2 );
+            processingSet = true;
+        }
+        break;
         }
     }
 

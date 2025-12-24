@@ -194,34 +194,34 @@ struct QTextHtmlParserNode
     {
         switch ( id )
         {
-            case Html_dd:
-            case Html_dt:
-                return ( parentId == Html_dl );
+        case Html_dd:
+        case Html_dt:
+            return ( parentId == Html_dl );
 
-            case Html_tr:
-                return ( parentId == Html_table
-                         || parentId == Html_thead
-                         || parentId == Html_tbody
-                         || parentId == Html_tfoot
-                       );
+        case Html_tr:
+            return ( parentId == Html_table
+                     || parentId == Html_thead
+                     || parentId == Html_tbody
+                     || parentId == Html_tfoot
+                   );
 
-            case Html_th:
-            case Html_td:
-                return ( parentId == Html_tr );
+        case Html_th:
+        case Html_td:
+            return ( parentId == Html_tr );
 
-            case Html_thead:
-            case Html_tbody:
-            case Html_tfoot:
-                return ( parentId == Html_table );
+        case Html_thead:
+        case Html_tbody:
+        case Html_tfoot:
+            return ( parentId == Html_table );
 
-            case Html_caption:
-                return ( parentId == Html_table );
+        case Html_caption:
+            return ( parentId == Html_table );
 
-            case Html_body:
-                return parentId != Html_head;
+        case Html_body:
+            return parentId != Html_head;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         return true;

@@ -146,466 +146,466 @@ int Lexer::findReservedWord( const QChar *c, int size ) const
 {
     switch ( size )
     {
-        case 2:
+    case 2:
+    {
+        if ( c[0] == QLatin1Char( 'd' ) && c[1] == QLatin1Char( 'o' ) )
         {
-            if ( c[0] == QLatin1Char( 'd' ) && c[1] == QLatin1Char( 'o' ) )
+            return QDeclarativeJSGrammar::T_DO;
+        }
+        else if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'f' ) )
+        {
+            return QDeclarativeJSGrammar::T_IF;
+        }
+        else if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'n' ) )
+        {
+            return QDeclarativeJSGrammar::T_IN;
+        }
+        else if ( c[0] == QLatin1Char( 'a' ) && c[1] == QLatin1Char( 's' ) )
+        {
+            return QDeclarativeJSGrammar::T_AS;
+        }
+        else if ( c[0] == QLatin1Char( 'o' ) && c[1] == QLatin1Char( 'n' ) )
+        {
+            return QDeclarativeJSGrammar::T_ON;
+        }
+    }
+    break;
+
+    case 3:
+    {
+        if ( c[0] == QLatin1Char( 'f' ) && c[1] == QLatin1Char( 'o' ) && c[2] == QLatin1Char( 'r' ) )
+        {
+            return QDeclarativeJSGrammar::T_FOR;
+        }
+        else if ( c[0] == QLatin1Char( 'n' ) && c[1] == QLatin1Char( 'e' ) && c[2] == QLatin1Char( 'w' ) )
+        {
+            return QDeclarativeJSGrammar::T_NEW;
+        }
+        else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'r' ) && c[2] == QLatin1Char( 'y' ) )
+        {
+            return QDeclarativeJSGrammar::T_TRY;
+        }
+        else if ( c[0] == QLatin1Char( 'v' ) && c[1] == QLatin1Char( 'a' ) && c[2] == QLatin1Char( 'r' ) )
+        {
+            return QDeclarativeJSGrammar::T_VAR;
+        }
+        else if ( check_reserved )
+        {
+            if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'n' ) && c[2] == QLatin1Char( 't' ) )
             {
-                return QDeclarativeJSGrammar::T_DO;
-            }
-            else if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'f' ) )
-            {
-                return QDeclarativeJSGrammar::T_IF;
-            }
-            else if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'n' ) )
-            {
-                return QDeclarativeJSGrammar::T_IN;
-            }
-            else if ( c[0] == QLatin1Char( 'a' ) && c[1] == QLatin1Char( 's' ) )
-            {
-                return QDeclarativeJSGrammar::T_AS;
-            }
-            else if ( c[0] == QLatin1Char( 'o' ) && c[1] == QLatin1Char( 'n' ) )
-            {
-                return QDeclarativeJSGrammar::T_ON;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
         }
-        break;
+    }
+    break;
 
-        case 3:
+    case 4:
+    {
+        if ( c[0] == QLatin1Char( 'c' ) && c[1] == QLatin1Char( 'a' )
+                && c[2] == QLatin1Char( 's' ) && c[3] == QLatin1Char( 'e' ) )
         {
-            if ( c[0] == QLatin1Char( 'f' ) && c[1] == QLatin1Char( 'o' ) && c[2] == QLatin1Char( 'r' ) )
+            return QDeclarativeJSGrammar::T_CASE;
+        }
+        else if ( c[0] == QLatin1Char( 'e' ) && c[1] == QLatin1Char( 'l' )
+                  && c[2] == QLatin1Char( 's' ) && c[3] == QLatin1Char( 'e' ) )
+        {
+            return QDeclarativeJSGrammar::T_ELSE;
+        }
+        else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'h' )
+                  && c[2] == QLatin1Char( 'i' ) && c[3] == QLatin1Char( 's' ) )
+        {
+            return QDeclarativeJSGrammar::T_THIS;
+        }
+        else if ( c[0] == QLatin1Char( 'v' ) && c[1] == QLatin1Char( 'o' )
+                  && c[2] == QLatin1Char( 'i' ) && c[3] == QLatin1Char( 'd' ) )
+        {
+            return QDeclarativeJSGrammar::T_VOID;
+        }
+        else if ( c[0] == QLatin1Char( 'w' ) && c[1] == QLatin1Char( 'i' )
+                  && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'h' ) )
+        {
+            return QDeclarativeJSGrammar::T_WITH;
+        }
+        else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'r' )
+                  && c[2] == QLatin1Char( 'u' ) && c[3] == QLatin1Char( 'e' ) )
+        {
+            return QDeclarativeJSGrammar::T_TRUE;
+        }
+        else if ( c[0] == QLatin1Char( 'n' ) && c[1] == QLatin1Char( 'u' )
+                  && c[2] == QLatin1Char( 'l' ) && c[3] == QLatin1Char( 'l' ) )
+        {
+            return QDeclarativeJSGrammar::T_NULL;
+        }
+        else if ( check_reserved )
+        {
+            if ( c[0] == QLatin1Char( 'e' ) && c[1] == QLatin1Char( 'n' )
+                    && c[2] == QLatin1Char( 'u' ) && c[3] == QLatin1Char( 'm' ) )
             {
-                return QDeclarativeJSGrammar::T_FOR;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( c[0] == QLatin1Char( 'n' ) && c[1] == QLatin1Char( 'e' ) && c[2] == QLatin1Char( 'w' ) )
+            else if ( c[0] == QLatin1Char( 'b' ) && c[1] == QLatin1Char( 'y' )
+                      && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'e' ) )
             {
-                return QDeclarativeJSGrammar::T_NEW;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'r' ) && c[2] == QLatin1Char( 'y' ) )
+            else if ( c[0] == QLatin1Char( 'l' ) && c[1] == QLatin1Char( 'o' )
+                      && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 'g' ) )
             {
-                return QDeclarativeJSGrammar::T_TRY;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( c[0] == QLatin1Char( 'v' ) && c[1] == QLatin1Char( 'a' ) && c[2] == QLatin1Char( 'r' ) )
+            else if ( c[0] == QLatin1Char( 'c' ) && c[1] == QLatin1Char( 'h' )
+                      && c[2] == QLatin1Char( 'a' ) && c[3] == QLatin1Char( 'r' ) )
             {
-                return QDeclarativeJSGrammar::T_VAR;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( check_reserved )
+            else if ( c[0] == QLatin1Char( 'g' ) && c[1] == QLatin1Char( 'o' )
+                      && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'o' ) )
             {
-                if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'n' ) && c[2] == QLatin1Char( 't' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
         }
-        break;
+    }
+    break;
 
-        case 4:
+    case 5:
+    {
+        if ( c[0] == QLatin1Char( 'b' ) && c[1] == QLatin1Char( 'r' )
+                && c[2] == QLatin1Char( 'e' ) && c[3] == QLatin1Char( 'a' )
+                && c[4] == QLatin1Char( 'k' ) )
         {
-            if ( c[0] == QLatin1Char( 'c' ) && c[1] == QLatin1Char( 'a' )
-                    && c[2] == QLatin1Char( 's' ) && c[3] == QLatin1Char( 'e' ) )
-            {
-                return QDeclarativeJSGrammar::T_CASE;
-            }
-            else if ( c[0] == QLatin1Char( 'e' ) && c[1] == QLatin1Char( 'l' )
-                      && c[2] == QLatin1Char( 's' ) && c[3] == QLatin1Char( 'e' ) )
-            {
-                return QDeclarativeJSGrammar::T_ELSE;
-            }
-            else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'h' )
-                      && c[2] == QLatin1Char( 'i' ) && c[3] == QLatin1Char( 's' ) )
-            {
-                return QDeclarativeJSGrammar::T_THIS;
-            }
-            else if ( c[0] == QLatin1Char( 'v' ) && c[1] == QLatin1Char( 'o' )
-                      && c[2] == QLatin1Char( 'i' ) && c[3] == QLatin1Char( 'd' ) )
-            {
-                return QDeclarativeJSGrammar::T_VOID;
-            }
-            else if ( c[0] == QLatin1Char( 'w' ) && c[1] == QLatin1Char( 'i' )
-                      && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'h' ) )
-            {
-                return QDeclarativeJSGrammar::T_WITH;
-            }
-            else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'r' )
-                      && c[2] == QLatin1Char( 'u' ) && c[3] == QLatin1Char( 'e' ) )
-            {
-                return QDeclarativeJSGrammar::T_TRUE;
-            }
-            else if ( c[0] == QLatin1Char( 'n' ) && c[1] == QLatin1Char( 'u' )
-                      && c[2] == QLatin1Char( 'l' ) && c[3] == QLatin1Char( 'l' ) )
-            {
-                return QDeclarativeJSGrammar::T_NULL;
-            }
-            else if ( check_reserved )
-            {
-                if ( c[0] == QLatin1Char( 'e' ) && c[1] == QLatin1Char( 'n' )
-                        && c[2] == QLatin1Char( 'u' ) && c[3] == QLatin1Char( 'm' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'b' ) && c[1] == QLatin1Char( 'y' )
-                          && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'e' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'l' ) && c[1] == QLatin1Char( 'o' )
-                          && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 'g' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'c' ) && c[1] == QLatin1Char( 'h' )
-                          && c[2] == QLatin1Char( 'a' ) && c[3] == QLatin1Char( 'r' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'g' ) && c[1] == QLatin1Char( 'o' )
-                          && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'o' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-            }
+            return QDeclarativeJSGrammar::T_BREAK;
         }
-        break;
-
-        case 5:
+        else if ( c[0] == QLatin1Char( 'c' ) && c[1] == QLatin1Char( 'a' )
+                  && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'c' )
+                  && c[4] == QLatin1Char( 'h' ) )
         {
-            if ( c[0] == QLatin1Char( 'b' ) && c[1] == QLatin1Char( 'r' )
-                    && c[2] == QLatin1Char( 'e' ) && c[3] == QLatin1Char( 'a' )
-                    && c[4] == QLatin1Char( 'k' ) )
+            return QDeclarativeJSGrammar::T_CATCH;
+        }
+        else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'h' )
+                  && c[2] == QLatin1Char( 'r' ) && c[3] == QLatin1Char( 'o' )
+                  && c[4] == QLatin1Char( 'w' ) )
+        {
+            return QDeclarativeJSGrammar::T_THROW;
+        }
+        else if ( c[0] == QLatin1Char( 'w' ) && c[1] == QLatin1Char( 'h' )
+                  && c[2] == QLatin1Char( 'i' ) && c[3] == QLatin1Char( 'l' )
+                  && c[4] == QLatin1Char( 'e' ) )
+        {
+            return QDeclarativeJSGrammar::T_WHILE;
+        }
+        else if ( c[0] == QLatin1Char( 'c' ) && c[1] == QLatin1Char( 'o' )
+                  && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 's' )
+                  && c[4] == QLatin1Char( 't' ) )
+        {
+            return QDeclarativeJSGrammar::T_CONST;
+        }
+        else if ( c[0] == QLatin1Char( 'f' ) && c[1] == QLatin1Char( 'a' )
+                  && c[2] == QLatin1Char( 'l' ) && c[3] == QLatin1Char( 's' )
+                  && c[4] == QLatin1Char( 'e' ) )
+        {
+            return QDeclarativeJSGrammar::T_FALSE;
+        }
+        else if ( check_reserved )
+        {
+            if ( c[0] == QLatin1Char( 's' ) && c[1] == QLatin1Char( 'h' )
+                    && c[2] == QLatin1Char( 'o' ) && c[3] == QLatin1Char( 'r' )
+                    && c[4] == QLatin1Char( 't' ) )
             {
-                return QDeclarativeJSGrammar::T_BREAK;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( c[0] == QLatin1Char( 'c' ) && c[1] == QLatin1Char( 'a' )
-                      && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'c' )
-                      && c[4] == QLatin1Char( 'h' ) )
+            else if ( c[0] == QLatin1Char( 's' ) && c[1] == QLatin1Char( 'u' )
+                      && c[2] == QLatin1Char( 'p' ) && c[3] == QLatin1Char( 'e' )
+                      && c[4] == QLatin1Char( 'r' ) )
             {
-                return QDeclarativeJSGrammar::T_CATCH;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'h' )
-                      && c[2] == QLatin1Char( 'r' ) && c[3] == QLatin1Char( 'o' )
-                      && c[4] == QLatin1Char( 'w' ) )
+            else if ( c[0] == QLatin1Char( 'f' ) && c[1] == QLatin1Char( 'i' )
+                      && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 'a' )
+                      && c[4] == QLatin1Char( 'l' ) )
             {
-                return QDeclarativeJSGrammar::T_THROW;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( c[0] == QLatin1Char( 'w' ) && c[1] == QLatin1Char( 'h' )
-                      && c[2] == QLatin1Char( 'i' ) && c[3] == QLatin1Char( 'l' )
-                      && c[4] == QLatin1Char( 'e' ) )
+            else if ( c[0] == QLatin1Char( 'c' ) && c[1] == QLatin1Char( 'l' )
+                      && c[2] == QLatin1Char( 'a' ) && c[3] == QLatin1Char( 's' )
+                      && c[4] == QLatin1Char( 's' ) )
             {
-                return QDeclarativeJSGrammar::T_WHILE;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( c[0] == QLatin1Char( 'c' ) && c[1] == QLatin1Char( 'o' )
-                      && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 's' )
+            else if ( c[0] == QLatin1Char( 'f' ) && c[1] == QLatin1Char( 'l' )
+                      && c[2] == QLatin1Char( 'o' ) && c[3] == QLatin1Char( 'a' )
                       && c[4] == QLatin1Char( 't' ) )
             {
-                return QDeclarativeJSGrammar::T_CONST;
-            }
-            else if ( c[0] == QLatin1Char( 'f' ) && c[1] == QLatin1Char( 'a' )
-                      && c[2] == QLatin1Char( 'l' ) && c[3] == QLatin1Char( 's' )
-                      && c[4] == QLatin1Char( 'e' ) )
-            {
-                return QDeclarativeJSGrammar::T_FALSE;
-            }
-            else if ( check_reserved )
-            {
-                if ( c[0] == QLatin1Char( 's' ) && c[1] == QLatin1Char( 'h' )
-                        && c[2] == QLatin1Char( 'o' ) && c[3] == QLatin1Char( 'r' )
-                        && c[4] == QLatin1Char( 't' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 's' ) && c[1] == QLatin1Char( 'u' )
-                          && c[2] == QLatin1Char( 'p' ) && c[3] == QLatin1Char( 'e' )
-                          && c[4] == QLatin1Char( 'r' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'f' ) && c[1] == QLatin1Char( 'i' )
-                          && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 'a' )
-                          && c[4] == QLatin1Char( 'l' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'c' ) && c[1] == QLatin1Char( 'l' )
-                          && c[2] == QLatin1Char( 'a' ) && c[3] == QLatin1Char( 's' )
-                          && c[4] == QLatin1Char( 's' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'f' ) && c[1] == QLatin1Char( 'l' )
-                          && c[2] == QLatin1Char( 'o' ) && c[3] == QLatin1Char( 'a' )
-                          && c[4] == QLatin1Char( 't' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
         }
-        break;
+    }
+    break;
 
-        case 6:
+    case 6:
+    {
+        if ( c[0] == QLatin1Char( 'd' ) && c[1] == QLatin1Char( 'e' )
+                && c[2] == QLatin1Char( 'l' ) && c[3] == QLatin1Char( 'e' )
+                && c[4] == QLatin1Char( 't' ) && c[5] == QLatin1Char( 'e' ) )
         {
-            if ( c[0] == QLatin1Char( 'd' ) && c[1] == QLatin1Char( 'e' )
-                    && c[2] == QLatin1Char( 'l' ) && c[3] == QLatin1Char( 'e' )
-                    && c[4] == QLatin1Char( 't' ) && c[5] == QLatin1Char( 'e' ) )
+            return QDeclarativeJSGrammar::T_DELETE;
+        }
+        else if ( c[0] == QLatin1Char( 'r' ) && c[1] == QLatin1Char( 'e' )
+                  && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'u' )
+                  && c[4] == QLatin1Char( 'r' ) && c[5] == QLatin1Char( 'n' ) )
+        {
+            return QDeclarativeJSGrammar::T_RETURN;
+        }
+        else if ( c[0] == QLatin1Char( 's' ) && c[1] == QLatin1Char( 'w' )
+                  && c[2] == QLatin1Char( 'i' ) && c[3] == QLatin1Char( 't' )
+                  && c[4] == QLatin1Char( 'c' ) && c[5] == QLatin1Char( 'h' ) )
+        {
+            return QDeclarativeJSGrammar::T_SWITCH;
+        }
+        else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'y' )
+                  && c[2] == QLatin1Char( 'p' ) && c[3] == QLatin1Char( 'e' )
+                  && c[4] == QLatin1Char( 'o' ) && c[5] == QLatin1Char( 'f' ) )
+        {
+            return QDeclarativeJSGrammar::T_TYPEOF;
+        }
+        else if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'm' )
+                  && c[2] == QLatin1Char( 'p' ) && c[3] == QLatin1Char( 'o' )
+                  && c[4] == QLatin1Char( 'r' ) && c[5] == QLatin1Char( 't' ) )
+        {
+            return QDeclarativeJSGrammar::T_IMPORT;
+        }
+        else if ( c[0] == QLatin1Char( 's' ) && c[1] == QLatin1Char( 'i' )
+                  && c[2] == QLatin1Char( 'g' ) && c[3] == QLatin1Char( 'n' )
+                  && c[4] == QLatin1Char( 'a' ) && c[5] == QLatin1Char( 'l' ) )
+        {
+            return QDeclarativeJSGrammar::T_SIGNAL;
+        }
+        else if ( check_reserved )
+        {
+            if ( c[0] == QLatin1Char( 'e' ) && c[1] == QLatin1Char( 'x' )
+                    && c[2] == QLatin1Char( 'p' ) && c[3] == QLatin1Char( 'o' )
+                    && c[4] == QLatin1Char( 'r' ) && c[5] == QLatin1Char( 't' ) )
             {
-                return QDeclarativeJSGrammar::T_DELETE;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( c[0] == QLatin1Char( 'r' ) && c[1] == QLatin1Char( 'e' )
-                      && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'u' )
-                      && c[4] == QLatin1Char( 'r' ) && c[5] == QLatin1Char( 'n' ) )
+            else if ( c[0] == QLatin1Char( 's' ) && c[1] == QLatin1Char( 't' )
+                      && c[2] == QLatin1Char( 'a' ) && c[3] == QLatin1Char( 't' )
+                      && c[4] == QLatin1Char( 'i' ) && c[5] == QLatin1Char( 'c' ) )
             {
-                return QDeclarativeJSGrammar::T_RETURN;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( c[0] == QLatin1Char( 's' ) && c[1] == QLatin1Char( 'w' )
-                      && c[2] == QLatin1Char( 'i' ) && c[3] == QLatin1Char( 't' )
-                      && c[4] == QLatin1Char( 'c' ) && c[5] == QLatin1Char( 'h' ) )
+            else if ( c[0] == QLatin1Char( 'd' ) && c[1] == QLatin1Char( 'o' )
+                      && c[2] == QLatin1Char( 'u' ) && c[3] == QLatin1Char( 'b' )
+                      && c[4] == QLatin1Char( 'l' ) && c[5] == QLatin1Char( 'e' ) )
             {
-                return QDeclarativeJSGrammar::T_SWITCH;
-            }
-            else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'y' )
-                      && c[2] == QLatin1Char( 'p' ) && c[3] == QLatin1Char( 'e' )
-                      && c[4] == QLatin1Char( 'o' ) && c[5] == QLatin1Char( 'f' ) )
-            {
-                return QDeclarativeJSGrammar::T_TYPEOF;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
             else if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'm' )
                       && c[2] == QLatin1Char( 'p' ) && c[3] == QLatin1Char( 'o' )
                       && c[4] == QLatin1Char( 'r' ) && c[5] == QLatin1Char( 't' ) )
             {
-                return QDeclarativeJSGrammar::T_IMPORT;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( c[0] == QLatin1Char( 's' ) && c[1] == QLatin1Char( 'i' )
-                      && c[2] == QLatin1Char( 'g' ) && c[3] == QLatin1Char( 'n' )
-                      && c[4] == QLatin1Char( 'a' ) && c[5] == QLatin1Char( 'l' ) )
+            else if ( c[0] == QLatin1Char( 'p' ) && c[1] == QLatin1Char( 'u' )
+                      && c[2] == QLatin1Char( 'b' ) && c[3] == QLatin1Char( 'l' )
+                      && c[4] == QLatin1Char( 'i' ) && c[5] == QLatin1Char( 'c' ) )
             {
-                return QDeclarativeJSGrammar::T_SIGNAL;
+                return QDeclarativeJSGrammar::T_PUBLIC;
             }
-            else if ( check_reserved )
+            else if ( c[0] == QLatin1Char( 'n' ) && c[1] == QLatin1Char( 'a' )
+                      && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'i' )
+                      && c[4] == QLatin1Char( 'v' ) && c[5] == QLatin1Char( 'e' ) )
             {
-                if ( c[0] == QLatin1Char( 'e' ) && c[1] == QLatin1Char( 'x' )
-                        && c[2] == QLatin1Char( 'p' ) && c[3] == QLatin1Char( 'o' )
-                        && c[4] == QLatin1Char( 'r' ) && c[5] == QLatin1Char( 't' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 's' ) && c[1] == QLatin1Char( 't' )
-                          && c[2] == QLatin1Char( 'a' ) && c[3] == QLatin1Char( 't' )
-                          && c[4] == QLatin1Char( 'i' ) && c[5] == QLatin1Char( 'c' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'd' ) && c[1] == QLatin1Char( 'o' )
-                          && c[2] == QLatin1Char( 'u' ) && c[3] == QLatin1Char( 'b' )
-                          && c[4] == QLatin1Char( 'l' ) && c[5] == QLatin1Char( 'e' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'm' )
-                          && c[2] == QLatin1Char( 'p' ) && c[3] == QLatin1Char( 'o' )
-                          && c[4] == QLatin1Char( 'r' ) && c[5] == QLatin1Char( 't' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'p' ) && c[1] == QLatin1Char( 'u' )
-                          && c[2] == QLatin1Char( 'b' ) && c[3] == QLatin1Char( 'l' )
-                          && c[4] == QLatin1Char( 'i' ) && c[5] == QLatin1Char( 'c' ) )
-                {
-                    return QDeclarativeJSGrammar::T_PUBLIC;
-                }
-                else if ( c[0] == QLatin1Char( 'n' ) && c[1] == QLatin1Char( 'a' )
-                          && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'i' )
-                          && c[4] == QLatin1Char( 'v' ) && c[5] == QLatin1Char( 'e' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'h' )
-                          && c[2] == QLatin1Char( 'r' ) && c[3] == QLatin1Char( 'o' )
-                          && c[4] == QLatin1Char( 'w' ) && c[5] == QLatin1Char( 's' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
+            }
+            else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'h' )
+                      && c[2] == QLatin1Char( 'r' ) && c[3] == QLatin1Char( 'o' )
+                      && c[4] == QLatin1Char( 'w' ) && c[5] == QLatin1Char( 's' ) )
+            {
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
         }
-        break;
+    }
+    break;
 
-        case 7:
+    case 7:
+    {
+        if ( c[0] == QLatin1Char( 'd' ) && c[1] == QLatin1Char( 'e' )
+                && c[2] == QLatin1Char( 'f' ) && c[3] == QLatin1Char( 'a' )
+                && c[4] == QLatin1Char( 'u' ) && c[5] == QLatin1Char( 'l' )
+                && c[6] == QLatin1Char( 't' ) )
         {
-            if ( c[0] == QLatin1Char( 'd' ) && c[1] == QLatin1Char( 'e' )
-                    && c[2] == QLatin1Char( 'f' ) && c[3] == QLatin1Char( 'a' )
-                    && c[4] == QLatin1Char( 'u' ) && c[5] == QLatin1Char( 'l' )
-                    && c[6] == QLatin1Char( 't' ) )
-            {
-                return QDeclarativeJSGrammar::T_DEFAULT;
-            }
-            else if ( c[0] == QLatin1Char( 'f' ) && c[1] == QLatin1Char( 'i' )
-                      && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 'a' )
-                      && c[4] == QLatin1Char( 'l' ) && c[5] == QLatin1Char( 'l' )
-                      && c[6] == QLatin1Char( 'y' ) )
-            {
-                return QDeclarativeJSGrammar::T_FINALLY;
-            }
-            else if ( check_reserved )
-            {
-                if ( c[0] == QLatin1Char( 'b' ) && c[1] == QLatin1Char( 'o' )
-                        && c[2] == QLatin1Char( 'o' ) && c[3] == QLatin1Char( 'l' )
-                        && c[4] == QLatin1Char( 'e' ) && c[5] == QLatin1Char( 'a' )
-                        && c[6] == QLatin1Char( 'n' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'e' ) && c[1] == QLatin1Char( 'x' )
-                          && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'e' )
-                          && c[4] == QLatin1Char( 'n' ) && c[5] == QLatin1Char( 'd' )
-                          && c[6] == QLatin1Char( 's' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'p' ) && c[1] == QLatin1Char( 'a' )
-                          && c[2] == QLatin1Char( 'c' ) && c[3] == QLatin1Char( 'k' )
-                          && c[4] == QLatin1Char( 'a' ) && c[5] == QLatin1Char( 'g' )
-                          && c[6] == QLatin1Char( 'e' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'p' ) && c[1] == QLatin1Char( 'r' )
-                          && c[2] == QLatin1Char( 'i' ) && c[3] == QLatin1Char( 'v' )
-                          && c[4] == QLatin1Char( 'a' ) && c[5] == QLatin1Char( 't' )
-                          && c[6] == QLatin1Char( 'e' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-            }
+            return QDeclarativeJSGrammar::T_DEFAULT;
         }
-        break;
-
-        case 8:
+        else if ( c[0] == QLatin1Char( 'f' ) && c[1] == QLatin1Char( 'i' )
+                  && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 'a' )
+                  && c[4] == QLatin1Char( 'l' ) && c[5] == QLatin1Char( 'l' )
+                  && c[6] == QLatin1Char( 'y' ) )
         {
-            if ( c[0] == QLatin1Char( 'c' ) && c[1] == QLatin1Char( 'o' )
-                    && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 't' )
-                    && c[4] == QLatin1Char( 'i' ) && c[5] == QLatin1Char( 'n' )
-                    && c[6] == QLatin1Char( 'u' ) && c[7] == QLatin1Char( 'e' ) )
+            return QDeclarativeJSGrammar::T_FINALLY;
+        }
+        else if ( check_reserved )
+        {
+            if ( c[0] == QLatin1Char( 'b' ) && c[1] == QLatin1Char( 'o' )
+                    && c[2] == QLatin1Char( 'o' ) && c[3] == QLatin1Char( 'l' )
+                    && c[4] == QLatin1Char( 'e' ) && c[5] == QLatin1Char( 'a' )
+                    && c[6] == QLatin1Char( 'n' ) )
             {
-                return QDeclarativeJSGrammar::T_CONTINUE;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( c[0] == QLatin1Char( 'f' ) && c[1] == QLatin1Char( 'u' )
-                      && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 'c' )
-                      && c[4] == QLatin1Char( 't' ) && c[5] == QLatin1Char( 'i' )
-                      && c[6] == QLatin1Char( 'o' ) && c[7] == QLatin1Char( 'n' ) )
+            else if ( c[0] == QLatin1Char( 'e' ) && c[1] == QLatin1Char( 'x' )
+                      && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'e' )
+                      && c[4] == QLatin1Char( 'n' ) && c[5] == QLatin1Char( 'd' )
+                      && c[6] == QLatin1Char( 's' ) )
             {
-                return QDeclarativeJSGrammar::T_FUNCTION;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( c[0] == QLatin1Char( 'd' ) && c[1] == QLatin1Char( 'e' )
-                      && c[2] == QLatin1Char( 'b' ) && c[3] == QLatin1Char( 'u' )
-                      && c[4] == QLatin1Char( 'g' ) && c[5] == QLatin1Char( 'g' )
-                      && c[6] == QLatin1Char( 'e' ) && c[7] == QLatin1Char( 'r' ) )
+            else if ( c[0] == QLatin1Char( 'p' ) && c[1] == QLatin1Char( 'a' )
+                      && c[2] == QLatin1Char( 'c' ) && c[3] == QLatin1Char( 'k' )
+                      && c[4] == QLatin1Char( 'a' ) && c[5] == QLatin1Char( 'g' )
+                      && c[6] == QLatin1Char( 'e' ) )
             {
-                return QDeclarativeJSGrammar::T_DEBUGGER;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
             else if ( c[0] == QLatin1Char( 'p' ) && c[1] == QLatin1Char( 'r' )
-                      && c[2] == QLatin1Char( 'o' ) && c[3] == QLatin1Char( 'p' )
-                      && c[4] == QLatin1Char( 'e' ) && c[5] == QLatin1Char( 'r' )
-                      && c[6] == QLatin1Char( 't' ) && c[7] == QLatin1Char( 'y' ) )
+                      && c[2] == QLatin1Char( 'i' ) && c[3] == QLatin1Char( 'v' )
+                      && c[4] == QLatin1Char( 'a' ) && c[5] == QLatin1Char( 't' )
+                      && c[6] == QLatin1Char( 'e' ) )
             {
-                return QDeclarativeJSGrammar::T_PROPERTY;
-            }
-            else if ( c[0] == QLatin1Char( 'r' ) && c[1] == QLatin1Char( 'e' )
-                      && c[2] == QLatin1Char( 'a' ) && c[3] == QLatin1Char( 'd' )
-                      && c[4] == QLatin1Char( 'o' ) && c[5] == QLatin1Char( 'n' )
-                      && c[6] == QLatin1Char( 'l' ) && c[7] == QLatin1Char( 'y' ) )
-            {
-                return QDeclarativeJSGrammar::T_READONLY;
-            }
-            else if ( check_reserved )
-            {
-                if ( c[0] == QLatin1Char( 'a' ) && c[1] == QLatin1Char( 'b' )
-                        && c[2] == QLatin1Char( 's' ) && c[3] == QLatin1Char( 't' )
-                        && c[4] == QLatin1Char( 'r' ) && c[5] == QLatin1Char( 'a' )
-                        && c[6] == QLatin1Char( 'c' ) && c[7] == QLatin1Char( 't' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'v' ) && c[1] == QLatin1Char( 'o' )
-                          && c[2] == QLatin1Char( 'l' ) && c[3] == QLatin1Char( 'a' )
-                          && c[4] == QLatin1Char( 't' ) && c[5] == QLatin1Char( 'i' )
-                          && c[6] == QLatin1Char( 'l' ) && c[7] == QLatin1Char( 'e' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
         }
-        break;
+    }
+    break;
 
-        case 9:
+    case 8:
+    {
+        if ( c[0] == QLatin1Char( 'c' ) && c[1] == QLatin1Char( 'o' )
+                && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 't' )
+                && c[4] == QLatin1Char( 'i' ) && c[5] == QLatin1Char( 'n' )
+                && c[6] == QLatin1Char( 'u' ) && c[7] == QLatin1Char( 'e' ) )
         {
-            if ( check_reserved )
+            return QDeclarativeJSGrammar::T_CONTINUE;
+        }
+        else if ( c[0] == QLatin1Char( 'f' ) && c[1] == QLatin1Char( 'u' )
+                  && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 'c' )
+                  && c[4] == QLatin1Char( 't' ) && c[5] == QLatin1Char( 'i' )
+                  && c[6] == QLatin1Char( 'o' ) && c[7] == QLatin1Char( 'n' ) )
+        {
+            return QDeclarativeJSGrammar::T_FUNCTION;
+        }
+        else if ( c[0] == QLatin1Char( 'd' ) && c[1] == QLatin1Char( 'e' )
+                  && c[2] == QLatin1Char( 'b' ) && c[3] == QLatin1Char( 'u' )
+                  && c[4] == QLatin1Char( 'g' ) && c[5] == QLatin1Char( 'g' )
+                  && c[6] == QLatin1Char( 'e' ) && c[7] == QLatin1Char( 'r' ) )
+        {
+            return QDeclarativeJSGrammar::T_DEBUGGER;
+        }
+        else if ( c[0] == QLatin1Char( 'p' ) && c[1] == QLatin1Char( 'r' )
+                  && c[2] == QLatin1Char( 'o' ) && c[3] == QLatin1Char( 'p' )
+                  && c[4] == QLatin1Char( 'e' ) && c[5] == QLatin1Char( 'r' )
+                  && c[6] == QLatin1Char( 't' ) && c[7] == QLatin1Char( 'y' ) )
+        {
+            return QDeclarativeJSGrammar::T_PROPERTY;
+        }
+        else if ( c[0] == QLatin1Char( 'r' ) && c[1] == QLatin1Char( 'e' )
+                  && c[2] == QLatin1Char( 'a' ) && c[3] == QLatin1Char( 'd' )
+                  && c[4] == QLatin1Char( 'o' ) && c[5] == QLatin1Char( 'n' )
+                  && c[6] == QLatin1Char( 'l' ) && c[7] == QLatin1Char( 'y' ) )
+        {
+            return QDeclarativeJSGrammar::T_READONLY;
+        }
+        else if ( check_reserved )
+        {
+            if ( c[0] == QLatin1Char( 'a' ) && c[1] == QLatin1Char( 'b' )
+                    && c[2] == QLatin1Char( 's' ) && c[3] == QLatin1Char( 't' )
+                    && c[4] == QLatin1Char( 'r' ) && c[5] == QLatin1Char( 'a' )
+                    && c[6] == QLatin1Char( 'c' ) && c[7] == QLatin1Char( 't' ) )
             {
-                if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'n' )
-                        && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'e' )
-                        && c[4] == QLatin1Char( 'r' ) && c[5] == QLatin1Char( 'f' )
-                        && c[6] == QLatin1Char( 'a' ) && c[7] == QLatin1Char( 'c' )
-                        && c[8] == QLatin1Char( 'e' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'r' )
-                          && c[2] == QLatin1Char( 'a' ) && c[3] == QLatin1Char( 'n' )
-                          && c[4] == QLatin1Char( 's' ) && c[5] == QLatin1Char( 'i' )
-                          && c[6] == QLatin1Char( 'e' ) && c[7] == QLatin1Char( 'n' )
-                          && c[8] == QLatin1Char( 't' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
-                else if ( c[0] == QLatin1Char( 'p' ) && c[1] == QLatin1Char( 'r' )
-                          && c[2] == QLatin1Char( 'o' ) && c[3] == QLatin1Char( 't' )
-                          && c[4] == QLatin1Char( 'e' ) && c[5] == QLatin1Char( 'c' )
-                          && c[6] == QLatin1Char( 't' ) && c[7] == QLatin1Char( 'e' )
-                          && c[8] == QLatin1Char( 'd' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
+            }
+            else if ( c[0] == QLatin1Char( 'v' ) && c[1] == QLatin1Char( 'o' )
+                      && c[2] == QLatin1Char( 'l' ) && c[3] == QLatin1Char( 'a' )
+                      && c[4] == QLatin1Char( 't' ) && c[5] == QLatin1Char( 'i' )
+                      && c[6] == QLatin1Char( 'l' ) && c[7] == QLatin1Char( 'e' ) )
+            {
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
         }
-        break;
+    }
+    break;
 
-        case 10:
+    case 9:
+    {
+        if ( check_reserved )
         {
             if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'n' )
-                    && c[2] == QLatin1Char( 's' ) && c[3] == QLatin1Char( 't' )
-                    && c[4] == QLatin1Char( 'a' ) && c[5] == QLatin1Char( 'n' )
-                    && c[6] == QLatin1Char( 'c' ) && c[7] == QLatin1Char( 'e' )
-                    && c[8] == QLatin1Char( 'o' ) && c[9] == QLatin1Char( 'f' ) )
+                    && c[2] == QLatin1Char( 't' ) && c[3] == QLatin1Char( 'e' )
+                    && c[4] == QLatin1Char( 'r' ) && c[5] == QLatin1Char( 'f' )
+                    && c[6] == QLatin1Char( 'a' ) && c[7] == QLatin1Char( 'c' )
+                    && c[8] == QLatin1Char( 'e' ) )
             {
-                return QDeclarativeJSGrammar::T_INSTANCEOF;
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
-            else if ( check_reserved )
+            else if ( c[0] == QLatin1Char( 't' ) && c[1] == QLatin1Char( 'r' )
+                      && c[2] == QLatin1Char( 'a' ) && c[3] == QLatin1Char( 'n' )
+                      && c[4] == QLatin1Char( 's' ) && c[5] == QLatin1Char( 'i' )
+                      && c[6] == QLatin1Char( 'e' ) && c[7] == QLatin1Char( 'n' )
+                      && c[8] == QLatin1Char( 't' ) )
             {
-                if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'm' )
-                        && c[2] == QLatin1Char( 'p' ) && c[3] == QLatin1Char( 'l' )
-                        && c[4] == QLatin1Char( 'e' ) && c[5] == QLatin1Char( 'm' )
-                        && c[6] == QLatin1Char( 'e' ) && c[7] == QLatin1Char( 'n' )
-                        && c[8] == QLatin1Char( 't' ) && c[9] == QLatin1Char( 's' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
+            }
+            else if ( c[0] == QLatin1Char( 'p' ) && c[1] == QLatin1Char( 'r' )
+                      && c[2] == QLatin1Char( 'o' ) && c[3] == QLatin1Char( 't' )
+                      && c[4] == QLatin1Char( 'e' ) && c[5] == QLatin1Char( 'c' )
+                      && c[6] == QLatin1Char( 't' ) && c[7] == QLatin1Char( 'e' )
+                      && c[8] == QLatin1Char( 'd' ) )
+            {
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
         }
-        break;
+    }
+    break;
 
-        case 12:
+    case 10:
+    {
+        if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'n' )
+                && c[2] == QLatin1Char( 's' ) && c[3] == QLatin1Char( 't' )
+                && c[4] == QLatin1Char( 'a' ) && c[5] == QLatin1Char( 'n' )
+                && c[6] == QLatin1Char( 'c' ) && c[7] == QLatin1Char( 'e' )
+                && c[8] == QLatin1Char( 'o' ) && c[9] == QLatin1Char( 'f' ) )
         {
-            if ( check_reserved )
+            return QDeclarativeJSGrammar::T_INSTANCEOF;
+        }
+        else if ( check_reserved )
+        {
+            if ( c[0] == QLatin1Char( 'i' ) && c[1] == QLatin1Char( 'm' )
+                    && c[2] == QLatin1Char( 'p' ) && c[3] == QLatin1Char( 'l' )
+                    && c[4] == QLatin1Char( 'e' ) && c[5] == QLatin1Char( 'm' )
+                    && c[6] == QLatin1Char( 'e' ) && c[7] == QLatin1Char( 'n' )
+                    && c[8] == QLatin1Char( 't' ) && c[9] == QLatin1Char( 's' ) )
             {
-                if ( c[0] == QLatin1Char( 's' ) && c[1] == QLatin1Char( 'y' )
-                        && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 'c' )
-                        && c[4] == QLatin1Char( 'h' ) && c[5] == QLatin1Char( 'r' )
-                        && c[6] == QLatin1Char( 'o' ) && c[7] == QLatin1Char( 'n' )
-                        && c[8] == QLatin1Char( 'i' ) && c[9] == QLatin1Char( 'z' )
-                        && c[10] == QLatin1Char( 'e' ) && c[11] == QLatin1Char( 'd' ) )
-                {
-                    return QDeclarativeJSGrammar::T_RESERVED_WORD;
-                }
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
             }
         }
-        break;
+    }
+    break;
+
+    case 12:
+    {
+        if ( check_reserved )
+        {
+            if ( c[0] == QLatin1Char( 's' ) && c[1] == QLatin1Char( 'y' )
+                    && c[2] == QLatin1Char( 'n' ) && c[3] == QLatin1Char( 'c' )
+                    && c[4] == QLatin1Char( 'h' ) && c[5] == QLatin1Char( 'r' )
+                    && c[6] == QLatin1Char( 'o' ) && c[7] == QLatin1Char( 'n' )
+                    && c[8] == QLatin1Char( 'i' ) && c[9] == QLatin1Char( 'z' )
+                    && c[10] == QLatin1Char( 'e' ) && c[11] == QLatin1Char( 'd' ) )
+            {
+                return QDeclarativeJSGrammar::T_RESERVED_WORD;
+            }
+        }
+    }
+    break;
 
     } // switch
 
@@ -637,501 +637,501 @@ int Lexer::lex()
     {
         switch ( state )
         {
-            case Start:
-                if ( isWhiteSpace() )
+        case Start:
+            if ( isWhiteSpace() )
+            {
+                // do nothing
+            }
+            else if ( current == '/' && next1 == '/' )
+            {
+                recordStartPos();
+                shift( 1 );
+                state = InSingleLineComment;
+            }
+            else if ( current == '/' && next1 == '*' )
+            {
+                recordStartPos();
+                shift( 1 );
+                state = InMultiLineComment;
+            }
+            else if ( current == 0 )
+            {
+                syncProhibitAutomaticSemicolon();
+
+                if ( !terminator && !delimited && !prohibitAutomaticSemicolon )
                 {
-                    // do nothing
+                    // automatic semicolon insertion if program incomplete
+                    token = QDeclarativeJSGrammar::T_SEMICOLON;
+                    stackToken = 0;
+                    setDone( Other );
                 }
-                else if ( current == '/' && next1 == '/' )
+                else
                 {
+                    setDone( Eof );
+                }
+            }
+            else if ( isLineTerminator() )
+            {
+                if ( restrKeyword )
+                {
+                    // automatic semicolon insertion
                     recordStartPos();
-                    shift( 1 );
-                    state = InSingleLineComment;
+                    token = QDeclarativeJSGrammar::T_SEMICOLON;
+                    setDone( Other );
                 }
-                else if ( current == '/' && next1 == '*' )
+                else
                 {
-                    recordStartPos();
-                    shift( 1 );
-                    state = InMultiLineComment;
-                }
-                else if ( current == 0 )
-                {
+                    shiftWindowsLineBreak();
+                    yylineno++;
+                    yycolumn = 0;
+                    bol = true;
+                    terminator = true;
                     syncProhibitAutomaticSemicolon();
+                }
+            }
+            else if ( current == '"' || current == '\'' )
+            {
+                recordStartPos();
+                state = InString;
+                multiLineString = false;
+                stringType = current;
+            }
+            else if ( current == '\\' && next1 == 'u' )
+            {
+                identifierWithEscapedUnicode = true;
+                recordStartPos();
 
-                    if ( !terminator && !delimited && !prohibitAutomaticSemicolon )
-                    {
-                        // automatic semicolon insertion if program incomplete
-                        token = QDeclarativeJSGrammar::T_SEMICOLON;
-                        stackToken = 0;
-                        setDone( Other );
-                    }
-                    else
-                    {
-                        setDone( Eof );
-                    }
-                }
-                else if ( isLineTerminator() )
-                {
-                    if ( restrKeyword )
-                    {
-                        // automatic semicolon insertion
-                        recordStartPos();
-                        token = QDeclarativeJSGrammar::T_SEMICOLON;
-                        setDone( Other );
-                    }
-                    else
-                    {
-                        shiftWindowsLineBreak();
-                        yylineno++;
-                        yycolumn = 0;
-                        bol = true;
-                        terminator = true;
-                        syncProhibitAutomaticSemicolon();
-                    }
-                }
-                else if ( current == '"' || current == '\'' )
-                {
-                    recordStartPos();
-                    state = InString;
-                    multiLineString = false;
-                    stringType = current;
-                }
-                else if ( current == '\\' && next1 == 'u' )
-                {
-                    identifierWithEscapedUnicode = true;
-                    recordStartPos();
+                shift( 2 ); // skip the unicode escape prefix `\u'
 
-                    shift( 2 ); // skip the unicode escape prefix `\u'
-
-                    if ( isHexDigit( current ) && isHexDigit( next1 ) &&
-                            isHexDigit( next2 ) && isHexDigit( next3 ) )
-                    {
-                        record16( convertUnicode( current, next1, next2, next3 ) );
-                        shift( 3 );
-                        state = InIdentifier;
-                    }
-                    else
-                    {
-                        setDone( Bad );
-                        err = IllegalUnicodeEscapeSequence;
-                        errmsg = QCoreApplication::translate( "QDeclarativeParser", "Illegal unicode escape sequence" );
-                        break;
-                    }
-
-                }
-                else if ( isIdentLetter( current ) )
-                {
-                    identifierWithEscapedUnicode = false;
-                    recordStartPos();
-                    record16( current );
-                    state = InIdentifier;
-                }
-                else if ( current == '0' )
-                {
-                    recordStartPos();
-                    record8( current );
-                    state = InNum0;
-                }
-                else if ( isDecimalDigit( current ) )
-                {
-                    recordStartPos();
-                    record8( current );
-                    state = InNum;
-                }
-                else if ( current == '.' && isDecimalDigit( next1 ) )
-                {
-                    recordStartPos();
-                    record8( current );
-                    state = InDecimal;
-                }
-                else
-                {
-                    recordStartPos();
-                    token = matchPunctuator( current, next1, next2, next3 );
-
-                    if ( token != -1 )
-                    {
-                        if ( terminator && !delimited && !prohibitAutomaticSemicolon
-                                && ( token == QDeclarativeJSGrammar::T_PLUS_PLUS
-                                     || token == QDeclarativeJSGrammar::T_MINUS_MINUS ) )
-                        {
-                            // automatic semicolon insertion
-                            stackToken = token;
-                            token = QDeclarativeJSGrammar::T_SEMICOLON;
-                        }
-
-                        setDone( Other );
-                    }
-                    else
-                    {
-                        setDone( Bad );
-                        err = IllegalCharacter;
-                        errmsg = QCoreApplication::translate( "QDeclarativeParser", "Illegal character" );
-                    }
-                }
-
-                break;
-
-            case InString:
-                if ( current == stringType )
-                {
-                    shift( 1 );
-                    setDone( String );
-                }
-                else if ( isLineTerminator() )
-                {
-                    multiLineString = true;
-                    record16( current );
-                }
-                else if ( current == 0 || isLineTerminator() )
-                {
-                    setDone( Bad );
-                    err = UnclosedStringLiteral;
-                    errmsg = QCoreApplication::translate( "QDeclarativeParser", "Unclosed string at end of line" );
-                }
-                else if ( current == '\\' )
-                {
-                    state = InEscapeSequence;
-                }
-                else
-                {
-                    record16( current );
-                }
-
-                break;
-
-            // Escape Sequences inside of strings
-            case InEscapeSequence:
-                if ( isOctalDigit( current ) )
-                {
-                    if ( current >= '0' && current <= '3' &&
-                            isOctalDigit( next1 ) && isOctalDigit( next2 ) )
-                    {
-                        record16( convertOctal( current, next1, next2 ) );
-                        shift( 2 );
-                        state = InString;
-                    }
-                    else if ( isOctalDigit( current ) &&
-                              isOctalDigit( next1 ) )
-                    {
-                        record16( convertOctal( '0', current, next1 ) );
-                        shift( 1 );
-                        state = InString;
-                    }
-                    else if ( isOctalDigit( current ) )
-                    {
-                        record16( convertOctal( '0', '0', current ) );
-                        state = InString;
-                    }
-                    else
-                    {
-                        setDone( Bad );
-                        err = IllegalEscapeSequence;
-                        errmsg = QCoreApplication::translate( "QDeclarativeParser", "Illegal escape sequence" );
-                    }
-                }
-                else if ( current == 'x' )
-                {
-                    state = InHexEscape;
-                }
-                else if ( current == 'u' )
-                {
-                    state = InUnicodeEscape;
-                }
-                else
-                {
-                    if ( isLineTerminator() )
-                    {
-                        shiftWindowsLineBreak();
-                        yylineno++;
-                        yycolumn = 0;
-                        bol = true;
-                    }
-                    else
-                    {
-                        record16( singleEscape( current ) );
-                    }
-
-                    state = InString;
-                }
-
-                break;
-
-            case InHexEscape:
-                if ( isHexDigit( current ) && isHexDigit( next1 ) )
-                {
-                    state = InString;
-                    record16( QLatin1Char( convertHex( current, next1 ) ) );
-                    shift( 1 );
-                }
-                else if ( current == stringType )
-                {
-                    record16( QLatin1Char( 'x' ) );
-                    shift( 1 );
-                    setDone( String );
-                }
-                else
-                {
-                    record16( QLatin1Char( 'x' ) );
-                    record16( current );
-                    state = InString;
-                }
-
-                break;
-
-            case InUnicodeEscape:
                 if ( isHexDigit( current ) && isHexDigit( next1 ) &&
                         isHexDigit( next2 ) && isHexDigit( next3 ) )
                 {
                     record16( convertUnicode( current, next1, next2, next3 ) );
                     shift( 3 );
-                    state = InString;
-                }
-                else if ( current == stringType )
-                {
-                    record16( QLatin1Char( 'u' ) );
-                    shift( 1 );
-                    setDone( String );
+                    state = InIdentifier;
                 }
                 else
                 {
                     setDone( Bad );
                     err = IllegalUnicodeEscapeSequence;
                     errmsg = QCoreApplication::translate( "QDeclarativeParser", "Illegal unicode escape sequence" );
+                    break;
                 }
 
-                break;
+            }
+            else if ( isIdentLetter( current ) )
+            {
+                identifierWithEscapedUnicode = false;
+                recordStartPos();
+                record16( current );
+                state = InIdentifier;
+            }
+            else if ( current == '0' )
+            {
+                recordStartPos();
+                record8( current );
+                state = InNum0;
+            }
+            else if ( isDecimalDigit( current ) )
+            {
+                recordStartPos();
+                record8( current );
+                state = InNum;
+            }
+            else if ( current == '.' && isDecimalDigit( next1 ) )
+            {
+                recordStartPos();
+                record8( current );
+                state = InDecimal;
+            }
+            else
+            {
+                recordStartPos();
+                token = matchPunctuator( current, next1, next2, next3 );
 
-            case InSingleLineComment:
+                if ( token != -1 )
+                {
+                    if ( terminator && !delimited && !prohibitAutomaticSemicolon
+                            && ( token == QDeclarativeJSGrammar::T_PLUS_PLUS
+                                 || token == QDeclarativeJSGrammar::T_MINUS_MINUS ) )
+                    {
+                        // automatic semicolon insertion
+                        stackToken = token;
+                        token = QDeclarativeJSGrammar::T_SEMICOLON;
+                    }
+
+                    setDone( Other );
+                }
+                else
+                {
+                    setDone( Bad );
+                    err = IllegalCharacter;
+                    errmsg = QCoreApplication::translate( "QDeclarativeParser", "Illegal character" );
+                }
+            }
+
+            break;
+
+        case InString:
+            if ( current == stringType )
+            {
+                shift( 1 );
+                setDone( String );
+            }
+            else if ( isLineTerminator() )
+            {
+                multiLineString = true;
+                record16( current );
+            }
+            else if ( current == 0 || isLineTerminator() )
+            {
+                setDone( Bad );
+                err = UnclosedStringLiteral;
+                errmsg = QCoreApplication::translate( "QDeclarativeParser", "Unclosed string at end of line" );
+            }
+            else if ( current == '\\' )
+            {
+                state = InEscapeSequence;
+            }
+            else
+            {
+                record16( current );
+            }
+
+            break;
+
+        // Escape Sequences inside of strings
+        case InEscapeSequence:
+            if ( isOctalDigit( current ) )
+            {
+                if ( current >= '0' && current <= '3' &&
+                        isOctalDigit( next1 ) && isOctalDigit( next2 ) )
+                {
+                    record16( convertOctal( current, next1, next2 ) );
+                    shift( 2 );
+                    state = InString;
+                }
+                else if ( isOctalDigit( current ) &&
+                          isOctalDigit( next1 ) )
+                {
+                    record16( convertOctal( '0', current, next1 ) );
+                    shift( 1 );
+                    state = InString;
+                }
+                else if ( isOctalDigit( current ) )
+                {
+                    record16( convertOctal( '0', '0', current ) );
+                    state = InString;
+                }
+                else
+                {
+                    setDone( Bad );
+                    err = IllegalEscapeSequence;
+                    errmsg = QCoreApplication::translate( "QDeclarativeParser", "Illegal escape sequence" );
+                }
+            }
+            else if ( current == 'x' )
+            {
+                state = InHexEscape;
+            }
+            else if ( current == 'u' )
+            {
+                state = InUnicodeEscape;
+            }
+            else
+            {
                 if ( isLineTerminator() )
                 {
                     shiftWindowsLineBreak();
                     yylineno++;
                     yycolumn = 0;
-                    terminator = true;
                     bol = true;
-
-                    if ( restrKeyword )
-                    {
-                        token = QDeclarativeJSGrammar::T_SEMICOLON;
-                        setDone( Other );
-                    }
-                    else
-                    {
-                        state = Start;
-                    }
-
-                    if ( driver )
-                    {
-                        driver->addComment( startpos + 2, tokenLength() - 2, startlineno, startcolumn + 2 );
-                    }
                 }
-                else if ( current == 0 )
+                else
                 {
-                    if ( driver )
-                    {
-                        driver->addComment( startpos + 2, tokenLength() - 2, startlineno, startcolumn + 2 );
-                    }
-
-                    setDone( Eof );
+                    record16( singleEscape( current ) );
                 }
 
-                break;
+                state = InString;
+            }
 
-            case InMultiLineComment:
-                if ( current == 0 )
+            break;
+
+        case InHexEscape:
+            if ( isHexDigit( current ) && isHexDigit( next1 ) )
+            {
+                state = InString;
+                record16( QLatin1Char( convertHex( current, next1 ) ) );
+                shift( 1 );
+            }
+            else if ( current == stringType )
+            {
+                record16( QLatin1Char( 'x' ) );
+                shift( 1 );
+                setDone( String );
+            }
+            else
+            {
+                record16( QLatin1Char( 'x' ) );
+                record16( current );
+                state = InString;
+            }
+
+            break;
+
+        case InUnicodeEscape:
+            if ( isHexDigit( current ) && isHexDigit( next1 ) &&
+                    isHexDigit( next2 ) && isHexDigit( next3 ) )
+            {
+                record16( convertUnicode( current, next1, next2, next3 ) );
+                shift( 3 );
+                state = InString;
+            }
+            else if ( current == stringType )
+            {
+                record16( QLatin1Char( 'u' ) );
+                shift( 1 );
+                setDone( String );
+            }
+            else
+            {
+                setDone( Bad );
+                err = IllegalUnicodeEscapeSequence;
+                errmsg = QCoreApplication::translate( "QDeclarativeParser", "Illegal unicode escape sequence" );
+            }
+
+            break;
+
+        case InSingleLineComment:
+            if ( isLineTerminator() )
+            {
+                shiftWindowsLineBreak();
+                yylineno++;
+                yycolumn = 0;
+                terminator = true;
+                bol = true;
+
+                if ( restrKeyword )
                 {
-                    setDone( Bad );
-                    err = UnclosedComment;
-                    errmsg = QCoreApplication::translate( "QDeclarativeParser", "Unclosed comment at end of file" );
-
-                    if ( driver )
-                    {
-                        driver->addComment( startpos + 2, tokenLength() - 2, startlineno, startcolumn + 2 );
-                    }
+                    token = QDeclarativeJSGrammar::T_SEMICOLON;
+                    setDone( Other );
                 }
-                else if ( isLineTerminator() )
-                {
-                    shiftWindowsLineBreak();
-                    yylineno++;
-                }
-                else if ( current == '*' && next1 == '/' )
+                else
                 {
                     state = Start;
-                    shift( 1 );
-
-                    if ( driver )
-                    {
-                        driver->addComment( startpos + 2, tokenLength() - 3, startlineno, startcolumn + 2 );
-                    }
                 }
 
-                break;
-
-            case InIdentifier:
-                if ( isIdentLetter( current ) || isDecimalDigit( current ) )
+                if ( driver )
                 {
-                    record16( current );
+                    driver->addComment( startpos + 2, tokenLength() - 2, startlineno, startcolumn + 2 );
+                }
+            }
+            else if ( current == 0 )
+            {
+                if ( driver )
+                {
+                    driver->addComment( startpos + 2, tokenLength() - 2, startlineno, startcolumn + 2 );
+                }
+
+                setDone( Eof );
+            }
+
+            break;
+
+        case InMultiLineComment:
+            if ( current == 0 )
+            {
+                setDone( Bad );
+                err = UnclosedComment;
+                errmsg = QCoreApplication::translate( "QDeclarativeParser", "Unclosed comment at end of file" );
+
+                if ( driver )
+                {
+                    driver->addComment( startpos + 2, tokenLength() - 2, startlineno, startcolumn + 2 );
+                }
+            }
+            else if ( isLineTerminator() )
+            {
+                shiftWindowsLineBreak();
+                yylineno++;
+            }
+            else if ( current == '*' && next1 == '/' )
+            {
+                state = Start;
+                shift( 1 );
+
+                if ( driver )
+                {
+                    driver->addComment( startpos + 2, tokenLength() - 3, startlineno, startcolumn + 2 );
+                }
+            }
+
+            break;
+
+        case InIdentifier:
+            if ( isIdentLetter( current ) || isDecimalDigit( current ) )
+            {
+                record16( current );
+                break;
+            }
+            else if ( current == '\\' && next1 == 'u' )
+            {
+                identifierWithEscapedUnicode = true;
+                shift( 2 ); // skip the unicode escape prefix `\u'
+
+                if ( isHexDigit( current ) && isHexDigit( next1 ) &&
+                        isHexDigit( next2 ) && isHexDigit( next3 ) )
+                {
+                    record16( convertUnicode( current, next1, next2, next3 ) );
+                    shift( 3 );
                     break;
-                }
-                else if ( current == '\\' && next1 == 'u' )
-                {
-                    identifierWithEscapedUnicode = true;
-                    shift( 2 ); // skip the unicode escape prefix `\u'
-
-                    if ( isHexDigit( current ) && isHexDigit( next1 ) &&
-                            isHexDigit( next2 ) && isHexDigit( next3 ) )
-                    {
-                        record16( convertUnicode( current, next1, next2, next3 ) );
-                        shift( 3 );
-                        break;
-                    }
-                    else
-                    {
-                        setDone( Bad );
-                        err = IllegalUnicodeEscapeSequence;
-                        errmsg = QCoreApplication::translate( "QDeclarativeParser", "Illegal unicode escape sequence" );
-                        break;
-                    }
-                }
-
-                setDone( Identifier );
-                break;
-
-            case InNum0:
-                if ( current == 'x' || current == 'X' )
-                {
-                    record8( current );
-                    state = InHex;
-                }
-                else if ( current == '.' )
-                {
-                    record8( current );
-                    state = InDecimal;
-                }
-                else if ( current == 'e' || current == 'E' )
-                {
-                    record8( current );
-                    state = InExponentIndicator;
-                }
-                else if ( isOctalDigit( current ) )
-                {
-                    record8( current );
-                    state = InOctal;
-                }
-                else if ( isDecimalDigit( current ) )
-                {
-                    record8( current );
-                    state = InDecimal;
-                }
-                else
-                {
-                    setDone( Number );
-                }
-
-                break;
-
-            case InHex:
-                if ( isHexDigit( current ) )
-                {
-                    record8( current );
-                }
-                else
-                {
-                    setDone( Hex );
-                }
-
-                break;
-
-            case InOctal:
-                if ( isOctalDigit( current ) )
-                {
-                    record8( current );
-                }
-                else if ( isDecimalDigit( current ) )
-                {
-                    record8( current );
-                    state = InDecimal;
-                }
-                else
-                {
-                    setDone( Octal );
-                }
-
-                break;
-
-            case InNum:
-                if ( isDecimalDigit( current ) )
-                {
-                    record8( current );
-                }
-                else if ( current == '.' )
-                {
-                    record8( current );
-                    state = InDecimal;
-                }
-                else if ( current == 'e' || current == 'E' )
-                {
-                    record8( current );
-                    state = InExponentIndicator;
-                }
-                else
-                {
-                    setDone( Number );
-                }
-
-                break;
-
-            case InDecimal:
-                if ( isDecimalDigit( current ) )
-                {
-                    record8( current );
-                }
-                else if ( current == 'e' || current == 'E' )
-                {
-                    record8( current );
-                    state = InExponentIndicator;
-                }
-                else
-                {
-                    setDone( Number );
-                }
-
-                break;
-
-            case InExponentIndicator:
-                if ( current == '+' || current == '-' )
-                {
-                    record8( current );
-                }
-                else if ( isDecimalDigit( current ) )
-                {
-                    record8( current );
-                    state = InExponent;
                 }
                 else
                 {
                     setDone( Bad );
-                    err = IllegalExponentIndicator;
-                    errmsg = QCoreApplication::translate( "QDeclarativeParser", "Illegal syntax for exponential number" );
+                    err = IllegalUnicodeEscapeSequence;
+                    errmsg = QCoreApplication::translate( "QDeclarativeParser", "Illegal unicode escape sequence" );
+                    break;
                 }
+            }
 
-                break;
+            setDone( Identifier );
+            break;
 
-            case InExponent:
-                if ( isDecimalDigit( current ) )
-                {
-                    record8( current );
-                }
-                else
-                {
-                    setDone( Number );
-                }
+        case InNum0:
+            if ( current == 'x' || current == 'X' )
+            {
+                record8( current );
+                state = InHex;
+            }
+            else if ( current == '.' )
+            {
+                record8( current );
+                state = InDecimal;
+            }
+            else if ( current == 'e' || current == 'E' )
+            {
+                record8( current );
+                state = InExponentIndicator;
+            }
+            else if ( isOctalDigit( current ) )
+            {
+                record8( current );
+                state = InOctal;
+            }
+            else if ( isDecimalDigit( current ) )
+            {
+                record8( current );
+                state = InDecimal;
+            }
+            else
+            {
+                setDone( Number );
+            }
 
-                break;
+            break;
 
-            default:
-                Q_ASSERT_X( 0, "Lexer::lex", "Unhandled state in switch statement" );
+        case InHex:
+            if ( isHexDigit( current ) )
+            {
+                record8( current );
+            }
+            else
+            {
+                setDone( Hex );
+            }
+
+            break;
+
+        case InOctal:
+            if ( isOctalDigit( current ) )
+            {
+                record8( current );
+            }
+            else if ( isDecimalDigit( current ) )
+            {
+                record8( current );
+                state = InDecimal;
+            }
+            else
+            {
+                setDone( Octal );
+            }
+
+            break;
+
+        case InNum:
+            if ( isDecimalDigit( current ) )
+            {
+                record8( current );
+            }
+            else if ( current == '.' )
+            {
+                record8( current );
+                state = InDecimal;
+            }
+            else if ( current == 'e' || current == 'E' )
+            {
+                record8( current );
+                state = InExponentIndicator;
+            }
+            else
+            {
+                setDone( Number );
+            }
+
+            break;
+
+        case InDecimal:
+            if ( isDecimalDigit( current ) )
+            {
+                record8( current );
+            }
+            else if ( current == 'e' || current == 'E' )
+            {
+                record8( current );
+                state = InExponentIndicator;
+            }
+            else
+            {
+                setDone( Number );
+            }
+
+            break;
+
+        case InExponentIndicator:
+            if ( current == '+' || current == '-' )
+            {
+                record8( current );
+            }
+            else if ( isDecimalDigit( current ) )
+            {
+                record8( current );
+                state = InExponent;
+            }
+            else
+            {
+                setDone( Bad );
+                err = IllegalExponentIndicator;
+                errmsg = QCoreApplication::translate( "QDeclarativeParser", "Illegal syntax for exponential number" );
+            }
+
+            break;
+
+        case InExponent:
+            if ( isDecimalDigit( current ) )
+            {
+                record8( current );
+            }
+            else
+            {
+                setDone( Number );
+            }
+
+            break;
+
+        default:
+            Q_ASSERT_X( 0, "Lexer::lex", "Unhandled state in switch statement" );
         }
 
         // move on to the next character
@@ -1180,86 +1180,55 @@ int Lexer::lex()
 
     switch ( parenthesesState )
     {
-        case IgnoreParentheses:
-            break;
+    case IgnoreParentheses:
+        break;
 
-        case CountParentheses:
-            if ( token == QDeclarativeJSGrammar::T_RPAREN )
+    case CountParentheses:
+        if ( token == QDeclarativeJSGrammar::T_RPAREN )
+        {
+            --parenthesesCount;
+
+            if ( parenthesesCount == 0 )
             {
-                --parenthesesCount;
-
-                if ( parenthesesCount == 0 )
-                {
-                    parenthesesState = BalancedParentheses;
-                }
+                parenthesesState = BalancedParentheses;
             }
-            else if ( token == QDeclarativeJSGrammar::T_LPAREN )
-            {
-                ++parenthesesCount;
-            }
+        }
+        else if ( token == QDeclarativeJSGrammar::T_LPAREN )
+        {
+            ++parenthesesCount;
+        }
 
-            break;
+        break;
 
-        case BalancedParentheses:
-            parenthesesState = IgnoreParentheses;
-            break;
+    case BalancedParentheses:
+        parenthesesState = IgnoreParentheses;
+        break;
     }
 
     switch ( state )
     {
-        case Eof:
-            return 0;
+    case Eof:
+        return 0;
 
-        case Other:
-            if ( token == QDeclarativeJSGrammar::T_RBRACE || token == QDeclarativeJSGrammar::T_SEMICOLON )
-            {
-                delimited = true;
-            }
+    case Other:
+        if ( token == QDeclarativeJSGrammar::T_RBRACE || token == QDeclarativeJSGrammar::T_SEMICOLON )
+        {
+            delimited = true;
+        }
 
-            return token;
+        return token;
 
-        case Identifier:
-            token = -1;
+    case Identifier:
+        token = -1;
 
-            if ( ! identifierWithEscapedUnicode )
-            {
-                token = findReservedWord( buffer16, pos16 );
-            }
+        if ( ! identifierWithEscapedUnicode )
+        {
+            token = findReservedWord( buffer16, pos16 );
+        }
 
-            if ( token < 0 )
-            {
-                /* TODO: close leak on parse error. same holds true for String */
-                if ( driver )
-                {
-                    qsyylval.ustr = driver->intern( buffer16, pos16 );
-                }
-                else
-                {
-                    qsyylval.ustr = 0;
-                }
-
-                return QDeclarativeJSGrammar::T_IDENTIFIER;
-            }
-
-            if ( token == QDeclarativeJSGrammar::T_CONTINUE || token == QDeclarativeJSGrammar::T_BREAK
-                    || token == QDeclarativeJSGrammar::T_RETURN || token == QDeclarativeJSGrammar::T_THROW )
-            {
-                restrKeyword = true;
-            }
-            else if ( token == QDeclarativeJSGrammar::T_IF || token == QDeclarativeJSGrammar::T_FOR
-                      || token == QDeclarativeJSGrammar::T_WHILE || token == QDeclarativeJSGrammar::T_WITH )
-            {
-                parenthesesState = CountParentheses;
-                parenthesesCount = 0;
-            }
-            else if ( token == QDeclarativeJSGrammar::T_DO )
-            {
-                parenthesesState = BalancedParentheses;
-            }
-
-            return token;
-
-        case String:
+        if ( token < 0 )
+        {
+            /* TODO: close leak on parse error. same holds true for String */
             if ( driver )
             {
                 qsyylval.ustr = driver->intern( buffer16, pos16 );
@@ -1269,18 +1238,49 @@ int Lexer::lex()
                 qsyylval.ustr = 0;
             }
 
-            return multiLineString ? QDeclarativeJSGrammar::T_MULTILINE_STRING_LITERAL : QDeclarativeJSGrammar::T_STRING_LITERAL;
+            return QDeclarativeJSGrammar::T_IDENTIFIER;
+        }
 
-        case Number:
-            qsyylval.dval = dval;
-            return QDeclarativeJSGrammar::T_NUMERIC_LITERAL;
+        if ( token == QDeclarativeJSGrammar::T_CONTINUE || token == QDeclarativeJSGrammar::T_BREAK
+                || token == QDeclarativeJSGrammar::T_RETURN || token == QDeclarativeJSGrammar::T_THROW )
+        {
+            restrKeyword = true;
+        }
+        else if ( token == QDeclarativeJSGrammar::T_IF || token == QDeclarativeJSGrammar::T_FOR
+                  || token == QDeclarativeJSGrammar::T_WHILE || token == QDeclarativeJSGrammar::T_WITH )
+        {
+            parenthesesState = CountParentheses;
+            parenthesesCount = 0;
+        }
+        else if ( token == QDeclarativeJSGrammar::T_DO )
+        {
+            parenthesesState = BalancedParentheses;
+        }
 
-        case Bad:
-            return -1;
+        return token;
 
-        default:
-            Q_ASSERT( !"unhandled numeration value in switch" );
-            return -1;
+    case String:
+        if ( driver )
+        {
+            qsyylval.ustr = driver->intern( buffer16, pos16 );
+        }
+        else
+        {
+            qsyylval.ustr = 0;
+        }
+
+        return multiLineString ? QDeclarativeJSGrammar::T_MULTILINE_STRING_LITERAL : QDeclarativeJSGrammar::T_STRING_LITERAL;
+
+    case Number:
+        qsyylval.dval = dval;
+        return QDeclarativeJSGrammar::T_NUMERIC_LITERAL;
+
+    case Bad:
+        return -1;
+
+    default:
+        Q_ASSERT( !"unhandled numeration value in switch" );
+        return -1;
     }
 }
 
@@ -1458,104 +1458,104 @@ int Lexer::matchPunctuator( ushort c1, ushort c2,
 
     switch ( c1 )
     {
-        case '=':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_EQ;
+    case '=':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_EQ;
 
-        case '>':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_GT;
+    case '>':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_GT;
 
-        case '<':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_LT;
+    case '<':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_LT;
 
-        case ',':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_COMMA;
+    case ',':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_COMMA;
 
-        case '!':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_NOT;
+    case '!':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_NOT;
 
-        case '~':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_TILDE;
+    case '~':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_TILDE;
 
-        case '?':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_QUESTION;
+    case '?':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_QUESTION;
 
-        case ':':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_COLON;
+    case ':':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_COLON;
 
-        case '.':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_DOT;
+    case '.':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_DOT;
 
-        case '+':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_PLUS;
+    case '+':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_PLUS;
 
-        case '-':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_MINUS;
+    case '-':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_MINUS;
 
-        case '*':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_STAR;
+    case '*':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_STAR;
 
-        case '/':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_DIVIDE_;
+    case '/':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_DIVIDE_;
 
-        case '&':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_AND;
+    case '&':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_AND;
 
-        case '|':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_OR;
+    case '|':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_OR;
 
-        case '^':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_XOR;
+    case '^':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_XOR;
 
-        case '%':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_REMAINDER;
+    case '%':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_REMAINDER;
 
-        case '(':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_LPAREN;
+    case '(':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_LPAREN;
 
-        case ')':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_RPAREN;
+    case ')':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_RPAREN;
 
-        case '{':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_LBRACE;
+    case '{':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_LBRACE;
 
-        case '}':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_RBRACE;
+    case '}':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_RBRACE;
 
-        case '[':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_LBRACKET;
+    case '[':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_LBRACKET;
 
-        case ']':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_RBRACKET;
+    case ']':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_RBRACKET;
 
-        case ';':
-            shift( 1 );
-            return QDeclarativeJSGrammar::T_SEMICOLON;
+    case ';':
+        shift( 1 );
+        return QDeclarativeJSGrammar::T_SEMICOLON;
 
-        default:
-            return -1;
+    default:
+        return -1;
     }
 }
 
@@ -1563,35 +1563,35 @@ ushort Lexer::singleEscape( ushort c ) const
 {
     switch ( c )
     {
-        case 'b':
-            return 0x08;
+    case 'b':
+        return 0x08;
 
-        case 't':
-            return 0x09;
+    case 't':
+        return 0x09;
 
-        case 'n':
-            return 0x0A;
+    case 'n':
+        return 0x0A;
 
-        case 'v':
-            return 0x0B;
+    case 'v':
+        return 0x0B;
 
-        case 'f':
-            return 0x0C;
+    case 'f':
+        return 0x0C;
 
-        case 'r':
-            return 0x0D;
+    case 'r':
+        return 0x0D;
 
-        case '"':
-            return 0x22;
+    case '"':
+        return 0x22;
 
-        case '\'':
-            return 0x27;
+    case '\'':
+        return 0x27;
 
-        case '\\':
-            return 0x5C;
+    case '\\':
+        return 0x5C;
 
-        default:
-            return c;
+    default:
+        return c;
     }
 }
 
@@ -1683,103 +1683,103 @@ bool Lexer::scanRegExp( RegExpBodyPrefix prefix )
         switch ( current )
         {
 
-            case 0: // eof
-            case '\n':
-            case '\r': // line terminator
-                errmsg = QCoreApplication::translate( "QDeclarativeParser", "Unterminated regular expression literal" );
-                return false;
+        case 0: // eof
+        case '\n':
+        case '\r': // line terminator
+            errmsg = QCoreApplication::translate( "QDeclarativeParser", "Unterminated regular expression literal" );
+            return false;
 
-            case '/':
-                shift( 1 );
+        case '/':
+            shift( 1 );
 
-                if ( driver ) // create the pattern
+            if ( driver ) // create the pattern
+            {
+                pattern = driver->intern( buffer16, pos16 );
+            }
+
+            // scan the flags
+            pos16 = 0;
+            flags = 0;
+
+            while ( isIdentLetter( current ) )
+            {
+                int flag = Ecma::RegExp::flagFromChar( current );
+
+                if ( flag == 0 )
                 {
-                    pattern = driver->intern( buffer16, pos16 );
+                    errmsg = QCoreApplication::translate( "QDeclarativeParser", "Invalid regular expression flag '%0'" )
+                             .arg( QChar( current ) );
+                    return false;
                 }
 
-                // scan the flags
-                pos16 = 0;
-                flags = 0;
+                flags |= flag;
+                record16( current );
+                shift( 1 );
+            }
 
-                while ( isIdentLetter( current ) )
+            return true;
+
+        case '\\':
+            // regular expression backslash sequence
+            record16( current );
+            shift( 1 );
+
+            if ( ! current || isLineTerminator() )
+            {
+                errmsg = QCoreApplication::translate( "QDeclarativeParser", "Unterminated regular expression backslash sequence" );
+                return false;
+            }
+
+            record16( current );
+            shift( 1 );
+            break;
+
+        case '[':
+            // regular expression class
+            record16( current );
+            shift( 1 );
+
+            while ( current && ! isLineTerminator() )
+            {
+                if ( current == ']' )
                 {
-                    int flag = Ecma::RegExp::flagFromChar( current );
+                    break;
+                }
+                else if ( current == '\\' )
+                {
+                    // regular expression backslash sequence
+                    record16( current );
+                    shift( 1 );
 
-                    if ( flag == 0 )
+                    if ( ! current || isLineTerminator() )
                     {
-                        errmsg = QCoreApplication::translate( "QDeclarativeParser", "Invalid regular expression flag '%0'" )
-                                 .arg( QChar( current ) );
+                        errmsg = QCoreApplication::translate( "QDeclarativeParser", "Unterminated regular expression backslash sequence" );
                         return false;
                     }
 
-                    flags |= flag;
                     record16( current );
                     shift( 1 );
                 }
-
-                return true;
-
-            case '\\':
-                // regular expression backslash sequence
-                record16( current );
-                shift( 1 );
-
-                if ( ! current || isLineTerminator() )
+                else
                 {
-                    errmsg = QCoreApplication::translate( "QDeclarativeParser", "Unterminated regular expression backslash sequence" );
-                    return false;
+                    record16( current );
+                    shift( 1 );
                 }
+            }
 
-                record16( current );
-                shift( 1 );
-                break;
+            if ( current != ']' )
+            {
+                errmsg = QCoreApplication::translate( "QDeclarativeParser", "Unterminated regular expression class" );
+                return false;
+            }
 
-            case '[':
-                // regular expression class
-                record16( current );
-                shift( 1 );
+            record16( current );
+            shift( 1 ); // skip ]
+            break;
 
-                while ( current && ! isLineTerminator() )
-                {
-                    if ( current == ']' )
-                    {
-                        break;
-                    }
-                    else if ( current == '\\' )
-                    {
-                        // regular expression backslash sequence
-                        record16( current );
-                        shift( 1 );
-
-                        if ( ! current || isLineTerminator() )
-                        {
-                            errmsg = QCoreApplication::translate( "QDeclarativeParser", "Unterminated regular expression backslash sequence" );
-                            return false;
-                        }
-
-                        record16( current );
-                        shift( 1 );
-                    }
-                    else
-                    {
-                        record16( current );
-                        shift( 1 );
-                    }
-                }
-
-                if ( current != ']' )
-                {
-                    errmsg = QCoreApplication::translate( "QDeclarativeParser", "Unterminated regular expression class" );
-                    return false;
-                }
-
-                record16( current );
-                shift( 1 ); // skip ]
-                break;
-
-            default:
-                record16( current );
-                shift( 1 );
+        default:
+            record16( current );
+            shift( 1 );
         } // switch
     } // while
 

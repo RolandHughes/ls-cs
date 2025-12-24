@@ -458,56 +458,56 @@ GLuint QPlatformBackingStore::toTexture( const QRegion &dirtyRegion, QSize *text
 
     switch ( image.format() )
     {
-        case QImage::Format_ARGB32_Premultiplied:
+    case QImage::Format_ARGB32_Premultiplied:
+        *flags |= TexturePremultiplied;
+        [[fallthrough]];
+
+    case QImage::Format_RGB32:
+    case QImage::Format_ARGB32:
+        *flags |= TextureSwizzle;
+        break;
+
+    case QImage::Format_RGBA8888_Premultiplied:
+        *flags |= TexturePremultiplied;
+        [[fallthrough]];
+
+    case QImage::Format_RGBX8888:
+    case QImage::Format_RGBA8888:
+        break;
+
+    case QImage::Format_BGR30:
+    case QImage::Format_A2BGR30_Premultiplied:
+        if ( !ctx->isOpenGLES() || ctx->format().majorVersion() >= 3 )
+        {
+            pixelType = GL_UNSIGNED_INT_2_10_10_10_REV;
+            internalFormat = GL_RGB10_A2;
             *flags |= TexturePremultiplied;
-            [[fallthrough]];
-
-        case QImage::Format_RGB32:
-        case QImage::Format_ARGB32:
-            *flags |= TextureSwizzle;
-            break;
-
-        case QImage::Format_RGBA8888_Premultiplied:
-            *flags |= TexturePremultiplied;
-            [[fallthrough]];
-
-        case QImage::Format_RGBX8888:
-        case QImage::Format_RGBA8888:
-            break;
-
-        case QImage::Format_BGR30:
-        case QImage::Format_A2BGR30_Premultiplied:
-            if ( !ctx->isOpenGLES() || ctx->format().majorVersion() >= 3 )
-            {
-                pixelType = GL_UNSIGNED_INT_2_10_10_10_REV;
-                internalFormat = GL_RGB10_A2;
-                *flags |= TexturePremultiplied;
-            }
-            else
-            {
-                needsConversion = true;
-            }
-
-            break;
-
-        case QImage::Format_RGB30:
-        case QImage::Format_A2RGB30_Premultiplied:
-            if ( !ctx->isOpenGLES() || ctx->format().majorVersion() >= 3 )
-            {
-                pixelType = GL_UNSIGNED_INT_2_10_10_10_REV;
-                internalFormat = GL_RGB10_A2;
-                *flags |= TextureSwizzle | TexturePremultiplied;
-            }
-            else
-            {
-                needsConversion = true;
-            }
-
-            break;
-
-        default:
+        }
+        else
+        {
             needsConversion = true;
-            break;
+        }
+
+        break;
+
+    case QImage::Format_RGB30:
+    case QImage::Format_A2RGB30_Premultiplied:
+        if ( !ctx->isOpenGLES() || ctx->format().majorVersion() >= 3 )
+        {
+            pixelType = GL_UNSIGNED_INT_2_10_10_10_REV;
+            internalFormat = GL_RGB10_A2;
+            *flags |= TextureSwizzle | TexturePremultiplied;
+        }
+        else
+        {
+            needsConversion = true;
+        }
+
+        break;
+
+    default:
+        needsConversion = true;
+        break;
     }
 
     if ( imageSize.isEmpty() )

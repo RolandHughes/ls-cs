@@ -1000,40 +1000,40 @@ void QTabBar::removeTab( int index )
                 switch ( d->selectionBehaviorOnRemove )
                 {
 
-                    case SelectPreviousTab:
-                        if ( newIndex > index )
-                        {
-                            newIndex--;
-                        }
+                case SelectPreviousTab:
+                    if ( newIndex > index )
+                    {
+                        newIndex--;
+                    }
 
-                        if ( d->validIndex( newIndex ) )
-                        {
-                            break;
-                        }
-
-                    // else fallthrough
-                    case SelectRightTab:
-                        newIndex = index;
-
-                        if ( newIndex >= d->tabList.size() )
-                        {
-                            newIndex = d->tabList.size() - 1;
-                        }
-
+                    if ( d->validIndex( newIndex ) )
+                    {
                         break;
+                    }
 
-                    case SelectLeftTab:
-                        newIndex = index - 1;
+                // else fallthrough
+                case SelectRightTab:
+                    newIndex = index;
 
-                        if ( newIndex < 0 )
-                        {
-                            newIndex = 0;
-                        }
+                    if ( newIndex >= d->tabList.size() )
+                    {
+                        newIndex = d->tabList.size() - 1;
+                    }
 
-                        break;
+                    break;
 
-                    default:
-                        break;
+                case SelectLeftTab:
+                    newIndex = index - 1;
+
+                    if ( newIndex < 0 )
+                    {
+                        newIndex = 0;
+                    }
+
+                    break;
+
+                default:
+                    break;
                 }
 
                 if ( d->validIndex( newIndex ) )
@@ -1464,21 +1464,21 @@ static QString computeElidedText( Qt::TextElideMode mode, const QString &text )
 
     switch ( mode )
     {
-        case Qt::ElideRight:
-            ret = text.left( 2 ) + Ellipses;
-            break;
+    case Qt::ElideRight:
+        ret = text.left( 2 ) + Ellipses;
+        break;
 
-        case Qt::ElideMiddle:
-            ret = text.left( 1 ) + Ellipses + text.right( 1 );
-            break;
+    case Qt::ElideMiddle:
+        ret = text.left( 1 ) + Ellipses + text.right( 1 );
+        break;
 
-        case Qt::ElideLeft:
-            ret = Ellipses + text.right( 2 );
-            break;
+    case Qt::ElideLeft:
+        ret = Ellipses + text.right( 2 );
+        break;
 
-        case Qt::ElideNone:
-            ret = text;
-            break;
+    case Qt::ElideNone:
+        ret = text;
+        break;
     }
 
     return ret;
@@ -2461,26 +2461,26 @@ void QTabBar::changeEvent( QEvent *event )
 
     switch ( event->type() )
     {
-        case QEvent::StyleChange:
-            if ( ! d->elideModeSetByUser )
-            {
-                d->elideMode = Qt::TextElideMode( style()->styleHint( QStyle::SH_TabBar_ElideMode, nullptr, this ) );
-            }
+    case QEvent::StyleChange:
+        if ( ! d->elideModeSetByUser )
+        {
+            d->elideMode = Qt::TextElideMode( style()->styleHint( QStyle::SH_TabBar_ElideMode, nullptr, this ) );
+        }
 
-            if ( ! d->useScrollButtonsSetByUser )
-            {
-                d->useScrollButtons = !style()->styleHint( QStyle::SH_TabBar_PreferNoArrows, nullptr, this );
-            }
+        if ( ! d->useScrollButtonsSetByUser )
+        {
+            d->useScrollButtons = !style()->styleHint( QStyle::SH_TabBar_PreferNoArrows, nullptr, this );
+        }
 
-            [[fallthrough]];
+        [[fallthrough]];
 
-        case QEvent::FontChange:
-            d->textSizes.clear();
-            d->refresh();
-            break;
+    case QEvent::FontChange:
+        d->textSizes.clear();
+        d->refresh();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     QWidget::changeEvent( event );

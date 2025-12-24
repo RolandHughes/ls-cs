@@ -126,22 +126,22 @@ static inline const uchar *verifyTag( const uchar *tagPtr, const uchar *endPtr )
     {
         switch ( tagTypes[tag] )
         {
-            case QFontEngineQPF2::BitFieldType:
-            case QFontEngineQPF2::StringType:
-                // do nothing
-                break;
+        case QFontEngineQPF2::BitFieldType:
+        case QFontEngineQPF2::StringType:
+            // do nothing
+            break;
 
-            case QFontEngineQPF2::UInt32Type:
-                VERIFY_TAG( length == sizeof( quint32 ) );
-                break;
+        case QFontEngineQPF2::UInt32Type:
+            VERIFY_TAG( length == sizeof( quint32 ) );
+            break;
 
-            case QFontEngineQPF2::FixedType:
-                VERIFY_TAG( length == sizeof( quint32 ) );
-                break;
+        case QFontEngineQPF2::FixedType:
+            VERIFY_TAG( length == sizeof( quint32 ) );
+            break;
 
-            case QFontEngineQPF2::UInt8Type:
-                VERIFY_TAG( length == sizeof( quint8 ) );
-                break;
+        case QFontEngineQPF2::UInt8Type:
+            VERIFY_TAG( length == sizeof( quint8 ) );
+            break;
         }
 
 #if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
@@ -239,20 +239,20 @@ QVariant QFontEngineQPF2::extractHeaderField( const uchar *data, HeaderTag reque
         {
             switch ( tagTypes[requestedTag] )
             {
-                case StringType:
-                    return QVariant( QString::fromUtf8( reinterpret_cast<const char *>( tagPtr ), length ) );
+            case StringType:
+                return QVariant( QString::fromUtf8( reinterpret_cast<const char *>( tagPtr ), length ) );
 
-                case UInt32Type:
-                    return QVariant( readValue<quint32>( tagPtr ) );
+            case UInt32Type:
+                return QVariant( readValue<quint32>( tagPtr ) );
 
-                case UInt8Type:
-                    return QVariant( uint( *tagPtr ) );
+            case UInt8Type:
+                return QVariant( uint( *tagPtr ) );
 
-                case FixedType:
-                    return QVariant( QFixed::fromFixed( readValue<quint32>( tagPtr ) ).toReal() );
+            case FixedType:
+                return QVariant( QFixed::fromFixed( readValue<quint32>( tagPtr ) ).toReal() );
 
-                case BitFieldType:
-                    return QVariant( QByteArray( reinterpret_cast<const char *>( tagPtr ), length ) );
+            case BitFieldType:
+                return QVariant( QByteArray( reinterpret_cast<const char *>( tagPtr ), length ) );
             }
 
             return QVariant();

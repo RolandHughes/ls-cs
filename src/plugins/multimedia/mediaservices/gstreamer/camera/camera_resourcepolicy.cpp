@@ -99,29 +99,29 @@ void CamerabinResourcePolicy::setResourceSet( CamerabinResourcePolicy::ResourceS
 
     switch ( set )
     {
-        case NoResources:
-            break;
+    case NoResources:
+        break;
 
-        case LoadedResources:
-            requestedTypes << ResourcePolicy::LensCoverType //to detect lens cover is opened/closed
-                           << ResourcePolicy::VideoRecorderType; //to open camera device
-            break;
+    case LoadedResources:
+        requestedTypes << ResourcePolicy::LensCoverType //to detect lens cover is opened/closed
+                       << ResourcePolicy::VideoRecorderType; //to open camera device
+        break;
 
-        case ImageCaptureResources:
-            requestedTypes << ResourcePolicy::LensCoverType
-                           << ResourcePolicy::VideoPlaybackType
-                           << ResourcePolicy::VideoRecorderType
-                           << ResourcePolicy::LedsType;
-            break;
+    case ImageCaptureResources:
+        requestedTypes << ResourcePolicy::LensCoverType
+                       << ResourcePolicy::VideoPlaybackType
+                       << ResourcePolicy::VideoRecorderType
+                       << ResourcePolicy::LedsType;
+        break;
 
-        case VideoCaptureResources:
-            requestedTypes << ResourcePolicy::LensCoverType
-                           << ResourcePolicy::VideoPlaybackType
-                           << ResourcePolicy::VideoRecorderType
-                           << ResourcePolicy::AudioPlaybackType
-                           << ResourcePolicy::AudioRecorderType
-                           << ResourcePolicy::LedsType;
-            break;
+    case VideoCaptureResources:
+        requestedTypes << ResourcePolicy::LensCoverType
+                       << ResourcePolicy::VideoPlaybackType
+                       << ResourcePolicy::VideoRecorderType
+                       << ResourcePolicy::AudioPlaybackType
+                       << ResourcePolicy::AudioRecorderType
+                       << ResourcePolicy::LedsType;
+        break;
     }
 
     QSet<ResourcePolicy::ResourceType> currentTypes;

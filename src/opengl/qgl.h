@@ -254,10 +254,10 @@ public:
         TemporarilyCachedBindOption             = 0x0040, // internal flag
 
         DefaultBindOption                       = LinearFilteringBindOption
-                | InvertedYBindOption
-                | MipmapBindOption,
+            | InvertedYBindOption
+            | MipmapBindOption,
         InternalBindOption                      = MemoryManagedBindOption
-                | PremultipliedAlphaBindOption
+            | PremultipliedAlphaBindOption
     };
     using BindOptions = QFlags<BindOption>;
 

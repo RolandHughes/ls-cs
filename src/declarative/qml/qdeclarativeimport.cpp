@@ -970,10 +970,10 @@ QDeclarativeImportDatabase::QDeclarativeImportDatabase( QDeclarativeEngine *e )
     // Search order is applicationDirPath(), $QML_IMPORT_PATH, QLibraryInfo::ImportsPath
 
 #ifndef LSCS_NO_SETTINGS
-    #if 0
+#if 0
     QString installImportsPath =  QLibraryInfo::location( QLibraryInfo::ImportsPath );
     addImportPath( installImportsPath );
-    #endif
+#endif
 
 #endif // LSCS_NO_SETTINGS
 

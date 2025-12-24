@@ -147,14 +147,14 @@ Item::Iterator::Ptr VariableLoader::evaluateSequence( const QXmlName name,
 
     switch ( v.type() )
     {
-        case QVariant::StringList:
-            return Item::Iterator::Ptr( new StringListIterator( v.toStringList() ) );
+    case QVariant::StringList:
+        return Item::Iterator::Ptr( new StringListIterator( v.toStringList() ) );
 
-        case QVariant::List:
-            return Item::Iterator::Ptr( new VariantListIterator( v.toList() ) );
+    case QVariant::List:
+        return Item::Iterator::Ptr( new VariantListIterator( v.toList() ) );
 
-        default:
-            return makeSingletonIterator( itemForName( name ) );
+    default:
+        return makeSingletonIterator( itemForName( name ) );
     }
 }
 

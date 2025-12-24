@@ -961,27 +961,27 @@ static QDeclarativePixmapData *createPixmapDataSync( QDeclarativeEngine *engine,
 
         switch ( imageType )
         {
-            case QDeclarativeImageProvider::Image:
+        case QDeclarativeImageProvider::Image:
+        {
+            QImage image = ep->getImageFromProvider( url, &readSize, requestSize );
+
+            if ( !image.isNull() )
             {
-                QImage image = ep->getImageFromProvider( url, &readSize, requestSize );
-
-                if ( !image.isNull() )
-                {
-                    *ok = true;
-                    return new QDeclarativePixmapData( url, QPixmap::fromImage( image ), readSize, requestSize );
-                }
+                *ok = true;
+                return new QDeclarativePixmapData( url, QPixmap::fromImage( image ), readSize, requestSize );
             }
+        }
 
-            case QDeclarativeImageProvider::Pixmap:
+        case QDeclarativeImageProvider::Pixmap:
+        {
+            QPixmap pixmap = ep->getPixmapFromProvider( url, &readSize, requestSize );
+
+            if ( !pixmap.isNull() )
             {
-                QPixmap pixmap = ep->getPixmapFromProvider( url, &readSize, requestSize );
-
-                if ( !pixmap.isNull() )
-                {
-                    *ok = true;
-                    return new QDeclarativePixmapData( url, pixmap, readSize, requestSize );
-                }
+                *ok = true;
+                return new QDeclarativePixmapData( url, pixmap, readSize, requestSize );
             }
+        }
         }
 
         // no matching provider, or provider has bad image type, or provider returned null image

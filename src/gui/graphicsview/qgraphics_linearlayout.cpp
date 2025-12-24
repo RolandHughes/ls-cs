@@ -171,7 +171,7 @@ void QGraphicsLinearLayout::insertItem( int index, QGraphicsLayoutItem *item )
     d->fixIndex( &index );
     d->engine.insertRow( index, d->orientation );
     QGraphicsGridLayoutEngineItem *gridEngineItem = new QGraphicsGridLayoutEngineItem( item, d->gridRow( index ),
-            d->gridColumn( index ), 1, 1, Qt::EmptyFlag );
+        d->gridColumn( index ), 1, 1, Qt::EmptyFlag );
     d->engine.insertItem( gridEngineItem, index );
     invalidate();
 }

@@ -242,27 +242,27 @@ QByteArray QDeclarativePropertyChangesParser::compile( const QList<QDeclarativeC
 
         switch ( v.type() )
         {
-            case QDeclarativeParser::Variant::Boolean:
-                var = QVariant( v.asBoolean() );
-                break;
+        case QDeclarativeParser::Variant::Boolean:
+            var = QVariant( v.asBoolean() );
+            break;
 
-            case QDeclarativeParser::Variant::Number:
-                var = QVariant( v.asNumber() );
-                break;
+        case QDeclarativeParser::Variant::Number:
+            var = QVariant( v.asNumber() );
+            break;
 
-            case QDeclarativeParser::Variant::String:
-                var = QVariant( v.asString() );
-                break;
+        case QDeclarativeParser::Variant::String:
+            var = QVariant( v.asString() );
+            break;
 
-            case QDeclarativeParser::Variant::Invalid:
-            case QDeclarativeParser::Variant::Script:
-                var = QVariant( v.asScript() );
-                {
-                    // Pre-rewrite the expression
-                    QString expression = v.asScript();
-                    id = rewriteBinding( expression, data.at( ii ).first ); //### recreates the AST, which is slow
-                }
-                break;
+        case QDeclarativeParser::Variant::Invalid:
+        case QDeclarativeParser::Variant::Script:
+            var = QVariant( v.asScript() );
+            {
+                // Pre-rewrite the expression
+                QString expression = v.asScript();
+                id = rewriteBinding( expression, data.at( ii ).first ); //### recreates the AST, which is slow
+            }
+            break;
         }
 
         ds << QString::fromUtf8( data.at( ii ).first ) << isScript << var;

@@ -53,27 +53,27 @@ QXmlStreamReader::TokenType MaintainingReader<TokenLookupClass, LookupKey>::read
 
     switch ( retval )
     {
-        case StartElement:
+    case StartElement:
+    {
+        m_currentElementName = TokenLookupClass::toToken( name() );
+        m_currentAttributes = attributes();
+        m_hasHandledStandardAttributes = false;
+
+        if ( ! m_currentAttributes.hasAttribute( "xml:space" ) )
         {
-            m_currentElementName = TokenLookupClass::toToken( name() );
-            m_currentAttributes = attributes();
-            m_hasHandledStandardAttributes = false;
-
-            if ( ! m_currentAttributes.hasAttribute( "xml:space" ) )
-            {
-                m_stripWhitespace.push( m_stripWhitespace.top() );
-            }
-
-            break;
+            m_stripWhitespace.push( m_stripWhitespace.top() );
         }
 
-        case EndElement:
-            m_currentElementName = TokenLookupClass::toToken( name() );
-            m_stripWhitespace.pop();
-            break;
+        break;
+    }
 
-        default:
-            break;
+    case EndElement:
+        m_currentElementName = TokenLookupClass::toToken( name() );
+        m_stripWhitespace.pop();
+        break;
+
+    default:
+        break;
     }
 
     return retval;

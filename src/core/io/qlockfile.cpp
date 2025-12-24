@@ -85,32 +85,32 @@ bool QLockFile::tryLock( int timeout )
 
         switch ( d->lockError )
         {
-            case NoError:
-                d->isLocked = true;
-                return true;
+        case NoError:
+            d->isLocked = true;
+            return true;
 
-            case PermissionError:
-            case UnknownError:
-                return false;
+        case PermissionError:
+        case UnknownError:
+            return false;
 
-            case LockFailedError:
-                if ( ! d->isLocked && d->isApparentlyStale() )
+        case LockFailedError:
+            if ( ! d->isLocked && d->isApparentlyStale() )
+            {
+                // Stale lock from another thread/process
+                // Ensure two processes don't remove it at the same time
+
+                QLockFile rmlock( d->fileName + ".rmlock" );
+
+                if ( rmlock.tryLock() )
                 {
-                    // Stale lock from another thread/process
-                    // Ensure two processes don't remove it at the same time
-
-                    QLockFile rmlock( d->fileName + ".rmlock" );
-
-                    if ( rmlock.tryLock() )
+                    if ( d->isApparentlyStale() && d->removeStaleLock() )
                     {
-                        if ( d->isApparentlyStale() && d->removeStaleLock() )
-                        {
-                            continue;
-                        }
+                        continue;
                     }
                 }
+            }
 
-                break;
+            break;
         }
 
         if ( timeout == 0 || ( timeout > 0 && timer.hasExpired( timeout ) ) )

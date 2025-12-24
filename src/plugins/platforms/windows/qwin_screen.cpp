@@ -373,25 +373,25 @@ bool QWindowsScreen::setOrientationPreference( Qt::ScreenOrientation o )
 
         switch ( o )
         {
-            case Qt::PrimaryOrientation:
-                orientationPreference = orientationPreferenceNone;
-                break;
+        case Qt::PrimaryOrientation:
+            orientationPreference = orientationPreferenceNone;
+            break;
 
-            case Qt::PortraitOrientation:
-                orientationPreference = orientationPreferencePortrait;
-                break;
+        case Qt::PortraitOrientation:
+            orientationPreference = orientationPreferencePortrait;
+            break;
 
-            case Qt::LandscapeOrientation:
-                orientationPreference = orientationPreferenceLandscape;
-                break;
+        case Qt::LandscapeOrientation:
+            orientationPreference = orientationPreferenceLandscape;
+            break;
 
-            case Qt::InvertedPortraitOrientation:
-                orientationPreference = orientationPreferencePortraitFlipped;
-                break;
+        case Qt::InvertedPortraitOrientation:
+            orientationPreference = orientationPreferencePortraitFlipped;
+            break;
 
-            case Qt::InvertedLandscapeOrientation:
-                orientationPreference = orientationPreferenceLandscapeFlipped;
-                break;
+        case Qt::InvertedLandscapeOrientation:
+            orientationPreference = orientationPreferenceLandscapeFlipped;
+            break;
         }
 
         result = QWindowsContext::user32dll.setDisplayAutoRotationPreferences( orientationPreference );
@@ -412,21 +412,21 @@ Qt::ScreenOrientation QWindowsScreen::orientationPreference()
         {
             switch ( orientationPreference )
             {
-                case orientationPreferenceLandscape:
-                    result = Qt::LandscapeOrientation;
-                    break;
+            case orientationPreferenceLandscape:
+                result = Qt::LandscapeOrientation;
+                break;
 
-                case orientationPreferencePortrait:
-                    result = Qt::PortraitOrientation;
-                    break;
+            case orientationPreferencePortrait:
+                result = Qt::PortraitOrientation;
+                break;
 
-                case orientationPreferenceLandscapeFlipped:
-                    result = Qt::InvertedLandscapeOrientation;
-                    break;
+            case orientationPreferenceLandscapeFlipped:
+                result = Qt::InvertedLandscapeOrientation;
+                break;
 
-                case orientationPreferencePortraitFlipped:
-                    result = Qt::InvertedPortraitOrientation;
-                    break;
+            case orientationPreferencePortraitFlipped:
+                result = Qt::InvertedPortraitOrientation;
+                break;
             }
         }
     }
@@ -449,21 +449,21 @@ QPlatformScreen::SubpixelAntialiasingType QWindowsScreen::subpixelAntialiasingTy
 
         switch ( registryValue )
         {
-            case 0:
-                type = QPlatformScreen::Subpixel_None;
-                break;
+        case 0:
+            type = QPlatformScreen::Subpixel_None;
+            break;
 
-            case 1:
-                type = QPlatformScreen::Subpixel_RGB;
-                break;
+        case 1:
+            type = QPlatformScreen::Subpixel_RGB;
+            break;
 
-            case 2:
-                type = QPlatformScreen::Subpixel_BGR;
-                break;
+        case 2:
+            type = QPlatformScreen::Subpixel_BGR;
+            break;
 
-            default:
-                type = QPlatformScreen::Subpixel_None;
-                break;
+        default:
+            type = QPlatformScreen::Subpixel_None;
+            break;
         }
     }
 

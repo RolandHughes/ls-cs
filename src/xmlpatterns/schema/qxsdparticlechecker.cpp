@@ -496,7 +496,7 @@ bool XsdParticleChecker::isUPAConform( const XsdParticle::Ptr &particle, const N
 
         // fetch all transitions the current state allows
         const QHash<XsdTerm::Ptr, QVector<XsdStateMachine<XsdTerm::Ptr>::StateId> > currentTransitions = transitions.value(
-                    stateIt.key() );
+                stateIt.key() );
         QHashIterator<XsdTerm::Ptr, QVector<XsdStateMachine<XsdTerm::Ptr>::StateId> > transitionIt( currentTransitions );
 
         while ( transitionIt.hasNext() ) // iterate over all transitions
@@ -638,11 +638,11 @@ bool XsdParticleChecker::subsumes( const XsdParticle::Ptr &particle, const XsdPa
         const QPair<XsdStateMachine<XsdTerm::Ptr>::StateId, XsdStateMachine<XsdTerm::Ptr>::StateId> set = workSet.takeFirst();
 
         const QHash<XsdTerm::Ptr, QVector<XsdStateMachine<XsdTerm::Ptr>::StateId> > derivedTrans = derivedTransitions.value(
-                    set.second );
+                set.second );
         QHashIterator<XsdTerm::Ptr, QVector<XsdStateMachine<XsdTerm::Ptr>::StateId> > derivedIt( derivedTrans );
 
         const QHash<XsdTerm::Ptr, QVector<XsdStateMachine<XsdTerm::Ptr>::StateId> > baseTrans = baseTransitions.value(
-                    set.first );
+                set.first );
 
         while ( derivedIt.hasNext() )
         {
@@ -659,7 +659,7 @@ bool XsdParticleChecker::subsumes( const XsdParticle::Ptr &particle, const XsdPa
                 {
                     const QPair<XsdStateMachine<XsdTerm::Ptr>::StateId, XsdStateMachine<XsdTerm::Ptr>::StateId> endSet =
                         qMakePair<XsdStateMachine<XsdTerm::Ptr>::StateId, XsdStateMachine<XsdTerm::Ptr>::StateId>( baseIt.value().first(),
-                                derivedIt.value().first() );
+                            derivedIt.value().first() );
 
                     if ( !processedSet.contains( endSet ) && !workSet.contains( endSet ) )
                     {

@@ -126,21 +126,21 @@ void QRegion::exec( const QByteArray &buffer, int ver, QDataStream::ByteOrder by
 
             switch ( id )
             {
-                case QRGN_OR:
-                    rgn = r1.united( r2 );
-                    break;
+            case QRGN_OR:
+                rgn = r1.united( r2 );
+                break;
 
-                case QRGN_AND:
-                    rgn = r1.intersected( r2 );
-                    break;
+            case QRGN_AND:
+                rgn = r1.intersected( r2 );
+                break;
 
-                case QRGN_SUB:
-                    rgn = r1.subtracted( r2 );
-                    break;
+            case QRGN_SUB:
+                rgn = r1.subtracted( r2 );
+                break;
 
-                case QRGN_XOR:
-                    rgn = r1.xored( r2 );
-                    break;
+            case QRGN_XOR:
+                rgn = r1.xored( r2 );
+                break;
             }
 
         }
@@ -3834,7 +3834,7 @@ QRegion::QRegion( const QPolygon &a, Qt::FillRule fillRule )
     if ( a.count() > 2 )
     {
         QRegionPrivate *lscs_rgn = PolygonRegion( a.constData(), a.size(),
-                                                fillRule == Qt::WindingFill ? WindingRule : EvenOddRule );
+                                   fillRule == Qt::WindingFill ? WindingRule : EvenOddRule );
 
         if ( lscs_rgn )
         {

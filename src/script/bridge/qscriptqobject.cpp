@@ -905,42 +905,42 @@ static JSC::JSValue delegateQtMethod( JSC::ExecState *exec, QMetaMethod::MethodT
                 {
                     switch ( tid )
                     {
-                        case QVariant::Double:
-                            // perfect
-                            break;
+                    case QVariant::Double:
+                        // perfect
+                        break;
 
-                        case QVariant::Float:
-                            matchDistance += 1;
-                            break;
+                    case QVariant::Float:
+                        matchDistance += 1;
+                        break;
 
-                        case QVariant::LongLong:
-                        case QVariant::ULongLong:
-                            matchDistance += 2;
-                            break;
+                    case QVariant::LongLong:
+                    case QVariant::ULongLong:
+                        matchDistance += 2;
+                        break;
 
-                        case QVariant::Long:
-                        case QVariant::ULong:
-                            matchDistance += 3;
-                            break;
+                    case QVariant::Long:
+                    case QVariant::ULong:
+                        matchDistance += 3;
+                        break;
 
-                        case QVariant::Int:
-                        case QVariant::UInt:
-                            matchDistance += 4;
-                            break;
+                    case QVariant::Int:
+                    case QVariant::UInt:
+                        matchDistance += 4;
+                        break;
 
-                        case QVariant::Short:
-                        case QVariant::UShort:
-                            matchDistance += 5;
-                            break;
+                    case QVariant::Short:
+                    case QVariant::UShort:
+                        matchDistance += 5;
+                        break;
 
-                        case QVariant::Char:
-                        case QVariant::UChar:
-                            matchDistance += 6;
-                            break;
+                    case QVariant::Char:
+                    case QVariant::UChar:
+                        matchDistance += 6;
+                        break;
 
-                        default:
-                            matchDistance += 10;
-                            break;
+                    default:
+                        matchDistance += 10;
+                        break;
                     }
 
                 }
@@ -948,13 +948,13 @@ static JSC::JSValue delegateQtMethod( JSC::ExecState *exec, QMetaMethod::MethodT
                 {
                     switch ( tid )
                     {
-                        case QVariant::String:
-                            // perfect
-                            break;
+                    case QVariant::String:
+                        // perfect
+                        break;
 
-                        default:
-                            matchDistance += 10;
-                            break;
+                    default:
+                        matchDistance += 10;
+                        break;
                     }
 
                 }
@@ -962,13 +962,13 @@ static JSC::JSValue delegateQtMethod( JSC::ExecState *exec, QMetaMethod::MethodT
                 {
                     switch ( tid )
                     {
-                        case QVariant::Bool:
-                            // perfect
-                            break;
+                    case QVariant::Bool:
+                        // perfect
+                        break;
 
-                        default:
-                            matchDistance += 10;
-                            break;
+                    default:
+                        matchDistance += 10;
+                        break;
                     }
 
                 }
@@ -976,21 +976,21 @@ static JSC::JSValue delegateQtMethod( JSC::ExecState *exec, QMetaMethod::MethodT
                 {
                     switch ( tid )
                     {
-                        case QVariant::DateTime:
-                            // perfect
-                            break;
+                    case QVariant::DateTime:
+                        // perfect
+                        break;
 
-                        case QVariant::Date:
-                            matchDistance += 1;
-                            break;
+                    case QVariant::Date:
+                        matchDistance += 1;
+                        break;
 
-                        case QVariant::Time:
-                            matchDistance += 2;
-                            break;
+                    case QVariant::Time:
+                        matchDistance += 2;
+                        break;
 
-                        default:
-                            matchDistance += 10;
-                            break;
+                    default:
+                        matchDistance += 10;
+                        break;
                     }
 
                 }
@@ -998,13 +998,13 @@ static JSC::JSValue delegateQtMethod( JSC::ExecState *exec, QMetaMethod::MethodT
                 {
                     switch ( tid )
                     {
-                        case QVariant::RegularExpression:
-                            // perfect
-                            break;
+                    case QVariant::RegularExpression:
+                        // perfect
+                        break;
 
-                        default:
-                            matchDistance += 10;
-                            break;
+                    default:
+                        matchDistance += 10;
+                        break;
                     }
 
                 }
@@ -1024,14 +1024,14 @@ static JSC::JSValue delegateQtMethod( JSC::ExecState *exec, QMetaMethod::MethodT
                 {
                     switch ( tid )
                     {
-                        case QVariant::StringList:
-                        case QVariant::List:
-                            matchDistance += 5;
-                            break;
+                    case QVariant::StringList:
+                    case QVariant::List:
+                        matchDistance += 5;
+                        break;
 
-                        default:
-                            matchDistance += 10;
-                            break;
+                    default:
+                        matchDistance += 10;
+                        break;
                     }
 
                 }
@@ -1039,18 +1039,18 @@ static JSC::JSValue delegateQtMethod( JSC::ExecState *exec, QMetaMethod::MethodT
                 {
                     switch ( tid )
                     {
-                        case QVariant::ObjectStar:
-                        case QVariant::WidgetStar:
-                            // perfect
-                            break;
+                    case QVariant::ObjectStar:
+                    case QVariant::WidgetStar:
+                        // perfect
+                        break;
 
-                        default:
-                            if ( isPtr2QObject( tid ) )
-                            {
-                                matchDistance += 10;
-                            }
+                    default:
+                        if ( isPtr2QObject( tid ) )
+                        {
+                            matchDistance += 10;
+                        }
 
-                            break;
+                        break;
                     }
 
                 }
@@ -1058,19 +1058,19 @@ static JSC::JSValue delegateQtMethod( JSC::ExecState *exec, QMetaMethod::MethodT
                 {
                     switch ( tid )
                     {
-                        case QVariant::VoidStar:
-                        case QVariant::ObjectStar:
-                        case QVariant::WidgetStar:
-                            // perfect
-                            break;
+                    case QVariant::VoidStar:
+                    case QVariant::ObjectStar:
+                    case QVariant::WidgetStar:
+                        // perfect
+                        break;
 
-                        default:
-                            if ( ! argType.name().endsWith( '*' ) )
-                            {
-                                matchDistance += 10;
-                            }
+                    default:
+                        if ( ! argType.name().endsWith( '*' ) )
+                        {
+                            matchDistance += 10;
+                        }
 
-                            break;
+                        break;
                     }
 
                 }
@@ -1294,23 +1294,23 @@ struct QtMethodCaller
 
             switch ( chosenMethod.type( i ).kind() )
             {
-                case QScriptMetaType::Variant:
-                    params[i] = const_cast<QVariant *>( &v );
-                    break;
+            case QScriptMetaType::Variant:
+                params[i] = const_cast<QVariant *>( &v );
+                break;
 
-                case QScriptMetaType::MetaType:
-                case QScriptMetaType::MetaEnum:
-                case QScriptMetaType::Unresolved:
+            case QScriptMetaType::MetaType:
+            case QScriptMetaType::MetaEnum:
+            case QScriptMetaType::Unresolved:
 
-                    /* emerald (script, hold)
-                       params[i] = const_cast<void *>(v.constData());
-                    */
-                    params[i] = nullptr;
+                /* emerald (script, hold)
+                   params[i] = const_cast<void *>(v.constData());
+                */
+                params[i] = nullptr;
 
-                    break;
+                break;
 
-                default:
-                    Q_ASSERT( 0 );
+            default:
+                Q_ASSERT( 0 );
             }
         }
 
@@ -1669,26 +1669,26 @@ QObjectDelegate::~QObjectDelegate()
 {
     switch ( data->ownership )
     {
-        case QScriptEngine::QtOwnership:
-            break;
+    case QScriptEngine::QtOwnership:
+        break;
 
-        case QScriptEngine::ScriptOwnership:
-            if ( data->value )
-            {
-                delete data->value;   // ### fixme
-            }
+    case QScriptEngine::ScriptOwnership:
+        if ( data->value )
+        {
+            delete data->value;   // ### fixme
+        }
 
-            //            eng->disposeQObject(value);
-            break;
+        //            eng->disposeQObject(value);
+        break;
 
-        case QScriptEngine::AutoOwnership:
-            if ( data->value && !data->value->parent() )
-            {
-                delete data->value;   // ### fixme
-            }
+    case QScriptEngine::AutoOwnership:
+        if ( data->value && !data->value->parent() )
+        {
+            delete data->value;   // ### fixme
+        }
 
-            //            eng->disposeQObject(value);
-            break;
+        //            eng->disposeQObject(value);
+        break;
     }
 
     delete data;
@@ -1753,7 +1753,7 @@ bool QObjectDelegate::getOwnPropertySlot( QScriptObject *object, JSC::ExecState 
                 {
 
                     QtFunction *fun = new ( exec )QtFunction( object, index, false,
-                            &exec->globalData(), eng->originalGlobalObject()->functionStructure(), propertyName );
+                        &exec->globalData(), eng->originalGlobalObject()->functionStructure(), propertyName );
 
                     slot.setValue( fun );
                     data->cachedMembers.insert( name, fun );
@@ -1778,7 +1778,7 @@ bool QObjectDelegate::getOwnPropertySlot( QScriptObject *object, JSC::ExecState 
                 if ( GeneratePropertyFunctions )
                 {
                     QtPropertyFunction *fun = new ( exec )QtPropertyFunction( meta, index, &exec->globalData(),
-                            eng->originalGlobalObject()->functionStructure(), propertyName );
+                        eng->originalGlobalObject()->functionStructure(), propertyName );
 
                     data->cachedMembers.insert( name, fun );
                     slot.setGetterSlot( fun );
@@ -1823,7 +1823,7 @@ bool QObjectDelegate::getOwnPropertySlot( QScriptObject *object, JSC::ExecState 
         if ( hasMethodAccess( method, index, opt ) && methodNameEquals( method, name, name.length() ) )
         {
             QtFunction *fun = new ( exec )QtFunction( object, index, true,
-                    &exec->globalData(), eng->originalGlobalObject()->functionStructure(), propertyName );
+                &exec->globalData(), eng->originalGlobalObject()->functionStructure(), propertyName );
 
             slot.setValue( fun );
             data->cachedMembers.insert( name, fun );
@@ -1926,7 +1926,7 @@ bool QObjectDelegate::getOwnPropertyDescriptor( QScriptObject *object, JSC::Exec
                 if ( !( opt & QScriptEngine::ExcludeSuperClassMethods ) || ( index >= meta->methodOffset() ) )
                 {
                     QtFunction *fun = new ( exec )QtFunction( object, index, false,
-                            &exec->globalData(), eng->originalGlobalObject()->functionStructure(), propertyName );
+                        &exec->globalData(), eng->originalGlobalObject()->functionStructure(), propertyName );
 
                     data->cachedMembers.insert( name, fun );
                     unsigned attributes = QObjectMemberAttribute;
@@ -1958,7 +1958,7 @@ bool QObjectDelegate::getOwnPropertyDescriptor( QScriptObject *object, JSC::Exec
                 if ( GeneratePropertyFunctions )
                 {
                     QtPropertyFunction *fun = new ( exec )QtPropertyFunction( meta, index, &exec->globalData(),
-                            eng->originalGlobalObject()->functionStructure(), propertyName );
+                        eng->originalGlobalObject()->functionStructure(), propertyName );
 
                     data->cachedMembers.insert( name, fun );
                     descriptor.setAccessorDescriptor( fun, fun, attributes );
@@ -2008,7 +2008,7 @@ bool QObjectDelegate::getOwnPropertyDescriptor( QScriptObject *object, JSC::Exec
         if ( hasMethodAccess( method, index, opt ) && methodNameEquals( method, name, name.length() ) )
         {
             QtFunction *fun = new ( exec )QtFunction( object, index, true,
-                    &exec->globalData(), eng->originalGlobalObject()->functionStructure(), propertyName );
+                &exec->globalData(), eng->originalGlobalObject()->functionStructure(), propertyName );
 
             unsigned attributes = QObjectMemberAttribute;
 

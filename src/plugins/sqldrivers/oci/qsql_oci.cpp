@@ -250,174 +250,174 @@ int QOCIResultPrivate::bindValue( OCIStmt *sql, OCIBind **hbnd, OCIError *err, i
 
     switch ( val.type() )
     {
-        case QVariant::ByteArray:
-            r = OCIBindByPos( sql, hbnd, err,
-                              pos + 1,
-                              isOutValue( pos )
-                              ?  const_cast<char *>( reinterpret_cast<QByteArray *>( data )->constData() )
-                              : reinterpret_cast<QByteArray *>( data )->data(),
-                              reinterpret_cast<QByteArray *>( data )->size(),
-                              SQLT_BIN, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
-            break;
+    case QVariant::ByteArray:
+        r = OCIBindByPos( sql, hbnd, err,
+                          pos + 1,
+                          isOutValue( pos )
+                          ?  const_cast<char *>( reinterpret_cast<QByteArray *>( data )->constData() )
+                          : reinterpret_cast<QByteArray *>( data )->data(),
+                          reinterpret_cast<QByteArray *>( data )->size(),
+                          SQLT_BIN, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
+        break;
 
-        case QVariant::Time:
-        case QVariant::Date:
-        case QVariant::DateTime:
+    case QVariant::Time:
+    case QVariant::Date:
+    case QVariant::DateTime:
+    {
+        QByteArray ba = qMakeOraDate( val.toDateTime() );
+        r = OCIBindByPos( sql, hbnd, err,
+                          pos + 1,
+                          ba.data(),
+                          ba.size(),
+                          SQLT_DAT, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
+        tmpStorage.append( ba );
+        break;
+    }
+
+    case QVariant::Int:
+        r = OCIBindByPos( sql, hbnd, err,
+                          pos + 1,
+                          // if it's an out value, the data is already detached
+                          // so the const cast is safe.
+                          const_cast<void *>( data ),
+                          sizeof( int ),
+                          SQLT_INT, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
+        break;
+
+    case QVariant::UInt:
+        r = OCIBindByPos( sql, hbnd, err,
+                          pos + 1,
+                          // if it's an out value, the data is already detached
+                          // so the const cast is safe.
+                          const_cast<void *>( data ),
+                          sizeof( uint ),
+                          SQLT_UIN, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
+        break;
+
+    case QVariant::LongLong:
+    {
+        QByteArray ba = qMakeOCINumber( val.toLongLong(), err );
+        r = OCIBindByPos( sql, hbnd, err,
+                          pos + 1,
+                          ba.data(),
+                          ba.size(),
+                          SQLT_VNU, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
+        tmpStorage.append( ba );
+        break;
+    }
+
+    case QVariant::ULongLong:
+    {
+        QByteArray ba = qMakeOCINumber( val.toULongLong(), err );
+        r = OCIBindByPos( sql, hbnd, err,
+                          pos + 1,
+                          ba.data(),
+                          ba.size(),
+                          SQLT_VNU, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
+        tmpStorage.append( ba );
+        break;
+    }
+
+    case QVariant::Double:
+        r = OCIBindByPos( sql, hbnd, err,
+                          pos + 1,
+                          // if it's an out value, the data is already detached
+                          // so the const cast is safe.
+                          const_cast<void *>( data ),
+                          sizeof( double ),
+                          SQLT_FLT, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
+        break;
+
+    case QVariant::UserType:
+        if ( val.canConvert<QSharedDataPointer<QOCIRowId>>() && !isOutValue( pos ) )
         {
-            QByteArray ba = qMakeOraDate( val.toDateTime() );
+            // use a const pointer to prevent a detach
+            const QSharedDataPointer<QOCIRowId> rptr = val.value<QSharedDataPointer<QOCIRowId>>();
+
             r = OCIBindByPos( sql, hbnd, err,
                               pos + 1,
-                              ba.data(),
-                              ba.size(),
-                              SQLT_DAT, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
-            tmpStorage.append( ba );
-            break;
+                              // it's an IN value, so const_cast is ok
+                              const_cast<OCIRowid **>( &rptr->id ),
+                              -1,
+                              SQLT_RDD, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
+
+        }
+        else
+        {
+            qWarning( "Unknown bind variable" );
+            r = OCI_ERROR;
         }
 
-        case QVariant::Int:
-            r = OCIBindByPos( sql, hbnd, err,
-                              pos + 1,
-                              // if it's an out value, the data is already detached
-                              // so the const cast is safe.
-                              const_cast<void *>( data ),
-                              sizeof( int ),
-                              SQLT_INT, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
-            break;
+        break;
 
-        case QVariant::UInt:
-            r = OCIBindByPos( sql, hbnd, err,
-                              pos + 1,
-                              // if it's an out value, the data is already detached
-                              // so the const cast is safe.
-                              const_cast<void *>( data ),
-                              sizeof( uint ),
-                              SQLT_UIN, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
-            break;
+    case QVariant::String:
+    {
+        const QString s = val.toString();
 
-        case QVariant::LongLong:
+        if ( isBinaryValue( pos ) )
         {
-            QByteArray ba = qMakeOCINumber( val.toLongLong(), err );
-            r = OCIBindByPos( sql, hbnd, err,
-                              pos + 1,
-                              ba.data(),
-                              ba.size(),
-                              SQLT_VNU, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
-            tmpStorage.append( ba );
+            r = OCIBindByPos( sql, hbnd, err, pos + 1,
+                              const_cast<ushort *>( s.utf16() ),
+                              s.length() * sizeof( QChar ),
+                              SQLT_LNG, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
             break;
+
         }
-
-        case QVariant::ULongLong:
+        else if ( !isOutValue( pos ) )
         {
-            QByteArray ba = qMakeOCINumber( val.toULongLong(), err );
-            r = OCIBindByPos( sql, hbnd, err,
-                              pos + 1,
-                              ba.data(),
-                              ba.size(),
-                              SQLT_VNU, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
-            tmpStorage.append( ba );
-            break;
-        }
-
-        case QVariant::Double:
-            r = OCIBindByPos( sql, hbnd, err,
-                              pos + 1,
-                              // if it's an out value, the data is already detached
-                              // so the const cast is safe.
-                              const_cast<void *>( data ),
-                              sizeof( double ),
-                              SQLT_FLT, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
-            break;
-
-        case QVariant::UserType:
-            if ( val.canConvert<QSharedDataPointer<QOCIRowId>>() && !isOutValue( pos ) )
-            {
-                // use a const pointer to prevent a detach
-                const QSharedDataPointer<QOCIRowId> rptr = val.value<QSharedDataPointer<QOCIRowId>>();
-
-                r = OCIBindByPos( sql, hbnd, err,
-                                  pos + 1,
-                                  // it's an IN value, so const_cast is ok
-                                  const_cast<OCIRowid **>( &rptr->id ),
-                                  -1,
-                                  SQLT_RDD, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
-
-            }
-            else
-            {
-                qWarning( "Unknown bind variable" );
-                r = OCI_ERROR;
-            }
-
-            break;
-
-        case QVariant::String:
-        {
-            const QString s = val.toString();
-
-            if ( isBinaryValue( pos ) )
-            {
-                r = OCIBindByPos( sql, hbnd, err, pos + 1,
-                                  const_cast<ushort *>( s.utf16() ),
-                                  s.length() * sizeof( QChar ),
-                                  SQLT_LNG, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
-                break;
-
-            }
-            else if ( !isOutValue( pos ) )
-            {
-                // don't detach the string
-                r = OCIBindByPos( sql, hbnd, err, pos + 1,
-                                  // safe since oracle doesn't touch OUT values
-                                  const_cast<ushort *>( s.utf16() ),
-                                  ( s.length() + 1 ) * sizeof( QChar ),
-                                  SQLT_STR, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
-
-                if ( r == OCI_SUCCESS )
-                {
-                    setCharset( *hbnd, OCI_HTYPE_BIND );
-                }
-
-                break;
-            }
-        }
-
-        [[fallthrough]];
-
-        default:
-        {
-            const QString s = val.toString();
-            // create a deep-copy
-            QByteArray ba( reinterpret_cast<const char *>( s.utf16() ), ( s.length() + 1 ) * sizeof( QChar ) );
-
-            if ( isOutValue( pos ) )
-            {
-                ba.reserve( ( s.capacity() + 1 ) * sizeof( QChar ) );
-                *tmpSize = ba.size();
-                r = OCIBindByPos( sql, hbnd, err,
-                                  pos + 1,
-                                  ba.data(),
-                                  ba.capacity(),
-                                  SQLT_STR, indPtr, tmpSize, 0, 0, 0, OCI_DEFAULT );
-
-            }
-            else
-            {
-                r = OCIBindByPos( sql, hbnd, err,
-                                  pos + 1,
-                                  ba.data(),
-                                  ba.size(),
-                                  SQLT_STR, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
-            }
+            // don't detach the string
+            r = OCIBindByPos( sql, hbnd, err, pos + 1,
+                              // safe since oracle doesn't touch OUT values
+                              const_cast<ushort *>( s.utf16() ),
+                              ( s.length() + 1 ) * sizeof( QChar ),
+                              SQLT_STR, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
 
             if ( r == OCI_SUCCESS )
             {
                 setCharset( *hbnd, OCI_HTYPE_BIND );
             }
 
-            tmpStorage.append( ba );
             break;
+        }
+    }
+
+    [[fallthrough]];
+
+    default:
+    {
+        const QString s = val.toString();
+        // create a deep-copy
+        QByteArray ba( reinterpret_cast<const char *>( s.utf16() ), ( s.length() + 1 ) * sizeof( QChar ) );
+
+        if ( isOutValue( pos ) )
+        {
+            ba.reserve( ( s.capacity() + 1 ) * sizeof( QChar ) );
+            *tmpSize = ba.size();
+            r = OCIBindByPos( sql, hbnd, err,
+                              pos + 1,
+                              ba.data(),
+                              ba.capacity(),
+                              SQLT_STR, indPtr, tmpSize, 0, 0, 0, OCI_DEFAULT );
 
         }
+        else
+        {
+            r = OCIBindByPos( sql, hbnd, err,
+                              pos + 1,
+                              ba.data(),
+                              ba.size(),
+                              SQLT_STR, indPtr, 0, 0, 0, 0, OCI_DEFAULT );
+        }
+
+        if ( r == OCI_SUCCESS )
+        {
+            setCharset( *hbnd, OCI_HTYPE_BIND );
+        }
+
+        tmpStorage.append( ba );
+        break;
+
+    }
     }
 
     if ( r != OCI_SUCCESS )
@@ -457,32 +457,32 @@ static void qOraOutValue( QVariant &value, QList<QByteArray> &storage, OCIError 
 {
     switch ( value.type() )
     {
-        case QVariant::Time:
-            value = qMakeDate( storage.takeFirst() ).time();
-            break;
+    case QVariant::Time:
+        value = qMakeDate( storage.takeFirst() ).time();
+        break;
 
-        case QVariant::Date:
-            value = qMakeDate( storage.takeFirst() ).date();
-            break;
+    case QVariant::Date:
+        value = qMakeDate( storage.takeFirst() ).date();
+        break;
 
-        case QVariant::DateTime:
-            value = qMakeDate( storage.takeFirst() );
-            break;
+    case QVariant::DateTime:
+        value = qMakeDate( storage.takeFirst() );
+        break;
 
-        case QVariant::LongLong:
-            value = qMakeLongLong( storage.takeFirst(), err );
-            break;
+    case QVariant::LongLong:
+        value = qMakeLongLong( storage.takeFirst(), err );
+        break;
 
-        case QVariant::ULongLong:
-            value = qMakeULongLong( storage.takeFirst(), err );
-            break;
+    case QVariant::ULongLong:
+        value = qMakeULongLong( storage.takeFirst(), err );
+        break;
 
-        case QVariant::String:
-            value = QString::fromUtf16( reinterpret_cast<const char16_t *>( storage.takeFirst().constData() ) );
-            break;
+    case QVariant::String:
+        value = QString::fromUtf16( reinterpret_cast<const char16_t *>( storage.takeFirst().constData() ) );
+        break;
 
-        default:
-            break; //nothing
+    default:
+        break; //nothing
     }
 }
 
@@ -634,22 +634,22 @@ QVariant::Type qDecodeOCIType( const QString &ocitype, QSql::NumericalPrecisionP
     {
         switch ( precisionPolicy )
         {
-            case QSql::LowPrecisionInt32:
-                type = QVariant::Int;
-                break;
+        case QSql::LowPrecisionInt32:
+            type = QVariant::Int;
+            break;
 
-            case QSql::LowPrecisionInt64:
-                type = QVariant::LongLong;
-                break;
+        case QSql::LowPrecisionInt64:
+            type = QVariant::LongLong;
+            break;
 
-            case QSql::LowPrecisionDouble:
-                type = QVariant::Double;
-                break;
+        case QSql::LowPrecisionDouble:
+            type = QVariant::Double;
+            break;
 
-            case QSql::HighPrecision:
-            default:
-                type = QVariant::String;
-                break;
+        case QSql::HighPrecision:
+        default:
+            type = QVariant::String;
+            break;
         }
     }
     else if ( ocitype == QLatin1String( "LONG" ) || ocitype == QLatin1String( "NCLOB" )
@@ -689,81 +689,81 @@ QVariant::Type qDecodeOCIType( int ocitype, QSql::NumericalPrecisionPolicy preci
 
     switch ( ocitype )
     {
-        case SQLT_STR:
-        case SQLT_VST:
-        case SQLT_CHR:
-        case SQLT_AFC:
-        case SQLT_VCS:
-        case SQLT_AVC:
-        case SQLT_RDD:
-        case SQLT_LNG:
+    case SQLT_STR:
+    case SQLT_VST:
+    case SQLT_CHR:
+    case SQLT_AFC:
+    case SQLT_VCS:
+    case SQLT_AVC:
+    case SQLT_RDD:
+    case SQLT_LNG:
 #ifdef SQLT_INTERVAL_YM
-        case SQLT_INTERVAL_YM:
+    case SQLT_INTERVAL_YM:
 #endif
 #ifdef SQLT_INTERVAL_DS
-        case SQLT_INTERVAL_DS:
+    case SQLT_INTERVAL_DS:
 #endif
-            type = QVariant::String;
-            break;
+        type = QVariant::String;
+        break;
 
-        case SQLT_INT:
+    case SQLT_INT:
+        type = QVariant::Int;
+        break;
+
+    case SQLT_FLT:
+    case SQLT_NUM:
+    case SQLT_VNU:
+    case SQLT_UIN:
+        switch ( precisionPolicy )
+        {
+        case QSql::LowPrecisionInt32:
             type = QVariant::Int;
             break;
 
-        case SQLT_FLT:
-        case SQLT_NUM:
-        case SQLT_VNU:
-        case SQLT_UIN:
-            switch ( precisionPolicy )
-            {
-                case QSql::LowPrecisionInt32:
-                    type = QVariant::Int;
-                    break;
-
-                case QSql::LowPrecisionInt64:
-                    type = QVariant::LongLong;
-                    break;
-
-                case QSql::LowPrecisionDouble:
-                    type = QVariant::Double;
-                    break;
-
-                case QSql::HighPrecision:
-                default:
-                    type = QVariant::String;
-                    break;
-            }
-
+        case QSql::LowPrecisionInt64:
+            type = QVariant::LongLong;
             break;
 
-        case SQLT_VBI:
-        case SQLT_BIN:
-        case SQLT_LBI:
-        case SQLT_LVC:
-        case SQLT_LVB:
-        case SQLT_BLOB:
-        case SQLT_CLOB:
-        case SQLT_FILE:
-        case SQLT_NTY:
-        case SQLT_REF:
-        case SQLT_RID:
-            type = QVariant::ByteArray;
+        case QSql::LowPrecisionDouble:
+            type = QVariant::Double;
             break;
 
-        case SQLT_DAT:
-        case SQLT_ODT:
-#ifdef SQLT_TIMESTAMP
-        case SQLT_TIMESTAMP:
-        case SQLT_TIMESTAMP_TZ:
-        case SQLT_TIMESTAMP_LTZ:
-#endif
-            type = QVariant::DateTime;
-            break;
-
+        case QSql::HighPrecision:
         default:
-            type = QVariant::Invalid;
-            qWarning( "qDecodeOCIType: unknown OCI datatype: %d", ocitype );
+            type = QVariant::String;
             break;
+        }
+
+        break;
+
+    case SQLT_VBI:
+    case SQLT_BIN:
+    case SQLT_LBI:
+    case SQLT_LVC:
+    case SQLT_LVB:
+    case SQLT_BLOB:
+    case SQLT_CLOB:
+    case SQLT_FILE:
+    case SQLT_NTY:
+    case SQLT_REF:
+    case SQLT_RID:
+        type = QVariant::ByteArray;
+        break;
+
+    case SQLT_DAT:
+    case SQLT_ODT:
+#ifdef SQLT_TIMESTAMP
+    case SQLT_TIMESTAMP:
+    case SQLT_TIMESTAMP_TZ:
+    case SQLT_TIMESTAMP_LTZ:
+#endif
+        type = QVariant::DateTime;
+        break;
+
+    default:
+        type = QVariant::Invalid;
+        qWarning( "qDecodeOCIType: unknown OCI datatype: %d", ocitype );
+        break;
     }
 
     return type;
@@ -986,160 +986,160 @@ QOCICols::QOCICols( int size, QOCIResultPrivate *dp )
 
         switch ( ofi.type )
         {
-            case QVariant::DateTime:
-                r = OCIDefineByPos( d->sql,
-                                    &dfn,
-                                    d->err,
-                                    count,
-                                    create( idx, dataSize + 1 ),
-                                    dataSize + 1,
-                                    SQLT_DAT,
-                                    &( fieldInf[idx].ind ),
-                                    0, 0, OCI_DEFAULT );
-                break;
+        case QVariant::DateTime:
+            r = OCIDefineByPos( d->sql,
+                                &dfn,
+                                d->err,
+                                count,
+                                create( idx, dataSize + 1 ),
+                                dataSize + 1,
+                                SQLT_DAT,
+                                &( fieldInf[idx].ind ),
+                                0, 0, OCI_DEFAULT );
+            break;
 
-            case QVariant::Double:
-                r = OCIDefineByPos( d->sql,
-                                    &dfn,
-                                    d->err,
-                                    count,
-                                    create( idx, sizeof( double ) - 1 ),
-                                    sizeof( double ),
-                                    SQLT_FLT,
-                                    &( fieldInf[idx].ind ),
-                                    0, 0, OCI_DEFAULT );
-                break;
+        case QVariant::Double:
+            r = OCIDefineByPos( d->sql,
+                                &dfn,
+                                d->err,
+                                count,
+                                create( idx, sizeof( double ) - 1 ),
+                                sizeof( double ),
+                                SQLT_FLT,
+                                &( fieldInf[idx].ind ),
+                                0, 0, OCI_DEFAULT );
+            break;
 
-            case QVariant::Int:
-                r = OCIDefineByPos( d->sql,
-                                    &dfn,
-                                    d->err,
-                                    count,
-                                    create( idx, sizeof( qint32 ) - 1 ),
-                                    sizeof( qint32 ),
-                                    SQLT_INT,
-                                    &( fieldInf[idx].ind ),
-                                    0, 0, OCI_DEFAULT );
-                break;
+        case QVariant::Int:
+            r = OCIDefineByPos( d->sql,
+                                &dfn,
+                                d->err,
+                                count,
+                                create( idx, sizeof( qint32 ) - 1 ),
+                                sizeof( qint32 ),
+                                SQLT_INT,
+                                &( fieldInf[idx].ind ),
+                                0, 0, OCI_DEFAULT );
+            break;
 
-            case QVariant::LongLong:
-                r = OCIDefineByPos( d->sql,
-                                    &dfn,
-                                    d->err,
-                                    count,
-                                    create( idx, sizeof( OCINumber ) ),
-                                    sizeof( OCINumber ),
-                                    SQLT_VNU,
-                                    &( fieldInf[idx].ind ),
-                                    0, 0, OCI_DEFAULT );
-                break;
+        case QVariant::LongLong:
+            r = OCIDefineByPos( d->sql,
+                                &dfn,
+                                d->err,
+                                count,
+                                create( idx, sizeof( OCINumber ) ),
+                                sizeof( OCINumber ),
+                                SQLT_VNU,
+                                &( fieldInf[idx].ind ),
+                                0, 0, OCI_DEFAULT );
+            break;
 
-            case QVariant::ByteArray:
+        case QVariant::ByteArray:
 
-                // RAW and LONG RAW fields can't be bound to LOB locators
-                if ( ofi.oraType == SQLT_BIN )
-                {
-                    //                                qDebug("binding SQLT_BIN");
-                    r = OCIDefineByPos( d->sql,
-                                        &dfn,
-                                        d->err,
-                                        count,
-                                        create( idx, dataSize ),
-                                        dataSize,
-                                        SQLT_BIN,
-                                        &( fieldInf[idx].ind ),
-                                        0, 0, OCI_DYNAMIC_FETCH );
-                }
-                else if ( ofi.oraType == SQLT_LBI )
-                {
-                    //                                    qDebug("binding SQLT_LBI");
-                    r = OCIDefineByPos( d->sql,
-                                        &dfn,
-                                        d->err,
-                                        count,
-                                        0,
-                                        SB4MAXVAL,
-                                        SQLT_LBI,
-                                        &( fieldInf[idx].ind ),
-                                        0, 0, OCI_DYNAMIC_FETCH );
-                }
-                else if ( ofi.oraType == SQLT_CLOB )
-                {
-                    r = OCIDefineByPos( d->sql,
-                                        &dfn,
-                                        d->err,
-                                        count,
-                                        createLobLocator( idx, d->env ),
-                                        -1,
-                                        SQLT_CLOB,
-                                        &( fieldInf[idx].ind ),
-                                        0, 0, OCI_DEFAULT );
-                }
-                else
-                {
-                    //                 qDebug("binding SQLT_BLOB");
-                    r = OCIDefineByPos( d->sql,
-                                        &dfn,
-                                        d->err,
-                                        count,
-                                        createLobLocator( idx, d->env ),
-                                        -1,
-                                        SQLT_BLOB,
-                                        &( fieldInf[idx].ind ),
-                                        0, 0, OCI_DEFAULT );
-                }
-
-                break;
-
-            case QVariant::String:
-                if ( ofi.oraType == SQLT_LNG )
-                {
-                    r = OCIDefineByPos( d->sql,
-                                        &dfn,
-                                        d->err,
-                                        count,
-                                        0,
-                                        SB4MAXVAL,
-                                        SQLT_LNG,
-                                        &( fieldInf[idx].ind ),
-                                        0, 0, OCI_DYNAMIC_FETCH );
-                }
-                else
-                {
-                    dataSize += dataSize + sizeof( QChar );
-                    //qDebug("OCIDefineByPosStr(%d): %d", count, dataSize);
-                    r = OCIDefineByPos( d->sql,
-                                        &dfn,
-                                        d->err,
-                                        count,
-                                        create( idx, dataSize ),
-                                        dataSize,
-                                        SQLT_STR,
-                                        &( fieldInf[idx].ind ),
-                                        0, 0, OCI_DEFAULT );
-
-                    if ( r == 0 )
-                    {
-                        d->setCharset( dfn, OCI_HTYPE_DEFINE );
-                    }
-                }
-
-                break;
-
-            default:
-                // this should make enough space even with character encoding
-                dataSize = ( dataSize + 1 ) * sizeof( utext ) ;
-                //qDebug("OCIDefineByPosDef(%d): %d", count, dataSize);
+            // RAW and LONG RAW fields can't be bound to LOB locators
+            if ( ofi.oraType == SQLT_BIN )
+            {
+                //                                qDebug("binding SQLT_BIN");
                 r = OCIDefineByPos( d->sql,
                                     &dfn,
                                     d->err,
                                     count,
                                     create( idx, dataSize ),
-                                    dataSize + 1,
+                                    dataSize,
+                                    SQLT_BIN,
+                                    &( fieldInf[idx].ind ),
+                                    0, 0, OCI_DYNAMIC_FETCH );
+            }
+            else if ( ofi.oraType == SQLT_LBI )
+            {
+                //                                    qDebug("binding SQLT_LBI");
+                r = OCIDefineByPos( d->sql,
+                                    &dfn,
+                                    d->err,
+                                    count,
+                                    0,
+                                    SB4MAXVAL,
+                                    SQLT_LBI,
+                                    &( fieldInf[idx].ind ),
+                                    0, 0, OCI_DYNAMIC_FETCH );
+            }
+            else if ( ofi.oraType == SQLT_CLOB )
+            {
+                r = OCIDefineByPos( d->sql,
+                                    &dfn,
+                                    d->err,
+                                    count,
+                                    createLobLocator( idx, d->env ),
+                                    -1,
+                                    SQLT_CLOB,
+                                    &( fieldInf[idx].ind ),
+                                    0, 0, OCI_DEFAULT );
+            }
+            else
+            {
+                //                 qDebug("binding SQLT_BLOB");
+                r = OCIDefineByPos( d->sql,
+                                    &dfn,
+                                    d->err,
+                                    count,
+                                    createLobLocator( idx, d->env ),
+                                    -1,
+                                    SQLT_BLOB,
+                                    &( fieldInf[idx].ind ),
+                                    0, 0, OCI_DEFAULT );
+            }
+
+            break;
+
+        case QVariant::String:
+            if ( ofi.oraType == SQLT_LNG )
+            {
+                r = OCIDefineByPos( d->sql,
+                                    &dfn,
+                                    d->err,
+                                    count,
+                                    0,
+                                    SB4MAXVAL,
+                                    SQLT_LNG,
+                                    &( fieldInf[idx].ind ),
+                                    0, 0, OCI_DYNAMIC_FETCH );
+            }
+            else
+            {
+                dataSize += dataSize + sizeof( QChar );
+                //qDebug("OCIDefineByPosStr(%d): %d", count, dataSize);
+                r = OCIDefineByPos( d->sql,
+                                    &dfn,
+                                    d->err,
+                                    count,
+                                    create( idx, dataSize ),
+                                    dataSize,
                                     SQLT_STR,
                                     &( fieldInf[idx].ind ),
                                     0, 0, OCI_DEFAULT );
-                break;
+
+                if ( r == 0 )
+                {
+                    d->setCharset( dfn, OCI_HTYPE_DEFINE );
+                }
+            }
+
+            break;
+
+        default:
+            // this should make enough space even with character encoding
+            dataSize = ( dataSize + 1 ) * sizeof( utext ) ;
+            //qDebug("OCIDefineByPosDef(%d): %d", count, dataSize);
+            r = OCIDefineByPos( d->sql,
+                                &dfn,
+                                d->err,
+                                count,
+                                create( idx, dataSize ),
+                                dataSize + 1,
+                                SQLT_STR,
+                                &( fieldInf[idx].ind ),
+                                0, 0, OCI_DEFAULT );
+            break;
         }
 
         if ( r != 0 )
@@ -1236,13 +1236,13 @@ int QOCICols::readPiecewise( QVector<QVariant> &values, int index )
 
             switch ( errcode )
             {
-                case 1405: /* NULL */
-                    nullField = true;
-                    break;
+            case 1405: /* NULL */
+                nullField = true;
+                break;
 
-                default:
-                    qOraWarning( "OCIResultPrivate::readPiecewise: unable to fetch next:", d->err );
-                    break;
+            default:
+                qOraWarning( "OCIResultPrivate::readPiecewise: unable to fetch next:", d->err );
+                break;
             }
         }
 
@@ -1553,94 +1553,94 @@ bool QOCICols::execBatch( QOCIResultPrivate *d, QVector<QVariant> &boundValues, 
 
         switch ( fieldTypes[i] )
         {
-            case QVariant::Time:
-            case QVariant::Date:
-            case QVariant::DateTime:
-                col.bindAs = SQLT_DAT;
-                col.maxLen = 7;
-                break;
+        case QVariant::Time:
+        case QVariant::Date:
+        case QVariant::DateTime:
+            col.bindAs = SQLT_DAT;
+            col.maxLen = 7;
+            break;
 
-            case QVariant::Int:
-                col.bindAs = SQLT_INT;
-                col.maxLen = sizeof( int );
-                break;
+        case QVariant::Int:
+            col.bindAs = SQLT_INT;
+            col.maxLen = sizeof( int );
+            break;
 
-            case QVariant::UInt:
-                col.bindAs = SQLT_UIN;
-                col.maxLen = sizeof( uint );
-                break;
+        case QVariant::UInt:
+            col.bindAs = SQLT_UIN;
+            col.maxLen = sizeof( uint );
+            break;
 
-            case QVariant::LongLong:
-                col.bindAs = SQLT_VNU;
-                col.maxLen = sizeof( OCINumber );
-                break;
+        case QVariant::LongLong:
+            col.bindAs = SQLT_VNU;
+            col.maxLen = sizeof( OCINumber );
+            break;
 
-            case QVariant::ULongLong:
-                col.bindAs = SQLT_VNU;
-                col.maxLen = sizeof( OCINumber );
-                break;
+        case QVariant::ULongLong:
+            col.bindAs = SQLT_VNU;
+            col.maxLen = sizeof( OCINumber );
+            break;
 
-            case QVariant::Double:
-                col.bindAs = SQLT_FLT;
-                col.maxLen = sizeof( double );
-                break;
+        case QVariant::Double:
+            col.bindAs = SQLT_FLT;
+            col.maxLen = sizeof( double );
+            break;
 
-            case QVariant::UserType:
-                col.bindAs = SQLT_RDD;
-                col.maxLen = sizeof( OCIRowid * );
-                break;
+        case QVariant::UserType:
+            col.bindAs = SQLT_RDD;
+            col.maxLen = sizeof( OCIRowid * );
+            break;
 
-            case QVariant::String:
+        case QVariant::String:
+        {
+            col.bindAs = SQLT_STR;
+
+            for ( uint j = 0; j < col.recordCount; ++j )
             {
-                col.bindAs = SQLT_STR;
+                uint len;
 
-                for ( uint j = 0; j < col.recordCount; ++j )
+                if ( d->isOutValue( i ) )
                 {
-                    uint len;
-
-                    if ( d->isOutValue( i ) )
-                    {
-                        len = boundValues.at( i ).toList().at( j ).toString().capacity() + 1;
-                    }
-                    else
-                    {
-                        len = boundValues.at( i ).toList().at( j ).toString().length() + 1;
-                    }
-
-                    if ( len > col.maxLen )
-                    {
-                        col.maxLen = len;
-                    }
+                    len = boundValues.at( i ).toList().at( j ).toString().capacity() + 1;
+                }
+                else
+                {
+                    len = boundValues.at( i ).toList().at( j ).toString().length() + 1;
                 }
 
-                col.maxLen *= sizeof( QChar );
-                break;
+                if ( len > col.maxLen )
+                {
+                    col.maxLen = len;
+                }
             }
 
-            case QVariant::ByteArray:
-            default:
+            col.maxLen *= sizeof( QChar );
+            break;
+        }
+
+        case QVariant::ByteArray:
+        default:
+        {
+            col.bindAs = SQLT_LBI;
+
+            for ( uint j = 0; j < col.recordCount; ++j )
             {
-                col.bindAs = SQLT_LBI;
-
-                for ( uint j = 0; j < col.recordCount; ++j )
+                if ( d->isOutValue( i ) )
                 {
-                    if ( d->isOutValue( i ) )
-                    {
-                        col.lengths[j] = boundValues.at( i ).toList().at( j ).toByteArray().capacity();
-                    }
-                    else
-                    {
-                        col.lengths[j] = boundValues.at( i ).toList().at( j ).toByteArray().size();
-                    }
-
-                    if ( col.lengths[j] > col.maxLen )
-                    {
-                        col.maxLen = col.lengths[j];
-                    }
+                    col.lengths[j] = boundValues.at( i ).toList().at( j ).toByteArray().capacity();
+                }
+                else
+                {
+                    col.lengths[j] = boundValues.at( i ).toList().at( j ).toByteArray().size();
                 }
 
-                break;
+                if ( col.lengths[j] > col.maxLen )
+                {
+                    col.maxLen = col.lengths[j];
+                }
             }
+
+            break;
+        }
         }
 
         col.data = new char[col.maxLen * col.recordCount];
@@ -1663,75 +1663,75 @@ bool QOCICols::execBatch( QOCIResultPrivate *d, QVector<QVariant> &boundValues, 
 
                 switch ( fieldTypes[i] )
                 {
-                    case QVariant::Time:
-                    case QVariant::Date:
-                    case QVariant::DateTime:
+                case QVariant::Time:
+                case QVariant::Date:
+                case QVariant::DateTime:
+                {
+                    columns[i].lengths[row] = columns[i].maxLen;
+                    const QByteArray ba = qMakeOraDate( val.toDateTime() );
+                    Q_ASSERT( ba.size() == int( columns[i].maxLen ) );
+                    memcpy( dataPtr, ba.constData(), columns[i].maxLen );
+                    break;
+                }
+
+                case QVariant::Int:
+                    columns[i].lengths[row] = columns[i].maxLen;
+                    *reinterpret_cast<int *>( dataPtr ) = val.toInt();
+                    break;
+
+                case QVariant::UInt:
+                    columns[i].lengths[row] = columns[i].maxLen;
+                    *reinterpret_cast<uint *>( dataPtr ) = val.toUInt();
+                    break;
+
+                case QVariant::LongLong:
+                {
+                    columns[i].lengths[row] = columns[i].maxLen;
+                    const QByteArray ba = qMakeOCINumber( val.toLongLong(), d->err );
+                    Q_ASSERT( ba.size() == int( columns[i].maxLen ) );
+                    memcpy( dataPtr, ba.constData(), columns[i].maxLen );
+                    break;
+                }
+
+                case QVariant::ULongLong:
+                {
+                    columns[i].lengths[row] = columns[i].maxLen;
+                    const QByteArray ba = qMakeOCINumber( val.toULongLong(), d->err );
+                    Q_ASSERT( ba.size() == int( columns[i].maxLen ) );
+                    memcpy( dataPtr, ba.constData(), columns[i].maxLen );
+                    break;
+                }
+
+                case QVariant::Double:
+                    columns[i].lengths[row] = columns[i].maxLen;
+                    *reinterpret_cast<double *>( dataPtr ) = val.toDouble();
+                    break;
+
+                case QVariant::String:
+                {
+                    const QString s = val.toString();
+                    columns[i].lengths[row] = ( s.length() + 1 ) * sizeof( QChar );
+                    memcpy( dataPtr, s.utf16(), columns[i].lengths[row] );
+                    break;
+                }
+
+                case QVariant::UserType:
+                    if ( val.canConvert<QSharedDataPointer<QOCIRowId>>() )
                     {
-                        columns[i].lengths[row] = columns[i].maxLen;
-                        const QByteArray ba = qMakeOraDate( val.toDateTime() );
-                        Q_ASSERT( ba.size() == int( columns[i].maxLen ) );
-                        memcpy( dataPtr, ba.constData(), columns[i].maxLen );
+                        const QSharedDataPointer<QOCIRowId> rptr = val.value<QSharedDataPointer<QOCIRowId>>();
+                        *reinterpret_cast<OCIRowid **>( dataPtr ) = rptr->id;
+                        columns[i].lengths[row] = 0;
                         break;
                     }
 
-                    case QVariant::Int:
-                        columns[i].lengths[row] = columns[i].maxLen;
-                        *reinterpret_cast<int *>( dataPtr ) = val.toInt();
-                        break;
-
-                    case QVariant::UInt:
-                        columns[i].lengths[row] = columns[i].maxLen;
-                        *reinterpret_cast<uint *>( dataPtr ) = val.toUInt();
-                        break;
-
-                    case QVariant::LongLong:
-                    {
-                        columns[i].lengths[row] = columns[i].maxLen;
-                        const QByteArray ba = qMakeOCINumber( val.toLongLong(), d->err );
-                        Q_ASSERT( ba.size() == int( columns[i].maxLen ) );
-                        memcpy( dataPtr, ba.constData(), columns[i].maxLen );
-                        break;
-                    }
-
-                    case QVariant::ULongLong:
-                    {
-                        columns[i].lengths[row] = columns[i].maxLen;
-                        const QByteArray ba = qMakeOCINumber( val.toULongLong(), d->err );
-                        Q_ASSERT( ba.size() == int( columns[i].maxLen ) );
-                        memcpy( dataPtr, ba.constData(), columns[i].maxLen );
-                        break;
-                    }
-
-                    case QVariant::Double:
-                        columns[i].lengths[row] = columns[i].maxLen;
-                        *reinterpret_cast<double *>( dataPtr ) = val.toDouble();
-                        break;
-
-                    case QVariant::String:
-                    {
-                        const QString s = val.toString();
-                        columns[i].lengths[row] = ( s.length() + 1 ) * sizeof( QChar );
-                        memcpy( dataPtr, s.utf16(), columns[i].lengths[row] );
-                        break;
-                    }
-
-                    case QVariant::UserType:
-                        if ( val.canConvert<QSharedDataPointer<QOCIRowId>>() )
-                        {
-                            const QSharedDataPointer<QOCIRowId> rptr = val.value<QSharedDataPointer<QOCIRowId>>();
-                            *reinterpret_cast<OCIRowid **>( dataPtr ) = rptr->id;
-                            columns[i].lengths[row] = 0;
-                            break;
-                        }
-
-                    case QVariant::ByteArray:
-                    default:
-                    {
-                        const QByteArray ba = val.toByteArray();
-                        columns[i].lengths[row] = ba.size();
-                        memcpy( dataPtr, ba.constData(), ba.size() );
-                        break;
-                    }
+                case QVariant::ByteArray:
+                default:
+                {
+                    const QByteArray ba = val.toByteArray();
+                    columns[i].lengths[row] = ba.size();
+                    memcpy( dataPtr, ba.constData(), ba.size() );
+                    break;
+                }
                 }
             }
         }
@@ -1850,49 +1850,49 @@ bool QOCICols::execBatch( QOCIResultPrivate *d, QVector<QVariant> &boundValues, 
             switch ( columns[i].bindAs )
             {
 
-                case SQLT_DAT:
-                    ( *list )[r] =  qMakeDate( data + r * columns[i].maxLen );
-                    break;
+            case SQLT_DAT:
+                ( *list )[r] =  qMakeDate( data + r * columns[i].maxLen );
+                break;
 
-                case SQLT_INT:
-                    ( *list )[r] =  *reinterpret_cast<int *>( data + r * columns[i].maxLen );
-                    break;
+            case SQLT_INT:
+                ( *list )[r] =  *reinterpret_cast<int *>( data + r * columns[i].maxLen );
+                break;
 
-                case SQLT_UIN:
-                    ( *list )[r] =  *reinterpret_cast<uint *>( data + r * columns[i].maxLen );
-                    break;
+            case SQLT_UIN:
+                ( *list )[r] =  *reinterpret_cast<uint *>( data + r * columns[i].maxLen );
+                break;
 
-                case SQLT_VNU:
+            case SQLT_VNU:
+            {
+                switch ( boundValues.at( i ).type() )
                 {
-                    switch ( boundValues.at( i ).type() )
-                    {
-                        case QVariant::LongLong:
-                            ( *list )[r] =  qMakeLongLong( data + r * columns[i].maxLen, d->err );
-                            break;
-
-                        case QVariant::ULongLong:
-                            ( *list )[r] =  qMakeULongLong( data + r * columns[i].maxLen, d->err );
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    break;
-                }
-
-                case SQLT_FLT:
-                    ( *list )[r] =  *reinterpret_cast<double *>( data + r * columns[i].maxLen );
+                case QVariant::LongLong:
+                    ( *list )[r] =  qMakeLongLong( data + r * columns[i].maxLen, d->err );
                     break;
 
-                case SQLT_STR:
-                    ( *list )[r] =  QString( reinterpret_cast<const QChar *>( data
-                                             + r * columns[i].maxLen ) );
+                case QVariant::ULongLong:
+                    ( *list )[r] =  qMakeULongLong( data + r * columns[i].maxLen, d->err );
                     break;
 
                 default:
-                    ( *list )[r] =  QByteArray( data + r * columns[i].maxLen, columns[i].maxLen );
                     break;
+                }
+
+                break;
+            }
+
+            case SQLT_FLT:
+                ( *list )[r] =  *reinterpret_cast<double *>( data + r * columns[i].maxLen );
+                break;
+
+            case SQLT_STR:
+                ( *list )[r] =  QString( reinterpret_cast<const QChar *>( data
+                                         + r * columns[i].maxLen ) );
+                break;
+
+            default:
+                ( *list )[r] =  QByteArray( data + r * columns[i].maxLen, columns[i].maxLen );
+                break;
             }
         }
     }
@@ -2039,68 +2039,68 @@ void QOCICols::getValues( QVector<QVariant> &v, int index )
 
         switch ( fld.typ )
         {
-            case QVariant::DateTime:
-                v[index + i] = QVariant( qMakeDate( fld.data ) );
-                break;
+        case QVariant::DateTime:
+            v[index + i] = QVariant( qMakeDate( fld.data ) );
+            break;
 
-            case QVariant::Double:
-            case QVariant::Int:
-            case QVariant::LongLong:
-                if ( d->q->numericalPrecisionPolicy() != QSql::HighPrecision )
+        case QVariant::Double:
+        case QVariant::Int:
+        case QVariant::LongLong:
+            if ( d->q->numericalPrecisionPolicy() != QSql::HighPrecision )
+            {
+                if ( ( d->q->numericalPrecisionPolicy() == QSql::LowPrecisionDouble )
+                        && ( fld.typ == QVariant::Double ) )
                 {
-                    if ( ( d->q->numericalPrecisionPolicy() == QSql::LowPrecisionDouble )
-                            && ( fld.typ == QVariant::Double ) )
-                    {
-                        v[index + i] = *reinterpret_cast<double *>( fld.data );
-                        break;
-                    }
-                    else if ( ( d->q->numericalPrecisionPolicy() == QSql::LowPrecisionInt64 )
-                              && ( fld.typ == QVariant::LongLong ) )
-                    {
-                        qint64 qll = 0;
-                        int r = OCINumberToInt( d->err, reinterpret_cast<OCINumber *>( fld.data ), sizeof( qint64 ),
-                                                OCI_NUMBER_SIGNED, &qll );
-
-                        if ( r == OCI_SUCCESS )
-                        {
-                            v[index + i] = qll;
-                        }
-                        else
-                        {
-                            v[index + i] = QVariant();
-                        }
-
-                        break;
-                    }
-                    else if ( ( d->q->numericalPrecisionPolicy() == QSql::LowPrecisionInt32 )
-                              && ( fld.typ == QVariant::Int ) )
-                    {
-                        v[index + i] = *reinterpret_cast<int *>( fld.data );
-                        break;
-                    }
+                    v[index + i] = *reinterpret_cast<double *>( fld.data );
+                    break;
                 }
-
-                [[fallthrough]];
-
-            case QVariant::String:
-                v[index + i] = QString( reinterpret_cast<const QChar *>( fld.data ) );
-                break;
-
-            case QVariant::ByteArray:
-                if ( fld.len > 0 )
+                else if ( ( d->q->numericalPrecisionPolicy() == QSql::LowPrecisionInt64 )
+                          && ( fld.typ == QVariant::LongLong ) )
                 {
-                    v[index + i] = QByteArray( fld.data, fld.len );
+                    qint64 qll = 0;
+                    int r = OCINumberToInt( d->err, reinterpret_cast<OCINumber *>( fld.data ), sizeof( qint64 ),
+                                            OCI_NUMBER_SIGNED, &qll );
+
+                    if ( r == OCI_SUCCESS )
+                    {
+                        v[index + i] = qll;
+                    }
+                    else
+                    {
+                        v[index + i] = QVariant();
+                    }
+
+                    break;
                 }
-                else
+                else if ( ( d->q->numericalPrecisionPolicy() == QSql::LowPrecisionInt32 )
+                          && ( fld.typ == QVariant::Int ) )
                 {
-                    v[index + i] = QVariant( QVariant::ByteArray );
+                    v[index + i] = *reinterpret_cast<int *>( fld.data );
+                    break;
                 }
+            }
 
-                break;
+            [[fallthrough]];
 
-            default:
-                qWarning( "QOCICols::value: unknown data type" );
-                break;
+        case QVariant::String:
+            v[index + i] = QString( reinterpret_cast<const QChar *>( fld.data ) );
+            break;
+
+        case QVariant::ByteArray:
+            if ( fld.len > 0 )
+            {
+                v[index + i] = QByteArray( fld.data, fld.len );
+            }
+            else
+            {
+                v[index + i] = QVariant( QVariant::ByteArray );
+            }
+
+            break;
+
+        default:
+            qWarning( "QOCICols::value: unknown data type" );
+            break;
         }
     }
 }
@@ -2191,39 +2191,39 @@ bool QOCIResult::gotoNext( QSqlCachedResult::ValueCache &values, int index )
 
     switch ( r )
     {
-        case OCI_SUCCESS:
+    case OCI_SUCCESS:
+        break;
+
+    case OCI_SUCCESS_WITH_INFO:
+        qOraWarning( "QOCIResult::gotoNext: SuccessWithInfo: ", d->err );
+        r = OCI_SUCCESS; //ignore it
+        break;
+
+    case OCI_NO_DATA:
+        // end of rowset
+        return false;
+
+    case OCI_NEED_DATA:
+        piecewise = true;
+        r = OCI_SUCCESS;
+        break;
+
+    case OCI_ERROR:
+        if ( qOraErrorNumber( d->err ) == 1406 )
+        {
+            qWarning( "QOCI Warning: data truncated for %s", lastQuery().toLocal8Bit().constData() );
+            r = OCI_SUCCESS; /* ignore it */
             break;
+        }
 
-        case OCI_SUCCESS_WITH_INFO:
-            qOraWarning( "QOCIResult::gotoNext: SuccessWithInfo: ", d->err );
-            r = OCI_SUCCESS; //ignore it
-            break;
+        [[fallthrough]];
 
-        case OCI_NO_DATA:
-            // end of rowset
-            return false;
-
-        case OCI_NEED_DATA:
-            piecewise = true;
-            r = OCI_SUCCESS;
-            break;
-
-        case OCI_ERROR:
-            if ( qOraErrorNumber( d->err ) == 1406 )
-            {
-                qWarning( "QOCI Warning: data truncated for %s", lastQuery().toLocal8Bit().constData() );
-                r = OCI_SUCCESS; /* ignore it */
-                break;
-            }
-
-            [[fallthrough]];
-
-        default:
-            qOraWarning( "QOCIResult::gotoNext: ", d->err );
-            setLastError( qMakeError( QCoreApplication::translate( "QOCIResult",
-                                      "Unable to goto next" ),
-                                      QSqlError::StatementError, d->err ) );
-            break;
+    default:
+        qOraWarning( "QOCIResult::gotoNext: ", d->err );
+        setLastError( qMakeError( QCoreApplication::translate( "QOCIResult",
+                                  "Unable to goto next" ),
+                                  QSqlError::StatementError, d->err ) );
+        break;
     }
 
     // need to read piecewise before assigning values
@@ -2465,12 +2465,12 @@ void QOCIResult::virtual_hook( int id, void *data )
 
     switch ( id )
     {
-        case QSqlResult::BatchOperation:
-            QOCICols::execBatch( d, boundValues(), *reinterpret_cast<bool *>( data ) );
-            break;
+    case QSqlResult::BatchOperation:
+        QOCICols::execBatch( d, boundValues(), *reinterpret_cast<bool *>( data ) );
+        break;
 
-        default:
-            QSqlCachedResult::virtual_hook( id, data );
+    default:
+        QSqlCachedResult::virtual_hook( id, data );
     }
 }
 
@@ -2551,25 +2551,25 @@ bool QOCIDriver::hasFeature( DriverFeature f ) const
 {
     switch ( f )
     {
-        case Transactions:
-        case LastInsertId:
-        case BLOB:
-        case PreparedQueries:
-        case NamedPlaceholders:
-        case BatchOperations:
-        case LowPrecisionNumbers:
-            return true;
+    case Transactions:
+    case LastInsertId:
+    case BLOB:
+    case PreparedQueries:
+    case NamedPlaceholders:
+    case BatchOperations:
+    case LowPrecisionNumbers:
+        return true;
 
-        case QuerySize:
-        case PositionalPlaceholders:
-        case SimpleLocking:
-        case EventNotifications:
-        case FinishQuery:
-        case MultipleResultSets:
-            return false;
+    case QuerySize:
+    case PositionalPlaceholders:
+    case SimpleLocking:
+    case EventNotifications:
+    case FinishQuery:
+    case MultipleResultSets:
+        return false;
 
-        case Unicode:
-            return d->serverVersion >= 9;
+    case Unicode:
+        return d->serverVersion >= 9;
     }
 
     return false;
@@ -2645,7 +2645,7 @@ bool QOCIDriver::open( const QString &db,
     if ( !hostname.isEmpty() )
         connectionString =
             QString::fromLatin1( "(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=%1)(Port=%2))"
-                                 "(CONNECT_DATA=(SID=%3)))" ).formatArg( hostname ).formatArg( ( port > -1 ? port : 1521 ) ).formatArg( db );
+                             "(CONNECT_DATA=(SID=%3)))" ).formatArg( hostname ).formatArg( ( port > -1 ? port : 1521 ) ).formatArg( db );
 
     r = OCIHandleAlloc( d->env, reinterpret_cast<void **>( &d->srvhp ), OCI_HTYPE_SERVER, 0, 0 );
 
@@ -3238,73 +3238,73 @@ QString QOCIDriver::formatValue( const QSqlField &field, bool trimStrings ) cons
 {
     switch ( field.type() )
     {
-        case QVariant::DateTime:
+    case QVariant::DateTime:
+    {
+        QDateTime datetime = field.value().toDateTime();
+        QString datestring;
+
+        if ( datetime.isValid() )
         {
-            QDateTime datetime = field.value().toDateTime();
-            QString datestring;
-
-            if ( datetime.isValid() )
-            {
-                datestring = QLatin1String( "TO_DATE('" ) + QString::number( datetime.date().year() )
-                             + QLatin1Char( '-' )
-                             + QString::number( datetime.date().month() ) + QLatin1Char( '-' )
-                             + QString::number( datetime.date().day() ) + QLatin1Char( ' ' )
-                             + QString::number( datetime.time().hour() ) + QLatin1Char( ':' )
-                             + QString::number( datetime.time().minute() ) + QLatin1Char( ':' )
-                             + QString::number( datetime.time().second() )
-                             + QLatin1String( "','YYYY-MM-DD HH24:MI:SS')" );
-            }
-            else
-            {
-                datestring = QLatin1String( "NULL" );
-            }
-
-            return datestring;
+            datestring = QLatin1String( "TO_DATE('" ) + QString::number( datetime.date().year() )
+                         + QLatin1Char( '-' )
+                         + QString::number( datetime.date().month() ) + QLatin1Char( '-' )
+                         + QString::number( datetime.date().day() ) + QLatin1Char( ' ' )
+                         + QString::number( datetime.time().hour() ) + QLatin1Char( ':' )
+                         + QString::number( datetime.time().minute() ) + QLatin1Char( ':' )
+                         + QString::number( datetime.time().second() )
+                         + QLatin1String( "','YYYY-MM-DD HH24:MI:SS')" );
+        }
+        else
+        {
+            datestring = QLatin1String( "NULL" );
         }
 
-        case QVariant::Time:
+        return datestring;
+    }
+
+    case QVariant::Time:
+    {
+        QDateTime datetime = field.value().toDateTime();
+        QString datestring;
+
+        if ( datetime.isValid() )
         {
-            QDateTime datetime = field.value().toDateTime();
-            QString datestring;
-
-            if ( datetime.isValid() )
-            {
-                datestring = QLatin1String( "TO_DATE('" )
-                             + QString::number( datetime.time().hour() ) + QLatin1Char( ':' )
-                             + QString::number( datetime.time().minute() ) + QLatin1Char( ':' )
-                             + QString::number( datetime.time().second() )
-                             + QLatin1String( "','HH24:MI:SS')" );
-            }
-            else
-            {
-                datestring = QLatin1String( "NULL" );
-            }
-
-            return datestring;
+            datestring = QLatin1String( "TO_DATE('" )
+                         + QString::number( datetime.time().hour() ) + QLatin1Char( ':' )
+                         + QString::number( datetime.time().minute() ) + QLatin1Char( ':' )
+                         + QString::number( datetime.time().second() )
+                         + QLatin1String( "','HH24:MI:SS')" );
+        }
+        else
+        {
+            datestring = QLatin1String( "NULL" );
         }
 
-        case QVariant::Date:
+        return datestring;
+    }
+
+    case QVariant::Date:
+    {
+        QDate date = field.value().toDate();
+        QString datestring;
+
+        if ( date.isValid() )
         {
-            QDate date = field.value().toDate();
-            QString datestring;
-
-            if ( date.isValid() )
-            {
-                datestring = QLatin1String( "TO_DATE('" ) + QString::number( date.year() ) +
-                             QLatin1Char( '-' ) +
-                             QString::number( date.month() ) + QLatin1Char( '-' ) +
-                             QString::number( date.day() ) + QLatin1String( "','YYYY-MM-DD')" );
-            }
-            else
-            {
-                datestring = QLatin1String( "NULL" );
-            }
-
-            return datestring;
+            datestring = QLatin1String( "TO_DATE('" ) + QString::number( date.year() ) +
+                         QLatin1Char( '-' ) +
+                         QString::number( date.month() ) + QLatin1Char( '-' ) +
+                         QString::number( date.day() ) + QLatin1String( "','YYYY-MM-DD')" );
+        }
+        else
+        {
+            datestring = QLatin1String( "NULL" );
         }
 
-        default:
-            break;
+        return datestring;
+    }
+
+    default:
+        break;
     }
 
     return QSqlDriver::formatValue( field, trimStrings );

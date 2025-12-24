@@ -1599,21 +1599,21 @@ bool QDeclarativePathView::sendMouseEvent( QGraphicsSceneMouseEvent *event )
 
         switch ( mouseEvent.type() )
         {
-            case QEvent::GraphicsSceneMouseMove:
-                d->handleMouseMoveEvent( &mouseEvent );
-                break;
+        case QEvent::GraphicsSceneMouseMove:
+            d->handleMouseMoveEvent( &mouseEvent );
+            break;
 
-            case QEvent::GraphicsSceneMousePress:
-                d->handleMousePressEvent( &mouseEvent );
-                stealThisEvent = d->stealMouse;   // Update stealThisEvent in case changed by function call above
-                break;
+        case QEvent::GraphicsSceneMousePress:
+            d->handleMousePressEvent( &mouseEvent );
+            stealThisEvent = d->stealMouse;   // Update stealThisEvent in case changed by function call above
+            break;
 
-            case QEvent::GraphicsSceneMouseRelease:
-                d->handleMouseReleaseEvent( &mouseEvent );
-                break;
+        case QEvent::GraphicsSceneMouseRelease:
+            d->handleMouseReleaseEvent( &mouseEvent );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         grabber = qobject_cast<QDeclarativeItem *>( s->mouseGrabberItem() );
@@ -1649,13 +1649,13 @@ bool QDeclarativePathView::sceneEventFilter( QGraphicsItem *i, QEvent *e )
 
     switch ( e->type() )
     {
-        case QEvent::GraphicsSceneMousePress:
-        case QEvent::GraphicsSceneMouseMove:
-        case QEvent::GraphicsSceneMouseRelease:
-            return sendMouseEvent( static_cast<QGraphicsSceneMouseEvent *>( e ) );
+    case QEvent::GraphicsSceneMousePress:
+    case QEvent::GraphicsSceneMouseMove:
+    case QEvent::GraphicsSceneMouseRelease:
+        return sendMouseEvent( static_cast<QGraphicsSceneMouseEvent *>( e ) );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QDeclarativeItem::sceneEventFilter( i, e );

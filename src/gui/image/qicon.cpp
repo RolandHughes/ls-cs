@@ -651,33 +651,33 @@ void QPixmapIconEngine::virtual_hook( int id, void *data )
 {
     switch ( id )
     {
-        case QIconEngine::AvailableSizesHook:
+    case QIconEngine::AvailableSizesHook:
+    {
+        QIconEngine::AvailableSizesArgument &arg =
+            *reinterpret_cast<QIconEngine::AvailableSizesArgument *>( data );
+        arg.sizes.clear();
+
+        for ( int i = 0; i < pixmaps.size(); ++i )
         {
-            QIconEngine::AvailableSizesArgument &arg =
-                *reinterpret_cast<QIconEngine::AvailableSizesArgument *>( data );
-            arg.sizes.clear();
+            QPixmapIconEngineEntry &pe = pixmaps[i];
 
-            for ( int i = 0; i < pixmaps.size(); ++i )
+            if ( pe.size == QSize() && pe.pixmap.isNull() )
             {
-                QPixmapIconEngineEntry &pe = pixmaps[i];
-
-                if ( pe.size == QSize() && pe.pixmap.isNull() )
-                {
-                    pe.pixmap = QPixmap( pe.fileName );
-                    pe.size = pe.pixmap.size();
-                }
-
-                if ( pe.mode == arg.mode && pe.state == arg.state && !pe.size.isEmpty() )
-                {
-                    arg.sizes.push_back( pe.size );
-                }
+                pe.pixmap = QPixmap( pe.fileName );
+                pe.size = pe.pixmap.size();
             }
 
-            break;
+            if ( pe.mode == arg.mode && pe.state == arg.state && !pe.size.isEmpty() )
+            {
+                arg.sizes.push_back( pe.size );
+            }
         }
 
-        default:
-            QIconEngine::virtual_hook( id, data );
+        break;
+    }
+
+    default:
+        QIconEngine::virtual_hook( id, data );
     }
 }
 
@@ -1151,7 +1151,7 @@ QDataStream &operator>>( QDataStream &s, QIcon &icon )
 }
 
 QString lscs_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRatio,
-                         qreal *sourceDevicePixelRatio )
+                           qreal *sourceDevicePixelRatio )
 {
     if ( targetDevicePixelRatio <= 1.0 )
     {

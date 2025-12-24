@@ -168,6 +168,8 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    add_definitions(
       -DLSCS_NO_STYLE_MAC
       -DLSCS_NO_LPR
+      -DLSCS_NO_STYLE_WINDOWSXP
+      -DLSCS_NO_STYLE_WINDOWSVISTA
    )
 endif()
 

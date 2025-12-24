@@ -120,16 +120,16 @@ void QSoundEffectPrivate::setSource( const QUrl &url )
 
     switch ( m_soundSource->m_sample->state() )
     {
-        case QSample::Ready:
-            m_soundSource->sampleReady();
-            break;
+    case QSample::Ready:
+        m_soundSource->sampleReady();
+        break;
 
-        case QSample::Error:
-            m_soundSource->decoderError();
-            break;
+    case QSample::Error:
+        m_soundSource->decoderError();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 

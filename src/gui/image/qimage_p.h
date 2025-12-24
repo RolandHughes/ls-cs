@@ -98,49 +98,49 @@ inline int lscs_depthForFormat( QImage::Format format )
 
     switch ( format )
     {
-        case QImage::Format_Invalid:
-        case QImage::NImageFormats:
-            // may want to throw an exception
-            break;
+    case QImage::Format_Invalid:
+    case QImage::NImageFormats:
+        // may want to throw an exception
+        break;
 
-        case QImage::Format_Mono:
-        case QImage::Format_MonoLSB:
-            depth = 1;
-            break;
+    case QImage::Format_Mono:
+    case QImage::Format_MonoLSB:
+        depth = 1;
+        break;
 
-        case QImage::Format_Indexed8:
-        case QImage::Format_Alpha8:
-        case QImage::Format_Grayscale8:
-            depth = 8;
-            break;
+    case QImage::Format_Indexed8:
+    case QImage::Format_Alpha8:
+    case QImage::Format_Grayscale8:
+        depth = 8;
+        break;
 
-        case QImage::Format_RGB32:
-        case QImage::Format_ARGB32:
-        case QImage::Format_ARGB32_Premultiplied:
-        case QImage::Format_RGBX8888:
-        case QImage::Format_RGBA8888:
-        case QImage::Format_RGBA8888_Premultiplied:
-        case QImage::Format_BGR30:
-        case QImage::Format_A2BGR30_Premultiplied:
-        case QImage::Format_RGB30:
-        case QImage::Format_A2RGB30_Premultiplied:
-            depth = 32;
-            break;
+    case QImage::Format_RGB32:
+    case QImage::Format_ARGB32:
+    case QImage::Format_ARGB32_Premultiplied:
+    case QImage::Format_RGBX8888:
+    case QImage::Format_RGBA8888:
+    case QImage::Format_RGBA8888_Premultiplied:
+    case QImage::Format_BGR30:
+    case QImage::Format_A2BGR30_Premultiplied:
+    case QImage::Format_RGB30:
+    case QImage::Format_A2RGB30_Premultiplied:
+        depth = 32;
+        break;
 
-        case QImage::Format_RGB555:
-        case QImage::Format_RGB16:
-        case QImage::Format_RGB444:
-        case QImage::Format_ARGB4444_Premultiplied:
-            depth = 16;
-            break;
+    case QImage::Format_RGB555:
+    case QImage::Format_RGB16:
+    case QImage::Format_RGB444:
+    case QImage::Format_ARGB4444_Premultiplied:
+        depth = 16;
+        break;
 
-        case QImage::Format_RGB666:
-        case QImage::Format_ARGB6666_Premultiplied:
-        case QImage::Format_ARGB8565_Premultiplied:
-        case QImage::Format_ARGB8555_Premultiplied:
-        case QImage::Format_RGB888:
-            depth = 24;
-            break;
+    case QImage::Format_RGB666:
+    case QImage::Format_ARGB6666_Premultiplied:
+    case QImage::Format_ARGB8565_Premultiplied:
+    case QImage::Format_ARGB8555_Premultiplied:
+    case QImage::Format_RGB888:
+        depth = 24;
+        break;
     }
 
     return depth;
@@ -150,29 +150,29 @@ inline QImage::Format lscs_alphaVersion( QImage::Format format )
 {
     switch ( format )
     {
-        case QImage::Format_RGB16:
-            return QImage::Format_ARGB8565_Premultiplied;
+    case QImage::Format_RGB16:
+        return QImage::Format_ARGB8565_Premultiplied;
 
-        case QImage::Format_RGB555:
-            return QImage::Format_ARGB8555_Premultiplied;
+    case QImage::Format_RGB555:
+        return QImage::Format_ARGB8555_Premultiplied;
 
-        case QImage::Format_RGB666:
-            return QImage::Format_ARGB6666_Premultiplied;
+    case QImage::Format_RGB666:
+        return QImage::Format_ARGB6666_Premultiplied;
 
-        case QImage::Format_RGB444:
-            return QImage::Format_ARGB4444_Premultiplied;
+    case QImage::Format_RGB444:
+        return QImage::Format_ARGB4444_Premultiplied;
 
-        case QImage::Format_RGBX8888:
-            return QImage::Format_RGBA8888_Premultiplied;
+    case QImage::Format_RGBX8888:
+        return QImage::Format_RGBA8888_Premultiplied;
 
-        case QImage::Format_BGR30:
-            return QImage::Format_A2BGR30_Premultiplied;
+    case QImage::Format_BGR30:
+        return QImage::Format_A2BGR30_Premultiplied;
 
-        case QImage::Format_RGB30:
-            return QImage::Format_A2RGB30_Premultiplied;
+    case QImage::Format_RGB30:
+        return QImage::Format_A2RGB30_Premultiplied;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QImage::Format_ARGB32_Premultiplied;

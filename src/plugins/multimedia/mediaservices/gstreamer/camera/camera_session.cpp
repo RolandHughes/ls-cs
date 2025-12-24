@@ -677,13 +677,13 @@ void CameraBinSession::setCaptureMode( QCamera::CaptureModes mode )
 
     switch ( m_captureMode )
     {
-        case QCamera::CaptureStillImage:
-            g_object_set( m_camerabin, MODE_PROPERTY, CAMERABIN_IMAGE_MODE, nullptr );
-            break;
+    case QCamera::CaptureStillImage:
+        g_object_set( m_camerabin, MODE_PROPERTY, CAMERABIN_IMAGE_MODE, nullptr );
+        break;
 
-        case QCamera::CaptureVideo:
-            g_object_set( m_camerabin, MODE_PROPERTY, CAMERABIN_VIDEO_MODE, nullptr );
-            break;
+    case QCamera::CaptureVideo:
+        g_object_set( m_camerabin, MODE_PROPERTY, CAMERABIN_VIDEO_MODE, nullptr );
+        break;
     }
 
     m_recorderControl->updateStatus();
@@ -853,33 +853,33 @@ void CameraBinSession::setStateHelper( QCamera::State state )
 {
     switch ( state )
     {
-        case QCamera::UnloadedState:
-            unload();
-            break;
+    case QCamera::UnloadedState:
+        unload();
+        break;
 
-        case QCamera::LoadedState:
-            if ( m_status == QCamera::ActiveStatus )
-            {
-                stop();
-            }
-            else if ( m_status == QCamera::UnloadedStatus )
-            {
-                load();
-            }
+    case QCamera::LoadedState:
+        if ( m_status == QCamera::ActiveStatus )
+        {
+            stop();
+        }
+        else if ( m_status == QCamera::UnloadedStatus )
+        {
+            load();
+        }
 
-            break;
+        break;
 
-        case QCamera::ActiveState:
+    case QCamera::ActiveState:
 
-            // If the viewfinder changed while in the loaded state, we need to reload the pipeline
-            if ( m_status == QCamera::LoadedStatus && !m_viewfinderHasChanged )
-            {
-                start();
-            }
-            else if ( m_status == QCamera::UnloadedStatus || m_viewfinderHasChanged )
-            {
-                load();
-            }
+        // If the viewfinder changed while in the loaded state, we need to reload the pipeline
+        if ( m_status == QCamera::LoadedStatus && !m_viewfinderHasChanged )
+        {
+            start();
+        }
+        else if ( m_status == QCamera::UnloadedStatus || m_viewfinderHasChanged )
+        {
+            load();
+        }
     }
 }
 
@@ -1212,67 +1212,67 @@ bool CameraBinSession::processBusMessage( const QGstreamerMessage &message )
         {
             switch ( GST_MESSAGE_TYPE( gm ) )
             {
-                case GST_MESSAGE_DURATION:
-                    break;
+            case GST_MESSAGE_DURATION:
+                break;
 
-                case GST_MESSAGE_STATE_CHANGED:
-                {
+            case GST_MESSAGE_STATE_CHANGED:
+            {
 
-                    GstState    oldState;
-                    GstState    newState;
-                    GstState    pending;
+                GstState    oldState;
+                GstState    newState;
+                GstState    pending;
 
-                    gst_message_parse_state_changed( gm, &oldState, &newState, &pending );
+                gst_message_parse_state_changed( gm, &oldState, &newState, &pending );
 
 
 #if CAMERABIN_DEBUG
-                    QStringList states;
-                    states << "GST_STATE_VOID_PENDING" <<  "GST_STATE_NULL" << "GST_STATE_READY" << "GST_STATE_PAUSED" << "GST_STATE_PLAYING";
+                QStringList states;
+                states << "GST_STATE_VOID_PENDING" <<  "GST_STATE_NULL" << "GST_STATE_READY" << "GST_STATE_PAUSED" << "GST_STATE_PLAYING";
 
 
-                    qDebug() << QString( "state changed: old: %1  new: %2  pending: %3" ) \
-                             .formatArg( states[oldState] ) \
-                             .formatArg( states[newState] ) \
-                             .formatArg( states[pending] );
+                qDebug() << QString( "state changed: old: %1  new: %2  pending: %3" ) \
+                         .formatArg( states[oldState] ) \
+                         .formatArg( states[newState] ) \
+                         .formatArg( states[pending] );
 #endif
 
 #ifdef CAMERABIN_DEBUG_DUMP_BIN
-                    _gst_debug_bin_to_dot_file_with_ts( GST_BIN( m_camerabin ),
-                                                        GstDebugGraphDetails(
-                                                            GST_DEBUG_GRAPH_SHOW_ALL /*GST_DEBUG_GRAPH_SHOW_MEDIA_TYPE | GST_DEBUG_GRAPH_SHOW_NON_DEFAULT_PARAMS | GST_DEBUG_GRAPH_SHOW_STATES*/ ),
-                                                        "camerabin" );
+                _gst_debug_bin_to_dot_file_with_ts( GST_BIN( m_camerabin ),
+                                                    GstDebugGraphDetails(
+                                                        GST_DEBUG_GRAPH_SHOW_ALL /*GST_DEBUG_GRAPH_SHOW_MEDIA_TYPE | GST_DEBUG_GRAPH_SHOW_NON_DEFAULT_PARAMS | GST_DEBUG_GRAPH_SHOW_STATES*/ ),
+                                                    "camerabin" );
 #endif
 
-                    switch ( newState )
+                switch ( newState )
+                {
+                case GST_STATE_VOID_PENDING:
+                case GST_STATE_NULL:
+                    setStatus( QCamera::UnloadedStatus );
+                    break;
+
+                case GST_STATE_READY:
+                    if ( oldState == GST_STATE_NULL )
                     {
-                        case GST_STATE_VOID_PENDING:
-                        case GST_STATE_NULL:
-                            setStatus( QCamera::UnloadedStatus );
-                            break;
-
-                        case GST_STATE_READY:
-                            if ( oldState == GST_STATE_NULL )
-                            {
-                                updateSupportedViewfinderSettings();
-                            }
-
-                            setMetaData( m_metaData );
-                            setStatus( QCamera::LoadedStatus );
-                            break;
-
-                        case GST_STATE_PLAYING:
-                            setStatus( QCamera::ActiveStatus );
-                            break;
-
-                        case GST_STATE_PAUSED:
-                        default:
-                            break;
+                        updateSupportedViewfinderSettings();
                     }
-                }
-                break;
 
+                    setMetaData( m_metaData );
+                    setStatus( QCamera::LoadedStatus );
+                    break;
+
+                case GST_STATE_PLAYING:
+                    setStatus( QCamera::ActiveStatus );
+                    break;
+
+                case GST_STATE_PAUSED:
                 default:
                     break;
+                }
+            }
+            break;
+
+            default:
+                break;
             }
         }
     }
@@ -1401,18 +1401,18 @@ GstCaps *CameraBinSession::supportedCaps( QCamera::CaptureModes mode ) const
 
         switch ( mode )
         {
-            case QCamera::CaptureStillImage:
-                prop = SUPPORTED_IMAGE_CAPTURE_CAPS_PROPERTY;
-                break;
+        case QCamera::CaptureStillImage:
+            prop = SUPPORTED_IMAGE_CAPTURE_CAPS_PROPERTY;
+            break;
 
-            case QCamera::CaptureVideo:
-                prop = SUPPORTED_VIDEO_CAPTURE_CAPS_PROPERTY;
-                break;
+        case QCamera::CaptureVideo:
+            prop = SUPPORTED_VIDEO_CAPTURE_CAPS_PROPERTY;
+            break;
 
-            case QCamera::CaptureViewfinder:
-            default:
-                prop = SUPPORTED_VIEWFINDER_CAPS_PROPERTY;
-                break;
+        case QCamera::CaptureViewfinder:
+        default:
+            prop = SUPPORTED_VIEWFINDER_CAPS_PROPERTY;
+            break;
         }
 
         g_object_get( G_OBJECT( m_camerabin ), prop, &supportedCaps, nullptr );

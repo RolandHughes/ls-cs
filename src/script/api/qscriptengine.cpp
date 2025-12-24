@@ -947,20 +947,20 @@ QScriptEnginePrivate::QScriptEnginePrivate()
     staticScopeObjectStructure = QScriptStaticScopeObject::createStructure( JSC::jsNull() );
 
     qobjectPrototype = new ( exec ) QScript::QObjectPrototype( exec,
-            QScript::QObjectPrototype::createStructure( globalObject->objectPrototype() ),
-            globalObject->prototypeFunctionStructure() );
+        QScript::QObjectPrototype::createStructure( globalObject->objectPrototype() ),
+        globalObject->prototypeFunctionStructure() );
 
     qobjectWrapperObjectStructure = QScriptObject::createStructure( qobjectPrototype );
 
     qmetaobjectPrototype = new ( exec ) QScript::QMetaObjectPrototype( exec,
-            QScript::QMetaObjectPrototype::createStructure( globalObject->objectPrototype() ),
-            globalObject->prototypeFunctionStructure() );
+        QScript::QMetaObjectPrototype::createStructure( globalObject->objectPrototype() ),
+        globalObject->prototypeFunctionStructure() );
 
     qmetaobjectWrapperObjectStructure = QScript::QMetaObjectWrapperObject::createStructure( qmetaobjectPrototype );
 
     variantPrototype = new ( exec ) QScript::QVariantPrototype( exec,
-            QScript::QVariantPrototype::createStructure( globalObject->objectPrototype() ),
-            globalObject->prototypeFunctionStructure() );
+        QScript::QVariantPrototype::createStructure( globalObject->objectPrototype() ),
+        globalObject->prototypeFunctionStructure() );
     variantWrapperObjectStructure = QScriptObject::createStructure( variantPrototype );
 
     globalObject->putDirectFunction( exec, new ( exec )JSC::NativeFunctionWrapper( exec,
@@ -1249,7 +1249,7 @@ JSC::JSValue QScriptEnginePrivate::toUsableValue( JSC::JSValue value )
     if ( !originalGlobalObjectProxy )
     {
         originalGlobalObjectProxy = new ( currentFrame )QScript::OriginalGlobalObjectProxy( scriptObjectStructure,
-                originalGlobalObject() );
+            originalGlobalObject() );
     }
 
     return originalGlobalObjectProxy;
@@ -1668,7 +1668,7 @@ JSC::JSValue QScriptEnginePrivate::newQMetaObject(
 
     JSC::ExecState *exec = currentFrame;
     QScript::QMetaObjectWrapperObject *result = new ( exec ) QScript::QMetaObjectWrapperObject( exec, metaObject, ctor,
-            qmetaobjectWrapperObjectStructure );
+        qmetaobjectWrapperObjectStructure );
 
     return result;
 }
@@ -2510,7 +2510,7 @@ QScriptValue QScriptEngine::newFunction( QScriptEngine::FunctionWithArgSignature
     QScript::APIShim shim( d );
     JSC::ExecState *exec = d->currentFrame;
     JSC::JSValue function = new ( exec )QScript::FunctionWithArgWrapper( exec, /*length=*/0, JSC::Identifier( exec, "" ), fun,
-            arg );
+        arg );
     QScriptValue result = d->scriptValueFromJSCValue( function );
     QScriptValue proto = newObject();
     result.setProperty( QLatin1String( "prototype" ), proto,
@@ -2582,17 +2582,17 @@ QScriptSyntaxCheckResult QScriptEnginePrivate::checkSyntax( const QString &progr
 
     switch ( result.state )
     {
-        case QScript::SyntaxChecker::Error:
-            p->state = QScriptSyntaxCheckResult::Error;
-            break;
+    case QScript::SyntaxChecker::Error:
+        p->state = QScriptSyntaxCheckResult::Error;
+        break;
 
-        case QScript::SyntaxChecker::Intermediate:
-            p->state = QScriptSyntaxCheckResult::Intermediate;
-            break;
+    case QScript::SyntaxChecker::Intermediate:
+        p->state = QScriptSyntaxCheckResult::Intermediate;
+        break;
 
-        case QScript::SyntaxChecker::Valid:
-            p->state = QScriptSyntaxCheckResult::Valid;
-            break;
+    case QScript::SyntaxChecker::Valid:
+        p->state = QScriptSyntaxCheckResult::Valid;
+        break;
     }
 
     p->errorLineNumber = result.errorLineNumber;
@@ -2892,128 +2892,128 @@ JSC::JSValue QScriptEnginePrivate::create( JSC::ExecState *exec, const QVariant 
         switch ( type )
         {
 
-            case QVariant::Invalid:
-            case QVariant::Void:
-                return JSC::jsUndefined();
+        case QVariant::Invalid:
+        case QVariant::Void:
+            return JSC::jsUndefined();
 
-            case QVariant::Bool:
-                return JSC::jsBoolean( data.getData<bool>() );
+        case QVariant::Bool:
+            return JSC::jsBoolean( data.getData<bool>() );
 
-            case QVariant::Int:
-                return JSC::jsNumber( exec, data.getData<int>() );
+        case QVariant::Int:
+            return JSC::jsNumber( exec, data.getData<int>() );
 
-            case QVariant::UInt:
-                return JSC::jsNumber( exec, data.getData<uint>() );
+        case QVariant::UInt:
+            return JSC::jsNumber( exec, data.getData<uint>() );
 
-            case QVariant::Short:
-                return JSC::jsNumber( exec, data.getData<short>() );
+        case QVariant::Short:
+            return JSC::jsNumber( exec, data.getData<short>() );
 
-            case QVariant::UShort:
-                return JSC::jsNumber( exec, data.getData<ushort>() );
+        case QVariant::UShort:
+            return JSC::jsNumber( exec, data.getData<ushort>() );
 
-            case QVariant::Long:
-                return JSC::jsNumber( exec, data.getData<long>() );
+        case QVariant::Long:
+            return JSC::jsNumber( exec, data.getData<long>() );
 
-            case QVariant::ULong:
-                return JSC::jsNumber( exec, data.getData<ulong>() );
+        case QVariant::ULong:
+            return JSC::jsNumber( exec, data.getData<ulong>() );
 
-            case QVariant::LongLong:
-                return JSC::jsNumber( exec, qsreal( data.getData<qint64>() ) );
+        case QVariant::LongLong:
+            return JSC::jsNumber( exec, qsreal( data.getData<qint64>() ) );
 
-            case QVariant::ULongLong:
-                return JSC::jsNumber( exec, qsreal( data.getData<quint64>() ) );
+        case QVariant::ULongLong:
+            return JSC::jsNumber( exec, qsreal( data.getData<quint64>() ) );
 
-            case QVariant::Double:
-                return JSC::jsNumber( exec, qsreal( data.getData<double>() ) );
+        case QVariant::Double:
+            return JSC::jsNumber( exec, qsreal( data.getData<double>() ) );
 
-            case QVariant::Float:
-                return JSC::jsNumber( exec, data.getData<float>() );
+        case QVariant::Float:
+            return JSC::jsNumber( exec, data.getData<float>() );
 
-            case QVariant::Char:
-                return JSC::jsNumber( exec, data.getData<char>() );
+        case QVariant::Char:
+            return JSC::jsNumber( exec, data.getData<char>() );
 
-            case QVariant::UChar:
-                return JSC::jsNumber( exec, data.getData<uchar>() );
+        case QVariant::UChar:
+            return JSC::jsNumber( exec, data.getData<uchar>() );
 
-            case QVariant::QChar:
-                return JSC::jsNumber( exec, data.getData<QChar32>().unicode() );
+        case QVariant::QChar:
+            return JSC::jsNumber( exec, data.getData<QChar32>().unicode() );
 
-            case QVariant::String:
-                return JSC::jsString( exec, data.getData<QString>() );
+        case QVariant::String:
+            return JSC::jsString( exec, data.getData<QString>() );
 
-            //
-            case QVariant::StringList:
-                result = arrayFromStringList( exec, data.getData<QStringList>() );
-                break;
+        //
+        case QVariant::StringList:
+            result = arrayFromStringList( exec, data.getData<QStringList>() );
+            break;
 
-            case QVariant::List:
-                result = arrayFromVariantList( exec, data.getData<QVariantList>() );
-                break;
+        case QVariant::List:
+            result = arrayFromVariantList( exec, data.getData<QVariantList>() );
+            break;
 
-            case QVariant::Map:
-                result = objectFromVariantMap( exec, data.getData<QVariantMap>() );
-                break;
+        case QVariant::Map:
+            result = objectFromVariantMap( exec, data.getData<QVariantMap>() );
+            break;
 
-            case QVariant::DateTime:
-                result = newDate( exec, data.getData<QDateTime>() );
-                break;
+        case QVariant::DateTime:
+            result = newDate( exec, data.getData<QDateTime>() );
+            break;
 
-            case QVariant::Date:
-                result = newDate( exec, QDateTime( data.getData<QDate>() ) );
-                break;
+        case QVariant::Date:
+            result = newDate( exec, QDateTime( data.getData<QDate>() ) );
+            break;
 
-            case QVariant::RegularExpression:
-                result = newRegExp( exec, data.getData<QRegularExpression>() );
-                break;
+        case QVariant::RegularExpression:
+            result = newRegExp( exec, data.getData<QRegularExpression>() );
+            break;
 
-            case QVariant::ObjectStar:
-            case QVariant::WidgetStar:
+        case QVariant::ObjectStar:
+        case QVariant::WidgetStar:
+            result = eng->newQObject( data.getData<QObject *>() );
+            break;
+
+        default:
+            if ( isPtr2QObject( type ) )
+            {
                 result = eng->newQObject( data.getData<QObject *>() );
                 break;
+            }
 
-            default:
-                if ( isPtr2QObject( type ) )
+            if ( type == QVariant::typeToTypeId<QScriptValue>() )
+            {
+                result = eng->scriptValueToJSCValue( data.getData<QScriptValue>() );
+
+                if ( ! result )
                 {
-                    result = eng->newQObject( data.getData<QObject *>() );
-                    break;
+                    return JSC::jsUndefined();
                 }
 
-                if ( type == QVariant::typeToTypeId<QScriptValue>() )
-                {
-                    result = eng->scriptValueToJSCValue( data.getData<QScriptValue>() );
+            }
+            else if ( type == QVariant::typeToTypeId<QObjectList>() )
+            {
+                qScriptRegisterSequenceMetaType<QObjectList>( eng->q_func() );
+                return create( exec, data );
 
-                    if ( ! result )
-                    {
-                        return JSC::jsUndefined();
-                    }
+            }
+            else if ( type == QVariant::typeToTypeId<QList<int>>() )
+            {
+                qScriptRegisterSequenceMetaType<QList<int>>( eng->q_func() );
+                return create( exec, data );
 
-                }
-                else if ( type == QVariant::typeToTypeId<QObjectList>() )
-                {
-                    qScriptRegisterSequenceMetaType<QObjectList>( eng->q_func() );
-                    return create( exec, data );
+            }
+            else
+            {
+                QString typeName = QVariant::typeToName( type );
 
-                }
-                else if ( type == QVariant::typeToTypeId<QList<int>>() )
+                if ( typeName.endsWith( '*' ) )
                 {
-                    qScriptRegisterSequenceMetaType<QList<int>>( eng->q_func() );
-                    return create( exec, data );
+                    return JSC::jsNull();
 
                 }
                 else
                 {
-                    QString typeName = QVariant::typeToName( type );
-
-                    if ( typeName.endsWith( '*' ) )
-                    {
-                        return JSC::jsNull();
-
-                    }
-                    else
-                    {
-                        result = eng->newVariant( data );
-                    }
+                    result = eng->newVariant( data );
                 }
+            }
         }
     }
 
@@ -3046,171 +3046,171 @@ QVariant QScriptEnginePrivate::convertValue( JSC::ExecState *exec, JSC::JSValue 
 
     switch ( type )
     {
-        case QVariant::Bool:
-            retval.setValue<bool>( toBool( exec, value ) );
+    case QVariant::Bool:
+        retval.setValue<bool>( toBool( exec, value ) );
+        return retval;
+
+    case QVariant::Int:
+        retval.setValue<int>( toInt32( exec, value ) );
+        return retval;
+
+    case QVariant::UInt:
+        retval.setValue<uint>( toUInt32( exec, value ) );
+        return retval;
+
+    case QVariant::Long:
+        retval.setValue<long>( long( toInteger( exec, value ) ) );
+        return retval;
+
+    case QVariant::ULong:
+        retval.setValue<ulong>( ulong( toInteger( exec, value ) ) );
+        return retval;
+
+    case QVariant::LongLong:
+        retval.setValue<qint64>( qint64( toInteger( exec, value ) ) );
+        return retval;
+
+    case QVariant::ULongLong:
+        retval.setValue<quint64>( quint64( toInteger( exec, value ) ) );
+        return retval;
+
+    case QVariant::Double:
+        retval.setValue<double>( toNumber( exec, value ) );
+        return retval;
+
+    case QVariant::Float:
+        retval.setValue<float>( toNumber( exec, value ) );
+        return retval;
+
+    case QVariant::Short:
+        retval.setValue<short>( short( toInt32( exec, value ) ) );
+        return retval;
+
+    case QVariant::UShort:
+        retval.setValue<unsigned short>( QScript::ToUInt16( toNumber( exec, value ) ) );
+        return retval;
+
+    case QVariant::Char:
+        retval.setValue<char>( char( toInt32( exec, value ) ) );
+        return retval;
+
+    case QVariant::UChar:
+        retval.setValue<unsigned char>( ( unsigned char )( toInt32( exec, value ) ) );
+        return retval;
+
+    case QVariant::QChar:
+        if ( value.isString() )
+        {
+            QString str = toString( exec, value );
+            retval.setValue<QChar>( str.isEmpty() ? QChar() : str.at( 0 ) );
+        }
+        else
+        {
+            retval.setValue<QChar>( char32_t( QScript::ToUInt32( toNumber( exec, value ) ) ) );
+        }
+
+        return retval;
+
+    case QVariant::String:
+        if ( value.isUndefined() || value.isNull() )
+        {
+            retval.setValue<QString>( QString() );
+        }
+        else
+        {
+            retval.setValue<QString>( toString( exec, value ) );
+        }
+
+        return retval;
+
+    case QVariant::RegularExpression:
+        if ( isRegExp( value ) )
+        {
+            retval.setValue<QRegularExpression>( toRegExp( exec, value ) );
+            return retval;
+        }
+
+        break;
+
+    case QVariant::StringList:
+        if ( isArray( value ) )
+        {
+            retval.setValue<QStringList>( stringListFromArray( exec, value ) );
+            return retval;
+        }
+
+        break;
+
+    case QVariant::DateTime:
+        if ( isDate( value ) )
+        {
+            retval.setValue<QDateTime>( toDateTime( exec, value ) );
+            return retval;
+        }
+
+        break;
+
+    case QVariant::Date:
+        if ( isDate( value ) )
+        {
+            retval.setValue<QDate>( toDateTime( exec, value ).date() );
+            return retval;
+        }
+
+        break;
+
+    case QVariant::ObjectStar:
+        if ( isQObject( value ) )
+        {
+            retval.setValue<QObject *>( toQObject( exec, value ) );
+            return retval;
+        }
+
+        break;
+
+    case QVariant::WidgetStar:
+        if ( isQObject( value ) )
+        {
+
+            /* emerald (script, hold)
+               QObject *tmp = toQObject(exec, value);
+
+               if (! tmp || tmp->isWidgetType()) {
+                  retval.setValue<QWidget *>(reinterpret_cast<QWidget *>(tmp));
+                  return retval;
+               }
+            */
+
             return retval;
 
-        case QVariant::Int:
-            retval.setValue<int>( toInt32( exec, value ) );
+        }
+
+        break;
+
+    case QVariant::List:
+        if ( isArray( value ) )
+        {
+            retval.setValue<QVariantList>( variantListFromArray( exec, JSC::asArray( value ) ) );
             return retval;
+        }
 
-        case QVariant::UInt:
-            retval.setValue<uint>( toUInt32( exec, value ) );
+        break;
+
+    case QVariant::Map:
+        if ( isObject( value ) )
+        {
+            retval.setValue<QVariantMap>( variantMapFromObject( exec, JSC::asObject( value ) ) );
             return retval;
+        }
 
-        case QVariant::Long:
-            retval.setValue<long>( long( toInteger( exec, value ) ) );
-            return retval;
+        break;
 
-        case QVariant::ULong:
-            retval.setValue<ulong>( ulong( toInteger( exec, value ) ) );
-            return retval;
+    case QVariant::Variant:
+        retval.setValue<QVariant>( toVariant( exec, value ) );
+        return retval;
 
-        case QVariant::LongLong:
-            retval.setValue<qint64>( qint64( toInteger( exec, value ) ) );
-            return retval;
-
-        case QVariant::ULongLong:
-            retval.setValue<quint64>( quint64( toInteger( exec, value ) ) );
-            return retval;
-
-        case QVariant::Double:
-            retval.setValue<double>( toNumber( exec, value ) );
-            return retval;
-
-        case QVariant::Float:
-            retval.setValue<float>( toNumber( exec, value ) );
-            return retval;
-
-        case QVariant::Short:
-            retval.setValue<short>( short( toInt32( exec, value ) ) );
-            return retval;
-
-        case QVariant::UShort:
-            retval.setValue<unsigned short>( QScript::ToUInt16( toNumber( exec, value ) ) );
-            return retval;
-
-        case QVariant::Char:
-            retval.setValue<char>( char( toInt32( exec, value ) ) );
-            return retval;
-
-        case QVariant::UChar:
-            retval.setValue<unsigned char>( ( unsigned char )( toInt32( exec, value ) ) );
-            return retval;
-
-        case QVariant::QChar:
-            if ( value.isString() )
-            {
-                QString str = toString( exec, value );
-                retval.setValue<QChar>( str.isEmpty() ? QChar() : str.at( 0 ) );
-            }
-            else
-            {
-                retval.setValue<QChar>( char32_t( QScript::ToUInt32( toNumber( exec, value ) ) ) );
-            }
-
-            return retval;
-
-        case QVariant::String:
-            if ( value.isUndefined() || value.isNull() )
-            {
-                retval.setValue<QString>( QString() );
-            }
-            else
-            {
-                retval.setValue<QString>( toString( exec, value ) );
-            }
-
-            return retval;
-
-        case QVariant::RegularExpression:
-            if ( isRegExp( value ) )
-            {
-                retval.setValue<QRegularExpression>( toRegExp( exec, value ) );
-                return retval;
-            }
-
-            break;
-
-        case QVariant::StringList:
-            if ( isArray( value ) )
-            {
-                retval.setValue<QStringList>( stringListFromArray( exec, value ) );
-                return retval;
-            }
-
-            break;
-
-        case QVariant::DateTime:
-            if ( isDate( value ) )
-            {
-                retval.setValue<QDateTime>( toDateTime( exec, value ) );
-                return retval;
-            }
-
-            break;
-
-        case QVariant::Date:
-            if ( isDate( value ) )
-            {
-                retval.setValue<QDate>( toDateTime( exec, value ).date() );
-                return retval;
-            }
-
-            break;
-
-        case QVariant::ObjectStar:
-            if ( isQObject( value ) )
-            {
-                retval.setValue<QObject *>( toQObject( exec, value ) );
-                return retval;
-            }
-
-            break;
-
-        case QVariant::WidgetStar:
-            if ( isQObject( value ) )
-            {
-
-                /* emerald (script, hold)
-                   QObject *tmp = toQObject(exec, value);
-
-                   if (! tmp || tmp->isWidgetType()) {
-                      retval.setValue<QWidget *>(reinterpret_cast<QWidget *>(tmp));
-                      return retval;
-                   }
-                */
-
-                return retval;
-
-            }
-
-            break;
-
-        case QVariant::List:
-            if ( isArray( value ) )
-            {
-                retval.setValue<QVariantList>( variantListFromArray( exec, JSC::asArray( value ) ) );
-                return retval;
-            }
-
-            break;
-
-        case QVariant::Map:
-            if ( isObject( value ) )
-            {
-                retval.setValue<QVariantMap>( variantMapFromObject( exec, JSC::asObject( value ) ) );
-                return retval;
-            }
-
-            break;
-
-        case QVariant::Variant:
-            retval.setValue<QVariant>( toVariant( exec, value ) );
-            return retval;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     QString name = QVariant::typeToName( type );
@@ -3312,68 +3312,68 @@ QVariant QScriptEnginePrivate::convertNumber( qsreal value, uint type )
     switch ( type )
     {
 
-        case QVariant::Bool:
-            retval.setValue<bool>( QScript::ToBool( value ) );
-            break;
+    case QVariant::Bool:
+        retval.setValue<bool>( QScript::ToBool( value ) );
+        break;
 
-        case QVariant::Int:
-            retval.setValue<int>( QScript::ToInt32( value ) );
-            break;
+    case QVariant::Int:
+        retval.setValue<int>( QScript::ToInt32( value ) );
+        break;
 
-        case QVariant::UInt:
-            retval.setValue<uint>( QScript::ToUInt32( value ) );
-            break;
+    case QVariant::UInt:
+        retval.setValue<uint>( QScript::ToUInt32( value ) );
+        break;
 
-        case QVariant::Long:
-            retval.setValue<long>( long( QScript::ToInteger( value ) ) );
-            break;
+    case QVariant::Long:
+        retval.setValue<long>( long( QScript::ToInteger( value ) ) );
+        break;
 
-        case QVariant::ULong:
-            retval.setValue<ulong>( ulong( QScript::ToInteger( value ) ) );
-            break;
+    case QVariant::ULong:
+        retval.setValue<ulong>( ulong( QScript::ToInteger( value ) ) );
+        break;
 
-        case QVariant::LongLong:
-            retval.setValue<qint64>( qint64( QScript::ToInteger( value ) ) );
-            break;
+    case QVariant::LongLong:
+        retval.setValue<qint64>( qint64( QScript::ToInteger( value ) ) );
+        break;
 
-        case QVariant::ULongLong:
-            retval.setValue<quint64>( quint64( QScript::ToInteger( value ) ) );
-            break;
+    case QVariant::ULongLong:
+        retval.setValue<quint64>( quint64( QScript::ToInteger( value ) ) );
+        break;
 
-        case QVariant::Double:
-            retval.setValue<double>( value );
-            break;
+    case QVariant::Double:
+        retval.setValue<double>( value );
+        break;
 
-        case QVariant::String:
-            retval.setValue<QString>( QScript::ToString( value ) );
-            break;
+    case QVariant::String:
+        retval.setValue<QString>( QScript::ToString( value ) );
+        break;
 
-        case QVariant::Float:
-            retval.setValue<float>( value );
-            break;
+    case QVariant::Float:
+        retval.setValue<float>( value );
+        break;
 
-        case QVariant::Short:
-            retval.setValue<short>( short( QScript::ToInt32( value ) ) );
-            break;
+    case QVariant::Short:
+        retval.setValue<short>( short( QScript::ToInt32( value ) ) );
+        break;
 
-        case QVariant::UShort:
-            retval.setValue<unsigned short>( QScript::ToUInt16( value ) );
-            break;
+    case QVariant::UShort:
+        retval.setValue<unsigned short>( QScript::ToUInt16( value ) );
+        break;
 
-        case QVariant::Char:
-            retval.setValue<char>( char( QScript::ToInt32( value ) ) );
-            break;
+    case QVariant::Char:
+        retval.setValue<char>( char( QScript::ToInt32( value ) ) );
+        break;
 
-        case QVariant::UChar:
-            retval.setValue<unsigned char>( ( unsigned char )( QScript::ToInt32( value ) ) );
-            break;
+    case QVariant::UChar:
+        retval.setValue<unsigned char>( ( unsigned char )( QScript::ToInt32( value ) ) );
+        break;
 
-        case QVariant::QChar:
-            retval.setValue<QChar>( QChar( QScript::ToUInt16( value ) ) );
-            break;
+    case QVariant::QChar:
+        retval.setValue<QChar>( QChar( QScript::ToUInt16( value ) ) );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return retval;
@@ -3386,68 +3386,68 @@ QVariant QScriptEnginePrivate::convertString( const QString &value, uint type )
     switch ( type )
     {
 
-        case QVariant::Bool:
-            retval.setValue<bool>( QScript::ToBool( value ) );
-            break;
+    case QVariant::Bool:
+        retval.setValue<bool>( QScript::ToBool( value ) );
+        break;
 
-        case QVariant::Int:
-            retval.setValue<int>( QScript::ToInt32( value ) );
-            break;
+    case QVariant::Int:
+        retval.setValue<int>( QScript::ToInt32( value ) );
+        break;
 
-        case QVariant::UInt:
-            retval.setValue<uint>( QScript::ToUInt32( value ) );
-            break;
+    case QVariant::UInt:
+        retval.setValue<uint>( QScript::ToUInt32( value ) );
+        break;
 
-        case QVariant::Long:
-            retval.setValue<long>( long( QScript::ToInteger( value ) ) );
-            break;
+    case QVariant::Long:
+        retval.setValue<long>( long( QScript::ToInteger( value ) ) );
+        break;
 
-        case QVariant::ULong:
-            retval.setValue<ulong>( ulong( QScript::ToInteger( value ) ) );
-            break;
+    case QVariant::ULong:
+        retval.setValue<ulong>( ulong( QScript::ToInteger( value ) ) );
+        break;
 
-        case QVariant::LongLong:
-            retval.setValue<qint64>( qint64( QScript::ToInteger( value ) ) );
-            break;
+    case QVariant::LongLong:
+        retval.setValue<qint64>( qint64( QScript::ToInteger( value ) ) );
+        break;
 
-        case QVariant::ULongLong:
-            retval.setValue<quint64>( quint64( QScript::ToInteger( value ) ) );
-            break;
+    case QVariant::ULongLong:
+        retval.setValue<quint64>( quint64( QScript::ToInteger( value ) ) );
+        break;
 
-        case QVariant::Double:
-            retval.setValue<double>( QScript::ToNumber( value ) );
-            break;
+    case QVariant::Double:
+        retval.setValue<double>( QScript::ToNumber( value ) );
+        break;
 
-        case QVariant::String:
-            retval.setValue<QString>( value );
-            break;
+    case QVariant::String:
+        retval.setValue<QString>( value );
+        break;
 
-        case QVariant::Float:
-            retval.setValue<float>( QScript::ToNumber( value ) );
-            break;
+    case QVariant::Float:
+        retval.setValue<float>( QScript::ToNumber( value ) );
+        break;
 
-        case QVariant::Short:
-            retval.setValue<short>( short( QScript::ToInt32( value ) ) );
-            break;
+    case QVariant::Short:
+        retval.setValue<short>( short( QScript::ToInt32( value ) ) );
+        break;
 
-        case QVariant::UShort:
-            retval.setValue<unsigned short>( QScript::ToUInt16( value ) );
-            break;
+    case QVariant::UShort:
+        retval.setValue<unsigned short>( QScript::ToUInt16( value ) );
+        break;
 
-        case QVariant::Char:
-            retval.setValue<char>( char( QScript::ToInt32( value ) ) );
-            break;
+    case QVariant::Char:
+        retval.setValue<char>( char( QScript::ToInt32( value ) ) );
+        break;
 
-        case QVariant::UChar:
-            retval.setValue<unsigned char>( ( unsigned char )( QScript::ToInt32( value ) ) );
-            break;
+    case QVariant::UChar:
+        retval.setValue<unsigned char>( ( unsigned char )( QScript::ToInt32( value ) ) );
+        break;
 
-        case QVariant::QChar:
-            retval.setValue<QChar>( QChar( QScript::ToUInt16( value ) ) );
-            break;
+    case QVariant::QChar:
+        retval.setValue<QChar>( QChar( QScript::ToUInt16( value ) ) );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return retval;
@@ -3499,25 +3499,25 @@ QVariant QScriptEngine::convertV2( const QScriptValue &value, uint type )
     {
         switch ( vp->type )
         {
-            case QScriptValuePrivate::JavaScriptCore:
+        case QScriptValuePrivate::JavaScriptCore:
+        {
+            if ( vp->engine )
             {
-                if ( vp->engine )
-                {
-                    QScript::APIShim shim( vp->engine );
-                    return QScriptEnginePrivate::convertValue( vp->engine->currentFrame, vp->jscValue, type );
+                QScript::APIShim shim( vp->engine );
+                return QScriptEnginePrivate::convertValue( vp->engine->currentFrame, vp->jscValue, type );
 
-                }
-                else
-                {
-                    return QScriptEnginePrivate::convertValue( nullptr, vp->jscValue, type );
-                }
             }
+            else
+            {
+                return QScriptEnginePrivate::convertValue( nullptr, vp->jscValue, type );
+            }
+        }
 
-            case QScriptValuePrivate::Number:
-                return QScriptEnginePrivate::convertNumber( vp->numberValue, type );
+        case QScriptValuePrivate::Number:
+            return QScriptEnginePrivate::convertNumber( vp->numberValue, type );
 
-            case QScriptValuePrivate::String:
-                return QScriptEnginePrivate::convertString( vp->stringValue, type );
+        case QScriptValuePrivate::String:
+            return QScriptEnginePrivate::convertString( vp->stringValue, type );
         }
     }
 

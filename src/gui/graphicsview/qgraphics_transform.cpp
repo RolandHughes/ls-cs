@@ -284,17 +284,17 @@ void QGraphicsRotation::setAxis( Qt::Axis axis )
 {
     switch ( axis )
     {
-        case Qt::XAxis:
-            setAxis( QVector3D( 1, 0, 0 ) );
-            break;
+    case Qt::XAxis:
+        setAxis( QVector3D( 1, 0, 0 ) );
+        break;
 
-        case Qt::YAxis:
-            setAxis( QVector3D( 0, 1, 0 ) );
-            break;
+    case Qt::YAxis:
+        setAxis( QVector3D( 0, 1, 0 ) );
+        break;
 
-        case Qt::ZAxis:
-            setAxis( QVector3D( 0, 0, 1 ) );
-            break;
+    case Qt::ZAxis:
+        setAxis( QVector3D( 0, 0, 1 ) );
+        break;
     }
 }
 

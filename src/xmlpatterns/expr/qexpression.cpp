@@ -138,57 +138,57 @@ Expression::Ptr Expression::invokeOptimizers( const Expression::Ptr &expr, const
 
         switch ( pass->operandsMatchMethod )
         {
-            case OptimizationPass::Sequential:
+        case OptimizationPass::Sequential:
+        {
+            for ( ; opIt != opEnd; ++opIt )
             {
-                for ( ; opIt != opEnd; ++opIt )
-                {
-                    const Expression::Ptr operand( *opIt ); /* Alias, for readability. */
-                    const ExpressionIdentifier::Ptr opIdentifier( *idIt ); /* Alias, for readability. */
+                const Expression::Ptr operand( *opIt ); /* Alias, for readability. */
+                const ExpressionIdentifier::Ptr opIdentifier( *idIt ); /* Alias, for readability. */
 
-                    if ( opIdentifier && !opIdentifier->matches( operand ) )
-                    {
-                        break;
-                    }
-
-                    ++idIt;
-                }
-
-                if ( opIt == opEnd )
-                {
-                    break;   /* All operands matched, so this pass matched. */
-                }
-                else
-                {
-                    /* The loop above did not finish which means all operands did not match.
-                       Therefore, this OptimizationPass did not match -- let's try the next one. */
-                    continue;
-                }
-            }
-
-            case OptimizationPass::AnyOrder:
-            {
-                Q_ASSERT_X( ops.count() == 2, Q_FUNC_INFO,
-                            "AnyOrder is currently only supported for Expressions with two operands." );
-
-                if ( pass->operandIdentifiers.first()->matches( ops.first() ) &&
-                        pass->operandIdentifiers.last()->matches( ops.last() ) )
+                if ( opIdentifier && !opIdentifier->matches( operand ) )
                 {
                     break;
+                }
 
-                }
-                else if ( pass->operandIdentifiers.first()->matches( ops.last() ) &&
-                          pass->operandIdentifiers.last()->matches( ops.first() ) )
-                {
-                    sourceMarker.first() = 1;
-                    sourceMarker[1] = 0;
-                    break; /* This pass matched. */
-
-                }
-                else
-                {
-                    continue;   /* This pass didn't match, let's loop through the next pass. */
-                }
+                ++idIt;
             }
+
+            if ( opIt == opEnd )
+            {
+                break;   /* All operands matched, so this pass matched. */
+            }
+            else
+            {
+                /* The loop above did not finish which means all operands did not match.
+                   Therefore, this OptimizationPass did not match -- let's try the next one. */
+                continue;
+            }
+        }
+
+        case OptimizationPass::AnyOrder:
+        {
+            Q_ASSERT_X( ops.count() == 2, Q_FUNC_INFO,
+                        "AnyOrder is currently only supported for Expressions with two operands." );
+
+            if ( pass->operandIdentifiers.first()->matches( ops.first() ) &&
+                    pass->operandIdentifiers.last()->matches( ops.last() ) )
+            {
+                break;
+
+            }
+            else if ( pass->operandIdentifiers.first()->matches( ops.last() ) &&
+                      pass->operandIdentifiers.last()->matches( ops.first() ) )
+            {
+                sourceMarker.first() = 1;
+                sourceMarker[1] = 0;
+                break; /* This pass matched. */
+
+            }
+            else
+            {
+                continue;   /* This pass didn't match, let's loop through the next pass. */
+            }
+        }
         }
 
         /* Figure out the source Expression, if any. */
@@ -274,14 +274,14 @@ Expression::Ptr Expression::constantPropagate( const StaticContext::Ptr &context
 
         switch ( result.count() )
         {
-            case 0:
-                return EmptySequence::create( this, context );
+        case 0:
+            return EmptySequence::create( this, context );
 
-            case 1:
-                return rewrite( Expression::Ptr( new Literal( result.first() ) ), context );
+        case 1:
+            return rewrite( Expression::Ptr( new Literal( result.first() ) ), context );
 
-            default:
-                return rewrite( Expression::Ptr( new LiteralSequence( result ) ), context );
+        default:
+            return rewrite( Expression::Ptr( new LiteralSequence( result ) ), context );
         }
 
     }

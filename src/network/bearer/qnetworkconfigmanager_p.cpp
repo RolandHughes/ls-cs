@@ -185,23 +185,23 @@ QNetworkConfiguration QNetworkConfigurationManagerPrivate::defaultConfiguration(
                     {
                         switch ( defaultConfiguration->bearerType )
                         {
-                            case QNetworkConfiguration::BearerEthernet:
-                                // do nothing
-                                break;
+                        case QNetworkConfiguration::BearerEthernet:
+                            // do nothing
+                            break;
 
-                            case QNetworkConfiguration::BearerWLAN:
-                                // Ethernet beats WLAN
+                        case QNetworkConfiguration::BearerWLAN:
+                            // Ethernet beats WLAN
+                            defaultConfiguration = ptr;
+                            break;
+
+                        default:
+
+                            // Ethernet and WLAN beats other
+                            if ( bearerType == QNetworkConfiguration::BearerEthernet ||
+                                    bearerType == QNetworkConfiguration::BearerWLAN )
+                            {
                                 defaultConfiguration = ptr;
-                                break;
-
-                            default:
-
-                                // Ethernet and WLAN beats other
-                                if ( bearerType == QNetworkConfiguration::BearerEthernet ||
-                                        bearerType == QNetworkConfiguration::BearerWLAN )
-                                {
-                                    defaultConfiguration = ptr;
-                                }
+                            }
                         }
 
                     }

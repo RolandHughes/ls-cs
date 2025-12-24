@@ -93,31 +93,31 @@ public:
 
         switch ( pe.type )
         {
-            case QPainterPath::LineToElement:
-                ce.type = QPainterPath::LineToElement;
-                break;
+        case QPainterPath::LineToElement:
+            ce.type = QPainterPath::LineToElement;
+            break;
 
-            case QPainterPath::CurveToDataElement:
+        case QPainterPath::CurveToDataElement:
 
-                // First control point?
-                if ( ce.type == QPainterPath::CurveToElement )
-                {
-                    ce.type = QPainterPath::CurveToDataElement;
-                }
-                else     // Second control point then
-                {
-                    ce.type = QPainterPath::CurveToElement;
-                }
-
-                break;
-
-            case QPainterPath::CurveToElement:
+            // First control point?
+            if ( ce.type == QPainterPath::CurveToElement )
+            {
                 ce.type = QPainterPath::CurveToDataElement;
-                break;
+            }
+            else     // Second control point then
+            {
+                ce.type = QPainterPath::CurveToElement;
+            }
 
-            default:
-                qWarning( "QSubpathReverseIterator::next() Unhandled type, %d", ce.type );
-                break;
+            break;
+
+        case QPainterPath::CurveToElement:
+            ce.type = QPainterPath::CurveToDataElement;
+            break;
+
+        default:
+            qWarning( "QSubpathReverseIterator::next() Unhandled type, %d", ce.type );
+            break;
         }
 
         --m_pos;
@@ -171,9 +171,9 @@ public:
 
             m_curve = QBezier::fromPoints( QPointF( lscs_fixed_to_real( m_path->at( m_pos - 1 ).x ),
                                                     lscs_fixed_to_real( m_path->at( m_pos - 1 ).y ) ), QPointF( lscs_fixed_to_real( e.x ),
-                                                            lscs_fixed_to_real( e.y ) ), QPointF( lscs_fixed_to_real( m_path->at( m_pos + 1 ).x ),
-                                                                    lscs_fixed_to_real( m_path->at( m_pos + 1 ).y ) ), QPointF( lscs_fixed_to_real( m_path->at( m_pos + 2 ).x ),
-                                                                            lscs_fixed_to_real( m_path->at( m_pos + 2 ).y ) ) ).toPolygon( m_curve_threshold );
+                                                        lscs_fixed_to_real( e.y ) ), QPointF( lscs_fixed_to_real( m_path->at( m_pos + 1 ).x ),
+                                                            lscs_fixed_to_real( m_path->at( m_pos + 1 ).y ) ), QPointF( lscs_fixed_to_real( m_path->at( m_pos + 2 ).x ),
+                                                                lscs_fixed_to_real( m_path->at( m_pos + 2 ).y ) ) ).toPolygon( m_curve_threshold );
 
             m_curve_index = 1;
             e.type = QPainterPath::LineToElement;
@@ -256,26 +256,26 @@ void QStrokerOps::strokePath( const QPainterPath &path, void *customData, const 
 
             switch ( e.type )
             {
-                case QPainterPath::MoveToElement:
-                    moveTo( lscs_real_to_fixed( e.x ), lscs_real_to_fixed( e.y ) );
-                    break;
-
-                case QPainterPath::LineToElement:
-                    lineTo( lscs_real_to_fixed( e.x ), lscs_real_to_fixed( e.y ) );
-                    break;
-
-                case QPainterPath::CurveToElement:
-                {
-                    const QPainterPath::Element &cp2 = path.elementAt( ++i );
-                    const QPainterPath::Element &ep = path.elementAt( ++i );
-                    cubicTo( lscs_real_to_fixed( e.x ), lscs_real_to_fixed( e.y ),
-                             lscs_real_to_fixed( cp2.x ), lscs_real_to_fixed( cp2.y ),
-                             lscs_real_to_fixed( ep.x ), lscs_real_to_fixed( ep.y ) );
-                }
+            case QPainterPath::MoveToElement:
+                moveTo( lscs_real_to_fixed( e.x ), lscs_real_to_fixed( e.y ) );
                 break;
 
-                default:
-                    break;
+            case QPainterPath::LineToElement:
+                lineTo( lscs_real_to_fixed( e.x ), lscs_real_to_fixed( e.y ) );
+                break;
+
+            case QPainterPath::CurveToElement:
+            {
+                const QPainterPath::Element &cp2 = path.elementAt( ++i );
+                const QPainterPath::Element &ep = path.elementAt( ++i );
+                cubicTo( lscs_real_to_fixed( e.x ), lscs_real_to_fixed( e.y ),
+                         lscs_real_to_fixed( cp2.x ), lscs_real_to_fixed( cp2.y ),
+                         lscs_real_to_fixed( ep.x ), lscs_real_to_fixed( ep.y ) );
+            }
+            break;
+
+            default:
+                break;
             }
         }
 
@@ -289,26 +289,26 @@ void QStrokerOps::strokePath( const QPainterPath &path, void *customData, const 
 
             switch ( e.type )
             {
-                case QPainterPath::MoveToElement:
-                    moveTo( lscs_real_to_fixed( pt.x() ), lscs_real_to_fixed( pt.y() ) );
-                    break;
-
-                case QPainterPath::LineToElement:
-                    lineTo( lscs_real_to_fixed( pt.x() ), lscs_real_to_fixed( pt.y() ) );
-                    break;
-
-                case QPainterPath::CurveToElement:
-                {
-                    QPointF cp2 = ( ( QPointF ) path.elementAt( ++i ) ) * matrix;
-                    QPointF ep = ( ( QPointF ) path.elementAt( ++i ) ) * matrix;
-                    cubicTo( lscs_real_to_fixed( pt.x() ), lscs_real_to_fixed( pt.y() ),
-                             lscs_real_to_fixed( cp2.x() ), lscs_real_to_fixed( cp2.y() ),
-                             lscs_real_to_fixed( ep.x() ), lscs_real_to_fixed( ep.y() ) );
-                }
+            case QPainterPath::MoveToElement:
+                moveTo( lscs_real_to_fixed( pt.x() ), lscs_real_to_fixed( pt.y() ) );
                 break;
 
-                default:
-                    break;
+            case QPainterPath::LineToElement:
+                lineTo( lscs_real_to_fixed( pt.x() ), lscs_real_to_fixed( pt.y() ) );
+                break;
+
+            case QPainterPath::CurveToElement:
+            {
+                QPointF cp2 = ( ( QPointF ) path.elementAt( ++i ) ) * matrix;
+                QPointF ep = ( ( QPointF ) path.elementAt( ++i ) ) * matrix;
+                cubicTo( lscs_real_to_fixed( pt.x() ), lscs_real_to_fixed( pt.y() ),
+                         lscs_real_to_fixed( cp2.x() ), lscs_real_to_fixed( cp2.y() ),
+                         lscs_real_to_fixed( ep.x() ), lscs_real_to_fixed( ep.y() ) );
+            }
+            break;
+
+            default:
+                break;
             }
         }
     }
@@ -937,7 +937,7 @@ Q_GUI_EXPORT void lscs_find_ellipse_coords( const QRectF &r, qreal angle, qreal 
         QPointF *startPoint, QPointF *endPoint );
 
 QPointF lscs_curves_for_arc( const QRectF &rect, qreal startAngle, qreal sweepLength,
-                           QPointF *curves, int *point_count )
+                             QPointF *curves, int *point_count )
 {
     Q_ASSERT( point_count );
     Q_ASSERT( curves );
@@ -1166,24 +1166,24 @@ QVector<qfixed> QDashStroker::patternForStyle( Qt::PenStyle style )
 
     switch ( style )
     {
-        case Qt::DashLine:
-            pattern << dash << space;
-            break;
+    case Qt::DashLine:
+        pattern << dash << space;
+        break;
 
-        case Qt::DotLine:
-            pattern << dot << space;
-            break;
+    case Qt::DotLine:
+        pattern << dot << space;
+        break;
 
-        case Qt::DashDotLine:
-            pattern << dash << space << dot << space;
-            break;
+    case Qt::DashDotLine:
+        pattern << dash << space << dot << space;
+        break;
 
-        case Qt::DashDotDotLine:
-            pattern << dash << space << dot << space << dot << space;
-            break;
+    case Qt::DashDotDotLine:
+        pattern << dash << space << dot << space << dot << space;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return pattern;

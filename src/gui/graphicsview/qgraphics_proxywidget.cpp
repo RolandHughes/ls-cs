@@ -93,57 +93,57 @@ void QGraphicsProxyWidgetPrivate::sendWidgetMouseEvent( QGraphicsSceneMouseEvent
 
     switch ( event->type() )
     {
-        case QEvent::GraphicsSceneMousePress:
-            type = QEvent::MouseButtonPress;
+    case QEvent::GraphicsSceneMousePress:
+        type = QEvent::MouseButtonPress;
 
-            if ( !embeddedMouseGrabber )
-            {
-                embeddedMouseGrabber = receiver;
-            }
-            else
-            {
-                receiver = embeddedMouseGrabber;
-            }
+        if ( !embeddedMouseGrabber )
+        {
+            embeddedMouseGrabber = receiver;
+        }
+        else
+        {
+            receiver = embeddedMouseGrabber;
+        }
 
-            break;
+        break;
 
-        case QEvent::GraphicsSceneMouseRelease:
-            type = QEvent::MouseButtonRelease;
+    case QEvent::GraphicsSceneMouseRelease:
+        type = QEvent::MouseButtonRelease;
 
-            if ( embeddedMouseGrabber )
-            {
-                receiver = embeddedMouseGrabber;
-            }
+        if ( embeddedMouseGrabber )
+        {
+            receiver = embeddedMouseGrabber;
+        }
 
-            break;
+        break;
 
-        case QEvent::GraphicsSceneMouseDoubleClick:
-            type = QEvent::MouseButtonDblClick;
+    case QEvent::GraphicsSceneMouseDoubleClick:
+        type = QEvent::MouseButtonDblClick;
 
-            if ( !embeddedMouseGrabber )
-            {
-                embeddedMouseGrabber = receiver;
-            }
-            else
-            {
-                receiver = embeddedMouseGrabber;
-            }
+        if ( !embeddedMouseGrabber )
+        {
+            embeddedMouseGrabber = receiver;
+        }
+        else
+        {
+            receiver = embeddedMouseGrabber;
+        }
 
-            break;
+        break;
 
-        case QEvent::GraphicsSceneMouseMove:
-            type = QEvent::MouseMove;
+    case QEvent::GraphicsSceneMouseMove:
+        type = QEvent::MouseMove;
 
-            if ( embeddedMouseGrabber )
-            {
-                receiver = embeddedMouseGrabber;
-            }
+        if ( embeddedMouseGrabber )
+        {
+            receiver = embeddedMouseGrabber;
+        }
 
-            break;
+        break;
 
-        default:
-            Q_ASSERT_X( false, "QGraphicsProxyWidget", "internal error" );
-            break;
+    default:
+        Q_ASSERT_X( false, "QGraphicsProxyWidget", "internal error" );
+        break;
     }
 
     if ( ! lastWidgetUnderMouse )
@@ -695,78 +695,78 @@ QVariant QGraphicsProxyWidget::itemChange( GraphicsItemChange change,
 
     switch ( change )
     {
-        case ItemPositionChange:
+    case ItemPositionChange:
 
-            // The item's position is either changed directly on the proxy, in
-            // which case the position change should propagate to the widget,
-            // otherwise it happens as a side effect when filtering QEvent::Move.
-            if ( !d->posChangeMode )
-            {
-                d->posChangeMode = QGraphicsProxyWidgetPrivate::ProxyToWidgetMode;
-            }
+        // The item's position is either changed directly on the proxy, in
+        // which case the position change should propagate to the widget,
+        // otherwise it happens as a side effect when filtering QEvent::Move.
+        if ( !d->posChangeMode )
+        {
+            d->posChangeMode = QGraphicsProxyWidgetPrivate::ProxyToWidgetMode;
+        }
 
-            break;
+        break;
 
-        case ItemPositionHasChanged:
+    case ItemPositionHasChanged:
 
-            // Move the internal widget if we're in widget-to-proxy
-            // mode. Otherwise the widget has already moved.
-            if ( d->widget && d->posChangeMode != QGraphicsProxyWidgetPrivate::WidgetToProxyMode )
-            {
-                d->widget->move( value.toPoint() );
-            }
+        // Move the internal widget if we're in widget-to-proxy
+        // mode. Otherwise the widget has already moved.
+        if ( d->widget && d->posChangeMode != QGraphicsProxyWidgetPrivate::WidgetToProxyMode )
+        {
+            d->widget->move( value.toPoint() );
+        }
 
-            if ( d->posChangeMode == QGraphicsProxyWidgetPrivate::ProxyToWidgetMode )
-            {
-                d->posChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
-            }
+        if ( d->posChangeMode == QGraphicsProxyWidgetPrivate::ProxyToWidgetMode )
+        {
+            d->posChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
+        }
 
-            break;
+        break;
 
-        case ItemVisibleChange:
-            if ( !d->visibleChangeMode )
-            {
-                d->visibleChangeMode = QGraphicsProxyWidgetPrivate::ProxyToWidgetMode;
-            }
+    case ItemVisibleChange:
+        if ( !d->visibleChangeMode )
+        {
+            d->visibleChangeMode = QGraphicsProxyWidgetPrivate::ProxyToWidgetMode;
+        }
 
-            break;
+        break;
 
-        case ItemVisibleHasChanged:
-            if ( d->widget && d->visibleChangeMode != QGraphicsProxyWidgetPrivate::WidgetToProxyMode )
-            {
-                d->widget->setVisible( isVisible() );
-            }
+    case ItemVisibleHasChanged:
+        if ( d->widget && d->visibleChangeMode != QGraphicsProxyWidgetPrivate::WidgetToProxyMode )
+        {
+            d->widget->setVisible( isVisible() );
+        }
 
-            if ( d->visibleChangeMode == QGraphicsProxyWidgetPrivate::ProxyToWidgetMode )
-            {
-                d->visibleChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
-            }
+        if ( d->visibleChangeMode == QGraphicsProxyWidgetPrivate::ProxyToWidgetMode )
+        {
+            d->visibleChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
+        }
 
-            break;
+        break;
 
-        case ItemEnabledChange:
-            if ( !d->enabledChangeMode )
-            {
-                d->enabledChangeMode = QGraphicsProxyWidgetPrivate::ProxyToWidgetMode;
-            }
+    case ItemEnabledChange:
+        if ( !d->enabledChangeMode )
+        {
+            d->enabledChangeMode = QGraphicsProxyWidgetPrivate::ProxyToWidgetMode;
+        }
 
-            break;
+        break;
 
-        case ItemEnabledHasChanged:
-            if ( d->widget && d->enabledChangeMode != QGraphicsProxyWidgetPrivate::WidgetToProxyMode )
-            {
-                d->widget->setEnabled( isEnabled() );
-            }
+    case ItemEnabledHasChanged:
+        if ( d->widget && d->enabledChangeMode != QGraphicsProxyWidgetPrivate::WidgetToProxyMode )
+        {
+            d->widget->setEnabled( isEnabled() );
+        }
 
-            if ( d->enabledChangeMode == QGraphicsProxyWidgetPrivate::ProxyToWidgetMode )
-            {
-                d->enabledChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
-            }
+        if ( d->enabledChangeMode == QGraphicsProxyWidgetPrivate::ProxyToWidgetMode )
+        {
+            d->enabledChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QGraphicsWidget::itemChange( change, value );
@@ -783,155 +783,155 @@ bool QGraphicsProxyWidget::event( QEvent *event )
 
     switch ( event->type() )
     {
-        case QEvent::StyleChange:
+    case QEvent::StyleChange:
 
-            // Propagate style changes to the embedded widget.
-            if ( !d->styleChangeMode )
-            {
-                d->styleChangeMode = QGraphicsProxyWidgetPrivate::ProxyToWidgetMode;
-                d->widget->setStyle( style() );
-                d->styleChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
-            }
-
-            break;
-
-        case QEvent::FontChange:
+        // Propagate style changes to the embedded widget.
+        if ( !d->styleChangeMode )
         {
-            // Propagate to widget.
-            QWidgetPrivate *wd = d->widget->d_func();
-            int mask = d->font.resolve() | d->inheritedFontResolveMask;
-            wd->inheritedFontResolveMask = mask;
-            wd->resolveFont();
-            break;
+            d->styleChangeMode = QGraphicsProxyWidgetPrivate::ProxyToWidgetMode;
+            d->widget->setStyle( style() );
+            d->styleChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
         }
 
-        case QEvent::PaletteChange:
+        break;
+
+    case QEvent::FontChange:
+    {
+        // Propagate to widget.
+        QWidgetPrivate *wd = d->widget->d_func();
+        int mask = d->font.resolve() | d->inheritedFontResolveMask;
+        wd->inheritedFontResolveMask = mask;
+        wd->resolveFont();
+        break;
+    }
+
+    case QEvent::PaletteChange:
+    {
+        // Propagate to widget.
+        QWidgetPrivate *wd = d->widget->d_func();
+        int mask = d->palette.resolve() | d->inheritedPaletteResolveMask;
+        wd->inheritedPaletteResolveMask = mask;
+        wd->resolvePalette();
+        break;
+    }
+
+    case QEvent::InputMethod:
+    {
+        inputMethodEvent( static_cast<QInputMethodEvent *>( event ) );
+
+        if ( event->isAccepted() )
         {
-            // Propagate to widget.
-            QWidgetPrivate *wd = d->widget->d_func();
-            int mask = d->palette.resolve() | d->inheritedPaletteResolveMask;
-            wd->inheritedPaletteResolveMask = mask;
-            wd->resolvePalette();
-            break;
+            return true;
         }
 
-        case QEvent::InputMethod:
+        return false;
+    }
+
+    case QEvent::ShortcutOverride:
+    {
+        QWidget *focusWidget = d->widget->focusWidget();
+
+        while ( focusWidget )
         {
-            inputMethodEvent( static_cast<QInputMethodEvent *>( event ) );
+            QApplication::sendEvent( focusWidget, event );
 
             if ( event->isAccepted() )
             {
                 return true;
             }
 
-            return false;
+            focusWidget = focusWidget->parentWidget();
         }
 
-        case QEvent::ShortcutOverride:
+        return false;
+    }
+
+    case QEvent::KeyPress:
+    {
+        QKeyEvent *k = static_cast<QKeyEvent *>( event );
+
+        if ( k->key() == Qt::Key_Tab || k->key() == Qt::Key_Backtab )
         {
-            QWidget *focusWidget = d->widget->focusWidget();
-
-            while ( focusWidget )
+            if ( !( k->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ) ) ) //### Add MetaModifier?
             {
-                QApplication::sendEvent( focusWidget, event );
+                QWidget *focusWidget = d->widget->focusWidget();
 
-                if ( event->isAccepted() )
+                while ( focusWidget )
                 {
-                    return true;
-                }
+                    bool res = QApplication::sendEvent( focusWidget, event );
 
-                focusWidget = focusWidget->parentWidget();
-            }
-
-            return false;
-        }
-
-        case QEvent::KeyPress:
-        {
-            QKeyEvent *k = static_cast<QKeyEvent *>( event );
-
-            if ( k->key() == Qt::Key_Tab || k->key() == Qt::Key_Backtab )
-            {
-                if ( !( k->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ) ) ) //### Add MetaModifier?
-                {
-                    QWidget *focusWidget = d->widget->focusWidget();
-
-                    while ( focusWidget )
+                    if ( ( res && event->isAccepted() ) || ( isWindow() && focusWidget == d->widget ) )
                     {
-                        bool res = QApplication::sendEvent( focusWidget, event );
-
-                        if ( ( res && event->isAccepted() ) || ( isWindow() && focusWidget == d->widget ) )
-                        {
-                            event->accept();
-                            break;
-                        }
-
-                        focusWidget = focusWidget->parentWidget();
+                        event->accept();
+                        break;
                     }
 
-                    return true;
+                    focusWidget = focusWidget->parentWidget();
                 }
-            }
 
-            break;
+                return true;
+            }
         }
+
+        break;
+    }
 
 #ifndef LSCS_NO_TOOLTIP
 
-        case QEvent::GraphicsSceneHelp:
+    case QEvent::GraphicsSceneHelp:
+    {
+        // Propagate the help event (for tooltip) to the widget under mouse
+        if ( d->lastWidgetUnderMouse )
         {
-            // Propagate the help event (for tooltip) to the widget under mouse
-            if ( d->lastWidgetUnderMouse )
-            {
-                QGraphicsSceneHelpEvent *he = static_cast<QGraphicsSceneHelpEvent *>( event );
-                QPoint pos = d->mapToReceiver( mapFromScene( he->scenePos() ), d->lastWidgetUnderMouse ).toPoint();
-                QHelpEvent e( QEvent::ToolTip, pos, he->screenPos() );
-                QApplication::sendEvent( d->lastWidgetUnderMouse, &e );
-                event->setAccepted( e.isAccepted() );
-                return e.isAccepted();
-            }
-
-            break;
+            QGraphicsSceneHelpEvent *he = static_cast<QGraphicsSceneHelpEvent *>( event );
+            QPoint pos = d->mapToReceiver( mapFromScene( he->scenePos() ), d->lastWidgetUnderMouse ).toPoint();
+            QHelpEvent e( QEvent::ToolTip, pos, he->screenPos() );
+            QApplication::sendEvent( d->lastWidgetUnderMouse, &e );
+            event->setAccepted( e.isAccepted() );
+            return e.isAccepted();
         }
 
-        case QEvent::ToolTipChange:
-        {
-            // Propagate tooltip change to the widget
-            if ( !d->tooltipChangeMode )
-            {
-                d->tooltipChangeMode = QGraphicsProxyWidgetPrivate::ProxyToWidgetMode;
-                d->widget->setToolTip( toolTip() );
-                d->tooltipChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
-            }
+        break;
+    }
 
-            break;
+    case QEvent::ToolTipChange:
+    {
+        // Propagate tooltip change to the widget
+        if ( !d->tooltipChangeMode )
+        {
+            d->tooltipChangeMode = QGraphicsProxyWidgetPrivate::ProxyToWidgetMode;
+            d->widget->setToolTip( toolTip() );
+            d->tooltipChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
         }
+
+        break;
+    }
 
 #endif
 
-        case QEvent::TouchBegin:
-        case QEvent::TouchUpdate:
-        case QEvent::TouchEnd:
+    case QEvent::TouchBegin:
+    case QEvent::TouchUpdate:
+    case QEvent::TouchEnd:
+    {
+        if ( event->spontaneous() )
         {
-            if ( event->spontaneous() )
-            {
-                lscs_sendSpontaneousEvent( d->widget, event );
-            }
-            else
-            {
-                QApplication::sendEvent( d->widget, event );
-            }
-
-            if ( event->isAccepted() )
-            {
-                return true;
-            }
-
-            break;
+            lscs_sendSpontaneousEvent( d->widget, event );
+        }
+        else
+        {
+            QApplication::sendEvent( d->widget, event );
         }
 
-        default:
-            break;
+        if ( event->isAccepted() )
+        {
+            return true;
+        }
+
+        break;
+    }
+
+    default:
+        break;
     }
 
     return QGraphicsWidget::event( event );
@@ -945,85 +945,85 @@ bool QGraphicsProxyWidget::eventFilter( QObject *object, QEvent *event )
     {
         switch ( event->type() )
         {
-            case QEvent::LayoutRequest:
-                updateGeometry();
-                break;
+        case QEvent::LayoutRequest:
+            updateGeometry();
+            break;
 
-            case QEvent::Resize:
+        case QEvent::Resize:
 
-                // If the widget resizes itself, we resize the proxy too.
-                // Prevent feed-back by checking the geometry change mode.
-                if ( !d->sizeChangeMode )
-                {
-                    d->updateProxyGeometryFromWidget();
-                }
+            // If the widget resizes itself, we resize the proxy too.
+            // Prevent feed-back by checking the geometry change mode.
+            if ( !d->sizeChangeMode )
+            {
+                d->updateProxyGeometryFromWidget();
+            }
 
-                break;
+            break;
 
-            case QEvent::Move:
+        case QEvent::Move:
 
-                // If the widget moves itself, we move the proxy too.  Prevent
-                // feed-back by checking the geometry change mode.
-                if ( !d->posChangeMode )
-                {
-                    d->updateProxyGeometryFromWidget();
-                }
+            // If the widget moves itself, we move the proxy too.  Prevent
+            // feed-back by checking the geometry change mode.
+            if ( !d->posChangeMode )
+            {
+                d->updateProxyGeometryFromWidget();
+            }
 
-                break;
+            break;
 
-            case QEvent::Hide:
-            case QEvent::Show:
+        case QEvent::Hide:
+        case QEvent::Show:
 
-                // If the widget toggles its visible state, the proxy will follow.
-                if ( !d->visibleChangeMode )
-                {
-                    d->visibleChangeMode = QGraphicsProxyWidgetPrivate::WidgetToProxyMode;
-                    setVisible( event->type() == QEvent::Show );
-                    d->visibleChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
-                }
+            // If the widget toggles its visible state, the proxy will follow.
+            if ( !d->visibleChangeMode )
+            {
+                d->visibleChangeMode = QGraphicsProxyWidgetPrivate::WidgetToProxyMode;
+                setVisible( event->type() == QEvent::Show );
+                d->visibleChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
+            }
 
-                break;
+            break;
 
-            case QEvent::EnabledChange:
+        case QEvent::EnabledChange:
 
-                // If the widget toggles its enabled state, the proxy will follow.
-                if ( !d->enabledChangeMode )
-                {
-                    d->enabledChangeMode = QGraphicsProxyWidgetPrivate::WidgetToProxyMode;
-                    setEnabled( d->widget->isEnabled() );
-                    d->enabledChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
-                }
+            // If the widget toggles its enabled state, the proxy will follow.
+            if ( !d->enabledChangeMode )
+            {
+                d->enabledChangeMode = QGraphicsProxyWidgetPrivate::WidgetToProxyMode;
+                setEnabled( d->widget->isEnabled() );
+                d->enabledChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
+            }
 
-                break;
+            break;
 
-            case QEvent::StyleChange:
+        case QEvent::StyleChange:
 
-                // Propagate style changes to the proxy.
-                if ( !d->styleChangeMode )
-                {
-                    d->styleChangeMode = QGraphicsProxyWidgetPrivate::WidgetToProxyMode;
-                    setStyle( d->widget->style() );
-                    d->styleChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
-                }
+            // Propagate style changes to the proxy.
+            if ( !d->styleChangeMode )
+            {
+                d->styleChangeMode = QGraphicsProxyWidgetPrivate::WidgetToProxyMode;
+                setStyle( d->widget->style() );
+                d->styleChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
+            }
 
-                break;
+            break;
 #ifndef LSCS_NO_TOOLTIP
 
-            case QEvent::ToolTipChange:
+        case QEvent::ToolTipChange:
 
-                // Propagate tooltip change to the proxy.
-                if ( !d->tooltipChangeMode )
-                {
-                    d->tooltipChangeMode = QGraphicsProxyWidgetPrivate::WidgetToProxyMode;
-                    setToolTip( d->widget->toolTip() );
-                    d->tooltipChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
-                }
+            // Propagate tooltip change to the proxy.
+            if ( !d->tooltipChangeMode )
+            {
+                d->tooltipChangeMode = QGraphicsProxyWidgetPrivate::WidgetToProxyMode;
+                setToolTip( d->widget->toolTip() );
+                d->tooltipChangeMode = QGraphicsProxyWidgetPrivate::NoMode;
+            }
 
-                break;
+            break;
 #endif
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -1409,31 +1409,31 @@ void QGraphicsProxyWidget::focusInEvent( QFocusEvent *event )
 
     switch ( event->reason() )
     {
-        case Qt::TabFocusReason:
+    case Qt::TabFocusReason:
+    {
+        if ( QWidget *focusChild = d->findFocusChild( nullptr, true ) )
         {
-            if ( QWidget *focusChild = d->findFocusChild( nullptr, true ) )
-            {
-                focusChild->setFocus( event->reason() );
-            }
-
-            break;
+            focusChild->setFocus( event->reason() );
         }
 
-        case Qt::BacktabFocusReason:
-            if ( QWidget *focusChild = d->findFocusChild( nullptr, false ) )
-            {
-                focusChild->setFocus( event->reason() );
-            }
+        break;
+    }
 
-            break;
+    case Qt::BacktabFocusReason:
+        if ( QWidget *focusChild = d->findFocusChild( nullptr, false ) )
+        {
+            focusChild->setFocus( event->reason() );
+        }
 
-        default:
-            if ( d->widget && d->widget->focusWidget() )
-            {
-                d->widget->focusWidget()->setFocus( event->reason() );
-            }
+        break;
 
-            break;
+    default:
+        if ( d->widget && d->widget->focusWidget() )
+        {
+            d->widget->focusWidget()->setFocus( event->reason() );
+        }
+
+        break;
     }
 
     d->proxyIsGivingFocus = false;
@@ -1500,24 +1500,24 @@ QVariant QGraphicsProxyWidget::inputMethodQuery( Qt::InputMethodQuery query ) co
 
     switch ( v.type() )
     {
-        case QVariant::RectF:
-            v = v.toRectF().translated( focusWidgetPos );
-            break;
+    case QVariant::RectF:
+        v = v.toRectF().translated( focusWidgetPos );
+        break;
 
-        case QVariant::PointF:
-            v = v.toPointF() + focusWidgetPos;
-            break;
+    case QVariant::PointF:
+        v = v.toPointF() + focusWidgetPos;
+        break;
 
-        case QVariant::Rect:
-            v = v.toRect().translated( focusWidgetPos.toPoint() );
-            break;
+    case QVariant::Rect:
+        v = v.toRect().translated( focusWidgetPos.toPoint() );
+        break;
 
-        case QVariant::Point:
-            v = v.toPoint() + focusWidgetPos.toPoint();
-            break;
+    case QVariant::Point:
+        v = v.toPoint() + focusWidgetPos.toPoint();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return v;
@@ -1548,48 +1548,48 @@ QSizeF QGraphicsProxyWidget::sizeHint( Qt::SizeHint which, const QSizeF &constra
 
     switch ( which )
     {
-        case Qt::PreferredSize:
-            if ( QLayout *l = d->widget->layout() )
-            {
-                sh = l->sizeHint();
-            }
-            else
-            {
-                sh = d->widget->sizeHint();
-            }
+    case Qt::PreferredSize:
+        if ( QLayout *l = d->widget->layout() )
+        {
+            sh = l->sizeHint();
+        }
+        else
+        {
+            sh = d->widget->sizeHint();
+        }
 
-            break;
+        break;
 
-        case Qt::MinimumSize:
-            if ( QLayout *l = d->widget->layout() )
-            {
-                sh = l->minimumSize();
-            }
-            else
-            {
-                sh = d->widget->minimumSizeHint();
-            }
+    case Qt::MinimumSize:
+        if ( QLayout *l = d->widget->layout() )
+        {
+            sh = l->minimumSize();
+        }
+        else
+        {
+            sh = d->widget->minimumSizeHint();
+        }
 
-            break;
+        break;
 
-        case Qt::MaximumSize:
-            if ( QLayout *l = d->widget->layout() )
-            {
-                sh = l->maximumSize();
-            }
-            else
-            {
-                sh = QSizeF( QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
-            }
+    case Qt::MaximumSize:
+        if ( QLayout *l = d->widget->layout() )
+        {
+            sh = l->maximumSize();
+        }
+        else
+        {
+            sh = QSizeF( QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
+        }
 
-            break;
+        break;
 
-        case Qt::MinimumDescent:
-            sh = constraint;
-            break;
+    case Qt::MinimumDescent:
+        sh = constraint;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return sh;

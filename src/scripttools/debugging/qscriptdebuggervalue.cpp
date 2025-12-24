@@ -268,26 +268,26 @@ QScriptValue QScriptDebuggerValue::toScriptValue( QScriptEngine *engine ) const
 
     switch ( d->type )
     {
-        case NoValue:
-            return QScriptValue();
+    case NoValue:
+        return QScriptValue();
 
-        case UndefinedValue:
-            return engine->undefinedValue();
+    case UndefinedValue:
+        return engine->undefinedValue();
 
-        case NullValue:
-            return engine->nullValue();
+    case NullValue:
+        return engine->nullValue();
 
-        case BooleanValue:
-            return QScriptValue( engine, d->booleanValue );
+    case BooleanValue:
+        return QScriptValue( engine, d->booleanValue );
 
-        case StringValue:
-            return QScriptValue( engine, *d->stringValue );
+    case StringValue:
+        return QScriptValue( engine, *d->stringValue );
 
-        case NumberValue:
-            return QScriptValue( engine, d->numberValue );
+    case NumberValue:
+        return QScriptValue( engine, d->numberValue );
 
-        case ObjectValue:
-            return engine->objectById( d->objectId );
+    case ObjectValue:
+        return engine->objectById( d->objectId );
     }
 
     return QScriptValue();
@@ -307,33 +307,33 @@ QString QScriptDebuggerValue::toString() const
 
     switch ( d->type )
     {
-        case NoValue:
-            return QString();
+    case NoValue:
+        return QString();
 
-        case UndefinedValue:
-            return QString::fromLatin1( "undefined" );
+    case UndefinedValue:
+        return QString::fromLatin1( "undefined" );
 
-        case NullValue:
-            return QString::fromLatin1( "null" );
+    case NullValue:
+        return QString::fromLatin1( "null" );
 
-        case BooleanValue:
-            if ( d->booleanValue )
-            {
-                return QString::fromLatin1( "true" );
-            }
-            else
-            {
-                return QString::fromLatin1( "false" );
-            }
+    case BooleanValue:
+        if ( d->booleanValue )
+        {
+            return QString::fromLatin1( "true" );
+        }
+        else
+        {
+            return QString::fromLatin1( "false" );
+        }
 
-        case StringValue:
-            return *d->stringValue;
+    case StringValue:
+        return *d->stringValue;
 
-        case NumberValue:
-            return QString::number( d->numberValue ); // ### qScriptNumberToString()
+    case NumberValue:
+        return QString::number( d->numberValue ); // ### qScriptNumberToString()
 
-        case ObjectValue:
-            return QString::fromLatin1( "[object Object]" );
+    case ObjectValue:
+        return QString::fromLatin1( "[object Object]" );
     }
 
     return QString();
@@ -365,22 +365,22 @@ bool QScriptDebuggerValue::operator==( const QScriptDebuggerValue &other ) const
 
     switch ( d->type )
     {
-        case NoValue:
-        case UndefinedValue:
-        case NullValue:
-            return true;
+    case NoValue:
+    case UndefinedValue:
+    case NullValue:
+        return true;
 
-        case BooleanValue:
-            return d->booleanValue == od->booleanValue;
+    case BooleanValue:
+        return d->booleanValue == od->booleanValue;
 
-        case StringValue:
-            return *d->stringValue == *od->stringValue;
+    case StringValue:
+        return *d->stringValue == *od->stringValue;
 
-        case NumberValue:
-            return d->numberValue == od->numberValue;
+    case NumberValue:
+        return d->numberValue == od->numberValue;
 
-        case ObjectValue:
-            return d->objectId == od->objectId;
+    case ObjectValue:
+        return d->objectId == od->objectId;
     }
 
     return false;
@@ -407,26 +407,26 @@ QDataStream &operator<<( QDataStream &out, const QScriptDebuggerValue &value )
 
     switch ( value.type() )
     {
-        case QScriptDebuggerValue::NoValue:
-        case QScriptDebuggerValue::UndefinedValue:
-        case QScriptDebuggerValue::NullValue:
-            break;
+    case QScriptDebuggerValue::NoValue:
+    case QScriptDebuggerValue::UndefinedValue:
+    case QScriptDebuggerValue::NullValue:
+        break;
 
-        case QScriptDebuggerValue::BooleanValue:
-            out << value.booleanValue();
-            break;
+    case QScriptDebuggerValue::BooleanValue:
+        out << value.booleanValue();
+        break;
 
-        case QScriptDebuggerValue::StringValue:
-            out << value.stringValue();
-            break;
+    case QScriptDebuggerValue::StringValue:
+        out << value.stringValue();
+        break;
 
-        case QScriptDebuggerValue::NumberValue:
-            out << value.numberValue();
-            break;
+    case QScriptDebuggerValue::NumberValue:
+        out << value.numberValue();
+        break;
 
-        case QScriptDebuggerValue::ObjectValue:
-            out << value.objectId();
-            break;
+    case QScriptDebuggerValue::ObjectValue:
+        out << value.objectId();
+        break;
     }
 
     return out;
@@ -446,47 +446,47 @@ QDataStream &operator>>( QDataStream &in, QScriptDebuggerValue &value )
 
     switch ( QScriptDebuggerValue::ValueType( type ) )
     {
-        case QScriptDebuggerValue::UndefinedValue:
-        case QScriptDebuggerValue::NullValue:
-            value = QScriptDebuggerValue( QScriptDebuggerValue::ValueType( type ) );
-            break;
-
-        case QScriptDebuggerValue::BooleanValue:
-        {
-            bool b;
-            in >> b;
-            value = QScriptDebuggerValue( b );
-        }
+    case QScriptDebuggerValue::UndefinedValue:
+    case QScriptDebuggerValue::NullValue:
+        value = QScriptDebuggerValue( QScriptDebuggerValue::ValueType( type ) );
         break;
 
-        case QScriptDebuggerValue::StringValue:
-        {
-            QString s;
-            in >> s;
-            value = QScriptDebuggerValue( s );
-        }
-        break;
+    case QScriptDebuggerValue::BooleanValue:
+    {
+        bool b;
+        in >> b;
+        value = QScriptDebuggerValue( b );
+    }
+    break;
 
-        case QScriptDebuggerValue::NumberValue:
-        {
-            double d;
-            in >> d;
-            value = QScriptDebuggerValue( d );
-        }
-        break;
+    case QScriptDebuggerValue::StringValue:
+    {
+        QString s;
+        in >> s;
+        value = QScriptDebuggerValue( s );
+    }
+    break;
 
-        case QScriptDebuggerValue::ObjectValue:
-        {
-            qint64 id;
-            in >> id;
-            value = QScriptDebuggerValue( id );
-        }
-        break;
+    case QScriptDebuggerValue::NumberValue:
+    {
+        double d;
+        in >> d;
+        value = QScriptDebuggerValue( d );
+    }
+    break;
 
-        case QScriptDebuggerValue::NoValue:
-        default:
-            value = QScriptDebuggerValue();
-            break;
+    case QScriptDebuggerValue::ObjectValue:
+    {
+        qint64 id;
+        in >> id;
+        value = QScriptDebuggerValue( id );
+    }
+    break;
+
+    case QScriptDebuggerValue::NoValue:
+    default:
+        value = QScriptDebuggerValue();
+        break;
     }
 
     return in;

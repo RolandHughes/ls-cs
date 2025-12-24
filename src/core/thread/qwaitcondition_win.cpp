@@ -98,12 +98,12 @@ bool QWaitConditionPrivate::wait( QWaitConditionEvent *wce, unsigned long time )
 
     switch ( WaitForSingleObject( wce->event, time ) )
     {
-        default:
-            break;
+    default:
+        break;
 
-        case WAIT_OBJECT_0:
-            ret = true;
-            break;
+    case WAIT_OBJECT_0:
+        ret = true;
+        break;
     }
 
     return ret;

@@ -71,20 +71,20 @@ QLockFile::LockError QLockFilePrivate::tryLock_sys()
 
         switch ( lastError )
         {
-            case ERROR_SHARING_VIOLATION:
-            case ERROR_ALREADY_EXISTS:
-            case ERROR_FILE_EXISTS:
-                return QLockFile::LockFailedError;
+        case ERROR_SHARING_VIOLATION:
+        case ERROR_ALREADY_EXISTS:
+        case ERROR_FILE_EXISTS:
+            return QLockFile::LockFailedError;
 
-            case ERROR_ACCESS_DENIED:
-                // readonly file, or file still in use by another process.
-                // Assume the latter if the file exists, since we don't create it readonly.
-                return fileExists( fileEntry.nativeFilePath().toStdWString().c_str() )
-                       ? QLockFile::LockFailedError : QLockFile::PermissionError;
+        case ERROR_ACCESS_DENIED:
+            // readonly file, or file still in use by another process.
+            // Assume the latter if the file exists, since we don't create it readonly.
+            return fileExists( fileEntry.nativeFilePath().toStdWString().c_str() )
+                   ? QLockFile::LockFailedError : QLockFile::PermissionError;
 
-            default:
-                qWarning( "QLockFilePrivate::tryLock_sys() Unexpected lock error %ld", lastError );
-                return QLockFile::UnknownError;
+        default:
+            qWarning( "QLockFilePrivate::tryLock_sys() Unexpected lock error %ld", lastError );
+            return QLockFile::UnknownError;
         }
     }
 

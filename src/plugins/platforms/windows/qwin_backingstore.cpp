@@ -89,7 +89,7 @@ void QWindowsBackingStore::flush( QWindow *window, const QRegion &region, const 
         else
         {
             QWindowsContext::user32dll.updateLayeredWindow( rw->handle(), nullptr, &ptDst, &size, m_image->hdc(), &ptSrc, 0, &blend,
-                    ULW_ALPHA );
+                                      ULW_ALPHA );
         }
 
     }

@@ -267,74 +267,74 @@ bool QGroupBox::event( QEvent *e )
     {
 
 
-        case QEvent::HoverEnter:
-        case QEvent::HoverMove:
-        {
-            QStyle::SubControl control = style()->hitTestComplexControl( QStyle::CC_GroupBox, &box,
-                                         static_cast<QHoverEvent *>( e )->pos(),
-                                         this );
-            bool oldHover = d->hover;
-            d->hover = d->checkable && ( control == QStyle::SC_GroupBoxLabel || control == QStyle::SC_GroupBoxCheckBox );
+    case QEvent::HoverEnter:
+    case QEvent::HoverMove:
+    {
+        QStyle::SubControl control = style()->hitTestComplexControl( QStyle::CC_GroupBox, &box,
+                                     static_cast<QHoverEvent *>( e )->pos(),
+                                     this );
+        bool oldHover = d->hover;
+        d->hover = d->checkable && ( control == QStyle::SC_GroupBoxLabel || control == QStyle::SC_GroupBoxCheckBox );
 
-            if ( oldHover != d->hover )
+        if ( oldHover != d->hover )
+        {
+            QRect rect = style()->subControlRect( QStyle::CC_GroupBox, &box, QStyle::SC_GroupBoxCheckBox, this )
+                         | style()->subControlRect( QStyle::CC_GroupBox, &box, QStyle::SC_GroupBoxLabel, this );
+            update( rect );
+        }
+
+        return true;
+    }
+
+    case QEvent::HoverLeave:
+        d->hover = false;
+
+        if ( d->checkable )
+        {
+            QRect rect = style()->subControlRect( QStyle::CC_GroupBox, &box, QStyle::SC_GroupBoxCheckBox, this )
+                         | style()->subControlRect( QStyle::CC_GroupBox, &box, QStyle::SC_GroupBoxLabel, this );
+            update( rect );
+        }
+
+        return true;
+
+    case QEvent::KeyPress:
+    {
+        QKeyEvent *k = static_cast<QKeyEvent *>( e );
+
+        if ( !k->isAutoRepeat() && ( k->key() == Qt::Key_Select || k->key() == Qt::Key_Space ) )
+        {
+            d->pressedControl = QStyle::SC_GroupBoxCheckBox;
+            update( style()->subControlRect( QStyle::CC_GroupBox, &box, QStyle::SC_GroupBoxCheckBox, this ) );
+            return true;
+        }
+
+        break;
+    }
+
+    case QEvent::KeyRelease:
+    {
+        QKeyEvent *k = static_cast<QKeyEvent *>( e );
+
+        if ( !k->isAutoRepeat() && ( k->key() == Qt::Key_Select || k->key() == Qt::Key_Space ) )
+        {
+            bool toggle = ( d->pressedControl == QStyle::SC_GroupBoxLabel
+                            || d->pressedControl == QStyle::SC_GroupBoxCheckBox );
+            d->pressedControl = QStyle::SC_None;
+
+            if ( toggle )
             {
-                QRect rect = style()->subControlRect( QStyle::CC_GroupBox, &box, QStyle::SC_GroupBoxCheckBox, this )
-                             | style()->subControlRect( QStyle::CC_GroupBox, &box, QStyle::SC_GroupBoxLabel, this );
-                update( rect );
+                d->click();
             }
 
             return true;
         }
 
-        case QEvent::HoverLeave:
-            d->hover = false;
+        break;
+    }
 
-            if ( d->checkable )
-            {
-                QRect rect = style()->subControlRect( QStyle::CC_GroupBox, &box, QStyle::SC_GroupBoxCheckBox, this )
-                             | style()->subControlRect( QStyle::CC_GroupBox, &box, QStyle::SC_GroupBoxLabel, this );
-                update( rect );
-            }
-
-            return true;
-
-        case QEvent::KeyPress:
-        {
-            QKeyEvent *k = static_cast<QKeyEvent *>( e );
-
-            if ( !k->isAutoRepeat() && ( k->key() == Qt::Key_Select || k->key() == Qt::Key_Space ) )
-            {
-                d->pressedControl = QStyle::SC_GroupBoxCheckBox;
-                update( style()->subControlRect( QStyle::CC_GroupBox, &box, QStyle::SC_GroupBoxCheckBox, this ) );
-                return true;
-            }
-
-            break;
-        }
-
-        case QEvent::KeyRelease:
-        {
-            QKeyEvent *k = static_cast<QKeyEvent *>( e );
-
-            if ( !k->isAutoRepeat() && ( k->key() == Qt::Key_Select || k->key() == Qt::Key_Space ) )
-            {
-                bool toggle = ( d->pressedControl == QStyle::SC_GroupBoxLabel
-                                || d->pressedControl == QStyle::SC_GroupBoxCheckBox );
-                d->pressedControl = QStyle::SC_None;
-
-                if ( toggle )
-                {
-                    d->click();
-                }
-
-                return true;
-            }
-
-            break;
-        }
-
-        default:
-            break;
+    default:
+        break;
     }
 
     return QWidget::event( e );

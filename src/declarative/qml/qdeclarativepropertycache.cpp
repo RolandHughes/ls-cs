@@ -67,7 +67,7 @@ QDeclarativePropertyCache::Data::Flags QDeclarativePropertyCache::Data::flagsFor
     else
     {
         QDeclarativeMetaType::TypeCategory cat = engine ? QDeclarativeEnginePrivate::get( engine )->typeCategory( propType )
-                : QDeclarativeMetaType::typeCategory( propType );
+            : QDeclarativeMetaType::typeCategory( propType );
 
         if ( cat == QDeclarativeMetaType::Object )
         {

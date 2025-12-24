@@ -102,7 +102,7 @@ public:
     {
 
         std::unique_ptr<CSBento< SlotReturn ( SlotClass::* )() >> slotBento =
-                    std::make_unique<CSBento< SlotReturn( SlotClass::* )() >>( std::move( slotMethod ) );
+            std::make_unique<CSBento< SlotReturn( SlotClass::* )() >>( std::move( slotMethod ) );
 
         singleShot_internal( msec, timerType, receiver, std::move( slotBento ) );
     }

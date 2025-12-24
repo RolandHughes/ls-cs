@@ -52,33 +52,33 @@ void ErrorsView::addError( int model, const ErrorType type, const QString &arg )
 
     switch ( type )
     {
-        case SuperfluousAccelerator:
-            addError( model, tr( "Accelerator possibly superfluous in translation." ) );
-            break;
+    case SuperfluousAccelerator:
+        addError( model, tr( "Accelerator possibly superfluous in translation." ) );
+        break;
 
-        case MissingAccelerator:
-            addError( model, tr( "Accelerator possibly missing in translation." ) );
-            break;
+    case MissingAccelerator:
+        addError( model, tr( "Accelerator possibly missing in translation." ) );
+        break;
 
-        case PunctuationDiffer:
-            addError( model, tr( "Translation does not end with the same punctuation as the source text." ) );
-            break;
+    case PunctuationDiffer:
+        addError( model, tr( "Translation does not end with the same punctuation as the source text." ) );
+        break;
 
-        case IgnoredPhrasebook:
-            addError( model, tr( "Phrase book suggestion for '%1' was ignored." ).formatArg( arg ) );
-            break;
+    case IgnoredPhrasebook:
+        addError( model, tr( "Phrase book suggestion for '%1' was ignored." ).formatArg( arg ) );
+        break;
 
-        case PlaceMarkersDiffer:
-            addError( model, tr( "Translation does not refer to the same place markers as in the source text." ) );
-            break;
+    case PlaceMarkersDiffer:
+        addError( model, tr( "Translation does not refer to the same place markers as in the source text." ) );
+        break;
 
-        case NumerusMarkerMissing:
-            addError( model, tr( "Translation does not contain the necessary %n place marker." ) );
-            break;
+    case NumerusMarkerMissing:
+        addError( model, tr( "Translation does not contain the necessary %n place marker." ) );
+        break;
 
-        default:
-            addError( model, tr( "Unknown error" ) );
-            break;
+    default:
+        addError( model, tr( "Unknown error" ) );
+        break;
     }
 }
 

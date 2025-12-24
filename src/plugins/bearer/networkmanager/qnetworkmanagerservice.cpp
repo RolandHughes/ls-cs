@@ -54,9 +54,9 @@ QNetworkManagerInterface::QNetworkManagerInterface( QObject *parent )
 {
     d = new QNetworkManagerInterfacePrivate();
     d->connectionInterface = new QDBusInterface( QLatin1String( NM_DBUS_SERVICE ),
-            QLatin1String( NM_DBUS_PATH ),
-            QLatin1String( NM_DBUS_INTERFACE ),
-            dbusConnection );
+        QLatin1String( NM_DBUS_PATH ),
+        QLatin1String( NM_DBUS_INTERFACE ),
+        dbusConnection );
 
     if ( !d->connectionInterface->isValid() )
     {
@@ -190,9 +190,9 @@ QNetworkManagerInterfaceAccessPoint::QNetworkManagerInterfaceAccessPoint( const 
     d = new QNetworkManagerInterfaceAccessPointPrivate();
     d->path = dbusPathName;
     d->connectionInterface = new QDBusInterface( QLatin1String( NM_DBUS_SERVICE ),
-            d->path,
-            QLatin1String( NM_DBUS_INTERFACE_ACCESS_POINT ),
-            dbusConnection );
+        d->path,
+        QLatin1String( NM_DBUS_INTERFACE_ACCESS_POINT ),
+        dbusConnection );
 
     if ( !d->connectionInterface->isValid() )
     {
@@ -305,9 +305,9 @@ QNetworkManagerInterfaceDevice::QNetworkManagerInterfaceDevice( const QString &d
     d = new QNetworkManagerInterfaceDevicePrivate();
     d->path = deviceObjectPath;
     d->connectionInterface = new QDBusInterface( QLatin1String( NM_DBUS_SERVICE ),
-            d->path,
-            QLatin1String( NM_DBUS_INTERFACE_DEVICE ),
-            dbusConnection );
+        d->path,
+        QLatin1String( NM_DBUS_INTERFACE_DEVICE ),
+        dbusConnection );
 
     if ( !d->connectionInterface->isValid() )
     {
@@ -404,9 +404,9 @@ QNetworkManagerInterfaceDeviceWired::QNetworkManagerInterfaceDeviceWired( const 
     d = new QNetworkManagerInterfaceDeviceWiredPrivate();
     d->path = ifaceDevicePath;
     d->connectionInterface = new QDBusInterface( QLatin1String( NM_DBUS_SERVICE ),
-            d->path,
-            QLatin1String( NM_DBUS_INTERFACE_DEVICE_WIRED ),
-            dbusConnection, parent );
+        d->path,
+        QLatin1String( NM_DBUS_INTERFACE_DEVICE_WIRED ),
+        dbusConnection, parent );
 
     if ( !d->connectionInterface->isValid() )
     {
@@ -489,9 +489,9 @@ QNetworkManagerInterfaceDeviceWireless::QNetworkManagerInterfaceDeviceWireless( 
     d = new QNetworkManagerInterfaceDeviceWirelessPrivate();
     d->path = ifaceDevicePath;
     d->connectionInterface = new QDBusInterface( QLatin1String( NM_DBUS_SERVICE ),
-            d->path,
-            QLatin1String( NM_DBUS_INTERFACE_DEVICE_WIRELESS ),
-            dbusConnection, parent );
+        d->path,
+        QLatin1String( NM_DBUS_INTERFACE_DEVICE_WIRELESS ),
+        dbusConnection, parent );
 
     if ( !d->connectionInterface->isValid() )
     {
@@ -614,9 +614,9 @@ QNetworkManagerSettings::QNetworkManagerSettings( const QString &settingsService
     d = new QNetworkManagerSettingsPrivate();
     d->path = settingsService;
     d->connectionInterface = new QDBusInterface( settingsService,
-            QLatin1String( NM_DBUS_PATH_SETTINGS ),
-            QLatin1String( NM_DBUS_IFACE_SETTINGS ),
-            dbusConnection );
+        QLatin1String( NM_DBUS_PATH_SETTINGS ),
+        QLatin1String( NM_DBUS_IFACE_SETTINGS ),
+        dbusConnection );
 
     if ( !d->connectionInterface->isValid() )
     {
@@ -683,9 +683,9 @@ QNetworkManagerSettingsConnection::QNetworkManagerSettingsConnection( const QStr
     d->path = connectionObjectPath;
     d->service = settingsService;
     d->connectionInterface = new QDBusInterface( settingsService,
-            d->path,
-            QLatin1String( NM_DBUS_IFACE_SETTINGS_CONNECTION ),
-            dbusConnection, parent );
+        d->path,
+        QLatin1String( NM_DBUS_IFACE_SETTINGS_CONNECTION ),
+        dbusConnection, parent );
 
     if ( !d->connectionInterface->isValid() )
     {
@@ -862,9 +862,9 @@ QNetworkManagerConnectionActive::QNetworkManagerConnectionActive( const QString 
     d = new QNetworkManagerConnectionActivePrivate();
     d->path = activeConnectionObjectPath;
     d->connectionInterface = new QDBusInterface( QLatin1String( NM_DBUS_SERVICE ),
-            d->path,
-            QLatin1String( NM_DBUS_INTERFACE_ACTIVE_CONNECTION ),
-            dbusConnection, parent );
+        d->path,
+        QLatin1String( NM_DBUS_INTERFACE_ACTIVE_CONNECTION ),
+        dbusConnection, parent );
 
     if ( !d->connectionInterface->isValid() )
     {
@@ -963,9 +963,9 @@ QNetworkManagerIp4Config::QNetworkManagerIp4Config( const QString &deviceObjectP
     d = new QNetworkManagerIp4ConfigPrivate();
     d->path = deviceObjectPath;
     d->connectionInterface = new QDBusInterface( QLatin1String( NM_DBUS_SERVICE ),
-            d->path,
-            QLatin1String( NM_DBUS_INTERFACE_IP4_CONFIG ),
-            dbusConnection, parent );
+        d->path,
+        QLatin1String( NM_DBUS_INTERFACE_IP4_CONFIG ),
+        dbusConnection, parent );
 
     if ( !d->connectionInterface->isValid() )
     {

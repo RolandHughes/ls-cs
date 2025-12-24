@@ -254,45 +254,45 @@ static void retranslateTarget( const TranslatableEntry &target, const QString &t
 {
     switch ( target.type )
     {
-        case TranslatableProperty:
-            target.target.object->setProperty( target.prop.name, text );
-            break;
+    case TranslatableProperty:
+        target.target.object->setProperty( target.prop.name, text );
+        break;
 
-        case TranslatableTabPageText:
-            target.target.tabWidget->setTabText( target.prop.index, text );
-            break;
+    case TranslatableTabPageText:
+        target.target.tabWidget->setTabText( target.prop.index, text );
+        break;
 
-        case TranslatableTabPageToolTip:
-            target.target.tabWidget->setTabToolTip( target.prop.index, text );
-            break;
+    case TranslatableTabPageToolTip:
+        target.target.tabWidget->setTabToolTip( target.prop.index, text );
+        break;
 
-        case TranslatableTabPageWhatsThis:
-            target.target.tabWidget->setTabWhatsThis( target.prop.index, text );
-            break;
+    case TranslatableTabPageWhatsThis:
+        target.target.tabWidget->setTabWhatsThis( target.prop.index, text );
+        break;
 
-        case TranslatableToolItemText:
-            target.target.toolBox->setItemText( target.prop.index, text );
-            break;
+    case TranslatableToolItemText:
+        target.target.toolBox->setItemText( target.prop.index, text );
+        break;
 
-        case TranslatableToolItemToolTip:
-            target.target.toolBox->setItemToolTip( target.prop.index, text );
-            break;
+    case TranslatableToolItemToolTip:
+        target.target.toolBox->setItemToolTip( target.prop.index, text );
+        break;
 
-        case TranslatableComboBoxItem:
-            target.target.comboBox->setItemText( target.prop.index, text );
-            break;
+    case TranslatableComboBoxItem:
+        target.target.comboBox->setItemText( target.prop.index, text );
+        break;
 
-        case TranslatableListWidgetItem:
-            target.target.listWidgetItem->setData( target.prop.index, text );
-            break;
+    case TranslatableListWidgetItem:
+        target.target.listWidgetItem->setData( target.prop.index, text );
+        break;
 
-        case TranslatableTableWidgetItem:
-            target.target.tableWidgetItem->setData( target.prop.index, text );
-            break;
+    case TranslatableTableWidgetItem:
+        target.target.tableWidgetItem->setData( target.prop.index, text );
+        break;
 
-        case TranslatableTreeWidgetItem:
-            target.target.treeWidgetItem->setData( target.prop.treeIndex.column, target.prop.treeIndex.index, text );
-            break;
+    case TranslatableTreeWidgetItem:
+        target.target.treeWidgetItem->setData( target.prop.treeIndex.column, target.prop.treeIndex.index, text );
+        break;
     }
 }
 
@@ -503,58 +503,58 @@ static void highlightTarget( const TranslatableEntry &target, bool on )
 {
     switch ( target.type )
     {
-        case TranslatableProperty:
-            if ( QAction *a = qobject_cast<QAction *>( target.target.object ) )
-            {
-                highlightAction( a, on );
+    case TranslatableProperty:
+        if ( QAction *a = qobject_cast<QAction *>( target.target.object ) )
+        {
+            highlightAction( a, on );
 
-            }
-            else if ( QWidget *w = qobject_cast<QWidget *>( target.target.object ) )
-            {
-                bringToFront( w );
-                highlightWidget( w, on );
-            }
+        }
+        else if ( QWidget *w = qobject_cast<QWidget *>( target.target.object ) )
+        {
+            bringToFront( w );
+            highlightWidget( w, on );
+        }
 
-            break;
+        break;
 
-        case TranslatableComboBoxItem:
-            static_cast<QComboBox *>( target.target.object )->setCurrentIndex( target.prop.index );
-            bringToFront( static_cast<QWidget *>( target.target.object ) );
-            highlightWidget( static_cast<QWidget *>( target.target.object ), on );
-            break;
+    case TranslatableComboBoxItem:
+        static_cast<QComboBox *>( target.target.object )->setCurrentIndex( target.prop.index );
+        bringToFront( static_cast<QWidget *>( target.target.object ) );
+        highlightWidget( static_cast<QWidget *>( target.target.object ), on );
+        break;
 
-        case TranslatableTabPageText:
-            static_cast<QTabWidget *>( target.target.object )->setCurrentIndex( target.prop.index );
-            bringToFront( static_cast<QWidget *>( target.target.object ) );
-            highlightWidget( static_cast<QWidget *>( target.target.object ), on );
-            break;
+    case TranslatableTabPageText:
+        static_cast<QTabWidget *>( target.target.object )->setCurrentIndex( target.prop.index );
+        bringToFront( static_cast<QWidget *>( target.target.object ) );
+        highlightWidget( static_cast<QWidget *>( target.target.object ), on );
+        break;
 
-        case TranslatableTabPageToolTip:
-        case TranslatableTabPageWhatsThis:
-        case TranslatableToolItemText:
-        case TranslatableToolItemToolTip:
-        case TranslatableComboBoxItem:
+    case TranslatableTabPageToolTip:
+    case TranslatableTabPageWhatsThis:
+    case TranslatableToolItemText:
+    case TranslatableToolItemToolTip:
+    case TranslatableComboBoxItem:
 
-            bringToFront( static_cast<QWidget *>( target.target.object ) );
-            highlightWidget( static_cast<QWidget *>( target.target.object ), on );
+        bringToFront( static_cast<QWidget *>( target.target.object ) );
+        highlightWidget( static_cast<QWidget *>( target.target.object ), on );
 
-            break;
+        break;
 
 
-        case TranslatableListWidgetItem:
-            bringToFront( target.target.listWidgetItem->listWidget() );
-            highlightWidgetItem( target.target.listWidgetItem, on );
-            break;
+    case TranslatableListWidgetItem:
+        bringToFront( target.target.listWidgetItem->listWidget() );
+        highlightWidgetItem( target.target.listWidgetItem, on );
+        break;
 
-        case TranslatableTableWidgetItem:
-            bringToFront( target.target.tableWidgetItem->tableWidget() );
-            highlightWidgetItem( target.target.tableWidgetItem, on );
-            break;
+    case TranslatableTableWidgetItem:
+        bringToFront( target.target.tableWidgetItem->tableWidget() );
+        highlightWidgetItem( target.target.tableWidgetItem, on );
+        break;
 
-        case TranslatableTreeWidgetItem:
-            bringToFront( target.target.treeWidgetItem->treeWidget() );
-            highlightTreeWidgetItem( target.target.treeWidgetItem, target.prop.treeIndex.column, on );
-            break;
+    case TranslatableTreeWidgetItem:
+        bringToFront( target.target.treeWidgetItem->treeWidget() );
+        highlightTreeWidgetItem( target.target.treeWidgetItem, target.prop.treeIndex.column, on );
+        break;
 
     }
 }

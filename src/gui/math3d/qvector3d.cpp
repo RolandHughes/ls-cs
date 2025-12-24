@@ -182,7 +182,7 @@ qreal QVector3D::lengthSquared() const
 QDebug operator<<( QDebug dbg, const QVector3D &vector )
 {
     dbg.nospace() << "QVector3D("
-                  << vector.x() << ", " << vector.y() << ", " << vector.z() << ')';
+       << vector.x() << ", " << vector.y() << ", " << vector.z() << ')';
     return dbg.space();
 }
 

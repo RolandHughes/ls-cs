@@ -204,35 +204,35 @@ const char *cfurlErrorDescription( SInt32 errorCode )
 {
     switch ( errorCode )
     {
-        case kCFURLUnknownError:
-            return "Unknown Error";
+    case kCFURLUnknownError:
+        return "Unknown Error";
 
-        case kCFURLUnknownSchemeError:
-            return "Unknown Scheme";
+    case kCFURLUnknownSchemeError:
+        return "Unknown Scheme";
 
-        case kCFURLResourceNotFoundError:
-            return "Resource Not Found";
+    case kCFURLResourceNotFoundError:
+        return "Resource Not Found";
 
-        case kCFURLResourceAccessViolationError:
-            return "Resource Access Violation";
+    case kCFURLResourceAccessViolationError:
+        return "Resource Access Violation";
 
-        case kCFURLRemoteHostUnavailableError:
-            return "Remote Host Unavailable";
+    case kCFURLRemoteHostUnavailableError:
+        return "Remote Host Unavailable";
 
-        case kCFURLImproperArgumentsError:
-            return "Improper Arguments";
+    case kCFURLImproperArgumentsError:
+        return "Improper Arguments";
 
-        case kCFURLUnknownPropertyKeyError:
-            return "Unknown Property Key";
+    case kCFURLUnknownPropertyKeyError:
+        return "Unknown Property Key";
 
-        case kCFURLPropertyKeyUnavailableError:
-            return "Property Key Unavailable";
+    case kCFURLPropertyKeyUnavailableError:
+        return "Property Key Unavailable";
 
-        case kCFURLTimeoutError:
-            return "Timeout";
+    case kCFURLTimeoutError:
+        return "Timeout";
 
-        default:
-            return "Really Unknown Error";
+    default:
+        return "Really Unknown Error";
     }
 }
 

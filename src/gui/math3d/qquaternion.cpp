@@ -210,8 +210,8 @@ QQuaternion::operator QVariant() const
 QDebug operator<<( QDebug dbg, const QQuaternion &q )
 {
     dbg.nospace() << "QQuaternion(scalar:" << q.scalar()
-                  << ", vector:(" << q.x() << ", "
-                  << q.y() << ", " << q.z() << "))";
+       << ", vector:(" << q.x() << ", "
+       << q.y() << ", " << q.z() << "))";
     return dbg.space();
 }
 

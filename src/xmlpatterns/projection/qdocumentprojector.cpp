@@ -38,68 +38,68 @@ void DocumentProjector::startElement( const QXmlName &name )
 {
     switch ( m_action )
     {
-        case ProjectedExpression::KeepSubtree:
+    case ProjectedExpression::KeepSubtree:
+    {
+        m_receiver->startElement( name );
+    }
+
+    [[fallthrough]];
+
+    case ProjectedExpression::Skip:
+    {
+        ++m_nodesInProcess;
+        return;
+    }
+
+    default:
+    {
+        Q_ASSERT_X( m_action == ProjectedExpression::Move, Q_FUNC_INFO,
+                    "Not to supposed to receive Keep because "
+                    "endElement() should always end the Keep state." );
+
+        for ( int i = 0; i < m_pathCount; ++i )
+        {
+            m_action = m_paths.at( i )->actionForElement( name, m_paths[i] );
+
+            switch ( m_action )
+            {
+            case ProjectedExpression::Keep:
+            {
+                m_action = ProjectedExpression::Keep;
+                continue;
+            }
+
+            case ProjectedExpression::KeepSubtree:
+            {
+                // Ok, at least one path wanted this node. Pass it on, * and exit.
+                m_receiver->startElement( name );
+                ++m_nodesInProcess;
+                return;
+            }
+
+            case ProjectedExpression::Skip:
+            {
+                /* This particular path doesn't need it, but
+                 * some other path might, so continue looping. */
+                continue;
+            }
+
+            case ProjectedExpression::Move:
+                Q_ASSERT_X( false, Q_FUNC_INFO, "Move is not valid." );
+            }
+        }
+
+        ++m_nodesInProcess;
+
+        if ( m_action == ProjectedExpression::Keep )
         {
             m_receiver->startElement( name );
         }
-
-        [[fallthrough]];
-
-        case ProjectedExpression::Skip:
+        else
         {
-            ++m_nodesInProcess;
-            return;
+            Q_ASSERT( m_action == ProjectedExpression::Skip );
         }
-
-        default:
-        {
-            Q_ASSERT_X( m_action == ProjectedExpression::Move, Q_FUNC_INFO,
-                        "Not to supposed to receive Keep because "
-                        "endElement() should always end the Keep state." );
-
-            for ( int i = 0; i < m_pathCount; ++i )
-            {
-                m_action = m_paths.at( i )->actionForElement( name, m_paths[i] );
-
-                switch ( m_action )
-                {
-                    case ProjectedExpression::Keep:
-                    {
-                        m_action = ProjectedExpression::Keep;
-                        continue;
-                    }
-
-                    case ProjectedExpression::KeepSubtree:
-                    {
-                        // Ok, at least one path wanted this node. Pass it on, * and exit.
-                        m_receiver->startElement( name );
-                        ++m_nodesInProcess;
-                        return;
-                    }
-
-                    case ProjectedExpression::Skip:
-                    {
-                        /* This particular path doesn't need it, but
-                         * some other path might, so continue looping. */
-                        continue;
-                    }
-
-                    case ProjectedExpression::Move:
-                        Q_ASSERT_X( false, Q_FUNC_INFO, "Move is not valid." );
-                }
-            }
-
-            ++m_nodesInProcess;
-
-            if ( m_action == ProjectedExpression::Keep )
-            {
-                m_receiver->startElement( name );
-            }
-            else
-            {
-                Q_ASSERT( m_action == ProjectedExpression::Skip );
-            }
-        }
+    }
     }
 }
 

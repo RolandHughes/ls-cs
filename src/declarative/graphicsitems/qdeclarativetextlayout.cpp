@@ -179,7 +179,7 @@ public:
     DrawTextItemDevice( bool untransformedCoordinates, bool useBackendOptimizations )
     {
         m_paintEngine = new DrawTextItemRecorder( untransformedCoordinates,
-                useBackendOptimizations );
+            useBackendOptimizations );
     }
 
     ~DrawTextItemDevice()
@@ -198,34 +198,34 @@ public:
 
         switch ( m )
         {
-            case PdmWidth:
-            case PdmHeight:
-            case PdmWidthMM:
-            case PdmHeightMM:
-                val = 0;
-                break;
+        case PdmWidth:
+        case PdmHeight:
+        case PdmWidthMM:
+        case PdmHeightMM:
+            val = 0;
+            break;
 
-            case PdmDpiX:
-            case PdmPhysicalDpiX:
-                val = lscs_defaultDpiX();
-                break;
+        case PdmDpiX:
+        case PdmPhysicalDpiX:
+            val = lscs_defaultDpiX();
+            break;
 
-            case PdmDpiY:
-            case PdmPhysicalDpiY:
-                val = lscs_defaultDpiY();
-                break;
+        case PdmDpiY:
+        case PdmPhysicalDpiY:
+            val = lscs_defaultDpiY();
+            break;
 
-            case PdmNumColors:
-                val = 16777216;
-                break;
+        case PdmNumColors:
+            val = 16777216;
+            break;
 
-            case PdmDepth:
-                val = 24;
-                break;
+        case PdmDepth:
+            val = 24;
+            break;
 
-            default:
-                val = 0;
-                qWarning( "DrawTextItemDevice::metric: Invalid metric command" );
+        default:
+            val = 0;
+            qWarning( "DrawTextItemDevice::metric: Invalid metric command" );
         }
 
         return val;
@@ -361,9 +361,9 @@ void QDeclarativeTextLayout::draw( QPainter *painter, const QPointF &p )
     QPainterPrivate *priv = QPainterPrivate::get( painter );
 
     bool paintEngineSupportsTransformations = priv->extended &&
-            ( priv->extended->type() == QPaintEngine::OpenGL2 ||
-              priv->extended->type() == QPaintEngine::OpenVG ||
-              priv->extended->type() == QPaintEngine::OpenGL );
+        ( priv->extended->type() == QPaintEngine::OpenGL2 ||
+          priv->extended->type() == QPaintEngine::OpenVG ||
+          priv->extended->type() == QPaintEngine::OpenGL );
 
     if ( !paintEngineSupportsTransformations || !priv->state->matrix.isAffine() )
     {
@@ -424,8 +424,8 @@ void QDeclarativeTextLayout::draw( QPainter *painter, const QPointF &p )
         priv->extended->drawStaticTextItem( &item );
 
         lscs_draw_decoration_for_glyphs( painter, item.glyphs, item.glyphPositions,
-                                       item.numGlyphs, item.fontEngine(), painter->font(),
-                                       QTextCharFormat() );
+                                         item.numGlyphs, item.fontEngine(), painter->font(),
+                                         QTextCharFormat() );
     }
 
     if ( currentColor != oldPen.color() )

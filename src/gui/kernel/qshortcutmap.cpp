@@ -313,32 +313,32 @@ bool QShortcutMap::tryShortcut( QKeyEvent *e )
 
     switch ( nextState( e ) )
     {
-        case QKeySequence::NoMatch:
-            // In the case of going from a partial match to no match we handled the
-            // event, since we already stated that we did for the partial match. But
-            // in the normal case of directly going to no match we say we didn't.
-            return previousState == QKeySequence::PartialMatch;
+    case QKeySequence::NoMatch:
+        // In the case of going from a partial match to no match we handled the
+        // event, since we already stated that we did for the partial match. But
+        // in the normal case of directly going to no match we say we didn't.
+        return previousState == QKeySequence::PartialMatch;
 
-        case QKeySequence::PartialMatch:
-            // For a partial match we don't know yet if we will handle the shortcut
-            // but we need to say we did, so that we get the follow-up key-presses.
-            return true;
+    case QKeySequence::PartialMatch:
+        // For a partial match we don't know yet if we will handle the shortcut
+        // but we need to say we did, so that we get the follow-up key-presses.
+        return true;
 
-        case QKeySequence::ExactMatch:
-        {
-            // Save number of identical matches before dispatching
-            // to keep QShortcutMap and tryShortcut reentrant.
-            const int identicalMatches = d->identicals.count();
-            resetState();
-            dispatchEvent( e );
-            // If there are no identicals we've only found disabled shortcuts, and
-            // shouldn't say that we handled the event.
-            return identicalMatches > 0;
-        }
+    case QKeySequence::ExactMatch:
+    {
+        // Save number of identical matches before dispatching
+        // to keep QShortcutMap and tryShortcut reentrant.
+        const int identicalMatches = d->identicals.count();
+        resetState();
+        dispatchEvent( e );
+        // If there are no identicals we've only found disabled shortcuts, and
+        // shouldn't say that we handled the event.
+        return identicalMatches > 0;
+    }
 
-        default:
-            // error, may want to throw
-            break;
+    default:
+        // error, may want to throw
+        break;
     }
 
     return false;

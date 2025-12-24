@@ -141,61 +141,61 @@ void QStyledItemDelegate::initStyleOption( QStyleOptionViewItem *option, const Q
 
         switch ( value.type() )
         {
-            case QVariant::Icon:
+        case QVariant::Icon:
+        {
+            option->icon = value.value<QIcon>();
+            QIcon::Mode mode;
+
+            if ( ! ( option->state & QStyle::State_Enabled ) )
             {
-                option->icon = value.value<QIcon>();
-                QIcon::Mode mode;
+                mode = QIcon::Disabled;
 
-                if ( ! ( option->state & QStyle::State_Enabled ) )
-                {
-                    mode = QIcon::Disabled;
+            }
+            else if ( option->state & QStyle::State_Selected )
+            {
+                mode = QIcon::Selected;
 
-                }
-                else if ( option->state & QStyle::State_Selected )
-                {
-                    mode = QIcon::Selected;
-
-                }
-                else
-                {
-                    mode = QIcon::Normal;
-                }
-
-                QIcon::State state = option->state & QStyle::State_Open ? QIcon::On : QIcon::Off;
-                QSize actualSize = option->icon.actualSize( option->decorationSize, mode, state );
-
-                // For highdpi icons actualSize might be larger than decorationSize, which we don't want. Clamp it to decorationSize.
-                option->decorationSize = QSize( qMin( option->decorationSize.width(), actualSize.width() ),
-                                                qMin( option->decorationSize.height(), actualSize.height() ) );
-                break;
+            }
+            else
+            {
+                mode = QIcon::Normal;
             }
 
-            case QVariant::Color:
-            {
-                QPixmap pixmap( option->decorationSize );
-                pixmap.fill( value.value<QColor>() );
-                option->icon = QIcon( pixmap );
-                break;
-            }
+            QIcon::State state = option->state & QStyle::State_Open ? QIcon::On : QIcon::Off;
+            QSize actualSize = option->icon.actualSize( option->decorationSize, mode, state );
 
-            case QVariant::Image:
-            {
-                QImage image = value.value<QImage>();
-                option->icon = QIcon( QPixmap::fromImage( image ) );
-                option->decorationSize = image.size() / image.devicePixelRatio();
-                break;
-            }
+            // For highdpi icons actualSize might be larger than decorationSize, which we don't want. Clamp it to decorationSize.
+            option->decorationSize = QSize( qMin( option->decorationSize.width(), actualSize.width() ),
+                                            qMin( option->decorationSize.height(), actualSize.height() ) );
+            break;
+        }
 
-            case QVariant::Pixmap:
-            {
-                QPixmap pixmap = value.value<QPixmap>();
-                option->icon = QIcon( pixmap );
-                option->decorationSize = pixmap.size() / pixmap.devicePixelRatio();
-                break;
-            }
+        case QVariant::Color:
+        {
+            QPixmap pixmap( option->decorationSize );
+            pixmap.fill( value.value<QColor>() );
+            option->icon = QIcon( pixmap );
+            break;
+        }
 
-            default:
-                break;
+        case QVariant::Image:
+        {
+            QImage image = value.value<QImage>();
+            option->icon = QIcon( QPixmap::fromImage( image ) );
+            option->decorationSize = image.size() / image.devicePixelRatio();
+            break;
+        }
+
+        case QVariant::Pixmap:
+        {
+            QPixmap pixmap = value.value<QPixmap>();
+            option->icon = QIcon( pixmap );
+            option->decorationSize = pixmap.size() / pixmap.devicePixelRatio();
+            break;
+        }
+
+        default:
+            break;
         }
     }
 

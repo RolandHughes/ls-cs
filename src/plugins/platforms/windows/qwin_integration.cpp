@@ -259,50 +259,50 @@ void QWindowsIntegration::initialize()
     QString icStr = QPlatformInputContextFactory::requested();
 
     icStr.isEmpty() ? d->m_inputContext.reset( new QWindowsInputContext )
-    : d->m_inputContext.reset( QPlatformInputContextFactory::create( icStr ) );
+         : d->m_inputContext.reset( QPlatformInputContextFactory::create( icStr ) );
 }
 
 bool QWindowsIntegration::hasCapability( QPlatformIntegration::Capability cap ) const
 {
     switch ( cap )
     {
-        case ThreadedPixmaps:
-            return true;
+    case ThreadedPixmaps:
+        return true;
 
 #ifndef LSCS_NO_OPENGL
 
-        case OpenGL:
-            return true;
+    case OpenGL:
+        return true;
 
-        case ThreadedOpenGL:
-            if ( const QWindowsStaticOpenGLContext *glContext = QWindowsIntegration::staticOpenGLContext() )
-            {
-                return glContext->supportsThreadedOpenGL();
-            }
+    case ThreadedOpenGL:
+        if ( const QWindowsStaticOpenGLContext *glContext = QWindowsIntegration::staticOpenGLContext() )
+        {
+            return glContext->supportsThreadedOpenGL();
+        }
 
-            return false;
+        return false;
 #endif
 
-        case WindowMasks:
-            return true;
+    case WindowMasks:
+        return true;
 
-        case MultipleWindows:
-            return true;
+    case MultipleWindows:
+        return true;
 
-        case ForeignWindows:
-            return true;
+    case ForeignWindows:
+        return true;
 
-        case RasterGLSurface:
-            return true;
+    case RasterGLSurface:
+        return true;
 
-        case AllGLFunctionsQueryable:
-            return true;
+    case AllGLFunctionsQueryable:
+        return true;
 
-        case SwitchableWidgetComposition:
-            return true;
+    case SwitchableWidgetComposition:
+        return true;
 
-        default:
-            return QPlatformIntegration::hasCapability( cap );
+    default:
+        return QPlatformIntegration::hasCapability( cap );
     }
 }
 
@@ -373,47 +373,47 @@ QWindowsStaticOpenGLContext *QWindowsStaticOpenGLContext::doCreate()
 
     switch ( requestedRenderer )
     {
-        case QWindowsOpenGLTester::DesktopGl:
-            if ( QWindowsStaticOpenGLContext *glCtx = QOpenGLStaticContext::create() )
+    case QWindowsOpenGLTester::DesktopGl:
+        if ( QWindowsStaticOpenGLContext *glCtx = QOpenGLStaticContext::create() )
+        {
+            if ( ( QWindowsOpenGLTester::supportedRenderers() & QWindowsOpenGLTester::DisableRotationFlag )
+                    && !QWindowsScreen::setOrientationPreference( Qt::LandscapeOrientation ) )
             {
-                if ( ( QWindowsOpenGLTester::supportedRenderers() & QWindowsOpenGLTester::DisableRotationFlag )
-                        && !QWindowsScreen::setOrientationPreference( Qt::LandscapeOrientation ) )
-                {
-                    qWarning( "QWindowsStaticOpenGLContext::doCreate() Unable to disable rotation" );
-                }
-
-                return glCtx;
+                qWarning( "QWindowsStaticOpenGLContext::doCreate() Unable to disable rotation" );
             }
 
-            qWarning( "QWindowsStaticOpenGLContext::doCreate() System OpenGL failed, Falling back to Software OpenGL" );
-            return QOpenGLStaticContext::create( true );
+            return glCtx;
+        }
 
-        // If ANGLE is requested use it, do not try anything else
-        case QWindowsOpenGLTester::AngleRendererD3d9:
-        case QWindowsOpenGLTester::AngleRendererD3d11:
-        case QWindowsOpenGLTester::AngleRendererD3d11Warp:
-            return QWindowsEGLStaticContext::create( requestedRenderer );
+        qWarning( "QWindowsStaticOpenGLContext::doCreate() System OpenGL failed, Falling back to Software OpenGL" );
+        return QOpenGLStaticContext::create( true );
 
-        case QWindowsOpenGLTester::Gles:
-            return QWindowsEGLStaticContext::create( QWindowsOpenGLTester::supportedGlesRenderers() );
+    // If ANGLE is requested use it, do not try anything else
+    case QWindowsOpenGLTester::AngleRendererD3d9:
+    case QWindowsOpenGLTester::AngleRendererD3d11:
+    case QWindowsOpenGLTester::AngleRendererD3d11Warp:
+        return QWindowsEGLStaticContext::create( requestedRenderer );
 
-        case QWindowsOpenGLTester::SoftwareRasterizer:
-            if ( QWindowsStaticOpenGLContext *swCtx = QOpenGLStaticContext::create( true ) )
-            {
-                return swCtx;
-            }
+    case QWindowsOpenGLTester::Gles:
+        return QWindowsEGLStaticContext::create( QWindowsOpenGLTester::supportedGlesRenderers() );
 
-            qWarning( "QWindowsStaticOpenGLContext::doCreate() Software OpenGL failed, Falling back to system OpenGL" );
+    case QWindowsOpenGLTester::SoftwareRasterizer:
+        if ( QWindowsStaticOpenGLContext *swCtx = QOpenGLStaticContext::create( true ) )
+        {
+            return swCtx;
+        }
 
-            if ( QWindowsOpenGLTester::supportedRenderers() & QWindowsOpenGLTester::DesktopGl )
-            {
-                return QOpenGLStaticContext::create();
-            }
+        qWarning( "QWindowsStaticOpenGLContext::doCreate() Software OpenGL failed, Falling back to system OpenGL" );
 
-            return nullptr;
+        if ( QWindowsOpenGLTester::supportedRenderers() & QWindowsOpenGLTester::DesktopGl )
+        {
+            return QOpenGLStaticContext::create();
+        }
 
-        default:
-            break;
+        return nullptr;
+
+    default:
+        break;
     }
 
     const QWindowsOpenGLTester::Renderers supportedRenderers = QWindowsOpenGLTester::supportedRenderers();
@@ -572,44 +572,44 @@ QVariant QWindowsIntegration::styleHint( QPlatformIntegration::StyleHint hint ) 
 {
     switch ( hint )
     {
-        case QPlatformIntegration::CursorFlashTime:
-            if ( const unsigned timeMS = GetCaretBlinkTime() )
-            {
-                return QVariant( timeMS != INFINITE ? int( timeMS ) * 2 : 0 );
-            }
+    case QPlatformIntegration::CursorFlashTime:
+        if ( const unsigned timeMS = GetCaretBlinkTime() )
+        {
+            return QVariant( timeMS != INFINITE ? int( timeMS ) * 2 : 0 );
+        }
 
-            break;
+        break;
 
 #ifdef SPI_GETKEYBOARDSPEED
 
-        case KeyboardAutoRepeatRate:
-            return QVariant( keyBoardAutoRepeatRateMS() );
+    case KeyboardAutoRepeatRate:
+        return QVariant( keyBoardAutoRepeatRateMS() );
 #endif
 
-        case QPlatformIntegration::StartDragTime:
-        case QPlatformIntegration::StartDragDistance:
-        case QPlatformIntegration::KeyboardInputInterval:
-        case QPlatformIntegration::ShowIsFullScreen:
-        case QPlatformIntegration::PasswordMaskDelay:
-        case QPlatformIntegration::StartDragVelocity:
-            break; // Not implemented
+    case QPlatformIntegration::StartDragTime:
+    case QPlatformIntegration::StartDragDistance:
+    case QPlatformIntegration::KeyboardInputInterval:
+    case QPlatformIntegration::ShowIsFullScreen:
+    case QPlatformIntegration::PasswordMaskDelay:
+    case QPlatformIntegration::StartDragVelocity:
+        break; // Not implemented
 
-        case QPlatformIntegration::FontSmoothingGamma:
-            return QVariant( QWindowsFontDatabase::fontSmoothingGamma() );
+    case QPlatformIntegration::FontSmoothingGamma:
+        return QVariant( QWindowsFontDatabase::fontSmoothingGamma() );
 
-        case QPlatformIntegration::MouseDoubleClickInterval:
-            if ( const UINT ms = GetDoubleClickTime() )
-            {
-                return QVariant( int( ms ) );
-            }
+    case QPlatformIntegration::MouseDoubleClickInterval:
+        if ( const UINT ms = GetDoubleClickTime() )
+        {
+            return QVariant( int( ms ) );
+        }
 
-            break;
+        break;
 
-        case QPlatformIntegration::UseRtlExtensions:
-            return QVariant( d->m_context.useRTLExtensions() );
+    case QPlatformIntegration::UseRtlExtensions:
+        return QVariant( d->m_context.useRTLExtensions() );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QPlatformIntegration::styleHint( hint );

@@ -52,7 +52,7 @@ void MainWindow::populateTextEdit()
     m_textEdit->setTextColor( Qt::darkRed );
     txt = QString("     unsigned char      %1").formatArg(sizeof( unsigned char ));
     m_textEdit->append( txt );
-    
+
     m_textEdit->setTextColor( Qt::darkGreen );
     txt = QString("     qint8              %1").formatArg(sizeof( qint8 ));
     m_textEdit->append( txt );
@@ -60,7 +60,7 @@ void MainWindow::populateTextEdit()
     m_textEdit->setTextColor( Qt::darkRed );
     txt = QString("     qint16             %1").formatArg(sizeof( qint16 ));
     m_textEdit->append( txt );
-    
+
     m_textEdit->setTextColor( Qt::darkGreen );
     txt = QString("     qint32              %1").formatArg(sizeof( qint32 ));
     m_textEdit->append( txt );
@@ -150,5 +150,5 @@ void MainWindow::populateTextEdit()
             m_textEdit->append( txt );
         }
     }
-    
+
 }

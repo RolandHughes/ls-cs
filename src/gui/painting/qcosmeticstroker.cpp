@@ -211,41 +211,41 @@ static StrokeLine strokeLine( int strokeSelection )
 
     switch ( strokeSelection )
     {
-        case Aliased|Solid|RegularDraw:
-            stroke = &LSCS_PREPEND_NAMESPACE( drawLine )<drawPixel, NoDasher>;
-            break;
+    case Aliased|Solid|RegularDraw:
+        stroke = &LSCS_PREPEND_NAMESPACE( drawLine )<drawPixel, NoDasher>;
+        break;
 
-        case Aliased|Solid|FastDraw:
-            stroke = &LSCS_PREPEND_NAMESPACE( drawLine )<drawPixelARGB32Opaque, NoDasher>;
-            break;
+    case Aliased|Solid|FastDraw:
+        stroke = &LSCS_PREPEND_NAMESPACE( drawLine )<drawPixelARGB32Opaque, NoDasher>;
+        break;
 
-        case Aliased|Dashed|RegularDraw:
-            stroke = &LSCS_PREPEND_NAMESPACE( drawLine )<drawPixel, Dasher>;
-            break;
+    case Aliased|Dashed|RegularDraw:
+        stroke = &LSCS_PREPEND_NAMESPACE( drawLine )<drawPixel, Dasher>;
+        break;
 
-        case Aliased|Dashed|FastDraw:
-            stroke = &LSCS_PREPEND_NAMESPACE( drawLine )<drawPixelARGB32Opaque, Dasher>;
-            break;
+    case Aliased|Dashed|FastDraw:
+        stroke = &LSCS_PREPEND_NAMESPACE( drawLine )<drawPixelARGB32Opaque, Dasher>;
+        break;
 
-        case AntiAliased|Solid|RegularDraw:
-            stroke = &LSCS_PREPEND_NAMESPACE( drawLineAA )<drawPixel, NoDasher>;
-            break;
+    case AntiAliased|Solid|RegularDraw:
+        stroke = &LSCS_PREPEND_NAMESPACE( drawLineAA )<drawPixel, NoDasher>;
+        break;
 
-        case AntiAliased|Solid|FastDraw:
-            stroke = &LSCS_PREPEND_NAMESPACE( drawLineAA )<drawPixelARGB32, NoDasher>;
-            break;
+    case AntiAliased|Solid|FastDraw:
+        stroke = &LSCS_PREPEND_NAMESPACE( drawLineAA )<drawPixelARGB32, NoDasher>;
+        break;
 
-        case AntiAliased|Dashed|RegularDraw:
-            stroke = &LSCS_PREPEND_NAMESPACE( drawLineAA )<drawPixel, Dasher>;
-            break;
+    case AntiAliased|Dashed|RegularDraw:
+        stroke = &LSCS_PREPEND_NAMESPACE( drawLineAA )<drawPixel, Dasher>;
+        break;
 
-        case AntiAliased|Dashed|FastDraw:
-            stroke = &LSCS_PREPEND_NAMESPACE( drawLineAA )<drawPixelARGB32, Dasher>;
-            break;
+    case AntiAliased|Dashed|FastDraw:
+        stroke = &LSCS_PREPEND_NAMESPACE( drawLineAA )<drawPixelARGB32, Dasher>;
+        break;
 
-        default:
-            Q_ASSERT( false );
-            stroke = nullptr;
+    default:
+        Q_ASSERT( false );
+        stroke = nullptr;
     }
 
     return stroke;
@@ -666,41 +666,41 @@ void QCosmeticStroker::drawPath( const QVectorPath &path )
 
                 switch ( *type )
                 {
-                    case QPainterPath::MoveToElement:
-                        Q_ASSERT( !"Logic error" );
-                        break;
+                case QPainterPath::MoveToElement:
+                    Q_ASSERT( !"Logic error" );
+                    break;
 
-                    case QPainterPath::LineToElement:
-                        if ( !closed && drawCaps && type == e - 1 )
-                        {
-                            caps |= CapEnd;
-                        }
-
-                        stroke( this, p.x(), p.y(), p2.x(), p2.y(), caps );
-                        p = p2;
-                        points += 2;
-                        ++type;
-                        break;
-
-                    case QPainterPath::CurveToElement:
+                case QPainterPath::LineToElement:
+                    if ( !closed && drawCaps && type == e - 1 )
                     {
-                        if ( !closed && drawCaps && type == e - 3 )
-                        {
-                            caps |= CapEnd;
-                        }
-
-                        QPointF p3 = QPointF( points[2], points[3] ) * state->matrix;
-                        QPointF p4 = QPointF( points[4], points[5] ) * state->matrix;
-                        renderCubic( p, p2, p3, p4, caps );
-                        p = p4;
-                        type += 3;
-                        points += 6;
-                        break;
+                        caps |= CapEnd;
                     }
 
-                    case QPainterPath::CurveToDataElement:
-                        Q_ASSERT( !"QPainterPath::toSubpathPolygons(), bad element type" );
-                        break;
+                    stroke( this, p.x(), p.y(), p2.x(), p2.y(), caps );
+                    p = p2;
+                    points += 2;
+                    ++type;
+                    break;
+
+                case QPainterPath::CurveToElement:
+                {
+                    if ( !closed && drawCaps && type == e - 3 )
+                    {
+                        caps |= CapEnd;
+                    }
+
+                    QPointF p3 = QPointF( points[2], points[3] ) * state->matrix;
+                    QPointF p4 = QPointF( points[4], points[5] ) * state->matrix;
+                    renderCubic( p, p2, p3, p4, caps );
+                    p = p4;
+                    type += 3;
+                    points += 6;
+                    break;
+                }
+
+                case QPainterPath::CurveToDataElement:
+                    Q_ASSERT( !"QPainterPath::toSubpathPolygons(), bad element type" );
+                    break;
                 }
 
                 caps = NoCaps;

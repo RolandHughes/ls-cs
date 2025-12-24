@@ -196,14 +196,14 @@ void QMediaPlayerPrivate::_q_mediaStatusChanged( QMediaPlayer::MediaStatus newSt
 
         switch ( newStatus )
         {
-            case QMediaPlayer::StalledMedia:
-            case QMediaPlayer::BufferingMedia:
-                q->addPropertyWatch<int>( "bufferStatus" );
-                break;
+        case QMediaPlayer::StalledMedia:
+        case QMediaPlayer::BufferingMedia:
+            q->addPropertyWatch<int>( "bufferStatus" );
+            break;
 
-            default:
-                q->removePropertyWatch( "bufferStatus" );
-                break;
+        default:
+            q->removePropertyWatch( "bufferStatus" );
+            break;
         }
 
         emit q->mediaStatusChanged( newStatus );
@@ -294,16 +294,16 @@ void QMediaPlayerPrivate::_q_updateMedia( const QMediaContent &media )
     {
         switch ( currentState )
         {
-            case QMediaPlayer::PlayingState:
-                control->play();
-                break;
+        case QMediaPlayer::PlayingState:
+            control->play();
+            break;
 
-            case QMediaPlayer::PausedState:
-                control->pause();
-                break;
+        case QMediaPlayer::PausedState:
+            control->pause();
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -557,16 +557,16 @@ void QMediaPlayerPrivate::_q_handlePlaylistLoaded()
 
     switch ( state )
     {
-        case QMediaPlayer::PausedState:
-            control->pause();
-            break;
+    case QMediaPlayer::PausedState:
+        control->pause();
+        break;
 
-        case QMediaPlayer::PlayingState:
-            control->play();
-            break;
+    case QMediaPlayer::PlayingState:
+        control->play();
+        break;
 
-        case QMediaPlayer::StoppedState:
-            break;
+    case QMediaPlayer::StoppedState:
+        break;
     }
 }
 

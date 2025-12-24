@@ -1235,40 +1235,40 @@ bool Q_INTERNAL_WIN_NO_THROW QPNGImageWriter::writeImage( const QImage &image, i
 
     switch ( image.format() )
     {
-        case QImage::Format_Mono:
-        case QImage::Format_MonoLSB:
-        case QImage::Format_Indexed8:
-        case QImage::Format_Grayscale8:
-        case QImage::Format_RGB32:
-        case QImage::Format_ARGB32:
-        case QImage::Format_RGB888:
+    case QImage::Format_Mono:
+    case QImage::Format_MonoLSB:
+    case QImage::Format_Indexed8:
+    case QImage::Format_Grayscale8:
+    case QImage::Format_RGB32:
+    case QImage::Format_ARGB32:
+    case QImage::Format_RGB888:
+    {
+        png_bytep *row_pointers = new png_bytep[height];
+
+        for ( int y = 0; y < height; y++ )
         {
-            png_bytep *row_pointers = new png_bytep[height];
-
-            for ( int y = 0; y < height; y++ )
-            {
-                row_pointers[y] = const_cast<png_bytep>( image.constScanLine( y ) );
-            }
-
-            png_write_image( png_ptr, row_pointers );
-            delete [] row_pointers;
+            row_pointers[y] = const_cast<png_bytep>( image.constScanLine( y ) );
         }
-        break;
 
-        default:
+        png_write_image( png_ptr, row_pointers );
+        delete [] row_pointers;
+    }
+    break;
+
+    default:
+    {
+        QImage::Format fmt = image.hasAlphaChannel() ? QImage::Format_ARGB32 : QImage::Format_RGB32;
+        QImage row;
+        png_bytep row_pointers[1];
+
+        for ( int y = 0; y < height; y++ )
         {
-            QImage::Format fmt = image.hasAlphaChannel() ? QImage::Format_ARGB32 : QImage::Format_RGB32;
-            QImage row;
-            png_bytep row_pointers[1];
-
-            for ( int y = 0; y < height; y++ )
-            {
-                row = image.copy( 0, y, width, 1 ).convertToFormat( fmt );
-                row_pointers[0] = const_cast<png_bytep>( row.constScanLine( 0 ) );
-                png_write_rows( png_ptr, row_pointers, 1 );
-            }
+            row = image.copy( 0, y, width, 1 ).convertToFormat( fmt );
+            row_pointers[0] = const_cast<png_bytep>( row.constScanLine( 0 ) );
+            png_write_rows( png_ptr, row_pointers, 1 );
         }
-        break;
+    }
+    break;
     }
 
     png_write_end( png_ptr, info_ptr );

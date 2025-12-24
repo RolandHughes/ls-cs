@@ -1211,16 +1211,16 @@ bool QFtpPI::processReply()
 
     switch ( abortState )
     {
-        case AbortStarted:
-            abortState = WaitForAbortToFinish;
-            break;
+    case AbortStarted:
+        abortState = WaitForAbortToFinish;
+        break;
 
-        case WaitForAbortToFinish:
-            abortState = None;
-            return true;
+    case WaitForAbortToFinish:
+        abortState = None;
+        return true;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     // get new state
@@ -1232,43 +1232,43 @@ bool QFtpPI::processReply()
 
     switch ( state )
     {
-        case Begin:
-            if ( m_replyCode[0] == 1 )
-            {
-                return true;
-
-            }
-            else if ( m_replyCode[0] == 2 )
-            {
-                state = Idle;
-                emit finished( QFtp::tr( "Connected to host %1" ).formatArg( commandSocket.peerName() ) );
-                break;
-            }
-
-            // reply codes not starting with 1 or 2 are not handled.
+    case Begin:
+        if ( m_replyCode[0] == 1 )
+        {
             return true;
 
-        case Waiting:
-            if ( static_cast<signed char>( m_replyCode[0] ) < 0 || m_replyCode[0] > 5 )
+        }
+        else if ( m_replyCode[0] == 2 )
+        {
+            state = Idle;
+            emit finished( QFtp::tr( "Connected to host %1" ).formatArg( commandSocket.peerName() ) );
+            break;
+        }
+
+        // reply codes not starting with 1 or 2 are not handled.
+        return true;
+
+    case Waiting:
+        if ( static_cast<signed char>( m_replyCode[0] ) < 0 || m_replyCode[0] > 5 )
+        {
+            state = Failure;
+        }
+        else
+
+            if ( replyCodeX == 202 )
             {
                 state = Failure;
             }
             else
+            {
+                state = table[m_replyCode[0] - 1];
+            }
 
-                if ( replyCodeX == 202 )
-                {
-                    state = Failure;
-                }
-                else
-                {
-                    state = table[m_replyCode[0] - 1];
-                }
+        break;
 
-            break;
-
-        default:
-            // ignore unrequested message
-            return true;
+    default:
+        // ignore unrequested message
+        return true;
     }
 
     // special actions on certain replies
@@ -1366,58 +1366,58 @@ bool QFtpPI::processReply()
     // react on new state
     switch ( state )
     {
-        case Begin:
-            // should never happen
-            break;
+    case Begin:
+        // should never happen
+        break;
 
-        case Success:
-            // success handling
+    case Success:
+        // success handling
+        state = Idle;
+        [[fallthrough]];
+
+    case Idle:
+        if ( dtp.hasError() )
+        {
+            emit error( QFtp::UnknownError, dtp.errorMessage() );
+            dtp.clearError();
+        }
+
+        startNextCmd();
+        break;
+
+    case Waiting:
+        break;
+
+    case Failure:
+
+        // If the EPSV or EPRT commands fail, replace them with
+        // the old PASV and PORT instead and try again
+
+        if ( currentCmd.startsWith( "EPSV" ) )
+        {
+            transferConnectionExtended = false;
+            pendingCommands.prepend( "PASV\r\n" );
+
+        }
+        else if ( currentCmd.startsWith( "EPRT" ) )
+        {
+            transferConnectionExtended = false;
+            pendingCommands.prepend( "PORT\r\n" );
+
+        }
+        else
+        {
+            emit error( QFtp::UnknownError, m_replyText );
+
+        }
+
+        if ( state != Waiting )
+        {
             state = Idle;
-            [[fallthrough]];
-
-        case Idle:
-            if ( dtp.hasError() )
-            {
-                emit error( QFtp::UnknownError, dtp.errorMessage() );
-                dtp.clearError();
-            }
-
             startNextCmd();
-            break;
+        }
 
-        case Waiting:
-            break;
-
-        case Failure:
-
-            // If the EPSV or EPRT commands fail, replace them with
-            // the old PASV and PORT instead and try again
-
-            if ( currentCmd.startsWith( "EPSV" ) )
-            {
-                transferConnectionExtended = false;
-                pendingCommands.prepend( "PASV\r\n" );
-
-            }
-            else if ( currentCmd.startsWith( "EPRT" ) )
-            {
-                transferConnectionExtended = false;
-                pendingCommands.prepend( "PORT\r\n" );
-
-            }
-            else
-            {
-                emit error( QFtp::UnknownError, m_replyText );
-
-            }
-
-            if ( state != Waiting )
-            {
-                state = Idle;
-                startNextCmd();
-            }
-
-            break;
+        break;
     }
 
     return true;
@@ -1516,37 +1516,37 @@ void QFtpPI::dtpConnectState( int state )
 {
     switch ( state )
     {
-        case QFtpDTP::CsClosed:
-            if ( waitForDtpToClose )
+    case QFtpDTP::CsClosed:
+        if ( waitForDtpToClose )
+        {
+            // there is an unprocessed reply
+            if ( processReply() )
             {
-                // there is an unprocessed reply
-                if ( processReply() )
-                {
-                    m_replyText = QString( "" );
-                }
-                else
-                {
-                    return;
-                }
+                m_replyText = QString( "" );
             }
+            else
+            {
+                return;
+            }
+        }
 
-            waitForDtpToClose = false;
-            readyRead();
-            return;
+        waitForDtpToClose = false;
+        readyRead();
+        return;
 
-        case QFtpDTP::CsConnected:
-            waitForDtpToConnect = false;
-            startNextCmd();
-            return;
+    case QFtpDTP::CsConnected:
+        waitForDtpToConnect = false;
+        startNextCmd();
+        return;
 
-        case QFtpDTP::CsHostNotFound:
-        case QFtpDTP::CsConnectionRefused:
-            emit error( QFtp::ConnectionRefused, QFtp::tr( "Data connection refused" ) );
-            startNextCmd();
-            return;
+    case QFtpDTP::CsHostNotFound:
+    case QFtpDTP::CsConnectionRefused:
+        emit error( QFtp::ConnectionRefused, QFtp::tr( "Data connection refused" ) );
+        startNextCmd();
+        return;
 
-        default:
-            return;
+    default:
+        return;
     }
 }
 
@@ -2062,45 +2062,45 @@ void QFtpPrivate::_q_piError( int errorCode, const QString &textMsg )
 
     switch ( q->currentCommand() )
     {
-        case QFtp::ConnectToHost:
-            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Connecting to host failed:\n%1" ) ).formatArg( textMsg );
-            break;
+    case QFtp::ConnectToHost:
+        errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Connecting to host failed:\n%1" ) ).formatArg( textMsg );
+        break;
 
-        case QFtp::Login:
-            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Login failed:\n%1" ) ).formatArg( textMsg );
-            break;
+    case QFtp::Login:
+        errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Login failed:\n%1" ) ).formatArg( textMsg );
+        break;
 
-        case QFtp::List:
-            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Listing directory failed:\n%1" ) ).formatArg( textMsg );
-            break;
+    case QFtp::List:
+        errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Listing directory failed:\n%1" ) ).formatArg( textMsg );
+        break;
 
-        case QFtp::Cd:
-            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Changing directory failed:\n%1" ) ).formatArg( textMsg );
-            break;
+    case QFtp::Cd:
+        errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Changing directory failed:\n%1" ) ).formatArg( textMsg );
+        break;
 
-        case QFtp::Get:
-            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Downloading file failed:\n%1" ) ).formatArg( textMsg );
-            break;
+    case QFtp::Get:
+        errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Downloading file failed:\n%1" ) ).formatArg( textMsg );
+        break;
 
-        case QFtp::Put:
-            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Uploading file failed:\n%1" ) ).formatArg( textMsg );
-            break;
+    case QFtp::Put:
+        errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Uploading file failed:\n%1" ) ).formatArg( textMsg );
+        break;
 
-        case QFtp::Remove:
-            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Removing file failed:\n%1" ) ).formatArg( textMsg );
-            break;
+    case QFtp::Remove:
+        errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Removing file failed:\n%1" ) ).formatArg( textMsg );
+        break;
 
-        case QFtp::Mkdir:
-            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Creating directory failed:\n%1" ) ).formatArg( textMsg );
-            break;
+    case QFtp::Mkdir:
+        errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Creating directory failed:\n%1" ) ).formatArg( textMsg );
+        break;
 
-        case QFtp::Rmdir:
-            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Removing directory failed:\n%1" ) ).formatArg( textMsg );
-            break;
+    case QFtp::Rmdir:
+        errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Removing directory failed:\n%1" ) ).formatArg( textMsg );
+        break;
 
-        default:
-            errorString = textMsg;
-            break;
+    default:
+        errorString = textMsg;
+        break;
     }
 
     pi.clearPendingCommands();

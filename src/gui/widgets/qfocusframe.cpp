@@ -267,57 +267,57 @@ bool QFocusFrame::eventFilter( QObject *o, QEvent *e )
     {
         switch ( e->type() )
         {
-            case QEvent::Move:
-            case QEvent::Resize:
-                d->updateSize();
-                break;
+        case QEvent::Move:
+        case QEvent::Resize:
+            d->updateSize();
+            break;
 
-            case QEvent::Hide:
-            case QEvent::StyleChange:
-                hide();
-                break;
+        case QEvent::Hide:
+        case QEvent::StyleChange:
+            hide();
+            break;
 
-            case QEvent::ParentChange:
-                if ( d->showFrameAboveWidget )
-                {
-                    QWidget *w = d->widget;
-                    setWidget( nullptr );
-                    setWidget( w );
-                }
-                else
-                {
-                    d->update();
-                }
-
-                break;
-
-            case QEvent::Show:
-                d->update();
-                show();
-                break;
-
-            case QEvent::PaletteChange:
-                setPalette( d->widget->palette() );
-                break;
-
-            case QEvent::ZOrderChange:
-                if ( style()->styleHint( QStyle::SH_FocusFrame_AboveWidget, nullptr, this ) )
-                {
-                    raise();
-                }
-                else
-                {
-                    stackUnder( d->widget );
-                }
-
-                break;
-
-            case QEvent::Destroy:
+        case QEvent::ParentChange:
+            if ( d->showFrameAboveWidget )
+            {
+                QWidget *w = d->widget;
                 setWidget( nullptr );
-                break;
+                setWidget( w );
+            }
+            else
+            {
+                d->update();
+            }
 
-            default:
-                break;
+            break;
+
+        case QEvent::Show:
+            d->update();
+            show();
+            break;
+
+        case QEvent::PaletteChange:
+            setPalette( d->widget->palette() );
+            break;
+
+        case QEvent::ZOrderChange:
+            if ( style()->styleHint( QStyle::SH_FocusFrame_AboveWidget, nullptr, this ) )
+            {
+                raise();
+            }
+            else
+            {
+                stackUnder( d->widget );
+            }
+
+            break;
+
+        case QEvent::Destroy:
+            setWidget( nullptr );
+            break;
+
+        default:
+            break;
         }
 
     }
@@ -326,17 +326,17 @@ bool QFocusFrame::eventFilter( QObject *o, QEvent *e )
         // Handle changes in the parent widgets we are monitoring.
         switch ( e->type() )
         {
-            case QEvent::Move:
-            case QEvent::Resize:
-                d->updateSize();
-                break;
+        case QEvent::Move:
+        case QEvent::Resize:
+            d->updateSize();
+            break;
 
-            case QEvent::ZOrderChange:
-                raise();
-                break;
+        case QEvent::ZOrderChange:
+            raise();
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 

@@ -285,14 +285,14 @@ QString QSystemLocalePrivate::dateFormat( QLocale::FormatType type )
 {
     switch ( type )
     {
-        case QLocale::ShortFormat:
-            return fromWinFormat( getLocaleInfo( LOCALE_SSHORTDATE ) );
+    case QLocale::ShortFormat:
+        return fromWinFormat( getLocaleInfo( LOCALE_SSHORTDATE ) );
 
-        case QLocale::LongFormat:
-            return fromWinFormat( getLocaleInfo( LOCALE_SLONGDATE ) );
+    case QLocale::LongFormat:
+        return fromWinFormat( getLocaleInfo( LOCALE_SLONGDATE ) );
 
-        case QLocale::NarrowFormat:
-            break;
+    case QLocale::NarrowFormat:
+        break;
     }
 
     return QString();
@@ -302,14 +302,14 @@ QString QSystemLocalePrivate::timeFormat( QLocale::FormatType type )
 {
     switch ( type )
     {
-        case QLocale::ShortFormat:
-            return fromWinFormat( getLocaleInfo( LOCALE_STIMEFORMAT ) );
+    case QLocale::ShortFormat:
+        return fromWinFormat( getLocaleInfo( LOCALE_STIMEFORMAT ) );
 
-        case QLocale::LongFormat:
-            return fromWinFormat( getLocaleInfo( LOCALE_STIMEFORMAT ) );
+    case QLocale::LongFormat:
+        return fromWinFormat( getLocaleInfo( LOCALE_STIMEFORMAT ) );
 
-        case QLocale::NarrowFormat:
-            break;
+    case QLocale::NarrowFormat:
+        break;
     }
 
     return QString();
@@ -513,45 +513,45 @@ QVariant QSystemLocalePrivate::currencySymbol( QLocale::CurrencySymbolFormat for
 
     switch ( format )
     {
-        case QLocale::CurrencySymbol:
-            if ( GetLocaleInfo( lcid, LOCALE_SCURRENCY, &buffer[0], buffer.size() ) )
-            {
-                return QString::fromStdWString( buffer );
-            }
-
-            break;
-
-        case QLocale::CurrencyIsoCode:
-            if ( GetLocaleInfo( lcid, LOCALE_SINTLSYMBOL, &buffer[0], buffer.size() ) )
-            {
-                return QString::fromStdWString( buffer );
-            }
-
-            break;
-
-        case QLocale::CurrencyDisplayName:
+    case QLocale::CurrencySymbol:
+        if ( GetLocaleInfo( lcid, LOCALE_SCURRENCY, &buffer[0], buffer.size() ) )
         {
-
-            if ( ! GetLocaleInfo( lcid, LOCALE_SNATIVECURRNAME, &buffer[0], buffer.size() ) )
-            {
-                if ( GetLastError() != ERROR_INSUFFICIENT_BUFFER )
-                {
-                    break;
-                }
-
-                buffer.resize( 255 );
-
-                if ( ! GetLocaleInfo( lcid, LOCALE_SNATIVECURRNAME, &buffer[0], buffer.size() ) )
-                {
-                    break;
-                }
-            }
-
             return QString::fromStdWString( buffer );
         }
 
-        default:
-            break;
+        break;
+
+    case QLocale::CurrencyIsoCode:
+        if ( GetLocaleInfo( lcid, LOCALE_SINTLSYMBOL, &buffer[0], buffer.size() ) )
+        {
+            return QString::fromStdWString( buffer );
+        }
+
+        break;
+
+    case QLocale::CurrencyDisplayName:
+    {
+
+        if ( ! GetLocaleInfo( lcid, LOCALE_SNATIVECURRNAME, &buffer[0], buffer.size() ) )
+        {
+            if ( GetLastError() != ERROR_INSUFFICIENT_BUFFER )
+            {
+                break;
+            }
+
+            buffer.resize( 255 );
+
+            if ( ! GetLocaleInfo( lcid, LOCALE_SNATIVECURRNAME, &buffer[0], buffer.size() ) )
+            {
+                break;
+            }
+        }
+
+        return QString::fromStdWString( buffer );
+    }
+
+    default:
+        break;
     }
 
     return QVariant();
@@ -563,34 +563,34 @@ QVariant QSystemLocalePrivate::toCurrencyString( const QSystemLocale::CurrencyTo
 
     switch ( arg.value.type() )
     {
-        case QVariant::Int:
-            value = QLocaleData::longLongToString( '0', ',', '+', '-',
-                                                   arg.value.toInt(), -1, 10, -1, QLocale::OmitGroupSeparator );
-            break;
+    case QVariant::Int:
+        value = QLocaleData::longLongToString( '0', ',', '+', '-',
+                                               arg.value.toInt(), -1, 10, -1, QLocale::OmitGroupSeparator );
+        break;
 
-        case QVariant::UInt:
-            value = QLocaleData::unsLongLongToString( '0', ',', '+',
-                    arg.value.toInt(), -1, 10, -1, QLocale::OmitGroupSeparator );
-            break;
+    case QVariant::UInt:
+        value = QLocaleData::unsLongLongToString( '0', ',', '+',
+                arg.value.toInt(), -1, 10, -1, QLocale::OmitGroupSeparator );
+        break;
 
-        case QVariant::Double:
-            value = QLocaleData::doubleToString( '0', '+', '-', ' ', ',', '.',
-                                                 arg.value.toDouble(), -1, QLocaleData::DFDecimal, -1, QLocale::OmitGroupSeparator );
+    case QVariant::Double:
+        value = QLocaleData::doubleToString( '0', '+', '-', ' ', ',', '.',
+                                             arg.value.toDouble(), -1, QLocaleData::DFDecimal, -1, QLocale::OmitGroupSeparator );
 
-            break;
+        break;
 
-        case QVariant::LongLong:
-            value = QLocaleData::longLongToString( '0', ',', '+', '-',
-                                                   arg.value.toLongLong(), -1, 10, -1, QLocale::OmitGroupSeparator );
-            break;
+    case QVariant::LongLong:
+        value = QLocaleData::longLongToString( '0', ',', '+', '-',
+                                               arg.value.toLongLong(), -1, 10, -1, QLocale::OmitGroupSeparator );
+        break;
 
-        case QVariant::ULongLong:
-            value = QLocaleData::unsLongLongToString( '0', ',', '+',
-                    arg.value.toULongLong(), -1, 10, -1, QLocale::OmitGroupSeparator );
-            break;
+    case QVariant::ULongLong:
+        value = QLocaleData::unsLongLongToString( '0', ',', '+',
+                arg.value.toULongLong(), -1, 10, -1, QLocale::OmitGroupSeparator );
+        break;
 
-        default:
-            return QVariant();
+    default:
+        return QVariant();
     }
 
     std::wstring out( 64, L'\0' );
@@ -772,65 +772,65 @@ QString QSystemLocalePrivate::fromWinFormat( const QString &sys_fmt )
 
         switch ( c.unicode() )
         {
-            // Date
-            case 'y':
-                if ( repeat > 5 )
-                {
-                    repeat = 5;
+        // Date
+        case 'y':
+            if ( repeat > 5 )
+            {
+                repeat = 5;
 
-                }
-                else if ( repeat == 3 )
-                {
-                    repeat = 2;
-                }
+            }
+            else if ( repeat == 3 )
+            {
+                repeat = 2;
+            }
 
-                switch ( repeat )
-                {
-                    case 1:
-                        result += "yy";                     // "y" unsupported, use "yy"
-                        break;
-
-                    case 5:
-                        result += "yyyy";                   // "yyyyy" same as "yyyy" on Windows
-                        break;
-
-                    default:
-                        result += QString( repeat, 'y' );
-                        break;
-                }
-
+            switch ( repeat )
+            {
+            case 1:
+                result += "yy";                     // "y" unsupported, use "yy"
                 break;
 
-            case 'g':
-                if ( repeat > 2 )
-                {
-                    repeat = 2;
-                }
-
-                switch ( repeat )
-                {
-                    case 2:
-                        break;                              // no equivalent of "gg"
-
-                    default:
-                        result += 'g';
-                        break;
-                }
-
-                break;
-
-            case 't':
-                if ( repeat > 2 )
-                {
-                    repeat = 2;
-                }
-
-                result += "AP";                           // "t" unsupported, use "AP"
+            case 5:
+                result += "yyyy";                   // "yyyyy" same as "yyyy" on Windows
                 break;
 
             default:
-                result += QString( repeat, c );
+                result += QString( repeat, 'y' );
                 break;
+            }
+
+            break;
+
+        case 'g':
+            if ( repeat > 2 )
+            {
+                repeat = 2;
+            }
+
+            switch ( repeat )
+            {
+            case 2:
+                break;                              // no equivalent of "gg"
+
+            default:
+                result += 'g';
+                break;
+            }
+
+            break;
+
+        case 't':
+            if ( repeat > 2 )
+            {
+                repeat = 2;
+            }
+
+            result += "AP";                           // "t" unsupported, use "AP"
+            break;
+
+        default:
+            result += QString( repeat, c );
+            break;
         }
 
         i += repeat;
@@ -850,130 +850,130 @@ QVariant QSystemLocale::query( QueryType type, QVariant in = QVariant() ) const
 
     switch ( type )
     {
-        case DecimalPoint:
-            return d->decimalPoint();
+    case DecimalPoint:
+        return d->decimalPoint();
 
-        case GroupSeparator:
-            return d->groupSeparator();
+    case GroupSeparator:
+        return d->groupSeparator();
 
-        case NegativeSign:
-            return d->negativeSign();
+    case NegativeSign:
+        return d->negativeSign();
 
-        case PositiveSign:
-            return d->positiveSign();
+    case PositiveSign:
+        return d->positiveSign();
 
-        case DateFormatLong:
-            return d->dateFormat( QLocale::LongFormat );
+    case DateFormatLong:
+        return d->dateFormat( QLocale::LongFormat );
 
-        case DateFormatShort:
-            return d->dateFormat( QLocale::ShortFormat );
+    case DateFormatShort:
+        return d->dateFormat( QLocale::ShortFormat );
 
-        case TimeFormatLong:
-            return d->timeFormat( QLocale::LongFormat );
+    case TimeFormatLong:
+        return d->timeFormat( QLocale::LongFormat );
 
-        case TimeFormatShort:
-            return d->timeFormat( QLocale::ShortFormat );
+    case TimeFormatShort:
+        return d->timeFormat( QLocale::ShortFormat );
 
-        case DateTimeFormatLong:
-            return d->dateTimeFormat( QLocale::LongFormat );
+    case DateTimeFormatLong:
+        return d->dateTimeFormat( QLocale::LongFormat );
 
-        case DateTimeFormatShort:
-            return d->dateTimeFormat( QLocale::ShortFormat );
+    case DateTimeFormatShort:
+        return d->dateTimeFormat( QLocale::ShortFormat );
 
-        case DayNameLong:
-            return d->dayName( in.toInt(), QLocale::LongFormat );
+    case DayNameLong:
+        return d->dayName( in.toInt(), QLocale::LongFormat );
 
-        case DayNameShort:
-            return d->dayName( in.toInt(), QLocale::ShortFormat );
+    case DayNameShort:
+        return d->dayName( in.toInt(), QLocale::ShortFormat );
 
-        case MonthNameLong:
-        case StandaloneMonthNameLong:
-            return d->monthName( in.toInt(), QLocale::LongFormat );
+    case MonthNameLong:
+    case StandaloneMonthNameLong:
+        return d->monthName( in.toInt(), QLocale::LongFormat );
 
-        case MonthNameShort:
-        case StandaloneMonthNameShort:
-            return d->monthName( in.toInt(), QLocale::ShortFormat );
+    case MonthNameShort:
+    case StandaloneMonthNameShort:
+        return d->monthName( in.toInt(), QLocale::ShortFormat );
 
-        case DateToStringShort:
-            return d->toString( in.toDate(), QLocale::ShortFormat );
+    case DateToStringShort:
+        return d->toString( in.toDate(), QLocale::ShortFormat );
 
-        case DateToStringLong:
-            return d->toString( in.toDate(), QLocale::LongFormat );
+    case DateToStringLong:
+        return d->toString( in.toDate(), QLocale::LongFormat );
 
-        case TimeToStringShort:
-            return d->toString( in.toTime(), QLocale::ShortFormat );
+    case TimeToStringShort:
+        return d->toString( in.toTime(), QLocale::ShortFormat );
 
-        case TimeToStringLong:
-            return d->toString( in.toTime(), QLocale::LongFormat );
+    case TimeToStringLong:
+        return d->toString( in.toTime(), QLocale::LongFormat );
 
-        case DateTimeToStringShort:
-            return d->toString( in.toDateTime(), QLocale::ShortFormat );
+    case DateTimeToStringShort:
+        return d->toString( in.toDateTime(), QLocale::ShortFormat );
 
-        case DateTimeToStringLong:
-            return d->toString( in.toDateTime(), QLocale::LongFormat );
+    case DateTimeToStringLong:
+        return d->toString( in.toDateTime(), QLocale::LongFormat );
 
-        case ZeroDigit:
-            return d->zeroDigit();
+    case ZeroDigit:
+        return d->zeroDigit();
 
-        case LanguageId:
-        case CountryId:
+    case LanguageId:
+    case CountryId:
+    {
+        QString locale = QString::fromLatin1( getWinLocaleName() );
+
+        QLocale::Language lang;
+        QLocale::Script script;
+        QLocale::Country cntry;
+        QLocalePrivate::getLangAndCountry( locale, lang, script, cntry );
+
+        if ( type == LanguageId )
         {
-            QString locale = QString::fromLatin1( getWinLocaleName() );
-
-            QLocale::Language lang;
-            QLocale::Script script;
-            QLocale::Country cntry;
-            QLocalePrivate::getLangAndCountry( locale, lang, script, cntry );
-
-            if ( type == LanguageId )
-            {
-                return lang;
-            }
-
-            if ( cntry == QLocale::AnyCountry )
-            {
-                return fallbackUiLocale().country();
-            }
-
-            return cntry;
+            return lang;
         }
 
-        case ScriptId:
-            return QVariant( QLocale::AnyScript );
+        if ( cntry == QLocale::AnyCountry )
+        {
+            return fallbackUiLocale().country();
+        }
 
-        case MeasurementSystem:
-            return d->measurementSystem();
+        return cntry;
+    }
 
-        case AMText:
-            return d->amText();
+    case ScriptId:
+        return QVariant( QLocale::AnyScript );
 
-        case PMText:
-            return d->pmText();
+    case MeasurementSystem:
+        return d->measurementSystem();
 
-        case FirstDayOfWeek:
-            return d->firstDayOfWeek();
+    case AMText:
+        return d->amText();
 
-        case CurrencySymbol:
-            return d->currencySymbol( QLocale::CurrencySymbolFormat( in.toUInt() ) );
+    case PMText:
+        return d->pmText();
 
-        case CurrencyToString:
-            return d->toCurrencyString( in.value<QSystemLocale::CurrencyToStringArgument>() );
+    case FirstDayOfWeek:
+        return d->firstDayOfWeek();
 
-        case UILanguages:
-            return d->uiLanguages();
+    case CurrencySymbol:
+        return d->currencySymbol( QLocale::CurrencySymbolFormat( in.toUInt() ) );
 
-        case LocaleChanged:
-            d->update();
-            break;
+    case CurrencyToString:
+        return d->toCurrencyString( in.value<QSystemLocale::CurrencyToStringArgument>() );
 
-        case NativeLanguageName:
-            return d->nativeLanguageName();
+    case UILanguages:
+        return d->uiLanguages();
 
-        case NativeCountryName:
-            return d->nativeCountryName();
+    case LocaleChanged:
+        d->update();
+        break;
 
-        default:
-            break;
+    case NativeLanguageName:
+        return d->nativeLanguageName();
+
+    case NativeCountryName:
+        return d->nativeCountryName();
+
+    default:
+        break;
     }
 
     return QVariant();

@@ -729,176 +729,176 @@ bool QAbstractScrollArea::event( QEvent *e )
 
     switch ( e->type() )
     {
-        case QEvent::AcceptDropsChange:
+    case QEvent::AcceptDropsChange:
 
-            // There was a chance with accessibility client we get an vent before the viewport was created.
-            // Also, in some cases we might get here from QWidget::event() virtual function which is (indirectly) called
-            // from the viewport constructor at the time when the d->viewport is not yet initialized even without any
-            // accessibility client. See qabstractscrollarea autotest for a test case.
+        // There was a chance with accessibility client we get an vent before the viewport was created.
+        // Also, in some cases we might get here from QWidget::event() virtual function which is (indirectly) called
+        // from the viewport constructor at the time when the d->viewport is not yet initialized even without any
+        // accessibility client. See qabstractscrollarea autotest for a test case.
 
-            if ( d->viewport )
-            {
-                d->viewport->setAcceptDrops( acceptDrops() );
-            }
-
-            break;
-
-        case QEvent::MouseTrackingChange:
-            d->viewport->setMouseTracking( hasMouseTracking() );
-            break;
-
-        case QEvent::Resize:
-            if ( !d->inResize )
-            {
-                d->inResize = true;
-                d->layoutChildren();
-                d->inResize = false;
-            }
-
-            break;
-
-        case QEvent::Show:
-            if ( !d->shownOnce && d->sizeAdjustPolicy == QAbstractScrollArea::AdjustToContentsOnFirstShow )
-            {
-                d->sizeHint = QSize();
-                updateGeometry();
-            }
-
-            d->shownOnce = true;
-            return QFrame::event( e );
-
-        case QEvent::Paint:
+        if ( d->viewport )
         {
-            QStyleOption option;
-            option.initFrom( this );
-
-            if ( d->cornerPaintingRect.isValid() )
-            {
-                option.rect = d->cornerPaintingRect;
-
-                QPainter p( this );
-                style()->drawPrimitive( QStyle::PE_PanelScrollAreaCorner, &option, &p, this );
-            }
-
+            d->viewport->setAcceptDrops( acceptDrops() );
         }
 
-        QFrame::paintEvent( ( QPaintEvent * )e );
         break;
+
+    case QEvent::MouseTrackingChange:
+        d->viewport->setMouseTracking( hasMouseTracking() );
+        break;
+
+    case QEvent::Resize:
+        if ( !d->inResize )
+        {
+            d->inResize = true;
+            d->layoutChildren();
+            d->inResize = false;
+        }
+
+        break;
+
+    case QEvent::Show:
+        if ( !d->shownOnce && d->sizeAdjustPolicy == QAbstractScrollArea::AdjustToContentsOnFirstShow )
+        {
+            d->sizeHint = QSize();
+            updateGeometry();
+        }
+
+        d->shownOnce = true;
+        return QFrame::event( e );
+
+    case QEvent::Paint:
+    {
+        QStyleOption option;
+        option.initFrom( this );
+
+        if ( d->cornerPaintingRect.isValid() )
+        {
+            option.rect = d->cornerPaintingRect;
+
+            QPainter p( this );
+            style()->drawPrimitive( QStyle::PE_PanelScrollAreaCorner, &option, &p, this );
+        }
+
+    }
+
+    QFrame::paintEvent( ( QPaintEvent * )e );
+    break;
 
 #ifndef LSCS_NO_CONTEXTMENU
 
-        case QEvent::ContextMenu:
-            if ( static_cast<QContextMenuEvent *>( e )->reason() == QContextMenuEvent::Keyboard )
-            {
-                return QFrame::event( e );
-            }
+    case QEvent::ContextMenu:
+        if ( static_cast<QContextMenuEvent *>( e )->reason() == QContextMenuEvent::Keyboard )
+        {
+            return QFrame::event( e );
+        }
 
-            e->ignore();
-            break;
+        e->ignore();
+        break;
 #endif
 
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonRelease:
-        case QEvent::MouseButtonDblClick:
-        case QEvent::MouseMove:
-        case QEvent::Wheel:
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonDblClick:
+    case QEvent::MouseMove:
+    case QEvent::Wheel:
 
 #ifndef LSCS_NO_DRAGANDDROP
-        case QEvent::Drop:
-        case QEvent::DragEnter:
-        case QEvent::DragMove:
-        case QEvent::DragLeave:
+    case QEvent::Drop:
+    case QEvent::DragEnter:
+    case QEvent::DragMove:
+    case QEvent::DragLeave:
 #endif
 
-        // ignore touch events in case they have been propagated from the viewport
-        case QEvent::TouchBegin:
-        case QEvent::TouchUpdate:
-        case QEvent::TouchEnd:
-            return false;
+    // ignore touch events in case they have been propagated from the viewport
+    case QEvent::TouchBegin:
+    case QEvent::TouchUpdate:
+    case QEvent::TouchEnd:
+        return false;
 
 #ifndef LSCS_NO_GESTURES
 
-        case QEvent::Gesture:
+    case QEvent::Gesture:
+    {
+        QGestureEvent *ge = static_cast<QGestureEvent *>( e );
+        QPanGesture *g = static_cast<QPanGesture *>( ge->gesture( Qt::PanGesture ) );
+
+        if ( g )
         {
-            QGestureEvent *ge = static_cast<QGestureEvent *>( e );
-            QPanGesture *g = static_cast<QPanGesture *>( ge->gesture( Qt::PanGesture ) );
-
-            if ( g )
-            {
-                QScrollBar *hBar = horizontalScrollBar();
-                QScrollBar *vBar = verticalScrollBar();
-                QPointF delta = g->delta();
-
-                if ( !delta.isNull() )
-                {
-                    if ( QApplication::isRightToLeft() )
-                    {
-                        delta.rx() *= -1;
-                    }
-
-                    int newX = hBar->value() - delta.x();
-                    int newY = vBar->value() - delta.y();
-                    hBar->setValue( newX );
-                    vBar->setValue( newY );
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-#endif
-
-        case QEvent::ScrollPrepare:
-        {
-            QScrollPrepareEvent *se = static_cast<QScrollPrepareEvent *>( e );
-
-            if ( d->canStartScrollingAt( se->startPos().toPoint() ) )
-            {
-                QScrollBar *hBar = horizontalScrollBar();
-                QScrollBar *vBar = verticalScrollBar();
-
-                se->setViewportSize( QSizeF( viewport()->size() ) );
-                se->setContentPosRange( QRectF( 0, 0, hBar->maximum(), vBar->maximum() ) );
-                se->setContentPos( QPointF( hBar->value(), vBar->value() ) );
-                se->accept();
-                return true;
-            }
-
-            return false;
-        }
-
-        case QEvent::Scroll:
-        {
-            QScrollEvent *se = static_cast<QScrollEvent *>( e );
-
             QScrollBar *hBar = horizontalScrollBar();
             QScrollBar *vBar = verticalScrollBar();
-            hBar->setValue( se->contentPos().x() );
-            vBar->setValue( se->contentPos().y() );
-
-            QPoint delta = d->overshoot - se->overshootDistance().toPoint();
+            QPointF delta = g->delta();
 
             if ( !delta.isNull() )
             {
-                viewport()->move( viewport()->pos() + delta );
-            }
+                if ( QApplication::isRightToLeft() )
+                {
+                    delta.rx() *= -1;
+                }
 
-            d->overshoot = se->overshootDistance().toPoint();
+                int newX = hBar->value() - delta.x();
+                int newY = vBar->value() - delta.y();
+                hBar->setValue( newX );
+                vBar->setValue( newY );
+            }
 
             return true;
         }
 
-        case QEvent::StyleChange:
-        case QEvent::LayoutDirectionChange:
-        case QEvent::ApplicationLayoutDirectionChange:
-        case QEvent::LayoutRequest:
-            d->layoutChildren();
-            [[fallthrough]];
+        return false;
+    }
 
-        default:
-            return QFrame::event( e );
+#endif
+
+    case QEvent::ScrollPrepare:
+    {
+        QScrollPrepareEvent *se = static_cast<QScrollPrepareEvent *>( e );
+
+        if ( d->canStartScrollingAt( se->startPos().toPoint() ) )
+        {
+            QScrollBar *hBar = horizontalScrollBar();
+            QScrollBar *vBar = verticalScrollBar();
+
+            se->setViewportSize( QSizeF( viewport()->size() ) );
+            se->setContentPosRange( QRectF( 0, 0, hBar->maximum(), vBar->maximum() ) );
+            se->setContentPos( QPointF( hBar->value(), vBar->value() ) );
+            se->accept();
+            return true;
+        }
+
+        return false;
+    }
+
+    case QEvent::Scroll:
+    {
+        QScrollEvent *se = static_cast<QScrollEvent *>( e );
+
+        QScrollBar *hBar = horizontalScrollBar();
+        QScrollBar *vBar = verticalScrollBar();
+        hBar->setValue( se->contentPos().x() );
+        vBar->setValue( se->contentPos().y() );
+
+        QPoint delta = d->overshoot - se->overshootDistance().toPoint();
+
+        if ( !delta.isNull() )
+        {
+            viewport()->move( viewport()->pos() + delta );
+        }
+
+        d->overshoot = se->overshootDistance().toPoint();
+
+        return true;
+    }
+
+    case QEvent::StyleChange:
+    case QEvent::LayoutDirectionChange:
+    case QEvent::ApplicationLayoutDirectionChange:
+    case QEvent::LayoutRequest:
+        d->layoutChildren();
+        [[fallthrough]];
+
+    default:
+        return QFrame::event( e );
     }
 
     return true;
@@ -908,55 +908,55 @@ bool QAbstractScrollArea::viewportEvent( QEvent *e )
 {
     switch ( e->type() )
     {
-        case QEvent::Resize:
-        case QEvent::Paint:
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonRelease:
-        case QEvent::MouseButtonDblClick:
-        case QEvent::TouchBegin:
-        case QEvent::TouchUpdate:
-        case QEvent::TouchEnd:
-        case QEvent::MouseMove:
-        case QEvent::ContextMenu:
+    case QEvent::Resize:
+    case QEvent::Paint:
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonDblClick:
+    case QEvent::TouchBegin:
+    case QEvent::TouchUpdate:
+    case QEvent::TouchEnd:
+    case QEvent::MouseMove:
+    case QEvent::ContextMenu:
 
 #ifndef LSCS_NO_WHEELEVENT
-        case QEvent::Wheel:
+    case QEvent::Wheel:
 #endif
 
 #ifndef LSCS_NO_DRAGANDDROP
-        case QEvent::Drop:
-        case QEvent::DragEnter:
-        case QEvent::DragMove:
-        case QEvent::DragLeave:
+    case QEvent::Drop:
+    case QEvent::DragEnter:
+    case QEvent::DragMove:
+    case QEvent::DragLeave:
 #endif
 
 #ifndef LSCS_NO_OPENGL
 
-            // QOpenGLWidget needs special support because it has to know
-            // its size has changed, so that it can resize its fbo
+        // QOpenGLWidget needs special support because it has to know
+        // its size has changed, so that it can resize its fbo
 
-            if ( e->type() == QEvent::Resize )
-            {
-                QWidgetPrivate::get( viewport() )->resizeViewportFramebuffer();
-            }
+        if ( e->type() == QEvent::Resize )
+        {
+            QWidgetPrivate::get( viewport() )->resizeViewportFramebuffer();
+        }
 
 #endif
-            return QFrame::event( e );
+        return QFrame::event( e );
 
-        case QEvent::LayoutRequest:
+    case QEvent::LayoutRequest:
 
 #ifndef LSCS_NO_GESTURES
-        case QEvent::Gesture:
-        case QEvent::GestureOverride:
-            return event( e );
+    case QEvent::Gesture:
+    case QEvent::GestureOverride:
+        return event( e );
 #endif
 
-        case QEvent::ScrollPrepare:
-        case QEvent::Scroll:
-            return event( e );
+    case QEvent::ScrollPrepare:
+    case QEvent::Scroll:
+        return event( e );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return false;  // let the viewport widget handle the event
@@ -1048,47 +1048,47 @@ void QAbstractScrollArea::keyPressEvent( QKeyEvent *e )
 
         switch ( e->key() )
         {
-            case Qt::Key_Up:
-                d->vbar->triggerAction( QScrollBar::SliderSingleStepSub );
-                break;
+        case Qt::Key_Up:
+            d->vbar->triggerAction( QScrollBar::SliderSingleStepSub );
+            break;
 
-            case Qt::Key_Down:
-                d->vbar->triggerAction( QScrollBar::SliderSingleStepAdd );
-                break;
+        case Qt::Key_Down:
+            d->vbar->triggerAction( QScrollBar::SliderSingleStepAdd );
+            break;
 
-            case Qt::Key_Left:
+        case Qt::Key_Left:
 #ifdef LSCS_KEYPAD_NAVIGATION
-                if ( QApplication::keypadNavigationEnabled() && hasEditFocus()
-                        && ( ! d->hbar->isVisible() || d->hbar->value() == d->hbar->minimum() ) )
-                {
-                    // if we are not using the hbar or we are already at the leftmost point ignore
-                    e->ignore();
-                    return;
-                }
-
-#endif
-                d->hbar->triggerAction( layoutDirection() == Qt::LeftToRight
-                                        ? QScrollBar::SliderSingleStepSub : QScrollBar::SliderSingleStepAdd );
-                break;
-
-            case Qt::Key_Right:
-#ifdef LSCS_KEYPAD_NAVIGATION
-                if ( QApplication::keypadNavigationEnabled() && hasEditFocus()
-                        && ( ! d->hbar->isVisible() || d->hbar->value() == d->hbar->maximum() ) )
-                {
-                    // if we are not using the hbar or we are already at the rightmost point ignore
-                    e->ignore();
-                    return;
-                }
-
-#endif
-                d->hbar->triggerAction( layoutDirection() == Qt::LeftToRight
-                                        ? QScrollBar::SliderSingleStepAdd : QScrollBar::SliderSingleStepSub );
-                break;
-
-            default:
+            if ( QApplication::keypadNavigationEnabled() && hasEditFocus()
+                    && ( ! d->hbar->isVisible() || d->hbar->value() == d->hbar->minimum() ) )
+            {
+                // if we are not using the hbar or we are already at the leftmost point ignore
                 e->ignore();
                 return;
+            }
+
+#endif
+            d->hbar->triggerAction( layoutDirection() == Qt::LeftToRight
+                                    ? QScrollBar::SliderSingleStepSub : QScrollBar::SliderSingleStepAdd );
+            break;
+
+        case Qt::Key_Right:
+#ifdef LSCS_KEYPAD_NAVIGATION
+            if ( QApplication::keypadNavigationEnabled() && hasEditFocus()
+                    && ( ! d->hbar->isVisible() || d->hbar->value() == d->hbar->maximum() ) )
+            {
+                // if we are not using the hbar or we are already at the rightmost point ignore
+                e->ignore();
+                return;
+            }
+
+#endif
+            d->hbar->triggerAction( layoutDirection() == Qt::LeftToRight
+                                    ? QScrollBar::SliderSingleStepAdd : QScrollBar::SliderSingleStepSub );
+            break;
+
+        default:
+            e->ignore();
+            return;
         }
     }
 

@@ -338,57 +338,57 @@ void QFileSystemMetaData::fillFromDirEnt( const LSCS_DIRENT &entry )
     // ### This will clear all entry flags and knownFlagsMask
     switch ( entry.d_type )
     {
-        case DT_DIR:
-            knownFlagsMask = QFileSystemMetaData::LinkType
-                             | QFileSystemMetaData::FileType
-                             | QFileSystemMetaData::DirectoryType
-                             | QFileSystemMetaData::SequentialType
-                             | QFileSystemMetaData::ExistsAttribute;
-
-            entryFlags = QFileSystemMetaData::DirectoryType
+    case DT_DIR:
+        knownFlagsMask = QFileSystemMetaData::LinkType
+                         | QFileSystemMetaData::FileType
+                         | QFileSystemMetaData::DirectoryType
+                         | QFileSystemMetaData::SequentialType
                          | QFileSystemMetaData::ExistsAttribute;
 
-            break;
+        entryFlags = QFileSystemMetaData::DirectoryType
+                     | QFileSystemMetaData::ExistsAttribute;
 
-        case DT_BLK:
-        case DT_CHR:
-        case DT_FIFO:
-        case DT_SOCK:
-            // ### System attribute
-            knownFlagsMask = QFileSystemMetaData::LinkType
-                             | QFileSystemMetaData::FileType
-                             | QFileSystemMetaData::DirectoryType
-                             | QFileSystemMetaData::BundleType
-                             | QFileSystemMetaData::AliasType
-                             | QFileSystemMetaData::SequentialType
-                             | QFileSystemMetaData::ExistsAttribute;
+        break;
 
-            entryFlags = QFileSystemMetaData::SequentialType
+    case DT_BLK:
+    case DT_CHR:
+    case DT_FIFO:
+    case DT_SOCK:
+        // ### System attribute
+        knownFlagsMask = QFileSystemMetaData::LinkType
+                         | QFileSystemMetaData::FileType
+                         | QFileSystemMetaData::DirectoryType
+                         | QFileSystemMetaData::BundleType
+                         | QFileSystemMetaData::AliasType
+                         | QFileSystemMetaData::SequentialType
                          | QFileSystemMetaData::ExistsAttribute;
 
-            break;
+        entryFlags = QFileSystemMetaData::SequentialType
+                     | QFileSystemMetaData::ExistsAttribute;
 
-        case DT_LNK:
-            knownFlagsMask = QFileSystemMetaData::LinkType;
-            entryFlags = QFileSystemMetaData::LinkType;
-            break;
+        break;
 
-        case DT_REG:
-            knownFlagsMask = QFileSystemMetaData::LinkType
-                             | QFileSystemMetaData::FileType
-                             | QFileSystemMetaData::DirectoryType
-                             | QFileSystemMetaData::BundleType
-                             | QFileSystemMetaData::SequentialType
-                             | QFileSystemMetaData::ExistsAttribute;
+    case DT_LNK:
+        knownFlagsMask = QFileSystemMetaData::LinkType;
+        entryFlags = QFileSystemMetaData::LinkType;
+        break;
 
-            entryFlags = QFileSystemMetaData::FileType
+    case DT_REG:
+        knownFlagsMask = QFileSystemMetaData::LinkType
+                         | QFileSystemMetaData::FileType
+                         | QFileSystemMetaData::DirectoryType
+                         | QFileSystemMetaData::BundleType
+                         | QFileSystemMetaData::SequentialType
                          | QFileSystemMetaData::ExistsAttribute;
 
-            break;
+        entryFlags = QFileSystemMetaData::FileType
+                     | QFileSystemMetaData::ExistsAttribute;
 
-        case DT_UNKNOWN:
-        default:
-            clear();
+        break;
+
+    case DT_UNKNOWN:
+    default:
+        clear();
     }
 
 #else

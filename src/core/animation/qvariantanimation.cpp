@@ -302,48 +302,48 @@ QVariantAnimation::CustomFormula QVariantAnimationPrivate::lscs_getCustomType( u
 {
     switch ( typeId )
     {
-        case QVariant::Int:
-            return lscs_variantFormula<int>;
+    case QVariant::Int:
+        return lscs_variantFormula<int>;
 
-        case QVariant::UInt:
-            return lscs_variantFormula<uint>;
+    case QVariant::UInt:
+        return lscs_variantFormula<uint>;
 
-        case QVariant::Double:
-            return lscs_variantFormula<double>;
+    case QVariant::Double:
+        return lscs_variantFormula<double>;
 
-        case QVariant::Float:
-            return lscs_variantFormula<float>;
+    case QVariant::Float:
+        return lscs_variantFormula<float>;
 
-        case QVariant::Line:
-            return lscs_variantFormula<QLine>;
+    case QVariant::Line:
+        return lscs_variantFormula<QLine>;
 
-        case QVariant::LineF:
-            return lscs_variantFormula<QLineF>;
+    case QVariant::LineF:
+        return lscs_variantFormula<QLineF>;
 
-        case QVariant::Point:
-            return lscs_variantFormula<QPoint>;
+    case QVariant::Point:
+        return lscs_variantFormula<QPoint>;
 
-        case QVariant::PointF:
-            return lscs_variantFormula<QPointF>;
+    case QVariant::PointF:
+        return lscs_variantFormula<QPointF>;
 
-        case QVariant::Size:
-            return lscs_variantFormula<QSize>;
+    case QVariant::Size:
+        return lscs_variantFormula<QSize>;
 
-        case QVariant::SizeF:
-            return lscs_variantFormula<QSizeF>;
+    case QVariant::SizeF:
+        return lscs_variantFormula<QSizeF>;
 
-        case QVariant::Rect:
-            return lscs_variantFormula<QRect>;
+    case QVariant::Rect:
+        return lscs_variantFormula<QRect>;
 
-        case QVariant::RectF:
-            return lscs_variantFormula<QRectF>;
+    case QVariant::RectF:
+        return lscs_variantFormula<QRectF>;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     libguarded::shared_guarded<QHash<uint, QVariantAnimation::CustomFormula>>::shared_handle hash =
-                QVariantAnimation::getFormulas().lock_shared();
+        QVariantAnimation::getFormulas().lock_shared();
 
     return hash->value( typeId, nullptr );
 }

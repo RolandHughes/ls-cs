@@ -203,7 +203,7 @@ void QDeclarativeFlickablePrivate::init()
     q->setAcceptedMouseButtons( Qt::LeftButton );
     q->setFiltersChildEvents( true );
     QDeclarativeItemPrivate *viewportPrivate = static_cast<QDeclarativeItemPrivate *>( QGraphicsItemPrivate::get(
-                contentItem ) );
+            contentItem ) );
     viewportPrivate->addItemChangeListener( this, QDeclarativeItemPrivate::Geometry );
     lastPosTime.invalidate();
 }
@@ -401,24 +401,24 @@ void QDeclarativeFlickablePrivate::fixup( AxisData &data, qreal minExtent, qreal
         {
             switch ( fixupMode )
             {
-                case Immediate:
-                    timeline.set( data.move, minExtent );
-                    break;
+            case Immediate:
+                timeline.set( data.move, minExtent );
+                break;
 
-                case ExtentChanged:
-                    // The target has changed. Don't start from the beginning; just complete the
-                    // second half of the animation using the new extent.
-                    timeline.move( data.move, minExtent, QEasingCurve( QEasingCurve::OutExpo ), 3 * fixupDuration / 4 );
-                    data.fixingUp = true;
-                    break;
+            case ExtentChanged:
+                // The target has changed. Don't start from the beginning; just complete the
+                // second half of the animation using the new extent.
+                timeline.move( data.move, minExtent, QEasingCurve( QEasingCurve::OutExpo ), 3 * fixupDuration / 4 );
+                data.fixingUp = true;
+                break;
 
-                default:
-                {
-                    qreal dist = minExtent - data.move;
-                    timeline.move( data.move, minExtent - dist / 2, QEasingCurve( QEasingCurve::InQuad ), fixupDuration / 4 );
-                    timeline.move( data.move, minExtent, QEasingCurve( QEasingCurve::OutExpo ), 3 * fixupDuration / 4 );
-                    data.fixingUp = true;
-                }
+            default:
+            {
+                qreal dist = minExtent - data.move;
+                timeline.move( data.move, minExtent - dist / 2, QEasingCurve( QEasingCurve::InQuad ), fixupDuration / 4 );
+                timeline.move( data.move, minExtent, QEasingCurve( QEasingCurve::OutExpo ), 3 * fixupDuration / 4 );
+                data.fixingUp = true;
+            }
             }
         }
     }
@@ -428,24 +428,24 @@ void QDeclarativeFlickablePrivate::fixup( AxisData &data, qreal minExtent, qreal
 
         switch ( fixupMode )
         {
-            case Immediate:
-                timeline.set( data.move, maxExtent );
-                break;
+        case Immediate:
+            timeline.set( data.move, maxExtent );
+            break;
 
-            case ExtentChanged:
-                // The target has changed. Don't start from the beginning; just complete the
-                // second half of the animation using the new extent.
-                timeline.move( data.move, maxExtent, QEasingCurve( QEasingCurve::OutExpo ), 3 * fixupDuration / 4 );
-                data.fixingUp = true;
-                break;
+        case ExtentChanged:
+            // The target has changed. Don't start from the beginning; just complete the
+            // second half of the animation using the new extent.
+            timeline.move( data.move, maxExtent, QEasingCurve( QEasingCurve::OutExpo ), 3 * fixupDuration / 4 );
+            data.fixingUp = true;
+            break;
 
-            default:
-            {
-                qreal dist = maxExtent - data.move;
-                timeline.move( data.move, maxExtent - dist / 2, QEasingCurve( QEasingCurve::InQuad ), fixupDuration / 4 );
-                timeline.move( data.move, maxExtent, QEasingCurve( QEasingCurve::OutExpo ), 3 * fixupDuration / 4 );
-                data.fixingUp = true;
-            }
+        default:
+        {
+            qreal dist = maxExtent - data.move;
+            timeline.move( data.move, maxExtent - dist / 2, QEasingCurve( QEasingCurve::InQuad ), fixupDuration / 4 );
+            timeline.move( data.move, maxExtent, QEasingCurve( QEasingCurve::OutExpo ), 3 * fixupDuration / 4 );
+            data.fixingUp = true;
+        }
         }
     }
 
@@ -1906,48 +1906,48 @@ bool QDeclarativeFlickable::sendMouseEvent( QGraphicsSceneMouseEvent *event )
 
         switch ( mouseEvent.type() )
         {
-            case QEvent::GraphicsSceneMouseMove:
-                d->handleMouseMoveEvent( &mouseEvent );
-                break;
+        case QEvent::GraphicsSceneMouseMove:
+            d->handleMouseMoveEvent( &mouseEvent );
+            break;
 
-            case QEvent::GraphicsSceneMousePress:
-                if ( d->pressed && !event->spontaneous() ) // we are already pressed - this is a delayed replay
+        case QEvent::GraphicsSceneMousePress:
+            if ( d->pressed && !event->spontaneous() ) // we are already pressed - this is a delayed replay
+            {
+                return false;
+            }
+
+            d->handleMousePressEvent( &mouseEvent );
+            d->captureDelayedPress( event );
+            stealThisEvent = d->stealMouse;   // Update stealThisEvent in case changed by function call above
+            break;
+
+        case QEvent::GraphicsSceneMouseRelease:
+            if ( d->delayedPressEvent )
+            {
+                // We replay the mouse press but the grabber we had might not be interessted by the event (e.g. overlay)
+                // so we reset the grabber
+                if ( s->mouseGrabberItem() == d->delayedPressTarget )
                 {
-                    return false;
+                    d->delayedPressTarget->ungrabMouse();
                 }
 
-                d->handleMousePressEvent( &mouseEvent );
-                d->captureDelayedPress( event );
-                stealThisEvent = d->stealMouse;   // Update stealThisEvent in case changed by function call above
-                break;
+                //Use the event handler that will take care of finding the proper item to propagate the event
+                QApplication::sendEvent( scene(), d->delayedPressEvent );
+                d->clearDelayedPress();
+                // We send the release
+                scene()->sendEvent( s->mouseGrabberItem(), event );
+                // And the event has been consumed
+                d->stealMouse = false;
+                d->pressed = false;
+                return true;
+            }
 
-            case QEvent::GraphicsSceneMouseRelease:
-                if ( d->delayedPressEvent )
-                {
-                    // We replay the mouse press but the grabber we had might not be interessted by the event (e.g. overlay)
-                    // so we reset the grabber
-                    if ( s->mouseGrabberItem() == d->delayedPressTarget )
-                    {
-                        d->delayedPressTarget->ungrabMouse();
-                    }
+            d->handleMouseReleaseEvent( &mouseEvent );
+            stealThisEvent = d->stealMouse;
+            break;
 
-                    //Use the event handler that will take care of finding the proper item to propagate the event
-                    QApplication::sendEvent( scene(), d->delayedPressEvent );
-                    d->clearDelayedPress();
-                    // We send the release
-                    scene()->sendEvent( s->mouseGrabberItem(), event );
-                    // And the event has been consumed
-                    d->stealMouse = false;
-                    d->pressed = false;
-                    return true;
-                }
-
-                d->handleMouseReleaseEvent( &mouseEvent );
-                stealThisEvent = d->stealMouse;
-                break;
-
-            default:
-                break;
+        default:
+            break;
         }
 
         grabber = qobject_cast<QDeclarativeItem *>( s->mouseGrabberItem() );
@@ -1986,13 +1986,13 @@ bool QDeclarativeFlickable::sceneEventFilter( QGraphicsItem *i, QEvent *e )
 
     switch ( e->type() )
     {
-        case QEvent::GraphicsSceneMousePress:
-        case QEvent::GraphicsSceneMouseMove:
-        case QEvent::GraphicsSceneMouseRelease:
-            return sendMouseEvent( static_cast<QGraphicsSceneMouseEvent *>( e ) );
+    case QEvent::GraphicsSceneMousePress:
+    case QEvent::GraphicsSceneMouseMove:
+    case QEvent::GraphicsSceneMouseRelease:
+        return sendMouseEvent( static_cast<QGraphicsSceneMouseEvent *>( e ) );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QDeclarativeItem::sceneEventFilter( i, e );

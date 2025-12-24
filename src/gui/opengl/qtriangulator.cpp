@@ -1174,60 +1174,60 @@ void QTriangulator<T>::initialize( const QVectorPath &path, const QTransform &ma
         {
             switch ( *e )
             {
-                case QPainterPath::MoveToElement:
-                    if ( !m_indices.isEmpty() )
-                    {
-                        m_indices.push_back( T( -1 ) ); // Q_TRIANGULATE_END_OF_POLYGON
-                    }
-
-                    [[fallthrough]];
-
-                case QPainterPath::LineToElement:
-                    m_indices.push_back( T( m_vertices.size() ) );
-                    m_vertices.resize( m_vertices.size() + 1 );
-                    qreal x, y;
-                    matrix.map( p[0], p[1], &x, &y );
-                    m_vertices.last().x = qRound( x * Q_FIXED_POINT_SCALE );
-                    m_vertices.last().y = qRound( y * Q_FIXED_POINT_SCALE );
-                    break;
-
-                case QPainterPath::CurveToElement:
+            case QPainterPath::MoveToElement:
+                if ( !m_indices.isEmpty() )
                 {
-                    qreal pts[8];
-
-                    for ( int i = 0; i < 4; ++i )
-                    {
-                        matrix.map( p[2 * i - 2], p[2 * i - 1], &pts[2 * i + 0], &pts[2 * i + 1] );
-                    }
-
-                    for ( int i = 0; i < 8; ++i )
-                    {
-                        pts[i] *= lod;
-                    }
-
-                    QBezier bezier = QBezier::fromPoints( QPointF( pts[0], pts[1] ), QPointF( pts[2], pts[3] ),
-                                                          QPointF( pts[4], pts[5] ), QPointF( pts[6], pts[7] ) );
-
-                    QPolygonF poly = bezier.toPolygon();
-
-                    // Skip first point, it already exists in 'm_vertices'.
-                    for ( int j = 1; j < poly.size(); ++j )
-                    {
-                        m_indices.push_back( T( m_vertices.size() ) );
-                        m_vertices.resize( m_vertices.size() + 1 );
-                        m_vertices.last().x = qRound( poly.at( j ).x() * Q_FIXED_POINT_SCALE / lod );
-                        m_vertices.last().y = qRound( poly.at( j ).y() * Q_FIXED_POINT_SCALE / lod );
-                    }
+                    m_indices.push_back( T( -1 ) ); // Q_TRIANGULATE_END_OF_POLYGON
                 }
 
-                i += 2;
-                e += 2;
-                p += 4;
+                [[fallthrough]];
+
+            case QPainterPath::LineToElement:
+                m_indices.push_back( T( m_vertices.size() ) );
+                m_vertices.resize( m_vertices.size() + 1 );
+                qreal x, y;
+                matrix.map( p[0], p[1], &x, &y );
+                m_vertices.last().x = qRound( x * Q_FIXED_POINT_SCALE );
+                m_vertices.last().y = qRound( y * Q_FIXED_POINT_SCALE );
                 break;
 
-                default:
-                    Q_ASSERT_X( 0, "QTriangulator::triangulate", "Unexpected element type." );
-                    break;
+            case QPainterPath::CurveToElement:
+            {
+                qreal pts[8];
+
+                for ( int i = 0; i < 4; ++i )
+                {
+                    matrix.map( p[2 * i - 2], p[2 * i - 1], &pts[2 * i + 0], &pts[2 * i + 1] );
+                }
+
+                for ( int i = 0; i < 8; ++i )
+                {
+                    pts[i] *= lod;
+                }
+
+                QBezier bezier = QBezier::fromPoints( QPointF( pts[0], pts[1] ), QPointF( pts[2], pts[3] ),
+                                                      QPointF( pts[4], pts[5] ), QPointF( pts[6], pts[7] ) );
+
+                QPolygonF poly = bezier.toPolygon();
+
+                // Skip first point, it already exists in 'm_vertices'.
+                for ( int j = 1; j < poly.size(); ++j )
+                {
+                    m_indices.push_back( T( m_vertices.size() ) );
+                    m_vertices.resize( m_vertices.size() + 1 );
+                    m_vertices.last().x = qRound( poly.at( j ).x() * Q_FIXED_POINT_SCALE / lod );
+                    m_vertices.last().y = qRound( poly.at( j ).y() * Q_FIXED_POINT_SCALE / lod );
+                }
+            }
+
+            i += 2;
+            e += 2;
+            p += 4;
+            break;
+
+            default:
+                Q_ASSERT_X( 0, "QTriangulator::triangulate", "Unexpected element type." );
+                break;
             }
         }
 
@@ -2753,107 +2753,48 @@ void QTriangulator<T>::SimpleToMonotone::monotoneDecomposition()
 
         switch ( m_edges[i].type )
         {
-            case RegularVertex:
+        case RegularVertex:
 
-                // If polygon interior is to the right of the vertex...
-                if ( m_edges[i].pointingUp == m_clockwiseOrder )
+            // If polygon interior is to the right of the vertex...
+            if ( m_edges[i].pointingUp == m_clockwiseOrder )
+            {
+                if ( m_edges[i].node )
                 {
-                    if ( m_edges[i].node )
+                    Q_ASSERT( !m_edges[j].node );
+
+                    if ( m_edges.at( m_edges[i].helper ).type == MergeVertex )
                     {
-                        Q_ASSERT( !m_edges[j].node );
-
-                        if ( m_edges.at( m_edges[i].helper ).type == MergeVertex )
-                        {
-                            diagonals.append( QPair<int, int>( i, m_edges[i].helper ) );
-                        }
-
-                        m_edges[j].node  = m_edges[i].node;
-                        m_edges[i].node = nullptr;
-                        m_edges[j].node->data = j;
-                        m_edges[j].helper = i;
-                    }
-                    else if ( m_edges[j].node )
-                    {
-                        Q_ASSERT( !m_edges[i].node );
-
-                        if ( m_edges.at( m_edges[j].helper ).type == MergeVertex )
-                        {
-                            diagonals.append( QPair<int, int>( i, m_edges[j].helper ) );
-                        }
-
-                        m_edges[i].node = m_edges[j].node;
-                        m_edges[j].node = nullptr;
-                        m_edges[i].node->data = i;
-                        m_edges[i].helper = i;
-                    }
-                    else
-                    {
-                        qWarning( "Inconsistent polygon. (#1)" );
+                        diagonals.append( QPair<int, int>( i, m_edges[i].helper ) );
                     }
 
-                }
-                else
-                {
-                    leftEdgeNode = searchEdgeLeftOfPoint( m_edges[i].from );
-
-                    if ( leftEdgeNode )
-                    {
-                        if ( m_edges.at( m_edges.at( leftEdgeNode->data ).helper ).type == MergeVertex )
-                        {
-                            diagonals.append( QPair<int, int>( i, m_edges.at( leftEdgeNode->data ).helper ) );
-                        }
-
-                        m_edges[leftEdgeNode->data].helper = i;
-                    }
-                    else
-                    {
-                        qWarning( "Inconsistent polygon. (#2)" );
-                    }
-                }
-
-                break;
-
-            case SplitVertex:
-                leftEdgeNode = searchEdgeLeftOfPoint( m_edges.at( i ).from );
-
-                if ( leftEdgeNode )
-                {
-                    diagonals.append( QPair<int, int>( i, m_edges.at( leftEdgeNode->data ).helper ) );
-                    m_edges[leftEdgeNode->data].helper = i;
-                }
-                else
-                {
-                    qWarning( "Inconsistent polygon. (#3)" );
-                }
-
-                [[fallthrough]];
-
-            case StartVertex:
-                if ( m_clockwiseOrder )
-                {
-                    leftEdgeNode = searchEdgeLeftOfEdge( j );
-                    QRBTree<int>::Node *node = m_edgeList.newNode();
-                    node->data = j;
-                    m_edges[j].node   = node;
+                    m_edges[j].node  = m_edges[i].node;
+                    m_edges[i].node = nullptr;
+                    m_edges[j].node->data = j;
                     m_edges[j].helper = i;
-                    m_edgeList.attachAfter( leftEdgeNode, node );
-                    Q_ASSERT( m_edgeList.validate() );
+                }
+                else if ( m_edges[j].node )
+                {
+                    Q_ASSERT( !m_edges[i].node );
+
+                    if ( m_edges.at( m_edges[j].helper ).type == MergeVertex )
+                    {
+                        diagonals.append( QPair<int, int>( i, m_edges[j].helper ) );
+                    }
+
+                    m_edges[i].node = m_edges[j].node;
+                    m_edges[j].node = nullptr;
+                    m_edges[i].node->data = i;
+                    m_edges[i].helper = i;
                 }
                 else
                 {
-                    leftEdgeNode = searchEdgeLeftOfEdge( i );
-                    QRBTree<int>::Node *node = m_edgeList.newNode();
-                    node->data = i;
-                    m_edges[i].node   = node;
-                    m_edges[i].helper = i;
-                    m_edgeList.attachAfter( leftEdgeNode, node );
-                    Q_ASSERT( m_edgeList.validate() );
+                    qWarning( "Inconsistent polygon. (#1)" );
                 }
 
-                break;
-
-            case MergeVertex:
-                leftEdgeNode = searchEdgeLeftOfPoint( m_edges.at( i ).from );
+            }
+            else
+            {
+                leftEdgeNode = searchEdgeLeftOfPoint( m_edges[i].from );
 
                 if ( leftEdgeNode )
                 {
@@ -2866,48 +2807,107 @@ void QTriangulator<T>::SimpleToMonotone::monotoneDecomposition()
                 }
                 else
                 {
-                    qWarning( "Inconsistent polygon. (#4)" );
+                    qWarning( "Inconsistent polygon. (#2)" );
+                }
+            }
+
+            break;
+
+        case SplitVertex:
+            leftEdgeNode = searchEdgeLeftOfPoint( m_edges.at( i ).from );
+
+            if ( leftEdgeNode )
+            {
+                diagonals.append( QPair<int, int>( i, m_edges.at( leftEdgeNode->data ).helper ) );
+                m_edges[leftEdgeNode->data].helper = i;
+            }
+            else
+            {
+                qWarning( "Inconsistent polygon. (#3)" );
+            }
+
+            [[fallthrough]];
+
+        case StartVertex:
+            if ( m_clockwiseOrder )
+            {
+                leftEdgeNode = searchEdgeLeftOfEdge( j );
+                QRBTree<int>::Node *node = m_edgeList.newNode();
+                node->data = j;
+                m_edges[j].node   = node;
+                m_edges[j].helper = i;
+                m_edgeList.attachAfter( leftEdgeNode, node );
+                Q_ASSERT( m_edgeList.validate() );
+            }
+            else
+            {
+                leftEdgeNode = searchEdgeLeftOfEdge( i );
+                QRBTree<int>::Node *node = m_edgeList.newNode();
+                node->data = i;
+                m_edges[i].node   = node;
+                m_edges[i].helper = i;
+                m_edgeList.attachAfter( leftEdgeNode, node );
+                Q_ASSERT( m_edgeList.validate() );
+            }
+
+            break;
+
+        case MergeVertex:
+            leftEdgeNode = searchEdgeLeftOfPoint( m_edges.at( i ).from );
+
+            if ( leftEdgeNode )
+            {
+                if ( m_edges.at( m_edges.at( leftEdgeNode->data ).helper ).type == MergeVertex )
+                {
+                    diagonals.append( QPair<int, int>( i, m_edges.at( leftEdgeNode->data ).helper ) );
                 }
 
-                [[fallthrough]];
+                m_edges[leftEdgeNode->data].helper = i;
+            }
+            else
+            {
+                qWarning( "Inconsistent polygon. (#4)" );
+            }
 
-            case EndVertex:
-                if ( m_clockwiseOrder )
+            [[fallthrough]];
+
+        case EndVertex:
+            if ( m_clockwiseOrder )
+            {
+                if ( m_edges.at( m_edges[i].helper ).type == MergeVertex )
                 {
-                    if ( m_edges.at( m_edges[i].helper ).type == MergeVertex )
-                    {
-                        diagonals.append( QPair<int, int>( i, m_edges[i].helper ) );
-                    }
+                    diagonals.append( QPair<int, int>( i, m_edges[i].helper ) );
+                }
 
-                    if ( m_edges[i].node )
-                    {
-                        m_edgeList.deleteNode( m_edges[i].node );
-                        Q_ASSERT( m_edgeList.validate() );
-                    }
-                    else
-                    {
-                        qWarning( "Inconsistent polygon. (#5)" );
-                    }
+                if ( m_edges[i].node )
+                {
+                    m_edgeList.deleteNode( m_edges[i].node );
+                    Q_ASSERT( m_edgeList.validate() );
                 }
                 else
                 {
-                    if ( m_edges.at( m_edges[j].helper ).type == MergeVertex )
-                    {
-                        diagonals.append( QPair<int, int>( i, m_edges[j].helper ) );
-                    }
-
-                    if ( m_edges[j].node )
-                    {
-                        m_edgeList.deleteNode( m_edges[j].node );
-                        Q_ASSERT( m_edgeList.validate() );
-                    }
-                    else
-                    {
-                        qWarning( "Inconsistent polygon. (#6)" );
-                    }
+                    qWarning( "Inconsistent polygon. (#5)" );
+                }
+            }
+            else
+            {
+                if ( m_edges.at( m_edges[j].helper ).type == MergeVertex )
+                {
+                    diagonals.append( QPair<int, int>( i, m_edges[j].helper ) );
                 }
 
-                break;
+                if ( m_edges[j].node )
+                {
+                    m_edgeList.deleteNode( m_edges[j].node );
+                    Q_ASSERT( m_edgeList.validate() );
+                }
+                else
+                {
+                    qWarning( "Inconsistent polygon. (#6)" );
+                }
+            }
+
+            break;
         }
     }
 

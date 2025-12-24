@@ -57,13 +57,13 @@ inline pa_sample_spec audioFormatToSampleSpec( const QAudioFormat &format )
     {
         switch ( format.byteOrder() )
         {
-            case QAudioFormat::BigEndian:
-                spec.format = PA_SAMPLE_S16BE;
-                break;
+        case QAudioFormat::BigEndian:
+            spec.format = PA_SAMPLE_S16BE;
+            break;
 
-            case QAudioFormat::LittleEndian:
-                spec.format = PA_SAMPLE_S16LE;
-                break;
+        case QAudioFormat::LittleEndian:
+            spec.format = PA_SAMPLE_S16LE;
+            break;
         }
     }
 
@@ -71,13 +71,13 @@ inline pa_sample_spec audioFormatToSampleSpec( const QAudioFormat &format )
     {
         switch ( format.byteOrder() )
         {
-            case QAudioFormat::BigEndian:
-                spec.format = PA_SAMPLE_S32BE;
-                break;
+        case QAudioFormat::BigEndian:
+            spec.format = PA_SAMPLE_S32BE;
+            break;
 
-            case QAudioFormat::LittleEndian:
-                spec.format = PA_SAMPLE_S32LE;
-                break;
+        case QAudioFormat::LittleEndian:
+            spec.format = PA_SAMPLE_S32LE;
+            break;
         }
     }
 
@@ -165,21 +165,21 @@ private:
 
         switch ( pa_context_get_state( c ) )
         {
-            case PA_CONTEXT_CONNECTING:
-            case PA_CONTEXT_AUTHORIZING:
-            case PA_CONTEXT_SETTING_NAME:
-                break;
+        case PA_CONTEXT_CONNECTING:
+        case PA_CONTEXT_AUTHORIZING:
+        case PA_CONTEXT_SETTING_NAME:
+            break;
 
-            case PA_CONTEXT_READY:
-                QMetaObject::invokeMethod( self, "contextReady", Qt::QueuedConnection );
-                break;
+        case PA_CONTEXT_READY:
+            QMetaObject::invokeMethod( self, "contextReady", Qt::QueuedConnection );
+            break;
 
-            case PA_CONTEXT_FAILED:
-                QMetaObject::invokeMethod( self, "onContextFailed", Qt::QueuedConnection );
-                break;
+        case PA_CONTEXT_FAILED:
+            QMetaObject::invokeMethod( self, "onContextFailed", Qt::QueuedConnection );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -527,16 +527,16 @@ void QSoundEffectPrivate::setSource( const QUrl &url )
 
     switch ( m_sample->state() )
     {
-        case QSample::Ready:
-            sampleReady();
-            break;
+    case QSample::Ready:
+        sampleReady();
+        break;
 
-        case QSample::Error:
-            decoderError();
-            break;
+    case QSample::Error:
+        decoderError();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -1277,57 +1277,57 @@ void QSoundEffectPrivate::stream_state_callback( pa_stream *s, void *userdata )
 
     switch ( pa_stream_get_state( s ) )
     {
-        case PA_STREAM_READY:
-        {
+    case PA_STREAM_READY:
+    {
 #if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
-            qDebug() << self << "pulse stream ready";
+        qDebug() << self << "pulse stream ready";
 #endif
-            const pa_buffer_attr *bufferAttr = pa_stream_get_buffer_attr( self->m_pulseStream );
-            self->m_pulseBufferSize = bufferAttr->tlength;
+        const pa_buffer_attr *bufferAttr = pa_stream_get_buffer_attr( self->m_pulseStream );
+        self->m_pulseBufferSize = bufferAttr->tlength;
 
-            if ( bufferAttr->prebuf > uint32_t( self->m_sample->data().size() ) )
+        if ( bufferAttr->prebuf > uint32_t( self->m_sample->data().size() ) )
+        {
+            pa_buffer_attr newBufferAttr;
+            newBufferAttr = *bufferAttr;
+            newBufferAttr.prebuf = self->m_sample->data().size();
+
+            pa_operation *op = pa_stream_set_buffer_attr( self->m_pulseStream, &newBufferAttr,
+                               stream_adjust_prebuffer_callback, self->m_ref->getRef() );
+
+            if ( op )
             {
-                pa_buffer_attr newBufferAttr;
-                newBufferAttr = *bufferAttr;
-                newBufferAttr.prebuf = self->m_sample->data().size();
-
-                pa_operation *op = pa_stream_set_buffer_attr( self->m_pulseStream, &newBufferAttr,
-                                   stream_adjust_prebuffer_callback, self->m_ref->getRef() );
-
-                if ( op )
-                {
-                    pa_operation_unref( op );
-                }
-                else
-                {
-                    qWarning( "QSoundEffect::createPulseStream() Failed to adjust pre-buffer attribute" );
-                }
-
+                pa_operation_unref( op );
             }
             else
             {
-                QMetaObject::invokeMethod( self, "streamReady", Qt::QueuedConnection );
+                qWarning( "QSoundEffect::createPulseStream() Failed to adjust pre-buffer attribute" );
             }
 
-            break;
+        }
+        else
+        {
+            QMetaObject::invokeMethod( self, "streamReady", Qt::QueuedConnection );
         }
 
-        case PA_STREAM_CREATING:
-#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
-            qDebug() << self << "pulse stream creating";
-#endif
-            break;
+        break;
+    }
 
-        case PA_STREAM_TERMINATED:
+    case PA_STREAM_CREATING:
 #if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
-            qDebug() << self << "pulse stream terminated";
+        qDebug() << self << "pulse stream creating";
 #endif
-            break;
+        break;
 
-        case PA_STREAM_FAILED:
-        default:
-            qWarning( "QSoundEffect::createPulseStream() Error in pulse audio stream" );
-            break;
+    case PA_STREAM_TERMINATED:
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
+        qDebug() << self << "pulse stream terminated";
+#endif
+        break;
+
+    case PA_STREAM_FAILED:
+    default:
+        qWarning( "QSoundEffect::createPulseStream() Error in pulse audio stream" );
+        break;
     }
 }
 

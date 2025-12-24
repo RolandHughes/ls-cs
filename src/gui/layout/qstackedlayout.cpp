@@ -377,27 +377,27 @@ void QStackedLayout::setGeometry( const QRect &rect )
 
     switch ( d->stackingMode )
     {
-        case StackOne:
-            if ( QWidget *widget = currentWidget() )
-            {
-                widget->setGeometry( rect );
-            }
+    case StackOne:
+        if ( QWidget *widget = currentWidget() )
+        {
+            widget->setGeometry( rect );
+        }
 
-            break;
+        break;
 
-        case StackAll:
-            if ( const int n = d->list.count() )
+    case StackAll:
+        if ( const int n = d->list.count() )
+        {
+            for ( int i = 0; i < n; ++i )
             {
-                for ( int i = 0; i < n; ++i )
+                if ( QWidget *widget = d->list.at( i )->widget() )
                 {
-                    if ( QWidget *widget = d->list.at( i )->widget() )
-                    {
-                        widget->setGeometry( rect );
-                    }
+                    widget->setGeometry( rect );
                 }
             }
+        }
 
-            break;
+        break;
     }
 }
 
@@ -472,37 +472,37 @@ void QStackedLayout::setStackingMode( StackingMode stackingMode )
 
     switch ( d->stackingMode )
     {
-        case StackOne:
-            if ( const int idx = currentIndex() )
-                for ( int i = 0; i < n; ++i )
-                    if ( QWidget *widget = d->list.at( i )->widget() )
-                    {
-                        widget->setVisible( i == idx );
-                    }
-
-            break;
-
-        case StackAll:   // Turn overlay on: Make sure all widgets are the same size
-        {
-            QRect geometry;
-
-            if ( const QWidget *widget = currentWidget() )
-            {
-                geometry = widget->geometry();
-            }
-
+    case StackOne:
+        if ( const int idx = currentIndex() )
             for ( int i = 0; i < n; ++i )
                 if ( QWidget *widget = d->list.at( i )->widget() )
                 {
-                    if ( !geometry.isNull() )
-                    {
-                        widget->setGeometry( geometry );
-                    }
-
-                    widget->setVisible( true );
+                    widget->setVisible( i == idx );
                 }
-        }
+
         break;
+
+    case StackAll:   // Turn overlay on: Make sure all widgets are the same size
+    {
+        QRect geometry;
+
+        if ( const QWidget *widget = currentWidget() )
+        {
+            geometry = widget->geometry();
+        }
+
+        for ( int i = 0; i < n; ++i )
+            if ( QWidget *widget = d->list.at( i )->widget() )
+            {
+                if ( !geometry.isNull() )
+                {
+                    widget->setGeometry( geometry );
+                }
+
+                widget->setVisible( true );
+            }
+    }
+    break;
     }
 }
 

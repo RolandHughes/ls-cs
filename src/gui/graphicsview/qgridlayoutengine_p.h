@@ -177,29 +177,29 @@ public:
 
         switch ( which )
         {
-            case Qt::MinimumSize:
-                t = &q_minimumSize;
-                break;
+        case Qt::MinimumSize:
+            t = &q_minimumSize;
+            break;
 
-            case Qt::PreferredSize:
-                t = &q_preferredSize;
-                break;
+        case Qt::PreferredSize:
+            t = &q_preferredSize;
+            break;
 
-            case Qt::MaximumSize:
-                t = &q_maximumSize;
-                break;
+        case Qt::MaximumSize:
+            t = &q_maximumSize;
+            break;
 
-            case Qt::MinimumDescent:
-                t = &q_minimumDescent;
-                break;
+        case Qt::MinimumDescent:
+            t = &q_minimumDescent;
+            break;
 
-            case ( Qt::MinimumDescent + 1 ):
-                t = &q_minimumAscent;
-                break;
+        case ( Qt::MinimumDescent + 1 ):
+            t = &q_minimumAscent;
+            break;
 
-            default:
-                t = nullptr;
-                break;
+        default:
+            t = nullptr;
+            break;
         }
 
         return *t;
@@ -211,29 +211,29 @@ public:
 
         switch ( which )
         {
-            case Qt::MinimumSize:
-                t = &q_minimumSize;
-                break;
+        case Qt::MinimumSize:
+            t = &q_minimumSize;
+            break;
 
-            case Qt::PreferredSize:
-                t = &q_preferredSize;
-                break;
+        case Qt::PreferredSize:
+            t = &q_preferredSize;
+            break;
 
-            case Qt::MaximumSize:
-                t = &q_maximumSize;
-                break;
+        case Qt::MaximumSize:
+            t = &q_maximumSize;
+            break;
 
-            case Qt::MinimumDescent:
-                t = &q_minimumDescent;
-                break;
+        case Qt::MinimumDescent:
+            t = &q_minimumDescent;
+            break;
 
-            case ( Qt::MinimumDescent + 1 ):
-                t = &q_minimumAscent;
-                break;
+        case ( Qt::MinimumDescent + 1 ):
+            t = &q_minimumAscent;
+            break;
 
-            default:
-                t = nullptr;
-                break;
+        default:
+            t = nullptr;
+            break;
         }
 
         return *t;

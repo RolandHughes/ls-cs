@@ -3203,24 +3203,24 @@ void QDeclarativeGridView::keyPressEvent( QKeyEvent *event )
 
         switch ( event->key() )
         {
-            case Qt::Key_Up:
-                moveCurrentIndexUp();
-                break;
+        case Qt::Key_Up:
+            moveCurrentIndexUp();
+            break;
 
-            case Qt::Key_Down:
-                moveCurrentIndexDown();
-                break;
+        case Qt::Key_Down:
+            moveCurrentIndexDown();
+            break;
 
-            case Qt::Key_Left:
-                moveCurrentIndexLeft();
-                break;
+        case Qt::Key_Left:
+            moveCurrentIndexLeft();
+            break;
 
-            case Qt::Key_Right:
-                moveCurrentIndexRight();
-                break;
+        case Qt::Key_Right:
+            moveCurrentIndexRight();
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         if ( oldCurrent != currentIndex() )
@@ -3495,56 +3495,56 @@ void QDeclarativeGridViewPrivate::positionViewAtIndex( int index, int mode )
 
         switch ( mode )
         {
-            case QDeclarativeGridView::Beginning:
-                pos = itemPos;
+        case QDeclarativeGridView::Beginning:
+            pos = itemPos;
 
-                if ( index < 0 && header )
-                {
-                    pos -= flow == QDeclarativeGridView::LeftToRight
-                           ? header->item->height()
-                           : header->item->width();
-                }
+            if ( index < 0 && header )
+            {
+                pos -= flow == QDeclarativeGridView::LeftToRight
+                       ? header->item->height()
+                       : header->item->width();
+            }
 
-                break;
+            break;
 
-            case QDeclarativeGridView::Center:
-                pos = itemPos - ( size() - rowSize() ) / 2;
-                break;
+        case QDeclarativeGridView::Center:
+            pos = itemPos - ( size() - rowSize() ) / 2;
+            break;
 
-            case QDeclarativeGridView::End:
+        case QDeclarativeGridView::End:
+            pos = itemPos - size() + rowSize();
+
+            if ( index >= model->count() && footer )
+            {
+                pos += flow == QDeclarativeGridView::LeftToRight
+                       ? footer->item->height()
+                       : footer->item->width();
+            }
+
+            break;
+
+        case QDeclarativeGridView::Visible:
+            if ( itemPos > pos + size() )
+            {
                 pos = itemPos - size() + rowSize();
+            }
+            else if ( item->endRowPos() < pos )
+            {
+                pos = itemPos;
+            }
 
-                if ( index >= model->count() && footer )
-                {
-                    pos += flow == QDeclarativeGridView::LeftToRight
-                           ? footer->item->height()
-                           : footer->item->width();
-                }
+            break;
 
-                break;
+        case QDeclarativeGridView::Contain:
+            if ( item->endRowPos() > pos + size() )
+            {
+                pos = itemPos - size() + rowSize();
+            }
 
-            case QDeclarativeGridView::Visible:
-                if ( itemPos > pos + size() )
-                {
-                    pos = itemPos - size() + rowSize();
-                }
-                else if ( item->endRowPos() < pos )
-                {
-                    pos = itemPos;
-                }
-
-                break;
-
-            case QDeclarativeGridView::Contain:
-                if ( item->endRowPos() > pos + size() )
-                {
-                    pos = itemPos - size() + rowSize();
-                }
-
-                if ( itemPos < pos )
-                {
-                    pos = itemPos;
-                }
+            if ( itemPos < pos )
+            {
+                pos = itemPos;
+            }
         }
 
         pos = qMin( pos, maxExtent );

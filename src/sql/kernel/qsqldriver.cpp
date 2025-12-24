@@ -163,136 +163,136 @@ QString QSqlDriver::sqlStatement( StatementType type, const QString &tableName,
 
     switch ( type )
     {
-        case SelectStatement:
-            for ( i = 0; i < rec.count(); ++i )
+    case SelectStatement:
+        for ( i = 0; i < rec.count(); ++i )
+        {
+            if ( rec.isGenerated( i ) )
             {
-                if ( rec.isGenerated( i ) )
-                {
-                    s.append( prepareIdentifier( rec.fieldName( i ), QSqlDriver::FieldName, this ) ).append( ", " );
-                }
+                s.append( prepareIdentifier( rec.fieldName( i ), QSqlDriver::FieldName, this ) ).append( ", " );
+            }
+        }
+
+        if ( s.isEmpty() )
+        {
+            return s;
+        }
+
+        s.chop( 2 );
+        s.prepend( "SELECT " ).append( " FROM " ).append( tableName );
+        break;
+
+    case WhereStatement:
+    {
+        const QString tableNamePrefix = tableName.isEmpty()
+                                        ? QString()
+                                        : prepareIdentifier( tableName, QSqlDriver::TableName, this ) + QChar( '.' );
+
+        for ( int i = 0; i < rec.count(); ++i )
+        {
+            s.append( i ? QString( " AND " ) : QString( "WHERE " ) );
+            s.append( tableNamePrefix );
+            s.append( prepareIdentifier( rec.fieldName( i ), QSqlDriver::FieldName, this ) );
+
+            if ( rec.isNull( i ) )
+            {
+                s.append( QString( " IS NULL" ) );
+
+            }
+            else if ( preparedStatement )
+            {
+                s.append( QString( " = ?" ) );
+
+            }
+            else
+            {
+                s.append( QString( " = " ) ).append( formatValue( rec.field( i ) ) );
+            }
+        }
+
+        break;
+    }
+
+    case UpdateStatement:
+        s.append( "UPDATE " + tableName + " SET " );
+
+        for ( i = 0; i < rec.count(); ++i )
+        {
+            if ( ! rec.isGenerated( i ) )
+            {
+                continue;
             }
 
-            if ( s.isEmpty() )
+            s.append( prepareIdentifier( rec.fieldName( i ), QSqlDriver::FieldName, this ) ).append( QChar( '=' ) );
+
+            if ( preparedStatement )
             {
-                return s;
+                s.append( QChar( '?' ) );
             }
+            else
+            {
+                s.append( formatValue( rec.field( i ) ) );
+            }
+
+            s.append( QString( ", " ) );
+        }
+
+        if ( s.endsWith( QString( ", " ) ) )
+        {
+            s.chop( 2 );
+        }
+        else
+        {
+            s.clear();
+        }
+
+        break;
+
+    case DeleteStatement:
+        s.append( QString( "DELETE FROM " ) ).append( tableName );
+        break;
+
+    case InsertStatement:
+    {
+        s.append( QString( "INSERT INTO " ) ).append( tableName ).append( QString( " (" ) );
+
+        QString vals;
+
+        for ( i = 0; i < rec.count(); ++i )
+        {
+            if ( ! rec.isGenerated( i ) )
+            {
+                continue;
+            }
+
+            s.append( prepareIdentifier( rec.fieldName( i ), QSqlDriver::FieldName, this ) ).append( QString( ", " ) );
+
+            if ( preparedStatement )
+            {
+                vals.append( QChar( '?' ) );
+            }
+            else
+            {
+                vals.append( formatValue( rec.field( i ) ) );
+            }
+
+            vals.append( QString( ", " ) );
+        }
+
+        if ( vals.isEmpty() )
+        {
+            s.clear();
+
+        }
+        else
+        {
+            vals.chop( 2 );              // remove trailing comma
 
             s.chop( 2 );
-            s.prepend( "SELECT " ).append( " FROM " ).append( tableName );
-            break;
-
-        case WhereStatement:
-        {
-            const QString tableNamePrefix = tableName.isEmpty()
-                                            ? QString()
-                                            : prepareIdentifier( tableName, QSqlDriver::TableName, this ) + QChar( '.' );
-
-            for ( int i = 0; i < rec.count(); ++i )
-            {
-                s.append( i ? QString( " AND " ) : QString( "WHERE " ) );
-                s.append( tableNamePrefix );
-                s.append( prepareIdentifier( rec.fieldName( i ), QSqlDriver::FieldName, this ) );
-
-                if ( rec.isNull( i ) )
-                {
-                    s.append( QString( " IS NULL" ) );
-
-                }
-                else if ( preparedStatement )
-                {
-                    s.append( QString( " = ?" ) );
-
-                }
-                else
-                {
-                    s.append( QString( " = " ) ).append( formatValue( rec.field( i ) ) );
-                }
-            }
-
-            break;
+            s.append( ") VALUES (" ).append( vals ).append( QChar( ')' ) );
         }
 
-        case UpdateStatement:
-            s.append( "UPDATE " + tableName + " SET " );
-
-            for ( i = 0; i < rec.count(); ++i )
-            {
-                if ( ! rec.isGenerated( i ) )
-                {
-                    continue;
-                }
-
-                s.append( prepareIdentifier( rec.fieldName( i ), QSqlDriver::FieldName, this ) ).append( QChar( '=' ) );
-
-                if ( preparedStatement )
-                {
-                    s.append( QChar( '?' ) );
-                }
-                else
-                {
-                    s.append( formatValue( rec.field( i ) ) );
-                }
-
-                s.append( QString( ", " ) );
-            }
-
-            if ( s.endsWith( QString( ", " ) ) )
-            {
-                s.chop( 2 );
-            }
-            else
-            {
-                s.clear();
-            }
-
-            break;
-
-        case DeleteStatement:
-            s.append( QString( "DELETE FROM " ) ).append( tableName );
-            break;
-
-        case InsertStatement:
-        {
-            s.append( QString( "INSERT INTO " ) ).append( tableName ).append( QString( " (" ) );
-
-            QString vals;
-
-            for ( i = 0; i < rec.count(); ++i )
-            {
-                if ( ! rec.isGenerated( i ) )
-                {
-                    continue;
-                }
-
-                s.append( prepareIdentifier( rec.fieldName( i ), QSqlDriver::FieldName, this ) ).append( QString( ", " ) );
-
-                if ( preparedStatement )
-                {
-                    vals.append( QChar( '?' ) );
-                }
-                else
-                {
-                    vals.append( formatValue( rec.field( i ) ) );
-                }
-
-                vals.append( QString( ", " ) );
-            }
-
-            if ( vals.isEmpty() )
-            {
-                s.clear();
-
-            }
-            else
-            {
-                vals.chop( 2 );              // remove trailing comma
-
-                s.chop( 2 );
-                s.append( ") VALUES (" ).append( vals ).append( QChar( ')' ) );
-            }
-
-            break;
-        }
+        break;
+    }
     }
 
     return s;
@@ -313,109 +313,109 @@ QString QSqlDriver::formatValue( const QSqlField &field, bool trimStrings ) cons
     {
         switch ( field.type() )
         {
-            case QVariant::Int:
-            case QVariant::UInt:
-                if ( field.value().type() == QVariant::Bool )
-                {
-                    r = field.value().toBool() ? QString( "1" ) : QString( "0" );
-                }
-                else
-                {
-                    r = field.value().toString();
-                }
-
-                break;
-
-            case QVariant::Date:
-                if ( field.value().toDate().isValid() )
-                {
-                    r = QChar( '\'' ) + field.value().toDate().toString( Qt::ISODate ) + QChar( '\'' );
-                }
-                else
-                {
-                    r = nullTxt;
-                }
-
-                break;
-
-            case QVariant::Time:
-                if ( field.value().toTime().isValid() )
-                {
-                    r =  QChar( '\'' ) + field.value().toTime().toString( Qt::ISODate ) + QChar( '\'' );
-                }
-                else
-                {
-                    r = nullTxt;
-                }
-
-                break;
-
-            case QVariant::DateTime:
-                if ( field.value().toDateTime().isValid() )
-                {
-                    r = QChar( '\'' ) + field.value().toDateTime().toString( Qt::ISODate ) + QChar( '\'' );
-                }
-                else
-                {
-                    r = nullTxt;
-                }
-
-                break;
-
-            case QVariant::String:
-            case QVariant::Char:
+        case QVariant::Int:
+        case QVariant::UInt:
+            if ( field.value().type() == QVariant::Bool )
             {
-                QString result = field.value().toString();
-
-                if ( trimStrings )
-                {
-                    int end = result.length();
-
-                    while ( end && result.at( end - 1 ).isSpace() )
-                    {
-                        // skip white space from end
-                        end--;
-                    }
-
-                    result.truncate( end );
-                }
-
-                /* escape the "'" character */
-                result.replace( '\'', "''" );
-                r = QChar( '\'' ) + result + QChar( '\'' );
-                break;
+                r = field.value().toBool() ? QString( "1" ) : QString( "0" );
             }
-
-            case QVariant::Bool:
-                r = QString::number( field.value().toBool() );
-                break;
-
-            case QVariant::ByteArray :
+            else
             {
-                if ( hasFeature( BLOB ) )
-                {
-                    QByteArray ba = field.value().toByteArray();
-                    QString res;
-
-                    static const char hexchars[] = "0123456789abcdef";
-
-                    for ( int i = 0; i < ba.size(); ++i )
-                    {
-                        uchar s = ( uchar ) ba[i];
-                        res += QChar( hexchars[s >> 4] );
-                        res += QChar( hexchars[s & 0x0f] );
-                    }
-
-                    r = QChar( '\'' ) + res +  QChar( '\'' );
-                    break;
-                }
-
-                [[fallthrough]];
-            }
-
-            default:
                 r = field.value().toString();
+            }
+
+            break;
+
+        case QVariant::Date:
+            if ( field.value().toDate().isValid() )
+            {
+                r = QChar( '\'' ) + field.value().toDate().toString( Qt::ISODate ) + QChar( '\'' );
+            }
+            else
+            {
+                r = nullTxt;
+            }
+
+            break;
+
+        case QVariant::Time:
+            if ( field.value().toTime().isValid() )
+            {
+                r =  QChar( '\'' ) + field.value().toTime().toString( Qt::ISODate ) + QChar( '\'' );
+            }
+            else
+            {
+                r = nullTxt;
+            }
+
+            break;
+
+        case QVariant::DateTime:
+            if ( field.value().toDateTime().isValid() )
+            {
+                r = QChar( '\'' ) + field.value().toDateTime().toString( Qt::ISODate ) + QChar( '\'' );
+            }
+            else
+            {
+                r = nullTxt;
+            }
+
+            break;
+
+        case QVariant::String:
+        case QVariant::Char:
+        {
+            QString result = field.value().toString();
+
+            if ( trimStrings )
+            {
+                int end = result.length();
+
+                while ( end && result.at( end - 1 ).isSpace() )
+                {
+                    // skip white space from end
+                    end--;
+                }
+
+                result.truncate( end );
+            }
+
+            /* escape the "'" character */
+            result.replace( '\'', "''" );
+            r = QChar( '\'' ) + result + QChar( '\'' );
+            break;
+        }
+
+        case QVariant::Bool:
+            r = QString::number( field.value().toBool() );
+            break;
+
+        case QVariant::ByteArray :
+        {
+            if ( hasFeature( BLOB ) )
+            {
+                QByteArray ba = field.value().toByteArray();
+                QString res;
+
+                static const char hexchars[] = "0123456789abcdef";
+
+                for ( int i = 0; i < ba.size(); ++i )
+                {
+                    uchar s = ( uchar ) ba[i];
+                    res += QChar( hexchars[s >> 4] );
+                    res += QChar( hexchars[s & 0x0f] );
+                }
+
+                r = QChar( '\'' ) + res +  QChar( '\'' );
                 break;
+            }
+
+            [[fallthrough]];
+        }
+
+        default:
+            r = field.value().toString();
+            break;
         }
     }
 

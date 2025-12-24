@@ -806,20 +806,20 @@ bool QDeclarativeMouseArea::sendMouseEvent( QGraphicsSceneMouseEvent *event )
 
         switch ( mouseEvent.type() )
         {
-            case QEvent::GraphicsSceneMouseMove:
-                mouseMoveEvent( &mouseEvent );
-                break;
+        case QEvent::GraphicsSceneMouseMove:
+            mouseMoveEvent( &mouseEvent );
+            break;
 
-            case QEvent::GraphicsSceneMousePress:
-                mousePressEvent( &mouseEvent );
-                break;
+        case QEvent::GraphicsSceneMousePress:
+            mousePressEvent( &mouseEvent );
+            break;
 
-            case QEvent::GraphicsSceneMouseRelease:
-                mouseReleaseEvent( &mouseEvent );
-                break;
+        case QEvent::GraphicsSceneMouseRelease:
+            mouseReleaseEvent( &mouseEvent );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         grabber = qobject_cast<QDeclarativeItem *>( s->mouseGrabberItem() );
@@ -869,13 +869,13 @@ bool QDeclarativeMouseArea::sceneEventFilter( QGraphicsItem *i, QEvent *e )
 
     switch ( e->type() )
     {
-        case QEvent::GraphicsSceneMousePress:
-        case QEvent::GraphicsSceneMouseMove:
-        case QEvent::GraphicsSceneMouseRelease:
-            return sendMouseEvent( static_cast<QGraphicsSceneMouseEvent *>( e ) );
+    case QEvent::GraphicsSceneMousePress:
+    case QEvent::GraphicsSceneMouseMove:
+    case QEvent::GraphicsSceneMouseRelease:
+        return sendMouseEvent( static_cast<QGraphicsSceneMouseEvent *>( e ) );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QDeclarativeItem::sceneEventFilter( i, e );
@@ -923,16 +923,16 @@ QVariant QDeclarativeMouseArea::itemChange( GraphicsItemChange change,
 
     switch ( change )
     {
-        case ItemVisibleHasChanged:
-            if ( acceptHoverEvents() && d->hovered != ( isVisible() && isUnderMouse() ) )
-            {
-                setHovered( !d->hovered );
-            }
+    case ItemVisibleHasChanged:
+        if ( acceptHoverEvents() && d->hovered != ( isVisible() && isUnderMouse() ) )
+        {
+            setHovered( !d->hovered );
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QDeclarativeItem::itemChange( change, value );

@@ -884,50 +884,50 @@ void QTextBrowser::keyPressEvent( QKeyEvent *ev )
 
     switch ( ev->key() )
     {
-        case Qt::Key_Select:
-            if ( QApplication::keypadNavigationEnabled() )
+    case Qt::Key_Select:
+        if ( QApplication::keypadNavigationEnabled() )
+        {
+            if ( !hasEditFocus() )
             {
-                if ( !hasEditFocus() )
-                {
-                    setEditFocus( true );
-                    return;
+                setEditFocus( true );
+                return;
 
-                }
-                else
-                {
-                    QTextCursor cursor = d->control->textCursor();
-                    QTextCharFormat charFmt = cursor.charFormat();
-
-                    if ( !cursor.hasSelection() || charFmt.anchorHref().isEmpty() )
-                    {
-                        ev->accept();
-                        return;
-                    }
-                }
             }
-
-            break;
-
-        case Qt::Key_Back:
-            if ( QApplication::keypadNavigationEnabled() )
+            else
             {
-                if ( hasEditFocus() )
+                QTextCursor cursor = d->control->textCursor();
+                QTextCharFormat charFmt = cursor.charFormat();
+
+                if ( !cursor.hasSelection() || charFmt.anchorHref().isEmpty() )
                 {
-                    setEditFocus( false );
                     ev->accept();
                     return;
                 }
             }
+        }
 
-            QTextEdit::keyPressEvent( ev );
-            return;
+        break;
 
-        default:
-            if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
+    case Qt::Key_Back:
+        if ( QApplication::keypadNavigationEnabled() )
+        {
+            if ( hasEditFocus() )
             {
-                ev->ignore();
+                setEditFocus( false );
+                ev->accept();
                 return;
             }
+        }
+
+        QTextEdit::keyPressEvent( ev );
+        return;
+
+    default:
+        if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
+        {
+            ev->ignore();
+            return;
+        }
     }
 
 #endif
@@ -936,20 +936,20 @@ void QTextBrowser::keyPressEvent( QKeyEvent *ev )
     {
         switch ( ev->key() )
         {
-            case Qt::Key_Right:
-                forward();
-                ev->accept();
-                return;
+        case Qt::Key_Right:
+            forward();
+            ev->accept();
+            return;
 
-            case Qt::Key_Left:
-                backward();
-                ev->accept();
-                return;
+        case Qt::Key_Left:
+            backward();
+            ev->accept();
+            return;
 
-            case Qt::Key_Up:
-                home();
-                ev->accept();
-                return;
+        case Qt::Key_Up:
+            home();
+            ev->accept();
+            return;
         }
     }
 

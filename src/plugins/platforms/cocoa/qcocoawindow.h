@@ -112,8 +112,8 @@ typedef NSWindow<QNSWindowProtocol> QCocoaNSWindow;
 @property ( nonatomic, readonly ) QNSWindowHelper *helper;
 
 - ( id )initWithContentRect: ( NSRect )contentRect
-    styleMask: ( NSUInteger )windowStyle
-    qPlatformWindow: ( QCocoaWindow * )qpw;
+styleMask: ( NSUInteger )windowStyle
+qPlatformWindow: ( QCocoaWindow * )qpw;
 
 @end
 
@@ -125,8 +125,8 @@ typedef NSWindow<QNSWindowProtocol> QCocoaNSWindow;
 @property ( nonatomic, readonly ) QNSWindowHelper *helper;
 
 - ( id )initWithContentRect: ( NSRect )contentRect
-    styleMask: ( NSUInteger )windowStyle
-    qPlatformWindow: ( QCocoaWindow * )qpw;
+styleMask: ( NSUInteger )windowStyle
+qPlatformWindow: ( QCocoaWindow * )qpw;
 
 @end
 

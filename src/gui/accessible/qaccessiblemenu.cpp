@@ -367,30 +367,30 @@ QString QAccessibleMenuItem::text( QAccessible::Text t ) const
 
     switch ( t )
     {
-        case QAccessible::Name:
-            str = lscs_accStripAmp( m_action->text() );
-            break;
+    case QAccessible::Name:
+        str = lscs_accStripAmp( m_action->text() );
+        break;
 
-        case QAccessible::Accelerator:
-        {
+    case QAccessible::Accelerator:
+    {
 #ifndef LSCS_NO_SHORTCUT
-            QKeySequence key = m_action->shortcut();
+        QKeySequence key = m_action->shortcut();
 
-            if ( !key.isEmpty() )
-            {
-                str = key.toString();
-            }
-            else
+        if ( !key.isEmpty() )
+        {
+            str = key.toString();
+        }
+        else
 #endif
-            {
-                str = lscs_accHotKey( m_action->text() );
-            }
-
-            break;
+        {
+            str = lscs_accHotKey( m_action->text() );
         }
 
-        default:
-            break;
+        break;
+    }
+
+    default:
+        break;
     }
 
     return str;

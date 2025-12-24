@@ -440,26 +440,26 @@ QWindowsCursor::PixmapCursor QWindowsCursor::customCursor( Qt::CursorShape curso
 
     switch ( cursorShape )
     {
-        case Qt::SplitVCursor:
-            return createPixmapCursorFromData( systemCursorSize( screen ), standardCursorSize(), 32, vsplit_bits, vsplitm_bits );
+    case Qt::SplitVCursor:
+        return createPixmapCursorFromData( systemCursorSize( screen ), standardCursorSize(), 32, vsplit_bits, vsplitm_bits );
 
-        case Qt::SplitHCursor:
-            return createPixmapCursorFromData( systemCursorSize( screen ), standardCursorSize(), 32, hsplit_bits, hsplitm_bits );
+    case Qt::SplitHCursor:
+        return createPixmapCursorFromData( systemCursorSize( screen ), standardCursorSize(), 32, hsplit_bits, hsplitm_bits );
 
-        case Qt::OpenHandCursor:
-            return createPixmapCursorFromData( systemCursorSize( screen ), standardCursorSize(), 16, openhand_bits, openhandm_bits );
+    case Qt::OpenHandCursor:
+        return createPixmapCursorFromData( systemCursorSize( screen ), standardCursorSize(), 16, openhand_bits, openhandm_bits );
 
-        case Qt::ClosedHandCursor:
-            return createPixmapCursorFromData( systemCursorSize( screen ), standardCursorSize(), 16, closedhand_bits, closedhandm_bits );
+    case Qt::ClosedHandCursor:
+        return createPixmapCursorFromData( systemCursorSize( screen ), standardCursorSize(), 16, closedhand_bits, closedhandm_bits );
 
-        case Qt::DragCopyCursor:
-            return QWindowsCursor::PixmapCursor( QPixmap( copyDragCursorXpmC ), QPoint( 0, 0 ) );
+    case Qt::DragCopyCursor:
+        return QWindowsCursor::PixmapCursor( QPixmap( copyDragCursorXpmC ), QPoint( 0, 0 ) );
 
-        case Qt::DragMoveCursor:
-            return QWindowsCursor::PixmapCursor( QPixmap( moveDragCursorXpmC ), QPoint( 0, 0 ) );
+    case Qt::DragMoveCursor:
+        return QWindowsCursor::PixmapCursor( QPixmap( moveDragCursorXpmC ), QPoint( 0, 0 ) );
 
-        case Qt::DragLinkCursor:
-            return QWindowsCursor::PixmapCursor( QPixmap( linkDragCursorXpmC ), QPoint( 0, 0 ) );
+    case Qt::DragLinkCursor:
+        return QWindowsCursor::PixmapCursor( QPixmap( linkDragCursorXpmC ), QPoint( 0, 0 ) );
     }
 
     return QWindowsCursor::PixmapCursor();
@@ -572,27 +572,27 @@ HCURSOR QWindowsCursor::createCursorFromShape( Qt::CursorShape cursorShape, cons
 
     switch ( cursorShape )
     {
-        case Qt::BlankCursor:
-        {
-            // ignore color table
+    case Qt::BlankCursor:
+    {
+        // ignore color table
 
-            QImage blank = QImage( systemCursorSize( screen ), QImage::Format_Mono );
-            blank.fill( 0 );
+        QImage blank = QImage( systemCursorSize( screen ), QImage::Format_Mono );
+        blank.fill( 0 );
 
-            return createBitmapCursor( blank, blank );
-        }
+        return createBitmapCursor( blank, blank );
+    }
 
-        case Qt::SplitVCursor:
-        case Qt::SplitHCursor:
-        case Qt::OpenHandCursor:
-        case Qt::ClosedHandCursor:
-        case Qt::DragCopyCursor:
-        case Qt::DragMoveCursor:
-        case Qt::DragLinkCursor:
-            return QWindowsCursor::createPixmapCursor( customCursor( cursorShape, screen ) );
+    case Qt::SplitVCursor:
+    case Qt::SplitHCursor:
+    case Qt::OpenHandCursor:
+    case Qt::ClosedHandCursor:
+    case Qt::DragCopyCursor:
+    case Qt::DragMoveCursor:
+    case Qt::DragLinkCursor:
+        return QWindowsCursor::createPixmapCursor( customCursor( cursorShape, screen ) );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     // load available standard cursors from resources
@@ -755,33 +755,33 @@ QPixmap QWindowsCursor::dragDefaultCursor( Qt::DropAction action ) const
 {
     switch ( action )
     {
-        case Qt::CopyAction:
-            if ( m_copyDragCursor.isNull() )
-            {
-                m_copyDragCursor = QWindowsCursor::customCursor( Qt::DragCopyCursor, m_screen ).pixmap;
-            }
+    case Qt::CopyAction:
+        if ( m_copyDragCursor.isNull() )
+        {
+            m_copyDragCursor = QWindowsCursor::customCursor( Qt::DragCopyCursor, m_screen ).pixmap;
+        }
 
-            return m_copyDragCursor;
+        return m_copyDragCursor;
 
-        case Qt::TargetMoveAction:
-        case Qt::MoveAction:
-            if ( m_moveDragCursor.isNull() )
-            {
-                m_moveDragCursor = QWindowsCursor::customCursor( Qt::DragMoveCursor, m_screen ).pixmap;
-            }
+    case Qt::TargetMoveAction:
+    case Qt::MoveAction:
+        if ( m_moveDragCursor.isNull() )
+        {
+            m_moveDragCursor = QWindowsCursor::customCursor( Qt::DragMoveCursor, m_screen ).pixmap;
+        }
 
-            return m_moveDragCursor;
+        return m_moveDragCursor;
 
-        case Qt::LinkAction:
-            if ( m_linkDragCursor.isNull() )
-            {
-                m_linkDragCursor = QWindowsCursor::customCursor( Qt::DragLinkCursor, m_screen ).pixmap;
-            }
+    case Qt::LinkAction:
+        if ( m_linkDragCursor.isNull() )
+        {
+            m_linkDragCursor = QWindowsCursor::customCursor( Qt::DragLinkCursor, m_screen ).pixmap;
+        }
 
-            return m_linkDragCursor;
+        return m_linkDragCursor;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     static const char *const ignoreDragCursorXpmC[] =

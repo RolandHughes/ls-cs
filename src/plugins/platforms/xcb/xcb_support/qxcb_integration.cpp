@@ -296,38 +296,38 @@ bool QXcbIntegration::hasCapability( QPlatformIntegration::Capability cap ) cons
 {
     switch ( cap )
     {
-        case ThreadedPixmaps:
-            return true;
+    case ThreadedPixmaps:
+        return true;
 
-        case OpenGL:
-            return m_connections.first()->glIntegration();
+    case OpenGL:
+        return m_connections.first()->glIntegration();
 
-        case ThreadedOpenGL:
-            return m_connections.at( 0 )->threadedEventHandling()
-                   && m_connections.at( 0 )->glIntegration()
-                   && m_connections.at( 0 )->glIntegration()->supportsThreadedOpenGL();
+    case ThreadedOpenGL:
+        return m_connections.at( 0 )->threadedEventHandling()
+               && m_connections.at( 0 )->glIntegration()
+               && m_connections.at( 0 )->glIntegration()->supportsThreadedOpenGL();
 
-        case WindowMasks:
-            return true;
+    case WindowMasks:
+        return true;
 
-        case MultipleWindows:
-            return true;
+    case MultipleWindows:
+        return true;
 
-        case ForeignWindows:
-            return true;
+    case ForeignWindows:
+        return true;
 
-        case SyncState:
-            return true;
+    case SyncState:
+        return true;
 
-        case RasterGLSurface:
-            return true;
+    case RasterGLSurface:
+        return true;
 
-        case SwitchableWidgetComposition:
-            return m_connections.at( 0 )->glIntegration()
-                   && m_connections.at( 0 )->glIntegration()->supportsSwitchableWidgetComposition();
+    case SwitchableWidgetComposition:
+        return m_connections.at( 0 )->glIntegration()
+               && m_connections.at( 0 )->glIntegration()->supportsSwitchableWidgetComposition();
 
-        default:
-            return QPlatformIntegration::hasCapability( cap );
+    default:
+        return QPlatformIntegration::hasCapability( cap );
     }
 }
 
@@ -441,53 +441,53 @@ QVariant QXcbIntegration::styleHint( QPlatformIntegration::StyleHint hint ) cons
 {
     switch ( hint )
     {
-        case QPlatformIntegration::CursorFlashTime:
-        case QPlatformIntegration::KeyboardInputInterval:
-        case QPlatformIntegration::MouseDoubleClickInterval:
-        case QPlatformIntegration::StartDragTime:
-        case QPlatformIntegration::KeyboardAutoRepeatRate:
-        case QPlatformIntegration::PasswordMaskDelay:
-        case QPlatformIntegration::StartDragVelocity:
-        case QPlatformIntegration::UseRtlExtensions:
-        case QPlatformIntegration::PasswordMaskCharacter:
-            // TODO using various xcb, gnome or KDE settings
-            break; // Not implemented, use defaults
+    case QPlatformIntegration::CursorFlashTime:
+    case QPlatformIntegration::KeyboardInputInterval:
+    case QPlatformIntegration::MouseDoubleClickInterval:
+    case QPlatformIntegration::StartDragTime:
+    case QPlatformIntegration::KeyboardAutoRepeatRate:
+    case QPlatformIntegration::PasswordMaskDelay:
+    case QPlatformIntegration::StartDragVelocity:
+    case QPlatformIntegration::UseRtlExtensions:
+    case QPlatformIntegration::PasswordMaskCharacter:
+        // TODO using various xcb, gnome or KDE settings
+        break; // Not implemented, use defaults
 
-        case QPlatformIntegration::FontSmoothingGamma:
-            return qreal( 1.0 );
+    case QPlatformIntegration::FontSmoothingGamma:
+        return qreal( 1.0 );
 
-        case QPlatformIntegration::StartDragDistance:
+    case QPlatformIntegration::StartDragDistance:
+    {
+        // The default (in QPlatformTheme::defaultThemeHint) is 10 pixels, but
+        // on a high-resolution screen it makes sense to increase it.
+        qreal dpi = 100.0;
+
+        if ( const QXcbScreen *screen = defaultConnection()->primaryScreen() )
         {
-            // The default (in QPlatformTheme::defaultThemeHint) is 10 pixels, but
-            // on a high-resolution screen it makes sense to increase it.
-            qreal dpi = 100.0;
-
-            if ( const QXcbScreen *screen = defaultConnection()->primaryScreen() )
+            if ( screen->logicalDpi().first > dpi )
             {
-                if ( screen->logicalDpi().first > dpi )
-                {
-                    dpi = screen->logicalDpi().first;
-                }
-
-                if ( screen->logicalDpi().second > dpi )
-                {
-                    dpi = screen->logicalDpi().second;
-                }
+                dpi = screen->logicalDpi().first;
             }
 
-            return 10.0 * dpi / 100.0;
+            if ( screen->logicalDpi().second > dpi )
+            {
+                dpi = screen->logicalDpi().second;
+            }
         }
 
-        case QPlatformIntegration::ShowIsFullScreen:
-            // X11 always has support for windows, but the
-            // window manager could prevent it (e.g. matchbox)
-            return false;
+        return 10.0 * dpi / 100.0;
+    }
 
-        case QPlatformIntegration::ReplayMousePressOutsidePopup:
-            return false;
+    case QPlatformIntegration::ShowIsFullScreen:
+        // X11 always has support for windows, but the
+        // window manager could prevent it (e.g. matchbox)
+        return false;
 
-        default:
-            break;
+    case QPlatformIntegration::ReplayMousePressOutsidePopup:
+        return false;
+
+    default:
+        break;
     }
 
     return QPlatformIntegration::styleHint( hint );

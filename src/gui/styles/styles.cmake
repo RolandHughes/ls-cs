@@ -158,4 +158,6 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
       ${CMAKE_CURRENT_SOURCE_DIR}/styles/qwindows_vistastyle.cpp
   )
 
+  add_definitions(-DLSCS_NO_STYLE_MAC -DLSCS_NO_STYLE_WINDOWSXP)
+
 endif()

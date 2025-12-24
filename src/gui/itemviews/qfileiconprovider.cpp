@@ -192,104 +192,104 @@ QIcon QFileIconProviderPrivate::getIcon( QStyle::StandardPixmap name ) const
 {
     switch ( name )
     {
-        case QStyle::SP_FileIcon:
-            if ( file.isNull() )
-            {
-                file = QApplication::style()->standardIcon( name );
-            }
+    case QStyle::SP_FileIcon:
+        if ( file.isNull() )
+        {
+            file = QApplication::style()->standardIcon( name );
+        }
 
-            return file;
+        return file;
 
-        case QStyle::SP_FileLinkIcon:
-            if ( fileLink.isNull() )
-            {
-                fileLink = QApplication::style()->standardIcon( name );
-            }
+    case QStyle::SP_FileLinkIcon:
+        if ( fileLink.isNull() )
+        {
+            fileLink = QApplication::style()->standardIcon( name );
+        }
 
-            return fileLink;
+        return fileLink;
 
-        case QStyle::SP_DirIcon:
-            if ( directory.isNull() )
-            {
-                directory = QApplication::style()->standardIcon( name );
-            }
+    case QStyle::SP_DirIcon:
+        if ( directory.isNull() )
+        {
+            directory = QApplication::style()->standardIcon( name );
+        }
 
-            return directory;
+        return directory;
 
-        case QStyle::SP_DirLinkIcon:
-            if ( directoryLink.isNull() )
-            {
-                directoryLink = QApplication::style()->standardIcon( name );
-            }
+    case QStyle::SP_DirLinkIcon:
+        if ( directoryLink.isNull() )
+        {
+            directoryLink = QApplication::style()->standardIcon( name );
+        }
 
-            return directoryLink;
+        return directoryLink;
 
-        case QStyle::SP_DriveHDIcon:
-            if ( harddisk.isNull() )
-            {
-                harddisk = QApplication::style()->standardIcon( name );
-            }
+    case QStyle::SP_DriveHDIcon:
+        if ( harddisk.isNull() )
+        {
+            harddisk = QApplication::style()->standardIcon( name );
+        }
 
-            return harddisk;
+        return harddisk;
 
-        case QStyle::SP_DriveFDIcon:
-            if ( floppy.isNull() )
-            {
-                floppy = QApplication::style()->standardIcon( name );
-            }
+    case QStyle::SP_DriveFDIcon:
+        if ( floppy.isNull() )
+        {
+            floppy = QApplication::style()->standardIcon( name );
+        }
 
-            return floppy;
+        return floppy;
 
-        case QStyle::SP_DriveCDIcon:
-            if ( cdrom.isNull() )
-            {
-                cdrom = QApplication::style()->standardIcon( name );
-            }
+    case QStyle::SP_DriveCDIcon:
+        if ( cdrom.isNull() )
+        {
+            cdrom = QApplication::style()->standardIcon( name );
+        }
 
-            return cdrom;
+        return cdrom;
 
-        case QStyle::SP_DriveNetIcon:
-            if ( network.isNull() )
-            {
-                network = QApplication::style()->standardIcon( name );
-            }
+    case QStyle::SP_DriveNetIcon:
+        if ( network.isNull() )
+        {
+            network = QApplication::style()->standardIcon( name );
+        }
 
-            return network;
+        return network;
 
-        case QStyle::SP_ComputerIcon:
-            if ( computer.isNull() )
-            {
-                computer = QApplication::style()->standardIcon( name );
-            }
+    case QStyle::SP_ComputerIcon:
+        if ( computer.isNull() )
+        {
+            computer = QApplication::style()->standardIcon( name );
+        }
 
-            return computer;
+        return computer;
 
-        case QStyle::SP_DesktopIcon:
-            if ( desktop.isNull() )
-            {
-                desktop = QApplication::style()->standardIcon( name );
-            }
+    case QStyle::SP_DesktopIcon:
+        if ( desktop.isNull() )
+        {
+            desktop = QApplication::style()->standardIcon( name );
+        }
 
-            return desktop;
+        return desktop;
 
-        case QStyle::SP_TrashIcon:
-            if ( trashcan.isNull() )
-            {
-                trashcan = QApplication::style()->standardIcon( name );
-            }
+    case QStyle::SP_TrashIcon:
+        if ( trashcan.isNull() )
+        {
+            trashcan = QApplication::style()->standardIcon( name );
+        }
 
-            return trashcan;
+        return trashcan;
 
-        case QStyle::SP_DirHomeIcon:
-            if ( home.isNull() )
-            {
-                home = QApplication::style()->standardIcon( name );
-            }
+    case QStyle::SP_DirHomeIcon:
+        if ( home.isNull() )
+        {
+            home = QApplication::style()->standardIcon( name );
+        }
 
-            return home;
+        return home;
 
-        default:
-            return QIcon();
+    default:
+        return QIcon();
     }
 
     return QIcon();
@@ -321,29 +321,29 @@ QIcon QFileIconProvider::icon( IconType type ) const
 
     switch ( type )
     {
-        case Computer:
-            return d->getIcon( QStyle::SP_ComputerIcon );
+    case Computer:
+        return d->getIcon( QStyle::SP_ComputerIcon );
 
-        case Desktop:
-            return d->getIcon( QStyle::SP_DesktopIcon );
+    case Desktop:
+        return d->getIcon( QStyle::SP_DesktopIcon );
 
-        case Trashcan:
-            return d->getIcon( QStyle::SP_TrashIcon );
+    case Trashcan:
+        return d->getIcon( QStyle::SP_TrashIcon );
 
-        case Network:
-            return d->getIcon( QStyle::SP_DriveNetIcon );
+    case Network:
+        return d->getIcon( QStyle::SP_DriveNetIcon );
 
-        case Drive:
-            return d->getIcon( QStyle::SP_DriveHDIcon );
+    case Drive:
+        return d->getIcon( QStyle::SP_DriveHDIcon );
 
-        case Folder:
-            return d->getIcon( QStyle::SP_DirIcon );
+    case Folder:
+        return d->getIcon( QStyle::SP_DirIcon );
 
-        case File:
-            return d->getIcon( QStyle::SP_FileIcon );
+    case File:
+        return d->getIcon( QStyle::SP_FileIcon );
 
-        default:
-            break;
+    default:
+        break;
     };
 
     return QIcon();
@@ -425,23 +425,23 @@ QIcon QFileIconProvider::icon( const QFileInfo &info ) const
 
         switch ( type )
         {
-            case DRIVE_REMOVABLE:
-                return d->getIcon( QStyle::SP_DriveFDIcon );
+        case DRIVE_REMOVABLE:
+            return d->getIcon( QStyle::SP_DriveFDIcon );
 
-            case DRIVE_FIXED:
-                return d->getIcon( QStyle::SP_DriveHDIcon );
+        case DRIVE_FIXED:
+            return d->getIcon( QStyle::SP_DriveHDIcon );
 
-            case DRIVE_REMOTE:
-                return d->getIcon( QStyle::SP_DriveNetIcon );
+        case DRIVE_REMOTE:
+            return d->getIcon( QStyle::SP_DriveNetIcon );
 
-            case DRIVE_CDROM:
-                return d->getIcon( QStyle::SP_DriveCDIcon );
+        case DRIVE_CDROM:
+            return d->getIcon( QStyle::SP_DriveCDIcon );
 
-            case DRIVE_RAMDISK:
-            case DRIVE_UNKNOWN:
-            case DRIVE_NO_ROOT_DIR:
-            default:
-                return d->getIcon( QStyle::SP_DriveHDIcon );
+        case DRIVE_RAMDISK:
+        case DRIVE_UNKNOWN:
+        case DRIVE_NO_ROOT_DIR:
+        default:
+            return d->getIcon( QStyle::SP_DriveHDIcon );
         }
     }
 

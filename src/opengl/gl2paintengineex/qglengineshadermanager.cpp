@@ -782,66 +782,66 @@ bool QGLEngineShaderManager::useCorrectShaderProg()
     else
         switch ( srcPixelType )
         {
-            default:
-            case Qt::NoBrush:
-                qFatal( "QGLEngineShaderManager::useCorrectShaderProg() - Qt::NoBrush style is set" );
-                break;
+        default:
+        case Qt::NoBrush:
+            qFatal( "QGLEngineShaderManager::useCorrectShaderProg() - Qt::NoBrush style is set" );
+            break;
 
-            case QGLEngineShaderManager::ImageSrc:
-                requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::ImageSrcFragmentShader;
-                requiredProgram.positionVertexShader = QGLEngineSharedShaders::PositionOnlyVertexShader;
-                texCoords = true;
-                break;
+        case QGLEngineShaderManager::ImageSrc:
+            requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::ImageSrcFragmentShader;
+            requiredProgram.positionVertexShader = QGLEngineSharedShaders::PositionOnlyVertexShader;
+            texCoords = true;
+            break;
 
-            case QGLEngineShaderManager::NonPremultipliedImageSrc:
-                requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::NonPremultipliedImageSrcFragmentShader;
-                requiredProgram.positionVertexShader = QGLEngineSharedShaders::PositionOnlyVertexShader;
-                texCoords = true;
-                break;
+        case QGLEngineShaderManager::NonPremultipliedImageSrc:
+            requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::NonPremultipliedImageSrcFragmentShader;
+            requiredProgram.positionVertexShader = QGLEngineSharedShaders::PositionOnlyVertexShader;
+            texCoords = true;
+            break;
 
-            case QGLEngineShaderManager::PatternSrc:
-                requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::ImageSrcWithPatternFragmentShader;
-                requiredProgram.positionVertexShader = QGLEngineSharedShaders::PositionOnlyVertexShader;
-                texCoords = true;
-                break;
+        case QGLEngineShaderManager::PatternSrc:
+            requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::ImageSrcWithPatternFragmentShader;
+            requiredProgram.positionVertexShader = QGLEngineSharedShaders::PositionOnlyVertexShader;
+            texCoords = true;
+            break;
 
-            case QGLEngineShaderManager::TextureSrcWithPattern:
-                requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::TextureBrushSrcWithPatternFragmentShader;
-                requiredProgram.positionVertexShader = isAffine ? QGLEngineSharedShaders::AffinePositionWithTextureBrushVertexShader
-                                                       : QGLEngineSharedShaders::PositionWithTextureBrushVertexShader;
-                break;
+        case QGLEngineShaderManager::TextureSrcWithPattern:
+            requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::TextureBrushSrcWithPatternFragmentShader;
+            requiredProgram.positionVertexShader = isAffine ? QGLEngineSharedShaders::AffinePositionWithTextureBrushVertexShader
+                                                   : QGLEngineSharedShaders::PositionWithTextureBrushVertexShader;
+            break;
 
-            case Qt::SolidPattern:
-                requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::SolidBrushSrcFragmentShader;
-                requiredProgram.positionVertexShader = QGLEngineSharedShaders::PositionOnlyVertexShader;
-                break;
+        case Qt::SolidPattern:
+            requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::SolidBrushSrcFragmentShader;
+            requiredProgram.positionVertexShader = QGLEngineSharedShaders::PositionOnlyVertexShader;
+            break;
 
-            case Qt::LinearGradientPattern:
-                requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::LinearGradientBrushSrcFragmentShader;
-                requiredProgram.positionVertexShader = isAffine ?
-                                                       QGLEngineSharedShaders::AffinePositionWithLinearGradientBrushVertexShader
-                                                       : QGLEngineSharedShaders::PositionWithLinearGradientBrushVertexShader;
-                break;
+        case Qt::LinearGradientPattern:
+            requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::LinearGradientBrushSrcFragmentShader;
+            requiredProgram.positionVertexShader = isAffine ?
+                                                   QGLEngineSharedShaders::AffinePositionWithLinearGradientBrushVertexShader
+                                                   : QGLEngineSharedShaders::PositionWithLinearGradientBrushVertexShader;
+            break;
 
-            case Qt::ConicalGradientPattern:
-                requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::ConicalGradientBrushSrcFragmentShader;
-                requiredProgram.positionVertexShader = isAffine ?
-                                                       QGLEngineSharedShaders::AffinePositionWithConicalGradientBrushVertexShader
-                                                       : QGLEngineSharedShaders::PositionWithConicalGradientBrushVertexShader;
-                break;
+        case Qt::ConicalGradientPattern:
+            requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::ConicalGradientBrushSrcFragmentShader;
+            requiredProgram.positionVertexShader = isAffine ?
+                                                   QGLEngineSharedShaders::AffinePositionWithConicalGradientBrushVertexShader
+                                                   : QGLEngineSharedShaders::PositionWithConicalGradientBrushVertexShader;
+            break;
 
-            case Qt::RadialGradientPattern:
-                requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::RadialGradientBrushSrcFragmentShader;
-                requiredProgram.positionVertexShader = isAffine ?
-                                                       QGLEngineSharedShaders::AffinePositionWithRadialGradientBrushVertexShader
-                                                       : QGLEngineSharedShaders::PositionWithRadialGradientBrushVertexShader;
-                break;
+        case Qt::RadialGradientPattern:
+            requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::RadialGradientBrushSrcFragmentShader;
+            requiredProgram.positionVertexShader = isAffine ?
+                                                   QGLEngineSharedShaders::AffinePositionWithRadialGradientBrushVertexShader
+                                                   : QGLEngineSharedShaders::PositionWithRadialGradientBrushVertexShader;
+            break;
 
-            case Qt::TexturePattern:
-                requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::TextureBrushSrcFragmentShader;
-                requiredProgram.positionVertexShader = isAffine ? QGLEngineSharedShaders::AffinePositionWithTextureBrushVertexShader
-                                                       : QGLEngineSharedShaders::PositionWithTextureBrushVertexShader;
-                break;
+        case Qt::TexturePattern:
+            requiredProgram.srcPixelFragShader = QGLEngineSharedShaders::TextureBrushSrcFragmentShader;
+            requiredProgram.positionVertexShader = isAffine ? QGLEngineSharedShaders::AffinePositionWithTextureBrushVertexShader
+                                                   : QGLEngineSharedShaders::PositionWithTextureBrushVertexShader;
+            break;
         };
 
     if ( useCustomSrc )
@@ -941,52 +941,52 @@ bool QGLEngineShaderManager::useCorrectShaderProg()
     {
         switch ( compositionMode )
         {
-            case QPainter::CompositionMode_Multiply:
-                requiredProgram.compositionFragShader = QGLEngineSharedShaders::MultiplyCompositionModeFragmentShader;
-                break;
+        case QPainter::CompositionMode_Multiply:
+            requiredProgram.compositionFragShader = QGLEngineSharedShaders::MultiplyCompositionModeFragmentShader;
+            break;
 
-            case QPainter::CompositionMode_Screen:
-                requiredProgram.compositionFragShader = QGLEngineSharedShaders::ScreenCompositionModeFragmentShader;
-                break;
+        case QPainter::CompositionMode_Screen:
+            requiredProgram.compositionFragShader = QGLEngineSharedShaders::ScreenCompositionModeFragmentShader;
+            break;
 
-            case QPainter::CompositionMode_Overlay:
-                requiredProgram.compositionFragShader = QGLEngineSharedShaders::OverlayCompositionModeFragmentShader;
-                break;
+        case QPainter::CompositionMode_Overlay:
+            requiredProgram.compositionFragShader = QGLEngineSharedShaders::OverlayCompositionModeFragmentShader;
+            break;
 
-            case QPainter::CompositionMode_Darken:
-                requiredProgram.compositionFragShader = QGLEngineSharedShaders::DarkenCompositionModeFragmentShader;
-                break;
+        case QPainter::CompositionMode_Darken:
+            requiredProgram.compositionFragShader = QGLEngineSharedShaders::DarkenCompositionModeFragmentShader;
+            break;
 
-            case QPainter::CompositionMode_Lighten:
-                requiredProgram.compositionFragShader = QGLEngineSharedShaders::LightenCompositionModeFragmentShader;
-                break;
+        case QPainter::CompositionMode_Lighten:
+            requiredProgram.compositionFragShader = QGLEngineSharedShaders::LightenCompositionModeFragmentShader;
+            break;
 
-            case QPainter::CompositionMode_ColorDodge:
-                requiredProgram.compositionFragShader = QGLEngineSharedShaders::ColorDodgeCompositionModeFragmentShader;
-                break;
+        case QPainter::CompositionMode_ColorDodge:
+            requiredProgram.compositionFragShader = QGLEngineSharedShaders::ColorDodgeCompositionModeFragmentShader;
+            break;
 
-            case QPainter::CompositionMode_ColorBurn:
-                requiredProgram.compositionFragShader = QGLEngineSharedShaders::ColorBurnCompositionModeFragmentShader;
-                break;
+        case QPainter::CompositionMode_ColorBurn:
+            requiredProgram.compositionFragShader = QGLEngineSharedShaders::ColorBurnCompositionModeFragmentShader;
+            break;
 
-            case QPainter::CompositionMode_HardLight:
-                requiredProgram.compositionFragShader = QGLEngineSharedShaders::HardLightCompositionModeFragmentShader;
-                break;
+        case QPainter::CompositionMode_HardLight:
+            requiredProgram.compositionFragShader = QGLEngineSharedShaders::HardLightCompositionModeFragmentShader;
+            break;
 
-            case QPainter::CompositionMode_SoftLight:
-                requiredProgram.compositionFragShader = QGLEngineSharedShaders::SoftLightCompositionModeFragmentShader;
-                break;
+        case QPainter::CompositionMode_SoftLight:
+            requiredProgram.compositionFragShader = QGLEngineSharedShaders::SoftLightCompositionModeFragmentShader;
+            break;
 
-            case QPainter::CompositionMode_Difference:
-                requiredProgram.compositionFragShader = QGLEngineSharedShaders::DifferenceCompositionModeFragmentShader;
-                break;
+        case QPainter::CompositionMode_Difference:
+            requiredProgram.compositionFragShader = QGLEngineSharedShaders::DifferenceCompositionModeFragmentShader;
+            break;
 
-            case QPainter::CompositionMode_Exclusion:
-                requiredProgram.compositionFragShader = QGLEngineSharedShaders::ExclusionCompositionModeFragmentShader;
-                break;
+        case QPainter::CompositionMode_Exclusion:
+            requiredProgram.compositionFragShader = QGLEngineSharedShaders::ExclusionCompositionModeFragmentShader;
+            break;
 
-            default:
-                qWarning( "QGLEngineShaderManager::useCorrectShaderProg() - Unsupported composition mode" );
+        default:
+            qWarning( "QGLEngineShaderManager::useCorrectShaderProg() - Unsupported composition mode" );
         }
     }
     else

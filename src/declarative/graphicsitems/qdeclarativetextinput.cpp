@@ -390,16 +390,16 @@ QDeclarativeTextInput::HAlignment QDeclarativeTextInput::effectiveHAlign() const
     {
         switch ( d->hAlign )
         {
-            case QDeclarativeTextInput::AlignLeft:
-                effectiveAlignment = QDeclarativeTextInput::AlignRight;
-                break;
+        case QDeclarativeTextInput::AlignLeft:
+            effectiveAlignment = QDeclarativeTextInput::AlignRight;
+            break;
 
-            case QDeclarativeTextInput::AlignRight:
-                effectiveAlignment = QDeclarativeTextInput::AlignLeft;
-                break;
+        case QDeclarativeTextInput::AlignRight:
+            effectiveAlignment = QDeclarativeTextInput::AlignLeft;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -1476,17 +1476,17 @@ bool QDeclarativeTextInput::event( QEvent *ev )
 
     switch ( ev->type() )
     {
-        case QEvent::KeyPress:
-        case QEvent::KeyRelease://###Should the control be doing anything with release?
-        case QEvent::InputMethod:
-        case QEvent::GraphicsSceneMousePress:
-        case QEvent::GraphicsSceneMouseMove:
-        case QEvent::GraphicsSceneMouseRelease:
-        case QEvent::GraphicsSceneMouseDoubleClick:
-            break;
+    case QEvent::KeyPress:
+    case QEvent::KeyRelease://###Should the control be doing anything with release?
+    case QEvent::InputMethod:
+    case QEvent::GraphicsSceneMousePress:
+    case QEvent::GraphicsSceneMouseMove:
+    case QEvent::GraphicsSceneMouseRelease:
+    case QEvent::GraphicsSceneMouseDoubleClick:
+        break;
 
-        default:
-            handled = d->control->processEvent( ev );
+    default:
+        handled = d->control->processEvent( ev );
     }
 
     if ( !handled )
@@ -1531,18 +1531,18 @@ void QDeclarativeTextInputPrivate::updateHorizontalScroll()
             // text fits in br; use hscroll for alignment
             switch ( effectiveHAlign & ~( Qt::AlignAbsolute | Qt::AlignVertical_Mask ) )
             {
-                case Qt::AlignRight:
-                    hscroll = widthUsed - br.width() - 1;
-                    break;
+            case Qt::AlignRight:
+                hscroll = widthUsed - br.width() - 1;
+                break;
 
-                case Qt::AlignHCenter:
-                    hscroll = ( widthUsed - br.width() ) / 2;
-                    break;
+            case Qt::AlignHCenter:
+                hscroll = ( widthUsed - br.width() ) / 2;
+                break;
 
-                default:
-                    // Left
-                    hscroll = 0;
-                    break;
+            default:
+                // Left
+                hscroll = 0;
+                break;
             }
         }
         else if ( cix - hscroll >= br.width() )
@@ -1579,18 +1579,18 @@ void QDeclarativeTextInputPrivate::updateHorizontalScroll()
     {
         switch ( effectiveHAlign )
         {
-            case QDeclarativeTextInput::AlignRight:
-                hscroll = q->width() - widthUsed;
-                break;
+        case QDeclarativeTextInput::AlignRight:
+            hscroll = q->width() - widthUsed;
+            break;
 
-            case QDeclarativeTextInput::AlignHCenter:
-                hscroll = ( q->width() - widthUsed ) / 2;
-                break;
+        case QDeclarativeTextInput::AlignHCenter:
+            hscroll = ( q->width() - widthUsed ) / 2;
+            break;
 
-            default:
-                // Left
-                hscroll = 0;
-                break;
+        default:
+            // Left
+            hscroll = 0;
+            break;
         }
     }
 }
@@ -1641,47 +1641,47 @@ QVariant QDeclarativeTextInput::inputMethodQuery( Qt::InputMethodQuery property 
 
     switch ( property )
     {
-        case Qt::ImMicroFocus:
-            return cursorRectangle();
+    case Qt::ImMicroFocus:
+        return cursorRectangle();
 
-        case Qt::ImFont:
-            return font();
+    case Qt::ImFont:
+        return font();
 
-        case Qt::ImCursorPosition:
+    case Qt::ImCursorPosition:
+        return QVariant( d->control->cursor() );
+
+    case Qt::ImSurroundingText:
+        if ( d->control->echoMode() == PasswordEchoOnEdit && !d->control->passwordEchoEditing() )
+        {
+            return QVariant( displayText() );
+        }
+        else
+        {
+            return QVariant( text() );
+        }
+
+    case Qt::ImCurrentSelection:
+        return QVariant( selectedText() );
+
+    case Qt::ImMaximumTextLength:
+        return QVariant( maxLength() );
+
+    case Qt::ImAnchorPosition:
+        if ( d->control->selectionStart() == d->control->selectionEnd() )
+        {
             return QVariant( d->control->cursor() );
+        }
+        else if ( d->control->selectionStart() == d->control->cursor() )
+        {
+            return QVariant( d->control->selectionEnd() );
+        }
+        else
+        {
+            return QVariant( d->control->selectionStart() );
+        }
 
-        case Qt::ImSurroundingText:
-            if ( d->control->echoMode() == PasswordEchoOnEdit && !d->control->passwordEchoEditing() )
-            {
-                return QVariant( displayText() );
-            }
-            else
-            {
-                return QVariant( text() );
-            }
-
-        case Qt::ImCurrentSelection:
-            return QVariant( selectedText() );
-
-        case Qt::ImMaximumTextLength:
-            return QVariant( maxLength() );
-
-        case Qt::ImAnchorPosition:
-            if ( d->control->selectionStart() == d->control->selectionEnd() )
-            {
-                return QVariant( d->control->cursor() );
-            }
-            else if ( d->control->selectionStart() == d->control->cursor() )
-            {
-                return QVariant( d->control->selectionEnd() );
-            }
-            else
-            {
-                return QVariant( d->control->selectionStart() );
-            }
-
-        default:
-            return QVariant();
+    default:
+        return QVariant();
     }
 }
 

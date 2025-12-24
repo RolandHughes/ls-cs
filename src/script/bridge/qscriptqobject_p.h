@@ -153,18 +153,18 @@ struct QObjectWrapperInfo
     {
         switch ( ownership )
         {
-            case QScriptEngine::ScriptOwnership:
-                return true;
+        case QScriptEngine::ScriptOwnership:
+            return true;
 
-            case QScriptEngine::AutoOwnership:
-            {
-                QScriptObjectDelegate *delegate = object->delegate();
-                Q_ASSERT( delegate && ( delegate->type() == QScriptObjectDelegate::QtObject ) );
-                return !static_cast<QObjectDelegate *>( delegate )->hasParent();
-            }
+        case QScriptEngine::AutoOwnership:
+        {
+            QScriptObjectDelegate *delegate = object->delegate();
+            Q_ASSERT( delegate && ( delegate->type() == QScriptObjectDelegate::QtObject ) );
+            return !static_cast<QObjectDelegate *>( delegate )->hasParent();
+        }
 
-            default:
-                break;
+        default:
+            break;
         }
 
         return false;

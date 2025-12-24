@@ -83,17 +83,17 @@ void QCompletionModel::createEngine()
     {
         switch ( m_completerPrivate->sorting )
         {
-            case QCompleter::UnsortedModel:
-                sortedEngine = false;
-                break;
+        case QCompleter::UnsortedModel:
+            sortedEngine = false;
+            break;
 
-            case QCompleter::CaseSensitivelySortedModel:
-                sortedEngine = m_completerPrivate->cs == Qt::CaseSensitive;
-                break;
+        case QCompleter::CaseSensitivelySortedModel:
+            sortedEngine = m_completerPrivate->cs == Qt::CaseSensitive;
+            break;
 
-            case QCompleter::CaseInsensitivelySortedModel:
-                sortedEngine = m_completerPrivate->cs == Qt::CaseInsensitive;
-                break;
+        case QCompleter::CaseInsensitivelySortedModel:
+            sortedEngine = m_completerPrivate->cs == Qt::CaseInsensitive;
+            break;
         }
     }
 
@@ -822,39 +822,39 @@ int QUnsortedModelEngine::buildIndices( const QString &str, const QModelIndex &p
 
         switch ( m_completerPrivate->filterMode )
         {
-            case Qt::MatchStartsWith:
-                if ( ! data.startsWith( str, m_completerPrivate->cs ) )
-                {
-                    continue;
-                }
+        case Qt::MatchStartsWith:
+            if ( ! data.startsWith( str, m_completerPrivate->cs ) )
+            {
+                continue;
+            }
 
-                break;
+            break;
 
-            case Qt::MatchContains:
-                if ( !data.contains( str, m_completerPrivate->cs ) )
-                {
-                    continue;
-                }
+        case Qt::MatchContains:
+            if ( !data.contains( str, m_completerPrivate->cs ) )
+            {
+                continue;
+            }
 
-                break;
+            break;
 
-            case Qt::MatchEndsWith:
-                if ( !data.endsWith( str, m_completerPrivate->cs ) )
-                {
-                    continue;
-                }
+        case Qt::MatchEndsWith:
+            if ( !data.endsWith( str, m_completerPrivate->cs ) )
+            {
+                continue;
+            }
 
-                break;
+            break;
 
-            case Qt::MatchExactly:
-            case Qt::MatchFixedString:
-            case Qt::MatchCaseSensitive:
-            case Qt::MatchRegExp:
-            case Qt::MatchWildcard:
-            case Qt::MatchWrap:
-            case Qt::MatchRecursive:
-                // error, may want to throw
-                break;
+        case Qt::MatchExactly:
+        case Qt::MatchFixedString:
+        case Qt::MatchCaseSensitive:
+        case Qt::MatchRegExp:
+        case Qt::MatchWildcard:
+        case Qt::MatchWrap:
+        case Qt::MatchRecursive:
+            // error, may want to throw
+            break;
         }
 
         m->m_indices.append( indices[i] );
@@ -1480,229 +1480,229 @@ bool QCompleter::eventFilter( QObject *o, QEvent *e )
 
     switch ( e->type() )
     {
-        case QEvent::KeyPress:
+    case QEvent::KeyPress:
+    {
+        QKeyEvent *ke = static_cast<QKeyEvent *>( e );
+
+        QModelIndex curIndex = d->popup->currentIndex();
+        QModelIndexList selList = d->popup->selectionModel()->selectedIndexes();
+
+        const int key = ke->key();
+
+        // In UnFilteredPopup mode, select the current item
+        if ( ( key == Qt::Key_Up || key == Qt::Key_Down ) && selList.isEmpty() && curIndex.isValid()
+                && d->mode == QCompleter::UnfilteredPopupCompletion )
         {
-            QKeyEvent *ke = static_cast<QKeyEvent *>( e );
-
-            QModelIndex curIndex = d->popup->currentIndex();
-            QModelIndexList selList = d->popup->selectionModel()->selectedIndexes();
-
-            const int key = ke->key();
-
-            // In UnFilteredPopup mode, select the current item
-            if ( ( key == Qt::Key_Up || key == Qt::Key_Down ) && selList.isEmpty() && curIndex.isValid()
-                    && d->mode == QCompleter::UnfilteredPopupCompletion )
-            {
-                d->setCurrentIndex( curIndex );
-                return true;
-            }
-
-            // Handle popup navigation keys. These are hardcoded because up/down might make the
-            // widget do something else (lineedit cursor moves to home/end on mac, for instance)
-            switch ( key )
-            {
-                case Qt::Key_End:
-                case Qt::Key_Home:
-                    if ( ke->modifiers() & Qt::ControlModifier )
-                    {
-                        return false;
-                    }
-
-                    break;
-
-                case Qt::Key_Up:
-                    if ( ! curIndex.isValid() )
-                    {
-                        int rowCount = d->proxy->rowCount();
-                        QModelIndex lastIndex = d->proxy->index( rowCount - 1, d->column );
-                        d->setCurrentIndex( lastIndex );
-                        return true;
-
-                    }
-                    else if ( curIndex.row() == 0 )
-                    {
-                        if ( d->wrap )
-                        {
-                            d->setCurrentIndex( QModelIndex() );
-                        }
-
-                        return true;
-                    }
-
-                    return false;
-
-                case Qt::Key_Down:
-                    if ( ! curIndex.isValid() )
-                    {
-                        QModelIndex firstIndex = d->proxy->index( 0, d->column );
-                        d->setCurrentIndex( firstIndex );
-                        return true;
-
-                    }
-                    else if ( curIndex.row() == d->proxy->rowCount() - 1 )
-                    {
-                        if ( d->wrap )
-                        {
-                            d->setCurrentIndex( QModelIndex() );
-                        }
-
-                        return true;
-                    }
-
-                    return false;
-
-                case Qt::Key_PageUp:
-                case Qt::Key_PageDown:
-                    return false;
-            }
-
-            // Send the event to the widget. If the widget accepted the event, do nothing
-            // If the widget did not accept the event, provide a default implementation
-            d->eatFocusOut = false;
-            ( static_cast<QObject *>( d->widget ) )->event( ke );
-            d->eatFocusOut = true;
-
-            if ( ! d->widget || e->isAccepted() || ! d->popup->isVisible() )
-            {
-                // widget lost focus, hide the popup
-
-#ifdef LSCS_KEYPAD_NAVIGATION
-                if ( d->widget && ( !d->widget->hasFocus()
-                                    || ( QApplication::keypadNavigationEnabled() && ! d->widget->hasEditFocus() ) ) )
-                {
-#else
-
-                if ( d->widget && ( !d->widget->hasFocus() ) )
-                {
-#endif
-
-                    d->popup->hide();
-                }
-
-                if ( e->isAccepted() )
-                {
-                    return true;
-                }
-            }
-
-            // default implementation for keys not handled by the widget when popup is open
-            if ( ke->matches( QKeySequence::Cancel ) )
-            {
-                d->popup->hide();
-                return true;
-            }
-
-            // default implementation for keys not handled by the widget when popup is open
-            switch ( key )
-            {
-
-#ifdef LSCS_KEYPAD_NAVIGATION
-
-                case Qt::Key_Select:
-                    if ( !QApplication::keypadNavigationEnabled() )
-                    {
-                        break;
-                    }
-
-#endif
-
-                case Qt::Key_Return:
-                case Qt::Key_Enter:
-                case Qt::Key_Tab:
-                    d->popup->hide();
-
-                    if ( curIndex.isValid() )
-                    {
-                        d->_q_complete( curIndex );
-                    }
-
-                    break;
-
-                case Qt::Key_F4:
-                    if ( ke->modifiers() & Qt::AltModifier )
-                    {
-                        d->popup->hide();
-                    }
-
-                    break;
-
-                case Qt::Key_Backtab:
-                    d->popup->hide();
-                    break;
-
-                default:
-                    break;
-            }
-
+            d->setCurrentIndex( curIndex );
             return true;
         }
 
-#ifdef LSCS_KEYPAD_NAVIGATION
-
-        case QEvent::KeyRelease:
+        // Handle popup navigation keys. These are hardcoded because up/down might make the
+        // widget do something else (lineedit cursor moves to home/end on mac, for instance)
+        switch ( key )
         {
-            QKeyEvent *ke = static_cast<QKeyEvent *>( e );
-
-            if ( QApplication::keypadNavigationEnabled() && ke->key() == Qt::Key_Back )
+        case Qt::Key_End:
+        case Qt::Key_Home:
+            if ( ke->modifiers() & Qt::ControlModifier )
             {
-                // Send the event to the 'widget'. This is what we did for KeyPress, so we need
-                // to do the same for KeyRelease, in case the widget's KeyPress event set
-                // up something (such as a timer) that is relying on also receiving the
-                // key release. I see this as a bug in Qt, and should really set it up for all
-                // the affected keys. However, it is difficult to tell how this will affect
-                // existing code, and I can't test for every combination!
-                d->eatFocusOut = false;
-                static_cast<QObject *>( d->widget )->event( ke );
-                d->eatFocusOut = true;
+                return false;
             }
 
             break;
-        }
 
-#endif
-
-        case QEvent::MouseButtonPress:
-        {
-#ifdef LSCS_KEYPAD_NAVIGATION
-
-            if ( QApplication::keypadNavigationEnabled() )
+        case Qt::Key_Up:
+            if ( ! curIndex.isValid() )
             {
-                // if we have clicked in the widget (or its descendant), let it handle the click
-                QWidget *source = qobject_cast<QWidget *>( o );
+                int rowCount = d->proxy->rowCount();
+                QModelIndex lastIndex = d->proxy->index( rowCount - 1, d->column );
+                d->setCurrentIndex( lastIndex );
+                return true;
 
-                if ( source )
+            }
+            else if ( curIndex.row() == 0 )
+            {
+                if ( d->wrap )
                 {
-                    QPoint pos = source->mapToGlobal( ( static_cast<QMouseEvent *>( e ) )->pos() );
-                    QWidget *target = QApplication::widgetAt( pos );
-
-                    if ( target && ( d->widget->isAncestorOf( target ) || target == d->widget ) )
-                    {
-                        d->eatFocusOut = false;
-                        static_cast<QObject *>( target )->event( e );
-                        d->eatFocusOut = true;
-                        return true;
-                    }
+                    d->setCurrentIndex( QModelIndex() );
                 }
+
+                return true;
             }
 
+            return false;
+
+        case Qt::Key_Down:
+            if ( ! curIndex.isValid() )
+            {
+                QModelIndex firstIndex = d->proxy->index( 0, d->column );
+                d->setCurrentIndex( firstIndex );
+                return true;
+
+            }
+            else if ( curIndex.row() == d->proxy->rowCount() - 1 )
+            {
+                if ( d->wrap )
+                {
+                    d->setCurrentIndex( QModelIndex() );
+                }
+
+                return true;
+            }
+
+            return false;
+
+        case Qt::Key_PageUp:
+        case Qt::Key_PageDown:
+            return false;
+        }
+
+        // Send the event to the widget. If the widget accepted the event, do nothing
+        // If the widget did not accept the event, provide a default implementation
+        d->eatFocusOut = false;
+        ( static_cast<QObject *>( d->widget ) )->event( ke );
+        d->eatFocusOut = true;
+
+        if ( ! d->widget || e->isAccepted() || ! d->popup->isVisible() )
+        {
+            // widget lost focus, hide the popup
+
+#ifdef LSCS_KEYPAD_NAVIGATION
+            if ( d->widget && ( !d->widget->hasFocus()
+                                || ( QApplication::keypadNavigationEnabled() && ! d->widget->hasEditFocus() ) ) )
+            {
+#else
+
+            if ( d->widget && ( !d->widget->hasFocus() ) )
+            {
 #endif
 
-            if ( ! d->popup->underMouse() )
-            {
                 d->popup->hide();
+            }
+
+            if ( e->isAccepted() )
+            {
                 return true;
             }
         }
 
-        return false;
+        // default implementation for keys not handled by the widget when popup is open
+        if ( ke->matches( QKeySequence::Cancel ) )
+        {
+            d->popup->hide();
+            return true;
+        }
 
-        case QEvent::InputMethod:
-        case QEvent::ShortcutOverride:
-            QApplication::sendEvent( d->widget, e );
+        // default implementation for keys not handled by the widget when popup is open
+        switch ( key )
+        {
+
+#ifdef LSCS_KEYPAD_NAVIGATION
+
+        case Qt::Key_Select:
+            if ( !QApplication::keypadNavigationEnabled() )
+            {
+                break;
+            }
+
+#endif
+
+        case Qt::Key_Return:
+        case Qt::Key_Enter:
+        case Qt::Key_Tab:
+            d->popup->hide();
+
+            if ( curIndex.isValid() )
+            {
+                d->_q_complete( curIndex );
+            }
+
+            break;
+
+        case Qt::Key_F4:
+            if ( ke->modifiers() & Qt::AltModifier )
+            {
+                d->popup->hide();
+            }
+
+            break;
+
+        case Qt::Key_Backtab:
+            d->popup->hide();
             break;
 
         default:
-            return false;
+            break;
+        }
+
+        return true;
+    }
+
+#ifdef LSCS_KEYPAD_NAVIGATION
+
+    case QEvent::KeyRelease:
+    {
+        QKeyEvent *ke = static_cast<QKeyEvent *>( e );
+
+        if ( QApplication::keypadNavigationEnabled() && ke->key() == Qt::Key_Back )
+        {
+            // Send the event to the 'widget'. This is what we did for KeyPress, so we need
+            // to do the same for KeyRelease, in case the widget's KeyPress event set
+            // up something (such as a timer) that is relying on also receiving the
+            // key release. I see this as a bug in Qt, and should really set it up for all
+            // the affected keys. However, it is difficult to tell how this will affect
+            // existing code, and I can't test for every combination!
+            d->eatFocusOut = false;
+            static_cast<QObject *>( d->widget )->event( ke );
+            d->eatFocusOut = true;
+        }
+
+        break;
+    }
+
+#endif
+
+    case QEvent::MouseButtonPress:
+    {
+#ifdef LSCS_KEYPAD_NAVIGATION
+
+        if ( QApplication::keypadNavigationEnabled() )
+        {
+            // if we have clicked in the widget (or its descendant), let it handle the click
+            QWidget *source = qobject_cast<QWidget *>( o );
+
+            if ( source )
+            {
+                QPoint pos = source->mapToGlobal( ( static_cast<QMouseEvent *>( e ) )->pos() );
+                QWidget *target = QApplication::widgetAt( pos );
+
+                if ( target && ( d->widget->isAncestorOf( target ) || target == d->widget ) )
+                {
+                    d->eatFocusOut = false;
+                    static_cast<QObject *>( target )->event( e );
+                    d->eatFocusOut = true;
+                    return true;
+                }
+            }
+        }
+
+#endif
+
+        if ( ! d->popup->underMouse() )
+        {
+            d->popup->hide();
+            return true;
+        }
+    }
+
+    return false;
+
+    case QEvent::InputMethod:
+    case QEvent::ShortcutOverride:
+        QApplication::sendEvent( d->widget, e );
+        break;
+
+    default:
+        return false;
     }
 
     return false;

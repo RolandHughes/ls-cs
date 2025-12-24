@@ -1024,26 +1024,26 @@ void QTextDecoder::toUnicode( QString *target, const char *chars, int len )
 
     switch ( c->mibEnum() )
     {
-        case 106:
-            // utf8
-            static_cast<const QUtf8Codec *>( c )->convertToUnicode( target, chars, len, &state );
-            break;
-
-        case 4:
-        {
-            // latin1
-            target->resize( len );
-            ushort *data = ( ushort * )target->data();
-
-            for ( int i = len; i >= 0; --i )
-            {
-                data[i] = ( uchar ) chars[i];
-            }
-        }
+    case 106:
+        // utf8
+        static_cast<const QUtf8Codec *>( c )->convertToUnicode( target, chars, len, &state );
         break;
 
-        default:
-            *target = c->toUnicode( chars, len, &state );
+    case 4:
+    {
+        // latin1
+        target->resize( len );
+        ushort *data = ( ushort * )target->data();
+
+        for ( int i = len; i >= 0; --i )
+        {
+            data[i] = ( uchar ) chars[i];
+        }
+    }
+    break;
+
+    default:
+        *target = c->toUnicode( chars, len, &state );
     }
 }
 

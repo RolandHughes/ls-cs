@@ -130,54 +130,54 @@ QVariant QDeclarativeStringConverters::variantFromString( const QString &s, int 
 {
     switch ( preferredType )
     {
-        case QMetaType::Int:
-            return QVariant( int( qRoundDouble( s.toDouble( ok ) ) ) );
+    case QMetaType::Int:
+        return QVariant( int( qRoundDouble( s.toDouble( ok ) ) ) );
 
-        case QMetaType::UInt:
-            return QVariant( uint( qRoundDouble( s.toDouble( ok ) ) ) );
+    case QMetaType::UInt:
+        return QVariant( uint( qRoundDouble( s.toDouble( ok ) ) ) );
 
-        case QMetaType::QColor:
-            return QVariant::fromValue( colorFromString( s, ok ) );
+    case QMetaType::QColor:
+        return QVariant::fromValue( colorFromString( s, ok ) );
 #ifndef LSCS_NO_DATESTRING
 
-        case QMetaType::QDate:
-            return QVariant::fromValue( dateFromString( s, ok ) );
+    case QMetaType::QDate:
+        return QVariant::fromValue( dateFromString( s, ok ) );
 
-        case QMetaType::QTime:
-            return QVariant::fromValue( timeFromString( s, ok ) );
+    case QMetaType::QTime:
+        return QVariant::fromValue( timeFromString( s, ok ) );
 
-        case QMetaType::QDateTime:
-            return QVariant::fromValue( dateTimeFromString( s, ok ) );
+    case QMetaType::QDateTime:
+        return QVariant::fromValue( dateTimeFromString( s, ok ) );
 #endif // LSCS_NO_DATESTRING
 
-        case QMetaType::QPointF:
-            return QVariant::fromValue( pointFFromString( s, ok ) );
+    case QMetaType::QPointF:
+        return QVariant::fromValue( pointFFromString( s, ok ) );
 
-        case QMetaType::QPoint:
-            return QVariant::fromValue( pointFFromString( s, ok ).toPoint() );
+    case QMetaType::QPoint:
+        return QVariant::fromValue( pointFFromString( s, ok ).toPoint() );
 
-        case QMetaType::QSizeF:
-            return QVariant::fromValue( sizeFFromString( s, ok ) );
+    case QMetaType::QSizeF:
+        return QVariant::fromValue( sizeFFromString( s, ok ) );
 
-        case QMetaType::QSize:
-            return QVariant::fromValue( sizeFFromString( s, ok ).toSize() );
+    case QMetaType::QSize:
+        return QVariant::fromValue( sizeFFromString( s, ok ).toSize() );
 
-        case QMetaType::QRectF:
-            return QVariant::fromValue( rectFFromString( s, ok ) );
+    case QMetaType::QRectF:
+        return QVariant::fromValue( rectFFromString( s, ok ) );
 
-        case QMetaType::QRect:
-            return QVariant::fromValue( rectFFromString( s, ok ).toRect() );
+    case QMetaType::QRect:
+        return QVariant::fromValue( rectFFromString( s, ok ).toRect() );
 
-        case QMetaType::QVector3D:
-            return QVariant::fromValue( vector3DFromString( s, ok ) );
+    case QMetaType::QVector3D:
+        return QVariant::fromValue( vector3DFromString( s, ok ) );
 
-        default:
-            if ( ok )
-            {
-                *ok = false;
-            }
+    default:
+        if ( ok )
+        {
+            *ok = false;
+        }
 
-            return QVariant();
+        return QVariant();
     }
 }
 

@@ -579,11 +579,11 @@ bool QSslCertificatePrivate::parseExtension( const QByteArray &data, QSslCertifi
 
             switch ( items.at( 1 ).type() )
             {
-                case QAsn1Element::Rfc822NameType:
-                case QAsn1Element::DnsNameType:
-                case QAsn1Element::UniformResourceIdentifierType:
-                    result[key] = items.at( 1 ).toString();
-                    break;
+            case QAsn1Element::Rfc822NameType:
+            case QAsn1Element::DnsNameType:
+            case QAsn1Element::UniformResourceIdentifierType:
+                result[key] = items.at( 1 ).toString();
+                break;
             }
         }
 

@@ -47,49 +47,49 @@ QString AtomicComparator::displayName( const AtomicComparator::Operator op, cons
     {
         switch ( op )
         {
-            case OperatorEqual:
-                return QLatin1String( "=" );
+        case OperatorEqual:
+            return QLatin1String( "=" );
 
-            case OperatorGreaterOrEqual:
-                return QLatin1String( "<=" );
+        case OperatorGreaterOrEqual:
+            return QLatin1String( "<=" );
 
-            case OperatorGreaterThan:
-                return QLatin1String( "<" );
+        case OperatorGreaterThan:
+            return QLatin1String( "<" );
 
-            case OperatorLessOrEqual:
-                return QLatin1String( ">=" );
+        case OperatorLessOrEqual:
+            return QLatin1String( ">=" );
 
-            case OperatorLessThanNaNLeast:
-            case OperatorLessThanNaNGreatest:
-            case OperatorLessThan:
-                return QLatin1String( ">" );
+        case OperatorLessThanNaNLeast:
+        case OperatorLessThanNaNGreatest:
+        case OperatorLessThan:
+            return QLatin1String( ">" );
 
-            case OperatorNotEqual:
-                return QLatin1String( "!=" );
+        case OperatorNotEqual:
+            return QLatin1String( "!=" );
         }
     }
 
     switch ( op )
     {
-        case OperatorEqual:
-            return QLatin1String( "eq" );
+    case OperatorEqual:
+        return QLatin1String( "eq" );
 
-        case OperatorGreaterOrEqual:
-            return QLatin1String( "ge" );
+    case OperatorGreaterOrEqual:
+        return QLatin1String( "ge" );
 
-        case OperatorGreaterThan:
-            return QLatin1String( "gt" );
+    case OperatorGreaterThan:
+        return QLatin1String( "gt" );
 
-        case OperatorLessOrEqual:
-            return QLatin1String( "le" );
+    case OperatorLessOrEqual:
+        return QLatin1String( "le" );
 
-        case OperatorLessThanNaNLeast:
-        case OperatorLessThanNaNGreatest:
-        case OperatorLessThan:
-            return QLatin1String( "lt" );
+    case OperatorLessThanNaNLeast:
+    case OperatorLessThanNaNGreatest:
+    case OperatorLessThan:
+        return QLatin1String( "lt" );
 
-        case OperatorNotEqual:
-            return QLatin1String( "ne" );
+    case OperatorNotEqual:
+        return QLatin1String( "ne" );
     }
 
     Q_ASSERT( false );

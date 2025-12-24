@@ -273,38 +273,38 @@ static QImage blendedImage( const QImage &start, const QImage &end, float alpha 
 
     switch ( start.depth() )
     {
-        case 32:
+    case 32:
+    {
+        blended = QImage( sw, sh, start.format() );
+        blended.setDevicePixelRatio( start.devicePixelRatio() );
+        uchar *mixed_data = blended.bits();
+        const uchar *back_data = start.bits();
+        const uchar *front_data = end.bits();
+
+        for ( int sy = 0; sy < sh; sy++ )
         {
-            blended = QImage( sw, sh, start.format() );
-            blended.setDevicePixelRatio( start.devicePixelRatio() );
-            uchar *mixed_data = blended.bits();
-            const uchar *back_data = start.bits();
-            const uchar *front_data = end.bits();
+            quint32 *mixed = ( quint32 * )mixed_data;
+            const quint32 *back = ( const quint32 * )back_data;
+            const quint32 *front = ( const quint32 * )front_data;
 
-            for ( int sy = 0; sy < sh; sy++ )
+            for ( int sx = 0; sx < sw; sx++ )
             {
-                quint32 *mixed = ( quint32 * )mixed_data;
-                const quint32 *back = ( const quint32 * )back_data;
-                const quint32 *front = ( const quint32 * )front_data;
-
-                for ( int sx = 0; sx < sw; sx++ )
-                {
-                    quint32 bp = back[sx];
-                    quint32 fp = front[sx];
-                    mixed[sx] =  qRgba ( ( qRed( bp ) * ia + qRed( fp ) * a ) >> 8,
-                                         ( qGreen( bp ) * ia + qGreen( fp ) * a ) >> 8,
-                                         ( qBlue( bp ) * ia + qBlue( fp ) * a ) >> 8,
-                                         ( qAlpha( bp ) * ia + qAlpha( fp ) * a ) >> 8 );
-                }
-
-                mixed_data += bpl;
-                back_data += bpl;
-                front_data += bpl;
+                quint32 bp = back[sx];
+                quint32 fp = front[sx];
+                mixed[sx] =  qRgba ( ( qRed( bp ) * ia + qRed( fp ) * a ) >> 8,
+                                     ( qGreen( bp ) * ia + qGreen( fp ) * a ) >> 8,
+                                     ( qBlue( bp ) * ia + qBlue( fp ) * a ) >> 8,
+                                     ( qAlpha( bp ) * ia + qAlpha( fp ) * a ) >> 8 );
             }
-        }
 
-        default:
-            break;
+            mixed_data += bpl;
+            back_data += bpl;
+            front_data += bpl;
+        }
+    }
+
+    default:
+        break;
     }
 
     return blended;
@@ -349,18 +349,18 @@ QScrollbarStyleAnimation::QScrollbarStyleAnimation( Mode mode, QObject *target )
 {
     switch ( mode )
     {
-        case Activating:
-            setDuration( ScrollBarFadeOutDuration );
-            setStartValue( 0.0 );
-            setEndValue( 1.0 );
-            break;
+    case Activating:
+        setDuration( ScrollBarFadeOutDuration );
+        setStartValue( 0.0 );
+        setEndValue( 1.0 );
+        break;
 
-        case Deactivating:
-            setDuration( ScrollBarFadeOutDelay + ScrollBarFadeOutDuration );
-            setDelay( ScrollBarFadeOutDelay );
-            setStartValue( 1.0 );
-            setEndValue( 0.0 );
-            break;
+    case Deactivating:
+        setDuration( ScrollBarFadeOutDelay + ScrollBarFadeOutDuration );
+        setDelay( ScrollBarFadeOutDelay );
+        setStartValue( 1.0 );
+        setEndValue( 0.0 );
+        break;
     }
 }
 

@@ -444,16 +444,16 @@ int QOpenGLWindow::metric( PaintDeviceMetric metric ) const
 
     switch ( metric )
     {
-        case PdmDepth:
-            if ( d->paintDevice )
-            {
-                return d->paintDevice->depth();
-            }
+    case PdmDepth:
+        if ( d->paintDevice )
+        {
+            return d->paintDevice->depth();
+        }
 
-            break;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QPaintDeviceWindow::metric( metric );

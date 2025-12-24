@@ -485,24 +485,24 @@ inline void QUrlPrivate::appendUserInfo( QString &appendTo, QUrl::FormattingOpti
     {
         switch ( appendingTo )
         {
-            case UserInfo:
-                userNameActions = userNameInUserInfo;
-                passwordActions = passwordInUserInfo;
-                break;
+        case UserInfo:
+            userNameActions = userNameInUserInfo;
+            passwordActions = passwordInUserInfo;
+            break;
 
-            case Authority:
-                userNameActions = userNameInAuthority;
-                passwordActions = passwordInAuthority;
-                break;
+        case Authority:
+            userNameActions = userNameInAuthority;
+            passwordActions = passwordInAuthority;
+            break;
 
-            case FullUrl:
-                userNameActions = userNameInUrl;
-                passwordActions = passwordInUrl;
-                break;
+        case FullUrl:
+            userNameActions = userNameInUrl;
+            passwordActions = passwordInUrl;
+            break;
 
-            default:
-                // can not happen
-                break;
+        default:
+            // can not happen
+            break;
         }
     }
 
@@ -2854,68 +2854,68 @@ static QString errorMessage( QUrlPrivate::ErrorCode errorCode, const QString &er
     switch ( errorCode )
     {
 
-        case QUrlPrivate::NoError:
-            Q_ASSERT_X( false, "QUrl::errorString", "Impossible: QUrl::errorString should have treated this condition" );
+    case QUrlPrivate::NoError:
+        Q_ASSERT_X( false, "QUrl::errorString", "Impossible: QUrl::errorString should have treated this condition" );
 
-            return QString();
+        return QString();
 
-        case QUrlPrivate::InvalidSchemeError:
+    case QUrlPrivate::InvalidSchemeError:
+    {
+        QString msg = QString( "Invalid scheme (character '%1' not permitted)" );
+        return msg.formatArg( c );
+    }
+
+    case QUrlPrivate::InvalidUserNameError:
+        return QString( "Invalid user name (character '%1' not permitted)" ).formatArg( c );
+
+    case QUrlPrivate::InvalidPasswordError:
+        return QString( "Invalid password (character '%1' not permitted)" ).formatArg( c );
+
+    case QUrlPrivate::InvalidRegNameError:
+        if ( errorPosition != -1 )
         {
-            QString msg = QString( "Invalid scheme (character '%1' not permitted)" );
-            return msg.formatArg( c );
+            return QString( "Invalid hostname (character '%1' not permitted)" ).formatArg( c );
+        }
+        else
+        {
+            return QString( "Invalid hostname (contains invalid characters)" );
         }
 
-        case QUrlPrivate::InvalidUserNameError:
-            return QString( "Invalid user name (character '%1' not permitted)" ).formatArg( c );
+    case QUrlPrivate::InvalidIPv4AddressError:
+        return QString(); // doesn't happen yet
 
-        case QUrlPrivate::InvalidPasswordError:
-            return QString( "Invalid password (character '%1' not permitted)" ).formatArg( c );
+    case QUrlPrivate::InvalidIPv6AddressError:
+        return QString( "Invalid IPv6 address" );
 
-        case QUrlPrivate::InvalidRegNameError:
-            if ( errorPosition != -1 )
-            {
-                return QString( "Invalid hostname (character '%1' not permitted)" ).formatArg( c );
-            }
-            else
-            {
-                return QString( "Invalid hostname (contains invalid characters)" );
-            }
+    case QUrlPrivate::InvalidCharacterInIPv6Error:
+        return QString( "Invalid IPv6 address (character '%1' not permitted)" ).formatArg( c );
 
-        case QUrlPrivate::InvalidIPv4AddressError:
-            return QString(); // doesn't happen yet
+    case QUrlPrivate::InvalidIPvFutureError:
+        return QString( "Invalid IPvFuture address (character '%1' not permitted)" ).formatArg( c );
 
-        case QUrlPrivate::InvalidIPv6AddressError:
-            return QString( "Invalid IPv6 address" );
+    case QUrlPrivate::HostMissingEndBracket:
+        return QString( "Expected ']' to match '[' in hostname" );
 
-        case QUrlPrivate::InvalidCharacterInIPv6Error:
-            return QString( "Invalid IPv6 address (character '%1' not permitted)" ).formatArg( c );
+    case QUrlPrivate::InvalidPortError:
+        return QString( "Invalid port or port number out of range" );
 
-        case QUrlPrivate::InvalidIPvFutureError:
-            return QString( "Invalid IPvFuture address (character '%1' not permitted)" ).formatArg( c );
+    case QUrlPrivate::PortEmptyError:
+        return QString( "Port field was empty" );
 
-        case QUrlPrivate::HostMissingEndBracket:
-            return QString( "Expected ']' to match '[' in hostname" );
+    case QUrlPrivate::InvalidPathError:
+        return QString( "Invalid path (character '%1' not permitted)" ).formatArg( c );
 
-        case QUrlPrivate::InvalidPortError:
-            return QString( "Invalid port or port number out of range" );
+    case QUrlPrivate::InvalidQueryError:
+        return QString( "Invalid query (character '%1' not permitted)" ).formatArg( c );
 
-        case QUrlPrivate::PortEmptyError:
-            return QString( "Port field was empty" );
+    case QUrlPrivate::InvalidFragmentError:
+        return QString( "Invalid fragment (character '%1' not permitted)" ).formatArg( c );
 
-        case QUrlPrivate::InvalidPathError:
-            return QString( "Invalid path (character '%1' not permitted)" ).formatArg( c );
+    case QUrlPrivate::AuthorityPresentAndPathIsRelative:
+        return QString( "Path component is relative and authority is present" );
 
-        case QUrlPrivate::InvalidQueryError:
-            return QString( "Invalid query (character '%1' not permitted)" ).formatArg( c );
-
-        case QUrlPrivate::InvalidFragmentError:
-            return QString( "Invalid fragment (character '%1' not permitted)" ).formatArg( c );
-
-        case QUrlPrivate::AuthorityPresentAndPathIsRelative:
-            return QString( "Path component is relative and authority is present" );
-
-        case QUrlPrivate::RelativeUrlPathContainsColonBeforeSlash:
-            return QString( "Relative URL's path component contains ':' before any '/'" );
+    case QUrlPrivate::RelativeUrlPathContainsColonBeforeSlash:
+        return QString( "Relative URL's path component contains ':' before any '/'" );
     }
 
     Q_ASSERT_X( false, "QUrl::errorString", "Can not happen, unknown error" );

@@ -155,7 +155,7 @@ private:
     GUI_LSCS_SLOT_2( _q_performDelayedSort )
 
     GUI_LSCS_SLOT_1( Private, void _q_fileSystemChanged( const QString &path,
-                   const QVector<QPair <QString, QFileInfo>> &data ) )
+                     const QVector<QPair <QString, QFileInfo>> &data ) )
     GUI_LSCS_SLOT_2( _q_fileSystemChanged )
 
     GUI_LSCS_SLOT_1( Private, void _q_resolvedName( const QString &fileName, const QString &resolvedName ) )

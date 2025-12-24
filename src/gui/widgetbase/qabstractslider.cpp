@@ -327,33 +327,33 @@ void QAbstractSlider::triggerAction( SliderAction action )
 
     switch ( action )
     {
-        case SliderSingleStepAdd:
-            setSliderPosition( d->overflowSafeAdd( d->effectiveSingleStep() ) );
-            break;
+    case SliderSingleStepAdd:
+        setSliderPosition( d->overflowSafeAdd( d->effectiveSingleStep() ) );
+        break;
 
-        case SliderSingleStepSub:
-            setSliderPosition( d->overflowSafeAdd( -d->effectiveSingleStep() ) );
-            break;
+    case SliderSingleStepSub:
+        setSliderPosition( d->overflowSafeAdd( -d->effectiveSingleStep() ) );
+        break;
 
-        case SliderPageStepAdd:
-            setSliderPosition( d->overflowSafeAdd( d->pageStep ) );
-            break;
+    case SliderPageStepAdd:
+        setSliderPosition( d->overflowSafeAdd( d->pageStep ) );
+        break;
 
-        case SliderPageStepSub:
-            setSliderPosition( d->overflowSafeAdd( -d->pageStep ) );
-            break;
+    case SliderPageStepSub:
+        setSliderPosition( d->overflowSafeAdd( -d->pageStep ) );
+        break;
 
-        case SliderToMinimum:
-            setSliderPosition( d->minimum );
-            break;
+    case SliderToMinimum:
+        setSliderPosition( d->minimum );
+        break;
 
-        case SliderToMaximum:
-            setSliderPosition( d->maximum );
-            break;
+    case SliderToMaximum:
+        setSliderPosition( d->maximum );
+        break;
 
-        case SliderMove:
-        case SliderNoAction:
-            break;
+    case SliderMove:
+    case SliderNoAction:
+        break;
     };
 
     emit actionTriggered( action );
@@ -562,153 +562,153 @@ void QAbstractSlider::keyPressEvent( QKeyEvent *ev )
     {
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-        case Qt::Key_Select:
-            if ( QApplication::keypadNavigationEnabled() )
-            {
-                setEditFocus( !hasEditFocus() );
-            }
-            else
-            {
-                ev->ignore();
-            }
+    case Qt::Key_Select:
+        if ( QApplication::keypadNavigationEnabled() )
+        {
+            setEditFocus( !hasEditFocus() );
+        }
+        else
+        {
+            ev->ignore();
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Back:
-            if ( QApplication::keypadNavigationEnabled() && hasEditFocus() )
-            {
-                setValue( d->origValue );
-                setEditFocus( false );
-            }
-            else
-            {
-                ev->ignore();
-            }
+    case Qt::Key_Back:
+        if ( QApplication::keypadNavigationEnabled() && hasEditFocus() )
+        {
+            setValue( d->origValue );
+            setEditFocus( false );
+        }
+        else
+        {
+            ev->ignore();
+        }
 
-            break;
+        break;
 #endif
 
-        // It seems we need to use invertedAppearance for Left and right, otherwise, things look weird.
-        case Qt::Key_Left:
+    // It seems we need to use invertedAppearance for Left and right, otherwise, things look weird.
+    case Qt::Key_Left:
 
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-            // In QApplication::KeypadNavigationDirectional, we want to change the slider
-            // value if there is no left/right navigation possible and if this slider is not
-            // inside a tab widget.
+        // In QApplication::KeypadNavigationDirectional, we want to change the slider
+        // value if there is no left/right navigation possible and if this slider is not
+        // inside a tab widget.
 
-            if ( QApplication::keypadNavigationEnabled()
-                    && ( ! hasEditFocus() && QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder
-                         || d->orientation == Qt::Vertical || ! hasEditFocus()
-                         && ( QWidgetPrivate::canKeypadNavigate( Qt::Horizontal ) || QWidgetPrivate::inTabWidget( this ) ) ) )
-            {
+        if ( QApplication::keypadNavigationEnabled()
+                && ( ! hasEditFocus() && QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder
+                     || d->orientation == Qt::Vertical || ! hasEditFocus()
+                     && ( QWidgetPrivate::canKeypadNavigate( Qt::Horizontal ) || QWidgetPrivate::inTabWidget( this ) ) ) )
+        {
 
-                ev->ignore();
-                return;
-            }
+            ev->ignore();
+            return;
+        }
 
-            if ( QApplication::keypadNavigationEnabled() && d->orientation == Qt::Vertical )
-            {
-                action = d->invertedControls ? SliderSingleStepSub : SliderSingleStepAdd;
-            }
-            else
-#endif
-                if ( isRightToLeft() )
-                {
-                    action = d->invertedAppearance ? SliderSingleStepSub : SliderSingleStepAdd;
-                }
-                else
-                {
-                    action = !d->invertedAppearance ? SliderSingleStepSub : SliderSingleStepAdd;
-                }
-
-            break;
-
-        case Qt::Key_Right:
-#ifdef LSCS_KEYPAD_NAVIGATION
-
-            // Same logic as in Qt::Key_Left
-            if ( QApplication::keypadNavigationEnabled()
-                    && ( ! hasEditFocus() && QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder
-                         || d->orientation == Qt::Vertical || !hasEditFocus()
-                         && ( QWidgetPrivate::canKeypadNavigate( Qt::Horizontal ) || QWidgetPrivate::inTabWidget( this ) ) ) )
-            {
-
-                ev->ignore();
-                return;
-            }
-
-            if ( QApplication::keypadNavigationEnabled() && d->orientation == Qt::Vertical )
-            {
-                action = d->invertedControls ? SliderSingleStepAdd : SliderSingleStepSub;
-            }
-            else
-#endif
-                if ( isRightToLeft() )
-                {
-                    action = d->invertedAppearance ? SliderSingleStepAdd : SliderSingleStepSub;
-                }
-                else
-                {
-                    action = !d->invertedAppearance ? SliderSingleStepAdd : SliderSingleStepSub;
-                }
-
-            break;
-
-        case Qt::Key_Up:
-#ifdef LSCS_KEYPAD_NAVIGATION
-
-            // In QApplication::KeypadNavigationDirectional, we want to change the slider
-            // value if there is no up/down navigation possible.
-            if ( QApplication::keypadNavigationEnabled()
-                    && ( QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder
-                         || d->orientation == Qt::Horizontal
-                         || ! hasEditFocus() && QWidgetPrivate::canKeypadNavigate( Qt::Vertical ) ) )
-            {
-                ev->ignore();
-                break;
-            }
-
-#endif
+        if ( QApplication::keypadNavigationEnabled() && d->orientation == Qt::Vertical )
+        {
             action = d->invertedControls ? SliderSingleStepSub : SliderSingleStepAdd;
-            break;
-
-        case Qt::Key_Down:
-#ifdef LSCS_KEYPAD_NAVIGATION
-
-            // Same logic as in Qt::Key_Up
-            if ( QApplication::keypadNavigationEnabled()
-                    && ( QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder
-                         || d->orientation == Qt::Horizontal
-                         || ! hasEditFocus() && QWidgetPrivate::canKeypadNavigate( Qt::Vertical ) ) )
+        }
+        else
+#endif
+            if ( isRightToLeft() )
             {
-                ev->ignore();
-                break;
+                action = d->invertedAppearance ? SliderSingleStepSub : SliderSingleStepAdd;
+            }
+            else
+            {
+                action = !d->invertedAppearance ? SliderSingleStepSub : SliderSingleStepAdd;
             }
 
-#endif
+        break;
+
+    case Qt::Key_Right:
+#ifdef LSCS_KEYPAD_NAVIGATION
+
+        // Same logic as in Qt::Key_Left
+        if ( QApplication::keypadNavigationEnabled()
+                && ( ! hasEditFocus() && QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder
+                     || d->orientation == Qt::Vertical || !hasEditFocus()
+                     && ( QWidgetPrivate::canKeypadNavigate( Qt::Horizontal ) || QWidgetPrivate::inTabWidget( this ) ) ) )
+        {
+
+            ev->ignore();
+            return;
+        }
+
+        if ( QApplication::keypadNavigationEnabled() && d->orientation == Qt::Vertical )
+        {
             action = d->invertedControls ? SliderSingleStepAdd : SliderSingleStepSub;
-            break;
+        }
+        else
+#endif
+            if ( isRightToLeft() )
+            {
+                action = d->invertedAppearance ? SliderSingleStepAdd : SliderSingleStepSub;
+            }
+            else
+            {
+                action = !d->invertedAppearance ? SliderSingleStepAdd : SliderSingleStepSub;
+            }
 
-        case Qt::Key_PageUp:
-            action = d->invertedControls ? SliderPageStepSub : SliderPageStepAdd;
-            break;
+        break;
 
-        case Qt::Key_PageDown:
-            action = d->invertedControls ? SliderPageStepAdd : SliderPageStepSub;
-            break;
+    case Qt::Key_Up:
+#ifdef LSCS_KEYPAD_NAVIGATION
 
-        case Qt::Key_Home:
-            action = SliderToMinimum;
-            break;
-
-        case Qt::Key_End:
-            action = SliderToMaximum;
-            break;
-
-        default:
+        // In QApplication::KeypadNavigationDirectional, we want to change the slider
+        // value if there is no up/down navigation possible.
+        if ( QApplication::keypadNavigationEnabled()
+                && ( QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder
+                     || d->orientation == Qt::Horizontal
+                     || ! hasEditFocus() && QWidgetPrivate::canKeypadNavigate( Qt::Vertical ) ) )
+        {
             ev->ignore();
             break;
+        }
+
+#endif
+        action = d->invertedControls ? SliderSingleStepSub : SliderSingleStepAdd;
+        break;
+
+    case Qt::Key_Down:
+#ifdef LSCS_KEYPAD_NAVIGATION
+
+        // Same logic as in Qt::Key_Up
+        if ( QApplication::keypadNavigationEnabled()
+                && ( QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder
+                     || d->orientation == Qt::Horizontal
+                     || ! hasEditFocus() && QWidgetPrivate::canKeypadNavigate( Qt::Vertical ) ) )
+        {
+            ev->ignore();
+            break;
+        }
+
+#endif
+        action = d->invertedControls ? SliderSingleStepAdd : SliderSingleStepSub;
+        break;
+
+    case Qt::Key_PageUp:
+        action = d->invertedControls ? SliderPageStepSub : SliderPageStepAdd;
+        break;
+
+    case Qt::Key_PageDown:
+        action = d->invertedControls ? SliderPageStepAdd : SliderPageStepSub;
+        break;
+
+    case Qt::Key_Home:
+        action = SliderToMinimum;
+        break;
+
+    case Qt::Key_End:
+        action = SliderToMaximum;
+        break;
+
+    default:
+        ev->ignore();
+        break;
     }
 
     if ( action )
@@ -723,17 +723,17 @@ void QAbstractSlider::changeEvent( QEvent *ev )
 
     switch ( ev->type() )
     {
-        case QEvent::EnabledChange:
-            if ( ! isEnabled() )
-            {
-                d->repeatActionTimer.stop();
-                setSliderDown( false );
-            }
+    case QEvent::EnabledChange:
+        if ( ! isEnabled() )
+        {
+            d->repeatActionTimer.stop();
+            setSliderDown( false );
+        }
 
-            [[fallthrough]];
+        [[fallthrough]];
 
-        default:
-            QWidget::changeEvent( ev );
+    default:
+        QWidget::changeEvent( ev );
     }
 }
 
@@ -744,12 +744,12 @@ bool QAbstractSlider::event( QEvent *e )
 
     switch ( e->type() )
     {
-        case QEvent::FocusIn:
-            d->origValue = d->value;
-            break;
+    case QEvent::FocusIn:
+        d->origValue = d->value;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
 #endif

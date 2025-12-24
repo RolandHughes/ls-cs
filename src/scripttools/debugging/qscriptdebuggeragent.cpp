@@ -706,107 +706,107 @@ void QScriptDebuggerAgent::positionChange( qint64 scriptId,
 
     switch ( d->state )
     {
-        case QScriptDebuggerAgentPrivate::NoState:
-        case QScriptDebuggerAgentPrivate::SteppingOutState:
-        case QScriptDebuggerAgentPrivate::ReturningByForceState:
-            // Do nothing
-            break;
+    case QScriptDebuggerAgentPrivate::NoState:
+    case QScriptDebuggerAgentPrivate::SteppingOutState:
+    case QScriptDebuggerAgentPrivate::ReturningByForceState:
+        // Do nothing
+        break;
 
-        case QScriptDebuggerAgentPrivate::SteppingIntoState:
-            if ( --d->stepCount == 0 )
-            {
-                d->state = QScriptDebuggerAgentPrivate::NoState;
-
-                if ( d->backend )
-                {
-                    d->backend->stepped( scriptId, lineNumber, columnNumber, QScriptValue() );
-                }
-            }
-
-            break;
-
-        case QScriptDebuggerAgentPrivate::SteppingOverState:
-            if ( ( d->stepDepth > 0 ) || ( --d->stepCount != 0 ) )
-            {
-                break;
-            }
-
-        // fallthrough
-        case QScriptDebuggerAgentPrivate::SteppedOverState:
+    case QScriptDebuggerAgentPrivate::SteppingIntoState:
+        if ( --d->stepCount == 0 )
+        {
             d->state = QScriptDebuggerAgentPrivate::NoState;
 
             if ( d->backend )
             {
-                d->backend->stepped( scriptId, lineNumber, columnNumber, d->stepResult );
+                d->backend->stepped( scriptId, lineNumber, columnNumber, QScriptValue() );
             }
+        }
 
+        break;
+
+    case QScriptDebuggerAgentPrivate::SteppingOverState:
+        if ( ( d->stepDepth > 0 ) || ( --d->stepCount != 0 ) )
+        {
             break;
+        }
 
-        case QScriptDebuggerAgentPrivate::SteppedOutState:
+    // fallthrough
+    case QScriptDebuggerAgentPrivate::SteppedOverState:
+        d->state = QScriptDebuggerAgentPrivate::NoState;
+
+        if ( d->backend )
+        {
+            d->backend->stepped( scriptId, lineNumber, columnNumber, d->stepResult );
+        }
+
+        break;
+
+    case QScriptDebuggerAgentPrivate::SteppedOutState:
+        d->state = QScriptDebuggerAgentPrivate::NoState;
+
+        if ( d->backend )
+        {
+            d->backend->stepped( scriptId, lineNumber, columnNumber, d->stepResult );
+        }
+
+        break;
+
+    case QScriptDebuggerAgentPrivate::RunningToLocationState:
+        if ( ( ( lineNumber == d->targetLineNumber ) || ( d->targetLineNumber == -1 ) )
+                && ( scriptId == d->targetScriptId ) )
+        {
             d->state = QScriptDebuggerAgentPrivate::NoState;
 
             if ( d->backend )
             {
-                d->backend->stepped( scriptId, lineNumber, columnNumber, d->stepResult );
+                d->backend->locationReached( scriptId, lineNumber, columnNumber );
             }
+        }
 
-            break;
+        break;
 
-        case QScriptDebuggerAgentPrivate::RunningToLocationState:
-            if ( ( ( lineNumber == d->targetLineNumber ) || ( d->targetLineNumber == -1 ) )
-                    && ( scriptId == d->targetScriptId ) )
-            {
-                d->state = QScriptDebuggerAgentPrivate::NoState;
+    case QScriptDebuggerAgentPrivate::InterruptingState:
+        d->state = QScriptDebuggerAgentPrivate::NoState;
 
-                if ( d->backend )
-                {
-                    d->backend->locationReached( scriptId, lineNumber, columnNumber );
-                }
-            }
+        if ( d->backend )
+        {
+            d->backend->interrupted( scriptId, lineNumber, columnNumber );
+        }
 
-            break;
+        break;
 
-        case QScriptDebuggerAgentPrivate::InterruptingState:
-            d->state = QScriptDebuggerAgentPrivate::NoState;
+    case QScriptDebuggerAgentPrivate::BreakpointState:
+        d->state = QScriptDebuggerAgentPrivate::NoState;
 
-            if ( d->backend )
-            {
-                d->backend->interrupted( scriptId, lineNumber, columnNumber );
-            }
+        if ( d->backend )
+        {
+            d->backend->breakpoint( scriptId, lineNumber, columnNumber, d->hitBreakpointId );
+        }
 
-            break;
+        if ( d->breakpoints.value( d->hitBreakpointId ).isSingleShot() )
+        {
+            deleteBreakpoint( d->hitBreakpointId );
+        }
 
-        case QScriptDebuggerAgentPrivate::BreakpointState:
-            d->state = QScriptDebuggerAgentPrivate::NoState;
+        break;
 
-            if ( d->backend )
-            {
-                d->backend->breakpoint( scriptId, lineNumber, columnNumber, d->hitBreakpointId );
-            }
+    case QScriptDebuggerAgentPrivate::ReturnedByForceState:
+        d->state = QScriptDebuggerAgentPrivate::NoState;
 
-            if ( d->breakpoints.value( d->hitBreakpointId ).isSingleShot() )
-            {
-                deleteBreakpoint( d->hitBreakpointId );
-            }
+        if ( d->backend )
+        {
+            d->backend->forcedReturn( scriptId, lineNumber, columnNumber, d->returnValue );
+        }
 
-            break;
+        break;
 
-        case QScriptDebuggerAgentPrivate::ReturnedByForceState:
-            d->state = QScriptDebuggerAgentPrivate::NoState;
-
-            if ( d->backend )
-            {
-                d->backend->forcedReturn( scriptId, lineNumber, columnNumber, d->returnValue );
-            }
-
-            break;
-
-        case QScriptDebuggerAgentPrivate::SteppedIntoState:
-        case QScriptDebuggerAgentPrivate::ReachedLocationState:
-        case QScriptDebuggerAgentPrivate::InterruptedState:
-            // ### deal with the case when code is evaluated while we're already paused
-            //        Q_ASSERT(false);
-            break;
+    case QScriptDebuggerAgentPrivate::SteppedIntoState:
+    case QScriptDebuggerAgentPrivate::ReachedLocationState:
+    case QScriptDebuggerAgentPrivate::InterruptedState:
+        // ### deal with the case when code is evaluated while we're already paused
+        //        Q_ASSERT(false);
+        break;
     }
 }
 

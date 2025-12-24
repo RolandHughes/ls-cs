@@ -505,11 +505,11 @@ void QGstVideoRendererSink::class_init( gpointer g_class, gpointer class_data )
 void QGstVideoRendererSink::base_init( gpointer g_class )
 {
     static GstStaticPadTemplate sink_pad_template = GST_STATIC_PAD_TEMPLATE(
-                "sink", GST_PAD_SINK, GST_PAD_ALWAYS, GST_STATIC_CAPS(
-                    "video/x-raw, "
-                    "framerate = (fraction) [ 0, MAX ], "
-                    "width = (int) [ 1, MAX ], "
-                    "height = (int) [ 1, MAX ]" ) );
+            "sink", GST_PAD_SINK, GST_PAD_ALWAYS, GST_STATIC_CAPS(
+                "video/x-raw, "
+                "framerate = (fraction) [ 0, MAX ], "
+                "width = (int) [ 1, MAX ], "
+                "height = (int) [ 1, MAX ]" ) );
 
     gst_element_class_add_pad_template(
         GST_ELEMENT_CLASS( g_class ), gst_static_pad_template_get( &sink_pad_template ) );

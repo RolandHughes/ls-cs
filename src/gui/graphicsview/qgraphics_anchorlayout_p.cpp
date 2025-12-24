@@ -501,25 +501,25 @@ static qreal interpolate( const QPair<QGraphicsAnchorLayoutPrivate::Interval, qr
 
     switch ( factor.first )
     {
-        case QGraphicsAnchorLayoutPrivate::MinimumToMinPreferred:
-            lower = min;
-            upper = minPref;
-            break;
+    case QGraphicsAnchorLayoutPrivate::MinimumToMinPreferred:
+        lower = min;
+        upper = minPref;
+        break;
 
-        case QGraphicsAnchorLayoutPrivate::MinPreferredToPreferred:
-            lower = minPref;
-            upper = pref;
-            break;
+    case QGraphicsAnchorLayoutPrivate::MinPreferredToPreferred:
+        lower = minPref;
+        upper = pref;
+        break;
 
-        case QGraphicsAnchorLayoutPrivate::PreferredToMaxPreferred:
-            lower = pref;
-            upper = maxPref;
-            break;
+    case QGraphicsAnchorLayoutPrivate::PreferredToMaxPreferred:
+        lower = pref;
+        upper = maxPref;
+        break;
 
-        case QGraphicsAnchorLayoutPrivate::MaxPreferredToMaximum:
-            lower = maxPref;
-            upper = max;
-            break;
+    case QGraphicsAnchorLayoutPrivate::MaxPreferredToMaximum:
+        lower = maxPref;
+        upper = max;
+        break;
     }
 
     return lower + factor.second * ( upper - lower );
@@ -722,24 +722,24 @@ Qt::AnchorPoint QGraphicsAnchorLayoutPrivate::oppositeEdge( Qt::AnchorPoint edge
 {
     switch ( edge )
     {
-        case Qt::AnchorLeft:
-            edge = Qt::AnchorRight;
-            break;
+    case Qt::AnchorLeft:
+        edge = Qt::AnchorRight;
+        break;
 
-        case Qt::AnchorRight:
-            edge = Qt::AnchorLeft;
-            break;
+    case Qt::AnchorRight:
+        edge = Qt::AnchorLeft;
+        break;
 
-        case Qt::AnchorTop:
-            edge = Qt::AnchorBottom;
-            break;
+    case Qt::AnchorTop:
+        edge = Qt::AnchorBottom;
+        break;
 
-        case Qt::AnchorBottom:
-            edge = Qt::AnchorTop;
-            break;
+    case Qt::AnchorBottom:
+        edge = Qt::AnchorTop;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return edge;
@@ -1586,17 +1586,17 @@ void QGraphicsAnchorLayoutPrivate::createCenterAnchors(
 
     switch ( centerEdge )
     {
-        case Qt::AnchorHorizontalCenter:
-            orientation = Horizontal;
-            break;
+    case Qt::AnchorHorizontalCenter:
+        orientation = Horizontal;
+        break;
 
-        case Qt::AnchorVerticalCenter:
-            orientation = Vertical;
-            break;
+    case Qt::AnchorVerticalCenter:
+        orientation = Vertical;
+        break;
 
-        default:
-            // Don't create center edges unless needed
-            return;
+    default:
+        // Don't create center edges unless needed
+        return;
     }
 
     // Check if vertex already exists
@@ -1662,17 +1662,17 @@ void QGraphicsAnchorLayoutPrivate::removeCenterAnchors(
 
     switch ( centerEdge )
     {
-        case Qt::AnchorHorizontalCenter:
-            orientation = Horizontal;
-            break;
+    case Qt::AnchorHorizontalCenter:
+        orientation = Horizontal;
+        break;
 
-        case Qt::AnchorVerticalCenter:
-            orientation = Vertical;
-            break;
+    case Qt::AnchorVerticalCenter:
+        orientation = Vertical;
+        break;
 
-        default:
-            // Don't remove edges that not the center ones
-            return;
+    default:
+        // Don't remove edges that not the center ones
+        return;
     }
 
     // Orientation code
@@ -2959,26 +2959,26 @@ void QGraphicsAnchorLayoutPrivate::identifyNonFloatItems_helper( const AnchorDat
 
     switch ( ad->type )
     {
-        case AnchorData::Normal:
-            if ( ad->item && ad->item != q )
-            {
-                nonFloatingItemsIdentifiedSoFar->insert( ad->item );
-            }
+    case AnchorData::Normal:
+        if ( ad->item && ad->item != q )
+        {
+            nonFloatingItemsIdentifiedSoFar->insert( ad->item );
+        }
 
-            break;
+        break;
 
-        case AnchorData::Sequential:
-            for ( const AnchorData *d : static_cast<const SequentialAnchorData *>( ad )->m_edges )
-            {
-                identifyNonFloatItems_helper( d, nonFloatingItemsIdentifiedSoFar );
-            }
+    case AnchorData::Sequential:
+        for ( const AnchorData *d : static_cast<const SequentialAnchorData *>( ad )->m_edges )
+        {
+            identifyNonFloatItems_helper( d, nonFloatingItemsIdentifiedSoFar );
+        }
 
-            break;
+        break;
 
-        case AnchorData::Parallel:
-            identifyNonFloatItems_helper( static_cast<const ParallelAnchorData *>( ad )->firstEdge, nonFloatingItemsIdentifiedSoFar );
-            identifyNonFloatItems_helper( static_cast<const ParallelAnchorData *>( ad )->secondEdge, nonFloatingItemsIdentifiedSoFar );
-            break;
+    case AnchorData::Parallel:
+        identifyNonFloatItems_helper( static_cast<const ParallelAnchorData *>( ad )->firstEdge, nonFloatingItemsIdentifiedSoFar );
+        identifyNonFloatItems_helper( static_cast<const ParallelAnchorData *>( ad )->secondEdge, nonFloatingItemsIdentifiedSoFar );
+        break;
     }
 }
 

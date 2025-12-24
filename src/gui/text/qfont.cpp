@@ -255,17 +255,17 @@ void QFontPrivate::alterCharForCapitalization( QChar &c ) const
 {
     switch ( capital )
     {
-        case QFont::AllUppercase:
-        case QFont::SmallCaps:
-            c = c.toUpper()[0];
-            break;
+    case QFont::AllUppercase:
+    case QFont::SmallCaps:
+        c = c.toUpper()[0];
+        break;
 
-        case QFont::AllLowercase:
-            c = c.toLower()[0];
-            break;
+    case QFont::AllLowercase:
+        c = c.toLower()[0];
+        break;
 
-        case QFont::MixedCase:
-            break;
+    case QFont::MixedCase:
+        break;
     }
 }
 

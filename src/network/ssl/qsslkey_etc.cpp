@@ -123,22 +123,22 @@ static QByteArray deriveKey( QSslKeyPrivate::Cipher cipher, const QByteArray &pa
 
     switch ( cipher )
     {
-        case QSslKeyPrivate::DesCbc:
-            key = hash.result().left( 8 );
-            break;
+    case QSslKeyPrivate::DesCbc:
+        key = hash.result().left( 8 );
+        break;
 
-        case QSslKeyPrivate::DesEde3Cbc:
-            key = hash.result();
-            hash.reset();
-            hash.addData( key );
-            hash.addData( passPhrase );
-            hash.addData( iv );
-            key += hash.result().left( 8 );
-            break;
+    case QSslKeyPrivate::DesEde3Cbc:
+        key = hash.result();
+        hash.reset();
+        hash.addData( key );
+        hash.addData( passPhrase );
+        hash.addData( iv );
+        key += hash.result().left( 8 );
+        break;
 
-        case QSslKeyPrivate::Rc2Cbc:
-            key = hash.result();
-            break;
+    case QSslKeyPrivate::Rc2Cbc:
+        key = hash.result();
+        break;
     }
 
     return key;

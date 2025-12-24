@@ -241,16 +241,16 @@ void CameraBinVideoEncoder::applySettings( GstElement *encoder )
         else
             switch ( m_actualVideoSettings.encodingMode() )
             {
-                case QMultimedia::ConstantBitRateEncoding:
-                    g_object_set( G_OBJECT( encoder ), "control-rate", 2, NULL );
-                    break;
+            case QMultimedia::ConstantBitRateEncoding:
+                g_object_set( G_OBJECT( encoder ), "control-rate", 2, NULL );
+                break;
 
-                case QMultimedia::AverageBitRateEncoding:
-                    g_object_set( G_OBJECT( encoder ), "control-rate", 1, NULL );
-                    break;
+            case QMultimedia::AverageBitRateEncoding:
+                g_object_set( G_OBJECT( encoder ), "control-rate", 1, NULL );
+                break;
 
-                default:
-                    g_object_set( G_OBJECT( encoder ), "control-rate", 0, NULL );
+            default:
+                g_object_set( G_OBJECT( encoder ), "control-rate", 0, NULL );
             }
     }
 }

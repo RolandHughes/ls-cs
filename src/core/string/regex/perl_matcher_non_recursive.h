@@ -496,46 +496,111 @@ bool perl_matcher<BidiIterator, Allocator, traits>::match_startmark()
 
     switch ( index )
     {
-        case 0:
-            pstate = pstate->next.p;
-            break;
+    case 0:
+        pstate = pstate->next.p;
+        break;
 
-        case -1:
-        case -2:
+    case -1:
+    case -2:
+    {
+        // forward lookahead assert:
+        const re_syntax_base *next_pstate = static_cast<const re_jump *>( pstate->next.p )->alt.p->next.p;
+        pstate = pstate->next.p->next.p;
+        push_assertion( next_pstate, index == -1 );
+        break;
+    }
+
+    case -3:
+    {
+        // independent sub-expression, currently this is always recursive:
+        bool old_independent = m_independent;
+        m_independent = true;
+        const re_syntax_base *next_pstate = static_cast<const re_jump *>( pstate->next.p )->alt.p->next.p;
+        pstate = pstate->next.p->next.p;
+
+        bool r = false;
+
+        try
         {
-            // forward lookahead assert:
-            const re_syntax_base *next_pstate = static_cast<const re_jump *>( pstate->next.p )->alt.p->next.p;
-            pstate = pstate->next.p->next.p;
-            push_assertion( next_pstate, index == -1 );
-            break;
+            r = match_all_states();
+
+            if ( !r && !m_independent )
+            {
+                // Must be unwinding from a COMMIT/SKIP/PRUNE and the independent
+                // sub failed, need to unwind everything else:
+                while ( unwind( false ) );
+
+                return false;
+            }
+
+        }
+        catch ( ... )
+        {
+            pstate = next_pstate;
+
+            // unwind all pushed states, apart from anything else this
+            // ensures that all the states are correctly destructed
+            // not just the memory freed.
+            while ( unwind( true ) ) {}
+
+            throw;
         }
 
-        case -3:
+        pstate = next_pstate;
+        m_independent = old_independent;
+
+        return r;
+    }
+
+    case -4:
+    {
+        // conditional expression:
+        const re_alt *alt = static_cast<const re_alt *>( pstate->next.p );
+        assert( alt->type == syntax_element_alt );
+        pstate = alt->next.p;
+
+        if ( pstate->type == syntax_element_assert_backref )
         {
-            // independent sub-expression, currently this is always recursive:
-            bool old_independent = m_independent;
-            m_independent = true;
+            if ( !match_assert_backref() )
+            {
+                pstate = alt->alt.p;
+            }
+
+            break;
+
+        }
+        else
+        {
+            // zero width assertion, have to match this recursively:
+            assert( pstate->type == syntax_element_startmark );
+            bool negated = static_cast<const re_brace *>( pstate )->index == -2;
+            BidiIterator saved_position = position;
             const re_syntax_base *next_pstate = static_cast<const re_jump *>( pstate->next.p )->alt.p->next.p;
             pstate = pstate->next.p->next.p;
-
-            bool r = false;
 
             try
             {
-                r = match_all_states();
+                bool r   = match_all_states();
+                position = saved_position;
 
-                if ( !r && !m_independent )
+                if ( negated )
                 {
-                    // Must be unwinding from a COMMIT/SKIP/PRUNE and the independent
-                    // sub failed, need to unwind everything else:
-                    while ( unwind( false ) );
+                    r = !r;
+                }
 
-                    return false;
+                if ( r )
+                {
+                    pstate = next_pstate;
+                }
+                else
+                {
+                    pstate = alt->alt.p;
                 }
 
             }
             catch ( ... )
             {
+
                 pstate = next_pstate;
 
                 // unwind all pushed states, apart from anything else this
@@ -546,96 +611,31 @@ bool perl_matcher<BidiIterator, Allocator, traits>::match_startmark()
                 throw;
             }
 
-            pstate = next_pstate;
-            m_independent = old_independent;
-
-            return r;
-        }
-
-        case -4:
-        {
-            // conditional expression:
-            const re_alt *alt = static_cast<const re_alt *>( pstate->next.p );
-            assert( alt->type == syntax_element_alt );
-            pstate = alt->next.p;
-
-            if ( pstate->type == syntax_element_assert_backref )
-            {
-                if ( !match_assert_backref() )
-                {
-                    pstate = alt->alt.p;
-                }
-
-                break;
-
-            }
-            else
-            {
-                // zero width assertion, have to match this recursively:
-                assert( pstate->type == syntax_element_startmark );
-                bool negated = static_cast<const re_brace *>( pstate )->index == -2;
-                BidiIterator saved_position = position;
-                const re_syntax_base *next_pstate = static_cast<const re_jump *>( pstate->next.p )->alt.p->next.p;
-                pstate = pstate->next.p->next.p;
-
-                try
-                {
-                    bool r   = match_all_states();
-                    position = saved_position;
-
-                    if ( negated )
-                    {
-                        r = !r;
-                    }
-
-                    if ( r )
-                    {
-                        pstate = next_pstate;
-                    }
-                    else
-                    {
-                        pstate = alt->alt.p;
-                    }
-
-                }
-                catch ( ... )
-                {
-
-                    pstate = next_pstate;
-
-                    // unwind all pushed states, apart from anything else this
-                    // ensures that all the states are correctly destructed
-                    // not just the memory freed.
-                    while ( unwind( true ) ) {}
-
-                    throw;
-                }
-
-                break;
-            }
-        }
-
-        case -5:
-        {
-            push_matched_paren( 0, ( *m_presult )[0] );
-            m_presult->set_first( position, 0, true );
-            pstate = pstate->next.p;
             break;
         }
+    }
 
-        default:
+    case -5:
+    {
+        push_matched_paren( 0, ( *m_presult )[0] );
+        m_presult->set_first( position, 0, true );
+        pstate = pstate->next.p;
+        break;
+    }
+
+    default:
+    {
+        assert( index > 0 );
+
+        if ( ( m_match_flags & match_nosubs ) == 0 )
         {
-            assert( index > 0 );
-
-            if ( ( m_match_flags & match_nosubs ) == 0 )
-            {
-                push_matched_paren( index, ( *m_presult )[index] );
-                m_presult->set_first( position, index );
-            }
-
-            pstate = pstate->next.p;
-            break;
+            push_matched_paren( index, ( *m_presult )[index] );
+            m_presult->set_first( position, index );
         }
+
+        pstate = pstate->next.p;
+        break;
+    }
     }
 
     return true;
@@ -1313,22 +1313,22 @@ bool perl_matcher<BidiIterator, Allocator, traits>::match_commit()
 
     switch ( static_cast<const re_commit *>( pstate )->action )
     {
-        case commit_commit:
-            restart = last;
-            break;
+    case commit_commit:
+        restart = last;
+        break;
 
-        case commit_skip:
-            if ( base != position )
-            {
-                restart = position;
-                // Have to decrement restart since it will get incremented again later:
-                --restart;
-            }
+    case commit_skip:
+        if ( base != position )
+        {
+            restart = position;
+            // Have to decrement restart since it will get incremented again later:
+            --restart;
+        }
 
-            break;
+        break;
 
-        case commit_prune:
-            break;
+    case commit_prune:
+        break;
     }
 
     saved_state *pmp = m_backup_state;

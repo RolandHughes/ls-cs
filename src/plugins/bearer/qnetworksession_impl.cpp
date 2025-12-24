@@ -89,32 +89,32 @@ void QNetworkSessionPrivateImpl::syncStateWithInterface()
     switch ( publicConfig.type() )
     {
 
-        case QNetworkConfiguration::InternetAccessPoint:
-            activeConfig = publicConfig;
-            engine = getEngineFromId( activeConfig.identifier() );
+    case QNetworkConfiguration::InternetAccessPoint:
+        activeConfig = publicConfig;
+        engine = getEngineFromId( activeConfig.identifier() );
 
-            if ( engine )
-            {
-                connect( engine, SIGNAL( configurationChanged( QNetworkConfigurationPrivatePointer ) ),
-                         this, SLOT( configurationChanged( QNetworkConfigurationPrivatePointer ) ), Qt::QueuedConnection );
+        if ( engine )
+        {
+            connect( engine, SIGNAL( configurationChanged( QNetworkConfigurationPrivatePointer ) ),
+                     this, SLOT( configurationChanged( QNetworkConfigurationPrivatePointer ) ), Qt::QueuedConnection );
 
-                connect( engine, SIGNAL( connectionError( QString,QBearerEngineImpl::ConnectionError ) ),
-                         this, SLOT( connectionError( QString,QBearerEngineImpl::ConnectionError ) ), Qt::QueuedConnection );
-            }
+            connect( engine, SIGNAL( connectionError( QString,QBearerEngineImpl::ConnectionError ) ),
+                     this, SLOT( connectionError( QString,QBearerEngineImpl::ConnectionError ) ), Qt::QueuedConnection );
+        }
 
-            break;
+        break;
 
-        case QNetworkConfiguration::ServiceNetwork:
-            serviceConfig = publicConfig;
-            // Defer setting engine and signals until open().
-            [[fallthrough]];
+    case QNetworkConfiguration::ServiceNetwork:
+        serviceConfig = publicConfig;
+        // Defer setting engine and signals until open().
+        [[fallthrough]];
 
-        case QNetworkConfiguration::UserChoice:
-            // Defer setting serviceConfig and activeConfig until open().
-            [[fallthrough]];
+    case QNetworkConfiguration::UserChoice:
+        // Defer setting serviceConfig and activeConfig until open().
+        [[fallthrough]];
 
-        default:
-            engine = nullptr;
+    default:
+        engine = nullptr;
     }
 
     networkConfigurationsChanged();
@@ -278,23 +278,23 @@ QString QNetworkSessionPrivateImpl::errorString() const
 {
     switch ( lastError )
     {
-        case QNetworkSession::UnknownSessionError:
-            return tr( "Unknown session error." );
+    case QNetworkSession::UnknownSessionError:
+        return tr( "Unknown session error." );
 
-        case QNetworkSession::SessionAbortedError:
-            return tr( "Session was aborted by the user or system." );
+    case QNetworkSession::SessionAbortedError:
+        return tr( "Session was aborted by the user or system." );
 
-        case QNetworkSession::OperationNotSupportedError:
-            return tr( "Requested operation is not supported by the system." );
+    case QNetworkSession::OperationNotSupportedError:
+        return tr( "Requested operation is not supported by the system." );
 
-        case QNetworkSession::InvalidConfigurationError:
-            return tr( "Specified configuration can not be used." );
+    case QNetworkSession::InvalidConfigurationError:
+        return tr( "Specified configuration can not be used." );
 
-        case QNetworkSession::RoamingError:
-            return tr( "Roaming was aborted or is not possible." );
+    case QNetworkSession::RoamingError:
+        return tr( "Roaming was aborted or is not possible." );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QString();
@@ -470,16 +470,16 @@ void QNetworkSessionPrivateImpl::connectionError( const QString &id, QBearerEngi
 
         switch ( error )
         {
-            case QBearerEngineImpl::OperationNotSupported:
-                lastError = QNetworkSession::OperationNotSupportedError;
-                opened = false;
-                break;
+        case QBearerEngineImpl::OperationNotSupported:
+            lastError = QNetworkSession::OperationNotSupportedError;
+            opened = false;
+            break;
 
-            case QBearerEngineImpl::InterfaceLookupError:
-            case QBearerEngineImpl::ConnectError:
-            case QBearerEngineImpl::DisconnectionError:
-            default:
-                lastError = QNetworkSession::UnknownSessionError;
+        case QBearerEngineImpl::InterfaceLookupError:
+        case QBearerEngineImpl::ConnectError:
+        case QBearerEngineImpl::DisconnectionError:
+        default:
+            lastError = QNetworkSession::UnknownSessionError;
         }
 
         emit QNetworkSessionPrivate::error( lastError );

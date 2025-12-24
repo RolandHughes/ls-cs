@@ -33,26 +33,26 @@ Q_GUI_EXPORT qreal lscs_pointMultiplier( QPageLayout::Unit unit )
 {
     switch ( unit )
     {
-        case QPageSize::Unit::Millimeter:
-            return 2.83464566929;
+    case QPageSize::Unit::Millimeter:
+        return 2.83464566929;
 
-        case QPageSize::Unit::Point:
-            return 1.0;
+    case QPageSize::Unit::Point:
+        return 1.0;
 
-        case QPageSize::Unit::Inch:
-            return 72.0;
+    case QPageSize::Unit::Inch:
+        return 72.0;
 
-        case QPageSize::Unit::Pica:
-            return 12;
+    case QPageSize::Unit::Pica:
+        return 12;
 
-        case QPageSize::Unit::Didot:
-            return 1.065826771;
+    case QPageSize::Unit::Didot:
+        return 1.065826771;
 
-        case QPageSize::Unit::Cicero:
-            return 12.789921252;
+    case QPageSize::Unit::Cicero:
+        return 12.789921252;
 
-        default:
-            return 1.0;
+    default:
+        return 1.0;
     }
 }
 
@@ -592,33 +592,33 @@ QDebug operator<<( QDebug dbg, const QPageLayout &layout )
 
         switch ( layout.units() )
         {
-            case QPageSize::Unit::Millimeter:
-                dbg << "mm";
-                break;
+        case QPageSize::Unit::Millimeter:
+            dbg << "mm";
+            break;
 
-            case QPageSize::Unit::Point:
-                dbg << "pt";
-                break;
+        case QPageSize::Unit::Point:
+            dbg << "pt";
+            break;
 
-            case QPageSize::Unit::Inch:
-                dbg << "in";
-                break;
+        case QPageSize::Unit::Inch:
+            dbg << "in";
+            break;
 
-            case QPageSize::Unit::Pica:
-                dbg << "pc";
-                break;
+        case QPageSize::Unit::Pica:
+            dbg << "pc";
+            break;
 
-            case QPageSize::Unit::Didot:
-                dbg << "DD";
-                break;
+        case QPageSize::Unit::Didot:
+            dbg << "DD";
+            break;
 
-            case QPageSize::Unit::Cicero:
-                dbg << "CC";
-                break;
+        case QPageSize::Unit::Cicero:
+            dbg << "CC";
+            break;
 
-            default:
-                dbg << "Unknown";
-                break;
+        default:
+            dbg << "Unknown";
+            break;
         }
     }
 

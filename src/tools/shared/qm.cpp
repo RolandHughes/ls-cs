@@ -258,18 +258,18 @@ void Releaser::writeMessage( const ByteTranslatorMessage &msg, QDataStream &stre
     // lrelease produces an invalid qm file for QByteArrays which are null
     switch ( prefix )
     {
-        default:
-        case TranslatorPrefix::HashContextSourceTextComment:
-            stream << quint8( TranslatorTag::Comment ) << msg.comment();
-            [[fallthrough]];
+    default:
+    case TranslatorPrefix::HashContextSourceTextComment:
+        stream << quint8( TranslatorTag::Comment ) << msg.comment();
+        [[fallthrough]];
 
-        case TranslatorPrefix::HashContextSourceText:
-            stream << quint8( TranslatorTag::SourceText ) << msg.sourceText();
-            [[fallthrough]];
+    case TranslatorPrefix::HashContextSourceText:
+        stream << quint8( TranslatorTag::SourceText ) << msg.sourceText();
+        [[fallthrough]];
 
-        case TranslatorPrefix::HashContext:
-            stream << quint8( TranslatorTag::Context ) << msg.context();
-            break;
+    case TranslatorPrefix::HashContext:
+        stream << quint8( TranslatorTag::Context ) << msg.context();
+        break;
     }
 
     stream << quint8( TranslatorTag::End );
@@ -327,13 +327,13 @@ bool Releaser::save( QIODevice *iod )
 
             switch ( which )
             {
-                case 0:
-                    s << static_cast<quint8>( std::get<CountGuide>( item ) );
-                    break;
+            case 0:
+                s << static_cast<quint8>( std::get<CountGuide>( item ) );
+                break;
 
-                case 1:
-                    s << static_cast<quint8>( std::get<int>( item ) );
-                    break;
+            case 1:
+                s << static_cast<quint8>( std::get<int>( item ) );
+                break;
             }
         }
     }
@@ -683,87 +683,87 @@ bool loadQM( Translator &translator, QIODevice &dev, ConversionData &cd )
 
             switch ( tag )
             {
-                case TranslatorTag::End:
-                    done = true;
-                    break;
+            case TranslatorTag::End:
+                done = true;
+                break;
 
-                case TranslatorTag::Obsolete1:
-                    m += 4;
-                    break;
+            case TranslatorTag::Obsolete1:
+                m += 4;
+                break;
 
-                case TranslatorTag::Translation:
+            case TranslatorTag::Translation:
+            {
+                quint32 len = read32( m );
+                m += 4;
+
+                if ( len == 0xffffffff )
                 {
-                    quint32 len = read32( m );
-                    m += 4;
-
-                    if ( len == 0xffffffff )
-                    {
-                        // indicates QByteArray was null
-                        len = 0;
-                    }
-
-                    QString str = QString::fromUtf8( ( const char * )m, len );
-                    translations << str;
-
-                    m += len;
-
-                    break;
+                    // indicates QByteArray was null
+                    len = 0;
                 }
 
-                case TranslatorTag::SourceText:
+                QString str = QString::fromUtf8( ( const char * )m, len );
+                translations << str;
+
+                m += len;
+
+                break;
+            }
+
+            case TranslatorTag::SourceText:
+            {
+                quint32 len = read32( m );
+                m += 4;
+
+                if ( len == 0xffffffff )
                 {
-                    quint32 len = read32( m );
-                    m += 4;
-
-                    if ( len == 0xffffffff )
-                    {
-                        // indicates QByteArray was null
-                        len = 0;
-                    }
-
-                    fromBytes( ( const char * )m, len, &sourcetext, &utf8Fail );
-
-                    m += len;
-                    break;
+                    // indicates QByteArray was null
+                    len = 0;
                 }
 
-                case TranslatorTag::Context:
+                fromBytes( ( const char * )m, len, &sourcetext, &utf8Fail );
+
+                m += len;
+                break;
+            }
+
+            case TranslatorTag::Context:
+            {
+                quint32 len = read32( m );
+                m += 4;
+
+                if ( len == 0xffffffff )
                 {
-                    quint32 len = read32( m );
-                    m += 4;
-
-                    if ( len == 0xffffffff )
-                    {
-                        // indicates QByteArray was null
-                        len = 0;
-                    }
-
-                    fromBytes( ( const char * )m, len, &context, &utf8Fail );
-
-                    m += len;
-                    break;
+                    // indicates QByteArray was null
+                    len = 0;
                 }
 
-                case TranslatorTag::Comment:
+                fromBytes( ( const char * )m, len, &context, &utf8Fail );
+
+                m += len;
+                break;
+            }
+
+            case TranslatorTag::Comment:
+            {
+                quint32 len = read32( m );
+                m += 4;
+
+                if ( len == 0xffffffff )
                 {
-                    quint32 len = read32( m );
-                    m += 4;
-
-                    if ( len == 0xffffffff )
-                    {
-                        // indicates QByteArray was null
-                        len = 0;
-                    }
-
-                    fromBytes( ( const char * )m, len, &comment, &utf8Fail );
-
-                    m += len;
-                    break;
+                    // indicates QByteArray was null
+                    len = 0;
                 }
 
-                default:
-                    // "unknown tag"
-                    break;
+                fromBytes( ( const char * )m, len, &comment, &utf8Fail );
+
+                m += len;
+                break;
+            }
+
+            default:
+                // "unknown tag"
+                break;
             }
         }
 

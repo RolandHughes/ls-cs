@@ -190,32 +190,32 @@ void QAbstractItemViewPrivate::_q_scrollerStateChanged()
     {
         switch ( scroller->state() )
         {
-            case QScroller::Pressed:
+        case QScroller::Pressed:
 
-                // store the current selection in case we start scrolling
-                if ( q->selectionModel() )
-                {
-                    oldSelection = q->selectionModel()->selection();
-                    oldCurrent = q->selectionModel()->currentIndex();
-                }
+            // store the current selection in case we start scrolling
+            if ( q->selectionModel() )
+            {
+                oldSelection = q->selectionModel()->selection();
+                oldCurrent = q->selectionModel()->currentIndex();
+            }
 
-                break;
+            break;
 
-            case QScroller::Dragging:
+        case QScroller::Dragging:
 
-                // restore the old selection if we really start scrolling
-                if ( q->selectionModel() )
-                {
-                    q->selectionModel()->select( oldSelection, QItemSelectionModel::ClearAndSelect );
-                    q->selectionModel()->setCurrentIndex( oldCurrent, QItemSelectionModel::NoUpdate );
-                }
+            // restore the old selection if we really start scrolling
+            if ( q->selectionModel() )
+            {
+                q->selectionModel()->select( oldSelection, QItemSelectionModel::ClearAndSelect );
+                q->selectionModel()->setCurrentIndex( oldCurrent, QItemSelectionModel::NoUpdate );
+            }
 
-                [[fallthrough]];
+            [[fallthrough]];
 
-            default:
-                oldSelection = QItemSelection();
-                oldCurrent = QModelIndex();
-                break;
+        default:
+            oldSelection = QItemSelection();
+            oldCurrent = QModelIndex();
+            break;
         }
     }
 }
@@ -923,51 +923,51 @@ bool QAbstractItemView::event( QEvent *event )
     switch ( event->type() )
     {
 
-        case QEvent::Paint:
-            //we call this here because the scrollbars' visibility might be altered
-            //so this can't be done in the paintEvent method
-            d->executePostedLayout(); //make sure we set the layout properly
-            break;
+    case QEvent::Paint:
+        //we call this here because the scrollbars' visibility might be altered
+        //so this can't be done in the paintEvent method
+        d->executePostedLayout(); //make sure we set the layout properly
+        break;
 
-        case QEvent::Show:
-            d->executePostedLayout();    //make sure we set the layout properly
+    case QEvent::Show:
+        d->executePostedLayout();    //make sure we set the layout properly
 
-            if ( d->shouldScrollToCurrentOnShow )
+        if ( d->shouldScrollToCurrentOnShow )
+        {
+            d->shouldScrollToCurrentOnShow = false;
+            const QModelIndex current = currentIndex();
+
+            if ( current.isValid() && ( d->state == QAbstractItemView::EditingState || d->autoScroll ) )
             {
-                d->shouldScrollToCurrentOnShow = false;
-                const QModelIndex current = currentIndex();
-
-                if ( current.isValid() && ( d->state == QAbstractItemView::EditingState || d->autoScroll ) )
-                {
-                    scrollTo( current );
-                }
+                scrollTo( current );
             }
+        }
 
-            break;
+        break;
 
-        case QEvent::LocaleChange:
-            viewport()->update();
-            break;
+    case QEvent::LocaleChange:
+        viewport()->update();
+        break;
 
-        case QEvent::LayoutDirectionChange:
-        case QEvent::ApplicationLayoutDirectionChange:
-            updateGeometries();
-            break;
+    case QEvent::LayoutDirectionChange:
+    case QEvent::ApplicationLayoutDirectionChange:
+        updateGeometries();
+        break;
 
-        case QEvent::StyleChange:
-            doItemsLayout();
-            break;
+    case QEvent::StyleChange:
+        doItemsLayout();
+        break;
 
-        case QEvent::FocusOut:
-            d->checkPersistentEditorFocus();
-            break;
+    case QEvent::FocusOut:
+        d->checkPersistentEditorFocus();
+        break;
 
-        case QEvent::FontChange:
-            d->doDelayedItemsLayout(); // the size of the items will change
-            break;
+    case QEvent::FontChange:
+        d->doDelayedItemsLayout(); // the size of the items will change
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QAbstractScrollArea::event( event );
@@ -980,77 +980,77 @@ bool QAbstractItemView::viewportEvent( QEvent *event )
     switch ( event->type() )
     {
 
-        case QEvent::HoverMove:
-        case QEvent::HoverEnter:
-            d->setHoverIndex( indexAt( static_cast<QHoverEvent *>( event )->pos() ) );
-            break;
+    case QEvent::HoverMove:
+    case QEvent::HoverEnter:
+        d->setHoverIndex( indexAt( static_cast<QHoverEvent *>( event )->pos() ) );
+        break;
 
-        case QEvent::HoverLeave:
-            d->setHoverIndex( QModelIndex() );
-            break;
+    case QEvent::HoverLeave:
+        d->setHoverIndex( QModelIndex() );
+        break;
 
-        case QEvent::Enter:
-            d->viewportEnteredNeeded = true;
-            break;
+    case QEvent::Enter:
+        d->viewportEnteredNeeded = true;
+        break;
 
-        case QEvent::Leave:
+    case QEvent::Leave:
 
 #ifndef LSCS_NO_STATUSTIP
-            if ( d->shouldClearStatusTip && this->parent() )
-            {
-                QString empty;
-                QStatusTipEvent tip( empty );
-                QApplication::sendEvent( this->parent(), &tip );
-                d->shouldClearStatusTip = false;
-            }
-
-#endif
-            d->enteredIndex = QModelIndex();
-            break;
-
-        case QEvent::ToolTip:
-        case QEvent::QueryWhatsThis:
-        case QEvent::WhatsThis:
+        if ( d->shouldClearStatusTip && this->parent() )
         {
-            QHelpEvent *he = static_cast<QHelpEvent *>( event );
-            const QModelIndex index = indexAt( he->pos() );
-
-            QStyleOptionViewItem option = d->viewOptions();
-            option.rect = visualRect( index );
-            option.state |= ( index == currentIndex() ? QStyle::State_HasFocus : QStyle::State_None );
-
-
-            QAbstractItemDelegate *delegate = d->delegateForIndex( index );
-
-            if ( !delegate )
-            {
-                return false;
-            }
-
-            return delegate->helpEvent( he, this, option, index );
+            QString empty;
+            QStatusTipEvent tip( empty );
+            QApplication::sendEvent( this->parent(), &tip );
+            d->shouldClearStatusTip = false;
         }
 
+#endif
+        d->enteredIndex = QModelIndex();
+        break;
 
-        case QEvent::FontChange:
-            d->doDelayedItemsLayout();    // the size of the items will change
-            break;
+    case QEvent::ToolTip:
+    case QEvent::QueryWhatsThis:
+    case QEvent::WhatsThis:
+    {
+        QHelpEvent *he = static_cast<QHelpEvent *>( event );
+        const QModelIndex index = indexAt( he->pos() );
 
-        case QEvent::WindowActivate:
-        case QEvent::WindowDeactivate:
-            d->viewport->update();
-            break;
+        QStyleOptionViewItem option = d->viewOptions();
+        option.rect = visualRect( index );
+        option.state |= ( index == currentIndex() ? QStyle::State_HasFocus : QStyle::State_None );
 
-        case QEvent::ScrollPrepare:
-            executeDelayedItemsLayout();
+
+        QAbstractItemDelegate *delegate = d->delegateForIndex( index );
+
+        if ( !delegate )
+        {
+            return false;
+        }
+
+        return delegate->helpEvent( he, this, option, index );
+    }
+
+
+    case QEvent::FontChange:
+        d->doDelayedItemsLayout();    // the size of the items will change
+        break;
+
+    case QEvent::WindowActivate:
+    case QEvent::WindowDeactivate:
+        d->viewport->update();
+        break;
+
+    case QEvent::ScrollPrepare:
+        executeDelayedItemsLayout();
 
 #ifndef LSCS_NO_GESTURES
-            connect( QScroller::scroller( d->viewport ), &QScroller::stateChanged, this,
-                     &QAbstractItemView::_q_scrollerStateChanged, Qt::UniqueConnection );
+        connect( QScroller::scroller( d->viewport ), &QScroller::stateChanged, this,
+                 &QAbstractItemView::_q_scrollerStateChanged, Qt::UniqueConnection );
 #endif
-            break;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QAbstractScrollArea::viewportEvent( event );
@@ -1366,54 +1366,54 @@ void QAbstractItemView::dragMoveEvent( QDragMoveEvent *event )
 
             switch ( d->dropIndicatorPosition )
             {
-                case AboveItem:
-                    if ( d->isIndexDropEnabled( index.parent() ) )
-                    {
-                        d->dropIndicatorRect = QRect( rect.left(), rect.top(), rect.width(), 0 );
-                        event->acceptProposedAction();
-                    }
-                    else
-                    {
-                        d->dropIndicatorRect = QRect();
-                    }
-
-                    break;
-
-                case BelowItem:
-                    if ( d->isIndexDropEnabled( index.parent() ) )
-                    {
-                        d->dropIndicatorRect = QRect( rect.left(), rect.bottom(), rect.width(), 0 );
-                        event->acceptProposedAction();
-                    }
-                    else
-                    {
-                        d->dropIndicatorRect = QRect();
-                    }
-
-                    break;
-
-                case OnItem:
-                    if ( d->isIndexDropEnabled( index ) )
-                    {
-                        d->dropIndicatorRect = rect;
-                        event->acceptProposedAction();
-                    }
-                    else
-                    {
-                        d->dropIndicatorRect = QRect();
-                    }
-
-                    break;
-
-                case OnViewport:
+            case AboveItem:
+                if ( d->isIndexDropEnabled( index.parent() ) )
+                {
+                    d->dropIndicatorRect = QRect( rect.left(), rect.top(), rect.width(), 0 );
+                    event->acceptProposedAction();
+                }
+                else
+                {
                     d->dropIndicatorRect = QRect();
+                }
 
-                    if ( d->isIndexDropEnabled( rootIndex() ) )
-                    {
-                        event->acceptProposedAction(); // allow dropping in empty areas
-                    }
+                break;
 
-                    break;
+            case BelowItem:
+                if ( d->isIndexDropEnabled( index.parent() ) )
+                {
+                    d->dropIndicatorRect = QRect( rect.left(), rect.bottom(), rect.width(), 0 );
+                    event->acceptProposedAction();
+                }
+                else
+                {
+                    d->dropIndicatorRect = QRect();
+                }
+
+                break;
+
+            case OnItem:
+                if ( d->isIndexDropEnabled( index ) )
+                {
+                    d->dropIndicatorRect = rect;
+                    event->acceptProposedAction();
+                }
+                else
+                {
+                    d->dropIndicatorRect = QRect();
+                }
+
+                break;
+
+            case OnViewport:
+                d->dropIndicatorRect = QRect();
+
+                if ( d->isIndexDropEnabled( rootIndex() ) )
+                {
+                    event->acceptProposedAction(); // allow dropping in empty areas
+                }
+
+                break;
             }
 
         }
@@ -1551,21 +1551,21 @@ bool QAbstractItemViewPrivate::dropOn( QDropEvent *event, int *dropRow, int *dro
 
             switch ( dropIndicatorPosition )
             {
-                case QAbstractItemView::AboveItem:
-                    row = index.row();
-                    col = index.column();
-                    index = index.parent();
-                    break;
+            case QAbstractItemView::AboveItem:
+                row = index.row();
+                col = index.column();
+                index = index.parent();
+                break;
 
-                case QAbstractItemView::BelowItem:
-                    row = index.row() + 1;
-                    col = index.column();
-                    index = index.parent();
-                    break;
+            case QAbstractItemView::BelowItem:
+                row = index.row() + 1;
+                col = index.column();
+                index = index.parent();
+                break;
 
-                case QAbstractItemView::OnItem:
-                case QAbstractItemView::OnViewport:
-                    break;
+            case QAbstractItemView::OnItem:
+            case QAbstractItemView::OnViewport:
+                break;
             }
 
         }
@@ -1692,64 +1692,64 @@ void QAbstractItemView::keyPressEvent( QKeyEvent *event )
 
     switch ( event->key() )
     {
-        case Qt::Key_Select:
-            if ( QApplication::keypadNavigationEnabled() )
+    case Qt::Key_Select:
+        if ( QApplication::keypadNavigationEnabled() )
+        {
+            if ( !hasEditFocus() )
             {
-                if ( !hasEditFocus() )
-                {
-                    setEditFocus( true );
-                    return;
-                }
+                setEditFocus( true );
+                return;
             }
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Back:
-            if ( QApplication::keypadNavigationEnabled() && hasEditFocus() )
-            {
-                setEditFocus( false );
-            }
-            else
-            {
-                event->ignore();
-            }
+    case Qt::Key_Back:
+        if ( QApplication::keypadNavigationEnabled() && hasEditFocus() )
+        {
+            setEditFocus( false );
+        }
+        else
+        {
+            event->ignore();
+        }
 
+        return;
+
+    case Qt::Key_Down:
+    case Qt::Key_Up:
+
+        // Let's ignore vertical navigation events, only if there is no other widget
+        // what can take the focus in vertical direction. This means widget can handle navigation events
+        // even the widget don't have edit focus, and there is no other widget in requested direction.
+        if ( QApplication::keypadNavigationEnabled() && !hasEditFocus()
+                && QWidgetPrivate::canKeypadNavigate( Qt::Vertical ) )
+        {
+            event->ignore();
             return;
+        }
 
-        case Qt::Key_Down:
-        case Qt::Key_Up:
+        break;
 
-            // Let's ignore vertical navigation events, only if there is no other widget
-            // what can take the focus in vertical direction. This means widget can handle navigation events
-            // even the widget don't have edit focus, and there is no other widget in requested direction.
-            if ( QApplication::keypadNavigationEnabled() && !hasEditFocus()
-                    && QWidgetPrivate::canKeypadNavigate( Qt::Vertical ) )
-            {
-                event->ignore();
-                return;
-            }
+    case Qt::Key_Left:
+    case Qt::Key_Right:
 
-            break;
+        // Similar logic as in up and down events
+        if ( QApplication::keypadNavigationEnabled() && !hasEditFocus()
+                && ( QWidgetPrivate::canKeypadNavigate( Qt::Horizontal ) || QWidgetPrivate::inTabWidget( this ) ) )
+        {
+            event->ignore();
+            return;
+        }
 
-        case Qt::Key_Left:
-        case Qt::Key_Right:
+        break;
 
-            // Similar logic as in up and down events
-            if ( QApplication::keypadNavigationEnabled() && !hasEditFocus()
-                    && ( QWidgetPrivate::canKeypadNavigate( Qt::Horizontal ) || QWidgetPrivate::inTabWidget( this ) ) )
-            {
-                event->ignore();
-                return;
-            }
-
-            break;
-
-        default:
-            if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
-            {
-                event->ignore();
-                return;
-            }
+    default:
+        if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
+        {
+            event->ignore();
+            return;
+        }
     }
 
 #endif
@@ -1780,53 +1780,53 @@ void QAbstractItemView::keyPressEvent( QKeyEvent *event )
 
     switch ( event->key() )
     {
-        case Qt::Key_Down:
-            newCurrent = moveCursor( MoveDown, event->modifiers() );
-            break;
+    case Qt::Key_Down:
+        newCurrent = moveCursor( MoveDown, event->modifiers() );
+        break;
 
-        case Qt::Key_Up:
-            newCurrent = moveCursor( MoveUp, event->modifiers() );
-            break;
+    case Qt::Key_Up:
+        newCurrent = moveCursor( MoveUp, event->modifiers() );
+        break;
 
-        case Qt::Key_Left:
-            newCurrent = moveCursor( MoveLeft, event->modifiers() );
-            break;
+    case Qt::Key_Left:
+        newCurrent = moveCursor( MoveLeft, event->modifiers() );
+        break;
 
-        case Qt::Key_Right:
-            newCurrent = moveCursor( MoveRight, event->modifiers() );
-            break;
+    case Qt::Key_Right:
+        newCurrent = moveCursor( MoveRight, event->modifiers() );
+        break;
 
-        case Qt::Key_Home:
-            newCurrent = moveCursor( MoveHome, event->modifiers() );
-            break;
+    case Qt::Key_Home:
+        newCurrent = moveCursor( MoveHome, event->modifiers() );
+        break;
 
-        case Qt::Key_End:
-            newCurrent = moveCursor( MoveEnd, event->modifiers() );
-            break;
+    case Qt::Key_End:
+        newCurrent = moveCursor( MoveEnd, event->modifiers() );
+        break;
 
-        case Qt::Key_PageUp:
-            newCurrent = moveCursor( MovePageUp, event->modifiers() );
-            break;
+    case Qt::Key_PageUp:
+        newCurrent = moveCursor( MovePageUp, event->modifiers() );
+        break;
 
-        case Qt::Key_PageDown:
-            newCurrent = moveCursor( MovePageDown, event->modifiers() );
-            break;
+    case Qt::Key_PageDown:
+        newCurrent = moveCursor( MovePageDown, event->modifiers() );
+        break;
 
-        case Qt::Key_Tab:
-            if ( d->tabKeyNavigation )
-            {
-                newCurrent = moveCursor( MoveNext, event->modifiers() );
-            }
+    case Qt::Key_Tab:
+        if ( d->tabKeyNavigation )
+        {
+            newCurrent = moveCursor( MoveNext, event->modifiers() );
+        }
 
-            break;
+        break;
 
-        case Qt::Key_Backtab:
-            if ( d->tabKeyNavigation )
-            {
-                newCurrent = moveCursor( MovePrevious, event->modifiers() );
-            }
+    case Qt::Key_Backtab:
+        if ( d->tabKeyNavigation )
+        {
+            newCurrent = moveCursor( MovePrevious, event->modifiers() );
+        }
 
-            break;
+        break;
     }
 
     QPersistentModelIndex oldCurrent = currentIndex();
@@ -1877,149 +1877,149 @@ void QAbstractItemView::keyPressEvent( QKeyEvent *event )
 
     switch ( event->key() )
     {
-        // ignored keys
-        case Qt::Key_Down:
-        case Qt::Key_Up:
+    // ignored keys
+    case Qt::Key_Down:
+    case Qt::Key_Up:
 
 #ifdef LSCS_KEYPAD_NAVIGATION
-            if ( QApplication::keypadNavigationEnabled() && QWidgetPrivate::canKeypadNavigate( Qt::Vertical ) )
-            {
-                event->accept(); // don't change focus
-                break;
-            }
+        if ( QApplication::keypadNavigationEnabled() && QWidgetPrivate::canKeypadNavigate( Qt::Vertical ) )
+        {
+            event->accept(); // don't change focus
+            break;
+        }
 
 #endif
-            [[fallthrough]];
+        [[fallthrough]];
 
-        case Qt::Key_Left:
-        case Qt::Key_Right:
+    case Qt::Key_Left:
+    case Qt::Key_Right:
 
 #ifdef LSCS_KEYPAD_NAVIGATION
-            if ( QApplication::navigationMode() == Qt::NavigationModeKeypadDirectional
-                    && ( QWidgetPrivate::canKeypadNavigate( Qt::Horizontal )
-                         || ( QWidgetPrivate::inTabWidget( this ) && d->model->columnCount( d->root ) > 1 ) ) )
-            {
-                event->accept(); // don't change focus
-                break;
-            }
+        if ( QApplication::navigationMode() == Qt::NavigationModeKeypadDirectional
+                && ( QWidgetPrivate::canKeypadNavigate( Qt::Horizontal )
+                     || ( QWidgetPrivate::inTabWidget( this ) && d->model->columnCount( d->root ) > 1 ) ) )
+        {
+            event->accept(); // don't change focus
+            break;
+        }
 
 #endif
-            [[fallthrough]];
+        [[fallthrough]];
 
-        case Qt::Key_Home:
-        case Qt::Key_End:
-        case Qt::Key_PageUp:
-        case Qt::Key_PageDown:
-        case Qt::Key_Escape:
-        case Qt::Key_Shift:
-        case Qt::Key_Control:
-        case Qt::Key_Delete:
-        case Qt::Key_Backspace:
-            event->ignore();
-            break;
+    case Qt::Key_Home:
+    case Qt::Key_End:
+    case Qt::Key_PageUp:
+    case Qt::Key_PageDown:
+    case Qt::Key_Escape:
+    case Qt::Key_Shift:
+    case Qt::Key_Control:
+    case Qt::Key_Delete:
+    case Qt::Key_Backspace:
+        event->ignore();
+        break;
 
-        case Qt::Key_Space:
-        case Qt::Key_Select:
-            if ( !edit( currentIndex(), AnyKeyPressed, event ) && d->selectionModel )
-            {
-                d->selectionModel->select( currentIndex(), selectionCommand( currentIndex(), event ) );
-            }
+    case Qt::Key_Space:
+    case Qt::Key_Select:
+        if ( !edit( currentIndex(), AnyKeyPressed, event ) && d->selectionModel )
+        {
+            d->selectionModel->select( currentIndex(), selectionCommand( currentIndex(), event ) );
+        }
 
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-            if ( event->key() == Qt::Key_Select )
+        if ( event->key() == Qt::Key_Select )
+        {
+            // Also do Key_Enter action.
+            if ( currentIndex().isValid() )
             {
-                // Also do Key_Enter action.
-                if ( currentIndex().isValid() )
-                {
-                    if ( state() != EditingState )
-                    {
-                        emit activated( currentIndex() );
-                    }
-                }
-                else
-                {
-                    event->ignore();
-                }
-            }
-
-#endif
-            break;
-
-#ifdef Q_OS_DARWIN
-
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-
-            // Propagate the enter if you couldn't edit the item and there are no
-            // current editors (if there are editors, the event was most likely propagated from it).
-            if ( !edit( currentIndex(), EditKeyPressed, event ) && d->editorIndexHash.isEmpty() )
-            {
-                event->ignore();
-            }
-
-            break;
-#else
-
-        case Qt::Key_F2:
-            if ( !edit( currentIndex(), EditKeyPressed, event ) )
-            {
-                event->ignore();
-            }
-
-            break;
-
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-
-            // ### we can't open the editor on enter, becuse
-            // some widgets will forward the enter event back
-            // to the viewport, starting an endless loop
-            if ( state() != EditingState || hasFocus() )
-            {
-                if ( currentIndex().isValid() )
+                if ( state() != EditingState )
                 {
                     emit activated( currentIndex() );
                 }
-
-                event->ignore();
-            }
-
-            break;
-#endif
-
-        default:
-        {
-            if ( event == QKeySequence::SelectAll && selectionMode() != NoSelection )
-            {
-                selectAll();
-                break;
-            }
-
-#ifdef Q_OS_DARWIN
-
-            if ( event->key() == Qt::Key_O && event->modifiers() & Qt::ControlModifier && currentIndex().isValid() )
-            {
-                emit activated( currentIndex() );
-                break;
-            }
-
-#endif
-
-            bool modified = ( event->modifiers() & ( Qt::ControlModifier | Qt::AltModifier | Qt::MetaModifier ) );
-
-            if ( !event->text().isEmpty() && !modified && !edit( currentIndex(), AnyKeyPressed, event ) )
-            {
-                keyboardSearch( event->text() );
-                event->accept();
             }
             else
             {
                 event->ignore();
             }
+        }
 
+#endif
+        break;
+
+#ifdef Q_OS_DARWIN
+
+    case Qt::Key_Enter:
+    case Qt::Key_Return:
+
+        // Propagate the enter if you couldn't edit the item and there are no
+        // current editors (if there are editors, the event was most likely propagated from it).
+        if ( !edit( currentIndex(), EditKeyPressed, event ) && d->editorIndexHash.isEmpty() )
+        {
+            event->ignore();
+        }
+
+        break;
+#else
+
+    case Qt::Key_F2:
+        if ( !edit( currentIndex(), EditKeyPressed, event ) )
+        {
+            event->ignore();
+        }
+
+        break;
+
+    case Qt::Key_Enter:
+    case Qt::Key_Return:
+
+        // ### we can't open the editor on enter, becuse
+        // some widgets will forward the enter event back
+        // to the viewport, starting an endless loop
+        if ( state() != EditingState || hasFocus() )
+        {
+            if ( currentIndex().isValid() )
+            {
+                emit activated( currentIndex() );
+            }
+
+            event->ignore();
+        }
+
+        break;
+#endif
+
+    default:
+    {
+        if ( event == QKeySequence::SelectAll && selectionMode() != NoSelection )
+        {
+            selectAll();
             break;
         }
+
+#ifdef Q_OS_DARWIN
+
+        if ( event->key() == Qt::Key_O && event->modifiers() & Qt::ControlModifier && currentIndex().isValid() )
+        {
+            emit activated( currentIndex() );
+            break;
+        }
+
+#endif
+
+        bool modified = ( event->modifiers() & ( Qt::ControlModifier | Qt::AltModifier | Qt::MetaModifier ) );
+
+        if ( !event->text().isEmpty() && !modified && !edit( currentIndex(), AnyKeyPressed, event ) )
+        {
+            keyboardSearch( event->text() );
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+
+        break;
+    }
     }
 
     if ( d->moveCursorUpdatedView )
@@ -2404,56 +2404,56 @@ void QAbstractItemView::closeEditor( QWidget *editor, QAbstractItemDelegate::End
 
     switch ( hint )
     {
-        case QAbstractItemDelegate::EditNextItem:
+    case QAbstractItemDelegate::EditNextItem:
+    {
+        QModelIndex index = moveCursor( MoveNext, Qt::NoModifier );
+
+        if ( index.isValid() )
         {
-            QModelIndex index = moveCursor( MoveNext, Qt::NoModifier );
+            QPersistentModelIndex persistent( index );
+            d->selectionModel->setCurrentIndex( persistent, flags );
 
-            if ( index.isValid() )
+            // currentChanged signal would have already started editing
+            if ( index.flags() & Qt::ItemIsEditable
+                    && ( !( editTriggers() & QAbstractItemView::CurrentChanged ) ) )
             {
-                QPersistentModelIndex persistent( index );
-                d->selectionModel->setCurrentIndex( persistent, flags );
-
-                // currentChanged signal would have already started editing
-                if ( index.flags() & Qt::ItemIsEditable
-                        && ( !( editTriggers() & QAbstractItemView::CurrentChanged ) ) )
-                {
-                    edit( persistent );
-                }
+                edit( persistent );
             }
-
-            break;
         }
 
-        case QAbstractItemDelegate::EditPreviousItem:
+        break;
+    }
+
+    case QAbstractItemDelegate::EditPreviousItem:
+    {
+        QModelIndex index = moveCursor( MovePrevious, Qt::NoModifier );
+
+        if ( index.isValid() )
         {
-            QModelIndex index = moveCursor( MovePrevious, Qt::NoModifier );
+            QPersistentModelIndex persistent( index );
+            d->selectionModel->setCurrentIndex( persistent, flags );
 
-            if ( index.isValid() )
+            // currentChanged signal would have already started editing
+            if ( index.flags() & Qt::ItemIsEditable
+                    && ( !( editTriggers() & QAbstractItemView::CurrentChanged ) ) )
             {
-                QPersistentModelIndex persistent( index );
-                d->selectionModel->setCurrentIndex( persistent, flags );
-
-                // currentChanged signal would have already started editing
-                if ( index.flags() & Qt::ItemIsEditable
-                        && ( !( editTriggers() & QAbstractItemView::CurrentChanged ) ) )
-                {
-                    edit( persistent );
-                }
+                edit( persistent );
             }
-
-            break;
         }
 
-        case QAbstractItemDelegate::SubmitModelCache:
-            d->model->submit();
-            break;
+        break;
+    }
 
-        case QAbstractItemDelegate::RevertModelCache:
-            d->model->revert();
-            break;
+    case QAbstractItemDelegate::SubmitModelCache:
+        d->model->submit();
+        break;
 
-        default:
-            break;
+    case QAbstractItemDelegate::RevertModelCache:
+        d->model->revert();
+        break;
+
+    default:
+        break;
     }
 }
 
@@ -3508,48 +3508,48 @@ QItemSelectionModel::SelectionFlags QAbstractItemView::selectionCommand( const Q
     {
         switch ( event->type() )
         {
-            case QEvent::MouseButtonDblClick:
-            case QEvent::MouseButtonPress:
-            case QEvent::MouseButtonRelease:
-            case QEvent::MouseMove:
-            case QEvent::KeyPress:
-            case QEvent::KeyRelease:
-                keyModifiers = ( static_cast<const QInputEvent *>( event ) )->modifiers();
-                break;
+        case QEvent::MouseButtonDblClick:
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonRelease:
+        case QEvent::MouseMove:
+        case QEvent::KeyPress:
+        case QEvent::KeyRelease:
+            keyModifiers = ( static_cast<const QInputEvent *>( event ) )->modifiers();
+            break;
 
-            default:
-                keyModifiers = QApplication::keyboardModifiers();
+        default:
+            keyModifiers = QApplication::keyboardModifiers();
         }
     }
 
     switch ( d->selectionMode )
     {
-        case NoSelection:       // Never update selection model
+    case NoSelection:       // Never update selection model
+        return QItemSelectionModel::NoUpdate;
+
+    case SingleSelection:   // ClearAndSelect on valid index otherwise NoUpdate
+        if ( event && event->type() == QEvent::MouseButtonRelease )
+        {
             return QItemSelectionModel::NoUpdate;
+        }
 
-        case SingleSelection:   // ClearAndSelect on valid index otherwise NoUpdate
-            if ( event && event->type() == QEvent::MouseButtonRelease )
-            {
-                return QItemSelectionModel::NoUpdate;
-            }
+        if ( ( keyModifiers & Qt::ControlModifier ) && d->selectionModel->isSelected( index ) )
+        {
+            return QItemSelectionModel::Deselect | d->selectionBehaviorFlags();
+        }
+        else
+        {
+            return QItemSelectionModel::ClearAndSelect | d->selectionBehaviorFlags();
+        }
 
-            if ( ( keyModifiers & Qt::ControlModifier ) && d->selectionModel->isSelected( index ) )
-            {
-                return QItemSelectionModel::Deselect | d->selectionBehaviorFlags();
-            }
-            else
-            {
-                return QItemSelectionModel::ClearAndSelect | d->selectionBehaviorFlags();
-            }
+    case MultiSelection:
+        return d->multiSelectionCommand( index, event );
 
-        case MultiSelection:
-            return d->multiSelectionCommand( index, event );
+    case ExtendedSelection:
+        return d->extendedSelectionCommand( index, event );
 
-        case ExtendedSelection:
-            return d->extendedSelectionCommand( index, event );
-
-        case ContiguousSelection:
-            return d->contiguousSelectionCommand( index, event );
+    case ContiguousSelection:
+        return d->contiguousSelectionCommand( index, event );
     }
 
     return QItemSelectionModel::NoUpdate;
@@ -3564,39 +3564,39 @@ QItemSelectionModel::SelectionFlags QAbstractItemViewPrivate::multiSelectionComm
     {
         switch ( event->type() )
         {
-            case QEvent::KeyPress:
-                if ( static_cast<const QKeyEvent *>( event )->key() == Qt::Key_Space
-                        || static_cast<const QKeyEvent *>( event )->key() == Qt::Key_Select )
-                {
-                    return QItemSelectionModel::Toggle | selectionBehaviorFlags();
-                }
+        case QEvent::KeyPress:
+            if ( static_cast<const QKeyEvent *>( event )->key() == Qt::Key_Space
+                    || static_cast<const QKeyEvent *>( event )->key() == Qt::Key_Select )
+            {
+                return QItemSelectionModel::Toggle | selectionBehaviorFlags();
+            }
 
-                break;
+            break;
 
-            case QEvent::MouseButtonPress:
-                if ( static_cast<const QMouseEvent *>( event )->button() == Qt::LeftButton )
-                {
-                    return QItemSelectionModel::Toggle | selectionBehaviorFlags();   // toggle
-                }
+        case QEvent::MouseButtonPress:
+            if ( static_cast<const QMouseEvent *>( event )->button() == Qt::LeftButton )
+            {
+                return QItemSelectionModel::Toggle | selectionBehaviorFlags();   // toggle
+            }
 
-                break;
+            break;
 
-            case QEvent::MouseButtonRelease:
-                if ( static_cast<const QMouseEvent *>( event )->button() == Qt::LeftButton )
-                {
-                    return QItemSelectionModel::NoUpdate | selectionBehaviorFlags();   // finalize
-                }
+        case QEvent::MouseButtonRelease:
+            if ( static_cast<const QMouseEvent *>( event )->button() == Qt::LeftButton )
+            {
+                return QItemSelectionModel::NoUpdate | selectionBehaviorFlags();   // finalize
+            }
 
-                break;
+            break;
 
-            case QEvent::MouseMove:
-                if ( static_cast<const QMouseEvent *>( event )->buttons() & Qt::LeftButton )
-                {
-                    return QItemSelectionModel::ToggleCurrent | selectionBehaviorFlags();   // toggle drag select
-                }
+        case QEvent::MouseMove:
+            if ( static_cast<const QMouseEvent *>( event )->buttons() & Qt::LeftButton )
+            {
+                return QItemSelectionModel::ToggleCurrent | selectionBehaviorFlags();   // toggle drag select
+            }
 
-            default:
-                break;
+        default:
+            break;
         }
 
         return QItemSelectionModel::NoUpdate;
@@ -3614,126 +3614,126 @@ QItemSelectionModel::SelectionFlags QAbstractItemViewPrivate::extendedSelectionC
     {
         switch ( event->type() )
         {
-            case QEvent::MouseMove:
+        case QEvent::MouseMove:
+        {
+            // Toggle on MouseMove
+            modifiers = static_cast<const QMouseEvent *>( event )->modifiers();
+
+            if ( modifiers & Qt::ControlModifier )
             {
-                // Toggle on MouseMove
-                modifiers = static_cast<const QMouseEvent *>( event )->modifiers();
-
-                if ( modifiers & Qt::ControlModifier )
-                {
-                    return QItemSelectionModel::ToggleCurrent | selectionBehaviorFlags();
-                }
-
-                break;
+                return QItemSelectionModel::ToggleCurrent | selectionBehaviorFlags();
             }
 
-            case QEvent::MouseButtonPress:
+            break;
+        }
+
+        case QEvent::MouseButtonPress:
+        {
+            modifiers = static_cast<const QMouseEvent *>( event )->modifiers();
+            const Qt::MouseButton button = static_cast<const QMouseEvent *>( event )->button();
+            const bool rightButtonPressed = button & Qt::RightButton;
+            const bool shiftKeyPressed = modifiers & Qt::ShiftModifier;
+            const bool controlKeyPressed = modifiers & Qt::ControlModifier;
+            const bool indexIsSelected = selectionModel->isSelected( index );
+
+            if ( ( shiftKeyPressed || controlKeyPressed ) && rightButtonPressed )
             {
-                modifiers = static_cast<const QMouseEvent *>( event )->modifiers();
-                const Qt::MouseButton button = static_cast<const QMouseEvent *>( event )->button();
-                const bool rightButtonPressed = button & Qt::RightButton;
-                const bool shiftKeyPressed = modifiers & Qt::ShiftModifier;
-                const bool controlKeyPressed = modifiers & Qt::ControlModifier;
-                const bool indexIsSelected = selectionModel->isSelected( index );
-
-                if ( ( shiftKeyPressed || controlKeyPressed ) && rightButtonPressed )
-                {
-                    return QItemSelectionModel::NoUpdate;
-                }
-
-                if ( !shiftKeyPressed && !controlKeyPressed && indexIsSelected )
-                {
-                    return QItemSelectionModel::NoUpdate;
-                }
-
-                if ( !index.isValid() && !rightButtonPressed && !shiftKeyPressed && !controlKeyPressed )
-                {
-                    return QItemSelectionModel::Clear;
-                }
-
-                if ( !index.isValid() )
-                {
-                    return QItemSelectionModel::NoUpdate;
-                }
-
-                break;
-            }
-
-            case QEvent::MouseButtonRelease:
-            {
-                // ClearAndSelect on MouseButtonRelease if MouseButtonPress on selected item or empty area
-                modifiers = static_cast<const QMouseEvent *>( event )->modifiers();
-
-                const Qt::MouseButton button  = static_cast<const QMouseEvent *>( event )->button();
-                const bool rightButtonPressed = button & Qt::RightButton;
-                const bool shiftKeyPressed    = modifiers & Qt::ShiftModifier;
-                const bool controlKeyPressed  = modifiers & Qt::ControlModifier;
-
-                if ( ( ( index == pressedIndex && selectionModel->isSelected( index ) )
-                        || !index.isValid() ) && state != QAbstractItemView::DragSelectingState
-                        && !shiftKeyPressed && !controlKeyPressed && ( !rightButtonPressed || !index.isValid() ) )
-                {
-                    return QItemSelectionModel::ClearAndSelect | selectionBehaviorFlags();
-                }
-
                 return QItemSelectionModel::NoUpdate;
             }
 
-            case QEvent::KeyPress:
+            if ( !shiftKeyPressed && !controlKeyPressed && indexIsSelected )
             {
-                // NoUpdate on Key movement and Ctrl
-                modifiers = static_cast<const QKeyEvent *>( event )->modifiers();
+                return QItemSelectionModel::NoUpdate;
+            }
 
-                switch ( static_cast<const QKeyEvent *>( event )->key() )
-                {
-                    case Qt::Key_Backtab:
-                        // special case for backtab
-                        modifiers = modifiers & ~Qt::ShiftModifier;
-                        [[fallthrough]];
+            if ( !index.isValid() && !rightButtonPressed && !shiftKeyPressed && !controlKeyPressed )
+            {
+                return QItemSelectionModel::Clear;
+            }
 
-                    case Qt::Key_Down:
-                    case Qt::Key_Up:
-                    case Qt::Key_Left:
-                    case Qt::Key_Right:
-                    case Qt::Key_Home:
-                    case Qt::Key_End:
-                    case Qt::Key_PageUp:
-                    case Qt::Key_PageDown:
+            if ( !index.isValid() )
+            {
+                return QItemSelectionModel::NoUpdate;
+            }
 
-                    case Qt::Key_Tab:
+            break;
+        }
+
+        case QEvent::MouseButtonRelease:
+        {
+            // ClearAndSelect on MouseButtonRelease if MouseButtonPress on selected item or empty area
+            modifiers = static_cast<const QMouseEvent *>( event )->modifiers();
+
+            const Qt::MouseButton button  = static_cast<const QMouseEvent *>( event )->button();
+            const bool rightButtonPressed = button & Qt::RightButton;
+            const bool shiftKeyPressed    = modifiers & Qt::ShiftModifier;
+            const bool controlKeyPressed  = modifiers & Qt::ControlModifier;
+
+            if ( ( ( index == pressedIndex && selectionModel->isSelected( index ) )
+                    || !index.isValid() ) && state != QAbstractItemView::DragSelectingState
+                    && !shiftKeyPressed && !controlKeyPressed && ( !rightButtonPressed || !index.isValid() ) )
+            {
+                return QItemSelectionModel::ClearAndSelect | selectionBehaviorFlags();
+            }
+
+            return QItemSelectionModel::NoUpdate;
+        }
+
+        case QEvent::KeyPress:
+        {
+            // NoUpdate on Key movement and Ctrl
+            modifiers = static_cast<const QKeyEvent *>( event )->modifiers();
+
+            switch ( static_cast<const QKeyEvent *>( event )->key() )
+            {
+            case Qt::Key_Backtab:
+                // special case for backtab
+                modifiers = modifiers & ~Qt::ShiftModifier;
+                [[fallthrough]];
+
+            case Qt::Key_Down:
+            case Qt::Key_Up:
+            case Qt::Key_Left:
+            case Qt::Key_Right:
+            case Qt::Key_Home:
+            case Qt::Key_End:
+            case Qt::Key_PageUp:
+            case Qt::Key_PageDown:
+
+            case Qt::Key_Tab:
 
 #ifdef LSCS_KEYPAD_NAVIGATION
-                        if ( modifiers & Qt::ControlModifier ||
-                                QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder )
-                        {
-                            // Preserve historical tab order navigation behavior
+                if ( modifiers & Qt::ControlModifier ||
+                        QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder )
+                {
+                    // Preserve historical tab order navigation behavior
 #else
-                        if ( modifiers & Qt::ControlModifier )
-                        {
+                if ( modifiers & Qt::ControlModifier )
+                {
 #endif
-                            return QItemSelectionModel::NoUpdate;
-                        }
-
-                        break;
-
-                    case Qt::Key_Select:
-                        return QItemSelectionModel::Toggle | selectionBehaviorFlags();
-
-                    case Qt::Key_Space:// Toggle on Ctrl-Qt::Key_Space, Select on Space
-                        if ( modifiers & Qt::ControlModifier )
-                        {
-                            return QItemSelectionModel::Toggle | selectionBehaviorFlags();
-                        }
-
-                        return QItemSelectionModel::Select | selectionBehaviorFlags();
-
-                    default:
-                        break;
+                    return QItemSelectionModel::NoUpdate;
                 }
-            }
+
+                break;
+
+            case Qt::Key_Select:
+                return QItemSelectionModel::Toggle | selectionBehaviorFlags();
+
+            case Qt::Key_Space:// Toggle on Ctrl-Qt::Key_Space, Select on Space
+                if ( modifiers & Qt::ControlModifier )
+                {
+                    return QItemSelectionModel::Toggle | selectionBehaviorFlags();
+                }
+
+                return QItemSelectionModel::Select | selectionBehaviorFlags();
 
             default:
                 break;
+            }
+        }
+
+        default:
+            break;
         }
     }
 
@@ -3766,23 +3766,23 @@ QItemSelectionModel::SelectionFlags QAbstractItemViewPrivate::contiguousSelectio
 
     switch ( flags & Mask )
     {
-        case QItemSelectionModel::Clear:
-        case QItemSelectionModel::ClearAndSelect:
-        case QItemSelectionModel::SelectCurrent:
+    case QItemSelectionModel::Clear:
+    case QItemSelectionModel::ClearAndSelect:
+    case QItemSelectionModel::SelectCurrent:
+        return flags;
+
+    case QItemSelectionModel::NoUpdate:
+        if ( event &&
+                ( event->type() == QEvent::MouseButtonPress
+                  || event->type() == QEvent::MouseButtonRelease ) )
+        {
             return flags;
+        }
 
-        case QItemSelectionModel::NoUpdate:
-            if ( event &&
-                    ( event->type() == QEvent::MouseButtonPress
-                      || event->type() == QEvent::MouseButtonRelease ) )
-            {
-                return flags;
-            }
+        return QItemSelectionModel::ClearAndSelect | selectionBehaviorFlags();
 
-            return QItemSelectionModel::ClearAndSelect | selectionBehaviorFlags();
-
-        default:
-            return QItemSelectionModel::SelectCurrent | selectionBehaviorFlags();
+    default:
+        return QItemSelectionModel::SelectCurrent | selectionBehaviorFlags();
     }
 }
 
@@ -3862,15 +3862,15 @@ bool QAbstractItemViewPrivate::shouldForwardEvent( QAbstractItemView::EditTrigge
 
     switch ( event->type() )
     {
-        case QEvent::KeyPress:
-        case QEvent::MouseButtonDblClick:
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonRelease:
-        case QEvent::MouseMove:
-            return true;
+    case QEvent::KeyPress:
+    case QEvent::MouseButtonDblClick:
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseMove:
+        return true;
 
-        default:
-            break;
+    default:
+        break;
     };
 
     return false;

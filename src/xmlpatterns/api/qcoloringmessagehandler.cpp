@@ -58,83 +58,83 @@ void ColoringMessageHandler::handleMessage( QtMsgType type,
 
     switch ( type )
     {
-        case QtWarningMsg:
+    case QtWarningMsg:
+    {
+        if ( hasLine )
         {
-            if ( hasLine )
-            {
-                writeUncolored( QXmlPatternistCLI::tr( "Warning in %1, at line %2, column %3: %4" )
-                                .formatArgs( QString( sourceLocation.uri().toEncoded() ), QString::number( sourceLocation.line() ),
-                                             QString::number( sourceLocation.column() ), colorifyDescription( description ) ) );
+            writeUncolored( QXmlPatternistCLI::tr( "Warning in %1, at line %2, column %3: %4" )
+                            .formatArgs( QString( sourceLocation.uri().toEncoded() ), QString::number( sourceLocation.line() ),
+                                         QString::number( sourceLocation.column() ), colorifyDescription( description ) ) );
 
-            }
-            else
-            {
-                writeUncolored( QXmlPatternistCLI::tr( "Warning in %1: %2" )
-                                .formatArgs( QString( sourceLocation.uri().toEncoded() ), colorifyDescription( description ) ) );
-            }
-
-            break;
+        }
+        else
+        {
+            writeUncolored( QXmlPatternistCLI::tr( "Warning in %1: %2" )
+                            .formatArgs( QString( sourceLocation.uri().toEncoded() ), colorifyDescription( description ) ) );
         }
 
-        case QtFatalMsg:
+        break;
+    }
+
+    case QtFatalMsg:
+    {
+        const QString errorCode( identifier.fragment() );
+
+        Q_ASSERT( ! errorCode.isEmpty() );
+
+        QUrl uri( identifier );
+        uri.setFragment( QString() );
+
+        QString location;
+
+        if ( sourceLocation.isNull() )
         {
-            const QString errorCode( identifier.fragment() );
-
-            Q_ASSERT( ! errorCode.isEmpty() );
-
-            QUrl uri( identifier );
-            uri.setFragment( QString() );
-
-            QString location;
-
-            if ( sourceLocation.isNull() )
-            {
-                location = QXmlPatternistCLI::tr( "Unknown location" );
-            }
-            else
-            {
-                location = QString::fromLatin1( sourceLocation.uri().toEncoded() );
-            }
-
-            QString errorId;
-
-            /* if it is a standard error code, we do not want to output the whole URI. */
-
-            if ( uri.toString() == "http://www.w3.org/2005/xqt-errors" )
-            {
-                errorId = errorCode;
-            }
-            else
-            {
-                errorId = QString::fromLatin1( identifier.toEncoded() );
-            }
-
-            if ( hasLine )
-            {
-                writeUncolored( QXmlPatternistCLI::tr( "Error %1 in %2, at line %3, column %4 \n   Description: %5" )
-                                .formatArgs( colorify( errorId, ErrorCode ),
-                                             colorify( location, Location ),
-                                             colorify( QString::number( sourceLocation.line() ), Location ),
-                                             colorify( QString::number( sourceLocation.column() ), Location ),
-                                             colorifyDescription( description ) ) );
-
-            }
-            else
-            {
-                writeUncolored( QXmlPatternistCLI::tr( "Error %1 in \"%2\" \n   Description: %3" )
-                                .formatArgs( colorify( errorId, ErrorCode ), colorify( location, Location ),
-                                             colorifyDescription( description ) ) );
-            }
-
-            break;
+            location = QXmlPatternistCLI::tr( "Unknown location" );
+        }
+        else
+        {
+            location = QString::fromLatin1( sourceLocation.uri().toEncoded() );
         }
 
-        case QtCriticalMsg:
-        case QtDebugMsg:
+        QString errorId;
+
+        /* if it is a standard error code, we do not want to output the whole URI. */
+
+        if ( uri.toString() == "http://www.w3.org/2005/xqt-errors" )
         {
-            Q_ASSERT_X( false, Q_FUNC_INFO, "CriticalMsg or DebugMsg not supported." );
-            return;
+            errorId = errorCode;
         }
+        else
+        {
+            errorId = QString::fromLatin1( identifier.toEncoded() );
+        }
+
+        if ( hasLine )
+        {
+            writeUncolored( QXmlPatternistCLI::tr( "Error %1 in %2, at line %3, column %4 \n   Description: %5" )
+                            .formatArgs( colorify( errorId, ErrorCode ),
+                                         colorify( location, Location ),
+                                         colorify( QString::number( sourceLocation.line() ), Location ),
+                                         colorify( QString::number( sourceLocation.column() ), Location ),
+                                         colorifyDescription( description ) ) );
+
+        }
+        else
+        {
+            writeUncolored( QXmlPatternistCLI::tr( "Error %1 in \"%2\" \n   Description: %3" )
+                            .formatArgs( colorify( errorId, ErrorCode ), colorify( location, Location ),
+                                         colorifyDescription( description ) ) );
+        }
+
+        break;
+    }
+
+    case QtCriticalMsg:
+    case QtDebugMsg:
+    {
+        Q_ASSERT_X( false, Q_FUNC_INFO, "CriticalMsg or DebugMsg not supported." );
+        return;
+    }
     }
 }
 
@@ -151,36 +151,36 @@ QString ColoringMessageHandler::colorifyDescription( const QString &in ) const
 
         switch ( reader.tokenType() )
         {
-            case QXmlStreamReader::StartElement:
+        case QXmlStreamReader::StartElement:
+        {
+
+            if ( reader.name() == "span" )
             {
-
-                if ( reader.name() == "span" )
-                {
-                    Q_ASSERT( m_classToColor.contains( reader.attributes().value( "class" ).toString() ) );
-                    currentColor = m_classToColor.value( reader.attributes().value( "class" ).toString() );
-                }
-
-                continue;
+                Q_ASSERT( m_classToColor.contains( reader.attributes().value( "class" ).toString() ) );
+                currentColor = m_classToColor.value( reader.attributes().value( "class" ).toString() );
             }
 
-            case QXmlStreamReader::Characters:
-            {
-                result.append( colorify( reader.text().toString(), currentColor ) );
-                continue;
-            }
+            continue;
+        }
 
-            case QXmlStreamReader::EndElement:
-            {
-                currentColor = RunningText;
-                continue;
-            }
+        case QXmlStreamReader::Characters:
+        {
+            result.append( colorify( reader.text().toString(), currentColor ) );
+            continue;
+        }
 
-            case QXmlStreamReader::StartDocument:
-            case QXmlStreamReader::EndDocument:
-                continue;
+        case QXmlStreamReader::EndElement:
+        {
+            currentColor = RunningText;
+            continue;
+        }
 
-            default:
-                Q_ASSERT_X( false, Q_FUNC_INFO, "Unexpected node." );
+        case QXmlStreamReader::StartDocument:
+        case QXmlStreamReader::EndDocument:
+            continue;
+
+        default:
+            Q_ASSERT_X( false, Q_FUNC_INFO, "Unexpected node." );
         }
     }
 

@@ -66,7 +66,7 @@ public:
 #if ! defined(LSCS_DOXYPRESS)
 
 template <typename T, typename Deleter = std::default_delete<LsCsPointer::lscs_add_missing_extent_t<T>>>
-          class QUniqueArrayPointer : public LsCsPointer::LsCsUniqueArrayPointer<T, Deleter>
+class QUniqueArrayPointer : public LsCsPointer::LsCsUniqueArrayPointer<T, Deleter>
 {
 public:
     using LsCsPointer::LsCsUniqueArrayPointer<T, Deleter>::LsCsUniqueArrayPointer;
@@ -88,14 +88,14 @@ public:
 
 // QScopedPointer
 template < typename T, typename... Args, typename = typename std::enable_if_t < ! std::is_array_v<T >>>
-           QUniquePointer<T> QMakeUnique( Args && ... args )
+QUniquePointer<T> QMakeUnique( Args && ... args )
 {
     return LsCsPointer::make_unique<T>( std::forward<Args>( args )... );
 }
 
 // QScopedArrayPointer
 template <typename T, typename = typename std::enable_if_t<std::is_array_v<T>>>
-          QUniquePointer<T> QMakeUnique( std::size_t size )
+QUniquePointer<T> QMakeUnique( std::size_t size )
 {
     return LsCsPointer::make_unique<T>( size );
 }

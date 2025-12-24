@@ -57,26 +57,26 @@ double lscs_multiplierForUnit( QPrinter::Unit unit, int resolution )
 {
     switch ( unit )
     {
-        case QPageSize::Unit::Millimeter:
-            return 2.83464566929;
+    case QPageSize::Unit::Millimeter:
+        return 2.83464566929;
 
-        case QPageSize::Unit::Point:
-            return 1.0;
+    case QPageSize::Unit::Point:
+        return 1.0;
 
-        case QPageSize::Unit::Inch:
-            return 72.0;
+    case QPageSize::Unit::Inch:
+        return 72.0;
 
-        case QPageSize::Unit::Pica:
-            return 12;
+    case QPageSize::Unit::Pica:
+        return 12;
 
-        case QPageSize::Unit::Didot:
-            return 1.065826771;
+    case QPageSize::Unit::Didot:
+        return 1.065826771;
 
-        case QPageSize::Unit::Cicero:
-            return 12.789921252;
+    case QPageSize::Unit::Cicero:
+        return 12.789921252;
 
-        case QPageSize::Unit::DevicePixel:
-            return 72.0 / resolution;
+    case QPageSize::Unit::DevicePixel:
+        return 72.0 / resolution;
     }
 
     return 1.0;
@@ -84,7 +84,7 @@ double lscs_multiplierForUnit( QPrinter::Unit unit, int resolution )
 
 // method used in qpagesetupdialog_unix.cpp
 QSizeF lscs_printerPaperSize( QPrinter::Orientation orientation, QPageSize::PageSizeId paperSize,
-                            QPrinter::Unit unit, int resolution )
+                              QPrinter::Unit unit, int resolution )
 {
     QPageSize pageSize = QPageSize( QPageSize::PageSizeId( paperSize ) );
     QSizeF sizef;

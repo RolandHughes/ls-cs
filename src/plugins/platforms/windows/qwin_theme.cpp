@@ -395,58 +395,58 @@ QVariant QWindowsTheme::themeHint( ThemeHint hint ) const
 {
     switch ( hint )
     {
-        case UseFullScreenForPopupMenu:
-            return QVariant( true );
+    case UseFullScreenForPopupMenu:
+        return QVariant( true );
 
-        case DialogButtonBoxLayout:
-            return QVariant( QPlatformDialogHelper::WinLayout );
+    case DialogButtonBoxLayout:
+        return QVariant( QPlatformDialogHelper::WinLayout );
 
-        case IconThemeSearchPaths:
-            return QVariant( iconThemeSearchPaths() );
+    case IconThemeSearchPaths:
+        return QVariant( iconThemeSearchPaths() );
 
-        case StyleNames:
-            return QVariant( styleNames() );
+    case StyleNames:
+        return QVariant( styleNames() );
 
-        case TextCursorWidth:
-            return QVariant( int( dWordSystemParametersInfo( SPI_GETCARETWIDTH, 1u ) ) );
+    case TextCursorWidth:
+        return QVariant( int( dWordSystemParametersInfo( SPI_GETCARETWIDTH, 1u ) ) );
 
-        case DropShadow:
-            return QVariant( booleanSystemParametersInfo( SPI_GETDROPSHADOW, false ) );
+    case DropShadow:
+        return QVariant( booleanSystemParametersInfo( SPI_GETDROPSHADOW, false ) );
 
-        case MaximumScrollBarDragDistance:
-            return QVariant( qRound( qreal( QWindowsContext::instance()->defaultDPI() ) * 1.375 ) );
+    case MaximumScrollBarDragDistance:
+        return QVariant( qRound( qreal( QWindowsContext::instance()->defaultDPI() ) * 1.375 ) );
 
-        case KeyboardScheme:
-            return QVariant( int( WindowsKeyboardScheme ) );
+    case KeyboardScheme:
+        return QVariant( int( WindowsKeyboardScheme ) );
 
-        case UiEffects:
-            return QVariant( uiEffects() );
+    case UiEffects:
+        return QVariant( uiEffects() );
 
-        case IconPixmapSizes:
-            return m_fileIconSizes;
+    case IconPixmapSizes:
+        return m_fileIconSizes;
 
-        case DialogSnapToDefaultButton:
-            return QVariant( booleanSystemParametersInfo( SPI_GETSNAPTODEFBUTTON, false ) );
+    case DialogSnapToDefaultButton:
+        return QVariant( booleanSystemParametersInfo( SPI_GETSNAPTODEFBUTTON, false ) );
 
-        case ContextMenuOnMouseRelease:
-            return QVariant( true );
+    case ContextMenuOnMouseRelease:
+        return QVariant( true );
 
-        case WheelScrollLines:
+    case WheelScrollLines:
+    {
+        int result = 3;
+        const DWORD scrollLines = dWordSystemParametersInfo( SPI_GETWHEELSCROLLLINES, DWORD( result ) );
+
+        if ( scrollLines != DWORD( -1 ) )
         {
-            int result = 3;
-            const DWORD scrollLines = dWordSystemParametersInfo( SPI_GETWHEELSCROLLLINES, DWORD( result ) );
-
-            if ( scrollLines != DWORD( -1 ) )
-            {
-                // Special value meaning "scroll one screen", unimplemented
-                result = int( scrollLines );
-            }
-
-            return QVariant( result );
+            // Special value meaning "scroll one screen", unimplemented
+            result = int( scrollLines );
         }
 
-        default:
-            break;
+        return QVariant( result );
+    }
+
+    default:
+        break;
     }
 
     return QPlatformTheme::themeHint( hint );
@@ -592,101 +592,101 @@ QPixmap QWindowsTheme::standardPixmap( StandardPixmap sp, const QSizeF &pixmapSi
 
     switch ( sp )
     {
-        case DriveCDIcon:
-        case DriveDVDIcon:
-            resourceId = 12;
-            break;
+    case DriveCDIcon:
+    case DriveDVDIcon:
+        resourceId = 12;
+        break;
 
-        case DriveNetIcon:
-            resourceId = 10;
-            break;
+    case DriveNetIcon:
+        resourceId = 10;
+        break;
 
-        case DriveHDIcon:
-            resourceId = 9;
-            break;
+    case DriveHDIcon:
+        resourceId = 9;
+        break;
 
-        case DriveFDIcon:
-            resourceId = 7;
-            break;
+    case DriveFDIcon:
+        resourceId = 7;
+        break;
 
-        case FileIcon:
-        case FileLinkIcon:
-            resourceId = 1;
-            break;
+    case FileIcon:
+    case FileLinkIcon:
+        resourceId = 1;
+        break;
 
-        case DirIcon:
-        case DirLinkIcon:
-        case DirClosedIcon:
-            resourceId = 4;
-            break;
+    case DirIcon:
+    case DirLinkIcon:
+    case DirClosedIcon:
+        resourceId = 4;
+        break;
 
-        case DesktopIcon:
-            resourceId = 35;
-            break;
+    case DesktopIcon:
+        resourceId = 35;
+        break;
 
-        case ComputerIcon:
-            resourceId = 16;
-            break;
+    case ComputerIcon:
+        resourceId = 16;
+        break;
 
-        case DirOpenIcon:
-        case DirLinkOpenIcon:
-            resourceId = 5;
-            break;
+    case DirOpenIcon:
+    case DirLinkOpenIcon:
+        resourceId = 5;
+        break;
 
-        case FileDialogNewFolder:
-            resourceId = 319;
-            break;
+    case FileDialogNewFolder:
+        resourceId = 319;
+        break;
 
-        case DirHomeIcon:
-            resourceId = 235;
-            break;
+    case DirHomeIcon:
+        resourceId = 235;
+        break;
 
-        case TrashIcon:
-            resourceId = 191;
-            break;
+    case TrashIcon:
+        resourceId = 191;
+        break;
 
-        case MessageBoxInformation:
-            iconName = IDI_INFORMATION;
-            break;
+    case MessageBoxInformation:
+        iconName = IDI_INFORMATION;
+        break;
 
-        case MessageBoxWarning:
-            iconName = IDI_WARNING;
-            break;
+    case MessageBoxWarning:
+        iconName = IDI_WARNING;
+        break;
 
-        case MessageBoxCritical:
-            iconName = IDI_ERROR;
-            break;
+    case MessageBoxCritical:
+        iconName = IDI_ERROR;
+        break;
 
-        case MessageBoxQuestion:
-            iconName = IDI_QUESTION;
-            break;
+    case MessageBoxQuestion:
+        iconName = IDI_QUESTION;
+        break;
 
-        case VistaShield:
-            if ( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based ) )
+    case VistaShield:
+        if ( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based ) )
+        {
+            if ( !QWindowsContext::shell32dll.sHGetStockIconInfo )
             {
-                if ( !QWindowsContext::shell32dll.sHGetStockIconInfo )
-                {
-                    return QPixmap();
-                }
-
-                QPixmap pixmap;
-                SHSTOCKICONINFO iconInfo;
-                memset( &iconInfo, 0, sizeof( iconInfo ) );
-                iconInfo.cbSize = sizeof( iconInfo );
-                const int iconSize = pixmapSize.width() > 16 ? SHGFI_LARGEICON : SHGFI_SMALLICON;
-
-                if ( QWindowsContext::shell32dll.sHGetStockIconInfo( SIID_SHIELD, SHGFI_ICON | iconSize, &iconInfo ) == S_OK )
-                {
-                    pixmap = lscs_pixmapFromWinHICON( iconInfo.hIcon );
-                    DestroyIcon( iconInfo.hIcon );
-                    return pixmap;
-                }
+                return QPixmap();
             }
 
-            break;
+            QPixmap pixmap;
+            SHSTOCKICONINFO iconInfo;
+            memset( &iconInfo, 0, sizeof( iconInfo ) );
+            iconInfo.cbSize = sizeof( iconInfo );
+            const int iconSize = pixmapSize.width() > 16 ? SHGFI_LARGEICON : SHGFI_SMALLICON;
 
-        default:
-            break;
+            if ( QWindowsContext::shell32dll.sHGetStockIconInfo( SIID_SHIELD, SHGFI_ICON | iconSize, &iconInfo ) == S_OK )
+            {
+                pixmap = lscs_pixmapFromWinHICON( iconInfo.hIcon );
+                DestroyIcon( iconInfo.hIcon );
+                return pixmap;
+            }
+        }
+
+        break;
+
+    default:
+        break;
     }
 
     if ( resourceId != -1 )
@@ -732,13 +732,13 @@ static QString dirIconPixmapCacheKey( int iIcon, int iconSize, int imageListSize
 
     switch ( imageListSize )
     {
-        case sHIL_EXTRALARGE:
-            key.append( 'e' );
-            break;
+    case sHIL_EXTRALARGE:
+        key.append( 'e' );
+        break;
 
-        case sHIL_JUMBO:
-            key.append( 'j' );
-            break;
+    case sHIL_JUMBO:
+        key.append( 'j' );
+        break;
     }
 
     return key;

@@ -320,41 +320,41 @@ QVariant QPlatformTheme::themeHint( ThemeHint hint ) const
 
     switch ( hint )
     {
-        case QPlatformTheme::CursorFlashTime:
-            return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::CursorFlashTime );
+    case QPlatformTheme::CursorFlashTime:
+        return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::CursorFlashTime );
 
-        case QPlatformTheme::KeyboardInputInterval:
-            return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::KeyboardInputInterval );
+    case QPlatformTheme::KeyboardInputInterval:
+        return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::KeyboardInputInterval );
 
-        case QPlatformTheme::KeyboardAutoRepeatRate:
-            return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::KeyboardAutoRepeatRate );
+    case QPlatformTheme::KeyboardAutoRepeatRate:
+        return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::KeyboardAutoRepeatRate );
 
-        case QPlatformTheme::MouseDoubleClickInterval:
-            return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::MouseDoubleClickInterval );
+    case QPlatformTheme::MouseDoubleClickInterval:
+        return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::MouseDoubleClickInterval );
 
-        case QPlatformTheme::StartDragDistance:
-            return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::StartDragDistance );
+    case QPlatformTheme::StartDragDistance:
+        return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::StartDragDistance );
 
-        case QPlatformTheme::StartDragTime:
-            return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::StartDragTime );
+    case QPlatformTheme::StartDragTime:
+        return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::StartDragTime );
 
-        case QPlatformTheme::StartDragVelocity:
-            return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::StartDragVelocity );
+    case QPlatformTheme::StartDragVelocity:
+        return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::StartDragVelocity );
 
-        case QPlatformTheme::PasswordMaskDelay:
-            return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::PasswordMaskDelay );
+    case QPlatformTheme::PasswordMaskDelay:
+        return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::PasswordMaskDelay );
 
-        case QPlatformTheme::PasswordMaskCharacter:
-            return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::PasswordMaskCharacter );
+    case QPlatformTheme::PasswordMaskCharacter:
+        return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::PasswordMaskCharacter );
 
-        case QPlatformTheme::MousePressAndHoldInterval:
-            return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::MousePressAndHoldInterval );
+    case QPlatformTheme::MousePressAndHoldInterval:
+        return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::MousePressAndHoldInterval );
 
-        case QPlatformTheme::ItemViewActivateItemOnSingleClick:
-            return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::ItemViewActivateItemOnSingleClick );
+    case QPlatformTheme::ItemViewActivateItemOnSingleClick:
+        return QGuiApplicationPrivate::platformIntegration()->styleHint( QPlatformIntegration::ItemViewActivateItemOnSingleClick );
 
-        default:
-            return QPlatformTheme::defaultThemeHint( hint );
+    default:
+        return QPlatformTheme::defaultThemeHint( hint );
     }
 }
 
@@ -362,104 +362,104 @@ QVariant QPlatformTheme::defaultThemeHint( ThemeHint hint )
 {
     switch ( hint )
     {
-        case QPlatformTheme::CursorFlashTime:
-            return QVariant( 1000 );
+    case QPlatformTheme::CursorFlashTime:
+        return QVariant( 1000 );
 
-        case QPlatformTheme::KeyboardInputInterval:
-            return QVariant( 400 );
+    case QPlatformTheme::KeyboardInputInterval:
+        return QVariant( 400 );
 
-        case QPlatformTheme::KeyboardAutoRepeatRate:
-            return QVariant( 30 );
+    case QPlatformTheme::KeyboardAutoRepeatRate:
+        return QVariant( 30 );
 
-        case QPlatformTheme::MouseDoubleClickInterval:
-            return QVariant( 400 );
+    case QPlatformTheme::MouseDoubleClickInterval:
+        return QVariant( 400 );
 
-        case QPlatformTheme::StartDragDistance:
-            return QVariant( 10 );
+    case QPlatformTheme::StartDragDistance:
+        return QVariant( 10 );
 
-        case QPlatformTheme::StartDragTime:
-            return QVariant( 500 );
+    case QPlatformTheme::StartDragTime:
+        return QVariant( 500 );
 
-        case QPlatformTheme::PasswordMaskDelay:
-            return QVariant( int( 0 ) );
+    case QPlatformTheme::PasswordMaskDelay:
+        return QVariant( int( 0 ) );
 
-        case QPlatformTheme::PasswordMaskCharacter:
-            return QVariant( QChar( 0x25CF ) );
+    case QPlatformTheme::PasswordMaskCharacter:
+        return QVariant( QChar( 0x25CF ) );
 
-        case QPlatformTheme::StartDragVelocity:
-            return QVariant( int( 0 ) ); // no limit
+    case QPlatformTheme::StartDragVelocity:
+        return QVariant( int( 0 ) ); // no limit
 
-        case QPlatformTheme::UseFullScreenForPopupMenu:
-            return QVariant( false );
+    case QPlatformTheme::UseFullScreenForPopupMenu:
+        return QVariant( false );
 
-        case QPlatformTheme::WindowAutoPlacement:
-            return QVariant( false );
+    case QPlatformTheme::WindowAutoPlacement:
+        return QVariant( false );
 
-        case QPlatformTheme::DialogButtonBoxLayout:
-            return QVariant( int( 0 ) );
+    case QPlatformTheme::DialogButtonBoxLayout:
+        return QVariant( int( 0 ) );
 
-        case QPlatformTheme::DialogButtonBoxButtonsHaveIcons:
-            return QVariant( false );
+    case QPlatformTheme::DialogButtonBoxButtonsHaveIcons:
+        return QVariant( false );
 
-        case QPlatformTheme::ItemViewActivateItemOnSingleClick:
-            return QVariant( false );
+    case QPlatformTheme::ItemViewActivateItemOnSingleClick:
+        return QVariant( false );
 
-        case QPlatformTheme::ToolButtonStyle:
-            return QVariant( int( Qt::ToolButtonIconOnly ) );
+    case QPlatformTheme::ToolButtonStyle:
+        return QVariant( int( Qt::ToolButtonIconOnly ) );
 
-        case QPlatformTheme::ToolBarIconSize:
-            return QVariant( int( 0 ) );
+    case QPlatformTheme::ToolBarIconSize:
+        return QVariant( int( 0 ) );
 
-        case QPlatformTheme::SystemIconThemeName:
-        case QPlatformTheme::SystemIconFallbackThemeName:
-            return QVariant( QString() );
+    case QPlatformTheme::SystemIconThemeName:
+    case QPlatformTheme::SystemIconFallbackThemeName:
+        return QVariant( QString() );
 
-        case QPlatformTheme::IconThemeSearchPaths:
-            return QVariant( QStringList() );
+    case QPlatformTheme::IconThemeSearchPaths:
+        return QVariant( QStringList() );
 
-        case QPlatformTheme::StyleNames:
-            return QVariant( QStringList() );
+    case QPlatformTheme::StyleNames:
+        return QVariant( QStringList() );
 
-        case TextCursorWidth:
-            return QVariant( 1 );
+    case TextCursorWidth:
+        return QVariant( 1 );
 
-        case DropShadow:
-            return QVariant( false );
+    case DropShadow:
+        return QVariant( false );
 
-        case MaximumScrollBarDragDistance:
-            return QVariant( -1 );
+    case MaximumScrollBarDragDistance:
+        return QVariant( -1 );
 
-        case KeyboardScheme:
-            return QVariant( int( WindowsKeyboardScheme ) );
+    case KeyboardScheme:
+        return QVariant( int( WindowsKeyboardScheme ) );
 
-        case UiEffects:
-            return QVariant( int( 0 ) );
+    case UiEffects:
+        return QVariant( int( 0 ) );
 
-        case SpellCheckUnderlineStyle:
-            return QVariant( int( QTextCharFormat::SpellCheckUnderline ) );
+    case SpellCheckUnderlineStyle:
+        return QVariant( int( QTextCharFormat::SpellCheckUnderline ) );
 
-        case TabFocusBehavior:
-            return QVariant( int( Qt::TabFocusAllControls ) );
+    case TabFocusBehavior:
+        return QVariant( int( Qt::TabFocusAllControls ) );
 
-        case IconPixmapSizes:
-            return QVariant::fromValue( QList<int>() );
+    case IconPixmapSizes:
+        return QVariant::fromValue( QList<int>() );
 
-        case DialogSnapToDefaultButton:
-        case ContextMenuOnMouseRelease:
-            return QVariant( false );
+    case DialogSnapToDefaultButton:
+    case ContextMenuOnMouseRelease:
+        return QVariant( false );
 
-        case MousePressAndHoldInterval:
-            return QVariant( 800 );
+    case MousePressAndHoldInterval:
+        return QVariant( 800 );
 
-        case MouseDoubleClickDistance:
-        {
-            bool ok = false;
-            const int dist = qgetenv( "LSCS_DBL_CLICK_DIST" ).toInt( &ok );
-            return QVariant( ok ? dist : 5 );
-        }
+    case MouseDoubleClickDistance:
+    {
+        bool ok = false;
+        const int dist = qgetenv( "LSCS_DBL_CLICK_DIST" ).toInt( &ok );
+        return QVariant( ok ? dist : 5 );
+    }
 
-        case WheelScrollLines:
-            return QVariant( 3 );
+    case WheelScrollLines:
+        return QVariant( 3 );
     }
 
     return QVariant();
@@ -588,62 +588,62 @@ QString QPlatformTheme::defaultStandardButtonText( int button )
 {
     switch ( button )
     {
-        case QPlatformDialogHelper::Ok:
-            return QCoreApplication::translate( "QPlatformTheme", "OK" );
+    case QPlatformDialogHelper::Ok:
+        return QCoreApplication::translate( "QPlatformTheme", "OK" );
 
-        case QPlatformDialogHelper::Save:
-            return QCoreApplication::translate( "QPlatformTheme", "Save" );
+    case QPlatformDialogHelper::Save:
+        return QCoreApplication::translate( "QPlatformTheme", "Save" );
 
-        case QPlatformDialogHelper::SaveAll:
-            return QCoreApplication::translate( "QPlatformTheme", "Save All" );
+    case QPlatformDialogHelper::SaveAll:
+        return QCoreApplication::translate( "QPlatformTheme", "Save All" );
 
-        case QPlatformDialogHelper::Open:
-            return QCoreApplication::translate( "QPlatformTheme", "Open" );
+    case QPlatformDialogHelper::Open:
+        return QCoreApplication::translate( "QPlatformTheme", "Open" );
 
-        case QPlatformDialogHelper::Yes:
-            return QCoreApplication::translate( "QPlatformTheme", "&Yes" );
+    case QPlatformDialogHelper::Yes:
+        return QCoreApplication::translate( "QPlatformTheme", "&Yes" );
 
-        case QPlatformDialogHelper::YesToAll:
-            return QCoreApplication::translate( "QPlatformTheme", "Yes to &All" );
+    case QPlatformDialogHelper::YesToAll:
+        return QCoreApplication::translate( "QPlatformTheme", "Yes to &All" );
 
-        case QPlatformDialogHelper::No:
-            return QCoreApplication::translate( "QPlatformTheme", "&No" );
+    case QPlatformDialogHelper::No:
+        return QCoreApplication::translate( "QPlatformTheme", "&No" );
 
-        case QPlatformDialogHelper::NoToAll:
-            return QCoreApplication::translate( "QPlatformTheme", "N&o to All" );
+    case QPlatformDialogHelper::NoToAll:
+        return QCoreApplication::translate( "QPlatformTheme", "N&o to All" );
 
-        case QPlatformDialogHelper::Abort:
-            return QCoreApplication::translate( "QPlatformTheme", "Abort" );
+    case QPlatformDialogHelper::Abort:
+        return QCoreApplication::translate( "QPlatformTheme", "Abort" );
 
-        case QPlatformDialogHelper::Retry:
-            return QCoreApplication::translate( "QPlatformTheme", "Retry" );
+    case QPlatformDialogHelper::Retry:
+        return QCoreApplication::translate( "QPlatformTheme", "Retry" );
 
-        case QPlatformDialogHelper::Ignore:
-            return QCoreApplication::translate( "QPlatformTheme", "Ignore" );
+    case QPlatformDialogHelper::Ignore:
+        return QCoreApplication::translate( "QPlatformTheme", "Ignore" );
 
-        case QPlatformDialogHelper::Close:
-            return QCoreApplication::translate( "QPlatformTheme", "Close" );
+    case QPlatformDialogHelper::Close:
+        return QCoreApplication::translate( "QPlatformTheme", "Close" );
 
-        case QPlatformDialogHelper::Cancel:
-            return QCoreApplication::translate( "QPlatformTheme", "Cancel" );
+    case QPlatformDialogHelper::Cancel:
+        return QCoreApplication::translate( "QPlatformTheme", "Cancel" );
 
-        case QPlatformDialogHelper::Discard:
-            return QCoreApplication::translate( "QPlatformTheme", "Discard" );
+    case QPlatformDialogHelper::Discard:
+        return QCoreApplication::translate( "QPlatformTheme", "Discard" );
 
-        case QPlatformDialogHelper::Help:
-            return QCoreApplication::translate( "QPlatformTheme", "Help" );
+    case QPlatformDialogHelper::Help:
+        return QCoreApplication::translate( "QPlatformTheme", "Help" );
 
-        case QPlatformDialogHelper::Apply:
-            return QCoreApplication::translate( "QPlatformTheme", "Apply" );
+    case QPlatformDialogHelper::Apply:
+        return QCoreApplication::translate( "QPlatformTheme", "Apply" );
 
-        case QPlatformDialogHelper::Reset:
-            return QCoreApplication::translate( "QPlatformTheme", "Reset" );
+    case QPlatformDialogHelper::Reset:
+        return QCoreApplication::translate( "QPlatformTheme", "Reset" );
 
-        case QPlatformDialogHelper::RestoreDefaults:
-            return QCoreApplication::translate( "QPlatformTheme", "Restore Defaults" );
+    case QPlatformDialogHelper::RestoreDefaults:
+        return QCoreApplication::translate( "QPlatformTheme", "Restore Defaults" );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QString();

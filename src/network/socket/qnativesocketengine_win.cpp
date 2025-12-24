@@ -51,189 +51,189 @@ void verboseWSErrorDebug( int r )
 {
     switch ( r )
     {
-        case WSANOTINITIALISED :
-            qDebug( "WSA error : WSANOTINITIALISED" );
-            break;
+    case WSANOTINITIALISED :
+        qDebug( "WSA error : WSANOTINITIALISED" );
+        break;
 
-        case WSAEINTR:
-            qDebug( "WSA error : WSAEINTR" );
-            break;
+    case WSAEINTR:
+        qDebug( "WSA error : WSAEINTR" );
+        break;
 
-        case WSAEBADF:
-            qDebug( "WSA error : WSAEBADF" );
-            break;
+    case WSAEBADF:
+        qDebug( "WSA error : WSAEBADF" );
+        break;
 
-        case WSAEACCES:
-            qDebug( "WSA error : WSAEACCES" );
-            break;
+    case WSAEACCES:
+        qDebug( "WSA error : WSAEACCES" );
+        break;
 
-        case WSAEFAULT:
-            qDebug( "WSA error : WSAEFAULT" );
-            break;
+    case WSAEFAULT:
+        qDebug( "WSA error : WSAEFAULT" );
+        break;
 
-        case WSAEINVAL:
-            qDebug( "WSA error : WSAEINVAL" );
-            break;
+    case WSAEINVAL:
+        qDebug( "WSA error : WSAEINVAL" );
+        break;
 
-        case WSAEMFILE:
-            qDebug( "WSA error : WSAEMFILE" );
-            break;
+    case WSAEMFILE:
+        qDebug( "WSA error : WSAEMFILE" );
+        break;
 
-        case WSAEWOULDBLOCK:
-            qDebug( "WSA error : WSAEWOULDBLOCK" );
-            break;
+    case WSAEWOULDBLOCK:
+        qDebug( "WSA error : WSAEWOULDBLOCK" );
+        break;
 
-        case WSAEINPROGRESS:
-            qDebug( "WSA error : WSAEINPROGRESS" );
-            break;
+    case WSAEINPROGRESS:
+        qDebug( "WSA error : WSAEINPROGRESS" );
+        break;
 
-        case WSAEALREADY:
-            qDebug( "WSA error : WSAEALREADY" );
-            break;
+    case WSAEALREADY:
+        qDebug( "WSA error : WSAEALREADY" );
+        break;
 
-        case WSAENOTSOCK:
-            qDebug( "WSA error : WSAENOTSOCK" );
-            break;
+    case WSAENOTSOCK:
+        qDebug( "WSA error : WSAENOTSOCK" );
+        break;
 
-        case WSAEDESTADDRREQ:
-            qDebug( "WSA error : WSAEDESTADDRREQ" );
-            break;
+    case WSAEDESTADDRREQ:
+        qDebug( "WSA error : WSAEDESTADDRREQ" );
+        break;
 
-        case WSAEMSGSIZE:
-            qDebug( "WSA error : WSAEMSGSIZE" );
-            break;
+    case WSAEMSGSIZE:
+        qDebug( "WSA error : WSAEMSGSIZE" );
+        break;
 
-        case WSAEPROTOTYPE:
-            qDebug( "WSA error : WSAEPROTOTYPE" );
-            break;
+    case WSAEPROTOTYPE:
+        qDebug( "WSA error : WSAEPROTOTYPE" );
+        break;
 
-        case WSAENOPROTOOPT:
-            qDebug( "WSA error : WSAENOPROTOOPT" );
-            break;
+    case WSAENOPROTOOPT:
+        qDebug( "WSA error : WSAENOPROTOOPT" );
+        break;
 
-        case WSAEPROTONOSUPPORT:
-            qDebug( "WSA error : WSAEPROTONOSUPPORT" );
-            break;
+    case WSAEPROTONOSUPPORT:
+        qDebug( "WSA error : WSAEPROTONOSUPPORT" );
+        break;
 
-        case WSAESOCKTNOSUPPORT:
-            qDebug( "WSA error : WSAESOCKTNOSUPPORT" );
-            break;
+    case WSAESOCKTNOSUPPORT:
+        qDebug( "WSA error : WSAESOCKTNOSUPPORT" );
+        break;
 
-        case WSAEOPNOTSUPP:
-            qDebug( "WSA error : WSAEOPNOTSUPP" );
-            break;
+    case WSAEOPNOTSUPP:
+        qDebug( "WSA error : WSAEOPNOTSUPP" );
+        break;
 
-        case WSAEPFNOSUPPORT:
-            qDebug( "WSA error : WSAEPFNOSUPPORT" );
-            break;
+    case WSAEPFNOSUPPORT:
+        qDebug( "WSA error : WSAEPFNOSUPPORT" );
+        break;
 
-        case WSAEAFNOSUPPORT:
-            qDebug( "WSA error : WSAEAFNOSUPPORT" );
-            break;
+    case WSAEAFNOSUPPORT:
+        qDebug( "WSA error : WSAEAFNOSUPPORT" );
+        break;
 
-        case WSAEADDRINUSE:
-            qDebug( "WSA error : WSAEADDRINUSE" );
-            break;
+    case WSAEADDRINUSE:
+        qDebug( "WSA error : WSAEADDRINUSE" );
+        break;
 
-        case WSAEADDRNOTAVAIL:
-            qDebug( "WSA error : WSAEADDRNOTAVAIL" );
-            break;
+    case WSAEADDRNOTAVAIL:
+        qDebug( "WSA error : WSAEADDRNOTAVAIL" );
+        break;
 
-        case WSAENETDOWN:
-            qDebug( "WSA error : WSAENETDOWN" );
-            break;
+    case WSAENETDOWN:
+        qDebug( "WSA error : WSAENETDOWN" );
+        break;
 
-        case WSAENETUNREACH:
-            qDebug( "WSA error : WSAENETUNREACH" );
-            break;
+    case WSAENETUNREACH:
+        qDebug( "WSA error : WSAENETUNREACH" );
+        break;
 
-        case WSAENETRESET:
-            qDebug( "WSA error : WSAENETRESET" );
-            break;
+    case WSAENETRESET:
+        qDebug( "WSA error : WSAENETRESET" );
+        break;
 
-        case WSAECONNABORTED:
-            qDebug( "WSA error : WSAECONNABORTED" );
-            break;
+    case WSAECONNABORTED:
+        qDebug( "WSA error : WSAECONNABORTED" );
+        break;
 
-        case WSAECONNRESET:
-            qDebug( "WSA error : WSAECONNRESET" );
-            break;
+    case WSAECONNRESET:
+        qDebug( "WSA error : WSAECONNRESET" );
+        break;
 
-        case WSAENOBUFS:
-            qDebug( "WSA error : WSAENOBUFS" );
-            break;
+    case WSAENOBUFS:
+        qDebug( "WSA error : WSAENOBUFS" );
+        break;
 
-        case WSAEISCONN:
-            qDebug( "WSA error : WSAEISCONN" );
-            break;
+    case WSAEISCONN:
+        qDebug( "WSA error : WSAEISCONN" );
+        break;
 
-        case WSAENOTCONN:
-            qDebug( "WSA error : WSAENOTCONN" );
-            break;
+    case WSAENOTCONN:
+        qDebug( "WSA error : WSAENOTCONN" );
+        break;
 
-        case WSAESHUTDOWN:
-            qDebug( "WSA error : WSAESHUTDOWN" );
-            break;
+    case WSAESHUTDOWN:
+        qDebug( "WSA error : WSAESHUTDOWN" );
+        break;
 
-        case WSAETOOMANYREFS:
-            qDebug( "WSA error : WSAETOOMANYREFS" );
-            break;
+    case WSAETOOMANYREFS:
+        qDebug( "WSA error : WSAETOOMANYREFS" );
+        break;
 
-        case WSAETIMEDOUT:
-            qDebug( "WSA error : WSAETIMEDOUT" );
-            break;
+    case WSAETIMEDOUT:
+        qDebug( "WSA error : WSAETIMEDOUT" );
+        break;
 
-        case WSAECONNREFUSED:
-            qDebug( "WSA error : WSAECONNREFUSED" );
-            break;
+    case WSAECONNREFUSED:
+        qDebug( "WSA error : WSAECONNREFUSED" );
+        break;
 
-        case WSAELOOP:
-            qDebug( "WSA error : WSAELOOP" );
-            break;
+    case WSAELOOP:
+        qDebug( "WSA error : WSAELOOP" );
+        break;
 
-        case WSAENAMETOOLONG:
-            qDebug( "WSA error : WSAENAMETOOLONG" );
-            break;
+    case WSAENAMETOOLONG:
+        qDebug( "WSA error : WSAENAMETOOLONG" );
+        break;
 
-        case WSAEHOSTDOWN:
-            qDebug( "WSA error : WSAEHOSTDOWN" );
-            break;
+    case WSAEHOSTDOWN:
+        qDebug( "WSA error : WSAEHOSTDOWN" );
+        break;
 
-        case WSAEHOSTUNREACH:
-            qDebug( "WSA error : WSAEHOSTUNREACH" );
-            break;
+    case WSAEHOSTUNREACH:
+        qDebug( "WSA error : WSAEHOSTUNREACH" );
+        break;
 
-        case WSAENOTEMPTY:
-            qDebug( "WSA error : WSAENOTEMPTY" );
-            break;
+    case WSAENOTEMPTY:
+        qDebug( "WSA error : WSAENOTEMPTY" );
+        break;
 
-        case WSAEPROCLIM:
-            qDebug( "WSA error : WSAEPROCLIM" );
-            break;
+    case WSAEPROCLIM:
+        qDebug( "WSA error : WSAEPROCLIM" );
+        break;
 
-        case WSAEUSERS:
-            qDebug( "WSA error : WSAEUSERS" );
-            break;
+    case WSAEUSERS:
+        qDebug( "WSA error : WSAEUSERS" );
+        break;
 
-        case WSAEDQUOT:
-            qDebug( "WSA error : WSAEDQUOT" );
-            break;
+    case WSAEDQUOT:
+        qDebug( "WSA error : WSAEDQUOT" );
+        break;
 
-        case WSAESTALE:
-            qDebug( "WSA error : WSAESTALE" );
-            break;
+    case WSAESTALE:
+        qDebug( "WSA error : WSAESTALE" );
+        break;
 
-        case WSAEREMOTE:
-            qDebug( "WSA error : WSAEREMOTE" );
-            break;
+    case WSAEREMOTE:
+        qDebug( "WSA error : WSAEREMOTE" );
+        break;
 
-        case WSAEDISCON:
-            qDebug( "WSA error : WSAEDISCON" );
-            break;
+    case WSAEDISCON:
+        qDebug( "WSA error : WSAEDISCON" );
+        break;
 
-        default:
-            qDebug( "WSA error : Unknown" );
-            break;
+    default:
+        qDebug( "WSA error : Unknown" );
+        break;
     }
 
     qErrnoWarning( r, "more details" );
@@ -260,20 +260,20 @@ static QByteArray lscs_prettyDebug( const char *data, int len, int maxLength )
         else
             switch ( c )
             {
-                case '\n':
-                    out += "\\n";
-                    break;
+            case '\n':
+                out += "\\n";
+                break;
 
-                case '\r':
-                    out += "\\r";
-                    break;
+            case '\r':
+                out += "\\r";
+                break;
 
-                case '\t':
-                    out += "\\t";
-                    break;
+            case '\t':
+                out += "\\t";
+                break;
 
-                default:
-                    out += QString( "\\%1" ).formatArgs( c, 8 ).toLatin1();
+            default:
+                out += QString( "\\%1" ).formatArgs( c, 8 ).toLatin1();
             }
     }
 
@@ -363,100 +363,100 @@ static void convertToLevelAndOption( QNativeSocketEngine::SocketOption opt,
 
     switch ( opt )
     {
-        case QNativeSocketEngine::NonBlockingSocketOption:      // WSAIoctl
-        case QNativeSocketEngine::TypeOfServiceOption:          // not supported
+    case QNativeSocketEngine::NonBlockingSocketOption:      // WSAIoctl
+    case QNativeSocketEngine::TypeOfServiceOption:          // not supported
 
-        // code not reachable
+    // code not reachable
 
-        case QNativeSocketEngine::ReceiveBufferSocketOption:
-            n = SO_RCVBUF;
-            break;
+    case QNativeSocketEngine::ReceiveBufferSocketOption:
+        n = SO_RCVBUF;
+        break;
 
-        case QNativeSocketEngine::SendBufferSocketOption:
-            n = SO_SNDBUF;
-            break;
+    case QNativeSocketEngine::SendBufferSocketOption:
+        n = SO_SNDBUF;
+        break;
 
-        case QNativeSocketEngine::BroadcastSocketOption:
-            n = SO_BROADCAST;
-            break;
+    case QNativeSocketEngine::BroadcastSocketOption:
+        n = SO_BROADCAST;
+        break;
 
-        case QNativeSocketEngine::AddressReusable:
-            n = SO_REUSEADDR;
-            break;
+    case QNativeSocketEngine::AddressReusable:
+        n = SO_REUSEADDR;
+        break;
 
-        case QNativeSocketEngine::BindExclusively:
-            n = SO_EXCLUSIVEADDRUSE;
-            break;
+    case QNativeSocketEngine::BindExclusively:
+        n = SO_EXCLUSIVEADDRUSE;
+        break;
 
-        case QNativeSocketEngine::ReceiveOutOfBandData:
-            n = SO_OOBINLINE;
-            break;
+    case QNativeSocketEngine::ReceiveOutOfBandData:
+        n = SO_OOBINLINE;
+        break;
 
-        case QNativeSocketEngine::LowDelayOption:
-            level = IPPROTO_TCP;
-            n = TCP_NODELAY;
-            break;
+    case QNativeSocketEngine::LowDelayOption:
+        level = IPPROTO_TCP;
+        n = TCP_NODELAY;
+        break;
 
-        case QNativeSocketEngine::KeepAliveOption:
-            n = SO_KEEPALIVE;
-            break;
+    case QNativeSocketEngine::KeepAliveOption:
+        n = SO_KEEPALIVE;
+        break;
 
-        case QNativeSocketEngine::MulticastTtlOption:
-            if ( socketProtocol == QAbstractSocket::IPv6Protocol || socketProtocol == QAbstractSocket::AnyIPProtocol )
-            {
-                level = IPPROTO_IPV6;
-                n = IPV6_MULTICAST_HOPS;
-            }
-            else
-            {
-                level = IPPROTO_IP;
-                n = IP_MULTICAST_TTL;
-            }
+    case QNativeSocketEngine::MulticastTtlOption:
+        if ( socketProtocol == QAbstractSocket::IPv6Protocol || socketProtocol == QAbstractSocket::AnyIPProtocol )
+        {
+            level = IPPROTO_IPV6;
+            n = IPV6_MULTICAST_HOPS;
+        }
+        else
+        {
+            level = IPPROTO_IP;
+            n = IP_MULTICAST_TTL;
+        }
 
-            break;
+        break;
 
-        case QNativeSocketEngine::MulticastLoopbackOption:
-            if ( socketProtocol == QAbstractSocket::IPv6Protocol || socketProtocol == QAbstractSocket::AnyIPProtocol )
-            {
-                level = IPPROTO_IPV6;
-                n = IPV6_MULTICAST_LOOP;
-            }
-            else
-            {
-                level = IPPROTO_IP;
-                n = IP_MULTICAST_LOOP;
-            }
+    case QNativeSocketEngine::MulticastLoopbackOption:
+        if ( socketProtocol == QAbstractSocket::IPv6Protocol || socketProtocol == QAbstractSocket::AnyIPProtocol )
+        {
+            level = IPPROTO_IPV6;
+            n = IPV6_MULTICAST_LOOP;
+        }
+        else
+        {
+            level = IPPROTO_IP;
+            n = IP_MULTICAST_LOOP;
+        }
 
-            break;
+        break;
 
-        case QNativeSocketEngine::ReceivePacketInformation:
-            if ( socketProtocol == QAbstractSocket::IPv6Protocol || socketProtocol == QAbstractSocket::AnyIPProtocol )
-            {
-                level = IPPROTO_IPV6;
-                n = IPV6_PKTINFO;
-            }
-            else if ( socketProtocol == QAbstractSocket::IPv4Protocol )
-            {
-                level = IPPROTO_IP;
-                n = IP_PKTINFO;
-            }
+    case QNativeSocketEngine::ReceivePacketInformation:
+        if ( socketProtocol == QAbstractSocket::IPv6Protocol || socketProtocol == QAbstractSocket::AnyIPProtocol )
+        {
+            level = IPPROTO_IPV6;
+            n = IPV6_PKTINFO;
+        }
+        else if ( socketProtocol == QAbstractSocket::IPv4Protocol )
+        {
+            level = IPPROTO_IP;
+            n = IP_PKTINFO;
+        }
 
-            break;
+        break;
 
-        case QNativeSocketEngine::ReceiveHopLimit:
-            if ( socketProtocol == QAbstractSocket::IPv6Protocol || socketProtocol == QAbstractSocket::AnyIPProtocol )
-            {
-                level = IPPROTO_IPV6;
-                n = IPV6_HOPLIMIT;
+    case QNativeSocketEngine::ReceiveHopLimit:
+        if ( socketProtocol == QAbstractSocket::IPv6Protocol || socketProtocol == QAbstractSocket::AnyIPProtocol )
+        {
+            level = IPPROTO_IPV6;
+            n = IPV6_HOPLIMIT;
 
-            }
-            else if ( socketProtocol == QAbstractSocket::IPv4Protocol )
-            {
-                level = IPPROTO_IP;
-                n = IP_HOPLIMIT;
-            }
+        }
+        else if ( socketProtocol == QAbstractSocket::IPv4Protocol )
+        {
+            level = IPPROTO_IP;
+            n = IP_HOPLIMIT;
+        }
 
-            break;
+        break;
     }
 }
 
@@ -579,23 +579,23 @@ bool QNativeSocketEnginePrivate::createNewSocket( QAbstractSocket::SocketType so
 
         switch ( err )
         {
-            case WSANOTINITIALISED:
-                break;
+        case WSANOTINITIALISED:
+            break;
 
-            case WSAEAFNOSUPPORT:
-            case WSAESOCKTNOSUPPORT:
-            case WSAEPROTOTYPE:
-            case WSAEINVAL:
-                setError( QAbstractSocket::UnsupportedSocketOperationError, ProtocolUnsupportedErrorString );
-                break;
+        case WSAEAFNOSUPPORT:
+        case WSAESOCKTNOSUPPORT:
+        case WSAEPROTOTYPE:
+        case WSAEINVAL:
+            setError( QAbstractSocket::UnsupportedSocketOperationError, ProtocolUnsupportedErrorString );
+            break;
 
-            case WSAEMFILE:
-            case WSAENOBUFS:
-                setError( QAbstractSocket::SocketResourceError, ResourceErrorString );
-                break;
+        case WSAEMFILE:
+        case WSAENOBUFS:
+            setError( QAbstractSocket::SocketResourceError, ResourceErrorString );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         return false;
@@ -667,27 +667,27 @@ int QNativeSocketEnginePrivate::option( QNativeSocketEngine::SocketOption opt ) 
     switch ( opt )
     {
 
-        case QNativeSocketEngine::NonBlockingSocketOption:
+    case QNativeSocketEngine::NonBlockingSocketOption:
+    {
+        unsigned long buf = 0;
+
+        if ( WSAIoctl( socketDescriptor, FIONBIO, nullptr, 0, &buf, sizeof( buf ), nullptr, nullptr, nullptr ) == 0 )
         {
-            unsigned long buf = 0;
-
-            if ( WSAIoctl( socketDescriptor, FIONBIO, nullptr, 0, &buf, sizeof( buf ), nullptr, nullptr, nullptr ) == 0 )
-            {
-                return buf;
-            }
-            else
-            {
-                return -1;
-            }
-
-            break;
+            return buf;
+        }
+        else
+        {
+            return -1;
         }
 
-        case QNativeSocketEngine::TypeOfServiceOption:
-            return -1;
+        break;
+    }
 
-        default:
-            break;
+    case QNativeSocketEngine::TypeOfServiceOption:
+        return -1;
+
+    default:
+        break;
     }
 
 #if Q_BYTE_ORDER != Q_LITTLE_ENDIAN
@@ -722,38 +722,38 @@ bool QNativeSocketEnginePrivate::setOption( QNativeSocketEngine::SocketOption op
     // handle non-setsockopt options
     switch ( opt )
     {
-        case QNativeSocketEngine::SendBufferSocketOption:
+    case QNativeSocketEngine::SendBufferSocketOption:
 
-            // see QTBUG-30478 SO_SNDBUF should not be used on Vista or later
-            if ( QSysInfo::windowsVersion() >= QSysInfo::WV_VISTA )
-            {
-                return false;
-            }
-
-            break;
-
-        case QNativeSocketEngine::NonBlockingSocketOption:
+        // see QTBUG-30478 SO_SNDBUF should not be used on Vista or later
+        if ( QSysInfo::windowsVersion() >= QSysInfo::WV_VISTA )
         {
-            unsigned long buf = v;
-            unsigned long outBuf;
-            DWORD sizeWritten = 0;
-
-            if ( ::WSAIoctl( socketDescriptor, FIONBIO, &buf, sizeof( unsigned long ), &outBuf,
-                             sizeof( unsigned long ), &sizeWritten, nullptr, nullptr ) == SOCKET_ERROR )
-            {
-                WS_ERROR_DEBUG( WSAGetLastError() );
-                return false;
-            }
-
-            return true;
-            break;
+            return false;
         }
 
-        case QNativeSocketEngine::TypeOfServiceOption:
-            return false;
+        break;
 
-        default:
-            break;
+    case QNativeSocketEngine::NonBlockingSocketOption:
+    {
+        unsigned long buf = v;
+        unsigned long outBuf;
+        DWORD sizeWritten = 0;
+
+        if ( ::WSAIoctl( socketDescriptor, FIONBIO, &buf, sizeof( unsigned long ), &outBuf,
+                         sizeof( unsigned long ), &sizeWritten, nullptr, nullptr ) == SOCKET_ERROR )
+        {
+            WS_ERROR_DEBUG( WSAGetLastError() );
+            return false;
+        }
+
+        return true;
+        break;
+    }
+
+    case QNativeSocketEngine::TypeOfServiceOption:
+        return false;
+
+    default:
+        break;
     }
 
     int n, level;
@@ -798,17 +798,17 @@ bool QNativeSocketEnginePrivate::fetchConnectionParameters()
         // Determine protocol family
         switch ( sa.a.sa_family )
         {
-            case AF_INET:
-                socketProtocol = QAbstractSocket::IPv4Protocol;
-                break;
+        case AF_INET:
+            socketProtocol = QAbstractSocket::IPv4Protocol;
+            break;
 
-            case AF_INET6:
-                socketProtocol = QAbstractSocket::IPv6Protocol;
-                break;
+        case AF_INET6:
+            socketProtocol = QAbstractSocket::IPv6Protocol;
+            break;
 
-            default:
-                socketProtocol = QAbstractSocket::UnknownNetworkLayerProtocol;
-                break;
+        default:
+            socketProtocol = QAbstractSocket::UnknownNetworkLayerProtocol;
+            break;
         }
 
     }
@@ -934,127 +934,127 @@ bool QNativeSocketEnginePrivate::nativeConnect( const QHostAddress &address, qui
 
             switch ( err )
             {
-                case WSANOTINITIALISED:
-                    //###
-                    break;
+            case WSANOTINITIALISED:
+                //###
+                break;
 
-                case WSAEISCONN:
-                    socketState = QAbstractSocket::ConnectedState;
-                    break;
+            case WSAEISCONN:
+                socketState = QAbstractSocket::ConnectedState;
+                break;
 
-                case WSAEWOULDBLOCK:
+            case WSAEWOULDBLOCK:
+            {
+                // If WSAConnect returns WSAEWOULDBLOCK on the second
+                // connection attempt, we have to check SO_ERROR's
+                // value to detect ECONNREFUSED. If we don't get
+                // ECONNREFUSED, we'll have to treat it as an unfinished operation.
+
+                int value = 0;
+                int valueSize = sizeof( value );
+
+                bool tryAgain = false;
+                bool errorDetected = false;
+                int tries = 0;
+
+                do
                 {
-                    // If WSAConnect returns WSAEWOULDBLOCK on the second
-                    // connection attempt, we have to check SO_ERROR's
-                    // value to detect ECONNREFUSED. If we don't get
-                    // ECONNREFUSED, we'll have to treat it as an unfinished operation.
-
-                    int value = 0;
-                    int valueSize = sizeof( value );
-
-                    bool tryAgain = false;
-                    bool errorDetected = false;
-                    int tries = 0;
-
-                    do
+                    if ( ::getsockopt( socketDescriptor, SOL_SOCKET, SO_ERROR, ( char * ) &value, &valueSize ) == 0 )
                     {
-                        if ( ::getsockopt( socketDescriptor, SOL_SOCKET, SO_ERROR, ( char * ) &value, &valueSize ) == 0 )
+                        if ( value == WSAECONNREFUSED )
                         {
-                            if ( value == WSAECONNREFUSED )
-                            {
-                                setError( QAbstractSocket::ConnectionRefusedError, ConnectionRefusedErrorString );
-                                socketState = QAbstractSocket::UnconnectedState;
-                                errorDetected = true;
-                                break;
-                            }
-
-                            if ( value == WSAETIMEDOUT )
-                            {
-                                setError( QAbstractSocket::NetworkError, ConnectionTimeOutErrorString );
-                                socketState = QAbstractSocket::UnconnectedState;
-                                errorDetected = true;
-                                break;
-                            }
-
-                            if ( value == WSAEHOSTUNREACH )
-                            {
-                                setError( QAbstractSocket::NetworkError, HostUnreachableErrorString );
-                                socketState = QAbstractSocket::UnconnectedState;
-                                errorDetected = true;
-                                break;
-                            }
-
-                            if ( value == WSAEADDRNOTAVAIL )
-                            {
-                                setError( QAbstractSocket::NetworkError, AddressNotAvailableErrorString );
-                                socketState = QAbstractSocket::UnconnectedState;
-                                errorDetected = true;
-                                break;
-                            }
-
-                            if ( value == NOERROR )
-                            {
-                                // When we get WSAEWOULDBLOCK the outcome was not known, so a
-                                // NOERROR might indicate that the result of the operation
-                                // is still unknown. We try again to increase the chance that we did
-                                // get the correct result.
-                                tryAgain = !tryAgain;
-                            }
+                            setError( QAbstractSocket::ConnectionRefusedError, ConnectionRefusedErrorString );
+                            socketState = QAbstractSocket::UnconnectedState;
+                            errorDetected = true;
+                            break;
                         }
 
-                        tries++;
-                    }
-                    while ( tryAgain && ( tries < 2 ) );
+                        if ( value == WSAETIMEDOUT )
+                        {
+                            setError( QAbstractSocket::NetworkError, ConnectionTimeOutErrorString );
+                            socketState = QAbstractSocket::UnconnectedState;
+                            errorDetected = true;
+                            break;
+                        }
 
-                    if ( errorDetected )
-                    {
-                        break;
+                        if ( value == WSAEHOSTUNREACH )
+                        {
+                            setError( QAbstractSocket::NetworkError, HostUnreachableErrorString );
+                            socketState = QAbstractSocket::UnconnectedState;
+                            errorDetected = true;
+                            break;
+                        }
+
+                        if ( value == WSAEADDRNOTAVAIL )
+                        {
+                            setError( QAbstractSocket::NetworkError, AddressNotAvailableErrorString );
+                            socketState = QAbstractSocket::UnconnectedState;
+                            errorDetected = true;
+                            break;
+                        }
+
+                        if ( value == NOERROR )
+                        {
+                            // When we get WSAEWOULDBLOCK the outcome was not known, so a
+                            // NOERROR might indicate that the result of the operation
+                            // is still unknown. We try again to increase the chance that we did
+                            // get the correct result.
+                            tryAgain = !tryAgain;
+                        }
                     }
 
+                    tries++;
+                }
+                while ( tryAgain && ( tries < 2 ) );
+
+                if ( errorDetected )
+                {
+                    break;
                 }
 
-                [[fallthrough]];
+            }
 
-                case WSAEINPROGRESS:
-                    setError( QAbstractSocket::UnfinishedSocketOperationError, InvalidSocketErrorString );
-                    socketState = QAbstractSocket::ConnectingState;
-                    break;
+            [[fallthrough]];
 
-                case WSAEADDRINUSE:
-                    setError( QAbstractSocket::NetworkError, AddressInuseErrorString );
-                    break;
+            case WSAEINPROGRESS:
+                setError( QAbstractSocket::UnfinishedSocketOperationError, InvalidSocketErrorString );
+                socketState = QAbstractSocket::ConnectingState;
+                break;
 
-                case WSAECONNREFUSED:
-                    setError( QAbstractSocket::ConnectionRefusedError, ConnectionRefusedErrorString );
-                    socketState = QAbstractSocket::UnconnectedState;
-                    break;
+            case WSAEADDRINUSE:
+                setError( QAbstractSocket::NetworkError, AddressInuseErrorString );
+                break;
 
-                case WSAETIMEDOUT:
-                    setError( QAbstractSocket::NetworkError, ConnectionTimeOutErrorString );
-                    break;
+            case WSAECONNREFUSED:
+                setError( QAbstractSocket::ConnectionRefusedError, ConnectionRefusedErrorString );
+                socketState = QAbstractSocket::UnconnectedState;
+                break;
 
-                case WSAEACCES:
-                    setError( QAbstractSocket::SocketAccessError, AccessErrorString );
-                    socketState = QAbstractSocket::UnconnectedState;
-                    break;
+            case WSAETIMEDOUT:
+                setError( QAbstractSocket::NetworkError, ConnectionTimeOutErrorString );
+                break;
 
-                case WSAEHOSTUNREACH:
-                    setError( QAbstractSocket::NetworkError, HostUnreachableErrorString );
-                    socketState = QAbstractSocket::UnconnectedState;
-                    break;
+            case WSAEACCES:
+                setError( QAbstractSocket::SocketAccessError, AccessErrorString );
+                socketState = QAbstractSocket::UnconnectedState;
+                break;
 
-                case WSAENETUNREACH:
-                    setError( QAbstractSocket::NetworkError, NetworkUnreachableErrorString );
-                    socketState = QAbstractSocket::UnconnectedState;
-                    break;
+            case WSAEHOSTUNREACH:
+                setError( QAbstractSocket::NetworkError, HostUnreachableErrorString );
+                socketState = QAbstractSocket::UnconnectedState;
+                break;
 
-                case WSAEINVAL:
-                case WSAEALREADY:
-                    setError( QAbstractSocket::UnfinishedSocketOperationError, InvalidSocketErrorString );
-                    break;
+            case WSAENETUNREACH:
+                setError( QAbstractSocket::NetworkError, NetworkUnreachableErrorString );
+                socketState = QAbstractSocket::UnconnectedState;
+                break;
 
-                default:
-                    break;
+            case WSAEINVAL:
+            case WSAEALREADY:
+                setError( QAbstractSocket::UnfinishedSocketOperationError, InvalidSocketErrorString );
+                break;
+
+            default:
+                break;
             }
 
             if ( socketState != QAbstractSocket::ConnectedState )
@@ -1134,24 +1134,24 @@ bool QNativeSocketEnginePrivate::nativeBind( const QHostAddress &addr, quint16 p
         switch ( err )
         {
 
-            case WSANOTINITIALISED:
-                break;
+        case WSANOTINITIALISED:
+            break;
 
-            case WSAEADDRINUSE:
-            case WSAEINVAL:
-                setError( QAbstractSocket::AddressInUseError, AddressInuseErrorString );
-                break;
+        case WSAEADDRINUSE:
+        case WSAEINVAL:
+            setError( QAbstractSocket::AddressInUseError, AddressInuseErrorString );
+            break;
 
-            case WSAEACCES:
-                setError( QAbstractSocket::SocketAccessError, AddressProtectedErrorString );
-                break;
+        case WSAEACCES:
+            setError( QAbstractSocket::SocketAccessError, AddressProtectedErrorString );
+            break;
 
-            case WSAEADDRNOTAVAIL:
-                setError( QAbstractSocket::SocketAddressNotAvailableError, AddressNotAvailableErrorString );
-                break;
+        case WSAEADDRNOTAVAIL:
+            setError( QAbstractSocket::SocketAddressNotAvailableError, AddressNotAvailableErrorString );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
@@ -1180,15 +1180,15 @@ bool QNativeSocketEnginePrivate::nativeListen( int backlog )
 
         switch ( err )
         {
-            case WSANOTINITIALISED:
-                break;
+        case WSANOTINITIALISED:
+            break;
 
-            case WSAEADDRINUSE:
-                setError( QAbstractSocket::AddressInUseError, PortInuseErrorString );
-                break;
+        case WSAEADDRINUSE:
+            setError( QAbstractSocket::AddressInUseError, PortInuseErrorString );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
@@ -1217,44 +1217,44 @@ int QNativeSocketEnginePrivate::nativeAccept()
 
         switch ( err )
         {
-            case WSAEACCES:
-                setError( QAbstractSocket::SocketAccessError, AccessErrorString );
-                break;
+        case WSAEACCES:
+            setError( QAbstractSocket::SocketAccessError, AccessErrorString );
+            break;
 
-            case WSAECONNREFUSED:
-                setError( QAbstractSocket::ConnectionRefusedError, ConnectionRefusedErrorString );
-                break;
+        case WSAECONNREFUSED:
+            setError( QAbstractSocket::ConnectionRefusedError, ConnectionRefusedErrorString );
+            break;
 
-            case WSAECONNRESET:
-                setError( QAbstractSocket::NetworkError, RemoteHostClosedErrorString );
-                break;
+        case WSAECONNRESET:
+            setError( QAbstractSocket::NetworkError, RemoteHostClosedErrorString );
+            break;
 
-            case WSAENETDOWN:
-                setError( QAbstractSocket::NetworkError, NetworkUnreachableErrorString );
-                break;
+        case WSAENETDOWN:
+            setError( QAbstractSocket::NetworkError, NetworkUnreachableErrorString );
+            break;
 
-            case WSAENOTSOCK:
-                setError( QAbstractSocket::SocketResourceError, NotSocketErrorString );
-                break;
+        case WSAENOTSOCK:
+            setError( QAbstractSocket::SocketResourceError, NotSocketErrorString );
+            break;
 
-            case WSAEINVAL:
-            case WSAEOPNOTSUPP:
-                setError( QAbstractSocket::UnsupportedSocketOperationError, ProtocolUnsupportedErrorString );
-                break;
+        case WSAEINVAL:
+        case WSAEOPNOTSUPP:
+            setError( QAbstractSocket::UnsupportedSocketOperationError, ProtocolUnsupportedErrorString );
+            break;
 
-            case WSAEFAULT:
-            case WSAEMFILE:
-            case WSAENOBUFS:
-                setError( QAbstractSocket::SocketResourceError, ResourceErrorString );
-                break;
+        case WSAEFAULT:
+        case WSAEMFILE:
+        case WSAENOBUFS:
+            setError( QAbstractSocket::SocketResourceError, ResourceErrorString );
+            break;
 
-            case WSAEWOULDBLOCK:
-                setError( QAbstractSocket::TemporaryError, TemporaryErrorString );
-                break;
+        case WSAEWOULDBLOCK:
+            setError( QAbstractSocket::TemporaryError, TemporaryErrorString );
+            break;
 
-            default:
-                setError( QAbstractSocket::UnknownSocketError, UnknownSocketErrorString );
-                break;
+        default:
+            setError( QAbstractSocket::UnknownSocketError, UnknownSocketErrorString );
+            break;
         }
 
     }
@@ -1588,22 +1588,22 @@ qint64 QNativeSocketEnginePrivate::nativePendingDatagramSize() const
         {
             switch ( err )
             {
-                case WSAEMSGSIZE:
-                    bufferCount += 5;
-                    delete[] buffer;
-                    buffer = nullptr;
+            case WSAEMSGSIZE:
+                bufferCount += 5;
+                delete[] buffer;
+                buffer = nullptr;
 
-                    continue;
+                continue;
 
-                case WSAECONNRESET:
-                case WSAENETRESET:
-                    retval = 0;
-                    break;
+            case WSAECONNRESET:
+            case WSAENETRESET:
+                retval = 0;
+                break;
 
-                default:
-                    WS_ERROR_DEBUG( err );
-                    retval = -1;
-                    break;
+            default:
+                WS_ERROR_DEBUG( err );
+                retval = -1;
+                break;
             }
 
             break;
@@ -1677,17 +1677,17 @@ qint64 QNativeSocketEnginePrivate::nativeReceiveDatagram( char *data, qint64 max
 
             switch ( err )
             {
-                case WSAENETRESET:
-                    setError( QAbstractSocket::NetworkError, NetworkDroppedConnectionErrorString );
-                    break;
+            case WSAENETRESET:
+                setError( QAbstractSocket::NetworkError, NetworkDroppedConnectionErrorString );
+                break;
 
-                case WSAECONNRESET:
-                    setError( QAbstractSocket::ConnectionRefusedError, ConnectionResetErrorString );
-                    break;
+            case WSAECONNRESET:
+                setError( QAbstractSocket::ConnectionRefusedError, ConnectionResetErrorString );
+                break;
 
-                default:
-                    setError( QAbstractSocket::NetworkError, ReceiveDatagramErrorString );
-                    break;
+            default:
+                setError( QAbstractSocket::NetworkError, ReceiveDatagramErrorString );
+                break;
             }
 
             ret = -1;
@@ -1873,13 +1873,13 @@ qint64 QNativeSocketEnginePrivate::nativeSendDatagram( const char *data, qint64 
 
         switch ( err )
         {
-            case WSAEMSGSIZE:
-                setError( QAbstractSocket::DatagramTooLargeError, DatagramTooLargeErrorString );
-                break;
+        case WSAEMSGSIZE:
+            setError( QAbstractSocket::DatagramTooLargeError, DatagramTooLargeErrorString );
+            break;
 
-            default:
-                setError( QAbstractSocket::NetworkError, SendDatagramErrorString );
-                break;
+        default:
+            setError( QAbstractSocket::NetworkError, SendDatagramErrorString );
+            break;
         }
 
         ret = -1;
@@ -1952,15 +1952,15 @@ qint64 QNativeSocketEnginePrivate::nativeWrite( const char *data, qint64 len )
 
             switch ( err )
             {
-                case WSAECONNRESET:
-                case WSAECONNABORTED:
-                    ret = -1;
-                    setError( QAbstractSocket::NetworkError, WriteErrorString );
-                    q->close();
-                    break;
+            case WSAECONNRESET:
+            case WSAECONNABORTED:
+                ret = -1;
+                setError( QAbstractSocket::NetworkError, WriteErrorString );
+                q->close();
+                break;
 
-                default:
-                    break;
+            default:
+                break;
             }
 
             break;
@@ -1994,23 +1994,23 @@ qint64 QNativeSocketEnginePrivate::nativeRead( char *data, qint64 maxLength )
 
         switch ( err )
         {
-            case WSAEWOULDBLOCK:
-                ret = -2;
-                break;
+        case WSAEWOULDBLOCK:
+            ret = -2;
+            break;
 
-            case WSAEBADF:
-            case WSAEINVAL:
-                //error string is now set in read(), not here in nativeRead()
-                break;
+        case WSAEBADF:
+        case WSAEINVAL:
+            //error string is now set in read(), not here in nativeRead()
+            break;
 
-            case WSAECONNRESET:
-            case WSAECONNABORTED:
-                // for tcp sockets this will be handled in QNativeSocketEngine::read
-                ret = 0;
-                break;
+        case WSAECONNRESET:
+        case WSAECONNABORTED:
+            // for tcp sockets this will be handled in QNativeSocketEngine::read
+            ret = 0;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
     }

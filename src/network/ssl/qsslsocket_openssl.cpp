@@ -1240,43 +1240,43 @@ void QSslSocketBackendPrivate::transmit()
             // Error
             switch ( q_SSL_get_error( ssl, readBytes ) )
             {
-                case SSL_ERROR_WANT_READ:
-                case SSL_ERROR_WANT_WRITE:
-                    // Out of data.
-                    break;
+            case SSL_ERROR_WANT_READ:
+            case SSL_ERROR_WANT_WRITE:
+                // Out of data.
+                break;
 
-                case SSL_ERROR_ZERO_RETURN:
-                    // The remote host closed the connection.
+            case SSL_ERROR_ZERO_RETURN:
+                // The remote host closed the connection.
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
-                    qDebug() << "QSslSocketBackendPrivate::transmit: remote disconnect";
+                qDebug() << "QSslSocketBackendPrivate::transmit: remote disconnect";
 #endif
-                    shutdown = true;    // the other side shut down, make sure we do not send shutdown
+                shutdown = true;    // the other side shut down, make sure we do not send shutdown
 
-                    // ourselves
-                    q->setErrorString( QSslSocket::tr( "The TLS/SSL connection has been closed" ) );
-                    q->setSocketError( QAbstractSocket::RemoteHostClosedError );
-                    emit q->error( QAbstractSocket::RemoteHostClosedError );
-                    return;
+                // ourselves
+                q->setErrorString( QSslSocket::tr( "The TLS/SSL connection has been closed" ) );
+                q->setSocketError( QAbstractSocket::RemoteHostClosedError );
+                emit q->error( QAbstractSocket::RemoteHostClosedError );
+                return;
 
-                case SSL_ERROR_SYSCALL:    // some IO error
-                case SSL_ERROR_SSL:    // error in the SSL library
-                    // we do not know exactly what the error is, nor whether we can recover from it,
-                    // so just return to prevent an endless loop in the outer "while" statement
-                    q->setErrorString( QSslSocket::tr( "Error while reading: %1" ).formatArg( getErrorsFromOpenSsl() ) );
-                    q->setSocketError( QAbstractSocket::UnknownSocketError );
-                    emit q->error( QAbstractSocket::UnknownSocketError );
-                    return;
+            case SSL_ERROR_SYSCALL:    // some IO error
+            case SSL_ERROR_SSL:    // error in the SSL library
+                // we do not know exactly what the error is, nor whether we can recover from it,
+                // so just return to prevent an endless loop in the outer "while" statement
+                q->setErrorString( QSslSocket::tr( "Error while reading: %1" ).formatArg( getErrorsFromOpenSsl() ) );
+                q->setSocketError( QAbstractSocket::UnknownSocketError );
+                emit q->error( QAbstractSocket::UnknownSocketError );
+                return;
 
-                default:
-                    // SSL_ERROR_WANT_CONNECT, SSL_ERROR_WANT_ACCEPT: can only happen with a
-                    // BIO_s_connect() or BIO_s_accept(), which we do not call.
-                    // SSL_ERROR_WANT_X509_LOOKUP: can only happen with a
-                    // SSL_CTX_set_client_cert_cb(), which we do not call.
-                    // So this default case should never be triggered.
-                    q->setErrorString( QSslSocket::tr( "Error while reading: %1" ).formatArg( getErrorsFromOpenSsl() ) );
-                    q->setSocketError( QAbstractSocket::UnknownSocketError );
-                    emit q->error( QAbstractSocket::UnknownSocketError );
-                    break;
+            default:
+                // SSL_ERROR_WANT_CONNECT, SSL_ERROR_WANT_ACCEPT: can only happen with a
+                // BIO_s_connect() or BIO_s_accept(), which we do not call.
+                // SSL_ERROR_WANT_X509_LOOKUP: can only happen with a
+                // SSL_CTX_set_client_cert_cb(), which we do not call.
+                // So this default case should never be triggered.
+                q->setErrorString( QSslSocket::tr( "Error while reading: %1" ).formatArg( getErrorsFromOpenSsl() ) );
+                q->setSocketError( QAbstractSocket::UnknownSocketError );
+                emit q->error( QAbstractSocket::UnknownSocketError );
+                break;
             }
 
         }
@@ -1292,85 +1292,85 @@ static QSslError _q_OpenSSL_to_QSslError( int errorCode, const QSslCertificate &
 
     switch ( errorCode )
     {
-        case X509_V_OK:
-            // X509_V_OK is also reported if the peer had no certificate.
-            break;
+    case X509_V_OK:
+        // X509_V_OK is also reported if the peer had no certificate.
+        break;
 
-        case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
-            error = QSslError( QSslError::UnableToGetIssuerCertificate, cert );
-            break;
+    case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
+        error = QSslError( QSslError::UnableToGetIssuerCertificate, cert );
+        break;
 
-        case X509_V_ERR_UNABLE_TO_DECRYPT_CERT_SIGNATURE:
-            error = QSslError( QSslError::UnableToDecryptCertificateSignature, cert );
-            break;
+    case X509_V_ERR_UNABLE_TO_DECRYPT_CERT_SIGNATURE:
+        error = QSslError( QSslError::UnableToDecryptCertificateSignature, cert );
+        break;
 
-        case X509_V_ERR_UNABLE_TO_DECODE_ISSUER_PUBLIC_KEY:
-            error = QSslError( QSslError::UnableToDecodeIssuerPublicKey, cert );
-            break;
+    case X509_V_ERR_UNABLE_TO_DECODE_ISSUER_PUBLIC_KEY:
+        error = QSslError( QSslError::UnableToDecodeIssuerPublicKey, cert );
+        break;
 
-        case X509_V_ERR_CERT_SIGNATURE_FAILURE:
-            error = QSslError( QSslError::CertificateSignatureFailed, cert );
-            break;
+    case X509_V_ERR_CERT_SIGNATURE_FAILURE:
+        error = QSslError( QSslError::CertificateSignatureFailed, cert );
+        break;
 
-        case X509_V_ERR_CERT_NOT_YET_VALID:
-            error = QSslError( QSslError::CertificateNotYetValid, cert );
-            break;
+    case X509_V_ERR_CERT_NOT_YET_VALID:
+        error = QSslError( QSslError::CertificateNotYetValid, cert );
+        break;
 
-        case X509_V_ERR_CERT_HAS_EXPIRED:
-            error = QSslError( QSslError::CertificateExpired, cert );
-            break;
+    case X509_V_ERR_CERT_HAS_EXPIRED:
+        error = QSslError( QSslError::CertificateExpired, cert );
+        break;
 
-        case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
-            error = QSslError( QSslError::InvalidNotBeforeField, cert );
-            break;
+    case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
+        error = QSslError( QSslError::InvalidNotBeforeField, cert );
+        break;
 
-        case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
-            error = QSslError( QSslError::InvalidNotAfterField, cert );
-            break;
+    case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
+        error = QSslError( QSslError::InvalidNotAfterField, cert );
+        break;
 
-        case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
-            error = QSslError( QSslError::SelfSignedCertificate, cert );
-            break;
+    case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
+        error = QSslError( QSslError::SelfSignedCertificate, cert );
+        break;
 
-        case X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN:
-            error = QSslError( QSslError::SelfSignedCertificateInChain, cert );
-            break;
+    case X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN:
+        error = QSslError( QSslError::SelfSignedCertificateInChain, cert );
+        break;
 
-        case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT_LOCALLY:
-            error = QSslError( QSslError::UnableToGetLocalIssuerCertificate, cert );
-            break;
+    case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT_LOCALLY:
+        error = QSslError( QSslError::UnableToGetLocalIssuerCertificate, cert );
+        break;
 
-        case X509_V_ERR_UNABLE_TO_VERIFY_LEAF_SIGNATURE:
-            error = QSslError( QSslError::UnableToVerifyFirstCertificate, cert );
-            break;
+    case X509_V_ERR_UNABLE_TO_VERIFY_LEAF_SIGNATURE:
+        error = QSslError( QSslError::UnableToVerifyFirstCertificate, cert );
+        break;
 
-        case X509_V_ERR_CERT_REVOKED:
-            error = QSslError( QSslError::CertificateRevoked, cert );
-            break;
+    case X509_V_ERR_CERT_REVOKED:
+        error = QSslError( QSslError::CertificateRevoked, cert );
+        break;
 
-        case X509_V_ERR_INVALID_CA:
-            error = QSslError( QSslError::InvalidCaCertificate, cert );
-            break;
+    case X509_V_ERR_INVALID_CA:
+        error = QSslError( QSslError::InvalidCaCertificate, cert );
+        break;
 
-        case X509_V_ERR_PATH_LENGTH_EXCEEDED:
-            error = QSslError( QSslError::PathLengthExceeded, cert );
-            break;
+    case X509_V_ERR_PATH_LENGTH_EXCEEDED:
+        error = QSslError( QSslError::PathLengthExceeded, cert );
+        break;
 
-        case X509_V_ERR_INVALID_PURPOSE:
-            error = QSslError( QSslError::InvalidPurpose, cert );
-            break;
+    case X509_V_ERR_INVALID_PURPOSE:
+        error = QSslError( QSslError::InvalidPurpose, cert );
+        break;
 
-        case X509_V_ERR_CERT_UNTRUSTED:
-            error = QSslError( QSslError::CertificateUntrusted, cert );
-            break;
+    case X509_V_ERR_CERT_UNTRUSTED:
+        error = QSslError( QSslError::CertificateUntrusted, cert );
+        break;
 
-        case X509_V_ERR_CERT_REJECTED:
-            error = QSslError( QSslError::CertificateRejected, cert );
-            break;
+    case X509_V_ERR_CERT_REJECTED:
+        error = QSslError( QSslError::CertificateRejected, cert );
+        break;
 
-        default:
-            error = QSslError( QSslError::UnspecifiedError, cert );
-            break;
+    default:
+        error = QSslError( QSslError::UnspecifiedError, cert );
+        break;
     }
 
     return error;
@@ -1420,19 +1420,19 @@ bool QSslSocketBackendPrivate::startHandshake()
     {
         switch ( q_SSL_get_error( ssl, result ) )
         {
-            case SSL_ERROR_WANT_READ:
-            case SSL_ERROR_WANT_WRITE:
-                // handshake is not yet complete.
-                break;
+        case SSL_ERROR_WANT_READ:
+        case SSL_ERROR_WANT_WRITE:
+            // handshake is not yet complete.
+            break;
 
-            default:
-                q->setErrorString( QSslSocket::tr( "Error during SSL handshake: %1" ).formatArg( getErrorsFromOpenSsl() ) );
-                q->setSocketError( QAbstractSocket::SslHandshakeFailedError );
+        default:
+            q->setErrorString( QSslSocket::tr( "Error during SSL handshake: %1" ).formatArg( getErrorsFromOpenSsl() ) );
+            q->setSocketError( QAbstractSocket::SslHandshakeFailedError );
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
-                qDebug() << "QSslSocketBackendPrivate::startHandshake: error!" << q->errorString();
+            qDebug() << "QSslSocketBackendPrivate::startHandshake: error!" << q->errorString();
 #endif
-                emit q->error( QAbstractSocket::SslHandshakeFailedError );
-                q->abort();
+            emit q->error( QAbstractSocket::SslHandshakeFailedError );
+            q->abort();
         }
 
         return false;
@@ -1544,27 +1544,27 @@ bool QSslSocketBackendPrivate::startHandshake()
             {
                 switch ( sslErrors.at( i ).error() )
                 {
-                    case QSslError::UnableToGetLocalIssuerCertificate:
+                case QSslError::UnableToGetLocalIssuerCertificate:
 
-                    // site presented intermediate cert, but root is unknown
+                // site presented intermediate cert, but root is unknown
 
-                    case QSslError::SelfSignedCertificateInChain:
-                        // site presented a complete chain, but root is unknown
-                        certToFetch = sslErrors.at( i ).certificate();
-                        break;
+                case QSslError::SelfSignedCertificateInChain:
+                    // site presented a complete chain, but root is unknown
+                    certToFetch = sslErrors.at( i ).certificate();
+                    break;
 
-                    case QSslError::SelfSignedCertificate:
-                    case QSslError::CertificateBlacklisted:
-                        // With these errors, we know it will be untrusted so save time by not asking windows
-                        fetchCertificate = false;
-                        break;
+                case QSslError::SelfSignedCertificate:
+                case QSslError::CertificateBlacklisted:
+                    // With these errors, we know it will be untrusted so save time by not asking windows
+                    fetchCertificate = false;
+                    break;
 
-                    default:
+                default:
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
-                        qDebug() << sslErrors.at( i ).errorString();
+                    qDebug() << sslErrors.at( i ).errorString();
 #endif
-                        break;
+                    break;
                 }
             }
 
@@ -1728,17 +1728,17 @@ void QSslSocketBackendPrivate::_q_caRootLoaded( QSslCertificate cert, QSslCertif
             {
                 switch ( sslErrors.at( i ).error() )
                 {
-                    case QSslError::UnableToGetLocalIssuerCertificate:
-                    case QSslError::CertificateUntrusted:
-                    case QSslError::UnableToVerifyFirstCertificate:
-                    case QSslError::SelfSignedCertificateInChain:
-                        // error can be ignored if OS says the chain is trusted
-                        sslErrors.removeAt( i );
-                        break;
+                case QSslError::UnableToGetLocalIssuerCertificate:
+                case QSslError::CertificateUntrusted:
+                case QSslError::UnableToVerifyFirstCertificate:
+                case QSslError::SelfSignedCertificateInChain:
+                    // error can be ignored if OS says the chain is trusted
+                    sslErrors.removeAt( i );
+                    break;
 
-                    default:
-                        // error cannot be ignored
-                        break;
+                default:
+                    // error cannot be ignored
+                    break;
                 }
             }
         }
@@ -1902,7 +1902,7 @@ void QWindowsCaRootFetcher::start()
             {
 
                 trustedRoot = QSslCertificate( QByteArray( ( const char * )finalChain->rgpElement[finalChain->cElement -
-                                                                    1]->pCertContext->pbCertEncoded
+                                               1]->pCertContext->pbCertEncoded
                                                , finalChain->rgpElement[finalChain->cElement - 1]->pCertContext->cbCertEncoded ), QSsl::Der );
             }
         }
@@ -1981,20 +1981,20 @@ QSsl::SslProtocol QSslSocketBackendPrivate::sessionProtocol() const
 
     switch ( ver )
     {
-        case 0x2:
-            return QSsl::SslV2;
+    case 0x2:
+        return QSsl::SslV2;
 
-        case 0x300:
-            return QSsl::SslV3;
+    case 0x300:
+        return QSsl::SslV3;
 
-        case 0x301:
-            return QSsl::TlsV1_0;
+    case 0x301:
+        return QSsl::TlsV1_0;
 
-        case 0x302:
-            return QSsl::TlsV1_1;
+    case 0x302:
+        return QSsl::TlsV1_1;
 
-        case 0x303:
-            return QSsl::TlsV1_2;
+    case 0x303:
+        return QSsl::TlsV1_2;
     }
 
     return QSsl::UnknownProtocol;

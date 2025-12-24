@@ -426,31 +426,31 @@ void QScriptDebuggerPrivate::handleResponse(
 
             switch ( command.type() )
             {
-                case QScriptDebuggerCommand::SetBreakpoint:
-                {
-                    int breakpointId = response.resultAsInt();
-                    QScriptBreakpointData data = command.breakpointData();
-                    breakpointsModel->addBreakpoint( breakpointId, data );
-                }
-                break;
+            case QScriptDebuggerCommand::SetBreakpoint:
+            {
+                int breakpointId = response.resultAsInt();
+                QScriptBreakpointData data = command.breakpointData();
+                breakpointsModel->addBreakpoint( breakpointId, data );
+            }
+            break;
 
-                case QScriptDebuggerCommand::SetBreakpointData:
-                {
-                    int breakpointId = command.breakpointId();
-                    QScriptBreakpointData data = command.breakpointData();
-                    breakpointsModel->modifyBreakpoint( breakpointId, data );
-                }
-                break;
+            case QScriptDebuggerCommand::SetBreakpointData:
+            {
+                int breakpointId = command.breakpointId();
+                QScriptBreakpointData data = command.breakpointData();
+                breakpointsModel->modifyBreakpoint( breakpointId, data );
+            }
+            break;
 
-                case QScriptDebuggerCommand::DeleteBreakpoint:
-                {
-                    int breakpointId = command.breakpointId();
-                    breakpointsModel->removeBreakpoint( breakpointId );
-                }
-                break;
+            case QScriptDebuggerCommand::DeleteBreakpoint:
+            {
+                int breakpointId = command.breakpointId();
+                breakpointsModel->removeBreakpoint( breakpointId );
+            }
+            break;
 
-                default:
-                    Q_ASSERT( false );
+            default:
+                Q_ASSERT( false );
             }
         }
     }
@@ -544,199 +544,199 @@ bool QScriptDebuggerPrivate::debuggerEvent( const QScriptDebuggerEvent &event )
 
     switch ( event.type() )
     {
-        case QScriptDebuggerEvent::None:
-        case QScriptDebuggerEvent::UserEvent:
-        case QScriptDebuggerEvent::MaxUserEvent:
-            Q_ASSERT( false );
-            break;
-
-        case QScriptDebuggerEvent::Trace:
-            if ( !debugOutputWidget && widgetFactory )
-            {
-                q->setDebugOutputWidget( widgetFactory->createDebugOutputWidget() );
-            }
-
-            if ( debugOutputWidget )
-            {
-                debugOutputWidget->message( QtDebugMsg, event.message() );
-            }
-
-            return true; // trace doesn't stall execution
-
-        case QScriptDebuggerEvent::SteppingFinished:
-        {
-            if ( !consoleWidget && widgetFactory )
-            {
-                q->setConsoleWidget( widgetFactory->createConsoleWidget() );
-            }
-
-            if ( consoleWidget )
-            {
-                QString msg = event.message();
-
-                if ( !msg.isEmpty() )
-                {
-                    consoleWidget->message( QtDebugMsg, msg );
-                }
-            }
-        }
+    case QScriptDebuggerEvent::None:
+    case QScriptDebuggerEvent::UserEvent:
+    case QScriptDebuggerEvent::MaxUserEvent:
+        Q_ASSERT( false );
         break;
 
-        case QScriptDebuggerEvent::Interrupted:
-        case QScriptDebuggerEvent::LocationReached:
-            break;
-
-        case QScriptDebuggerEvent::Breakpoint:
+    case QScriptDebuggerEvent::Trace:
+        if ( !debugOutputWidget && widgetFactory )
         {
-            int bpId = event.breakpointId();
+            q->setDebugOutputWidget( widgetFactory->createDebugOutputWidget() );
+        }
 
-            if ( !consoleWidget && widgetFactory )
-            {
-                q->setConsoleWidget( widgetFactory->createConsoleWidget() );
-            }
+        if ( debugOutputWidget )
+        {
+            debugOutputWidget->message( QtDebugMsg, event.message() );
+        }
 
-            if ( consoleWidget )
-            {
-                consoleWidget->message( QtDebugMsg,
-                                        QString::fromLatin1( "Breakpoint %0 at %1, line %2." )
-                                        .arg( bpId ).arg( event.fileName() )
-                                        .arg( event.lineNumber() ) );
-            }
+        return true; // trace doesn't stall execution
 
-            if ( breakpointsModel->breakpointData( bpId ).isSingleShot() )
+    case QScriptDebuggerEvent::SteppingFinished:
+    {
+        if ( !consoleWidget && widgetFactory )
+        {
+            q->setConsoleWidget( widgetFactory->createConsoleWidget() );
+        }
+
+        if ( consoleWidget )
+        {
+            QString msg = event.message();
+
+            if ( !msg.isEmpty() )
             {
-                breakpointsModel->removeBreakpoint( bpId );
+                consoleWidget->message( QtDebugMsg, msg );
             }
         }
+    }
+    break;
+
+    case QScriptDebuggerEvent::Interrupted:
+    case QScriptDebuggerEvent::LocationReached:
         break;
 
-        case QScriptDebuggerEvent::Exception:
+    case QScriptDebuggerEvent::Breakpoint:
+    {
+        int bpId = event.breakpointId();
+
+        if ( !consoleWidget && widgetFactory )
         {
-            if ( event.hasExceptionHandler() )
-            {
-                // Let the exception be handled like normal.
-                // We may want to add a "Break on all exceptions" option
-                // to be able to customize this behavior.
-                return true;
-            }
-
-            if ( !consoleWidget && widgetFactory )
-            {
-                q->setConsoleWidget( widgetFactory->createConsoleWidget() );
-            }
-
-            if ( !errorLogWidget && widgetFactory )
-            {
-                q->setErrorLogWidget( widgetFactory->createErrorLogWidget() );
-            }
-
-            if ( consoleWidget || errorLogWidget )
-            {
-                QString fn = event.fileName();
-
-                if ( fn.isEmpty() )
-                {
-                    if ( event.scriptId() != -1 )
-                    {
-                        fn = QString::fromLatin1( "<anonymous script, id=%0>" ).arg( event.scriptId() );
-                    }
-                    else
-                    {
-                        fn = QString::fromLatin1( "<native>" );
-                    }
-                }
-
-                QString msg = QString::fromLatin1( "Uncaught exception at %0:%1: %2" ).arg( fn )
-                              .arg( event.lineNumber() ).arg( event.message() );
-
-                if ( consoleWidget )
-                {
-                    consoleWidget->message( QtCriticalMsg, msg );
-                }
-
-                if ( errorLogWidget )
-                {
-                    errorLogWidget->message( QtCriticalMsg, msg );
-                }
-            }
+            q->setConsoleWidget( widgetFactory->createConsoleWidget() );
         }
-        break;
 
-        case QScriptDebuggerEvent::InlineEvalFinished:
+        if ( consoleWidget )
         {
-            QScriptDebuggerValue result = event.scriptValue();
-            Q_ASSERT( console != 0 );
-            int action = console->evaluateAction();
-            console->setEvaluateAction( 0 );
-
-            switch ( action )
-            {
-                case 0:   // eval command
-                {
-                    if ( activeJob )
-                    {
-                        if ( activeJobHibernating )
-                        {
-                            activeJobHibernating = false;
-                            activeJob->evaluateFinished( result );
-                        }
-                    }
-                    else if ( consoleWidget )
-                    {
-                        // ### if the result is an object, need to do a tostring job on it
-                        //          messageHandler->message(QtDebugMsg, result.toString());
-                        if ( result.type() != QScriptDebuggerValue::UndefinedValue )
-                        {
-                            consoleWidget->message( QtDebugMsg, event.message() );
-                        }
-                    }
-                }
-                break;
-
-                case 1:   // return command
-                {
-                    QScriptDebuggerCommandSchedulerFrontend frontend( this, this );
-                    frontend.scheduleForceReturn( console->currentFrameIndex(), result );
-                }
-
-                return false;
-            }
-
-            if ( !event.isNestedEvaluate() )
-            {
-                // in the case when evaluate() was called while the
-                // engine was not running, we don't want to enter interactive mode
-                return true;
-            }
+            consoleWidget->message( QtDebugMsg,
+                                    QString::fromLatin1( "Breakpoint %0 at %1, line %2." )
+                                    .arg( bpId ).arg( event.fileName() )
+                                    .arg( event.lineNumber() ) );
         }
-        break;
 
-        case QScriptDebuggerEvent::DebuggerInvocationRequest:
+        if ( breakpointsModel->breakpointData( bpId ).isSingleShot() )
         {
-            if ( !consoleWidget && widgetFactory )
-            {
-                q->setConsoleWidget( widgetFactory->createConsoleWidget() );
-            }
+            breakpointsModel->removeBreakpoint( bpId );
+        }
+    }
+    break;
 
-            if ( consoleWidget )
-            {
-                QString fn = event.fileName();
+    case QScriptDebuggerEvent::Exception:
+    {
+        if ( event.hasExceptionHandler() )
+        {
+            // Let the exception be handled like normal.
+            // We may want to add a "Break on all exceptions" option
+            // to be able to customize this behavior.
+            return true;
+        }
 
-                if ( fn.isEmpty() )
+        if ( !consoleWidget && widgetFactory )
+        {
+            q->setConsoleWidget( widgetFactory->createConsoleWidget() );
+        }
+
+        if ( !errorLogWidget && widgetFactory )
+        {
+            q->setErrorLogWidget( widgetFactory->createErrorLogWidget() );
+        }
+
+        if ( consoleWidget || errorLogWidget )
+        {
+            QString fn = event.fileName();
+
+            if ( fn.isEmpty() )
+            {
+                if ( event.scriptId() != -1 )
                 {
                     fn = QString::fromLatin1( "<anonymous script, id=%0>" ).arg( event.scriptId() );
                 }
+                else
+                {
+                    fn = QString::fromLatin1( "<native>" );
+                }
+            }
 
-                consoleWidget->message( QtDebugMsg,
-                                        QString::fromLatin1( "Debugger invoked from %1, line %2." )
-                                        .arg( fn ).arg( event.lineNumber() ) );
+            QString msg = QString::fromLatin1( "Uncaught exception at %0:%1: %2" ).arg( fn )
+                          .arg( event.lineNumber() ).arg( event.message() );
+
+            if ( consoleWidget )
+            {
+                consoleWidget->message( QtCriticalMsg, msg );
+            }
+
+            if ( errorLogWidget )
+            {
+                errorLogWidget->message( QtCriticalMsg, msg );
+            }
+        }
+    }
+    break;
+
+    case QScriptDebuggerEvent::InlineEvalFinished:
+    {
+        QScriptDebuggerValue result = event.scriptValue();
+        Q_ASSERT( console != 0 );
+        int action = console->evaluateAction();
+        console->setEvaluateAction( 0 );
+
+        switch ( action )
+        {
+        case 0:   // eval command
+        {
+            if ( activeJob )
+            {
+                if ( activeJobHibernating )
+                {
+                    activeJobHibernating = false;
+                    activeJob->evaluateFinished( result );
+                }
+            }
+            else if ( consoleWidget )
+            {
+                // ### if the result is an object, need to do a tostring job on it
+                //          messageHandler->message(QtDebugMsg, result.toString());
+                if ( result.type() != QScriptDebuggerValue::UndefinedValue )
+                {
+                    consoleWidget->message( QtDebugMsg, event.message() );
+                }
             }
         }
         break;
 
-        case QScriptDebuggerEvent::ForcedReturn:
+        case 1:   // return command
         {
-        }   break;
+            QScriptDebuggerCommandSchedulerFrontend frontend( this, this );
+            frontend.scheduleForceReturn( console->currentFrameIndex(), result );
+        }
+
+        return false;
+        }
+
+        if ( !event.isNestedEvaluate() )
+        {
+            // in the case when evaluate() was called while the
+            // engine was not running, we don't want to enter interactive mode
+            return true;
+        }
+    }
+    break;
+
+    case QScriptDebuggerEvent::DebuggerInvocationRequest:
+    {
+        if ( !consoleWidget && widgetFactory )
+        {
+            q->setConsoleWidget( widgetFactory->createConsoleWidget() );
+        }
+
+        if ( consoleWidget )
+        {
+            QString fn = event.fileName();
+
+            if ( fn.isEmpty() )
+            {
+                fn = QString::fromLatin1( "<anonymous script, id=%0>" ).arg( event.scriptId() );
+            }
+
+            consoleWidget->message( QtDebugMsg,
+                                    QString::fromLatin1( "Debugger invoked from %1, line %2." )
+                                    .arg( fn ).arg( event.lineNumber() ) );
+        }
+    }
+    break;
+
+    case QScriptDebuggerEvent::ForcedReturn:
+    {
+    }   break;
 
     }
 
@@ -1676,50 +1676,50 @@ QAction *QScriptDebugger::action( DebuggerAction action, QObject *parent )
 {
     switch ( action )
     {
-        case InterruptAction:
-            return interruptAction( parent );
+    case InterruptAction:
+        return interruptAction( parent );
 
-        case ContinueAction:
-            return continueAction( parent );
+    case ContinueAction:
+        return continueAction( parent );
 
-        case StepIntoAction:
-            return stepIntoAction( parent );
+    case StepIntoAction:
+        return stepIntoAction( parent );
 
-        case StepOverAction:
-            return stepOverAction( parent );
+    case StepOverAction:
+        return stepOverAction( parent );
 
-        case StepOutAction:
-            return stepOutAction( parent );
+    case StepOutAction:
+        return stepOutAction( parent );
 
-        case RunToCursorAction:
-            return runToCursorAction( parent );
+    case RunToCursorAction:
+        return runToCursorAction( parent );
 
-        case RunToNewScriptAction:
-            return runToNewScriptAction( parent );
+    case RunToNewScriptAction:
+        return runToNewScriptAction( parent );
 
-        case ToggleBreakpointAction:
-            return toggleBreakpointAction( parent );
+    case ToggleBreakpointAction:
+        return toggleBreakpointAction( parent );
 
-        case ClearDebugOutputAction:
-            return clearDebugOutputAction( parent );
+    case ClearDebugOutputAction:
+        return clearDebugOutputAction( parent );
 
-        case ClearErrorLogAction:
-            return clearErrorLogAction( parent );
+    case ClearErrorLogAction:
+        return clearErrorLogAction( parent );
 
-        case ClearConsoleAction:
-            return clearConsoleAction( parent );
+    case ClearConsoleAction:
+        return clearConsoleAction( parent );
 
-        case FindInScriptAction:
-            return findInScriptAction( parent );
+    case FindInScriptAction:
+        return findInScriptAction( parent );
 
-        case FindNextInScriptAction:
-            return findNextInScriptAction( parent );
+    case FindNextInScriptAction:
+        return findNextInScriptAction( parent );
 
-        case FindPreviousInScriptAction:
-            return findPreviousInScriptAction( parent );
+    case FindPreviousInScriptAction:
+        return findPreviousInScriptAction( parent );
 
-        case GoToLineAction:
-            return goToLineAction( parent );
+    case GoToLineAction:
+        return goToLineAction( parent );
     }
 
     return 0;
@@ -1729,122 +1729,122 @@ QWidget *QScriptDebugger::widget( DebuggerWidget widget )
 {
     switch ( widget )
     {
-        case ConsoleWidget:
+    case ConsoleWidget:
+    {
+        QScriptDebuggerConsoleWidgetInterface *w = consoleWidget();
+
+        if ( !w && widgetFactory() )
         {
-            QScriptDebuggerConsoleWidgetInterface *w = consoleWidget();
-
-            if ( !w && widgetFactory() )
-            {
-                w = widgetFactory()->createConsoleWidget();
-                setConsoleWidget( w );
-            }
-
-            return w;
+            w = widgetFactory()->createConsoleWidget();
+            setConsoleWidget( w );
         }
 
-        case StackWidget:
+        return w;
+    }
+
+    case StackWidget:
+    {
+        QScriptDebuggerStackWidgetInterface *w = stackWidget();
+
+        if ( !w && widgetFactory() )
         {
-            QScriptDebuggerStackWidgetInterface *w = stackWidget();
-
-            if ( !w && widgetFactory() )
-            {
-                w = widgetFactory()->createStackWidget();
-                setStackWidget( w );
-            }
-
-            return w;
+            w = widgetFactory()->createStackWidget();
+            setStackWidget( w );
         }
 
-        case ScriptsWidget:
+        return w;
+    }
+
+    case ScriptsWidget:
+    {
+        QScriptDebuggerScriptsWidgetInterface *w = scriptsWidget();
+
+        if ( !w && widgetFactory() )
         {
-            QScriptDebuggerScriptsWidgetInterface *w = scriptsWidget();
-
-            if ( !w && widgetFactory() )
-            {
-                w = widgetFactory()->createScriptsWidget();
-                setScriptsWidget( w );
-            }
-
-            return w;
+            w = widgetFactory()->createScriptsWidget();
+            setScriptsWidget( w );
         }
 
-        case LocalsWidget:
+        return w;
+    }
+
+    case LocalsWidget:
+    {
+        QScriptDebuggerLocalsWidgetInterface *w = localsWidget();
+
+        if ( !w && widgetFactory() )
         {
-            QScriptDebuggerLocalsWidgetInterface *w = localsWidget();
-
-            if ( !w && widgetFactory() )
-            {
-                w = widgetFactory()->createLocalsWidget();
-                setLocalsWidget( w );
-            }
-
-            return w;
+            w = widgetFactory()->createLocalsWidget();
+            setLocalsWidget( w );
         }
 
-        case CodeWidget:
+        return w;
+    }
+
+    case CodeWidget:
+    {
+        QScriptDebuggerCodeWidgetInterface *w = codeWidget();
+
+        if ( !w && widgetFactory() )
         {
-            QScriptDebuggerCodeWidgetInterface *w = codeWidget();
-
-            if ( !w && widgetFactory() )
-            {
-                w = widgetFactory()->createCodeWidget();
-                setCodeWidget( w );
-            }
-
-            return w;
+            w = widgetFactory()->createCodeWidget();
+            setCodeWidget( w );
         }
 
-        case CodeFinderWidget:
+        return w;
+    }
+
+    case CodeFinderWidget:
+    {
+        QScriptDebuggerCodeFinderWidgetInterface *w = codeFinderWidget();
+
+        if ( !w && widgetFactory() )
         {
-            QScriptDebuggerCodeFinderWidgetInterface *w = codeFinderWidget();
-
-            if ( !w && widgetFactory() )
-            {
-                w = widgetFactory()->createCodeFinderWidget();
-                setCodeFinderWidget( w );
-            }
-
-            return w;
+            w = widgetFactory()->createCodeFinderWidget();
+            setCodeFinderWidget( w );
         }
 
-        case BreakpointsWidget:
+        return w;
+    }
+
+    case BreakpointsWidget:
+    {
+        QScriptBreakpointsWidgetInterface *w = breakpointsWidget();
+
+        if ( !w && widgetFactory() )
         {
-            QScriptBreakpointsWidgetInterface *w = breakpointsWidget();
-
-            if ( !w && widgetFactory() )
-            {
-                w = widgetFactory()->createBreakpointsWidget();
-                setBreakpointsWidget( w );
-            }
-
-            return w;
+            w = widgetFactory()->createBreakpointsWidget();
+            setBreakpointsWidget( w );
         }
 
-        case DebugOutputWidget:
+        return w;
+    }
+
+    case DebugOutputWidget:
+    {
+        QScriptDebugOutputWidgetInterface *w = debugOutputWidget();
+
+        if ( !w && widgetFactory() )
         {
-            QScriptDebugOutputWidgetInterface *w = debugOutputWidget();
-
-            if ( !w && widgetFactory() )
-            {
-                w = widgetFactory()->createDebugOutputWidget();
-                setDebugOutputWidget( w );
-            }
-
-            return w;
+            w = widgetFactory()->createDebugOutputWidget();
+            setDebugOutputWidget( w );
         }
 
-        case ErrorLogWidget:
+        return w;
+    }
+
+    case ErrorLogWidget:
+    {
+        QScriptErrorLogWidgetInterface *w = errorLogWidget();
+
+        if ( !w && widgetFactory() )
         {
-            QScriptErrorLogWidgetInterface *w = errorLogWidget();
-
-            if ( !w && widgetFactory() )
-            {
-                w = widgetFactory()->createErrorLogWidget();
-                setErrorLogWidget( w );
-            }
-
-            return w;
+            w = widgetFactory()->createErrorLogWidget();
+            setErrorLogWidget( w );
         }
+
+        return w;
+    }
     }
 
     return 0;
@@ -2269,7 +2269,7 @@ QAction *QScriptDebugger::runToNewScriptAction( QObject *parent ) const
         runToNewScriptIcon.addPixmap( d->pixmap( QString::fromLatin1( "d_breakonscriptload.png" ) ), QIcon::Disabled );
         QScriptDebugger *that = const_cast<QScriptDebugger *>( this );
         that->d_func()->runToNewScriptAction = new QAction( runToNewScriptIcon,
-                QScriptDebugger::tr( "Run to New Script" ), parent );
+            QScriptDebugger::tr( "Run to New Script" ), parent );
         d->runToNewScriptAction->setEnabled( d->interactive );
         QObject::connect( d->runToNewScriptAction, SIGNAL( triggered() ), that, SLOT( _q_runToNewScript() ) );
     }
@@ -2287,7 +2287,7 @@ QAction *QScriptDebugger::toggleBreakpointAction( QObject *parent ) const
 
         QScriptDebugger *that = const_cast<QScriptDebugger *>( this );
         that->d_func()->toggleBreakpointAction = new QAction( toggleBreakpointIcon,
-                QScriptDebugger::tr( "Toggle Breakpoint" ), parent );
+            QScriptDebugger::tr( "Toggle Breakpoint" ), parent );
         d->toggleBreakpointAction->setShortcut( QScriptDebugger::tr( "F9" ) );
         d->toggleBreakpointAction->setEnabled( ( d->codeWidget != 0 ) && ( d->codeWidget->currentView() != 0 ) );
 
@@ -2307,7 +2307,7 @@ QAction *QScriptDebugger::clearDebugOutputAction( QObject *parent ) const
         QScriptDebugger *that = const_cast<QScriptDebugger *>( this );
 
         that->d_func()->clearDebugOutputAction = new QAction( clearDebugOutputIcon, QScriptDebugger::tr( "Clear Debug Output" ),
-                parent );
+            parent );
         QObject::connect( d->clearDebugOutputAction, SIGNAL( triggered() ), that, SLOT( _q_clearDebugOutput() ) );
     }
 
@@ -2399,7 +2399,7 @@ QAction *QScriptDebugger::findPreviousInScriptAction( QObject *parent ) const
 
         QScriptDebugger *that = const_cast<QScriptDebugger *>( this );
         that->d_func()->findPreviousInScriptAction = new QAction( findPreviousInScriptIcon,
-                QScriptDebugger::tr( "Find &Previous" ), parent );
+            QScriptDebugger::tr( "Find &Previous" ), parent );
 
         d->findPreviousInScriptAction->setEnabled( d->codeFinderWidget && !d->codeFinderWidget->text().isEmpty() );
         d->findPreviousInScriptAction->setShortcut( QScriptDebugger::tr( "Shift+F3" ) );

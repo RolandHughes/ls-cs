@@ -368,23 +368,23 @@ static inline bool isInheritable( Property propertyId )
 {
     switch ( propertyId )
     {
-        case Font:
-        case FontFamily:
-        case FontSize:
-        case FontStyle:
-        case FontWeight:
-        case TextIndent:
-        case Whitespace:
-        case ListStyleType:
-        case ListStyle:
-        case TextAlignment:
-        case FontVariant:
-        case TextTransform:
-        case LineHeight:
-            return true;
+    case Font:
+    case FontFamily:
+    case FontSize:
+    case FontStyle:
+    case FontWeight:
+    case TextIndent:
+    case Whitespace:
+    case ListStyleType:
+    case ListStyle:
+    case TextAlignment:
+    case FontVariant:
+    case TextTransform:
+    case LineHeight:
+        return true;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return false;
@@ -523,32 +523,32 @@ bool ValueExtractor::extractGeometry( int *w, int *h, int *minw, int *minh, int 
 
         switch ( decl.d->propertyId )
         {
-            case Width:
-                *w = lengthValue( decl );
-                break;
+        case Width:
+            *w = lengthValue( decl );
+            break;
 
-            case Height:
-                *h = lengthValue( decl );
-                break;
+        case Height:
+            *h = lengthValue( decl );
+            break;
 
-            case MinimumWidth:
-                *minw = lengthValue( decl );
-                break;
+        case MinimumWidth:
+            *minw = lengthValue( decl );
+            break;
 
-            case MinimumHeight:
-                *minh = lengthValue( decl );
-                break;
+        case MinimumHeight:
+            *minh = lengthValue( decl );
+            break;
 
-            case MaximumWidth:
-                *maxw = lengthValue( decl );
-                break;
+        case MaximumWidth:
+            *maxw = lengthValue( decl );
+            break;
 
-            case MaximumHeight:
-                *maxh = lengthValue( decl );
-                break;
+        case MaximumHeight:
+            *maxh = lengthValue( decl );
+            break;
 
-            default:
-                continue;
+        default:
+            continue;
         }
 
         hit = true;
@@ -569,40 +569,40 @@ bool ValueExtractor::extractPosition( int *left, int *top, int *right, int *bott
 
         switch ( decl.d->propertyId )
         {
-            case Left:
-                *left = lengthValue( decl );
-                break;
+        case Left:
+            *left = lengthValue( decl );
+            break;
 
-            case Top:
-                *top = lengthValue( decl );
-                break;
+        case Top:
+            *top = lengthValue( decl );
+            break;
 
-            case Right:
-                *right = lengthValue( decl );
-                break;
+        case Right:
+            *right = lengthValue( decl );
+            break;
 
-            case Bottom:
-                *bottom = lengthValue( decl );
-                break;
+        case Bottom:
+            *bottom = lengthValue( decl );
+            break;
 
-            case QtOrigin:
-                *origin = decl.originValue();
-                break;
+        case QtOrigin:
+            *origin = decl.originValue();
+            break;
 
-            case QtPosition:
-                *position = decl.alignmentValue();
-                break;
+        case QtPosition:
+            *position = decl.alignmentValue();
+            break;
 
-            case TextAlignment:
-                *textAlignment = decl.alignmentValue();
-                break;
+        case TextAlignment:
+            *textAlignment = decl.alignmentValue();
+            break;
 
-            case Position:
-                *mode = decl.positionValue();
-                break;
+        case Position:
+            *mode = decl.positionValue();
+            break;
 
-            default:
-                continue;
+        default:
+            continue;
         }
 
         hit = true;
@@ -622,56 +622,56 @@ bool ValueExtractor::extractBox( int *margins, int *paddings, int *spacing )
 
         switch ( decl.d->propertyId )
         {
-            case PaddingLeft:
-                paddings[LeftEdge] = lengthValue( decl );
-                break;
+        case PaddingLeft:
+            paddings[LeftEdge] = lengthValue( decl );
+            break;
 
-            case PaddingRight:
-                paddings[RightEdge] = lengthValue( decl );
-                break;
+        case PaddingRight:
+            paddings[RightEdge] = lengthValue( decl );
+            break;
 
-            case PaddingTop:
-                paddings[TopEdge] = lengthValue( decl );
-                break;
+        case PaddingTop:
+            paddings[TopEdge] = lengthValue( decl );
+            break;
 
-            case PaddingBottom:
-                paddings[BottomEdge] = lengthValue( decl );
-                break;
+        case PaddingBottom:
+            paddings[BottomEdge] = lengthValue( decl );
+            break;
 
-            case Padding:
-                lengthValues( decl, paddings );
-                break;
+        case Padding:
+            lengthValues( decl, paddings );
+            break;
 
-            case MarginLeft:
-                margins[LeftEdge] = lengthValue( decl );
-                break;
+        case MarginLeft:
+            margins[LeftEdge] = lengthValue( decl );
+            break;
 
-            case MarginRight:
-                margins[RightEdge] = lengthValue( decl );
-                break;
+        case MarginRight:
+            margins[RightEdge] = lengthValue( decl );
+            break;
 
-            case MarginTop:
-                margins[TopEdge] = lengthValue( decl );
-                break;
+        case MarginTop:
+            margins[TopEdge] = lengthValue( decl );
+            break;
 
-            case MarginBottom:
-                margins[BottomEdge] = lengthValue( decl );
-                break;
+        case MarginBottom:
+            margins[BottomEdge] = lengthValue( decl );
+            break;
 
-            case Margin:
-                lengthValues( decl, margins );
-                break;
+        case Margin:
+            lengthValues( decl, margins );
+            break;
 
-            case QtSpacing:
-                if ( spacing )
-                {
-                    *spacing = lengthValue( decl );
-                }
+        case QtSpacing:
+            if ( spacing )
+            {
+                *spacing = lengthValue( decl );
+            }
 
-                break;
+            break;
 
-            default:
-                continue;
+        default:
+            continue;
         }
 
         hit = true;
@@ -751,111 +751,111 @@ bool ValueExtractor::extractBorder( int *borders, QBrush *colors, BorderStyle *s
 
         switch ( decl.d->propertyId )
         {
-            case BorderLeftWidth:
-                borders[LeftEdge] = lengthValue( decl );
-                break;
+        case BorderLeftWidth:
+            borders[LeftEdge] = lengthValue( decl );
+            break;
 
-            case BorderRightWidth:
-                borders[RightEdge] = lengthValue( decl );
-                break;
+        case BorderRightWidth:
+            borders[RightEdge] = lengthValue( decl );
+            break;
 
-            case BorderTopWidth:
-                borders[TopEdge] = lengthValue( decl );
-                break;
+        case BorderTopWidth:
+            borders[TopEdge] = lengthValue( decl );
+            break;
 
-            case BorderBottomWidth:
-                borders[BottomEdge] = lengthValue( decl );
-                break;
+        case BorderBottomWidth:
+            borders[BottomEdge] = lengthValue( decl );
+            break;
 
-            case BorderWidth:
-                lengthValues( decl, borders );
-                break;
+        case BorderWidth:
+            lengthValues( decl, borders );
+            break;
 
-            case BorderLeftColor:
-                colors[LeftEdge] = decl.brushValue( pal );
-                break;
+        case BorderLeftColor:
+            colors[LeftEdge] = decl.brushValue( pal );
+            break;
 
-            case BorderRightColor:
-                colors[RightEdge] = decl.brushValue( pal );
-                break;
+        case BorderRightColor:
+            colors[RightEdge] = decl.brushValue( pal );
+            break;
 
-            case BorderTopColor:
-                colors[TopEdge] = decl.brushValue( pal );
-                break;
+        case BorderTopColor:
+            colors[TopEdge] = decl.brushValue( pal );
+            break;
 
-            case BorderBottomColor:
-                colors[BottomEdge] = decl.brushValue( pal );
-                break;
+        case BorderBottomColor:
+            colors[BottomEdge] = decl.brushValue( pal );
+            break;
 
-            case BorderColor:
-                decl.brushValues( colors, pal );
-                break;
+        case BorderColor:
+            decl.brushValues( colors, pal );
+            break;
 
-            case BorderTopStyle:
-                styles[TopEdge] = decl.styleValue();
-                break;
+        case BorderTopStyle:
+            styles[TopEdge] = decl.styleValue();
+            break;
 
-            case BorderBottomStyle:
-                styles[BottomEdge] = decl.styleValue();
-                break;
+        case BorderBottomStyle:
+            styles[BottomEdge] = decl.styleValue();
+            break;
 
-            case BorderLeftStyle:
-                styles[LeftEdge] = decl.styleValue();
-                break;
+        case BorderLeftStyle:
+            styles[LeftEdge] = decl.styleValue();
+            break;
 
-            case BorderRightStyle:
-                styles[RightEdge] = decl.styleValue();
-                break;
+        case BorderRightStyle:
+            styles[RightEdge] = decl.styleValue();
+            break;
 
-            case BorderStyles:
-                decl.styleValues( styles );
-                break;
+        case BorderStyles:
+            decl.styleValues( styles );
+            break;
 
-            case BorderTopLeftRadius:
-                radii[0] = sizeValue( decl );
-                break;
+        case BorderTopLeftRadius:
+            radii[0] = sizeValue( decl );
+            break;
 
-            case BorderTopRightRadius:
-                radii[1] = sizeValue( decl );
-                break;
+        case BorderTopRightRadius:
+            radii[1] = sizeValue( decl );
+            break;
 
-            case BorderBottomLeftRadius:
-                radii[2] = sizeValue( decl );
-                break;
+        case BorderBottomLeftRadius:
+            radii[2] = sizeValue( decl );
+            break;
 
-            case BorderBottomRightRadius:
-                radii[3] = sizeValue( decl );
-                break;
+        case BorderBottomRightRadius:
+            radii[3] = sizeValue( decl );
+            break;
 
-            case BorderRadius:
-                sizeValues( decl, radii );
-                break;
+        case BorderRadius:
+            sizeValues( decl, radii );
+            break;
 
-            case BorderLeft:
-                borderValue( decl, &borders[LeftEdge], &styles[LeftEdge], &colors[LeftEdge] );
-                break;
+        case BorderLeft:
+            borderValue( decl, &borders[LeftEdge], &styles[LeftEdge], &colors[LeftEdge] );
+            break;
 
-            case BorderTop:
-                borderValue( decl, &borders[TopEdge], &styles[TopEdge], &colors[TopEdge] );
-                break;
+        case BorderTop:
+            borderValue( decl, &borders[TopEdge], &styles[TopEdge], &colors[TopEdge] );
+            break;
 
-            case BorderRight:
-                borderValue( decl, &borders[RightEdge], &styles[RightEdge], &colors[RightEdge] );
-                break;
+        case BorderRight:
+            borderValue( decl, &borders[RightEdge], &styles[RightEdge], &colors[RightEdge] );
+            break;
 
-            case BorderBottom:
-                borderValue( decl, &borders[BottomEdge], &styles[BottomEdge], &colors[BottomEdge] );
-                break;
+        case BorderBottom:
+            borderValue( decl, &borders[BottomEdge], &styles[BottomEdge], &colors[BottomEdge] );
+            break;
 
-            case Border:
-                borderValue( decl, &borders[LeftEdge], &styles[LeftEdge], &colors[LeftEdge] );
-                borders[TopEdge] = borders[RightEdge] = borders[BottomEdge] = borders[LeftEdge];
-                styles[TopEdge] = styles[RightEdge] = styles[BottomEdge] = styles[LeftEdge];
-                colors[TopEdge] = colors[RightEdge] = colors[BottomEdge] = colors[LeftEdge];
-                break;
+        case Border:
+            borderValue( decl, &borders[LeftEdge], &styles[LeftEdge], &colors[LeftEdge] );
+            borders[TopEdge] = borders[RightEdge] = borders[BottomEdge] = borders[LeftEdge];
+            styles[TopEdge] = styles[RightEdge] = styles[BottomEdge] = styles[LeftEdge];
+            colors[TopEdge] = colors[RightEdge] = colors[BottomEdge] = colors[LeftEdge];
+            break;
 
-            default:
-                continue;
+        default:
+            continue;
         }
 
         hit = true;
@@ -876,51 +876,51 @@ bool ValueExtractor::extractOutline( int *borders, QBrush *colors, BorderStyle *
 
         switch ( decl.d->propertyId )
         {
-            case OutlineWidth:
-                lengthValues( decl, borders );
-                break;
+        case OutlineWidth:
+            lengthValues( decl, borders );
+            break;
 
-            case OutlineColor:
-                decl.brushValues( colors, pal );
-                break;
+        case OutlineColor:
+            decl.brushValues( colors, pal );
+            break;
 
-            case OutlineStyle:
-                decl.styleValues( styles );
-                break;
+        case OutlineStyle:
+            decl.styleValues( styles );
+            break;
 
-            case OutlineTopLeftRadius:
-                radii[0] = sizeValue( decl );
-                break;
+        case OutlineTopLeftRadius:
+            radii[0] = sizeValue( decl );
+            break;
 
-            case OutlineTopRightRadius:
-                radii[1] = sizeValue( decl );
-                break;
+        case OutlineTopRightRadius:
+            radii[1] = sizeValue( decl );
+            break;
 
-            case OutlineBottomLeftRadius:
-                radii[2] = sizeValue( decl );
-                break;
+        case OutlineBottomLeftRadius:
+            radii[2] = sizeValue( decl );
+            break;
 
-            case OutlineBottomRightRadius:
-                radii[3] = sizeValue( decl );
-                break;
+        case OutlineBottomRightRadius:
+            radii[3] = sizeValue( decl );
+            break;
 
-            case OutlineRadius:
-                sizeValues( decl, radii );
-                break;
+        case OutlineRadius:
+            sizeValues( decl, radii );
+            break;
 
-            case OutlineOffset:
-                lengthValues( decl, offsets );
-                break;
+        case OutlineOffset:
+            lengthValues( decl, offsets );
+            break;
 
-            case Outline:
-                borderValue( decl, &borders[LeftEdge], &styles[LeftEdge], &colors[LeftEdge] );
-                borders[TopEdge] = borders[RightEdge] = borders[BottomEdge] = borders[LeftEdge];
-                styles[TopEdge] = styles[RightEdge] = styles[BottomEdge] = styles[LeftEdge];
-                colors[TopEdge] = colors[RightEdge] = colors[BottomEdge] = colors[LeftEdge];
-                break;
+        case Outline:
+            borderValue( decl, &borders[LeftEdge], &styles[LeftEdge], &colors[LeftEdge] );
+            borders[TopEdge] = borders[RightEdge] = borders[BottomEdge] = borders[LeftEdge];
+            styles[TopEdge] = styles[RightEdge] = styles[BottomEdge] = styles[LeftEdge];
+            colors[TopEdge] = colors[RightEdge] = colors[BottomEdge] = colors[LeftEdge];
+            break;
 
-            default:
-                continue;
+        default:
+            continue;
         }
 
         hit = true;
@@ -942,28 +942,28 @@ static Qt::Alignment parseAlignment( const QCss::Value *values, int count )
 
         switch ( values[i].variant.toInt() )
         {
-            case Value_Left:
-                a[i] = Qt::AlignLeft;
-                break;
+        case Value_Left:
+            a[i] = Qt::AlignLeft;
+            break;
 
-            case Value_Right:
-                a[i] = Qt::AlignRight;
-                break;
+        case Value_Right:
+            a[i] = Qt::AlignRight;
+            break;
 
-            case Value_Top:
-                a[i] = Qt::AlignTop;
-                break;
+        case Value_Top:
+            a[i] = Qt::AlignTop;
+            break;
 
-            case Value_Bottom:
-                a[i] = Qt::AlignBottom;
-                break;
+        case Value_Bottom:
+            a[i] = Qt::AlignBottom;
+            break;
 
-            case Value_Center:
-                a[i] = Qt::AlignCenter;
-                break;
+        case Value_Center:
+            a[i] = Qt::AlignCenter;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -1298,44 +1298,44 @@ static BorderStyle parseStyleValue( QCss::Value v )
     {
         switch ( v.variant.toInt() )
         {
-            case Value_None:
-                return BorderStyle_None;
+        case Value_None:
+            return BorderStyle_None;
 
-            case Value_Dotted:
-                return BorderStyle_Dotted;
+        case Value_Dotted:
+            return BorderStyle_Dotted;
 
-            case Value_Dashed:
-                return BorderStyle_Dashed;
+        case Value_Dashed:
+            return BorderStyle_Dashed;
 
-            case Value_Solid:
-                return BorderStyle_Solid;
+        case Value_Solid:
+            return BorderStyle_Solid;
 
-            case Value_Double:
-                return BorderStyle_Double;
+        case Value_Double:
+            return BorderStyle_Double;
 
-            case Value_DotDash:
-                return BorderStyle_DotDash;
+        case Value_DotDash:
+            return BorderStyle_DotDash;
 
-            case Value_DotDotDash:
-                return BorderStyle_DotDotDash;
+        case Value_DotDotDash:
+            return BorderStyle_DotDotDash;
 
-            case Value_Groove:
-                return BorderStyle_Groove;
+        case Value_Groove:
+            return BorderStyle_Groove;
 
-            case Value_Ridge:
-                return BorderStyle_Ridge;
+        case Value_Ridge:
+            return BorderStyle_Ridge;
 
-            case Value_Inset:
-                return BorderStyle_Inset;
+        case Value_Inset:
+            return BorderStyle_Inset;
 
-            case Value_Outset:
-                return BorderStyle_Outset;
+        case Value_Outset:
+            return BorderStyle_Outset;
 
-            case Value_Native:
-                return BorderStyle_Native;
+        case Value_Native:
+            return BorderStyle_Native;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -1490,74 +1490,74 @@ bool ValueExtractor::extractBackground( QBrush *brush, QString *image, Repeat *r
 
         switch ( decl.d->propertyId )
         {
-            case BackgroundColor:
-                *brush = decl.brushValue();
-                break;
+        case BackgroundColor:
+            *brush = decl.brushValue();
+            break;
 
-            case BackgroundImage:
-                if ( val.type == Value::Uri )
+        case BackgroundImage:
+            if ( val.type == Value::Uri )
+            {
+                *image = val.variant.toString();
+            }
+
+            break;
+
+        case BackgroundRepeat:
+            if ( decl.d->parsed.isValid() )
+            {
+                *repeat = static_cast<Repeat>( decl.d->parsed.toInt() );
+            }
+            else
+            {
+                *repeat = static_cast<Repeat>( findKnownValue( val.variant.toString(),
+                                               repeats, NumKnownRepeats ) );
+                decl.d->parsed = *repeat;
+            }
+
+            break;
+
+        case BackgroundPosition:
+            *alignment = decl.alignmentValue();
+            break;
+
+        case BackgroundOrigin:
+            *origin = decl.originValue();
+            break;
+
+        case BackgroundClip:
+            *clip = decl.originValue();
+            break;
+
+        case Background:
+            if ( decl.d->parsed.isValid() )
+            {
+                BackgroundData data = ( decl.d->parsed ).value<BackgroundData>();
+                *brush = brushFromData( data.brush, pal );
+                *image = data.image;
+                *repeat = data.repeat;
+                *alignment = data.alignment;
+            }
+            else
+            {
+                BrushData brushData;
+                parseShorthandBackgroundProperty( decl.d->values, &brushData, image, repeat, alignment, pal );
+                *brush = brushFromData( brushData, pal );
+
+                if ( brushData.type != BrushData::DependsOnThePalette )
                 {
-                    *image = val.variant.toString();
+                    BackgroundData data = { brushData, *image, *repeat, *alignment };
+                    decl.d->parsed = QVariant::fromValue<BackgroundData>( data );
                 }
+            }
 
-                break;
+            break;
 
-            case BackgroundRepeat:
-                if ( decl.d->parsed.isValid() )
-                {
-                    *repeat = static_cast<Repeat>( decl.d->parsed.toInt() );
-                }
-                else
-                {
-                    *repeat = static_cast<Repeat>( findKnownValue( val.variant.toString(),
-                                                   repeats, NumKnownRepeats ) );
-                    decl.d->parsed = *repeat;
-                }
+        case BackgroundAttachment:
+            *attachment = decl.attachmentValue();
+            break;
 
-                break;
-
-            case BackgroundPosition:
-                *alignment = decl.alignmentValue();
-                break;
-
-            case BackgroundOrigin:
-                *origin = decl.originValue();
-                break;
-
-            case BackgroundClip:
-                *clip = decl.originValue();
-                break;
-
-            case Background:
-                if ( decl.d->parsed.isValid() )
-                {
-                    BackgroundData data = ( decl.d->parsed ).value<BackgroundData>();
-                    *brush = brushFromData( data.brush, pal );
-                    *image = data.image;
-                    *repeat = data.repeat;
-                    *alignment = data.alignment;
-                }
-                else
-                {
-                    BrushData brushData;
-                    parseShorthandBackgroundProperty( decl.d->values, &brushData, image, repeat, alignment, pal );
-                    *brush = brushFromData( brushData, pal );
-
-                    if ( brushData.type != BrushData::DependsOnThePalette )
-                    {
-                        BackgroundData data = { brushData, *image, *repeat, *alignment };
-                        decl.d->parsed = QVariant::fromValue<BackgroundData>( data );
-                    }
-                }
-
-                break;
-
-            case BackgroundAttachment:
-                *attachment = decl.attachmentValue();
-                break;
-
-            default:
-                continue;
+        default:
+            continue;
         }
 
         hit = true;
@@ -1574,29 +1574,29 @@ static bool setFontSizeFromValue( QCss::Value value, QFont *font, int *fontSizeA
 
         switch ( value.variant.toInt() )
         {
-            case Value_Small:
-                *fontSizeAdjustment = -1;
-                break;
+        case Value_Small:
+            *fontSizeAdjustment = -1;
+            break;
 
-            case Value_Medium:
-                *fontSizeAdjustment = 0;
-                break;
+        case Value_Medium:
+            *fontSizeAdjustment = 0;
+            break;
 
-            case Value_Large:
-                *fontSizeAdjustment = 1;
-                break;
+        case Value_Large:
+            *fontSizeAdjustment = 1;
+            break;
 
-            case Value_XLarge:
-                *fontSizeAdjustment = 2;
-                break;
+        case Value_XLarge:
+            *fontSizeAdjustment = 2;
+            break;
 
-            case Value_XXLarge:
-                *fontSizeAdjustment = 3;
-                break;
+        case Value_XXLarge:
+            *fontSizeAdjustment = 3;
+            break;
 
-            default:
-                valid = false;
-                break;
+        default:
+            valid = false;
+            break;
         }
 
         return valid;
@@ -1646,20 +1646,20 @@ static bool setFontStyleFromValue( const QCss::Value &value, QFont *font )
 
     switch ( value.variant.toInt() )
     {
-        case Value_Normal:
-            font->setStyle( QFont::StyleNormal );
-            return true;
+    case Value_Normal:
+        font->setStyle( QFont::StyleNormal );
+        return true;
 
-        case Value_Italic:
-            font->setStyle( QFont::StyleItalic );
-            return true;
+    case Value_Italic:
+        font->setStyle( QFont::StyleItalic );
+        return true;
 
-        case Value_Oblique:
-            font->setStyle( QFont::StyleOblique );
-            return true;
+    case Value_Oblique:
+        font->setStyle( QFont::StyleOblique );
+        return true;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return false;
@@ -1671,16 +1671,16 @@ static bool setFontWeightFromValue( const QCss::Value &value, QFont *font )
     {
         switch ( value.variant.toInt() )
         {
-            case Value_Normal:
-                font->setWeight( QFont::Normal );
-                return true;
+        case Value_Normal:
+            font->setWeight( QFont::Normal );
+            return true;
 
-            case Value_Bold:
-                font->setWeight( QFont::Bold );
-                return true;
+        case Value_Bold:
+            font->setWeight( QFont::Bold );
+            return true;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         return false;
@@ -1752,26 +1752,26 @@ static void setTextDecorationFromValues( const QVector<QCss::Value> &values, QFo
 
         switch ( values.at( i ).variant.toInt() )
         {
-            case Value_Underline:
-                font->setUnderline( true );
-                break;
+        case Value_Underline:
+            font->setUnderline( true );
+            break;
 
-            case Value_Overline:
-                font->setOverline( true );
-                break;
+        case Value_Overline:
+            font->setOverline( true );
+            break;
 
-            case Value_LineThrough:
-                font->setStrikeOut( true );
-                break;
+        case Value_LineThrough:
+            font->setStrikeOut( true );
+            break;
 
-            case Value_None:
-                font->setUnderline( false );
-                font->setOverline( false );
-                font->setStrikeOut( false );
-                break;
+        case Value_None:
+            font->setUnderline( false );
+            font->setOverline( false );
+            font->setStrikeOut( false );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 }
@@ -1815,16 +1815,16 @@ static void setFontVariantFromValue( const QCss::Value &value, QFont *font )
     {
         switch ( value.variant.toInt() )
         {
-            case Value_Normal:
-                font->setCapitalization( QFont::MixedCase );
-                break;
+        case Value_Normal:
+            font->setCapitalization( QFont::MixedCase );
+            break;
 
-            case Value_SmallCaps:
-                font->setCapitalization( QFont::SmallCaps );
-                break;
+        case Value_SmallCaps:
+            font->setCapitalization( QFont::SmallCaps );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 }
@@ -1835,20 +1835,20 @@ static void setTextTransformFromValue( const QCss::Value &value, QFont *font )
     {
         switch ( value.variant.toInt() )
         {
-            case Value_None:
-                font->setCapitalization( QFont::MixedCase );
-                break;
+        case Value_None:
+            font->setCapitalization( QFont::MixedCase );
+            break;
 
-            case Value_Uppercase:
-                font->setCapitalization( QFont::AllUppercase );
-                break;
+        case Value_Uppercase:
+            font->setCapitalization( QFont::AllUppercase );
+            break;
 
-            case Value_Lowercase:
-                font->setCapitalization( QFont::AllLowercase );
-                break;
+        case Value_Lowercase:
+            font->setCapitalization( QFont::AllLowercase );
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 }
@@ -1877,40 +1877,40 @@ bool ValueExtractor::extractFont( QFont *font, int *fontSizeAdjustment )
 
         switch ( decl.d->propertyId )
         {
-            case FontSize:
-                setFontSizeFromValue( val, font, fontSizeAdjustment );
-                break;
+        case FontSize:
+            setFontSizeFromValue( val, font, fontSizeAdjustment );
+            break;
 
-            case FontStyle:
-                setFontStyleFromValue( val, font );
-                break;
+        case FontStyle:
+            setFontStyleFromValue( val, font );
+            break;
 
-            case FontWeight:
-                setFontWeightFromValue( val, font );
-                break;
+        case FontWeight:
+            setFontWeightFromValue( val, font );
+            break;
 
-            case FontFamily:
-                setFontFamilyFromValues( decl.d->values, font );
-                break;
+        case FontFamily:
+            setFontFamilyFromValues( decl.d->values, font );
+            break;
 
-            case TextDecoration:
-                setTextDecorationFromValues( decl.d->values, font );
-                break;
+        case TextDecoration:
+            setTextDecorationFromValues( decl.d->values, font );
+            break;
 
-            case Font:
-                parseShorthandFontProperty( decl.d->values, font, fontSizeAdjustment );
-                break;
+        case Font:
+            parseShorthandFontProperty( decl.d->values, font, fontSizeAdjustment );
+            break;
 
-            case FontVariant:
-                setFontVariantFromValue( val, font );
-                break;
+        case FontVariant:
+            setFontVariantFromValue( val, font );
+            break;
 
-            case TextTransform:
-                setTextTransformFromValue( val, font );
-                break;
+        case TextTransform:
+            setTextTransformFromValue( val, font );
+            break;
 
-            default:
-                continue;
+        default:
+            continue;
         }
 
         hit = true;
@@ -1932,24 +1932,24 @@ bool ValueExtractor::extractPalette( QBrush *fg, QBrush *sfg, QBrush *sbg, QBrus
 
         switch ( decl.d->propertyId )
         {
-            case Color:
-                *fg = decl.brushValue( pal );
-                break;
+        case Color:
+            *fg = decl.brushValue( pal );
+            break;
 
-            case QtSelectionForeground:
-                *sfg = decl.brushValue( pal );
-                break;
+        case QtSelectionForeground:
+            *sfg = decl.brushValue( pal );
+            break;
 
-            case QtSelectionBackground:
-                *sbg = decl.brushValue( pal );
-                break;
+        case QtSelectionBackground:
+            *sbg = decl.brushValue( pal );
+            break;
 
-            case QtAlternateBackground:
-                *abg = decl.brushValue( pal );
-                break;
+        case QtAlternateBackground:
+            *abg = decl.brushValue( pal );
+            break;
 
-            default:
-                continue;
+        default:
+            continue;
         }
 
         hit = true;
@@ -1979,30 +1979,30 @@ bool ValueExtractor::extractImage( QIcon *icon, Qt::Alignment *a, QSize *size )
 
         switch ( decl.d->propertyId )
         {
-            case QtImage:
-                *icon = decl.iconValue();
+        case QtImage:
+            *icon = decl.iconValue();
 
-                if ( decl.d->values.count() > 0 && decl.d->values.at( 0 ).type == Value::Uri )
+            if ( decl.d->values.count() > 0 && decl.d->values.at( 0 ).type == Value::Uri )
+            {
+                // try to pull just the size from the image...
+                QImageReader imageReader( decl.d->values.at( 0 ).variant.toString() );
+
+                if ( ( *size = imageReader.size() ).isNull() )
                 {
-                    // try to pull just the size from the image...
-                    QImageReader imageReader( decl.d->values.at( 0 ).variant.toString() );
-
-                    if ( ( *size = imageReader.size() ).isNull() )
-                    {
-                        // but we'll have to load the whole image if the
-                        // format doesn't support just reading the size
-                        *size = imageReader.read().size();
-                    }
+                    // but we'll have to load the whole image if the
+                    // format doesn't support just reading the size
+                    *size = imageReader.read().size();
                 }
+            }
 
-                break;
+            break;
 
-            case QtImageAlignment:
-                *a = decl.alignmentValue();
-                break;
+        case QtImageAlignment:
+            *a = decl.alignmentValue();
+            break;
 
-            default:
-                continue;
+        default:
+            continue;
         }
 
         hit = true;
@@ -2630,32 +2630,32 @@ QIcon Declaration::iconValue() const
             {
                 switch ( d->values.at( i ).variant.toInt() )
                 {
-                    case Value_Disabled:
-                        mode = QIcon::Disabled;
-                        break;
+                case Value_Disabled:
+                    mode = QIcon::Disabled;
+                    break;
 
-                    case Value_Active:
-                        mode = QIcon::Active;
-                        break;
+                case Value_Active:
+                    mode = QIcon::Active;
+                    break;
 
-                    case Value_Selected:
-                        mode = QIcon::Selected;
-                        break;
+                case Value_Selected:
+                    mode = QIcon::Selected;
+                    break;
 
-                    case Value_Normal:
-                        mode = QIcon::Normal;
-                        break;
+                case Value_Normal:
+                    mode = QIcon::Normal;
+                    break;
 
-                    case Value_On:
-                        state = QIcon::On;
-                        break;
+                case Value_On:
+                    state = QIcon::On;
+                    break;
 
-                    case Value_Off:
-                        state = QIcon::Off;
-                        break;
+                case Value_Off:
+                    state = QIcon::Off;
+                    break;
 
-                    default:
-                        break;
+                default:
+                    break;
                 }
 
                 ++i;
@@ -3611,19 +3611,19 @@ bool Parser::parseNextOperator( Value *value )
 
     switch ( next() )
     {
-        case TokenType::SLASH:
-            value->type = Value::TermOperatorSlash;
-            skipSpace();
-            break;
+    case TokenType::SLASH:
+        value->type = Value::TermOperatorSlash;
+        skipSpace();
+        break;
 
-        case TokenType::COMMA:
-            value->type = Value::TermOperatorComma;
-            skipSpace();
-            break;
+    case TokenType::COMMA:
+        value->type = Value::TermOperatorComma;
+        skipSpace();
+        break;
 
-        default:
-            prev();
-            break;
+    default:
+        prev();
+        break;
     }
 
     return true;
@@ -3889,16 +3889,16 @@ bool Parser::parseElementName( QString *name )
 {
     switch ( lookup() )
     {
-        case TokenType::STAR:
-            name->clear();
-            break;
+    case TokenType::STAR:
+        name->clear();
+        break;
 
-        case TokenType::IDENT:
-            *name = lexem();
-            break;
+    case TokenType::IDENT:
+        *name = lexem();
+        break;
 
-        default:
-            return false;
+    default:
+        return false;
     }
 
     return true;
@@ -4129,111 +4129,111 @@ bool Parser::parseTerm( Value *value )
 
     switch ( lookup() )
     {
-        case TokenType::NUMBER:
-            value->type = Value::Number;
-            value->variant.convert( QVariant::Double );
-            break;
+    case TokenType::NUMBER:
+        value->type = Value::Number;
+        value->variant.convert( QVariant::Double );
+        break;
 
-        case TokenType::PERCENTAGE:
-            value->type = Value::Percentage;
-            str.chop( 1 ); // strip off %
-            value->variant = str;
-            break;
+    case TokenType::PERCENTAGE:
+        value->type = Value::Percentage;
+        str.chop( 1 ); // strip off %
+        value->variant = str;
+        break;
 
-        case TokenType::LENGTH:
-            value->type = Value::Length;
-            break;
+    case TokenType::LENGTH:
+        value->type = Value::Length;
+        break;
 
-        case TokenType::STRING:
-            if ( haveUnary )
-            {
-                return false;
-            }
-
-            value->type = Value::String;
-            str.chop( 1 );
-            str.remove( 0, 1 );
-            value->variant = str;
-            break;
-
-        case TokenType::IDENT:
+    case TokenType::STRING:
+        if ( haveUnary )
         {
-            if ( haveUnary )
-            {
-                return false;
-            }
-
-            value->type = Value::Identifier;
-            const int theid = findKnownValue( str, s_values, NumKnownValues );
-
-            if ( theid != 0 )
-            {
-                value->type = Value::KnownIdentifier;
-                value->variant = theid;
-            }
-
-            break;
+            return false;
         }
 
-        default:
+        value->type = Value::String;
+        str.chop( 1 );
+        str.remove( 0, 1 );
+        value->variant = str;
+        break;
+
+    case TokenType::IDENT:
+    {
+        if ( haveUnary )
         {
-            if ( haveUnary )
+            return false;
+        }
+
+        value->type = Value::Identifier;
+        const int theid = findKnownValue( str, s_values, NumKnownValues );
+
+        if ( theid != 0 )
+        {
+            value->type = Value::KnownIdentifier;
+            value->variant = theid;
+        }
+
+        break;
+    }
+
+    default:
+    {
+        if ( haveUnary )
+        {
+            return false;
+        }
+
+        prev();
+
+        if ( testHexColor() )
+        {
+            QColor col;
+
+            if ( ! parseHexColor( &col ) )
             {
                 return false;
             }
 
-            prev();
+            value->type = Value::Color;
+            value->variant = col;
 
-            if ( testHexColor() )
+        }
+        else if ( testFunction() )
+        {
+            QString name;
+            QString args;
+
+            if ( !parseFunction( &name, &args ) )
             {
-                QColor col;
-
-                if ( ! parseHexColor( &col ) )
-                {
-                    return false;
-                }
-
-                value->type = Value::Color;
-                value->variant = col;
-
+                return false;
             }
-            else if ( testFunction() )
+
+            if ( name == "url" )
             {
-                QString name;
-                QString args;
+                value->type = Value::Uri;
+                removeOptionalQuotes( &args );
 
-                if ( !parseFunction( &name, &args ) )
+                if ( QFileInfo( args ).isRelative() && !sourcePath.isEmpty() )
                 {
-                    return false;
+                    args.prepend( sourcePath );
                 }
 
-                if ( name == "url" )
-                {
-                    value->type = Value::Uri;
-                    removeOptionalQuotes( &args );
-
-                    if ( QFileInfo( args ).isRelative() && !sourcePath.isEmpty() )
-                    {
-                        args.prepend( sourcePath );
-                    }
-
-                    value->variant = args;
-
-                }
-                else
-                {
-                    value->type = Value::Function;
-                    value->variant = QStringList() << name << args;
-                }
+                value->variant = args;
 
             }
             else
             {
-                return recordError();
+                value->type = Value::Function;
+                value->variant = QStringList() << name << args;
             }
 
-            return true;
         }
+        else
+        {
+            return recordError();
+        }
+
+        return true;
+    }
     }
 
     skipSpace();
@@ -4374,21 +4374,21 @@ bool Parser::until( QCss::TokenType target, QCss::TokenType target2 )
     {
         switch ( symbols.at( index - 1 ).token )
         {
-            case TokenType::LBRACE:
-                ++braceCount;
-                break;
+        case TokenType::LBRACE:
+            ++braceCount;
+            break;
 
-            case TokenType::LBRACKET:
-                ++brackCount;
-                break;
+        case TokenType::LBRACKET:
+            ++brackCount;
+            break;
 
-            case TokenType::FUNCTION:
-            case TokenType::LPAREN:
-                ++parenCount;
-                break;
+        case TokenType::FUNCTION:
+        case TokenType::LPAREN:
+            ++parenCount;
+            break;
 
-            default:
-                ;
+        default:
+            ;
         }
     }
 
@@ -4398,33 +4398,33 @@ bool Parser::until( QCss::TokenType target, QCss::TokenType target2 )
 
         switch ( t )
         {
-            case TokenType::LBRACE:
-                ++braceCount;
-                break;
+        case TokenType::LBRACE:
+            ++braceCount;
+            break;
 
-            case TokenType::RBRACE:
-                --braceCount;
-                break;
+        case TokenType::RBRACE:
+            --braceCount;
+            break;
 
-            case TokenType::LBRACKET:
-                ++brackCount;
-                break;
+        case TokenType::LBRACKET:
+            ++brackCount;
+            break;
 
-            case TokenType::RBRACKET:
-                --brackCount;
-                break;
+        case TokenType::RBRACKET:
+            --brackCount;
+            break;
 
-            case TokenType::FUNCTION:
-            case TokenType::LPAREN:
-                ++parenCount;
-                break;
+        case TokenType::FUNCTION:
+        case TokenType::LPAREN:
+            ++parenCount;
+            break;
 
-            case TokenType::RPAREN:
-                --parenCount;
-                break;
+        case TokenType::RPAREN:
+            --parenCount;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         if ( ( t == target || ( target2 != TokenType::NONE && t == target2 ) )

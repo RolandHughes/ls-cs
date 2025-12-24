@@ -218,128 +218,128 @@ public:
             switch ( hint.type() )
             {
 
-                case QMediaServiceProviderHint::Null:
-                    plugin = plugins[0];
+            case QMediaServiceProviderHint::Null:
+                plugin = plugins[0];
 
-                    // special case for media player, if low latency was not asked,
-                    // prefer services not offering it, since they are likely to support more formats
+                // special case for media player, if low latency was not asked,
+                // prefer services not offering it, since they are likely to support more formats
 
-                    if ( key == Q_MEDIASERVICE_MEDIAPLAYER )
-                    {
-                        for ( QMediaServiceProviderPlugin *currentPlugin : plugins )
-                        {
-
-                            QMediaServiceFeaturesInterface *iface = dynamic_cast<QMediaServiceFeaturesInterface *>( currentPlugin );
-
-                            if ( ! iface || ! ( iface->supportedFeatures( key ) & QMediaServiceProviderHint::LowLatencyPlayback ) )
-                            {
-                                plugin = currentPlugin;
-                                break;
-                            }
-                        }
-                    }
-
-                    break;
-
-                case QMediaServiceProviderHint::SupportedFeatures:
-                    plugin = plugins[0];
-
+                if ( key == Q_MEDIASERVICE_MEDIAPLAYER )
+                {
                     for ( QMediaServiceProviderPlugin *currentPlugin : plugins )
                     {
+
                         QMediaServiceFeaturesInterface *iface = dynamic_cast<QMediaServiceFeaturesInterface *>( currentPlugin );
 
-                        if ( iface )
-                        {
-                            if ( ( iface->supportedFeatures( key ) & hint.features() ) == hint.features() )
-                            {
-                                plugin = currentPlugin;
-                                break;
-                            }
-                        }
-                    }
-
-                    break;
-
-                case QMediaServiceProviderHint::Device:
-                {
-                    plugin = plugins[0];
-
-                    for ( QMediaServiceProviderPlugin *currentPlugin : plugins )
-                    {
-                        QMediaServiceSupportedDevicesInterface *iface =
-                            dynamic_cast<QMediaServiceSupportedDevicesInterface *>( currentPlugin );
-
-                        if ( iface && iface->devices( key ).contains( hint.device() ) )
+                        if ( ! iface || ! ( iface->supportedFeatures( key ) & QMediaServiceProviderHint::LowLatencyPlayback ) )
                         {
                             plugin = currentPlugin;
                             break;
                         }
                     }
                 }
+
                 break;
 
-                case QMediaServiceProviderHint::CameraPosition:
+            case QMediaServiceProviderHint::SupportedFeatures:
+                plugin = plugins[0];
+
+                for ( QMediaServiceProviderPlugin *currentPlugin : plugins )
                 {
-                    plugin = plugins[0];
+                    QMediaServiceFeaturesInterface *iface = dynamic_cast<QMediaServiceFeaturesInterface *>( currentPlugin );
 
-                    if ( key == Q_MEDIASERVICE_CAMERA && hint.cameraPosition() != QCamera::UnspecifiedPosition )
+                    if ( iface )
                     {
-                        for ( QMediaServiceProviderPlugin *currentPlugin : plugins )
+                        if ( ( iface->supportedFeatures( key ) & hint.features() ) == hint.features() )
                         {
-                            const QMediaServiceSupportedDevicesInterface *deviceIface =
-                                dynamic_cast<QMediaServiceSupportedDevicesInterface *>( currentPlugin );
+                            plugin = currentPlugin;
+                            break;
+                        }
+                    }
+                }
 
-                            const QMediaServiceCameraInfoInterface *cameraIface =
-                                dynamic_cast<QMediaServiceCameraInfoInterface *>( currentPlugin );
+                break;
 
-                            if ( deviceIface && cameraIface )
+            case QMediaServiceProviderHint::Device:
+            {
+                plugin = plugins[0];
+
+                for ( QMediaServiceProviderPlugin *currentPlugin : plugins )
+                {
+                    QMediaServiceSupportedDevicesInterface *iface =
+                        dynamic_cast<QMediaServiceSupportedDevicesInterface *>( currentPlugin );
+
+                    if ( iface && iface->devices( key ).contains( hint.device() ) )
+                    {
+                        plugin = currentPlugin;
+                        break;
+                    }
+                }
+            }
+            break;
+
+            case QMediaServiceProviderHint::CameraPosition:
+            {
+                plugin = plugins[0];
+
+                if ( key == Q_MEDIASERVICE_CAMERA && hint.cameraPosition() != QCamera::UnspecifiedPosition )
+                {
+                    for ( QMediaServiceProviderPlugin *currentPlugin : plugins )
+                    {
+                        const QMediaServiceSupportedDevicesInterface *deviceIface =
+                            dynamic_cast<QMediaServiceSupportedDevicesInterface *>( currentPlugin );
+
+                        const QMediaServiceCameraInfoInterface *cameraIface =
+                            dynamic_cast<QMediaServiceCameraInfoInterface *>( currentPlugin );
+
+                        if ( deviceIface && cameraIface )
+                        {
+                            const QList<QString> cameras = deviceIface->devices( key );
+
+                            for ( const QString &camera : cameras )
                             {
-                                const QList<QString> cameras = deviceIface->devices( key );
-
-                                for ( const QString &camera : cameras )
+                                if ( cameraIface->cameraPosition( camera ) == hint.cameraPosition() )
                                 {
-                                    if ( cameraIface->cameraPosition( camera ) == hint.cameraPosition() )
-                                    {
-                                        plugin = currentPlugin;
-                                        break;
-                                    }
+                                    plugin = currentPlugin;
+                                    break;
                                 }
                             }
                         }
                     }
                 }
-                break;
+            }
+            break;
 
 
-                case QMediaServiceProviderHint::ContentType:
+            case QMediaServiceProviderHint::ContentType:
+            {
+                QMultimedia::SupportEstimate estimate = QMultimedia::NotSupported;
+
+                for ( QMediaServiceProviderPlugin *currentPlugin : plugins )
                 {
-                    QMultimedia::SupportEstimate estimate = QMultimedia::NotSupported;
+                    QMultimedia::SupportEstimate currentEstimate = QMultimedia::MaybeSupported;
 
-                    for ( QMediaServiceProviderPlugin *currentPlugin : plugins )
+                    QMediaServiceSupportedFormatsInterface *iface =
+                        dynamic_cast<QMediaServiceSupportedFormatsInterface *>( currentPlugin );
+
+                    if ( iface )
                     {
-                        QMultimedia::SupportEstimate currentEstimate = QMultimedia::MaybeSupported;
+                        currentEstimate = iface->hasSupport( hint.mimeType(), hint.codecs() );
+                    }
 
-                        QMediaServiceSupportedFormatsInterface *iface =
-                            dynamic_cast<QMediaServiceSupportedFormatsInterface *>( currentPlugin );
+                    if ( currentEstimate > estimate )
+                    {
+                        estimate = currentEstimate;
+                        plugin   = currentPlugin;
 
-                        if ( iface )
+                        if ( currentEstimate == QMultimedia::PreferredService )
                         {
-                            currentEstimate = iface->hasSupport( hint.mimeType(), hint.codecs() );
-                        }
-
-                        if ( currentEstimate > estimate )
-                        {
-                            estimate = currentEstimate;
-                            plugin   = currentPlugin;
-
-                            if ( currentEstimate == QMultimedia::PreferredService )
-                            {
-                                break;
-                            }
+                            break;
                         }
                     }
                 }
-                break;
+            }
+            break;
             }
 
             if ( plugin != nullptr )

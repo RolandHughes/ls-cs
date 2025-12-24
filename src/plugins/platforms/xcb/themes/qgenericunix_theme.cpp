@@ -119,14 +119,14 @@ const QFont *QGenericUnixTheme::font( Font type ) const
 
     switch ( type )
     {
-        case QPlatformTheme::SystemFont:
-            return &d->systemFont;
+    case QPlatformTheme::SystemFont:
+        return &d->systemFont;
 
-        case QPlatformTheme::FixedFont:
-            return &d->fixedFont;
+    case QPlatformTheme::FixedFont:
+        return &d->fixedFont;
 
-        default:
-            return nullptr;
+    default:
+        return nullptr;
     }
 }
 
@@ -185,28 +185,28 @@ QVariant QGenericUnixTheme::themeHint( ThemeHint hint ) const
 {
     switch ( hint )
     {
-        case QPlatformTheme::SystemIconFallbackThemeName:
-            return QVariant( QString( "hicolor" ) );
+    case QPlatformTheme::SystemIconFallbackThemeName:
+        return QVariant( QString( "hicolor" ) );
 
-        case QPlatformTheme::IconThemeSearchPaths:
-            return xdgIconThemePaths();
+    case QPlatformTheme::IconThemeSearchPaths:
+        return xdgIconThemePaths();
 
-        case QPlatformTheme::DialogButtonBoxButtonsHaveIcons:
-            return QVariant( true );
+    case QPlatformTheme::DialogButtonBoxButtonsHaveIcons:
+        return QVariant( true );
 
-        case QPlatformTheme::StyleNames:
-        {
-            QStringList styleNames;
-            styleNames << "Fusion" << "Windows";
+    case QPlatformTheme::StyleNames:
+    {
+        QStringList styleNames;
+        styleNames << "Fusion" << "Windows";
 
-            return QVariant( styleNames );
-        }
+        return QVariant( styleNames );
+    }
 
-        case QPlatformTheme::KeyboardScheme:
-            return QVariant( int( X11KeyboardScheme ) );
+    case QPlatformTheme::KeyboardScheme:
+        return QVariant( int( X11KeyboardScheme ) );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QPlatformTheme::themeHint( hint );
@@ -558,44 +558,44 @@ QVariant QKdeTheme::themeHint( QPlatformTheme::ThemeHint hint ) const
 
     switch ( hint )
     {
-        case QPlatformTheme::UseFullScreenForPopupMenu:
-            return QVariant( true );
+    case QPlatformTheme::UseFullScreenForPopupMenu:
+        return QVariant( true );
 
-        case QPlatformTheme::DialogButtonBoxButtonsHaveIcons:
-            return QVariant( true );
+    case QPlatformTheme::DialogButtonBoxButtonsHaveIcons:
+        return QVariant( true );
 
-        case QPlatformTheme::DialogButtonBoxLayout:
-            return QVariant( QPlatformDialogHelper::KdeLayout );
+    case QPlatformTheme::DialogButtonBoxLayout:
+        return QVariant( QPlatformDialogHelper::KdeLayout );
 
-        case QPlatformTheme::ToolButtonStyle:
-            return QVariant( d->toolButtonStyle );
+    case QPlatformTheme::ToolButtonStyle:
+        return QVariant( d->toolButtonStyle );
 
-        case QPlatformTheme::ToolBarIconSize:
-            return QVariant( d->toolBarIconSize );
+    case QPlatformTheme::ToolBarIconSize:
+        return QVariant( d->toolBarIconSize );
 
-        case QPlatformTheme::SystemIconThemeName:
-            return QVariant( d->iconThemeName );
+    case QPlatformTheme::SystemIconThemeName:
+        return QVariant( d->iconThemeName );
 
-        case QPlatformTheme::SystemIconFallbackThemeName:
-            return QVariant( d->iconFallbackThemeName );
+    case QPlatformTheme::SystemIconFallbackThemeName:
+        return QVariant( d->iconFallbackThemeName );
 
-        case QPlatformTheme::IconThemeSearchPaths:
-            return QVariant( d->kdeIconThemeSearchPaths( d->kdeDirs ) );
+    case QPlatformTheme::IconThemeSearchPaths:
+        return QVariant( d->kdeIconThemeSearchPaths( d->kdeDirs ) );
 
-        case QPlatformTheme::StyleNames:
-            return QVariant( d->styleNames );
+    case QPlatformTheme::StyleNames:
+        return QVariant( d->styleNames );
 
-        case QPlatformTheme::KeyboardScheme:
-            return QVariant( int( KdeKeyboardScheme ) );
+    case QPlatformTheme::KeyboardScheme:
+        return QVariant( int( KdeKeyboardScheme ) );
 
-        case QPlatformTheme::ItemViewActivateItemOnSingleClick:
-            return QVariant( d->singleClick );
+    case QPlatformTheme::ItemViewActivateItemOnSingleClick:
+        return QVariant( d->singleClick );
 
-        case QPlatformTheme::WheelScrollLines:
-            return QVariant( d->wheelScrollLines );
+    case QPlatformTheme::WheelScrollLines:
+        return QVariant( d->wheelScrollLines );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QPlatformTheme::themeHint( hint );
@@ -746,36 +746,36 @@ QVariant QGnomeTheme::themeHint( QPlatformTheme::ThemeHint hint ) const
 {
     switch ( hint )
     {
-        case QPlatformTheme::DialogButtonBoxButtonsHaveIcons:
-            return QVariant( true );
+    case QPlatformTheme::DialogButtonBoxButtonsHaveIcons:
+        return QVariant( true );
 
-        case QPlatformTheme::DialogButtonBoxLayout:
-            return QVariant( QPlatformDialogHelper::GnomeLayout );
+    case QPlatformTheme::DialogButtonBoxLayout:
+        return QVariant( QPlatformDialogHelper::GnomeLayout );
 
-        case QPlatformTheme::SystemIconThemeName:
-            return QVariant( QString( "Adwaita" ) );
+    case QPlatformTheme::SystemIconThemeName:
+        return QVariant( QString( "Adwaita" ) );
 
-        case QPlatformTheme::SystemIconFallbackThemeName:
-            return QVariant( QString( "gnome" ) );
+    case QPlatformTheme::SystemIconFallbackThemeName:
+        return QVariant( QString( "gnome" ) );
 
-        case QPlatformTheme::IconThemeSearchPaths:
-            return QVariant( QGenericUnixTheme::xdgIconThemePaths() );
+    case QPlatformTheme::IconThemeSearchPaths:
+        return QVariant( QGenericUnixTheme::xdgIconThemePaths() );
 
-        case QPlatformTheme::StyleNames:
-        {
-            QStringList styleNames;
-            styleNames << "GTK+" << "fusion" << "windows";
-            return QVariant( styleNames );
-        }
+    case QPlatformTheme::StyleNames:
+    {
+        QStringList styleNames;
+        styleNames << "GTK+" << "fusion" << "windows";
+        return QVariant( styleNames );
+    }
 
-        case QPlatformTheme::KeyboardScheme:
-            return QVariant( int( GnomeKeyboardScheme ) );
+    case QPlatformTheme::KeyboardScheme:
+        return QVariant( int( GnomeKeyboardScheme ) );
 
-        case QPlatformTheme::PasswordMaskCharacter:
-            return QVariant( QChar( 0x2022 ) );
+    case QPlatformTheme::PasswordMaskCharacter:
+        return QVariant( QChar( 0x2022 ) );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QPlatformTheme::themeHint( hint );
@@ -792,14 +792,14 @@ const QFont *QGnomeTheme::font( Font type ) const
 
     switch ( type )
     {
-        case QPlatformTheme::SystemFont:
-            return d->systemFont;
+    case QPlatformTheme::SystemFont:
+        return d->systemFont;
 
-        case QPlatformTheme::FixedFont:
-            return d->fixedFont;
+    case QPlatformTheme::FixedFont:
+        return d->fixedFont;
 
-        default:
-            return nullptr;
+    default:
+        return nullptr;
     }
 }
 
@@ -824,23 +824,23 @@ QString QGnomeTheme::standardButtonText( int button ) const
 {
     switch ( button )
     {
-        case QPlatformDialogHelper::Ok:
-            return QCoreApplication::translate( "QGnomeTheme", "&OK" );
+    case QPlatformDialogHelper::Ok:
+        return QCoreApplication::translate( "QGnomeTheme", "&OK" );
 
-        case QPlatformDialogHelper::Save:
-            return QCoreApplication::translate( "QGnomeTheme", "&Save" );
+    case QPlatformDialogHelper::Save:
+        return QCoreApplication::translate( "QGnomeTheme", "&Save" );
 
-        case QPlatformDialogHelper::Cancel:
-            return QCoreApplication::translate( "QGnomeTheme", "&Cancel" );
+    case QPlatformDialogHelper::Cancel:
+        return QCoreApplication::translate( "QGnomeTheme", "&Cancel" );
 
-        case QPlatformDialogHelper::Close:
-            return QCoreApplication::translate( "QGnomeTheme", "&Close" );
+    case QPlatformDialogHelper::Close:
+        return QCoreApplication::translate( "QGnomeTheme", "&Close" );
 
-        case QPlatformDialogHelper::Discard:
-            return QCoreApplication::translate( "QGnomeTheme", "Close without Saving" );
+    case QPlatformDialogHelper::Discard:
+        return QCoreApplication::translate( "QGnomeTheme", "Close without Saving" );
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QPlatformTheme::standardButtonText( button );

@@ -250,31 +250,31 @@ bool QTipLabel::eventFilter( QObject *o, QEvent *e )
 {
     switch ( e->type() )
     {
-        case QEvent::Leave:
+    case QEvent::Leave:
+        hideTip();
+        break;
+
+    case QEvent::WindowActivate:
+    case QEvent::WindowDeactivate:
+    case QEvent::FocusIn:
+    case QEvent::FocusOut:
+    case QEvent::Close:
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonDblClick:
+
+    case QEvent::Wheel:
+        hideTipImmediately();
+        break;
+
+    case QEvent::MouseMove:
+        if ( o == widget && !rect.isNull() && !rect.contains( static_cast<QMouseEvent *>( e )->pos() ) )
+        {
             hideTip();
-            break;
+        }
 
-        case QEvent::WindowActivate:
-        case QEvent::WindowDeactivate:
-        case QEvent::FocusIn:
-        case QEvent::FocusOut:
-        case QEvent::Close:
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonRelease:
-        case QEvent::MouseButtonDblClick:
-
-        case QEvent::Wheel:
-            hideTipImmediately();
-            break;
-
-        case QEvent::MouseMove:
-            if ( o == widget && !rect.isNull() && !rect.contains( static_cast<QMouseEvent *>( e )->pos() ) )
-            {
-                hideTip();
-            }
-
-        default:
-            break;
+    default:
+        break;
     }
 
     return false;

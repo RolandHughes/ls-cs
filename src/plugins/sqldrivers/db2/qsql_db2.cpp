@@ -154,61 +154,61 @@ static QVariant::Type qDecodeDB2Type( SQLSMALLINT sqltype )
 
     switch ( sqltype )
     {
-        case SQL_REAL:
-        case SQL_FLOAT:
-        case SQL_DOUBLE:
-        case SQL_DECIMAL:
-        case SQL_NUMERIC:
-            type = QVariant::Double;
-            break;
+    case SQL_REAL:
+    case SQL_FLOAT:
+    case SQL_DOUBLE:
+    case SQL_DECIMAL:
+    case SQL_NUMERIC:
+        type = QVariant::Double;
+        break;
 
-        case SQL_SMALLINT:
-        case SQL_INTEGER:
-        case SQL_BIT:
-        case SQL_TINYINT:
-            type = QVariant::Int;
-            break;
+    case SQL_SMALLINT:
+    case SQL_INTEGER:
+    case SQL_BIT:
+    case SQL_TINYINT:
+        type = QVariant::Int;
+        break;
 
-        case SQL_BIGINT:
-            type = QVariant::LongLong;
-            break;
+    case SQL_BIGINT:
+        type = QVariant::LongLong;
+        break;
 
-        case SQL_BLOB:
-        case SQL_BINARY:
-        case SQL_VARBINARY:
-        case SQL_LONGVARBINARY:
-        case SQL_CLOB:
-        case SQL_DBCLOB:
-            type = QVariant::ByteArray;
-            break;
+    case SQL_BLOB:
+    case SQL_BINARY:
+    case SQL_VARBINARY:
+    case SQL_LONGVARBINARY:
+    case SQL_CLOB:
+    case SQL_DBCLOB:
+        type = QVariant::ByteArray;
+        break;
 
-        case SQL_DATE:
-        case SQL_TYPE_DATE:
-            type = QVariant::Date;
-            break;
+    case SQL_DATE:
+    case SQL_TYPE_DATE:
+        type = QVariant::Date;
+        break;
 
-        case SQL_TIME:
-        case SQL_TYPE_TIME:
-            type = QVariant::Time;
-            break;
+    case SQL_TIME:
+    case SQL_TYPE_TIME:
+        type = QVariant::Time;
+        break;
 
-        case SQL_TIMESTAMP:
-        case SQL_TYPE_TIMESTAMP:
-            type = QVariant::DateTime;
-            break;
+    case SQL_TIMESTAMP:
+    case SQL_TYPE_TIMESTAMP:
+        type = QVariant::DateTime;
+        break;
 
-        case SQL_WCHAR:
-        case SQL_WVARCHAR:
-        case SQL_WLONGVARCHAR:
-        case SQL_CHAR:
-        case SQL_VARCHAR:
-        case SQL_LONGVARCHAR:
-            type = QVariant::String;
-            break;
+    case SQL_WCHAR:
+    case SQL_WVARCHAR:
+    case SQL_WLONGVARCHAR:
+    case SQL_CHAR:
+    case SQL_VARCHAR:
+    case SQL_LONGVARCHAR:
+        type = QVariant::String;
+        break;
 
-        default:
-            type = QVariant::ByteArray;
-            break;
+    default:
+        type = QVariant::ByteArray;
+        break;
     }
 
     return type;
@@ -743,193 +743,193 @@ bool QDB2Result::exec()
 
         switch ( values.at( i ).type() )
         {
-            case QVariant::Date:
+        case QVariant::Date:
+        {
+            QByteArray ba;
+            ba.resize( sizeof( DATE_STRUCT ) );
+            DATE_STRUCT *dt = ( DATE_STRUCT * )ba.constData();
+            QDate qdt = values.at( i ).toDate();
+            dt->year = qdt.year();
+            dt->month = qdt.month();
+            dt->day = qdt.day();
+            r = SQLBindParameter( d->hStmt,
+                                  i + 1,
+                                  qParamType[( QFlag )( bindValueType( i ) ) & 3],
+                                  SQL_C_DATE,
+                                  SQL_DATE,
+                                  0,
+                                  0,
+                                  ( void * ) dt,
+                                  0,
+                                  *ind == SQL_NULL_DATA ? ind : NULL );
+            tmpStorage.append( ba );
+            break;
+        }
+
+        case QVariant::Time:
+        {
+            QByteArray ba;
+            ba.resize( sizeof( TIME_STRUCT ) );
+            TIME_STRUCT *dt = ( TIME_STRUCT * )ba.constData();
+            QTime qdt = values.at( i ).toTime();
+            dt->hour = qdt.hour();
+            dt->minute = qdt.minute();
+            dt->second = qdt.second();
+            r = SQLBindParameter( d->hStmt,
+                                  i + 1,
+                                  qParamType[( QFlag )( bindValueType( i ) ) & 3],
+                                  SQL_C_TIME,
+                                  SQL_TIME,
+                                  0,
+                                  0,
+                                  ( void * ) dt,
+                                  0,
+                                  *ind == SQL_NULL_DATA ? ind : NULL );
+            tmpStorage.append( ba );
+            break;
+        }
+
+        case QVariant::DateTime:
+        {
+            QByteArray ba;
+            ba.resize( sizeof( TIMESTAMP_STRUCT ) );
+            TIMESTAMP_STRUCT *dt = ( TIMESTAMP_STRUCT * )ba.constData();
+            QDateTime qdt = values.at( i ).toDateTime();
+            dt->year = qdt.date().year();
+            dt->month = qdt.date().month();
+            dt->day = qdt.date().day();
+            dt->hour = qdt.time().hour();
+            dt->minute = qdt.time().minute();
+            dt->second = qdt.time().second();
+            dt->fraction = qdt.time().msec() * 1000000;
+            r = SQLBindParameter( d->hStmt,
+                                  i + 1,
+                                  qParamType[( QFlag )( bindValueType( i ) ) & 3],
+                                  SQL_C_TIMESTAMP,
+                                  SQL_TIMESTAMP,
+                                  0,
+                                  0,
+                                  ( void * ) dt,
+                                  0,
+                                  *ind == SQL_NULL_DATA ? ind : NULL );
+            tmpStorage.append( ba );
+            break;
+        }
+
+        case QVariant::Int:
+            r = SQLBindParameter( d->hStmt,
+                                  i + 1,
+                                  qParamType[( QFlag )( bindValueType( i ) ) & 3],
+                                  SQL_C_SLONG,
+                                  SQL_INTEGER,
+                                  0,
+                                  0,
+                                  ( void * )values.at( i ).constData(),
+                                  0,
+                                  *ind == SQL_NULL_DATA ? ind : NULL );
+            break;
+
+        case QVariant::Double:
+            r = SQLBindParameter( d->hStmt,
+                                  i + 1,
+                                  qParamType[( QFlag )( bindValueType( i ) ) & 3],
+                                  SQL_C_DOUBLE,
+                                  SQL_DOUBLE,
+                                  0,
+                                  0,
+                                  ( void * )values.at( i ).constData(),
+                                  0,
+                                  *ind == SQL_NULL_DATA ? ind : NULL );
+            break;
+
+        case QVariant::ByteArray:
+        {
+            int len = values.at( i ).toByteArray().size();
+
+            if ( *ind != SQL_NULL_DATA )
             {
-                QByteArray ba;
-                ba.resize( sizeof( DATE_STRUCT ) );
-                DATE_STRUCT *dt = ( DATE_STRUCT * )ba.constData();
-                QDate qdt = values.at( i ).toDate();
-                dt->year = qdt.year();
-                dt->month = qdt.month();
-                dt->day = qdt.day();
-                r = SQLBindParameter( d->hStmt,
-                                      i + 1,
-                                      qParamType[( QFlag )( bindValueType( i ) ) & 3],
-                                      SQL_C_DATE,
-                                      SQL_DATE,
-                                      0,
-                                      0,
-                                      ( void * ) dt,
-                                      0,
-                                      *ind == SQL_NULL_DATA ? ind : NULL );
-                tmpStorage.append( ba );
-                break;
+                *ind = len;
             }
 
-            case QVariant::Time:
+            r = SQLBindParameter( d->hStmt,
+                                  i + 1,
+                                  qParamType[( QFlag )( bindValueType( i ) ) & 3],
+                                  SQL_C_BINARY,
+                                  SQL_LONGVARBINARY,
+                                  len,
+                                  0,
+                                  ( void * )values.at( i ).toByteArray().constData(),
+                                  len,
+                                  ind );
+            break;
+        }
+
+        case QVariant::String:
+        {
+            QString str( values.at( i ).toString() );
+
+            if ( *ind != SQL_NULL_DATA )
             {
-                QByteArray ba;
-                ba.resize( sizeof( TIME_STRUCT ) );
-                TIME_STRUCT *dt = ( TIME_STRUCT * )ba.constData();
-                QTime qdt = values.at( i ).toTime();
-                dt->hour = qdt.hour();
-                dt->minute = qdt.minute();
-                dt->second = qdt.second();
-                r = SQLBindParameter( d->hStmt,
-                                      i + 1,
-                                      qParamType[( QFlag )( bindValueType( i ) ) & 3],
-                                      SQL_C_TIME,
-                                      SQL_TIME,
-                                      0,
-                                      0,
-                                      ( void * ) dt,
-                                      0,
-                                      *ind == SQL_NULL_DATA ? ind : NULL );
-                tmpStorage.append( ba );
-                break;
+                *ind = str.length() * sizeof( QChar );
             }
 
-            case QVariant::DateTime:
+            if ( bindValueType( i ) & QSql::Out )
             {
-                QByteArray ba;
-                ba.resize( sizeof( TIMESTAMP_STRUCT ) );
-                TIMESTAMP_STRUCT *dt = ( TIMESTAMP_STRUCT * )ba.constData();
-                QDateTime qdt = values.at( i ).toDateTime();
-                dt->year = qdt.date().year();
-                dt->month = qdt.date().month();
-                dt->day = qdt.date().day();
-                dt->hour = qdt.time().hour();
-                dt->minute = qdt.time().minute();
-                dt->second = qdt.time().second();
-                dt->fraction = qdt.time().msec() * 1000000;
+                QByteArray ba( ( char * )str.utf16(), str.capacity() * sizeof( QChar ) );
                 r = SQLBindParameter( d->hStmt,
                                       i + 1,
                                       qParamType[( QFlag )( bindValueType( i ) ) & 3],
-                                      SQL_C_TIMESTAMP,
-                                      SQL_TIMESTAMP,
+                                      SQL_C_WCHAR,
+                                      SQL_WVARCHAR,
+                                      str.length(),
                                       0,
-                                      0,
-                                      ( void * ) dt,
-                                      0,
-                                      *ind == SQL_NULL_DATA ? ind : NULL );
-                tmpStorage.append( ba );
-                break;
-            }
-
-            case QVariant::Int:
-                r = SQLBindParameter( d->hStmt,
-                                      i + 1,
-                                      qParamType[( QFlag )( bindValueType( i ) ) & 3],
-                                      SQL_C_SLONG,
-                                      SQL_INTEGER,
-                                      0,
-                                      0,
-                                      ( void * )values.at( i ).constData(),
-                                      0,
-                                      *ind == SQL_NULL_DATA ? ind : NULL );
-                break;
-
-            case QVariant::Double:
-                r = SQLBindParameter( d->hStmt,
-                                      i + 1,
-                                      qParamType[( QFlag )( bindValueType( i ) ) & 3],
-                                      SQL_C_DOUBLE,
-                                      SQL_DOUBLE,
-                                      0,
-                                      0,
-                                      ( void * )values.at( i ).constData(),
-                                      0,
-                                      *ind == SQL_NULL_DATA ? ind : NULL );
-                break;
-
-            case QVariant::ByteArray:
-            {
-                int len = values.at( i ).toByteArray().size();
-
-                if ( *ind != SQL_NULL_DATA )
-                {
-                    *ind = len;
-                }
-
-                r = SQLBindParameter( d->hStmt,
-                                      i + 1,
-                                      qParamType[( QFlag )( bindValueType( i ) ) & 3],
-                                      SQL_C_BINARY,
-                                      SQL_LONGVARBINARY,
-                                      len,
-                                      0,
-                                      ( void * )values.at( i ).toByteArray().constData(),
-                                      len,
-                                      ind );
-                break;
-            }
-
-            case QVariant::String:
-            {
-                QString str( values.at( i ).toString() );
-
-                if ( *ind != SQL_NULL_DATA )
-                {
-                    *ind = str.length() * sizeof( QChar );
-                }
-
-                if ( bindValueType( i ) & QSql::Out )
-                {
-                    QByteArray ba( ( char * )str.utf16(), str.capacity() * sizeof( QChar ) );
-                    r = SQLBindParameter( d->hStmt,
-                                          i + 1,
-                                          qParamType[( QFlag )( bindValueType( i ) ) & 3],
-                                          SQL_C_WCHAR,
-                                          SQL_WVARCHAR,
-                                          str.length(),
-                                          0,
-                                          ( void * )ba.constData(),
-                                          ba.size(),
-                                          ind );
-                    tmpStorage.append( ba );
-                }
-                else
-                {
-                    void *data = ( void * )str.utf16();
-                    int len = str.length();
-                    r = SQLBindParameter( d->hStmt,
-                                          i + 1,
-                                          qParamType[( QFlag )( bindValueType( i ) ) & 3],
-                                          SQL_C_WCHAR,
-                                          SQL_WVARCHAR,
-                                          len,
-                                          0,
-                                          data,
-                                          len * sizeof( QChar ),
-                                          ind );
-                }
-
-                break;
-            }
-
-            default:
-            {
-                QByteArray ba = values.at( i ).toString().toLatin1();
-                int len = ba.length() + 1;
-
-                if ( *ind != SQL_NULL_DATA )
-                {
-                    *ind = ba.length();
-                }
-
-                r = SQLBindParameter( d->hStmt,
-                                      i + 1,
-                                      qParamType[( QFlag )( bindValueType( i ) ) & 3],
-                                      SQL_C_CHAR,
-                                      SQL_VARCHAR,
-                                      len,
-                                      0,
-                                      ( void * ) ba.constData(),
-                                      len,
+                                      ( void * )ba.constData(),
+                                      ba.size(),
                                       ind );
                 tmpStorage.append( ba );
-                break;
             }
+            else
+            {
+                void *data = ( void * )str.utf16();
+                int len = str.length();
+                r = SQLBindParameter( d->hStmt,
+                                      i + 1,
+                                      qParamType[( QFlag )( bindValueType( i ) ) & 3],
+                                      SQL_C_WCHAR,
+                                      SQL_WVARCHAR,
+                                      len,
+                                      0,
+                                      data,
+                                      len * sizeof( QChar ),
+                                      ind );
+            }
+
+            break;
+        }
+
+        default:
+        {
+            QByteArray ba = values.at( i ).toString().toLatin1();
+            int len = ba.length() + 1;
+
+            if ( *ind != SQL_NULL_DATA )
+            {
+                *ind = ba.length();
+            }
+
+            r = SQLBindParameter( d->hStmt,
+                                  i + 1,
+                                  qParamType[( QFlag )( bindValueType( i ) ) & 3],
+                                  SQL_C_CHAR,
+                                  SQL_VARCHAR,
+                                  len,
+                                  0,
+                                  ( void * ) ba.constData(),
+                                  len,
+                                  ind );
+            tmpStorage.append( ba );
+            break;
+        }
         }
 
         if ( r != SQL_SUCCESS )
@@ -984,46 +984,46 @@ bool QDB2Result::exec()
     {
         switch ( values[i].type() )
         {
-            case QVariant::Date:
+        case QVariant::Date:
+        {
+            DATE_STRUCT ds = *( ( DATE_STRUCT * )tmpStorage.takeFirst().constData() );
+            values[i] = QVariant( QDate( ds.year, ds.month, ds.day ) );
+            break;
+        }
+
+        case QVariant::Time:
+        {
+            TIME_STRUCT dt = *( ( TIME_STRUCT * )tmpStorage.takeFirst().constData() );
+            values[i] = QVariant( QTime( dt.hour, dt.minute, dt.second ) );
+            break;
+        }
+
+        case QVariant::DateTime:
+        {
+            TIMESTAMP_STRUCT dt = *( ( TIMESTAMP_STRUCT * )tmpStorage.takeFirst().constData() );
+            values[i] = QVariant( QDateTime( QDate( dt.year, dt.month, dt.day ),
+                                             QTime( dt.hour, dt.minute, dt.second, dt.fraction / 1000000 ) ) );
+            break;
+        }
+
+        case QVariant::Int:
+        case QVariant::Double:
+        case QVariant::ByteArray:
+            break;
+
+        case QVariant::String:
+            if ( bindValueType( i ) & QSql::Out )
             {
-                DATE_STRUCT ds = *( ( DATE_STRUCT * )tmpStorage.takeFirst().constData() );
-                values[i] = QVariant( QDate( ds.year, ds.month, ds.day ) );
-                break;
+                values[i] = QString( ( const QChar * )tmpStorage.takeFirst().constData() );
             }
 
-            case QVariant::Time:
-            {
-                TIME_STRUCT dt = *( ( TIME_STRUCT * )tmpStorage.takeFirst().constData() );
-                values[i] = QVariant( QTime( dt.hour, dt.minute, dt.second ) );
-                break;
-            }
+            break;
 
-            case QVariant::DateTime:
-            {
-                TIMESTAMP_STRUCT dt = *( ( TIMESTAMP_STRUCT * )tmpStorage.takeFirst().constData() );
-                values[i] = QVariant( QDateTime( QDate( dt.year, dt.month, dt.day ),
-                                                 QTime( dt.hour, dt.minute, dt.second, dt.fraction / 1000000 ) ) );
-                break;
-            }
-
-            case QVariant::Int:
-            case QVariant::Double:
-            case QVariant::ByteArray:
-                break;
-
-            case QVariant::String:
-                if ( bindValueType( i ) & QSql::Out )
-                {
-                    values[i] = QString( ( const QChar * )tmpStorage.takeFirst().constData() );
-                }
-
-                break;
-
-            default:
-            {
-                values[i] = QString::fromLatin1( tmpStorage.takeFirst().constData() );
-                break;
-            }
+        default:
+        {
+            values[i] = QString::fromLatin1( tmpStorage.takeFirst().constData() );
+            break;
+        }
         }
 
         if ( indicators[i] == SQL_NULL_DATA )
@@ -1215,118 +1215,118 @@ QVariant QDB2Result::data( int field )
 
     switch ( info.type() )
     {
-        case QVariant::LongLong:
-            v = new QVariant( ( qint64 ) qGetBigIntData( d->hStmt, field, isNull ) );
-            break;
+    case QVariant::LongLong:
+        v = new QVariant( ( qint64 ) qGetBigIntData( d->hStmt, field, isNull ) );
+        break;
 
-        case QVariant::Int:
+    case QVariant::Int:
+        v = new QVariant( qGetIntData( d->hStmt, field, isNull ) );
+        break;
+
+    case QVariant::Date:
+    {
+        DATE_STRUCT dbuf;
+        r = SQLGetData( d->hStmt,
+                        field + 1,
+                        SQL_C_DATE,
+                        ( SQLPOINTER ) &dbuf,
+                        0,
+                        &lengthIndicator );
+
+        if ( ( r == SQL_SUCCESS || r == SQL_SUCCESS_WITH_INFO ) && ( lengthIndicator != SQL_NULL_DATA ) )
+        {
+            v = new QVariant( QDate( dbuf.year, dbuf.month, dbuf.day ) );
+        }
+        else
+        {
+            v = new QVariant( QDate() );
+            isNull = true;
+        }
+
+        break;
+    }
+
+    case QVariant::Time:
+    {
+        TIME_STRUCT tbuf;
+        r = SQLGetData( d->hStmt,
+                        field + 1,
+                        SQL_C_TIME,
+                        ( SQLPOINTER ) &tbuf,
+                        0,
+                        &lengthIndicator );
+
+        if ( ( r == SQL_SUCCESS || r == SQL_SUCCESS_WITH_INFO ) && ( lengthIndicator != SQL_NULL_DATA ) )
+        {
+            v = new QVariant( QTime( tbuf.hour, tbuf.minute, tbuf.second ) );
+        }
+        else
+        {
+            v = new QVariant( QTime() );
+            isNull = true;
+        }
+
+        break;
+    }
+
+    case QVariant::DateTime:
+    {
+        TIMESTAMP_STRUCT dtbuf;
+        r = SQLGetData( d->hStmt,
+                        field + 1,
+                        SQL_C_TIMESTAMP,
+                        ( SQLPOINTER ) &dtbuf,
+                        0,
+                        &lengthIndicator );
+
+        if ( ( r == SQL_SUCCESS || r == SQL_SUCCESS_WITH_INFO ) && ( lengthIndicator != SQL_NULL_DATA ) )
+        {
+            v = new QVariant( QDateTime( QDate( dtbuf.year, dtbuf.month, dtbuf.day ),
+                                         QTime( dtbuf.hour, dtbuf.minute, dtbuf.second, dtbuf.fraction / 1000000 ) ) );
+        }
+        else
+        {
+            v = new QVariant( QDateTime() );
+            isNull = true;
+        }
+
+        break;
+    }
+
+    case QVariant::ByteArray:
+        v = new QVariant( qGetBinaryData( d->hStmt, field, lengthIndicator, isNull ) );
+        break;
+
+    case QVariant::Double:
+    {
+        switch ( numericalPrecisionPolicy() )
+        {
+        case QSql::LowPrecisionInt32:
             v = new QVariant( qGetIntData( d->hStmt, field, isNull ) );
             break;
 
-        case QVariant::Date:
-        {
-            DATE_STRUCT dbuf;
-            r = SQLGetData( d->hStmt,
-                            field + 1,
-                            SQL_C_DATE,
-                            ( SQLPOINTER ) &dbuf,
-                            0,
-                            &lengthIndicator );
-
-            if ( ( r == SQL_SUCCESS || r == SQL_SUCCESS_WITH_INFO ) && ( lengthIndicator != SQL_NULL_DATA ) )
-            {
-                v = new QVariant( QDate( dbuf.year, dbuf.month, dbuf.day ) );
-            }
-            else
-            {
-                v = new QVariant( QDate() );
-                isNull = true;
-            }
-
-            break;
-        }
-
-        case QVariant::Time:
-        {
-            TIME_STRUCT tbuf;
-            r = SQLGetData( d->hStmt,
-                            field + 1,
-                            SQL_C_TIME,
-                            ( SQLPOINTER ) &tbuf,
-                            0,
-                            &lengthIndicator );
-
-            if ( ( r == SQL_SUCCESS || r == SQL_SUCCESS_WITH_INFO ) && ( lengthIndicator != SQL_NULL_DATA ) )
-            {
-                v = new QVariant( QTime( tbuf.hour, tbuf.minute, tbuf.second ) );
-            }
-            else
-            {
-                v = new QVariant( QTime() );
-                isNull = true;
-            }
-
-            break;
-        }
-
-        case QVariant::DateTime:
-        {
-            TIMESTAMP_STRUCT dtbuf;
-            r = SQLGetData( d->hStmt,
-                            field + 1,
-                            SQL_C_TIMESTAMP,
-                            ( SQLPOINTER ) &dtbuf,
-                            0,
-                            &lengthIndicator );
-
-            if ( ( r == SQL_SUCCESS || r == SQL_SUCCESS_WITH_INFO ) && ( lengthIndicator != SQL_NULL_DATA ) )
-            {
-                v = new QVariant( QDateTime( QDate( dtbuf.year, dtbuf.month, dtbuf.day ),
-                                             QTime( dtbuf.hour, dtbuf.minute, dtbuf.second, dtbuf.fraction / 1000000 ) ) );
-            }
-            else
-            {
-                v = new QVariant( QDateTime() );
-                isNull = true;
-            }
-
-            break;
-        }
-
-        case QVariant::ByteArray:
-            v = new QVariant( qGetBinaryData( d->hStmt, field, lengthIndicator, isNull ) );
+        case QSql::LowPrecisionInt64:
+            v = new QVariant( ( qint64 ) qGetBigIntData( d->hStmt, field, isNull ) );
             break;
 
-        case QVariant::Double:
-        {
-            switch ( numericalPrecisionPolicy() )
-            {
-                case QSql::LowPrecisionInt32:
-                    v = new QVariant( qGetIntData( d->hStmt, field, isNull ) );
-                    break;
-
-                case QSql::LowPrecisionInt64:
-                    v = new QVariant( ( qint64 ) qGetBigIntData( d->hStmt, field, isNull ) );
-                    break;
-
-                case QSql::LowPrecisionDouble:
-                    v = new QVariant( qGetDoubleData( d->hStmt, field, isNull ) );
-                    break;
-
-                case QSql::HighPrecision:
-                default:
-                    // length + 1 for the comma
-                    v = new QVariant( qGetStringData( d->hStmt, field, info.length() + 1, isNull ) );
-                    break;
-            }
-
+        case QSql::LowPrecisionDouble:
+            v = new QVariant( qGetDoubleData( d->hStmt, field, isNull ) );
             break;
-        }
 
-        case QVariant::String:
+        case QSql::HighPrecision:
         default:
-            v = new QVariant( qGetStringData( d->hStmt, field, info.length(), isNull ) );
+            // length + 1 for the comma
+            v = new QVariant( qGetStringData( d->hStmt, field, info.length() + 1, isNull ) );
             break;
+        }
+
+        break;
+    }
+
+    case QVariant::String:
+    default:
+        v = new QVariant( qGetStringData( d->hStmt, field, info.length(), isNull ) );
+        break;
     }
 
     if ( isNull )
@@ -1426,21 +1426,21 @@ void QDB2Result::virtual_hook( int id, void *data )
 {
     switch ( id )
     {
-        case QSqlResult::NextResult:
-            Q_ASSERT( data );
-            *static_cast<bool *>( data ) = nextResult();
-            break;
+    case QSqlResult::NextResult:
+        Q_ASSERT( data );
+        *static_cast<bool *>( data ) = nextResult();
+        break;
 
-        case QSqlResult::DetachFromResultSet:
-            if ( d->hStmt )
-            {
-                SQLCloseCursor( d->hStmt );
-            }
+    case QSqlResult::DetachFromResultSet:
+        if ( d->hStmt )
+        {
+            SQLCloseCursor( d->hStmt );
+        }
 
-            break;
+        break;
 
-        default:
-            QSqlResult::virtual_hook( id, data );
+    default:
+        QSqlResult::virtual_hook( id, data );
     }
 }
 
@@ -1954,25 +1954,25 @@ bool QDB2Driver::hasFeature( DriverFeature f ) const
 {
     switch ( f )
     {
-        case QuerySize:
-        case NamedPlaceholders:
-        case BatchOperations:
-        case LastInsertId:
-        case SimpleLocking:
-        case EventNotifications:
-            return false;
+    case QuerySize:
+    case NamedPlaceholders:
+    case BatchOperations:
+    case LastInsertId:
+    case SimpleLocking:
+    case EventNotifications:
+        return false;
 
-        case BLOB:
-        case Transactions:
-        case MultipleResultSets:
-        case PreparedQueries:
-        case PositionalPlaceholders:
-        case LowPrecisionNumbers:
-        case FinishQuery:
-            return true;
+    case BLOB:
+    case Transactions:
+    case MultipleResultSets:
+    case PreparedQueries:
+    case PositionalPlaceholders:
+    case LowPrecisionNumbers:
+    case FinishQuery:
+        return true;
 
-        case Unicode:
-            return true;
+    case Unicode:
+        return true;
     }
 
     return false;
@@ -2060,50 +2060,50 @@ QString QDB2Driver::formatValue( const QSqlField &field, bool trimStrings ) cons
 
     switch ( field.type() )
     {
-        case QVariant::DateTime:
+    case QVariant::DateTime:
+    {
+        // Use an escape sequence for the datetime fields
+        if ( field.value().toDateTime().isValid() )
         {
-            // Use an escape sequence for the datetime fields
-            if ( field.value().toDateTime().isValid() )
-            {
-                QDate dt = field.value().toDateTime().date();
-                QTime tm = field.value().toDateTime().time();
-                // Dateformat has to be "yyyy-MM-dd hh:mm:ss", with leading zeroes if month or day < 10
-                return QLatin1Char( '\'' ) + QString::number( dt.year() ) + QLatin1Char( '-' )
-                       + QString::number( dt.month() ) + QLatin1Char( '-' )
-                       + QString::number( dt.day() ) + QLatin1Char( '-' )
-                       + QString::number( tm.hour() ) + QLatin1Char( '.' )
-                       + QString::number( tm.minute() ).rightJustified( 2, QLatin1Char( '0' ), true )
-                       + QLatin1Char( '.' )
-                       + QString::number( tm.second() ).rightJustified( 2, QLatin1Char( '0' ), true )
-                       + QLatin1Char( '.' )
-                       + QString::number( tm.msec() * 1000 ).rightJustified( 6, QLatin1Char( '0' ), true )
-                       + QLatin1Char( '\'' );
-            }
-            else
-            {
-                return QLatin1String( "NULL" );
-            }
+            QDate dt = field.value().toDateTime().date();
+            QTime tm = field.value().toDateTime().time();
+            // Dateformat has to be "yyyy-MM-dd hh:mm:ss", with leading zeroes if month or day < 10
+            return QLatin1Char( '\'' ) + QString::number( dt.year() ) + QLatin1Char( '-' )
+                   + QString::number( dt.month() ) + QLatin1Char( '-' )
+                   + QString::number( dt.day() ) + QLatin1Char( '-' )
+                   + QString::number( tm.hour() ) + QLatin1Char( '.' )
+                   + QString::number( tm.minute() ).rightJustified( 2, QLatin1Char( '0' ), true )
+                   + QLatin1Char( '.' )
+                   + QString::number( tm.second() ).rightJustified( 2, QLatin1Char( '0' ), true )
+                   + QLatin1Char( '.' )
+                   + QString::number( tm.msec() * 1000 ).rightJustified( 6, QLatin1Char( '0' ), true )
+                   + QLatin1Char( '\'' );
+        }
+        else
+        {
+            return QLatin1String( "NULL" );
+        }
+    }
+
+    case QVariant::ByteArray:
+    {
+        QByteArray ba = field.value().toByteArray();
+        QString res = QString::fromLatin1( "BLOB(X'" );
+        static const char hexchars[] = "0123456789abcdef";
+
+        for ( int i = 0; i < ba.size(); ++i )
+        {
+            uchar s = ( uchar ) ba[i];
+            res += QLatin1Char( hexchars[s >> 4] );
+            res += QLatin1Char( hexchars[s & 0x0f] );
         }
 
-        case QVariant::ByteArray:
-        {
-            QByteArray ba = field.value().toByteArray();
-            QString res = QString::fromLatin1( "BLOB(X'" );
-            static const char hexchars[] = "0123456789abcdef";
+        res += QLatin1String( "')" );
+        return res;
+    }
 
-            for ( int i = 0; i < ba.size(); ++i )
-            {
-                uchar s = ( uchar ) ba[i];
-                res += QLatin1Char( hexchars[s >> 4] );
-                res += QLatin1Char( hexchars[s & 0x0f] );
-            }
-
-            res += QLatin1String( "')" );
-            return res;
-        }
-
-        default:
-            return QSqlDriver::formatValue( field, trimStrings );
+    default:
+        return QSqlDriver::formatValue( field, trimStrings );
     }
 }
 

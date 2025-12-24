@@ -1634,9 +1634,9 @@ struct SelectStoredConstMemberFunctionCall5
 {
     using type = typename SelectSpecialization<T>::template
                  Type<StoredConstMemberFunctionCall5<T, Class, Param1, Arg1, Param2, Arg2, Param3, Arg3, Param4, Arg4,
-                         Param5, Arg5>,
+                      Param5, Arg5>,
                       VoidStoredConstMemberFunctionCall5<T, Class, Param1, Arg1, Param2, Arg2, Param3, Arg3, Param4, Arg4,
-                              Param5, Arg5>>::type;
+                          Param5, Arg5>>::type;
 };
 
 template <typename T, typename Class, typename Param1, typename Arg1, typename Param2, typename Arg2,
@@ -1695,9 +1695,9 @@ struct SelectStoredMemberFunctionPointerCall5
 {
     using type = typename SelectSpecialization<T>::template
                  Type<StoredMemberFunctionPointerCall5<T, Class, Param1, Arg1, Param2, Arg2, Param3, Arg3, Param4,
-                         Arg4, Param5, Arg5>,
+                      Arg4, Param5, Arg5>,
                       VoidStoredMemberFunctionPointerCall5<T, Class, Param1, Arg1, Param2, Arg2, Param3, Arg3, Param4,
-                              Arg4, Param5, Arg5>>::type;
+                          Arg4, Param5, Arg5>>::type;
 };
 
 template <typename T, typename Class, typename Param1, typename Arg1, typename Param2, typename Arg2,
@@ -1756,9 +1756,9 @@ struct SelectStoredConstMemberFunctionPointerCall5
 {
     using type = typename SelectSpecialization<T>::template
                  Type<StoredConstMemberFunctionPointerCall5<T, Class, Param1, Arg1, Param2, Arg2, Param3, Arg3,
-                         Param4, Arg4, Param5, Arg5>,
+                      Param4, Arg4, Param5, Arg5>,
                       VoidStoredConstMemberFunctionPointerCall5<T, Class, Param1, Arg1, Param2, Arg2, Param3, Arg3,
-                              Param4, Arg4, Param5, Arg5>>::type;
+                          Param4, Arg4, Param5, Arg5>>::type;
 };
 
 template <typename T, typename Functor>

@@ -93,11 +93,11 @@ Item ResolveQNameFN::evaluateSingleton( const DynamicContext::Ptr &context ) con
     const NamespaceResolver::Ptr resolver( new NodeNamespaceResolver( m_operands.last()->evaluateSingleton( context ) ) );
     const QString strName( itemName.stringValue() );
     const QXmlName name = QNameConstructor::expandQName<DynamicContext::Ptr,
-                   ReportContext::FOCA0002,
-                   ReportContext::FONS0004>( strName,
-                           context,
-                           resolver,
-                           this );
+          ReportContext::FOCA0002,
+          ReportContext::FONS0004>( strName,
+                                    context,
+                                    resolver,
+                                    this );
 
     return toItem( QNameValue::fromValue( context->namePool(), name ) );
 }

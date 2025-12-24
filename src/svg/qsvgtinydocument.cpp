@@ -120,17 +120,17 @@ QByteArray lscs_inflateGZipDataFrom( QIODevice *device )
 
             switch ( zlibResult )
             {
-                case Z_NEED_DICT:
-                case Z_DATA_ERROR:
-                case Z_STREAM_ERROR:
-                case Z_MEM_ERROR:
-                {
-                    inflateEnd( &zlibStream );
-                    qWarning( "Error while inflating gzip file: %s",
-                              ( zlibStream.msg != nullptr ? zlibStream.msg : "Unknown error" ) );
-                    destination.chop( zlibStream.avail_out );
-                    return destination;
-                }
+            case Z_NEED_DICT:
+            case Z_DATA_ERROR:
+            case Z_STREAM_ERROR:
+            case Z_MEM_ERROR:
+            {
+                inflateEnd( &zlibStream );
+                qWarning( "Error while inflating gzip file: %s",
+                          ( zlibStream.msg != nullptr ? zlibStream.msg : "Unknown error" ) );
+                destination.chop( zlibStream.avail_out );
+                return destination;
+            }
             }
 
             // If the output buffer still has more room after calling inflate

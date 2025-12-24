@@ -253,8 +253,8 @@ public:
     QHash<RestorableId, QVariant> computePendingRestorables( const QList<QAbstractState *> &statesToExit_sorted ) const;
 
     QHash<QAbstractState *, QVector<QPropertyAssignment>>
-            computePropertyAssignments( const QList<QAbstractState *> &statesToEnter_sorted,
-                                        QHash<RestorableId, QVariant> &pendingRestorables ) const;
+    computePropertyAssignments( const QList<QAbstractState *> &statesToEnter_sorted,
+                                QHash<RestorableId, QVariant> &pendingRestorables ) const;
 #endif
 
     State state;

@@ -1592,13 +1592,13 @@ dig_done:
 
         switch ( c = *++s )
         {
-            case '-':
-                esign = 1;
-                [[fallthrough]];
+        case '-':
+            esign = 1;
+            [[fallthrough]];
 
-            case '+':
-                c = *++s;
-                break;
+        case '+':
+            c = *++s;
+            break;
         }
 
         if ( c >= '0' && c <= '9' )
@@ -2126,13 +2126,13 @@ drop_down:
 
             switch ( FLT_ROUNDS )
             {
-                case 2: /* towards +infinity */
-                    aadj1 -= 0.5;
-                    break;
+            case 2: /* towards +infinity */
+                aadj1 -= 0.5;
+                break;
 
-                case 0: /* towards 0 */
-                case 3: /* towards -infinity */
-                    aadj1 += 0.5;
+            case 0: /* towards 0 */
+            case 3: /* towards -infinity */
+                aadj1 += 0.5;
             }
 
 #else
@@ -2700,39 +2700,39 @@ char *_qdtoa( double d, int mode, int ndigits, int *decpt, int *sign, char **rve
 
     switch ( mode )
     {
-        case 0:
-        case 1:
-            ilim = ilim1 = -1;
-            i = 18;
-            ndigits = 0;
-            break;
+    case 0:
+    case 1:
+        ilim = ilim1 = -1;
+        i = 18;
+        ndigits = 0;
+        break;
 
-        case 2:
-            leftright = 0;
-            [[fallthrough]];
+    case 2:
+        leftright = 0;
+        [[fallthrough]];
 
-        case 4:
-            if ( ndigits <= 0 )
-            {
-                ndigits = 1;
-            }
+    case 4:
+        if ( ndigits <= 0 )
+        {
+            ndigits = 1;
+        }
 
-            ilim = ilim1 = i = ndigits;
-            break;
+        ilim = ilim1 = i = ndigits;
+        break;
 
-        case 3:
-            leftright = 0;
-            [[fallthrough]];
+    case 3:
+        leftright = 0;
+        [[fallthrough]];
 
-        case 5:
-            i = ndigits + k + 1;
-            ilim  = i;
-            ilim1 = i - 1;
+    case 5:
+        i = ndigits + k + 1;
+        ilim  = i;
+        ilim1 = i - 1;
 
-            if ( i <= 0 )
-            {
-                i = 1;
-            }
+        if ( i <= 0 )
+        {
+            i = 1;
+        }
     }
 
     try

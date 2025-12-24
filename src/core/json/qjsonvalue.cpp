@@ -118,48 +118,48 @@ QJsonValue QJsonValue::fromVariant( const QVariant &variant )
     switch ( variant.type() )
     {
 
-        case QVariant::Bool:
-            return QJsonValue( variant.toBool() );
+    case QVariant::Bool:
+        return QJsonValue( variant.toBool() );
 
-        case QVariant::Int:
-        case QVariant::Double:
-        case QVariant::LongLong:
-        case QVariant::ULongLong:
-        case QVariant::UInt:
-            return QJsonValue( variant.toDouble() );
+    case QVariant::Int:
+    case QVariant::Double:
+    case QVariant::LongLong:
+    case QVariant::ULongLong:
+    case QVariant::UInt:
+        return QJsonValue( variant.toDouble() );
 
-        case QVariant::String:
-            return QJsonValue( variant.toString() );
+    case QVariant::String:
+        return QJsonValue( variant.toString() );
 
-        case QVariant::StringList:
-            return QJsonValue( QJsonArray::fromStringList( variant.toStringList() ) );
+    case QVariant::StringList:
+        return QJsonValue( QJsonArray::fromStringList( variant.toStringList() ) );
 
-        case QVariant::List:
-            return QJsonValue( QJsonArray::fromVariantList( variant.toList() ) );
+    case QVariant::List:
+        return QJsonValue( QJsonArray::fromVariantList( variant.toList() ) );
 
-        case QVariant::Hash:
-            return QJsonValue( QJsonObject::fromVariantHash( variant.toHash() ) );
+    case QVariant::Hash:
+        return QJsonValue( QJsonObject::fromVariantHash( variant.toHash() ) );
 
-        case QVariant::Map:
-            return QJsonValue( QJsonObject::fromVariantMap( variant.toMap() ) );
+    case QVariant::Map:
+        return QJsonValue( QJsonObject::fromVariantMap( variant.toMap() ) );
 
-        case QVariant::JsonValue:
-            return variant.toJsonValue();
+    case QVariant::JsonValue:
+        return variant.toJsonValue();
 
-        case QVariant::JsonObject:
-            return variant.toJsonObject();
+    case QVariant::JsonObject:
+        return variant.toJsonObject();
 
-        case QVariant::JsonArray:
-            return variant.toJsonArray();
+    case QVariant::JsonArray:
+        return variant.toJsonArray();
 
-        case QVariant::JsonDocument:
-        {
-            QJsonDocument doc = variant.toJsonDocument();
-            return doc.isArray() ? QJsonValue( doc.array() ) : QJsonValue( doc.object() );
-        }
+    case QVariant::JsonDocument:
+    {
+        QJsonDocument doc = variant.toJsonDocument();
+        return doc.isArray() ? QJsonValue( doc.array() ) : QJsonValue( doc.object() );
+    }
 
-        default:
-            break;
+    default:
+        break;
     }
 
     QString string = variant.toString();
@@ -176,23 +176,23 @@ QVariant QJsonValue::toVariant() const
 {
     switch ( type() )
     {
-        case Type::Bool:
-            return toBool();
+    case Type::Bool:
+        return toBool();
 
-        case Type::Double:
-            return toDouble();
+    case Type::Double:
+        return toDouble();
 
-        case Type::String:
-            return toString();
+    case Type::String:
+        return toString();
 
-        case Type::Array:
-            return toArray().toVariantList();
+    case Type::Array:
+        return toArray().toVariantList();
 
-        case Type::Object:
-            return toObject().toVariantMap();
+    case Type::Object:
+        return toObject().toVariantMap();
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return QVariant();
@@ -252,24 +252,24 @@ bool QJsonValue::operator==( const QJsonValue &other ) const
 
     switch ( type() )
     {
-        case Undefined:
-        case Null:
-            break;
+    case Undefined:
+    case Null:
+        break;
 
-        case Bool:
-            return toBool() == other.toBool();
+    case Bool:
+        return toBool() == other.toBool();
 
-        case Double:
-            return toDouble() == other.toDouble();
+    case Double:
+        return toDouble() == other.toDouble();
 
-        case String:
-            return toString() == other.toString();
+    case String:
+        return toString() == other.toString();
 
-        case Array:
-            return toArray() == other.toArray();
+    case Array:
+        return toArray() == other.toArray();
 
-        case Object:
-            return toObject() == other.toObject();
+    case Object:
+        return toObject() == other.toObject();
     }
 
     return true;

@@ -328,29 +328,29 @@ bool QAccessibleTable::selectRow( int row )
 
     switch ( view()->selectionMode() )
     {
-        case QAbstractItemView::NoSelection:
+    case QAbstractItemView::NoSelection:
+        return false;
+
+    case QAbstractItemView::SingleSelection:
+        if ( view()->selectionBehavior() != QAbstractItemView::SelectRows && columnCount() > 1 )
+        {
             return false;
+        }
 
-        case QAbstractItemView::SingleSelection:
-            if ( view()->selectionBehavior() != QAbstractItemView::SelectRows && columnCount() > 1 )
-            {
-                return false;
-            }
+        view()->clearSelection();
+        break;
 
+    case QAbstractItemView::ContiguousSelection:
+        if ( ( !row || !view()->selectionModel()->isRowSelected( row - 1, view()->rootIndex() ) )
+                && !view()->selectionModel()->isRowSelected( row + 1, view()->rootIndex() ) )
+        {
             view()->clearSelection();
-            break;
+        }
 
-        case QAbstractItemView::ContiguousSelection:
-            if ( ( !row || !view()->selectionModel()->isRowSelected( row - 1, view()->rootIndex() ) )
-                    && !view()->selectionModel()->isRowSelected( row + 1, view()->rootIndex() ) )
-            {
-                view()->clearSelection();
-            }
+        break;
 
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     view()->selectionModel()->select( index, QItemSelectionModel::Select | QItemSelectionModel::Rows );
@@ -373,28 +373,28 @@ bool QAccessibleTable::selectColumn( int column )
 
     switch ( view()->selectionMode() )
     {
-        case QAbstractItemView::NoSelection:
+    case QAbstractItemView::NoSelection:
+        return false;
+
+    case QAbstractItemView::SingleSelection:
+        if ( view()->selectionBehavior() != QAbstractItemView::SelectColumns && rowCount() > 1 )
+        {
             return false;
+        }
 
-        case QAbstractItemView::SingleSelection:
-            if ( view()->selectionBehavior() != QAbstractItemView::SelectColumns && rowCount() > 1 )
-            {
-                return false;
-            }
+        [[fallthrough]];
 
-            [[fallthrough]];
+    case QAbstractItemView::ContiguousSelection:
+        if ( ( ! column || !view()->selectionModel()->isColumnSelected( column - 1, view()->rootIndex() ) )
+                && ! view()->selectionModel()->isColumnSelected( column + 1, view()->rootIndex() ) )
+        {
+            view()->clearSelection();
+        }
 
-        case QAbstractItemView::ContiguousSelection:
-            if ( ( ! column || !view()->selectionModel()->isColumnSelected( column - 1, view()->rootIndex() ) )
-                    && ! view()->selectionModel()->isColumnSelected( column + 1, view()->rootIndex() ) )
-            {
-                view()->clearSelection();
-            }
+        break;
 
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     view()->selectionModel()->select( index, QItemSelectionModel::Select | QItemSelectionModel::Columns );
@@ -420,33 +420,33 @@ bool QAccessibleTable::unselectRow( int row )
 
     switch ( view()->selectionMode() )
     {
-        case QAbstractItemView::SingleSelection:
+    case QAbstractItemView::SingleSelection:
 
-            //In SingleSelection and ContiguousSelection once an item
-            //is selected, there's no way for the user to unselect all items
-            if ( selectedRowCount() == 1 )
-            {
-                return false;
-            }
+        //In SingleSelection and ContiguousSelection once an item
+        //is selected, there's no way for the user to unselect all items
+        if ( selectedRowCount() == 1 )
+        {
+            return false;
+        }
 
-            break;
+        break;
 
-        case QAbstractItemView::ContiguousSelection:
-            if ( selectedRowCount() == 1 )
-            {
-                return false;
-            }
+    case QAbstractItemView::ContiguousSelection:
+        if ( selectedRowCount() == 1 )
+        {
+            return false;
+        }
 
-            if ( ( !row || view()->selectionModel()->isRowSelected( row - 1, view()->rootIndex() ) )
-                    && view()->selectionModel()->isRowSelected( row + 1, view()->rootIndex() ) )
-            {
-                //If there are rows selected both up the current row and down the current rown,
-                //the ones which are down the current row will be deselected
-                selection = QItemSelection( index, view()->model()->index( rowCount() - 1, 0, view()->rootIndex() ) );
-            }
+        if ( ( !row || view()->selectionModel()->isRowSelected( row - 1, view()->rootIndex() ) )
+                && view()->selectionModel()->isRowSelected( row + 1, view()->rootIndex() ) )
+        {
+            //If there are rows selected both up the current row and down the current rown,
+            //the ones which are down the current row will be deselected
+            selection = QItemSelection( index, view()->model()->index( rowCount() - 1, 0, view()->rootIndex() ) );
+        }
 
-        default:
-            break;
+    default:
+        break;
     }
 
     view()->selectionModel()->select( selection, QItemSelectionModel::Deselect | QItemSelectionModel::Rows );
@@ -471,33 +471,33 @@ bool QAccessibleTable::unselectColumn( int column )
 
     switch ( view()->selectionMode() )
     {
-        case QAbstractItemView::SingleSelection:
+    case QAbstractItemView::SingleSelection:
 
-            //In SingleSelection and ContiguousSelection once an item
-            //is selected, there's no way for the user to unselect all items
-            if ( selectedColumnCount() == 1 )
-            {
-                return false;
-            }
+        //In SingleSelection and ContiguousSelection once an item
+        //is selected, there's no way for the user to unselect all items
+        if ( selectedColumnCount() == 1 )
+        {
+            return false;
+        }
 
-            break;
+        break;
 
-        case QAbstractItemView::ContiguousSelection:
-            if ( selectedColumnCount() == 1 )
-            {
-                return false;
-            }
+    case QAbstractItemView::ContiguousSelection:
+        if ( selectedColumnCount() == 1 )
+        {
+            return false;
+        }
 
-            if ( ( !column || view()->selectionModel()->isColumnSelected( column - 1, view()->rootIndex() ) )
-                    && view()->selectionModel()->isColumnSelected( column + 1, view()->rootIndex() ) )
-            {
-                //If there are columns selected both at the left of the current row and at the right
-                //of the current rown, the ones which are at the right will be deselected
-                selection = QItemSelection( index, view()->model()->index( 0, columnCount() - 1, view()->rootIndex() ) );
-            }
+        if ( ( !column || view()->selectionModel()->isColumnSelected( column - 1, view()->rootIndex() ) )
+                && view()->selectionModel()->isColumnSelected( column + 1, view()->rootIndex() ) )
+        {
+            //If there are columns selected both at the left of the current row and at the right
+            //of the current rown, the ones which are at the right will be deselected
+            selection = QItemSelection( index, view()->model()->index( 0, columnCount() - 1, view()->rootIndex() ) );
+        }
 
-        default:
-            break;
+    default:
+        break;
     }
 
     view()->selectionModel()->select( selection, QItemSelectionModel::Deselect | QItemSelectionModel::Columns );
@@ -710,150 +710,150 @@ void QAccessibleTable::modelChange( QAccessibleTableModelChangeEvent *event )
 
     switch ( event->modelChangeType() )
     {
-        case QAccessibleTableModelChangeEvent::ModelReset:
-            for ( QAccessible::Id id : childToId )
+    case QAccessibleTableModelChangeEvent::ModelReset:
+        for ( QAccessible::Id id : childToId )
+        {
+            QAccessible::deleteAccessibleInterface( id );
+        }
+
+        childToId.clear();
+        break;
+
+    // rows are inserted: move every row after that
+    case QAccessibleTableModelChangeEvent::RowsInserted:
+    case QAccessibleTableModelChangeEvent::ColumnsInserted:
+    {
+        int newRows = event->lastRow() - event->firstRow() + 1;
+        int newColumns = event->lastColumn() - event->firstColumn() + 1;
+
+        ChildCache newCache;
+        ChildCache::const_iterator iter = childToId.constBegin();
+
+        while ( iter != childToId.constEnd() )
+        {
+            QAccessible::Id id = iter.value();
+            QAccessibleInterface *iface = QAccessible::accessibleInterface( id );
+            Q_ASSERT( iface );
+
+            if ( event->modelChangeType() == QAccessibleTableModelChangeEvent::RowsInserted
+                    && iface->role() == QAccessible::RowHeader )
             {
+                QAccessibleTableHeaderCell *cell = static_cast<QAccessibleTableHeaderCell *>( iface );
+
+                if ( cell->index >= event->firstRow() )
+                {
+                    cell->index += newRows;
+                }
+            }
+            else if ( event->modelChangeType() == QAccessibleTableModelChangeEvent::ColumnsInserted
+                      && iface->role() == QAccessible::ColumnHeader )
+            {
+                QAccessibleTableHeaderCell *cell = static_cast<QAccessibleTableHeaderCell *>( iface );
+
+                if ( cell->index >= event->firstColumn() )
+                {
+                    cell->index += newColumns;
+                }
+            }
+
+            if ( indexOfChild( iface ) >= 0 )
+            {
+                newCache.insert( indexOfChild( iface ), id );
+            }
+            else
+            {
+                // ### This should really not happen,
+                // but it might if the view has a root index set.
+                // This needs to be fixed.
                 QAccessible::deleteAccessibleInterface( id );
             }
 
-            childToId.clear();
-            break;
+            ++iter;
+        }
 
-        // rows are inserted: move every row after that
-        case QAccessibleTableModelChangeEvent::RowsInserted:
-        case QAccessibleTableModelChangeEvent::ColumnsInserted:
+        childToId = newCache;
+        break;
+    }
+
+    case QAccessibleTableModelChangeEvent::ColumnsRemoved:
+    case QAccessibleTableModelChangeEvent::RowsRemoved:
+    {
+        int deletedColumns = event->lastColumn() - event->firstColumn() + 1;
+        int deletedRows = event->lastRow() - event->firstRow() + 1;
+        ChildCache newCache;
+        ChildCache::const_iterator iter = childToId.constBegin();
+
+        while ( iter != childToId.constEnd() )
         {
-            int newRows = event->lastRow() - event->firstRow() + 1;
-            int newColumns = event->lastColumn() - event->firstColumn() + 1;
+            QAccessible::Id id = iter.value();
+            QAccessibleInterface *iface = QAccessible::accessibleInterface( id );
+            Q_ASSERT( iface );
 
-            ChildCache newCache;
-            ChildCache::const_iterator iter = childToId.constBegin();
-
-            while ( iter != childToId.constEnd() )
+            if ( iface->role() == QAccessible::Cell || iface->role() == QAccessible::ListItem )
             {
-                QAccessible::Id id = iter.value();
-                QAccessibleInterface *iface = QAccessible::accessibleInterface( id );
-                Q_ASSERT( iface );
+                Q_ASSERT( iface->tableCellInterface() );
+                QAccessibleTableCell *cell = static_cast<QAccessibleTableCell *>( iface->tableCellInterface() );
 
-                if ( event->modelChangeType() == QAccessibleTableModelChangeEvent::RowsInserted
-                        && iface->role() == QAccessible::RowHeader )
+                // Since it is a QPersistentModelIndex, we only need to check if it is valid
+                if ( cell->m_index.isValid() )
                 {
-                    QAccessibleTableHeaderCell *cell = static_cast<QAccessibleTableHeaderCell *>( iface );
-
-                    if ( cell->index >= event->firstRow() )
-                    {
-                        cell->index += newRows;
-                    }
-                }
-                else if ( event->modelChangeType() == QAccessibleTableModelChangeEvent::ColumnsInserted
-                          && iface->role() == QAccessible::ColumnHeader )
-                {
-                    QAccessibleTableHeaderCell *cell = static_cast<QAccessibleTableHeaderCell *>( iface );
-
-                    if ( cell->index >= event->firstColumn() )
-                    {
-                        cell->index += newColumns;
-                    }
-                }
-
-                if ( indexOfChild( iface ) >= 0 )
-                {
-                    newCache.insert( indexOfChild( iface ), id );
+                    newCache.insert( indexOfChild( cell ), id );
                 }
                 else
                 {
-                    // ### This should really not happen,
-                    // but it might if the view has a root index set.
-                    // This needs to be fixed.
                     QAccessible::deleteAccessibleInterface( id );
                 }
 
-                ++iter;
             }
-
-            childToId = newCache;
-            break;
-        }
-
-        case QAccessibleTableModelChangeEvent::ColumnsRemoved:
-        case QAccessibleTableModelChangeEvent::RowsRemoved:
-        {
-            int deletedColumns = event->lastColumn() - event->firstColumn() + 1;
-            int deletedRows = event->lastRow() - event->firstRow() + 1;
-            ChildCache newCache;
-            ChildCache::const_iterator iter = childToId.constBegin();
-
-            while ( iter != childToId.constEnd() )
+            else if ( event->modelChangeType() == QAccessibleTableModelChangeEvent::RowsRemoved
+                      && iface->role() == QAccessible::RowHeader )
             {
-                QAccessible::Id id = iter.value();
-                QAccessibleInterface *iface = QAccessible::accessibleInterface( id );
-                Q_ASSERT( iface );
+                QAccessibleTableHeaderCell *cell = static_cast<QAccessibleTableHeaderCell *>( iface );
 
-                if ( iface->role() == QAccessible::Cell || iface->role() == QAccessible::ListItem )
+                if ( cell->index < event->firstRow() )
                 {
-                    Q_ASSERT( iface->tableCellInterface() );
-                    QAccessibleTableCell *cell = static_cast<QAccessibleTableCell *>( iface->tableCellInterface() );
-
-                    // Since it is a QPersistentModelIndex, we only need to check if it is valid
-                    if ( cell->m_index.isValid() )
-                    {
-                        newCache.insert( indexOfChild( cell ), id );
-                    }
-                    else
-                    {
-                        QAccessible::deleteAccessibleInterface( id );
-                    }
-
+                    newCache.insert( indexOfChild( cell ), id );
                 }
-                else if ( event->modelChangeType() == QAccessibleTableModelChangeEvent::RowsRemoved
-                          && iface->role() == QAccessible::RowHeader )
+                else if ( cell->index > event->lastRow() )
                 {
-                    QAccessibleTableHeaderCell *cell = static_cast<QAccessibleTableHeaderCell *>( iface );
-
-                    if ( cell->index < event->firstRow() )
-                    {
-                        newCache.insert( indexOfChild( cell ), id );
-                    }
-                    else if ( cell->index > event->lastRow() )
-                    {
-                        cell->index -= deletedRows;
-                        newCache.insert( indexOfChild( cell ), id );
-                    }
-                    else
-                    {
-                        QAccessible::deleteAccessibleInterface( id );
-                    }
+                    cell->index -= deletedRows;
+                    newCache.insert( indexOfChild( cell ), id );
                 }
-                else if ( event->modelChangeType() == QAccessibleTableModelChangeEvent::ColumnsRemoved
-                          && iface->role() == QAccessible::ColumnHeader )
+                else
                 {
-                    QAccessibleTableHeaderCell *cell = static_cast<QAccessibleTableHeaderCell *>( iface );
-
-                    if ( cell->index < event->firstColumn() )
-                    {
-                        newCache.insert( indexOfChild( cell ), id );
-                    }
-                    else if ( cell->index > event->lastColumn() )
-                    {
-                        cell->index -= deletedColumns;
-                        newCache.insert( indexOfChild( cell ), id );
-                    }
-                    else
-                    {
-                        QAccessible::deleteAccessibleInterface( id );
-                    }
+                    QAccessible::deleteAccessibleInterface( id );
                 }
+            }
+            else if ( event->modelChangeType() == QAccessibleTableModelChangeEvent::ColumnsRemoved
+                      && iface->role() == QAccessible::ColumnHeader )
+            {
+                QAccessibleTableHeaderCell *cell = static_cast<QAccessibleTableHeaderCell *>( iface );
 
-                ++iter;
+                if ( cell->index < event->firstColumn() )
+                {
+                    newCache.insert( indexOfChild( cell ), id );
+                }
+                else if ( cell->index > event->lastColumn() )
+                {
+                    cell->index -= deletedColumns;
+                    newCache.insert( indexOfChild( cell ), id );
+                }
+                else
+                {
+                    QAccessible::deleteAccessibleInterface( id );
+                }
             }
 
-            childToId = newCache;
-            break;
+            ++iter;
         }
 
-        case QAccessibleTableModelChangeEvent::DataChanged:
-            // nothing to do in this case
-            break;
+        childToId = newCache;
+        break;
+    }
+
+    case QAccessibleTableModelChangeEvent::DataChanged:
+        // nothing to do in this case
+        break;
     }
 }
 
@@ -1060,29 +1060,29 @@ bool QAccessibleTree::selectRow( int row )
 
     switch ( view()->selectionMode() )
     {
-        case QAbstractItemView::NoSelection:
+    case QAbstractItemView::NoSelection:
+        return false;
+
+    case QAbstractItemView::SingleSelection:
+        if ( ( view()->selectionBehavior() != QAbstractItemView::SelectRows ) && ( columnCount() > 1 ) )
+        {
             return false;
+        }
 
-        case QAbstractItemView::SingleSelection:
-            if ( ( view()->selectionBehavior() != QAbstractItemView::SelectRows ) && ( columnCount() > 1 ) )
-            {
-                return false;
-            }
+        view()->clearSelection();
+        break;
 
+    case QAbstractItemView::ContiguousSelection:
+        if ( ( !row || !view()->selectionModel()->isRowSelected( row - 1, view()->rootIndex() ) )
+                && !view()->selectionModel()->isRowSelected( row + 1, view()->rootIndex() ) )
+        {
             view()->clearSelection();
-            break;
+        }
 
-        case QAbstractItemView::ContiguousSelection:
-            if ( ( !row || !view()->selectionModel()->isRowSelected( row - 1, view()->rootIndex() ) )
-                    && !view()->selectionModel()->isRowSelected( row + 1, view()->rootIndex() ) )
-            {
-                view()->clearSelection();
-            }
+        break;
 
-            break;
-
-        default:
-            break;
+    default:
+        break;
     }
 
     view()->selectionModel()->select( index, QItemSelectionModel::Select | QItemSelectionModel::Rows );
@@ -1255,24 +1255,24 @@ void QAccessibleTableCell::selectCell()
 
     switch ( view->selectionBehavior() )
     {
-        case QAbstractItemView::SelectItems:
-            break;
+    case QAbstractItemView::SelectItems:
+        break;
 
-        case QAbstractItemView::SelectColumns:
-            if ( cellTable )
-            {
-                cellTable->selectColumn( m_index.column() );
-            }
+    case QAbstractItemView::SelectColumns:
+        if ( cellTable )
+        {
+            cellTable->selectColumn( m_index.column() );
+        }
 
-            return;
+        return;
 
-        case QAbstractItemView::SelectRows:
-            if ( cellTable )
-            {
-                cellTable->selectRow( m_index.row() );
-            }
+    case QAbstractItemView::SelectRows:
+        if ( cellTable )
+        {
+            cellTable->selectRow( m_index.row() );
+        }
 
-            return;
+        return;
     }
 
     if ( selectionMode == QAbstractItemView::SingleSelection )
@@ -1297,24 +1297,24 @@ void QAccessibleTableCell::unselectCell()
 
     switch ( view->selectionBehavior() )
     {
-        case QAbstractItemView::SelectItems:
-            break;
+    case QAbstractItemView::SelectItems:
+        break;
 
-        case QAbstractItemView::SelectColumns:
-            if ( cellTable )
-            {
-                cellTable->unselectColumn( m_index.column() );
-            }
+    case QAbstractItemView::SelectColumns:
+        if ( cellTable )
+        {
+            cellTable->unselectColumn( m_index.column() );
+        }
 
-            return;
+        return;
 
-        case QAbstractItemView::SelectRows:
-            if ( cellTable )
-            {
-                cellTable->unselectRow( m_index.row() );
-            }
+    case QAbstractItemView::SelectRows:
+        if ( cellTable )
+        {
+            cellTable->unselectRow( m_index.row() );
+        }
 
-            return;
+        return;
     }
 
     //If the mode is not MultiSelection or ExtendedSelection and only
@@ -1429,22 +1429,22 @@ QString QAccessibleTableCell::text( QAccessible::Text t ) const
 
     switch ( t )
     {
-        case QAccessible::Name:
-            value = model->data( m_index, Qt::AccessibleTextRole ).toString();
+    case QAccessible::Name:
+        value = model->data( m_index, Qt::AccessibleTextRole ).toString();
 
-            if ( value.isEmpty() )
-            {
-                value = model->data( m_index, Qt::DisplayRole ).toString();
-            }
+        if ( value.isEmpty() )
+        {
+            value = model->data( m_index, Qt::DisplayRole ).toString();
+        }
 
-            break;
+        break;
 
-        case QAccessible::Description:
-            value = model->data( m_index, Qt::AccessibleDescriptionRole ).toString();
-            break;
+    case QAccessible::Description:
+        value = model->data( m_index, Qt::AccessibleDescriptionRole ).toString();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return value;
@@ -1552,22 +1552,22 @@ QString QAccessibleTableHeaderCell::text( QAccessible::Text t ) const
 
     switch ( t )
     {
-        case QAccessible::Name:
-            value = model->headerData( index, orientation, Qt::AccessibleTextRole ).toString();
+    case QAccessible::Name:
+        value = model->headerData( index, orientation, Qt::AccessibleTextRole ).toString();
 
-            if ( value.isEmpty() )
-            {
-                value = model->headerData( index, orientation, Qt::DisplayRole ).toString();
-            }
+        if ( value.isEmpty() )
+        {
+            value = model->headerData( index, orientation, Qt::DisplayRole ).toString();
+        }
 
-            break;
+        break;
 
-        case QAccessible::Description:
-            value = model->headerData( index, orientation, Qt::AccessibleDescriptionRole ).toString();
-            break;
+    case QAccessible::Description:
+        value = model->headerData( index, orientation, Qt::AccessibleDescriptionRole ).toString();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return value;

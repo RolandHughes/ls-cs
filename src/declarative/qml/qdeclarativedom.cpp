@@ -487,38 +487,38 @@ int QDeclarativeDomDynamicProperty::propertyType() const
     {
         switch ( d->property.type )
         {
-            case QDeclarativeParser::Object::DynamicProperty::Bool:
-                return QMetaType::type( "bool" );
+        case QDeclarativeParser::Object::DynamicProperty::Bool:
+            return QMetaType::type( "bool" );
 
-            case QDeclarativeParser::Object::DynamicProperty::Color:
-                return QMetaType::type( "QColor" );
+        case QDeclarativeParser::Object::DynamicProperty::Color:
+            return QMetaType::type( "QColor" );
 
-            case QDeclarativeParser::Object::DynamicProperty::Time:
-                return QMetaType::type( "QTime" );
+        case QDeclarativeParser::Object::DynamicProperty::Time:
+            return QMetaType::type( "QTime" );
 
-            case QDeclarativeParser::Object::DynamicProperty::Date:
-                return QMetaType::type( "QDate" );
+        case QDeclarativeParser::Object::DynamicProperty::Date:
+            return QMetaType::type( "QDate" );
 
-            case QDeclarativeParser::Object::DynamicProperty::DateTime:
-                return QMetaType::type( "QDateTime" );
+        case QDeclarativeParser::Object::DynamicProperty::DateTime:
+            return QMetaType::type( "QDateTime" );
 
-            case QDeclarativeParser::Object::DynamicProperty::Int:
-                return QMetaType::type( "int" );
+        case QDeclarativeParser::Object::DynamicProperty::Int:
+            return QMetaType::type( "int" );
 
-            case QDeclarativeParser::Object::DynamicProperty::Real:
-                return sizeof( qreal ) == sizeof( double ) ? QMetaType::type( "double" ) : QMetaType::type( "float" );
+        case QDeclarativeParser::Object::DynamicProperty::Real:
+            return sizeof( qreal ) == sizeof( double ) ? QMetaType::type( "double" ) : QMetaType::type( "float" );
 
-            case QDeclarativeParser::Object::DynamicProperty::String:
-                return QMetaType::type( "QString" );
+        case QDeclarativeParser::Object::DynamicProperty::String:
+            return QMetaType::type( "QString" );
 
-            case QDeclarativeParser::Object::DynamicProperty::Url:
-                return QMetaType::type( "QUrl" );
+        case QDeclarativeParser::Object::DynamicProperty::Url:
+            return QMetaType::type( "QUrl" );
 
-            case QDeclarativeParser::Object::DynamicProperty::Variant:
-                return QMetaType::type( "QVariant" );
+        case QDeclarativeParser::Object::DynamicProperty::Variant:
+            return QMetaType::type( "QVariant" );
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
@@ -1259,7 +1259,7 @@ QDeclarativeDomValueValueSource::~QDeclarativeDomValueValueSource()
     Assign \a other to this QDeclarativeDomValueValueSource.
 */
 QDeclarativeDomValueValueSource &QDeclarativeDomValueValueSource::operator=( const QDeclarativeDomValueValueSource
-        &other )
+    &other )
 {
     d = other.d;
     return *this;
@@ -1496,32 +1496,32 @@ QDeclarativeDomValue::Type QDeclarativeDomValue::type() const
 
     switch ( value->type )
     {
-        case QDeclarativeParser::Value::Unknown:
-            return Invalid;
+    case QDeclarativeParser::Value::Unknown:
+        return Invalid;
 
-        case QDeclarativeParser::Value::Literal:
-            return Literal;
+    case QDeclarativeParser::Value::Literal:
+        return Literal;
 
-        case QDeclarativeParser::Value::PropertyBinding:
-            return PropertyBinding;
+    case QDeclarativeParser::Value::PropertyBinding:
+        return PropertyBinding;
 
-        case QDeclarativeParser::Value::ValueSource:
-            return ValueSource;
+    case QDeclarativeParser::Value::ValueSource:
+        return ValueSource;
 
-        case QDeclarativeParser::Value::ValueInterceptor:
-            return ValueInterceptor;
+    case QDeclarativeParser::Value::ValueInterceptor:
+        return ValueInterceptor;
 
-        case QDeclarativeParser::Value::CreatedObject:
-            return Object;
+    case QDeclarativeParser::Value::CreatedObject:
+        return Object;
 
-        case QDeclarativeParser::Value::SignalObject:
-            return Invalid;
+    case QDeclarativeParser::Value::SignalObject:
+        return Invalid;
 
-        case QDeclarativeParser::Value::SignalExpression:
-            return Literal;
+    case QDeclarativeParser::Value::SignalExpression:
+        return Literal;
 
-        case QDeclarativeParser::Value::Id:
-            return Literal;
+    case QDeclarativeParser::Value::Id:
+        return Literal;
     }
 
     return Invalid;

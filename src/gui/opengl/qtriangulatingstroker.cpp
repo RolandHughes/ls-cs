@@ -207,88 +207,88 @@ void QTriangulatingStroker::process( const QVectorPath &path, const QPen &pen, c
         {
             switch ( *types )
             {
-                case QPainterPath::MoveToElement:
+            case QPainterPath::MoveToElement:
+            {
+                if ( previousType != QPainterPath::MoveToElement )
+                {
+                    endCapOrJoinClosed( startPts, previousPts, path.hasImplicitClose(), endsAtStart );
+                }
+
+                startPts = pts;
+                skipDuplicatePoints( &startPts, endPts ); // Skip duplicates to find correct normal.
+
+                if ( startPts + 2 >= endPts )
+                {
+                    return;    // Nothing to see here...
+                }
+
+                int end = ( endPts - pts ) / 2;
+                int i = 2; // Start looking to ahead since we never have two moveto's in a row
+
+                while ( i<end && types[i] != QPainterPath::MoveToElement )
+                {
+                    ++i;
+                }
+
+                endsAtStart = float( startPts[0] ) == float( pts[i*2 - 2] )
+                              && float( startPts[1] ) == float( pts[i*2 - 1] );
+
+                if ( endsAtStart || path.hasImplicitClose() )
+                {
+                    m_cap_style = Qt::FlatCap;
+                }
+
+                moveTo( startPts );
+                m_cap_style = cap;
+                previousType = QPainterPath::MoveToElement;
+                previousPts = pts;
+                pts+=2;
+                ++types;
+                break;
+            }
+
+            case QPainterPath::LineToElement:
+                if ( float( m_cx ) != float( pts[0] ) || float( m_cy ) != float( pts[1] ) )
                 {
                     if ( previousType != QPainterPath::MoveToElement )
                     {
-                        endCapOrJoinClosed( startPts, previousPts, path.hasImplicitClose(), endsAtStart );
+                        join( pts );
                     }
 
-                    startPts = pts;
-                    skipDuplicatePoints( &startPts, endPts ); // Skip duplicates to find correct normal.
-
-                    if ( startPts + 2 >= endPts )
-                    {
-                        return;    // Nothing to see here...
-                    }
-
-                    int end = ( endPts - pts ) / 2;
-                    int i = 2; // Start looking to ahead since we never have two moveto's in a row
-
-                    while ( i<end && types[i] != QPainterPath::MoveToElement )
-                    {
-                        ++i;
-                    }
-
-                    endsAtStart = float( startPts[0] ) == float( pts[i*2 - 2] )
-                                  && float( startPts[1] ) == float( pts[i*2 - 1] );
-
-                    if ( endsAtStart || path.hasImplicitClose() )
-                    {
-                        m_cap_style = Qt::FlatCap;
-                    }
-
-                    moveTo( startPts );
-                    m_cap_style = cap;
-                    previousType = QPainterPath::MoveToElement;
+                    lineTo( pts );
+                    previousType = QPainterPath::LineToElement;
                     previousPts = pts;
-                    pts+=2;
-                    ++types;
-                    break;
                 }
 
-                case QPainterPath::LineToElement:
+                pts+=2;
+                ++types;
+                break;
+
+            case QPainterPath::CurveToElement:
+                if ( float( m_cx ) != float( pts[0] ) || float( m_cy ) != float( pts[1] )
+                        || float( pts[0] ) != float( pts[2] ) || float( pts[1] ) != float( pts[3] )
+                        || float( pts[2] ) != float( pts[4] ) || float( pts[3] ) != float( pts[5] ) )
+                {
                     if ( float( m_cx ) != float( pts[0] ) || float( m_cy ) != float( pts[1] ) )
                     {
                         if ( previousType != QPainterPath::MoveToElement )
                         {
                             join( pts );
                         }
-
-                        lineTo( pts );
-                        previousType = QPainterPath::LineToElement;
-                        previousPts = pts;
                     }
 
-                    pts+=2;
-                    ++types;
-                    break;
+                    cubicTo( pts );
+                    previousType = QPainterPath::CurveToElement;
+                    previousPts = pts + 4;
+                }
 
-                case QPainterPath::CurveToElement:
-                    if ( float( m_cx ) != float( pts[0] ) || float( m_cy ) != float( pts[1] )
-                            || float( pts[0] ) != float( pts[2] ) || float( pts[1] ) != float( pts[3] )
-                            || float( pts[2] ) != float( pts[4] ) || float( pts[3] ) != float( pts[5] ) )
-                    {
-                        if ( float( m_cx ) != float( pts[0] ) || float( m_cy ) != float( pts[1] ) )
-                        {
-                            if ( previousType != QPainterPath::MoveToElement )
-                            {
-                                join( pts );
-                            }
-                        }
+                pts+=6;
+                types+=3;
+                break;
 
-                        cubicTo( pts );
-                        previousType = QPainterPath::CurveToElement;
-                        previousPts = pts + 4;
-                    }
-
-                    pts+=6;
-                    types+=3;
-                    break;
-
-                default:
-                    Q_ASSERT( false );
-                    break;
+            default:
+                Q_ASSERT( false );
+                break;
             }
         }
 
@@ -316,66 +316,66 @@ void QTriangulatingStroker::moveTo( const qreal *pts )
 
     switch ( m_cap_style )
     {
-        case Qt::FlatCap:
-            if ( invisibleJump )
-            {
-                m_vertices.append( m_cx + m_nvx );
-                m_vertices.append( m_cy + m_nvy );
-            }
-
-            break;
-
-        case Qt::SquareCap:
+    case Qt::FlatCap:
+        if ( invisibleJump )
         {
-            float sx = m_cx - m_nvy;
-            float sy = m_cy + m_nvx;
-
-            if ( invisibleJump )
-            {
-                m_vertices.append( sx + m_nvx );
-                m_vertices.append( sy + m_nvy );
-            }
-
-            emitLineSegment( sx, sy, m_nvx, m_nvy );
-            break;
+            m_vertices.append( m_cx + m_nvx );
+            m_vertices.append( m_cy + m_nvy );
         }
 
-        case Qt::RoundCap:
+        break;
+
+    case Qt::SquareCap:
+    {
+        float sx = m_cx - m_nvy;
+        float sy = m_cy + m_nvx;
+
+        if ( invisibleJump )
         {
-            QVarLengthArray<float> points;
-            arcPoints( m_cx, m_cy, m_cx + m_nvx, m_cy + m_nvy, m_cx - m_nvx, m_cy - m_nvy, points );
-            m_vertices.resize( m_vertices.size() + points.size() + 2 * int( invisibleJump ) );
-            int count = m_vertices.size();
-            int front = 0;
-            int end = points.size() / 2;
-
-            while ( front != end )
-            {
-                m_vertices[--count] = points[2 * end - 1];
-                m_vertices[--count] = points[2 * end - 2];
-                --end;
-
-                if ( front == end )
-                {
-                    break;
-                }
-
-                m_vertices[--count] = points[2 * front + 1];
-                m_vertices[--count] = points[2 * front + 0];
-                ++front;
-            }
-
-            if ( invisibleJump )
-            {
-                m_vertices[count - 1] = m_vertices.at( count + 1 );
-                m_vertices[count - 2] = m_vertices.at( count + 0 );
-            }
-
-            break;
+            m_vertices.append( sx + m_nvx );
+            m_vertices.append( sy + m_nvy );
         }
 
-        default:
-            break; // ssssh gcc...
+        emitLineSegment( sx, sy, m_nvx, m_nvy );
+        break;
+    }
+
+    case Qt::RoundCap:
+    {
+        QVarLengthArray<float> points;
+        arcPoints( m_cx, m_cy, m_cx + m_nvx, m_cy + m_nvy, m_cx - m_nvx, m_cy - m_nvy, points );
+        m_vertices.resize( m_vertices.size() + points.size() + 2 * int( invisibleJump ) );
+        int count = m_vertices.size();
+        int front = 0;
+        int end = points.size() / 2;
+
+        while ( front != end )
+        {
+            m_vertices[--count] = points[2 * end - 1];
+            m_vertices[--count] = points[2 * end - 2];
+            --end;
+
+            if ( front == end )
+            {
+                break;
+            }
+
+            m_vertices[--count] = points[2 * front + 1];
+            m_vertices[--count] = points[2 * front + 0];
+            ++front;
+        }
+
+        if ( invisibleJump )
+        {
+            m_vertices[count - 1] = m_vertices.at( count + 1 );
+            m_vertices[count - 2] = m_vertices.at( count + 0 );
+        }
+
+        break;
+    }
+
+    default:
+        break; // ssssh gcc...
     }
 
     emitLineSegment( m_cx, m_cy, m_nvx, m_nvy );
@@ -434,96 +434,96 @@ void QTriangulatingStroker::join( const qreal *pts )
 
     switch ( m_join_style )
     {
-        case Qt::BevelJoin:
-            break;
+    case Qt::BevelJoin:
+        break;
 
-        case Qt::SvgMiterJoin:
-        case Qt::MiterJoin:
+    case Qt::SvgMiterJoin:
+    case Qt::MiterJoin:
+    {
+        // Find out on which side the join should be.
+        int count = m_vertices.size();
+        float prevNvx = m_vertices.at( count - 2 ) - m_cx;
+        float prevNvy = m_vertices.at( count - 1 ) - m_cy;
+        float xprod = prevNvx * m_nvy - prevNvy * m_nvx;
+        float px, py, qx, qy;
+
+        // If the segments are parallel, use bevel join.
+        if ( qFuzzyIsNull( xprod ) )
         {
-            // Find out on which side the join should be.
-            int count = m_vertices.size();
-            float prevNvx = m_vertices.at( count - 2 ) - m_cx;
-            float prevNvy = m_vertices.at( count - 1 ) - m_cy;
-            float xprod = prevNvx * m_nvy - prevNvy * m_nvx;
-            float px, py, qx, qy;
-
-            // If the segments are parallel, use bevel join.
-            if ( qFuzzyIsNull( xprod ) )
-            {
-                break;
-            }
-
-            // Find the corners of the previous and next segment to join.
-            if ( xprod < 0 )
-            {
-                px = m_vertices.at( count - 2 );
-                py = m_vertices.at( count - 1 );
-                qx = m_cx - m_nvx;
-                qy = m_cy - m_nvy;
-            }
-            else
-            {
-                px = m_vertices.at( count - 4 );
-                py = m_vertices.at( count - 3 );
-                qx = m_cx + m_nvx;
-                qy = m_cy + m_nvy;
-            }
-
-            // Find intersection point.
-            float pu = px * prevNvx + py * prevNvy;
-            float qv = qx * m_nvx + qy * m_nvy;
-            float ix = ( m_nvy * pu - prevNvy * qv ) / xprod;
-            float iy = ( prevNvx * qv - m_nvx * pu ) / xprod;
-
-            // Check that the distance to the intersection point is less than the miter limit.
-            if ( ( ix - px ) * ( ix - px ) + ( iy - py ) * ( iy - py ) <= m_miter_limit * m_miter_limit )
-            {
-                m_vertices.append( ix );
-                m_vertices.append( iy );
-                m_vertices.append( ix );
-                m_vertices.append( iy );
-            }
-
-            // else
-            // Do a plain bevel join if the miter limit is exceeded or if
-            // the lines are parallel. This is not what the raster
-            // engine's stroker does, but it is both faster and similar to
-            // what some other graphics API's do.
-
             break;
         }
 
-        case Qt::RoundJoin:
+        // Find the corners of the previous and next segment to join.
+        if ( xprod < 0 )
         {
-            QVarLengthArray<float> points;
-            int count = m_vertices.size();
-            float prevNvx = m_vertices.at( count - 2 ) - m_cx;
-            float prevNvy = m_vertices.at( count - 1 ) - m_cy;
-
-            if ( m_nvx * prevNvy - m_nvy * prevNvx < 0 )
-            {
-                arcPoints( 0, 0, m_nvx, m_nvy, -prevNvx, -prevNvy, points );
-
-                for ( int i = points.size() / 2; i > 0; --i )
-                {
-                    emitLineSegment( m_cx, m_cy, points[2 * i - 2], points[2 * i - 1] );
-                }
-            }
-            else
-            {
-                arcPoints( 0, 0, -prevNvx, -prevNvy, m_nvx, m_nvy, points );
-
-                for ( int i = 0; i < points.size() / 2; ++i )
-                {
-                    emitLineSegment( m_cx, m_cy, points[2 * i + 0], points[2 * i + 1] );
-                }
-            }
-
-            break;
+            px = m_vertices.at( count - 2 );
+            py = m_vertices.at( count - 1 );
+            qx = m_cx - m_nvx;
+            qy = m_cy - m_nvy;
+        }
+        else
+        {
+            px = m_vertices.at( count - 4 );
+            py = m_vertices.at( count - 3 );
+            qx = m_cx + m_nvx;
+            qy = m_cy + m_nvy;
         }
 
-        default:
-            break; // gcc warn--
+        // Find intersection point.
+        float pu = px * prevNvx + py * prevNvy;
+        float qv = qx * m_nvx + qy * m_nvy;
+        float ix = ( m_nvy * pu - prevNvy * qv ) / xprod;
+        float iy = ( prevNvx * qv - m_nvx * pu ) / xprod;
+
+        // Check that the distance to the intersection point is less than the miter limit.
+        if ( ( ix - px ) * ( ix - px ) + ( iy - py ) * ( iy - py ) <= m_miter_limit * m_miter_limit )
+        {
+            m_vertices.append( ix );
+            m_vertices.append( iy );
+            m_vertices.append( ix );
+            m_vertices.append( iy );
+        }
+
+        // else
+        // Do a plain bevel join if the miter limit is exceeded or if
+        // the lines are parallel. This is not what the raster
+        // engine's stroker does, but it is both faster and similar to
+        // what some other graphics API's do.
+
+        break;
+    }
+
+    case Qt::RoundJoin:
+    {
+        QVarLengthArray<float> points;
+        int count = m_vertices.size();
+        float prevNvx = m_vertices.at( count - 2 ) - m_cx;
+        float prevNvy = m_vertices.at( count - 1 ) - m_cy;
+
+        if ( m_nvx * prevNvy - m_nvy * prevNvx < 0 )
+        {
+            arcPoints( 0, 0, m_nvx, m_nvy, -prevNvx, -prevNvy, points );
+
+            for ( int i = points.size() / 2; i > 0; --i )
+            {
+                emitLineSegment( m_cx, m_cy, points[2 * i - 2], points[2 * i - 1] );
+            }
+        }
+        else
+        {
+            arcPoints( 0, 0, -prevNvx, -prevNvy, m_nvx, m_nvy, points );
+
+            for ( int i = 0; i < points.size() / 2; ++i )
+            {
+                emitLineSegment( m_cx, m_cy, points[2 * i + 0], points[2 * i + 1] );
+            }
+        }
+
+        break;
+    }
+
+    default:
+        break; // gcc warn--
     }
 
     emitLineSegment( m_cx, m_cy, m_nvx, m_nvy );
@@ -533,43 +533,43 @@ void QTriangulatingStroker::endCap( const qreal * )
 {
     switch ( m_cap_style )
     {
-        case Qt::FlatCap:
-            break;
+    case Qt::FlatCap:
+        break;
 
-        case Qt::SquareCap:
-            emitLineSegment( m_cx + m_nvy, m_cy - m_nvx, m_nvx, m_nvy );
-            break;
+    case Qt::SquareCap:
+        emitLineSegment( m_cx + m_nvy, m_cy - m_nvx, m_nvx, m_nvy );
+        break;
 
-        case Qt::RoundCap:
+    case Qt::RoundCap:
+    {
+        QVarLengthArray<float> points;
+        int count = m_vertices.size();
+        arcPoints( m_cx, m_cy, m_vertices.at( count - 2 ), m_vertices.at( count - 1 ), m_vertices.at( count - 4 ),
+                   m_vertices.at( count - 3 ), points );
+        int front = 0;
+        int end = points.size() / 2;
+
+        while ( front != end )
         {
-            QVarLengthArray<float> points;
-            int count = m_vertices.size();
-            arcPoints( m_cx, m_cy, m_vertices.at( count - 2 ), m_vertices.at( count - 1 ), m_vertices.at( count - 4 ),
-                       m_vertices.at( count - 3 ), points );
-            int front = 0;
-            int end = points.size() / 2;
+            m_vertices.append( points[2 * end - 2] );
+            m_vertices.append( points[2 * end - 1] );
+            --end;
 
-            while ( front != end )
+            if ( front == end )
             {
-                m_vertices.append( points[2 * end - 2] );
-                m_vertices.append( points[2 * end - 1] );
-                --end;
-
-                if ( front == end )
-                {
-                    break;
-                }
-
-                m_vertices.append( points[2 * front + 0] );
-                m_vertices.append( points[2 * front + 1] );
-                ++front;
+                break;
             }
 
-            break;
+            m_vertices.append( points[2 * front + 0] );
+            m_vertices.append( points[2 * front + 1] );
+            ++front;
         }
 
-        default:
-            break; // to shut gcc up...
+        break;
+    }
+
+    default:
+        break; // to shut gcc up...
     }
 }
 
@@ -717,48 +717,48 @@ void QDashedStrokeProcessor::process( const QVectorPath &path, const QPen &pen, 
         {
             switch ( *types )
             {
-                case QPainterPath::MoveToElement:
-                    m_dash_stroker.moveTo( pts[0], pts[1] );
-                    pts += 2;
-                    ++types;
-                    break;
+            case QPainterPath::MoveToElement:
+                m_dash_stroker.moveTo( pts[0], pts[1] );
+                pts += 2;
+                ++types;
+                break;
 
-                case QPainterPath::LineToElement:
-                    m_dash_stroker.lineTo( pts[0], pts[1] );
-                    pts += 2;
-                    ++types;
-                    break;
+            case QPainterPath::LineToElement:
+                m_dash_stroker.lineTo( pts[0], pts[1] );
+                pts += 2;
+                ++types;
+                break;
 
-                case QPainterPath::CurveToElement:
+            case QPainterPath::CurveToElement:
+            {
+                QBezier b = QBezier::fromPoints( *( ( ( const QPointF * ) pts ) - 1 ),
+                                                 *( ( ( const QPointF * ) pts ) ),
+                                                 *( ( ( const QPointF * ) pts ) + 1 ),
+                                                 *( ( ( const QPointF * ) pts ) + 2 ) );
+                QRectF bounds = b.bounds();
+                float rad = qMax( bounds.width(), bounds.height() );
+                int threshold = qMin<float>( 64, ( rad + curvynessAdd ) * curvynessMul );
+
+                if ( threshold < 4 )
                 {
-                    QBezier b = QBezier::fromPoints( *( ( ( const QPointF * ) pts ) - 1 ),
-                                                     *( ( ( const QPointF * ) pts ) ),
-                                                     *( ( ( const QPointF * ) pts ) + 1 ),
-                                                     *( ( ( const QPointF * ) pts ) + 2 ) );
-                    QRectF bounds = b.bounds();
-                    float rad = qMax( bounds.width(), bounds.height() );
-                    int threshold = qMin<float>( 64, ( rad + curvynessAdd ) * curvynessMul );
-
-                    if ( threshold < 4 )
-                    {
-                        threshold = 4;
-                    }
-
-                    qreal threshold_minus_1 = threshold - 1;
-
-                    for ( int i=0; i<threshold; ++i )
-                    {
-                        QPointF pt = b.pointAt( i / threshold_minus_1 );
-                        m_dash_stroker.lineTo( pt.x(), pt.y() );
-                    }
-
-                    pts += 6;
-                    types += 3;
-                    break;
+                    threshold = 4;
                 }
 
-                default:
-                    break;
+                qreal threshold_minus_1 = threshold - 1;
+
+                for ( int i=0; i<threshold; ++i )
+                {
+                    QPointF pt = b.pointAt( i / threshold_minus_1 );
+                    m_dash_stroker.lineTo( pt.x(), pt.y() );
+                }
+
+                pts += 6;
+                types += 3;
+                break;
+            }
+
+            default:
+                break;
             }
         }
     }

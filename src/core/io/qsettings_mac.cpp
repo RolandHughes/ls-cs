@@ -110,130 +110,130 @@ static QCFType<CFPropertyListRef> macValue( const QVariant &value )
 
     switch ( value.type() )
     {
-        case QVariant::ByteArray:
-        {
-            QByteArray ba = value.toByteArray();
-            result = CFDataCreate( kCFAllocatorDefault, reinterpret_cast<const UInt8 *>( ba.data() ), CFIndex( ba.size() ) );
-        }
+    case QVariant::ByteArray:
+    {
+        QByteArray ba = value.toByteArray();
+        result = CFDataCreate( kCFAllocatorDefault, reinterpret_cast<const UInt8 *>( ba.data() ), CFIndex( ba.size() ) );
+    }
+    break;
+
+    // should be same as below (look for LIST)
+    case QVariant::List:
+    case QVariant::StringList:
+    case QVariant::Polygon:
+        result = macList( value.toList() );
         break;
 
-        // should be same as below (look for LIST)
-        case QVariant::List:
-        case QVariant::StringList:
-        case QVariant::Polygon:
-            result = macList( value.toList() );
-            break;
+    case QVariant::Map:
+    {
+        /*
+            QMap<QString, QVariant> is potentially a multimap,
+            whereas CFDictionary is a single-valued map. To allow
+            for multiple values with the same key, we store
+            multiple values in a CFArray. To avoid ambiguities,
+            we also wrap lists in a CFArray singleton.
+        */
+        QMap<QString, QVariant> map = value.toMap();
+        QMap<QString, QVariant>::const_iterator i = map.constBegin();
 
-        case QVariant::Map:
+        int maxUniqueKeys = map.size();
+        int numUniqueKeys = 0;
+
+        QVarLengthArray<QCFType<CFPropertyListRef>> cfkeys( maxUniqueKeys );
+        QVarLengthArray<QCFType<CFPropertyListRef>> cfvalues( maxUniqueKeys );
+
+        while ( i != map.constEnd() )
         {
-            /*
-                QMap<QString, QVariant> is potentially a multimap,
-                whereas CFDictionary is a single-valued map. To allow
-                for multiple values with the same key, we store
-                multiple values in a CFArray. To avoid ambiguities,
-                we also wrap lists in a CFArray singleton.
-            */
-            QMap<QString, QVariant> map = value.toMap();
-            QMap<QString, QVariant>::const_iterator i = map.constBegin();
+            const QString &key = i.key();
+            QList<QVariant> values;
 
-            int maxUniqueKeys = map.size();
-            int numUniqueKeys = 0;
-
-            QVarLengthArray<QCFType<CFPropertyListRef>> cfkeys( maxUniqueKeys );
-            QVarLengthArray<QCFType<CFPropertyListRef>> cfvalues( maxUniqueKeys );
-
-            while ( i != map.constEnd() )
+            do
             {
-                const QString &key = i.key();
-                QList<QVariant> values;
+                values << i.value();
+                ++i;
+            }
+            while ( i != map.constEnd() && i.key() == key );
 
-                do
+            bool singleton = ( values.count() == 1 );
+
+            if ( singleton )
+            {
+                switch ( values.first().type() )
                 {
-                    values << i.value();
-                    ++i;
+                // should be same as above (look for LIST)
+                case QVariant::List:
+                case QVariant::StringList:
+                case QVariant::Polygon:
+                    singleton = false;
+
+                default:
+                    ;
                 }
-                while ( i != map.constEnd() && i.key() == key );
-
-                bool singleton = ( values.count() == 1 );
-
-                if ( singleton )
-                {
-                    switch ( values.first().type() )
-                    {
-                        // should be same as above (look for LIST)
-                        case QVariant::List:
-                        case QVariant::StringList:
-                        case QVariant::Polygon:
-                            singleton = false;
-
-                        default:
-                            ;
-                    }
-                }
-
-                cfkeys[numUniqueKeys] = QCFString::toCFStringRef( key );
-                cfvalues[numUniqueKeys] = singleton ? macValue( values.first() ) : macList( values );
-                ++numUniqueKeys;
             }
 
-            result = CFDictionaryCreate( kCFAllocatorDefault,
-                                         reinterpret_cast<const void **>( cfkeys.data() ), reinterpret_cast<const void **>( cfvalues.data() ),
-                                         CFIndex( numUniqueKeys ), &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks );
+            cfkeys[numUniqueKeys] = QCFString::toCFStringRef( key );
+            cfvalues[numUniqueKeys] = singleton ? macValue( values.first() ) : macList( values );
+            ++numUniqueKeys;
         }
-        break;
 
-        case QVariant::DateTime:
+        result = CFDictionaryCreate( kCFAllocatorDefault,
+                                     reinterpret_cast<const void **>( cfkeys.data() ), reinterpret_cast<const void **>( cfvalues.data() ),
+                                     CFIndex( numUniqueKeys ), &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks );
+    }
+    break;
+
+    case QVariant::DateTime:
+    {
+        //    CFDate, unlike QDateTime, doesn't store timezone information
+
+        QDateTime dt = value.toDateTime();
+
+        if ( dt.timeZone() == QTimeZone::systemTimeZone() )
         {
-            //    CFDate, unlike QDateTime, doesn't store timezone information
-
-            QDateTime dt = value.toDateTime();
-
-            if ( dt.timeZone() == QTimeZone::systemTimeZone() )
-            {
-                QDateTime reference;
-                reference.setTime_t( ( uint )kCFAbsoluteTimeIntervalSince1970 );
-                result = CFDateCreate( kCFAllocatorDefault, CFAbsoluteTime( reference.secsTo( dt ) ) );
-            }
-            else
-            {
-                goto string_case;
-            }
+            QDateTime reference;
+            reference.setTime_t( ( uint )kCFAbsoluteTimeIntervalSince1970 );
+            result = CFDateCreate( kCFAllocatorDefault, CFAbsoluteTime( reference.secsTo( dt ) ) );
         }
-        break;
-
-        case QVariant::Bool:
-            result = value.toBool() ? kCFBooleanTrue : kCFBooleanFalse;
-            break;
-
-        case QVariant::Int:
-        case QVariant::UInt:
+        else
         {
-            int n  = value.toInt();
-            result = CFNumberCreate( kCFAllocatorDefault, kCFNumberIntType, &n );
+            goto string_case;
         }
+    }
+    break;
 
+    case QVariant::Bool:
+        result = value.toBool() ? kCFBooleanTrue : kCFBooleanFalse;
         break;
 
-        case QVariant::Double:
-        {
-            double n = value.toDouble();
-            result = CFNumberCreate( kCFAllocatorDefault, kCFNumberDoubleType, &n );
-        }
-        break;
+    case QVariant::Int:
+    case QVariant::UInt:
+    {
+        int n  = value.toInt();
+        result = CFNumberCreate( kCFAllocatorDefault, kCFNumberIntType, &n );
+    }
 
-        case QVariant::LongLong:
-        case QVariant::ULongLong:
-        {
-            qint64 n = value.toLongLong();
-            result = CFNumberCreate( nullptr, kCFNumberLongLongType, &n );
-        }
-        break;
+    break;
 
-        case QVariant::String:
+    case QVariant::Double:
+    {
+        double n = value.toDouble();
+        result = CFNumberCreate( kCFAllocatorDefault, kCFNumberDoubleType, &n );
+    }
+    break;
+
+    case QVariant::LongLong:
+    case QVariant::ULongLong:
+    {
+        qint64 n = value.toLongLong();
+        result = CFNumberCreate( nullptr, kCFNumberLongLongType, &n );
+    }
+    break;
+
+    case QVariant::String:
 string_case:
-        default:
-            QString string = QSettingsPrivate::variantToString( value );
-            result = QCFString::toCFStringRef( string );
+    default:
+        QString string = QSettingsPrivate::variantToString( value );
+        result = QCFString::toCFStringRef( string );
     }
 
     return result;
@@ -799,7 +799,7 @@ bool QConfFileSettingsPrivate::readPlistFile( const QString &fileName, ParsedSet
                                   reinterpret_cast<const UInt8 *>( data.constData() ), data.length(), kCFAllocatorNull );
 
     QCFType<CFPropertyListRef> propertyList = CFPropertyListCreateWithData( kCFAllocatorDefault, resource,
-            kCFPropertyListImmutable, nullptr, nullptr );
+        kCFPropertyListImmutable, nullptr, nullptr );
 
     if ( ! propertyList )
     {

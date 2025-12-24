@@ -110,100 +110,100 @@ DBusMessage *QDBusMessagePrivate::toDBusMessage( const QDBusMessage &message,
 
     switch ( d_ptr->type )
     {
-        case DBUS_MESSAGE_TYPE_INVALID:
-            //qDebug() << "QDBusMessagePrivate::toDBusMessage" <<  "message is invalid";
-            break;
+    case DBUS_MESSAGE_TYPE_INVALID:
+        //qDebug() << "QDBusMessagePrivate::toDBusMessage" <<  "message is invalid";
+        break;
 
-        case DBUS_MESSAGE_TYPE_METHOD_CALL:
+    case DBUS_MESSAGE_TYPE_METHOD_CALL:
 
-            // only service and interface can be empty -> path and name must not be empty
-            if ( !d_ptr->parametersValidated )
-            {
-                if ( !QDBusUtil::checkBusName( d_ptr->service, QDBusUtil::EmptyAllowed, error ) )
-                {
-                    return 0;
-                }
-
-                if ( !QDBusUtil::checkObjectPath( d_ptr->path, QDBusUtil::EmptyNotAllowed, error ) )
-                {
-                    return 0;
-                }
-
-                if ( !QDBusUtil::checkInterfaceName( d_ptr->interface, QDBusUtil::EmptyAllowed, error ) )
-                {
-                    return 0;
-                }
-
-                if ( !QDBusUtil::checkMemberName( d_ptr->name, QDBusUtil::EmptyNotAllowed, error, "method" ) )
-                {
-                    return 0;
-                }
-            }
-
-            msg = q_dbus_message_new_method_call( data( d_ptr->service.toUtf8() ), d_ptr->path.toUtf8(),
-                                                  data( d_ptr->interface.toUtf8() ), d_ptr->name.toUtf8() );
-            q_dbus_message_set_auto_start( msg, d_ptr->autoStartService );
-            break;
-
-        case DBUS_MESSAGE_TYPE_METHOD_RETURN:
-            msg = q_dbus_message_new( DBUS_MESSAGE_TYPE_METHOD_RETURN );
-
-            if ( !d_ptr->localMessage )
-            {
-                q_dbus_message_set_destination( msg, q_dbus_message_get_sender( d_ptr->reply ) );
-                q_dbus_message_set_reply_serial( msg, q_dbus_message_get_serial( d_ptr->reply ) );
-            }
-
-            break;
-
-        case DBUS_MESSAGE_TYPE_ERROR:
-
-            // error name can't be empty
-            if ( !d_ptr->parametersValidated
-                    && !QDBusUtil::checkErrorName( d_ptr->name, QDBusUtil::EmptyNotAllowed, error ) )
+        // only service and interface can be empty -> path and name must not be empty
+        if ( !d_ptr->parametersValidated )
+        {
+            if ( !QDBusUtil::checkBusName( d_ptr->service, QDBusUtil::EmptyAllowed, error ) )
             {
                 return 0;
             }
 
-            msg = q_dbus_message_new( DBUS_MESSAGE_TYPE_ERROR );
-            q_dbus_message_set_error_name( msg, d_ptr->name.toUtf8() );
-
-            if ( !d_ptr->localMessage )
+            if ( !QDBusUtil::checkObjectPath( d_ptr->path, QDBusUtil::EmptyNotAllowed, error ) )
             {
-                q_dbus_message_set_destination( msg, q_dbus_message_get_sender( d_ptr->reply ) );
-                q_dbus_message_set_reply_serial( msg, q_dbus_message_get_serial( d_ptr->reply ) );
+                return 0;
             }
 
-            break;
-
-        case DBUS_MESSAGE_TYPE_SIGNAL:
-
-            // nothing can be empty here
-            if ( !d_ptr->parametersValidated )
+            if ( !QDBusUtil::checkInterfaceName( d_ptr->interface, QDBusUtil::EmptyAllowed, error ) )
             {
-                if ( !QDBusUtil::checkObjectPath( d_ptr->path, QDBusUtil::EmptyNotAllowed, error ) )
-                {
-                    return 0;
-                }
-
-                if ( !QDBusUtil::checkInterfaceName( d_ptr->interface, QDBusUtil::EmptyAllowed, error ) )
-                {
-                    return 0;
-                }
-
-                if ( !QDBusUtil::checkMemberName( d_ptr->name, QDBusUtil::EmptyNotAllowed, error, "method" ) )
-                {
-                    return 0;
-                }
+                return 0;
             }
 
-            msg = q_dbus_message_new_signal( d_ptr->path.toUtf8(), d_ptr->interface.toUtf8(),
-                                             d_ptr->name.toUtf8() );
-            break;
+            if ( !QDBusUtil::checkMemberName( d_ptr->name, QDBusUtil::EmptyNotAllowed, error, "method" ) )
+            {
+                return 0;
+            }
+        }
 
-        default:
-            Q_ASSERT( false );
-            break;
+        msg = q_dbus_message_new_method_call( data( d_ptr->service.toUtf8() ), d_ptr->path.toUtf8(),
+                                              data( d_ptr->interface.toUtf8() ), d_ptr->name.toUtf8() );
+        q_dbus_message_set_auto_start( msg, d_ptr->autoStartService );
+        break;
+
+    case DBUS_MESSAGE_TYPE_METHOD_RETURN:
+        msg = q_dbus_message_new( DBUS_MESSAGE_TYPE_METHOD_RETURN );
+
+        if ( !d_ptr->localMessage )
+        {
+            q_dbus_message_set_destination( msg, q_dbus_message_get_sender( d_ptr->reply ) );
+            q_dbus_message_set_reply_serial( msg, q_dbus_message_get_serial( d_ptr->reply ) );
+        }
+
+        break;
+
+    case DBUS_MESSAGE_TYPE_ERROR:
+
+        // error name can't be empty
+        if ( !d_ptr->parametersValidated
+                && !QDBusUtil::checkErrorName( d_ptr->name, QDBusUtil::EmptyNotAllowed, error ) )
+        {
+            return 0;
+        }
+
+        msg = q_dbus_message_new( DBUS_MESSAGE_TYPE_ERROR );
+        q_dbus_message_set_error_name( msg, d_ptr->name.toUtf8() );
+
+        if ( !d_ptr->localMessage )
+        {
+            q_dbus_message_set_destination( msg, q_dbus_message_get_sender( d_ptr->reply ) );
+            q_dbus_message_set_reply_serial( msg, q_dbus_message_get_serial( d_ptr->reply ) );
+        }
+
+        break;
+
+    case DBUS_MESSAGE_TYPE_SIGNAL:
+
+        // nothing can be empty here
+        if ( !d_ptr->parametersValidated )
+        {
+            if ( !QDBusUtil::checkObjectPath( d_ptr->path, QDBusUtil::EmptyNotAllowed, error ) )
+            {
+                return 0;
+            }
+
+            if ( !QDBusUtil::checkInterfaceName( d_ptr->interface, QDBusUtil::EmptyAllowed, error ) )
+            {
+                return 0;
+            }
+
+            if ( !QDBusUtil::checkMemberName( d_ptr->name, QDBusUtil::EmptyNotAllowed, error, "method" ) )
+            {
+                return 0;
+            }
+        }
+
+        msg = q_dbus_message_new_signal( d_ptr->path.toUtf8(), d_ptr->interface.toUtf8(),
+                                         d_ptr->name.toUtf8() );
+        break;
+
+    default:
+        Q_ASSERT( false );
+        break;
     }
 
     // if we got here, the parameters validated
@@ -810,20 +810,20 @@ QDBusMessage::MessageType QDBusMessage::type() const
 {
     switch ( d_ptr->type )
     {
-        case DBUS_MESSAGE_TYPE_METHOD_CALL:
-            return MethodCallMessage;
+    case DBUS_MESSAGE_TYPE_METHOD_CALL:
+        return MethodCallMessage;
 
-        case DBUS_MESSAGE_TYPE_METHOD_RETURN:
-            return ReplyMessage;
+    case DBUS_MESSAGE_TYPE_METHOD_RETURN:
+        return ReplyMessage;
 
-        case DBUS_MESSAGE_TYPE_ERROR:
-            return ErrorMessage;
+    case DBUS_MESSAGE_TYPE_ERROR:
+        return ErrorMessage;
 
-        case DBUS_MESSAGE_TYPE_SIGNAL:
-            return SignalMessage;
+    case DBUS_MESSAGE_TYPE_SIGNAL:
+        return SignalMessage;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return InvalidMessage;
@@ -834,20 +834,20 @@ static QDebug operator<<( QDebug dbg, QDBusMessage::MessageType t )
 {
     switch ( t )
     {
-        case QDBusMessage::MethodCallMessage:
-            return dbg << "MethodCall";
+    case QDBusMessage::MethodCallMessage:
+        return dbg << "MethodCall";
 
-        case QDBusMessage::ReplyMessage:
-            return dbg << "MethodReturn";
+    case QDBusMessage::ReplyMessage:
+        return dbg << "MethodReturn";
 
-        case QDBusMessage::SignalMessage:
-            return dbg << "Signal";
+    case QDBusMessage::SignalMessage:
+        return dbg << "Signal";
 
-        case QDBusMessage::ErrorMessage:
-            return dbg << "Error";
+    case QDBusMessage::ErrorMessage:
+        return dbg << "Error";
 
-        default:
-            return dbg << "Invalid";
+    default:
+        return dbg << "Invalid";
     }
 }
 
@@ -872,20 +872,20 @@ static void debugVariantList( QDebug dbg, const QVariantList &list )
 QDebug operator<<( QDebug dbg, const QDBusMessage &msg )
 {
     dbg.nospace() << "QDBusMessage(type=" << msg.type()
-                  << ", service=" << msg.service();
+       << ", service=" << msg.service();
 
     if ( msg.type() == QDBusMessage::MethodCallMessage ||
             msg.type() == QDBusMessage::SignalMessage )
         dbg.nospace() << ", path=" << msg.path()
-                      << ", interface=" << msg.interface()
-                      << ", member=" << msg.member();
+           << ", interface=" << msg.interface()
+           << ", member=" << msg.member();
 
     if ( msg.type() == QDBusMessage::ErrorMessage )
         dbg.nospace() << ", error name=" << msg.errorName()
-                      << ", error message=" << msg.errorMessage();
+           << ", error message=" << msg.errorMessage();
 
     dbg.nospace() << ", signature=" << msg.signature()
-                  << ", contents=(";
+       << ", contents=(";
     debugVariantList( dbg, msg.arguments() );
     dbg.nospace() << ") )";
     return dbg.space();

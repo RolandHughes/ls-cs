@@ -80,16 +80,16 @@ void QStyleOption::initFrom( const QWidget *widget )
 
     switch ( QMacStyle::widgetSizePolicy( widget ) )
     {
-        case QMacStyle::SizeSmall:
-            state |= QStyle::State_Small;
-            break;
+    case QMacStyle::SizeSmall:
+        state |= QStyle::State_Small;
+        break;
 
-        case QMacStyle::SizeMini:
-            state |= QStyle::State_Mini;
-            break;
+    case QMacStyle::SizeMini:
+        state |= QStyle::State_Mini;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
 #endif
@@ -521,109 +521,109 @@ QDebug operator<<( QDebug debug, const QStyleOption::OptionType &optionType )
 
     switch ( optionType )
     {
-        case QStyleOption::SO_Default:
-            debug << "SO_Default";
-            break;
+    case QStyleOption::SO_Default:
+        debug << "SO_Default";
+        break;
 
-        case QStyleOption::SO_FocusRect:
-            debug << "SO_FocusRect";
-            break;
+    case QStyleOption::SO_FocusRect:
+        debug << "SO_FocusRect";
+        break;
 
-        case QStyleOption::SO_Button:
-            debug << "SO_Button";
-            break;
+    case QStyleOption::SO_Button:
+        debug << "SO_Button";
+        break;
 
-        case QStyleOption::SO_Tab:
-            debug << "SO_Tab";
-            break;
+    case QStyleOption::SO_Tab:
+        debug << "SO_Tab";
+        break;
 
-        case QStyleOption::SO_MenuItem:
-            debug << "SO_MenuItem";
-            break;
+    case QStyleOption::SO_MenuItem:
+        debug << "SO_MenuItem";
+        break;
 
-        case QStyleOption::SO_Frame:
-            debug << "SO_Frame";
-            break;
+    case QStyleOption::SO_Frame:
+        debug << "SO_Frame";
+        break;
 
-        case QStyleOption::SO_ProgressBar:
-            debug << "SO_ProgressBar";
-            break;
+    case QStyleOption::SO_ProgressBar:
+        debug << "SO_ProgressBar";
+        break;
 
-        case QStyleOption::SO_ToolBox:
-            debug << "SO_ToolBox";
-            break;
+    case QStyleOption::SO_ToolBox:
+        debug << "SO_ToolBox";
+        break;
 
-        case QStyleOption::SO_Header:
-            debug << "SO_Header";
-            break;
+    case QStyleOption::SO_Header:
+        debug << "SO_Header";
+        break;
 
-        case QStyleOption::SO_DockWidget:
-            debug << "SO_DockWidget";
-            break;
+    case QStyleOption::SO_DockWidget:
+        debug << "SO_DockWidget";
+        break;
 
-        case QStyleOption::SO_ViewItem:
-            debug << "SO_ViewItem";
-            break;
+    case QStyleOption::SO_ViewItem:
+        debug << "SO_ViewItem";
+        break;
 
-        case QStyleOption::SO_TabWidgetFrame:
-            debug << "SO_TabWidgetFrame";
-            break;
+    case QStyleOption::SO_TabWidgetFrame:
+        debug << "SO_TabWidgetFrame";
+        break;
 
-        case QStyleOption::SO_TabBarBase:
-            debug << "SO_TabBarBase";
-            break;
+    case QStyleOption::SO_TabBarBase:
+        debug << "SO_TabBarBase";
+        break;
 
-        case QStyleOption::SO_RubberBand:
-            debug << "SO_RubberBand";
-            break;
+    case QStyleOption::SO_RubberBand:
+        debug << "SO_RubberBand";
+        break;
 
-        case QStyleOption::SO_Complex:
-            debug << "SO_Complex";
-            break;
+    case QStyleOption::SO_Complex:
+        debug << "SO_Complex";
+        break;
 
-        case QStyleOption::SO_Slider:
-            debug << "SO_Slider";
-            break;
+    case QStyleOption::SO_Slider:
+        debug << "SO_Slider";
+        break;
 
-        case QStyleOption::SO_SpinBox:
-            debug << "SO_SpinBox";
-            break;
+    case QStyleOption::SO_SpinBox:
+        debug << "SO_SpinBox";
+        break;
 
-        case QStyleOption::SO_ToolButton:
-            debug << "SO_ToolButton";
-            break;
+    case QStyleOption::SO_ToolButton:
+        debug << "SO_ToolButton";
+        break;
 
-        case QStyleOption::SO_ComboBox:
-            debug << "SO_ComboBox";
-            break;
+    case QStyleOption::SO_ComboBox:
+        debug << "SO_ComboBox";
+        break;
 
-        case QStyleOption::SO_TitleBar:
-            debug << "SO_TitleBar";
-            break;
+    case QStyleOption::SO_TitleBar:
+        debug << "SO_TitleBar";
+        break;
 
-        case QStyleOption::SO_CustomBase:
-            debug << "SO_CustomBase";
-            break;
+    case QStyleOption::SO_CustomBase:
+        debug << "SO_CustomBase";
+        break;
 
-        case QStyleOption::SO_GroupBox:
-            debug << "SO_GroupBox";
-            break;
+    case QStyleOption::SO_GroupBox:
+        debug << "SO_GroupBox";
+        break;
 
-        case QStyleOption::SO_ToolBar:
-            debug << "SO_ToolBar";
-            break;
+    case QStyleOption::SO_ToolBar:
+        debug << "SO_ToolBar";
+        break;
 
-        case QStyleOption::SO_ComplexCustomBase:
-            debug << "SO_ComplexCustomBase";
-            break;
+    case QStyleOption::SO_ComplexCustomBase:
+        debug << "SO_ComplexCustomBase";
+        break;
 
-        case QStyleOption::SO_SizeGrip:
-            debug << "SO_SizeGrip";
-            break;
+    case QStyleOption::SO_SizeGrip:
+        debug << "SO_SizeGrip";
+        break;
 
-        case QStyleOption::SO_GraphicsItem:
-            debug << "SO_GraphicsItem";
-            break;
+    case QStyleOption::SO_GraphicsItem:
+        debug << "SO_GraphicsItem";
+        break;
     }
 
 #else
