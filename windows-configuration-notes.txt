@@ -14,6 +14,10 @@ Install community edition of VisualStudio to get compilers.
 Install Artistic Style - 
     can be found here https://sourceforge.net/projects/astyle/files/astyle/
     You will have to unzip someplace and add that place to your PATH
+    
+Install NSIS
+    can be found here https://sourceforge.net/projects/nsis/files/NSIS%202/
+    has an exe installer    
 
 
 Visual Studio Installer->modify->individual components

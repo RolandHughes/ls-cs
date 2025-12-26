@@ -42,7 +42,6 @@ public:
 
     void init();
     qreal titleSize() const;
-    bool usingVistaStyle() const;
 
     QFont titleFont() const;
     QFont descriptionFont() const;
@@ -93,15 +92,8 @@ QFont QCommandLinkButtonPrivate::titleFont() const
     Q_Q( const QCommandLinkButton );
     QFont font = q->font();
 
-    if ( usingVistaStyle() )
-    {
-        font.setPointSizeF( 12.0 );
-    }
-    else
-    {
-        font.setBold( true );
-        font.setPointSizeF( 9.0 );
-    }
+    font.setBold( true );
+    font.setPointSizeF( 9.0 );
 
     // Note the font will be resolved against
     // QPainters font, so we need to restore the mask
@@ -159,15 +151,6 @@ int QCommandLinkButtonPrivate::descriptionOffset() const
 {
     QFontMetrics fm( titleFont() );
     return topMargin() + fm.height();
-}
-
-bool QCommandLinkButtonPrivate::usingVistaStyle() const
-{
-    Q_Q( const QCommandLinkButton );
-    //### This is a hack to detect if we are indeed running Vista style themed and not in classic
-    // When we add api to query for this, we should change this implementation to use it.
-    return q->style()->inherits( "QWindowsVistaStyle" )
-           && !q->style()->pixelMetric( QStyle::PM_ButtonShiftHorizontal );
 }
 
 void QCommandLinkButtonPrivate::init()
@@ -321,20 +304,6 @@ void QCommandLinkButton::paintEvent( QPaintEvent * )
 
     //Draw title
     QColor textColor = palette().buttonText().color();
-
-    if ( isEnabled() && d->usingVistaStyle() )
-    {
-        textColor = QColor( 21, 28, 85 );
-
-        if ( underMouse() && !isDown() )
-        {
-            textColor = QColor( 7, 64, 229 );
-        }
-
-        //A simple text color transition
-        d->currentColor = d->mergedColors( textColor, d->currentColor, 60 );
-        option.palette.setColor( QPalette::ButtonText, d->currentColor );
-    }
 
     int textflags = Qt::TextShowMnemonic;
 

@@ -95,6 +95,7 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
    set(CMAKE_INSTALL_BINDIR bin)
    set(CMAKE_INSTALL_LIBDIR lib)
    set(CMAKE_INSTALL_INCLUDEDIR include)
+   set(CMAKE_INSTALL_DATAROOTDIR share)
 
 endif()
 
@@ -201,8 +202,6 @@ set(CPACK_SOURCE_GENERATOR            ZIP TBZ2)
 file (READ "description.txt" CPACK_PACKAGE_DESCRIPTION_TEXT)
 
 file(STRINGS cmake/dist_ignore.txt    CPACK_SOURCE_IGNORE_FILES)
-
-include(CPack)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_INCLUDE_DIRECTORIES_BEFORE ON)
@@ -507,27 +506,6 @@ set_package_properties(SQLite3 PROPERTIES
    TYPE RECOMMENDED
 )
 
-if (WITH_VULKAN)
-   find_package(Vulkan 1.1)
-   set_package_properties(Vulkan PROPERTIES
-      PURPOSE "Required for Vulkan support"
-      DESCRIPTION "The Vulkan SDK"
-      URL "https://www.lunarg.com/"
-      TYPE REQUIRED
-   )
-
-   if (NOT TARGET Vulkan::Vulkan)
-      set(WITH_VULKAN NO)
-
-      if (Vulkan_FOUND)
-         message(STATUS "Partial Vulkan installation exists however the SDK was not found, "
-            "LsCsVulkan library will not be built\n")
-      else()
-         message(STATUS "Vulkan SDK was not found, LsCsVulkan library will not be built\n")
-      endif()
-
-   endif()
-endif()
 
 # emerald - temporarily turn off GTK as a workaround, conflicts with freetype version in Harfbuzz
 set(CMAKE_DISABLE_FIND_PACKAGE_GTK2 TRUE)
@@ -541,16 +519,6 @@ if (NOT CMAKE_SYSTEM_NAME MATCHES "Darwin")
       TYPE RECOMMENDED
    )
 endif()
-
-#if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-#   find_package(Security)
-#   set_package_properties(Security PROPERTIES
-#      PURPOSE "Required for HTTPS support"
-#      DESCRIPTION "Support for secure network communications using Secure Trasnport for SSL and TLS"
-#      URL "https://developer.apple.com/documentation/security/secure_transport"
-#      TYPE RECOMMENDED
-#   )
-#endif()
 
 if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    find_package(Threads)
@@ -656,15 +624,6 @@ if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
       )
    endif()
 
-   if (WITH_WEBKIT)
-      find_package(LibXml2)
-      set_package_properties(LibXml2 PROPERTIES
-         PURPOSE "Required for XML support in WebKit"
-         DESCRIPTION "XML C parser and toolkit developed for the Gnome project"
-         URL "http://www.xmlsoft.org/"
-         TYPE REQUIRED
-      )
-   endif()
 endif()
 
 if (WIN32)
@@ -730,9 +689,6 @@ elseif (WITH_SVG AND NOT WITH_GUI)
 
 elseif (WITH_XMLPATTERNS AND NOT WITH_NETWORK)
    message(SEND_ERROR "LsCsXmlPatterns component requires LsCsNetwork component")
-
-elseif (WITH_WEBKIT AND NOT (WITH_GUI AND WITH_NETWORK AND WITH_SCRIPT))
-   message(SEND_ERROR "LsCsWebKit component requires LsCsGui, LsCsNetwork, and LsCsScript components")
 
 endif()
 
@@ -884,12 +840,15 @@ install(
       ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
       ${CMAKE_SOURCE_DIR}/cmake/InstallMinGW.cmake
    DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake
+   COMPONENT Development
 )
 
 install(
   FILES
      ${CMAKE_BINARY_DIR}/LsCs-library.conf
      DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/ld.so.conf.d
+     COMPONENT Runtime
+     COMPONENT Development
 )
 else()
 install(
@@ -901,6 +860,7 @@ install(
       ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
       ${CMAKE_SOURCE_DIR}/cmake/InstallMinGW.cmake
       DESTINATION ${PKG_PREFIX}/${CMAKE_INSTALL_LIBDIR}/cmake
+      COMPONENT Development
 )
 endif()
 
@@ -910,12 +870,16 @@ install(
        ${CMAKE_SOURCE_DIR}/license/LICENSE.FDL
        ${CMAKE_SOURCE_DIR}/license/LICENSE.LGPL
        DESTINATION ${CMAKE_INSTALL_DOCDIR}/license
+       COMPONENT Runtime
+       COMPONENT Development
 )
 
 install(
   FILES
      ${CMAKE_BINARY_DIR}/lscs.conf
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME}
+  COMPONENT Runtime
+  COMPONENT Development
 )
 
 install(
@@ -925,6 +889,7 @@ install(
    NAMESPACE LsCs::
    FILE LsCsLibraryTargets.cmake
    DESTINATION ${PKG_PREFIX}
+   COMPONENT Development
 )
 
 # generate cmake files containing rules about running LsCs binary tools
@@ -933,7 +898,14 @@ install(
    NAMESPACE LsCs::
    FILE LsCsBinaryTargets.cmake
    DESTINATION ${PKG_PREFIX}
+   COMPONENT Development
 )
+
+include(CPack)
+
+if (CMAKE_SYSTEM_NAME MATCHES "Windows")
+    include (InstallRequiredSystemLibraries)
+endif()
 
 message("\n")
 message("-- The following lscs libraries will be built:")

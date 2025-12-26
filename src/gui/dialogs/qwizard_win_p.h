@@ -25,7 +25,6 @@
 #define QWIZARD_WIN_P_H
 
 #ifndef LSCS_NO_WIZARD
-#ifndef LSCS_NO_STYLE_WINDOWSVISTA
 
 #include <qabstractbutton.h>
 #include <qobject.h>
@@ -188,7 +187,6 @@ private:
     static int m_devicePixelRatio;
 };
 
-#endif // LSCS_NO_STYLE_WINDOWSVISTA
 #endif // LSCS_NO_WIZARD
 
 #endif

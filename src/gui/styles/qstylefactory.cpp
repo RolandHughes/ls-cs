@@ -36,14 +36,6 @@
 #include <qgtkstyle_p.h>
 #endif
 
-#ifndef LSCS_NO_STYLE_WINDOWSXP
-#include <qwindows_xpstyle_p.h>
-#endif
-
-#ifndef LSCS_NO_STYLE_WINDOWSVISTA
-#include <qwindows_vistastyle_p.h>
-#endif
-
 #if !defined(LSCS_NO_STYLE_MAC) && defined(Q_OS_DARWIN)
 #include <qmacstyle.h>
 #endif
@@ -66,22 +58,6 @@ QStyle *QStyleFactory::create( const QString &key )
         retval = new QWindowsStyle;
     }
     else
-#endif
-
-#ifndef LSCS_NO_STYLE_WINDOWSXP
-        if ( style == "windowsxp" )
-        {
-            retval = new QWindowsXPStyle;
-        }
-        else
-#endif
-
-#ifndef LSCS_NO_STYLE_WINDOWSVISTA
-            if ( style == "windowsvista" )
-            {
-                retval = new QWindowsVistaStyle;
-            }
-            else
 #endif
 
 #ifndef LSCS_NO_STYLE_FUSION
@@ -135,26 +111,6 @@ QStringList QStyleFactory::keys()
     if ( ! list.contains( "Windows" ) )
     {
         list << "Windows";
-    }
-
-#endif
-
-#ifndef LSCS_NO_STYLE_WINDOWSXP
-
-    if ( ! list.contains( "WindowsXP" ) &&
-            ( QSysInfo::WindowsVersion >= QSysInfo::WV_XP && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based ) ) )
-    {
-        list << "WindowsXP";
-    }
-
-#endif
-
-#ifndef LSCS_NO_STYLE_WINDOWSVISTA
-
-    if ( ! list.contains( "WindowsVista" ) &&
-            ( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based ) ) )
-    {
-        list << "WindowsVista";
     }
 
 #endif

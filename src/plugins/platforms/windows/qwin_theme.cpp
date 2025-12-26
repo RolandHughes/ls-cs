@@ -344,16 +344,6 @@ static inline QStringList styleNames()
 {
     QStringList result;
 
-    if ( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA )
-    {
-        result.append( QString( "WindowsVista" ) );
-    }
-
-    if ( QSysInfo::WindowsVersion >= QSysInfo::WV_XP )
-    {
-        result.append( QString( "WindowsXP" ) );
-    }
-
     result.append( QString( "Windows" ) );
 
     return result;

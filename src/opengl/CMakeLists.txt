@@ -121,7 +121,6 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    target_compile_definitions(LsCsOpenGL
       PRIVATE
       -DLSCS_NO_STYLE_GTK
-      -DLSCS_NO_STYLE_WINDOWSVISTA
    )
 
 endif()

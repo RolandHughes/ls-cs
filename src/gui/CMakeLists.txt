@@ -107,8 +107,6 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
       -framework OpenGL
    )
 
-   add_definitions(-DLSCS_NO_STYLE_WINDOWSVISTA)
-
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
 
    target_link_libraries(LsCsGui
@@ -130,8 +128,6 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
       -DHAVE_POSIX_MEMALIGN
       -DLSCS_NO_XINPUT
       -DLSCS_NO_STYLE_MAC
-      -DLSCS_NO_STYLE_WINDOWSXP
-      -DLSCS_NO_STYLE_WINDOWSVISTA
       -DLSCS_NO_TABLET
    )
 
@@ -168,8 +164,6 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    add_definitions(
       -DLSCS_NO_STYLE_MAC
       -DLSCS_NO_LPR
-      -DLSCS_NO_STYLE_WINDOWSXP
-      -DLSCS_NO_STYLE_WINDOWSVISTA
    )
 endif()
 

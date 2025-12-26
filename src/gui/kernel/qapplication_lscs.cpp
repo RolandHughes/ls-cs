@@ -719,7 +719,7 @@ void QApplication::setStyleSheet( const QString &styleSheet )
 
 /*!
     string must be one of the QStyleFactory::keys(), typically
-    "windows", "fusion", "windowsxp", or "macintosh". Style names are case insensitive.
+    "windows", "fusion", or "macintosh". Style names are case insensitive.
 */
 QStyle *QApplication::setStyle( const QString &style )
 {

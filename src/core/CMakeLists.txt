@@ -344,7 +344,7 @@ install(
    COMPONENT Devel
 )
 
-install(FILES ${CMAKE_BINARY_DIR}/include/lscs_config.h  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} )
+install(FILES ${CMAKE_BINARY_DIR}/include/lscs_config.h  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT Development )
 
 if (LsCsSignal_FOUND)
 
@@ -352,21 +352,21 @@ if (LsCsSignal_FOUND)
 
       if (CMAKE_SYSTEM_NAME MATCHES "Windows")
          # install system library to LsCs install directory
-         install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_BINDIR})
+         install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT RUNTIME)
 
          # install import library to CS install lib directory
          set(LsCsSignal_ImportLib $<TARGET_LINKER_FILE:LsCsSignal::LsCsSignal>)
 
-         install(FILES ${LsCsSignal_ImportLib} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+         install(FILES ${LsCsSignal_ImportLib} DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Library)
 
       else()
          # darwin and unix
 
          # install system library to CS install directory
          if (DEBIAN_FOUND)
-             install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR})
+             install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR} COMPONENT Library)
          else()
-             install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+             install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Library)
          endif()
       endif()
 

@@ -26,26 +26,39 @@ if exist "..\ls-cs-release" rmdir /S /Q "..\ls-cs-release"
 if exist "..\ls-cs-build" ECHO "You must rmdir /s /q ..\ls-cs-build prior to running ; cd %srcDir% ; exit
 
 if /I "%1" == "-skip" goto CREATEDIRS
-ECHO "Enforcing style"
-ECHO " "
+ECHO Enforcing style
+ECHO 
 call astyle-project.bat
-ECHO " "
+ECHO 
 
 :CREATEDIRS
-ECHO "Creating empty build directories"
-ECHO " "
+ECHO Creating empty build directories
+ECHO 
 
 mkdir ..\ls-cs-build
 mkdir ..\ls-cs-release
-ECHO " "
-ECHO "Building libraries and packages"
-ECHO " "
+ECHO 
+ECHO Building libraries and packages
+ECHO 
+ECHO ************************************************************************
+ECHO *****  NOTE: the VCPKG step is very sensitive to your Internet 
+ECHO *****        connection and the habit of some antivirus packages to 
+ECHO *****        always eat the first download request. If it fails you 
+ECHO *****        should see something like 
+ECHO *****
+ECHO *****        openssl does not exist 
+ECHO *****
+ECHO *****        in the lines below. Check your Internet
+ECHO *****        and re-run. Think about getting a better antivirus product as well.
+ECHO *****
+ECHO ************************************************************************
+ECHO
 cd ..\ls-cs-build
 cmake -G "Ninja" -DCMAKE_TOOLCHAIN_FILE="%VCPKG_ROOT%"\scripts\buildsystems\vcpkg.cmake^
       -DVCPKG_TARGET_TRIPLET=x64-windows^
       -DCMAKE_BUILD_TYPE=Release^
       -DCMAKE_INSTALL_PREFIX=..\ls-cs-release "%srcDir%"
-ECHO " "
+ECHO 
 ninja
 
 ninja install
