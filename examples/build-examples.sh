@@ -14,8 +14,8 @@ echo "*** Establishing directory variables"
 echo " "
 SCRIPT_DIR="$PWD"
 EXAMPLES_DIR="$SCRIPT_DIR"
-BUILD_BASE_DIR="$SCRIPT_DIR/../../ls-cs_examples_build"
-INSTALL_BASE_DIR="$SCRIPT_DIR/../../ls-cs_examples_install"
+BUILD_BASE_DIR="$SCRIPT_DIR/../../LsCs_examples_build"
+INSTALL_BASE_DIR="$SCRIPT_DIR/../../LsCs_examples_install"
 
 # I know, I probably should have some range safety here, but that
 # is a bit of overkill at this point. If the directory doesn't exist

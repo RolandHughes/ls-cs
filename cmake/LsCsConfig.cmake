@@ -47,6 +47,12 @@ set(LSCS_INCLUDES @LSCS_INST_INCLUDE@)
 set(LSCS_LIBRARIES)
 set(LSCS_COMPONENTS @BUILD_COMPONENTS@)
 
+message(TRACE "***************")
+message(TRACE "***************")
+message(TRACE "*************** LsCsConfig.cmake executing foreach with LSCS_INST_INCLUDE ${LSCS_INST_INCLUDE}")
+message(TRACE "***************")
+message(TRACE "***************")
+
 foreach(component ${LSCS_COMPONENTS})
    string(TOUPPER ${component} uppercomp)
    string(TOLOWER ${component} lowercomp)

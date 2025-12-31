@@ -1,4 +1,4 @@
-# Ls-Cs Cross Platform Library for Desktops and Embedded Systems Development
+# LsCs Cross Platform Library for Desktops and Embedded Systems Development
 
 *This is project is not maintained by the CopperSpice project and we no longer
 accept code from them.*
@@ -101,7 +101,7 @@ scripts to build a package or a local development install.
 
 ### Using the Ls-Cs Libraries
 
-In a few weeks RedDiamond should be ported to use Ls-Cs instead of CopperSpice.
+In a few weeks RedDiamond should be ported to use LsCs instead of CopperSpice.
 https://sourceforge.net/p/reddiamond/code/ci/master/tree/
 
 You will note that project also has build*.sh files Thieving just a few files
