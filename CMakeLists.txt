@@ -885,6 +885,9 @@ install(
   COMPONENT Development
 )
 
+# need to figure out where include/Qt is coming from
+#dump_cmake_variables()
+
 install(
    # generate cmake files containing rules about linking with LsCs libs
 
