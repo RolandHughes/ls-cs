@@ -2,24 +2,24 @@
 #
 # LsCs-Deb-build-dependencies.sh
 #
-if [ `whoami` != root ]; then
-    echo Please run this script as root or using sudo
-    exit
-fi
-
 
 # Executables first
 #
 
-apt-get install build-essential g++ fakeroot hashdeep dpkg-dev ninja-build \
+sudo apt-get install build-essential g++ fakeroot hashdeep dpkg-dev ninja-build \
         mercurial mercurial-common git astyle hunspell tree 
 
+# we use apostrophe to edit Markdown documentation like README.md
+#
 ./get-apostrophe.sh
+
+# with 0.2.1 package builing was migrated to vcpkg.
+#
 ./install-vcpkg.sh
 
 # libraries we cannot get via vcpkg
 #
-apt-get install libcups2-dev libc6-dev autoconf autotools-dev libtool
+sudo apt-get install libcups2-dev libc6-dev autoconf autotools-dev libtool
 
 # libaudio-dev libxcursor-dev libxext-dev libxfixes-dev libxkbcommon-x11-dev 
 # this list will need to be cleaned up once SDL3 is the only backend
@@ -42,30 +42,13 @@ echo "***************************************************************"
 echo "***************************************************************"
 echo "***************************************************************"
 echo " "
-echo " "
 echo "   cmake 3.31.10 or higher is required. Even Ubuntu 24.04 doesn't have "
 echo "   include this in their repos. "
 echo " "
-echo " "
-echo "   visit https://apt.kitware.com to see if you have a version with "
-echo "   official kitware repo.  If so, follow the instructions "
-echo " "
-echo "   Everyone else must visit https://cmake.org/download/ "
-echo "   download a .sh file for a version at least 3.31.10 or newer "
-echo "   follow the instructions. "
+echo "   visit apt.kitware.com and pull down kitware-archive.sh "
+echo "   to install for a supported Ubuntu version "
 echo " "
 echo "***************************************************************"
 echo "***************************************************************"
 echo "***************************************************************"
 echo " "
-echo " "
-echo " Ubuntu 18.04 users will need at least python 3.7 which is not"
-echo " in the official repositories "
-echo "        sudo apt-get update "
-echo "        sudo apt-get install software-properties-common "
-echo "        sudo add-apt-repository ppa:deadsnakes/ppa "
-echo "        press enter when prompted "
-echo "        sudo apt-get update "
-echo "        sudo apt-get install python3.8"
-echo "        sudo update-alternatives --install /usr/bin/python python3 /usr/bin/python3.8 2 "
-echo "        sudo update-alternatives  --set python3 /usr/bin/python3.8 "
