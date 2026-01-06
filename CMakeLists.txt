@@ -253,8 +253,6 @@ check_include_file(inttypes.h    HAVE_INTTYPES_H)
 check_include_file(libpq-fe.h    HAVE_LIBPQ_FE_H)
 check_include_file(memory.h      HAVE_MEMORY_H)
 check_include_file(pg_config.h   HAVE_PG_CONFIG_H)
-check_include_file(pthread.h     HAVE_PTHREAD_H)
-check_include_file(pthread_np.h  HAVE_PTHREAD_NP_H)
 check_include_file(pwd.h         HAVE_PWD_H)
 check_include_file(signal.h      HAVE_SIGNAL_H)
 check_include_file(stdint.h      HAVE_STDINT_H)
@@ -264,7 +262,6 @@ check_include_file(string.h      HAVE_STRING_H)
 check_include_file(unistd.h      HAVE_UNISTD_H)
 
 check_include_file(cups/cups.h   HAVE_CUPS_CUPS_H)
-check_include_file(mysql/mysql.h HAVE_MYSQL_H)
 check_include_file(net/if.h      HAVE_NET_IF_H)
 check_include_file(netinet/in.h  HAVE_NETINET_IN_H)
 check_include_file(sys/eventfd.h HAVE_SYS_EVENTFD_H)
@@ -311,69 +308,26 @@ message("")
 message("Configuring CMake for lscs\n\n")
 message("-- Searching for required packages\n")
 
+# LibGuarded should go away once we base this on SDL3. 
+# SDL3 gives us SDL_Mutex, SDL_RWLock and Thread Local Storage
+#
 find_package(LsCsLibGuarded QUIET)
 
-if (LsCsLibGuarded_FOUND)
-   message(STATUS "LsCsLibGuarded was found \n"
-      " * Path is ${LsCsLibGuarded_INCLUDES}\n")
-else()
-   message(STATUS "LsCsLibGuarded was not found, bundled library will be used\n")
-endif()
-
+# LsCsString will not be a separate library when we are done
+#
 find_package(LsCsString QUIET)
 
-if (LsCsString_FOUND)
-   message(STATUS "LsCsString was found \n"
-      " * Path is ${LsCsString_LIBRARIES}\n")
-else()
-   message(STATUS "LsCsString was not found, bundled library will be used\n")
-endif()
-
+# SDL3 has a callback api as well as its own event queues. 
+# define SDL_MAIN_USE_CALLBACKS 1
+# https://www.youtube.com/watch?v=7Qm7yXG_BHs
+#
 find_package(LsCsSignal QUIET)
 
-if (LsCsSignal_FOUND)
-   message(STATUS "LsCsSignal was found \n"
-      " * Path is ${LsCsSignal_LIBRARIES}\n")
-else()
-   message(STATUS "LsCsSignal was not found, bundled library will be used\n")
-endif()
-
-find_package(OpenSSL 1.0)
-set_package_properties(OpenSSL PROPERTIES
-   PURPOSE "Required for HTTPS support"
-   DESCRIPTION "Support for SSL and TLS"
-   URL "https://openssl.org"
-   TYPE RECOMMENDED
-)
-
-if (OpenSSL_FOUND)
-   message(STATUS "OpenSSL was found \n"
-      " * Version: ${OPENSSL_VERSION}\n"
-      " * Path: ${OPENSSL_CRYPTO_LIBRARY}\n")
-endif()
+find_package(OpenSSL QUIET)
 
 find_package(ZLIB QUIET)
-set_package_properties(ZLIB PROPERTIES
-   PURPOSE "Required for compression support"
-   DESCRIPTION "Compression Library"
-   URL "https://zlib.net"
-   TYPE RECOMMENDED
-)
-
-if (ZLIB_FOUND)
-   include_directories(${ZLIB_INCLUDE_DIRS})
-   message(STATUS "ZLIB was found, path is ${ZLIB_LIBRARIES}\n")
-else()
-   message(STATUS "ZLIB was not found, bundled library will be used\n")
-endif()
 
 find_package(JPEG QUIET)
-set_package_properties(JPEG PROPERTIES
-   PURPOSE "Used for JPEG compression for images"
-   DESCRIPTION "JPEG Compression Library"
-   URL "https://ijg.org"
-   TYPE RECOMMENDED
-)
 
 if (NOT JPEG_FOUND)
    message(STATUS "libjpeg was not found, bundled library will be used\n")

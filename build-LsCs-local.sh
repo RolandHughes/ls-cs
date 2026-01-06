@@ -1,9 +1,23 @@
+#!/bin/bash
+#
 echo "MUST BE RUN FROM ROOT OF PROJECT DIRECTORY TREE"
 echo " "
 echo "This will delete existing local build or release "
 echo "directories and create new ones. It will then prep "
 echo "the build directory for a ninja build. Finally it "
 echo "will perform the actual build."
+
+if [[ -n "$VCPKG_ROOT" ]]
+then
+    echo "found VCPKG_ROOT value"
+else
+    echo "You must define environment variable VCPKG_ROOT"
+    echo "It must point to the parent directory for "
+    echo "/scripts/buildsystems/vcpkg.cmake"
+    exit
+fi
+
+    
 
 #  Step 1 : Establish fresh clean directories
 #
@@ -38,6 +52,20 @@ fi
 mkdir -p "$BUILD_DIR"
 mkdir -p "$RELEASE_DIR"
 
+echo "************************************************************************"
+echo "*****  NOTE: the VCPKG step is very sensitive to your Internet "
+echo "*****        connection and the habit of some antivirus packages to "
+echo "*****        always eat the first download request. If it fails you "
+echo "*****        should see something like "
+echo "*****"
+echo "*****        openssl does not exist "
+echo "*****"
+echo "*****        in the lines below. Check your Internet"
+echo "*****        and re-run. Think about getting a better antivirus product as well."
+echo "*****"
+echo "************************************************************************"
+echo
+
 #  Step 3 : Prepare Build Directory
 #
 echo "*** Prepping build directory"
@@ -46,6 +74,8 @@ cd "$BUILD_DIR"
 #        -DBUILDING_DEBIAN=ON \
         
 cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
+      -DVCPKG_TARGET_TRIPLET=x64-linux \
       -DCMAKE_INSTALL_PREFIX="$RELEASE_DIR" \
       "$SCRIPT_DIR"
 
