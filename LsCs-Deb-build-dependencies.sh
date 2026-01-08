@@ -7,19 +7,24 @@
 #
 
 sudo apt-get install build-essential g++ fakeroot hashdeep dpkg-dev ninja-build \
-        mercurial mercurial-common git astyle hunspell tree 
+     mercurial mercurial-common git astyle tree python3-distutils \
+     python3-distutils-extra 
 
 # we use apostrophe to edit Markdown documentation like README.md
 #
-./get-apostrophe.sh
+./install-apostrophe.sh
 
 # with 0.2.1 package builing was migrated to vcpkg.
 #
 ./install-vcpkg.sh
 
+# sadly vcpkg needs versions of autoconf stuff that aren't in distros
+#
+sudo ./install-autotools.sh
+
 # libraries we cannot get via vcpkg
 #
-sudo apt-get install libcups2-dev libc6-dev autoconf autotools-dev libtool
+sudo apt-get install libcups2-dev libc6-dev 
 
 # libaudio-dev libxcursor-dev libxext-dev libxfixes-dev libxkbcommon-x11-dev 
 # this list will need to be cleaned up once SDL3 is the only backend
@@ -46,7 +51,12 @@ echo "   cmake 3.31.10 or higher is required. Even Ubuntu 24.04 doesn't have "
 echo "   include this in their repos. "
 echo " "
 echo "   visit apt.kitware.com and pull down kitware-archive.sh "
-echo "   to install for a supported Ubuntu version "
+echo "   to configure repositories for current version. "
+echo "   Once configured run "
+echo "   sudo snap install cmake "
+echo "   or install via synaptic package manager. "
+echo "   apt will not install the version you just configured because "
+echo "   the repository kitware hosts is for snaps "
 echo " "
 echo "***************************************************************"
 echo "***************************************************************"
