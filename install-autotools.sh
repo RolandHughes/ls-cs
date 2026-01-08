@@ -4,6 +4,11 @@
 #
 # must be run under root/sudo
 #
+
+# sadly vcpkg needs versions of autoconf stuff that aren't in distros
+#
+apt-get purge -y automake autoconf libtool
+
 AC_VERSION="autoconf-2.72"
 cd /usr/local/src
 wget https://ftp.gnu.org/gnu/autoconf/$AC_VERSION.tar.gz
