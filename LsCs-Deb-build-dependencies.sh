@@ -8,7 +8,7 @@
 
 sudo apt-get install -y build-essential g++ fakeroot hashdeep dpkg-dev ninja-build \
      mercurial mercurial-common git astyle tree python3-distutils \
-     python3-distutils-extra autotools-dev 
+     python3-distutils-extra autotools-dev libtool-bin bison flex nasm hunspell
 
 # we use apostrophe to edit Markdown documentation like README.md
 #

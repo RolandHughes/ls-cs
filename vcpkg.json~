@@ -6,6 +6,7 @@
     "glib",
     "glibmm",
     "gstreamer",
+    "hunspell",
     "libice",
     "libjpeg-turbo",
     "libmariadb",
