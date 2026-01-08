@@ -6,7 +6,7 @@
 # Executables first
 #
 
-sudo apt-get install build-essential g++ fakeroot hashdeep dpkg-dev ninja-build \
+sudo apt-get install -y build-essential g++ fakeroot hashdeep dpkg-dev ninja-build \
      mercurial mercurial-common git astyle tree python3-distutils \
      python3-distutils-extra 
 
@@ -20,11 +20,12 @@ sudo apt-get install build-essential g++ fakeroot hashdeep dpkg-dev ninja-build 
 
 # sadly vcpkg needs versions of autoconf stuff that aren't in distros
 #
+sudo apt-get purge -y automake autoconf libtool
 sudo ./install-autotools.sh
 
 # libraries we cannot get via vcpkg
 #
-sudo apt-get install libcups2-dev libc6-dev 
+sudo apt-get install -y libcups2-dev libc6-dev 
 
 # libaudio-dev libxcursor-dev libxext-dev libxfixes-dev libxkbcommon-x11-dev 
 # this list will need to be cleaned up once SDL3 is the only backend

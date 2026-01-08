@@ -7,7 +7,7 @@
 # access that directory tree.
 #
 sudo apt update
-sudo apt install build-essential tar git zip unzip curl pkg-config
+sudo apt install -y build-essential tar git zip unzip curl pkg-config
 
 mkdir $HOME/vcpkg
 

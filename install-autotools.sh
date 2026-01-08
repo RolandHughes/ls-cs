@@ -12,7 +12,7 @@ cd $AC_VERSION
 sh configure --prefix /usr/local
 make install
 
-AM_VERSION="automake-1.17"
+AM_VERSION="automake-1.18"
 cd /usr/local/src
 wget https://ftp.gnu.org/gnu/automake/$AM_VERSIN.tar.gz
 tar xf automake*
