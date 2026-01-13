@@ -1,7 +1,0 @@
-cmake-windows-10-notes.txt
-
-https://stackoverflow.com/questions/1459482/how-to-use-cmake-for-non-interactive-build-on-windows
-
-cmake.exe -G"Visual Studio 8 2005" -H<source_dir> -B<build_dir>
-
-https://www.reddit.com/r/cpp_questions/comments/tau4nv/building_in_release_mode_from_command_line_using/?captcha=1

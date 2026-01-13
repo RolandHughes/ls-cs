@@ -1,0 +1,46 @@
+cmake-install-notes.txt
+
+These notes are for Linux. If you want to do Windows configuration see
+
+windows-configuration-notes.txt
+
+If you happen to be running a Ubuntu version directly supported by
+Kitware, you can visit
+
+            apt.kitware.com
+
+and pull down kitware-archive.sh then run it to configure your
+repositories to use their repos. After that you can
+
+sudo snap install --classic cmake
+
+or use Synaptic package manager. You cannot use apt-get install because
+the kitware repos only have a snap.
+
+If you do not care about being able to do a clean uninstall later, the
+easiest way is to visit
+
+https://cmake.org/download/
+
+download the version you wish then copy it to /usr/local/src
+cd /usr/local
+
+/usr/local$ sudo ./src/cmake-4.2.1-linux-x86_64.sh
+
+Do you accept the license? [yn]: 
+y
+By default the CMake will be installed in:
+  "/usr/local/cmake-4.2.1-linux-x86_64"
+Do you want to include the subdirectory cmake-4.2.1-linux-x86_64?
+Saying no will install in: "/usr/local" [Yn]: 
+n
+
+Most important that you say no to the subdirectory unless you want
+to do a lot more work adding this to your PATH. By default on Ubuntu
+/usr/local directories are added to PATH, but not /usr/local/src.
+
+echo $PATH
+/home/developer/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+No matter which way you install, you should probably reboot to ensure the
+directory scans happen.
