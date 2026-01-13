@@ -1,0 +1,28 @@
+python-3-7-notes.txt
+
+Ubuntu 18.04 users are lucky that 3.7 is in the repos. If you are on a different
+distro check to see if your repo just installs an older version but has newer.
+
+On Ubuntu 18.04 you would do this
+
+sudo apt-get install python3.7
+
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 3
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
+
+sudo update-alternatives --config python3
+There are 2 choices for the alternative python3 (providing /usr/bin/python3).
+
+  Selection    Path                Priority   Status
+------------------------------------------------------------
+  0            /usr/bin/python3.6   3         auto mode
+  1            /usr/bin/python3.6   3         manual mode
+* 2            /usr/bin/python3.7   2         manual mode
+
+choose the highest number
+
+python3 -V
+
+should now show 3.7 or whatever you installed
+
+other distros will have other versions, possibly in different spots.
