@@ -5,9 +5,14 @@ distro check to see if your repo just installs an older version but has newer.
 
 On Ubuntu 18.04 you would do this
 
-sudo apt-get install python3.7 python3.7-venv 
+# you will get some error messages about not being able to lock /var/cache
+# and /var/lib
+#
+sudo apt-get install --no-install-recommends -y software-properties-common \
+            python3.7 python3.7-venv python3.7-distutils &&
+            apt-get clean && rm -rf /var/lib/apt/lists/*
 
-sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 3
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 1
 sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
 
 sudo update-alternatives --config python3
@@ -27,4 +32,14 @@ should now show 3.7 or whatever you installed
 
 other distros will have other versions, possibly in different spots.
 
+# upgrade pip to latest - note you will need to know version from above.
+# Ignore warning about .local/bin not being in path. When you reboot
+# your .profile will take care of that.
+#
+sudo curl -s  https://bootstrap.pypa.io/pip/3.7/get-pip.py -o get-pip.py && \
+    python3 get-pip.py --force-reinstall && \
+    rm get-pip.py
+
+# reboot before installing this.
+#
 python3 -m pip install MarkupSafe
