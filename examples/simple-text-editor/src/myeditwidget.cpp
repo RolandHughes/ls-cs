@@ -1,7 +1,7 @@
 /* myeditwidget.cpp
  *
  * To avoid creating a MainWindow class that is a mess, one should create their own
- * wrapper class for CsScintillaEdit. This way you can put all of the heavy lifting
+ * wrapper class for QTextEdit. This way you can put all of the heavy lifting
  * like file loading and such into the widget keeping MainWindow concerned only
  * with MainWindow things.
  *

@@ -5,11 +5,16 @@
 
 # Executables first
 #
+# Note: later Ubuntu distros do not install python 2.7 so you should only have
+#       python3 packages.
 #
 sudo apt-get install -y build-essential g++ fakeroot hashdeep dpkg-dev ninja-build \
      mercurial mercurial-common git astyle tree python3-distutils \
      python3-distutils-extra autoconf libtool nasm hunspell meld \
-     tar zip unzip curl pkg-config bison flex
+     tar zip unzip curl pkg-config bison flex python3-venv python-markupsafe \
+     python-distutils-extra python-setuptools python-setuptools-git \
+     python3-distlib python3-distutils-extra python3-setuptools \
+     python3-setuptools-git python-pip python3-pip 
 
 # we use apostrophe to edit Markdown documentation like README.md
 #

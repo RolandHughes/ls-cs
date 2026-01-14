@@ -5,7 +5,7 @@ distro check to see if your repo just installs an older version but has newer.
 
 On Ubuntu 18.04 you would do this
 
-sudo apt-get install python3.7
+sudo apt-get install python3.7 python3.7-venv 
 
 sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 3
 sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
@@ -26,3 +26,5 @@ python3 -V
 should now show 3.7 or whatever you installed
 
 other distros will have other versions, possibly in different spots.
+
+python3 -m pip install MarkupSafe

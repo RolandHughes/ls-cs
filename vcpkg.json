@@ -10,16 +10,17 @@
     "libjpeg-turbo",
     "libmariadb",
     "libpng",
+    "libsm",
     "libx11",
     "libxi",
     "libxinerama",
     "libxkbcommon",
+    "libxkbfile",
     "libxml2",
     "libxmlpp",
     "libxrandr",
     "libxrender",
     "libxres",
-    "libsm",
     "mesa",
     "openssl",
     "pthread",
@@ -28,6 +29,6 @@
     "tiff",
     "unixodbc",
     "zlib",
-    "libxkbfile"
+    "glslang"
   ]
 }
