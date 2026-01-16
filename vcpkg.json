@@ -6,6 +6,7 @@
     "glib",
     "glibmm",
     "gstreamer",
+    "glslang",
     "libice",
     "libjpeg-turbo",
     "libmariadb",
@@ -30,5 +31,19 @@
     "unixodbc",
     "zlib",
     "glslang"
+  ],
+  "overrides": [
+    {
+      "name": "vcpkg-tool-meson",
+      "version": "1.9.0#0"
+    },
+    {
+      "name": "glslang",
+      "version": "12.2.0#1"
+    },
+    {
+      "name": "mesa",
+      "version": "22.1.7#1"
+    }
   ]
 }

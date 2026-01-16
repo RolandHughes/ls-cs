@@ -77,9 +77,11 @@ cd "$BUILD_DIR"
 #
 export VCPKG_MAX_CONCURRENCY=4
 
+#      -DVCPKG_INSTALL_OPTIONS="--allow-unsupported" \
+
 cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
-      -DVCPKG_TARGET_TRIPLET=x64-linux \
+      -DVCPKG_TARGET_TRIPLET=x64-linux-release \
       -DCMAKE_INSTALL_PREFIX="$RELEASE_DIR" \
       "$SCRIPT_DIR"
 

@@ -11,10 +11,10 @@
 sudo apt-get install -y build-essential g++ fakeroot hashdeep dpkg-dev ninja-build \
      mercurial mercurial-common git astyle tree python3-distutils \
      python3-distutils-extra autoconf libtool nasm hunspell meld \
-     tar zip unzip curl pkg-config bison flex python3-venv python-markupsafe \
-     python-distutils-extra python-setuptools python-setuptools-git \
-     python3-distlib python3-distutils-extra python3-setuptools \
-     python3-setuptools-git python-pip python3-pip 
+     tar zip unzip curl pkg-config bison flex python3-venv \
+     python3-markupsafe python3-distlib python3-distutils-extra python3-setuptools \
+     python3-setuptools-git python3-pip libvdpau-dev glslang-tools glslang-dev \
+     libdrm-dev clang
 
 # we use apostrophe to edit Markdown documentation like README.md
 #
@@ -49,21 +49,17 @@ echo "***************************************************************"
 echo "***************************************************************"
 echo "***************************************************************"
 echo " "
-echo " meson requires a minimum of python 3.7. Type "
-echo " "
-echo " python3 -V"
-echo " "
-echo " using uppercase V to check your version. If you do not have "
-echo " at least 3.7 see python-3-7-notes.txt "
-echo " "
+echo " We need autoconf 2.70 or higher. Look at "
+echo " install-autotools.sh if your distro doesn't have the "
+echo " necessary version. "
 echo "***************************************************************"
 echo "***************************************************************"
 echo "***************************************************************"
 echo " "
-echo " vcpkg needs a version of autoconf automake and libtool that is "
-echo " not in the repositories for Ubuntu 18.04 and older Linux distros"
-echo " If your build encounters issues needing newer versions of these "
-echo " tools run "
+echo "  meson needs libvpdau-dev >= 1.4. If you don't have that"
+echo "  read install-vdpau.sh "
 echo " "
-echo " sudo ./install-autotools.sh "
-echo " "
+echo "***************************************************************"
+echo "***************************************************************"
+echo "***************************************************************"
+
