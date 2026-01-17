@@ -12,7 +12,6 @@ target_compile_definitions(LsCsGui
    -DLSCS_BUILTIN_GIF_READER
    -DMNG_BUILD_SO
    -DMNG_NO_INCLUDE_JNG
-   -DPNG_NO_CONFIG_H
 )
 
 set(EXTRA_GUI_CXXFLAGS)
@@ -48,25 +47,15 @@ include_directories(
    ${CMAKE_CURRENT_SOURCE_DIR}/widgetbase
    ${CMAKE_CURRENT_SOURCE_DIR}/widgets
 
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include/freetype
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/libtiff/libtiff
    ${CMAKE_SOURCE_DIR}/src/3rdparty/libmng
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/libpng
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib
 )
 
-if (${JPEG_FOUND})
-   include_directories(
+include_directories(
       # using system library
       ${JPEG_INCLUDE_DIR}
+      ${TIFF_INCLUDE_DIR}
    )
-else()
-   include_directories(
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/libjpeg
-   )
-endif()
 
 include(accessible/accessible.cmake)
 include(animation/animation.cmake)
@@ -108,7 +97,7 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-
+   message( "TIFF_LIBRARIES   ${TIFF_LIBRARIES}")
    target_link_libraries(LsCsGui
       PRIVATE
       ${X11_X11_LIB}
@@ -121,6 +110,9 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
       ${X11_SM_LIB}
       ${X11_ICE_LIB}
       ${CMAKE_THREAD_LIBS_INIT}
+      ${TIFF_LIBRARIES}
+      ${FREETYPE_LIBRARY}
+      ${PNG_LIBRARIES}
       rt
    )
 
@@ -142,6 +134,8 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
       ${X11_Xfixes_INCLUDE_PATH}
       ${X11_SM_INCLUDE_PATH}
       ${X11_ICE_INCLUDE_PATH}
+      ${TIFF_INCLUDE_DIRS}
+      ${FREETYPE_INCLUDE_DIRS}
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")

@@ -1,7 +1,3 @@
-add_definitions(
-   -DLSCS_USE_FREETYPE
-)
-
 list(APPEND GUI_PUBLIC_INCLUDES
    QPlatform_Accessibility
    QPlatform_BackingStore
