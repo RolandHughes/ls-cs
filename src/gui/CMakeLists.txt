@@ -12,6 +12,7 @@ target_compile_definitions(LsCsGui
    -DLSCS_BUILTIN_GIF_READER
    -DMNG_BUILD_SO
    -DMNG_NO_INCLUDE_JNG
+   -DPNG_NO_CONFIG_H
 )
 
 set(EXTRA_GUI_CXXFLAGS)
@@ -55,6 +56,7 @@ include_directories(
       # using system library
       ${JPEG_INCLUDE_DIR}
       ${TIFF_INCLUDE_DIR}
+      ${FREETYPE_INCLUDE_DIRS}
    )
 
 include(accessible/accessible.cmake)
@@ -97,7 +99,7 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-   message( "TIFF_LIBRARIES   ${TIFF_LIBRARIES}")
+
    target_link_libraries(LsCsGui
       PRIVATE
       ${X11_X11_LIB}
@@ -110,9 +112,6 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
       ${X11_SM_LIB}
       ${X11_ICE_LIB}
       ${CMAKE_THREAD_LIBS_INIT}
-      ${TIFF_LIBRARIES}
-      ${FREETYPE_LIBRARY}
-      ${PNG_LIBRARIES}
       rt
    )
 
@@ -123,6 +122,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
       -DLSCS_NO_TABLET
    )
 
+   message( "******************* FREETYPE_INCLUDE_DIRS     ${FREETYPE_INCLUDE_DIRS}")
    include_directories(
       ${FONTCONFIG_INCLUDES}
       ${X11_X11_INCLUDE_PATH}
@@ -134,8 +134,6 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
       ${X11_Xfixes_INCLUDE_PATH}
       ${X11_SM_INCLUDE_PATH}
       ${X11_ICE_INCLUDE_PATH}
-      ${TIFF_INCLUDE_DIRS}
-      ${FREETYPE_INCLUDE_DIRS}
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
@@ -170,15 +168,21 @@ target_sources(LsCsGui
    ${GUI_PLATFORMHEADERS_INCLUDES}
 )
 
+message( "################## FREETYPE_INCLUDE_DIRS   ${FREETYPE_INCLUDE_DIRS}") 
 target_include_directories(LsCsGui
    PUBLIC
    ${OPENGL_INCLUDE_DIR}
+   ${TIFF_INCLUDE_DIRS}
+   ${FREETYPE_INCLUDE_DIRS}
 )
 
 target_link_libraries(LsCsGui
    PUBLIC
    LsCsCore
    ${OPENGL_LIBRARIES}
+   ${TIFF_LIBRARIES}
+   ${FREETYPE_LIBRARIES}
+   ${PNG_LIBRARIES}
 )
 
 if (${JPEG_FOUND})

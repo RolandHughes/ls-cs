@@ -2,6 +2,8 @@
 #
 # For building on any Linux or Unix flavored OS
 
+# Find the PkgConfig module
+# find_package(PkgConfig REQUIRED)
 
 # used to control cmake/pc variables when building
 # installation packages
@@ -73,19 +75,10 @@ endif()
 
 set(prefix "${LSCS_INST_PREFIX}")
 
-# required libraries
-set(BUILD_COMPONENTS "Core Xml")
+
 
 # unused at this time: DBus, Declarative, and ScriptTools
 set(LSCS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Sql Svg XmlPatterns)
-
-set(PACKAGE           "lscs")
-set(PACKAGE_NAME      "LsCs")
-set(PACKAGE_VERSION   "${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
-set(PACKAGE_STRING    "lscs ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
-set(PACKAGE_TARNAME   "lscs")
-set(PACKAGE_BUGREPORT "originalseasonedgeek@gmail.com")
-set(PACKAGE_URL       "https://github.com/RolandHughes/ls-cs")
 
 set(RPM_VERSION       "${BUILD_MAJOR}.${BUILD_MINOR}")
 set(RPM_RELEASE       "${BUILD_MICRO}")
@@ -147,21 +140,10 @@ file(STRINGS cmake/dist_ignore.txt    CPACK_SOURCE_IGNORE_FILES)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_INCLUDE_DIRECTORIES_BEFORE ON)
 
-if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,-undefined,error")
-   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-undefined,error")
-   set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,-undefined,error")
-
-elseif (CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD|DragonFly)")
+if (CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD|DragonFly)")
    set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--no-undefined")
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ")
    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined")
-
-elseif (MSVC)
-   string (REGEX REPLACE "/W3" "" CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}"  )
-   string (REGEX REPLACE "/W3" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-
-   add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:/utf-8>")
 
 else()
    # Linux, Windows (MinGW)
@@ -170,10 +152,6 @@ else()
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined")
 
-   if (CMAKE_SYSTEM_NAME MATCHES "Windows")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wa,-mbig-obj")
-      set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wa,-mbig-obj")
-   endif()
 
 endif()
 
@@ -264,12 +242,31 @@ find_package(LsCsString QUIET)
 find_package(LsCsSignal QUIET)
 
 find_package(OpenSSL QUIET)
+set_package_properties(OpenSSL PROPERTIES
+   PURPOSE "Required for network communications"
+   DESCRIPTION "a software library used in Linux and other operating systems to provide secure communications over computer networks"
+   URL "https://www.openssl-library.org/source/"
+   TYPE REQUIRED
+)
+
 
 find_package(ZLIB QUIET)
+set_package_properties(ZLIB PROPERTIES
+   PURPOSE "Required for compression support"
+   DESCRIPTION "A Massively Spiffy Yet Delicately Unobtrusive Compression Library"
+   URL "https://www.zlib.net"
+   TYPE REQUIRED
+)
+
 
 find_package(JPEG QUIET)
+set_package_properties(JPEG PROPERTIES
+   PURPOSE "Required for JPEG image compression support"
+   DESCRIPTION "a free library with functions for handling the JPEG image data format"
+   URL "https://ijg.org"
+   TYPE REQUIRED
+)
 
-if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 find_package(Cups)
 set_package_properties(Cups PROPERTIES
@@ -286,10 +283,7 @@ set_package_properties(ALSA PROPERTIES
    URL "https://www.alsa-project.org"
    TYPE RECOMMENDED
 )
-endif()
 
-
-if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
 
 find_package(PulseAudio)
 set_package_properties(PulseAudio PROPERTIES
@@ -298,7 +292,6 @@ set_package_properties(PulseAudio PROPERTIES
    URL "https://www.pulseaudio.org"
    TYPE RECOMMENDED
 )
-endif()
 
 
 find_package(PostgreSQL QUIET)
@@ -313,47 +306,16 @@ if (PosgreSQL_FOUND)
    set(HAVE_PG_CONFIG_H TRUE)
 endif()
 
-if (CMAKE_DISABLE_FIND_PACKAGE_PostgreSQL)
-   message(STATUS "PostgreSQL disabled, lscs plugin will not be built\n")
 
-elseif (NOT PostgreSQL_FOUND)
-   message(STATUS "PostgreSQL was not found, lscs plugin will not be built\n")
-
-else()
-   message(STATUS "PostgreSQL was found, lscs plugin will be built\n")
-
-endif()
-
-
-if (PostgreSQL_FOUND AND CMAKE_SYSTEM_NAME MATCHES "Windows" AND NOT MSVC)
-
-   foreach (fname IN LISTS PostgreSQL_INCLUDE_DIRS)
-      # testing for 'EXISTS', a query for if the file can be read or written
-
-      if (EXISTS "${fname}/pthread.h")
-         # Postgres bug
-
-         message(WARNING "")
-         message(WARNING "------------------------------------------------------------")
-         message(WARNING "WARNING WARNING")
-         message(WARNING "The '${fname}' directory contains a file called pthread.h")
-         message(WARNING "")
-         message(WARNING "A conflict exists between pthread.h and the standard library ")
-         message(WARNING "Rename or remove pthread.h in order to build the CsSqlPsql plugin")
-         message(WARNING "------------------------------------------------------------")
-         message(WARNING "")
-
-         # force to not found
-         set(PostgreSQL_FOUND false)
-
-         message(STATUS "PostgreSQL client library was found, lscs plugin will not be built")
-         message(STATUS "")
-      endif()
-
-   endforeach()
-endif()
 
 find_package( Freetype REQUIRED)
+set_package_properties(Freetype PROPERTIES
+   PURPOSE "Required for font rendering"
+   DESCRIPTION "a freely available software library to render fonts"
+   URL "https://freetype.org"
+   TYPE REQUIRED
+)
+
 
 
 find_package(MySQL QUIET)
@@ -364,34 +326,12 @@ set_package_properties(MySQL PROPERTIES
    TYPE RECOMMENDED
 )
 
-if (CMAKE_DISABLE_FIND_PACKAGE_MySQL)
-   message(STATUS "MySQL disabled, lscs plugin will not be built\n")
-
-elseif (NOT MySQL_FOUND)
-   message(STATUS "MySQL was not found, lscs plugin will not be built\n")
-
-else()
-   message(STATUS "MySQL was found, lscs plugin will be built\n")
-
-endif()
-
 find_package(ODBC QUIET)
 set_package_properties(ODBC PROPERTIES
    PURPOSE "Required for ODBC SQL database support"
    DESCRIPTION "ODBC SQL driver implementation"
    TYPE RECOMMENDED
 )
-
-if (CMAKE_DISABLE_FIND_PACKAGE_ODBC)
-   message(STATUS "ODBC SQL Driver disabled, lscs plugin will not be built\n")
-
-elseif (NOT ODBC_FOUND)
-   message(STATUS "ODBC SQL Driver was not found, lscs plugin will not be built\n")
-
-else()
-   message(STATUS "ODBC SQL Driver was found, lscs plugin will be built\n")
-
-endif()
 
 find_package(SQLite3 QUIET)
 set_package_properties(SQLite3 PROPERTIES
@@ -402,125 +342,117 @@ set_package_properties(SQLite3 PROPERTIES
 )
 
 
-if (NOT CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   find_package(GTK2)
-   set_package_properties(GTK2 PROPERTIES
-      PURPOSE "Required for GTK style and application integration support"
-      DESCRIPTION "Multi-platform toolkit for creating graphical user interfaces"
-      URL "http://www.gtk.org"
-      TYPE RECOMMENDED
+find_package(GTK2)
+set_package_properties(GTK2 PROPERTIES
+   PURPOSE "Required for GTK style and application integration support"
+   DESCRIPTION "Multi-platform toolkit for creating graphical user interfaces"
+   URL "http://www.gtk.org"
+   TYPE RECOMMENDED
+)
+
+find_package(Threads)
+set_package_properties(Threads PROPERTIES
+   PURPOSE "Required for threading support"
+   DESCRIPTION "Platform dependant threading library"
+   URL ""
+   TYPE REQUIRED
+)
+
+find_package(GLib2)
+set_package_properties(GLib2 PROPERTIES
+   PURPOSE "Required for glib mainloop support"
+   DESCRIPTION "GNOME core library"
+   URL "https://developer.gnome.org/glib"
+   TYPE REQUIRED
+) 
+
+find_package(GObject2)
+set_package_properties(GObject2 PROPERTIES
+   PURPOSE "Required for glib mainloop support"
+   DESCRIPTION "The object system used for Pango and GTK+"
+   URL "https://developer.gnome.org/gobject"
+   TYPE REQUIRED
+)
+
+find_package(Iconv)
+set_package_properties(Iconv PROPERTIES
+   PURPOSE "Iconv support"
+   DESCRIPTION "For use on systems which do not have Iconv or lack Unicode support"
+   URL "http://www.gnu.org/software/libiconv/"
+   TYPE REQUIRED
+)
+
+if (WITH_GUI)
+   find_package(X11 COMPONENTS ICE SM Xcursor Xext Xfixes Xi Xinerama Xrandr Xrender)
+   set_package_properties(X11 PROPERTIES
+      PURPOSE "Required for X11/X.Org integration support"
+      DESCRIPTION "Open source implementation of the X Window System"
+      URL "https://www.x.org"
+      TYPE REQUIRED
+   )
+
+   find_package(XCB COMPONENTS xcb xcb-image xcb-icccm xcb-sync xcb-xfixes xcb-shm xcb-randr
+                xcb-shape xcb-keysyms xcb-xinerama xcb-xkb xcb-render xcb-render-util xcb-glx)
+   set_package_properties(XCB PROPERTIES
+      PURPOSE "Required for XCB/X.Org integration support"
+      DESCRIPTION "Open source implementation of the XCB Interface for the X11 Window System"
+      URL "https://xcb.freedesktop.org"
+      TYPE REQUIRED
+   )
+
+   find_package(X11_XCB)
+   set_package_properties(X11_XCB PROPERTIES
+      PURPOSE "Required for X11 XCB support"
+      DESCRIPTION "Integration between X11 and XCB"
+      URL "https://xcb.freedesktop.org"
+      TYPE REQUIRED
+   )
+
+   find_package(XKBCommon)
+   set_package_properties(XKBCommon PROPERTIES
+      PURPOSE "Required for XKB integration support"
+      DESCRIPTION "Keyboard library"
+      URL "https://xkbcommon.org"
+      TYPE REQUIRED
+   )
+
+   find_package(XKBCommon_X11)
+   set_package_properties(XKBCommon_X11 PROPERTIES
+      PURPOSE "Required for XKB X11 integration support"
+      DESCRIPTION "Keyboard library"
+      URL "https://xkbcommon.org"
+      TYPE REQUIRED
+   )
+
+   find_package(Fontconfig)
+   set_package_properties(Fontconfig PROPERTIES
+      PURPOSE "Required for fonts configuration support"
+      DESCRIPTION "Library for configuring and customizing font access"
+      URL "http://www.freedesktop.org/wiki/Software/fontconfig/"
+      TYPE REQUIRED
    )
 endif()
 
-if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-   find_package(Threads)
-   set_package_properties(Threads PROPERTIES
-      PURPOSE "Required for threading support"
-      DESCRIPTION "Platform dependant threading library"
-      URL ""
+if (WITH_MULTIMEDIA)
+   find_package(GStreamer)
+   set_package_properties(GStreamer PROPERTIES
+      PURPOSE "Required for multimedia audio and video support"
+      DESCRIPTION "Open source media playback library"
+      URL "http://gstreamer.freedesktop.org"
       TYPE REQUIRED
    )
-
-   find_package(GLib2)
-   set_package_properties(GLib2 PROPERTIES
-      PURPOSE "Required for glib mainloop support"
-      DESCRIPTION "GNOME core library"
-      URL "https://developer.gnome.org/glib"
-      TYPE REQUIRED
-   )
-
-   find_package(GObject2)
-   set_package_properties(GObject2 PROPERTIES
-      PURPOSE "Required for glib mainloop support"
-      DESCRIPTION "The object system used for Pango and GTK+"
-      URL "https://developer.gnome.org/gobject"
-      TYPE REQUIRED
-   )
-
-   find_package(Iconv)
-   set_package_properties(Iconv PROPERTIES
-      PURPOSE "Iconv support"
-      DESCRIPTION "For use on systems which do not have Iconv or lack Unicode support"
-      URL "http://www.gnu.org/software/libiconv/"
-      TYPE REQUIRED
-   )
-
-   if (WITH_GUI)
-      find_package(X11 COMPONENTS ICE SM Xcursor Xext Xfixes Xi Xinerama Xrandr Xrender)
-      set_package_properties(X11 PROPERTIES
-         PURPOSE "Required for X11/X.Org integration support"
-         DESCRIPTION "Open source implementation of the X Window System"
-         URL "https://www.x.org"
-         TYPE REQUIRED
-      )
-
-      find_package(XCB COMPONENTS xcb xcb-image xcb-icccm xcb-sync xcb-xfixes xcb-shm xcb-randr
-                   xcb-shape xcb-keysyms xcb-xinerama xcb-xkb xcb-render xcb-render-util xcb-glx)
-      set_package_properties(XCB PROPERTIES
-         PURPOSE "Required for XCB/X.Org integration support"
-         DESCRIPTION "Open source implementation of the XCB Interface for the X11 Window System"
-         URL "https://xcb.freedesktop.org"
-         TYPE REQUIRED
-      )
-
-      find_package(X11_XCB)
-      set_package_properties(X11_XCB PROPERTIES
-         PURPOSE "Required for X11 XCB support"
-         DESCRIPTION "Integration between X11 and XCB"
-         URL "https://xcb.freedesktop.org"
-         TYPE REQUIRED
-      )
-
-      find_package(XKBCommon)
-      set_package_properties(XKBCommon PROPERTIES
-         PURPOSE "Required for XKB integration support"
-         DESCRIPTION "Keyboard library"
-         URL "https://xkbcommon.org"
-         TYPE REQUIRED
-      )
-
-      find_package(XKBCommon_X11)
-      set_package_properties(XKBCommon_X11 PROPERTIES
-         PURPOSE "Required for XKB X11 integration support"
-         DESCRIPTION "Keyboard library"
-         URL "https://xkbcommon.org"
-         TYPE REQUIRED
-      )
-
-      find_package(Fontconfig)
-      set_package_properties(Fontconfig PROPERTIES
-         PURPOSE "Required for fonts configuration support"
-         DESCRIPTION "Library for configuring and customizing font access"
-         URL "http://www.freedesktop.org/wiki/Software/fontconfig/"
-         TYPE REQUIRED
-      )
-   endif()
-
-   if (WITH_MULTIMEDIA)
-      find_package(GStreamer)
-      set_package_properties(GStreamer PROPERTIES
-         PURPOSE "Required for multimedia audio and video support"
-         DESCRIPTION "Open source media playback library"
-         URL "http://gstreamer.freedesktop.org"
-         TYPE REQUIRED
-      )
-   endif()
-
-   if (WITH_OPENGL)
-      find_package(OpenGL)
-      set_package_properties(OpenGL PROPERTIES
-         PURPOSE "Required for OpenGL support"
-         DESCRIPTION "The Mesa 3D Graphics Library"
-         URL "http://www.mesa3d.org/"
-         TYPE REQUIRED
-      )
-   endif()
-
 endif()
 
-if (WIN32)
-   add_definitions(-DUNICODE)
+if (WITH_OPENGL)
+   find_package(OpenGL)
+   set_package_properties(OpenGL PROPERTIES
+      PURPOSE "Required for OpenGL support"
+      DESCRIPTION "The Mesa 3D Graphics Library"
+      URL "http://www.mesa3d.org/"
+      TYPE REQUIRED
+   )
 endif()
+
 
 if (NOT Cups_FOUND)
    add_definitions(-DLSCS_NO_CUPS)
@@ -528,10 +460,6 @@ endif()
 
 if (NOT GLIB2_FOUND)
    add_definitions(-DLSCS_NO_GLIB)
-endif()
-
-if (NOT ZLIB_FOUND)
-   include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/zlib)
 endif()
 
 if (HAVE_LARGEFILESUPPORT)
@@ -548,41 +476,6 @@ if (HAVE_LARGEFILESUPPORT)
    endif()
 endif()
 
-configure_file(
-   ${CMAKE_SOURCE_DIR}/cmake/lscs_config.h.cmake
-   ${CMAKE_BINARY_DIR}/include/lscs_config.h
-)
-
-# file locations for building
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/${CMAKE_PROJECT})
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-
-configure_file(
-   ${CMAKE_SOURCE_DIR}/src/core/global/LsCs_build_info.h.in
-   ${CMAKE_BINARY_DIR}/include/QtCore/LsCs_build_info.h
-)
-
-# Ninja generator does not yet know how to build archives in pieces, so response
-# files must be used to deal with very long linker command lines.
-set(CMAKE_NINJA_FORCE_RESPONSE_FILE 1)
-
-# check components dependencies
-if (WITH_MULTIMEDIA AND NOT (WITH_GUI AND WITH_NETWORK AND WITH_OPENGL))
-   message(SEND_ERROR "LsCsMultimedia component requires LsCsGui, LsCsNetwork, and LsCsOpenGL components")
-
-elseif (WITH_OPENGL AND NOT WITH_GUI)
-   message(SEND_ERROR "LsCsOpenGL component requires LsCsGui component")
-
-elseif (WITH_SVG AND NOT WITH_GUI)
-   message(SEND_ERROR "LsCsSvg component requires LsCsGui component")
-
-elseif (WITH_XMLPATTERNS AND NOT WITH_NETWORK)
-   message(SEND_ERROR "LsCsXmlPatterns component requires LsCsNetwork component")
-
-endif()
 
 add_subdirectory(src/core)
 add_subdirectory(src/xml)
@@ -597,72 +490,19 @@ foreach(component ${LSCS_OPTIONAL_COMPONENTS})
    endif()
 endforeach()
 
-add_subdirectory(src/tools/shared)
-add_subdirectory(src/tools/lconvert)
-add_subdirectory(src/tools/lrelease)
-add_subdirectory(src/tools/lupdate)
-
-add_subdirectory(src/tools/rcc)
-add_subdirectory(src/tools/uic)
-
-if (WITH_GUI)
-   add_subdirectory(src/tools/linguist)
-endif()
 
 # platform plugins
 if (WITH_GUI)
-   if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-      set(BUILD_PLATFORMS_COCOA_PLUGIN TRUE)
-   endif()
-
-   if (CMAKE_SYSTEM_NAME MATCHES "Windows")
-      set(BUILD_PLATFORMS_WINDOWS_PLUGIN TRUE)
-   endif()
-
-   if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-      set(BUILD_PLATFORMS_XCB_PLUGIN TRUE)
-   endif()
+   set(BUILD_PLATFORMS_XCB_PLUGIN TRUE)
 
    add_subdirectory(src/plugins/imageformats)
    add_subdirectory(src/plugins/platforms)
    add_subdirectory(src/plugins/printerdrivers)
 endif()
 
-configure_file(
-   ${CMAKE_SOURCE_DIR}/cmake/LsCsConfig.cmake
-   ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
-   @ONLY
-)
 
-configure_file(
-   ${CMAKE_SOURCE_DIR}/cmake/LsCsConfigVersion.cmake
-   ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
-   @ONLY
-)
+set(PKG_PREFIX "${CMAKE_INSTALL_LIBDIR}/cmake")
 
-configure_file(
-   ${CMAKE_SOURCE_DIR}/lscs.conf.in
-   ${CMAKE_BINARY_DIR}/lscs.conf
-   @ONLY
-)
-
-configure_file(
-   ${CMAKE_SOURCE_DIR}/tools.qrc.in
-   ${CMAKE_BINARY_DIR}/tools.qrc
-   @ONLY
-)
-
-
-if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   set(PKG_PREFIX "lscs.framework/Resources")
-
-elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
-   set(PKG_PREFIX "cmake/LsCs")
-
-else()
-   set(PKG_PREFIX "${CMAKE_INSTALL_LIBDIR}/cmake")
-
-endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
     #  Update files needed for Debian

@@ -4,7 +4,6 @@ add_definitions(
    -DHB_EXTERN=
    -DHB_NO_UNICODE_FUNCS
    -DHB_NDEBUG
-   -DFT2_BUILD_LIBRARY
 )
 
 # Harfbuzz settings
@@ -241,6 +240,7 @@ target_sources(LsCsGui
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-unicode.cc
 
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/graph/gsubgpos-context.cc
+
 )
 
 if (GTK2_FOUND)

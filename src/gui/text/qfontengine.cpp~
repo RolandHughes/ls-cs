@@ -39,10 +39,10 @@
 #include <algorithm>
 #include <limits.h>
 
-#define HB_NO_SINGLE_HEADER_ERROR 1
+// order of these two headers matters
+//
 #include <hb-ot.h>
 #include <hb-ot-layout.h>
-
 
 #ifndef HB_OT_MAX_TAGS_PER_SCRIPT
    #define HB_OT_MAX_TAGS_PER_SCRIPT   3u

@@ -16,6 +16,18 @@ set(BUILD_MAJOR "0")
 set(BUILD_MINOR "2")
 set(BUILD_MICRO "1")
 
+# unused at this time: DBus, Declarative, and ScriptTools
+set(LSCS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Sql Svg XmlPatterns)
+
+set(PACKAGE           "lscs")
+set(PACKAGE_NAME      "LsCs")
+set(PACKAGE_VERSION   "${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
+set(PACKAGE_STRING    "lscs ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
+set(PACKAGE_TARNAME   "lscs")
+set(PACKAGE_BUGREPORT "originalseasonedgeek@gmail.com")
+set(PACKAGE_URL       "https://github.com/RolandHughes/ls-cs")
+
+
 project(LsCs VERSION ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO} DESCRIPTION "A C++ Cross Platform Application Framework" )
 
 function(dump_cmake_variables)
@@ -50,6 +62,8 @@ include(CheckLibraryExists)
 include(ResourceMacros)
 include(TestLargeFiles)
 
+# required libraries
+set(BUILD_COMPONENTS "Core Xml")
 
 if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
   include(linux.cmake)
@@ -59,12 +73,82 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
   include(windows.cmake)
 endif()
 
+configure_file(
+   ${CMAKE_SOURCE_DIR}/cmake/lscs_config.h.cmake
+   ${CMAKE_BINARY_DIR}/include/lscs_config.h
+)
+
+# file locations for building
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/${CMAKE_PROJECT})
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+
+configure_file(
+   ${CMAKE_SOURCE_DIR}/src/core/global/LsCs_build_info.h.in
+   ${CMAKE_BINARY_DIR}/include/QtCore/LsCs_build_info.h
+)
+
+# Ninja generator does not yet know how to build archives in pieces, so response
+# files must be used to deal with very long linker command lines.
+set(CMAKE_NINJA_FORCE_RESPONSE_FILE 1)
+
+# check components dependencies
+if (WITH_MULTIMEDIA AND NOT (WITH_GUI AND WITH_NETWORK AND WITH_OPENGL))
+   message(SEND_ERROR "LsCsMultimedia component requires LsCsGui, LsCsNetwork, and LsCsOpenGL components")
+
+elseif (WITH_OPENGL AND NOT WITH_GUI)
+   message(SEND_ERROR "LsCsOpenGL component requires LsCsGui component")
+
+elseif (WITH_SVG AND NOT WITH_GUI)
+   message(SEND_ERROR "LsCsSvg component requires LsCsGui component")
+
+elseif (WITH_XMLPATTERNS AND NOT WITH_NETWORK)
+   message(SEND_ERROR "LsCsXmlPatterns component requires LsCsNetwork component")
+
+endif()
+
+add_subdirectory(src/tools/shared)
+add_subdirectory(src/tools/lconvert)
+add_subdirectory(src/tools/lrelease)
+add_subdirectory(src/tools/lupdate)
+
+add_subdirectory(src/tools/rcc)
+add_subdirectory(src/tools/uic)
+
+if (WITH_GUI)
+   add_subdirectory(src/tools/linguist)
+endif()
+
+configure_file(
+   ${CMAKE_SOURCE_DIR}/cmake/LsCsConfig.cmake
+   ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
+   @ONLY
+)
+
+configure_file(
+   ${CMAKE_SOURCE_DIR}/cmake/LsCsConfigVersion.cmake
+   ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
+   @ONLY
+)
+
+configure_file(
+   ${CMAKE_SOURCE_DIR}/lscs.conf.in
+   ${CMAKE_BINARY_DIR}/lscs.conf
+   @ONLY
+)
+
+configure_file(
+   ${CMAKE_SOURCE_DIR}/tools.qrc.in
+   ${CMAKE_BINARY_DIR}/tools.qrc
+   @ONLY
+)
+
 
 include(CPack)
 
-if (CMAKE_SYSTEM_NAME MATCHES "Windows")
-    include (InstallRequiredSystemLibraries)
-endif()
+include (InstallRequiredSystemLibraries)
 
 message("\n")
 message("-- The following lscs libraries will be built:")

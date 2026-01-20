@@ -34,7 +34,7 @@
 
 class QEventDispatcherGlibPrivate;
 
-using GMainContext = _GMainContext;
+using GMainContext = _GMainContext
 
                      struct GPostEventSource;
 struct GSocketNotifierSource;

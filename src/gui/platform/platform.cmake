@@ -1,3 +1,7 @@
+add_definitions(
+   -DLSCS_USE_FREETYPE
+)
+
 list(APPEND GUI_PUBLIC_INCLUDES
    QPlatform_Accessibility
    QPlatform_BackingStore
@@ -126,7 +130,7 @@ target_sources(LsCsGui
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_themefactory.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_themeplugin.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/qplatform_window.cpp
-
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/platformheaders/qbasicfontdatabase.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/platform/platformheaders/qfontengine_ft.cpp
-)
+ )
+   
