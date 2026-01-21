@@ -130,7 +130,6 @@ void QWindowsUser32DLL::init()
 {
     QSystemLibrary library( "user32" );
 
-    // MinGW (g++ 3.4.5) accepts only C casts.
     setLayeredWindowAttributes = ( SetLayeredWindowAttributes )( library.resolve( "SetLayeredWindowAttributes" ) );
     updateLayeredWindow = ( UpdateLayeredWindow )( library.resolve( "UpdateLayeredWindow" ) );
 

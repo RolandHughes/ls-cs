@@ -38,14 +38,6 @@
 
 // including jpeglib.h seems to be a little messy
 extern "C" {
-    // mingw includes rpcndr.h but does not define boolean
-#if defined(Q_OS_WIN) && defined(Q_CC_GNU)
-#   if defined(__RPCNDR_H__) && !defined(boolean)
-    typedef unsigned char boolean;
-#       define HAVE_BOOLEAN
-#   endif
-#endif
-
 #define XMD_H           // shut JPEGlib up
 #if defined(Q_OS_UNIXWARE)
 #  define HAVE_BOOLEAN  // libjpeg under Unixware seems to need this

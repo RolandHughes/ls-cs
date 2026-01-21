@@ -169,7 +169,7 @@ void lscs_message_output( QtMsgType msgType, QStringView msg )
     if ( msgType == QtFatalMsg || ( msgType == QtWarningMsg && ( ! qgetenv( "LSCS_FATAL_WARNINGS" ).isNull() ) ) )
     {
 
-#if (defined(Q_OS_UNIX) || defined(Q_CC_MINGW))
+#if (defined(Q_OS_UNIX))
         abort();
 #else
         exit( 1 );

@@ -64,11 +64,6 @@ set_target_properties(lrelease${TOOLS_SUFFIX}
 
  function_generate_resources(lrelease${TOOLS_SUFFIX})
 
-#
-#   Now that binary file names don't collide with
-#   Qt or any version of CopperSpice, we can just
-#   put them in the default binary dir
-#
 install(
     TARGETS lrelease${TOOLS_SUFFIX}
     EXPORT LsCsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}

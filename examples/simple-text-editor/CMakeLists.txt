@@ -37,7 +37,6 @@ elseif(MSVC)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
-   #MinGW should no longer be needed
 endif()
 
 set(PACKAGE           "${PROJECT_NAME}")

@@ -153,7 +153,7 @@ int main( int argc, char **argv )
         }
     }
 
-    app.setOrganizationName( "CopperSpice" );
+    app.setOrganizationName( "LsCs" );
     app.setApplicationName( "Linguist" );
 
     QSettings config;

@@ -132,7 +132,7 @@ static inline bool winClearTypeFontsEnabled()
 {
     UINT result = 0;
 
-#if ! defined(SPI_GETFONTSMOOTHINGTYPE) // MinGW
+#if ! defined(SPI_GETFONTSMOOTHINGTYPE) 
 #  define SPI_GETFONTSMOOTHINGTYPE  0x200A
 #  define FE_FONTSMOOTHINGCLEARTYPE 0x002
 #endif

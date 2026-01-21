@@ -941,7 +941,7 @@ bool RCCResourceLibrary::writeHeader()
         writeString( "/****************************************************************************\n" );
         writeString( "** Resource object code\n" );
         writeString( "**\n" );
-        writeString( "** Created by: CopperSpice Resource Compiler Version " );
+        writeString( "** Created by: LsCs Resource Compiler Version " );
         writeByteArray( LSCS_VERSION_STR );
         writeString( "\n**\n" );
         writeString( "** WARNING: All changes made in this file will be lost when RCC is run again\n" );

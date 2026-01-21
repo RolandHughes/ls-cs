@@ -759,7 +759,6 @@ static QPixmap pixmapFromShellImageList( int iImageList, const SHFILEINFO &info 
     QPixmap result;
 
 #ifdef USE_IIMAGELIST
-    // For MinGW
     static const IID iID_IImageList = {0x46eb5926, 0x582e, 0x4017, {0x9f, 0xdf, 0xe8, 0x99, 0x8d, 0xaa, 0x9, 0x50}};
 
     if ( !QWindowsContext::shell32dll.sHGetImageList )

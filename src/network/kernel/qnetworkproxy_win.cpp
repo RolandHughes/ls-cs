@@ -687,7 +687,7 @@ void QWindowsSystemProxy::init()
     if ( ieProxyConfig.fAutoDetect || !autoConfigUrl.isEmpty() )
     {
         // open the handle and obtain the options
-        hHttpSession = ptrWinHttpOpen( L"CopperSpice System Proxy access/1.0",
+        hHttpSession = ptrWinHttpOpen( L"LsCs System Proxy access/1.0",
                                        WINHTTP_ACCESS_TYPE_NO_PROXY,
                                        WINHTTP_NO_PROXY_NAME,
                                        WINHTTP_NO_PROXY_BYPASS, 0 );

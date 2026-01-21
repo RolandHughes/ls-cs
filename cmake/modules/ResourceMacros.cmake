@@ -128,7 +128,7 @@ macro(MACRO_WINDOWS_RESOURCES RESOURCES RSCNAME)
       get_filename_component(resource_ext  ${resource} EXT)
       get_filename_component(resource_name ${resource} NAME_WE)
 
-      if(resource_ext MATCHES ".manifest" AND NOT MINGW)
+      if(resource_ext MATCHES ".manifest")
          set(resource_out ${CMAKE_CURRENT_BINARY_DIR}/${resource_name})
 
          execute_process(
@@ -158,7 +158,6 @@ macro(MACRO_WINDOWS_RESOURCES RESOURCES RSCNAME)
             set(${RSCNAME} ${resource_out})
 
         elseif(resource_ext STREQUAL ".rc")
-            # MinGW, manifest alternative on GNU host
             set(resource_out ${CMAKE_CURRENT_BINARY_DIR}/${resource_name}.o)
 
             execute_process(

@@ -107,7 +107,7 @@ void lscs_require_version( int argc, char *argv[], const char *str )
             new QApplication( argc, argv );
         }
 
-        QString errMsg = QApplication::tr( "%1 requires CopperSpice version %2\n\nFound CopperSpice version %3\n" )
+        QString errMsg = QApplication::tr( "%1 requires LsCs version %2\n\nFound LsCs version %3\n" )
                          .formatArg( qAppName() ).formatArg( req_version ).formatArg( cur_version );
 
         QMessageBox box( QMessageBox::Critical, QApplication::tr( "Incompatible Library" ),
@@ -1392,7 +1392,7 @@ void QMessageBox::aboutCs( QWidget *parent, const QString &title )
 
     if ( title.isEmpty() )
     {
-        aboutBox->setWindowTitle( tr( "About CopperSpice" ) );
+        aboutBox->setWindowTitle( tr( "About LsCs" ) );
 
     }
     else
@@ -1412,7 +1412,7 @@ void QMessageBox::aboutCs( QWidget *parent, const QString &title )
     msg1->setFont( font );
 
     QLabel *msg2 = new QLabel;
-    msg2->setText( tr( "CopperSpice is a set of C++ libraries for developing cross platform applications <br>"
+    msg2->setText( tr( "LsCs is a set of C++ libraries for developing cross platform applications <br>"
                        "on X11, Windows, and Mac OS X\n" ) );
 
     font = msg2->font();
@@ -1422,7 +1422,7 @@ void QMessageBox::aboutCs( QWidget *parent, const QString &title )
     QLabel *msg3 = new QLabel;
 
     msg3->setText( "Copyright (c) 2012-2024 Ansel Sermersheim & Barbara Geller\n"
-                   "CopperSpice is released under the terms of the GNU LGPL version 2.1\n"
+                   "LsCs is released under the terms of the GNU LGPL version 2.1\n"
                    "\n"
                    "Copyright (c) 2015 The Qt Company Ltd\n"
                    "Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies)\n"

@@ -17,6 +17,11 @@ EXAMPLES_DIR="$SCRIPT_DIR"
 BUILD_BASE_DIR="$SCRIPT_DIR/../../LsCs_examples_build"
 INSTALL_BASE_DIR="$SCRIPT_DIR/../../LsCs_examples_install"
 
+prefix_dir="$LsCs_DIR"
+local_build=true
+
+
+
 # I know, I probably should have some range safety here, but that
 # is a bit of overkill at this point. If the directory doesn't exist
 # we will catch that.
@@ -54,12 +59,22 @@ build_one(){
             # Older versions of CMAKE_PREFIX_PATH allowed/required a space between ; and next list item
             # latest version will gag if there is a space.
             #
-            cmake -G "Ninja" \
-                  -DCMAKE_BUILD_TYPE=Debug \
-                  -DCMAKE_INSTALL_PREFIX="$I_DIR" \
-                  -S "$S_DIR" \
-                  -B "$B_DIR"
-
+            if [ "$local_build" = true ] ; then
+                
+                cmake -G "Ninja" \
+                      -DCMAKE_BUILD_TYPE=Debug \
+                      -DCMAKE_INSTALL_PREFIX="$I_DIR" \
+                      -DCMAKE_PREFIX_PATH="$prefix_dir" \
+                      -S "$S_DIR" \
+                      -B "$B_DIR"
+            else
+                cmake -G "Ninja" \
+                      -DCMAKE_BUILD_TYPE=Debug \
+                      -DCMAKE_INSTALL_PREFIX="$I_DIR" \
+                      -S "$S_DIR" \
+                      -B "$B_DIR"
+            fi
+            
             ninja install
         fi
     fi
@@ -95,6 +110,37 @@ while true; do
 	* ) echo "Please answer Y or n";;
     esac
 done
+
+
+
+while true; do
+    read -p "Will you be using system installed LsCs or a local build (S/L)?" RESP
+    case "${RESP:-L}" in
+        [""]* ) ;;
+        [sS]* ) echo "System"; local_build=false; break;;
+        [Ll]* ) echo "Local build"; local_build=true; break;;
+	* ) echo "Please answer S or L";;
+    esac
+done
+
+
+if [ "$local_build" = true ] ; then
+
+
+    if [ -z "${prefix_dir}"]; then
+        prefix_dir="$PWD/../../LsCs_local_release/lib/LsCs/cmake"
+    fi
+
+    echo ""
+    echo "using local build of: ${prefix_dir}"
+    echo ""
+    echo "if your local build is in a different location"
+    echo "define the environment variable LsCs_DIR "
+    echo "before running this script."
+    echo ""
+
+fi
+
 
 while true; do
     echo " "

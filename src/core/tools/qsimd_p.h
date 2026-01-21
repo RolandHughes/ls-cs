@@ -28,10 +28,6 @@
 
 #include <atomic>
 
-#if defined(__MINGW64_VERSION_MAJOR) || defined(Q_CC_MSVC)
-#include <intrin.h>
-#endif
-
 #define LSCS_COMPILER_SUPPORTS(x)     (LSCS_COMPILER_SUPPORTS_ ## x - 0)
 
 #if defined(Q_CC_INTEL) || defined(Q_CC_MSVC) || (defined(Q_CC_GNU) && ! defined(Q_CC_CLANG))

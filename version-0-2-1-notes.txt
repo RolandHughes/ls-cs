@@ -1,0 +1,8 @@
+version 0.2.1 notes
+
+* removed webkit
+* removed qdeclarative
+* removed system strings that said CopperSpice
+* added Liberation San font
+* removed mingw support
+*

@@ -60,11 +60,6 @@ set_target_properties(rcc${TOOLS_SUFFIX}
    EXPORT_NAME rcc
 )
 
-#
-#   Now that binary file names don't collide with
-#   Qt or any version of CopperSpice, we can just
-#   put them in the default binary dir
-#
 install(
     TARGETS rcc${TOOLS_SUFFIX}
     EXPORT LsCsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}

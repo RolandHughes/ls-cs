@@ -146,13 +146,9 @@ if (CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD|DragonFly)")
    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined")
 
 else()
-   # Linux, Windows (MinGW)
-
    set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--no-undefined")
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined")
-
-
 endif()
 
 string(TIMESTAMP BUILD_DATE "%Y-%m-%d")
@@ -570,7 +566,6 @@ install(
 
       ${CMAKE_SOURCE_DIR}/cmake/LsCsDeploy.cmake
       ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
-      ${CMAKE_SOURCE_DIR}/cmake/InstallMinGW.cmake
    DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake
    COMPONENT Development
 )
@@ -590,7 +585,6 @@ install(
 
       ${CMAKE_SOURCE_DIR}/cmake/LsCsDeploy.cmake
       ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
-      ${CMAKE_SOURCE_DIR}/cmake/InstallMinGW.cmake
       DESTINATION ${PKG_PREFIX}
       COMPONENT Development
 )

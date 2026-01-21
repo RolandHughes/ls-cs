@@ -19,7 +19,7 @@ include(CheckIncludeFile)
 include(CheckIncludeFiles)
 include(CheckTypeSize)
 
-find_package(CopperSpice REQUIRED)
+find_package(LsCs REQUIRED)
 
 # location for install or package
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
@@ -69,7 +69,6 @@ elseif (MSVC)
    add_compile_options("/utf-8")
 
 else()
-   # Linux, Windows (MinGW)
 
    set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--no-undefined")
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
@@ -126,5 +125,8 @@ endif()
 
 install(TARGETS Generate_Tables DESTINATION .)
 
-# install the CopperSpice libraries
+# TODO:: See if we still need to do this. When package installed
+#        libraries are in system search path.
+#
+# install the LsCs libraries
 lscs_copy_library(LsCsCore)

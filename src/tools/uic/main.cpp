@@ -35,7 +35,7 @@ static const char *error = nullptr;
 
 void showHelp( const char *appName )
 {
-    fprintf( stderr, "CopperSpice User Interface Compiler version %s\n", UIC_VERSION_STR );
+    fprintf( stderr, "LsCs User Interface Compiler version %s\n", UIC_VERSION_STR );
 
     if ( error )
     {
@@ -78,7 +78,7 @@ int runUic( int argc, char *argv[] )
         }
         else if ( opt == "-v" || opt == "-version" || opt == "--version" )
         {
-            fprintf( stderr, "CopperSpice User Interface Compiler version %s\n", UIC_VERSION_STR );
+            fprintf( stderr, "LsCs User Interface Compiler version %s\n", UIC_VERSION_STR );
             return 0;
 
         }

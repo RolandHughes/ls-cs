@@ -390,11 +390,9 @@ public:
     GUI_LSCS_SIGNAL_2( fontDatabaseChanged )
 
 #ifndef LSCS_NO_SESSIONMANAGER
-    // CopperSpice - api change to pass a pointer instead of a reference
     GUI_LSCS_SIGNAL_1( Public, void commitDataRequest( QSessionManager *sessionManager ) )
     GUI_LSCS_SIGNAL_2( commitDataRequest, sessionManager )
 
-    // CopperSpice - api change to pass a pointer instead of a reference
     GUI_LSCS_SIGNAL_1( Public, void saveStateRequest( QSessionManager *sessionManager ) )
     GUI_LSCS_SIGNAL_2( saveStateRequest, sessionManager )
 #endif
