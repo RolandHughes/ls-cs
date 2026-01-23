@@ -632,8 +632,44 @@ void QCoreApplicationPrivate::init()
         appendApplicationPathToLibraryPaths();
     }
 
-    app_libpaths->append( QString::fromUtf8( LsCsLibraryInfo::libraries ) );
-    app_libpaths->append( QString::fromUtf8( LsCsLibraryInfo::plugins ) );
+    /*
+     * This logic must support both a full path to libraries and the 
+     * correct path-based-on-prefix value.
+     * 
+     * NOTE: We will only load paths that actually exist at runtime.
+     *       If your values point to a drive that gets mounted later
+     *       they won't be loaded.
+     */
+    QDir fullLibPath( QString::fromUtf8( LsCsLibraryInfo::install_prefix));
+    fullLibPath.cd( QString::fromUtf8( LsCsLibraryInfo::libraries ) );
+    QString pathStr = fullLibPath.canonicalPath();
+    if (pathStr.length() > 0)
+    {
+        app_libpaths->append( pathStr);
+    }
+    
+    QDir libOnlyPath( QString::fromUtf8( LsCsLibraryInfo::libraries ) );
+    pathStr = libOnlyPath.canonicalPath();
+    if (pathStr.length() > 0)
+    {
+        app_libpaths->append( pathStr );
+    }
+    
+    QDir fullPluginPath( QString::fromUtf8( LsCsLibraryInfo::install_prefix));
+    fullPluginPath.cd( QString::fromUtf8( LsCsLibraryInfo::plugins ) );
+    pathStr = fullPluginPath.canonicalPath();
+    if (pathStr.length() > 0)
+    {
+        app_libpaths->append( pathStr );
+    }
+
+    QDir pluginOnlyPath( QString::fromUtf8( LsCsLibraryInfo::plugins ) );
+    pathStr = pluginOnlyPath.canonicalPath();
+    if (pathStr.length() > 0)
+    {
+        app_libpaths->append( pathStr );
+    }
+
 #endif
 
     // threads

@@ -15,8 +15,8 @@ set(EXTRA_LCONVERT_CXXFLAGS)
 set(EXTRA_LCONVERT_LDFLAGS)
 
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtXml/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtXml/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}
    ${CMAKE_SOURCE_DIR}/src/tools/shared

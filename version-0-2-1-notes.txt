@@ -3,6 +3,7 @@ version 0.2.1 notes
 * removed webkit
 * removed qdeclarative
 * removed system strings that said CopperSpice
-* added Liberation San font
+* added Liberation Sans font
 * removed mingw support
-*
+* local build now deploys cmake files along with lscs.conf
+

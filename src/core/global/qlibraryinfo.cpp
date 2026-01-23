@@ -29,6 +29,7 @@
 #include <qscopedpointer.h>
 #include <qsettings.h>
 #include <qstringlist.h>
+#include <qdebug.h>
 
 #include <LsCs_build_info.h>
 
@@ -120,15 +121,23 @@ void QLibrarySettings::load()
 
 QSettings *QLibraryInfoPrivate::findConfiguration()
 {
+	/* 
+	 * While it is not a good idea unless you are distributing an 
+	 * entire application directory tree, the developer could have
+	 * resource compiled their .conf. Check there first.
+	 */
     QString qtconfig( QString::fromUtf8(CONF_RESOURCE_PATH) );
-
-    if (QCoreApplication::testAttribute(Qt::AA_UseSystemConf))
+    
+    if ( QFile::exists( qtconfig ) )
     {
-        QDir systemDataPath( QString::fromUtf8(LsCsLibraryInfo::lscsData ));
-        qtconfig = systemDataPath.filePath( QString::fromUtf8(CONF_FILE_NAME));
+        QSettings *tmp = new QSettings( qtconfig, QSettings::IniFormat );
+        return tmp;
     }
-
-    if ( ! QFile::exists( qtconfig ) && QCoreApplication::instance() )
+    
+    /* See if they have a CONF_FILE_NAME locally with the executable
+     * Very common during development/testing.
+     */
+    if ( QCoreApplication::instance() )
     {
 
 #ifdef Q_OS_DARWIN
@@ -136,7 +145,7 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
 
         if ( bundleRef )
         {
-            // locates the lscs.conf file in foo.app/Contents/Resources
+            // locates the .conf file in foo.app/Contents/Resources
             QCFType<CFURLRef> urlRef = CFBundleCopyResourceURL( bundleRef, QCFString( CONF_FILE_NAME ).toCFStringRef(), nullptr, nullptr );
 
             if ( urlRef )
@@ -159,6 +168,38 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
         QSettings *tmp = new QSettings( qtconfig, QSettings::IniFormat );
         return tmp;
     }
+    
+    
+	/*
+	 * Someone could have mungy-puffled the CMake definitions so 
+	 * a full path got loaded as the data value instead of a directory
+	 * tree based on the prefix. Check for mungy-puffle first.
+	 */
+    QDir systemDataPath( QString::fromUtf8(LsCsLibraryInfo::lscsData ));
+    qtconfig = systemDataPath.filePath( QString::fromUtf8(CONF_FILE_NAME));
+        
+    if ( QFile::exists( qtconfig ) )
+    {
+        QSettings *tmp = new QSettings( qtconfig, QSettings::IniFormat );
+        return tmp;
+    }
+    
+    /*
+     * Good. This is how it is supposed to work. The data value is 
+     * supposed to be based on the prefix.
+     */
+    QDir fullDataPath( QString::fromUtf8( LsCsLibraryInfo::install_prefix ));
+	fullDataPath.cd( QString::fromUtf8(LsCsLibraryInfo::lscsData));
+	qtconfig = fullDataPath.filePath( QString::fromUtf8(CONF_FILE_NAME));
+	
+    if ( QFile::exists( qtconfig ) )
+    {
+		qDebug() << "config file found in full data path";
+        QSettings *tmp = new QSettings( qtconfig, QSettings::IniFormat );
+        return tmp;
+    }
+	    
+    qDebug() << "config file not found";
 
     return nullptr;     // no luck
 }
@@ -250,6 +291,7 @@ QString QLibraryInfo::location( LibraryLocation loc )
             {
                 QString newStr = QString::fromUtf8( qgetenv( match.captured( 1 ).toLatin1().constData() ) );
 
+                qDebug() << "newStr: " << newStr;
                 retval.replace( match.capturedStart( 0 ), match.capturedEnd( 0 ), newStr );
                 match = reg_var.match( retval );
             }

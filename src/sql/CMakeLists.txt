@@ -17,13 +17,13 @@ set(EXTRA_SQL_LDFLAGS)
 
 target_include_directories(LsCsSql
    PUBLIC
-   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtSql>
-   $<INSTALL_INTERFACE:include/QtSql>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtSql>
+   $<INSTALL_INTERFACE:include/${PACKAGE_NAME}/QtSql>
 )
 
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtSql/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtSql/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel
@@ -111,7 +111,7 @@ else()
 endif()
 
 install(
-   DIRECTORY ${CMAKE_BINARY_DIR}/include/QtSql
+   DIRECTORY ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtSql
    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
    COMPONENT Devel
 )

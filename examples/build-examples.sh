@@ -67,15 +67,19 @@ build_one(){
                       -DCMAKE_PREFIX_PATH="$prefix_dir" \
                       -S "$S_DIR" \
                       -B "$B_DIR"
+                      
+                ninja install
+                
+                #cp "$prefix_dir/../../../share/LsCs/lscs.conf" "$I_DIR/"
             else
                 cmake -G "Ninja" \
                       -DCMAKE_BUILD_TYPE=Debug \
                       -DCMAKE_INSTALL_PREFIX="$I_DIR" \
                       -S "$S_DIR" \
                       -B "$B_DIR"
+                      
+               ninja install
             fi
-            
-            ninja install
         fi
     fi
 

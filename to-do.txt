@@ -1,11 +1,14 @@
-* local build needs to deploy cmake files
 * example build needs to work with local build libraries
+* make plugins use lscs.conf information
 * Replace default fonts with liberation
 * Nuke the 3rdparty fonts directory once fonts replaced
 
-* cleaning up the install directory tree
-* renaming and relocating Qt header files to avoid collisions
-* making SDL3 the primary underlying library. All QPlatform code will be replaced by a new LsPlatform class based exclusively on SDL3.
+* rename and rebrand project to LsX - the Ls Cross Platform Framework
+
+
+* rename and relocate Qt header files to avoid collisions
+
+* make SDL3 the primary underlying library. All QPlatform code will be replaced by a new LsPlatform class based exclusively on SDL3.
 * UTF-8 for internal character encoding.
 * QChar will be replaced by LsChar which will be based on work already done in BasisDoctrina. 
 * All flavors of QString will go away and be replaced by work already done in bd_string for BasisDoctrina. 
@@ -16,4 +19,5 @@
 Once we get the last of the Qt/CopperSpice stuff out, a VCPKG build for Windows will be created.
 
 A cross compile will then be created for ArmV8.
+
 

@@ -87,7 +87,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 configure_file(
    ${CMAKE_SOURCE_DIR}/src/core/global/LsCs_build_info.h.in
-   ${CMAKE_BINARY_DIR}/include/QtCore/LsCs_build_info.h
+   ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/LsCs_build_info.h
 )
 
 # Ninja generator does not yet know how to build archives in pieces, so response
@@ -171,6 +171,8 @@ message("   LSCS_INST_INCLUDE    ${LSCS_INST_INCLUDE}")
 message("   LSCS_INST_BIN        ${LSCS_INST_BIN}")
 message("   LSCS_INST_SHARE      ${LSCS_INST_SHARE}")
 message( " ")
+message("PACKAGE_NAME                   ${PACKAGE_NAME}")
+message("CMAKE_PACKAGE_NAME             ${CMAKE_PACKAGE_NAME}")
 message("CMAKE_BINARY_DIR               ${CMAKE_BINARY_DIR}")
 message("CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}")
 message("CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")

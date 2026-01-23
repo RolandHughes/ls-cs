@@ -11,9 +11,9 @@ set(EXTRA_LINGUIST_CXXFLAGS)
 set(EXTRA_LINGUIST_LDFLAGS)
 
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtGui/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtXml/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtGui/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtXml/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}
    ${CMAKE_SOURCE_DIR}/src/tools/shared

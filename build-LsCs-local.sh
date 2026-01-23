@@ -59,7 +59,8 @@ echo
 echo "*** Prepping build directory"
 cd "$BUILD_DIR"
 
-cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release \
+# Release
+cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug \
       -DCMAKE_INSTALL_PREFIX="$RELEASE_DIR" \
       "$SCRIPT_DIR"
 

@@ -33,7 +33,6 @@ EXECUTE_PROCESS( COMMAND arch  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE 
 #  for a development install into a non-system directory.
 #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-# set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/:$ORIGIN/..")
 set(CMAKE_INSTALL_INCLUDEDIR "include/${CMAKE_PROJECT_NAME}")
 set(CMAKE_INSTALL_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
 
@@ -608,9 +607,13 @@ install(
   COMPONENT Development
 )
 
-# need to figure out where include/Qt is coming from
-#dump_cmake_variables()
-
+install(
+  FILES
+     ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/LsCs_build_info.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  COMPONENT Development
+)
+  
 install(
    # generate cmake files containing rules about linking with LsCs libs
 

@@ -1,9 +1,9 @@
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtGui/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtGui/private
 
-   ${CMAKE_BINARY_DIR}/include/QtGui/platformheaders
-   ${CMAKE_BINARY_DIR}/privateinclude/QtGui/private/platforms
+   ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtGui/platformheaders
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtGui/private/platforms
 
    ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src

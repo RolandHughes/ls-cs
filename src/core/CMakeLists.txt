@@ -28,13 +28,15 @@ endif()
 target_include_directories(LsCsCore
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
-   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtCore>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtCore>
    $<INSTALL_INTERFACE:include>
-   $<INSTALL_INTERFACE:include/QtCore>
+   $<INSTALL_INTERFACE:include>/${PACKAGE_NAME}
+   $<INSTALL_INTERFACE:include/${PACKAGE_NAME}/QtCore>
 )
 
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}/animation
    ${CMAKE_CURRENT_SOURCE_DIR}/arch
@@ -339,7 +341,7 @@ else()
 endif()
 
 install(
-   DIRECTORY ${CMAKE_BINARY_DIR}/include/QtCore
+   DIRECTORY ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtCore
    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
    COMPONENT Devel
 )

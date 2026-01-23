@@ -27,6 +27,7 @@
 
 #include <qfilesystementry_p.h>
 #include <qlibrary_p.h>
+#include <qdebug.h>
 
 #ifdef Q_OS_DARWIN
 #  include <qcore_mac_p.h>
@@ -181,6 +182,7 @@ bool QLibraryHandle::load_sys()
 
     bool retry = true;
 
+    qDebug() << "prefixes: " << prefixes;
     for ( int prefix = 0; retry && !pHnd && prefix < prefixes.size(); prefix++ )
     {
         for ( int suffix = 0; retry && !pHnd && suffix < suffixes.size(); suffix++ )

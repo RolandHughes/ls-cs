@@ -20,13 +20,13 @@ set(EXTRA_GUI_LDFLAGS)
 
 target_include_directories(LsCsGui
    PUBLIC
-   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtGui>
-   $<INSTALL_INTERFACE:include/QtGui>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtGui>
+   $<INSTALL_INTERFACE:include/${PACKAGE_NAME}/QtGui>
 )
 
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtGui/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtGui/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}/accessible
    ${CMAKE_CURRENT_SOURCE_DIR}/animation
@@ -226,7 +226,7 @@ else()
 endif()
 
 install(
-    DIRECTORY ${CMAKE_BINARY_DIR}/include/QtGui
+    DIRECTORY ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtGui
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     COMPONENT Devel
 )

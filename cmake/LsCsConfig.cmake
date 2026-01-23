@@ -38,7 +38,7 @@ get_filename_component(LSCS_PREFIX ${LSCS_CMAKE_DIR}/ ABSOLUTE)
 include("${LSCS_CMAKE_DIR}/LsCsLibraryTargets.cmake")
 include("${LSCS_CMAKE_DIR}/LsCsBinaryTargets.cmake")
 
-# macros required to build software which links with Cs-Cs
+# macros required to build software
 include("${LSCS_CMAKE_DIR}/LsCsMacros.cmake")
 include("${LSCS_CMAKE_DIR}/LsCsDeploy.cmake")
 

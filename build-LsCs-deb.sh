@@ -117,13 +117,6 @@ function build_from_source()
     #  Step 5: Sweep up what CopperSpice project gets wrong in their
     #          default build.  TODO:: see if this is still needed
     cd "$RELEASE_DIR/${LIB_DIR}/LsCs/cmake"
-    if [ -f "LsCsLibraryTargets.cmake" ]; then
-        echo "*** "
-        echo "*** Fixing where cmake looks for Qt and other headers"
-        echo "*** "
-        sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/LsCs;#g' LsCsLibraryTargets.cmake
-        sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/LsCs/Qt#g' LsCsLibraryTargets.cmake
-    fi
     
     BUILD_FROM_SOURCE_COMPLETED=$( date '+%F_%H:%M:%S' )
 }

@@ -15,14 +15,14 @@ set(EXTRA_SVG_LDFLAGS)
 
 target_include_directories(LsCsSvg
    PUBLIC
-   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtSvg>
-   $<INSTALL_INTERFACE:include/QtSvg>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtSvg>
+   $<INSTALL_INTERFACE:include/${PACKAGE_NAME}/QtSvg>
 )
 
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtGui/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtSvg/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtGui/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtSvg/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src
@@ -134,7 +134,7 @@ else()
 endif() 
 
 install(
-   DIRECTORY ${CMAKE_BINARY_DIR}/include/QtSvg
+   DIRECTORY ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtSvg
    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
    COMPONENT Devel
 )

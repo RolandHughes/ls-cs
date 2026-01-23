@@ -105,6 +105,7 @@ void QFactoryLoader::setup()
     QStringList libDirs = QCoreApplication::libraryPaths();
     // mp_pluginsFound.clear();
 
+    qDebug() << "QFactoryLoader::setup()  libDirs: " << libDirs;
     for ( const QString &pluginDir : libDirs )
     {
         // already looked in this path
@@ -130,6 +131,7 @@ void QFactoryLoader::setup()
         {
             QString fname = QDir::cleanPath( path + '/' + plugins.at( j ) );
 
+            qDebug() << "looking for: " << QFileInfo( fname ).canonicalFilePath();
             library = QLibraryHandle::findOrLoad( QFileInfo( fname ).canonicalFilePath() );
 
             if ( ! library->isPlugin() )
