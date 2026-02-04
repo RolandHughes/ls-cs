@@ -23,9 +23,12 @@ easiest way is to visit
 https://cmake.org/download/
 
 download the version you wish then copy it to /usr/local/src
+
 cd /usr/local
 
-/usr/local$ sudo ./src/cmake-4.2.1-linux-x86_64.sh
+sudo chmod +x src/cmake <tab>
+
+sudo sudo src/cmake <tab>
 
 Do you accept the license? [yn]: 
 y

@@ -13,7 +13,7 @@ apt-get update
 #
 
 apt-get install -y g++ build-essential fakeroot hashdeep dpkg-dev cmake ninja-build mercurial \
-        mercurial-common git tree synaptic
+        mercurial-common git tree synaptic python3
 
 # Maybe you have your favorite editor, maybe not. I use jed in a terminal and emacs or
 # codelite for source. Mostly emacs. RedDiamond is available as AppImage so no need
@@ -40,6 +40,13 @@ apt-get install -y libcups2-dev libasound2-dev libxml++2.6-dev \
         libssl-dev libpulse-dev libhunspell-dev unixodbc-dev libmysql++-dev libvulkan-dev \
         libsqlite3-dev
 
+# Ubuntu 18.04 through 24.04 do not have aclocal 1.17 or higher
+#
+Var=$(lsb_release -r)
+if [[ ! "$Var" > "24.04" ]]; then
+    ./install-autotools.sh
+fi
+
 
 echo "To build Postgresql support you need to install the postgresql-server-dev-nn package for your distro"
 echo "it will install a ton of dependencies.  If you want to actually use Postgresql then uncomment "
@@ -60,3 +67,9 @@ echo "For Ubuntu 24.04   sudo apt-get install postgresql-server-dev-16"
 echo "Currently need aclocal 1.17 or higher. "
 echo "on Ubuntu 18.04 sudo ./install-autotools.sh then reboot to be certain"
 echo "paths are updated as this will install in /usr/local"
+
+echo ""
+echo "   Read and follow cmake-install-notes.txt if your cmake version less than 3.16.0"
+echo ""
+echo "****************************"
+

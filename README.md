@@ -27,19 +27,25 @@ Don't worry if you already have them installed. Any included with this get Ls ad
 
 **currently requires C++17 or newer.**
 
+## Ubuntu 18.04 users
+To build this code you need to read and follow python-3-7-notes.txt. 
+
 ## Transitional
 Versions 0.2.1 and later are transitional experiments for things that may become part of [BasisDoctrina](https://sourceforge.net/projects/basisdoctrina/).
 
+Completed:
+* nuked much dead and legacy code.
+* removed minGW support. Native or nothing.
+* cleaned up the install directory tree.
+* lscs.conf is now found where it should be and legacy bug that still exists in Qt today of not respecting Libraries = path is fixed. This means you can do a local build into a directory tree and build examples against it successfully without having to copy the entire library into same directory as binary.
+
 Transitions currently taking place:
 
-* nuking much dead and legacy code
-* removing minGW support. Native or nothing.
-* cleaning up the install directory tree
 * renaming and relocating Qt header files to avoid collisions
-* making SDL3 the primary underlying library. All QPlatform code will be replaced by a new LsPlatform class based exclusively on SDL3.
+* making SDL3 the primary underlying library. All QPlatform code will be replaced by a new LsXPlatform class based exclusively on SDL3.
 * UTF-8 for internal character encoding.
-* QChar will be replaced by LsChar which will be based on work already done in BasisDoctrina. 
-* All flavors of QString will go away and be replaced by work already done in bd_string for BasisDoctrina. 
+* QChar will be replaced by LsXChar which will be based on work already done in BasisDoctrina. 
+* All flavors of QString will go away and be replaced by work already done in bd_string for BasisDoctrina. LsXString
 * Containers will become wrappers for STL templates/classes.
 * One by one all low level graphics classes will be replaced by wrappers for SDL3 functionality.
 * CUPS 3.x support.
@@ -90,13 +96,14 @@ You will also find:
 
 ### Building
 
-Once you have successfully run a dependency script you can use one of the build
-scripts to build a package or a local development install.
+Once you have successfully run a dependency script you can use one of the build scripts to build a package or a local development install.
 
 
 ### Using the Ls-Cs Libraries
 
-Your best example is RedDiamond.
+Your cleanest examples are found in this repository. Also look at LsCsScintilla - soon to be renamed LsXScintilla - for its example directories.
+
+Your best example will be RedDiamond since that was created using both.
 https://sourceforge.net/p/reddiamond/code/ci/master/tree/
 
 You will note that project also has build*.sh files Thieving just a few files from that project should jump start your use of LsCs.
