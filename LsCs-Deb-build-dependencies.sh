@@ -7,6 +7,7 @@ if [ `whoami` != root ]; then
     exit
 fi
 
+apt-get update
 
 # Executables first
 #
@@ -18,7 +19,7 @@ apt-get install -y g++ build-essential fakeroot hashdeep dpkg-dev cmake ninja-bu
 # codelite for source. Mostly emacs. RedDiamond is available as AppImage so no need
 # to install here. Big fan of configure and go development. Just run a couple of scripts,
 # no hand tweaking.
-./install-editors.sh
+# ./install-editors.sh
 
 # this list will need to be cleaned up once GLFW is the only backend
 apt-get install -y libfreetype6-dev libfontconfig1-dev libglib2.0-dev libgstreamer1.0-dev \
