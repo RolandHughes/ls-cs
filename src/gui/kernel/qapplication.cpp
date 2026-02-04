@@ -1047,6 +1047,15 @@ static void init_platform( const QString &pluginArgument, const QString &platfor
     // Split into platform arguments and key
     QStringList arguments   = pluginArgument.split( ':' );
     const QString pluginKey = arguments.takeFirst().toLower();
+    
+    /*
+     * TODO:: Legacy Qt and CopperSpice bug. They did not honor entries in the .conf file.
+     *        If you did a local build of library you had to hack RPATH on the plugins to
+     *        point to your libraries otherwise they had to be in LD_LIBRARY_PATH prior to
+     *        starting a program. Kind of defeats the entire concept of the .conf file.
+     */
+     
+    qDebug() << "pluginKey:  " << pluginKey;
 
     // look up the arguments in system settings
     arguments.append( QLibraryInfo::platformPluginArguments( pluginKey ) );
@@ -1205,7 +1214,7 @@ static void init_plugins( const QList<QString> &pluginList )
 
 void QGuiApplicationPrivate::createPlatformIntegration()
 {
-    // Use the CS menus by default. Platform plugins that want to enable a native
+    // Use the LS menus by default. Platform plugins that want to enable a native
     // menu implementation can clear this flag.
     QCoreApplication::setAttribute( Qt::AA_DontUseNativeMenuBar, true );
 

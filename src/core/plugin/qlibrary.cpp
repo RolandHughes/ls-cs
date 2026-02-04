@@ -34,6 +34,8 @@
 #include <qstringlist.h>
 #include <qvector.h>
 
+#include <LsCs_build_info.h>
+
 #include <qcoreapplication_p.h>
 
 #ifdef Q_OS_DARWIN

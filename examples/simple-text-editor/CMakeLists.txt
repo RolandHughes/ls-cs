@@ -5,11 +5,6 @@ cmake_policy(VERSION 3.10..3.13)
 # support using rpath on Mac OS X
 cmake_policy(SET CMP0042 NEW)
 
-if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.20")
-   cmake_policy(SET CMP0115 OLD)
-endif()   
-
-
 project(simple-text-editor)
 
 set(BUILD_MAJOR "1")

@@ -38,7 +38,33 @@ set(CMAKE_INSTALL_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
 
 
 message( "CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
-   
+
+
+    
+
+# CMake is an odd duck. If you provide SOURCE_DIR definiion for 
+# external project, PREFIX will not create the other directories.
+# CMake ASS-U-ME-s all external projects are CMAKE builds. Not 
+# the case with libtool and so many other things.
+#
+# The hacky looking path for the configure command is a result of  
+# CMake forcing its own directory structure on external project.
+include(ExternalProject)
+
+ExternalProject_Add(
+    ls_libtool
+    PREFIX "${CMAKE_BINARY_DIR}/ls_libtool"
+    DOWNLOAD_DIR "${CMAKE_BINARY_DIR}"
+    URL https://ftp.gnu.org/gnu/libtool/libtool-2.5.4.tar.gz
+    DOWNLOAD_NO_PROGRESS ON 
+    DOWNLOAD_EXTRACT_TIMESTAMP false
+    CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure --prefix=${CMAKE_BINARY_DIR}/ls_libtool "CFLAGS=-g -O0 ${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE}}"
+    BUILD_COMMAND make 
+    
+)
+
+
+
 #
 # When building for a package we install to /usr under a
 # fakeroot or buildroot during build. We don't want
@@ -563,7 +589,6 @@ install(
       ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
       ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
 
-      ${CMAKE_SOURCE_DIR}/cmake/LsCsDeploy.cmake
       ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
    DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake
    COMPONENT Development
@@ -582,7 +607,6 @@ install(
       ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
       ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
 
-      ${CMAKE_SOURCE_DIR}/cmake/LsCsDeploy.cmake
       ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
       DESTINATION ${PKG_PREFIX}
       COMPONENT Development

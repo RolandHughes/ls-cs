@@ -163,6 +163,7 @@ void QFactoryLoader::setup()
             }
 
             iid = library->m_metaObject->classInfo( index ).value();
+            qDebug() << "iid: " << iid;
 
             if ( iid != d->iid )
             {
@@ -220,6 +221,8 @@ void QFactoryLoader::setup()
 
                             mp_pluginsFound.last().keyFound = keyList[0];
                 */
+                
+                qDebug() << "keyList: " << keyList;
             }
 
             int keyUsageCount = 0;

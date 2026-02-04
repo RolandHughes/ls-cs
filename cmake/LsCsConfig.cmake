@@ -40,7 +40,6 @@ include("${LSCS_CMAKE_DIR}/LsCsBinaryTargets.cmake")
 
 # macros required to build software
 include("${LSCS_CMAKE_DIR}/LsCsMacros.cmake")
-include("${LSCS_CMAKE_DIR}/LsCsDeploy.cmake")
 
 # IMPORTED targets
 set(LSCS_INCLUDES @LSCS_INST_INCLUDE@)

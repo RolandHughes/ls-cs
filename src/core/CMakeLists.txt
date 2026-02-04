@@ -190,39 +190,16 @@ else()
    )
 endif()
 
-if (ZLIB_FOUND)
-   target_link_libraries(LsCsCore
+  
+target_link_libraries(LsCsCore
       PUBLIC
       ${ZLIB_LIBRARIES}
    )
 
-   target_include_directories(LsCsCore
+target_include_directories(LsCsCore
       PRIVATE
       ${ZLIB_INCLUDE_DIR}
    )
-
-else()
-   target_sources(LsCsCore
-      PRIVATE
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/adler32.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/compress.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/crc32.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/deflate.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/gzclose.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/gzlib.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/gzread.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/gzwrite.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/infback.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/inffast.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/inflate.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/inftrees.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/trees.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/uncompr.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/zutil.c
-   )
-
-   include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty)
-endif()
 
 macro_generate_public("${CORE_PUBLIC_INCLUDES}" QtCore)
 macro_generate_private("${CORE_PRIVATE_INCLUDES}" QtCore)

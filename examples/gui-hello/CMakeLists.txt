@@ -1,15 +1,11 @@
 cmake_minimum_required(VERSION 3.10.0 FATAL_ERROR)
 
-cmake_policy(VERSION 3.10..3.23)
+cmake_policy(VERSION 3.16..3.23)
 
 if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.19.0")
    # allows spaces in ctest names
    cmake_policy(SET CMP0110 NEW)
- endif()
-
- if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.20")
-   cmake_policy(SET CMP0115 OLD)
-endif()   
+endif()
 
 
 set(CMAKE_CXX_STANDARD 17)

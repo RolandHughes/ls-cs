@@ -77,6 +77,7 @@
 #include <locale.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <ltdl.h>
 #endif
 
 #include <algorithm>
@@ -1908,28 +1909,30 @@ QStringList QCoreApplication::libraryPaths()
      * not-yet-released library changes, the logic really needs to support
      * the distribution directory tree. File and directory names are
      * subject to change so just walk the tree.
-     *
-     * /usr/lib/LsCs/plugins
-     * ├── iconengines
-     * ├── imageformats
-     * │   └── LsCsImageFormatsSvg0.1.so
-     * ├── mediaservices
-     * │   ├── LsCsMultimedia_gst_audiodecoder0.1.so
-     * │   ├── LsCsMultimedia_gst_camerabin0.1.so
-     * │   └── LsCsMultimedia_gst_mediaplayer0.1.so
-     * ├── pictureformats
-     * ├── platforms
-     * │   └── LsCsGuiXcb0.1.so
-     * ├── playlistformats
-     * │   └── LsCsMultimedia_m3u0.1.so
-     * ├── printerdrivers
-     * │   └── LsCsPrinterDriverCups0.1.so
-     * ├── sqldrivers
-     * │   ├── LsCsSqlMySql0.1.so
-     * │   ├── LsCsSqlOdbc0.1.so
-     * │   └── LsCsSqlPsql0.1.so
-     * └── xcbglintegrations
-     *    └── LsCsGuiXcb_Glx0.1.so
+     * 
+     * 
+     * /usr/lib/LsCs
+     * ├─/usr/lib/LsCs/plugins
+     *   ├── iconengines
+     *   ├── imageformats
+     *   │   └── LsCsImageFormatsSvg0.1.so
+     *   ├── mediaservices
+     *   │   ├── LsCsMultimedia_gst_audiodecoder0.1.so
+     *   │   ├── LsCsMultimedia_gst_camerabin0.1.so
+     *   │   └── LsCsMultimedia_gst_mediaplayer0.1.so
+     *   ├── pictureformats
+     *   ├── platforms
+     *   │   └── LsCsGuiXcb0.1.so
+     *   ├── playlistformats
+     *   │   └── LsCsMultimedia_m3u0.1.so
+     *   ├── printerdrivers
+     *   │   └── LsCsPrinterDriverCups0.1.so
+     *   ├── sqldrivers
+     *   │   ├── LsCsSqlMySql0.1.so
+     *   │   ├── LsCsSqlOdbc0.1.so
+     *   │   └── LsCsSqlPsql0.1.so
+     *   └── xcbglintegrations
+     *       └── LsCsGuiXcb_Glx0.1.so
      */
 
     if ( ! coreappdata()->app_libpaths )

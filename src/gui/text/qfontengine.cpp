@@ -41,7 +41,10 @@
 
 #define HB_NO_SINGLE_HEADER_ERROR 1
 #include <hb-ot.h>
-#include <hb-ot-layout.h>
+
+#ifndef HB_OT_LAYOUT_H
+    #include <hb-ot-layout.h>
+#endif
 
 
 #ifndef HB_OT_MAX_TAGS_PER_SCRIPT

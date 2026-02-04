@@ -24,10 +24,11 @@
 #include <qcoreapplication.h>
 #include <qfile.h>
 #include <qplatformdefs.h>
-
+#include <qlibraryinfo.h>
 #include <qfilesystementry_p.h>
 #include <qlibrary_p.h>
 #include <qdebug.h>
+#include <qdir.h>
 
 #ifdef Q_OS_DARWIN
 #  include <qcore_mac_p.h>
@@ -182,7 +183,6 @@ bool QLibraryHandle::load_sys()
 
     bool retry = true;
 
-    qDebug() << "prefixes: " << prefixes;
     for ( int prefix = 0; retry && !pHnd && prefix < prefixes.size(); prefix++ )
     {
         for ( int suffix = 0; retry && !pHnd && suffix < suffixes.size(); suffix++ )
@@ -214,6 +214,7 @@ bool QLibraryHandle::load_sys()
                 attempt = path + prefixes.at( prefix ) + name + suffixes.at( suffix );
             }
 
+            qDebug() << "attempt: " << QFile::encodeName( attempt ).constData();
             pHnd = dlopen( QFile::encodeName( attempt ).constData(), dlFlags );
 
             if ( !pHnd && fileName.startsWith( QLatin1Char( '/' ) ) && QFile::exists( attempt ) )

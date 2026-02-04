@@ -1,5 +1,6 @@
 * example build needs to work with local build libraries
 * make plugins use lscs.conf information
+* stop loading configuration file twice.
 * Replace default fonts with liberation
 * Nuke the 3rdparty fonts directory once fonts replaced
 
