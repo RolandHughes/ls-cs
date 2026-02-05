@@ -103,6 +103,40 @@ list(APPEND GUI_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/text/qtexttablecell.h
    ${CMAKE_CURRENT_SOURCE_DIR}/text/qtexttablecellformat.h
    ${CMAKE_CURRENT_SOURCE_DIR}/text/qtexttableformat.h
+
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-aat.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-aat-layout.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-blob.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-buffer.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-common.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-deprecated.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-draw.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-face.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-font.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-glib.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-gobject-structs.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-map.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-color.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-deprecated.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-font.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-layout.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-math.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-meta.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-metrics.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-name.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-shape.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-var.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-paint.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-set.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-shape.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-shape-plan.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-style.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-subset.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-unicode.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-version.h
+
 )
 
 list(APPEND GUI_PRIVATE_INCLUDES

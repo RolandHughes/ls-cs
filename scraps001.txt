@@ -35,3 +35,19 @@ if [[ $MAJOR -lt $MIN_VERSION_MAJOR ]] || [[ $MAJOR -eq $MIN_VERSION_MAJOR && $M
 fi
 
 echo "Python $PYTHON_VERSION is installed. Proceeding..."
+
+
+
+echo "************************************************************************"
+echo "*****  NOTE: the VCPKG step is very sensitive to your Internet "
+echo "*****        connection and the habit of some antivirus packages to "
+echo "*****        always eat the first download request. If it fails you "
+echo "*****        should see something like "
+echo "*****"
+echo "*****        openssl does not exist "
+echo "*****"
+echo "*****        in the lines below. Check your Internet"
+echo "*****        and re-run. Think about getting a better antivirus product as well."
+echo "*****"
+echo "************************************************************************"
+echo

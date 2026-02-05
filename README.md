@@ -34,8 +34,13 @@ To build this code you need to read and follow python-3-7-notes.txt.
 Versions 0.2.1 and later are transitional experiments for things that may become part of [BasisDoctrina](https://sourceforge.net/projects/basisdoctrina/).
 
 Completed:
-* nuked much dead and legacy code.
-* removed minGW support. Native or nothing.
+* removed webkit
+* removed qdeclarative
+* removed system strings that said CopperSpice
+* added Liberation Sans font
+* removed mingw support
+* local build now deploys cmake files along with lscs.conf
+* removed RPATH hacking CopperSpice relied upon. Secured environments will not allow you to do that.
 * cleaned up the install directory tree.
 * lscs.conf is now found where it should be and legacy bug that still exists in Qt today of not respecting Libraries = path is fixed. This means you can do a local build into a directory tree and build examples against it successfully without having to copy the entire library into same directory as binary.
 
@@ -50,9 +55,11 @@ Transitions currently taking place:
 * One by one all low level graphics classes will be replaced by wrappers for SDL3 functionality.
 * CUPS 3.x support.
 
-Once we get the last of the Qt/CopperSpice stuff out, a VCPKG build for Windows will be created.
+Once we get the last of the Qt/CopperSpice stuff out:
 
-A cross compile will then be created for ArmV8.
+* A cross compile will then be created for ArmV8.
+* a VCPKG build for Windows will be created.
+
 
 Then we are done. No more work will be done on this library as all efforts will be devoted to BasisDoctrina.
 

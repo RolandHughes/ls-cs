@@ -42,13 +42,14 @@ message( "CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
 
     
 
-# CMake is an odd duck. If you provide SOURCE_DIR definiion for 
+# CMake is an odd duck. If you provide SOURCE_DIR definition for 
 # external project, PREFIX will not create the other directories.
 # CMake ASS-U-ME-s all external projects are CMAKE builds. Not 
 # the case with libtool and so many other things.
 #
 # The hacky looking path for the configure command is a result of  
 # CMake forcing its own directory structure on external project.
+#
 include(ExternalProject)
 
 ExternalProject_Add(
@@ -58,7 +59,7 @@ ExternalProject_Add(
     URL https://ftp.gnu.org/gnu/libtool/libtool-2.5.4.tar.gz
     DOWNLOAD_NO_PROGRESS ON 
     DOWNLOAD_EXTRACT_TIMESTAMP false
-    CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure --prefix=${CMAKE_BINARY_DIR}/ls_libtool "CFLAGS=-g -O0 ${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE}}"
+    CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure --prefix=${CMAKE_BINARY_DIR}/ls_libtool/install "CFLAGS=-g -O0 ${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE}}"
     BUILD_COMMAND make 
     
 )

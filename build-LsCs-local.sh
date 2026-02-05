@@ -40,19 +40,6 @@ fi
 mkdir -p "$BUILD_DIR"
 mkdir -p "$RELEASE_DIR"
 
-echo "************************************************************************"
-echo "*****  NOTE: the VCPKG step is very sensitive to your Internet "
-echo "*****        connection and the habit of some antivirus packages to "
-echo "*****        always eat the first download request. If it fails you "
-echo "*****        should see something like "
-echo "*****"
-echo "*****        openssl does not exist "
-echo "*****"
-echo "*****        in the lines below. Check your Internet"
-echo "*****        and re-run. Think about getting a better antivirus product as well."
-echo "*****"
-echo "************************************************************************"
-echo
 
 #  Step 3 : Prepare Build Directory
 #

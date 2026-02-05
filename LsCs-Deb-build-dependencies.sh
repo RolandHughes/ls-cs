@@ -11,9 +11,11 @@ apt-get update
 
 # Executables first
 #
-
+#  help2man texinfo and those following are all because we are building
+#  libtool as part okf this package.
+#
 apt-get install -y g++ build-essential fakeroot hashdeep dpkg-dev cmake ninja-build mercurial \
-        mercurial-common git tree synaptic python3
+        mercurial-common git tree synaptic python3 help2man texinfo
 
 # Maybe you have your favorite editor, maybe not. I use jed in a terminal and emacs or
 # codelite for source. Mostly emacs. RedDiamond is available as AppImage so no need
@@ -27,7 +29,7 @@ apt-get install -y libfreetype6-dev libfontconfig1-dev libglib2.0-dev libgstream
         libc6-dev libsm-dev libxcursor-dev libxext-dev libxfixes-dev \
         libxi-dev libxinerama-dev libxrandr-dev libxrender-dev libxkbcommon-dev \
         libxkbcommon-x11-dev libx11-dev libpng++-dev libmng-dev libfreetype6-dev \
-        libcairo2-dev libgtk2.0-dev libgtk-3-dev
+        libcairo2-dev libgtk2.0-dev
 
 apt-get install -y libxcb1-dev libx11-xcb-dev libxcb-glx0-dev libxcb-icccm4-dev \
         libxcb-image0-dev libxcb-keysyms1-dev libxcb-render0-dev libxcb-render-util0-dev \
@@ -41,8 +43,8 @@ apt-get install -y libcups2-dev libasound2-dev libxml++2.6-dev \
         libsqlite3-dev
 
 # Ubuntu 18.04 through 24.04 do not have aclocal 1.17 or higher
-#
-Var=$(lsb_release -r)
+# 
+Var=$(lsb_release -sr)
 if [[ ! "$Var" > "24.04" ]]; then
     ./install-autotools.sh
 fi

@@ -9,6 +9,13 @@
 #
 apt-get purge -y autoconf 
 
+echo "**************************************"
+echo "  This script does not delete previous downloads and/or installs in"
+echo "  /usr/local."
+echo "  Must be done manually before next run."
+echo "**************************************"
+
+
 echo " "
 echo "++++++ installing autoconf +++ "
 echo " "
@@ -25,7 +32,7 @@ apt-get purge -y automake
 echo " "
 echo "++++++ installing automake +++ "
 echo " "
-AM_VERSION="automake-1.18.1"
+AM_VERSION="automake-1.17"
 cd /usr/local/src
 wget https://ftp.gnu.org/gnu/automake/$AM_VERSION.tar.gz
 tar xf automake*
