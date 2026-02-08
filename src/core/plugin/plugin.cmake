@@ -40,5 +40,6 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|Darwin|OpenBSD|FreeBSD|NetBSD)")
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/plugin/qlibrary_unix.cpp
   )
+  
 endif()
 

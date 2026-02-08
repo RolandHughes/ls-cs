@@ -39,6 +39,8 @@ set(CMAKE_INSTALL_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
 
 message( "CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
 
+message( "CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
+
 
     
 
@@ -52,6 +54,7 @@ message( "CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
 #
 include(ExternalProject)
 
+# NOTE: If you change the file here you may need to change the libldtl install version.
 ExternalProject_Add(
     ls_libtool
     PREFIX "${CMAKE_BINARY_DIR}/ls_libtool"
@@ -59,7 +62,7 @@ ExternalProject_Add(
     URL https://ftp.gnu.org/gnu/libtool/libtool-2.5.4.tar.gz
     DOWNLOAD_NO_PROGRESS ON 
     DOWNLOAD_EXTRACT_TIMESTAMP false
-    CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure --prefix=${CMAKE_BINARY_DIR}/ls_libtool/install "CFLAGS=-g -O0 ${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE}}"
+    CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure --prefix=${LIBTOOL_INSTALL_PREFIX} "CFLAGS=-g -O0 ${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE}}"
     BUILD_COMMAND make 
     
 )
@@ -502,6 +505,24 @@ endif()
 add_subdirectory(src/core)
 add_subdirectory(src/xml)
 
+add_library(ls_libtoola STATIC IMPORTED)
+add_library(ls_libtool_ep SHARED IMPORTED)
+
+add_dependencies(ls_libtool_ep  ls_libtool)
+add_dependencies(LsCsCore ls_libtool)
+
+set_target_properties(ls_libtoola PROPERTIES
+    IMPORTED_LOCATION  "${LIBTOOL_INSTALL_PREFIX}/lib"
+    IMPORTED_IMPLIB "{LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a"
+    IMPORTED_LINK_INTERFACE_INCLUDE_DIRECTORIES "${LIBTOOL_INSTALL_PREFIX}/include")
+
+set_target_properties(ls_libtool PROPERTIES
+    IMPORTED_LOCATION "${LIBTOOL_INSTALL_PREFIX}/lib"
+    IMPORTED_IMPLIB "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl"
+    IMPORTED_LINK_INTERFACE_INCLUDE_DIRECTORIES "${LIBTOOL_INSTALL_PREFIX}/include")
+
+#target_link_libraries(LsCsCore PRIVATE ls_libtool)
+
 foreach(component ${LSCS_OPTIONAL_COMPONENTS})
    string(TOUPPER ${component} uppercomp)
 
@@ -584,34 +605,69 @@ if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
 endif()
 
 
+# libtool headers and libraries
+#
+
+#install(
+#  FILES
+#  ${LIBTOOL_INSTALL_PREFIX}/include/ltdl.h
+#  DESTINATION ${LSCS_INST_INCLUDE}
+#  COMPONENT Development
+#)
+
+#install(
+#  FILES
+#  ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_dlloader.h
+#  ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_error.h
+#  ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_system.h
+#  DESTINATION ${LSCS_INST_INCLUDE}/libltdl
+#  COMPONENT Development
+#)
+
+# NOTE:: Need dynamic way of determining major version of library or a for loop finding each 
+#        This hard coding bad.
+#install(
+#   FILES
+#   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a
+#   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la
+#   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so
+#   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7
+#   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7.3.3
+#   DESTINATION ${LSCS_INST_LIB}
+#   COMPONENT Development
+#   COMPONENT Runtime
+#)
+
+
 if (BUILDING_DEBIAN)
-install(
-   FILES
-      ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
-      ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
+    install(
+       FILES
+          ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
+          ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
 
-      ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
-   DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake
-   COMPONENT Development
-)
+          ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
+       DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake
+       COMPONENT Development
+    )
 
-install(
-  FILES
-     ${CMAKE_BINARY_DIR}/LsCs-library.conf
-     DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/ld.so.conf.d
-     COMPONENT Runtime
-     COMPONENT Development
-)
+    install(
+      FILES
+         ${CMAKE_BINARY_DIR}/LsCs-library.conf
+         DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/ld.so.conf.d
+         COMPONENT Runtime
+         COMPONENT Development
+    )
+    
 else()
-install(
-   FILES
-      ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
-      ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
+    install(
+       FILES
+          ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
+          ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
 
-      ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
-      DESTINATION ${PKG_PREFIX}
-      COMPONENT Development
-)
+          ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
+          DESTINATION ${PKG_PREFIX}
+          COMPONENT Development
+    )
 endif()
 
 install(

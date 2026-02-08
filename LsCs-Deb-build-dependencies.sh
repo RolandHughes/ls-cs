@@ -55,8 +55,6 @@ echo "it will install a ton of dependencies.  If you want to actually use Postgr
 echo "the following line: "
 echo "#sudo apt-get install postgresql postgresql-client postgresql-contrib"
 
-#sudo apt-get install postgresql postgresql-client postgresql-contrib
-
 echo " "
 echo " ****  if you don't have cmake 3.16 or greater you need to read cmake-install-notes.txt"
 echo " "
@@ -65,11 +63,7 @@ echo "For Ubuntu 18.04   sudo apt-get install postgresql-server-dev-10"
 echo "For Ubuntu 20.04   sudo apt-get install postgresql-server-dev-12"
 echo "For Ubuntu 22.04   sudo apt-get install postgresql-server-dev-14"
 echo "For Ubuntu 24.04   sudo apt-get install postgresql-server-dev-16"
-
-echo "Currently need aclocal 1.17 or higher. "
-echo "on Ubuntu 18.04 sudo ./install-autotools.sh then reboot to be certain"
-echo "paths are updated as this will install in /usr/local"
-
+echo ""
 echo ""
 echo "   Read and follow cmake-install-notes.txt if your cmake version less than 3.16.0"
 echo ""

@@ -6,6 +6,7 @@ set_target_properties(LsCsCore PROPERTIES
   SOVERSION ${BUILD_MAJOR}
 )
 
+
 target_compile_definitions(LsCsCore
    PRIVATE
    -DLSCS_BUILD_CORE_LIB
@@ -135,6 +136,7 @@ if (LsCsSignal_FOUND)
             $<BUILD_INTERFACE:LsCsSignal::LsCsSignal>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libLsCsSignal.so>
          )
+         
 
       elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
          # link with import library in CS install lib directory
@@ -224,12 +226,22 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
       dl
       ${CMAKE_THREAD_LIBS_INIT}
    )
-   include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/forkfd)
+   
+#   target_link_libraries(LsCsCore
+#      PRIVATE
+#      ${LIBTOOL_INSTALL_PREFIX}/libltdl
+#   )
+   
+   include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/forkfd
+#                        ${LIBTOOL_INSTALL_PREFIX}/include
+#                        ${LIBTOOL_INSTALL_PREFIX}/include/libltdl
+   )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD|DragonFly)")
    target_link_libraries(LsCsCore
       PRIVATE
       ${CMAKE_THREAD_LIBS_INIT}
+#      ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl
    )
    include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/forkfd)
 

@@ -40,6 +40,7 @@
 
 #if ! defined(LSCS_NO_DYNAMIC_LIBRARY)
 #include <dlfcn.h>
+#include <ltdl.h>
 #endif
 
 static QString qdlerror()

@@ -42,7 +42,7 @@
 
 static const char PLATFORMS_SECTION[] = "Platforms";
 static const char CONF_FILE_NAME[] = "lscs.conf";
-static const char CONF_RESOURCE_PATH[] = ":/lscs/etc/lscs.conf";
+static const char CONF_RESOURCE_PATH[] = ":/share/LsCs/lscs.conf";
 static bool CONFIGURATION_SETTINGS_LOADED = false;
 
 struct QLibrarySettings

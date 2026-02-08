@@ -65,6 +65,8 @@ include(TestLargeFiles)
 # required libraries
 set(BUILD_COMPONENTS "Core Xml")
 
+set(LIBTOOL_INSTALL_PREFIX  "${CMAKE_BINARY_DIR}/ls_libtool/install")
+
 if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
   include(linux.cmake)
 elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
