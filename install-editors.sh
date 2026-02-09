@@ -9,8 +9,7 @@ if [ `whoami` != root ]; then
     exit
 fi
 
-apt-get install -y codelite codelite-plugins jed jed-common jed-extra \
-        astyle hunspell meld
+apt-get install jed jed-common jed-extra astyle hunspell meld
 
 add-apt-repository ppa:flatpak/stable
 apt-get update
@@ -25,4 +24,3 @@ flatpak install flathub org.gnome.gitlab.somas.Apostrophe
 flatpak install flathub org.gnu.emacs
 flatpak install flathub com.axosoft.GitKraken
 flatpak install flathub com.vscodium.codium
-
