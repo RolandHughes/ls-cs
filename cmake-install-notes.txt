@@ -28,7 +28,7 @@ cd /usr/local
 
 sudo chmod +x src/cmake <tab>
 
-sudo sudo src/cmake <tab>
+sudo src/cmake <tab>
 
 Do you accept the license? [yn]: 
 y

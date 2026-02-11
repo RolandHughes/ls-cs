@@ -49,6 +49,7 @@ if [[ ! "$Var" > "24.04" ]]; then
     ./install-autotools.sh
 fi
 
+# sudo apt-get purge libgtk2.0-dev libharfbuzz-dev libicu-dev libicu-le-hb-dev libpango1.0-dev libxml++2.6-dev libxml2-dev
 
 echo "To build Postgresql support you need to install the postgresql-server-dev-nn package for your distro"
 echo "it will install a ton of dependencies.  If you want to actually use Postgresql then uncomment "

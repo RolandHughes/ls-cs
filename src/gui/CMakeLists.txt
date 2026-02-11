@@ -6,6 +6,16 @@ set_target_properties(LsCsGui PROPERTIES
   SOVERSION ${BUILD_MAJOR}
 )
 
+
+
+# Oncee we move to SSDL33 harrffbuzz will be gone
+# Add this directory to the target's include path
+target_include_directories(LsCsGui
+    # The 'BEFORE SYSTEM' keywords tell the compiler to search this directory 
+    # before any default system directories like /usr/include.
+    PUBLIC BEFORE SYSTEM ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src
+)
+
 target_compile_definitions(LsCsGui
    PRIVATE
    -DLSCS_BUILD_GUI_LIB
@@ -24,7 +34,8 @@ target_include_directories(LsCsGui
    $<INSTALL_INTERFACE:include/${PACKAGE_NAME}/QtGui>
 )
 
-include_directories(
+target_include_directories(LsCsGui
+   PRIVATE
    ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
    ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtGui/private
 
@@ -50,14 +61,12 @@ include_directories(
 
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src
    ${CMAKE_SOURCE_DIR}/src/3rdparty/libmng
-)
 
-include_directories(
-      # using system library
-      ${JPEG_INCLUDE_DIR}
-      ${TIFF_INCLUDE_DIR}
-      ${FREETYPE_INCLUDE_DIRS}
-   )
+   # using system library
+   ${JPEG_INCLUDE_DIR}
+   ${TIFF_INCLUDE_DIR}
+   ${FREETYPE_INCLUDE_DIRS}
+)
 
 include(accessible/accessible.cmake)
 include(animation/animation.cmake)

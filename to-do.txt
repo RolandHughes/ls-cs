@@ -21,4 +21,11 @@ Once we get the last of the Qt/CopperSpice stuff out, a VCPKG build for Windows 
 
 A cross compile will then be created for ArmV8.
 
+https://stackoverflow.com/questions/160608/do-a-git-export-like-svn-export
+
+To export just the project
+git archive --format zip --output /full/path/to/zipfile.zip master
+
+Be aware that even though the archive will not contain the .git directory, it will, however, contain other hidden git-specific files like .gitignore, .gitattributes, etc. If you don't want them in the archive, make sure you use the export-ignore attribute in a .gitattributes file and commit this before doing your archive. 
+
 
