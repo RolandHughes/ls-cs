@@ -13,7 +13,7 @@ set_target_properties(LsCsGui PROPERTIES
 target_include_directories(LsCsGui
     # The 'BEFORE SYSTEM' keywords tell the compiler to search this directory 
     # before any default system directories like /usr/include.
-    PUBLIC BEFORE SYSTEM ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src
+    PRIVATE BEFORE SYSTEM  "${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src"
 )
 
 target_compile_definitions(LsCsGui

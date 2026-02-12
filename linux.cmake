@@ -521,7 +521,7 @@ set_target_properties(ls_libtool PROPERTIES
     IMPORTED_IMPLIB "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl"
     IMPORTED_LINK_INTERFACE_INCLUDE_DIRECTORIES "${LIBTOOL_INSTALL_PREFIX}/include")
 
-target_link_libraries(LsCsCore PRIVATE ls_libtool)
+# target_link_libraries(LsCsCore PRIVATE ls_libtool)
 
 foreach(component ${LSCS_OPTIONAL_COMPONENTS})
    string(TOUPPER ${component} uppercomp)
@@ -537,7 +537,7 @@ endforeach()
 # platform plugins
 if (WITH_GUI)
    set(BUILD_PLATFORMS_XCB_PLUGIN TRUE)
-   include_directories( ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src )
+   include_directories( BEFORE ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src )
    add_subdirectory(src/plugins/imageformats)
    add_subdirectory(src/plugins/platforms)
    add_subdirectory(src/plugins/printerdrivers)
@@ -620,23 +620,23 @@ install(
   ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_dlloader.h
   ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_error.h
   ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_system.h
-  DESTINATION ${LSCS_INST_INCLUDE}/libltdl
+  DESTINATION ${LSCS_INST_INCLUDE}
   COMPONENT Development
 )
 
 # NOTE:: Need dynamic way of determining major version of library or a for loop finding each 
 #        This hard coding bad.
-#install(
-#   FILES
-#   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a
-#   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la
-#   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so
-#   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7
-#   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7.3.3
-#   DESTINATION ${LSCS_INST_LIB}
-#   COMPONENT Development
-#   COMPONENT Runtime
-#)
+install(
+   FILES
+   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a
+   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la
+   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so
+   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7
+   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7.3.3
+   DESTINATION ${LSCS_INST_LIB}
+   COMPONENT Development
+   COMPONENT Runtime
+)
 
 
 if (BUILDING_DEBIAN)

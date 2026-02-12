@@ -54,6 +54,11 @@ cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug \
 #  Step 4 : Actually build the library
 #
 echo "*** Building LSCS"
-ninja install
+CORES=$(lscpu -b -p=Core,Socket | grep -v '^#' | sort -u | wc -l)
+JOBS=$((CORES-1))
+
+echo "Found $CORES cores so setting job count to $JOBS"
+export NINJAJOBS=$JOBS
+ninja -j $JOBS install
 
 exit

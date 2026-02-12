@@ -75,6 +75,10 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
   include(windows.cmake)
 endif()
 
+# hack to use local harfbuzz instead of system.
+#
+include_directories( BEFORE ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src )
+
 configure_file(
    ${CMAKE_SOURCE_DIR}/cmake/lscs_config.h.cmake
    ${CMAKE_BINARY_DIR}/include/lscs_config.h
