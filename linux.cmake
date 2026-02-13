@@ -37,9 +37,11 @@ set(CMAKE_INSTALL_INCLUDEDIR "include/${CMAKE_PROJECT_NAME}")
 set(CMAKE_INSTALL_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
 
 
-message( "CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
+message( "*****************CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
 
-message( "CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
+message( "*****************CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
+
+message( "*****************LIBTOOL_INSTALL_PREFIX ${LIBTOOL_INSTALL_PREFIX} ")
 
 
     
@@ -54,7 +56,18 @@ message( "CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
 #
 include(ExternalProject)
 
+set(LS_LIBTOOL_BYPRODUCTS 
+   "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a"
+   "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la"
+   "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so"
+   "${LIBTOOL_INSTALL_PREFIX}/include/ltdl.h"
+   "${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_dlloader.h"
+   "${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_error.h"
+   "${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_system.h"
+)
+    
 # NOTE: If you change the file here you may need to change the libldtl install version.
+# Must provide BUILD_BYPRODUCTS when using ninja-build
 ExternalProject_Add(
     ls_libtool
     PREFIX "${CMAKE_BINARY_DIR}/ls_libtool"
@@ -64,7 +77,7 @@ ExternalProject_Add(
     DOWNLOAD_EXTRACT_TIMESTAMP false
     CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure --prefix=${LIBTOOL_INSTALL_PREFIX} "CFLAGS=-g -O0 ${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE}}"
     BUILD_COMMAND make 
-    
+    BUILD_BYPRODUCTS ${LS_LIBTOOL_BYPRODUCTS}
 )
 
 
@@ -504,24 +517,6 @@ endif()
 
 add_subdirectory(src/core)
 add_subdirectory(src/xml)
-
-add_library(ls_libtoola STATIC IMPORTED)
-add_library(ls_libtool_ep SHARED IMPORTED)
-
-add_dependencies(ls_libtool_ep  ls_libtool)
-add_dependencies(LsCsCore ls_libtool)
-
-set_target_properties(ls_libtoola PROPERTIES
-    IMPORTED_LOCATION  "${LIBTOOL_INSTALL_PREFIX}/lib"
-    IMPORTED_IMPLIB "{LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a"
-    IMPORTED_LINK_INTERFACE_INCLUDE_DIRECTORIES "${LIBTOOL_INSTALL_PREFIX}/include")
-
-set_target_properties(ls_libtool PROPERTIES
-    IMPORTED_LOCATION "${LIBTOOL_INSTALL_PREFIX}/lib"
-    IMPORTED_IMPLIB "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl"
-    IMPORTED_LINK_INTERFACE_INCLUDE_DIRECTORIES "${LIBTOOL_INSTALL_PREFIX}/include")
-
-# target_link_libraries(LsCsCore PRIVATE ls_libtool)
 
 foreach(component ${LSCS_OPTIONAL_COMPONENTS})
    string(TOUPPER ${component} uppercomp)
