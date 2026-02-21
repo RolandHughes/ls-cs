@@ -6,11 +6,20 @@ if(WITH_SVG)
    add_library(LsCsImageFormatsSvg MODULE "")
    add_library(LsCs::LsCsImageFormatsSvg ALIAS LsCsImageFormatsSvg)
 
-   set_target_properties(LsCsImageFormatsSvg PROPERTIES
-     PREFIX ""
-     VERSION ${BUILD_ABI}
-     SOVERSION ${BUILD_MAJOR}
-   )
+   if( BUILDING_LOCAL)
+       set_target_properties(LsCsImageFormatsSvg PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+         INSTALL_RPATH "${LSCS_INST_PREFIX}/${LSCS_INST_LIB};${LSCS_INST_PREFIX}/${LSCS_INST_LIB}/plugins/imageformats"
+       )
+   else()
+       set_target_properties(LsCsImageFormatsSvg PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+       )
+   endif()
 
    target_sources(LsCsImageFormatsSvg
       PRIVATE

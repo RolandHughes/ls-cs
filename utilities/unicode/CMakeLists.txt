@@ -25,20 +25,27 @@ find_package(LsCs REQUIRED)
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include(GNUInstallDirs)
 
+   if (BUILDING_LOCAL)
    # rpath used for rcc and uic when compiling a user application
-   #file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
-   #                                "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+   file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
+                                   "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
 
-   #set(CMAKE_INSTALL_RPATH "@executable_path/${LSCS_BIN_RPATH}")
+   set(CMAKE_INSTALL_RPATH "@executable_path/${LSCS_BIN_RPATH}")
+   endif()
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
 
+   if (BUILDING_LOCAL)
+      message("*****************************")
+      message("     Unicode BUILDING_LOCAL ")
+      message("*****************************")
    # rpath used for rcc and uic when compiling a user application
-   #file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
-   #                                "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+   file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
+                                   "${LSCS_INST_PREFIX}/${LSCS_INST_LIB}")
 
-   #set(CMAKE_INSTALL_RPATH "$ORIGIN/${LSCS_BIN_RPATH}")
+   set(CMAKE_INSTALL_RPATH ""${LSCS_INST_PREFIX}/${LSCS_BIN_RPATH}")
+   endif()
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
    set(CMAKE_INSTALL_BINDIR bin)
@@ -58,9 +65,9 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,-undefined,error")
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD|DragonFly)")
-   set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--no-undefined")
-   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ")
-   set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined")
+   set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--no-undefined -zlazy")
+   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -zlazy")
+   set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined -zlazy")
 
 elseif (MSVC)
    string (REGEX REPLACE "/W3" "" CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}"  )
@@ -70,9 +77,9 @@ elseif (MSVC)
 
 else()
 
-   set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--no-undefined")
-   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
-   set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined")
+   set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--no-undefined -zlazy")
+   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined -zlazy")
+   set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined -zlazy")
 
    if (CMAKE_SYSTEM_NAME MATCHES "Windows")
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wa,-mbig-obj")
@@ -129,4 +136,4 @@ install(TARGETS Generate_Tables DESTINATION .)
 #        libraries are in system search path.
 #
 # install the LsCs libraries
-lscs_copy_library(LsCsCore)
+# lscs_copy_library(LsCsCore)

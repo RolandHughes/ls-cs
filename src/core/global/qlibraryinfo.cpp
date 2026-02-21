@@ -271,11 +271,6 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
     {
         QSettings *tmp = new QSettings( qtconfig, QSettings::IniFormat );
         CONFIGURATION_SETTINGS_LOADED = true;
-        qDebug() << "QSettings:";
-        for ( QString key : tmp->allKeys())
-        {
-            qDebug() << "     key: " << key << "   value: " << tmp->value( key).toString();
-        }
         return tmp;
     }
 	    

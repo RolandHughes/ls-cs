@@ -25,12 +25,14 @@ if(Cups_FOUND)
    target_include_directories(LsCsPrinterDriverCups
       PRIVATE
       ${CUPS_INCLUDE_DIRS}
+      "${LIBTOOL_INSTALL_PREFIX}/include"
    )
 
    target_link_libraries(LsCsPrinterDriverCups
       LsCsCore
       LsCsGui
       ${CUPS_LIBRARIES}
+      ls_libtool_ep
    )
 
    target_compile_definitions(LsCsPrinterDriverCups

@@ -1055,8 +1055,6 @@ static void init_platform( const QString &pluginArgument, const QString &platfor
      *        starting a program. Kind of defeats the entire concept of the .conf file.
      */
      
-    qDebug() << "pluginKey:  " << pluginKey;
-
     // look up the arguments in system settings
     arguments.append( QLibraryInfo::platformPluginArguments( pluginKey ) );
 

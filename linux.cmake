@@ -10,6 +10,7 @@
 #
 option(BUILDING_RPM "Are we building RPM" OFF)
 option(BUILDING_DEBIAN "Are we building DEBIAN" OFF)
+option(BUILDING_LOCAL "Are we doing a non-system LOCAL install" OFF)
 
 
 # location for install or package
@@ -27,10 +28,9 @@ EXECUTE_PROCESS( COMMAND arch  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE 
 #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 #  Now that we are naming binaries appropriately and putting them in
 #  standard locations, all of this RPATH stuff trying to find binaries
-#  underneath the lib directory tree is unnecessary.
-#
-#  One single RPATH definition works for all. Really only need RPATH
-#  for a development install into a non-system directory.
+#  underneath the lib directory tree is only needed for a BUILDING_LOCAL.
+#  Normally a development install into a non-system directory so we 
+#  added a test for BUILDING_LOCAL to those plugins and binaries 
 #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 set(CMAKE_INSTALL_INCLUDEDIR "include/${CMAKE_PROJECT_NAME}")
@@ -75,7 +75,12 @@ ExternalProject_Add(
     URL https://ftp.gnu.org/gnu/libtool/libtool-2.5.4.tar.gz
     DOWNLOAD_NO_PROGRESS ON 
     DOWNLOAD_EXTRACT_TIMESTAMP false
-    CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure --prefix=${LIBTOOL_INSTALL_PREFIX} "CFLAGS=-g -O0 ${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE}}"
+    
+    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy 
+        ${CMAKE_SOURCE_DIR}/libtool-configure.ac
+        ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure.ac
+        
+    CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure --prefix=${LIBTOOL_INSTALL_PREFIX} "CFLAGS=-g -O0" "CXXFLAGS=-g -O0"
     BUILD_COMMAND make 
     BUILD_BYPRODUCTS ${LS_LIBTOOL_BYPRODUCTS}
 )

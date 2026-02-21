@@ -7,6 +7,8 @@ include_directories(
 
    ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src
+   
+   "${LIBTOOL_INSTALL_PREFIX}/include"
 
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa
    ${CMAKE_CURRENT_SOURCE_DIR}/windows

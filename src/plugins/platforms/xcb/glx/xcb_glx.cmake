@@ -11,27 +11,42 @@ if(BUILD_PLATFORMS_XCB_PLUGIN AND XCB_GLX_LIB)
    add_library(LsCsGuiXcb_Glx MODULE "")
    add_library(LsCs::LsCsGuiXcb_Glx ALIAS LsCsGuiXcb_Glx)
 
-   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+   
 
    if (BUILDING_DEBIAN)
+      set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
       set_target_properties(LsCsGuiXcb_Glx PROPERTIES
           VERSION ${BUILD_ABI}
           SOVERSION ${BUILD_MAJOR}
           PREFIX ""
       )
    elseif (BUILDING_RPM)
+      set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
       set_target_properties(LsCsGuiXcb_Glx PROPERTIES
           VERSION ${BUILD_ABI}
           SOVERSION ${BUILD_MAJOR}
           PREFIX ""
       )
-    else()
-      # ass-u-me local build for testing
+    elseif( BUILDING_LOCAL)
+     message("*****************************")
+     message("     GLX BUILDING_LOCAL ")
+     message("*****************************")
      set_target_properties(LsCsGuiXcb_Glx PROPERTIES
           VERSION ${BUILD_ABI}
           SOVERSION ${BUILD_MAJOR}
           PREFIX ""
-          INSTALL_RPATH "$ORIGIN/.."
+          INSTALL_RPATH "${LSCS_INST_PREFIX}/${LSCS_INST_LIB};${LSCS_INST_PREFIX}/${LSCS_INST_LIB}/plugins/xcbglintegrations"
+    )
+    else()
+      # ass-u-me local build tree and hope for best
+      message("*****************************")
+      message("     XCB BUILDING unknown ")
+      message("*****************************")
+     set_target_properties(LsCsGuiXcb_Glx PROPERTIES
+          VERSION ${BUILD_ABI}
+          SOVERSION ${BUILD_MAJOR}
+          PREFIX ""
+          INSTALL_RPATH "$ORIGIN/../.."
     )
   endif()
   
@@ -54,11 +69,13 @@ if(BUILD_PLATFORMS_XCB_PLUGIN AND XCB_GLX_LIB)
       ${XCB_LIB}
       ${XCB_GLX_LIB}
       ${X11_X11_LIB}
+      ls_libtool_ep
    )
 
    target_include_directories(LsCsGuiXcb_Glx
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/platforms/xcb/glx
+      "${LIBTOOL_INSTALL_PREFIX}/include"
    )
 
    target_compile_definitions(LsCsGuiXcb_Glx

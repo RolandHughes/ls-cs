@@ -49,6 +49,7 @@ cd "$BUILD_DIR"
 # Release
 cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug \
       -DCMAKE_INSTALL_PREFIX="$RELEASE_DIR" \
+      -DBUILDING_LOCAL=ON \
       "$SCRIPT_DIR"
 
 #  Step 4 : Actually build the library

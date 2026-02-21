@@ -42,13 +42,13 @@ make install
 
 apt-get purge -y libtool
  
-LT_VERSION="libtool-2.5.4"
-cd /usr/local/src
-wget https://ftp.gnu.org/gnu/libtool/$LT_VERSION.tar.gz
-tar xf libtool*
-cd $LT_VERSION
-sh configure --prefix /usr/local
-make install
+#LT_VERSION="libtool-2.5.4"
+#cd /usr/local/src
+#wget https://ftp.gnu.org/gnu/libtool/$LT_VERSION.tar.gz
+#tar xf libtool*
+#cd $LT_VERSION
+#sh configure --prefix /usr/local
+#make install
 
 
 

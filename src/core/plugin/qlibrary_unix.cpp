@@ -194,10 +194,6 @@ bool QLibraryHandle::load_sys()
     QString librariesStr( QLibraryInfo::location( QLibraryInfo::LibraryLocation::LibrariesPath));
     QString pluginsStr( QLibraryInfo::location( QLibraryInfo::LibraryLocation::PluginsPath));
     
-    qDebug() << "prefixStr:    " << prefixStr;
-    qDebug() << "librariesStr: " << librariesStr;
-    qDebug() << "pluginsStr:   " << pluginsStr;
-    
     if (prefixStr.length() > 0)
     {
         QDir pref( prefixStr);
@@ -221,8 +217,6 @@ bool QLibraryHandle::load_sys()
         }
     }
     
-    qDebug() << "search path after changes: " << QString::fromUtf8( lt_dlgetsearchpath());
-
     /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
      *   now search for libraries
      *;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -258,20 +252,18 @@ bool QLibraryHandle::load_sys()
                 attempt = path + prefixes.at( prefix ) + name + suffixes.at( suffix );
             }
 
-            qDebug() << "search path: " << QString::fromUtf8( lt_dlgetsearchpath());
-            qDebug() << "attempt: " << QFile::encodeName( attempt ).constData();
-            //pHnd = dlopen( QFile::encodeName( attempt ).constData(), dlFlags );
-            pHnd = lt_dlopen( QFile::encodeName( attempt ).constData());
+            pHnd = dlopen( QFile::encodeName( attempt ).constData(), dlFlags );
+            //pHnd = lt_dlopen( QFile::encodeName( attempt ).constData());
             
-            if (!pHnd)
-            {
-                QString eStr( QString::fromUtf8( lt_dlerror()));
-                if (eStr.length() > 0)
-                {
-                    qDebug() << "****lt_dlerror() returned: " << eStr;
-                }
-                    
-            }
+//            if (!pHnd)
+//            {
+//                QString eStr( QString::fromUtf8( lt_dlerror()));
+//                if (eStr.length() > 0)
+//                {
+//                    qDebug() << "****lt_dlerror() returned: " << eStr;
+//                }
+//                    
+//            }
 
             if ( !pHnd && fileName.startsWith( QLatin1Char( '/' ) ) && QFile::exists( attempt ) )
             {

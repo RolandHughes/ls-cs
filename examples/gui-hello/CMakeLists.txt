@@ -27,21 +27,30 @@ include(CheckTypeSize)
 
 find_package(LsCs REQUIRED)
 
-# When building your own stand alone executables
-# you really shouldn't use RPATH. That's only for
-# locally built libraries you are testing/debugging.
-# If you choose to use RPATH you need to comment this
-# line out and uncomment one or more of the lines
-# assigning a value to CMAKE_INSTALL_RPATH.
-#
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # file locations for installing
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include(GNUInstallDirs)
+    # When building your own stand alone executables
+    # you really shouldn't use RPATH. That's only for
+    # locally built libraries you are testing/debugging.
+    # If you choose to use RPATH you need to comment this
+    # line out and uncomment one or more of the lines
+    # assigning a value to CMAKE_INSTALL_RPATH.
+    #
+    #set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
+
+    # When building your own stand alone executables
+    # you really shouldn't use RPATH. That's only for
+    # locally built libraries you are testing/debugging.
+    # If you choose to use RPATH you need to comment this
+    # line out and uncomment one or more of the lines
+    # assigning a value to CMAKE_INSTALL_RPATH.
+    #
+    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
    # lots of warnings and all warnings as errors
    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
@@ -87,9 +96,9 @@ if(APPLE)
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-undefined,error")
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,-undefined,error")
 else()
-    set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--no-undefined")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
-    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined")
+    set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--no-undefined -zlazy")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined -zlazy")
+    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined -zlazy")
 endif()
 
 string(TIMESTAMP BUILD_DATE "%m/%d/%Y")

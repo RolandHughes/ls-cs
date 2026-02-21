@@ -8,13 +8,9 @@ In particular ***C++20 will never be required/used for this fork***. When C++20 
 
 Many multi-national banks are using these same machines for the very same reason. When "front end" systems written in C++ running on "commodity" hardware try to pass back "integer" values it reeks havoc. Just ask all of the college students whose financial aid applications got jacked up by it for the 2024 school year because front ends ass-u-me-d integer was integer.
 
-Initially we will focus on formal packaging: Deb, RPM, Manjaro as well as ArmV8 for embedded systems. Toradex will be target of choice because it is what we have. All NXP derived ArmV8 should be able to utilize the code.
+Initially we will focus on formal packaging: Deb, RPM, as well as ArmV8 for embedded systems. Toradex will be target of choice because it is what we have. All NXP derived ArmV8 should be able to utilize the code.
 
-You can read the CopperSpice README.md here:
-https://github.com/copperspice/copperspice
-
-The original licese was LGPL V2.1 for CopperSpice. Right now not worth the pain of trying to flip it to BSD. Oddly enough it included these libraries
-that were BSD.
+The original license was LGPL V2.1 for CopperSpice. Right now not worth the pain of trying to flip it to BSD. Oddly enough it included these libraries that were BSD.
 
  * CsCrypto
  * LsCsLibGuarded
@@ -27,9 +23,6 @@ Don't worry if you already have them installed. Any included with this get Ls ad
 
 **currently requires C++17 or newer.**
 
-## Ubuntu 18.04 users
-To build this code you need to read and follow python-3-7-notes.txt. 
-
 ## Transitional
 Versions 0.2.1 and later are transitional experiments for things that may become part of [BasisDoctrina](https://sourceforge.net/projects/basisdoctrina/).
 
@@ -40,12 +33,12 @@ Completed:
 * added Liberation Sans font
 * removed mingw support
 * local build now deploys cmake files along with lscs.conf
-* removed RPATH hacking CopperSpice relied upon. Secured environments will not allow you to do that.
+* removed RPATH ${origin}hacking CopperSpice relied upon. Secured environments will not allow you to do that.
 * cleaned up the install directory tree.
-* lscs.conf is now found where it should be and legacy bug that still exists in Qt today of not respecting Libraries = path is fixed. This means you can do a local build into a directory tree and build examples against it successfully without having to copy the entire library into same directory as binary.
+* lscs.conf is now found where it should be and most legacy bugs that still exists in Qt today of not respecting paths is fixed. 
 
 Transitions currently taking place:
-
+* LsX rebranding
 * renaming and relocating Qt header files to avoid collisions
 * making SDL3 the primary underlying library. All QPlatform code will be replaced by a new LsXPlatform class based exclusively on SDL3.
 * UTF-8 for internal character encoding.

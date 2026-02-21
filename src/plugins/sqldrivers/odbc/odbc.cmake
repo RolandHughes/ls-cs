@@ -13,11 +13,20 @@ if (WITH_ODBC_PLUGIN AND ODBC_FOUND)
    add_library(LsCsSqlOdbc MODULE "")
    add_library(LsCs::LsCsSqlOdbc ALIAS LsCsSqlOdbc)
 
-   set_target_properties(LsCsSqlOdbc PROPERTIES
-     PREFIX ""
-     VERSION ${BUILD_ABI}
-     SOVERSION ${BUILD_MAJOR}
-   )
+   if ( BUILDING_LOCAL )
+       set_target_properties(LsCsSqlOdbc PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+         INSTALL_RPATH "${LSCS_INST_PREFIX}/${LSCS_INST_LIB};${LSCS_INST_PREFIX}/${LSCS_INST_LIB}/plugins/sqldrivers"
+       )
+   else()
+       set_target_properties(LsCsSqlOdbc PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+       )
+   endif()
 
    include_directories(${ODBC_INCLUDE_DIRS})
 

@@ -223,10 +223,6 @@ target_include_directories(LsCsCore
       ${ZLIB_INCLUDE_DIR}
    )
 
-macro_generate_public("${CORE_PUBLIC_INCLUDES}" QtCore)
-macro_generate_private("${CORE_PRIVATE_INCLUDES}" QtCore)
-macro_generate_misc("${CORE_INCLUDES}" QtCore)
-macro_generate_misc("${CORE_REGEX_INCLUDES}" QtCore/regex)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    list(APPEND EXTRA_CORE_LDFLAGS
@@ -317,6 +313,11 @@ set_target_properties(LsCsCore
    COMPILE_FLAGS ${EXTRA_CORE_CXXFLAGS}
    LINK_FLAGS    ${EXTRA_CORE_LDFLAGS}
 )
+
+macro_generate_public("${CORE_PUBLIC_INCLUDES}" QtCore)
+macro_generate_private("${CORE_PRIVATE_INCLUDES}" QtCore)
+macro_generate_misc("${CORE_INCLUDES}" QtCore)
+macro_generate_misc("${CORE_REGEX_INCLUDES}" QtCore/regex)
 
 function_generate_resources(LsCsCore)
 

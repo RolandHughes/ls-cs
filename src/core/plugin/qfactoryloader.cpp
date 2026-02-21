@@ -105,7 +105,6 @@ void QFactoryLoader::setup()
     QStringList libDirs = QCoreApplication::libraryPaths();
     // mp_pluginsFound.clear();
 
-    qDebug() << "QFactoryLoader::setup()  libDirs: " << libDirs;
     for ( const QString &pluginDir : libDirs )
     {
         // already looked in this path
@@ -131,7 +130,6 @@ void QFactoryLoader::setup()
         {
             QString fname = QDir::cleanPath( path + '/' + plugins.at( j ) );
 
-            qDebug() << "looking for: " << QFileInfo( fname ).canonicalFilePath();
             library = QLibraryHandle::findOrLoad( QFileInfo( fname ).canonicalFilePath() );
 
             if ( ! library->isPlugin() )
@@ -163,7 +161,6 @@ void QFactoryLoader::setup()
             }
 
             iid = library->m_metaObject->classInfo( index ).value();
-            qDebug() << "iid: " << iid;
 
             if ( iid != d->iid )
             {
@@ -222,7 +219,6 @@ void QFactoryLoader::setup()
                             mp_pluginsFound.last().keyFound = keyList[0];
                 */
                 
-                qDebug() << "keyList: " << keyList;
             }
 
             int keyUsageCount = 0;
