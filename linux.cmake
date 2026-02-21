@@ -608,36 +608,69 @@ endif()
 # libtool headers and libraries
 #
 
-install(
-  FILES
-  ${LIBTOOL_INSTALL_PREFIX}/include/ltdl.h
-  DESTINATION ${LSCS_INST_INCLUDE}
-  COMPONENT Development
-)
+if (BUILDING_DEBIAN)
+    install(
+      FILES
+      ${LIBTOOL_INSTALL_PREFIX}/include/ltdl.h
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+      COMPONENT Development
+    )
+else()
+    install(
+      FILES
+      ${LIBTOOL_INSTALL_PREFIX}/include/ltdl.h
+      DESTINATION ${LSCS_INST_INCLUDE}
+      COMPONENT Development
+    )
+endif()
 
-install(
-  FILES
-  ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_dlloader.h
-  ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_error.h
-  ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_system.h
-  DESTINATION ${LSCS_INST_INCLUDE}
-  COMPONENT Development
-)
+if (BUILDING_DEBIAN)
+    install(
+      FILES
+      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_dlloader.h
+      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_error.h
+      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_system.h
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+      COMPONENT Development
+    )
+else()
+    install(
+      FILES
+      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_dlloader.h
+      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_error.h
+      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_system.h
+      DESTINATION ${LSCS_INST_INCLUDE}
+      COMPONENT Development
+    )
+endif()
 
 # NOTE:: Need dynamic way of determining major version of library or a for loop finding each 
 #        This hard coding bad.
-install(
-   FILES
-   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a
-   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la
-   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so
-   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7
-   ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7.3.3
-   DESTINATION ${LSCS_INST_LIB}
-   COMPONENT Development
-   COMPONENT Runtime
-)
-
+if (BUILDING_DEBIAN)
+    install(
+       FILES
+       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a
+       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la
+       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so
+       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7
+       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7.3.3
+       DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+       COMPONENT Development
+       COMPONENT Runtime
+    )
+else()
+    install(
+       FILES
+       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a
+       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la
+       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so
+       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7
+       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7.3.3
+       DESTINATION ${LSCS_INST_LIB}
+       COMPONENT Development
+       COMPONENT Runtime
+    )
+endif()
 
 if (BUILDING_DEBIAN)
     install(
