@@ -104,7 +104,7 @@ function build_from_source()
     echo "*** Prepping build directory"
     cd "$BUILD_DIR"
 
-    cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug \
+    cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release \
         -DBUILDING_DEBIAN=ON \
         -DCMAKE_INSTALL_PREFIX="$RELEASE_DIR" \
         "$SCRIPT_DIR"
@@ -112,7 +112,8 @@ function build_from_source()
     #  Step 4: Actually build LsCs
     #
     echo "*** Building LsCs"
-    ninja install
+    CORE_MINUS_1=$(( $(lscpu --parse=Core,Socket | grep -v '^#' | sort -u | wc -l) - 1 ))
+    ninja -j $CORE_MINUS_1 install
 
     #  Step 5: Sweep up what CopperSpice project gets wrong in their
     #          default build.  TODO:: see if this is still needed
