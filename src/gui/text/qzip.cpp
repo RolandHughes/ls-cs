@@ -510,61 +510,61 @@ QZipReader::FileInfo QZipPrivate::fillFileInfo( int index ) const
 
     switch ( hostOS )
     {
-    case HostUnix:
-        mode = ( mode >> 16 ) & 0xffff;
+        case HostUnix:
+            mode = ( mode >> 16 ) & 0xffff;
 
-        switch ( mode & UnixFileAttributes::TypeMask )
-        {
-        case UnixFileAttributes::SymLink:
-            fileInfo.isSymLink = true;
+            switch ( mode & UnixFileAttributes::TypeMask )
+            {
+                case UnixFileAttributes::SymLink:
+                    fileInfo.isSymLink = true;
+                    break;
+
+                case UnixFileAttributes::Dir:
+                    fileInfo.isDir = true;
+                    break;
+
+                case UnixFileAttributes::File:
+                default: // ### just for the case; should we warn?
+                    fileInfo.isFile = true;
+                    break;
+            }
+
+            fileInfo.permissions = modeToPermissions( mode );
             break;
 
-        case UnixFileAttributes::Dir:
-            fileInfo.isDir = true;
+        case HostFAT:
+        case HostNTFS:
+        case HostHPFS:
+        case HostVFAT:
+            switch ( mode & WindowsFileAttributes::TypeMask )
+            {
+                case WindowsFileAttributes::Dir:
+                    fileInfo.isDir = true;
+                    break;
+
+                case WindowsFileAttributes::File:
+                default:
+                    fileInfo.isFile = true;
+                    break;
+            }
+
+            fileInfo.permissions |= QFile::ReadOwner | QFile::ReadUser | QFile::ReadGroup | QFile::ReadOther;
+
+            if ( ( mode & WindowsFileAttributes::ReadOnly ) == 0 )
+            {
+                fileInfo.permissions |= QFile::WriteOwner | QFile::WriteUser | QFile::WriteGroup | QFile::WriteOther;
+            }
+
+            if ( fileInfo.isDir )
+            {
+                fileInfo.permissions |= QFile::ExeOwner | QFile::ExeUser | QFile::ExeGroup | QFile::ExeOther;
+            }
+
             break;
 
-        case UnixFileAttributes::File:
-        default: // ### just for the case; should we warn?
-            fileInfo.isFile = true;
-            break;
-        }
-
-        fileInfo.permissions = modeToPermissions( mode );
-        break;
-
-    case HostFAT:
-    case HostNTFS:
-    case HostHPFS:
-    case HostVFAT:
-        switch ( mode & WindowsFileAttributes::TypeMask )
-        {
-        case WindowsFileAttributes::Dir:
-            fileInfo.isDir = true;
-            break;
-
-        case WindowsFileAttributes::File:
         default:
-            fileInfo.isFile = true;
-            break;
-        }
-
-        fileInfo.permissions |= QFile::ReadOwner | QFile::ReadUser | QFile::ReadGroup | QFile::ReadOther;
-
-        if ( ( mode & WindowsFileAttributes::ReadOnly ) == 0 )
-        {
-            fileInfo.permissions |= QFile::WriteOwner | QFile::WriteUser | QFile::WriteGroup | QFile::WriteOther;
-        }
-
-        if ( fileInfo.isDir )
-        {
-            fileInfo.permissions |= QFile::ExeOwner | QFile::ExeUser | QFile::ExeGroup | QFile::ExeOther;
-        }
-
-        break;
-
-    default:
-        qWarning( "QZip::fillFileInfo() Zip entry format at index %d is not supported.", index );
-        return fileInfo;       // we do not support anything else
+            qWarning( "QZip::fillFileInfo() Zip entry format at index %d is not supported.", index );
+            return fileInfo;       // we do not support anything else
     }
 
     ushort general_purpose_bits = readUShort( header.h.general_purpose_bits );
@@ -832,18 +832,18 @@ void QZipWriterPrivate::addEntry( EntryType type, const QString &fileName, const
 
             switch ( res )
             {
-            case Z_OK:
-                data.resize( len );
-                break;
+                case Z_OK:
+                    data.resize( len );
+                    break;
 
-            case Z_MEM_ERROR:
-                qWarning( "QZip::addEntry() Not enough memory to compress file, skipping" );
-                data.resize( 0 );
-                break;
+                case Z_MEM_ERROR:
+                    qWarning( "QZip::addEntry() Not enough memory to compress file, skipping" );
+                    data.resize( 0 );
+                    break;
 
-            case Z_BUF_ERROR:
-                len *= 2;
-                break;
+                case Z_BUF_ERROR:
+                    len *= 2;
+                    break;
             }
         }
         while ( res == Z_BUF_ERROR );
@@ -887,21 +887,21 @@ void QZipWriterPrivate::addEntry( EntryType type, const QString &fileName, const
 
     switch ( type )
     {
-    case Symlink:
-        mode |= UnixFileAttributes::SymLink;
-        break;
+        case Symlink:
+            mode |= UnixFileAttributes::SymLink;
+            break;
 
-    case Directory:
-        mode |= UnixFileAttributes::Dir;
-        break;
+        case Directory:
+            mode |= UnixFileAttributes::Dir;
+            break;
 
-    case File:
-        mode |= UnixFileAttributes::File;
-        break;
+        case File:
+            mode |= UnixFileAttributes::File;
+            break;
 
-    default:
-        // error, may want to throw
-        break;
+        default:
+            // error, may want to throw
+            break;
     }
 
     writeUInt( header.h.external_file_attributes, mode << 16 );
@@ -1105,25 +1105,25 @@ QByteArray QZipReader::fileData( const QString &fileName ) const
 
             switch ( res )
             {
-            case Z_OK:
-                if ( ( int )len != baunzip.size() )
-                {
-                    baunzip.resize( len );
-                }
+                case Z_OK:
+                    if ( ( int )len != baunzip.size() )
+                    {
+                        baunzip.resize( len );
+                    }
 
-                break;
+                    break;
 
-            case Z_MEM_ERROR:
-                qWarning( "QZip::fileData() Not enough memory" );
-                break;
+                case Z_MEM_ERROR:
+                    qWarning( "QZip::fileData() Not enough memory" );
+                    break;
 
-            case Z_BUF_ERROR:
-                len *= 2;
-                break;
+                case Z_BUF_ERROR:
+                    len *= 2;
+                    break;
 
-            case Z_DATA_ERROR:
-                qWarning( "QZip::fileData() Input data is corrupted" );
-                break;
+                case Z_DATA_ERROR:
+                    qWarning( "QZip::fileData() Input data is corrupted" );
+                    break;
             }
         }
         while ( res == Z_BUF_ERROR );

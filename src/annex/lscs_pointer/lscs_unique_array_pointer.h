@@ -41,7 +41,7 @@ template <typename T>
 using lscs_add_missing_extent_t = typename cs_add_missing_extent<T>::type;
 
 template <typename T, typename Deleter = std::default_delete<lscs_add_missing_extent_t<T>>>
-class LsCsUniqueArrayPointer : public LsCsUniquePointer<lscs_add_missing_extent_t<T>, Deleter>
+          class LsCsUniqueArrayPointer : public LsCsUniquePointer<lscs_add_missing_extent_t<T>, Deleter>
 {
 public:
     using pointer      = typename std::unique_ptr<lscs_add_missing_extent_t<T>, Deleter>::pointer;
@@ -88,7 +88,7 @@ public:
 };
 
 template <typename T, typename = typename std::enable_if_t<std::is_array_v<T>>>
-LsCsUniqueArrayPointer<T> make_unique( std::size_t size )
+          LsCsUniqueArrayPointer<T> make_unique( std::size_t size )
 {
     return std::make_unique<T>( size );
 }

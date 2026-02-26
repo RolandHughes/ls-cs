@@ -134,33 +134,33 @@ void QGraphicsItemPrivate::updateAncestorFlag( QGraphicsItem::GraphicsItemFlag c
         // disabled \a childFlag, or has been reparented.
         switch ( int( childFlag ) )
         {
-        case -2:
-            flag = AncestorFiltersChildEvents;
-            enabled = q->filtersChildEvents();
-            break;
+            case -2:
+                flag = AncestorFiltersChildEvents;
+                enabled = q->filtersChildEvents();
+                break;
 
-        case -1:
-            flag = AncestorHandlesChildEvents;
-            enabled = q->handlesChildEvents();
-            break;
+            case -1:
+                flag = AncestorHandlesChildEvents;
+                enabled = q->handlesChildEvents();
+                break;
 
-        case QGraphicsItem::ItemClipsChildrenToShape:
-            flag = AncestorClipsChildren;
-            enabled = itemFlags & QGraphicsItem::ItemClipsChildrenToShape;
-            break;
+            case QGraphicsItem::ItemClipsChildrenToShape:
+                flag = AncestorClipsChildren;
+                enabled = itemFlags & QGraphicsItem::ItemClipsChildrenToShape;
+                break;
 
-        case QGraphicsItem::ItemIgnoresTransformations:
-            flag = AncestorIgnoresTransformations;
-            enabled = itemFlags & QGraphicsItem::ItemIgnoresTransformations;
-            break;
+            case QGraphicsItem::ItemIgnoresTransformations:
+                flag = AncestorIgnoresTransformations;
+                enabled = itemFlags & QGraphicsItem::ItemIgnoresTransformations;
+                break;
 
-        case QGraphicsItem::ItemContainsChildrenInShape:
-            flag = AncestorContainsChildren;
-            enabled = itemFlags & QGraphicsItem::ItemContainsChildrenInShape;
-            break;
+            case QGraphicsItem::ItemContainsChildrenInShape:
+                flag = AncestorContainsChildren;
+                enabled = itemFlags & QGraphicsItem::ItemContainsChildrenInShape;
+                break;
 
-        default:
-            return;
+            default:
+                return;
         }
 
         if ( parent )
@@ -292,50 +292,50 @@ void QGraphicsItemPrivate::remapItemPos( QEvent *event, QGraphicsItem *item )
 
     switch ( event->type() )
     {
-    case QEvent::GraphicsSceneMouseMove:
-    case QEvent::GraphicsSceneMousePress:
-    case QEvent::GraphicsSceneMouseRelease:
-    case QEvent::GraphicsSceneMouseDoubleClick:
-    {
-        QGraphicsSceneMouseEvent *mouseEvent = static_cast<QGraphicsSceneMouseEvent *>( event );
-        mouseEvent->setPos( item->mapFromItem( q, mouseEvent->pos() ) );
-        mouseEvent->setLastPos( item->mapFromItem( q, mouseEvent->pos() ) );
-
-        for ( int i = 0x1; i <= 0x10; i <<= 1 )
+        case QEvent::GraphicsSceneMouseMove:
+        case QEvent::GraphicsSceneMousePress:
+        case QEvent::GraphicsSceneMouseRelease:
+        case QEvent::GraphicsSceneMouseDoubleClick:
         {
-            if ( mouseEvent->buttons() & i )
+            QGraphicsSceneMouseEvent *mouseEvent = static_cast<QGraphicsSceneMouseEvent *>( event );
+            mouseEvent->setPos( item->mapFromItem( q, mouseEvent->pos() ) );
+            mouseEvent->setLastPos( item->mapFromItem( q, mouseEvent->pos() ) );
+
+            for ( int i = 0x1; i <= 0x10; i <<= 1 )
             {
-                Qt::MouseButton button = Qt::MouseButton( i );
-                mouseEvent->setButtonDownPos( button, item->mapFromItem( q, mouseEvent->buttonDownPos( button ) ) );
+                if ( mouseEvent->buttons() & i )
+                {
+                    Qt::MouseButton button = Qt::MouseButton( i );
+                    mouseEvent->setButtonDownPos( button, item->mapFromItem( q, mouseEvent->buttonDownPos( button ) ) );
+                }
             }
+
+            break;
         }
 
-        break;
-    }
+        case QEvent::GraphicsSceneWheel:
+        {
+            QGraphicsSceneWheelEvent *wheelEvent = static_cast<QGraphicsSceneWheelEvent *>( event );
+            wheelEvent->setPos( item->mapFromItem( q, wheelEvent->pos() ) );
+            break;
+        }
 
-    case QEvent::GraphicsSceneWheel:
-    {
-        QGraphicsSceneWheelEvent *wheelEvent = static_cast<QGraphicsSceneWheelEvent *>( event );
-        wheelEvent->setPos( item->mapFromItem( q, wheelEvent->pos() ) );
-        break;
-    }
+        case QEvent::GraphicsSceneContextMenu:
+        {
+            QGraphicsSceneContextMenuEvent *contextEvent = static_cast<QGraphicsSceneContextMenuEvent *>( event );
+            contextEvent->setPos( item->mapFromItem( q, contextEvent->pos() ) );
+            break;
+        }
 
-    case QEvent::GraphicsSceneContextMenu:
-    {
-        QGraphicsSceneContextMenuEvent *contextEvent = static_cast<QGraphicsSceneContextMenuEvent *>( event );
-        contextEvent->setPos( item->mapFromItem( q, contextEvent->pos() ) );
-        break;
-    }
+        case QEvent::GraphicsSceneHoverMove:
+        {
+            QGraphicsSceneHoverEvent *hoverEvent = static_cast<QGraphicsSceneHoverEvent *>( event );
+            hoverEvent->setPos( item->mapFromItem( q, hoverEvent->pos() ) );
+            break;
+        }
 
-    case QEvent::GraphicsSceneHoverMove:
-    {
-        QGraphicsSceneHoverEvent *hoverEvent = static_cast<QGraphicsSceneHoverEvent *>( event );
-        hoverEvent->setPos( item->mapFromItem( q, hoverEvent->pos() ) );
-        break;
-    }
-
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -4952,141 +4952,141 @@ bool QGraphicsItem::sceneEvent( QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::FocusIn:
-        focusInEvent( static_cast<QFocusEvent *>( event ) );
-        break;
+        case QEvent::FocusIn:
+            focusInEvent( static_cast<QFocusEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneContextMenu:
-        contextMenuEvent( static_cast<QGraphicsSceneContextMenuEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneContextMenu:
+            contextMenuEvent( static_cast<QGraphicsSceneContextMenuEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneDragEnter:
-        dragEnterEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneDragEnter:
+            dragEnterEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneDragMove:
-        dragMoveEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneDragMove:
+            dragMoveEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneDragLeave:
-        dragLeaveEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneDragLeave:
+            dragLeaveEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneDrop:
-        dropEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneDrop:
+            dropEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneHoverEnter:
-        hoverEnterEvent( static_cast<QGraphicsSceneHoverEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneHoverEnter:
+            hoverEnterEvent( static_cast<QGraphicsSceneHoverEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneHoverMove:
-        hoverMoveEvent( static_cast<QGraphicsSceneHoverEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneHoverMove:
+            hoverMoveEvent( static_cast<QGraphicsSceneHoverEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneHoverLeave:
-        hoverLeaveEvent( static_cast<QGraphicsSceneHoverEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneHoverLeave:
+            hoverLeaveEvent( static_cast<QGraphicsSceneHoverEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneMouseMove:
-        mouseMoveEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneMouseMove:
+            mouseMoveEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneMousePress:
-        mousePressEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneMousePress:
+            mousePressEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneMouseRelease:
-        mouseReleaseEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneMouseRelease:
+            mouseReleaseEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneMouseDoubleClick:
-        mouseDoubleClickEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneMouseDoubleClick:
+            mouseDoubleClickEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneWheel:
-        wheelEvent( static_cast<QGraphicsSceneWheelEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneWheel:
+            wheelEvent( static_cast<QGraphicsSceneWheelEvent *>( event ) );
+            break;
 
-    case QEvent::KeyPress:
-    {
-        QKeyEvent *k = static_cast<QKeyEvent *>( event );
-
-        if ( k->key() == Qt::Key_Tab || k->key() == Qt::Key_Backtab )
+        case QEvent::KeyPress:
         {
-            if ( !( k->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ) ) ) //### Add MetaModifier?
+            QKeyEvent *k = static_cast<QKeyEvent *>( event );
+
+            if ( k->key() == Qt::Key_Tab || k->key() == Qt::Key_Backtab )
             {
-                bool res = false;
-
-                if ( k->key() == Qt::Key_Backtab
-                        || ( k->key() == Qt::Key_Tab && ( k->modifiers() & Qt::ShiftModifier ) ) )
+                if ( !( k->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ) ) ) //### Add MetaModifier?
                 {
-                    if ( d_ptr->isWidget )
+                    bool res = false;
+
+                    if ( k->key() == Qt::Key_Backtab
+                            || ( k->key() == Qt::Key_Tab && ( k->modifiers() & Qt::ShiftModifier ) ) )
                     {
-                        res = static_cast<QGraphicsWidget *>( this )->focusNextPrevChild( false );
+                        if ( d_ptr->isWidget )
+                        {
+                            res = static_cast<QGraphicsWidget *>( this )->focusNextPrevChild( false );
+                        }
+                        else if ( d_ptr->scene )
+                        {
+                            res = d_ptr->scene->focusNextPrevChild( false );
+                        }
                     }
-                    else if ( d_ptr->scene )
+                    else if ( k->key() == Qt::Key_Tab )
                     {
-                        res = d_ptr->scene->focusNextPrevChild( false );
+                        if ( d_ptr->isWidget )
+                        {
+                            res = static_cast<QGraphicsWidget *>( this )->focusNextPrevChild( true );
+                        }
+                        else if ( d_ptr->scene )
+                        {
+                            res = d_ptr->scene->focusNextPrevChild( true );
+                        }
                     }
-                }
-                else if ( k->key() == Qt::Key_Tab )
-                {
-                    if ( d_ptr->isWidget )
+
+                    if ( !res )
                     {
-                        res = static_cast<QGraphicsWidget *>( this )->focusNextPrevChild( true );
+                        event->ignore();
                     }
-                    else if ( d_ptr->scene )
-                    {
-                        res = d_ptr->scene->focusNextPrevChild( true );
-                    }
-                }
 
-                if ( !res )
-                {
-                    event->ignore();
-                }
-
-                return true;
-            }
-        }
-
-        keyPressEvent( static_cast<QKeyEvent *>( event ) );
-        break;
-    }
-
-    case QEvent::KeyRelease:
-        keyReleaseEvent( static_cast<QKeyEvent *>( event ) );
-        break;
-
-    case QEvent::InputMethod:
-        inputMethodEvent( static_cast<QInputMethodEvent *>( event ) );
-        break;
-
-    case QEvent::WindowActivate:
-    case QEvent::WindowDeactivate:
-
-        // Propagate panel activation.
-        if ( d_ptr->scene )
-        {
-            for ( int i = 0; i < d_ptr->children.size(); ++i )
-            {
-                QGraphicsItem *child = d_ptr->children.at( i );
-
-                if ( child->isVisible() && !child->isPanel() )
-                {
-                    if ( !( child->d_ptr->ancestorFlags & QGraphicsItemPrivate::AncestorHandlesChildEvents ) )
-                    {
-                        d_ptr->scene->sendEvent( child, event );
-                    }
+                    return true;
                 }
             }
+
+            keyPressEvent( static_cast<QKeyEvent *>( event ) );
+            break;
         }
 
-        break;
+        case QEvent::KeyRelease:
+            keyReleaseEvent( static_cast<QKeyEvent *>( event ) );
+            break;
 
-    default:
-        return false;
+        case QEvent::InputMethod:
+            inputMethodEvent( static_cast<QInputMethodEvent *>( event ) );
+            break;
+
+        case QEvent::WindowActivate:
+        case QEvent::WindowDeactivate:
+
+            // Propagate panel activation.
+            if ( d_ptr->scene )
+            {
+                for ( int i = 0; i < d_ptr->children.size(); ++i )
+                {
+                    QGraphicsItem *child = d_ptr->children.at( i );
+
+                    if ( child->isVisible() && !child->isPanel() )
+                    {
+                        if ( !( child->d_ptr->ancestorFlags & QGraphicsItemPrivate::AncestorHandlesChildEvents ) )
+                        {
+                            d_ptr->scene->sendEvent( child, event );
+                        }
+                    }
+                }
+            }
+
+            break;
+
+        default:
+            return false;
     }
 
     return true;
@@ -5606,32 +5606,32 @@ static void lscs_graphicsItem_highlightSelected(
 
     switch ( item->type() )
     {
-    case QGraphicsEllipseItem::Type:
-        itemPenWidth = static_cast<QGraphicsEllipseItem *>( item )->pen().widthF();
-        break;
+        case QGraphicsEllipseItem::Type:
+            itemPenWidth = static_cast<QGraphicsEllipseItem *>( item )->pen().widthF();
+            break;
 
-    case QGraphicsPathItem::Type:
-        itemPenWidth = static_cast<QGraphicsPathItem *>( item )->pen().widthF();
-        break;
+        case QGraphicsPathItem::Type:
+            itemPenWidth = static_cast<QGraphicsPathItem *>( item )->pen().widthF();
+            break;
 
-    case QGraphicsPolygonItem::Type:
-        itemPenWidth = static_cast<QGraphicsPolygonItem *>( item )->pen().widthF();
-        break;
+        case QGraphicsPolygonItem::Type:
+            itemPenWidth = static_cast<QGraphicsPolygonItem *>( item )->pen().widthF();
+            break;
 
-    case QGraphicsRectItem::Type:
-        itemPenWidth = static_cast<QGraphicsRectItem *>( item )->pen().widthF();
-        break;
+        case QGraphicsRectItem::Type:
+            itemPenWidth = static_cast<QGraphicsRectItem *>( item )->pen().widthF();
+            break;
 
-    case QGraphicsSimpleTextItem::Type:
-        itemPenWidth = static_cast<QGraphicsSimpleTextItem *>( item )->pen().widthF();
-        break;
+        case QGraphicsSimpleTextItem::Type:
+            itemPenWidth = static_cast<QGraphicsSimpleTextItem *>( item )->pen().widthF();
+            break;
 
-    case QGraphicsLineItem::Type:
-        itemPenWidth = static_cast<QGraphicsLineItem *>( item )->pen().widthF();
-        break;
+        case QGraphicsLineItem::Type:
+            itemPenWidth = static_cast<QGraphicsLineItem *>( item )->pen().widthF();
+            break;
 
-    default:
-        itemPenWidth = 1.0;
+        default:
+            itemPenWidth = 1.0;
     }
 
     const qreal pad = itemPenWidth / 2;
@@ -6714,30 +6714,30 @@ public:
 
         switch ( shapeMode )
         {
-        case QGraphicsPixmapItem::MaskShape:
-        {
-            QBitmap mask = pixmap.mask();
-
-            if ( ! mask.isNull() )
+            case QGraphicsPixmapItem::MaskShape:
             {
-                shape = lscs_regionToPath( QRegion( mask ).translated( offset.toPoint() ) );
-                break;
+                QBitmap mask = pixmap.mask();
+
+                if ( ! mask.isNull() )
+                {
+                    shape = lscs_regionToPath( QRegion( mask ).translated( offset.toPoint() ) );
+                    break;
+                }
+
+                [[fallthrough]];
             }
 
-            [[fallthrough]];
-        }
+            case QGraphicsPixmapItem::BoundingRectShape:
+                shape.addRect( QRectF( offset.x(), offset.y(), pixmap.width(), pixmap.height() ) );
+                break;
 
-        case QGraphicsPixmapItem::BoundingRectShape:
-            shape.addRect( QRectF( offset.x(), offset.y(), pixmap.width(), pixmap.height() ) );
-            break;
-
-        case QGraphicsPixmapItem::HeuristicMaskShape:
+            case QGraphicsPixmapItem::HeuristicMaskShape:
 #ifndef LSCS_NO_IMAGE_HEURISTIC_MASK
-            shape = lscs_regionToPath( QRegion( pixmap.createHeuristicMask() ).translated( offset.toPoint() ) );
+                shape = lscs_regionToPath( QRegion( pixmap.createHeuristicMask() ).translated( offset.toPoint() ) );
 #else
-            shape.addRect( QRectF( offset.x(), offset.y(), pixmap.width(), pixmap.height() ) );
+                shape.addRect( QRectF( offset.x(), offset.y(), pixmap.width(), pixmap.height() ) );
 #endif
-            break;
+                break;
         }
     }
 };
@@ -7191,43 +7191,43 @@ bool QGraphicsTextItem::sceneEvent( QEvent *event )
     // Ensure input context is updated.
     switch ( event->type() )
     {
-    case QEvent::ContextMenu:
-    case QEvent::FocusIn:
-    case QEvent::FocusOut:
-    case QEvent::GraphicsSceneDragEnter:
-    case QEvent::GraphicsSceneDragLeave:
-    case QEvent::GraphicsSceneDragMove:
-    case QEvent::GraphicsSceneDrop:
-    case QEvent::GraphicsSceneHoverEnter:
-    case QEvent::GraphicsSceneHoverLeave:
-    case QEvent::GraphicsSceneHoverMove:
-    case QEvent::GraphicsSceneMouseDoubleClick:
-    case QEvent::GraphicsSceneMousePress:
-    case QEvent::GraphicsSceneMouseMove:
-    case QEvent::GraphicsSceneMouseRelease:
-    case QEvent::KeyPress:
-    case QEvent::KeyRelease:
+        case QEvent::ContextMenu:
+        case QEvent::FocusIn:
+        case QEvent::FocusOut:
+        case QEvent::GraphicsSceneDragEnter:
+        case QEvent::GraphicsSceneDragLeave:
+        case QEvent::GraphicsSceneDragMove:
+        case QEvent::GraphicsSceneDrop:
+        case QEvent::GraphicsSceneHoverEnter:
+        case QEvent::GraphicsSceneHoverLeave:
+        case QEvent::GraphicsSceneHoverMove:
+        case QEvent::GraphicsSceneMouseDoubleClick:
+        case QEvent::GraphicsSceneMousePress:
+        case QEvent::GraphicsSceneMouseMove:
+        case QEvent::GraphicsSceneMouseRelease:
+        case QEvent::KeyPress:
+        case QEvent::KeyRelease:
 
-        // Reset the focus widget's input context, regardless
-        // of how this item gained or lost focus.
+            // Reset the focus widget's input context, regardless
+            // of how this item gained or lost focus.
 
-        if ( event->type() == QEvent::FocusIn || event->type() == QEvent::FocusOut )
-        {
-            QGuiApplication::inputMethod()->reset();
-        }
-        else
-        {
-            QGuiApplication::inputMethod()->update( Qt::ImQueryInput );
-        }
+            if ( event->type() == QEvent::FocusIn || event->type() == QEvent::FocusOut )
+            {
+                QGuiApplication::inputMethod()->reset();
+            }
+            else
+            {
+                QGuiApplication::inputMethod()->update( Qt::ImQueryInput );
+            }
 
-        break;
+            break;
 
-    case QEvent::ShortcutOverride:
-        dd->sendControlEvent( event );
-        return true;
+        case QEvent::ShortcutOverride:
+            dd->sendControlEvent( event );
+            return true;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return result;
@@ -8301,141 +8301,141 @@ QDebug operator<<( QDebug debug, QGraphicsItem::GraphicsItemChange change )
 
     switch ( change )
     {
-    case QGraphicsItem::ItemChildAddedChange:
-        str = "ItemChildAddedChange";
-        break;
+        case QGraphicsItem::ItemChildAddedChange:
+            str = "ItemChildAddedChange";
+            break;
 
-    case QGraphicsItem::ItemChildRemovedChange:
-        str = "ItemChildRemovedChange";
-        break;
+        case QGraphicsItem::ItemChildRemovedChange:
+            str = "ItemChildRemovedChange";
+            break;
 
-    case QGraphicsItem::ItemCursorChange:
-        str = "ItemCursorChange";
-        break;
+        case QGraphicsItem::ItemCursorChange:
+            str = "ItemCursorChange";
+            break;
 
-    case QGraphicsItem::ItemCursorHasChanged:
-        str = "ItemCursorHasChanged";
-        break;
+        case QGraphicsItem::ItemCursorHasChanged:
+            str = "ItemCursorHasChanged";
+            break;
 
-    case QGraphicsItem::ItemEnabledChange:
-        str = "ItemEnabledChange";
-        break;
+        case QGraphicsItem::ItemEnabledChange:
+            str = "ItemEnabledChange";
+            break;
 
-    case QGraphicsItem::ItemEnabledHasChanged:
-        str = "ItemEnabledHasChanged";
-        break;
+        case QGraphicsItem::ItemEnabledHasChanged:
+            str = "ItemEnabledHasChanged";
+            break;
 
-    case QGraphicsItem::ItemFlagsChange:
-        str = "ItemFlagsChange";
-        break;
+        case QGraphicsItem::ItemFlagsChange:
+            str = "ItemFlagsChange";
+            break;
 
-    case QGraphicsItem::ItemFlagsHaveChanged:
-        str = "ItemFlagsHaveChanged";
-        break;
+        case QGraphicsItem::ItemFlagsHaveChanged:
+            str = "ItemFlagsHaveChanged";
+            break;
 
-    case QGraphicsItem::ItemMatrixChange:
-        str = "ItemMatrixChange";
-        break;
+        case QGraphicsItem::ItemMatrixChange:
+            str = "ItemMatrixChange";
+            break;
 
-    case QGraphicsItem::ItemParentChange:
-        str = "ItemParentChange";
-        break;
+        case QGraphicsItem::ItemParentChange:
+            str = "ItemParentChange";
+            break;
 
-    case QGraphicsItem::ItemParentHasChanged:
-        str = "ItemParentHasChanged";
-        break;
+        case QGraphicsItem::ItemParentHasChanged:
+            str = "ItemParentHasChanged";
+            break;
 
-    case QGraphicsItem::ItemPositionChange:
-        str = "ItemPositionChange";
-        break;
+        case QGraphicsItem::ItemPositionChange:
+            str = "ItemPositionChange";
+            break;
 
-    case QGraphicsItem::ItemPositionHasChanged:
-        str = "ItemPositionHasChanged";
-        break;
+        case QGraphicsItem::ItemPositionHasChanged:
+            str = "ItemPositionHasChanged";
+            break;
 
-    case QGraphicsItem::ItemSceneChange:
-        str = "ItemSceneChange";
-        break;
+        case QGraphicsItem::ItemSceneChange:
+            str = "ItemSceneChange";
+            break;
 
-    case QGraphicsItem::ItemSceneHasChanged:
-        str = "ItemSceneHasChanged";
-        break;
+        case QGraphicsItem::ItemSceneHasChanged:
+            str = "ItemSceneHasChanged";
+            break;
 
-    case QGraphicsItem::ItemSelectedChange:
-        str = "ItemSelectedChange";
-        break;
+        case QGraphicsItem::ItemSelectedChange:
+            str = "ItemSelectedChange";
+            break;
 
-    case QGraphicsItem::ItemSelectedHasChanged:
-        str = "ItemSelectedHasChanged";
-        break;
+        case QGraphicsItem::ItemSelectedHasChanged:
+            str = "ItemSelectedHasChanged";
+            break;
 
-    case QGraphicsItem::ItemToolTipChange:
-        str = "ItemToolTipChange";
-        break;
+        case QGraphicsItem::ItemToolTipChange:
+            str = "ItemToolTipChange";
+            break;
 
-    case QGraphicsItem::ItemToolTipHasChanged:
-        str = "ItemToolTipHasChanged";
-        break;
+        case QGraphicsItem::ItemToolTipHasChanged:
+            str = "ItemToolTipHasChanged";
+            break;
 
-    case QGraphicsItem::ItemTransformChange:
-        str = "ItemTransformChange";
-        break;
+        case QGraphicsItem::ItemTransformChange:
+            str = "ItemTransformChange";
+            break;
 
-    case QGraphicsItem::ItemTransformHasChanged:
-        str = "ItemTransformHasChanged";
-        break;
+        case QGraphicsItem::ItemTransformHasChanged:
+            str = "ItemTransformHasChanged";
+            break;
 
-    case QGraphicsItem::ItemVisibleChange:
-        str = "ItemVisibleChange";
-        break;
+        case QGraphicsItem::ItemVisibleChange:
+            str = "ItemVisibleChange";
+            break;
 
-    case QGraphicsItem::ItemVisibleHasChanged:
-        str = "ItemVisibleHasChanged";
-        break;
+        case QGraphicsItem::ItemVisibleHasChanged:
+            str = "ItemVisibleHasChanged";
+            break;
 
-    case QGraphicsItem::ItemZValueChange:
-        str = "ItemZValueChange";
-        break;
+        case QGraphicsItem::ItemZValueChange:
+            str = "ItemZValueChange";
+            break;
 
-    case QGraphicsItem::ItemZValueHasChanged:
-        str = "ItemZValueHasChanged";
-        break;
+        case QGraphicsItem::ItemZValueHasChanged:
+            str = "ItemZValueHasChanged";
+            break;
 
-    case QGraphicsItem::ItemOpacityChange:
-        str = "ItemOpacityChange";
-        break;
+        case QGraphicsItem::ItemOpacityChange:
+            str = "ItemOpacityChange";
+            break;
 
-    case QGraphicsItem::ItemOpacityHasChanged:
-        str = "ItemOpacityHasChanged";
-        break;
+        case QGraphicsItem::ItemOpacityHasChanged:
+            str = "ItemOpacityHasChanged";
+            break;
 
-    case QGraphicsItem::ItemScenePositionHasChanged:
-        str = "ItemScenePositionHasChanged";
-        break;
+        case QGraphicsItem::ItemScenePositionHasChanged:
+            str = "ItemScenePositionHasChanged";
+            break;
 
-    case QGraphicsItem::ItemRotationChange:
-        str = "ItemRotationChange";
-        break;
+        case QGraphicsItem::ItemRotationChange:
+            str = "ItemRotationChange";
+            break;
 
-    case QGraphicsItem::ItemRotationHasChanged:
-        str = "ItemRotationHasChanged";
-        break;
+        case QGraphicsItem::ItemRotationHasChanged:
+            str = "ItemRotationHasChanged";
+            break;
 
-    case QGraphicsItem::ItemScaleChange:
-        str = "ItemScaleChange";
-        break;
+        case QGraphicsItem::ItemScaleChange:
+            str = "ItemScaleChange";
+            break;
 
-    case QGraphicsItem::ItemScaleHasChanged:
-        str = "ItemScaleHasChanged";
-        break;
+        case QGraphicsItem::ItemScaleHasChanged:
+            str = "ItemScaleHasChanged";
+            break;
 
-    case QGraphicsItem::ItemTransformOriginPointChange:
-        str = "ItemTransformOriginPointChange";
-        break;
+        case QGraphicsItem::ItemTransformOriginPointChange:
+            str = "ItemTransformOriginPointChange";
+            break;
 
-    case QGraphicsItem::ItemTransformOriginPointHasChanged:
-        str = "ItemTransformOriginPointHasChanged";
-        break;
+        case QGraphicsItem::ItemTransformOriginPointHasChanged:
+            str = "ItemTransformOriginPointHasChanged";
+            break;
     }
 
     debug << str;
@@ -8449,85 +8449,85 @@ QDebug operator<<( QDebug debug, QGraphicsItem::GraphicsItemFlag flag )
 
     switch ( flag )
     {
-    case QGraphicsItem::ItemIsMovable:
-        str = "ItemIsMovable";
-        break;
+        case QGraphicsItem::ItemIsMovable:
+            str = "ItemIsMovable";
+            break;
 
-    case QGraphicsItem::ItemIsSelectable:
-        str = "ItemIsSelectable";
-        break;
+        case QGraphicsItem::ItemIsSelectable:
+            str = "ItemIsSelectable";
+            break;
 
-    case QGraphicsItem::ItemIsFocusable:
-        str = "ItemIsFocusable";
-        break;
+        case QGraphicsItem::ItemIsFocusable:
+            str = "ItemIsFocusable";
+            break;
 
-    case QGraphicsItem::ItemClipsToShape:
-        str = "ItemClipsToShape";
-        break;
+        case QGraphicsItem::ItemClipsToShape:
+            str = "ItemClipsToShape";
+            break;
 
-    case QGraphicsItem::ItemClipsChildrenToShape:
-        str = "ItemClipsChildrenToShape";
-        break;
+        case QGraphicsItem::ItemClipsChildrenToShape:
+            str = "ItemClipsChildrenToShape";
+            break;
 
-    case QGraphicsItem::ItemIgnoresTransformations:
-        str = "ItemIgnoresTransformations";
-        break;
+        case QGraphicsItem::ItemIgnoresTransformations:
+            str = "ItemIgnoresTransformations";
+            break;
 
-    case QGraphicsItem::ItemIgnoresParentOpacity:
-        str = "ItemIgnoresParentOpacity";
-        break;
+        case QGraphicsItem::ItemIgnoresParentOpacity:
+            str = "ItemIgnoresParentOpacity";
+            break;
 
-    case QGraphicsItem::ItemDoesntPropagateOpacityToChildren:
-        str = "ItemDoesntPropagateOpacityToChildren";
-        break;
+        case QGraphicsItem::ItemDoesntPropagateOpacityToChildren:
+            str = "ItemDoesntPropagateOpacityToChildren";
+            break;
 
-    case QGraphicsItem::ItemStacksBehindParent:
-        str = "ItemStacksBehindParent";
-        break;
+        case QGraphicsItem::ItemStacksBehindParent:
+            str = "ItemStacksBehindParent";
+            break;
 
-    case QGraphicsItem::ItemUsesExtendedStyleOption:
-        str = "ItemUsesExtendedStyleOption";
-        break;
+        case QGraphicsItem::ItemUsesExtendedStyleOption:
+            str = "ItemUsesExtendedStyleOption";
+            break;
 
-    case QGraphicsItem::ItemHasNoContents:
-        str = "ItemHasNoContents";
-        break;
+        case QGraphicsItem::ItemHasNoContents:
+            str = "ItemHasNoContents";
+            break;
 
-    case QGraphicsItem::ItemSendsGeometryChanges:
-        str = "ItemSendsGeometryChanges";
-        break;
+        case QGraphicsItem::ItemSendsGeometryChanges:
+            str = "ItemSendsGeometryChanges";
+            break;
 
-    case QGraphicsItem::ItemAcceptsInputMethod:
-        str = "ItemAcceptsInputMethod";
-        break;
+        case QGraphicsItem::ItemAcceptsInputMethod:
+            str = "ItemAcceptsInputMethod";
+            break;
 
-    case QGraphicsItem::ItemNegativeZStacksBehindParent:
-        str = "ItemNegativeZStacksBehindParent";
-        break;
+        case QGraphicsItem::ItemNegativeZStacksBehindParent:
+            str = "ItemNegativeZStacksBehindParent";
+            break;
 
-    case QGraphicsItem::ItemIsPanel:
-        str = "ItemIsPanel";
-        break;
+        case QGraphicsItem::ItemIsPanel:
+            str = "ItemIsPanel";
+            break;
 
-    case QGraphicsItem::ItemIsFocusScope:
-        str = "ItemIsFocusScope";
-        break;
+        case QGraphicsItem::ItemIsFocusScope:
+            str = "ItemIsFocusScope";
+            break;
 
-    case QGraphicsItem::ItemSendsScenePositionChanges:
-        str = "ItemSendsScenePositionChanges";
-        break;
+        case QGraphicsItem::ItemSendsScenePositionChanges:
+            str = "ItemSendsScenePositionChanges";
+            break;
 
-    case QGraphicsItem::ItemStopsClickFocusPropagation:
-        str = "ItemStopsClickFocusPropagation";
-        break;
+        case QGraphicsItem::ItemStopsClickFocusPropagation:
+            str = "ItemStopsClickFocusPropagation";
+            break;
 
-    case QGraphicsItem::ItemStopsFocusHandling:
-        str = "ItemStopsFocusHandling";
-        break;
+        case QGraphicsItem::ItemStopsFocusHandling:
+            str = "ItemStopsFocusHandling";
+            break;
 
-    case QGraphicsItem::ItemContainsChildrenInShape:
-        str = "ItemContainsChildrenInShape";
-        break;
+        case QGraphicsItem::ItemContainsChildrenInShape:
+            str = "ItemContainsChildrenInShape";
+            break;
     }
 
     debug << str;

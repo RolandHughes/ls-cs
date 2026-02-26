@@ -202,80 +202,80 @@ void QDialogButtonBoxPrivate::layoutButtons()
 
         switch ( role )
         {
-        case QPlatformDialogHelper::Stretch:
-            if ( ! center )
-            {
-                buttonLayout->addStretch();
-            }
+            case QPlatformDialogHelper::Stretch:
+                if ( ! center )
+                {
+                    buttonLayout->addStretch();
+                }
 
+                break;
+
+            case QPlatformDialogHelper::AcceptRole:
+            {
+                if ( acceptRoleList.isEmpty() )
+                {
+                    break;
+                }
+
+                // Only the first one
+                QAbstractButton *button = acceptRoleList.first();
+
+                buttonLayout->addWidget( button );
+                button->show();
+            }
             break;
 
-        case QPlatformDialogHelper::AcceptRole:
-        {
-            if ( acceptRoleList.isEmpty() )
+            case QPlatformDialogHelper::AlternateRole:
             {
-                break;
+                if ( acceptRoleList.size() < 2 )
+                {
+                    break;
+                }
+
+                QList<QAbstractButton *> list = acceptRoleList;
+                list.removeFirst();
+                addButtonsToLayout( list, reverse );
             }
+            break;
 
-            // Only the first one
-            QAbstractButton *button = acceptRoleList.first();
-
-            buttonLayout->addWidget( button );
-            button->show();
-        }
-        break;
-
-        case QPlatformDialogHelper::AlternateRole:
-        {
-            if ( acceptRoleList.size() < 2 )
+            case QPlatformDialogHelper::DestructiveRole:
             {
-                break;
+                const QList<QAbstractButton *> &list = buttonLists[role];
+
+                /*
+                    Mac: Insert a gap on the left of the destructive
+                    buttons to ensure that they don't get too close to
+                    the help and action buttons (but only if there are
+                    some buttons to the left of the destructive buttons
+                    (and the stretch, whence buttonLayout->count() > 1
+                    and not 0)).
+                */
+                if ( tmpPolicy == QDialogButtonBox::MacLayout
+                        && !list.isEmpty() && buttonLayout->count() > 1 )
+                {
+                    buttonLayout->addSpacing( MacGap );
+                }
+
+                addButtonsToLayout( list, reverse );
+
+                // Insert a gap between the destructive buttons and the
+                // accept and reject buttons.
+
+                if ( tmpPolicy == QDialogButtonBox::MacLayout && !list.isEmpty() )
+                {
+                    buttonLayout->addSpacing( MacGap );
+                }
             }
+            break;
 
-            QList<QAbstractButton *> list = acceptRoleList;
-            list.removeFirst();
-            addButtonsToLayout( list, reverse );
-        }
-        break;
-
-        case QPlatformDialogHelper::DestructiveRole:
-        {
-            const QList<QAbstractButton *> &list = buttonLists[role];
-
-            /*
-                Mac: Insert a gap on the left of the destructive
-                buttons to ensure that they don't get too close to
-                the help and action buttons (but only if there are
-                some buttons to the left of the destructive buttons
-                (and the stretch, whence buttonLayout->count() > 1
-                and not 0)).
-            */
-            if ( tmpPolicy == QDialogButtonBox::MacLayout
-                    && !list.isEmpty() && buttonLayout->count() > 1 )
-            {
-                buttonLayout->addSpacing( MacGap );
-            }
-
-            addButtonsToLayout( list, reverse );
-
-            // Insert a gap between the destructive buttons and the
-            // accept and reject buttons.
-
-            if ( tmpPolicy == QDialogButtonBox::MacLayout && !list.isEmpty() )
-            {
-                buttonLayout->addSpacing( MacGap );
-            }
-        }
-        break;
-
-        case QPlatformDialogHelper::RejectRole:
-        case QPlatformDialogHelper::ActionRole:
-        case QPlatformDialogHelper::HelpRole:
-        case QPlatformDialogHelper::YesRole:
-        case QPlatformDialogHelper::NoRole:
-        case QPlatformDialogHelper::ApplyRole:
-        case QPlatformDialogHelper::ResetRole:
-            addButtonsToLayout( buttonLists[role], reverse );
+            case QPlatformDialogHelper::RejectRole:
+            case QPlatformDialogHelper::ActionRole:
+            case QPlatformDialogHelper::HelpRole:
+            case QPlatformDialogHelper::YesRole:
+            case QPlatformDialogHelper::NoRole:
+            case QPlatformDialogHelper::ApplyRole:
+            case QPlatformDialogHelper::ResetRole:
+                addButtonsToLayout( buttonLists[role], reverse );
         }
 
         ++currentLayout;
@@ -317,61 +317,61 @@ QPushButton *QDialogButtonBoxPrivate::createButton( QDialogButtonBox::StandardBu
 
     switch ( sbutton )
     {
-    case QDialogButtonBox::Ok:
-        icon = QStyle::SP_DialogOkButton;
-        break;
+        case QDialogButtonBox::Ok:
+            icon = QStyle::SP_DialogOkButton;
+            break;
 
-    case QDialogButtonBox::Save:
-        icon = QStyle::SP_DialogSaveButton;
-        break;
+        case QDialogButtonBox::Save:
+            icon = QStyle::SP_DialogSaveButton;
+            break;
 
-    case QDialogButtonBox::Open:
-        icon = QStyle::SP_DialogOpenButton;
-        break;
+        case QDialogButtonBox::Open:
+            icon = QStyle::SP_DialogOpenButton;
+            break;
 
-    case QDialogButtonBox::Cancel:
-        icon = QStyle::SP_DialogCancelButton;
-        break;
+        case QDialogButtonBox::Cancel:
+            icon = QStyle::SP_DialogCancelButton;
+            break;
 
-    case QDialogButtonBox::Close:
-        icon = QStyle::SP_DialogCloseButton;
-        break;
+        case QDialogButtonBox::Close:
+            icon = QStyle::SP_DialogCloseButton;
+            break;
 
-    case QDialogButtonBox::Apply:
-        icon = QStyle::SP_DialogApplyButton;
-        break;
+        case QDialogButtonBox::Apply:
+            icon = QStyle::SP_DialogApplyButton;
+            break;
 
-    case QDialogButtonBox::Reset:
-        icon = QStyle::SP_DialogResetButton;
-        break;
+        case QDialogButtonBox::Reset:
+            icon = QStyle::SP_DialogResetButton;
+            break;
 
-    case QDialogButtonBox::Help:
-        icon = QStyle::SP_DialogHelpButton;
-        break;
+        case QDialogButtonBox::Help:
+            icon = QStyle::SP_DialogHelpButton;
+            break;
 
-    case QDialogButtonBox::Discard:
-        icon = QStyle::SP_DialogDiscardButton;
-        break;
+        case QDialogButtonBox::Discard:
+            icon = QStyle::SP_DialogDiscardButton;
+            break;
 
-    case QDialogButtonBox::Yes:
-        icon = QStyle::SP_DialogYesButton;
-        break;
+        case QDialogButtonBox::Yes:
+            icon = QStyle::SP_DialogYesButton;
+            break;
 
-    case QDialogButtonBox::No:
-        icon = QStyle::SP_DialogNoButton;
-        break;
+        case QDialogButtonBox::No:
+            icon = QStyle::SP_DialogNoButton;
+            break;
 
-    case QDialogButtonBox::YesToAll:
-    case QDialogButtonBox::NoToAll:
-    case QDialogButtonBox::SaveAll:
-    case QDialogButtonBox::Abort:
-    case QDialogButtonBox::Retry:
-    case QDialogButtonBox::Ignore:
-    case QDialogButtonBox::RestoreDefaults:
-        break;
+        case QDialogButtonBox::YesToAll:
+        case QDialogButtonBox::NoToAll:
+        case QDialogButtonBox::SaveAll:
+        case QDialogButtonBox::Abort:
+        case QDialogButtonBox::Retry:
+        case QDialogButtonBox::Ignore:
+        case QDialogButtonBox::RestoreDefaults:
+            break;
 
-    case QDialogButtonBox::NoButton:
-        return nullptr;
+        case QDialogButtonBox::NoButton:
+            return nullptr;
     }
 
     QPushButton *button = new QPushButton( QGuiApplicationPrivate::platformTheme()->standardButtonText( sbutton ), q );
@@ -693,22 +693,22 @@ void QDialogButtonBoxPrivate::_q_handleButtonClicked()
 
         switch ( buttonRole )
         {
-        case QDialogButtonBox::AcceptRole:
-        case QDialogButtonBox::YesRole:
-            emit q->accepted();
-            break;
+            case QDialogButtonBox::AcceptRole:
+            case QDialogButtonBox::YesRole:
+                emit q->accepted();
+                break;
 
-        case QDialogButtonBox::RejectRole:
-        case QDialogButtonBox::NoRole:
-            emit q->rejected();
-            break;
+            case QDialogButtonBox::RejectRole:
+            case QDialogButtonBox::NoRole:
+                emit q->rejected();
+                break;
 
-        case QDialogButtonBox::HelpRole:
-            emit q->helpRequested();
-            break;
+            case QDialogButtonBox::HelpRole:
+                emit q->helpRequested();
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 }
@@ -770,33 +770,33 @@ void QDialogButtonBox::changeEvent( QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::StyleChange:
+        case QEvent::StyleChange:
 
-        // Propagate style
+            // Propagate style
 
-        if ( ! d->standardButtonHash.empty() )
-        {
-            QStyle *newStyle = style();
-            const StandardButtonHash::iterator end = d->standardButtonHash.end();
-
-            for ( StandardButtonHash::iterator it = d->standardButtonHash.begin(); it != end; ++it )
+            if ( ! d->standardButtonHash.empty() )
             {
-                it.key()->setStyle( newStyle );
+                QStyle *newStyle = style();
+                const StandardButtonHash::iterator end = d->standardButtonHash.end();
+
+                for ( StandardButtonHash::iterator it = d->standardButtonHash.begin(); it != end; ++it )
+                {
+                    it.key()->setStyle( newStyle );
+                }
             }
-        }
 
 #ifdef Q_OS_DARWIN
-        [[fallthrough]];
+            [[fallthrough]];
 
-    case QEvent::MacSizeChange:
+        case QEvent::MacSizeChange:
 #endif
-        d->resetLayout();
-        QWidget::changeEvent( event );
-        break;
+            d->resetLayout();
+            QWidget::changeEvent( event );
+            break;
 
-    default:
-        QWidget::changeEvent( event );
-        break;
+        default:
+            QWidget::changeEvent( event );
+            break;
     }
 }
 

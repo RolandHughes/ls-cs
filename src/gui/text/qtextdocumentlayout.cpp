@@ -1269,7 +1269,7 @@ void QTextDocumentLayoutPrivate::drawFrame( const QPointF &offset, QPainter *pai
         const int cursorPos = context.cursorPosition - cursorBlockNeedingRepaint.position();
 
         cursorBlockNeedingRepaint.layout()->drawCursor( painter, offsetOfRepaintedCursorBlock,
-                                 cursorPos, cursorWidth );
+                cursorPos, cursorWidth );
 
         painter->setPen( oldPen );
     }
@@ -1333,24 +1333,24 @@ void QTextDocumentLayoutPrivate::drawTableCell( const QRectF &cellRect, QPainter
 
         switch ( cellBorder )
         {
-        case QTextFrameFormat::BorderStyle_Inset:
-            cellBorder = QTextFrameFormat::BorderStyle_Outset;
-            break;
+            case QTextFrameFormat::BorderStyle_Inset:
+                cellBorder = QTextFrameFormat::BorderStyle_Outset;
+                break;
 
-        case QTextFrameFormat::BorderStyle_Outset:
-            cellBorder = QTextFrameFormat::BorderStyle_Inset;
-            break;
+            case QTextFrameFormat::BorderStyle_Outset:
+                cellBorder = QTextFrameFormat::BorderStyle_Inset;
+                break;
 
-        case QTextFrameFormat::BorderStyle_Groove:
-            cellBorder = QTextFrameFormat::BorderStyle_Ridge;
-            break;
+            case QTextFrameFormat::BorderStyle_Groove:
+                cellBorder = QTextFrameFormat::BorderStyle_Ridge;
+                break;
 
-        case QTextFrameFormat::BorderStyle_Ridge:
-            cellBorder = QTextFrameFormat::BorderStyle_Groove;
-            break;
+            case QTextFrameFormat::BorderStyle_Ridge:
+                cellBorder = QTextFrameFormat::BorderStyle_Groove;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         drawBorder( painter, borderRect, topMargin, bottomMargin,
@@ -1704,28 +1704,28 @@ void QTextDocumentLayoutPrivate::drawListItem( const QPointF &offset, QPainter *
 
     switch ( style )
     {
-    case QTextListFormat::ListDecimal:
-    case QTextListFormat::ListLowerAlpha:
-    case QTextListFormat::ListUpperAlpha:
-    case QTextListFormat::ListLowerRoman:
-    case QTextListFormat::ListUpperRoman:
-        itemText = static_cast<QTextList *>( object )->itemText( bl );
-        size.setWidth( fontMetrics.width( itemText ) );
-        size.setHeight( fontMetrics.height() );
-        break;
+        case QTextListFormat::ListDecimal:
+        case QTextListFormat::ListLowerAlpha:
+        case QTextListFormat::ListUpperAlpha:
+        case QTextListFormat::ListLowerRoman:
+        case QTextListFormat::ListUpperRoman:
+            itemText = static_cast<QTextList *>( object )->itemText( bl );
+            size.setWidth( fontMetrics.width( itemText ) );
+            size.setHeight( fontMetrics.height() );
+            break;
 
-    case QTextListFormat::ListSquare:
-    case QTextListFormat::ListCircle:
-    case QTextListFormat::ListDisc:
-        size.setWidth( fontMetrics.lineSpacing() / 3 );
-        size.setHeight( size.width() );
-        break;
+        case QTextListFormat::ListSquare:
+        case QTextListFormat::ListCircle:
+        case QTextListFormat::ListDisc:
+            size.setWidth( fontMetrics.lineSpacing() / 3 );
+            size.setHeight( size.width() );
+            break;
 
-    case QTextListFormat::ListStyleUndefined:
-        return;
+        case QTextListFormat::ListStyleUndefined:
+            return;
 
-    default:
-        return;
+        default:
+            return;
     }
 
     QRectF r( pos, size );
@@ -1765,51 +1765,51 @@ void QTextDocumentLayoutPrivate::drawListItem( const QPointF &offset, QPainter *
 
     switch ( style )
     {
-    case QTextListFormat::ListDecimal:
-    case QTextListFormat::ListLowerAlpha:
-    case QTextListFormat::ListUpperAlpha:
-    case QTextListFormat::ListLowerRoman:
-    case QTextListFormat::ListUpperRoman:
-    {
-        QTextLayout layout( itemText, font, q->paintDevice() );
-        layout.setCacheEnabled( true );
-        QTextOption option( Qt::AlignLeft | Qt::AlignAbsolute );
-        option.setTextDirection( dir );
-        layout.setTextOption( option );
-        layout.beginLayout();
-
-        QTextLine line = layout.createLine();
-
-        if ( line.isValid() )
+        case QTextListFormat::ListDecimal:
+        case QTextListFormat::ListLowerAlpha:
+        case QTextListFormat::ListUpperAlpha:
+        case QTextListFormat::ListLowerRoman:
+        case QTextListFormat::ListUpperRoman:
         {
-            line.setLeadingIncluded( true );
+            QTextLayout layout( itemText, font, q->paintDevice() );
+            layout.setCacheEnabled( true );
+            QTextOption option( Qt::AlignLeft | Qt::AlignAbsolute );
+            option.setTextDirection( dir );
+            layout.setTextOption( option );
+            layout.beginLayout();
+
+            QTextLine line = layout.createLine();
+
+            if ( line.isValid() )
+            {
+                line.setLeadingIncluded( true );
+            }
+
+            layout.endLayout();
+            layout.draw( painter, QPointF( r.left(), pos.y() ) );
+            break;
         }
 
-        layout.endLayout();
-        layout.draw( painter, QPointF( r.left(), pos.y() ) );
-        break;
-    }
+        case QTextListFormat::ListSquare:
+            painter->fillRect( r, brush );
+            break;
 
-    case QTextListFormat::ListSquare:
-        painter->fillRect( r, brush );
-        break;
+        case QTextListFormat::ListCircle:
+            painter->setPen( QPen( brush, 0 ) );
+            painter->drawEllipse( r.translated( 0.5, 0.5 ) ); // pixel align for sharper rendering
+            break;
 
-    case QTextListFormat::ListCircle:
-        painter->setPen( QPen( brush, 0 ) );
-        painter->drawEllipse( r.translated( 0.5, 0.5 ) ); // pixel align for sharper rendering
-        break;
+        case QTextListFormat::ListDisc:
+            painter->setBrush( brush );
+            painter->setPen( Qt::NoPen );
+            painter->drawEllipse( r );
+            break;
 
-    case QTextListFormat::ListDisc:
-        painter->setBrush( brush );
-        painter->setPen( Qt::NoPen );
-        painter->drawEllipse( r );
-        break;
+        case QTextListFormat::ListStyleUndefined:
+            break;
 
-    case QTextListFormat::ListStyleUndefined:
-        break;
-
-    default:
-        break;
+        default:
+            break;
     }
 
     painter->restore();
@@ -2423,16 +2423,16 @@ relayout:
 
             switch ( cellFormat.verticalAlignment() )
             {
-            case QTextCharFormat::AlignMiddle:
-                offset = ( availableHeight - cellHeight ) / 2;
-                break;
+                case QTextCharFormat::AlignMiddle:
+                    offset = ( availableHeight - cellHeight ) / 2;
+                    break;
 
-            case QTextCharFormat::AlignBottom:
-                offset = availableHeight - cellHeight;
-                break;
+                case QTextCharFormat::AlignBottom:
+                    offset = availableHeight - cellHeight;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             };
 
             for ( int rd = 0; rd < cell.rowSpan(); ++rd )
@@ -3866,19 +3866,19 @@ void QTextDocumentLayout::resizeInlineObject( QTextInlineObject item, int posInD
 
     switch ( f.verticalAlignment() )
     {
-    case QTextCharFormat::AlignMiddle:
-        item.setDescent( inlineSize.height() / 2 );
-        item.setAscent( inlineSize.height() / 2 );
-        break;
+        case QTextCharFormat::AlignMiddle:
+            item.setDescent( inlineSize.height() / 2 );
+            item.setAscent( inlineSize.height() / 2 );
+            break;
 
-    case QTextCharFormat::AlignBaseline:
-        item.setDescent( m.descent() );
-        item.setAscent( inlineSize.height() - m.descent() );
-        break;
+        case QTextCharFormat::AlignBaseline:
+            item.setDescent( m.descent() );
+            item.setAscent( inlineSize.height() - m.descent() );
+            break;
 
-    default:
-        item.setDescent( 0 );
-        item.setAscent( inlineSize.height() );
+        default:
+            item.setDescent( 0 );
+            item.setAscent( inlineSize.height() );
     }
 }
 

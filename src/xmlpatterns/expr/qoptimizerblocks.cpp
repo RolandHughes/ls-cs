@@ -137,23 +137,23 @@ Expression::Ptr ByIDCreator::create( const Expression::ID id,
 
     switch ( id )
     {
-    case Expression::IDExistsFN:
-    {
-        fnName = StandardLocalNames::exists;
-        break;
-    }
+        case Expression::IDExistsFN:
+        {
+            fnName = StandardLocalNames::exists;
+            break;
+        }
 
-    case Expression::IDEmptyFN:
-    {
-        fnName = StandardLocalNames::empty;
-        break;
-    }
+        case Expression::IDEmptyFN:
+        {
+            fnName = StandardLocalNames::empty;
+            break;
+        }
 
-    default:
-    {
-        Q_ASSERT_X( false, Q_FUNC_INFO, "Can not create an expression of requested type, m_id is invalid." );
-        return Expression::Ptr();
-    }
+        default:
+        {
+            Q_ASSERT_X( false, Q_FUNC_INFO, "Can not create an expression of requested type, m_id is invalid." );
+            return Expression::Ptr();
+        }
     }
 
     /* The reason we don't simply do 'new ExistsFN()' ourselves, is that all FunctionCall

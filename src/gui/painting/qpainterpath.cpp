@@ -875,29 +875,29 @@ QPainterPath QPainterPath::toReversed() const
 
         switch ( elm.type )
         {
-        case LineToElement:
-            rev.lineTo( prev.x, prev.y );
-            break;
+            case LineToElement:
+                rev.lineTo( prev.x, prev.y );
+                break;
 
-        case MoveToElement:
-            rev.moveTo( prev.x, prev.y );
-            break;
+            case MoveToElement:
+                rev.moveTo( prev.x, prev.y );
+                break;
 
-        case CurveToDataElement:
-        {
-            Q_ASSERT( i >= 3 );
-            const QPainterPath::Element &cp1 = d->elements.at( i - 2 );
-            const QPainterPath::Element &sp = d->elements.at( i - 3 );
-            Q_ASSERT( prev.type == CurveToDataElement );
-            Q_ASSERT( cp1.type == CurveToElement );
-            rev.cubicTo( prev.x, prev.y, cp1.x, cp1.y, sp.x, sp.y );
-            i -= 2;
-            break;
-        }
+            case CurveToDataElement:
+            {
+                Q_ASSERT( i >= 3 );
+                const QPainterPath::Element &cp1 = d->elements.at( i - 2 );
+                const QPainterPath::Element &sp = d->elements.at( i - 3 );
+                Q_ASSERT( prev.type == CurveToDataElement );
+                Q_ASSERT( cp1.type == CurveToElement );
+                rev.cubicTo( prev.x, prev.y, cp1.x, cp1.y, sp.x, sp.y );
+                i -= 2;
+                break;
+            }
 
-        default:
-            Q_ASSERT( !"lscs_reversed_path" );
-            break;
+            default:
+                Q_ASSERT( !"lscs_reversed_path" );
+                break;
         }
     }
 
@@ -923,37 +923,37 @@ QList<QPolygonF> QPainterPath::toSubpathPolygons( const QTransform &matrix ) con
 
         switch ( e.type )
         {
-        case QPainterPath::MoveToElement:
-            if ( current.size() > 1 )
+            case QPainterPath::MoveToElement:
+                if ( current.size() > 1 )
+                {
+                    flatCurves += current;
+                }
+
+                current.clear();
+                current.reserve( 16 );
+                current += QPointF( e.x, e.y ) * matrix;
+                break;
+
+            case QPainterPath::LineToElement:
+                current += QPointF( e.x, e.y ) * matrix;
+                break;
+
+            case QPainterPath::CurveToElement:
             {
-                flatCurves += current;
+                Q_ASSERT( d->elements.at( i + 1 ).type == QPainterPath::CurveToDataElement );
+                Q_ASSERT( d->elements.at( i + 2 ).type == QPainterPath::CurveToDataElement );
+                QBezier bezier = QBezier::fromPoints( QPointF( d->elements.at( i - 1 ).x, d->elements.at( i - 1 ).y ) * matrix,
+                                                      QPointF( e.x, e.y ) * matrix,
+                                                      QPointF( d->elements.at( i + 1 ).x, d->elements.at( i + 1 ).y ) * matrix,
+                                                      QPointF( d->elements.at( i + 2 ).x, d->elements.at( i + 2 ).y ) * matrix );
+                bezier.addToPolygon( &current );
+                i += 2;
+                break;
             }
 
-            current.clear();
-            current.reserve( 16 );
-            current += QPointF( e.x, e.y ) * matrix;
-            break;
-
-        case QPainterPath::LineToElement:
-            current += QPointF( e.x, e.y ) * matrix;
-            break;
-
-        case QPainterPath::CurveToElement:
-        {
-            Q_ASSERT( d->elements.at( i + 1 ).type == QPainterPath::CurveToDataElement );
-            Q_ASSERT( d->elements.at( i + 2 ).type == QPainterPath::CurveToDataElement );
-            QBezier bezier = QBezier::fromPoints( QPointF( d->elements.at( i - 1 ).x, d->elements.at( i - 1 ).y ) * matrix,
-                                                  QPointF( e.x, e.y ) * matrix,
-                                                  QPointF( d->elements.at( i + 1 ).x, d->elements.at( i + 1 ).y ) * matrix,
-                                                  QPointF( d->elements.at( i + 2 ).x, d->elements.at( i + 2 ).y ) * matrix );
-            bezier.addToPolygon( &current );
-            i += 2;
-            break;
-        }
-
-        case QPainterPath::CurveToDataElement:
-            Q_ASSERT( !"QPainterPath::toSubpathPolygons(), bad element type" );
-            break;
+            case QPainterPath::CurveToDataElement:
+                Q_ASSERT( !"QPainterPath::toSubpathPolygons(), bad element type" );
+                break;
         }
     }
 
@@ -1176,34 +1176,34 @@ bool QPainterPath::contains( const QPointF &pt ) const
         switch ( e.type )
         {
 
-        case MoveToElement:
-            if ( i > 0 )
+            case MoveToElement:
+                if ( i > 0 )
+                {
+                    // implicitly close all paths.
+                    lscs_painterpath_isect_line( last_pt, last_start, pt, &winding_number );
+                }
+
+                last_start = last_pt = e;
+                break;
+
+            case LineToElement:
+                lscs_painterpath_isect_line( last_pt, e, pt, &winding_number );
+                last_pt = e;
+                break;
+
+            case CurveToElement:
             {
-                // implicitly close all paths.
-                lscs_painterpath_isect_line( last_pt, last_start, pt, &winding_number );
+                const QPainterPath::Element &cp2 = d->elements.at( ++i );
+                const QPainterPath::Element &ep = d->elements.at( ++i );
+                lscs_painterpath_isect_curve( QBezier::fromPoints( last_pt, e, cp2, ep ),
+                                              pt, &winding_number );
+                last_pt = ep;
+
             }
-
-            last_start = last_pt = e;
             break;
 
-        case LineToElement:
-            lscs_painterpath_isect_line( last_pt, e, pt, &winding_number );
-            last_pt = e;
-            break;
-
-        case CurveToElement:
-        {
-            const QPainterPath::Element &cp2 = d->elements.at( ++i );
-            const QPainterPath::Element &ep = d->elements.at( ++i );
-            lscs_painterpath_isect_curve( QBezier::fromPoints( last_pt, e, cp2, ep ),
-                                          pt, &winding_number );
-            last_pt = ep;
-
-        }
-        break;
-
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -1393,48 +1393,48 @@ static bool lscs_painterpath_check_crossing( const QPainterPath *path, const QRe
         switch ( e.type )
         {
 
-        case QPainterPath::MoveToElement:
-            if ( i > 0
-                    && qFuzzyCompare( last_pt.x(), last_start.x() )
-                    && qFuzzyCompare( last_pt.y(), last_start.y() )
-                    && lscs_painterpath_isect_line_rect( last_pt.x(), last_pt.y(),
-                            last_start.x(), last_start.y(), rect ) )
-            {
-                return true;
-            }
+            case QPainterPath::MoveToElement:
+                if ( i > 0
+                        && qFuzzyCompare( last_pt.x(), last_start.x() )
+                        && qFuzzyCompare( last_pt.y(), last_start.y() )
+                        && lscs_painterpath_isect_line_rect( last_pt.x(), last_pt.y(),
+                                last_start.x(), last_start.y(), rect ) )
+                {
+                    return true;
+                }
 
-            last_start = last_pt = e;
+                last_start = last_pt = e;
+                break;
+
+            case QPainterPath::LineToElement:
+                if ( lscs_painterpath_isect_line_rect( last_pt.x(), last_pt.y(), e.x, e.y, rect ) )
+                {
+                    return true;
+                }
+
+                last_pt = e;
+                break;
+
+            case QPainterPath::CurveToElement:
+            {
+                QPointF cp2 = path->elementAt( ++i );
+                QPointF ep = path->elementAt( ++i );
+                QBezier bezier = QBezier::fromPoints( last_pt, e, cp2, ep );
+
+                if ( lscs_isect_curve_horizontal( bezier, rect.top(), rect.left(), rect.right() )
+                        || lscs_isect_curve_horizontal( bezier, rect.bottom(), rect.left(), rect.right() )
+                        || lscs_isect_curve_vertical( bezier, rect.left(), rect.top(), rect.bottom() )
+                        || lscs_isect_curve_vertical( bezier, rect.right(), rect.top(), rect.bottom() ) )
+                {
+                    return true;
+                }
+
+                last_pt = ep;
+            }
             break;
 
-        case QPainterPath::LineToElement:
-            if ( lscs_painterpath_isect_line_rect( last_pt.x(), last_pt.y(), e.x, e.y, rect ) )
-            {
-                return true;
-            }
-
-            last_pt = e;
-            break;
-
-        case QPainterPath::CurveToElement:
-        {
-            QPointF cp2 = path->elementAt( ++i );
-            QPointF ep = path->elementAt( ++i );
-            QBezier bezier = QBezier::fromPoints( last_pt, e, cp2, ep );
-
-            if ( lscs_isect_curve_horizontal( bezier, rect.top(), rect.left(), rect.right() )
-                    || lscs_isect_curve_horizontal( bezier, rect.bottom(), rect.left(), rect.right() )
-                    || lscs_isect_curve_vertical( bezier, rect.left(), rect.top(), rect.bottom() )
-                    || lscs_isect_curve_vertical( bezier, rect.right(), rect.top(), rect.bottom() ) )
-            {
-                return true;
-            }
-
-            last_pt = ep;
-        }
-        break;
-
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -1601,29 +1601,29 @@ bool QPainterPath::contains( const QRectF &rect ) const
 
                 switch ( el.type )
                 {
-                case MoveToElement:
-                    stop = true;
-                    break;
+                    case MoveToElement:
+                        stop = true;
+                        break;
 
-                case LineToElement:
-                    if ( !contains( el ) )
-                    {
-                        return false;
-                    }
+                    case LineToElement:
+                        if ( !contains( el ) )
+                        {
+                            return false;
+                        }
 
-                    break;
+                        break;
 
-                case CurveToElement:
-                    if ( !contains( d->elements.at( i + 2 ) ) )
-                    {
-                        return false;
-                    }
+                    case CurveToElement:
+                        if ( !contains( d->elements.at( i + 2 ) ) )
+                        {
+                            return false;
+                        }
 
-                    i += 2;
-                    break;
+                        i += 2;
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
                 }
             }
 
@@ -2029,28 +2029,28 @@ qreal QPainterPath::length() const
 
         switch ( e.type )
         {
-        case MoveToElement:
-            break;
+            case MoveToElement:
+                break;
 
-        case LineToElement:
-        {
-            len += QLineF( d->elements.at( i - 1 ), e ).length();
-            break;
-        }
+            case LineToElement:
+            {
+                len += QLineF( d->elements.at( i - 1 ), e ).length();
+                break;
+            }
 
-        case CurveToElement:
-        {
-            QBezier b = QBezier::fromPoints( d->elements.at( i - 1 ),
-                                             e,
-                                             d->elements.at( i + 1 ),
-                                             d->elements.at( i + 2 ) );
-            len += b.length();
-            i += 2;
-            break;
-        }
+            case CurveToElement:
+            {
+                QBezier b = QBezier::fromPoints( d->elements.at( i - 1 ),
+                                                 e,
+                                                 d->elements.at( i + 1 ),
+                                                 d->elements.at( i + 2 ) );
+                len += b.length();
+                i += 2;
+                break;
+            }
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -2081,45 +2081,45 @@ qreal QPainterPath::percentAtLength( qreal len ) const
 
         switch ( e.type )
         {
-        case MoveToElement:
-            break;
+            case MoveToElement:
+                break;
 
-        case LineToElement:
-        {
-            QLineF line( d->elements.at( i - 1 ), e );
-            qreal llen = line.length();
-            curLen += llen;
-
-            if ( curLen >= len )
+            case LineToElement:
             {
-                return len / totalLength ;
+                QLineF line( d->elements.at( i - 1 ), e );
+                qreal llen = line.length();
+                curLen += llen;
+
+                if ( curLen >= len )
+                {
+                    return len / totalLength ;
+                }
+
+                break;
             }
 
-            break;
-        }
-
-        case CurveToElement:
-        {
-            QBezier b = QBezier::fromPoints( d->elements.at( i - 1 ),
-                                             e,
-                                             d->elements.at( i + 1 ),
-                                             d->elements.at( i + 2 ) );
-            qreal blen = b.length();
-            qreal prevLen = curLen;
-            curLen += blen;
-
-            if ( curLen >= len )
+            case CurveToElement:
             {
-                qreal res = b.tAtLength( len - prevLen );
-                return ( res * blen + prevLen ) / totalLength;
+                QBezier b = QBezier::fromPoints( d->elements.at( i - 1 ),
+                                                 e,
+                                                 d->elements.at( i + 1 ),
+                                                 d->elements.at( i + 2 ) );
+                qreal blen = b.length();
+                qreal prevLen = curLen;
+                curLen += blen;
+
+                if ( curLen >= len )
+                {
+                    qreal res = b.tAtLength( len - prevLen );
+                    return ( res * blen + prevLen ) / totalLength;
+                }
+
+                i += 2;
+                break;
             }
 
-            i += 2;
-            break;
-        }
-
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -2146,47 +2146,47 @@ static inline QBezier bezierAtT( const QPainterPath &path, qreal t, qreal *start
 
         switch ( e.type )
         {
-        case QPainterPath::MoveToElement:
-            break;
+            case QPainterPath::MoveToElement:
+                break;
 
-        case QPainterPath::LineToElement:
-        {
-            QLineF line( path.elementAt( i - 1 ), e );
-            qreal llen = line.length();
-            curLen += llen;
-
-            if ( i == lastElement || curLen / totalLength >= t )
+            case QPainterPath::LineToElement:
             {
-                *bezierLength = llen;
-                QPointF a = path.elementAt( i - 1 );
-                QPointF delta = e - a;
-                return QBezier::fromPoints( a, a + delta / 3, a + 2 * delta / 3, e );
+                QLineF line( path.elementAt( i - 1 ), e );
+                qreal llen = line.length();
+                curLen += llen;
+
+                if ( i == lastElement || curLen / totalLength >= t )
+                {
+                    *bezierLength = llen;
+                    QPointF a = path.elementAt( i - 1 );
+                    QPointF delta = e - a;
+                    return QBezier::fromPoints( a, a + delta / 3, a + 2 * delta / 3, e );
+                }
+
+                break;
             }
 
-            break;
-        }
-
-        case QPainterPath::CurveToElement:
-        {
-            QBezier b = QBezier::fromPoints( path.elementAt( i - 1 ),
-                                             e,
-                                             path.elementAt( i + 1 ),
-                                             path.elementAt( i + 2 ) );
-            qreal blen = b.length();
-            curLen += blen;
-
-            if ( i + 2 == lastElement || curLen / totalLength >= t )
+            case QPainterPath::CurveToElement:
             {
-                *bezierLength = blen;
-                return b;
+                QBezier b = QBezier::fromPoints( path.elementAt( i - 1 ),
+                                                 e,
+                                                 path.elementAt( i + 1 ),
+                                                 path.elementAt( i + 2 ) );
+                qreal blen = b.length();
+                curLen += blen;
+
+                if ( i + 2 == lastElement || curLen / totalLength >= t )
+                {
+                    *bezierLength = blen;
+                    return b;
+                }
+
+                i += 2;
+                break;
             }
 
-            i += 2;
-            break;
-        }
-
-        default:
-            break;
+            default:
+                break;
         }
 
         *startingLength = curLen;
@@ -2522,64 +2522,64 @@ void QPainterPath::computeBoundingRect() const
 
         switch ( e.type )
         {
-        case MoveToElement:
-        case LineToElement:
-            if ( e.x > maxx )
-            {
-                maxx = e.x;
-            }
-            else if ( e.x < minx )
-            {
-                minx = e.x;
-            }
+            case MoveToElement:
+            case LineToElement:
+                if ( e.x > maxx )
+                {
+                    maxx = e.x;
+                }
+                else if ( e.x < minx )
+                {
+                    minx = e.x;
+                }
 
-            if ( e.y > maxy )
-            {
-                maxy = e.y;
-            }
-            else if ( e.y < miny )
-            {
-                miny = e.y;
-            }
+                if ( e.y > maxy )
+                {
+                    maxy = e.y;
+                }
+                else if ( e.y < miny )
+                {
+                    miny = e.y;
+                }
 
+                break;
+
+            case CurveToElement:
+            {
+                QBezier b = QBezier::fromPoints( d->elements.at( i - 1 ),
+                                                 e,
+                                                 d->elements.at( i + 1 ),
+                                                 d->elements.at( i + 2 ) );
+                QRectF r = lscs_painterpath_bezier_extrema( b );
+                qreal right = r.right();
+                qreal bottom = r.bottom();
+
+                if ( r.x() < minx )
+                {
+                    minx = r.x();
+                }
+
+                if ( right > maxx )
+                {
+                    maxx = right;
+                }
+
+                if ( r.y() < miny )
+                {
+                    miny = r.y();
+                }
+
+                if ( bottom > maxy )
+                {
+                    maxy = bottom;
+                }
+
+                i += 2;
+            }
             break;
 
-        case CurveToElement:
-        {
-            QBezier b = QBezier::fromPoints( d->elements.at( i - 1 ),
-                                             e,
-                                             d->elements.at( i + 1 ),
-                                             d->elements.at( i + 2 ) );
-            QRectF r = lscs_painterpath_bezier_extrema( b );
-            qreal right = r.right();
-            qreal bottom = r.bottom();
-
-            if ( r.x() < minx )
-            {
-                minx = r.x();
-            }
-
-            if ( right > maxx )
-            {
-                maxx = right;
-            }
-
-            if ( r.y() < miny )
-            {
-                miny = r.y();
-            }
-
-            if ( bottom > maxy )
-            {
-                maxy = bottom;
-            }
-
-            i += 2;
-        }
-        break;
-
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -2635,7 +2635,7 @@ QDebug operator<<( QDebug debug, const QPainterPath &p )
     for ( int i = 0; i < p.elementCount(); ++i )
     {
         debug.nospace() << " -> " << types[p.elementAt( i ).type]
-             << "(x =" << p.elementAt( i ).x << ", y =" << p.elementAt( i ).y << ")\n";
+                        << "(x =" << p.elementAt( i ).x << ", y =" << p.elementAt( i ).y << ")\n";
     }
 
     return debug;

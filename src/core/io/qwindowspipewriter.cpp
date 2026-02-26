@@ -127,20 +127,20 @@ void QWindowsPipeWriter::notified( DWORD errorCode, DWORD numberOfBytesWritten )
 
     switch ( errorCode )
     {
-    case ERROR_SUCCESS:
-        break;
-
-    case ERROR_OPERATION_ABORTED:
-        if ( stopped )
-        {
+        case ERROR_SUCCESS:
             break;
-        }
 
-        [[fallthrough]];
+        case ERROR_OPERATION_ABORTED:
+            if ( stopped )
+            {
+                break;
+            }
 
-    default:
-        qErrnoWarning( errorCode, "QWindowsPipeWriter: asynchronous write failed." );
-        break;
+            [[fallthrough]];
+
+        default:
+            qErrnoWarning( errorCode, "QWindowsPipeWriter: asynchronous write failed." );
+            break;
     }
 
     // After the writer was stopped, the only reason why this function can be called is the

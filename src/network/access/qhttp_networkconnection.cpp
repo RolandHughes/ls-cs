@@ -783,14 +783,14 @@ QHttpNetworkReply *QHttpNetworkConnectionPrivate::queueRequest( const QHttpNetwo
 
         switch ( request.priority() )
         {
-        case QHttpNetworkRequest::HighPriority:
-            highPriorityQueue.prepend( pair );
-            break;
+            case QHttpNetworkRequest::HighPriority:
+                highPriorityQueue.prepend( pair );
+                break;
 
-        case QHttpNetworkRequest::NormalPriority:
-        case QHttpNetworkRequest::LowPriority:
-            lowPriorityQueue.prepend( pair );
-            break;
+            case QHttpNetworkRequest::NormalPriority:
+            case QHttpNetworkRequest::LowPriority:
+                lowPriorityQueue.prepend( pair );
+                break;
         }
     }
 
@@ -840,14 +840,14 @@ void QHttpNetworkConnectionPrivate::requeueRequest( const HttpMessagePair &pair 
 
     switch ( request.priority() )
     {
-    case QHttpNetworkRequest::HighPriority:
-        highPriorityQueue.prepend( pair );
-        break;
+        case QHttpNetworkRequest::HighPriority:
+            highPriorityQueue.prepend( pair );
+            break;
 
-    case QHttpNetworkRequest::NormalPriority:
-    case QHttpNetworkRequest::LowPriority:
-        lowPriorityQueue.prepend( pair );
-        break;
+        case QHttpNetworkRequest::NormalPriority:
+        case QHttpNetworkRequest::LowPriority:
+            lowPriorityQueue.prepend( pair );
+            break;
     }
 
     QMetaObject::invokeMethod( q, "_q_startNextRequest", Qt::QueuedConnection );
@@ -1088,62 +1088,62 @@ QString QHttpNetworkConnectionPrivate::errorDetail( QNetworkReply::NetworkError 
 
     switch ( errorCode )
     {
-    case QNetworkReply::HostNotFoundError:
-        if ( socket )
-        {
-            errorString = QCoreApplication::translate( "QHttp", "Host %1 not found" ).formatArg( socket->peerName() );
-        }
-        else
-        {
-            errorString = QCoreApplication::translate( "QHttp", "Host %1 not found" ).formatArg( hostName );
-        }
+        case QNetworkReply::HostNotFoundError:
+            if ( socket )
+            {
+                errorString = QCoreApplication::translate( "QHttp", "Host %1 not found" ).formatArg( socket->peerName() );
+            }
+            else
+            {
+                errorString = QCoreApplication::translate( "QHttp", "Host %1 not found" ).formatArg( hostName );
+            }
 
-        break;
+            break;
 
-    case QNetworkReply::ConnectionRefusedError:
-        errorString = QCoreApplication::translate( "QHttp", "Connection refused" );
-        break;
+        case QNetworkReply::ConnectionRefusedError:
+            errorString = QCoreApplication::translate( "QHttp", "Connection refused" );
+            break;
 
-    case QNetworkReply::RemoteHostClosedError:
-        errorString = QCoreApplication::translate( "QHttp", "Connection closed" );
-        break;
+        case QNetworkReply::RemoteHostClosedError:
+            errorString = QCoreApplication::translate( "QHttp", "Connection closed" );
+            break;
 
-    case QNetworkReply::TimeoutError:
-        errorString = QCoreApplication::translate( "QAbstractSocket", "Socket operation timed out" );
-        break;
+        case QNetworkReply::TimeoutError:
+            errorString = QCoreApplication::translate( "QAbstractSocket", "Socket operation timed out" );
+            break;
 
-    case QNetworkReply::ProxyAuthenticationRequiredError:
-        errorString = QCoreApplication::translate( "QHttp", "Proxy requires authentication" );
-        break;
+        case QNetworkReply::ProxyAuthenticationRequiredError:
+            errorString = QCoreApplication::translate( "QHttp", "Proxy requires authentication" );
+            break;
 
-    case QNetworkReply::AuthenticationRequiredError:
-        errorString = QCoreApplication::translate( "QHttp", "Host requires authentication" );
-        break;
+        case QNetworkReply::AuthenticationRequiredError:
+            errorString = QCoreApplication::translate( "QHttp", "Host requires authentication" );
+            break;
 
-    case QNetworkReply::ProtocolFailure:
-        errorString = QCoreApplication::translate( "QHttp", "Data corrupted" );
-        break;
+        case QNetworkReply::ProtocolFailure:
+            errorString = QCoreApplication::translate( "QHttp", "Data corrupted" );
+            break;
 
-    case QNetworkReply::ProtocolUnknownError:
-        errorString = QCoreApplication::translate( "QHttp", "Unknown protocol specified" );
-        break;
+        case QNetworkReply::ProtocolUnknownError:
+            errorString = QCoreApplication::translate( "QHttp", "Unknown protocol specified" );
+            break;
 
-    case QNetworkReply::SslHandshakeFailedError:
-        errorString = QCoreApplication::translate( "QHttp", "SSL handshake failed" );
-        break;
+        case QNetworkReply::SslHandshakeFailedError:
+            errorString = QCoreApplication::translate( "QHttp", "SSL handshake failed" );
+            break;
 
-    case QNetworkReply::TooManyRedirectsError:
-        errorString = QCoreApplication::translate( "QHttp", "Too many redirects" );
-        break;
+        case QNetworkReply::TooManyRedirectsError:
+            errorString = QCoreApplication::translate( "QHttp", "Too many redirects" );
+            break;
 
-    case QNetworkReply::InsecureRedirectError:
-        errorString = QCoreApplication::translate( "QHttp", "Insecure redirect" );
-        break;
+        case QNetworkReply::InsecureRedirectError:
+            errorString = QCoreApplication::translate( "QHttp", "Insecure redirect" );
+            break;
 
-    default:
-        // all other errors are treated as QNetworkReply::UnknownNetworkError
-        errorString = extraDetail;
-        break;
+        default:
+            // all other errors are treated as QNetworkReply::UnknownNetworkError
+            errorString = extraDetail;
+            break;
     }
 
     return errorString;
@@ -1311,64 +1311,64 @@ void QHttpNetworkConnectionPrivate::_q_startNextRequest()
 
     switch ( connectionType )
     {
-    case QHttpNetworkConnection::ConnectionTypeHTTP:
-    {
-        // return fast if there is nothing to do
-        if ( highPriorityQueue.isEmpty() && lowPriorityQueue.isEmpty() )
+        case QHttpNetworkConnection::ConnectionTypeHTTP:
         {
-            return;
-        }
-
-        // try to get a free AND connected socket
-        for ( int i = 0; i < channelCount; ++i )
-        {
-            if ( channels[i].socket )
+            // return fast if there is nothing to do
+            if ( highPriorityQueue.isEmpty() && lowPriorityQueue.isEmpty() )
             {
+                return;
+            }
 
-                if ( !channels[i].reply && !channels[i].isSocketBusy() &&
-                        channels[i].socket->state() == QAbstractSocket::ConnectedState )
+            // try to get a free AND connected socket
+            for ( int i = 0; i < channelCount; ++i )
+            {
+                if ( channels[i].socket )
                 {
-                    if ( dequeueRequest( channels[i].socket ) )
+
+                    if ( !channels[i].reply && !channels[i].isSocketBusy() &&
+                            channels[i].socket->state() == QAbstractSocket::ConnectedState )
                     {
-                        channels[i].sendRequest();
+                        if ( dequeueRequest( channels[i].socket ) )
+                        {
+                            channels[i].sendRequest();
+                        }
                     }
                 }
             }
+
+            break;
         }
 
-        break;
-    }
-
-    case QHttpNetworkConnection::ConnectionTypeSPDY:
-    {
+        case QHttpNetworkConnection::ConnectionTypeSPDY:
+        {
 
 #ifdef LSCS_SSL
 
-        if ( channels[0].spdyRequestsToSend.isEmpty() )
-        {
-            return;
-        }
+            if ( channels[0].spdyRequestsToSend.isEmpty() )
+            {
+                return;
+            }
 
-        if ( networkLayerState == IPv4 )
-        {
-            channels[0].networkLayerPreference = QAbstractSocket::IPv4Protocol;
-        }
-        else if ( networkLayerState == IPv6 )
-        {
-            channels[0].networkLayerPreference = QAbstractSocket::IPv6Protocol;
-        }
+            if ( networkLayerState == IPv4 )
+            {
+                channels[0].networkLayerPreference = QAbstractSocket::IPv4Protocol;
+            }
+            else if ( networkLayerState == IPv6 )
+            {
+                channels[0].networkLayerPreference = QAbstractSocket::IPv6Protocol;
+            }
 
-        channels[0].ensureConnection();
+            channels[0].ensureConnection();
 
-        if ( channels[0].socket && channels[0].socket->state() == QAbstractSocket::ConnectedState
-                && ! channels[0].pendingEncrypt )
-        {
-            channels[0].sendRequest();
-        }
+            if ( channels[0].socket && channels[0].socket->state() == QAbstractSocket::ConnectedState
+                    && ! channels[0].pendingEncrypt )
+            {
+                channels[0].sendRequest();
+            }
 
 #endif
-        break;
-    }
+            break;
+        }
     }
 
     // try to push more into all sockets

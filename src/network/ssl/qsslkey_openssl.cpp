@@ -233,28 +233,28 @@ int QSslKeyPrivate::length() const
 
     switch ( algorithm )
     {
-    case QSsl::Rsa:
+        case QSsl::Rsa:
 #if OPENSSL_VERSION_NUMBER >= 0x10100000L
-        return q_RSA_size( rsa ) * std::numeric_limits<uint8_t>::digits;
+            return q_RSA_size( rsa ) * std::numeric_limits<uint8_t>::digits;
 #else
-        return q_BN_num_bits( rsa->n );
+            return q_BN_num_bits( rsa->n );
 #endif
 
-    case QSsl::Dsa:
+        case QSsl::Dsa:
 #if OPENSSL_VERSION_NUMBER >= 0x10100000L
-        return q_DSA_bits( dsa );
+            return q_DSA_bits( dsa );
 #else
-        return q_BN_num_bits( dsa->p );
+            return q_BN_num_bits( dsa->p );
 #endif
 
 #ifndef OPENSSL_NO_EC
 
-    case QSsl::Ec:
-        return q_EC_GROUP_get_degree( q_EC_KEY_get0_group( ec ) );
+        case QSsl::Ec:
+            return q_EC_GROUP_get_degree( q_EC_KEY_get0_group( ec ) );
 #endif
 
-    default:
-        return -1;
+        default:
+            return -1;
     }
 }
 
@@ -369,23 +369,23 @@ Qt::HANDLE QSslKeyPrivate::handle() const
 {
     switch ( algorithm )
     {
-    case QSsl::Opaque:
-        return Qt::HANDLE( opaque );
+        case QSsl::Opaque:
+            return Qt::HANDLE( opaque );
 
-    case QSsl::Rsa:
-        return Qt::HANDLE( rsa );
+        case QSsl::Rsa:
+            return Qt::HANDLE( rsa );
 
-    case QSsl::Dsa:
-        return Qt::HANDLE( dsa );
+        case QSsl::Dsa:
+            return Qt::HANDLE( dsa );
 
 #ifndef OPENSSL_NO_EC
 
-    case QSsl::Ec:
-        return Qt::HANDLE( ec );
+        case QSsl::Ec:
+            return Qt::HANDLE( ec );
 #endif
 
-    default:
-        return Qt::HANDLE( nullptr );
+        default:
+            return Qt::HANDLE( nullptr );
     }
 }
 
@@ -408,17 +408,17 @@ static QByteArray doCrypt( QSslKeyPrivate::Cipher cipher, const QByteArray &data
 
     switch ( cipher )
     {
-    case QSslKeyPrivate::DesCbc:
-        type = q_EVP_des_cbc();
-        break;
+        case QSslKeyPrivate::DesCbc:
+            type = q_EVP_des_cbc();
+            break;
 
-    case QSslKeyPrivate::DesEde3Cbc:
-        type = q_EVP_des_ede3_cbc();
-        break;
+        case QSslKeyPrivate::DesEde3Cbc:
+            type = q_EVP_des_ede3_cbc();
+            break;
 
-    case QSslKeyPrivate::Rc2Cbc:
-        type = q_EVP_rc2_cbc();
-        break;
+        case QSslKeyPrivate::Rc2Cbc:
+            type = q_EVP_rc2_cbc();
+            break;
     }
 
     QByteArray output;

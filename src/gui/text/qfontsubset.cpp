@@ -250,14 +250,14 @@ QByteArray QFontSubset::createToUnicodeMap() const
     QPdf::ByteStream ts( &touc );
 
     ts << "/CIDInit /ProcSet findresource begin\n"
-          "12 dict begin\n"
-          "begincmap\n"
-          "/CIDSystemInfo << /Registry (Adobe) /Ordering (UCS) /Supplement 0 >> def\n"
-          "/CMapName /Adobe-Identity-UCS def\n"
-          "/CMapType 2 def\n"
-          "1 begincodespacerange\n"
-          "<0000> <FFFF>\n"
-          "endcodespacerange\n";
+       "12 dict begin\n"
+       "begincmap\n"
+       "/CIDSystemInfo << /Registry (Adobe) /Ordering (UCS) /Supplement 0 >> def\n"
+       "/CMapName /Adobe-Identity-UCS def\n"
+       "/CMapType 2 def\n"
+       "1 begincodespacerange\n"
+       "<0000> <FFFF>\n"
+       "endcodespacerange\n";
 
     int nranges = 1;
     QByteArray ranges = "<0000> <0000> <0000>\n";
@@ -370,9 +370,9 @@ QByteArray QFontSubset::createToUnicodeMap() const
     }
 
     ts << "endcmap\n"
-          "CMapName currentdict /CMap defineresource pop\n"
-          "end\n"
-          "end\n";
+       "CMapName currentdict /CMap defineresource pop\n"
+       "end\n"
+       "end\n";
 
     return touc;
 }
@@ -889,123 +889,123 @@ static void convertPath( const QPainterPath &path, QVector<TTF_POINT> *points, Q
 
         switch ( e.type )
         {
-        case QPainterPath::MoveToElement:
-            if ( i != 0 )
-            {
-                // see if start and end points of the last contour agree
-                int start = endPoints->size() ? endPoints->at( endPoints->size() - 1 ) - 1 : 0;
-                int end = points->size() - 1;
-
-                if ( points->at( end ).x == points->at( start ).x
-                        && points->at( end ).y == points->at( start ).y )
+            case QPainterPath::MoveToElement:
+                if ( i != 0 )
                 {
-                    points->takeLast();
-                }
+                    // see if start and end points of the last contour agree
+                    int start = endPoints->size() ? endPoints->at( endPoints->size() - 1 ) - 1 : 0;
+                    int end = points->size() - 1;
 
-                endPoints->append( points->size() - 1 );
-            }
-
-            [[fallthrough]];
-
-        case QPainterPath::LineToElement:
-            p.flags = OnCurve;
-            break;
-
-        case QPainterPath::CurveToElement:
-        {
-            // cubic bezier curve, we need to reduce to a list of quadratic curves
-            TTF_POINT list[3 * 16 + 4]; // we need max 16 subdivisions
-            list[3] = points->at( points->size() - 1 );
-            list[2] = p;
-            const QPainterPath::Element &e2 = path.elementAt( ++i );
-            list[1].x = qRound( e2.x * 2048. / ppem );
-            list[1].y = qRound( -e2.y * 2048. / ppem );
-            const QPainterPath::Element &e3 = path.elementAt( ++i );
-            list[0].x = qRound( e3.x * 2048. / ppem );
-            list[0].y = qRound( -e3.y * 2048. / ppem );
-
-            TTF_POINT *base = list;
-
-            bool try_reduce = points->size() > 1
-                              && points->at( points->size() - 1 ).flags == OnCurve
-                              && points->at( points->size() - 2 ).flags == OffCurve;
-
-            while ( base >= list )
-            {
-                const int split_limit = 3;
-
-                Q_ASSERT( base - list < 3 * 16 + 1 );
-
-                // first see if we can easily reduce the cubic to a quadratic bezier curve
-                int i1_x = base[1].x + ( ( base[1].x - base[0].x ) >> 1 );
-                int i1_y = base[1].y + ( ( base[1].y - base[0].y ) >> 1 );
-                int i2_x = base[2].x + ( ( base[2].x - base[3].x ) >> 1 );
-                int i2_y = base[2].y + ( ( base[2].y - base[3].y ) >> 1 );
-
-
-                if ( qAbs( i1_x - i2_x ) <= split_limit && qAbs( i1_y - i2_y ) <= split_limit )
-                {
-                    // got a quadratic bezier curve
-                    TTF_POINT np;
-                    np.x = ( i1_x + i2_x ) >> 1;
-                    np.y = ( i1_y + i2_y ) >> 1;
-
-                    if ( try_reduce )
+                    if ( points->at( end ).x == points->at( start ).x
+                            && points->at( end ).y == points->at( start ).y )
                     {
-                        // see if we can optimize out the last onCurve point
-                        int mx = ( points->at( points->size() - 2 ).x + base[2].x ) >> 1;
-                        int my = ( points->at( points->size() - 2 ).y + base[2].y ) >> 1;
-
-                        if ( qAbs( mx - base[3].x ) <= split_limit && qAbs( my = base[3].y ) <= split_limit )
-                        {
-                            points->takeLast();
-                        }
-
-                        try_reduce = false;
+                        points->takeLast();
                     }
 
-                    np.flags = OffCurve;
-                    points->append( np );
-
-                    base -= 3;
-
+                    endPoints->append( points->size() - 1 );
                 }
-                else
+
+                [[fallthrough]];
+
+            case QPainterPath::LineToElement:
+                p.flags = OnCurve;
+                break;
+
+            case QPainterPath::CurveToElement:
+            {
+                // cubic bezier curve, we need to reduce to a list of quadratic curves
+                TTF_POINT list[3 * 16 + 4]; // we need max 16 subdivisions
+                list[3] = points->at( points->size() - 1 );
+                list[2] = p;
+                const QPainterPath::Element &e2 = path.elementAt( ++i );
+                list[1].x = qRound( e2.x * 2048. / ppem );
+                list[1].y = qRound( -e2.y * 2048. / ppem );
+                const QPainterPath::Element &e3 = path.elementAt( ++i );
+                list[0].x = qRound( e3.x * 2048. / ppem );
+                list[0].y = qRound( -e3.y * 2048. / ppem );
+
+                TTF_POINT *base = list;
+
+                bool try_reduce = points->size() > 1
+                                  && points->at( points->size() - 1 ).flags == OnCurve
+                                  && points->at( points->size() - 2 ).flags == OffCurve;
+
+                while ( base >= list )
                 {
-                    // need to split
+                    const int split_limit = 3;
 
-                    qint16 a, b, c, d;
-                    base[6].x = base[3].x;
-                    c = base[1].x;
-                    d = base[2].x;
-                    base[1].x = a = ( base[0].x + c ) >> 1;
-                    base[5].x = b = ( base[3].x + d ) >> 1;
-                    c = ( c + d ) >> 1;
-                    base[2].x = a = ( a + c ) >> 1;
-                    base[4].x = b = ( b + c ) >> 1;
-                    base[3].x = ( a + b ) >> 1;
+                    Q_ASSERT( base - list < 3 * 16 + 1 );
 
-                    base[6].y = base[3].y;
-                    c = base[1].y;
-                    d = base[2].y;
-                    base[1].y = a = ( base[0].y + c ) >> 1;
-                    base[5].y = b = ( base[3].y + d ) >> 1;
-                    c = ( c + d ) >> 1;
-                    base[2].y = a = ( a + c ) >> 1;
-                    base[4].y = b = ( b + c ) >> 1;
-                    base[3].y = ( a + b ) >> 1;
-                    base += 3;
+                    // first see if we can easily reduce the cubic to a quadratic bezier curve
+                    int i1_x = base[1].x + ( ( base[1].x - base[0].x ) >> 1 );
+                    int i1_y = base[1].y + ( ( base[1].y - base[0].y ) >> 1 );
+                    int i2_x = base[2].x + ( ( base[2].x - base[3].x ) >> 1 );
+                    int i2_y = base[2].y + ( ( base[2].y - base[3].y ) >> 1 );
+
+
+                    if ( qAbs( i1_x - i2_x ) <= split_limit && qAbs( i1_y - i2_y ) <= split_limit )
+                    {
+                        // got a quadratic bezier curve
+                        TTF_POINT np;
+                        np.x = ( i1_x + i2_x ) >> 1;
+                        np.y = ( i1_y + i2_y ) >> 1;
+
+                        if ( try_reduce )
+                        {
+                            // see if we can optimize out the last onCurve point
+                            int mx = ( points->at( points->size() - 2 ).x + base[2].x ) >> 1;
+                            int my = ( points->at( points->size() - 2 ).y + base[2].y ) >> 1;
+
+                            if ( qAbs( mx - base[3].x ) <= split_limit && qAbs( my = base[3].y ) <= split_limit )
+                            {
+                                points->takeLast();
+                            }
+
+                            try_reduce = false;
+                        }
+
+                        np.flags = OffCurve;
+                        points->append( np );
+
+                        base -= 3;
+
+                    }
+                    else
+                    {
+                        // need to split
+
+                        qint16 a, b, c, d;
+                        base[6].x = base[3].x;
+                        c = base[1].x;
+                        d = base[2].x;
+                        base[1].x = a = ( base[0].x + c ) >> 1;
+                        base[5].x = b = ( base[3].x + d ) >> 1;
+                        c = ( c + d ) >> 1;
+                        base[2].x = a = ( a + c ) >> 1;
+                        base[4].x = b = ( b + c ) >> 1;
+                        base[3].x = ( a + b ) >> 1;
+
+                        base[6].y = base[3].y;
+                        c = base[1].y;
+                        d = base[2].y;
+                        base[1].y = a = ( base[0].y + c ) >> 1;
+                        base[5].y = b = ( base[3].y + d ) >> 1;
+                        c = ( c + d ) >> 1;
+                        base[2].y = a = ( a + c ) >> 1;
+                        base[4].y = b = ( b + c ) >> 1;
+                        base[3].y = ( a + b ) >> 1;
+                        base += 3;
+                    }
                 }
+
+                p = list[0];
+                p.flags = OnCurve;
+                break;
             }
 
-            p = list[0];
-            p.flags = OnCurve;
-            break;
-        }
-
-        case QPainterPath::CurveToDataElement:
-            Q_ASSERT( false );
-            break;
+            case QPainterPath::CurveToDataElement:
+                Q_ASSERT( false );
+                break;
         }
 
         points->append( p );

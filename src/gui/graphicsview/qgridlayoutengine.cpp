@@ -763,41 +763,41 @@ QRectF QGridLayoutItem::geometryWithin( qreal x, qreal y, qreal width, qreal hei
 
     switch ( align & Qt::AlignHorizontal_Mask )
     {
-    case Qt::AlignHCenter:
-        x += ( cellWidth - width ) / 2;
-        break;
+        case Qt::AlignHCenter:
+            x += ( cellWidth - width ) / 2;
+            break;
 
-    case Qt::AlignRight:
-        x += cellWidth - width;
-        break;
+        case Qt::AlignRight:
+            x += cellWidth - width;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     switch ( align & Qt::AlignVertical_Mask )
     {
-    case Qt::AlignVCenter:
-        y += ( cellHeight - height ) / 2;
-        break;
+        case Qt::AlignVCenter:
+            y += ( cellHeight - height ) / 2;
+            break;
 
-    case Qt::AlignBottom:
-        y += cellHeight - height;
-        break;
+        case Qt::AlignBottom:
+            y += cellHeight - height;
+            break;
 
-    case Qt::AlignBaseline:
-    {
-        width = qMin( effectiveMaxSize( QSizeF( -1, -1 ) ).width(), width );
-        QGridLayoutBox vBox = box( Qt::Vertical );
-        const qreal descent = vBox.q_minimumDescent;
-        const qreal ascent = vBox.q_minimumSize - descent;
-        y += ( cellHeight - rowDescent - ascent );
-        height = ascent + descent;
-        break;
-    }
+        case Qt::AlignBaseline:
+        {
+            width = qMin( effectiveMaxSize( QSizeF( -1, -1 ) ).width(), width );
+            QGridLayoutBox vBox = box( Qt::Vertical );
+            const qreal descent = vBox.q_minimumDescent;
+            const qreal ascent = vBox.q_minimumSize - descent;
+            y += ( cellHeight - rowDescent - ascent );
+            height = ascent + descent;
+            break;
+        }
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QRectF( x, y, width, height );

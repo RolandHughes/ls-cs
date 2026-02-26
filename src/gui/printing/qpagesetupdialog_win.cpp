@@ -101,20 +101,20 @@ int QPageSetupDialog::exec()
 
     switch ( layout.units() )
     {
-    case QPageSize::Unit::Millimeter:
-    case QPageSize::Unit::Inch:
-        break;
+        case QPageSize::Unit::Millimeter:
+        case QPageSize::Unit::Inch:
+            break;
 
-    case QPageSize::Unit::Point:
-    case QPageSize::Unit::Pica:
-    case QPageSize::Unit::Didot:
-    case QPageSize::Unit::Cicero:
-        layout.setUnits( QLocale::system().measurementSystem() == QLocale::MetricSystem ?
-                         QPageSize::Unit::Millimeter : QPageSize::Unit::Inch );
-        break;
+        case QPageSize::Unit::Point:
+        case QPageSize::Unit::Pica:
+        case QPageSize::Unit::Didot:
+        case QPageSize::Unit::Cicero:
+            layout.setUnits( QLocale::system().measurementSystem() == QLocale::MetricSystem ?
+                             QPageSize::Unit::Millimeter : QPageSize::Unit::Inch );
+            break;
 
-    case QPageSize::Unit::DevicePixel:
-        break;
+        case QPageSize::Unit::DevicePixel:
+            break;
     }
 
     qreal multiplier = 1.0;

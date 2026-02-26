@@ -185,50 +185,50 @@ QDBusArgument::ElementType QDBusDemarshaller::currentType()
 {
     switch ( q_dbus_message_iter_get_arg_type( &iterator ) )
     {
-    case DBUS_TYPE_BYTE:
-    case DBUS_TYPE_INT16:
-    case DBUS_TYPE_UINT16:
-    case DBUS_TYPE_INT32:
-    case DBUS_TYPE_UINT32:
-    case DBUS_TYPE_INT64:
-    case DBUS_TYPE_UINT64:
-    case DBUS_TYPE_BOOLEAN:
-    case DBUS_TYPE_DOUBLE:
-    case DBUS_TYPE_STRING:
-    case DBUS_TYPE_OBJECT_PATH:
-    case DBUS_TYPE_SIGNATURE:
-        return QDBusArgument::BasicType;
-
-    case DBUS_TYPE_VARIANT:
-        return QDBusArgument::VariantType;
-
-    case DBUS_TYPE_ARRAY:
-        switch ( q_dbus_message_iter_get_element_type( &iterator ) )
-        {
         case DBUS_TYPE_BYTE:
+        case DBUS_TYPE_INT16:
+        case DBUS_TYPE_UINT16:
+        case DBUS_TYPE_INT32:
+        case DBUS_TYPE_UINT32:
+        case DBUS_TYPE_INT64:
+        case DBUS_TYPE_UINT64:
+        case DBUS_TYPE_BOOLEAN:
+        case DBUS_TYPE_DOUBLE:
         case DBUS_TYPE_STRING:
-            // QByteArray and QStringList
+        case DBUS_TYPE_OBJECT_PATH:
+        case DBUS_TYPE_SIGNATURE:
             return QDBusArgument::BasicType;
 
+        case DBUS_TYPE_VARIANT:
+            return QDBusArgument::VariantType;
+
+        case DBUS_TYPE_ARRAY:
+            switch ( q_dbus_message_iter_get_element_type( &iterator ) )
+            {
+                case DBUS_TYPE_BYTE:
+                case DBUS_TYPE_STRING:
+                    // QByteArray and QStringList
+                    return QDBusArgument::BasicType;
+
+                case DBUS_TYPE_DICT_ENTRY:
+                    return QDBusArgument::MapType;
+
+                default:
+                    return QDBusArgument::ArrayType;
+            }
+
+        case DBUS_TYPE_STRUCT:
+            return QDBusArgument::StructureType;
+
         case DBUS_TYPE_DICT_ENTRY:
-            return QDBusArgument::MapType;
+            return QDBusArgument::MapEntryType;
 
-        default:
-            return QDBusArgument::ArrayType;
-        }
+        case DBUS_TYPE_UNIX_FD:
+            return capabilities & QDBusConnection::UnixFileDescriptorPassing ?
+                   QDBusArgument::BasicType : QDBusArgument::UnknownType;
 
-    case DBUS_TYPE_STRUCT:
-        return QDBusArgument::StructureType;
-
-    case DBUS_TYPE_DICT_ENTRY:
-        return QDBusArgument::MapEntryType;
-
-    case DBUS_TYPE_UNIX_FD:
-        return capabilities & QDBusConnection::UnixFileDescriptorPassing ?
-               QDBusArgument::BasicType : QDBusArgument::UnknownType;
-
-    case DBUS_TYPE_INVALID:
-        return QDBusArgument::UnknownType;
+        case DBUS_TYPE_INVALID:
+            return QDBusArgument::UnknownType;
 
 //    default:
 //        qWarning("QDBusDemarshaller: Found unknown D-Bus type %d '%c'",
@@ -243,84 +243,84 @@ QVariant QDBusDemarshaller::toVariantInternal()
 {
     switch ( q_dbus_message_iter_get_arg_type( &iterator ) )
     {
-    case DBUS_TYPE_BYTE:
-        return QVariant::fromValue( toByte() );
-
-    case DBUS_TYPE_INT16:
-        return QVariant::fromValue( toShort() );
-
-    case DBUS_TYPE_UINT16:
-        return QVariant::fromValue( toUShort() );
-
-    case DBUS_TYPE_INT32:
-        return toInt();
-
-    case DBUS_TYPE_UINT32:
-        return toUInt();
-
-    case DBUS_TYPE_DOUBLE:
-        return toDouble();
-
-    case DBUS_TYPE_BOOLEAN:
-        return toBool();
-
-    case DBUS_TYPE_INT64:
-        return toLongLong();
-
-    case DBUS_TYPE_UINT64:
-        return toULongLong();
-
-    case DBUS_TYPE_STRING:
-        return toStringUnchecked();
-
-    case DBUS_TYPE_OBJECT_PATH:
-        return QVariant::fromValue( toObjectPathUnchecked() );
-
-    case DBUS_TYPE_SIGNATURE:
-        return QVariant::fromValue( toSignatureUnchecked() );
-
-    case DBUS_TYPE_VARIANT:
-        return QVariant::fromValue( toVariant() );
-
-    case DBUS_TYPE_ARRAY:
-        switch ( q_dbus_message_iter_get_element_type( &iterator ) )
-        {
         case DBUS_TYPE_BYTE:
-            // QByteArray
-            return toByteArrayUnchecked();
+            return QVariant::fromValue( toByte() );
+
+        case DBUS_TYPE_INT16:
+            return QVariant::fromValue( toShort() );
+
+        case DBUS_TYPE_UINT16:
+            return QVariant::fromValue( toUShort() );
+
+        case DBUS_TYPE_INT32:
+            return toInt();
+
+        case DBUS_TYPE_UINT32:
+            return toUInt();
+
+        case DBUS_TYPE_DOUBLE:
+            return toDouble();
+
+        case DBUS_TYPE_BOOLEAN:
+            return toBool();
+
+        case DBUS_TYPE_INT64:
+            return toLongLong();
+
+        case DBUS_TYPE_UINT64:
+            return toULongLong();
 
         case DBUS_TYPE_STRING:
-            return toStringListUnchecked();
+            return toStringUnchecked();
 
-        case DBUS_TYPE_DICT_ENTRY:
+        case DBUS_TYPE_OBJECT_PATH:
+            return QVariant::fromValue( toObjectPathUnchecked() );
+
+        case DBUS_TYPE_SIGNATURE:
+            return QVariant::fromValue( toSignatureUnchecked() );
+
+        case DBUS_TYPE_VARIANT:
+            return QVariant::fromValue( toVariant() );
+
+        case DBUS_TYPE_ARRAY:
+            switch ( q_dbus_message_iter_get_element_type( &iterator ) )
+            {
+                case DBUS_TYPE_BYTE:
+                    // QByteArray
+                    return toByteArrayUnchecked();
+
+                case DBUS_TYPE_STRING:
+                    return toStringListUnchecked();
+
+                case DBUS_TYPE_DICT_ENTRY:
+                    return QVariant::fromValue( duplicate() );
+
+                default:
+                    return QVariant::fromValue( duplicate() );
+            }
+
+        case DBUS_TYPE_STRUCT:
             return QVariant::fromValue( duplicate() );
+
+        case DBUS_TYPE_UNIX_FD:
+            if ( capabilities & QDBusConnection::UnixFileDescriptorPassing )
+            {
+                return QVariant::fromValue( toUnixFileDescriptor() );
+            }
+
+        // fall through
 
         default:
-            return QVariant::fromValue( duplicate() );
-        }
-
-    case DBUS_TYPE_STRUCT:
-        return QVariant::fromValue( duplicate() );
-
-    case DBUS_TYPE_UNIX_FD:
-        if ( capabilities & QDBusConnection::UnixFileDescriptorPassing )
-        {
-            return QVariant::fromValue( toUnixFileDescriptor() );
-        }
-
-    // fall through
-
-    default:
 //        qWarning("QDBusDemarshaller: Found unknown D-Bus type %d '%c'",
 //                 q_dbus_message_iter_get_arg_type(&iterator),
 //                 q_dbus_message_iter_get_arg_type(&iterator));
-        char *ptr = 0;
-        ptr += q_dbus_message_iter_get_arg_type( &iterator );
-        q_dbus_message_iter_next( &iterator );
+            char *ptr = 0;
+            ptr += q_dbus_message_iter_get_arg_type( &iterator );
+            q_dbus_message_iter_next( &iterator );
 
-        // I hope you never dereference this pointer!
-        return QVariant::fromValue<void *>( ptr );
-        break;
+            // I hope you never dereference this pointer!
+            return QVariant::fromValue<void *>( ptr );
+            break;
     };
 }
 
@@ -330,13 +330,13 @@ bool QDBusDemarshaller::isCurrentTypeStringLike()
 
     switch ( type )
     {
-    case DBUS_TYPE_STRING:  //FALLTHROUGH
-    case DBUS_TYPE_OBJECT_PATH:  //FALLTHROUGH
-    case DBUS_TYPE_SIGNATURE:
-        return true;
+        case DBUS_TYPE_STRING:  //FALLTHROUGH
+        case DBUS_TYPE_OBJECT_PATH:  //FALLTHROUGH
+        case DBUS_TYPE_SIGNATURE:
+            return true;
 
-    default:
-        return false;
+        default:
+            return false;
     }
 }
 

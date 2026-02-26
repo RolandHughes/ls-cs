@@ -109,11 +109,11 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
 
-   include_directories( "${LIBTOOL_INSTALL_PREFIX}/include" )
+#   include_directories( "${LIBTOOL_INSTALL_PREFIX}/include" )
 
-   add_dependencies(LsCsGui ls_libtool)
+#   add_dependencies(LsCsGui ls_libtool)
 
-   target_link_libraries(LsCsGui PRIVATE ls_libtool_ep)
+#   target_link_libraries(LsCsGui PRIVATE ls_libtool_ep)
 
    target_link_libraries(LsCsGui
       PRIVATE

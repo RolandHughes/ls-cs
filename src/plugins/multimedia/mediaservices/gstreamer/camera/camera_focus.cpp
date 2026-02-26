@@ -74,36 +74,36 @@ void CameraBinFocus::setFocusMode( QCameraFocus::FocusModes mode )
 
     switch ( mode )
     {
-    case QCameraFocus::AutoFocus:
-        photographyMode = GST_PHOTOGRAPHY_FOCUS_MODE_AUTO;
-        break;
-
-    case QCameraFocus::HyperfocalFocus:
-        photographyMode = GST_PHOTOGRAPHY_FOCUS_MODE_HYPERFOCAL;
-        break;
-
-    case QCameraFocus::InfinityFocus:
-        photographyMode = GST_PHOTOGRAPHY_FOCUS_MODE_INFINITY;
-        break;
-
-    case QCameraFocus::ContinuousFocus:
-        photographyMode = GST_PHOTOGRAPHY_FOCUS_MODE_CONTINUOUS_NORMAL;
-        break;
-
-    case QCameraFocus::MacroFocus:
-        photographyMode = GST_PHOTOGRAPHY_FOCUS_MODE_MACRO;
-        break;
-
-    default:
-        if ( mode & QCameraFocus::AutoFocus )
-        {
+        case QCameraFocus::AutoFocus:
             photographyMode = GST_PHOTOGRAPHY_FOCUS_MODE_AUTO;
             break;
-        }
-        else
-        {
-            return;
-        }
+
+        case QCameraFocus::HyperfocalFocus:
+            photographyMode = GST_PHOTOGRAPHY_FOCUS_MODE_HYPERFOCAL;
+            break;
+
+        case QCameraFocus::InfinityFocus:
+            photographyMode = GST_PHOTOGRAPHY_FOCUS_MODE_INFINITY;
+            break;
+
+        case QCameraFocus::ContinuousFocus:
+            photographyMode = GST_PHOTOGRAPHY_FOCUS_MODE_CONTINUOUS_NORMAL;
+            break;
+
+        case QCameraFocus::MacroFocus:
+            photographyMode = GST_PHOTOGRAPHY_FOCUS_MODE_MACRO;
+            break;
+
+        default:
+            if ( mode & QCameraFocus::AutoFocus )
+            {
+                photographyMode = GST_PHOTOGRAPHY_FOCUS_MODE_AUTO;
+                break;
+            }
+            else
+            {
+                return;
+            }
     }
 
     if ( gst_photography_set_focus_mode( m_session->photography(), photographyMode ) )
@@ -116,15 +116,15 @@ bool CameraBinFocus::isFocusModeSupported( QCameraFocus::FocusModes mode ) const
 {
     switch ( mode )
     {
-    case QCameraFocus::AutoFocus:
-    case QCameraFocus::HyperfocalFocus:
-    case QCameraFocus::InfinityFocus:
-    case QCameraFocus::ContinuousFocus:
-    case QCameraFocus::MacroFocus:
-        return true;
+        case QCameraFocus::AutoFocus:
+        case QCameraFocus::HyperfocalFocus:
+        case QCameraFocus::InfinityFocus:
+        case QCameraFocus::ContinuousFocus:
+        case QCameraFocus::MacroFocus:
+            return true;
 
-    default:
-        return mode & QCameraFocus::AutoFocus;
+        default:
+            return mode & QCameraFocus::AutoFocus;
     }
 }
 
@@ -170,27 +170,27 @@ void CameraBinFocus::setFocusPointMode( QCameraFocus::FocusPointMode mode )
 
     switch ( mode )
     {
-    case QCameraFocus::FocusPointAuto:
-    case QCameraFocus::FocusPointCustom:
-        break;
+        case QCameraFocus::FocusPointAuto:
+        case QCameraFocus::FocusPointCustom:
+            break;
 #if GST_CHECK_VERSION(1,0,0)
 
-    case QCameraFocus::FocusPointFaceDetection:
-        if ( g_object_class_find_property( G_OBJECT_GET_CLASS( source ), "detect-faces" ) )
-        {
-            if ( GstPad *pad = gst_element_get_static_pad( source, "vfsrc" ) )
+        case QCameraFocus::FocusPointFaceDetection:
+            if ( g_object_class_find_property( G_OBJECT_GET_CLASS( source ), "detect-faces" ) )
             {
-                addProbeToPad( pad );
-                g_object_set ( G_OBJECT( source ), "detect-faces", TRUE, NULL );
-                break;
+                if ( GstPad *pad = gst_element_get_static_pad( source, "vfsrc" ) )
+                {
+                    addProbeToPad( pad );
+                    g_object_set ( G_OBJECT( source ), "detect-faces", TRUE, NULL );
+                    break;
+                }
             }
-        }
 
-        return;
+            return;
 #endif
 
-    default:
-        return;
+        default:
+            return;
     }
 
     m_focusPointMode = mode;
@@ -204,22 +204,22 @@ bool CameraBinFocus::isFocusPointModeSupported( QCameraFocus::FocusPointMode mod
 
     switch ( mode )
     {
-    case QCameraFocus::FocusPointAuto:
-    case QCameraFocus::FocusPointCustom:
-        return true;
+        case QCameraFocus::FocusPointAuto:
+        case QCameraFocus::FocusPointCustom:
+            return true;
 #if GST_CHECK_VERSION(1,0,0)
 
-    case QCameraFocus::FocusPointFaceDetection:
-        if ( GstElement *source = m_session->cameraSource() )
-        {
-            return g_object_class_find_property( G_OBJECT_GET_CLASS( source ), "detect-faces" );
-        }
+        case QCameraFocus::FocusPointFaceDetection:
+            if ( GstElement *source = m_session->cameraSource() )
+            {
+                return g_object_class_find_property( G_OBJECT_GET_CLASS( source ), "detect-faces" );
+            }
 
-        return false;
+            return false;
 #endif
 
-    default:
-        return false;
+        default:
+            return false;
     }
 }
 
@@ -300,24 +300,24 @@ void CameraBinFocus::handleFocusMessage( GstMessage *gm )
 
         switch ( status )
         {
-        case GST_PHOTOGRAPHY_FOCUS_STATUS_FAIL:
-            focusStatus = QCamera::Unlocked;
-            reason = QCamera::LockFailed;
-            break;
+            case GST_PHOTOGRAPHY_FOCUS_STATUS_FAIL:
+                focusStatus = QCamera::Unlocked;
+                reason = QCamera::LockFailed;
+                break;
 
-        case GST_PHOTOGRAPHY_FOCUS_STATUS_SUCCESS:
-            focusStatus = QCamera::Locked;
-            break;
+            case GST_PHOTOGRAPHY_FOCUS_STATUS_SUCCESS:
+                focusStatus = QCamera::Locked;
+                break;
 
-        case GST_PHOTOGRAPHY_FOCUS_STATUS_NONE:
-            break;
+            case GST_PHOTOGRAPHY_FOCUS_STATUS_NONE:
+                break;
 
-        case GST_PHOTOGRAPHY_FOCUS_STATUS_RUNNING:
-            focusStatus = QCamera::Searching;
-            break;
+            case GST_PHOTOGRAPHY_FOCUS_STATUS_RUNNING:
+                focusStatus = QCamera::Searching;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         static int signalIndex = metaObject()->indexOfSlot(

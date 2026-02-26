@@ -151,33 +151,33 @@ static QString bulletChar( QTextListFormat::Style style )
 {
     switch ( style )
     {
-    case QTextListFormat::ListDisc:
-        return QChar( 0x25cf ); // bullet character
+        case QTextListFormat::ListDisc:
+            return QChar( 0x25cf ); // bullet character
 
-    case QTextListFormat::ListCircle:
-        return QChar( 0x25cb ); // white circle
+        case QTextListFormat::ListCircle:
+            return QChar( 0x25cb ); // white circle
 
-    case QTextListFormat::ListSquare:
-        return QChar( 0x25a1 ); // white square
+        case QTextListFormat::ListSquare:
+            return QChar( 0x25a1 ); // white square
 
-    case QTextListFormat::ListDecimal:
-        return QString::fromLatin1( "1" );
+        case QTextListFormat::ListDecimal:
+            return QString::fromLatin1( "1" );
 
-    case QTextListFormat::ListLowerAlpha:
-        return QString::fromLatin1( "a" );
+        case QTextListFormat::ListLowerAlpha:
+            return QString::fromLatin1( "a" );
 
-    case QTextListFormat::ListUpperAlpha:
-        return QString::fromLatin1( "A" );
+        case QTextListFormat::ListUpperAlpha:
+            return QString::fromLatin1( "A" );
 
-    case QTextListFormat::ListLowerRoman:
-        return QString::fromLatin1( "i" );
+        case QTextListFormat::ListLowerRoman:
+            return QString::fromLatin1( "i" );
 
-    case QTextListFormat::ListUpperRoman:
-        return QString::fromLatin1( "I" );
+        case QTextListFormat::ListUpperRoman:
+            return QString::fromLatin1( "I" );
 
-    case QTextListFormat::ListStyleUndefined:
-    default:
-        return QString();
+        case QTextListFormat::ListStyleUndefined:
+        default:
+            return QString();
     }
 }
 
@@ -548,33 +548,33 @@ void QTextOdfWriter::writeFormats( QXmlStreamWriter &writer, const QSet<int> &fo
 
         switch ( textFormat.type() )
         {
-        case QTextFormat::CharFormat:
-            if ( textFormat.isTableCellFormat() )
-            {
-                writeTableCellFormat( writer, textFormat.toTableCellFormat(), formatIndex );
-            }
-            else
-            {
-                writeCharacterFormat( writer, textFormat.toCharFormat(), formatIndex );
-            }
+            case QTextFormat::CharFormat:
+                if ( textFormat.isTableCellFormat() )
+                {
+                    writeTableCellFormat( writer, textFormat.toTableCellFormat(), formatIndex );
+                }
+                else
+                {
+                    writeCharacterFormat( writer, textFormat.toCharFormat(), formatIndex );
+                }
 
-            break;
+                break;
 
-        case QTextFormat::BlockFormat:
-            writeBlockFormat( writer, textFormat.toBlockFormat(), formatIndex );
-            break;
+            case QTextFormat::BlockFormat:
+                writeBlockFormat( writer, textFormat.toBlockFormat(), formatIndex );
+                break;
 
-        case QTextFormat::ListFormat:
-            writeListFormat( writer, textFormat.toListFormat(), formatIndex );
-            break;
+            case QTextFormat::ListFormat:
+                writeListFormat( writer, textFormat.toListFormat(), formatIndex );
+                break;
 
-        case QTextFormat::FrameFormat:
-            writeFrameFormat( writer, textFormat.toFrameFormat(), formatIndex );
-            break;
+            case QTextFormat::FrameFormat:
+                writeFrameFormat( writer, textFormat.toFrameFormat(), formatIndex );
+                break;
 
-        case QTextFormat::TableFormat:
+            case QTextFormat::TableFormat:
 
-            break;
+                break;
         }
     }
 
@@ -691,21 +691,21 @@ void QTextOdfWriter::writeBlockFormat( QXmlStreamWriter &writer, QTextBlockForma
 
             switch ( iterator->type )
             {
-            case QTextOption::DelimiterTab:
-                type = "char";
-                break;
+                case QTextOption::DelimiterTab:
+                    type = "char";
+                    break;
 
-            case QTextOption::LeftTab:
-                type = "left";
-                break;
+                case QTextOption::LeftTab:
+                    type = "left";
+                    break;
 
-            case QTextOption::RightTab:
-                type = "right";
-                break;
+                case QTextOption::RightTab:
+                    type = "right";
+                    break;
 
-            case QTextOption::CenterTab:
-                type = "center";
-                break;
+                case QTextOption::CenterTab:
+                    type = "center";
+                    break;
             }
 
             writer.writeAttribute( styleNS, QString::fromLatin1( "type" ), type );
@@ -772,25 +772,25 @@ void QTextOdfWriter::writeCharacterFormat( QXmlStreamWriter &writer, QTextCharFo
     {
         switch ( format.fontCapitalization() )
         {
-        case QFont::MixedCase:
-            writer.writeAttribute( foNS, QString::fromLatin1( "text-transform" ), QString::fromLatin1( "none" ) );
-            break;
+            case QFont::MixedCase:
+                writer.writeAttribute( foNS, QString::fromLatin1( "text-transform" ), QString::fromLatin1( "none" ) );
+                break;
 
-        case QFont::AllUppercase:
-            writer.writeAttribute( foNS, QString::fromLatin1( "text-transform" ), QString::fromLatin1( "uppercase" ) );
-            break;
+            case QFont::AllUppercase:
+                writer.writeAttribute( foNS, QString::fromLatin1( "text-transform" ), QString::fromLatin1( "uppercase" ) );
+                break;
 
-        case QFont::AllLowercase:
-            writer.writeAttribute( foNS, QString::fromLatin1( "text-transform" ), QString::fromLatin1( "lowercase" ) );
-            break;
+            case QFont::AllLowercase:
+                writer.writeAttribute( foNS, QString::fromLatin1( "text-transform" ), QString::fromLatin1( "lowercase" ) );
+                break;
 
-        case QFont::Capitalize:
-            writer.writeAttribute( foNS, QString::fromLatin1( "text-transform" ), QString::fromLatin1( "capitalize" ) );
-            break;
+            case QFont::Capitalize:
+                writer.writeAttribute( foNS, QString::fromLatin1( "text-transform" ), QString::fromLatin1( "capitalize" ) );
+                break;
 
-        case QFont::SmallCaps:
-            writer.writeAttribute( foNS, QString::fromLatin1( "font-variant" ), QString::fromLatin1( "small-caps" ) );
-            break;
+            case QFont::SmallCaps:
+                writer.writeAttribute( foNS, QString::fromLatin1( "font-variant" ), QString::fromLatin1( "small-caps" ) );
+                break;
         }
     }
 
@@ -833,37 +833,37 @@ void QTextOdfWriter::writeCharacterFormat( QXmlStreamWriter &writer, QTextCharFo
 
         switch ( format.underlineStyle() )
         {
-        case QTextCharFormat::NoUnderline:
-            value = QString::fromLatin1( "none" );
-            break;
+            case QTextCharFormat::NoUnderline:
+                value = QString::fromLatin1( "none" );
+                break;
 
-        case QTextCharFormat::SingleUnderline:
-            value = QString::fromLatin1( "solid" );
-            break;
+            case QTextCharFormat::SingleUnderline:
+                value = QString::fromLatin1( "solid" );
+                break;
 
-        case QTextCharFormat::DashUnderline:
-            value = QString::fromLatin1( "dash" );
-            break;
+            case QTextCharFormat::DashUnderline:
+                value = QString::fromLatin1( "dash" );
+                break;
 
-        case QTextCharFormat::DotLine:
-            value = QString::fromLatin1( "dotted" );
-            break;
+            case QTextCharFormat::DotLine:
+                value = QString::fromLatin1( "dotted" );
+                break;
 
-        case QTextCharFormat::DashDotLine:
-            value = QString::fromLatin1( "dash-dot" );
-            break;
+            case QTextCharFormat::DashDotLine:
+                value = QString::fromLatin1( "dash-dot" );
+                break;
 
-        case QTextCharFormat::DashDotDotLine:
-            value = QString::fromLatin1( "dot-dot-dash" );
-            break;
+            case QTextCharFormat::DashDotDotLine:
+                value = QString::fromLatin1( "dot-dot-dash" );
+                break;
 
-        case QTextCharFormat::WaveUnderline:
-            value = QString::fromLatin1( "wave" );
-            break;
+            case QTextCharFormat::WaveUnderline:
+                value = QString::fromLatin1( "wave" );
+                break;
 
-        case QTextCharFormat::SpellCheckUnderline:
-            value = QString::fromLatin1( "none" );
-            break;
+            case QTextCharFormat::SpellCheckUnderline:
+                value = QString::fromLatin1( "none" );
+                break;
         }
 
         writer.writeAttribute( styleNS, QString::fromLatin1( "text-underline-style" ), value );
@@ -875,29 +875,29 @@ void QTextOdfWriter::writeCharacterFormat( QXmlStreamWriter &writer, QTextCharFo
 
         switch ( format.verticalAlignment() )
         {
-        case QTextCharFormat::AlignMiddle:
-        case QTextCharFormat::AlignNormal:
-            value = QString::fromLatin1( "0%" );
-            break;
+            case QTextCharFormat::AlignMiddle:
+            case QTextCharFormat::AlignNormal:
+                value = QString::fromLatin1( "0%" );
+                break;
 
-        case QTextCharFormat::AlignSuperScript:
-            value = QString::fromLatin1( "super" );
-            break;
+            case QTextCharFormat::AlignSuperScript:
+                value = QString::fromLatin1( "super" );
+                break;
 
-        case QTextCharFormat::AlignSubScript:
-            value = QString::fromLatin1( "sub" );
-            break;
+            case QTextCharFormat::AlignSubScript:
+                value = QString::fromLatin1( "sub" );
+                break;
 
-        case QTextCharFormat::AlignTop:
-            value = QString::fromLatin1( "100%" );
-            break;
+            case QTextCharFormat::AlignTop:
+                value = QString::fromLatin1( "100%" );
+                break;
 
-        case QTextCharFormat::AlignBottom:
-            value = QString::fromLatin1( "-100%" );
-            break;
+            case QTextCharFormat::AlignBottom:
+                value = QString::fromLatin1( "-100%" );
+                break;
 
-        case QTextCharFormat::AlignBaseline:
-            break;
+            case QTextCharFormat::AlignBaseline:
+                break;
 
         }
 
@@ -1076,21 +1076,21 @@ void QTextOdfWriter::writeTableCellFormat( QXmlStreamWriter &writer, QTextTableC
 
         switch ( format.verticalAlignment() )
         {
-        case QTextCharFormat::AlignMiddle:
-            pos = QString::fromLatin1( "middle" );
-            break;
+            case QTextCharFormat::AlignMiddle:
+                pos = QString::fromLatin1( "middle" );
+                break;
 
-        case QTextCharFormat::AlignTop:
-            pos = QString::fromLatin1( "top" );
-            break;
+            case QTextCharFormat::AlignTop:
+                pos = QString::fromLatin1( "top" );
+                break;
 
-        case QTextCharFormat::AlignBottom:
-            pos = QString::fromLatin1( "bottom" );
-            break;
+            case QTextCharFormat::AlignBottom:
+                pos = QString::fromLatin1( "bottom" );
+                break;
 
-        default:
-            pos = QString::fromLatin1( "automatic" );
-            break;
+            default:
+                pos = QString::fromLatin1( "automatic" );
+                break;
         }
 
         writer.writeAttribute( styleNS, QString::fromLatin1( "vertical-align" ), pos );

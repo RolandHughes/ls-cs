@@ -130,7 +130,8 @@ static constexpr const int lscs_green_shift    = lscs_bbits - ( 8 - lscs_gbits )
 static constexpr const int lscs_neg_blue_shift = 8 - lscs_bbits;
 static constexpr const int lscs_blue_mask      = ( 1 << lscs_bbits ) - 1;
 static constexpr const int lscs_green_mask     = ( 1 << ( lscs_gbits + lscs_bbits ) ) - ( 1 << lscs_bbits );
-static constexpr const int lscs_red_mask       = ( 1 << ( lscs_rbits + lscs_gbits + lscs_bbits ) ) - ( 1 << ( lscs_gbits + lscs_bbits ) );
+static constexpr const int lscs_red_mask       = ( 1 << ( lscs_rbits + lscs_gbits + lscs_bbits ) ) - ( 1 <<
+        ( lscs_gbits + lscs_bbits ) );
 
 static constexpr const int lscs_red_rounding_shift   = lscs_red_shift + lscs_rbits;
 static constexpr const int lscs_green_rounding_shift = lscs_green_shift + lscs_gbits;
@@ -165,34 +166,34 @@ uint QColormap::pixel( const QColor &color ) const
     {
         switch ( d->depth )
         {
-        case 16:
-            return lscs_convRgbTo16( rgb );
+            case 16:
+                return lscs_convRgbTo16( rgb );
 
-        case 24:
-        case 32:
-        {
-            const int r = qRed( rgb );
-            const int g = qGreen( rgb );
-            const int b = qBlue( rgb );
-            const int red_shift = 16;
-            const int green_shift = 8;
-            const int red_mask   = 0xff0000;
-            const int green_mask = 0x00ff00;
-            const int blue_mask  = 0x0000ff;
-            const int tg = g << green_shift;
+            case 24:
+            case 32:
+            {
+                const int r = qRed( rgb );
+                const int g = qGreen( rgb );
+                const int b = qBlue( rgb );
+                const int red_shift = 16;
+                const int green_shift = 8;
+                const int red_mask   = 0xff0000;
+                const int green_mask = 0x00ff00;
+                const int blue_mask  = 0x0000ff;
+                const int tg = g << green_shift;
 
 #ifdef LSCS_QWS_DEPTH_32_BGR
 
-            if ( lscs_screen->pixelType() == QScreen::BGRPixel )
-            {
-                const int tb = b << red_shift;
-                return 0xff000000 | ( r & blue_mask ) | ( tg & green_mask ) | ( tb & red_mask );
-            }
+                if ( lscs_screen->pixelType() == QScreen::BGRPixel )
+                {
+                    const int tb = b << red_shift;
+                    return 0xff000000 | ( r & blue_mask ) | ( tg & green_mask ) | ( tb & red_mask );
+                }
 
 #endif
-            const int tr = r << red_shift;
-            return 0xff000000 | ( b & blue_mask ) | ( tg & green_mask ) | ( tr & red_mask );
-        }
+                const int tr = r << red_shift;
+                return 0xff000000 | ( b & blue_mask ) | ( tg & green_mask ) | ( tr & red_mask );
+            }
         }
     }
 

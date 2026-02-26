@@ -123,20 +123,20 @@ struct ElasticEase : public QEasingCurveFunction
 
         switch ( _t )
         {
-        case In:
-            return easeInElastic( t, a, p );
+            case In:
+                return easeInElastic( t, a, p );
 
-        case Out:
-            return easeOutElastic( t, a, p );
+            case Out:
+                return easeOutElastic( t, a, p );
 
-        case InOut:
-            return easeInOutElastic( t, a, p );
+            case InOut:
+                return easeInOutElastic( t, a, p );
 
-        case OutIn:
-            return easeOutInElastic( t, a, p );
+            case OutIn:
+                return easeOutInElastic( t, a, p );
 
-        default:
-            return t;
+            default:
+                return t;
         }
     }
 };
@@ -161,20 +161,20 @@ struct BounceEase : public QEasingCurveFunction
 
         switch ( _t )
         {
-        case In:
-            return easeInBounce( t, a );
+            case In:
+                return easeInBounce( t, a );
 
-        case Out:
-            return easeOutBounce( t, a );
+            case Out:
+                return easeOutBounce( t, a );
 
-        case InOut:
-            return easeInOutBounce( t, a );
+            case InOut:
+                return easeInOutBounce( t, a );
 
-        case OutIn:
-            return easeOutInBounce( t, a );
+            case OutIn:
+                return easeOutInBounce( t, a );
 
-        default:
-            return t;
+            default:
+                return t;
         }
     }
 };
@@ -199,20 +199,20 @@ struct BackEase : public QEasingCurveFunction
 
         switch ( _t )
         {
-        case In:
-            return easeInBack( t, o );
+            case In:
+                return easeInBack( t, o );
 
-        case Out:
-            return easeOutBack( t, o );
+            case Out:
+                return easeOutBack( t, o );
 
-        case InOut:
-            return easeInOutBack( t, o );
+            case InOut:
+                return easeInOutBack( t, o );
 
-        case OutIn:
-            return easeOutInBack( t, o );
+            case OutIn:
+                return easeOutInBack( t, o );
 
-        default:
-            return t;
+            default:
+                return t;
         }
     }
 };
@@ -221,108 +221,108 @@ static QEasingCurve::EasingFunction curveToFunc( QEasingCurve::Type curve )
 {
     switch ( curve )
     {
-    case QEasingCurve::Linear:
-        return &easeNone;
+        case QEasingCurve::Linear:
+            return &easeNone;
 
-    case QEasingCurve::InQuad:
-        return &easeInQuad;
+        case QEasingCurve::InQuad:
+            return &easeInQuad;
 
-    case QEasingCurve::OutQuad:
-        return &easeOutQuad;
+        case QEasingCurve::OutQuad:
+            return &easeOutQuad;
 
-    case QEasingCurve::InOutQuad:
-        return &easeInOutQuad;
+        case QEasingCurve::InOutQuad:
+            return &easeInOutQuad;
 
-    case QEasingCurve::OutInQuad:
-        return &easeOutInQuad;
+        case QEasingCurve::OutInQuad:
+            return &easeOutInQuad;
 
-    case QEasingCurve::InCubic:
-        return &easeInCubic;
+        case QEasingCurve::InCubic:
+            return &easeInCubic;
 
-    case QEasingCurve::OutCubic:
-        return &easeOutCubic;
+        case QEasingCurve::OutCubic:
+            return &easeOutCubic;
 
-    case QEasingCurve::InOutCubic:
-        return &easeInOutCubic;
+        case QEasingCurve::InOutCubic:
+            return &easeInOutCubic;
 
-    case QEasingCurve::OutInCubic:
-        return &easeOutInCubic;
+        case QEasingCurve::OutInCubic:
+            return &easeOutInCubic;
 
-    case QEasingCurve::InQuart:
-        return &easeInQuart;
+        case QEasingCurve::InQuart:
+            return &easeInQuart;
 
-    case QEasingCurve::OutQuart:
-        return &easeOutQuart;
+        case QEasingCurve::OutQuart:
+            return &easeOutQuart;
 
-    case QEasingCurve::InOutQuart:
-        return &easeInOutQuart;
+        case QEasingCurve::InOutQuart:
+            return &easeInOutQuart;
 
-    case QEasingCurve::OutInQuart:
-        return &easeOutInQuart;
+        case QEasingCurve::OutInQuart:
+            return &easeOutInQuart;
 
-    case QEasingCurve::InQuint:
-        return &easeInQuint;
+        case QEasingCurve::InQuint:
+            return &easeInQuint;
 
-    case QEasingCurve::OutQuint:
-        return &easeOutQuint;
+        case QEasingCurve::OutQuint:
+            return &easeOutQuint;
 
-    case QEasingCurve::InOutQuint:
-        return &easeInOutQuint;
+        case QEasingCurve::InOutQuint:
+            return &easeInOutQuint;
 
-    case QEasingCurve::OutInQuint:
-        return &easeOutInQuint;
+        case QEasingCurve::OutInQuint:
+            return &easeOutInQuint;
 
-    case QEasingCurve::InSine:
-        return &easeInSine;
+        case QEasingCurve::InSine:
+            return &easeInSine;
 
-    case QEasingCurve::OutSine:
-        return &easeOutSine;
+        case QEasingCurve::OutSine:
+            return &easeOutSine;
 
-    case QEasingCurve::InOutSine:
-        return &easeInOutSine;
+        case QEasingCurve::InOutSine:
+            return &easeInOutSine;
 
-    case QEasingCurve::OutInSine:
-        return &easeOutInSine;
+        case QEasingCurve::OutInSine:
+            return &easeOutInSine;
 
-    case QEasingCurve::InExpo:
-        return &easeInExpo;
+        case QEasingCurve::InExpo:
+            return &easeInExpo;
 
-    case QEasingCurve::OutExpo:
-        return &easeOutExpo;
+        case QEasingCurve::OutExpo:
+            return &easeOutExpo;
 
-    case QEasingCurve::InOutExpo:
-        return &easeInOutExpo;
+        case QEasingCurve::InOutExpo:
+            return &easeInOutExpo;
 
-    case QEasingCurve::OutInExpo:
-        return &easeOutInExpo;
+        case QEasingCurve::OutInExpo:
+            return &easeOutInExpo;
 
-    case QEasingCurve::InCirc:
-        return &easeInCirc;
+        case QEasingCurve::InCirc:
+            return &easeInCirc;
 
-    case QEasingCurve::OutCirc:
-        return &easeOutCirc;
+        case QEasingCurve::OutCirc:
+            return &easeOutCirc;
 
-    case QEasingCurve::InOutCirc:
-        return &easeInOutCirc;
+        case QEasingCurve::InOutCirc:
+            return &easeInOutCirc;
 
-    case QEasingCurve::OutInCirc:
-        return &easeOutInCirc;
+        case QEasingCurve::OutInCirc:
+            return &easeOutInCirc;
 
-    // Internal for, compatibility with QTimeLine only ??
-    case QEasingCurve::InCurve:
-        return &easeInCurve;
+        // Internal for, compatibility with QTimeLine only ??
+        case QEasingCurve::InCurve:
+            return &easeInCurve;
 
-    case QEasingCurve::OutCurve:
-        return &easeOutCurve;
+        case QEasingCurve::OutCurve:
+            return &easeOutCurve;
 
-    case QEasingCurve::SineCurve:
-        return &easeSineCurve;
+        case QEasingCurve::SineCurve:
+            return &easeSineCurve;
 
-    case QEasingCurve::CosineCurve:
-        return &easeCosineCurve;
+        case QEasingCurve::CosineCurve:
+            return &easeCosineCurve;
 
-    default:
-        return nullptr;
+        default:
+            return nullptr;
     };
 }
 
@@ -332,56 +332,56 @@ static QEasingCurveFunction *curveToFunctionObject( QEasingCurve::Type type )
 
     switch ( type )
     {
-    case QEasingCurve::InElastic:
-        curveFunc = new ElasticEase( ElasticEase::In );
-        break;
+        case QEasingCurve::InElastic:
+            curveFunc = new ElasticEase( ElasticEase::In );
+            break;
 
-    case QEasingCurve::OutElastic:
-        curveFunc = new ElasticEase( ElasticEase::Out );
-        break;
+        case QEasingCurve::OutElastic:
+            curveFunc = new ElasticEase( ElasticEase::Out );
+            break;
 
-    case QEasingCurve::InOutElastic:
-        curveFunc = new ElasticEase( ElasticEase::InOut );
-        break;
+        case QEasingCurve::InOutElastic:
+            curveFunc = new ElasticEase( ElasticEase::InOut );
+            break;
 
-    case QEasingCurve::OutInElastic:
-        curveFunc = new ElasticEase( ElasticEase::OutIn );
-        break;
+        case QEasingCurve::OutInElastic:
+            curveFunc = new ElasticEase( ElasticEase::OutIn );
+            break;
 
-    case QEasingCurve::OutBounce:
-        curveFunc = new BounceEase( BounceEase::Out );
-        break;
+        case QEasingCurve::OutBounce:
+            curveFunc = new BounceEase( BounceEase::Out );
+            break;
 
-    case QEasingCurve::InBounce:
-        curveFunc = new BounceEase( BounceEase::In );
-        break;
+        case QEasingCurve::InBounce:
+            curveFunc = new BounceEase( BounceEase::In );
+            break;
 
-    case QEasingCurve::OutInBounce:
-        curveFunc = new BounceEase( BounceEase::OutIn );
-        break;
+        case QEasingCurve::OutInBounce:
+            curveFunc = new BounceEase( BounceEase::OutIn );
+            break;
 
-    case QEasingCurve::InOutBounce:
-        curveFunc = new BounceEase( BounceEase::InOut );
-        break;
+        case QEasingCurve::InOutBounce:
+            curveFunc = new BounceEase( BounceEase::InOut );
+            break;
 
-    case QEasingCurve::InBack:
-        curveFunc = new BackEase( BackEase::In );
-        break;
+        case QEasingCurve::InBack:
+            curveFunc = new BackEase( BackEase::In );
+            break;
 
-    case QEasingCurve::OutBack:
-        curveFunc = new BackEase( BackEase::Out );
-        break;
+        case QEasingCurve::OutBack:
+            curveFunc = new BackEase( BackEase::Out );
+            break;
 
-    case QEasingCurve::InOutBack:
-        curveFunc = new BackEase( BackEase::InOut );
-        break;
+        case QEasingCurve::InOutBack:
+            curveFunc = new BackEase( BackEase::InOut );
+            break;
 
-    case QEasingCurve::OutInBack:
-        curveFunc = new BackEase( BackEase::OutIn );
-        break;
+        case QEasingCurve::OutInBack:
+            curveFunc = new BackEase( BackEase::OutIn );
+            break;
 
-    default:
-        curveFunc = new QEasingCurveFunction( QEasingCurveFunction::In, qreal( 0.3 ), qreal( 1.0 ), qreal( 1.70158 ) );
+        default:
+            curveFunc = new QEasingCurveFunction( QEasingCurveFunction::In, qreal( 0.3 ), qreal( 1.0 ), qreal( 1.70158 ) );
     }
 
     return curveFunc;

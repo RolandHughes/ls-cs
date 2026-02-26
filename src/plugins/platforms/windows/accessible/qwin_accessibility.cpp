@@ -77,14 +77,14 @@ static inline QString messageBoxAlertSound( const QObject *messageBox )
 
     switch ( messageBox->property( "icon" ).toInt() )
     {
-    case Information:
-        return QString( "SystemAsterisk" );
+        case Information:
+            return QString( "SystemAsterisk" );
 
-    case Warning:
-        return QString( "SystemExclamation" );
+        case Warning:
+            return QString( "SystemExclamation" );
 
-    case Critical:
-        return QString( "SystemHand" );
+        case Critical:
+            return QString( "SystemHand" );
     }
 
     return QString();
@@ -96,21 +96,21 @@ void QWindowsAccessibility::notifyAccessibilityUpdate( QAccessibleEvent *event )
 
     switch ( event->type() )
     {
-    case QAccessible::PopupMenuStart:
-        soundName = "MenuPopup";
-        break;
+        case QAccessible::PopupMenuStart:
+            soundName = "MenuPopup";
+            break;
 
-    case QAccessible::MenuCommand:
-        soundName = "MenuCommand";
-        break;
+        case QAccessible::MenuCommand:
+            soundName = "MenuCommand";
+            break;
 
-    case QAccessible::Alert:
-        soundName = event->object()->inherits( "QMessageBox" ) ?
-                    messageBoxAlertSound( event->object() ) : QString( "SystemAsterisk" );
-        break;
+        case QAccessible::Alert:
+            soundName = event->object()->inherits( "QMessageBox" ) ?
+                        messageBoxAlertSound( event->object() ) : QString( "SystemAsterisk" );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     if ( ! soundName.isEmpty() )

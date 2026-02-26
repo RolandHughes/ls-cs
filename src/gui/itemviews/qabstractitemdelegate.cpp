@@ -126,54 +126,54 @@ bool QAbstractItemDelegate::helpEvent( QHelpEvent *event, QAbstractItemView *vie
 
 #ifndef LSCS_NO_TOOLTIP
 
-    case QEvent::ToolTip:
-    {
-        QHelpEvent *he = static_cast<QHelpEvent *>( event );
-        const int precision = inherits( "QItemDelegate" ) ? 10 : 6; // keep in sync with DBL_DIG in qitemdelegate.cpp
-        const QString tooltip = d->textForRole( Qt::ToolTipRole, index.data( Qt::ToolTipRole ), option.locale, precision );
-
-        if ( !tooltip.isEmpty() )
+        case QEvent::ToolTip:
         {
-            QToolTip::showText( he->globalPos(), tooltip, view );
-            return true;
-        }
+            QHelpEvent *he = static_cast<QHelpEvent *>( event );
+            const int precision = inherits( "QItemDelegate" ) ? 10 : 6; // keep in sync with DBL_DIG in qitemdelegate.cpp
+            const QString tooltip = d->textForRole( Qt::ToolTipRole, index.data( Qt::ToolTipRole ), option.locale, precision );
 
-        break;
-    }
+            if ( !tooltip.isEmpty() )
+            {
+                QToolTip::showText( he->globalPos(), tooltip, view );
+                return true;
+            }
+
+            break;
+        }
 
 #endif
 
 #ifndef LSCS_NO_WHATSTHIS
 
-    case QEvent::QueryWhatsThis:
-    {
-        if ( index.data( Qt::WhatsThisRole ).isValid() )
+        case QEvent::QueryWhatsThis:
         {
-            return true;
+            if ( index.data( Qt::WhatsThisRole ).isValid() )
+            {
+                return true;
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case QEvent::WhatsThis:
-    {
-        QHelpEvent *he = static_cast<QHelpEvent *>( event );
-        const int precision = inherits( "QItemDelegate" ) ? 10 : 6; // keep in sync with DBL_DIG in qitemdelegate.cpp
-        const QString whatsthis = d->textForRole( Qt::WhatsThisRole, index.data( Qt::WhatsThisRole ), option.locale, precision );
-
-        if ( !whatsthis.isEmpty() )
+        case QEvent::WhatsThis:
         {
-            QWhatsThis::showText( he->globalPos(), whatsthis, view );
-            return true;
-        }
+            QHelpEvent *he = static_cast<QHelpEvent *>( event );
+            const int precision = inherits( "QItemDelegate" ) ? 10 : 6; // keep in sync with DBL_DIG in qitemdelegate.cpp
+            const QString whatsthis = d->textForRole( Qt::WhatsThisRole, index.data( Qt::WhatsThisRole ), option.locale, precision );
 
-        break;
-    }
+            if ( !whatsthis.isEmpty() )
+            {
+                QWhatsThis::showText( he->globalPos(), whatsthis, view );
+                return true;
+            }
+
+            break;
+        }
 
 #endif
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return false;
@@ -196,14 +196,14 @@ static bool editorHandlesKeyEvent( QWidget *editor, const QKeyEvent *event )
     {
         switch ( event->key() )
         {
-        case Qt::Key_Tab:
-        case Qt::Key_Backtab:
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-            return true;
+            case Qt::Key_Tab:
+            case Qt::Key_Backtab:
+            case Qt::Key_Enter:
+            case Qt::Key_Return:
+                return true;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -241,40 +241,40 @@ bool QAbstractItemDelegatePrivate::editorEventFilter( QObject *object, QEvent *e
 
         switch ( keyEvent->key() )
         {
-        case Qt::Key_Tab:
-            if ( tryFixup( editor ) )
-            {
-                emit q->commitData( editor );
-                emit q->closeEditor( editor, QAbstractItemDelegate::EditNextItem );
-            }
+            case Qt::Key_Tab:
+                if ( tryFixup( editor ) )
+                {
+                    emit q->commitData( editor );
+                    emit q->closeEditor( editor, QAbstractItemDelegate::EditNextItem );
+                }
 
-            return true;
-
-        case Qt::Key_Backtab:
-            if ( tryFixup( editor ) )
-            {
-                emit q->commitData( editor );
-                emit q->closeEditor( editor, QAbstractItemDelegate::EditPreviousItem );
-            }
-
-            return true;
-
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-
-            // We want the editor to be able to process the key press before
-            // committing the data (e.g. so it can do validation/fixup of the input)
-
-            if ( ! tryFixup( editor ) )
-            {
                 return true;
-            }
 
-            QMetaObject::invokeMethod( q, "_q_commitDataAndCloseEditor", Qt::QueuedConnection, Q_ARG( QWidget *, editor ) );
-            return false;
+            case Qt::Key_Backtab:
+                if ( tryFixup( editor ) )
+                {
+                    emit q->commitData( editor );
+                    emit q->closeEditor( editor, QAbstractItemDelegate::EditPreviousItem );
+                }
 
-        default:
-            return false;
+                return true;
+
+            case Qt::Key_Enter:
+            case Qt::Key_Return:
+
+                // We want the editor to be able to process the key press before
+                // committing the data (e.g. so it can do validation/fixup of the input)
+
+                if ( ! tryFixup( editor ) )
+                {
+                    return true;
+                }
+
+                QMetaObject::invokeMethod( q, "_q_commitDataAndCloseEditor", Qt::QueuedConnection, Q_ARG( QWidget *, editor ) );
+                return false;
+
+            default:
+                return false;
         }
     }
     else if ( event->type() == QEvent::FocusOut || ( event->type() == QEvent::Hide && editor->isWindow() ) )
@@ -357,49 +357,49 @@ QString QAbstractItemDelegatePrivate::textForRole( Qt::ItemDataRole role, const 
 
     switch ( value.userType() )
     {
-    case QVariant::Float:
-        text = locale.toString( value.toFloat() );
-        break;
+        case QVariant::Float:
+            text = locale.toString( value.toFloat() );
+            break;
 
-    case QVariant::Double:
-        text = locale.toString( value.toDouble(), 'g', precision );
-        break;
+        case QVariant::Double:
+            text = locale.toString( value.toDouble(), 'g', precision );
+            break;
 
-    case QVariant::Int:
-    case QVariant::LongLong:
-        text = locale.toString( value.toLongLong() );
-        break;
+        case QVariant::Int:
+        case QVariant::LongLong:
+            text = locale.toString( value.toLongLong() );
+            break;
 
-    case QVariant::UInt:
-    case QVariant::ULongLong:
-        text = locale.toString( value.toULongLong() );
-        break;
+        case QVariant::UInt:
+        case QVariant::ULongLong:
+            text = locale.toString( value.toULongLong() );
+            break;
 
-    case QVariant::Date:
-        text = locale.toString( value.toDate(), formatType );
-        break;
+        case QVariant::Date:
+            text = locale.toString( value.toDate(), formatType );
+            break;
 
-    case QVariant::Time:
-        text = locale.toString( value.toTime(), formatType );
-        break;
+        case QVariant::Time:
+            text = locale.toString( value.toTime(), formatType );
+            break;
 
-    case QVariant::DateTime:
-    {
-        const QDateTime dateTime = value.toDateTime();
-        text = locale.toString( dateTime.date(), formatType ) + QChar( ' ' )
-               + locale.toString( dateTime.time(), formatType );
-        break;
-    }
-
-    default:
-        text = value.toString();
-
-        if ( role == Qt::DisplayRole )
+        case QVariant::DateTime:
         {
-            text.replace( '\n', QChar( QChar::LineSeparator ) );
+            const QDateTime dateTime = value.toDateTime();
+            text = locale.toString( dateTime.date(), formatType ) + QChar( ' ' )
+                   + locale.toString( dateTime.time(), formatType );
+            break;
         }
 
-        break;
+        default:
+            text = value.toString();
+
+            if ( role == Qt::DisplayRole )
+            {
+                text.replace( '\n', QChar( QChar::LineSeparator ) );
+            }
+
+            break;
     }
 
     return text;

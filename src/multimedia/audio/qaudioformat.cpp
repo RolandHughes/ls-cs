@@ -257,13 +257,13 @@ QDebug operator<<( QDebug dbg, QAudioFormat::Endian endian )
 
     switch ( endian )
     {
-    case QAudioFormat::BigEndian:
-        dbg << "BigEndian";
-        break;
+        case QAudioFormat::BigEndian:
+            dbg << "BigEndian";
+            break;
 
-    case QAudioFormat::LittleEndian:
-        dbg << "LittleEndian";
-        break;
+        case QAudioFormat::LittleEndian:
+            dbg << "LittleEndian";
+            break;
     }
 
     return dbg;
@@ -276,21 +276,21 @@ QDebug operator<<( QDebug dbg, QAudioFormat::SampleType type )
 
     switch ( type )
     {
-    case QAudioFormat::SignedInt:
-        dbg << "SignedInt";
-        break;
+        case QAudioFormat::SignedInt:
+            dbg << "SignedInt";
+            break;
 
-    case QAudioFormat::UnSignedInt:
-        dbg << "UnSignedInt";
-        break;
+        case QAudioFormat::UnSignedInt:
+            dbg << "UnSignedInt";
+            break;
 
-    case QAudioFormat::Float:
-        dbg << "Float";
-        break;
+        case QAudioFormat::Float:
+            dbg << "Float";
+            break;
 
-    default:
-        dbg << "Unknown";
-        break;
+        default:
+            dbg << "Unknown";
+            break;
     }
 
     return dbg;

@@ -64,17 +64,17 @@ static QVariant toGStreamerOrientation( const QVariant &value )
 {
     switch ( value.toInt() )
     {
-    case 90:
-        return QString( "rotate-270" );
+        case 90:
+            return QString( "rotate-270" );
 
-    case 180:
-        return QString( "rotate-180" );
+        case 180:
+            return QString( "rotate-180" );
 
-    case 270:
-        return QString( "rotate-90" );
+        case 270:
+            return QString( "rotate-90" );
 
-    default:
-        return QString( "rotate-0" );
+        default:
+            return QString( "rotate-0" );
     }
 }
 

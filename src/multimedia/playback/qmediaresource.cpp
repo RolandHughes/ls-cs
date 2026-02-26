@@ -67,19 +67,19 @@ bool QMediaResource::operator ==( const QMediaResource &other ) const
     {
         switch ( key )
         {
-        case Request:
-            if ( request() != other.request() )
-            {
-                return false;
-            }
+            case Request:
+                if ( request() != other.request() )
+                {
+                    return false;
+                }
 
-            break;
+                break;
 
-        default:
-            if ( values.value( key ) != other.values.value( key ) )
-            {
-                return false;
-            }
+            default:
+                if ( values.value( key ) != other.values.value( key ) )
+                {
+                    return false;
+                }
         }
     }
 

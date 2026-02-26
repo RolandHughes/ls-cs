@@ -397,46 +397,46 @@ void QPixmap::setMask( const QBitmap &mask )
 
         switch ( image.depth() )
         {
-        case 1:
-        {
-            const QImage imageMask = mask.toImage().convertToFormat( image.format() );
-
-            for ( int y = 0; y < h; ++y )
+            case 1:
             {
-                const uchar *mscan = imageMask.scanLine( y );
-                uchar *tscan = image.scanLine( y );
-                int bytesPerLine = image.bytesPerLine();
+                const QImage imageMask = mask.toImage().convertToFormat( image.format() );
 
-                for ( int i = 0; i < bytesPerLine; ++i )
+                for ( int y = 0; y < h; ++y )
                 {
-                    tscan[i] &= mscan[i];
-                }
-            }
+                    const uchar *mscan = imageMask.scanLine( y );
+                    uchar *tscan = image.scanLine( y );
+                    int bytesPerLine = image.bytesPerLine();
 
-            break;
-        }
-
-        default:
-        {
-            const QImage imageMask = mask.toImage().convertToFormat( QImage::Format_MonoLSB );
-            image = image.convertToFormat( QImage::Format_ARGB32_Premultiplied );
-
-            for ( int y = 0; y < h; ++y )
-            {
-                const uchar *mscan = imageMask.scanLine( y );
-                QRgb *tscan = ( QRgb * )image.scanLine( y );
-
-                for ( int x = 0; x < w; ++x )
-                {
-                    if ( !( mscan[x >> 3] & ( 1 << ( x & 7 ) ) ) )
+                    for ( int i = 0; i < bytesPerLine; ++i )
                     {
-                        tscan[x] = 0;
+                        tscan[i] &= mscan[i];
                     }
                 }
+
+                break;
             }
 
-            break;
-        }
+            default:
+            {
+                const QImage imageMask = mask.toImage().convertToFormat( QImage::Format_MonoLSB );
+                image = image.convertToFormat( QImage::Format_ARGB32_Premultiplied );
+
+                for ( int y = 0; y < h; ++y )
+                {
+                    const uchar *mscan = imageMask.scanLine( y );
+                    QRgb *tscan = ( QRgb * )image.scanLine( y );
+
+                    for ( int x = 0; x < w; ++x )
+                    {
+                        if ( !( mscan[x >> 3] & ( 1 << ( x & 7 ) ) ) )
+                        {
+                            tscan[x] = 0;
+                        }
+                    }
+                }
+
+                break;
+            }
         }
     }
 

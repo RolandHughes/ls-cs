@@ -41,7 +41,8 @@ void XsdSchemaDebugger::dumpParticle( const XsdParticle::Ptr &particle, int leve
 
     if ( particle->term()->isElement() )
     {
-        qDebug( "%selement (%s)", lscsPrintable( prefix ), lscsPrintable( XsdElement::Ptr( particle->term() )->displayName( m_namePool ) ) );
+        qDebug( "%selement (%s)", lscsPrintable( prefix ),
+                lscsPrintable( XsdElement::Ptr( particle->term() )->displayName( m_namePool ) ) );
     }
     else if ( particle->term()->isModelGroup() )
     {

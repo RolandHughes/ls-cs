@@ -122,7 +122,7 @@ void QGraphicsGridLayout::addItem( QGraphicsLayoutItem *item, int row, int colum
     d->addChildLayoutItem( item );
 
     QGraphicsGridLayoutEngineItem *gridEngineItem = new QGraphicsGridLayoutEngineItem( item, row, column, rowSpan, columnSpan,
-        alignment );
+            alignment );
     d->engine.insertItem( gridEngineItem, -1 );
     invalidate();
 }

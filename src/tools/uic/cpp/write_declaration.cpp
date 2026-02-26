@@ -95,9 +95,9 @@ void writeScriptContextClass( const QString &indent, QTextStream &str )
         << indent << "        scriptEngine.evaluate(script);\n"
         << indent << "        if (scriptEngine.hasUncaughtException ()) {\n"
         << indent <<
-    "            qWarning() << \"An exception occurred at line \" << scriptEngine.uncaughtExceptionLineNumber()\n"
+        "            qWarning() << \"An exception occurred at line \" << scriptEngine.uncaughtExceptionLineNumber()\n"
         << indent <<
-    "                       << \" of the script for \" << widget->objectName() << \": \" << engineError() << '\\n'\n"
+        "                       << \" of the script for \" << widget->objectName() << \": \" << engineError() << '\\n'\n"
         << indent << "                       << script;\n"
         << indent << "        }\n\n"
         << indent << "        scriptEngine.popContext();\n"

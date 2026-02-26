@@ -289,21 +289,21 @@ QBalloonTip::QBalloonTip( QSystemTrayIcon::MessageIcon icon, const QString &titl
 
     switch ( icon )
     {
-    case QSystemTrayIcon::Warning:
-        si = style()->standardIcon( QStyle::SP_MessageBoxWarning );
-        break;
+        case QSystemTrayIcon::Warning:
+            si = style()->standardIcon( QStyle::SP_MessageBoxWarning );
+            break;
 
-    case QSystemTrayIcon::Critical:
-        si = style()->standardIcon( QStyle::SP_MessageBoxCritical );
-        break;
+        case QSystemTrayIcon::Critical:
+            si = style()->standardIcon( QStyle::SP_MessageBoxCritical );
+            break;
 
-    case QSystemTrayIcon::Information:
-        si = style()->standardIcon( QStyle::SP_MessageBoxInformation );
-        break;
+        case QSystemTrayIcon::Information:
+            si = style()->standardIcon( QStyle::SP_MessageBoxInformation );
+            break;
 
-    case QSystemTrayIcon::NoIcon:
-    default:
-        break;
+        case QSystemTrayIcon::NoIcon:
+        default:
+            break;
     }
 
     QGridLayout *layout = new QGridLayout;
@@ -543,20 +543,20 @@ void QSystemTrayIconPrivate::showMessage_sys_qpa( const QString &title,
 
     switch ( icon )
     {
-    case QSystemTrayIcon::Information:
-        notificationIcon = QApplication::style()->standardIcon( QStyle::SP_MessageBoxInformation );
-        break;
+        case QSystemTrayIcon::Information:
+            notificationIcon = QApplication::style()->standardIcon( QStyle::SP_MessageBoxInformation );
+            break;
 
-    case QSystemTrayIcon::Warning:
-        notificationIcon = QApplication::style()->standardIcon( QStyle::SP_MessageBoxWarning );
-        break;
+        case QSystemTrayIcon::Warning:
+            notificationIcon = QApplication::style()->standardIcon( QStyle::SP_MessageBoxWarning );
+            break;
 
-    case QSystemTrayIcon::Critical:
-        notificationIcon = QApplication::style()->standardIcon( QStyle::SP_MessageBoxCritical );
-        break;
+        case QSystemTrayIcon::Critical:
+            notificationIcon = QApplication::style()->standardIcon( QStyle::SP_MessageBoxCritical );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     qpa_sys->showMessage( title, message, notificationIcon,

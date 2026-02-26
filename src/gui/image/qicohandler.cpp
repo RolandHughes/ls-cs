@@ -619,19 +619,19 @@ QImage ICOReader::iconAt( int index )
 
                 switch ( icoAttrib.nbits )
                 {
-                case 32:
-                case 24:
-                case 16:
-                    icoAttrib.depth = 32;
-                    break;
+                    case 32:
+                    case 24:
+                    case 16:
+                        icoAttrib.depth = 32;
+                        break;
 
-                case 8:
-                case 4:
-                    icoAttrib.depth = 8;
-                    break;
+                    case 8:
+                    case 4:
+                        icoAttrib.depth = 8;
+                        break;
 
-                default:
-                    icoAttrib.depth = 1;
+                    default:
+                        icoAttrib.depth = 1;
                 }
 
                 if ( icoAttrib.depth == 32 )              // there's no colormap

@@ -194,23 +194,23 @@ static QOpenGLDebugMessage::Source lscs_messageSourceFromGL( GLenum source )
 {
     switch ( source )
     {
-    case GL_DEBUG_SOURCE_API:
-        return QOpenGLDebugMessage::APISource;
+        case GL_DEBUG_SOURCE_API:
+            return QOpenGLDebugMessage::APISource;
 
-    case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-        return QOpenGLDebugMessage::WindowSystemSource;
+        case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
+            return QOpenGLDebugMessage::WindowSystemSource;
 
-    case GL_DEBUG_SOURCE_SHADER_COMPILER:
-        return QOpenGLDebugMessage::ShaderCompilerSource;
+        case GL_DEBUG_SOURCE_SHADER_COMPILER:
+            return QOpenGLDebugMessage::ShaderCompilerSource;
 
-    case GL_DEBUG_SOURCE_THIRD_PARTY:
-        return QOpenGLDebugMessage::ThirdPartySource;
+        case GL_DEBUG_SOURCE_THIRD_PARTY:
+            return QOpenGLDebugMessage::ThirdPartySource;
 
-    case GL_DEBUG_SOURCE_APPLICATION:
-        return QOpenGLDebugMessage::ApplicationSource;
+        case GL_DEBUG_SOURCE_APPLICATION:
+            return QOpenGLDebugMessage::ApplicationSource;
 
-    case GL_DEBUG_SOURCE_OTHER:
-        return QOpenGLDebugMessage::OtherSource;
+        case GL_DEBUG_SOURCE_OTHER:
+            return QOpenGLDebugMessage::OtherSource;
     }
 
     Q_ASSERT_X( false, Q_FUNC_INFO, "Unknown message source from GL" );
@@ -222,29 +222,29 @@ static GLenum lscs_messageSourceToGL( QOpenGLDebugMessage::Source source )
 {
     switch ( source )
     {
-    case QOpenGLDebugMessage::InvalidSource:
-        break;
+        case QOpenGLDebugMessage::InvalidSource:
+            break;
 
-    case QOpenGLDebugMessage::APISource:
-        return GL_DEBUG_SOURCE_API;
+        case QOpenGLDebugMessage::APISource:
+            return GL_DEBUG_SOURCE_API;
 
-    case QOpenGLDebugMessage::WindowSystemSource:
-        return GL_DEBUG_SOURCE_WINDOW_SYSTEM;
+        case QOpenGLDebugMessage::WindowSystemSource:
+            return GL_DEBUG_SOURCE_WINDOW_SYSTEM;
 
-    case QOpenGLDebugMessage::ShaderCompilerSource:
-        return GL_DEBUG_SOURCE_SHADER_COMPILER;
+        case QOpenGLDebugMessage::ShaderCompilerSource:
+            return GL_DEBUG_SOURCE_SHADER_COMPILER;
 
-    case QOpenGLDebugMessage::ThirdPartySource:
-        return GL_DEBUG_SOURCE_THIRD_PARTY;
+        case QOpenGLDebugMessage::ThirdPartySource:
+            return GL_DEBUG_SOURCE_THIRD_PARTY;
 
-    case QOpenGLDebugMessage::ApplicationSource:
-        return GL_DEBUG_SOURCE_APPLICATION;
+        case QOpenGLDebugMessage::ApplicationSource:
+            return GL_DEBUG_SOURCE_APPLICATION;
 
-    case QOpenGLDebugMessage::OtherSource:
-        return GL_DEBUG_SOURCE_OTHER;
+        case QOpenGLDebugMessage::OtherSource:
+            return GL_DEBUG_SOURCE_OTHER;
 
-    case QOpenGLDebugMessage::AnySource:
-        break;
+        case QOpenGLDebugMessage::AnySource:
+            break;
     }
 
     Q_ASSERT_X( false, Q_FUNC_INFO, "Invalid message source" );
@@ -255,29 +255,29 @@ static QString lscs_messageSourceToString( QOpenGLDebugMessage::Source source )
 {
     switch ( source )
     {
-    case QOpenGLDebugMessage::InvalidSource:
-        return QString( "InvalidSource" );
+        case QOpenGLDebugMessage::InvalidSource:
+            return QString( "InvalidSource" );
 
-    case QOpenGLDebugMessage::APISource:
-        return QString( "APISource" );
+        case QOpenGLDebugMessage::APISource:
+            return QString( "APISource" );
 
-    case QOpenGLDebugMessage::WindowSystemSource:
-        return QString( "WindowSystemSource" );
+        case QOpenGLDebugMessage::WindowSystemSource:
+            return QString( "WindowSystemSource" );
 
-    case QOpenGLDebugMessage::ShaderCompilerSource:
-        return QString( "ShaderCompilerSource" );
+        case QOpenGLDebugMessage::ShaderCompilerSource:
+            return QString( "ShaderCompilerSource" );
 
-    case QOpenGLDebugMessage::ThirdPartySource:
-        return QString( "ThirdPartySource" );
+        case QOpenGLDebugMessage::ThirdPartySource:
+            return QString( "ThirdPartySource" );
 
-    case QOpenGLDebugMessage::ApplicationSource:
-        return QString( "ApplicationSource" );
+        case QOpenGLDebugMessage::ApplicationSource:
+            return QString( "ApplicationSource" );
 
-    case QOpenGLDebugMessage::OtherSource:
-        return QString( "OtherSource" );
+        case QOpenGLDebugMessage::OtherSource:
+            return QString( "OtherSource" );
 
-    case QOpenGLDebugMessage::AnySource:
-        return QString( "AnySource" );
+        case QOpenGLDebugMessage::AnySource:
+            return QString( "AnySource" );
     }
 
     Q_ASSERT_X( false, Q_FUNC_INFO, "Unknown message source" );
@@ -288,32 +288,32 @@ static QOpenGLDebugMessage::Type lscs_messageTypeFromGL( GLenum type )
 {
     switch ( type )
     {
-    case GL_DEBUG_TYPE_ERROR:
-        return QOpenGLDebugMessage::ErrorType;
+        case GL_DEBUG_TYPE_ERROR:
+            return QOpenGLDebugMessage::ErrorType;
 
-    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-        return QOpenGLDebugMessage::DeprecatedBehaviorType;
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+            return QOpenGLDebugMessage::DeprecatedBehaviorType;
 
-    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-        return QOpenGLDebugMessage::UndefinedBehaviorType;
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+            return QOpenGLDebugMessage::UndefinedBehaviorType;
 
-    case GL_DEBUG_TYPE_PORTABILITY:
-        return QOpenGLDebugMessage::PortabilityType;
+        case GL_DEBUG_TYPE_PORTABILITY:
+            return QOpenGLDebugMessage::PortabilityType;
 
-    case GL_DEBUG_TYPE_PERFORMANCE:
-        return QOpenGLDebugMessage::PerformanceType;
+        case GL_DEBUG_TYPE_PERFORMANCE:
+            return QOpenGLDebugMessage::PerformanceType;
 
-    case GL_DEBUG_TYPE_OTHER:
-        return QOpenGLDebugMessage::OtherType;
+        case GL_DEBUG_TYPE_OTHER:
+            return QOpenGLDebugMessage::OtherType;
 
-    case GL_DEBUG_TYPE_MARKER:
-        return QOpenGLDebugMessage::MarkerType;
+        case GL_DEBUG_TYPE_MARKER:
+            return QOpenGLDebugMessage::MarkerType;
 
-    case GL_DEBUG_TYPE_PUSH_GROUP:
-        return QOpenGLDebugMessage::GroupPushType;
+        case GL_DEBUG_TYPE_PUSH_GROUP:
+            return QOpenGLDebugMessage::GroupPushType;
 
-    case GL_DEBUG_TYPE_POP_GROUP:
-        return QOpenGLDebugMessage::GroupPopType;
+        case GL_DEBUG_TYPE_POP_GROUP:
+            return QOpenGLDebugMessage::GroupPopType;
     }
 
     Q_ASSERT_X( false, Q_FUNC_INFO, "Unknown message type from GL" );
@@ -325,38 +325,38 @@ static GLenum lscs_messageTypeToGL( QOpenGLDebugMessage::Type type )
 {
     switch ( type )
     {
-    case QOpenGLDebugMessage::InvalidType:
-        break;
+        case QOpenGLDebugMessage::InvalidType:
+            break;
 
-    case QOpenGLDebugMessage::ErrorType:
-        return GL_DEBUG_TYPE_ERROR;
+        case QOpenGLDebugMessage::ErrorType:
+            return GL_DEBUG_TYPE_ERROR;
 
-    case QOpenGLDebugMessage::DeprecatedBehaviorType:
-        return GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR;
+        case QOpenGLDebugMessage::DeprecatedBehaviorType:
+            return GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR;
 
-    case QOpenGLDebugMessage::UndefinedBehaviorType:
-        return GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR;
+        case QOpenGLDebugMessage::UndefinedBehaviorType:
+            return GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR;
 
-    case QOpenGLDebugMessage::PortabilityType:
-        return GL_DEBUG_TYPE_PORTABILITY;
+        case QOpenGLDebugMessage::PortabilityType:
+            return GL_DEBUG_TYPE_PORTABILITY;
 
-    case QOpenGLDebugMessage::PerformanceType:
-        return GL_DEBUG_TYPE_PERFORMANCE;
+        case QOpenGLDebugMessage::PerformanceType:
+            return GL_DEBUG_TYPE_PERFORMANCE;
 
-    case QOpenGLDebugMessage::OtherType:
-        return GL_DEBUG_TYPE_OTHER;
+        case QOpenGLDebugMessage::OtherType:
+            return GL_DEBUG_TYPE_OTHER;
 
-    case QOpenGLDebugMessage::MarkerType:
-        return GL_DEBUG_TYPE_MARKER;
+        case QOpenGLDebugMessage::MarkerType:
+            return GL_DEBUG_TYPE_MARKER;
 
-    case QOpenGLDebugMessage::GroupPushType:
-        return GL_DEBUG_TYPE_PUSH_GROUP;
+        case QOpenGLDebugMessage::GroupPushType:
+            return GL_DEBUG_TYPE_PUSH_GROUP;
 
-    case QOpenGLDebugMessage::GroupPopType:
-        return GL_DEBUG_TYPE_POP_GROUP;
+        case QOpenGLDebugMessage::GroupPopType:
+            return GL_DEBUG_TYPE_POP_GROUP;
 
-    case QOpenGLDebugMessage::AnyType:
-        break;
+        case QOpenGLDebugMessage::AnyType:
+            break;
     }
 
     Q_ASSERT_X( false, Q_FUNC_INFO, "Invalid message type" );
@@ -367,38 +367,38 @@ static QString lscs_messageTypeToString( QOpenGLDebugMessage::Type type )
 {
     switch ( type )
     {
-    case QOpenGLDebugMessage::InvalidType:
-        return QString( "InvalidType" );
+        case QOpenGLDebugMessage::InvalidType:
+            return QString( "InvalidType" );
 
-    case QOpenGLDebugMessage::ErrorType:
-        return QString( "ErrorType" );
+        case QOpenGLDebugMessage::ErrorType:
+            return QString( "ErrorType" );
 
-    case QOpenGLDebugMessage::DeprecatedBehaviorType:
-        return QString( "DeprecatedBehaviorType" );
+        case QOpenGLDebugMessage::DeprecatedBehaviorType:
+            return QString( "DeprecatedBehaviorType" );
 
-    case QOpenGLDebugMessage::UndefinedBehaviorType:
-        return QString( "UndefinedBehaviorType" );
+        case QOpenGLDebugMessage::UndefinedBehaviorType:
+            return QString( "UndefinedBehaviorType" );
 
-    case QOpenGLDebugMessage::PortabilityType:
-        return QString( "PortabilityType" );
+        case QOpenGLDebugMessage::PortabilityType:
+            return QString( "PortabilityType" );
 
-    case QOpenGLDebugMessage::PerformanceType:
-        return QString( "PerformanceType" );
+        case QOpenGLDebugMessage::PerformanceType:
+            return QString( "PerformanceType" );
 
-    case QOpenGLDebugMessage::OtherType:
-        return QString( "OtherType" );
+        case QOpenGLDebugMessage::OtherType:
+            return QString( "OtherType" );
 
-    case QOpenGLDebugMessage::MarkerType:
-        return QString( "MarkerType" );
+        case QOpenGLDebugMessage::MarkerType:
+            return QString( "MarkerType" );
 
-    case QOpenGLDebugMessage::GroupPushType:
-        return QString( "GroupPushType" );
+        case QOpenGLDebugMessage::GroupPushType:
+            return QString( "GroupPushType" );
 
-    case QOpenGLDebugMessage::GroupPopType:
-        return QString( "GroupPopType" );
+        case QOpenGLDebugMessage::GroupPopType:
+            return QString( "GroupPopType" );
 
-    case QOpenGLDebugMessage::AnyType:
-        return QString( "AnyType" );
+        case QOpenGLDebugMessage::AnyType:
+            return QString( "AnyType" );
     }
 
     Q_ASSERT_X( false, Q_FUNC_INFO, "Unknown message type" );
@@ -410,17 +410,17 @@ static QOpenGLDebugMessage::Severity lscs_messageSeverityFromGL( GLenum severity
 {
     switch ( severity )
     {
-    case GL_DEBUG_SEVERITY_HIGH:
-        return QOpenGLDebugMessage::HighSeverity;
+        case GL_DEBUG_SEVERITY_HIGH:
+            return QOpenGLDebugMessage::HighSeverity;
 
-    case GL_DEBUG_SEVERITY_MEDIUM:
-        return QOpenGLDebugMessage::MediumSeverity;
+        case GL_DEBUG_SEVERITY_MEDIUM:
+            return QOpenGLDebugMessage::MediumSeverity;
 
-    case GL_DEBUG_SEVERITY_LOW:
-        return QOpenGLDebugMessage::LowSeverity;
+        case GL_DEBUG_SEVERITY_LOW:
+            return QOpenGLDebugMessage::LowSeverity;
 
-    case GL_DEBUG_SEVERITY_NOTIFICATION:
-        return QOpenGLDebugMessage::NotificationSeverity;
+        case GL_DEBUG_SEVERITY_NOTIFICATION:
+            return QOpenGLDebugMessage::NotificationSeverity;
     }
 
     Q_ASSERT_X( false, Q_FUNC_INFO, "Unknown message severity from GL" );
@@ -432,23 +432,23 @@ static GLenum lscs_messageSeverityToGL( QOpenGLDebugMessage::Severity severity )
 {
     switch ( severity )
     {
-    case QOpenGLDebugMessage::InvalidSeverity:
-        break;
+        case QOpenGLDebugMessage::InvalidSeverity:
+            break;
 
-    case QOpenGLDebugMessage::HighSeverity:
-        return GL_DEBUG_SEVERITY_HIGH;
+        case QOpenGLDebugMessage::HighSeverity:
+            return GL_DEBUG_SEVERITY_HIGH;
 
-    case QOpenGLDebugMessage::MediumSeverity:
-        return GL_DEBUG_SEVERITY_MEDIUM;
+        case QOpenGLDebugMessage::MediumSeverity:
+            return GL_DEBUG_SEVERITY_MEDIUM;
 
-    case QOpenGLDebugMessage::LowSeverity:
-        return GL_DEBUG_SEVERITY_LOW;
+        case QOpenGLDebugMessage::LowSeverity:
+            return GL_DEBUG_SEVERITY_LOW;
 
-    case QOpenGLDebugMessage::NotificationSeverity:
-        return GL_DEBUG_SEVERITY_NOTIFICATION;
+        case QOpenGLDebugMessage::NotificationSeverity:
+            return GL_DEBUG_SEVERITY_NOTIFICATION;
 
-    case QOpenGLDebugMessage::AnySeverity:
-        break;
+        case QOpenGLDebugMessage::AnySeverity:
+            break;
     }
 
     Q_ASSERT_X( false, Q_FUNC_INFO, "Invalid message severity" );
@@ -460,23 +460,23 @@ static QString lscs_messageSeverityToString( QOpenGLDebugMessage::Severity sever
 {
     switch ( severity )
     {
-    case QOpenGLDebugMessage::InvalidSeverity:
-        return QString( "InvalidSeverity" );
+        case QOpenGLDebugMessage::InvalidSeverity:
+            return QString( "InvalidSeverity" );
 
-    case QOpenGLDebugMessage::HighSeverity:
-        return QString( "HighSeverity" );
+        case QOpenGLDebugMessage::HighSeverity:
+            return QString( "HighSeverity" );
 
-    case QOpenGLDebugMessage::MediumSeverity:
-        return QString( "MediumSeverity" );
+        case QOpenGLDebugMessage::MediumSeverity:
+            return QString( "MediumSeverity" );
 
-    case QOpenGLDebugMessage::LowSeverity:
-        return QString( "LowSeverity" );
+        case QOpenGLDebugMessage::LowSeverity:
+            return QString( "LowSeverity" );
 
-    case QOpenGLDebugMessage::NotificationSeverity:
-        return QString( "NotificationSeverity" );
+        case QOpenGLDebugMessage::NotificationSeverity:
+            return QString( "NotificationSeverity" );
 
-    case QOpenGLDebugMessage::AnySeverity:
-        return QString( "AnySeverity" );
+        case QOpenGLDebugMessage::AnySeverity:
+            return QString( "AnySeverity" );
     }
 
     Q_ASSERT_X( false, Q_FUNC_INFO, "Unknown message severity" );
@@ -588,8 +588,8 @@ QDebug operator<<( QDebug debug, QOpenGLDebugMessage::Source source )
 {
     QDebugStateSaver saver( debug );
     debug.nospace() << "QOpenGLDebugMessage::Source("
-         << lscs_messageSourceToString( source )
-         << ')';
+                    << lscs_messageSourceToString( source )
+                    << ')';
 
     return debug;
 }
@@ -598,8 +598,8 @@ QDebug operator<<( QDebug debug, QOpenGLDebugMessage::Type type )
 {
     QDebugStateSaver saver( debug );
     debug.nospace() << "QOpenGLDebugMessage::Type("
-         << lscs_messageTypeToString( type )
-         << ')';
+                    << lscs_messageTypeToString( type )
+                    << ')';
 
     return debug;
 }
@@ -608,8 +608,8 @@ QDebug operator<<( QDebug debug, QOpenGLDebugMessage::Severity severity )
 {
     QDebugStateSaver saver( debug );
     debug.nospace() << "QOpenGLDebugMessage::Severity("
-         << lscs_messageSeverityToString( severity )
-         << ')';
+                    << lscs_messageSeverityToString( severity )
+                    << ')';
 
     return debug;
 }
@@ -618,11 +618,11 @@ QDebug operator<<( QDebug debug, const QOpenGLDebugMessage &message )
 {
     QDebugStateSaver saver( debug );
     debug.nospace() << "QOpenGLDebugMessage("
-         << lscs_messageSourceToString( message.source() ) << ", "
-         << message.id() << ", "
-         << message.message() << ", "
-         << lscs_messageSeverityToString( message.severity() ) << ", "
-         << lscs_messageTypeToString( message.type() ) << ')';
+                    << lscs_messageSourceToString( message.source() ) << ", "
+                    << message.id() << ", "
+                    << message.message() << ", "
+                    << lscs_messageSeverityToString( message.severity() ) << ", "
+                    << lscs_messageTypeToString( message.type() ) << ')';
     return debug;
 
 }

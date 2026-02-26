@@ -140,21 +140,21 @@ QStyleOptionMenuItem QComboMenuDelegate::getStyleOption( const QStyleOptionViewI
 
     switch ( variant.type() )
     {
-    case QVariant::Icon:
-        menuOption.icon = variant.value<QIcon>();
-        break;
+        case QVariant::Icon:
+            menuOption.icon = variant.value<QIcon>();
+            break;
 
-    case QVariant::Color:
-    {
-        static QPixmap pixmap( option.decorationSize );
-        pixmap.fill( variant.value<QColor>() );
-        menuOption.icon = pixmap;
-        break;
-    }
+        case QVariant::Color:
+        {
+            static QPixmap pixmap( option.decorationSize );
+            pixmap.fill( variant.value<QColor>() );
+            menuOption.icon = pixmap;
+            break;
+        }
 
-    default:
-        menuOption.icon = variant.value<QPixmap>();
-        break;
+        default:
+            menuOption.icon = variant.value<QPixmap>();
+            break;
     }
 
     if ( index.data( Qt::BackgroundRole ).canConvert<QBrush>() )
@@ -364,33 +364,33 @@ QSize QComboBoxPrivate::recomputeSizeHint( QSize &sh ) const
 
             switch ( sizeAdjustPolicy )
             {
-            case QComboBox::AdjustToContents:
-            case QComboBox::AdjustToContentsOnFirstShow:
-                if ( count == 0 )
-                {
-                    sh.rwidth() = 7 * fm.width( 'x' );
-
-                }
-                else
-                {
-                    for ( int i = 0; i < count; ++i )
+                case QComboBox::AdjustToContents:
+                case QComboBox::AdjustToContentsOnFirstShow:
+                    if ( count == 0 )
                     {
-                        if ( !q->itemIcon( i ).isNull() )
+                        sh.rwidth() = 7 * fm.width( 'x' );
+
+                    }
+                    else
+                    {
+                        for ( int i = 0; i < count; ++i )
                         {
-                            hasIcon = true;
-                            sh.setWidth( qMax( sh.width(), fm.boundingRect( q->itemText( i ) ).width() + iconSize.width() + 4 ) );
-                        }
-                        else
-                        {
-                            sh.setWidth( qMax( sh.width(), fm.boundingRect( q->itemText( i ) ).width() ) );
+                            if ( !q->itemIcon( i ).isNull() )
+                            {
+                                hasIcon = true;
+                                sh.setWidth( qMax( sh.width(), fm.boundingRect( q->itemText( i ) ).width() + iconSize.width() + 4 ) );
+                            }
+                            else
+                            {
+                                sh.setWidth( qMax( sh.width(), fm.boundingRect( q->itemText( i ) ).width() ) );
+                            }
                         }
                     }
-                }
 
-                break;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
 
         }
@@ -785,97 +785,97 @@ bool QComboBoxPrivateContainer::eventFilter( QObject *o, QEvent *e )
 {
     switch ( e->type() )
     {
-    case QEvent::ShortcutOverride:
-    {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>( e );
-
-        switch ( keyEvent->key() )
+        case QEvent::ShortcutOverride:
         {
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>( e );
+
+            switch ( keyEvent->key() )
+            {
+                case Qt::Key_Enter:
+                case Qt::Key_Return:
 
 #ifdef LSCS_KEYPAD_NAVIGATION
-        case Qt::Key_Select:
+                case Qt::Key_Select:
 #endif
-            if ( view->currentIndex().isValid() && ( view->currentIndex().flags() & Qt::ItemIsEnabled ) )
+                    if ( view->currentIndex().isValid() && ( view->currentIndex().flags() & Qt::ItemIsEnabled ) )
+                    {
+                        combo->hidePopup();
+                        emit itemSelected( view->currentIndex() );
+                    }
+
+                    return true;
+
+                case Qt::Key_Down:
+                    if ( !( keyEvent->modifiers() & Qt::AltModifier ) )
+                    {
+                        break;
+                    }
+
+                    [[fallthrough]];
+
+                case Qt::Key_F4:
+                    combo->hidePopup();
+                    return true;
+
+                default:
+                    if ( keyEvent->matches( QKeySequence::Cancel ) )
+                    {
+                        combo->hidePopup();
+                        return true;
+                    }
+
+                    break;
+            }
+
+            break;
+        }
+
+        case QEvent::MouseMove:
+            if ( isVisible() )
+            {
+                QMouseEvent *m = static_cast<QMouseEvent *>( e );
+                QWidget *widget = static_cast<QWidget *>( o );
+                QPoint vector = widget->mapToGlobal( m->pos() ) - initialClickPosition;
+
+                if ( vector.manhattanLength() > 9 && blockMouseReleaseTimer.isActive() )
+                {
+                    blockMouseReleaseTimer.stop();
+                }
+
+                QModelIndex indexUnderMouse = view->indexAt( m->pos() );
+
+                if ( indexUnderMouse.isValid() && ! QComboBoxDelegate::isSeparator( indexUnderMouse ) )
+                {
+                    view->setCurrentIndex( indexUnderMouse );
+                }
+            }
+
+            break;
+
+        case QEvent::MouseButtonPress:
+            maybeIgnoreMouseButtonRelease = false;
+            break;
+
+        case QEvent::MouseButtonRelease:
+        {
+            bool ignoreEvent = maybeIgnoreMouseButtonRelease && popupTimer.elapsed() < QApplication::doubleClickInterval();
+            QMouseEvent *m = static_cast<QMouseEvent *>( e );
+
+            if ( isVisible() && view->rect().contains( m->pos() ) && view->currentIndex().isValid()
+                    && ! blockMouseReleaseTimer.isActive() && !ignoreEvent
+                    && ( view->currentIndex().flags() & Qt::ItemIsEnabled )
+                    && ( view->currentIndex().flags() & Qt::ItemIsSelectable ) )
             {
                 combo->hidePopup();
                 emit itemSelected( view->currentIndex() );
-            }
-
-            return true;
-
-        case Qt::Key_Down:
-            if ( !( keyEvent->modifiers() & Qt::AltModifier ) )
-            {
-                break;
-            }
-
-            [[fallthrough]];
-
-        case Qt::Key_F4:
-            combo->hidePopup();
-            return true;
-
-        default:
-            if ( keyEvent->matches( QKeySequence::Cancel ) )
-            {
-                combo->hidePopup();
                 return true;
             }
 
             break;
         }
 
-        break;
-    }
-
-    case QEvent::MouseMove:
-        if ( isVisible() )
-        {
-            QMouseEvent *m = static_cast<QMouseEvent *>( e );
-            QWidget *widget = static_cast<QWidget *>( o );
-            QPoint vector = widget->mapToGlobal( m->pos() ) - initialClickPosition;
-
-            if ( vector.manhattanLength() > 9 && blockMouseReleaseTimer.isActive() )
-            {
-                blockMouseReleaseTimer.stop();
-            }
-
-            QModelIndex indexUnderMouse = view->indexAt( m->pos() );
-
-            if ( indexUnderMouse.isValid() && ! QComboBoxDelegate::isSeparator( indexUnderMouse ) )
-            {
-                view->setCurrentIndex( indexUnderMouse );
-            }
-        }
-
-        break;
-
-    case QEvent::MouseButtonPress:
-        maybeIgnoreMouseButtonRelease = false;
-        break;
-
-    case QEvent::MouseButtonRelease:
-    {
-        bool ignoreEvent = maybeIgnoreMouseButtonRelease && popupTimer.elapsed() < QApplication::doubleClickInterval();
-        QMouseEvent *m = static_cast<QMouseEvent *>( e );
-
-        if ( isVisible() && view->rect().contains( m->pos() ) && view->currentIndex().isValid()
-                && ! blockMouseReleaseTimer.isActive() && !ignoreEvent
-                && ( view->currentIndex().flags() & Qt::ItemIsEnabled )
-                && ( view->currentIndex().flags() & Qt::ItemIsSelectable ) )
-        {
-            combo->hidePopup();
-            emit itemSelected( view->currentIndex() );
-            return true;
-        }
-
-        break;
-    }
-
-    default:
-        break;
+        default:
+            break;
     }
 
     return QFrame::eventFilter( o, e );
@@ -1335,51 +1335,51 @@ void QComboBoxPrivate::_q_returnPressed()
 
         switch ( insertPolicy )
         {
-        case QComboBox::InsertAtTop:
-            index = 0;
-            break;
-
-        case QComboBox::InsertAtBottom:
-            index = q->count();
-            break;
-
-        case QComboBox::InsertAtCurrent:
-        case QComboBox::InsertAfterCurrent:
-        case QComboBox::InsertBeforeCurrent:
-            if ( ! q->count() || !currentIndex.isValid() )
-            {
+            case QComboBox::InsertAtTop:
                 index = 0;
-            }
-            else if ( insertPolicy == QComboBox::InsertAtCurrent )
-            {
-                q->setItemText( q->currentIndex(), text );
-            }
-            else if ( insertPolicy == QComboBox::InsertAfterCurrent )
-            {
-                index = q->currentIndex() + 1;
-            }
-            else if ( insertPolicy == QComboBox::InsertBeforeCurrent )
-            {
-                index = q->currentIndex();
-            }
+                break;
 
-            break;
+            case QComboBox::InsertAtBottom:
+                index = q->count();
+                break;
 
-        case QComboBox::InsertAlphabetically:
-            index = 0;
-
-            for ( int i = 0; i < q->count(); i++, index++ )
-            {
-                if ( text.toLower() < q->itemText( i ).toLower() )
+            case QComboBox::InsertAtCurrent:
+            case QComboBox::InsertAfterCurrent:
+            case QComboBox::InsertBeforeCurrent:
+                if ( ! q->count() || !currentIndex.isValid() )
                 {
-                    break;
+                    index = 0;
                 }
-            }
+                else if ( insertPolicy == QComboBox::InsertAtCurrent )
+                {
+                    q->setItemText( q->currentIndex(), text );
+                }
+                else if ( insertPolicy == QComboBox::InsertAfterCurrent )
+                {
+                    index = q->currentIndex() + 1;
+                }
+                else if ( insertPolicy == QComboBox::InsertBeforeCurrent )
+                {
+                    index = q->currentIndex();
+                }
 
-            break;
+                break;
 
-        default:
-            break;
+            case QComboBox::InsertAlphabetically:
+                index = 0;
+
+                for ( int i = 0; i < q->count(); i++, index++ )
+                {
+                    if ( text.toLower() < q->itemText( i ).toLower() )
+                    {
+                        break;
+                    }
+                }
+
+                break;
+
+            default:
+                break;
         }
 
         if ( index >= 0 )
@@ -3020,75 +3020,75 @@ void QComboBox::changeEvent( QEvent *e )
 
     switch ( e->type() )
     {
-    case QEvent::StyleChange:
-        d->updateDelegate();
+        case QEvent::StyleChange:
+            d->updateDelegate();
 
 #ifdef Q_OS_DARWIN
 
-    case QEvent::MacSizeChange:
+        case QEvent::MacSizeChange:
 #endif
-        d->sizeHint = QSize(); // invalidate size hint
-        d->minimumSizeHint = QSize();
-        d->updateLayoutDirection();
+            d->sizeHint = QSize(); // invalidate size hint
+            d->minimumSizeHint = QSize();
+            d->updateLayoutDirection();
 
-        if ( d->lineEdit )
-        {
-            d->updateLineEditGeometry();
-        }
-
-        d->setLayoutItemMargins( QStyle::SE_ComboBoxLayoutItem );
-
-        if ( e->type() == QEvent::MacSizeChange )
-        {
-            QPlatformTheme::Font f = QPlatformTheme::SystemFont;
-
-            if ( testAttribute( Qt::WA_MacSmallSize ) )
+            if ( d->lineEdit )
             {
-                f = QPlatformTheme::SmallFont;
-            }
-            else if ( testAttribute( Qt::WA_MacMiniSize ) )
-            {
-                f = QPlatformTheme::MiniFont;
+                d->updateLineEditGeometry();
             }
 
-            if ( const QFont *platformFont = QApplicationPrivate::platformTheme()->font( f ) )
+            d->setLayoutItemMargins( QStyle::SE_ComboBoxLayoutItem );
+
+            if ( e->type() == QEvent::MacSizeChange )
             {
-                QFont f = font();
-                f.setPointSizeF( platformFont->pointSizeF() );
-                setFont( f );
+                QPlatformTheme::Font f = QPlatformTheme::SystemFont;
+
+                if ( testAttribute( Qt::WA_MacSmallSize ) )
+                {
+                    f = QPlatformTheme::SmallFont;
+                }
+                else if ( testAttribute( Qt::WA_MacMiniSize ) )
+                {
+                    f = QPlatformTheme::MiniFont;
+                }
+
+                if ( const QFont *platformFont = QApplicationPrivate::platformTheme()->font( f ) )
+                {
+                    QFont f = font();
+                    f.setPointSizeF( platformFont->pointSizeF() );
+                    setFont( f );
+                }
             }
-        }
 
-        // ### need to update scrollers as well
-        break;
+            // ### need to update scrollers as well
+            break;
 
-    case QEvent::EnabledChange:
-        if ( ! isEnabled() )
+        case QEvent::EnabledChange:
+            if ( ! isEnabled() )
+            {
+                hidePopup();
+            }
+
+            break;
+
+        case QEvent::PaletteChange:
         {
-            hidePopup();
+            d->updateViewContainerPaletteAndOpacity();
+            break;
         }
 
-        break;
+        case QEvent::FontChange:
+            d->sizeHint = QSize(); // invalidate size hint
+            d->viewContainer()->setFont( font() );
 
-    case QEvent::PaletteChange:
-    {
-        d->updateViewContainerPaletteAndOpacity();
-        break;
-    }
+            if ( d->lineEdit )
+            {
+                d->updateLineEditGeometry();
+            }
 
-    case QEvent::FontChange:
-        d->sizeHint = QSize(); // invalidate size hint
-        d->viewContainer()->setFont( font() );
+            break;
 
-        if ( d->lineEdit )
-        {
-            d->updateLineEditGeometry();
-        }
-
-        break;
-
-    default:
-        break;
+        default:
+            break;
     }
 
     QWidget::changeEvent( e );
@@ -3139,55 +3139,55 @@ bool QComboBox::event( QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::LayoutDirectionChange:
-    case QEvent::ApplicationLayoutDirectionChange:
-        d->updateLayoutDirection();
-        d->updateLineEditGeometry();
-        break;
+        case QEvent::LayoutDirectionChange:
+        case QEvent::ApplicationLayoutDirectionChange:
+            d->updateLayoutDirection();
+            d->updateLineEditGeometry();
+            break;
 
-    case QEvent::HoverEnter:
-    case QEvent::HoverLeave:
-    case QEvent::HoverMove:
-        if ( const QHoverEvent *he = static_cast<const QHoverEvent *>( event ) )
-        {
-            d->updateHoverControl( he->pos() );
-        }
+        case QEvent::HoverEnter:
+        case QEvent::HoverLeave:
+        case QEvent::HoverMove:
+            if ( const QHoverEvent *he = static_cast<const QHoverEvent *>( event ) )
+            {
+                d->updateHoverControl( he->pos() );
+            }
 
-        break;
+            break;
 
-    case QEvent::ShortcutOverride:
-        if ( d->lineEdit )
-        {
-            return d->lineEdit->event( event );
-        }
+        case QEvent::ShortcutOverride:
+            if ( d->lineEdit )
+            {
+                return d->lineEdit->event( event );
+            }
 
-        break;
+            break;
 
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-    case QEvent::EnterEditFocus:
-        if ( !d->lineEdit )
-        {
-            setEditFocus( false );       // We never want edit focus if we are not editable
-        }
-        else
-        {
-            d->lineEdit->event( event ); // so cursor starts
-        }
+        case QEvent::EnterEditFocus:
+            if ( !d->lineEdit )
+            {
+                setEditFocus( false );       // We never want edit focus if we are not editable
+            }
+            else
+            {
+                d->lineEdit->event( event ); // so cursor starts
+            }
 
-        break;
+            break;
 
-    case QEvent::LeaveEditFocus:
-        if ( d->lineEdit )
-        {
-            d->lineEdit->event( event ); // so cursor stops
-        }
+        case QEvent::LeaveEditFocus:
+            if ( d->lineEdit )
+            {
+                d->lineEdit->event( event ); // so cursor stops
+            }
 
-        break;
+            break;
 #endif
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QWidget::event( event );
@@ -3300,144 +3300,144 @@ void QComboBox::keyPressEvent( QKeyEvent *e )
 
     switch ( e->key() )
     {
-    case Qt::Key_Up:
-        if ( e->modifiers() & Qt::ControlModifier )
-        {
-            break;   // pass to line edit for auto completion
-        }
+        case Qt::Key_Up:
+            if ( e->modifiers() & Qt::ControlModifier )
+            {
+                break;   // pass to line edit for auto completion
+            }
 
-        [[fallthrough]];
+            [[fallthrough]];
 
-    case Qt::Key_PageUp:
+        case Qt::Key_PageUp:
 #ifdef LSCS_KEYPAD_NAVIGATION
-        if ( QApplication::keypadNavigationEnabled() )
-        {
-            e->ignore();
-        }
-        else
-#endif
-            move = MoveUp;
-
-        break;
-
-    case Qt::Key_Down:
-        if ( e->modifiers() & Qt::AltModifier )
-        {
-            showPopup();
-            return;
-        }
-        else if ( e->modifiers() & Qt::ControlModifier )
-        {
-            break;   // pass to line edit for auto completion
-        }
-
-        [[fallthrough]];
-
-    case Qt::Key_PageDown:
-#ifdef LSCS_KEYPAD_NAVIGATION
-        if ( QApplication::keypadNavigationEnabled() )
-        {
-            e->ignore();
-        }
-        else
-#endif
-            move = MoveDown;
-
-        break;
-
-    case Qt::Key_Home:
-        if ( !d->lineEdit )
-        {
-            move = MoveFirst;
-        }
-
-        break;
-
-    case Qt::Key_End:
-        if ( !d->lineEdit )
-        {
-            move = MoveLast;
-        }
-
-        break;
-
-    case Qt::Key_F4:
-        if ( !e->modifiers() )
-        {
-            showPopup();
-            return;
-        }
-
-        break;
-
-    case Qt::Key_Space:
-        if ( !d->lineEdit )
-        {
-            showPopup();
-            return;
-        }
-
-        break;
-
-    case Qt::Key_Enter:
-    case Qt::Key_Return:
-    case Qt::Key_Escape:
-        if ( !d->lineEdit )
-        {
-            e->ignore();
-        }
-
-        break;
-
-#ifdef LSCS_KEYPAD_NAVIGATION
-
-    case Qt::Key_Select:
-        if ( QApplication::keypadNavigationEnabled()
-                && ( !hasEditFocus() || !d->lineEdit ) )
-        {
-            showPopup();
-            return;
-        }
-
-        break;
-
-    case Qt::Key_Left:
-    case Qt::Key_Right:
-        if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
-        {
-            e->ignore();
-        }
-
-        break;
-
-    case Qt::Key_Back:
-        if ( QApplication::keypadNavigationEnabled() )
-        {
-            if ( !hasEditFocus() || !d->lineEdit )
+            if ( QApplication::keypadNavigationEnabled() )
             {
                 e->ignore();
             }
-        }
-        else
-        {
-            e->ignore(); // let the surounding dialog have it
-        }
-
-        break;
+            else
 #endif
+                move = MoveUp;
 
-    default:
-        if ( !d->lineEdit )
-        {
-            if ( !e->text().isEmpty() )
+            break;
+
+        case Qt::Key_Down:
+            if ( e->modifiers() & Qt::AltModifier )
             {
-                d->keyboardSearchString( e->text() );
+                showPopup();
+                return;
+            }
+            else if ( e->modifiers() & Qt::ControlModifier )
+            {
+                break;   // pass to line edit for auto completion
+            }
+
+            [[fallthrough]];
+
+        case Qt::Key_PageDown:
+#ifdef LSCS_KEYPAD_NAVIGATION
+            if ( QApplication::keypadNavigationEnabled() )
+            {
+                e->ignore();
+            }
+            else
+#endif
+                move = MoveDown;
+
+            break;
+
+        case Qt::Key_Home:
+            if ( !d->lineEdit )
+            {
+                move = MoveFirst;
+            }
+
+            break;
+
+        case Qt::Key_End:
+            if ( !d->lineEdit )
+            {
+                move = MoveLast;
+            }
+
+            break;
+
+        case Qt::Key_F4:
+            if ( !e->modifiers() )
+            {
+                showPopup();
+                return;
+            }
+
+            break;
+
+        case Qt::Key_Space:
+            if ( !d->lineEdit )
+            {
+                showPopup();
+                return;
+            }
+
+            break;
+
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+        case Qt::Key_Escape:
+            if ( !d->lineEdit )
+            {
+                e->ignore();
+            }
+
+            break;
+
+#ifdef LSCS_KEYPAD_NAVIGATION
+
+        case Qt::Key_Select:
+            if ( QApplication::keypadNavigationEnabled()
+                    && ( !hasEditFocus() || !d->lineEdit ) )
+            {
+                showPopup();
+                return;
+            }
+
+            break;
+
+        case Qt::Key_Left:
+        case Qt::Key_Right:
+            if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
+            {
+                e->ignore();
+            }
+
+            break;
+
+        case Qt::Key_Back:
+            if ( QApplication::keypadNavigationEnabled() )
+            {
+                if ( !hasEditFocus() || !d->lineEdit )
+                {
+                    e->ignore();
+                }
             }
             else
             {
-                e->ignore();
+                e->ignore(); // let the surounding dialog have it
             }
-        }
+
+            break;
+#endif
+
+        default:
+            if ( !d->lineEdit )
+            {
+                if ( !e->text().isEmpty() )
+                {
+                    d->keyboardSearchString( e->text() );
+                }
+                else
+                {
+                    e->ignore();
+                }
+            }
     }
 
     if ( move != NoMove )
@@ -3446,38 +3446,38 @@ void QComboBox::keyPressEvent( QKeyEvent *e )
 
         switch ( move )
         {
-        case MoveFirst:
-            newIndex = -1;
-            [[fallthrough]];
+            case MoveFirst:
+                newIndex = -1;
+                [[fallthrough]];
 
-        case MoveDown:
-            ++newIndex;
-
-            while ( ( newIndex < count() ) && !( d->model->flags( d->model->index( newIndex, d->modelColumn, d->root ) )
-                                                 & Qt::ItemIsEnabled ) )
-            {
+            case MoveDown:
                 ++newIndex;
-            }
 
-            break;
+                while ( ( newIndex < count() ) && !( d->model->flags( d->model->index( newIndex, d->modelColumn, d->root ) )
+                                                     & Qt::ItemIsEnabled ) )
+                {
+                    ++newIndex;
+                }
 
-        case MoveLast:
-            newIndex = count();
-            [[fallthrough]];
+                break;
 
-        case MoveUp:
-            --newIndex;
+            case MoveLast:
+                newIndex = count();
+                [[fallthrough]];
 
-            while ( ( newIndex >= 0 ) && !( d->model->flags( d->model->index( newIndex, d->modelColumn, d->root ) ) & Qt::ItemIsEnabled ) )
-            {
+            case MoveUp:
                 --newIndex;
-            }
 
-            break;
+                while ( ( newIndex >= 0 ) && !( d->model->flags( d->model->index( newIndex, d->modelColumn, d->root ) ) & Qt::ItemIsEnabled ) )
+                {
+                    --newIndex;
+                }
 
-        default:
-            e->ignore();
-            break;
+                break;
+
+            default:
+                e->ignore();
+                break;
         }
 
         if ( newIndex >= 0 && newIndex < count() && newIndex != currentIndex() )

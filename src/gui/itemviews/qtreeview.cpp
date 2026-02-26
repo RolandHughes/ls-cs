@@ -869,11 +869,11 @@ void QTreeView::keyboardSearch( const QString &search )
     if ( index.isValid() )
     {
         QItemSelectionModel::SelectionFlags flags = ( d->selectionMode == SingleSelection
-            ? QItemSelectionModel::SelectionFlags(
-                QItemSelectionModel::ClearAndSelect
-                | d->selectionBehaviorFlags() )
-            : QItemSelectionModel::SelectionFlags(
-                QItemSelectionModel::NoUpdate ) );
+                ? QItemSelectionModel::SelectionFlags(
+                    QItemSelectionModel::ClearAndSelect
+                    | d->selectionBehaviorFlags() )
+                : QItemSelectionModel::SelectionFlags(
+                    QItemSelectionModel::NoUpdate ) );
         selectionModel()->setCurrentIndex( index, flags );
     }
 }
@@ -1137,31 +1137,31 @@ bool QTreeView::viewportEvent( QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::HoverEnter:
-    case QEvent::HoverLeave:
-    case QEvent::HoverMove:
-    {
-        QHoverEvent *he = static_cast<QHoverEvent *>( event );
-        int oldBranch = d->hoverBranch;
-        d->hoverBranch = d->itemDecorationAt( he->pos() );
-
-        QModelIndex newIndex = indexAt( he->pos() );
-
-        if ( d->hover != newIndex || d->hoverBranch != oldBranch )
+        case QEvent::HoverEnter:
+        case QEvent::HoverLeave:
+        case QEvent::HoverMove:
         {
-            // Update the whole hovered over row. No need to update the old hovered
-            // row, that is taken care in superclass hover handling.
-            QRect rect = visualRect( newIndex );
-            rect.setX( 0 );
-            rect.setWidth( viewport()->width() );
-            viewport()->update( rect );
+            QHoverEvent *he = static_cast<QHoverEvent *>( event );
+            int oldBranch = d->hoverBranch;
+            d->hoverBranch = d->itemDecorationAt( he->pos() );
+
+            QModelIndex newIndex = indexAt( he->pos() );
+
+            if ( d->hover != newIndex || d->hoverBranch != oldBranch )
+            {
+                // Update the whole hovered over row. No need to update the old hovered
+                // row, that is taken care in superclass hover handling.
+                QRect rect = visualRect( newIndex );
+                rect.setX( 0 );
+                rect.setWidth( viewport()->width() );
+                viewport()->update( rect );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    default:
-        break;
+        default:
+            break;
     }
 
     return QAbstractItemView::viewportEvent( event );
@@ -2111,40 +2111,40 @@ void QTreeView::keyPressEvent( QKeyEvent *event )
         switch ( event->key() )
         {
 
-        case Qt::Key_Asterisk:
-        {
-            QStack<QModelIndex> parents;
-            parents.push( current );
-
-            while ( ! parents.isEmpty() )
+            case Qt::Key_Asterisk:
             {
-                QModelIndex parent = parents.pop();
+                QStack<QModelIndex> parents;
+                parents.push( current );
 
-                for ( int row = 0; row < d->model->rowCount( parent ); ++row )
+                while ( ! parents.isEmpty() )
                 {
-                    QModelIndex child = d->model->index( row, 0, parent );
+                    QModelIndex parent = parents.pop();
 
-                    if ( !d->isIndexValid( child ) )
+                    for ( int row = 0; row < d->model->rowCount( parent ); ++row )
                     {
-                        break;
-                    }
+                        QModelIndex child = d->model->index( row, 0, parent );
 
-                    parents.push( child );
-                    expand( child );
+                        if ( !d->isIndexValid( child ) )
+                        {
+                            break;
+                        }
+
+                        parents.push( child );
+                        expand( child );
+                    }
                 }
+
+                expand( current );
+                break;
             }
 
-            expand( current );
-            break;
-        }
+            case Qt::Key_Plus:
+                expand( current );
+                break;
 
-        case Qt::Key_Plus:
-            expand( current );
-            break;
-
-        case Qt::Key_Minus:
-            collapse( current );
-            break;
+            case Qt::Key_Minus:
+                collapse( current );
+                break;
         }
     }
 
@@ -2387,164 +2387,164 @@ QModelIndex QTreeView::moveCursor( CursorAction cursorAction, Qt::KeyboardModifi
 
     switch ( cursorAction )
     {
-    case MoveNext:
-    case MoveDown:
+        case MoveNext:
+        case MoveDown:
 #ifdef LSCS_KEYPAD_NAVIGATION
-        if ( vi == d->viewItems.count() - 1 && QApplication::keypadNavigationEnabled() )
+            if ( vi == d->viewItems.count() - 1 && QApplication::keypadNavigationEnabled() )
+            {
+                return d->model->index( 0, current.column(), d->root );
+            }
+
+#endif
+            return d->modelIndex( d->below( vi ), current.column() );
+
+        case MovePrevious:
+        case MoveUp:
+#ifdef LSCS_KEYPAD_NAVIGATION
+            if ( vi == 0 && QApplication::keypadNavigationEnabled() )
+            {
+                return d->modelIndex( d->viewItems.count() - 1, current.column() );
+            }
+
+#endif
+            return d->modelIndex( d->above( vi ), current.column() );
+
+        case MoveLeft:
         {
+            QScrollBar *sb = horizontalScrollBar();
+
+            if ( vi < d->viewItems.count() && d->viewItems.at( vi ).expanded && d->itemsExpandable && sb->value() == sb->minimum() )
+            {
+                d->collapse( vi, true );
+                d->moveCursorUpdatedView = true;
+            }
+            else
+            {
+                bool descend = style()->styleHint( QStyle::SH_ItemView_ArrowKeysNavigateIntoChildren, nullptr, this );
+
+                if ( descend )
+                {
+                    QModelIndex par = current.parent();
+
+                    if ( par.isValid() && par != rootIndex() )
+                    {
+                        return par;
+                    }
+                    else
+                    {
+                        descend = false;
+                    }
+                }
+
+                if ( !descend )
+                {
+                    if ( d->selectionBehavior == SelectItems || d->selectionBehavior == SelectColumns )
+                    {
+                        int visualColumn = d->header->visualIndex( current.column() ) - 1;
+
+                        while ( visualColumn >= 0 && isColumnHidden( d->header->logicalIndex( visualColumn ) ) )
+                        {
+                            visualColumn--;
+                        }
+
+                        int newColumn = d->header->logicalIndex( visualColumn );
+                        QModelIndex next = current.sibling( current.row(), newColumn );
+
+                        if ( next.isValid() )
+                        {
+                            return next;
+                        }
+                    }
+
+                    int oldValue = sb->value();
+                    sb->setValue( sb->value() - sb->singleStep() );
+
+                    if ( oldValue != sb->value() )
+                    {
+                        d->moveCursorUpdatedView = true;
+                    }
+                }
+
+            }
+
+            updateGeometries();
+            viewport()->update();
+            break;
+        }
+
+        case MoveRight:
+            if ( vi < d->viewItems.count() && !d->viewItems.at( vi ).expanded && d->itemsExpandable
+                    && d->hasVisibleChildren( d->viewItems.at( vi ).index ) )
+            {
+                d->expand( vi, true );
+                d->moveCursorUpdatedView = true;
+
+            }
+            else
+            {
+                bool descend = style()->styleHint( QStyle::SH_ItemView_ArrowKeysNavigateIntoChildren, nullptr, this );
+
+                if ( descend )
+                {
+                    QModelIndex idx = d->modelIndex( d->below( vi ) );
+
+                    if ( idx.parent() == current )
+                    {
+                        return idx;
+                    }
+                    else
+                    {
+                        descend = false;
+                    }
+                }
+
+                if ( !descend )
+                {
+                    if ( d->selectionBehavior == SelectItems || d->selectionBehavior == SelectColumns )
+                    {
+                        int visualColumn = d->header->visualIndex( current.column() ) + 1;
+
+                        while ( visualColumn < d->model->columnCount( current.parent() ) && isColumnHidden( d->header->logicalIndex( visualColumn ) ) )
+                        {
+                            visualColumn++;
+                        }
+
+                        const int newColumn = d->header->logicalIndex( visualColumn );
+                        const QModelIndex next = current.sibling( current.row(), newColumn );
+
+                        if ( next.isValid() )
+                        {
+                            return next;
+                        }
+                    }
+
+                    //last restort: we change the scrollbar value
+                    QScrollBar *sb = horizontalScrollBar();
+                    int oldValue = sb->value();
+                    sb->setValue( sb->value() + sb->singleStep() );
+
+                    if ( oldValue != sb->value() )
+                    {
+                        d->moveCursorUpdatedView = true;
+                    }
+                }
+            }
+
+            updateGeometries();
+            viewport()->update();
+            break;
+
+        case MovePageUp:
+            return d->modelIndex( d->pageUp( vi ), current.column() );
+
+        case MovePageDown:
+            return d->modelIndex( d->pageDown( vi ), current.column() );
+
+        case MoveHome:
             return d->model->index( 0, current.column(), d->root );
-        }
 
-#endif
-        return d->modelIndex( d->below( vi ), current.column() );
-
-    case MovePrevious:
-    case MoveUp:
-#ifdef LSCS_KEYPAD_NAVIGATION
-        if ( vi == 0 && QApplication::keypadNavigationEnabled() )
-        {
+        case MoveEnd:
             return d->modelIndex( d->viewItems.count() - 1, current.column() );
-        }
-
-#endif
-        return d->modelIndex( d->above( vi ), current.column() );
-
-    case MoveLeft:
-    {
-        QScrollBar *sb = horizontalScrollBar();
-
-        if ( vi < d->viewItems.count() && d->viewItems.at( vi ).expanded && d->itemsExpandable && sb->value() == sb->minimum() )
-        {
-            d->collapse( vi, true );
-            d->moveCursorUpdatedView = true;
-        }
-        else
-        {
-            bool descend = style()->styleHint( QStyle::SH_ItemView_ArrowKeysNavigateIntoChildren, nullptr, this );
-
-            if ( descend )
-            {
-                QModelIndex par = current.parent();
-
-                if ( par.isValid() && par != rootIndex() )
-                {
-                    return par;
-                }
-                else
-                {
-                    descend = false;
-                }
-            }
-
-            if ( !descend )
-            {
-                if ( d->selectionBehavior == SelectItems || d->selectionBehavior == SelectColumns )
-                {
-                    int visualColumn = d->header->visualIndex( current.column() ) - 1;
-
-                    while ( visualColumn >= 0 && isColumnHidden( d->header->logicalIndex( visualColumn ) ) )
-                    {
-                        visualColumn--;
-                    }
-
-                    int newColumn = d->header->logicalIndex( visualColumn );
-                    QModelIndex next = current.sibling( current.row(), newColumn );
-
-                    if ( next.isValid() )
-                    {
-                        return next;
-                    }
-                }
-
-                int oldValue = sb->value();
-                sb->setValue( sb->value() - sb->singleStep() );
-
-                if ( oldValue != sb->value() )
-                {
-                    d->moveCursorUpdatedView = true;
-                }
-            }
-
-        }
-
-        updateGeometries();
-        viewport()->update();
-        break;
-    }
-
-    case MoveRight:
-        if ( vi < d->viewItems.count() && !d->viewItems.at( vi ).expanded && d->itemsExpandable
-                && d->hasVisibleChildren( d->viewItems.at( vi ).index ) )
-        {
-            d->expand( vi, true );
-            d->moveCursorUpdatedView = true;
-
-        }
-        else
-        {
-            bool descend = style()->styleHint( QStyle::SH_ItemView_ArrowKeysNavigateIntoChildren, nullptr, this );
-
-            if ( descend )
-            {
-                QModelIndex idx = d->modelIndex( d->below( vi ) );
-
-                if ( idx.parent() == current )
-                {
-                    return idx;
-                }
-                else
-                {
-                    descend = false;
-                }
-            }
-
-            if ( !descend )
-            {
-                if ( d->selectionBehavior == SelectItems || d->selectionBehavior == SelectColumns )
-                {
-                    int visualColumn = d->header->visualIndex( current.column() ) + 1;
-
-                    while ( visualColumn < d->model->columnCount( current.parent() ) && isColumnHidden( d->header->logicalIndex( visualColumn ) ) )
-                    {
-                        visualColumn++;
-                    }
-
-                    const int newColumn = d->header->logicalIndex( visualColumn );
-                    const QModelIndex next = current.sibling( current.row(), newColumn );
-
-                    if ( next.isValid() )
-                    {
-                        return next;
-                    }
-                }
-
-                //last restort: we change the scrollbar value
-                QScrollBar *sb = horizontalScrollBar();
-                int oldValue = sb->value();
-                sb->setValue( sb->value() + sb->singleStep() );
-
-                if ( oldValue != sb->value() )
-                {
-                    d->moveCursorUpdatedView = true;
-                }
-            }
-        }
-
-        updateGeometries();
-        viewport()->update();
-        break;
-
-    case MovePageUp:
-        return d->modelIndex( d->pageUp( vi ), current.column() );
-
-    case MovePageDown:
-        return d->modelIndex( d->pageDown( vi ), current.column() );
-
-    case MoveHome:
-        return d->model->index( 0, current.column(), d->root );
-
-    case MoveEnd:
-        return d->modelIndex( d->viewItems.count() - 1, current.column() );
     }
 
     return current;
@@ -4434,7 +4434,7 @@ QRect QTreeViewPrivate::itemDecorationRect( const QModelIndex &index ) const
 }
 
 QList<QPair<int, int>> QTreeViewPrivate::columnRanges( const QModelIndex &topIndex,
-        const QModelIndex &bottomIndex ) const
+                    const QModelIndex &bottomIndex ) const
 {
     const int topVisual = header->visualIndex( topIndex.column() ),
               bottomVisual = header->visualIndex( bottomIndex.column() );

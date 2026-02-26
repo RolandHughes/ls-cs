@@ -269,33 +269,33 @@ bool QXmlUtils::isPublicID( const QString &candidate )
 
         switch ( cp )
         {
-        /* Fallthrough all these. */
-        case 0x20:
-        case 0x0D:
-        case 0x0A:
-        case '-':
-        case '\'':
-        case '(':
-        case ')':
-        case '+':
-        case ',':
-        case '.':
-        case '/':
-        case ':':
-        case '=':
-        case '?':
-        case ';':
-        case '!':
-        case '*':
-        case '#':
-        case '@':
-        case '$':
-        case '_':
-        case '%':
-            continue;
+            /* Fallthrough all these. */
+            case 0x20:
+            case 0x0D:
+            case 0x0A:
+            case '-':
+            case '\'':
+            case '(':
+            case ')':
+            case '+':
+            case ',':
+            case '.':
+            case '/':
+            case ':':
+            case '=':
+            case '?':
+            case ';':
+            case '!':
+            case '*':
+            case '#':
+            case '@':
+            case '$':
+            case '_':
+            case '%':
+                continue;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 

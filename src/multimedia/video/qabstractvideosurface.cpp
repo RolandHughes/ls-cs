@@ -218,25 +218,25 @@ QDebug operator<<( QDebug dbg, const QAbstractVideoSurface::Error &error )
 
     switch ( error )
     {
-    case QAbstractVideoSurface::UnsupportedFormatError:
-        dbg << "UnsupportedFormatError";
-        break;
+        case QAbstractVideoSurface::UnsupportedFormatError:
+            dbg << "UnsupportedFormatError";
+            break;
 
-    case QAbstractVideoSurface::IncorrectFormatError:
-        dbg << "IncorrectFormatError";
-        break;
+        case QAbstractVideoSurface::IncorrectFormatError:
+            dbg << "IncorrectFormatError";
+            break;
 
-    case QAbstractVideoSurface::StoppedError:
-        dbg << "StoppedError";
-        break;
+        case QAbstractVideoSurface::StoppedError:
+            dbg << "StoppedError";
+            break;
 
-    case QAbstractVideoSurface::ResourceError:
-        dbg << "ResourceError";
-        break;
+        case QAbstractVideoSurface::ResourceError:
+            dbg << "ResourceError";
+            break;
 
-    default:
-        dbg << "NoError";
-        break;
+        default:
+            dbg << "NoError";
+            break;
     }
 
     return dbg;

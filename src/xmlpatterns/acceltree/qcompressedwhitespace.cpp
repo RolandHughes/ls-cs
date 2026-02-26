@@ -31,23 +31,23 @@ CompressedWhitespace::CharIdentifier CompressedWhitespace::toIdentifier( const Q
 {
     switch ( ch.unicode() )
     {
-    case ' ':
-        return Space;
+        case ' ':
+            return Space;
 
-    case '\n':
-        return LF;
+        case '\n':
+            return LF;
 
-    case '\r':
-        return CR;
+        case '\r':
+            return CR;
 
-    case '\t':
-        return Tab;
+        case '\t':
+            return Tab;
 
-    default:
-    {
-        Q_ASSERT_X( false, Q_FUNC_INFO, "Only whitespace should be passed." );
-        return Tab;
-    }
+        default:
+        {
+            Q_ASSERT_X( false, Q_FUNC_INFO, "Only whitespace should be passed." );
+            return Tab;
+        }
     }
 }
 
@@ -69,23 +69,23 @@ QChar CompressedWhitespace::toChar( const CharIdentifier id )
 {
     switch ( id )
     {
-    case Space:
-        return QLatin1Char( ' ' );
+        case Space:
+            return QLatin1Char( ' ' );
 
-    case CR:
-        return QLatin1Char( '\r' );
+        case CR:
+            return QLatin1Char( '\r' );
 
-    case LF:
-        return QLatin1Char( '\n' );
+        case LF:
+            return QLatin1Char( '\n' );
 
-    case Tab:
-        return QLatin1Char( '\t' );
+        case Tab:
+            return QLatin1Char( '\t' );
 
-    default:
-    {
-        Q_ASSERT_X( false, Q_FUNC_INFO, "Unexpected input" );
-        return QChar();
-    }
+        default:
+        {
+            Q_ASSERT_X( false, Q_FUNC_INFO, "Unexpected input" );
+            return QChar();
+        }
     }
 }
 

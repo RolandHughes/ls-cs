@@ -86,47 +86,47 @@ static QString s5StateToString( QSocks5SocketEnginePrivate::Socks5State s )
 {
     switch ( s )
     {
-    case QSocks5SocketEnginePrivate::Uninitialized:
-        return QString( "Uninitialized" );
+        case QSocks5SocketEnginePrivate::Uninitialized:
+            return QString( "Uninitialized" );
 
-    case QSocks5SocketEnginePrivate::ConnectError:
-        return QString( "ConnectError" );
+        case QSocks5SocketEnginePrivate::ConnectError:
+            return QString( "ConnectError" );
 
-    case QSocks5SocketEnginePrivate::AuthenticationMethodsSent:
-        return QString( "AuthenticationMethodsSent" );
+        case QSocks5SocketEnginePrivate::AuthenticationMethodsSent:
+            return QString( "AuthenticationMethodsSent" );
 
-    case QSocks5SocketEnginePrivate::Authenticating:
-        return QString( "Authenticating" );
+        case QSocks5SocketEnginePrivate::Authenticating:
+            return QString( "Authenticating" );
 
-    case QSocks5SocketEnginePrivate::AuthenticatingError:
-        return QString( "AuthenticatingError" );
+        case QSocks5SocketEnginePrivate::AuthenticatingError:
+            return QString( "AuthenticatingError" );
 
-    case QSocks5SocketEnginePrivate::RequestMethodSent:
-        return QString( "RequestMethodSent" );
+        case QSocks5SocketEnginePrivate::RequestMethodSent:
+            return QString( "RequestMethodSent" );
 
-    case QSocks5SocketEnginePrivate::RequestError:
-        return QString( "RequestError" );
+        case QSocks5SocketEnginePrivate::RequestError:
+            return QString( "RequestError" );
 
-    case QSocks5SocketEnginePrivate::Connected:
-        return QString( "Connected" );
+        case QSocks5SocketEnginePrivate::Connected:
+            return QString( "Connected" );
 
-    case QSocks5SocketEnginePrivate::UdpAssociateSuccess:
-        return QString( "UdpAssociateSuccess" );
+        case QSocks5SocketEnginePrivate::UdpAssociateSuccess:
+            return QString( "UdpAssociateSuccess" );
 
-    case QSocks5SocketEnginePrivate::BindSuccess:
-        return QString( "BindSuccess" );
+        case QSocks5SocketEnginePrivate::BindSuccess:
+            return QString( "BindSuccess" );
 
-    case QSocks5SocketEnginePrivate::ControlSocketError:
-        return QString( "ControlSocketError" );
+        case QSocks5SocketEnginePrivate::ControlSocketError:
+            return QString( "ControlSocketError" );
 
-    case QSocks5SocketEnginePrivate::SocksError:
-        return QString( "SocksError" );
+        case QSocks5SocketEnginePrivate::SocksError:
+            return QString( "SocksError" );
 
-    case QSocks5SocketEnginePrivate::HostNameLookupError:
-        return QString( "HostNameLookupError" );
+        case QSocks5SocketEnginePrivate::HostNameLookupError:
+            return QString( "HostNameLookupError" );
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QString( "unknown state" );
@@ -708,83 +708,83 @@ void QSocks5SocketEnginePrivate::setErrorState( Socks5State state, const QString
 
     switch ( state )
     {
-    case Uninitialized:
-    case Authenticating:
-    case AuthenticationMethodsSent:
-    case RequestMethodSent:
-    case Connected:
-    case UdpAssociateSuccess:
-    case BindSuccess:
-        // these are not error states
-        return;
+        case Uninitialized:
+        case Authenticating:
+        case AuthenticationMethodsSent:
+        case RequestMethodSent:
+        case Connected:
+        case UdpAssociateSuccess:
+        case BindSuccess:
+            // these are not error states
+            return;
 
-    case ConnectError:
-    case ControlSocketError:
-    {
-        QAbstractSocket::SocketError controlSocketError = data->controlSocket->error();
-
-        if ( socks5State != Connected )
+        case ConnectError:
+        case ControlSocketError:
         {
-            switch ( controlSocketError )
+            QAbstractSocket::SocketError controlSocketError = data->controlSocket->error();
+
+            if ( socks5State != Connected )
             {
-            case QAbstractSocket::ConnectionRefusedError:
-                q->setError( QAbstractSocket::ProxyConnectionRefusedError,
-                             QSocks5SocketEngine::tr( "Connection to proxy refused" ) );
-                break;
-
-            case QAbstractSocket::RemoteHostClosedError:
-                q->setError( QAbstractSocket::ProxyConnectionClosedError,
-                             QSocks5SocketEngine::tr( "Connection to proxy closed prematurely" ) );
-                break;
-
-            case QAbstractSocket::HostNotFoundError:
-                q->setError( QAbstractSocket::ProxyNotFoundError,
-                             QSocks5SocketEngine::tr( "Proxy host not found" ) );
-                break;
-
-            case QAbstractSocket::SocketTimeoutError:
-                if ( state == ConnectError )
+                switch ( controlSocketError )
                 {
-                    q->setError( QAbstractSocket::ProxyConnectionTimeoutError,
-                                 QSocks5SocketEngine::tr( "Connection to proxy timed out" ) );
-                    break;
+                    case QAbstractSocket::ConnectionRefusedError:
+                        q->setError( QAbstractSocket::ProxyConnectionRefusedError,
+                                     QSocks5SocketEngine::tr( "Connection to proxy refused" ) );
+                        break;
+
+                    case QAbstractSocket::RemoteHostClosedError:
+                        q->setError( QAbstractSocket::ProxyConnectionClosedError,
+                                     QSocks5SocketEngine::tr( "Connection to proxy closed prematurely" ) );
+                        break;
+
+                    case QAbstractSocket::HostNotFoundError:
+                        q->setError( QAbstractSocket::ProxyNotFoundError,
+                                     QSocks5SocketEngine::tr( "Proxy host not found" ) );
+                        break;
+
+                    case QAbstractSocket::SocketTimeoutError:
+                        if ( state == ConnectError )
+                        {
+                            q->setError( QAbstractSocket::ProxyConnectionTimeoutError,
+                                         QSocks5SocketEngine::tr( "Connection to proxy timed out" ) );
+                            break;
+                        }
+
+                        [[fallthrough]];
+
+                    default:
+                        q->setError( controlSocketError, data->controlSocket->errorString() );
+                        break;
                 }
-
-                [[fallthrough]];
-
-            default:
-                q->setError( controlSocketError, data->controlSocket->errorString() );
-                break;
             }
+            else
+            {
+                q->setError( controlSocketError, data->controlSocket->errorString() );
+            }
+
+            break;
         }
-        else
-        {
-            q->setError( controlSocketError, data->controlSocket->errorString() );
-        }
 
-        break;
-    }
+        case AuthenticatingError:
+            q->setError( QAbstractSocket::ProxyAuthenticationRequiredError,
+                         extraMessage.isEmpty() ?
+                         QSocks5SocketEngine::tr( "Proxy authentication failed" ) :
+                         QSocks5SocketEngine::tr( "Proxy authentication failed: %1" ).formatArg( extraMessage ) );
+            break;
 
-    case AuthenticatingError:
-        q->setError( QAbstractSocket::ProxyAuthenticationRequiredError,
-                     extraMessage.isEmpty() ?
-                     QSocks5SocketEngine::tr( "Proxy authentication failed" ) :
-                     QSocks5SocketEngine::tr( "Proxy authentication failed: %1" ).formatArg( extraMessage ) );
-        break;
+        case RequestError:
+            // error code set by caller (overload)
+            break;
 
-    case RequestError:
-        // error code set by caller (overload)
-        break;
+        case SocksError:
+            q->setError( QAbstractSocket::ProxyProtocolError,
+                         QSocks5SocketEngine::tr( "SOCKS version 5 protocol error" ) );
+            break;
 
-    case SocksError:
-        q->setError( QAbstractSocket::ProxyProtocolError,
-                     QSocks5SocketEngine::tr( "SOCKS version 5 protocol error" ) );
-        break;
-
-    case HostNameLookupError:
-        q->setError( QAbstractSocket::HostNotFoundError,
-                     QAbstractSocket::tr( "Host not found" ) );
-        break;
+        case HostNameLookupError:
+            q->setError( QAbstractSocket::HostNotFoundError,
+                         QAbstractSocket::tr( "Host not found" ) );
+            break;
     }
 
     q->setState( QAbstractSocket::UnconnectedState );
@@ -797,50 +797,50 @@ void QSocks5SocketEnginePrivate::setErrorState( Socks5State state, Socks5Error s
 
     switch ( socks5error )
     {
-    case SocksFailure:
-        q->setError( QAbstractSocket::NetworkError,
-                     QSocks5SocketEngine::tr( "General SOCKSv5 server failure" ) );
-        break;
+        case SocksFailure:
+            q->setError( QAbstractSocket::NetworkError,
+                         QSocks5SocketEngine::tr( "General SOCKSv5 server failure" ) );
+            break;
 
-    case ConnectionNotAllowed:
-        q->setError( QAbstractSocket::SocketAccessError,
-                     QSocks5SocketEngine::tr( "Connection not allowed by SOCKSv5 server" ) );
-        break;
+        case ConnectionNotAllowed:
+            q->setError( QAbstractSocket::SocketAccessError,
+                         QSocks5SocketEngine::tr( "Connection not allowed by SOCKSv5 server" ) );
+            break;
 
-    case NetworkUnreachable:
-        q->setError( QAbstractSocket::NetworkError,
-                     QAbstractSocket::tr( "Network unreachable" ) );
-        break;
+        case NetworkUnreachable:
+            q->setError( QAbstractSocket::NetworkError,
+                         QAbstractSocket::tr( "Network unreachable" ) );
+            break;
 
-    case HostUnreachable:
-        q->setError( QAbstractSocket::HostNotFoundError,
-                     QAbstractSocket::tr( "Host not found" ) );
-        break;
+        case HostUnreachable:
+            q->setError( QAbstractSocket::HostNotFoundError,
+                         QAbstractSocket::tr( "Host not found" ) );
+            break;
 
-    case ConnectionRefused:
-        q->setError( QAbstractSocket::ConnectionRefusedError,
-                     QAbstractSocket::tr( "Connection refused" ) );
-        break;
+        case ConnectionRefused:
+            q->setError( QAbstractSocket::ConnectionRefusedError,
+                         QAbstractSocket::tr( "Connection refused" ) );
+            break;
 
-    case TTLExpired:
-        q->setError( QAbstractSocket::NetworkError,
-                     QSocks5SocketEngine::tr( "TTL expired" ) );
-        break;
+        case TTLExpired:
+            q->setError( QAbstractSocket::NetworkError,
+                         QSocks5SocketEngine::tr( "TTL expired" ) );
+            break;
 
-    case CommandNotSupported:
-        q->setError( QAbstractSocket::UnsupportedSocketOperationError,
-                     QSocks5SocketEngine::tr( "SOCKSv5 command not supported" ) );
-        break;
+        case CommandNotSupported:
+            q->setError( QAbstractSocket::UnsupportedSocketOperationError,
+                         QSocks5SocketEngine::tr( "SOCKSv5 command not supported" ) );
+            break;
 
-    case AddressTypeNotSupported:
-        q->setError( QAbstractSocket::UnsupportedSocketOperationError,
-                     QSocks5SocketEngine::tr( "Address type not supported" ) );
-        break;
+        case AddressTypeNotSupported:
+            q->setError( QAbstractSocket::UnsupportedSocketOperationError,
+                         QSocks5SocketEngine::tr( "Address type not supported" ) );
+            break;
 
-    default:
-        q->setError( QAbstractSocket::UnknownSocketError,
-                     QSocks5SocketEngine::tr( "Unknown SOCKSv5 proxy error code 0x%1" ).formatArg( int( socks5error ), 16 ) );
-        break;
+        default:
+            q->setError( QAbstractSocket::UnknownSocketError,
+                         QSocks5SocketEngine::tr( "Unknown SOCKSv5 proxy error code 0x%1" ).formatArg( int( socks5error ), 16 ) );
+            break;
     }
 
     setErrorState( state, QString() );
@@ -1442,52 +1442,52 @@ void QSocks5SocketEnginePrivate::_q_controlSocketReadNotification()
 
     switch ( socks5State )
     {
-    case AuthenticationMethodsSent:
-        parseAuthenticationMethodReply();
-        break;
+        case AuthenticationMethodsSent:
+            parseAuthenticationMethodReply();
+            break;
 
-    case Authenticating:
-        parseAuthenticatingReply();
-        break;
+        case Authenticating:
+            parseAuthenticatingReply();
+            break;
 
-    case RequestMethodSent:
-        parseRequestMethodReply();
-        break;
-
-    case Connected:
-    {
-        QByteArray buf;
-
-        if ( ! data->authenticator->unSeal( data->controlSocket, &buf ) )
-        {
-            // no action
-        }
-
-        if ( buf.size() )
-        {
-            QSOCKS5_DEBUG << dump( buf );
-            connectData->readBuffer += buf;
-            emitReadNotification();
-        }
-
-        break;
-    }
-
-    case BindSuccess:
-
-        // only get here if command is bind
-        if ( mode == BindMode )
-        {
+        case RequestMethodSent:
             parseRequestMethodReply();
+            break;
+
+        case Connected:
+        {
+            QByteArray buf;
+
+            if ( ! data->authenticator->unSeal( data->controlSocket, &buf ) )
+            {
+                // no action
+            }
+
+            if ( buf.size() )
+            {
+                QSOCKS5_DEBUG << dump( buf );
+                connectData->readBuffer += buf;
+                emitReadNotification();
+            }
+
             break;
         }
 
-        [[fallthrough]];
+        case BindSuccess:
 
-    default:
-        qWarning( "QSocks5SocketEngine::_q_controlSocketReadNotification() "
-                  "Unexpectedly received data while in state %d and mode %d", socks5State, mode );
-        break;
+            // only get here if command is bind
+            if ( mode == BindMode )
+            {
+                parseRequestMethodReply();
+                break;
+            }
+
+            [[fallthrough]];
+
+        default:
+            qWarning( "QSocks5SocketEngine::_q_controlSocketReadNotification() "
+                      "Unexpectedly received data while in state %d and mode %d", socks5State, mode );
+            break;
     };
 }
 
@@ -1791,32 +1791,32 @@ int QSocks5SocketEngine::accept()
 
     switch ( d->socks5State )
     {
-    case QSocks5SocketEnginePrivate::BindSuccess:
-        QSOCKS5_Q_DEBUG << "BindSuccess adding" << d->socketDescriptor << "to the bind store";
-        d->data->controlSocket->disconnect();
-        d->data->controlSocket->setParent( nullptr );
-        d->bindData->localAddress = d->localAddress;
-        d->bindData->localPort = d->localPort;
-        sd = d->socketDescriptor;
+        case QSocks5SocketEnginePrivate::BindSuccess:
+            QSOCKS5_Q_DEBUG << "BindSuccess adding" << d->socketDescriptor << "to the bind store";
+            d->data->controlSocket->disconnect();
+            d->data->controlSocket->setParent( nullptr );
+            d->bindData->localAddress = d->localAddress;
+            d->bindData->localPort = d->localPort;
+            sd = d->socketDescriptor;
 
-        socks5BindStore()->add( sd, d->bindData );
-        d->data     = nullptr;
-        d->bindData = nullptr;
-        d->socketDescriptor = 0;
+            socks5BindStore()->add( sd, d->bindData );
+            d->data     = nullptr;
+            d->bindData = nullptr;
+            d->socketDescriptor = 0;
 
-        //### do something about this socket layer ... set it closed and an error about why ...
-        // reset state and local port/address
-        d->socks5State = QSocks5SocketEnginePrivate::Uninitialized; // ..??
-        d->socketState = QAbstractSocket::UnconnectedState;
-        break;
+            //### do something about this socket layer ... set it closed and an error about why ...
+            // reset state and local port/address
+            d->socks5State = QSocks5SocketEnginePrivate::Uninitialized; // ..??
+            d->socketState = QAbstractSocket::UnconnectedState;
+            break;
 
-    case QSocks5SocketEnginePrivate::ControlSocketError:
-        setError( QAbstractSocket::ProxyProtocolError, QLatin1String( "Control socket error" ) );
-        break;
+        case QSocks5SocketEnginePrivate::ControlSocketError:
+            setError( QAbstractSocket::ProxyProtocolError, QLatin1String( "Control socket error" ) );
+            break;
 
-    default:
-        setError( QAbstractSocket::ProxyProtocolError, QLatin1String( "SOCKS5 proxy error" ) );
-        break;
+        default:
+            setError( QAbstractSocket::ProxyProtocolError, QLatin1String( "SOCKS5 proxy error" ) );
+            break;
     }
 
     return sd;

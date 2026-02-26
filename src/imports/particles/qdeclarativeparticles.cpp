@@ -672,33 +672,33 @@ void QDeclarativeParticlesPrivate::updateOpacity( QDeclarativeParticle &p, int a
 {
     switch ( p.state )
     {
-    case QDeclarativeParticle::FadeIn:
-        if ( age <= fadeInDur )
-        {
-            p.opacity = qreal( age ) / fadeInDur;
-            break;
-        }
-        else
-        {
-            p.opacity = 1.0;
-            p.state = QDeclarativeParticle::Solid;
-            // Fall through
-        }
+        case QDeclarativeParticle::FadeIn:
+            if ( age <= fadeInDur )
+            {
+                p.opacity = qreal( age ) / fadeInDur;
+                break;
+            }
+            else
+            {
+                p.opacity = 1.0;
+                p.state = QDeclarativeParticle::Solid;
+                // Fall through
+            }
 
-    case QDeclarativeParticle::Solid:
-        if ( age <= p.fadeOutAge )
-        {
-            break;
-        }
-        else
-        {
-            p.state = QDeclarativeParticle::FadeOut;
-            // Fall through
-        }
+        case QDeclarativeParticle::Solid:
+            if ( age <= p.fadeOutAge )
+            {
+                break;
+            }
+            else
+            {
+                p.state = QDeclarativeParticle::FadeOut;
+                // Fall through
+            }
 
-    case QDeclarativeParticle::FadeOut:
-        p.opacity = qreal( p.lifeSpan - age ) / fadeOutDur;
-        break;
+        case QDeclarativeParticle::FadeOut:
+            p.opacity = qreal( p.lifeSpan - age ) / fadeOutDur;
+            break;
     }
 }
 

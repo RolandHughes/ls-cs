@@ -65,23 +65,23 @@ static QByteArray lscs_prettyDebug( const char *data, int len, int maxSize )
         {
             switch ( c )
             {
-            case '\n':
-                out += "\\n";
-                break;
+                case '\n':
+                    out += "\\n";
+                    break;
 
-            case '\r':
-                out += "\\r";
-                break;
+                case '\r':
+                    out += "\\r";
+                    break;
 
-            case '\t':
-                out += "\\t";
-                break;
+                case '\t':
+                    out += "\\t";
+                    break;
 
-            default:
-                char buf[5];
-                std::snprintf( buf, sizeof( buf ), "\\%3o", c );
-                buf[4] = '\0';
-                out += QByteArray( buf );
+                default:
+                    char buf[5];
+                    std::snprintf( buf, sizeof( buf ), "\\%3o", c );
+                    buf[4] = '\0';
+                    out += QByteArray( buf );
             }
         }
     }
@@ -321,17 +321,17 @@ void QProcessPrivate::Channel::clear()
 {
     switch ( type )
     {
-    case PipeSource:
-        Q_ASSERT( process );
-        process->stdinChannel.type = Normal;
-        process->stdinChannel.process = nullptr;
-        break;
+        case PipeSource:
+            Q_ASSERT( process );
+            process->stdinChannel.type = Normal;
+            process->stdinChannel.process = nullptr;
+            break;
 
-    case PipeSink:
-        Q_ASSERT( process );
-        process->stdoutChannel.type = Normal;
-        process->stdoutChannel.process = nullptr;
-        break;
+        case PipeSink:
+            Q_ASSERT( process );
+            process->stdoutChannel.type = Normal;
+            process->stdoutChannel.process = nullptr;
+            break;
     }
 
     type = Normal;
@@ -480,29 +480,29 @@ void QProcessPrivate::setError( QProcess::ProcessError error, const QString &des
     {
         switch ( error )
         {
-        case QProcess::FailedToStart:
-            errorString = QProcess::tr( "Process failed to start" );
-            break;
+            case QProcess::FailedToStart:
+                errorString = QProcess::tr( "Process failed to start" );
+                break;
 
-        case QProcess::Crashed:
-            errorString = QProcess::tr( "Process crashed" );
-            break;
+            case QProcess::Crashed:
+                errorString = QProcess::tr( "Process crashed" );
+                break;
 
-        case QProcess::Timedout:
-            errorString = QProcess::tr( "Process operation timed out" );
-            break;
+            case QProcess::Timedout:
+                errorString = QProcess::tr( "Process operation timed out" );
+                break;
 
-        case QProcess::ReadError:
-            errorString = QProcess::tr( "Error reading from process" );
-            break;
+            case QProcess::ReadError:
+                errorString = QProcess::tr( "Error reading from process" );
+                break;
 
-        case QProcess::WriteError:
-            errorString = QProcess::tr( "Error writing to process" );
-            break;
+            case QProcess::WriteError:
+                errorString = QProcess::tr( "Error writing to process" );
+                break;
 
-        case QProcess::UnknownError:
-            errorString.clear();
-            break;
+            case QProcess::UnknownError:
+                errorString.clear();
+                break;
         }
 
     }

@@ -329,75 +329,75 @@ int QWin32PrintEngine::metric( QPaintDevice::PaintDeviceMetric m ) const
 
     switch ( m )
     {
-    case QPaintDevice::PdmWidth:
+        case QPaintDevice::PdmWidth:
 
-        val = d->m_paintRectPixels.width();
+            val = d->m_paintRectPixels.width();
 
-        break;
+            break;
 
-    case QPaintDevice::PdmHeight:
-        val = d->m_paintRectPixels.height();
-        break;
+        case QPaintDevice::PdmHeight:
+            val = d->m_paintRectPixels.height();
+            break;
 
-    case QPaintDevice::PdmDpiX:
-        val = res;
-        break;
+        case QPaintDevice::PdmDpiX:
+            val = res;
+            break;
 
-    case QPaintDevice::PdmDpiY:
-        val = res;
-        break;
+        case QPaintDevice::PdmDpiY:
+            val = res;
+            break;
 
-    case QPaintDevice::PdmPhysicalDpiX:
-        val = GetDeviceCaps( d->hdc, LOGPIXELSX );
-        break;
+        case QPaintDevice::PdmPhysicalDpiX:
+            val = GetDeviceCaps( d->hdc, LOGPIXELSX );
+            break;
 
-    case QPaintDevice::PdmPhysicalDpiY:
-        val = GetDeviceCaps( d->hdc, LOGPIXELSY );
-        break;
+        case QPaintDevice::PdmPhysicalDpiY:
+            val = GetDeviceCaps( d->hdc, LOGPIXELSY );
+            break;
 
-    case QPaintDevice::PdmWidthMM:
+        case QPaintDevice::PdmWidthMM:
 
-        val = d->m_paintSizeMM.width();
-        break;
+            val = d->m_paintSizeMM.width();
+            break;
 
-    case QPaintDevice::PdmHeightMM:
-        val = d->m_paintSizeMM.height();
-        break;
+        case QPaintDevice::PdmHeightMM:
+            val = d->m_paintSizeMM.height();
+            break;
 
-    case QPaintDevice::PdmNumColors:
-    {
-        int bpp = GetDeviceCaps( d->hdc, BITSPIXEL );
-
-        if ( bpp == 32 )
+        case QPaintDevice::PdmNumColors:
         {
-            val = INT_MAX;
-        }
-        else if ( bpp <= 8 )
-        {
-            val = GetDeviceCaps( d->hdc, NUMCOLORS );
-        }
-        else
-        {
-            val = 1 << ( bpp * GetDeviceCaps( d->hdc, PLANES ) );
-        }
-    }
-    break;
+            int bpp = GetDeviceCaps( d->hdc, BITSPIXEL );
 
-    case QPaintDevice::PdmDepth:
-        val = GetDeviceCaps( d->hdc, PLANES );
+            if ( bpp == 32 )
+            {
+                val = INT_MAX;
+            }
+            else if ( bpp <= 8 )
+            {
+                val = GetDeviceCaps( d->hdc, NUMCOLORS );
+            }
+            else
+            {
+                val = 1 << ( bpp * GetDeviceCaps( d->hdc, PLANES ) );
+            }
+        }
         break;
 
-    case QPaintDevice::PdmDevicePixelRatio:
-        val = 1;
-        break;
+        case QPaintDevice::PdmDepth:
+            val = GetDeviceCaps( d->hdc, PLANES );
+            break;
 
-    case QPaintDevice::PdmDevicePixelRatioScaled:
-        val = 1 * QPaintDevice::devicePixelRatioFScale();
-        break;
+        case QPaintDevice::PdmDevicePixelRatio:
+            val = 1;
+            break;
 
-    default:
-        qWarning( "QPrinter::metric() Invalid metric command" );
-        return 0;
+        case QPaintDevice::PdmDevicePixelRatioScaled:
+            val = 1 * QPaintDevice::devicePixelRatioFScale();
+            break;
+
+        default:
+            qWarning( "QPrinter::metric() Invalid metric command" );
+            return 0;
     }
 
     return val;
@@ -486,10 +486,10 @@ void QWin32PrintEngine::updateClipPath( const QPainterPath &clipPath, Qt::ClipOp
             const int ops[] =
             {
                 -1,         // Qt::NoClip, covered above
-                RGN_COPY,   // Qt::ReplaceClip
-                RGN_AND,    // Qt::IntersectClip
-                RGN_OR      // Qt::UniteClip
-            };
+                    RGN_COPY,   // Qt::ReplaceClip
+                    RGN_AND,    // Qt::IntersectClip
+                    RGN_OR      // Qt::UniteClip
+                };
             Q_ASSERT( op > 0 && unsigned( op ) <= sizeof( ops ) / sizeof( int ) );
             SelectClipPath( d->hdc, ops[op] );
         }
@@ -719,37 +719,37 @@ void QWin32PrintEnginePrivate::composeGdiPath( const QPainterPath &path )
 
         switch ( elm.type )
         {
-        case QPainterPath::MoveToElement:
-            if ( start >= 0
-                    && path.elementAt( start ).x == path.elementAt( i - 1 ).x
-                    && path.elementAt( start ).y == path.elementAt( i - 1 ).y )
+            case QPainterPath::MoveToElement:
+                if ( start >= 0
+                        && path.elementAt( start ).x == path.elementAt( i - 1 ).x
+                        && path.elementAt( start ).y == path.elementAt( i - 1 ).y )
+                {
+                    CloseFigure( hdc );
+                }
+
+                start = i;
+                MoveToEx( hdc, qRound( elm.x ), qRound( elm.y ), nullptr );
+                break;
+
+            case QPainterPath::LineToElement:
+                LineTo( hdc, qRound( elm.x ), qRound( elm.y ) );
+                break;
+
+            case QPainterPath::CurveToElement:
             {
-                CloseFigure( hdc );
+                POINT pts[3] =
+                {
+                    { qRound( elm.x ), qRound( elm.y ) },
+                    { qRound( path.elementAt( i + 1 ).x ), qRound( path.elementAt( i + 1 ).y ) },
+                    { qRound( path.elementAt( i + 2 ).x ), qRound( path.elementAt( i + 2 ).y ) }
+                };
+                i += 2;
+                PolyBezierTo( hdc, pts, 3 );
+                break;
             }
 
-            start = i;
-            MoveToEx( hdc, qRound( elm.x ), qRound( elm.y ), nullptr );
-            break;
-
-        case QPainterPath::LineToElement:
-            LineTo( hdc, qRound( elm.x ), qRound( elm.y ) );
-            break;
-
-        case QPainterPath::CurveToElement:
-        {
-            POINT pts[3] =
-            {
-                { qRound( elm.x ), qRound( elm.y ) },
-                { qRound( path.elementAt( i + 1 ).x ), qRound( path.elementAt( i + 1 ).y ) },
-                { qRound( path.elementAt( i + 2 ).x ), qRound( path.elementAt( i + 2 ).y ) }
-            };
-            i += 2;
-            PolyBezierTo( hdc, pts, 3 );
-            break;
-        }
-
-        default:
-            qFatal( "QWin32PaintEngine::drawPath: Unhandled type: %d", elm.type );
+            default:
+                qFatal( "QWin32PaintEngine::drawPath: Unhandled type: %d", elm.type );
         }
     }
 
@@ -1035,21 +1035,21 @@ void QWin32PrintEnginePrivate::initHDC()
 
     switch ( mode )
     {
-    case QPrinter::ScreenResolution:
-        resolution = dpi_display;
-        stretch_x = dpi_x / double( dpi_display );
-        stretch_y = dpi_y / double( dpi_display );
-        break;
+        case QPrinter::ScreenResolution:
+            resolution = dpi_display;
+            stretch_x = dpi_x / double( dpi_display );
+            stretch_y = dpi_y / double( dpi_display );
+            break;
 
-    case QPrinter::PrinterResolution:
-    case QPrinter::HighResolution:
-        resolution = dpi_y;
-        stretch_x = 1;
-        stretch_y = 1;
-        break;
+        case QPrinter::PrinterResolution:
+        case QPrinter::HighResolution:
+            resolution = dpi_y;
+            stretch_x = 1;
+            stretch_y = 1;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     updateMetrics();
@@ -1161,361 +1161,361 @@ void QWin32PrintEngine::setProperty( PrintEnginePropertyKey key, const QVariant 
 
     switch ( key )
     {
-    case PPK_PageRect:
-        break;
-
-    case PPK_PaperRect:
-        break;
-
-    case PPK_PaperSources:
-        break;
-
-    case PPK_SupportsMultipleCopies:
-        break;
-
-    case PPK_SupportedResolutions:
-        break;
-
-    case PPK_CustomBase:
-        break;
-
-    case PPK_PageOrder:
-        break;
-
-    case PPK_PrinterProgram:
-        break;
-
-    case PPK_SelectionOption:
-        break;
-
-    // The following keys are properties and settings that are supported by the Windows PrintEngine
-    case PPK_FontEmbedding:
-        d->embed_fonts = value.toBool();
-        break;
-
-    case PPK_CollateCopies:
-    {
-        if ( !d->devMode )
-        {
-            break;
-        }
-
-        d->devMode->dmCollate = value.toBool() ? DMCOLLATE_TRUE : DMCOLLATE_FALSE;
-        d->doReinit();
-    }
-    break;
-
-    case PPK_ColorMode:
-    {
-        if ( !d->devMode )
-        {
-            break;
-        }
-
-        d->devMode->dmColor = ( value.toInt() == QPrinter::Color ) ? DMCOLOR_COLOR : DMCOLOR_MONOCHROME;
-        d->doReinit();
-    }
-    break;
-
-    case PPK_Creator:
-        d->m_creator = value.toString();
-        break;
-
-    case PPK_DocumentName:
-        if ( isActive() )
-        {
-            qWarning( "QWin32PrintEngine::setProperty() Unable to change document name while printing is active" );
-            return;
-        }
-
-        d->docName = value.toString();
-        break;
-
-    case PPK_Duplex:
-    {
-        if ( !d->devMode )
-        {
-            break;
-        }
-
-        QPrint::DuplexMode mode = QPrint::DuplexMode( value.toInt() );
-
-        if ( mode == property( PPK_Duplex ).toInt() || !d->m_printDevice.supportedDuplexModes().contains( mode ) )
-        {
-            break;
-        }
-
-        switch ( mode )
-        {
-        case QPrinter::DuplexNone:
-            d->devMode->dmDuplex = DMDUP_SIMPLEX;
+        case PPK_PageRect:
             break;
 
-        case QPrinter::DuplexAuto:
-            d->devMode->dmDuplex = d->m_pageLayout.orientation() == QPageLayout::Landscape ? DMDUP_HORIZONTAL : DMDUP_VERTICAL;
+        case PPK_PaperRect:
             break;
 
-        case QPrinter::DuplexLongSide:
-            d->devMode->dmDuplex = DMDUP_VERTICAL;
+        case PPK_PaperSources:
             break;
 
-        case QPrinter::DuplexShortSide:
-            d->devMode->dmDuplex = DMDUP_HORIZONTAL;
+        case PPK_SupportsMultipleCopies:
             break;
 
-        default:
+        case PPK_SupportedResolutions:
             break;
-        }
 
-        d->doReinit();
-        break;
-    }
-
-    case PPK_FullPage:
-        if ( value.toBool() )
-        {
-            d->m_pageLayout.setMode( QPageLayout::FullPageMode );
-        }
-        else
-        {
-            d->m_pageLayout.setMode( QPageLayout::StandardMode );
-        }
-
-        d->updateMetrics();
-
-        break;
-
-    case PPK_CopyCount:
-    case PPK_NumberOfCopies:
-        if ( !d->devMode )
-        {
+        case PPK_CustomBase:
             break;
-        }
 
-        d->num_copies = value.toInt();
-        d->devMode->dmCopies = d->num_copies;
-        d->doReinit();
-        break;
-
-    case PPK_Orientation:
-    {
-        if ( !d->devMode )
-        {
+        case PPK_PageOrder:
             break;
-        }
 
-        QPageLayout::Orientation orientation = QPageLayout::Orientation( value.toInt() );
-        d->devMode->dmOrientation = orientation == QPageLayout::Landscape ? DMORIENT_LANDSCAPE : DMORIENT_PORTRAIT;
-        d->m_pageLayout.setOrientation( orientation );
-        d->updateMetrics();
-
-        d->doReinit();
-
-        break;
-    }
-
-    case PPK_OutputFileName:
-        if ( isActive() )
-        {
-            qWarning( "QWin32PrintEngine::setProperty() Unable to change filename while printing" );
-        }
-        else
-        {
-            d->fileName = value.toString();
-            d->printToFile = !value.toString().isEmpty();
-        }
-
-        break;
-
-    case PPK_PageSize:
-    {
-        if ( !d->devMode )
-        {
+        case PPK_PrinterProgram:
             break;
-        }
 
-        const QPageSize pageSize = QPageSize( QPageSize::PageSizeId( value.toInt() ) );
+        case PPK_SelectionOption:
+            break;
 
-        if ( pageSize.isValid() )
+        // The following keys are properties and settings that are supported by the Windows PrintEngine
+        case PPK_FontEmbedding:
+            d->embed_fonts = value.toBool();
+            break;
+
+        case PPK_CollateCopies:
         {
-            d->setPageSize( pageSize );
+            if ( !d->devMode )
+            {
+                break;
+            }
+
+            d->devMode->dmCollate = value.toBool() ? DMCOLLATE_TRUE : DMCOLLATE_FALSE;
             d->doReinit();
         }
-
         break;
-    }
 
-    case PPK_PaperName:
-    {
-        if ( !d->devMode )
+        case PPK_ColorMode:
         {
-            break;
-        }
+            if ( !d->devMode )
+            {
+                break;
+            }
 
-        // Get the named page size from the printer if supported
-        const QPageSize pageSize = d->m_printDevice.supportedPageSize( value.toString() );
-
-        if ( pageSize.isValid() )
-        {
-            d->setPageSize( pageSize );
+            d->devMode->dmColor = ( value.toInt() == QPrinter::Color ) ? DMCOLOR_COLOR : DMCOLOR_MONOCHROME;
             d->doReinit();
-
         }
-
         break;
-    }
 
-    case PPK_PaperSource:
-    {
-        if ( !d->devMode )
-        {
+        case PPK_Creator:
+            d->m_creator = value.toString();
             break;
-        }
 
-        const QList<QPrint::InputSlot> inputSlots = d->m_printDevice.supportedInputSlots();
-        const int paperSource = value.toInt();
-        const int index = paperSource >= DMBIN_USER ?
-                          indexOfWindowsId( inputSlots, paperSource ) : indexOfId( inputSlots, QPrint::InputSlotId( paperSource ) );
-        d->devMode->dmDefaultSource = index >= 0 ? inputSlots.at( index ).windowsId : DMBIN_AUTO;
-        d->doReinit();
+        case PPK_DocumentName:
+            if ( isActive() )
+            {
+                qWarning( "QWin32PrintEngine::setProperty() Unable to change document name while printing is active" );
+                return;
+            }
 
-        break;
-    }
-
-    case PPK_PrinterName:
-    {
-        QString id = value.toString();
-        QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
-
-        if ( !ps )
-        {
-            return;
-        }
-
-        QPrintDevice printDevice = ps->createPrintDevice( id.isEmpty() ? ps->defaultPrintDeviceId() : id );
-
-        if ( printDevice.isValid() )
-        {
-            d->m_printDevice = printDevice;
-            // TODO Do we need to check if the page size is valid on new printer?
-            d->initialize();
-        }
-
-        break;
-    }
-
-    case PPK_Resolution:
-    {
-        d->resolution = value.toInt();
-
-        d->stretch_x = d->dpi_x / double( d->resolution );
-        d->stretch_y = d->dpi_y / double( d->resolution );
-        d->updateMetrics();
-
-        break;
-    }
-
-    case PPK_WindowsPageSize:
-    {
-        if ( !d->devMode )
-        {
+            d->docName = value.toString();
             break;
-        }
 
-        const QPageSize pageSize = QPageSize( QPageSize::id( value.toInt() ) );
-
-        if ( pageSize.isValid() )
+        case PPK_Duplex:
         {
-            d->setPageSize( pageSize );
+            if ( !d->devMode )
+            {
+                break;
+            }
+
+            QPrint::DuplexMode mode = QPrint::DuplexMode( value.toInt() );
+
+            if ( mode == property( PPK_Duplex ).toInt() || !d->m_printDevice.supportedDuplexModes().contains( mode ) )
+            {
+                break;
+            }
+
+            switch ( mode )
+            {
+                case QPrinter::DuplexNone:
+                    d->devMode->dmDuplex = DMDUP_SIMPLEX;
+                    break;
+
+                case QPrinter::DuplexAuto:
+                    d->devMode->dmDuplex = d->m_pageLayout.orientation() == QPageLayout::Landscape ? DMDUP_HORIZONTAL : DMDUP_VERTICAL;
+                    break;
+
+                case QPrinter::DuplexLongSide:
+                    d->devMode->dmDuplex = DMDUP_VERTICAL;
+                    break;
+
+                case QPrinter::DuplexShortSide:
+                    d->devMode->dmDuplex = DMDUP_HORIZONTAL;
+                    break;
+
+                default:
+                    break;
+            }
+
             d->doReinit();
-
             break;
         }
 
+        case PPK_FullPage:
+            if ( value.toBool() )
+            {
+                d->m_pageLayout.setMode( QPageLayout::FullPageMode );
+            }
+            else
+            {
+                d->m_pageLayout.setMode( QPageLayout::StandardMode );
+            }
 
-        break;
-    }
-
-    case PPK_CustomPaperSize:
-    {
-        if ( !d->devMode )
-        {
-            break;
-        }
-
-        const QPageSize pageSize = QPageSize( value.toSizeF(), QPageSize::Unit::Point );
-
-        if ( pageSize.isValid() )
-        {
-            d->setPageSize( pageSize );
-            d->doReinit();
-
-        }
-
-        break;
-    }
-
-    case PPK_PageMargins:
-    {
-        QList<QVariant> margins( value.toList() );
-        Q_ASSERT( margins.size() == 4 );
-        d->m_pageLayout.setUnits( QPageSize::Unit::Point );
-        d->m_pageLayout.setMargins( QMarginsF( margins.at( 0 ).toReal(), margins.at( 1 ).toReal(),
-                                               margins.at( 2 ).toReal(), margins.at( 3 ).toReal() ) );
-        d->updateMetrics();
-
-        break;
-    }
-
-    case PPK_QPageSize:
-    {
-        if ( !d->devMode )
-        {
-            break;
-        }
-
-        // Get the page size from the printer if supported
-        const QPageSize pageSize = value.value<QPageSize>();
-
-        if ( pageSize.isValid() )
-        {
-            d->setPageSize( pageSize );
-            d->doReinit();
-
-        }
-
-        break;
-    }
-
-    case PPK_QPageMargins:
-    {
-        QPair<QMarginsF, QPageLayout::Unit> pair = value.value<QPair<QMarginsF, QPageLayout::Unit>>();
-        d->m_pageLayout.setUnits( pair.second );
-        d->m_pageLayout.setMargins( pair.first );
-        d->updateMetrics();
-
-        break;
-    }
-
-    case PPK_QPageLayout:
-    {
-        QPageLayout pageLayout = value.value<QPageLayout>();
-
-        if ( pageLayout.isValid() && d->m_printDevice.isValidPageLayout( pageLayout, d->resolution ) )
-        {
-            setProperty( PPK_QPageSize, QVariant::fromValue( pageLayout.pageSize() ) );
-            setProperty( PPK_FullPage, pageLayout.mode() == QPageLayout::FullPageMode );
-            setProperty( PPK_Orientation, QVariant::fromValue( pageLayout.orientation() ) );
-            d->m_pageLayout.setUnits( pageLayout.units() );
-            d->m_pageLayout.setMargins( pageLayout.margins() );
             d->updateMetrics();
 
+            break;
+
+        case PPK_CopyCount:
+        case PPK_NumberOfCopies:
+            if ( !d->devMode )
+            {
+                break;
+            }
+
+            d->num_copies = value.toInt();
+            d->devMode->dmCopies = d->num_copies;
+            d->doReinit();
+            break;
+
+        case PPK_Orientation:
+        {
+            if ( !d->devMode )
+            {
+                break;
+            }
+
+            QPageLayout::Orientation orientation = QPageLayout::Orientation( value.toInt() );
+            d->devMode->dmOrientation = orientation == QPageLayout::Landscape ? DMORIENT_LANDSCAPE : DMORIENT_PORTRAIT;
+            d->m_pageLayout.setOrientation( orientation );
+            d->updateMetrics();
+
+            d->doReinit();
+
+            break;
         }
 
-        break;
-    }
+        case PPK_OutputFileName:
+            if ( isActive() )
+            {
+                qWarning( "QWin32PrintEngine::setProperty() Unable to change filename while printing" );
+            }
+            else
+            {
+                d->fileName = value.toString();
+                d->printToFile = !value.toString().isEmpty();
+            }
 
-        // No default so that compiler will complain if new keys added and not handled in this engine
+            break;
+
+        case PPK_PageSize:
+        {
+            if ( !d->devMode )
+            {
+                break;
+            }
+
+            const QPageSize pageSize = QPageSize( QPageSize::PageSizeId( value.toInt() ) );
+
+            if ( pageSize.isValid() )
+            {
+                d->setPageSize( pageSize );
+                d->doReinit();
+            }
+
+            break;
+        }
+
+        case PPK_PaperName:
+        {
+            if ( !d->devMode )
+            {
+                break;
+            }
+
+            // Get the named page size from the printer if supported
+            const QPageSize pageSize = d->m_printDevice.supportedPageSize( value.toString() );
+
+            if ( pageSize.isValid() )
+            {
+                d->setPageSize( pageSize );
+                d->doReinit();
+
+            }
+
+            break;
+        }
+
+        case PPK_PaperSource:
+        {
+            if ( !d->devMode )
+            {
+                break;
+            }
+
+            const QList<QPrint::InputSlot> inputSlots = d->m_printDevice.supportedInputSlots();
+            const int paperSource = value.toInt();
+            const int index = paperSource >= DMBIN_USER ?
+                              indexOfWindowsId( inputSlots, paperSource ) : indexOfId( inputSlots, QPrint::InputSlotId( paperSource ) );
+            d->devMode->dmDefaultSource = index >= 0 ? inputSlots.at( index ).windowsId : DMBIN_AUTO;
+            d->doReinit();
+
+            break;
+        }
+
+        case PPK_PrinterName:
+        {
+            QString id = value.toString();
+            QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
+
+            if ( !ps )
+            {
+                return;
+            }
+
+            QPrintDevice printDevice = ps->createPrintDevice( id.isEmpty() ? ps->defaultPrintDeviceId() : id );
+
+            if ( printDevice.isValid() )
+            {
+                d->m_printDevice = printDevice;
+                // TODO Do we need to check if the page size is valid on new printer?
+                d->initialize();
+            }
+
+            break;
+        }
+
+        case PPK_Resolution:
+        {
+            d->resolution = value.toInt();
+
+            d->stretch_x = d->dpi_x / double( d->resolution );
+            d->stretch_y = d->dpi_y / double( d->resolution );
+            d->updateMetrics();
+
+            break;
+        }
+
+        case PPK_WindowsPageSize:
+        {
+            if ( !d->devMode )
+            {
+                break;
+            }
+
+            const QPageSize pageSize = QPageSize( QPageSize::id( value.toInt() ) );
+
+            if ( pageSize.isValid() )
+            {
+                d->setPageSize( pageSize );
+                d->doReinit();
+
+                break;
+            }
+
+
+            break;
+        }
+
+        case PPK_CustomPaperSize:
+        {
+            if ( !d->devMode )
+            {
+                break;
+            }
+
+            const QPageSize pageSize = QPageSize( value.toSizeF(), QPageSize::Unit::Point );
+
+            if ( pageSize.isValid() )
+            {
+                d->setPageSize( pageSize );
+                d->doReinit();
+
+            }
+
+            break;
+        }
+
+        case PPK_PageMargins:
+        {
+            QList<QVariant> margins( value.toList() );
+            Q_ASSERT( margins.size() == 4 );
+            d->m_pageLayout.setUnits( QPageSize::Unit::Point );
+            d->m_pageLayout.setMargins( QMarginsF( margins.at( 0 ).toReal(), margins.at( 1 ).toReal(),
+                                                   margins.at( 2 ).toReal(), margins.at( 3 ).toReal() ) );
+            d->updateMetrics();
+
+            break;
+        }
+
+        case PPK_QPageSize:
+        {
+            if ( !d->devMode )
+            {
+                break;
+            }
+
+            // Get the page size from the printer if supported
+            const QPageSize pageSize = value.value<QPageSize>();
+
+            if ( pageSize.isValid() )
+            {
+                d->setPageSize( pageSize );
+                d->doReinit();
+
+            }
+
+            break;
+        }
+
+        case PPK_QPageMargins:
+        {
+            QPair<QMarginsF, QPageLayout::Unit> pair = value.value<QPair<QMarginsF, QPageLayout::Unit>>();
+            d->m_pageLayout.setUnits( pair.second );
+            d->m_pageLayout.setMargins( pair.first );
+            d->updateMetrics();
+
+            break;
+        }
+
+        case PPK_QPageLayout:
+        {
+            QPageLayout pageLayout = value.value<QPageLayout>();
+
+            if ( pageLayout.isValid() && d->m_printDevice.isValidPageLayout( pageLayout, d->resolution ) )
+            {
+                setProperty( PPK_QPageSize, QVariant::fromValue( pageLayout.pageSize() ) );
+                setProperty( PPK_FullPage, pageLayout.mode() == QPageLayout::FullPageMode );
+                setProperty( PPK_Orientation, QVariant::fromValue( pageLayout.orientation() ) );
+                d->m_pageLayout.setUnits( pageLayout.units() );
+                d->m_pageLayout.setMargins( pageLayout.margins() );
+                d->updateMetrics();
+
+            }
+
+            break;
+        }
+
+            // No default so that compiler will complain if new keys added and not handled in this engine
     }
 }
 
@@ -1528,225 +1528,225 @@ QVariant QWin32PrintEngine::property( PrintEnginePropertyKey key ) const
     switch ( key )
     {
 
-    // The following keys are settings that are unsupported by the Windows PrintEngine
-    // Return sensible default values to ensure consistent behavior across platforms
-    case PPK_PageOrder:
-        value = QPrinter::FirstPageFirst;
-        break;
+        // The following keys are settings that are unsupported by the Windows PrintEngine
+        // Return sensible default values to ensure consistent behavior across platforms
+        case PPK_PageOrder:
+            value = QPrinter::FirstPageFirst;
+            break;
 
-    case PPK_PrinterProgram:
-        value = QString();
-        break;
+        case PPK_PrinterProgram:
+            value = QString();
+            break;
 
-    case PPK_SelectionOption:
-        value = QString();
-        break;
+        case PPK_SelectionOption:
+            value = QString();
+            break;
 
-    // The following keys are properties and settings that are supported by the Windows PrintEngine
-    case PPK_FontEmbedding:
-        value = d->embed_fonts;
-        break;
+        // The following keys are properties and settings that are supported by the Windows PrintEngine
+        case PPK_FontEmbedding:
+            value = d->embed_fonts;
+            break;
 
-    case PPK_CollateCopies:
-        if ( !d->devMode )
-        {
-            value = false;
-        }
-        else
-        {
-            value = d->devMode->dmCollate == DMCOLLATE_TRUE;
-        }
-
-        break;
-
-    case PPK_ColorMode:
-    {
-        if ( !d->devMode )
-        {
-            value = QPrinter::Color;
-        }
-        else
-        {
-            value = ( d->devMode->dmColor == DMCOLOR_COLOR ) ? QPrinter::Color : QPrinter::GrayScale;
-        }
-    }
-    break;
-
-    case PPK_Creator:
-        value = d->m_creator;
-        break;
-
-    case PPK_DocumentName:
-        value = d->docName;
-        break;
-
-    case PPK_Duplex:
-    {
-        if ( !d->devMode )
-        {
-            value = QPrinter::DuplexNone;
-        }
-        else
-        {
-            switch ( d->devMode->dmDuplex )
+        case PPK_CollateCopies:
+            if ( !d->devMode )
             {
-            case DMDUP_VERTICAL:
-                value = QPrinter::DuplexLongSide;
-                break;
-
-            case DMDUP_HORIZONTAL:
-                value = QPrinter::DuplexShortSide;
-                break;
-
-            case DMDUP_SIMPLEX:
-            default:
-                value = QPrinter::DuplexNone;
-                break;
-            }
-        }
-
-        break;
-    }
-
-    case PPK_FullPage:
-        value =  d->m_pageLayout.mode() == QPageLayout::FullPageMode;
-        break;
-
-    case PPK_CopyCount:
-        value = d->num_copies;
-        break;
-
-    case PPK_SupportsMultipleCopies:
-        value = true;
-        break;
-
-    case PPK_NumberOfCopies:
-        value = 1;
-        break;
-
-    case PPK_Orientation:
-        value = d->m_pageLayout.orientation();
-        break;
-
-    case PPK_OutputFileName:
-        value = d->fileName;
-        break;
-
-    case PPK_PageRect:
-        // PageRect is returned in device pixels
-        value = d->m_pageLayout.paintRectPixels( d->resolution );
-        break;
-
-    case PPK_PageSize:
-        value = d->m_pageLayout.pageSize().id();
-        break;
-
-    case PPK_PaperRect:
-        // PaperRect is returned in device pixels
-        value = d->m_pageLayout.fullRectPixels( d->resolution );
-        break;
-
-    case PPK_PaperName:
-        value = d->m_pageLayout.pageSize().name();
-        break;
-
-    case PPK_PaperSource:
-        if ( !d->devMode )
-        {
-            value = d->m_printDevice.defaultInputSlot().id;
-        }
-        else
-        {
-            if ( d->devMode->dmDefaultSource >= DMBIN_USER )
-            {
-                value = int( d->devMode->dmDefaultSource );
+                value = false;
             }
             else
             {
-                const QList<QPrint::InputSlot> inputSlots = d->m_printDevice.supportedInputSlots();
-                const int index = indexOfWindowsId( inputSlots, d->devMode->dmDefaultSource );
-                value = index >= 0 ? inputSlots.at( index ).id : QPrint::Auto;
+                value = d->devMode->dmCollate == DMCOLLATE_TRUE;
+            }
+
+            break;
+
+        case PPK_ColorMode:
+        {
+            if ( !d->devMode )
+            {
+                value = QPrinter::Color;
+            }
+            else
+            {
+                value = ( d->devMode->dmColor == DMCOLOR_COLOR ) ? QPrinter::Color : QPrinter::GrayScale;
             }
         }
-
         break;
 
-    case PPK_PrinterName:
-        value = d->m_printDevice.id();
-        break;
+        case PPK_Creator:
+            value = d->m_creator;
+            break;
 
-    case PPK_Resolution:
-        if ( d->resolution || d->m_printDevice.isValid() )
+        case PPK_DocumentName:
+            value = d->docName;
+            break;
+
+        case PPK_Duplex:
         {
-            value = d->resolution;
+            if ( !d->devMode )
+            {
+                value = QPrinter::DuplexNone;
+            }
+            else
+            {
+                switch ( d->devMode->dmDuplex )
+                {
+                    case DMDUP_VERTICAL:
+                        value = QPrinter::DuplexLongSide;
+                        break;
+
+                    case DMDUP_HORIZONTAL:
+                        value = QPrinter::DuplexShortSide;
+                        break;
+
+                    case DMDUP_SIMPLEX:
+                    default:
+                        value = QPrinter::DuplexNone;
+                        break;
+                }
+            }
+
+            break;
         }
 
-        break;
+        case PPK_FullPage:
+            value =  d->m_pageLayout.mode() == QPageLayout::FullPageMode;
+            break;
 
-    case PPK_SupportedResolutions:
-    {
-        QList<QVariant> list;
+        case PPK_CopyCount:
+            value = d->num_copies;
+            break;
 
-        for ( int resolution : d->m_printDevice.supportedResolutions() )
+        case PPK_SupportsMultipleCopies:
+            value = true;
+            break;
+
+        case PPK_NumberOfCopies:
+            value = 1;
+            break;
+
+        case PPK_Orientation:
+            value = d->m_pageLayout.orientation();
+            break;
+
+        case PPK_OutputFileName:
+            value = d->fileName;
+            break;
+
+        case PPK_PageRect:
+            // PageRect is returned in device pixels
+            value = d->m_pageLayout.paintRectPixels( d->resolution );
+            break;
+
+        case PPK_PageSize:
+            value = d->m_pageLayout.pageSize().id();
+            break;
+
+        case PPK_PaperRect:
+            // PaperRect is returned in device pixels
+            value = d->m_pageLayout.fullRectPixels( d->resolution );
+            break;
+
+        case PPK_PaperName:
+            value = d->m_pageLayout.pageSize().name();
+            break;
+
+        case PPK_PaperSource:
+            if ( !d->devMode )
+            {
+                value = d->m_printDevice.defaultInputSlot().id;
+            }
+            else
+            {
+                if ( d->devMode->dmDefaultSource >= DMBIN_USER )
+                {
+                    value = int( d->devMode->dmDefaultSource );
+                }
+                else
+                {
+                    const QList<QPrint::InputSlot> inputSlots = d->m_printDevice.supportedInputSlots();
+                    const int index = indexOfWindowsId( inputSlots, d->devMode->dmDefaultSource );
+                    value = index >= 0 ? inputSlots.at( index ).id : QPrint::Auto;
+                }
+            }
+
+            break;
+
+        case PPK_PrinterName:
+            value = d->m_printDevice.id();
+            break;
+
+        case PPK_Resolution:
+            if ( d->resolution || d->m_printDevice.isValid() )
+            {
+                value = d->resolution;
+            }
+
+            break;
+
+        case PPK_SupportedResolutions:
         {
-            list << resolution;
+            QList<QVariant> list;
+
+            for ( int resolution : d->m_printDevice.supportedResolutions() )
+            {
+                list << resolution;
+            }
+
+            value = list;
+            break;
         }
 
-        value = list;
-        break;
-    }
+        case PPK_WindowsPageSize:
+            value = d->m_pageLayout.pageSize().windowsId();
+            break;
 
-    case PPK_WindowsPageSize:
-        value = d->m_pageLayout.pageSize().windowsId();
-        break;
-
-    case PPK_PaperSources:
-    {
-
-
-        QList<QVariant> out;
-
-        for ( const QPrint::InputSlot inputSlot : d->m_printDevice.supportedInputSlots() )
+        case PPK_PaperSources:
         {
-            out << QVariant( inputSlot.id == QPrint::CustomInputSlot ? inputSlot.windowsId : int( inputSlot.id ) );
+
+
+            QList<QVariant> out;
+
+            for ( const QPrint::InputSlot inputSlot : d->m_printDevice.supportedInputSlots() )
+            {
+                out << QVariant( inputSlot.id == QPrint::CustomInputSlot ? inputSlot.windowsId : int( inputSlot.id ) );
+            }
+
+            value = out;
+            break;
         }
 
-        value = out;
-        break;
-    }
 
+        case PPK_CustomPaperSize:
+            value = d->m_pageLayout.fullRectPoints().size();
+            break;
 
-    case PPK_CustomPaperSize:
-        value = d->m_pageLayout.fullRectPoints().size();
-        break;
+        case PPK_PageMargins:
+        {
+            QList<QVariant> list;
+            QMarginsF margins = d->m_pageLayout.margins( QPageSize::Unit::Point );
+            list << margins.left() << margins.top() << margins.right() << margins.bottom();
+            value = list;
+            break;
+        }
 
-    case PPK_PageMargins:
-    {
-        QList<QVariant> list;
-        QMarginsF margins = d->m_pageLayout.margins( QPageSize::Unit::Point );
-        list << margins.left() << margins.top() << margins.right() << margins.bottom();
-        value = list;
-        break;
-    }
+        case PPK_QPageSize:
+            value.setValue( d->m_pageLayout.pageSize() );
+            break;
 
-    case PPK_QPageSize:
-        value.setValue( d->m_pageLayout.pageSize() );
-        break;
+        case PPK_QPageMargins:
+        {
+            QPair<QMarginsF, QPageLayout::Unit> pair = qMakePair( d->m_pageLayout.margins(), d->m_pageLayout.units() );
+            value.setValue( pair );
+            break;
+        }
 
-    case PPK_QPageMargins:
-    {
-        QPair<QMarginsF, QPageLayout::Unit> pair = qMakePair( d->m_pageLayout.margins(), d->m_pageLayout.units() );
-        value.setValue( pair );
-        break;
-    }
+        case PPK_QPageLayout:
+            value.setValue( d->m_pageLayout );
+            break;
 
-    case PPK_QPageLayout:
-        value.setValue( d->m_pageLayout );
-        break;
-
-    // Do nothing
-    case PPK_CustomBase:
-        break;
+        // Do nothing
+        case PPK_CustomBase:
+            break;
     }
 
     return value;

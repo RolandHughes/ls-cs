@@ -50,12 +50,13 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
       ${CMAKE_CURRENT_SOURCE_DIR}/xcb/qxcb_main.cpp
    )
 
+   #ls_libtool_ep
+
    target_link_libraries(LsCsGuiXcb
       PRIVATE
       LsCsCore
       LsCsGui
       LsCsXcbSupport
-      ls_libtool_ep
    )
 
    target_compile_definitions(LsCsGuiXcb
@@ -64,10 +65,6 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
       -DXCB_USE_XINPUT2
    )
 
-#   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS LsCsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/platforms)
-#   else()
-#      install(TARGETS LsCsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR})
-#   endif()
+   install(TARGETS LsCsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/platforms)
 endif()
 

@@ -56,24 +56,24 @@ static QString candidateSignal( int which )
 
     switch ( CandidateSignal( which ) )
     {
-    case TextValueSelectedSignal:
-        retval = "textValueSelected(QString)";
-        break;
+        case TextValueSelectedSignal:
+            retval = "textValueSelected(QString)";
+            break;
 
-    case IntValueSelectedSignal:
-        retval = "intValueSelected(int)";
-        break;
+        case IntValueSelectedSignal:
+            retval = "intValueSelected(int)";
+            break;
 
-    case DoubleValueSelectedSignal:
-        retval = "doubleValueSelected(double)";
-        break;
+        case DoubleValueSelectedSignal:
+            retval = "doubleValueSelected(double)";
+            break;
 
-    case NumCandidateSignals:
-        [[fallthrough]];
+        case NumCandidateSignals:
+            [[fallthrough]];
 
-    default:
-        // error, may want to throw
-        break;
+        default:
+            // error, may want to throw
+            break;
     }
 
     return retval;
@@ -623,20 +623,20 @@ void QInputDialog::setInputMode( InputMode mode )
 
     switch ( mode )
     {
-    case IntInput:
-        d->ensureIntSpinBox();
-        widget = d->intSpinBox;
-        break;
+        case IntInput:
+            d->ensureIntSpinBox();
+            widget = d->intSpinBox;
+            break;
 
-    case DoubleInput:
-        d->ensureDoubleSpinBox();
-        widget = d->doubleSpinBox;
-        break;
+        case DoubleInput:
+            d->ensureDoubleSpinBox();
+            widget = d->doubleSpinBox;
+            break;
 
-    default:
-        Q_ASSERT( mode == TextInput );
-        d->chooseRightTextInputWidget();
-        return;
+        default:
+            Q_ASSERT( mode == TextInput );
+            d->chooseRightTextInputWidget();
+            return;
     }
 
     d->setInputWidget( widget );
@@ -1135,17 +1135,17 @@ void QInputDialog::done( int result )
 
         switch ( mode )
         {
-        case DoubleInput:
-            emit doubleValueSelected( doubleValue() );
-            break;
+            case DoubleInput:
+                emit doubleValueSelected( doubleValue() );
+                break;
 
-        case IntInput:
-            emit intValueSelected( intValue() );
-            break;
+            case IntInput:
+                emit intValueSelected( intValue() );
+                break;
 
-        default:
-            Q_ASSERT( mode == TextInput );
-            emit textValueSelected( textValue() );
+            default:
+                Q_ASSERT( mode == TextInput );
+                emit textValueSelected( textValue() );
         }
     }
 

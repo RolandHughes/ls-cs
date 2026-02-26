@@ -945,7 +945,7 @@ void QWidgetPrivate::create_sys( WId window, bool initializeWindow, bool destroy
     }
 
     lscs_window_private( win )->positionPolicy = topData()->posIncludesFrame ?
-        QWindowPrivate::WindowFrameInclusive : QWindowPrivate::WindowFrameExclusive;
+            QWindowPrivate::WindowFrameInclusive : QWindowPrivate::WindowFrameExclusive;
 
     win->create();
 
@@ -3527,29 +3527,29 @@ QPalette::ColorRole QWidget::foregroundRole() const
 
     switch ( backgroundRole() )
     {
-    case QPalette::Button:
-        role = QPalette::ButtonText;
-        break;
+        case QPalette::Button:
+            role = QPalette::ButtonText;
+            break;
 
-    case QPalette::Base:
-        role = QPalette::Text;
-        break;
+        case QPalette::Base:
+            role = QPalette::Text;
+            break;
 
-    case QPalette::Dark:
-    case QPalette::Shadow:
-        role = QPalette::Light;
-        break;
+        case QPalette::Dark:
+        case QPalette::Shadow:
+            role = QPalette::Light;
+            break;
 
-    case QPalette::Highlight:
-        role = QPalette::HighlightedText;
-        break;
+        case QPalette::Highlight:
+            role = QPalette::HighlightedText;
+            break;
 
-    case QPalette::ToolTipBase:
-        role = QPalette::ToolTipText;
-        break;
+        case QPalette::ToolTipBase:
+            role = QPalette::ToolTipText;
+            break;
 
-    default:
-        ;
+        default:
+            ;
     }
 
     return role;
@@ -7736,675 +7736,675 @@ bool QWidget::event( QEvent *event )
         switch ( event->type() )
         {
 
-        case QEvent::TabletPress:
-        case QEvent::TabletRelease:
-        case QEvent::TabletMove:
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonRelease:
-        case QEvent::MouseButtonDblClick:
-        case QEvent::MouseMove:
-        case QEvent::TouchBegin:
-        case QEvent::TouchUpdate:
-        case QEvent::TouchEnd:
-        case QEvent::TouchCancel:
-        case QEvent::ContextMenu:
-        case QEvent::KeyPress:
-        case QEvent::KeyRelease:
+            case QEvent::TabletPress:
+            case QEvent::TabletRelease:
+            case QEvent::TabletMove:
+            case QEvent::MouseButtonPress:
+            case QEvent::MouseButtonRelease:
+            case QEvent::MouseButtonDblClick:
+            case QEvent::MouseMove:
+            case QEvent::TouchBegin:
+            case QEvent::TouchUpdate:
+            case QEvent::TouchEnd:
+            case QEvent::TouchCancel:
+            case QEvent::ContextMenu:
+            case QEvent::KeyPress:
+            case QEvent::KeyRelease:
 #ifndef LSCS_NO_WHEELEVENT
-        case QEvent::Wheel:
+            case QEvent::Wheel:
 #endif
-            return false;
+                return false;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
     switch ( event->type() )
     {
-    case QEvent::MouseMove:
-        mouseMoveEvent( ( QMouseEvent * )event );
-        break;
+        case QEvent::MouseMove:
+            mouseMoveEvent( ( QMouseEvent * )event );
+            break;
 
-    case QEvent::MouseButtonPress:
-        // Do not reset input context here. Whether reset or not is
-        // a responsibility of input method. reset() will be
-        // called by mouseHandler() of input method if necessary
-        // via mousePressEvent() of text widgets.
+        case QEvent::MouseButtonPress:
+            // Do not reset input context here. Whether reset or not is
+            // a responsibility of input method. reset() will be
+            // called by mouseHandler() of input method if necessary
+            // via mousePressEvent() of text widgets.
 
-        mousePressEvent( ( QMouseEvent * )event );
-        break;
+            mousePressEvent( ( QMouseEvent * )event );
+            break;
 
-    case QEvent::MouseButtonRelease:
-        mouseReleaseEvent( ( QMouseEvent * )event );
-        break;
+        case QEvent::MouseButtonRelease:
+            mouseReleaseEvent( ( QMouseEvent * )event );
+            break;
 
-    case QEvent::MouseButtonDblClick:
-        mouseDoubleClickEvent( ( QMouseEvent * )event );
-        break;
+        case QEvent::MouseButtonDblClick:
+            mouseDoubleClickEvent( ( QMouseEvent * )event );
+            break;
 
 #ifndef LSCS_NO_WHEELEVENT
 
-    case QEvent::Wheel:
-        wheelEvent( ( QWheelEvent * )event );
-        break;
+        case QEvent::Wheel:
+            wheelEvent( ( QWheelEvent * )event );
+            break;
 #endif
 
 #ifndef LSCS_NO_TABLETEVENT
 
-    case QEvent::TabletMove:
-    case QEvent::TabletPress:
-    case QEvent::TabletRelease:
-        tabletEvent( ( QTabletEvent * )event );
-        break;
+        case QEvent::TabletMove:
+        case QEvent::TabletPress:
+        case QEvent::TabletRelease:
+            tabletEvent( ( QTabletEvent * )event );
+            break;
 #endif
 
-    case QEvent::KeyPress:
-    {
-        QKeyEvent *k = ( QKeyEvent * )event;
-        bool res = false;
-
-        if ( ! ( k->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ) ) )
+        case QEvent::KeyPress:
         {
-            // ### Add MetaModifier?
+            QKeyEvent *k = ( QKeyEvent * )event;
+            bool res = false;
 
-            if ( k->key() == Qt::Key_Backtab || ( k->key() == Qt::Key_Tab && ( k->modifiers() & Qt::ShiftModifier ) ) )
+            if ( ! ( k->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ) ) )
             {
-                res = focusNextPrevChild( false );
+                // ### Add MetaModifier?
 
-            }
-            else if ( k->key() == Qt::Key_Tab )
-            {
-                res = focusNextPrevChild( true );
-            }
-
-            if ( res )
-            {
-                break;
-            }
-        }
-
-        keyPressEvent( k );
-#ifdef LSCS_KEYPAD_NAVIGATION
-
-        if ( ! k->isAccepted() && QApplication::keypadNavigationEnabled() &&
-                ! ( k->modifiers() & ( Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier ) ) )
-        {
-
-            if ( QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder )
-            {
-                if ( k->key() == Qt::Key_Up )
+                if ( k->key() == Qt::Key_Backtab || ( k->key() == Qt::Key_Tab && ( k->modifiers() & Qt::ShiftModifier ) ) )
                 {
                     res = focusNextPrevChild( false );
+
                 }
-                else if ( k->key() == Qt::Key_Down )
+                else if ( k->key() == Qt::Key_Tab )
                 {
                     res = focusNextPrevChild( true );
                 }
 
-            }
-            else if ( QApplication::navigationMode() == Qt::NavigationModeKeypadDirectional )
-            {
-                if ( k->key() == Qt::Key_Up )
+                if ( res )
                 {
-                    res = QWidgetPrivate::navigateToDirection( QWidgetPrivate::DirectionNorth );
-                }
-                else if ( k->key() == Qt::Key_Right )
-                {
-                    res = QWidgetPrivate::navigateToDirection( QWidgetPrivate::DirectionEast );
-                }
-                else if ( k->key() == Qt::Key_Down )
-                {
-                    res = QWidgetPrivate::navigateToDirection( QWidgetPrivate::DirectionSouth );
-                }
-                else if ( k->key() == Qt::Key_Left )
-                {
-                    res = QWidgetPrivate::navigateToDirection( QWidgetPrivate::DirectionWest );
+                    break;
                 }
             }
 
-            if ( res )
+            keyPressEvent( k );
+#ifdef LSCS_KEYPAD_NAVIGATION
+
+            if ( ! k->isAccepted() && QApplication::keypadNavigationEnabled() &&
+                    ! ( k->modifiers() & ( Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier ) ) )
             {
-                k->accept();
-                break;
+
+                if ( QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder )
+                {
+                    if ( k->key() == Qt::Key_Up )
+                    {
+                        res = focusNextPrevChild( false );
+                    }
+                    else if ( k->key() == Qt::Key_Down )
+                    {
+                        res = focusNextPrevChild( true );
+                    }
+
+                }
+                else if ( QApplication::navigationMode() == Qt::NavigationModeKeypadDirectional )
+                {
+                    if ( k->key() == Qt::Key_Up )
+                    {
+                        res = QWidgetPrivate::navigateToDirection( QWidgetPrivate::DirectionNorth );
+                    }
+                    else if ( k->key() == Qt::Key_Right )
+                    {
+                        res = QWidgetPrivate::navigateToDirection( QWidgetPrivate::DirectionEast );
+                    }
+                    else if ( k->key() == Qt::Key_Down )
+                    {
+                        res = QWidgetPrivate::navigateToDirection( QWidgetPrivate::DirectionSouth );
+                    }
+                    else if ( k->key() == Qt::Key_Left )
+                    {
+                        res = QWidgetPrivate::navigateToDirection( QWidgetPrivate::DirectionWest );
+                    }
+                }
+
+                if ( res )
+                {
+                    k->accept();
+                    break;
+                }
             }
-        }
 
 #endif
 
 #ifndef LSCS_NO_WHATSTHIS
 
-        if ( ! k->isAccepted() && k->modifiers() & Qt::ShiftModifier && k->key() == Qt::Key_F1
-                && d->whatsThis.size() )
-        {
-            QWhatsThis::showText( mapToGlobal( inputMethodQuery( Qt::ImCursorRectangle ).toRect().center() ), d->whatsThis, this );
-            k->accept();
-        }
-
-#endif
-    }
-    break;
-
-    case QEvent::KeyRelease:
-        keyReleaseEvent( ( QKeyEvent * )event );
-        [[fallthrough]];
-
-    case QEvent::ShortcutOverride:
-        break;
-
-    case QEvent::InputMethod:
-        inputMethodEvent( ( QInputMethodEvent * ) event );
-        break;
-
-    case QEvent::InputMethodQuery:
-        if ( testAttribute( Qt::WA_InputMethodEnabled ) )
-        {
-            QInputMethodQueryEvent *query = static_cast<QInputMethodQueryEvent *>( event );
-            Qt::InputMethodQueries queries = query->queries();
-
-            for ( uint i = 0; i < 32; ++i )
+            if ( ! k->isAccepted() && k->modifiers() & Qt::ShiftModifier && k->key() == Qt::Key_F1
+                    && d->whatsThis.size() )
             {
-                Qt::InputMethodQuery q = ( Qt::InputMethodQuery )( int )( queries & ( 1 << i ) );
-
-                if ( q )
-                {
-                    QVariant v = inputMethodQuery( q );
-
-                    if ( q == Qt::ImEnabled && !v.isValid() && isEnabled() )
-                    {
-                        v = QVariant( true ); // special case for backward compatibility
-                    }
-
-                    query->setValue( q, v );
-                }
+                QWhatsThis::showText( mapToGlobal( inputMethodQuery( Qt::ImCursorRectangle ).toRect().center() ), d->whatsThis, this );
+                k->accept();
             }
 
-            query->accept();
+#endif
         }
-
         break;
 
-    case QEvent::PolishRequest:
-        ensurePolished();
-        break;
+        case QEvent::KeyRelease:
+            keyReleaseEvent( ( QKeyEvent * )event );
+            [[fallthrough]];
 
-    case QEvent::Polish:
-    {
-        style()->polish( this );
-        setAttribute( Qt::WA_WState_Polished );
+        case QEvent::ShortcutOverride:
+            break;
 
-        if ( ! QApplication::font( this ).isCopyOf( QApplication::font() ) )
+        case QEvent::InputMethod:
+            inputMethodEvent( ( QInputMethodEvent * ) event );
+            break;
+
+        case QEvent::InputMethodQuery:
+            if ( testAttribute( Qt::WA_InputMethodEnabled ) )
+            {
+                QInputMethodQueryEvent *query = static_cast<QInputMethodQueryEvent *>( event );
+                Qt::InputMethodQueries queries = query->queries();
+
+                for ( uint i = 0; i < 32; ++i )
+                {
+                    Qt::InputMethodQuery q = ( Qt::InputMethodQuery )( int )( queries & ( 1 << i ) );
+
+                    if ( q )
+                    {
+                        QVariant v = inputMethodQuery( q );
+
+                        if ( q == Qt::ImEnabled && !v.isValid() && isEnabled() )
+                        {
+                            v = QVariant( true ); // special case for backward compatibility
+                        }
+
+                        query->setValue( q, v );
+                    }
+                }
+
+                query->accept();
+            }
+
+            break;
+
+        case QEvent::PolishRequest:
+            ensurePolished();
+            break;
+
+        case QEvent::Polish:
         {
-            d->resolveFont();
-        }
+            style()->polish( this );
+            setAttribute( Qt::WA_WState_Polished );
 
-        if ( ! QApplication::palette( this ).isCopyOf( QApplication::palette() ) )
-        {
-            d->resolvePalette();
-        }
-    }
-    break;
+            if ( ! QApplication::font( this ).isCopyOf( QApplication::font() ) )
+            {
+                d->resolveFont();
+            }
 
-    case QEvent::ApplicationWindowIconChange:
-        if ( isWindow() && !testAttribute( Qt::WA_SetWindowIcon ) )
-        {
-            d->setWindowIcon_sys();
-            d->setWindowIcon_helper();
+            if ( ! QApplication::palette( this ).isCopyOf( QApplication::palette() ) )
+            {
+                d->resolvePalette();
+            }
         }
-
         break;
 
-    case QEvent::FocusIn:
-        focusInEvent( ( QFocusEvent * )event );
-        d->updateWidgetTransform( event );
-        break;
+        case QEvent::ApplicationWindowIconChange:
+            if ( isWindow() && !testAttribute( Qt::WA_SetWindowIcon ) )
+            {
+                d->setWindowIcon_sys();
+                d->setWindowIcon_helper();
+            }
 
-    case QEvent::FocusOut:
-        focusOutEvent( ( QFocusEvent * )event );
-        break;
+            break;
 
-    case QEvent::Enter:
+        case QEvent::FocusIn:
+            focusInEvent( ( QFocusEvent * )event );
+            d->updateWidgetTransform( event );
+            break;
+
+        case QEvent::FocusOut:
+            focusOutEvent( ( QFocusEvent * )event );
+            break;
+
+        case QEvent::Enter:
 
 #ifndef LSCS_NO_STATUSTIP
-        if ( d->statusTip.size() )
-        {
-            QStatusTipEvent tip( d->statusTip );
-            QApplication::sendEvent( const_cast<QWidget *>( this ), &tip );
-        }
+            if ( d->statusTip.size() )
+            {
+                QStatusTipEvent tip( d->statusTip );
+                QApplication::sendEvent( const_cast<QWidget *>( this ), &tip );
+            }
 
 #endif
-        enterEvent( event );
-        break;
+            enterEvent( event );
+            break;
 
-    case QEvent::Leave:
+        case QEvent::Leave:
 #ifndef LSCS_NO_STATUSTIP
-        if ( d->statusTip.size() )
-        {
-            QString empty;
-            QStatusTipEvent tip( empty );
-            QApplication::sendEvent( const_cast<QWidget *>( this ), &tip );
-        }
+            if ( d->statusTip.size() )
+            {
+                QString empty;
+                QStatusTipEvent tip( empty );
+                QApplication::sendEvent( const_cast<QWidget *>( this ), &tip );
+            }
 
 #endif
-        leaveEvent( event );
-        break;
+            leaveEvent( event );
+            break;
 
-    case QEvent::HoverEnter:
-    case QEvent::HoverLeave:
-        update();
-        break;
+        case QEvent::HoverEnter:
+        case QEvent::HoverLeave:
+            update();
+            break;
 
-    case QEvent::Paint:
-        // At this point the event has to be delivered, regardless whether the widget
-        // isVisible() or not because it already went through the filters
+        case QEvent::Paint:
+            // At this point the event has to be delivered, regardless whether the widget
+            // isVisible() or not because it already went through the filters
 
-        paintEvent( ( QPaintEvent * )event );
-        break;
+            paintEvent( ( QPaintEvent * )event );
+            break;
 
-    case QEvent::Move:
-        moveEvent( ( QMoveEvent * )event );
-        d->updateWidgetTransform( event );
-        break;
+        case QEvent::Move:
+            moveEvent( ( QMoveEvent * )event );
+            d->updateWidgetTransform( event );
+            break;
 
-    case QEvent::Resize:
-        resizeEvent( ( QResizeEvent * )event );
-        d->updateWidgetTransform( event );
-        break;
+        case QEvent::Resize:
+            resizeEvent( ( QResizeEvent * )event );
+            d->updateWidgetTransform( event );
+            break;
 
-    case QEvent::Close:
-        closeEvent( ( QCloseEvent * )event );
-        break;
+        case QEvent::Close:
+            closeEvent( ( QCloseEvent * )event );
+            break;
 
 #ifndef LSCS_NO_CONTEXTMENU
 
-    case QEvent::ContextMenu:
-        switch ( m_widgetData->context_menu_policy )
-        {
-        case Qt::PreventContextMenu:
-            break;
+        case QEvent::ContextMenu:
+            switch ( m_widgetData->context_menu_policy )
+            {
+                case Qt::PreventContextMenu:
+                    break;
 
-        case Qt::DefaultContextMenu:
-            contextMenuEvent( static_cast<QContextMenuEvent *>( event ) );
-            break;
+                case Qt::DefaultContextMenu:
+                    contextMenuEvent( static_cast<QContextMenuEvent *>( event ) );
+                    break;
 
-        case Qt::CustomContextMenu:
-            emit customContextMenuRequested( static_cast<QContextMenuEvent *>( event )->pos() );
-            break;
+                case Qt::CustomContextMenu:
+                    emit customContextMenuRequested( static_cast<QContextMenuEvent *>( event )->pos() );
+                    break;
 
 #ifndef LSCS_NO_MENU
 
-        case Qt::ActionsContextMenu:
-            if ( d->actions.count() )
-            {
-                QMenu::exec( d->actions, static_cast<QContextMenuEvent *>( event )->globalPos(), nullptr, this );
-                break;
-            }
+                case Qt::ActionsContextMenu:
+                    if ( d->actions.count() )
+                    {
+                        QMenu::exec( d->actions, static_cast<QContextMenuEvent *>( event )->globalPos(), nullptr, this );
+                        break;
+                    }
 
-            [[fallthrough]];
+                    [[fallthrough]];
 #endif
 
-        default:
-            event->ignore();
-            break;
-        }
+                default:
+                    event->ignore();
+                    break;
+            }
 
-        break;
+            break;
 
 #endif // LSCS_NO_CONTEXTMENU
 
 #ifndef LSCS_NO_DRAGANDDROP
 
-    case QEvent::Drop:
-        dropEvent( ( QDropEvent * ) event );
-        break;
+        case QEvent::Drop:
+            dropEvent( ( QDropEvent * ) event );
+            break;
 
-    case QEvent::DragEnter:
-        dragEnterEvent( ( QDragEnterEvent * ) event );
-        break;
+        case QEvent::DragEnter:
+            dragEnterEvent( ( QDragEnterEvent * ) event );
+            break;
 
-    case QEvent::DragMove:
-        dragMoveEvent( ( QDragMoveEvent * ) event );
-        break;
+        case QEvent::DragMove:
+            dragMoveEvent( ( QDragMoveEvent * ) event );
+            break;
 
-    case QEvent::DragLeave:
-        dragLeaveEvent( ( QDragLeaveEvent * ) event );
-        break;
+        case QEvent::DragLeave:
+            dragLeaveEvent( ( QDragLeaveEvent * ) event );
+            break;
 #endif
 
-    case QEvent::Show:
-        showEvent( ( QShowEvent * ) event );
-        break;
+        case QEvent::Show:
+            showEvent( ( QShowEvent * ) event );
+            break;
 
-    case QEvent::Hide:
-        hideEvent( ( QHideEvent * ) event );
-        break;
+        case QEvent::Hide:
+            hideEvent( ( QHideEvent * ) event );
+            break;
 
-    case QEvent::ShowWindowRequest:
-        if ( !isHidden() )
-        {
-            d->show_sys();
-        }
-
-        break;
-
-    case QEvent::ApplicationFontChange:
-        d->resolveFont();
-        break;
-
-    case QEvent::ApplicationPaletteChange:
-        if ( !( windowType() == Qt::Desktop ) )
-        {
-            d->resolvePalette();
-        }
-
-        break;
-
-    case QEvent::ToolBarChange:
-    case QEvent::ActivationChange:
-    case QEvent::EnabledChange:
-    case QEvent::FontChange:
-    case QEvent::StyleChange:
-    case QEvent::PaletteChange:
-    case QEvent::WindowTitleChange:
-    case QEvent::IconTextChange:
-    case QEvent::ModifiedChange:
-    case QEvent::MouseTrackingChange:
-    case QEvent::ParentChange:
-
-    case QEvent::LocaleChange:
-    case QEvent::MacSizeChange:
-    case QEvent::ContentsRectChange:
-    case QEvent::ThemeChange:
-    case QEvent::ReadOnlyChange:
-        changeEvent( event );
-        break;
-
-    case QEvent::WindowStateChange:
-    {
-        const bool wasMinimized = static_cast<const QWindowStateChangeEvent *>( event )->oldState() & Qt::WindowMinimized;
-
-        if ( wasMinimized != isMinimized() )
-        {
-            QWidget *widget = const_cast<QWidget *>( this );
-
-            if ( wasMinimized )
+        case QEvent::ShowWindowRequest:
+            if ( !isHidden() )
             {
-                // Always send the spontaneous events here, otherwise it can break the application!
-                if ( ! d->childrenShownByExpose )
+                d->show_sys();
+            }
+
+            break;
+
+        case QEvent::ApplicationFontChange:
+            d->resolveFont();
+            break;
+
+        case QEvent::ApplicationPaletteChange:
+            if ( !( windowType() == Qt::Desktop ) )
+            {
+                d->resolvePalette();
+            }
+
+            break;
+
+        case QEvent::ToolBarChange:
+        case QEvent::ActivationChange:
+        case QEvent::EnabledChange:
+        case QEvent::FontChange:
+        case QEvent::StyleChange:
+        case QEvent::PaletteChange:
+        case QEvent::WindowTitleChange:
+        case QEvent::IconTextChange:
+        case QEvent::ModifiedChange:
+        case QEvent::MouseTrackingChange:
+        case QEvent::ParentChange:
+
+        case QEvent::LocaleChange:
+        case QEvent::MacSizeChange:
+        case QEvent::ContentsRectChange:
+        case QEvent::ThemeChange:
+        case QEvent::ReadOnlyChange:
+            changeEvent( event );
+            break;
+
+        case QEvent::WindowStateChange:
+        {
+            const bool wasMinimized = static_cast<const QWindowStateChangeEvent *>( event )->oldState() & Qt::WindowMinimized;
+
+            if ( wasMinimized != isMinimized() )
+            {
+                QWidget *widget = const_cast<QWidget *>( this );
+
+                if ( wasMinimized )
                 {
-                    // Show widgets only when they are not yet shown by the expose event
-                    d->showChildren( true );
-                    QShowEvent showEvent;
-                    QCoreApplication::sendSpontaneousEvent( widget, &showEvent );
+                    // Always send the spontaneous events here, otherwise it can break the application!
+                    if ( ! d->childrenShownByExpose )
+                    {
+                        // Show widgets only when they are not yet shown by the expose event
+                        d->showChildren( true );
+                        QShowEvent showEvent;
+                        QCoreApplication::sendSpontaneousEvent( widget, &showEvent );
+                    }
+
+                    d->childrenHiddenByWState = false;   // Set it always to "false" when window is restored
+
+                }
+                else
+                {
+                    QHideEvent hideEvent;
+                    QCoreApplication::sendSpontaneousEvent( widget, &hideEvent );
+                    d->hideChildren( true );
+                    d->childrenHiddenByWState = true;
                 }
 
-                d->childrenHiddenByWState = false;   // Set it always to "false" when window is restored
-
-            }
-            else
-            {
-                QHideEvent hideEvent;
-                QCoreApplication::sendSpontaneousEvent( widget, &hideEvent );
-                d->hideChildren( true );
-                d->childrenHiddenByWState = true;
+                d->childrenShownByExpose = false;      // Set it always to "false" when window state changes
             }
 
-            d->childrenShownByExpose = false;      // Set it always to "false" when window state changes
+            changeEvent( event );
         }
-
-        changeEvent( event );
-    }
-    break;
-
-    case QEvent::WindowActivate:
-    case QEvent::WindowDeactivate:
-    {
-        if ( isVisible() && !palette().isEqual( QPalette::Active, QPalette::Inactive ) )
-        {
-            update();
-        }
-
-        QList<QObject *> childList = children();
-
-        for ( int i = 0; i < childList.size(); ++i )
-        {
-            QWidget *w = dynamic_cast<QWidget *>( childList.at( i ) );
-
-            if ( w != nullptr && w->isVisible() && !w->isWindow() )
-            {
-                QApplication::sendEvent( w, event );
-            }
-        }
-
         break;
-    }
 
-    case QEvent::LanguageChange:
-        changeEvent( event );
-
+        case QEvent::WindowActivate:
+        case QEvent::WindowDeactivate:
         {
+            if ( isVisible() && !palette().isEqual( QPalette::Active, QPalette::Inactive ) )
+            {
+                update();
+            }
+
             QList<QObject *> childList = children();
 
             for ( int i = 0; i < childList.size(); ++i )
             {
-                QObject *o = childList.at( i );
+                QWidget *w = dynamic_cast<QWidget *>( childList.at( i ) );
 
-                if ( o )
+                if ( w != nullptr && w->isVisible() && !w->isWindow() )
                 {
-                    QApplication::sendEvent( o, event );
+                    QApplication::sendEvent( w, event );
                 }
             }
-        }
-        update();
-        break;
 
-    case QEvent::ApplicationLayoutDirectionChange:
-        d->resolveLayoutDirection();
-        break;
-
-    case QEvent::LayoutDirectionChange:
-        if ( d->layout )
-        {
-            d->layout->invalidate();
+            break;
         }
 
-        update();
-        changeEvent( event );
-        break;
+        case QEvent::LanguageChange:
+            changeEvent( event );
 
-    case QEvent::UpdateRequest:
-        d->syncBackingStore();
-        break;
-
-    case QEvent::UpdateLater:
-        update( static_cast<QUpdateLaterEvent *>( event )->region() );
-        break;
-
-    case QEvent::StyleAnimationUpdate:
-        if ( isVisible() && !window()->isMinimized() )
-        {
-            event->accept();
-            update();
-        }
-
-        break;
-
-    case QEvent::WindowBlocked:
-    case QEvent::WindowUnblocked:
-    {
-
-        QList<QObject *> childList = children();
-
-        if ( ! childList.isEmpty() )
-        {
-            QWidget *modalWidget = QApplication::activeModalWidget();
-
-            for ( auto obj : childList )
             {
+                QList<QObject *> childList = children();
 
-                if ( obj != nullptr && obj != modalWidget && obj->isWidgetType() )
+                for ( int i = 0; i < childList.size(); ++i )
                 {
-                    QWidget *w = dynamic_cast<QWidget *>( obj );
+                    QObject *o = childList.at( i );
 
-                    // do not forward the event to child windows since QApplication will do this
-                    if ( w  != nullptr && ! w->isWindow() )
+                    if ( o )
                     {
-                        QApplication::sendEvent( w, event );
+                        QApplication::sendEvent( o, event );
                     }
                 }
             }
-        }
+            update();
+            break;
 
-    }
+        case QEvent::ApplicationLayoutDirectionChange:
+            d->resolveLayoutDirection();
+            break;
 
-    break;
+        case QEvent::LayoutDirectionChange:
+            if ( d->layout )
+            {
+                d->layout->invalidate();
+            }
 
-#ifndef LSCS_NO_TOOLTIP
+            update();
+            changeEvent( event );
+            break;
 
-    case QEvent::ToolTip:
-        if ( ! d->toolTip.isEmpty() )
+        case QEvent::UpdateRequest:
+            d->syncBackingStore();
+            break;
+
+        case QEvent::UpdateLater:
+            update( static_cast<QUpdateLaterEvent *>( event )->region() );
+            break;
+
+        case QEvent::StyleAnimationUpdate:
+            if ( isVisible() && !window()->isMinimized() )
+            {
+                event->accept();
+                update();
+            }
+
+            break;
+
+        case QEvent::WindowBlocked:
+        case QEvent::WindowUnblocked:
         {
-            QToolTip::showText( static_cast<QHelpEvent *>( event )->globalPos(), d->toolTip, this );
-        }
-        else
-        {
-            event->ignore();
+
+            QList<QObject *> childList = children();
+
+            if ( ! childList.isEmpty() )
+            {
+                QWidget *modalWidget = QApplication::activeModalWidget();
+
+                for ( auto obj : childList )
+                {
+
+                    if ( obj != nullptr && obj != modalWidget && obj->isWidgetType() )
+                    {
+                        QWidget *w = dynamic_cast<QWidget *>( obj );
+
+                        // do not forward the event to child windows since QApplication will do this
+                        if ( w  != nullptr && ! w->isWindow() )
+                        {
+                            QApplication::sendEvent( w, event );
+                        }
+                    }
+                }
+            }
+
         }
 
         break;
+
+#ifndef LSCS_NO_TOOLTIP
+
+        case QEvent::ToolTip:
+            if ( ! d->toolTip.isEmpty() )
+            {
+                QToolTip::showText( static_cast<QHelpEvent *>( event )->globalPos(), d->toolTip, this );
+            }
+            else
+            {
+                event->ignore();
+            }
+
+            break;
 #endif
 
 #ifndef LSCS_NO_WHATSTHIS
 
-    case QEvent::WhatsThis:
-        if ( d->whatsThis.size() )
-        {
-            QWhatsThis::showText( static_cast<QHelpEvent *>( event )->globalPos(), d->whatsThis, this );
-        }
-        else
-        {
-            event->ignore();
-        }
+        case QEvent::WhatsThis:
+            if ( d->whatsThis.size() )
+            {
+                QWhatsThis::showText( static_cast<QHelpEvent *>( event )->globalPos(), d->whatsThis, this );
+            }
+            else
+            {
+                event->ignore();
+            }
 
-        break;
+            break;
 
-    case QEvent::QueryWhatsThis:
-        if ( d->whatsThis.isEmpty() )
-        {
-            event->ignore();
-        }
+        case QEvent::QueryWhatsThis:
+            if ( d->whatsThis.isEmpty() )
+            {
+                event->ignore();
+            }
 
-        break;
+            break;
 #endif
 
-    case QEvent::EmbeddingControl:
-        d->topData()->frameStrut.setCoords( 0, 0, 0, 0 );
-        m_widgetData->fstrut_dirty = false;
-        break;
+        case QEvent::EmbeddingControl:
+            d->topData()->frameStrut.setCoords( 0, 0, 0, 0 );
+            m_widgetData->fstrut_dirty = false;
+            break;
 
 #ifndef LSCS_NO_ACTION
 
-    case QEvent::ActionAdded:
-    case QEvent::ActionRemoved:
-    case QEvent::ActionChanged:
-        actionEvent( ( QActionEvent * )event );
-        break;
+        case QEvent::ActionAdded:
+        case QEvent::ActionRemoved:
+        case QEvent::ActionChanged:
+            actionEvent( ( QActionEvent * )event );
+            break;
 #endif
 
-    case QEvent::KeyboardLayoutChange:
-    {
-        changeEvent( event );
-
-        // inform children of the change
-        QList<QObject *> childList = children();
-
-        for ( int i = 0; i < childList.size(); ++i )
+        case QEvent::KeyboardLayoutChange:
         {
-            QWidget *w = dynamic_cast<QWidget *>( childList.at( i ) );
+            changeEvent( event );
 
-            if ( w != nullptr && w->isVisible() && ! w->isWindow() )
+            // inform children of the change
+            QList<QObject *> childList = children();
+
+            for ( int i = 0; i < childList.size(); ++i )
             {
-                QApplication::sendEvent( w, event );
+                QWidget *w = dynamic_cast<QWidget *>( childList.at( i ) );
+
+                if ( w != nullptr && w->isVisible() && ! w->isWindow() )
+                {
+                    QApplication::sendEvent( w, event );
+                }
             }
+
+            break;
         }
 
-        break;
-    }
-
-    case QEvent::TouchBegin:
-    case QEvent::TouchUpdate:
-    case QEvent::TouchEnd:
-    case QEvent::TouchCancel:
-    {
-        event->ignore();
-        break;
-    }
+        case QEvent::TouchBegin:
+        case QEvent::TouchUpdate:
+        case QEvent::TouchEnd:
+        case QEvent::TouchCancel:
+        {
+            event->ignore();
+            break;
+        }
 
 #ifndef LSCS_NO_GESTURES
 
-    case QEvent::Gesture:
-        event->ignore();
-        break;
+        case QEvent::Gesture:
+            event->ignore();
+            break;
 #endif
 
-    case QEvent::ScreenChangeInternal:
-        if ( const QTLWExtra *te = d->maybeTopData() )
-        {
-            const QWindow *win = te->window;
-            d->setWinId( ( win && win->handle() ) ? win->handle()->winId() : 0 );
-        }
+        case QEvent::ScreenChangeInternal:
+            if ( const QTLWExtra *te = d->maybeTopData() )
+            {
+                const QWindow *win = te->window;
+                d->setWinId( ( win && win->handle() ) ? win->handle()->winId() : 0 );
+            }
 
 #ifndef LSCS_NO_OPENGL
-        d->renderToTextureReallyDirty = 1;
+            d->renderToTextureReallyDirty = 1;
 #endif
-        break;
+            break;
 
 #ifndef LSCS_NO_PROPERTIES
 
-    case QEvent::DynamicPropertyChange:
-    {
-        const QString &propName = static_cast<QDynamicPropertyChangeEvent *>( event )->propertyName();
-
-        if ( propName == "_q_customDpiX" )
+        case QEvent::DynamicPropertyChange:
         {
-            uint value = property( propName ).toUInt();
+            const QString &propName = static_cast<QDynamicPropertyChangeEvent *>( event )->propertyName();
 
-            if ( ! d->extra )
+            if ( propName == "_q_customDpiX" )
             {
-                d->createExtra();
+                uint value = property( propName ).toUInt();
+
+                if ( ! d->extra )
+                {
+                    d->createExtra();
+                }
+
+                d->extra->customDpiX = value;
+                d->updateFont( d->m_privateData.fnt );
+
+            }
+            else if ( propName == "_q_customDpiY" )
+            {
+
+                uint value = property( propName ).toUInt();
+
+                if ( ! d->extra )
+                {
+                    d->createExtra();
+                }
+
+                d->extra->customDpiY = value;
+                d->updateFont( d->m_privateData.fnt );
+
+            }
+            else if ( windowHandle() && propName.startsWith( "_q_platform_" ) )
+            {
+                windowHandle()->setProperty( propName, property( propName ) );
+
             }
 
-            d->extra->customDpiX = value;
-            d->updateFont( d->m_privateData.fnt );
-
+            [[fallthrough]];
         }
-        else if ( propName == "_q_customDpiY" )
-        {
-
-            uint value = property( propName ).toUInt();
-
-            if ( ! d->extra )
-            {
-                d->createExtra();
-            }
-
-            d->extra->customDpiY = value;
-            d->updateFont( d->m_privateData.fnt );
-
-        }
-        else if ( windowHandle() && propName.startsWith( "_q_platform_" ) )
-        {
-            windowHandle()->setProperty( propName, property( propName ) );
-
-        }
-
-        [[fallthrough]];
-    }
 
 #endif
 
-    default:
-        return QObject::event( event );
+        default:
+            return QObject::event( event );
     }
 
     return true;
@@ -8414,72 +8414,72 @@ void QWidget::changeEvent( QEvent *event )
 {
     switch ( event->type() )
     {
-    case QEvent::EnabledChange:
-    {
-        update();
+        case QEvent::EnabledChange:
+        {
+            update();
 
 #ifndef LSCS_NO_ACCESSIBILITY
-        QAccessible::State s;
-        s.disabled = true;
-        QAccessibleStateChangeEvent event( this, s );
-        QAccessible::updateAccessibility( &event );
+            QAccessible::State s;
+            s.disabled = true;
+            QAccessibleStateChangeEvent event( this, s );
+            QAccessible::updateAccessibility( &event );
 #endif
-        break;
-    }
-
-    case QEvent::FontChange:
-    case QEvent::StyleChange:
-    {
-        Q_D( QWidget );
-        update();
-        updateGeometry();
-
-        if ( d->layout )
-        {
-            d->layout->invalidate();
+            break;
         }
 
-        break;
-    }
-
-    case QEvent::PaletteChange:
-        update();
-        break;
-
-    case QEvent::ThemeChange:
-        if ( QApplication::desktopSettingsAware() && windowType() != Qt::Desktop
-                && qApp && !QApplication::closingDown() )
+        case QEvent::FontChange:
+        case QEvent::StyleChange:
         {
-            if ( testAttribute( Qt::WA_WState_Polished ) )
+            Q_D( QWidget );
+            update();
+            updateGeometry();
+
+            if ( d->layout )
             {
-                QApplication::style()->unpolish( this );
+                d->layout->invalidate();
             }
 
-            if ( testAttribute( Qt::WA_WState_Polished ) )
-            {
-                QApplication::style()->polish( this );
-            }
-
-            QEvent styleChangedEvent( QEvent::StyleChange );
-            QCoreApplication::sendEvent( this, &styleChangedEvent );
-
-            if ( isVisible() )
-            {
-                update();
-            }
+            break;
         }
 
-        break;
+        case QEvent::PaletteChange:
+            update();
+            break;
+
+        case QEvent::ThemeChange:
+            if ( QApplication::desktopSettingsAware() && windowType() != Qt::Desktop
+                    && qApp && !QApplication::closingDown() )
+            {
+                if ( testAttribute( Qt::WA_WState_Polished ) )
+                {
+                    QApplication::style()->unpolish( this );
+                }
+
+                if ( testAttribute( Qt::WA_WState_Polished ) )
+                {
+                    QApplication::style()->polish( this );
+                }
+
+                QEvent styleChangedEvent( QEvent::StyleChange );
+                QCoreApplication::sendEvent( this, &styleChangedEvent );
+
+                if ( isVisible() )
+                {
+                    update();
+                }
+            }
+
+            break;
 
 #ifdef Q_OS_DARWIN
 
-    case QEvent::MacSizeChange:
-        updateGeometry();
-        break;
+        case QEvent::MacSizeChange:
+            updateGeometry();
+            break;
 #endif
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -8626,21 +8626,21 @@ QVariant QWidget::inputMethodQuery( Qt::InputMethodQuery query ) const
 {
     switch ( query )
     {
-    case Qt::ImCursorRectangle:
-        return QRect( width() / 2, 0, 1, height() );
+        case Qt::ImCursorRectangle:
+            return QRect( width() / 2, 0, 1, height() );
 
-    case Qt::ImFont:
-        return font();
+        case Qt::ImFont:
+            return font();
 
-    case Qt::ImAnchorPosition:
-        // Fallback
-        return inputMethodQuery( Qt::ImCursorPosition );
+        case Qt::ImAnchorPosition:
+            // Fallback
+            return inputMethodQuery( Qt::ImCursorPosition );
 
-    case Qt::ImHints:
-        return ( int )inputMethodHints();
+        case Qt::ImHints:
+            return ( int )inputMethodHints();
 
-    default:
-        return QVariant();
+        default:
+            return QVariant();
     }
 }
 
@@ -9807,280 +9807,280 @@ void QWidget::setAttribute( Qt::WidgetAttribute attribute, bool on )
 
 #ifndef LSCS_NO_DRAGANDDROP
 
-    case Qt::WA_AcceptDrops:
-    {
-        if ( on && ! testAttribute( Qt::WA_DropSiteRegistered ) )
+        case Qt::WA_AcceptDrops:
         {
-            setAttribute( Qt::WA_DropSiteRegistered, true );
-
-        }
-        else if ( !on && ( isWindow() || ! parentWidget() ||
-                           ! parentWidget()->testAttribute( Qt::WA_DropSiteRegistered ) ) )
-        {
-            setAttribute( Qt::WA_DropSiteRegistered, false );
-
-        }
-
-        QEvent e( QEvent::AcceptDropsChange );
-        QApplication::sendEvent( this, &e );
-        break;
-    }
-
-    case Qt::WA_DropSiteRegistered:
-    {
-        d->registerDropSite( on );
-
-        for ( int i = 0; i < children().size(); ++i )
-        {
-            QWidget *w = dynamic_cast<QWidget *>( children().at( i ) );
-
-            if ( w != nullptr && ! w->isWindow() && ! w->testAttribute( Qt::WA_AcceptDrops ) &&
-                    w->testAttribute( Qt::WA_DropSiteRegistered ) != on )
+            if ( on && ! testAttribute( Qt::WA_DropSiteRegistered ) )
             {
-                w->setAttribute( Qt::WA_DropSiteRegistered, on );
+                setAttribute( Qt::WA_DropSiteRegistered, true );
+
             }
+            else if ( !on && ( isWindow() || ! parentWidget() ||
+                               ! parentWidget()->testAttribute( Qt::WA_DropSiteRegistered ) ) )
+            {
+                setAttribute( Qt::WA_DropSiteRegistered, false );
+
+            }
+
+            QEvent e( QEvent::AcceptDropsChange );
+            QApplication::sendEvent( this, &e );
+            break;
         }
 
-        break;
-    }
+        case Qt::WA_DropSiteRegistered:
+        {
+            d->registerDropSite( on );
+
+            for ( int i = 0; i < children().size(); ++i )
+            {
+                QWidget *w = dynamic_cast<QWidget *>( children().at( i ) );
+
+                if ( w != nullptr && ! w->isWindow() && ! w->testAttribute( Qt::WA_AcceptDrops ) &&
+                        w->testAttribute( Qt::WA_DropSiteRegistered ) != on )
+                {
+                    w->setAttribute( Qt::WA_DropSiteRegistered, on );
+                }
+            }
+
+            break;
+        }
 
 #endif
 
-    case Qt::WA_NoChildEventsForParent:
-        LSCSInternalEvents::set_m_sendChildEvents( this, ! on );
-        break;
+        case Qt::WA_NoChildEventsForParent:
+            LSCSInternalEvents::set_m_sendChildEvents( this, ! on );
+            break;
 
-    case Qt::WA_NoChildEventsFromChildren:
-        LSCSInternalEvents::set_m_receiveChildEvents( this, ! on );
-        break;
+        case Qt::WA_NoChildEventsFromChildren:
+            LSCSInternalEvents::set_m_receiveChildEvents( this, ! on );
+            break;
 
-    case Qt::WA_MacBrushedMetal:
+        case Qt::WA_MacBrushedMetal:
 
-    case Qt::WA_MacAlwaysShowToolWindow:
-        break;
+        case Qt::WA_MacAlwaysShowToolWindow:
+            break;
 
-    case Qt::WA_MacNormalSize:
-    case Qt::WA_MacSmallSize:
-    case Qt::WA_MacMiniSize:
+        case Qt::WA_MacNormalSize:
+        case Qt::WA_MacSmallSize:
+        case Qt::WA_MacMiniSize:
 
 #ifdef Q_OS_DARWIN
-    {
-        // we can only have one of these set at a time
-        const Qt::WidgetAttribute MacSizes[] = { Qt::WA_MacNormalSize, Qt::WA_MacSmallSize,
-                                                 Qt::WA_MacMiniSize
-                                               };
-
-        for ( int i = 0; i < 3; ++i )
         {
-            if ( MacSizes[i] != attribute )
-            {
-                setAttribute_internal( MacSizes[i], false, m_widgetData, d );
-            }
-        }
+            // we can only have one of these set at a time
+            const Qt::WidgetAttribute MacSizes[] = { Qt::WA_MacNormalSize, Qt::WA_MacSmallSize,
+                                                     Qt::WA_MacMiniSize
+                                                   };
 
-        d->macUpdateSizeAttribute();
-    }
+            for ( int i = 0; i < 3; ++i )
+            {
+                if ( MacSizes[i] != attribute )
+                {
+                    setAttribute_internal( MacSizes[i], false, m_widgetData, d );
+                }
+            }
+
+            d->macUpdateSizeAttribute();
+        }
 
 #endif
-    break;
+        break;
 
-    case Qt::WA_ShowModal:
-        if ( ! on )
-        {
-            // reset modality type to Modeless when clearing WA_ShowModal
-            m_widgetData->window_modality = Qt::NonModal;
-
-        }
-        else if ( m_widgetData->window_modality == Qt::NonModal )
-        {
-            // determine the modality type if it hasn't been set prior
-            // to setting WA_ShowModal. set the default to WindowModal
-            // if we are the child of a group leader; otherwise use ApplicationModal
-
-            QWidget *w = parentWidget();
-
-            if ( w )
+        case Qt::WA_ShowModal:
+            if ( ! on )
             {
-                w = w->window();
+                // reset modality type to Modeless when clearing WA_ShowModal
+                m_widgetData->window_modality = Qt::NonModal;
+
             }
-
-            while ( w && !w->testAttribute( Qt::WA_GroupLeader ) )
+            else if ( m_widgetData->window_modality == Qt::NonModal )
             {
-                w = w->parentWidget();
+                // determine the modality type if it hasn't been set prior
+                // to setting WA_ShowModal. set the default to WindowModal
+                // if we are the child of a group leader; otherwise use ApplicationModal
+
+                QWidget *w = parentWidget();
 
                 if ( w )
                 {
                     w = w->window();
                 }
+
+                while ( w && !w->testAttribute( Qt::WA_GroupLeader ) )
+                {
+                    w = w->parentWidget();
+
+                    if ( w )
+                    {
+                        w = w->window();
+                    }
+                }
+
+                m_widgetData->window_modality = ( w && w->testAttribute( Qt::WA_GroupLeader ) )
+                                                ? Qt::WindowModal : Qt::ApplicationModal;
+
+                // Some window managers does not allow us to enter modal after the
+                // window is showing. Therefore, to be consistent, we cannot call
+                // QApplicationPrivate::enterModal(this) here. The window must be
+                // hidden before changing modality.
             }
 
-            m_widgetData->window_modality = ( w && w->testAttribute( Qt::WA_GroupLeader ) )
-                                            ? Qt::WindowModal : Qt::ApplicationModal;
-
-            // Some window managers does not allow us to enter modal after the
-            // window is showing. Therefore, to be consistent, we cannot call
-            // QApplicationPrivate::enterModal(this) here. The window must be
-            // hidden before changing modality.
-        }
-
-        if ( testAttribute( Qt::WA_WState_Created ) )
-        {
-            // don't call setModal_sys() before create_sys()
-            d->setModal_sys();
-        }
-
-        break;
-
-    case Qt::WA_MouseTracking:
-    {
-        QEvent e( QEvent::MouseTrackingChange );
-        QApplication::sendEvent( this, &e );
-        break;
-    }
-
-    case Qt::WA_NativeWindow:
-    {
-        d->createTLExtra();
-
-        if ( on )
-        {
-            d->createTLSysExtra();
-        }
-
-#ifndef LSCS_NO_IM
-        QWidget *focusWidget = d->effectiveFocusWidget();
-
-        if ( on && ! internalWinId() && this == QGuiApplication::focusObject()
-                && focusWidget->testAttribute( Qt::WA_InputMethodEnabled ) )
-        {
-            QGuiApplication::inputMethod()->commit();
-            QGuiApplication::inputMethod()->update( Qt::ImEnabled );
-        }
-
-        if ( !qApp->testAttribute( Qt::AA_DontCreateNativeWidgetSiblings ) && parentWidget() )
-        {
-            parentWidget()->d_func()->enforceNativeChildren();
-        }
-
-        if ( on && ! internalWinId() && testAttribute( Qt::WA_WState_Created ) )
-        {
-            d->createWinId();
-        }
-
-        if ( isEnabled() && focusWidget->isEnabled() && this == QGuiApplication::focusObject()
-                && focusWidget->testAttribute( Qt::WA_InputMethodEnabled ) )
-        {
-            QGuiApplication::inputMethod()->update( Qt::ImEnabled );
-        }
-
-#endif
-        break;
-    }
-
-    case Qt::WA_PaintOnScreen:
-        d->updateIsOpaque();
-        [[fallthrough]];
-
-    case Qt::WA_OpaquePaintEvent:
-        d->updateIsOpaque();
-        break;
-
-    case Qt::WA_NoSystemBackground:
-        d->updateIsOpaque();
-        [[fallthrough]];
-
-    case Qt::WA_UpdatesDisabled:
-        d->updateSystemBackground();
-        break;
-
-    case Qt::WA_TransparentForMouseEvents:
-
-        break;
-
-    case Qt::WA_InputMethodEnabled:
-    {
-
-#ifndef LSCS_NO_IM
-
-        if ( QGuiApplication::focusObject() == this )
-        {
-            if ( !on )
+            if ( testAttribute( Qt::WA_WState_Created ) )
             {
-                QGuiApplication::inputMethod()->commit();
+                // don't call setModal_sys() before create_sys()
+                d->setModal_sys();
             }
 
-            QGuiApplication::inputMethod()->update( Qt::ImEnabled );
+            break;
+
+        case Qt::WA_MouseTracking:
+        {
+            QEvent e( QEvent::MouseTrackingChange );
+            QApplication::sendEvent( this, &e );
+            break;
         }
 
-#endif
-        break;
-    }
-
-    case Qt::WA_WindowPropagation:
-        d->resolvePalette();
-        d->resolveFont();
-        d->resolveLocale();
-        break;
-
-    case Qt::WA_DontShowOnScreen:
-    {
-        if ( on && isVisible() )
+        case Qt::WA_NativeWindow:
         {
-            // Make sure we keep the current state and only hide the widget
-            // from the desktop. show_sys will only update platform specific
-            // attributes at this point.
-            d->hide_sys();
-            d->show_sys();
-        }
+            d->createTLExtra();
 
-        break;
-    }
-
-    case Qt::WA_X11NetWmWindowTypeDesktop:
-    case Qt::WA_X11NetWmWindowTypeDock:
-    case Qt::WA_X11NetWmWindowTypeToolBar:
-    case Qt::WA_X11NetWmWindowTypeMenu:
-    case Qt::WA_X11NetWmWindowTypeUtility:
-    case Qt::WA_X11NetWmWindowTypeSplash:
-    case Qt::WA_X11NetWmWindowTypeDialog:
-    case Qt::WA_X11NetWmWindowTypeDropDownMenu:
-    case Qt::WA_X11NetWmWindowTypePopupMenu:
-    case Qt::WA_X11NetWmWindowTypeToolTip:
-    case Qt::WA_X11NetWmWindowTypeNotification:
-    case Qt::WA_X11NetWmWindowTypeCombo:
-    case Qt::WA_X11NetWmWindowTypeDND:
-        d->setNetWmWindowTypes();
-        break;
-
-    case Qt::WA_StaticContents:
-        if ( QWidgetBackingStore *bs = d->maybeBackingStore() )
-        {
             if ( on )
             {
-                bs->addStaticWidget( this );
+                d->createTLSysExtra();
             }
-            else
+
+#ifndef LSCS_NO_IM
+            QWidget *focusWidget = d->effectiveFocusWidget();
+
+            if ( on && ! internalWinId() && this == QGuiApplication::focusObject()
+                    && focusWidget->testAttribute( Qt::WA_InputMethodEnabled ) )
             {
-                bs->removeStaticWidget( this );
+                QGuiApplication::inputMethod()->commit();
+                QGuiApplication::inputMethod()->update( Qt::ImEnabled );
             }
+
+            if ( !qApp->testAttribute( Qt::AA_DontCreateNativeWidgetSiblings ) && parentWidget() )
+            {
+                parentWidget()->d_func()->enforceNativeChildren();
+            }
+
+            if ( on && ! internalWinId() && testAttribute( Qt::WA_WState_Created ) )
+            {
+                d->createWinId();
+            }
+
+            if ( isEnabled() && focusWidget->isEnabled() && this == QGuiApplication::focusObject()
+                    && focusWidget->testAttribute( Qt::WA_InputMethodEnabled ) )
+            {
+                QGuiApplication::inputMethod()->update( Qt::ImEnabled );
+            }
+
+#endif
+            break;
         }
 
-        break;
+        case Qt::WA_PaintOnScreen:
+            d->updateIsOpaque();
+            [[fallthrough]];
 
-    case Qt::WA_TranslucentBackground:
-        if ( on )
+        case Qt::WA_OpaquePaintEvent:
+            d->updateIsOpaque();
+            break;
+
+        case Qt::WA_NoSystemBackground:
+            d->updateIsOpaque();
+            [[fallthrough]];
+
+        case Qt::WA_UpdatesDisabled:
+            d->updateSystemBackground();
+            break;
+
+        case Qt::WA_TransparentForMouseEvents:
+
+            break;
+
+        case Qt::WA_InputMethodEnabled:
         {
-            setAttribute( Qt::WA_NoSystemBackground );
-            d->updateIsTranslucent();
+
+#ifndef LSCS_NO_IM
+
+            if ( QGuiApplication::focusObject() == this )
+            {
+                if ( !on )
+                {
+                    QGuiApplication::inputMethod()->commit();
+                }
+
+                QGuiApplication::inputMethod()->update( Qt::ImEnabled );
+            }
+
+#endif
+            break;
         }
 
-        break;
+        case Qt::WA_WindowPropagation:
+            d->resolvePalette();
+            d->resolveFont();
+            d->resolveLocale();
+            break;
 
-    case Qt::WA_AcceptTouchEvents:
-        break;
+        case Qt::WA_DontShowOnScreen:
+        {
+            if ( on && isVisible() )
+            {
+                // Make sure we keep the current state and only hide the widget
+                // from the desktop. show_sys will only update platform specific
+                // attributes at this point.
+                d->hide_sys();
+                d->show_sys();
+            }
 
-    default:
-        break;
+            break;
+        }
+
+        case Qt::WA_X11NetWmWindowTypeDesktop:
+        case Qt::WA_X11NetWmWindowTypeDock:
+        case Qt::WA_X11NetWmWindowTypeToolBar:
+        case Qt::WA_X11NetWmWindowTypeMenu:
+        case Qt::WA_X11NetWmWindowTypeUtility:
+        case Qt::WA_X11NetWmWindowTypeSplash:
+        case Qt::WA_X11NetWmWindowTypeDialog:
+        case Qt::WA_X11NetWmWindowTypeDropDownMenu:
+        case Qt::WA_X11NetWmWindowTypePopupMenu:
+        case Qt::WA_X11NetWmWindowTypeToolTip:
+        case Qt::WA_X11NetWmWindowTypeNotification:
+        case Qt::WA_X11NetWmWindowTypeCombo:
+        case Qt::WA_X11NetWmWindowTypeDND:
+            d->setNetWmWindowTypes();
+            break;
+
+        case Qt::WA_StaticContents:
+            if ( QWidgetBackingStore *bs = d->maybeBackingStore() )
+            {
+                if ( on )
+                {
+                    bs->addStaticWidget( this );
+                }
+                else
+                {
+                    bs->removeStaticWidget( this );
+                }
+            }
+
+            break;
+
+        case Qt::WA_TranslucentBackground:
+            if ( on )
+            {
+                setAttribute( Qt::WA_NoSystemBackground );
+                d->updateIsTranslucent();
+            }
+
+            break;
+
+        case Qt::WA_AcceptTouchEvents:
+            break;
+
+        default:
+            break;
     }
 }
 

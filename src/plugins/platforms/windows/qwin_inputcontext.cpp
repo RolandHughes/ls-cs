@@ -90,11 +90,11 @@ bool QWindowsInputContext::hasCapability( Capability capability ) const
 {
     switch ( capability )
     {
-    case QPlatformInputContext::HiddenTextCapability:
-        return false; // QTBUG-40691, do not show IME on desktop for password entry fields.
+        case QPlatformInputContext::HiddenTextCapability:
+            return false; // QTBUG-40691, do not show IME on desktop for password entry fields.
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return true;
@@ -326,19 +326,19 @@ static inline QTextFormat standardFormat( StandardFormat format )
 
     switch ( format )
     {
-    case PreeditFormat:
-        result.setUnderlineStyle( QTextCharFormat::DashUnderline );
-        break;
+        case PreeditFormat:
+            result.setUnderlineStyle( QTextCharFormat::DashUnderline );
+            break;
 
-    case SelectionFormat:
-    {
-        // TODO: Should be that of the widget?
-        const QPalette palette = QApplication::palette();
-        const QColor background = palette.text().color();
-        result.setBackground( QBrush( background ) );
-        result.setForeground( palette.background() );
-        break;
-    }
+        case SelectionFormat:
+        {
+            // TODO: Should be that of the widget?
+            const QPalette palette = QApplication::palette();
+            const QColor background = palette.text().color();
+            result.setBackground( QBrush( background ) );
+            result.setForeground( palette.background() );
+            break;
+        }
     }
 
     return result;
@@ -581,25 +581,25 @@ bool QWindowsInputContext::handleIME_Request( WPARAM wParam,
 {
     switch ( int( wParam ) )
     {
-    case IMR_RECONVERTSTRING:
-    {
-        const int size = reconvertString( reinterpret_cast<RECONVERTSTRING *>( lParam ) );
-
-        if ( size < 0 )
+        case IMR_RECONVERTSTRING:
         {
-            return false;
+            const int size = reconvertString( reinterpret_cast<RECONVERTSTRING *>( lParam ) );
+
+            if ( size < 0 )
+            {
+                return false;
+            }
+
+            *result = size;
         }
 
-        *result = size;
-    }
-
-    return true;
-
-    case IMR_CONFIRMRECONVERTSTRING:
         return true;
 
-    default:
-        break;
+        case IMR_CONFIRMRECONVERTSTRING:
+            return true;
+
+        default:
+            break;
     }
 
     return false;

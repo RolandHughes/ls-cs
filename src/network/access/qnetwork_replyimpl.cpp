@@ -368,20 +368,20 @@ void QNetworkReplyImplPrivate::_q_networkSessionConnected()
 
     switch ( state )
     {
-    case ReplyState::Buffering:
-    case ReplyState::Working:
-    case ReplyState::Reconnecting:
-        // Migrate existing downloads to new network connection.
-        migrateBackend();
-        break;
+        case ReplyState::Buffering:
+        case ReplyState::Working:
+        case ReplyState::Reconnecting:
+            // Migrate existing downloads to new network connection.
+            migrateBackend();
+            break;
 
-    case ReplyState::WaitingForSession:
-        // Start waiting requests.
-        QMetaObject::invokeMethod( q, "_q_startOperation", Qt::QueuedConnection );
-        break;
+        case ReplyState::WaitingForSession:
+            // Start waiting requests.
+            QMetaObject::invokeMethod( q, "_q_startOperation", Qt::QueuedConnection );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -573,29 +573,29 @@ void QNetworkReplyImplPrivate::handleNotifications()
 
         switch ( notification )
         {
-        case NotifyDownstreamReadyWrite:
-            if ( copyDevice )
+            case NotifyDownstreamReadyWrite:
+                if ( copyDevice )
+                {
+                    _q_copyReadyRead();
+                }
+                else
+                {
+                    backend->downstreamReadyWrite();
+                }
+
+                break;
+
+            case NotifyCloseDownstreamChannel:
+                backend->closeDownstreamChannel();
+                break;
+
+            case NotifyCopyFinished:
             {
-                _q_copyReadyRead();
+                QIODevice *dev = copyDevice;
+                copyDevice = nullptr;
+                backend->copyFinished( dev );
+                break;
             }
-            else
-            {
-                backend->downstreamReadyWrite();
-            }
-
-            break;
-
-        case NotifyCloseDownstreamChannel:
-            backend->closeDownstreamChannel();
-            break;
-
-        case NotifyCopyFinished:
-        {
-            QIODevice *dev = copyDevice;
-            copyDevice = nullptr;
-            backend->copyFinished( dev );
-            break;
-        }
         }
     }
 }

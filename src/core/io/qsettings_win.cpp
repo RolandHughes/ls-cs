@@ -591,111 +591,111 @@ bool QWinSettingsPrivate::readKey( HKEY parentHandle, const QString &rSubKey, QV
 
     switch ( dataType )
     {
-    case REG_EXPAND_SZ:
-    case REG_SZ:
-    {
-        QString s;
-
-        if ( dataSize )
+        case REG_EXPAND_SZ:
+        case REG_SZ:
         {
-            s = QString::fromUtf16( ( const char16_t * )data.constData() );
-        }
+            QString s;
 
-        if ( value != nullptr )
-        {
-            *value = stringToVariant( s );
-        }
-
-        break;
-    }
-
-    case REG_MULTI_SZ:
-    {
-        QStringList list;
-
-        if ( dataSize )
-        {
-            int i = 0;
-
-            for ( ;; )
+            if ( dataSize )
             {
-                QString s = QString::fromUtf16( ( const char16_t * )data.constData() + i );
-                i += s.length() + 1;
-
-                if ( s.isEmpty() )
-                {
-                    break;
-                }
-
-                list.append( s );
+                s = QString::fromUtf16( ( const char16_t * )data.constData() );
             }
+
+            if ( value != nullptr )
+            {
+                *value = stringToVariant( s );
+            }
+
+            break;
         }
 
-        if ( value != nullptr )
+        case REG_MULTI_SZ:
         {
-            *value = stringListToVariantList( list );
+            QStringList list;
+
+            if ( dataSize )
+            {
+                int i = 0;
+
+                for ( ;; )
+                {
+                    QString s = QString::fromUtf16( ( const char16_t * )data.constData() + i );
+                    i += s.length() + 1;
+
+                    if ( s.isEmpty() )
+                    {
+                        break;
+                    }
+
+                    list.append( s );
+                }
+            }
+
+            if ( value != nullptr )
+            {
+                *value = stringListToVariantList( list );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case REG_NONE:
-    case REG_BINARY:
-    {
-        QString s;
-
-        if ( dataSize )
+        case REG_NONE:
+        case REG_BINARY:
         {
-            s = QString::fromUtf16( ( const char16_t * )data.constData(), data.size() / 2 );
+            QString s;
+
+            if ( dataSize )
+            {
+                s = QString::fromUtf16( ( const char16_t * )data.constData(), data.size() / 2 );
+            }
+
+            if ( value != nullptr )
+            {
+                *value = stringToVariant( s );
+            }
+
+            break;
         }
 
-        if ( value != nullptr )
+        case REG_DWORD_BIG_ENDIAN:
+        case REG_DWORD:
         {
-            *value = stringToVariant( s );
+            Q_ASSERT( data.size() == sizeof( int ) );
+            int i;
+
+            memcpy( ( char * )&i, data.constData(), sizeof( int ) );
+
+            if ( value != nullptr )
+            {
+                *value = i;
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case REG_DWORD_BIG_ENDIAN:
-    case REG_DWORD:
-    {
-        Q_ASSERT( data.size() == sizeof( int ) );
-        int i;
-
-        memcpy( ( char * )&i, data.constData(), sizeof( int ) );
-
-        if ( value != nullptr )
+        case REG_QWORD:
         {
-            *value = i;
+            Q_ASSERT( data.size() == sizeof( qint64 ) );
+            qint64 i;
+            memcpy( ( char * )&i, data.constData(), sizeof( qint64 ) );
+
+            if ( value != nullptr )
+            {
+                *value = i;
+            }
+
+            break;
         }
 
-        break;
-    }
+        default:
+            qWarning( "QWinSettings::readKey() Unknown data type in Windows registry, %d", static_cast<int>( dataType ) );
 
-    case REG_QWORD:
-    {
-        Q_ASSERT( data.size() == sizeof( qint64 ) );
-        qint64 i;
-        memcpy( ( char * )&i, data.constData(), sizeof( qint64 ) );
+            if ( value != nullptr )
+            {
+                *value = QVariant();
+            }
 
-        if ( value != nullptr )
-        {
-            *value = i;
-        }
-
-        break;
-    }
-
-    default:
-        qWarning( "QWinSettings::readKey() Unknown data type in Windows registry, %d", static_cast<int>( dataType ) );
-
-        if ( value != nullptr )
-        {
-            *value = QVariant();
-        }
-
-        break;
+            break;
     }
 
     RegCloseKey( handle );
@@ -825,112 +825,112 @@ void QWinSettingsPrivate::set( const QString &uKey, const QVariant &value )
     // Determine the type
     switch ( value.type() )
     {
-    case QVariant::List:
-    case QVariant::StringList:
-    {
-        // If none of the elements contains '\0', we can use REG_MULTI_SZ, the
-        // native registry string list type. Otherwise we use REG_BINARY.
-
-        type = REG_MULTI_SZ;
-
-        QStringList l = variantListToStringList( value.toList() );
-        QStringList::const_iterator iter = l.constBegin();
-
-        for ( ; iter != l.constEnd(); ++iter )
+        case QVariant::List:
+        case QVariant::StringList:
         {
+            // If none of the elements contains '\0', we can use REG_MULTI_SZ, the
+            // native registry string list type. Otherwise we use REG_BINARY.
 
-            if ( iter->isEmpty() || iter->contains( '\0' ) )
+            type = REG_MULTI_SZ;
+
+            QStringList l = variantListToStringList( value.toList() );
+            QStringList::const_iterator iter = l.constBegin();
+
+            for ( ; iter != l.constEnd(); ++iter )
             {
-                type = REG_BINARY;
-                break;
+
+                if ( iter->isEmpty() || iter->contains( '\0' ) )
+                {
+                    type = REG_BINARY;
+                    break;
+                }
             }
-        }
 
-        if ( type == REG_BINARY )
-        {
-            QString s = variantToString( value );
-
-            std::wstring tmp = s.toStdWString();
-
-            QByteArray tmpArray;
-            tmpArray.resize( tmp.size() * 2 );
-            memcpy( tmpArray.data(), tmp.data(), tmp.size() * 2 );
-
-            regValueBuff = tmpArray;
-
-        }
-        else
-        {
-            QStringList::const_iterator it = l.constBegin();
-
-            for ( ; it != l.constEnd(); ++it )
+            if ( type == REG_BINARY )
             {
-                const QString &s = *it;
+                QString s = variantToString( value );
 
                 std::wstring tmp = s.toStdWString();
 
                 QByteArray tmpArray;
-                tmpArray.resize( ( tmp.size() + 1 ) * 2 );
-                memcpy( tmpArray.data(), tmp.data(), ( tmp.size() + 1 ) * 2 );
+                tmpArray.resize( tmp.size() * 2 );
+                memcpy( tmpArray.data(), tmp.data(), tmp.size() * 2 );
 
-                regValueBuff += tmpArray;
+                regValueBuff = tmpArray;
+
+            }
+            else
+            {
+                QStringList::const_iterator it = l.constBegin();
+
+                for ( ; it != l.constEnd(); ++it )
+                {
+                    const QString &s = *it;
+
+                    std::wstring tmp = s.toStdWString();
+
+                    QByteArray tmpArray;
+                    tmpArray.resize( ( tmp.size() + 1 ) * 2 );
+                    memcpy( tmpArray.data(), tmp.data(), ( tmp.size() + 1 ) * 2 );
+
+                    regValueBuff += tmpArray;
+                }
+
+                regValueBuff.append( ( char )0 );
+                regValueBuff.append( ( char )0 );
             }
 
-            regValueBuff.append( ( char )0 );
-            regValueBuff.append( ( char )0 );
+            break;
         }
 
-        break;
-    }
-
-    case QVariant::Int:
-    case QVariant::UInt:
-    {
-        type = REG_DWORD;
-        qint32 i = value.toInt();
-        regValueBuff = QByteArray( ( const char * )&i, sizeof( qint32 ) );
-        break;
-    }
-
-    case QVariant::LongLong:
-    case QVariant::ULongLong:
-    {
-        type = REG_QWORD;
-        qint64 i = value.toLongLong();
-        regValueBuff = QByteArray( ( const char * )&i, sizeof( qint64 ) );
-        break;
-    }
-
-    case QVariant::ByteArray:
-        [[fallthrough]];
-
-    default:
-    {
-        // If the string does not contain '\0', we can use REG_SZ, the native registry
-        // string type. Otherwise we use REG_BINARY.
-
-        QString s = variantToString( value );
-
-        std::wstring tmp = s.toStdWString();
-
-        if ( s.contains( '\0' ) )
+        case QVariant::Int:
+        case QVariant::UInt:
         {
-            type = REG_BINARY;
-
-            regValueBuff.resize( tmp.size() * 2 );
-            memcpy( regValueBuff.data(), tmp.data(), tmp.size() * 2 );
-
+            type = REG_DWORD;
+            qint32 i = value.toInt();
+            regValueBuff = QByteArray( ( const char * )&i, sizeof( qint32 ) );
+            break;
         }
-        else
+
+        case QVariant::LongLong:
+        case QVariant::ULongLong:
         {
-            type = REG_SZ;
-
-            regValueBuff.resize( ( tmp.size() + 1 ) * 2 );
-            memcpy( regValueBuff.data(), tmp.data(), ( tmp.size() + 1 ) * 2 );
+            type = REG_QWORD;
+            qint64 i = value.toLongLong();
+            regValueBuff = QByteArray( ( const char * )&i, sizeof( qint64 ) );
+            break;
         }
 
-        break;
-    }
+        case QVariant::ByteArray:
+            [[fallthrough]];
+
+        default:
+        {
+            // If the string does not contain '\0', we can use REG_SZ, the native registry
+            // string type. Otherwise we use REG_BINARY.
+
+            QString s = variantToString( value );
+
+            std::wstring tmp = s.toStdWString();
+
+            if ( s.contains( '\0' ) )
+            {
+                type = REG_BINARY;
+
+                regValueBuff.resize( tmp.size() * 2 );
+                memcpy( regValueBuff.data(), tmp.data(), tmp.size() * 2 );
+
+            }
+            else
+            {
+                type = REG_SZ;
+
+                regValueBuff.resize( ( tmp.size() + 1 ) * 2 );
+                memcpy( regValueBuff.data(), tmp.data(), ( tmp.size() + 1 ) * 2 );
+            }
+
+            break;
+        }
     }
 
     // set the value

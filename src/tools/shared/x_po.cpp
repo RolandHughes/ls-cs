@@ -51,61 +51,61 @@ static QString poEscapedString( const QString &prefix, const QString &keyword,
 
         switch ( c )
         {
-        case '\n':
-            res += QLatin1String( "\\n" );
-            lines.append( res );
-            res.clear();
-            break;
+            case '\n':
+                res += QLatin1String( "\\n" );
+                lines.append( res );
+                res.clear();
+                break;
 
-        case '\r':
-            res += QLatin1String( "\\r" );
-            break;
+            case '\r':
+                res += QLatin1String( "\\r" );
+                break;
 
-        case '\t':
-            res += QLatin1String( "\\t" );
-            break;
+            case '\t':
+                res += QLatin1String( "\\t" );
+                break;
 
-        case '\v':
-            res += QLatin1String( "\\v" );
-            break;
+            case '\v':
+                res += QLatin1String( "\\v" );
+                break;
 
-        case '\a':
-            res += QLatin1String( "\\a" );
-            break;
+            case '\a':
+                res += QLatin1String( "\\a" );
+                break;
 
-        case '\b':
-            res += QLatin1String( "\\b" );
-            break;
+            case '\b':
+                res += QLatin1String( "\\b" );
+                break;
 
-        case '\f':
-            res += QLatin1String( "\\f" );
-            break;
+            case '\f':
+                res += QLatin1String( "\\f" );
+                break;
 
-        case '"':
-            res += QLatin1String( "\\\"" );
-            break;
+            case '"':
+                res += QLatin1String( "\\\"" );
+                break;
 
-        case '\\':
-            res += QLatin1String( "\\\\" );
-            break;
+            case '\\':
+                res += QLatin1String( "\\\\" );
+                break;
 
-        default:
-            if ( c < 32 )
-            {
-                res += QLatin1String( "\\x" );
-                res += QString::number( c, 16 );
-
-                if ( off < ba.length() && isxdigit( ba[off].unicode() ) )
+            default:
+                if ( c < 32 )
                 {
-                    res += QLatin1String( "\"\"" );
-                }
-            }
-            else
-            {
-                res += QChar( c );
-            }
+                    res += QLatin1String( "\\x" );
+                    res += QString::number( c, 16 );
 
-            break;
+                    if ( off < ba.length() && isxdigit( ba[off].unicode() ) )
+                    {
+                        res += QLatin1String( "\"\"" );
+                    }
+                }
+                else
+                {
+                    res += QChar( c );
+                }
+
+                break;
         }
     }
 
@@ -335,78 +335,78 @@ static QByteArray slurpEscapedString( const QList<QByteArray> &lines, int &l,
 
                 switch ( c )
                 {
-                case 'r':
-                    msg += '\r'; // Maybe just throw it away?
-                    break;
+                    case 'r':
+                        msg += '\r'; // Maybe just throw it away?
+                        break;
 
-                case 'n':
-                    msg += '\n';
-                    break;
+                    case 'n':
+                        msg += '\n';
+                        break;
 
-                case 't':
-                    msg += '\t';
-                    break;
+                    case 't':
+                        msg += '\t';
+                        break;
 
-                case 'v':
-                    msg += '\v';
-                    break;
+                    case 'v':
+                        msg += '\v';
+                        break;
 
-                case 'a':
-                    msg += '\a';
-                    break;
+                    case 'a':
+                        msg += '\a';
+                        break;
 
-                case 'b':
-                    msg += '\b';
-                    break;
+                    case 'b':
+                        msg += '\b';
+                        break;
 
-                case 'f':
-                    msg += '\f';
-                    break;
+                    case 'f':
+                        msg += '\f';
+                        break;
 
-                case '"':
-                    msg += '"';
-                    break;
+                    case '"':
+                        msg += '"';
+                        break;
 
-                case '\\':
-                    msg += '\\';
-                    break;
+                    case '\\':
+                        msg += '\\';
+                        break;
 
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                    stoff = offset - 1;
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                        stoff = offset - 1;
 
-                    while ( ( c = line[offset] ) >= '0' && c <= '7' )
-                        if ( ++offset == line.length() )
-                        {
-                            goto premature_eol;
-                        }
+                        while ( ( c = line[offset] ) >= '0' && c <= '7' )
+                            if ( ++offset == line.length() )
+                            {
+                                goto premature_eol;
+                            }
 
-                    msg += line.mid( stoff, offset - stoff ).toUInt( nullptr, 8 );
-                    break;
+                        msg += line.mid( stoff, offset - stoff ).toUInt( nullptr, 8 );
+                        break;
 
-                case 'x':
-                    stoff = offset;
+                    case 'x':
+                        stoff = offset;
 
-                    while ( isxdigit( line[offset] ) )
-                        if ( ++offset == line.length() )
-                        {
-                            goto premature_eol;
-                        }
+                        while ( isxdigit( line[offset] ) )
+                            if ( ++offset == line.length() )
+                            {
+                                goto premature_eol;
+                            }
 
-                    msg += line.mid( stoff, offset - stoff ).toUInt( nullptr, 16 );
-                    break;
+                        msg += line.mid( stoff, offset - stoff ).toUInt( nullptr, 16 );
+                        break;
 
-                default:
-                    cd.appendError( QString( "PO parsing error: invalid escape '\\%1' (line %2)." ).formatArg( c ).formatArg( l + 1 ) );
-                    msg += '\\';
-                    msg += c;
-                    break;
+                    default:
+                        cd.appendError( QString( "PO parsing error: invalid escape '\\%1' (line %2)." ).formatArg( c ).formatArg( l + 1 ) );
+                        msg += '\\';
+                        msg += c;
+                        break;
                 }
 
             }
@@ -854,138 +854,138 @@ doneho:
         {
             switch ( line.size() < 2 ? 0 : line.at( 1 ) )
             {
-            case ':':
-                item.references += line.mid( 3 );
-                item.references += '\n';
-                break;
+                case ':':
+                    item.references += line.mid( 3 );
+                    item.references += '\n';
+                    break;
 
-            case ',':
-            {
-                QStringList flags = QString::fromLatin1( line.mid( 2 ) ).split( QRegularExpression( "[, ]" ), QStringParser::SkipEmptyParts );
-
-                if ( flags.removeOne( "fuzzy" ) )
+                case ',':
                 {
-                    item.isFuzzy = true;
-                }
+                    QStringList flags = QString::fromLatin1( line.mid( 2 ) ).split( QRegularExpression( "[, ]" ), QStringParser::SkipEmptyParts );
 
-                flags.removeOne( "qt-format" );
-                TranslatorMessage::ExtraData::const_iterator it = item.extra.find( "po-flags" );
-
-                if ( it != item.extra.end() )
-                {
-                    flags.prepend( *it );
-                }
-
-                if ( !flags.isEmpty() )
-                {
-                    item.extra[QLatin1String( "po-flags" )] = flags.join( ", " );
-                }
-
-                break;
-            }
-
-            case 0:
-                item.translatorComments += '\n';
-                break;
-
-            case ' ':
-                slurpComment( item.translatorComments, lines, l );
-                break;
-
-            case '.':
-                if ( line.startsWith( "#. ts-context " ) ) // legacy
-                {
-                    item.context = line.mid( 14 );
-                }
-                else if ( line.startsWith( "#. ts-id " ) )
-                {
-                    item.id = line.mid( 9 );
-                }
-                else
-                {
-                    item.automaticComments += line.mid( 3 );
-                    item.automaticComments += '\n';
-                }
-
-                break;
-
-            case '|':
-                if ( line.startsWith( "#| msgid " ) )
-                {
-                    item.oldMsgId = slurpEscapedString( lines, l, 9, "#| ", cd );
-
-                }
-                else if ( line.startsWith( "#| msgid_plural " ) )
-                {
-                    QByteArray extra = slurpEscapedString( lines, l, 16, "#| ", cd );
-
-                    if ( extra != item.oldMsgId )
+                    if ( flags.removeOne( "fuzzy" ) )
                     {
-                        item.extra[QLatin1String( "po-old_msgid_plural" )] = codec->toUnicode( extra );
+                        item.isFuzzy = true;
                     }
 
-                }
-                else if ( line.startsWith( "#| msgctxt " ) )
-                {
-                    item.oldTscomment = slurpEscapedString( lines, l, 11, "#| ", cd );
+                    flags.removeOne( "qt-format" );
+                    TranslatorMessage::ExtraData::const_iterator it = item.extra.find( "po-flags" );
 
-                    if ( qtContexts )
+                    if ( it != item.extra.end() )
                     {
-                        splitContext( &item.oldTscomment, &item.context );
+                        flags.prepend( *it );
                     }
 
+                    if ( !flags.isEmpty() )
+                    {
+                        item.extra[QLatin1String( "po-flags" )] = flags.join( ", " );
+                    }
+
+                    break;
                 }
-                else
-                {
+
+                case 0:
+                    item.translatorComments += '\n';
+                    break;
+
+                case ' ':
+                    slurpComment( item.translatorComments, lines, l );
+                    break;
+
+                case '.':
+                    if ( line.startsWith( "#. ts-context " ) ) // legacy
+                    {
+                        item.context = line.mid( 14 );
+                    }
+                    else if ( line.startsWith( "#. ts-id " ) )
+                    {
+                        item.id = line.mid( 9 );
+                    }
+                    else
+                    {
+                        item.automaticComments += line.mid( 3 );
+                        item.automaticComments += '\n';
+                    }
+
+                    break;
+
+                case '|':
+                    if ( line.startsWith( "#| msgid " ) )
+                    {
+                        item.oldMsgId = slurpEscapedString( lines, l, 9, "#| ", cd );
+
+                    }
+                    else if ( line.startsWith( "#| msgid_plural " ) )
+                    {
+                        QByteArray extra = slurpEscapedString( lines, l, 16, "#| ", cd );
+
+                        if ( extra != item.oldMsgId )
+                        {
+                            item.extra[QLatin1String( "po-old_msgid_plural" )] = codec->toUnicode( extra );
+                        }
+
+                    }
+                    else if ( line.startsWith( "#| msgctxt " ) )
+                    {
+                        item.oldTscomment = slurpEscapedString( lines, l, 11, "#| ", cd );
+
+                        if ( qtContexts )
+                        {
+                            splitContext( &item.oldTscomment, &item.context );
+                        }
+
+                    }
+                    else
+                    {
+                        cd.appendError( QString( "PO-format parse error in line %1: '%2'" ).formatArg( l + 1 ).formatArg( codec->toUnicode(
+                                            lines[l] ) ) );
+                        error = true;
+                    }
+
+                    break;
+
+                case '~':
+                    if ( line.startsWith( "#~ msgid " ) )
+                    {
+                        item.msgId = slurpEscapedString( lines, l, 9, "#~ ", cd );
+
+                    }
+                    else if ( line.startsWith( "#~ msgid_plural " ) )
+                    {
+                        QByteArray extra = slurpEscapedString( lines, l, 16, "#~ ", cd );
+
+                        if ( extra != item.msgId )
+                        {
+                            item.extra[QLatin1String( "po-msgid_plural" )] = codec->toUnicode( extra );
+                        }
+
+                        item.isPlural = true;
+
+                    }
+                    else if ( line.startsWith( "#~ msgctxt " ) )
+                    {
+                        item.tscomment = slurpEscapedString( lines, l, 11, "#~ ", cd );
+
+                        if ( qtContexts )
+                        {
+                            splitContext( &item.tscomment, &item.context );
+                        }
+
+                    }
+                    else
+                    {
+                        cd.appendError( QString( "PO-format parse error in line %1: '%2'" ).formatArg( l + 1 ).formatArg( codec->toUnicode(
+                                            lines[l] ) ) );
+                        error = true;
+                    }
+
+                    break;
+
+                default:
                     cd.appendError( QString( "PO-format parse error in line %1: '%2'" ).formatArg( l + 1 ).formatArg( codec->toUnicode(
                                         lines[l] ) ) );
                     error = true;
-                }
-
-                break;
-
-            case '~':
-                if ( line.startsWith( "#~ msgid " ) )
-                {
-                    item.msgId = slurpEscapedString( lines, l, 9, "#~ ", cd );
-
-                }
-                else if ( line.startsWith( "#~ msgid_plural " ) )
-                {
-                    QByteArray extra = slurpEscapedString( lines, l, 16, "#~ ", cd );
-
-                    if ( extra != item.msgId )
-                    {
-                        item.extra[QLatin1String( "po-msgid_plural" )] = codec->toUnicode( extra );
-                    }
-
-                    item.isPlural = true;
-
-                }
-                else if ( line.startsWith( "#~ msgctxt " ) )
-                {
-                    item.tscomment = slurpEscapedString( lines, l, 11, "#~ ", cd );
-
-                    if ( qtContexts )
-                    {
-                        splitContext( &item.tscomment, &item.context );
-                    }
-
-                }
-                else
-                {
-                    cd.appendError( QString( "PO-format parse error in line %1: '%2'" ).formatArg( l + 1 ).formatArg( codec->toUnicode(
-                                        lines[l] ) ) );
-                    error = true;
-                }
-
-                break;
-
-            default:
-                cd.appendError( QString( "PO-format parse error in line %1: '%2'" ).formatArg( l + 1 ).formatArg( codec->toUnicode(
-                                    lines[l] ) ) );
-                error = true;
-                break;
+                    break;
             }
 
             lastCmtLine = l;

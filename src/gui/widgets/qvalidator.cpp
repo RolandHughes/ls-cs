@@ -281,13 +281,13 @@ QValidator::State QDoubleValidator::validate( QString &input, int & ) const
 
     switch ( d->notation )
     {
-    case StandardNotation:
-        numMode = QLocaleData::DoubleStandardMode;
-        break;
+        case StandardNotation:
+            numMode = QLocaleData::DoubleStandardMode;
+            break;
 
-    case ScientificNotation:
-        numMode = QLocaleData::DoubleScientificMode;
-        break;
+        case ScientificNotation:
+            numMode = QLocaleData::DoubleScientificMode;
+            break;
     }
 
     return d->validateWithLocale( input, numMode, locale() );

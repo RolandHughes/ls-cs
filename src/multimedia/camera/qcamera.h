@@ -265,7 +265,8 @@ public:
 
     MULTI_LSCS_SIGNAL_1( Public, void lockStatusChanged( QCamera::LockType type, QCamera::LockStatus status,
                          QCamera::LockChangeReason reason ) )
-    MULTI_LSCS_SIGNAL_OVERLOAD( lockStatusChanged, ( QCamera::LockType, QCamera::LockStatus, QCamera::LockChangeReason ), type, status,
+    MULTI_LSCS_SIGNAL_OVERLOAD( lockStatusChanged, ( QCamera::LockType, QCamera::LockStatus, QCamera::LockChangeReason ), type,
+                                status,
                                 reason )
 
 private:

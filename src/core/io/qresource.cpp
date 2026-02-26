@@ -827,7 +827,7 @@ bool QResourceRoot::mappingRootSubdir( const QString &path, QString *match ) con
     {
 
         const QStringList root_segments = root.split( '/', QStringParser::SkipEmptyParts ),
-              path_segments = path.split( '/', QStringParser::SkipEmptyParts );
+                          path_segments = path.split( '/', QStringParser::SkipEmptyParts );
 
         if ( path_segments.size() <= root_segments.size() )
         {

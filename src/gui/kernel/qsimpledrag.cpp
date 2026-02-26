@@ -108,57 +108,57 @@ bool QBasicDrag::eventFilter( QObject *o, QEvent *e )
 
     switch ( e->type() )
     {
-    case QEvent::ShortcutOverride:
-        // prevent accelerators from firing while dragging
-        e->accept();
-        return true;
+        case QEvent::ShortcutOverride:
+            // prevent accelerators from firing while dragging
+            e->accept();
+            return true;
 
-    case QEvent::KeyPress:
-    case QEvent::KeyRelease:
-    {
-        QKeyEvent *ke = static_cast<QKeyEvent *>( e );
-
-        if ( ke->key() == Qt::Key_Escape && e->type() == QEvent::KeyPress )
+        case QEvent::KeyPress:
+        case QEvent::KeyRelease:
         {
-            cancel();
-            disableEventFilter();
-            exitDndEventLoop();
+            QKeyEvent *ke = static_cast<QKeyEvent *>( e );
 
+            if ( ke->key() == Qt::Key_Escape && e->type() == QEvent::KeyPress )
+            {
+                cancel();
+                disableEventFilter();
+                exitDndEventLoop();
+
+            }
+
+            return true; // Eat all key events
         }
 
-        return true; // Eat all key events
-    }
-
-    case QEvent::MouseMove:
-    {
-        QPoint nativePosition = getNativeMousePos( e, o );
-        move( nativePosition );
-        return true; // Eat all mouse move events
-    }
-
-    case QEvent::MouseButtonRelease:
-        disableEventFilter();
-
-        if ( canDrop() )
+        case QEvent::MouseMove:
         {
             QPoint nativePosition = getNativeMousePos( e, o );
-            drop( nativePosition );
-        }
-        else
-        {
-            cancel();
+            move( nativePosition );
+            return true; // Eat all mouse move events
         }
 
-        exitDndEventLoop();
-        QCoreApplication::postEvent( o, new QMouseEvent( *static_cast<QMouseEvent *>( e ) ) );
-        return true; // defer mouse release events until drag event loop has returned
+        case QEvent::MouseButtonRelease:
+            disableEventFilter();
 
-    case QEvent::MouseButtonDblClick:
-    case QEvent::Wheel:
-        return true;
+            if ( canDrop() )
+            {
+                QPoint nativePosition = getNativeMousePos( e, o );
+                drop( nativePosition );
+            }
+            else
+            {
+                cancel();
+            }
 
-    default:
-        break;
+            exitDndEventLoop();
+            QCoreApplication::postEvent( o, new QMouseEvent( *static_cast<QMouseEvent *>( e ) ) );
+            return true; // defer mouse release events until drag event loop has returned
+
+        case QEvent::MouseButtonDblClick:
+        case QEvent::Wheel:
+            return true;
+
+        default:
+            break;
     }
 
     return false;
@@ -274,17 +274,17 @@ void QBasicDrag::updateCursor( Qt::DropAction action )
     {
         switch ( action )
         {
-        case Qt::CopyAction:
-            cursorShape = Qt::DragCopyCursor;
-            break;
+            case Qt::CopyAction:
+                cursorShape = Qt::DragCopyCursor;
+                break;
 
-        case Qt::LinkAction:
-            cursorShape = Qt::DragLinkCursor;
-            break;
+            case Qt::LinkAction:
+                cursorShape = Qt::DragLinkCursor;
+                break;
 
-        default:
-            cursorShape = Qt::DragMoveCursor;
-            break;
+            default:
+                cursorShape = Qt::DragMoveCursor;
+                break;
         }
     }
 

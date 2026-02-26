@@ -474,61 +474,61 @@ void QGL2PaintEngineExPrivate::updateCompositionMode()
 
     switch ( q->state()->composition_mode )
     {
-    case QPainter::CompositionMode_SourceOver:
-        glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
-        break;
+        case QPainter::CompositionMode_SourceOver:
+            glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
+            break;
 
-    case QPainter::CompositionMode_DestinationOver:
-        glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_ONE );
-        break;
+        case QPainter::CompositionMode_DestinationOver:
+            glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_ONE );
+            break;
 
-    case QPainter::CompositionMode_Clear:
-        glBlendFunc( GL_ZERO, GL_ZERO );
-        break;
+        case QPainter::CompositionMode_Clear:
+            glBlendFunc( GL_ZERO, GL_ZERO );
+            break;
 
-    case QPainter::CompositionMode_Source:
-        glBlendFunc( GL_ONE, GL_ZERO );
-        break;
+        case QPainter::CompositionMode_Source:
+            glBlendFunc( GL_ONE, GL_ZERO );
+            break;
 
-    case QPainter::CompositionMode_Destination:
-        glBlendFunc( GL_ZERO, GL_ONE );
-        break;
+        case QPainter::CompositionMode_Destination:
+            glBlendFunc( GL_ZERO, GL_ONE );
+            break;
 
-    case QPainter::CompositionMode_SourceIn:
-        glBlendFunc( GL_DST_ALPHA, GL_ZERO );
-        break;
+        case QPainter::CompositionMode_SourceIn:
+            glBlendFunc( GL_DST_ALPHA, GL_ZERO );
+            break;
 
-    case QPainter::CompositionMode_DestinationIn:
-        glBlendFunc( GL_ZERO, GL_SRC_ALPHA );
-        break;
+        case QPainter::CompositionMode_DestinationIn:
+            glBlendFunc( GL_ZERO, GL_SRC_ALPHA );
+            break;
 
-    case QPainter::CompositionMode_SourceOut:
-        glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_ZERO );
-        break;
+        case QPainter::CompositionMode_SourceOut:
+            glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_ZERO );
+            break;
 
-    case QPainter::CompositionMode_DestinationOut:
-        glBlendFunc( GL_ZERO, GL_ONE_MINUS_SRC_ALPHA );
-        break;
+        case QPainter::CompositionMode_DestinationOut:
+            glBlendFunc( GL_ZERO, GL_ONE_MINUS_SRC_ALPHA );
+            break;
 
-    case QPainter::CompositionMode_SourceAtop:
-        glBlendFunc( GL_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-        break;
+        case QPainter::CompositionMode_SourceAtop:
+            glBlendFunc( GL_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+            break;
 
-    case QPainter::CompositionMode_DestinationAtop:
-        glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_SRC_ALPHA );
-        break;
+        case QPainter::CompositionMode_DestinationAtop:
+            glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_SRC_ALPHA );
+            break;
 
-    case QPainter::CompositionMode_Xor:
-        glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-        break;
+        case QPainter::CompositionMode_Xor:
+            glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+            break;
 
-    case QPainter::CompositionMode_Plus:
-        glBlendFunc( GL_ONE, GL_ONE );
-        break;
+        case QPainter::CompositionMode_Plus:
+            glBlendFunc( GL_ONE, GL_ONE );
+            break;
 
-    default:
-        qWarning( "Unsupported composition mode" );
-        break;
+        default:
+            qWarning( "Unsupported composition mode" );
+            break;
     }
 
     compositionModeDirty = false;
@@ -1892,7 +1892,7 @@ void QGL2PaintEngineExPrivate::drawCachedGlyphs( QFontEngine::GlyphFormat glyphF
         glyphCacheTransform = s->matrix.type() < QTransform::TxRotate ?
                               QTransform::fromScale( qAbs( s->matrix.m11() ), qAbs( s->matrix.m22() ) ) :
                               QTransform::fromScale( QVector2D( s->matrix.m11(), s->matrix.m12() ).length(),
-                                  QVector2D( s->matrix.m21(), s->matrix.m22() ).length() );
+                                      QVector2D( s->matrix.m21(), s->matrix.m22() ).length() );
     }
 
     QGLTextureGlyphCache *cache = ( QGLTextureGlyphCache * ) fe->glyphCache( cacheKey, glyphFormat, glyphCacheTransform );
@@ -2186,7 +2186,7 @@ void QGL2PaintEngineExPrivate::drawCachedGlyphs( QFontEngine::GlyphFormat glyphF
     }
 
     QGLTextureGlyphCache::FilterMode filterMode = ( s->matrix.type() > QTransform::TxTranslate )
-        ? QGLTextureGlyphCache::Linear:QGLTextureGlyphCache::Nearest;
+            ? QGLTextureGlyphCache::Linear:QGLTextureGlyphCache::Nearest;
 
     if ( lastMaskTextureUsed != cache->texture() || cache->filterMode() != filterMode )
     {
@@ -2739,34 +2739,34 @@ void QGL2PaintEngineEx::clip( const QVectorPath &path, Qt::ClipOperation op )
 
     switch ( op )
     {
-    case Qt::NoClip:
-        if ( d->useSystemClip )
-        {
+        case Qt::NoClip:
+            if ( d->useSystemClip )
+            {
+                state()->clipTestEnabled = true;
+                state()->currentClip = 1;
+            }
+            else
+            {
+                state()->clipTestEnabled = false;
+            }
+
+            state()->rectangleClip = QRect( 0, 0, d->width, d->height );
+            state()->canRestoreClip = false;
+            d->updateClipScissorTest();
+            break;
+
+        case Qt::IntersectClip:
+            state()->rectangleClip = state()->rectangleClip.intersected( pathRect );
+            d->updateClipScissorTest();
+            d->resetClipIfNeeded();
+            ++d->maxClip;
+            d->writeClip( path, d->maxClip );
+            state()->currentClip = d->maxClip;
             state()->clipTestEnabled = true;
-            state()->currentClip = 1;
-        }
-        else
-        {
-            state()->clipTestEnabled = false;
-        }
+            break;
 
-        state()->rectangleClip = QRect( 0, 0, d->width, d->height );
-        state()->canRestoreClip = false;
-        d->updateClipScissorTest();
-        break;
-
-    case Qt::IntersectClip:
-        state()->rectangleClip = state()->rectangleClip.intersected( pathRect );
-        d->updateClipScissorTest();
-        d->resetClipIfNeeded();
-        ++d->maxClip;
-        d->writeClip( path, d->maxClip );
-        state()->currentClip = d->maxClip;
-        state()->clipTestEnabled = true;
-        break;
-
-    default:
-        break;
+        default:
+            break;
     }
 }
 

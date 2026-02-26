@@ -568,21 +568,21 @@ QSizeF QGraphicsWidget::sizeHint( Qt::SizeHint which, const QSizeF &constraint )
     {
         switch ( which )
         {
-        case Qt::MinimumSize:
-            sh = QSizeF( 0, 0 );
-            break;
+            case Qt::MinimumSize:
+                sh = QSizeF( 0, 0 );
+                break;
 
-        case Qt::PreferredSize:
-            sh = QSizeF( 50, 50 );  //rather arbitrary
-            break;
+            case Qt::PreferredSize:
+                sh = QSizeF( 50, 50 );  //rather arbitrary
+                break;
 
-        case Qt::MaximumSize:
-            sh = QSizeF( QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
-            break;
+            case Qt::MaximumSize:
+                sh = QSizeF( QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
+                break;
 
-        default:
-            qWarning( "QGraphicsWidget::sizeHint() Value for size hint is not valid" );
-            break;
+            default:
+                qWarning( "QGraphicsWidget::sizeHint() Value for size hint is not valid" );
+                break;
         }
     }
 
@@ -788,85 +788,85 @@ QVariant QGraphicsWidget::itemChange( GraphicsItemChange change, const QVariant 
 
     switch ( change )
     {
-    case ItemEnabledHasChanged:
-    {
-        // Send EnabledChange after the enabled state has changed.
-        QEvent event( QEvent::EnabledChange );
-        QApplication::sendEvent( this, &event );
-        break;
-    }
-
-    case ItemVisibleChange:
-        if ( value.toBool() )
+        case ItemEnabledHasChanged:
         {
-            // Send Show event before the item has been shown.
-            QShowEvent event;
+            // Send EnabledChange after the enabled state has changed.
+            QEvent event( QEvent::EnabledChange );
             QApplication::sendEvent( this, &event );
-            bool resized = testAttribute( Qt::WA_Resized );
+            break;
+        }
 
-            if ( !resized )
+        case ItemVisibleChange:
+            if ( value.toBool() )
             {
-                adjustSize();
-                setAttribute( Qt::WA_Resized, false );
+                // Send Show event before the item has been shown.
+                QShowEvent event;
+                QApplication::sendEvent( this, &event );
+                bool resized = testAttribute( Qt::WA_Resized );
+
+                if ( !resized )
+                {
+                    adjustSize();
+                    setAttribute( Qt::WA_Resized, false );
+                }
             }
-        }
 
-        // layout size hint only changes if an item changes from/to explicitly hidden state
-        if ( value.toBool() || d->explicitlyHidden )
+            // layout size hint only changes if an item changes from/to explicitly hidden state
+            if ( value.toBool() || d->explicitlyHidden )
+            {
+                updateGeometry();
+            }
+
+            break;
+
+        case ItemVisibleHasChanged:
+            if ( !value.toBool() )
+            {
+                // Send Hide event after the item has been hidden.
+                QHideEvent event;
+                QApplication::sendEvent( this, &event );
+            }
+
+            break;
+
+        case ItemPositionHasChanged:
+            d->setGeometryFromSetPos();
+            break;
+
+        case ItemParentChange:
         {
-            updateGeometry();
-        }
-
-        break;
-
-    case ItemVisibleHasChanged:
-        if ( !value.toBool() )
-        {
-            // Send Hide event after the item has been hidden.
-            QHideEvent event;
+            // Deliver ParentAboutToChange.
+            QEvent event( QEvent::ParentAboutToChange );
             QApplication::sendEvent( this, &event );
+            break;
         }
 
-        break;
+        case ItemParentHasChanged:
+        {
+            // Deliver ParentChange.
+            QEvent event( QEvent::ParentChange );
+            QApplication::sendEvent( this, &event );
+            break;
+        }
 
-    case ItemPositionHasChanged:
-        d->setGeometryFromSetPos();
-        break;
+        case ItemCursorHasChanged:
+        {
+            // Deliver CursorChange.
+            QEvent event( QEvent::CursorChange );
+            QApplication::sendEvent( this, &event );
+            break;
+        }
 
-    case ItemParentChange:
-    {
-        // Deliver ParentAboutToChange.
-        QEvent event( QEvent::ParentAboutToChange );
-        QApplication::sendEvent( this, &event );
-        break;
-    }
+        case ItemToolTipHasChanged:
+        {
+            // Deliver ToolTipChange.
+            QEvent event( QEvent::ToolTipChange );
+            QApplication::sendEvent( this, &event );
+            break;
+        }
 
-    case ItemParentHasChanged:
-    {
-        // Deliver ParentChange.
-        QEvent event( QEvent::ParentChange );
-        QApplication::sendEvent( this, &event );
-        break;
-    }
-
-    case ItemCursorHasChanged:
-    {
-        // Deliver CursorChange.
-        QEvent event( QEvent::CursorChange );
-        QApplication::sendEvent( this, &event );
-        break;
-    }
-
-    case ItemToolTipHasChanged:
-    {
-        // Deliver ToolTipChange.
-        QEvent event( QEvent::ToolTipChange );
-        QApplication::sendEvent( this, &event );
-        break;
-    }
-
-    default:
-        break;
+        default:
+            break;
     }
 
     return QGraphicsItem::itemChange( change, value );
@@ -890,35 +890,35 @@ bool QGraphicsWidget::windowFrameEvent( QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::GraphicsSceneMousePress:
-        d->windowFrameMousePressEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneMousePress:
+            d->windowFrameMousePressEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneMouseMove:
-        d->ensureWindowData();
+        case QEvent::GraphicsSceneMouseMove:
+            d->ensureWindowData();
 
-        if ( d->windowData->grabbedSection != Qt::NoSection )
-        {
-            d->windowFrameMouseMoveEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
-            event->accept();
-        }
+            if ( d->windowData->grabbedSection != Qt::NoSection )
+            {
+                d->windowFrameMouseMoveEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
+                event->accept();
+            }
 
-        break;
+            break;
 
-    case QEvent::GraphicsSceneMouseRelease:
-        d->windowFrameMouseReleaseEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneMouseRelease:
+            d->windowFrameMouseReleaseEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneHoverMove:
-        d->windowFrameHoverMoveEvent( static_cast<QGraphicsSceneHoverEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneHoverMove:
+            d->windowFrameHoverMoveEvent( static_cast<QGraphicsSceneHoverEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneHoverLeave:
-        d->windowFrameHoverLeaveEvent( static_cast<QGraphicsSceneHoverEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneHoverLeave:
+            d->windowFrameHoverLeaveEvent( static_cast<QGraphicsSceneHoverEvent *>( event ) );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return event->isAccepted();
@@ -1016,118 +1016,118 @@ bool QGraphicsWidget::event( QEvent *event )
     // Handle the event itself.
     switch ( event->type() )
     {
-    case QEvent::GraphicsSceneMove:
-        moveEvent( static_cast<QGraphicsSceneMoveEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneMove:
+            moveEvent( static_cast<QGraphicsSceneMoveEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneResize:
-        resizeEvent( static_cast<QGraphicsSceneResizeEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneResize:
+            resizeEvent( static_cast<QGraphicsSceneResizeEvent *>( event ) );
+            break;
 
-    case QEvent::Show:
-        showEvent( static_cast<QShowEvent *>( event ) );
-        break;
+        case QEvent::Show:
+            showEvent( static_cast<QShowEvent *>( event ) );
+            break;
 
-    case QEvent::Hide:
-        hideEvent( static_cast<QHideEvent *>( event ) );
-        break;
+        case QEvent::Hide:
+            hideEvent( static_cast<QHideEvent *>( event ) );
+            break;
 
-    case QEvent::Polish:
-        polishEvent();
-        d->polished = true;
+        case QEvent::Polish:
+            polishEvent();
+            d->polished = true;
 
-        if ( !d->font.isCopyOf( QApplication::font() ) )
-        {
-            d->updateFont( d->font );
-        }
+            if ( !d->font.isCopyOf( QApplication::font() ) )
+            {
+                d->updateFont( d->font );
+            }
 
-        break;
+            break;
 
-    case QEvent::WindowActivate:
-    case QEvent::WindowDeactivate:
-        update();
-        break;
-
-    case QEvent::StyleAnimationUpdate:
-        if ( isVisible() )
-        {
-            event->accept();
+        case QEvent::WindowActivate:
+        case QEvent::WindowDeactivate:
             update();
-        }
+            break;
 
-        break;
+        case QEvent::StyleAnimationUpdate:
+            if ( isVisible() )
+            {
+                event->accept();
+                update();
+            }
 
-    // Taken from QWidget::event
-    case QEvent::ActivationChange:
-    case QEvent::EnabledChange:
-    case QEvent::FontChange:
-    case QEvent::StyleChange:
-    case QEvent::PaletteChange:
-    case QEvent::ParentChange:
-    case QEvent::ContentsRectChange:
-    case QEvent::LayoutDirectionChange:
-        changeEvent( event );
-        break;
+            break;
 
-    case QEvent::Close:
-        closeEvent( ( QCloseEvent * )event );
-        break;
+        // Taken from QWidget::event
+        case QEvent::ActivationChange:
+        case QEvent::EnabledChange:
+        case QEvent::FontChange:
+        case QEvent::StyleChange:
+        case QEvent::PaletteChange:
+        case QEvent::ParentChange:
+        case QEvent::ContentsRectChange:
+        case QEvent::LayoutDirectionChange:
+            changeEvent( event );
+            break;
 
-    case QEvent::GrabMouse:
-        grabMouseEvent( event );
-        break;
+        case QEvent::Close:
+            closeEvent( ( QCloseEvent * )event );
+            break;
 
-    case QEvent::UngrabMouse:
-        ungrabMouseEvent( event );
-        break;
+        case QEvent::GrabMouse:
+            grabMouseEvent( event );
+            break;
 
-    case QEvent::GrabKeyboard:
-        grabKeyboardEvent( event );
-        break;
+        case QEvent::UngrabMouse:
+            ungrabMouseEvent( event );
+            break;
 
-    case QEvent::UngrabKeyboard:
-        ungrabKeyboardEvent( event );
-        break;
+        case QEvent::GrabKeyboard:
+            grabKeyboardEvent( event );
+            break;
 
-    case QEvent::GraphicsSceneMousePress:
-        if ( d->hasDecoration() && windowFrameEvent( event ) )
-        {
-            return true;
-        }
+        case QEvent::UngrabKeyboard:
+            ungrabKeyboardEvent( event );
+            break;
 
-        break;
-
-    case QEvent::GraphicsSceneMouseMove:
-    case QEvent::GraphicsSceneMouseRelease:
-    case QEvent::GraphicsSceneMouseDoubleClick:
-        d->ensureWindowData();
-
-        if ( d->hasDecoration() && d->windowData->grabbedSection != Qt::NoSection )
-        {
-            return windowFrameEvent( event );
-        }
-
-        break;
-
-    case QEvent::GraphicsSceneHoverEnter:
-    case QEvent::GraphicsSceneHoverMove:
-    case QEvent::GraphicsSceneHoverLeave:
-        if ( d->hasDecoration() )
-        {
-            windowFrameEvent( event );
-
-            // Filter out hover events if they were sent to us only because of the
-            // decoration (special case in QGraphicsScenePrivate::dispatchHoverEvent).
-            if ( !acceptHoverEvents() )
+        case QEvent::GraphicsSceneMousePress:
+            if ( d->hasDecoration() && windowFrameEvent( event ) )
             {
                 return true;
             }
-        }
 
-        break;
+            break;
 
-    default:
-        break;
+        case QEvent::GraphicsSceneMouseMove:
+        case QEvent::GraphicsSceneMouseRelease:
+        case QEvent::GraphicsSceneMouseDoubleClick:
+            d->ensureWindowData();
+
+            if ( d->hasDecoration() && d->windowData->grabbedSection != Qt::NoSection )
+            {
+                return windowFrameEvent( event );
+            }
+
+            break;
+
+        case QEvent::GraphicsSceneHoverEnter:
+        case QEvent::GraphicsSceneHoverMove:
+        case QEvent::GraphicsSceneHoverLeave:
+            if ( d->hasDecoration() )
+            {
+                windowFrameEvent( event );
+
+                // Filter out hover events if they were sent to us only because of the
+                // decoration (special case in QGraphicsScenePrivate::dispatchHoverEvent).
+                if ( !acceptHoverEvents() )
+                {
+                    return true;
+                }
+            }
+
+            break;
+
+        default:
+            break;
     }
 
     return QObject::event( event );
@@ -1139,33 +1139,33 @@ void QGraphicsWidget::changeEvent( QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::StyleChange:
-        // ### Don't unset if the margins are explicitly set.
-        unsetWindowFrameMargins();
+        case QEvent::StyleChange:
+            // ### Don't unset if the margins are explicitly set.
+            unsetWindowFrameMargins();
 
-        if ( d->layout )
-        {
-            d->layout->invalidate();
-        }
+            if ( d->layout )
+            {
+                d->layout->invalidate();
+            }
 
-        [[fallthrough]];
+            [[fallthrough]];
 
-    case QEvent::FontChange:
-        update();
-        updateGeometry();
-        break;
+        case QEvent::FontChange:
+            update();
+            updateGeometry();
+            break;
 
-    case QEvent::PaletteChange:
-        update();
-        break;
+        case QEvent::PaletteChange:
+            update();
+            break;
 
-    case QEvent::ParentChange:
-        d->resolveFont( d->inheritedFontResolveMask );
-        d->resolvePalette( d->inheritedPaletteResolveMask );
-        break;
+        case QEvent::ParentChange:
+            d->resolveFont( d->inheritedFontResolveMask );
+            d->resolvePalette( d->inheritedPaletteResolveMask );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 

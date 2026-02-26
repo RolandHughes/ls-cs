@@ -61,6 +61,8 @@ if(BUILD_PLATFORMS_XCB_PLUGIN AND XCB_GLX_LIB)
       ${CMAKE_CURRENT_SOURCE_DIR}/xcb/glx/qxcb_glx_main.cpp
    )
 
+   #ls_libtool_ep
+   
    target_link_libraries(LsCsGuiXcb_Glx
       PRIVATE
       LsCsCore
@@ -69,7 +71,6 @@ if(BUILD_PLATFORMS_XCB_PLUGIN AND XCB_GLX_LIB)
       ${XCB_LIB}
       ${XCB_GLX_LIB}
       ${X11_X11_LIB}
-      ls_libtool_ep
    )
 
    target_include_directories(LsCsGuiXcb_Glx

@@ -70,53 +70,53 @@ QString lscs_error_string( int errorCode )
 
     switch ( errorCode )
     {
-    case 0:
-        break;
+        case 0:
+            break;
 
-    case EACCES:
-        s = lscs_mark_tr( "QIODevice", "Permission denied" );
-        break;
+        case EACCES:
+            s = lscs_mark_tr( "QIODevice", "Permission denied" );
+            break;
 
-    case EMFILE:
-        s = lscs_mark_tr( "QIODevice", "Too many open files" );
-        break;
+        case EMFILE:
+            s = lscs_mark_tr( "QIODevice", "Too many open files" );
+            break;
 
-    case ENOENT:
-        s = lscs_mark_tr( "QIODevice", "No such file or directory" );
-        break;
+        case ENOENT:
+            s = lscs_mark_tr( "QIODevice", "No such file or directory" );
+            break;
 
-    case ENOSPC:
-        s = lscs_mark_tr( "QIODevice", "No space left on device" );
-        break;
+        case ENOSPC:
+            s = lscs_mark_tr( "QIODevice", "No space left on device" );
+            break;
 
-    default:
-    {
+        default:
+        {
 
 #ifdef Q_OS_WIN
-        char16_t *string = nullptr;
+            char16_t *string = nullptr;
 
-        FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-                       nullptr, errorCode, MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ), ( LPWSTR )&string, 0, nullptr );
+            FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+                           nullptr, errorCode, MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ), ( LPWSTR )&string, 0, nullptr );
 
-        retval = QString::fromUtf16( string );
-        LocalFree( ( HLOCAL )string );
+            retval = QString::fromUtf16( string );
+            LocalFree( ( HLOCAL )string );
 
-        if ( retval.isEmpty() && errorCode == ERROR_MOD_NOT_FOUND )
-        {
-            retval = "Specified module could not be found.";
-        }
+            if ( retval.isEmpty() && errorCode == ERROR_MOD_NOT_FOUND )
+            {
+                retval = "Specified module could not be found.";
+            }
 
 #elif defined(_POSIX_THREAD_SAFE_FUNCTIONS) && _POSIX_VERSION >= 200112L
-        QByteArray buf( 1024, '\0' );
-        retval = fromstrerror_helper( strerror_r( errorCode, buf.data(), buf.size() ), buf );
+            QByteArray buf( 1024, '\0' );
+            retval = fromstrerror_helper( strerror_r( errorCode, buf.data(), buf.size() ), buf );
 
 #else
-        retval = QString::fromUtf8( strerror( errorCode ) );
+            retval = QString::fromUtf8( strerror( errorCode ) );
 
 #endif
 
-        break;
-    }
+            break;
+        }
     }
 
     if ( s )

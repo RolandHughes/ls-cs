@@ -123,17 +123,17 @@ public:
 
             switch ( result )
             {
-            case AtomicComparator::LessThan:
-                return orderSpec.direction == OrderBy::OrderSpec::Ascending;
+                case AtomicComparator::LessThan:
+                    return orderSpec.direction == OrderBy::OrderSpec::Ascending;
 
-            case AtomicComparator::GreaterThan:
-                return orderSpec.direction != OrderBy::OrderSpec::Ascending;
+                case AtomicComparator::GreaterThan:
+                    return orderSpec.direction != OrderBy::OrderSpec::Ascending;
 
-            case AtomicComparator::Equal:
-                continue;
+                case AtomicComparator::Equal:
+                    continue;
 
-            case AtomicComparator::Incomparable:
-                Q_ASSERT_X( false, Q_FUNC_INFO, "These values must be comparable." );
+                case AtomicComparator::Incomparable:
+                    Q_ASSERT_X( false, Q_FUNC_INFO, "These values must be comparable." );
             }
         }
 

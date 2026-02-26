@@ -1176,316 +1176,316 @@ void QTextControl::processEvent( QEvent *e, const QMatrix &matrix, QWidget *cont
         {
 #ifndef LSCS_NO_GRAPHICSVIEW
 
-        case QEvent::GraphicsSceneMouseMove:
-        case QEvent::GraphicsSceneMousePress:
-        case QEvent::GraphicsSceneMouseRelease:
-        case QEvent::GraphicsSceneMouseDoubleClick:
-        case QEvent::GraphicsSceneContextMenu:
-        case QEvent::GraphicsSceneHoverEnter:
-        case QEvent::GraphicsSceneHoverMove:
-        case QEvent::GraphicsSceneHoverLeave:
-        case QEvent::GraphicsSceneHelp:
-        case QEvent::GraphicsSceneDragEnter:
-        case QEvent::GraphicsSceneDragMove:
-        case QEvent::GraphicsSceneDragLeave:
-        case QEvent::GraphicsSceneDrop:
-        {
-            QGraphicsSceneEvent *ev = static_cast<QGraphicsSceneEvent *>( e );
-            d->contextWidget = ev->widget();
-            break;
-        }
+            case QEvent::GraphicsSceneMouseMove:
+            case QEvent::GraphicsSceneMousePress:
+            case QEvent::GraphicsSceneMouseRelease:
+            case QEvent::GraphicsSceneMouseDoubleClick:
+            case QEvent::GraphicsSceneContextMenu:
+            case QEvent::GraphicsSceneHoverEnter:
+            case QEvent::GraphicsSceneHoverMove:
+            case QEvent::GraphicsSceneHoverLeave:
+            case QEvent::GraphicsSceneHelp:
+            case QEvent::GraphicsSceneDragEnter:
+            case QEvent::GraphicsSceneDragMove:
+            case QEvent::GraphicsSceneDragLeave:
+            case QEvent::GraphicsSceneDrop:
+            {
+                QGraphicsSceneEvent *ev = static_cast<QGraphicsSceneEvent *>( e );
+                d->contextWidget = ev->widget();
+                break;
+            }
 
 #endif // LSCS_NO_GRAPHICSVIEW
 
-        default:
-            break;
+            default:
+                break;
         };
     }
 
     switch ( e->type() )
     {
-    case QEvent::KeyPress:
-        d->keyPressEvent( static_cast<QKeyEvent *>( e ) );
-        break;
+        case QEvent::KeyPress:
+            d->keyPressEvent( static_cast<QKeyEvent *>( e ) );
+            break;
 
-    case QEvent::MouseButtonPress:
-    {
-        QMouseEvent *ev = static_cast<QMouseEvent *>( e );
-        d->mousePressEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(),
-                            ev->buttons(), ev->globalPos() );
-        break;
-    }
+        case QEvent::MouseButtonPress:
+        {
+            QMouseEvent *ev = static_cast<QMouseEvent *>( e );
+            d->mousePressEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(),
+                                ev->buttons(), ev->globalPos() );
+            break;
+        }
 
-    case QEvent::MouseMove:
-    {
-        QMouseEvent *ev = static_cast<QMouseEvent *>( e );
-        d->mouseMoveEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(),
-                           ev->buttons(), ev->globalPos() );
-        break;
-    }
+        case QEvent::MouseMove:
+        {
+            QMouseEvent *ev = static_cast<QMouseEvent *>( e );
+            d->mouseMoveEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(),
+                               ev->buttons(), ev->globalPos() );
+            break;
+        }
 
-    case QEvent::MouseButtonRelease:
-    {
-        QMouseEvent *ev = static_cast<QMouseEvent *>( e );
-        d->mouseReleaseEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(),
-                              ev->buttons(), ev->globalPos() );
-        break;
-    }
-
-    case QEvent::MouseButtonDblClick:
-    {
-        QMouseEvent *ev = static_cast<QMouseEvent *>( e );
-        d->mouseDoubleClickEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(),
+        case QEvent::MouseButtonRelease:
+        {
+            QMouseEvent *ev = static_cast<QMouseEvent *>( e );
+            d->mouseReleaseEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(),
                                   ev->buttons(), ev->globalPos() );
-        break;
-    }
+            break;
+        }
 
-    case QEvent::InputMethod:
-        d->inputMethodEvent( static_cast<QInputMethodEvent *>( e ) );
-        break;
+        case QEvent::MouseButtonDblClick:
+        {
+            QMouseEvent *ev = static_cast<QMouseEvent *>( e );
+            d->mouseDoubleClickEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(),
+                                      ev->buttons(), ev->globalPos() );
+            break;
+        }
+
+        case QEvent::InputMethod:
+            d->inputMethodEvent( static_cast<QInputMethodEvent *>( e ) );
+            break;
 #ifndef LSCS_NO_CONTEXTMENU
 
-    case QEvent::ContextMenu:
-    {
-        QContextMenuEvent *ev = static_cast<QContextMenuEvent *>( e );
-        d->contextMenuEvent( ev->globalPos(), matrix.map( ev->pos() ), contextWidget );
-        break;
-    }
+        case QEvent::ContextMenu:
+        {
+            QContextMenuEvent *ev = static_cast<QContextMenuEvent *>( e );
+            d->contextMenuEvent( ev->globalPos(), matrix.map( ev->pos() ), contextWidget );
+            break;
+        }
 
 #endif // LSCS_NO_CONTEXTMENU
 
-    case QEvent::FocusIn:
-    case QEvent::FocusOut:
-        d->focusEvent( static_cast<QFocusEvent *>( e ) );
-        break;
+        case QEvent::FocusIn:
+        case QEvent::FocusOut:
+            d->focusEvent( static_cast<QFocusEvent *>( e ) );
+            break;
 
-    case QEvent::EnabledChange:
-        d->isEnabled = e->isAccepted();
-        break;
+        case QEvent::EnabledChange:
+            d->isEnabled = e->isAccepted();
+            break;
 
 #ifndef LSCS_NO_TOOLTIP
 
-    case QEvent::ToolTip:
-    {
-        QHelpEvent *ev = static_cast<QHelpEvent *>( e );
-        d->showToolTip( ev->globalPos(), matrix.map( ev->pos() ), contextWidget );
-        break;
-    }
+        case QEvent::ToolTip:
+        {
+            QHelpEvent *ev = static_cast<QHelpEvent *>( e );
+            d->showToolTip( ev->globalPos(), matrix.map( ev->pos() ), contextWidget );
+            break;
+        }
 
 #endif // LSCS_NO_TOOLTIP
 
 #ifndef LSCS_NO_DRAGANDDROP
 
-    case QEvent::DragEnter:
-    {
-        QDragEnterEvent *ev = static_cast<QDragEnterEvent *>( e );
-
-        if ( d->dragEnterEvent( e, ev->mimeData() ) )
+        case QEvent::DragEnter:
         {
-            ev->acceptProposedAction();
+            QDragEnterEvent *ev = static_cast<QDragEnterEvent *>( e );
+
+            if ( d->dragEnterEvent( e, ev->mimeData() ) )
+            {
+                ev->acceptProposedAction();
+            }
+
+            break;
         }
 
-        break;
-    }
+        case QEvent::DragLeave:
+            d->dragLeaveEvent();
+            break;
 
-    case QEvent::DragLeave:
-        d->dragLeaveEvent();
-        break;
-
-    case QEvent::DragMove:
-    {
-        QDragMoveEvent *ev = static_cast<QDragMoveEvent *>( e );
-
-        if ( d->dragMoveEvent( e, ev->mimeData(), matrix.map( ev->pos() ) ) )
+        case QEvent::DragMove:
         {
-            ev->acceptProposedAction();
+            QDragMoveEvent *ev = static_cast<QDragMoveEvent *>( e );
+
+            if ( d->dragMoveEvent( e, ev->mimeData(), matrix.map( ev->pos() ) ) )
+            {
+                ev->acceptProposedAction();
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case QEvent::Drop:
-    {
-        QDropEvent *ev = static_cast<QDropEvent *>( e );
-
-        if ( d->dropEvent( ev->mimeData(), matrix.map( ev->pos() ), ev->dropAction(), ev->source() ) )
+        case QEvent::Drop:
         {
-            ev->acceptProposedAction();
-        }
+            QDropEvent *ev = static_cast<QDropEvent *>( e );
 
-        break;
-    }
+            if ( d->dropEvent( ev->mimeData(), matrix.map( ev->pos() ), ev->dropAction(), ev->source() ) )
+            {
+                ev->acceptProposedAction();
+            }
+
+            break;
+        }
 
 #endif
 
 #ifndef LSCS_NO_GRAPHICSVIEW
 
-    case QEvent::GraphicsSceneMousePress:
-    {
-        QGraphicsSceneMouseEvent *ev = static_cast<QGraphicsSceneMouseEvent *>( e );
-        d->mousePressEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(), ev->buttons(),
-                            ev->screenPos() );
-        break;
-    }
+        case QEvent::GraphicsSceneMousePress:
+        {
+            QGraphicsSceneMouseEvent *ev = static_cast<QGraphicsSceneMouseEvent *>( e );
+            d->mousePressEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(), ev->buttons(),
+                                ev->screenPos() );
+            break;
+        }
 
-    case QEvent::GraphicsSceneMouseMove:
-    {
-        QGraphicsSceneMouseEvent *ev = static_cast<QGraphicsSceneMouseEvent *>( e );
-        d->mouseMoveEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(), ev->buttons(),
-                           ev->screenPos() );
-        break;
-    }
+        case QEvent::GraphicsSceneMouseMove:
+        {
+            QGraphicsSceneMouseEvent *ev = static_cast<QGraphicsSceneMouseEvent *>( e );
+            d->mouseMoveEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(), ev->buttons(),
+                               ev->screenPos() );
+            break;
+        }
 
-    case QEvent::GraphicsSceneMouseRelease:
-    {
-        QGraphicsSceneMouseEvent *ev = static_cast<QGraphicsSceneMouseEvent *>( e );
-        d->mouseReleaseEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(), ev->buttons(),
-                              ev->screenPos() );
-        break;
-    }
-
-    case QEvent::GraphicsSceneMouseDoubleClick:
-    {
-        QGraphicsSceneMouseEvent *ev = static_cast<QGraphicsSceneMouseEvent *>( e );
-        d->mouseDoubleClickEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(), ev->buttons(),
+        case QEvent::GraphicsSceneMouseRelease:
+        {
+            QGraphicsSceneMouseEvent *ev = static_cast<QGraphicsSceneMouseEvent *>( e );
+            d->mouseReleaseEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(), ev->buttons(),
                                   ev->screenPos() );
-        break;
-    }
-
-    case QEvent::GraphicsSceneContextMenu:
-    {
-        QGraphicsSceneContextMenuEvent *ev = static_cast<QGraphicsSceneContextMenuEvent *>( e );
-        d->contextMenuEvent( ev->screenPos(), matrix.map( ev->pos() ), contextWidget );
-        break;
-    }
-
-    case QEvent::GraphicsSceneHoverMove:
-    {
-        QGraphicsSceneHoverEvent *ev = static_cast<QGraphicsSceneHoverEvent *>( e );
-        d->mouseMoveEvent( ev, Qt::NoButton, matrix.map( ev->pos() ), ev->modifiers(), Qt::NoButton,
-                           ev->screenPos() );
-        break;
-    }
-
-    case QEvent::GraphicsSceneDragEnter:
-    {
-        QGraphicsSceneDragDropEvent *ev = static_cast<QGraphicsSceneDragDropEvent *>( e );
-
-        if ( d->dragEnterEvent( e, ev->mimeData() ) )
-        {
-            ev->acceptProposedAction();
+            break;
         }
 
-        break;
-    }
-
-    case QEvent::GraphicsSceneDragLeave:
-        d->dragLeaveEvent();
-        break;
-
-    case QEvent::GraphicsSceneDragMove:
-    {
-        QGraphicsSceneDragDropEvent *ev = static_cast<QGraphicsSceneDragDropEvent *>( e );
-
-        if ( d->dragMoveEvent( e, ev->mimeData(), matrix.map( ev->pos() ) ) )
+        case QEvent::GraphicsSceneMouseDoubleClick:
         {
-            ev->acceptProposedAction();
+            QGraphicsSceneMouseEvent *ev = static_cast<QGraphicsSceneMouseEvent *>( e );
+            d->mouseDoubleClickEvent( ev, ev->button(), matrix.map( ev->pos() ), ev->modifiers(), ev->buttons(),
+                                      ev->screenPos() );
+            break;
         }
 
-        break;
-    }
-
-    case QEvent::GraphicsSceneDrop:
-    {
-        QGraphicsSceneDragDropEvent *ev = static_cast<QGraphicsSceneDragDropEvent *>( e );
-
-        if ( d->dropEvent( ev->mimeData(), matrix.map( ev->pos() ), ev->dropAction(), ev->source() ) )
+        case QEvent::GraphicsSceneContextMenu:
         {
-            ev->accept();
+            QGraphicsSceneContextMenuEvent *ev = static_cast<QGraphicsSceneContextMenuEvent *>( e );
+            d->contextMenuEvent( ev->screenPos(), matrix.map( ev->pos() ), contextWidget );
+            break;
         }
 
-        break;
-    }
+        case QEvent::GraphicsSceneHoverMove:
+        {
+            QGraphicsSceneHoverEvent *ev = static_cast<QGraphicsSceneHoverEvent *>( e );
+            d->mouseMoveEvent( ev, Qt::NoButton, matrix.map( ev->pos() ), ev->modifiers(), Qt::NoButton,
+                               ev->screenPos() );
+            break;
+        }
+
+        case QEvent::GraphicsSceneDragEnter:
+        {
+            QGraphicsSceneDragDropEvent *ev = static_cast<QGraphicsSceneDragDropEvent *>( e );
+
+            if ( d->dragEnterEvent( e, ev->mimeData() ) )
+            {
+                ev->acceptProposedAction();
+            }
+
+            break;
+        }
+
+        case QEvent::GraphicsSceneDragLeave:
+            d->dragLeaveEvent();
+            break;
+
+        case QEvent::GraphicsSceneDragMove:
+        {
+            QGraphicsSceneDragDropEvent *ev = static_cast<QGraphicsSceneDragDropEvent *>( e );
+
+            if ( d->dragMoveEvent( e, ev->mimeData(), matrix.map( ev->pos() ) ) )
+            {
+                ev->acceptProposedAction();
+            }
+
+            break;
+        }
+
+        case QEvent::GraphicsSceneDrop:
+        {
+            QGraphicsSceneDragDropEvent *ev = static_cast<QGraphicsSceneDragDropEvent *>( e );
+
+            if ( d->dropEvent( ev->mimeData(), matrix.map( ev->pos() ), ev->dropAction(), ev->source() ) )
+            {
+                ev->accept();
+            }
+
+            break;
+        }
 
 #endif // LSCS_NO_GRAPHICSVIEW
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-    case QEvent::EnterEditFocus:
-    case QEvent::LeaveEditFocus:
-        if ( QApplication::keypadNavigationEnabled() )
-        {
-            d->editFocusEvent( e );
-        }
+        case QEvent::EnterEditFocus:
+        case QEvent::LeaveEditFocus:
+            if ( QApplication::keypadNavigationEnabled() )
+            {
+                d->editFocusEvent( e );
+            }
 
-        break;
+            break;
 #endif
 
-    case QEvent::ShortcutOverride:
-        if ( d->interactionFlags & Qt::TextEditable )
-        {
-            QKeyEvent *ke = static_cast<QKeyEvent *>( e );
-
-            if ( ke->modifiers() == Qt::NoModifier
-                    || ke->modifiers() == Qt::ShiftModifier
-                    || ke->modifiers() == Qt::KeypadModifier )
+        case QEvent::ShortcutOverride:
+            if ( d->interactionFlags & Qt::TextEditable )
             {
-                if ( ke->key() < Qt::Key_Escape )
-                {
-                    ke->accept();
-                }
-                else
-                {
-                    switch ( ke->key() )
-                    {
-                    case Qt::Key_Return:
-                    case Qt::Key_Enter:
-                    case Qt::Key_Delete:
-                    case Qt::Key_Home:
-                    case Qt::Key_End:
-                    case Qt::Key_Backspace:
-                    case Qt::Key_Left:
-                    case Qt::Key_Right:
-                    case Qt::Key_Up:
-                    case Qt::Key_Down:
-                    case Qt::Key_Tab:
-                        ke->accept();
+                QKeyEvent *ke = static_cast<QKeyEvent *>( e );
 
-                    default:
-                        break;
+                if ( ke->modifiers() == Qt::NoModifier
+                        || ke->modifiers() == Qt::ShiftModifier
+                        || ke->modifiers() == Qt::KeypadModifier )
+                {
+                    if ( ke->key() < Qt::Key_Escape )
+                    {
+                        ke->accept();
                     }
-                }
+                    else
+                    {
+                        switch ( ke->key() )
+                        {
+                            case Qt::Key_Return:
+                            case Qt::Key_Enter:
+                            case Qt::Key_Delete:
+                            case Qt::Key_Home:
+                            case Qt::Key_End:
+                            case Qt::Key_Backspace:
+                            case Qt::Key_Left:
+                            case Qt::Key_Right:
+                            case Qt::Key_Up:
+                            case Qt::Key_Down:
+                            case Qt::Key_Tab:
+                                ke->accept();
+
+                            default:
+                                break;
+                        }
+                    }
 
 #ifndef LSCS_NO_SHORTCUT
-            }
-            else if ( ke == QKeySequence::Copy
-                      || ke == QKeySequence::Paste
-                      || ke == QKeySequence::Cut
-                      || ke == QKeySequence::Redo
-                      || ke == QKeySequence::Undo
-                      || ke == QKeySequence::MoveToNextWord
-                      || ke == QKeySequence::MoveToPreviousWord
-                      || ke == QKeySequence::MoveToStartOfDocument
-                      || ke == QKeySequence::MoveToEndOfDocument
-                      || ke == QKeySequence::SelectNextWord
-                      || ke == QKeySequence::SelectPreviousWord
-                      || ke == QKeySequence::SelectStartOfLine
-                      || ke == QKeySequence::SelectEndOfLine
-                      || ke == QKeySequence::SelectStartOfBlock
-                      || ke == QKeySequence::SelectEndOfBlock
-                      || ke == QKeySequence::SelectStartOfDocument
-                      || ke == QKeySequence::SelectEndOfDocument
-                      || ke == QKeySequence::SelectAll
-                    )
-            {
-                ke->accept();
+                }
+                else if ( ke == QKeySequence::Copy
+                          || ke == QKeySequence::Paste
+                          || ke == QKeySequence::Cut
+                          || ke == QKeySequence::Redo
+                          || ke == QKeySequence::Undo
+                          || ke == QKeySequence::MoveToNextWord
+                          || ke == QKeySequence::MoveToPreviousWord
+                          || ke == QKeySequence::MoveToStartOfDocument
+                          || ke == QKeySequence::MoveToEndOfDocument
+                          || ke == QKeySequence::SelectNextWord
+                          || ke == QKeySequence::SelectPreviousWord
+                          || ke == QKeySequence::SelectStartOfLine
+                          || ke == QKeySequence::SelectEndOfLine
+                          || ke == QKeySequence::SelectStartOfBlock
+                          || ke == QKeySequence::SelectEndOfBlock
+                          || ke == QKeySequence::SelectStartOfDocument
+                          || ke == QKeySequence::SelectEndOfDocument
+                          || ke == QKeySequence::SelectAll
+                        )
+                {
+                    ke->accept();
 #endif
+                }
             }
-        }
 
-        break;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -1886,10 +1886,10 @@ static QRectF boundingRectOfFloatsInSelection( const QTextCursor &cursor )
     const QList<QTextFrame *> children = frame->childFrames();
 
     const QList<QTextFrame *>::const_iterator firstFrame = std::lower_bound( children.constBegin(), children.constEnd(),
-        cursor.selectionStart(), QTextFrameComparator() );
+            cursor.selectionStart(), QTextFrameComparator() );
 
     const QList<QTextFrame *>::const_iterator lastFrame = std::upper_bound( children.constBegin(), children.constEnd(),
-        cursor.selectionEnd(), QTextFrameComparator() );
+            cursor.selectionEnd(), QTextFrameComparator() );
 
     for ( QList<QTextFrame *>::const_iterator it = firstFrame; it != lastFrame; ++it )
     {
@@ -2671,90 +2671,90 @@ QVariant QTextControl::inputMethodQuery( Qt::InputMethodQuery property, QVariant
 
     switch ( property )
     {
-    case Qt::ImCursorRectangle:
-        return cursorRect();
+        case Qt::ImCursorRectangle:
+            return cursorRect();
 
-    case Qt::ImFont:
-        return QVariant( d->cursor.charFormat().font() );
+        case Qt::ImFont:
+            return QVariant( d->cursor.charFormat().font() );
 
-    case Qt::ImCursorPosition:
-        return QVariant( d->cursor.position() - block.position() );
+        case Qt::ImCursorPosition:
+            return QVariant( d->cursor.position() - block.position() );
 
-    case Qt::ImSurroundingText:
-        return QVariant( block.text() );
+        case Qt::ImSurroundingText:
+            return QVariant( block.text() );
 
-    case Qt::ImCurrentSelection:
-        return QVariant( d->cursor.selectedText() );
+        case Qt::ImCurrentSelection:
+            return QVariant( d->cursor.selectedText() );
 
-    case Qt::ImMaximumTextLength:
-        return QVariant(); // No limit.
+        case Qt::ImMaximumTextLength:
+            return QVariant(); // No limit.
 
-    case Qt::ImAnchorPosition:
-        return QVariant( d->cursor.anchor() - block.position() );
+        case Qt::ImAnchorPosition:
+            return QVariant( d->cursor.anchor() - block.position() );
 
-    case Qt::ImAbsolutePosition:
-        return QVariant( d->cursor.position() );
+        case Qt::ImAbsolutePosition:
+            return QVariant( d->cursor.position() );
 
-    case Qt::ImTextAfterCursor:
-    {
-        int maxLength = argument.isValid() ? argument.toInt() : 1024;
-        QTextCursor tmpCursor = d->cursor;
-        int localPos = d->cursor.position() - block.position();
-        QString result = block.text().mid( localPos );
-
-        while ( result.length() < maxLength )
+        case Qt::ImTextAfterCursor:
         {
-            int currentBlock = tmpCursor.blockNumber();
-            tmpCursor.movePosition( QTextCursor::NextBlock );
+            int maxLength = argument.isValid() ? argument.toInt() : 1024;
+            QTextCursor tmpCursor = d->cursor;
+            int localPos = d->cursor.position() - block.position();
+            QString result = block.text().mid( localPos );
 
-            if ( tmpCursor.blockNumber() == currentBlock )
+            while ( result.length() < maxLength )
             {
-                break;
+                int currentBlock = tmpCursor.blockNumber();
+                tmpCursor.movePosition( QTextCursor::NextBlock );
+
+                if ( tmpCursor.blockNumber() == currentBlock )
+                {
+                    break;
+                }
+
+                result += QLatin1Char( '\n' ) + tmpCursor.block().text();
             }
 
-            result += QLatin1Char( '\n' ) + tmpCursor.block().text();
+            return QVariant( result );
         }
 
-        return QVariant( result );
-    }
-
-    case Qt::ImTextBeforeCursor:
-    {
-        int maxLength = argument.isValid() ? argument.toInt() : 1024;
-        QTextCursor tmpCursor = d->cursor;
-        int localPos = d->cursor.position() - block.position();
-        int numBlocks = 0;
-        int resultLen = localPos;
-
-        while ( resultLen < maxLength )
+        case Qt::ImTextBeforeCursor:
         {
-            int currentBlock = tmpCursor.blockNumber();
-            tmpCursor.movePosition( QTextCursor::PreviousBlock );
+            int maxLength = argument.isValid() ? argument.toInt() : 1024;
+            QTextCursor tmpCursor = d->cursor;
+            int localPos = d->cursor.position() - block.position();
+            int numBlocks = 0;
+            int resultLen = localPos;
 
-            if ( tmpCursor.blockNumber() == currentBlock )
+            while ( resultLen < maxLength )
             {
-                break;
+                int currentBlock = tmpCursor.blockNumber();
+                tmpCursor.movePosition( QTextCursor::PreviousBlock );
+
+                if ( tmpCursor.blockNumber() == currentBlock )
+                {
+                    break;
+                }
+
+                numBlocks++;
+                resultLen += tmpCursor.block().length();
             }
 
-            numBlocks++;
-            resultLen += tmpCursor.block().length();
+            QString result;
+
+            while ( numBlocks )
+            {
+                result += tmpCursor.block().text() + QLatin1Char( '\n' );
+                tmpCursor.movePosition( QTextCursor::NextBlock );
+                --numBlocks;
+            }
+
+            result += block.text().mid( 0, localPos );
+            return QVariant( result );
         }
 
-        QString result;
-
-        while ( numBlocks )
-        {
-            result += tmpCursor.block().text() + QLatin1Char( '\n' );
-            tmpCursor.movePosition( QTextCursor::NextBlock );
-            --numBlocks;
-        }
-
-        result += block.text().mid( 0, localPos );
-        return QVariant( result );
-    }
-
-    default:
-        return QVariant();
+        default:
+            return QVariant();
     }
 }
 

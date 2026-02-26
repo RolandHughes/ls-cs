@@ -68,44 +68,44 @@ void QSharedMemoryPrivate::setErrorString( const QString &function )
     // EINVAL is handled in functions so they can give better error strings
     switch ( errno )
     {
-    case EACCES:
-    case EPERM:
-        errorString = QSharedMemory::tr( "%1: permission denied" ).formatArg( function );
-        error = QSharedMemory::PermissionDenied;
-        break;
+        case EACCES:
+        case EPERM:
+            errorString = QSharedMemory::tr( "%1: permission denied" ).formatArg( function );
+            error = QSharedMemory::PermissionDenied;
+            break;
 
-    case EEXIST:
-        errorString = QSharedMemory::tr( "%1: already exists" ).formatArg( function );
-        error = QSharedMemory::AlreadyExists;
-        break;
+        case EEXIST:
+            errorString = QSharedMemory::tr( "%1: already exists" ).formatArg( function );
+            error = QSharedMemory::AlreadyExists;
+            break;
 
-    case ENOENT:
-        errorString = QSharedMemory::tr( "%1: does not exist" ).formatArg( function );
-        error = QSharedMemory::NotFound;
-        break;
+        case ENOENT:
+            errorString = QSharedMemory::tr( "%1: does not exist" ).formatArg( function );
+            error = QSharedMemory::NotFound;
+            break;
 
-    case EAGAIN:
-    case EMFILE:
-    case ENFILE:
-    case ENOMEM:
-    case ENOSPC:
-        errorString = QSharedMemory::tr( "%1: out of resources" ).formatArg( function );
-        error = QSharedMemory::OutOfResources;
-        break;
+        case EAGAIN:
+        case EMFILE:
+        case ENFILE:
+        case ENOMEM:
+        case ENOSPC:
+            errorString = QSharedMemory::tr( "%1: out of resources" ).formatArg( function );
+            error = QSharedMemory::OutOfResources;
+            break;
 
-    case EOVERFLOW:
-        errorString = QSharedMemory::tr( "%1: invalid size" ).formatArg( function );
-        error = QSharedMemory::InvalidSize;
-        break;
+        case EOVERFLOW:
+            errorString = QSharedMemory::tr( "%1: invalid size" ).formatArg( function );
+            error = QSharedMemory::InvalidSize;
+            break;
 
-    default:
-        errorString = QSharedMemory::tr( "%1: unknown error %2" ).formatArgs( function, errno );
-        error = QSharedMemory::UnknownError;
+        default:
+            errorString = QSharedMemory::tr( "%1: unknown error %2" ).formatArgs( function, errno );
+            error = QSharedMemory::UnknownError;
 
 #if defined(LSCS_SHOW_DEBUG_CORE)
-        qDebug() << errorString << "key" << key << "errno" << errno << EINVAL;
+            qDebug() << errorString << "key" << key << "errno" << errno << EINVAL;
 #endif
-        break;
+            break;
     }
 }
 
@@ -244,13 +244,13 @@ bool QSharedMemoryPrivate::create( int size )
 
         switch ( errno )
         {
-        case EINVAL:
-            errorString = QSharedMemory::tr( "%1: system-imposed size restrictions" ).formatArg( function );
-            error = QSharedMemory::InvalidSize;
-            break;
+            case EINVAL:
+                errorString = QSharedMemory::tr( "%1: system-imposed size restrictions" ).formatArg( function );
+                error = QSharedMemory::InvalidSize;
+                break;
 
-        default:
-            setErrorString( function );
+            default:
+                setErrorString( function );
         }
 
         if ( createdFile && error != QSharedMemory::AlreadyExists )
@@ -279,14 +279,14 @@ bool QSharedMemoryPrivate::create( int size )
 
         switch ( errno )
         {
-        case ENAMETOOLONG:
-        case EINVAL:
-            errorString = QSharedMemory::tr( "%1: bad name" ).formatArg( function );
-            error = QSharedMemory::KeyError;
-            break;
+            case ENAMETOOLONG:
+            case EINVAL:
+                errorString = QSharedMemory::tr( "%1: bad name" ).formatArg( function );
+                error = QSharedMemory::KeyError;
+                break;
 
-        default:
-            setErrorString( function );
+            default:
+                setErrorString( function );
         }
 
         return false;
@@ -358,14 +358,14 @@ bool QSharedMemoryPrivate::attach( QSharedMemory::AccessMode mode )
 
         switch ( errno )
         {
-        case ENAMETOOLONG:
-        case EINVAL:
-            errorString = QSharedMemory::tr( "%1: bad name" ).formatArg( function );
-            error = QSharedMemory::KeyError;
-            break;
+            case ENAMETOOLONG:
+            case EINVAL:
+                errorString = QSharedMemory::tr( "%1: bad name" ).formatArg( function );
+                error = QSharedMemory::KeyError;
+                break;
 
-        default:
-            setErrorString( function );
+            default:
+                setErrorString( function );
         }
 
         hand = 0;
@@ -413,13 +413,13 @@ bool QSharedMemoryPrivate::detach()
 
         switch ( errno )
         {
-        case EINVAL:
-            errorString = QSharedMemory::tr( "%1: not attached" ).formatArg( function );
-            error = QSharedMemory::NotFound;
-            break;
+            case EINVAL:
+                errorString = QSharedMemory::tr( "%1: not attached" ).formatArg( function );
+                error = QSharedMemory::NotFound;
+                break;
 
-        default:
-            setErrorString( function );
+            default:
+                setErrorString( function );
         }
 
         return false;
@@ -438,11 +438,11 @@ bool QSharedMemoryPrivate::detach()
     {
         switch ( errno )
         {
-        case EINVAL:
-            return true;
+            case EINVAL:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -456,11 +456,11 @@ bool QSharedMemoryPrivate::detach()
 
             switch ( errno )
             {
-            case EINVAL:
-                return true;
+                case EINVAL:
+                    return true;
 
-            default:
-                return false;
+                default:
+                    return false;
             }
         }
 

@@ -412,30 +412,30 @@ QWindowGeometrySpecification QWindowGeometrySpecification::fromArgument( const Q
 
         switch ( op )
         {
-        case 'x':
-            ( result.width >= 0 ? result.height : result.width ) = value;
-            break;
+            case 'x':
+                ( result.width >= 0 ? result.height : result.width ) = value;
+                break;
 
-        case '+':
-        case '-':
-            if ( result.xOffset >= 0 )
-            {
-                result.yOffset = value;
-
-                if ( op == '-' )
+            case '+':
+            case '-':
+                if ( result.xOffset >= 0 )
                 {
-                    result.corner = result.corner == Qt::TopRightCorner ? Qt::BottomRightCorner : Qt::BottomLeftCorner;
-                }
-            }
-            else
-            {
-                result.xOffset = value;
+                    result.yOffset = value;
 
-                if ( op == '-' )
-                {
-                    result.corner = Qt::TopRightCorner;
+                    if ( op == '-' )
+                    {
+                        result.corner = result.corner == Qt::TopRightCorner ? Qt::BottomRightCorner : Qt::BottomLeftCorner;
+                    }
                 }
-            }
+                else
+                {
+                    result.xOffset = value;
+
+                    if ( op == '-' )
+                    {
+                        result.corner = Qt::TopRightCorner;
+                    }
+                }
         }
     }
 
@@ -1047,20 +1047,20 @@ static void init_platform( const QString &pluginArgument, const QString &platfor
     // Split into platform arguments and key
     QStringList arguments   = pluginArgument.split( ':' );
     const QString pluginKey = arguments.takeFirst().toLower();
-    
+
     /*
      * TODO:: Legacy Qt and CopperSpice bug. They did not honor entries in the .conf file.
      *        If you did a local build of library you had to hack RPATH on the plugins to
      *        point to your libraries otherwise they had to be in LD_LIBRARY_PATH prior to
      *        starting a program. Kind of defeats the entire concept of the .conf file.
      */
-     
+
     // look up the arguments in system settings
     arguments.append( QLibraryInfo::platformPluginArguments( pluginKey ) );
 
     // load the platform plugin
     QGuiApplicationPrivate::platform_integration = QPlatformIntegrationFactory::create( pluginKey, arguments,
-        argc, argv, platformPluginPath );
+            argc, argv, platformPluginPath );
 
     if ( QGuiApplicationPrivate::platform_integration != nullptr )
     {
@@ -1665,147 +1665,147 @@ void QGuiApplicationPrivate::processWindowSystemEvent( QWindowSystemInterfacePri
 {
     switch ( e->type )
     {
-    case QWindowSystemInterfacePrivate::FrameStrutMouse:
-    case QWindowSystemInterfacePrivate::Mouse:
-        QGuiApplicationPrivate::processMouseEvent( static_cast<QWindowSystemInterfacePrivate::MouseEvent *>( e ) );
+        case QWindowSystemInterfacePrivate::FrameStrutMouse:
+        case QWindowSystemInterfacePrivate::Mouse:
+            QGuiApplicationPrivate::processMouseEvent( static_cast<QWindowSystemInterfacePrivate::MouseEvent *>( e ) );
+            break;
+
+        case QWindowSystemInterfacePrivate::Wheel:
+            QGuiApplicationPrivate::processWheelEvent( static_cast<QWindowSystemInterfacePrivate::WheelEvent *>( e ) );
+            break;
+
+        case QWindowSystemInterfacePrivate::Key:
+            QGuiApplicationPrivate::processKeyEvent( static_cast<QWindowSystemInterfacePrivate::KeyEvent *>( e ) );
+            break;
+
+        case QWindowSystemInterfacePrivate::Touch:
+            QGuiApplicationPrivate::processTouchEvent( static_cast<QWindowSystemInterfacePrivate::TouchEvent *>( e ) );
+            break;
+
+        case QWindowSystemInterfacePrivate::GeometryChange:
+            QGuiApplicationPrivate::processGeometryChangeEvent( static_cast<QWindowSystemInterfacePrivate::GeometryChangeEvent *>( e ) );
+            break;
+
+        case QWindowSystemInterfacePrivate::Enter:
+            QGuiApplicationPrivate::processEnterEvent( static_cast<QWindowSystemInterfacePrivate::EnterEvent *>( e ) );
+            break;
+
+        case QWindowSystemInterfacePrivate::Leave:
+            QGuiApplicationPrivate::processLeaveEvent( static_cast<QWindowSystemInterfacePrivate::LeaveEvent *>( e ) );
+            break;
+
+        case QWindowSystemInterfacePrivate::ActivatedWindow:
+            QGuiApplicationPrivate::processActivatedEvent( static_cast<QWindowSystemInterfacePrivate::ActivatedWindowEvent *>( e ) );
+            break;
+
+        case QWindowSystemInterfacePrivate::WindowStateChanged:
+            QGuiApplicationPrivate::processWindowStateChangedEvent( static_cast<QWindowSystemInterfacePrivate::WindowStateChangedEvent *>
+                    ( e ) );
+            break;
+
+        case QWindowSystemInterfacePrivate::WindowScreenChanged:
+            QGuiApplicationPrivate::processWindowScreenChangedEvent( static_cast<QWindowSystemInterfacePrivate::WindowScreenChangedEvent *>
+                    ( e ) );
+            break;
+
+        case QWindowSystemInterfacePrivate::ApplicationStateChanged:
+        {
+            QWindowSystemInterfacePrivate::ApplicationStateChangedEvent *changeEvent =
+                static_cast<QWindowSystemInterfacePrivate::ApplicationStateChangedEvent *>( e );
+            QGuiApplicationPrivate::setApplicationState( changeEvent->newState, changeEvent->forcePropagate );
+        }
         break;
 
-    case QWindowSystemInterfacePrivate::Wheel:
-        QGuiApplicationPrivate::processWheelEvent( static_cast<QWindowSystemInterfacePrivate::WheelEvent *>( e ) );
+        case QWindowSystemInterfacePrivate::FlushEvents:
+        {
+            QWindowSystemInterfacePrivate::FlushEventsEvent *flushEventsEvent =
+                static_cast<QWindowSystemInterfacePrivate::FlushEventsEvent *>( e );
+            QWindowSystemInterface::deferredFlushWindowSystemEvents( flushEventsEvent->flags );
+        }
         break;
 
-    case QWindowSystemInterfacePrivate::Key:
-        QGuiApplicationPrivate::processKeyEvent( static_cast<QWindowSystemInterfacePrivate::KeyEvent *>( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::Close:
+            QGuiApplicationPrivate::processCloseEvent(
+                static_cast<QWindowSystemInterfacePrivate::CloseEvent *>( e ) );
+            break;
 
-    case QWindowSystemInterfacePrivate::Touch:
-        QGuiApplicationPrivate::processTouchEvent( static_cast<QWindowSystemInterfacePrivate::TouchEvent *>( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::ScreenOrientation:
+            QGuiApplicationPrivate::reportScreenOrientationChange(
+                static_cast<QWindowSystemInterfacePrivate::ScreenOrientationEvent *>( e ) );
+            break;
 
-    case QWindowSystemInterfacePrivate::GeometryChange:
-        QGuiApplicationPrivate::processGeometryChangeEvent( static_cast<QWindowSystemInterfacePrivate::GeometryChangeEvent *>( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::ScreenGeometry:
+            QGuiApplicationPrivate::reportGeometryChange(
+                static_cast<QWindowSystemInterfacePrivate::ScreenGeometryEvent *>( e ) );
+            break;
 
-    case QWindowSystemInterfacePrivate::Enter:
-        QGuiApplicationPrivate::processEnterEvent( static_cast<QWindowSystemInterfacePrivate::EnterEvent *>( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::ScreenLogicalDotsPerInch:
+            QGuiApplicationPrivate::reportLogicalDotsPerInchChange(
+                static_cast<QWindowSystemInterfacePrivate::ScreenLogicalDotsPerInchEvent *>( e ) );
+            break;
 
-    case QWindowSystemInterfacePrivate::Leave:
-        QGuiApplicationPrivate::processLeaveEvent( static_cast<QWindowSystemInterfacePrivate::LeaveEvent *>( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::ScreenRefreshRate:
+            QGuiApplicationPrivate::reportRefreshRateChange(
+                static_cast<QWindowSystemInterfacePrivate::ScreenRefreshRateEvent *>( e ) );
+            break;
 
-    case QWindowSystemInterfacePrivate::ActivatedWindow:
-        QGuiApplicationPrivate::processActivatedEvent( static_cast<QWindowSystemInterfacePrivate::ActivatedWindowEvent *>( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::ThemeChange:
+            QGuiApplicationPrivate::processThemeChanged(
+                static_cast<QWindowSystemInterfacePrivate::ThemeChangeEvent *>( e ) );
+            break;
 
-    case QWindowSystemInterfacePrivate::WindowStateChanged:
-        QGuiApplicationPrivate::processWindowStateChangedEvent( static_cast<QWindowSystemInterfacePrivate::WindowStateChangedEvent *>
-                ( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::Expose:
+            QGuiApplicationPrivate::processExposeEvent( static_cast<QWindowSystemInterfacePrivate::ExposeEvent *>( e ) );
+            break;
 
-    case QWindowSystemInterfacePrivate::WindowScreenChanged:
-        QGuiApplicationPrivate::processWindowScreenChangedEvent( static_cast<QWindowSystemInterfacePrivate::WindowScreenChangedEvent *>
-                ( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::Tablet:
+            QGuiApplicationPrivate::processTabletEvent(
+                static_cast<QWindowSystemInterfacePrivate::TabletEvent *>( e ) );
+            break;
 
-    case QWindowSystemInterfacePrivate::ApplicationStateChanged:
-    {
-        QWindowSystemInterfacePrivate::ApplicationStateChangedEvent *changeEvent =
-            static_cast<QWindowSystemInterfacePrivate::ApplicationStateChangedEvent *>( e );
-        QGuiApplicationPrivate::setApplicationState( changeEvent->newState, changeEvent->forcePropagate );
-    }
-    break;
+        case QWindowSystemInterfacePrivate::TabletEnterProximity:
+            QGuiApplicationPrivate::processTabletEnterProximityEvent(
+                static_cast<QWindowSystemInterfacePrivate::TabletEnterProximityEvent *>( e ) );
+            break;
 
-    case QWindowSystemInterfacePrivate::FlushEvents:
-    {
-        QWindowSystemInterfacePrivate::FlushEventsEvent *flushEventsEvent =
-            static_cast<QWindowSystemInterfacePrivate::FlushEventsEvent *>( e );
-        QWindowSystemInterface::deferredFlushWindowSystemEvents( flushEventsEvent->flags );
-    }
-    break;
-
-    case QWindowSystemInterfacePrivate::Close:
-        QGuiApplicationPrivate::processCloseEvent(
-            static_cast<QWindowSystemInterfacePrivate::CloseEvent *>( e ) );
-        break;
-
-    case QWindowSystemInterfacePrivate::ScreenOrientation:
-        QGuiApplicationPrivate::reportScreenOrientationChange(
-            static_cast<QWindowSystemInterfacePrivate::ScreenOrientationEvent *>( e ) );
-        break;
-
-    case QWindowSystemInterfacePrivate::ScreenGeometry:
-        QGuiApplicationPrivate::reportGeometryChange(
-            static_cast<QWindowSystemInterfacePrivate::ScreenGeometryEvent *>( e ) );
-        break;
-
-    case QWindowSystemInterfacePrivate::ScreenLogicalDotsPerInch:
-        QGuiApplicationPrivate::reportLogicalDotsPerInchChange(
-            static_cast<QWindowSystemInterfacePrivate::ScreenLogicalDotsPerInchEvent *>( e ) );
-        break;
-
-    case QWindowSystemInterfacePrivate::ScreenRefreshRate:
-        QGuiApplicationPrivate::reportRefreshRateChange(
-            static_cast<QWindowSystemInterfacePrivate::ScreenRefreshRateEvent *>( e ) );
-        break;
-
-    case QWindowSystemInterfacePrivate::ThemeChange:
-        QGuiApplicationPrivate::processThemeChanged(
-            static_cast<QWindowSystemInterfacePrivate::ThemeChangeEvent *>( e ) );
-        break;
-
-    case QWindowSystemInterfacePrivate::Expose:
-        QGuiApplicationPrivate::processExposeEvent( static_cast<QWindowSystemInterfacePrivate::ExposeEvent *>( e ) );
-        break;
-
-    case QWindowSystemInterfacePrivate::Tablet:
-        QGuiApplicationPrivate::processTabletEvent(
-            static_cast<QWindowSystemInterfacePrivate::TabletEvent *>( e ) );
-        break;
-
-    case QWindowSystemInterfacePrivate::TabletEnterProximity:
-        QGuiApplicationPrivate::processTabletEnterProximityEvent(
-            static_cast<QWindowSystemInterfacePrivate::TabletEnterProximityEvent *>( e ) );
-        break;
-
-    case QWindowSystemInterfacePrivate::TabletLeaveProximity:
-        QGuiApplicationPrivate::processTabletLeaveProximityEvent(
-            static_cast<QWindowSystemInterfacePrivate::TabletLeaveProximityEvent *>( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::TabletLeaveProximity:
+            QGuiApplicationPrivate::processTabletLeaveProximityEvent(
+                static_cast<QWindowSystemInterfacePrivate::TabletLeaveProximityEvent *>( e ) );
+            break;
 
 #ifndef LSCS_NO_GESTURES
 
-    case QWindowSystemInterfacePrivate::Gesture:
-        QGuiApplicationPrivate::processGestureEvent(
-            static_cast<QWindowSystemInterfacePrivate::GestureEvent *>( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::Gesture:
+            QGuiApplicationPrivate::processGestureEvent(
+                static_cast<QWindowSystemInterfacePrivate::GestureEvent *>( e ) );
+            break;
 #endif
 
-    case QWindowSystemInterfacePrivate::PlatformPanel:
-        QGuiApplicationPrivate::processPlatformPanelEvent(
-            static_cast<QWindowSystemInterfacePrivate::PlatformPanelEvent *>( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::PlatformPanel:
+            QGuiApplicationPrivate::processPlatformPanelEvent(
+                static_cast<QWindowSystemInterfacePrivate::PlatformPanelEvent *>( e ) );
+            break;
 
-    case QWindowSystemInterfacePrivate::FileOpen:
-        QGuiApplicationPrivate::processFileOpenEvent(
-            static_cast<QWindowSystemInterfacePrivate::FileOpenEvent *>( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::FileOpen:
+            QGuiApplicationPrivate::processFileOpenEvent(
+                static_cast<QWindowSystemInterfacePrivate::FileOpenEvent *>( e ) );
+            break;
 
 #ifndef LSCS_NO_CONTEXTMENU
 
-    case QWindowSystemInterfacePrivate::ContextMenu:
-        QGuiApplicationPrivate::processContextMenuEvent(
-            static_cast<QWindowSystemInterfacePrivate::ContextMenuEvent *>( e ) );
-        break;
+        case QWindowSystemInterfacePrivate::ContextMenu:
+            QGuiApplicationPrivate::processContextMenuEvent(
+                static_cast<QWindowSystemInterfacePrivate::ContextMenuEvent *>( e ) );
+            break;
 #endif
 
-    case QWindowSystemInterfacePrivate::EnterWhatsThisMode:
-        QGuiApplication::postEvent( QGuiApplication::instance(), new QEvent( QEvent::EnterWhatsThisMode ) );
-        break;
+        case QWindowSystemInterfacePrivate::EnterWhatsThisMode:
+            QGuiApplication::postEvent( QGuiApplication::instance(), new QEvent( QEvent::EnterWhatsThisMode ) );
+            break;
 
-    default:
-        qWarning() << "QApplication::processWindowSystemEvent() Unknown user input event type," << e->type;
-        break;
+        default:
+            qWarning() << "QApplication::processWindowSystemEvent() Unknown user input event type," << e->type;
+            break;
     }
 }
 
@@ -2683,96 +2683,96 @@ void QGuiApplicationPrivate::processTouchEvent( QWindowSystemInterfacePrivate::T
 
         switch ( touchPoint.state() )
         {
-        case Qt::TouchPointPressed:
-            if ( e->device->type() == QTouchDevice::TouchPad )
-            {
-                // on touch-pads, send all touch points to the same widget
-                w = d->activeTouchPoints.isEmpty()
-                    ? QPointer<QWindow>() : d->activeTouchPoints.constBegin().value().window;
-            }
-
-            if ( ! w )
-            {
-                // determine which window this event will go to
-                if ( !window )
+            case Qt::TouchPointPressed:
+                if ( e->device->type() == QTouchDevice::TouchPad )
                 {
-                    window = QGuiApplication::topLevelWindowAt( touchPoint.screenPos().toPoint() );
+                    // on touch-pads, send all touch points to the same widget
+                    w = d->activeTouchPoints.isEmpty()
+                        ? QPointer<QWindow>() : d->activeTouchPoints.constBegin().value().window;
                 }
 
-                if ( !window )
+                if ( ! w )
+                {
+                    // determine which window this event will go to
+                    if ( !window )
+                    {
+                        window = QGuiApplication::topLevelWindowAt( touchPoint.screenPos().toPoint() );
+                    }
+
+                    if ( !window )
+                    {
+                        continue;
+                    }
+
+                    w = window;
+                }
+
+                touchInfo.window = w;
+                touchPoint.d->startScreenPos = touchPoint.screenPos();
+                touchPoint.d->lastScreenPos = touchPoint.screenPos();
+                touchPoint.d->startNormalizedPos = touchPoint.normalizedPos();
+                touchPoint.d->lastNormalizedPos = touchPoint.normalizedPos();
+
+                if ( touchPoint.pressure() < qreal( 0. ) )
+                {
+                    touchPoint.d->pressure = qreal( 1. );
+                }
+
+                touchInfo.touchPoint = touchPoint;
+                break;
+
+            case Qt::TouchPointReleased:
+                w = touchInfo.window;
+
+                if ( !w )
                 {
                     continue;
                 }
 
-                w = window;
-            }
+                previousTouchPoint = touchInfo.touchPoint;
+                touchPoint.d->startScreenPos = previousTouchPoint.startScreenPos();
+                touchPoint.d->lastScreenPos = previousTouchPoint.screenPos();
+                touchPoint.d->startPos = previousTouchPoint.startPos();
+                touchPoint.d->lastPos = previousTouchPoint.pos();
+                touchPoint.d->startNormalizedPos = previousTouchPoint.startNormalizedPos();
+                touchPoint.d->lastNormalizedPos = previousTouchPoint.normalizedPos();
 
-            touchInfo.window = w;
-            touchPoint.d->startScreenPos = touchPoint.screenPos();
-            touchPoint.d->lastScreenPos = touchPoint.screenPos();
-            touchPoint.d->startNormalizedPos = touchPoint.normalizedPos();
-            touchPoint.d->lastNormalizedPos = touchPoint.normalizedPos();
+                if ( touchPoint.pressure() < qreal( 0. ) )
+                {
+                    touchPoint.d->pressure = qreal( 0. );
+                }
 
-            if ( touchPoint.pressure() < qreal( 0. ) )
-            {
-                touchPoint.d->pressure = qreal( 1. );
-            }
+                break;
 
-            touchInfo.touchPoint = touchPoint;
-            break;
+            default:
+                w = touchInfo.window;
 
-        case Qt::TouchPointReleased:
-            w = touchInfo.window;
+                if ( !w )
+                {
+                    continue;
+                }
 
-            if ( !w )
-            {
-                continue;
-            }
+                previousTouchPoint = touchInfo.touchPoint;
+                touchPoint.d->startScreenPos = previousTouchPoint.startScreenPos();
+                touchPoint.d->lastScreenPos = previousTouchPoint.screenPos();
+                touchPoint.d->startPos = previousTouchPoint.startPos();
+                touchPoint.d->lastPos = previousTouchPoint.pos();
+                touchPoint.d->startNormalizedPos = previousTouchPoint.startNormalizedPos();
+                touchPoint.d->lastNormalizedPos = previousTouchPoint.normalizedPos();
 
-            previousTouchPoint = touchInfo.touchPoint;
-            touchPoint.d->startScreenPos = previousTouchPoint.startScreenPos();
-            touchPoint.d->lastScreenPos = previousTouchPoint.screenPos();
-            touchPoint.d->startPos = previousTouchPoint.startPos();
-            touchPoint.d->lastPos = previousTouchPoint.pos();
-            touchPoint.d->startNormalizedPos = previousTouchPoint.startNormalizedPos();
-            touchPoint.d->lastNormalizedPos = previousTouchPoint.normalizedPos();
+                if ( touchPoint.pressure() < qreal( 0. ) )
+                {
+                    touchPoint.d->pressure = qreal( 1. );
+                }
 
-            if ( touchPoint.pressure() < qreal( 0. ) )
-            {
-                touchPoint.d->pressure = qreal( 0. );
-            }
+                // Stationary points might not be delivered down to the receiving item
+                // and get their position transformed, keep the old values instead.
+                if ( touchPoint.state() != Qt::TouchPointStationary )
+                {
+                    touchInfo.touchPoint = touchPoint;
+                }
 
-            break;
-
-        default:
-            w = touchInfo.window;
-
-            if ( !w )
-            {
-                continue;
-            }
-
-            previousTouchPoint = touchInfo.touchPoint;
-            touchPoint.d->startScreenPos = previousTouchPoint.startScreenPos();
-            touchPoint.d->lastScreenPos = previousTouchPoint.screenPos();
-            touchPoint.d->startPos = previousTouchPoint.startPos();
-            touchPoint.d->lastPos = previousTouchPoint.pos();
-            touchPoint.d->startNormalizedPos = previousTouchPoint.startNormalizedPos();
-            touchPoint.d->lastNormalizedPos = previousTouchPoint.normalizedPos();
-
-            if ( touchPoint.pressure() < qreal( 0. ) )
-            {
-                touchPoint.d->pressure = qreal( 1. );
-            }
-
-            // Stationary points might not be delivered down to the receiving item
-            // and get their position transformed, keep the old values instead.
-            if ( touchPoint.state() != Qt::TouchPointStationary )
-            {
-                touchInfo.touchPoint = touchPoint;
-            }
-
-            break;
+                break;
         }
 
         Q_ASSERT( w.data() != nullptr );
@@ -2803,21 +2803,21 @@ void QGuiApplicationPrivate::processTouchEvent( QWindowSystemInterfacePrivate::T
 
         switch ( it.value().first )
         {
-        case Qt::TouchPointPressed:
-            eventType = QEvent::TouchBegin;
-            break;
+            case Qt::TouchPointPressed:
+                eventType = QEvent::TouchBegin;
+                break;
 
-        case Qt::TouchPointReleased:
-            eventType = QEvent::TouchEnd;
-            break;
+            case Qt::TouchPointReleased:
+                eventType = QEvent::TouchEnd;
+                break;
 
-        case Qt::TouchPointStationary:
-            // don't send the event if nothing changed
-            continue;
+            case Qt::TouchPointStationary:
+                // don't send the event if nothing changed
+                continue;
 
-        default:
-            eventType = QEvent::TouchUpdate;
-            break;
+            default:
+                eventType = QEvent::TouchUpdate;
+                break;
         }
 
         if ( w->d_func()->blockedByModalWindow )
@@ -3345,22 +3345,22 @@ void QGuiApplicationPrivate::setApplicationState( Qt::ApplicationState state, bo
 
     switch ( state )
     {
-    case Qt::ApplicationActive:
-    {
-        QEvent appActivate( QEvent::ApplicationActivate );
-        QCoreApplication::sendSpontaneousEvent( qApp, &appActivate );
-        break;
-    }
+        case Qt::ApplicationActive:
+        {
+            QEvent appActivate( QEvent::ApplicationActivate );
+            QCoreApplication::sendSpontaneousEvent( qApp, &appActivate );
+            break;
+        }
 
-    case Qt::ApplicationInactive:
-    {
-        QEvent appDeactivate( QEvent::ApplicationDeactivate );
-        QCoreApplication::sendSpontaneousEvent( qApp, &appDeactivate );
-        break;
-    }
+        case Qt::ApplicationInactive:
+        {
+            QEvent appDeactivate( QEvent::ApplicationDeactivate );
+            QCoreApplication::sendSpontaneousEvent( qApp, &appDeactivate );
+            break;
+        }
 
-    default:
-        break;
+        default:
+            break;
     }
 
     QApplicationStateChangeEvent event( applicationState );

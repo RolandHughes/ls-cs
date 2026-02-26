@@ -46,25 +46,25 @@ public:
 
         switch ( sortField )
         {
-        case QDeclarativeFolderListModel::Unsorted:
-            flags |= QDir::Unsorted;
-            break;
+            case QDeclarativeFolderListModel::Unsorted:
+                flags |= QDir::Unsorted;
+                break;
 
-        case QDeclarativeFolderListModel::Name:
-            flags |= QDir::Name;
-            break;
+            case QDeclarativeFolderListModel::Name:
+                flags |= QDir::Name;
+                break;
 
-        case QDeclarativeFolderListModel::Time:
-            flags |= QDir::Time;
-            break;
+            case QDeclarativeFolderListModel::Time:
+                flags |= QDir::Time;
+                break;
 
-        case QDeclarativeFolderListModel::Size:
-            flags |= QDir::Size;
-            break;
+            case QDeclarativeFolderListModel::Size:
+                flags |= QDir::Size;
+                break;
 
-        case QDeclarativeFolderListModel::Type:
-            flags |= QDir::Type;
-            break;
+            case QDeclarativeFolderListModel::Type:
+                flags |= QDir::Type;
+                break;
         }
 
         if ( sortReversed )

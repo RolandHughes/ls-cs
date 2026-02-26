@@ -327,10 +327,10 @@ bool connect( const Sender &sender, void ( SignalClass::*signalMethod )( SignalA
     }
 
     std::unique_ptr<Internal::Bento<void ( SignalClass::* )( SignalArgs... )>>
-    signalMethod_Bento( new Internal::Bento<void ( SignalClass::* )( SignalArgs... )>( signalMethod ) );
+            signalMethod_Bento( new Internal::Bento<void ( SignalClass::* )( SignalArgs... )>( signalMethod ) );
 
     std::unique_ptr<Internal::Bento<SlotReturn ( SlotClass::* )( SlotArgs... )>>
-    slotMethod_Bento( new Internal::Bento<SlotReturn ( SlotClass::* )( SlotArgs... )>( slotMethod ) );
+            slotMethod_Bento( new Internal::Bento<SlotReturn ( SlotClass::* )( SlotArgs... )>( slotMethod ) );
 
     auto senderListHandle = sender.m_connectList.lock_write();
 
@@ -383,7 +383,7 @@ bool connect( const Sender &sender, void ( SignalClass::*signalMethod )( SignalA
     }
 
     std::unique_ptr<Internal::Bento<void ( SignalClass::* )( SignalArgs... )>>
-    signalMethod_Bento( new Internal::Bento<void ( SignalClass::* )( SignalArgs... )>( signalMethod ) );
+            signalMethod_Bento( new Internal::Bento<void ( SignalClass::* )( SignalArgs... )>( signalMethod ) );
 
     std::unique_ptr<Internal::Bento<T>> slotLambda_Bento( new Internal::Bento<T>( slotLambda ) );
 

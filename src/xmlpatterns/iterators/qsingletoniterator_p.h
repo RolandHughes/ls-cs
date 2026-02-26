@@ -50,23 +50,23 @@ public:
     {
         switch ( m_position )
         {
-        case 0:
-        {
-            ++m_position;
-            return m_item;
-        }
+            case 0:
+            {
+                ++m_position;
+                return m_item;
+            }
 
-        case 1:
-        {
-            m_position = -1;
-            return T();
-        }
+            case 1:
+            {
+                m_position = -1;
+                return T();
+            }
 
-        default:
-        {
-            Q_ASSERT( m_position == -1 );
-            return T();
-        }
+            default:
+            {
+                Q_ASSERT( m_position == -1 );
+                return T();
+            }
         }
     }
 

@@ -167,40 +167,40 @@ public:
 
         switch ( format )
         {
-        case 'f':
-            stream << std::nouppercase << std::fixed;
-            break;
+            case 'f':
+                stream << std::nouppercase << std::fixed;
+                break;
 
-        case 'e':
-            stream << std::nouppercase << std::scientific;
-            break;
+            case 'e':
+                stream << std::nouppercase << std::scientific;
+                break;
 
-        case 'E':
-            stream << std::uppercase << std::scientific;
-            break;
+            case 'E':
+                stream << std::uppercase << std::scientific;
+                break;
 
-        case 'g':
-            stream << std::nouppercase;
-            stream.unsetf( std::ios_base::floatfield );
-            break;
+            case 'g':
+                stream << std::nouppercase;
+                stream.unsetf( std::ios_base::floatfield );
+                break;
 
-        case 'G':
-            stream << std::uppercase;
-            stream.unsetf( std::ios_base::floatfield );
-            break;
+            case 'G':
+                stream << std::uppercase;
+                stream.unsetf( std::ios_base::floatfield );
+                break;
 
-        default:
-            if ( format <= 32 )
-            {
-                qWarning( "QStringParser::formatArg() Invalid format '%d'", format );
+            default:
+                if ( format <= 32 )
+                {
+                    qWarning( "QStringParser::formatArg() Invalid format '%d'", format );
 
-            }
-            else
-            {
-                qWarning( "QStringParser::formatArg() Invalid format '%c'", format );
-            }
+                }
+                else
+                {
+                    qWarning( "QStringParser::formatArg() Invalid format '%c'", format );
+                }
 
-            break;
+                break;
         }
 
         stream << std::setprecision( precision );
@@ -324,31 +324,31 @@ public:
 
         switch ( format )
         {
-        case 'f':
-            stream << std::nouppercase << std::fixed;
-            break;
+            case 'f':
+                stream << std::nouppercase << std::fixed;
+                break;
 
-        case 'e':
-            stream << std::nouppercase << std::scientific;
-            break;
+            case 'e':
+                stream << std::nouppercase << std::scientific;
+                break;
 
-        case 'E':
-            stream << std::uppercase << std::scientific;
-            break;
+            case 'E':
+                stream << std::uppercase << std::scientific;
+                break;
 
-        case 'g':
-            stream << std::nouppercase;
-            stream.unsetf( std::ios_base::floatfield );
-            break;
+            case 'g':
+                stream << std::nouppercase;
+                stream.unsetf( std::ios_base::floatfield );
+                break;
 
-        case 'G':
-            stream << std::uppercase;
-            stream.unsetf( std::ios_base::floatfield );
-            break;
+            case 'G':
+                stream << std::uppercase;
+                stream.unsetf( std::ios_base::floatfield );
+                break;
 
-        default:
-            qWarning( "QStringParser::number() Invalid format '%c'", format );
-            break;
+            default:
+                qWarning( "QStringParser::number() Invalid format '%c'", format );
+                break;
         }
 
         stream << std::setprecision( precision );

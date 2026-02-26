@@ -236,23 +236,23 @@ void QOpenGLVertexArrayObjectPrivate::destroy()
     {
 #ifndef LSCS_OPENGL_ES_2
 
-    case Core_3_2:
-        vaoFuncs.core_3_2->glDeleteVertexArrays( 1, &vao );
-        break;
+        case Core_3_2:
+            vaoFuncs.core_3_2->glDeleteVertexArrays( 1, &vao );
+            break;
 
-    case Core_3_0:
-        vaoFuncs.core_3_0->glDeleteVertexArrays( 1, &vao );
-        break;
+        case Core_3_0:
+            vaoFuncs.core_3_0->glDeleteVertexArrays( 1, &vao );
+            break;
 #endif
 
-    case ARB:
-    case APPLE:
-    case OES:
-        vaoFuncs.helper->glDeleteVertexArrays( 1, &vao );
-        break;
+        case ARB:
+        case APPLE:
+        case OES:
+            vaoFuncs.helper->glDeleteVertexArrays( 1, &vao );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     vao = 0;
@@ -270,23 +270,23 @@ void QOpenGLVertexArrayObjectPrivate::bind()
     {
 #ifndef LSCS_OPENGL_ES_2
 
-    case Core_3_2:
-        vaoFuncs.core_3_2->glBindVertexArray( vao );
-        break;
+        case Core_3_2:
+            vaoFuncs.core_3_2->glBindVertexArray( vao );
+            break;
 
-    case Core_3_0:
-        vaoFuncs.core_3_0->glBindVertexArray( vao );
-        break;
+        case Core_3_0:
+            vaoFuncs.core_3_0->glBindVertexArray( vao );
+            break;
 #endif
 
-    case ARB:
-    case APPLE:
-    case OES:
-        vaoFuncs.helper->glBindVertexArray( vao );
-        break;
+        case ARB:
+        case APPLE:
+        case OES:
+            vaoFuncs.helper->glBindVertexArray( vao );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -296,23 +296,23 @@ void QOpenGLVertexArrayObjectPrivate::release()
     {
 #ifndef LSCS_OPENGL_ES_2
 
-    case Core_3_2:
-        vaoFuncs.core_3_2->glBindVertexArray( 0 );
-        break;
+        case Core_3_2:
+            vaoFuncs.core_3_2->glBindVertexArray( 0 );
+            break;
 
-    case Core_3_0:
-        vaoFuncs.core_3_0->glBindVertexArray( 0 );
-        break;
+        case Core_3_0:
+            vaoFuncs.core_3_0->glBindVertexArray( 0 );
+            break;
 #endif
 
-    case ARB:
-    case APPLE:
-    case OES:
-        vaoFuncs.helper->glBindVertexArray( 0 );
-        break;
+        case ARB:
+        case APPLE:
+        case OES:
+            vaoFuncs.helper->glBindVertexArray( 0 );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 

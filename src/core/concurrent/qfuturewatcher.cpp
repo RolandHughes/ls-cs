@@ -245,88 +245,88 @@ void QFutureWatcherBasePrivate::sendCallOutEvent( QFutureCallOutEvent *event )
 
     switch ( event->m_callOutType )
     {
-    case QFutureCallOutEvent::Started:
-        emit q->started();
-        break;
-
-    case QFutureCallOutEvent::Finished:
-        finished = true;
-        emit q->finished();
-        break;
-
-    case QFutureCallOutEvent::Canceled:
-        pendingResultsReady = 0;
-        emit q->canceled();
-        break;
-
-    case QFutureCallOutEvent::Paused:
-        if ( q->futureInterface().isCanceled() )
-        {
+        case QFutureCallOutEvent::Started:
+            emit q->started();
             break;
-        }
 
-        emit q->paused();
-        break;
-
-    case QFutureCallOutEvent::Resumed:
-        if ( q->futureInterface().isCanceled() )
-        {
+        case QFutureCallOutEvent::Finished:
+            finished = true;
+            emit q->finished();
             break;
-        }
 
-        emit q->resumed();
-        break;
-
-    case QFutureCallOutEvent::ResultsReady:
-    {
-        if ( q->futureInterface().isCanceled() )
-        {
+        case QFutureCallOutEvent::Canceled:
+            pendingResultsReady = 0;
+            emit q->canceled();
             break;
-        }
 
-        if ( pendingResultsReady.fetchAndAddRelaxed( -1 ) <= maximumPendingResultsReady )
-        {
-            q->futureInterface().setThrottled( false );
-        }
+        case QFutureCallOutEvent::Paused:
+            if ( q->futureInterface().isCanceled() )
+            {
+                break;
+            }
 
-        const int beginIndex = event->m_index1;
-        const int endIndex   = event->m_index2;
-
-        emit q->resultsReadyAt( beginIndex, endIndex );
-
-        if ( resultAtConnected.load() <= 0 )
-        {
+            emit q->paused();
             break;
-        }
 
-        for ( int i = beginIndex; i < endIndex; ++i )
-        {
-            emit q->resultReadyAt( i );
-        }
+        case QFutureCallOutEvent::Resumed:
+            if ( q->futureInterface().isCanceled() )
+            {
+                break;
+            }
 
-    }
-    break;
-
-    case QFutureCallOutEvent::Progress:
-        if ( q->futureInterface().isCanceled() )
-        {
+            emit q->resumed();
             break;
-        }
 
-        emit q->progressValueChanged( event->m_index1 );
-
-        if ( ! event->m_text.isEmpty() )
+        case QFutureCallOutEvent::ResultsReady:
         {
-            q->progressTextChanged( event->m_text );
+            if ( q->futureInterface().isCanceled() )
+            {
+                break;
+            }
+
+            if ( pendingResultsReady.fetchAndAddRelaxed( -1 ) <= maximumPendingResultsReady )
+            {
+                q->futureInterface().setThrottled( false );
+            }
+
+            const int beginIndex = event->m_index1;
+            const int endIndex   = event->m_index2;
+
+            emit q->resultsReadyAt( beginIndex, endIndex );
+
+            if ( resultAtConnected.load() <= 0 )
+            {
+                break;
+            }
+
+            for ( int i = beginIndex; i < endIndex; ++i )
+            {
+                emit q->resultReadyAt( i );
+            }
+
         }
-
         break;
 
-    case QFutureCallOutEvent::ProgressRange:
-        emit q->progressRangeChanged( event->m_index1, event->m_index2 );
-        break;
+        case QFutureCallOutEvent::Progress:
+            if ( q->futureInterface().isCanceled() )
+            {
+                break;
+            }
 
-    default:
-        break;
+            emit q->progressValueChanged( event->m_index1 );
+
+            if ( ! event->m_text.isEmpty() )
+            {
+                q->progressTextChanged( event->m_text );
+            }
+
+            break;
+
+        case QFutureCallOutEvent::ProgressRange:
+            emit q->progressRangeChanged( event->m_index1, event->m_index2 );
+            break;
+
+        default:
+            break;
     }
 }

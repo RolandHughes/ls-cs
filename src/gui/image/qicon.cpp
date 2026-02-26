@@ -651,33 +651,33 @@ void QPixmapIconEngine::virtual_hook( int id, void *data )
 {
     switch ( id )
     {
-    case QIconEngine::AvailableSizesHook:
-    {
-        QIconEngine::AvailableSizesArgument &arg =
-            *reinterpret_cast<QIconEngine::AvailableSizesArgument *>( data );
-        arg.sizes.clear();
-
-        for ( int i = 0; i < pixmaps.size(); ++i )
+        case QIconEngine::AvailableSizesHook:
         {
-            QPixmapIconEngineEntry &pe = pixmaps[i];
+            QIconEngine::AvailableSizesArgument &arg =
+                *reinterpret_cast<QIconEngine::AvailableSizesArgument *>( data );
+            arg.sizes.clear();
 
-            if ( pe.size == QSize() && pe.pixmap.isNull() )
+            for ( int i = 0; i < pixmaps.size(); ++i )
             {
-                pe.pixmap = QPixmap( pe.fileName );
-                pe.size = pe.pixmap.size();
+                QPixmapIconEngineEntry &pe = pixmaps[i];
+
+                if ( pe.size == QSize() && pe.pixmap.isNull() )
+                {
+                    pe.pixmap = QPixmap( pe.fileName );
+                    pe.size = pe.pixmap.size();
+                }
+
+                if ( pe.mode == arg.mode && pe.state == arg.state && !pe.size.isEmpty() )
+                {
+                    arg.sizes.push_back( pe.size );
+                }
             }
 
-            if ( pe.mode == arg.mode && pe.state == arg.state && !pe.size.isEmpty() )
-            {
-                arg.sizes.push_back( pe.size );
-            }
+            break;
         }
 
-        break;
-    }
-
-    default:
-        QIconEngine::virtual_hook( id, data );
+        default:
+            QIconEngine::virtual_hook( id, data );
     }
 }
 

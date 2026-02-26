@@ -44,63 +44,63 @@ QString QFileInfoPrivate::getFileName( QAbstractFileEngine::FileName name ) cons
 
         switch ( name )
         {
-        case QAbstractFileEngine::CanonicalName:
-        case QAbstractFileEngine::CanonicalPathName:
-        {
-            QFileSystemEntry entry = QFileSystemEngine::canonicalName( fileEntry, metaData );
-
-            if ( cache_enabled ) // be smart and store both
+            case QAbstractFileEngine::CanonicalName:
+            case QAbstractFileEngine::CanonicalPathName:
             {
-                fileNames[QAbstractFileEngine::CanonicalName] = entry.filePath();
-                fileNames[QAbstractFileEngine::CanonicalPathName] = entry.path();
+                QFileSystemEntry entry = QFileSystemEngine::canonicalName( fileEntry, metaData );
+
+                if ( cache_enabled ) // be smart and store both
+                {
+                    fileNames[QAbstractFileEngine::CanonicalName] = entry.filePath();
+                    fileNames[QAbstractFileEngine::CanonicalPathName] = entry.path();
+                }
+
+                if ( name == QAbstractFileEngine::CanonicalName )
+                {
+                    ret = entry.filePath();
+                }
+                else
+                {
+                    ret = entry.path();
+                }
+
+                break;
             }
 
-            if ( name == QAbstractFileEngine::CanonicalName )
+            case QAbstractFileEngine::LinkName:
+                ret = QFileSystemEngine::getLinkTarget( fileEntry, metaData ).filePath();
+                break;
+
+            case QAbstractFileEngine::BundleName:
+                ret = QFileSystemEngine::bundleName( fileEntry );
+                break;
+
+            case QAbstractFileEngine::AbsoluteName:
+            case QAbstractFileEngine::AbsolutePathName:
             {
-                ret = entry.filePath();
-            }
-            else
-            {
-                ret = entry.path();
-            }
+                QFileSystemEntry entry = QFileSystemEngine::absoluteName( fileEntry );
 
-            break;
-        }
+                if ( cache_enabled )
+                {
+                    // be smart and store both
+                    fileNames[QAbstractFileEngine::AbsoluteName] = entry.filePath();
+                    fileNames[QAbstractFileEngine::AbsolutePathName] = entry.path();
+                }
 
-        case QAbstractFileEngine::LinkName:
-            ret = QFileSystemEngine::getLinkTarget( fileEntry, metaData ).filePath();
-            break;
+                if ( name == QAbstractFileEngine::AbsoluteName )
+                {
+                    ret = entry.filePath();
+                }
+                else
+                {
+                    ret = entry.path();
+                }
 
-        case QAbstractFileEngine::BundleName:
-            ret = QFileSystemEngine::bundleName( fileEntry );
-            break;
-
-        case QAbstractFileEngine::AbsoluteName:
-        case QAbstractFileEngine::AbsolutePathName:
-        {
-            QFileSystemEntry entry = QFileSystemEngine::absoluteName( fileEntry );
-
-            if ( cache_enabled )
-            {
-                // be smart and store both
-                fileNames[QAbstractFileEngine::AbsoluteName] = entry.filePath();
-                fileNames[QAbstractFileEngine::AbsolutePathName] = entry.path();
-            }
-
-            if ( name == QAbstractFileEngine::AbsoluteName )
-            {
-                ret = entry.filePath();
-            }
-            else
-            {
-                ret = entry.path();
+                break;
             }
 
-            break;
-        }
-
-        default:
-            break;
+            default:
+                break;
         }
     }
     else
@@ -129,13 +129,13 @@ QString QFileInfoPrivate::getFileOwner( QAbstractFileEngine::FileOwner own ) con
     {
         switch ( own )
         {
-        case QAbstractFileEngine::OwnerUser:
-            ret = QFileSystemEngine::resolveUserName( fileEntry, metaData );
-            break;
+            case QAbstractFileEngine::OwnerUser:
+                ret = QFileSystemEngine::resolveUserName( fileEntry, metaData );
+                break;
 
-        case QAbstractFileEngine::OwnerGroup:
-            ret = QFileSystemEngine::resolveGroupName( fileEntry, metaData );
-            break;
+            case QAbstractFileEngine::OwnerGroup:
+                ret = QFileSystemEngine::resolveGroupName( fileEntry, metaData );
+                break;
         }
 
     }

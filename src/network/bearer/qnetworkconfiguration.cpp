@@ -194,28 +194,28 @@ QNetworkConfiguration::BearerType QNetworkConfiguration::bearerTypeFamily() cons
 
     switch ( type )
     {
-    case QNetworkConfiguration::BearerUnknown:
-    case QNetworkConfiguration::Bearer2G:
-    case QNetworkConfiguration::BearerEthernet:
-    case QNetworkConfiguration::BearerWLAN:
-    case QNetworkConfiguration::BearerBluetooth:
-        return type;
+        case QNetworkConfiguration::BearerUnknown:
+        case QNetworkConfiguration::Bearer2G:
+        case QNetworkConfiguration::BearerEthernet:
+        case QNetworkConfiguration::BearerWLAN:
+        case QNetworkConfiguration::BearerBluetooth:
+            return type;
 
-    case QNetworkConfiguration::BearerCDMA2000:
-    case QNetworkConfiguration::BearerEVDO:
-    case QNetworkConfiguration::BearerWCDMA:
-    case QNetworkConfiguration::BearerHSPA:
-    case QNetworkConfiguration::Bearer3G:
-        return QNetworkConfiguration::Bearer3G;
+        case QNetworkConfiguration::BearerCDMA2000:
+        case QNetworkConfiguration::BearerEVDO:
+        case QNetworkConfiguration::BearerWCDMA:
+        case QNetworkConfiguration::BearerHSPA:
+        case QNetworkConfiguration::Bearer3G:
+            return QNetworkConfiguration::Bearer3G;
 
-    case QNetworkConfiguration::BearerWiMAX:
-    case QNetworkConfiguration::BearerLTE:
-    case QNetworkConfiguration::Bearer4G:
-        return QNetworkConfiguration::Bearer4G;
+        case QNetworkConfiguration::BearerWiMAX:
+        case QNetworkConfiguration::BearerLTE:
+        case QNetworkConfiguration::Bearer4G:
+            return QNetworkConfiguration::Bearer4G;
 
-    default:
-        qWarning() << "QNetworkConfiguration::bearerTypeFamily() Unknown bearer type " << type;
-        return QNetworkConfiguration::BearerUnknown;
+        default:
+            qWarning() << "QNetworkConfiguration::bearerTypeFamily() Unknown bearer type " << type;
+            return QNetworkConfiguration::BearerUnknown;
     }
 }
 
@@ -236,44 +236,44 @@ QString QNetworkConfiguration::bearerTypeName() const
     switch ( d->bearerType )
     {
 
-    case BearerEthernet:
-        return QString( "Ethernet" );
+        case BearerEthernet:
+            return QString( "Ethernet" );
 
-    case BearerWLAN:
-        return QString( "WLAN" );
+        case BearerWLAN:
+            return QString( "WLAN" );
 
-    case Bearer2G:
-        return QString( "2G" );
+        case Bearer2G:
+            return QString( "2G" );
 
-    case Bearer3G:
-        return QString( "3G" );
+        case Bearer3G:
+            return QString( "3G" );
 
-    case Bearer4G:
-        return QString( "4G" );
+        case Bearer4G:
+            return QString( "4G" );
 
-    case BearerCDMA2000:
-        return QString( "CDMA2000" );
+        case BearerCDMA2000:
+            return QString( "CDMA2000" );
 
-    case BearerWCDMA:
-        return QString( "WCDMA" );
+        case BearerWCDMA:
+            return QString( "WCDMA" );
 
-    case BearerHSPA:
-        return QString( "HSPA" );
+        case BearerHSPA:
+            return QString( "HSPA" );
 
-    case BearerBluetooth:
-        return QString( "Bluetooth" );
+        case BearerBluetooth:
+            return QString( "Bluetooth" );
 
-    case BearerWiMAX:
-        return QString( "WiMAX" );
+        case BearerWiMAX:
+            return QString( "WiMAX" );
 
-    case BearerEVDO:
-        return QString( "EVDO" );
+        case BearerEVDO:
+            return QString( "EVDO" );
 
-    case BearerLTE:
-        return QString( "LTE" );
+        case BearerLTE:
+            return QString( "LTE" );
 
-    case BearerUnknown:
-        break;
+        case BearerUnknown:
+            break;
     }
 
     return QString( "Unknown" );

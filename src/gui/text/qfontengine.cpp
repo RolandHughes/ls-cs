@@ -43,14 +43,14 @@
 
 #define HB_NO_SINGLE_HEADER_ERROR 1
 #if defined(HB_DISABLE_DEPRECATED)
-    #undef(HB_DISABLE_DEPRECATED)
+#undef(HB_DISABLE_DEPRECATED)
 #endif
 
 #include <hb-ot-layout.h>
 
 
 #ifndef HB_OT_MAX_TAGS_PER_SCRIPT
-   #define HB_OT_MAX_TAGS_PER_SCRIPT   3u
+#define HB_OT_MAX_TAGS_PER_SCRIPT   3u
 #endif
 
 #define GRID(x, y) grid[(y)*(w+1) + (x)]
@@ -1348,70 +1348,70 @@ const uchar *QFontEngine::getCMap( const uchar *table, uint tableSize, bool *isS
 
         switch ( platformId )
         {
-        case 0: // Unicode
-            if ( score < Unicode &&
-                    ( platformSpecificId == 0 ||
-                      platformSpecificId == 2 ||
-                      platformSpecificId == 3 ) )
-            {
-                tableToUse = n;
-                score = Unicode;
-            }
-            else if ( score < Unicode11 && platformSpecificId == 1 )
-            {
-                tableToUse = n;
-                score = Unicode11;
-            }
-
-            break;
-
-        case 1: // Apple
-            if ( score < AppleRoman && platformSpecificId == 0 ) // Apple Roman
-            {
-                tableToUse = n;
-                score = AppleRoman;
-            }
-
-            break;
-
-        case 3: // Microsoft
-            switch ( platformSpecificId )
-            {
-            case 0:
-                symbolTable = n;
-
-                if ( score < Symbol )
+            case 0: // Unicode
+                if ( score < Unicode &&
+                        ( platformSpecificId == 0 ||
+                          platformSpecificId == 2 ||
+                          platformSpecificId == 3 ) )
                 {
                     tableToUse = n;
-                    score = Symbol;
+                    score = Unicode;
+                }
+                else if ( score < Unicode11 && platformSpecificId == 1 )
+                {
+                    tableToUse = n;
+                    score = Unicode11;
                 }
 
                 break;
 
-            case 1:
-                if ( score < MicrosoftUnicode )
+            case 1: // Apple
+                if ( score < AppleRoman && platformSpecificId == 0 ) // Apple Roman
                 {
                     tableToUse = n;
-                    score = MicrosoftUnicode;
+                    score = AppleRoman;
                 }
 
                 break;
 
-            case 0xa:
-                if ( score < MicrosoftUnicodeExtended )
+            case 3: // Microsoft
+                switch ( platformSpecificId )
                 {
-                    tableToUse = n;
-                    score = MicrosoftUnicodeExtended;
-                }
+                    case 0:
+                        symbolTable = n;
 
-                break;
+                        if ( score < Symbol )
+                        {
+                            tableToUse = n;
+                            score = Symbol;
+                        }
+
+                        break;
+
+                    case 1:
+                        if ( score < MicrosoftUnicode )
+                        {
+                            tableToUse = n;
+                            score = MicrosoftUnicode;
+                        }
+
+                        break;
+
+                    case 0xa:
+                        if ( score < MicrosoftUnicodeExtended )
+                        {
+                            tableToUse = n;
+                            score = MicrosoftUnicodeExtended;
+                        }
+
+                        break;
+
+                    default:
+                        break;
+                }
 
             default:
                 break;
-            }
-
-        default:
-            break;
         }
     }
 
@@ -2033,7 +2033,8 @@ QFontEngineMulti::~QFontEngineMulti()
     }
 }
 
-QStringList lscs_fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint, QChar::Script script );
+QStringList lscs_fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint,
+                                     QChar::Script script );
 
 void QFontEngineMulti::ensureFallbackFamiliesQueried()
 {

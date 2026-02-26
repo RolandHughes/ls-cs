@@ -145,45 +145,45 @@ void QParallelAnimationGroup::updateState( QAbstractAnimation::State newState,
 
     switch ( newState )
     {
-    case Stopped:
-        for ( int i = 0; i < d->animations.size(); ++i )
-        {
-            d->animations.at( i )->stop();
-        }
-
-        d->disconnectUncontrolledAnimations();
-        break;
-
-    case Paused:
-        for ( int i = 0; i < d->animations.size(); ++i )
-            if ( d->animations.at( i )->state() == Running )
+        case Stopped:
+            for ( int i = 0; i < d->animations.size(); ++i )
             {
-                d->animations.at( i )->pause();
+                d->animations.at( i )->stop();
             }
 
-        break;
+            d->disconnectUncontrolledAnimations();
+            break;
 
-    case Running:
-        d->connectUncontrolledAnimations();
+        case Paused:
+            for ( int i = 0; i < d->animations.size(); ++i )
+                if ( d->animations.at( i )->state() == Running )
+                {
+                    d->animations.at( i )->pause();
+                }
 
-        for ( int i = 0; i < d->animations.size(); ++i )
-        {
-            QAbstractAnimation *animation = d->animations.at( i );
+            break;
 
-            if ( oldState == Stopped )
+        case Running:
+            d->connectUncontrolledAnimations();
+
+            for ( int i = 0; i < d->animations.size(); ++i )
             {
-                animation->stop();
+                QAbstractAnimation *animation = d->animations.at( i );
+
+                if ( oldState == Stopped )
+                {
+                    animation->stop();
+                }
+
+                animation->setDirection( d->direction );
+
+                if ( d->shouldAnimationStart( animation, oldState == Stopped ) )
+                {
+                    animation->start();
+                }
             }
 
-            animation->setDirection( d->direction );
-
-            if ( d->shouldAnimationStart( animation, oldState == Stopped ) )
-            {
-                animation->start();
-            }
-        }
-
-        break;
+            break;
     }
 }
 
@@ -295,17 +295,17 @@ void QParallelAnimationGroupPrivate::applyGroupState( QAbstractAnimation *animat
 {
     switch ( state )
     {
-    case QAbstractAnimation::Running:
-        animation->start();
-        break;
+        case QAbstractAnimation::Running:
+            animation->start();
+            break;
 
-    case QAbstractAnimation::Paused:
-        animation->pause();
-        break;
+        case QAbstractAnimation::Paused:
+            animation->pause();
+            break;
 
-    case QAbstractAnimation::Stopped:
-    default:
-        break;
+        case QAbstractAnimation::Stopped:
+        default:
+            break;
     }
 }
 

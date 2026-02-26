@@ -187,25 +187,25 @@ void QTabWidget::initStyleOption( QStyleOptionTabWidgetFrame *option ) const
 
     switch ( d->pos )
     {
-    case QTabWidget::North:
-        option->shape = d->shape == QTabWidget::Rounded ? QTabBar::RoundedNorth
-                        : QTabBar::TriangularNorth;
-        break;
+        case QTabWidget::North:
+            option->shape = d->shape == QTabWidget::Rounded ? QTabBar::RoundedNorth
+                            : QTabBar::TriangularNorth;
+            break;
 
-    case QTabWidget::South:
-        option->shape = d->shape == QTabWidget::Rounded ? QTabBar::RoundedSouth
-                        : QTabBar::TriangularSouth;
-        break;
+        case QTabWidget::South:
+            option->shape = d->shape == QTabWidget::Rounded ? QTabBar::RoundedSouth
+                            : QTabBar::TriangularSouth;
+            break;
 
-    case QTabWidget::West:
-        option->shape = d->shape == QTabWidget::Rounded ? QTabBar::RoundedWest
-                        : QTabBar::TriangularWest;
-        break;
+        case QTabWidget::West:
+            option->shape = d->shape == QTabWidget::Rounded ? QTabBar::RoundedWest
+                            : QTabBar::TriangularWest;
+            break;
 
-    case QTabWidget::East:
-        option->shape = d->shape == QTabWidget::Rounded ? QTabBar::RoundedEast
-                        : QTabBar::TriangularEast;
-        break;
+        case QTabWidget::East:
+            option->shape = d->shape == QTabWidget::Rounded ? QTabBar::RoundedEast
+                            : QTabBar::TriangularEast;
+            break;
     }
 
     option->tabBarSize = t;
@@ -662,25 +662,25 @@ void QTabWidgetPrivate::updateTabBarPosition()
 
     switch ( pos )
     {
-    case QTabWidget::North:
-        tabs->setShape( shape == QTabWidget::Rounded ? QTabBar::RoundedNorth
-                        : QTabBar::TriangularNorth );
-        break;
+        case QTabWidget::North:
+            tabs->setShape( shape == QTabWidget::Rounded ? QTabBar::RoundedNorth
+                            : QTabBar::TriangularNorth );
+            break;
 
-    case QTabWidget::South:
-        tabs->setShape( shape == QTabWidget::Rounded ? QTabBar::RoundedSouth
-                        : QTabBar::TriangularSouth );
-        break;
+        case QTabWidget::South:
+            tabs->setShape( shape == QTabWidget::Rounded ? QTabBar::RoundedSouth
+                            : QTabBar::TriangularSouth );
+            break;
 
-    case QTabWidget::West:
-        tabs->setShape( shape == QTabWidget::Rounded ? QTabBar::RoundedWest
-                        : QTabBar::TriangularWest );
-        break;
+        case QTabWidget::West:
+            tabs->setShape( shape == QTabWidget::Rounded ? QTabBar::RoundedWest
+                            : QTabBar::TriangularWest );
+            break;
 
-    case QTabWidget::East:
-        tabs->setShape( shape == QTabWidget::Rounded ? QTabBar::RoundedEast
-                        : QTabBar::TriangularEast );
-        break;
+        case QTabWidget::East:
+            tabs->setShape( shape == QTabWidget::Rounded ? QTabBar::RoundedEast
+                            : QTabBar::TriangularEast );
+            break;
     }
 
     q->setUpLayout();

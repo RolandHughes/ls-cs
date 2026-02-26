@@ -367,59 +367,59 @@ public:
 
         switch ( spen.style() )
         {
-        case Qt::NoPen:
-            stream() << QLatin1String( "stroke=\"none\" " );
+            case Qt::NoPen:
+                stream() << QLatin1String( "stroke=\"none\" " );
 
-            d_func()->attributes.stroke = QLatin1String( "none" );
-            d_func()->attributes.strokeOpacity = QString();
-            return;
+                d_func()->attributes.stroke = QLatin1String( "none" );
+                d_func()->attributes.strokeOpacity = QString();
+                return;
+                break;
+
+            case Qt::SolidLine:
+            {
+                QString color, colorOpacity;
+
+                translate_color( spen.color(), &color,
+                                 &colorOpacity );
+                d_func()->attributes.stroke = color;
+                d_func()->attributes.strokeOpacity = colorOpacity;
+
+                stream() << QLatin1String( "stroke=\"" ) << color << QLatin1String( "\" " );
+                stream() << QLatin1String( "stroke-opacity=\"" ) << colorOpacity << QLatin1String( "\" " );
+            }
             break;
 
-        case Qt::SolidLine:
-        {
-            QString color, colorOpacity;
+            case Qt::DashLine:
+            case Qt::DotLine:
+            case Qt::DashDotLine:
+            case Qt::DashDotDotLine:
+            case Qt::CustomDashLine:
+            {
+                QString color, colorOpacity, dashPattern, dashOffset;
 
-            translate_color( spen.color(), &color,
-                             &colorOpacity );
-            d_func()->attributes.stroke = color;
-            d_func()->attributes.strokeOpacity = colorOpacity;
+                qreal penWidth = spen.width() == 0 ? qreal( 1 ) : spen.widthF();
 
-            stream() << QLatin1String( "stroke=\"" ) << color << QLatin1String( "\" " );
-            stream() << QLatin1String( "stroke-opacity=\"" ) << colorOpacity << QLatin1String( "\" " );
-        }
-        break;
+                translate_color( spen.color(), &color, &colorOpacity );
+                translate_dashPattern( spen.dashPattern(), penWidth, &dashPattern );
 
-        case Qt::DashLine:
-        case Qt::DotLine:
-        case Qt::DashDotLine:
-        case Qt::DashDotDotLine:
-        case Qt::CustomDashLine:
-        {
-            QString color, colorOpacity, dashPattern, dashOffset;
+                // SVG uses absolute offset
+                dashOffset = QString::number( spen.dashOffset() * penWidth );
 
-            qreal penWidth = spen.width() == 0 ? qreal( 1 ) : spen.widthF();
+                d_func()->attributes.stroke = color;
+                d_func()->attributes.strokeOpacity = colorOpacity;
+                d_func()->attributes.dashPattern = dashPattern;
+                d_func()->attributes.dashOffset = dashOffset;
 
-            translate_color( spen.color(), &color, &colorOpacity );
-            translate_dashPattern( spen.dashPattern(), penWidth, &dashPattern );
+                stream() << QLatin1String( "stroke=\"" ) << color << QLatin1String( "\" " );
+                stream() << QLatin1String( "stroke-opacity=\"" ) << colorOpacity << QLatin1String( "\" " );
+                stream() << QLatin1String( "stroke-dasharray=\"" ) << dashPattern << QLatin1String( "\" " );
+                stream() << QLatin1String( "stroke-dashoffset=\"" ) << dashOffset << QLatin1String( "\" " );
+                break;
+            }
 
-            // SVG uses absolute offset
-            dashOffset = QString::number( spen.dashOffset() * penWidth );
-
-            d_func()->attributes.stroke = color;
-            d_func()->attributes.strokeOpacity = colorOpacity;
-            d_func()->attributes.dashPattern = dashPattern;
-            d_func()->attributes.dashOffset = dashOffset;
-
-            stream() << QLatin1String( "stroke=\"" ) << color << QLatin1String( "\" " );
-            stream() << QLatin1String( "stroke-opacity=\"" ) << colorOpacity << QLatin1String( "\" " );
-            stream() << QLatin1String( "stroke-dasharray=\"" ) << dashPattern << QLatin1String( "\" " );
-            stream() << QLatin1String( "stroke-dashoffset=\"" ) << dashOffset << QLatin1String( "\" " );
-            break;
-        }
-
-        default:
-            qWarning( "Unsupported pen style" );
-            break;
+            default:
+                qWarning( "Unsupported pen style" );
+                break;
         }
 
         if ( spen.widthF() == 0 )
@@ -433,40 +433,40 @@ public:
 
         switch ( spen.capStyle() )
         {
-        case Qt::FlatCap:
-            stream() << "stroke-linecap=\"butt\" ";
-            break;
+            case Qt::FlatCap:
+                stream() << "stroke-linecap=\"butt\" ";
+                break;
 
-        case Qt::SquareCap:
-            stream() << "stroke-linecap=\"square\" ";
-            break;
+            case Qt::SquareCap:
+                stream() << "stroke-linecap=\"square\" ";
+                break;
 
-        case Qt::RoundCap:
-            stream() << "stroke-linecap=\"round\" ";
-            break;
+            case Qt::RoundCap:
+                stream() << "stroke-linecap=\"round\" ";
+                break;
 
-        default:
-            qWarning( "Unhandled cap style" );
+            default:
+                qWarning( "Unhandled cap style" );
         }
 
         switch ( spen.joinStyle() )
         {
-        case Qt::SvgMiterJoin:
-        case Qt::MiterJoin:
-            stream() << "stroke-linejoin=\"miter\" "
-                        "stroke-miterlimit=\"" << spen.miterLimit() << "\" ";
-            break;
+            case Qt::SvgMiterJoin:
+            case Qt::MiterJoin:
+                stream() << "stroke-linejoin=\"miter\" "
+                         "stroke-miterlimit=\"" << spen.miterLimit() << "\" ";
+                break;
 
-        case Qt::BevelJoin:
-            stream() << "stroke-linejoin=\"bevel\" ";
-            break;
+            case Qt::BevelJoin:
+                stream() << "stroke-linejoin=\"bevel\" ";
+                break;
 
-        case Qt::RoundJoin:
-            stream() << "stroke-linejoin=\"round\" ";
-            break;
+            case Qt::RoundJoin:
+                stream() << "stroke-linejoin=\"round\" ";
+                break;
 
-        default:
-            qWarning( "Unhandled join style" );
+            default:
+                qWarning( "Unhandled join style" );
         }
     }
     void qbrushToSvg( const QBrush &sbrush )
@@ -475,48 +475,48 @@ public:
 
         switch ( sbrush.style() )
         {
-        case Qt::SolidPattern:
-        {
-            QString color, colorOpacity;
-            translate_color( sbrush.color(), &color, &colorOpacity );
-            stream() << "fill=\"" << color << "\" "
-                        "fill-opacity=\""
-                     << colorOpacity << "\" ";
-            d_func()->attributes.fill = color;
-            d_func()->attributes.fillOpacity = colorOpacity;
-        }
-        break;
-
-        case Qt::LinearGradientPattern:
-            saveLinearGradientBrush( sbrush.gradient() );
-            d_func()->attributes.fill = QString::fromLatin1( "url(#%1)" ).formatArg( d_func()->currentGradientName );
-            d_func()->attributes.fillOpacity = QString();
-            stream() << QLatin1String( "fill=\"url(#" ) << d_func()->currentGradientName << QLatin1String( ")\" " );
+            case Qt::SolidPattern:
+            {
+                QString color, colorOpacity;
+                translate_color( sbrush.color(), &color, &colorOpacity );
+                stream() << "fill=\"" << color << "\" "
+                         "fill-opacity=\""
+                         << colorOpacity << "\" ";
+                d_func()->attributes.fill = color;
+                d_func()->attributes.fillOpacity = colorOpacity;
+            }
             break;
 
-        case Qt::RadialGradientPattern:
-            saveRadialGradientBrush( sbrush.gradient() );
-            d_func()->attributes.fill = QString::fromLatin1( "url(#%1)" ).formatArg( d_func()->currentGradientName );
-            d_func()->attributes.fillOpacity = QString();
-            stream() << QLatin1String( "fill=\"url(#" ) << d_func()->currentGradientName << QLatin1String( ")\" " );
-            break;
+            case Qt::LinearGradientPattern:
+                saveLinearGradientBrush( sbrush.gradient() );
+                d_func()->attributes.fill = QString::fromLatin1( "url(#%1)" ).formatArg( d_func()->currentGradientName );
+                d_func()->attributes.fillOpacity = QString();
+                stream() << QLatin1String( "fill=\"url(#" ) << d_func()->currentGradientName << QLatin1String( ")\" " );
+                break;
 
-        case Qt::ConicalGradientPattern:
-            saveConicalGradientBrush( sbrush.gradient() );
-            d_func()->attributes.fill = QString::fromLatin1( "url(#%1)" ).formatArg( d_func()->currentGradientName );
-            d_func()->attributes.fillOpacity = QString();
-            stream() << QLatin1String( "fill=\"url(#" ) << d_func()->currentGradientName << QLatin1String( ")\" " );
-            break;
+            case Qt::RadialGradientPattern:
+                saveRadialGradientBrush( sbrush.gradient() );
+                d_func()->attributes.fill = QString::fromLatin1( "url(#%1)" ).formatArg( d_func()->currentGradientName );
+                d_func()->attributes.fillOpacity = QString();
+                stream() << QLatin1String( "fill=\"url(#" ) << d_func()->currentGradientName << QLatin1String( ")\" " );
+                break;
 
-        case Qt::NoBrush:
-            stream() << QLatin1String( "fill=\"none\" " );
-            d_func()->attributes.fill = QLatin1String( "none" );
-            d_func()->attributes.fillOpacity = QString();
-            return;
-            break;
+            case Qt::ConicalGradientPattern:
+                saveConicalGradientBrush( sbrush.gradient() );
+                d_func()->attributes.fill = QString::fromLatin1( "url(#%1)" ).formatArg( d_func()->currentGradientName );
+                d_func()->attributes.fillOpacity = QString();
+                stream() << QLatin1String( "fill=\"url(#" ) << d_func()->currentGradientName << QLatin1String( ")\" " );
+                break;
 
-        default:
-            break;
+            case Qt::NoBrush:
+                stream() << QLatin1String( "fill=\"none\" " );
+                d_func()->attributes.fill = QLatin1String( "none" );
+                d_func()->attributes.fillOpacity = QString();
+                return;
+                break;
+
+            default:
+                break;
         }
     }
     void qfontToSvg( const QFont &sfont )
@@ -538,20 +538,20 @@ public:
 
         switch ( svgWeight )
         {
-        case QFont::Light:
-            svgWeight = 100;
-            break;
+            case QFont::Light:
+                svgWeight = 100;
+                break;
 
-        case QFont::Normal:
-            svgWeight = 400;
-            break;
+            case QFont::Normal:
+                svgWeight = 400;
+                break;
 
-        case QFont::Bold:
-            svgWeight = 700;
-            break;
+            case QFont::Bold:
+                svgWeight = 700;
+                break;
 
-        default:
-            svgWeight *= 10;
+            default:
+                svgWeight *= 10;
         }
 
         d->attributes.font_weight = QString::number( svgWeight );
@@ -559,9 +559,9 @@ public:
         d->attributes.font_style = d->font.italic() ? QLatin1String( "italic" ) : QLatin1String( "normal" );
 
         *d->stream << "font-family=\"" << d->attributes.font_family << "\" "
-                      "font-size=\"" << d->attributes.font_size << "\" "
-                      "font-weight=\"" << d->attributes.font_weight << "\" "
-                      "font-style=\"" << d->attributes.font_style << "\" "
+                   "font-size=\"" << d->attributes.font_size << "\" "
+                   "font-weight=\"" << d->attributes.font_weight << "\" "
+                   "font-style=\"" << d->attributes.font_style << "\" "
                    << endl;
     }
 };
@@ -746,43 +746,43 @@ int QSvgGenerator::metric( QPaintDevice::PaintDeviceMetric metric ) const
 
     switch ( metric )
     {
-    case QPaintDevice::PdmDepth:
-        return 32;
+        case QPaintDevice::PdmDepth:
+            return 32;
 
-    case QPaintDevice::PdmWidth:
-        return d->engine->size().width();
+        case QPaintDevice::PdmWidth:
+            return d->engine->size().width();
 
-    case QPaintDevice::PdmHeight:
-        return d->engine->size().height();
+        case QPaintDevice::PdmHeight:
+            return d->engine->size().height();
 
-    case QPaintDevice::PdmDpiX:
-        return d->engine->resolution();
+        case QPaintDevice::PdmDpiX:
+            return d->engine->resolution();
 
-    case QPaintDevice::PdmDpiY:
-        return d->engine->resolution();
+        case QPaintDevice::PdmDpiY:
+            return d->engine->resolution();
 
-    case QPaintDevice::PdmHeightMM:
-        return qRound( d->engine->size().height() * 25.4 / d->engine->resolution() );
+        case QPaintDevice::PdmHeightMM:
+            return qRound( d->engine->size().height() * 25.4 / d->engine->resolution() );
 
-    case QPaintDevice::PdmWidthMM:
-        return qRound( d->engine->size().width() * 25.4 / d->engine->resolution() );
+        case QPaintDevice::PdmWidthMM:
+            return qRound( d->engine->size().width() * 25.4 / d->engine->resolution() );
 
-    case QPaintDevice::PdmNumColors:
-        return 0xffffffff;
+        case QPaintDevice::PdmNumColors:
+            return 0xffffffff;
 
-    case QPaintDevice::PdmPhysicalDpiX:
-        return d->engine->resolution();
+        case QPaintDevice::PdmPhysicalDpiX:
+            return d->engine->resolution();
 
-    case QPaintDevice::PdmPhysicalDpiY:
-        return d->engine->resolution();
+        case QPaintDevice::PdmPhysicalDpiY:
+            return d->engine->resolution();
 
-    case QPaintDevice::PdmDevicePixelRatio:
-    case QPaintDevice::PdmDevicePixelRatioScaled:
-        return 1;
+        case QPaintDevice::PdmDevicePixelRatio:
+        case QPaintDevice::PdmDevicePixelRatioScaled:
+            return 1;
 
-    default:
-        qWarning( "QSvgGenerator::metric(), unhandled metric %d\n", metric );
-        break;
+        default:
+            qWarning( "QSvgGenerator::metric(), unhandled metric %d\n", metric );
+            break;
     }
 
     return 0;
@@ -903,10 +903,10 @@ void QSvgPaintEngine::drawImage( const QRectF &r, const QImage &image,
 
     stream() << "<image ";
     stream() << "x=\"" << r.x() << "\" "
-                "y=\"" << r.y() << "\" "
-                "width=\"" << r.width() << "\" "
-                "height=\"" << r.height() << "\" "
-                "preserveAspectRatio=\"none\" ";
+             "y=\"" << r.y() << "\" "
+             "width=\"" << r.width() << "\" "
+             "height=\"" << r.height() << "\" "
+             "preserveAspectRatio=\"none\" ";
 
     QByteArray data;
     QBuffer buffer( &data );
@@ -1015,40 +1015,40 @@ void QSvgPaintEngine::drawPath( const QPainterPath &p )
 
         switch ( e.type )
         {
-        case QPainterPath::MoveToElement:
-            *d->stream << 'M' << e.x << ',' << e.y;
-            break;
+            case QPainterPath::MoveToElement:
+                *d->stream << 'M' << e.x << ',' << e.y;
+                break;
 
-        case QPainterPath::LineToElement:
-            *d->stream << 'L' << e.x << ',' << e.y;
-            break;
+            case QPainterPath::LineToElement:
+                *d->stream << 'L' << e.x << ',' << e.y;
+                break;
 
-        case QPainterPath::CurveToElement:
-            *d->stream << 'C' << e.x << ',' << e.y;
-            ++i;
-
-            while ( i < p.elementCount() )
-            {
-                const QPainterPath::Element &e = p.elementAt( i );
-
-                if ( e.type != QPainterPath::CurveToDataElement )
-                {
-                    --i;
-                    break;
-                }
-                else
-                {
-                    *d->stream << ' ';
-                }
-
-                *d->stream << e.x << ',' << e.y;
+            case QPainterPath::CurveToElement:
+                *d->stream << 'C' << e.x << ',' << e.y;
                 ++i;
-            }
 
-            break;
+                while ( i < p.elementCount() )
+                {
+                    const QPainterPath::Element &e = p.elementAt( i );
 
-        default:
-            break;
+                    if ( e.type != QPainterPath::CurveToDataElement )
+                    {
+                        --i;
+                        break;
+                    }
+                    else
+                    {
+                        *d->stream << ' ';
+                    }
+
+                    *d->stream << e.x << ',' << e.y;
+                    ++i;
+                }
+
+                break;
+
+            default:
+                break;
         }
 
         if ( i != p.elementCount() - 1 )
@@ -1133,11 +1133,11 @@ void QSvgPaintEngine::drawTextItem( const QPointF &pt, const QTextItem &textItem
     QString s = QString( ti.m_iter, ti.m_end );
 
     *d->stream << "<text "
-                  "fill=\"" << d->attributes.stroke << "\" "
-                  "fill-opacity=\"" << d->attributes.strokeOpacity << "\" "
-                  "stroke=\"none\" "
-                  "xml:space=\"preserve\" "
-                  "x=\"" << pt.x() << "\" y=\"" << pt.y() << "\" ";
+               "fill=\"" << d->attributes.stroke << "\" "
+               "fill-opacity=\"" << d->attributes.strokeOpacity << "\" "
+               "stroke=\"none\" "
+               "xml:space=\"preserve\" "
+               "x=\"" << pt.x() << "\" y=\"" << pt.y() << "\" ";
 
     qfontToSvg( textItem.font() );
     *d->stream << " >"

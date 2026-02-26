@@ -138,30 +138,30 @@ bool QSharedMemoryPrivate::initKey()
 
         switch ( systemSemaphore.error() )
         {
-        case QSystemSemaphore::PermissionDenied:
-            error = QSharedMemory::PermissionDenied;
-            break;
+            case QSystemSemaphore::PermissionDenied:
+                error = QSharedMemory::PermissionDenied;
+                break;
 
-        case QSystemSemaphore::KeyError:
-            error = QSharedMemory::KeyError;
-            break;
+            case QSystemSemaphore::KeyError:
+                error = QSharedMemory::KeyError;
+                break;
 
-        case QSystemSemaphore::AlreadyExists:
-            error = QSharedMemory::AlreadyExists;
-            break;
+            case QSystemSemaphore::AlreadyExists:
+                error = QSharedMemory::AlreadyExists;
+                break;
 
-        case QSystemSemaphore::NotFound:
-            error = QSharedMemory::NotFound;
-            break;
+            case QSystemSemaphore::NotFound:
+                error = QSharedMemory::NotFound;
+                break;
 
-        case QSystemSemaphore::OutOfResources:
-            error = QSharedMemory::OutOfResources;
-            break;
+            case QSystemSemaphore::OutOfResources:
+                error = QSharedMemory::OutOfResources;
+                break;
 
-        case QSystemSemaphore::UnknownError:
-        default:
-            error = QSharedMemory::UnknownError;
-            break;
+            case QSystemSemaphore::UnknownError:
+            default:
+                error = QSharedMemory::UnknownError;
+                break;
         }
 
         return false;

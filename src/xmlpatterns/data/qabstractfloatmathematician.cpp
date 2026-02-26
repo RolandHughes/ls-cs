@@ -36,42 +36,42 @@ Item AbstractFloatMathematician<isDouble>::calculate( const Item &o1, const Oper
 
     switch ( op )
     {
-    case Div:
-        return toItem( AbstractFloat<isDouble>::fromValue( num1->toDouble() / num2->toDouble() ) );
+        case Div:
+            return toItem( AbstractFloat<isDouble>::fromValue( num1->toDouble() / num2->toDouble() ) );
 
-    case IDiv:
-    {
-        if ( num1->isNaN() || num2->isNaN() )
+        case IDiv:
         {
-            context->error( QtXmlPatterns::tr( "No operand in an integer division, %1, can be %2." )
-                            .formatArg( formatKeyword( "idiv" ) ).formatArg( formatData( "NaN" ) ), ReportContext::FOAR0002, this );
+            if ( num1->isNaN() || num2->isNaN() )
+            {
+                context->error( QtXmlPatterns::tr( "No operand in an integer division, %1, can be %2." )
+                                .formatArg( formatKeyword( "idiv" ) ).formatArg( formatData( "NaN" ) ), ReportContext::FOAR0002, this );
 
+            }
+            else if ( num1->isInf() )
+            {
+                context->error( QtXmlPatterns::tr( "The first operand in an integer division, %1, cannot be infinity (%2)." )
+                                .formatArg( formatKeyword( "idiv" ) ).formatArg( formatData( "INF" ) ), ReportContext::FOAR0002, this );
+
+            }
+            else if ( num2->toInteger() == 0 )
+                context->error( QtXmlPatterns::tr( "The second operand in a division, %1, cannot be zero (%2)." )
+                                .formatArg( formatKeyword( "idiv" ) ).formatArg( formatData( "0" ) ),
+                                ReportContext::FOAR0001, this );
+
+            return Integer::fromValue( static_cast<xsInteger>( num1->toDouble() / num2->toDouble() ) );
         }
-        else if ( num1->isInf() )
-        {
-            context->error( QtXmlPatterns::tr( "The first operand in an integer division, %1, cannot be infinity (%2)." )
-                            .formatArg( formatKeyword( "idiv" ) ).formatArg( formatData( "INF" ) ), ReportContext::FOAR0002, this );
 
-        }
-        else if ( num2->toInteger() == 0 )
-            context->error( QtXmlPatterns::tr( "The second operand in a division, %1, cannot be zero (%2)." )
-                            .formatArg( formatKeyword( "idiv" ) ).formatArg( formatData( "0" ) ),
-                            ReportContext::FOAR0001, this );
+        case Substract:
+            return toItem( AbstractFloat<isDouble>::fromValue( num1->toDouble() - num2->toDouble() ) );
 
-        return Integer::fromValue( static_cast<xsInteger>( num1->toDouble() / num2->toDouble() ) );
-    }
+        case Mod:
+            return toItem( AbstractFloat<isDouble>::fromValue( ::fmod( num1->toDouble(), num2->toDouble() ) ) );
 
-    case Substract:
-        return toItem( AbstractFloat<isDouble>::fromValue( num1->toDouble() - num2->toDouble() ) );
+        case Multiply:
+            return toItem( AbstractFloat<isDouble>::fromValue( num1->toDouble() * num2->toDouble() ) );
 
-    case Mod:
-        return toItem( AbstractFloat<isDouble>::fromValue( ::fmod( num1->toDouble(), num2->toDouble() ) ) );
-
-    case Multiply:
-        return toItem( AbstractFloat<isDouble>::fromValue( num1->toDouble() * num2->toDouble() ) );
-
-    case Add:
-        return toItem( AbstractFloat<isDouble>::fromValue( num1->toDouble() + num2->toDouble() ) );
+        case Add:
+            return toItem( AbstractFloat<isDouble>::fromValue( num1->toDouble() + num2->toDouble() ) );
     }
 
     Q_ASSERT( false );

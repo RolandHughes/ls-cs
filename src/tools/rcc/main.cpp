@@ -43,17 +43,17 @@ void showHelp( const QString &argv0, const QString &error )
     }
 
     fprintf( stderr, "Usage: %s  [options] <inputs>\n\n"
-                     "Options:\n"
-                     "  -o file              write output to file rather than stdout\n"
-                     "  -name name           create an external initialization function with name\n"
-                     "  -threshold level     threshold to consider compressing files\n"
-                     "  -compress level      compress input files by level\n"
-                     "  -root path           prefix resource access path with root path\n"
-                     "  -no-compress         disable all compression\n"
-                     "  -binary              output a binary file for use as a dynamic resource\n"
-                     "  -project             generate resource file containing all files from the current directory\n"
-                     "  -version             display rcc version\n"
-                     "  -help                display this information\n",
+             "Options:\n"
+             "  -o file              write output to file rather than stdout\n"
+             "  -name name           create an external initialization function with name\n"
+             "  -threshold level     threshold to consider compressing files\n"
+             "  -compress level      compress input files by level\n"
+             "  -root path           prefix resource access path with root path\n"
+             "  -no-compress         disable all compression\n"
+             "  -binary              output a binary file for use as a dynamic resource\n"
+             "  -project             generate resource file containing all files from the current directory\n"
+             "  -version             display rcc version\n"
+             "  -help                display this information\n",
              lscsPrintable( argv0 ) );
 }
 
@@ -333,7 +333,7 @@ int runRcc( int argc, char *argv[] )
 int main( int argc, char *argv[] )
 {
 #if defined(LSCS_PACKAGE_BUILD)
-    QCoreApplication::setAttribute( Qt::AA_UseSystemConf, true);
+    QCoreApplication::setAttribute( Qt::AA_UseSystemConf, true );
 #endif
 
     return runRcc( argc, argv );

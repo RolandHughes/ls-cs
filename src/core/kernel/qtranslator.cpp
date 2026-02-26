@@ -160,23 +160,23 @@ static bool isValidCountRules( const QVector<std::variant<CountGuide, int>> &dat
 
             switch ( option )
             {
-            case CountGuide::Equal:
-            case CountGuide::LessThan:
-            case CountGuide::LessThanEqual:
-                break;
-
-            case CountGuide::Between:
-                if ( offset != rulesSize )
-                {
-                    // third operand
-                    ++offset;
+                case CountGuide::Equal:
+                case CountGuide::LessThan:
+                case CountGuide::LessThanEqual:
                     break;
-                }
 
-                return false;               // Missing operand
+                case CountGuide::Between:
+                    if ( offset != rulesSize )
+                    {
+                        // third operand
+                        ++offset;
+                        break;
+                    }
 
-            default:
-                return false;               // Bad option (0)
+                    return false;               // Missing operand
+
+                default:
+                    return false;               // Bad option (0)
             }
 
             if ( offset == rulesSize )
@@ -270,33 +270,33 @@ static uint countHelper( int n, const QVector<std::variant<CountGuide, int>> &da
 
                 switch ( op )
                 {
-                case CountGuide::Equal:
-                    truthValue = ( leftOperand == rightOperand );
-                    break;
+                    case CountGuide::Equal:
+                        truthValue = ( leftOperand == rightOperand );
+                        break;
 
-                case CountGuide::LessThan:
-                    truthValue = ( leftOperand < rightOperand );
-                    break;
+                    case CountGuide::LessThan:
+                        truthValue = ( leftOperand < rightOperand );
+                        break;
 
-                case CountGuide::LessThanEqual:
-                    truthValue = ( leftOperand <= rightOperand );
-                    break;
+                    case CountGuide::LessThanEqual:
+                        truthValue = ( leftOperand <= rightOperand );
+                        break;
 
-                case CountGuide::Between:
-                {
-                    int bottom = rightOperand;
+                    case CountGuide::Between:
+                    {
+                        int bottom = rightOperand;
 
-                    int top    = std::get<int>( data[cnt] );
-                    truthValue = ( leftOperand >= bottom && leftOperand <= top );
+                        int top    = std::get<int>( data[cnt] );
+                        truthValue = ( leftOperand >= bottom && leftOperand <= top );
 
-                    ++cnt;
+                        ++cnt;
 
-                    break;
-                }
+                        break;
+                    }
 
-                default:
-                    // not a valid case
-                    break;
+                    default:
+                        // not a valid case
+                        break;
                 }
 
                 if ( opcode & CountGuide::Not )
@@ -830,13 +830,13 @@ bool QTranslatorPrivate::do_load( const uchar *data, int len, const QString &dir
                 // retrieve and enum or int ( some rule )
                 switch ( which )
                 {
-                case 0:
-                    m_countRules.append( static_cast<CountGuide>( data[cnt + 1] ) );
-                    break;
+                    case 0:
+                        m_countRules.append( static_cast<CountGuide>( data[cnt + 1] ) );
+                        break;
 
-                case 1:
-                    m_countRules.append( static_cast<int>( data[cnt + 1] ) );
-                    break;
+                    case 1:
+                        m_countRules.append( static_cast<int>( data[cnt + 1] ) );
+                        break;
                 }
             }
 
@@ -938,101 +938,101 @@ static QString getMessage( const uchar *data, const uchar *end, const char *cont
 
         switch ( tag )
         {
-        case TranslatorTag::End:
-            done = true;
-            break;
+            case TranslatorTag::End:
+                done = true;
+                break;
 
-        case TranslatorTag::Translation:
-        {
-            quint32 len = read32( data );
-
-            if ( len == 0xffffffff )
+            case TranslatorTag::Translation:
             {
-                // indicates QByteArray was null
-                len = 0;
+                quint32 len = read32( data );
+
+                if ( len == 0xffffffff )
+                {
+                    // indicates QByteArray was null
+                    len = 0;
+                }
+
+                data += 4;
+
+                if ( numerus == 0 )
+                {
+                    tn_length = len;
+                    tn = data;
+                }
+
+                --numerus;
+
+                data += len;
+                break;
             }
 
-            data += 4;
+            case TranslatorTag::Obsolete1:
+                data += 4;
+                break;
 
-            if ( numerus == 0 )
+            case TranslatorTag::SourceText:
             {
-                tn_length = len;
-                tn = data;
+                quint32 len = read32( data );
+                data += 4;
+
+                if ( len == 0xffffffff )
+                {
+                    // indicates QByteArray was null
+                    len = 0;
+                }
+
+                if ( ! match( data, len, text, sourceTextLen ) )
+                {
+                    return retval;
+                }
+
+                data += len;
+                break;
             }
 
-            --numerus;
-
-            data += len;
-            break;
-        }
-
-        case TranslatorTag::Obsolete1:
-            data += 4;
-            break;
-
-        case TranslatorTag::SourceText:
-        {
-            quint32 len = read32( data );
-            data += 4;
-
-            if ( len == 0xffffffff )
+            case TranslatorTag::Context:
             {
-                // indicates QByteArray was null
-                len = 0;
+                quint32 len = read32( data );
+                data += 4;
+
+                if ( len == 0xffffffff )
+                {
+                    // indicates QByteArray was null
+                    len = 0;
+                }
+
+                if ( ! match( data, len, context, contextLen ) )
+                {
+                    return retval;
+                }
+
+                data += len;
+                break;
             }
 
-            if ( ! match( data, len, text, sourceTextLen ) )
+            case TranslatorTag::Comment:
             {
+                quint32 len = read32( data );
+                data += 4;
+
+                if ( len == 0xffffffff )
+                {
+                    // indicates QByteArray was null
+                    len = 0;
+                }
+
+                if ( *data != 0 && ! match( data, len, comment, commentLen ) )
+                {
+                    return retval;
+                }
+
+                data += len;
+                break;
+            }
+
+            default:
+                // "unknown tag"
                 return retval;
-            }
-
-            data += len;
-            break;
-        }
-
-        case TranslatorTag::Context:
-        {
-            quint32 len = read32( data );
-            data += 4;
-
-            if ( len == 0xffffffff )
-            {
-                // indicates QByteArray was null
-                len = 0;
-            }
-
-            if ( ! match( data, len, context, contextLen ) )
-            {
-                return retval;
-            }
-
-            data += len;
-            break;
-        }
-
-        case TranslatorTag::Comment:
-        {
-            quint32 len = read32( data );
-            data += 4;
-
-            if ( len == 0xffffffff )
-            {
-                // indicates QByteArray was null
-                len = 0;
-            }
-
-            if ( *data != 0 && ! match( data, len, comment, commentLen ) )
-            {
-                return retval;
-            }
-
-            data += len;
-            break;
-        }
-
-        default:
-            // "unknown tag"
-            return retval;
         }
     }
 

@@ -59,16 +59,17 @@ QXcbEglNativeInterfaceHandler::QXcbEglNativeInterfaceHandler( QXcbNativeInterfac
 {
 }
 
-QPlatformNativeInterface::NativeResourceForIntegrationFunction QXcbEglNativeInterfaceHandler::nativeResourceFunctionForIntegration(
+QPlatformNativeInterface::NativeResourceForIntegrationFunction
+QXcbEglNativeInterfaceHandler::nativeResourceFunctionForIntegration(
     const QByteArray &resource ) const
 {
     switch ( resourceType( resource ) )
     {
-    case EglDisplay:
-        return eglDisplay;
+        case EglDisplay:
+            return eglDisplay;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return nullptr;
@@ -79,14 +80,14 @@ QPlatformNativeInterface::NativeResourceForContextFunction QXcbEglNativeInterfac
 {
     switch ( resourceType( resource ) )
     {
-    case EglContext:
-        return eglContextForContext;
+        case EglContext:
+            return eglContextForContext;
 
-    case EglConfig:
-        return eglConfigForContext;
+        case EglConfig:
+            return eglConfigForContext;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return nullptr;
@@ -97,11 +98,11 @@ QPlatformNativeInterface::NativeResourceForWindowFunction QXcbEglNativeInterface
 {
     switch ( resourceType( resource ) )
     {
-    case EglDisplay:
-        return eglDisplayForWindow;
+        case EglDisplay:
+            return eglDisplayForWindow;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return nullptr;

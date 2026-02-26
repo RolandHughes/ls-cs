@@ -1777,29 +1777,29 @@ QVariant MessageModel::data( const QModelIndex &index, int role ) const
         {
             switch ( column - numLangs )
             {
-            case 0:
-            {
-                // Source text
-
-                MultiMessageItem *msgItem = mci->multiMessageItem( row );
-
-                if ( msgItem->text().isEmpty() )
+                case 0:
                 {
-                    if ( mci->context().isEmpty() )
+                    // Source text
+
+                    MultiMessageItem *msgItem = mci->multiMessageItem( row );
+
+                    if ( msgItem->text().isEmpty() )
                     {
-                        return tr( "<file header>" );
+                        if ( mci->context().isEmpty() )
+                        {
+                            return tr( "<file header>" );
+                        }
+                        else
+                        {
+                            return tr( "<context comment>" );
+                        }
                     }
-                    else
-                    {
-                        return tr( "<context comment>" );
-                    }
+
+                    return msgItem->text().simplified();
                 }
 
-                return msgItem->text().simplified();
-            }
-
-            default: // Status or dummy column => no text
-                return QVariant();
+                default: // Status or dummy column => no text
+                    return QVariant();
             }
 
         }
@@ -1809,29 +1809,29 @@ QVariant MessageModel::data( const QModelIndex &index, int role ) const
             {
                 switch ( msgItem->message().type() )
                 {
-                case TranslatorMessage::Type::Unfinished:
-                    if ( msgItem->translation().isEmpty() )
-                    {
-                        return pxEmpty;
-                    }
+                    case TranslatorMessage::Type::Unfinished:
+                        if ( msgItem->translation().isEmpty() )
+                        {
+                            return pxEmpty;
+                        }
 
-                    if ( msgItem->danger() )
-                    {
-                        return pxDanger;
-                    }
+                        if ( msgItem->danger() )
+                        {
+                            return pxDanger;
+                        }
 
-                    return pxOff;
+                        return pxOff;
 
-                case TranslatorMessage::Type::Finished:
-                    if ( msgItem->danger() )
-                    {
-                        return pxWarning;
-                    }
+                    case TranslatorMessage::Type::Finished:
+                        if ( msgItem->danger() )
+                        {
+                            return pxWarning;
+                        }
 
-                    return pxOn;
+                        return pxOn;
 
-                default:
-                    return pxObsolete;
+                    default:
+                        return pxObsolete;
                 }
             }
 
@@ -1842,37 +1842,37 @@ QVariant MessageModel::data( const QModelIndex &index, int role ) const
         {
             switch ( column - numLangs )
             {
-            case 0:
-                // Source text
-                return mci->multiMessageItem( row )->text().simplified().remove( '&' );
+                case 0:
+                    // Source text
+                    return mci->multiMessageItem( row )->text().simplified().remove( '&' );
 
-            case 1:
-                // Dummy column
-                return QVariant();
+                case 1:
+                    // Dummy column
+                    return QVariant();
 
-            default:
-                if ( MessageItem *msgItem = mci->messageItem( column, row ) )
-                {
-                    int rslt = !msgItem->translation().isEmpty();
-
-                    if ( !msgItem->danger() )
+                default:
+                    if ( MessageItem *msgItem = mci->messageItem( column, row ) )
                     {
-                        rslt |= 2;
+                        int rslt = !msgItem->translation().isEmpty();
+
+                        if ( !msgItem->danger() )
+                        {
+                            rslt |= 2;
+                        }
+
+                        if ( msgItem->isObsolete() )
+                        {
+                            rslt |= 8;
+                        }
+                        else if ( msgItem->isFinished() )
+                        {
+                            rslt |= 4;
+                        }
+
+                        return rslt;
                     }
 
-                    if ( msgItem->isObsolete() )
-                    {
-                        rslt |= 8;
-                    }
-                    else if ( msgItem->isFinished() )
-                    {
-                        rslt |= 4;
-                    }
-
-                    return rslt;
-                }
-
-                return INT_MAX;
+                    return INT_MAX;
             }
         }
         else if ( role == Qt::ForegroundRole && column > 0
@@ -1909,25 +1909,25 @@ QVariant MessageModel::data( const QModelIndex &index, int role ) const
         {
             switch ( column - numLangs )
             {
-            case 0:
-            {
-                // Context
-                if ( mci->context().isEmpty() )
+                case 0:
                 {
-                    return tr( "<unnamed context>" );
+                    // Context
+                    if ( mci->context().isEmpty() )
+                    {
+                        return tr( "<unnamed context>" );
+                    }
+
+                    return mci->context().simplified();
                 }
 
-                return mci->context().simplified();
-            }
+                case 1:
+                {
+                    QString s = QString( "%1/%2" ).formatArg( mci->getNumFinished() ).formatArg( mci->getNumEditable() );
+                    return s;
+                }
 
-            case 1:
-            {
-                QString s = QString( "%1/%2" ).formatArg( mci->getNumFinished() ).formatArg( mci->getNumEditable() );
-                return s;
-            }
-
-            default:
-                return QVariant(); // Status => no text
+                default:
+                    return QVariant(); // Status => no text
             }
 
         }
@@ -1957,51 +1957,51 @@ QVariant MessageModel::data( const QModelIndex &index, int role ) const
         {
             switch ( column - numLangs )
             {
-            case 0:
-                // Context (same as display role)
-                return mci->context().simplified();
+                case 0:
+                    // Context (same as display role)
+                    return mci->context().simplified();
 
-            case 1:
-                // Items
-                return mci->getNumEditable();
+                case 1:
+                    // Items
+                    return mci->getNumEditable();
 
-            default:
-                // Percent
-                ContextItem *subject = mci->contextItem( column );
+                default:
+                    // Percent
+                    ContextItem *subject = mci->contextItem( column );
 
-                if ( subject != nullptr )
-                {
-                    int totalItems = subject->nonobsoleteCount();
-                    int percent    = totalItems ? ( 100 * subject->finishedCount() ) / totalItems : 100;
-                    int rslt       = percent * ( ( ( 1 << 28 ) - 1 ) / 100 ) + totalItems;
-
-                    if ( subject->isObsolete() )
+                    if ( subject != nullptr )
                     {
-                        rslt |= ( 1 << 30 );
+                        int totalItems = subject->nonobsoleteCount();
+                        int percent    = totalItems ? ( 100 * subject->finishedCount() ) / totalItems : 100;
+                        int rslt       = percent * ( ( ( 1 << 28 ) - 1 ) / 100 ) + totalItems;
 
-                    }
-                    else if ( subject->isFinished() )
-                    {
-                        rslt |= ( 1 << 29 );
-
-                        if ( ! subject->finishedDangerCount() )
+                        if ( subject->isObsolete() )
                         {
-                            rslt |= ( 1 << 28 );
+                            rslt |= ( 1 << 30 );
+
+                        }
+                        else if ( subject->isFinished() )
+                        {
+                            rslt |= ( 1 << 29 );
+
+                            if ( ! subject->finishedDangerCount() )
+                            {
+                                rslt |= ( 1 << 28 );
+                            }
+
+                        }
+                        else
+                        {
+                            if ( ! subject->unfinishedDangerCount() )
+                            {
+                                rslt |= ( 1 << 28 );
+                            }
                         }
 
-                    }
-                    else
-                    {
-                        if ( ! subject->unfinishedDangerCount() )
-                        {
-                            rslt |= ( 1 << 28 );
-                        }
+                        return rslt;
                     }
 
-                    return rslt;
-                }
-
-                return INT_MAX;
+                    return INT_MAX;
             }
 
         }

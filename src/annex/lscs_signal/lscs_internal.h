@@ -351,7 +351,7 @@ public:
 
 template<class ...Ts>
 template<class T> TeaCup<std::tuple<Ts...>>::TeaCup( T lambda )
-    : TeaCup<Ts...>( std::move( lambda ) )
+            : TeaCup<Ts...>( std::move( lambda ) )
 {
 }
 
@@ -661,8 +661,7 @@ void Bento<MethodReturn( MethodClass::* )( MethodArgs... )>::invoke( SlotBase *r
 
 
 // (4) specialization, pointer to const method
-template<class MethodClass, class MethodReturn, class...MethodArgs>
-Bento<MethodReturn( MethodClass::* )( MethodArgs... ) const>::Bento(
+template<class MethodClass, class MethodReturn, class...MethodArgs> Bento<MethodReturn( MethodClass::* )( MethodArgs... ) const>::Bento(
     MethodReturn( MethodClass::*ptr )( MethodArgs... ) const )
     : m_methodPtr( ptr )
 {

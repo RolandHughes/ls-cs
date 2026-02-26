@@ -133,21 +133,21 @@ void QCameraExposurePrivate::_q_exposureParameterChanged( int parameter )
 
     switch ( parameter )
     {
-    case QCameraExposureControl::ISO:
-        emit q->isoSensitivityChanged( q->isoSensitivity() );
-        break;
+        case QCameraExposureControl::ISO:
+            emit q->isoSensitivityChanged( q->isoSensitivity() );
+            break;
 
-    case QCameraExposureControl::Aperture:
-        emit q->apertureChanged( q->aperture() );
-        break;
+        case QCameraExposureControl::Aperture:
+            emit q->apertureChanged( q->aperture() );
+            break;
 
-    case QCameraExposureControl::ShutterSpeed:
-        emit q->shutterSpeedChanged( q->shutterSpeed() );
-        break;
+        case QCameraExposureControl::ShutterSpeed:
+            emit q->shutterSpeedChanged( q->shutterSpeed() );
+            break;
 
-    case QCameraExposureControl::ExposureCompensation:
-        emit q->exposureCompensationChanged( q->exposureCompensation() );
-        break;
+        case QCameraExposureControl::ExposureCompensation:
+            emit q->exposureCompensationChanged( q->exposureCompensation() );
+            break;
     }
 }
 
@@ -157,13 +157,13 @@ void QCameraExposurePrivate::_q_exposureParameterRangeChanged( int parameter )
 
     switch ( parameter )
     {
-    case QCameraExposureControl::Aperture:
-        emit q->apertureRangeChanged();
-        break;
+        case QCameraExposureControl::Aperture:
+            emit q->apertureRangeChanged();
+            break;
 
-    case QCameraExposureControl::ShutterSpeed:
-        emit q->shutterSpeedRangeChanged();
-        break;
+        case QCameraExposureControl::ShutterSpeed:
+            emit q->shutterSpeedRangeChanged();
+            break;
     }
 }
 

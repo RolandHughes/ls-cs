@@ -75,8 +75,9 @@ bool QObject::connect( const Sender *sender, void ( SignalClass::*signalMethod )
         const QMetaObject *receiverMetaObject = receiver->metaObject();
         QString receiverClass = receiverMetaObject->className();
 
-        qWarning( "QObject::connect() Invalid Signal (signal & slot method one), sender: %s signalName: %s  receiver: %s", lscsPrintable( senderClass ),
-                  lscsPrintable( signalName),
+        qWarning( "QObject::connect() Invalid Signal (signal & slot method one), sender: %s signalName: %s  receiver: %s",
+                  lscsPrintable( senderClass ),
+                  lscsPrintable( signalName ),
                   lscsPrintable( receiverClass ) );
         return false;
     }
@@ -84,7 +85,8 @@ bool QObject::connect( const Sender *sender, void ( SignalClass::*signalMethod )
     // is signalMethod a signal
     if ( signalMetaMethod.methodType() != QMetaMethod::Signal )
     {
-        qWarning( "QObject::connect() Invalid Signal (signal method not signal), sender: %s signalName: %s  signature: %s", lscsPrintable( senderClass ), lscsPrintable( signalName), lscsPrintable( signature ) );
+        qWarning( "QObject::connect() Invalid Signal (signal method not signal), sender: %s signalName: %s  signature: %s",
+                  lscsPrintable( senderClass ), lscsPrintable( signalName ), lscsPrintable( signature ) );
         return false;
     }
 
@@ -143,7 +145,8 @@ bool QObject::connect( const Sender *sender, void ( SignalClass::*signalMethod )
         const QMetaObject *receiverMetaObject = receiver->metaObject();
         QString receiverClass = receiverMetaObject->className();
 
-        qWarning( "QObject::connect() Invalid Signal (146 lambda one), sender: %s signalName: %s receiver: %s", lscsPrintable( senderClass ),
+        qWarning( "QObject::connect() Invalid Signal (146 lambda one), sender: %s signalName: %s receiver: %s",
+                  lscsPrintable( senderClass ),
                   lscsPrintable( signalName ),
                   lscsPrintable( receiverClass ) );
         return false;
@@ -503,7 +506,7 @@ bool QMetaMethod::invoke( QObject *object, Qt::ConnectionType type, LSCSReturnAr
 
         // store the signal data, true indicates the data will be copied into a TeaCup Object (stored on the heap)
         CSMetaCallEvent *event = new CSMetaCallEvent( m_bento,
-            new LsCsSignal::Internal::TeaCup_Data<Ts...>( true, std::forward<Ts>( Vs )... ), nullptr, -1 );
+                new LsCsSignal::Internal::TeaCup_Data<Ts...>( true, std::forward<Ts>( Vs )... ), nullptr, -1 );
 
         QCoreApplication::postEvent( object, event );
 
@@ -525,7 +528,7 @@ bool QMetaMethod::invoke( QObject *object, Qt::ConnectionType type, LSCSReturnAr
 
         // store the signal data, false indicates the data will not be copied
         CSMetaCallEvent *event = new CSMetaCallEvent( m_bento,
-            new LsCsSignal::Internal::TeaCup_Data<Ts...>( false, std::forward<Ts>( Vs )... ), nullptr, -1, &semaphore );
+                new LsCsSignal::Internal::TeaCup_Data<Ts...>( false, std::forward<Ts>( Vs )... ), nullptr, -1, &semaphore );
 
         QCoreApplication::postEvent( object, event );
 
@@ -588,7 +591,7 @@ bool QMetaMethod::invoke( QObject *object, Qt::ConnectionType type, Ts &&...Vs )
 
         // store the signal data, false indicates the data will not be copied
         CSMetaCallEvent *event = new CSMetaCallEvent( m_bento,
-            new LsCsSignal::Internal::TeaCup_Data<Ts...>( true, std::forward<Ts>( Vs )... ), nullptr, -1 );
+                new LsCsSignal::Internal::TeaCup_Data<Ts...>( true, std::forward<Ts>( Vs )... ), nullptr, -1 );
         QCoreApplication::postEvent( object, event );
 
     }
@@ -606,7 +609,7 @@ bool QMetaMethod::invoke( QObject *object, Qt::ConnectionType type, Ts &&...Vs )
 
         // store the signal data, false indicates the data will not be copied
         CSMetaCallEvent *event = new CSMetaCallEvent( m_bento,
-            new LsCsSignal::Internal::TeaCup_Data<Ts...>( false, std::forward<Ts>( Vs )... ), nullptr, -1, &semaphore );
+                new LsCsSignal::Internal::TeaCup_Data<Ts...>( false, std::forward<Ts>( Vs )... ), nullptr, -1, &semaphore );
         QCoreApplication::postEvent( object, event );
 
         semaphore.acquire();

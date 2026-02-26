@@ -320,7 +320,7 @@ void QWindowsOleDropSource::createCursors()
     QPixmap scaledPixmap = qFuzzyCompare( pixmapScaleFactor, 1.0 )
                            ? pixmap
                            :  pixmap.scaled( ( QSizeF( pixmap.size() ) * pixmapScaleFactor ).toSize(),
-                               Qt::KeepAspectRatio, Qt::SmoothTransformation );
+                                   Qt::KeepAspectRatio, Qt::SmoothTransformation );
 
     scaledPixmap.setDevicePixelRatio( 1 );
 
@@ -506,25 +506,25 @@ LSCS_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropSource::GiveFeedba
 
         switch ( m_mode )
         {
-        case MouseDrag:
-            SetCursor( e.cursor->handle() );
-            break;
+            case MouseDrag:
+                SetCursor( e.cursor->handle() );
+                break;
 
-        case TouchDrag:
-            if ( !m_touchDragWindow )
-            {
-                m_touchDragWindow = new QWindowsDragCursorWindow;
-            }
+            case TouchDrag:
+                if ( !m_touchDragWindow )
+                {
+                    m_touchDragWindow = new QWindowsDragCursorWindow;
+                }
 
-            m_touchDragWindow->setPixmap( e.pixmap );
-            m_touchDragWindow->setFramePosition( QCursor::pos() - e.hotSpot );
+                m_touchDragWindow->setPixmap( e.pixmap );
+                m_touchDragWindow->setFramePosition( QCursor::pos() - e.hotSpot );
 
-            if ( !m_touchDragWindow->isVisible() )
-            {
-                m_touchDragWindow->show();
-            }
+                if ( !m_touchDragWindow->isVisible() )
+                {
+                    m_touchDragWindow->show();
+                }
 
-            break;
+                break;
         }
 
         return ResultFromScode( S_OK );
@@ -675,7 +675,7 @@ LSCS_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropTarget::Drop( LPDA
     QWindowsDrag *windowsDrag = QWindowsDrag::instance();
 
     const QPlatformDropQtResponse response = QWindowSystemInterface::handleDrop( m_window, windowsDrag->dropData(),
-        m_lastPoint, translateToQDragDropActions( *pdwEffect ) );
+            m_lastPoint, translateToQDragDropActions( *pdwEffect ) );
 
     if ( response.isAccepted() )
     {

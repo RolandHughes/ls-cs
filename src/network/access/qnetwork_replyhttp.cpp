@@ -530,7 +530,7 @@ bool QNetworkReplyHttpImplPrivate::loadFromCacheIfAllowed( QHttpNetworkRequest &
 {
     QNetworkRequest::CacheLoadControl CacheLoadControlAttribute =
         ( QNetworkRequest::CacheLoadControl )request.attribute( QNetworkRequest::CacheLoadControlAttribute,
-            QNetworkRequest::PreferNetwork ).toInt();
+                QNetworkRequest::PreferNetwork ).toInt();
 
     if ( CacheLoadControlAttribute == QNetworkRequest::AlwaysNetwork )
     {
@@ -699,15 +699,15 @@ QHttpNetworkRequest::Priority QNetworkReplyHttpImplPrivate::convert( const QNetw
 {
     switch ( priority )
     {
-    case QNetworkRequest::LowPriority:
-        return QHttpNetworkRequest::LowPriority;
+        case QNetworkRequest::LowPriority:
+            return QHttpNetworkRequest::LowPriority;
 
-    case QNetworkRequest::HighPriority:
-        return QHttpNetworkRequest::HighPriority;
+        case QNetworkRequest::HighPriority:
+            return QHttpNetworkRequest::HighPriority;
 
-    case QNetworkRequest::NormalPriority:
-    default:
-        return QHttpNetworkRequest::NormalPriority;
+        case QNetworkRequest::NormalPriority:
+        default:
+            return QHttpNetworkRequest::NormalPriority;
     }
 }
 
@@ -805,52 +805,52 @@ void QNetworkReplyHttpImplPrivate::postRequest( const QNetworkRequest &newHttpRe
 
     switch ( operation )
     {
-    case QNetworkAccessManager::GetOperation:
-        httpRequest.setOperation( QHttpNetworkRequest::Get );
+        case QNetworkAccessManager::GetOperation:
+            httpRequest.setOperation( QHttpNetworkRequest::Get );
 
-        if ( loadFromCacheIfAllowed( httpRequest ) )
-        {
-            return;   // no need to send the request! :)
-        }
+            if ( loadFromCacheIfAllowed( httpRequest ) )
+            {
+                return;   // no need to send the request! :)
+            }
 
-        break;
+            break;
 
-    case QNetworkAccessManager::HeadOperation:
-        httpRequest.setOperation( QHttpNetworkRequest::Head );
+        case QNetworkAccessManager::HeadOperation:
+            httpRequest.setOperation( QHttpNetworkRequest::Head );
 
-        if ( loadFromCacheIfAllowed( httpRequest ) )
-        {
-            return;   // no need to send the request! :)
-        }
+            if ( loadFromCacheIfAllowed( httpRequest ) )
+            {
+                return;   // no need to send the request! :)
+            }
 
-        break;
+            break;
 
-    case QNetworkAccessManager::PostOperation:
-        invalidateCache();
-        httpRequest.setOperation( QHttpNetworkRequest::Post );
-        createUploadByteDevice();
-        break;
+        case QNetworkAccessManager::PostOperation:
+            invalidateCache();
+            httpRequest.setOperation( QHttpNetworkRequest::Post );
+            createUploadByteDevice();
+            break;
 
-    case QNetworkAccessManager::PutOperation:
-        invalidateCache();
-        httpRequest.setOperation( QHttpNetworkRequest::Put );
-        createUploadByteDevice();
-        break;
+        case QNetworkAccessManager::PutOperation:
+            invalidateCache();
+            httpRequest.setOperation( QHttpNetworkRequest::Put );
+            createUploadByteDevice();
+            break;
 
-    case QNetworkAccessManager::DeleteOperation:
-        invalidateCache();
-        httpRequest.setOperation( QHttpNetworkRequest::Delete );
-        break;
+        case QNetworkAccessManager::DeleteOperation:
+            invalidateCache();
+            httpRequest.setOperation( QHttpNetworkRequest::Delete );
+            break;
 
-    case QNetworkAccessManager::CustomOperation:
-        invalidateCache(); // for safety reasons, we don't know what the operation does
-        httpRequest.setOperation( QHttpNetworkRequest::Custom );
-        createUploadByteDevice();
-        httpRequest.setCustomVerb( newHttpRequest.attribute( QNetworkRequest::CustomVerbAttribute ).toByteArray() );
-        break;
+        case QNetworkAccessManager::CustomOperation:
+            invalidateCache(); // for safety reasons, we don't know what the operation does
+            httpRequest.setOperation( QHttpNetworkRequest::Custom );
+            createUploadByteDevice();
+            httpRequest.setCustomVerb( newHttpRequest.attribute( QNetworkRequest::CustomVerbAttribute ).toByteArray() );
+            break;
 
-    default:
-        break;                  // should not happen
+        default:
+            break;                  // should not happen
     }
 
     QList<QByteArray> headers = newHttpRequest.rawHeaderList();
@@ -1155,7 +1155,8 @@ void QNetworkReplyHttpImplPrivate::initCacheSaveDevice()
     if ( cacheSaveDevice )
     {
         // do not allow aboutToClose to be queued acrss threads
-        q->connect( cacheSaveDevice, &QIODevice::aboutToClose, q, &QNetworkReplyHttpImpl::_q_cacheSaveDeviceAboutToClose, Qt::DirectConnection );
+        q->connect( cacheSaveDevice, &QIODevice::aboutToClose, q, &QNetworkReplyHttpImpl::_q_cacheSaveDeviceAboutToClose,
+                    Qt::DirectConnection );
     }
 
     if ( !cacheSaveDevice || ( cacheSaveDevice && !cacheSaveDevice->isOpen() ) )
@@ -1281,11 +1282,11 @@ QNetworkAccessManager::Operation QNetworkReplyHttpImplPrivate::getRedirectOperat
 
     switch ( currentOp )
     {
-    case QNetworkAccessManager::HeadOperation:
-        return QNetworkAccessManager::HeadOperation;
+        case QNetworkAccessManager::HeadOperation:
+            return QNetworkAccessManager::HeadOperation;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     // For now, we're always returning GET for anything other than HEAD
@@ -1345,22 +1346,22 @@ void QNetworkReplyHttpImplPrivate::checkForRedirect( const int statusCode )
 
     switch ( statusCode )
     {
-    case 301:                   // Moved Permanently
-    case 302:                   // Found
-    case 303:                   // See Other
-    case 307:                   // Temporary Redirect
-        // What do we do about the caching of the HTML note?
-        // The response to a 303 MUST NOT be cached, while the response to
-        // all of the others is cacheable if the headers indicate it to be
-        QByteArray header = q->rawHeader( "location" );
-        QUrl url = QUrl( QString::fromUtf8( header ) );
+        case 301:                   // Moved Permanently
+        case 302:                   // Found
+        case 303:                   // See Other
+        case 307:                   // Temporary Redirect
+            // What do we do about the caching of the HTML note?
+            // The response to a 303 MUST NOT be cached, while the response to
+            // all of the others is cacheable if the headers indicate it to be
+            QByteArray header = q->rawHeader( "location" );
+            QUrl url = QUrl( QString::fromUtf8( header ) );
 
-        if ( ! url.isValid() )
-        {
-            url = QUrl( header );
-        }
+            if ( ! url.isValid() )
+            {
+                url = QUrl( header );
+            }
 
-        q->setAttribute( QNetworkRequest::RedirectionTargetAttribute, url );
+            q->setAttribute( QNetworkRequest::RedirectionTargetAttribute, url );
     }
 }
 
@@ -2357,20 +2358,20 @@ void QNetworkReplyHttpImplPrivate::_q_networkSessionConnected()
 
     switch ( state )
     {
-    case QNetworkReplyPrivate::Buffering:
-    case QNetworkReplyPrivate::Working:
-    case QNetworkReplyPrivate::Reconnecting:
-        // Migrate existing downloads to new network connection.
-        migrateBackend();
-        break;
+        case QNetworkReplyPrivate::Buffering:
+        case QNetworkReplyPrivate::Working:
+        case QNetworkReplyPrivate::Reconnecting:
+            // Migrate existing downloads to new network connection.
+            migrateBackend();
+            break;
 
-    case QNetworkReplyPrivate::WaitingForSession:
-        // Start waiting requests.
-        QMetaObject::invokeMethod( q, "_q_startOperation", Qt::QueuedConnection );
-        break;
+        case QNetworkReplyPrivate::WaitingForSession:
+            // Start waiting requests.
+            QMetaObject::invokeMethod( q, "_q_startOperation", Qt::QueuedConnection );
+            break;
 
-    default:
-        ;
+        default:
+            ;
     }
 }
 

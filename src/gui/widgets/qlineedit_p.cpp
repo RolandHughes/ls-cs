@@ -384,24 +384,24 @@ void QLineEditIconButton::actionEvent( QActionEvent *e )
 {
     switch ( e->type() )
     {
-    case QEvent::ActionChanged:
-    {
-        const QAction *action = e->action();
-
-        if ( isVisibleTo( parentWidget() ) != action->isVisible() )
+        case QEvent::ActionChanged:
         {
-            setVisible( action->isVisible() );
+            const QAction *action = e->action();
 
-            if ( QLineEditPrivate *lep = lineEditPrivate() )
+            if ( isVisibleTo( parentWidget() ) != action->isVisible() )
             {
-                lep->positionSideWidgets();
+                setVisible( action->isVisible() );
+
+                if ( QLineEditPrivate *lep = lineEditPrivate() )
+                {
+                    lep->positionSideWidgets();
+                }
             }
         }
-    }
-    break;
-
-    default:
         break;
+
+        default:
+            break;
     }
 
     QToolButton::actionEvent( e );

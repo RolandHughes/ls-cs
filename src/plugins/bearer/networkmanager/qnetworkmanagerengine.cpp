@@ -465,7 +465,7 @@ void QNetworkManagerEngine::newConnection( const QDBusObjectPath &path,
 
     QNetworkManagerSettingsConnection *connection =
         new QNetworkManagerSettingsConnection( settings->connectionInterface()->service(),
-            path.path() );
+                path.path() );
     connections.append( connection );
 
     connect( connection, SIGNAL( removed( QString ) ), this, SLOT( removeConnection( QString ) ) );
@@ -928,14 +928,14 @@ QNetworkSession::State QNetworkManagerEngine::sessionStateForId( const QString &
         {
             switch ( activeConnection->state() )
             {
-            case 0:
-                return QNetworkSession::Disconnected;
+                case 0:
+                    return QNetworkSession::Disconnected;
 
-            case 1:
-                return QNetworkSession::Connecting;
+                case 1:
+                    return QNetworkSession::Connecting;
 
-            case 2:
-                return QNetworkSession::Connected;
+                case 2:
+                    return QNetworkSession::Connected;
             }
         }
     }

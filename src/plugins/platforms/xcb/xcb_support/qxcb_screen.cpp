@@ -125,7 +125,7 @@ QRect QXcbVirtualDesktop::getWorkArea() const
     QRect r;
     xcb_get_property_reply_t *workArea = xcb_get_property_reply( xcb_connection(),
                                          xcb_get_property_unchecked( xcb_connection(), false, screen()->root,
-                                             atom( QXcbAtom::_NET_WORKAREA ), XCB_ATOM_CARDINAL, 0, 1024 ), nullptr );
+                                                 atom( QXcbAtom::_NET_WORKAREA ), XCB_ATOM_CARDINAL, 0, 1024 ), nullptr );
 
     if ( workArea && workArea->type == XCB_ATOM_CARDINAL && workArea->format == 32 && workArea->value_len >= 4 )
     {
@@ -258,8 +258,8 @@ QXcbScreen::QXcbScreen( QXcbConnection *connection, QXcbVirtualDesktop *virtualD
     xcb_get_property_reply_t *reply =
         xcb_get_property_reply( xcb_connection(),
                                 xcb_get_property_unchecked( xcb_connection(), false, screen()->root,
-                                    atom( QXcbAtom::_NET_SUPPORTING_WM_CHECK ),
-                                    XCB_ATOM_WINDOW, 0, 1024 ), nullptr );
+                                        atom( QXcbAtom::_NET_SUPPORTING_WM_CHECK ),
+                                        XCB_ATOM_WINDOW, 0, 1024 ), nullptr );
 
     if ( reply && reply->format == 32 && reply->type == XCB_ATOM_WINDOW )
     {
@@ -270,8 +270,8 @@ QXcbScreen::QXcbScreen( QXcbConnection *connection, QXcbVirtualDesktop *virtualD
             xcb_get_property_reply_t *windowManagerReply =
                 xcb_get_property_reply( xcb_connection(),
                                         xcb_get_property_unchecked( xcb_connection(), false, windowManager,
-                                            atom( QXcbAtom::_NET_WM_NAME ),
-                                            atom( QXcbAtom::UTF8_STRING ), 0, 1024 ), nullptr );
+                                                atom( QXcbAtom::_NET_WM_NAME ),
+                                                atom( QXcbAtom::UTF8_STRING ), 0, 1024 ), nullptr );
 
             if ( windowManagerReply && windowManagerReply->format == 8 && windowManagerReply->type == atom( QXcbAtom::UTF8_STRING ) )
             {
@@ -538,44 +538,44 @@ void QXcbScreen::handleScreenChange( xcb_randr_screen_change_notify_event_t *cha
 
     switch ( m_rotation )
     {
-    case XCB_RANDR_ROTATION_ROTATE_0: // xrandr --rotate normal
-        m_orientation = Qt::LandscapeOrientation;
-        m_virtualSize.setWidth( change_event->width );
-        m_virtualSize.setHeight( change_event->height );
-        m_virtualSizeMillimeters.setWidth( change_event->mwidth );
-        m_virtualSizeMillimeters.setHeight( change_event->mheight );
-        break;
+        case XCB_RANDR_ROTATION_ROTATE_0: // xrandr --rotate normal
+            m_orientation = Qt::LandscapeOrientation;
+            m_virtualSize.setWidth( change_event->width );
+            m_virtualSize.setHeight( change_event->height );
+            m_virtualSizeMillimeters.setWidth( change_event->mwidth );
+            m_virtualSizeMillimeters.setHeight( change_event->mheight );
+            break;
 
-    case XCB_RANDR_ROTATION_ROTATE_90: // xrandr --rotate left
-        m_orientation = Qt::PortraitOrientation;
-        m_virtualSize.setWidth( change_event->height );
-        m_virtualSize.setHeight( change_event->width );
-        m_virtualSizeMillimeters.setWidth( change_event->mheight );
-        m_virtualSizeMillimeters.setHeight( change_event->mwidth );
-        break;
+        case XCB_RANDR_ROTATION_ROTATE_90: // xrandr --rotate left
+            m_orientation = Qt::PortraitOrientation;
+            m_virtualSize.setWidth( change_event->height );
+            m_virtualSize.setHeight( change_event->width );
+            m_virtualSizeMillimeters.setWidth( change_event->mheight );
+            m_virtualSizeMillimeters.setHeight( change_event->mwidth );
+            break;
 
-    case XCB_RANDR_ROTATION_ROTATE_180: // xrandr --rotate inverted
-        m_orientation = Qt::InvertedLandscapeOrientation;
-        m_virtualSize.setWidth( change_event->width );
-        m_virtualSize.setHeight( change_event->height );
-        m_virtualSizeMillimeters.setWidth( change_event->mwidth );
-        m_virtualSizeMillimeters.setHeight( change_event->mheight );
-        break;
+        case XCB_RANDR_ROTATION_ROTATE_180: // xrandr --rotate inverted
+            m_orientation = Qt::InvertedLandscapeOrientation;
+            m_virtualSize.setWidth( change_event->width );
+            m_virtualSize.setHeight( change_event->height );
+            m_virtualSizeMillimeters.setWidth( change_event->mwidth );
+            m_virtualSizeMillimeters.setHeight( change_event->mheight );
+            break;
 
-    case XCB_RANDR_ROTATION_ROTATE_270: // xrandr --rotate right
-        m_orientation = Qt::InvertedPortraitOrientation;
-        m_virtualSize.setWidth( change_event->height );
-        m_virtualSize.setHeight( change_event->width );
-        m_virtualSizeMillimeters.setWidth( change_event->mheight );
-        m_virtualSizeMillimeters.setHeight( change_event->mwidth );
-        break;
+        case XCB_RANDR_ROTATION_ROTATE_270: // xrandr --rotate right
+            m_orientation = Qt::InvertedPortraitOrientation;
+            m_virtualSize.setWidth( change_event->height );
+            m_virtualSize.setHeight( change_event->width );
+            m_virtualSizeMillimeters.setWidth( change_event->mheight );
+            m_virtualSizeMillimeters.setHeight( change_event->mwidth );
+            break;
 
-    // we do not need to handle X or Y since QScreen does not store reflection state
-    case XCB_RANDR_ROTATION_REFLECT_X:
-        break;
+        // we do not need to handle X or Y since QScreen does not store reflection state
+        case XCB_RANDR_ROTATION_REFLECT_X:
+            break;
 
-    case XCB_RANDR_ROTATION_REFLECT_Y:
-        break;
+        case XCB_RANDR_ROTATION_REFLECT_Y:
+            break;
     }
 
     updateGeometry( change_event->timestamp );
@@ -611,25 +611,25 @@ void QXcbScreen::updateGeometry( const QRect &geom, uint8_t rotation )
 
     switch ( rotation )
     {
-    case XCB_RANDR_ROTATION_ROTATE_0: // xrandr --rotate normal
-        m_orientation = Qt::LandscapeOrientation;
-        m_sizeMillimeters = m_outputSizeMillimeters;
-        break;
+        case XCB_RANDR_ROTATION_ROTATE_0: // xrandr --rotate normal
+            m_orientation = Qt::LandscapeOrientation;
+            m_sizeMillimeters = m_outputSizeMillimeters;
+            break;
 
-    case XCB_RANDR_ROTATION_ROTATE_90: // xrandr --rotate left
-        m_orientation = Qt::PortraitOrientation;
-        m_sizeMillimeters = m_outputSizeMillimeters.transposed();
-        break;
+        case XCB_RANDR_ROTATION_ROTATE_90: // xrandr --rotate left
+            m_orientation = Qt::PortraitOrientation;
+            m_sizeMillimeters = m_outputSizeMillimeters.transposed();
+            break;
 
-    case XCB_RANDR_ROTATION_ROTATE_180: // xrandr --rotate inverted
-        m_orientation = Qt::InvertedLandscapeOrientation;
-        m_sizeMillimeters = m_outputSizeMillimeters;
-        break;
+        case XCB_RANDR_ROTATION_ROTATE_180: // xrandr --rotate inverted
+            m_orientation = Qt::InvertedLandscapeOrientation;
+            m_sizeMillimeters = m_outputSizeMillimeters;
+            break;
 
-    case XCB_RANDR_ROTATION_ROTATE_270: // xrandr --rotate right
-        m_orientation = Qt::InvertedPortraitOrientation;
-        m_sizeMillimeters = m_outputSizeMillimeters.transposed();
-        break;
+        case XCB_RANDR_ROTATION_ROTATE_270: // xrandr --rotate right
+            m_orientation = Qt::InvertedPortraitOrientation;
+            m_sizeMillimeters = m_outputSizeMillimeters.transposed();
+            break;
     }
 
     // It can be that physical size is unknown while virtual size
@@ -893,8 +893,8 @@ void QXcbScreen::readXResources()
         xcb_get_property_reply_t *reply =
             xcb_get_property_reply( xcb_connection(),
                                     xcb_get_property_unchecked( xcb_connection(), false, screen()->root,
-                                        XCB_ATOM_RESOURCE_MANAGER,
-                                        XCB_ATOM_STRING, offset / 4, 8192 ), nullptr );
+                                            XCB_ATOM_RESOURCE_MANAGER,
+                                            XCB_ATOM_STRING, offset / 4, 8192 ), nullptr );
         bool more = false;
 
         if ( reply && reply->format == 8 && reply->type == XCB_ATOM_STRING )

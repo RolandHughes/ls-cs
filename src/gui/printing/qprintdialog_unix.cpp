@@ -305,18 +305,18 @@ void QPrintDialogPrivate::selectPrinter( const QPrinter::OutputFormat outputForm
 
     switch ( p->duplex() )
     {
-    case QPrinter::DuplexNone:
-        options.noDuplex->setChecked( true );
-        break;
+        case QPrinter::DuplexNone:
+            options.noDuplex->setChecked( true );
+            break;
 
-    case QPrinter::DuplexLongSide:
-    case QPrinter::DuplexAuto:
-        options.duplexLong->setChecked( true );
-        break;
+        case QPrinter::DuplexLongSide:
+        case QPrinter::DuplexAuto:
+            options.duplexLong->setChecked( true );
+            break;
 
-    case QPrinter::DuplexShortSide:
-        options.duplexShort->setChecked( true );
-        break;
+        case QPrinter::DuplexShortSide:
+            options.duplexShort->setChecked( true );
+            break;
     }
 
     options.copies->setValue( p->copyCount() );
@@ -416,16 +416,16 @@ void QPrintDialogPrivate::setupPrinter()
 
             switch ( pageSet )
             {
-            case QCUPSSupport::AllPages:
-                break;
+                case QCUPSSupport::AllPages:
+                    break;
 
-            case QCUPSSupport::OddPages:
-                QCUPSSupport::setPageSet( p, QCUPSSupport::EvenPages );
-                break;
+                case QCUPSSupport::OddPages:
+                    QCUPSSupport::setPageSet( p, QCUPSSupport::EvenPages );
+                    break;
 
-            case QCUPSSupport::EvenPages:
-                QCUPSSupport::setPageSet( p, QCUPSSupport::OddPages );
-                break;
+                case QCUPSSupport::EvenPages:
+                    QCUPSSupport::setPageSet( p, QCUPSSupport::OddPages );
+                    break;
             }
         }
         else if ( pageSet != QCUPSSupport::AllPages )
@@ -532,32 +532,32 @@ void QPrintDialogPrivate::updateWidgets()
 
     switch ( q->printRange() )
     {
-    case QPrintDialog::AllPages:
-        options.printAll->setChecked( true );
-        options.pageSetCombo->setEnabled( true );
-        break;
+        case QPrintDialog::AllPages:
+            options.printAll->setChecked( true );
+            options.pageSetCombo->setEnabled( true );
+            break;
 
-    case QPrintDialog::Selection:
-        options.printSelection->setChecked( true );
-        options.pageSetCombo->setEnabled( false );
-        break;
-
-    case QPrintDialog::PageRange:
-        options.printRange->setChecked( true );
-        options.pageSetCombo->setEnabled( true );
-        break;
-
-    case QPrintDialog::CurrentPage:
-        if ( q->isOptionEnabled( QPrintDialog::PrintCurrentPage ) )
-        {
-            options.printCurrentPage->setChecked( true );
+        case QPrintDialog::Selection:
+            options.printSelection->setChecked( true );
             options.pageSetCombo->setEnabled( false );
-        }
+            break;
 
-        break;
+        case QPrintDialog::PageRange:
+            options.printRange->setChecked( true );
+            options.pageSetCombo->setEnabled( true );
+            break;
 
-    default:
-        break;
+        case QPrintDialog::CurrentPage:
+            if ( q->isOptionEnabled( QPrintDialog::PrintCurrentPage ) )
+            {
+                options.printCurrentPage->setChecked( true );
+                options.pageSetCombo->setEnabled( false );
+            }
+
+            break;
+
+        default:
+            break;
     }
 
     const int minPage = qMax( 1, qMin( q->minPage(), q->maxPage() ) );

@@ -28,11 +28,12 @@ if(Cups_FOUND)
       "${LIBTOOL_INSTALL_PREFIX}/include"
    )
 
+   #ls_libtool_ep
+   
    target_link_libraries(LsCsPrinterDriverCups
       LsCsCore
       LsCsGui
       ${CUPS_LIBRARIES}
-      ls_libtool_ep
    )
 
    target_compile_definitions(LsCsPrinterDriverCups

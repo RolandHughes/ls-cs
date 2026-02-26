@@ -171,28 +171,28 @@ static QNetworkProxy::Capabilities defaultCapabilitiesForType( QNetworkProxy::Pr
     {
         /* [QNetworkProxy::DefaultProxy] = */
         ( int( QNetworkProxy::ListeningCapability ) |
-        int( QNetworkProxy::TunnelingCapability ) |
-        int( QNetworkProxy::UdpTunnelingCapability ) ),
+          int( QNetworkProxy::TunnelingCapability ) |
+          int( QNetworkProxy::UdpTunnelingCapability ) ),
         /* [QNetworkProxy::Socks5Proxy] = */
         ( int( QNetworkProxy::TunnelingCapability ) |
-        int( QNetworkProxy::ListeningCapability ) |
-        int( QNetworkProxy::UdpTunnelingCapability ) |
-        int( QNetworkProxy::HostNameLookupCapability ) ),
+          int( QNetworkProxy::ListeningCapability ) |
+          int( QNetworkProxy::UdpTunnelingCapability ) |
+          int( QNetworkProxy::HostNameLookupCapability ) ),
         // it's weird to talk about the proxy capabilities of a "not proxy"...
         /* [QNetworkProxy::NoProxy] = */
         ( int( QNetworkProxy::ListeningCapability ) |
-        int( QNetworkProxy::TunnelingCapability ) |
-        int( QNetworkProxy::UdpTunnelingCapability ) ),
+          int( QNetworkProxy::TunnelingCapability ) |
+          int( QNetworkProxy::UdpTunnelingCapability ) ),
         /* [QNetworkProxy::HttpProxy] = */
         ( int( QNetworkProxy::TunnelingCapability ) |
-        int( QNetworkProxy::CachingCapability ) |
-        int( QNetworkProxy::HostNameLookupCapability ) ),
+          int( QNetworkProxy::CachingCapability ) |
+          int( QNetworkProxy::HostNameLookupCapability ) ),
         /* [QNetworkProxy::HttpCachingProxy] = */
         ( int( QNetworkProxy::CachingCapability ) |
-        int( QNetworkProxy::HostNameLookupCapability ) ),
+          int( QNetworkProxy::HostNameLookupCapability ) ),
         /* [QNetworkProxy::FtpCachingProxy] = */
         ( int( QNetworkProxy::CachingCapability ) |
-        int( QNetworkProxy::HostNameLookupCapability ) ),
+          int( QNetworkProxy::HostNameLookupCapability ) ),
     };
 
     if ( int( type ) < 0 || int( type ) > int( QNetworkProxy::FtpCachingProxy ) )
@@ -688,33 +688,33 @@ QDebug operator<<( QDebug debug, const QNetworkProxy &proxy )
 
     switch ( type )
     {
-    case QNetworkProxy::NoProxy:
-        debug << "NoProxy ";
-        break;
+        case QNetworkProxy::NoProxy:
+            debug << "NoProxy ";
+            break;
 
-    case QNetworkProxy::DefaultProxy:
-        debug << "DefaultProxy ";
-        break;
+        case QNetworkProxy::DefaultProxy:
+            debug << "DefaultProxy ";
+            break;
 
-    case QNetworkProxy::Socks5Proxy:
-        debug << "Socks5Proxy ";
-        break;
+        case QNetworkProxy::Socks5Proxy:
+            debug << "Socks5Proxy ";
+            break;
 
-    case QNetworkProxy::HttpProxy:
-        debug << "HttpProxy ";
-        break;
+        case QNetworkProxy::HttpProxy:
+            debug << "HttpProxy ";
+            break;
 
-    case QNetworkProxy::HttpCachingProxy:
-        debug << "HttpCachingProxy ";
-        break;
+        case QNetworkProxy::HttpCachingProxy:
+            debug << "HttpCachingProxy ";
+            break;
 
-    case QNetworkProxy::FtpCachingProxy:
-        debug << "FtpCachingProxy ";
-        break;
+        case QNetworkProxy::FtpCachingProxy:
+            debug << "FtpCachingProxy ";
+            break;
 
-    default:
-        debug << "Unknown proxy " << int( type );
-        break;
+        default:
+            debug << "Unknown proxy " << int( type );
+            break;
     }
 
     debug << '"' << proxy.hostName() << ':' << proxy.port() << "\" ";

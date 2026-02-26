@@ -520,417 +520,417 @@ bool QTextCursorPrivate::movePosition( QTextCursor::MoveOperation op, QTextCurso
 
     switch ( op )
     {
-    case QTextCursor::NoMove:
-        return true;
+        case QTextCursor::NoMove:
+            return true;
 
-    case QTextCursor::Start:
-        newPosition = 0;
-        break;
+        case QTextCursor::Start:
+            newPosition = 0;
+            break;
 
-    case QTextCursor::StartOfLine:
-    {
-        newPosition = blockIt.position();
-
-        if ( line.isValid() )
+        case QTextCursor::StartOfLine:
         {
-            newPosition += line.textStart();
-        }
+            newPosition = blockIt.position();
 
-        break;
-    }
+            if ( line.isValid() )
+            {
+                newPosition += line.textStart();
+            }
 
-    case QTextCursor::StartOfBlock:
-    {
-        newPosition = blockIt.position();
-        break;
-    }
-
-    case QTextCursor::PreviousBlock:
-    {
-        if ( blockIt == priv->blocksBegin() )
-        {
-            return false;
-        }
-
-        blockIt = blockIt.previous();
-
-        newPosition = blockIt.position();
-        break;
-    }
-
-    case QTextCursor::PreviousCharacter:
-
-        if ( mode == QTextCursor::MoveAnchor && position != adjusted_anchor )
-        {
-            newPosition = qMin( position, adjusted_anchor );
-        }
-        else
-        {
-            newPosition = priv->previousCursorPosition( position, QTextLayout::SkipCharacters );
-        }
-
-        break;
-
-    case QTextCursor::Left:
-
-        if ( mode == QTextCursor::MoveAnchor && position != adjusted_anchor )
-        {
-            newPosition = visualMovement ? qMax( position, adjusted_anchor )
-                          : qMin( position, adjusted_anchor );
-        }
-        else
-        {
-            newPosition = visualMovement ? priv->leftCursorPosition( position )
-                          : priv->previousCursorPosition( position, QTextLayout::SkipCharacters );
-        }
-
-        break;
-
-    case QTextCursor::StartOfWord:
-    {
-        if ( relativePos == 0 )
-        {
             break;
         }
 
-        // skip if already at word start
-        QTextEngine *engine = layout->engine();
-        const QCharAttributes *attributes = engine->attributes();
-
-        if ( ( relativePos == blockIt.length() - 1 )
-                && ( attributes[relativePos - 1].whiteSpace || engine->atWordSeparator( relativePos - 1 ) ) )
+        case QTextCursor::StartOfBlock:
         {
-            return false;
+            newPosition = blockIt.position();
+            break;
         }
 
-        if ( relativePos < blockIt.length() - 1 )
-        {
-            ++position;
-        }
-    }
-
-    [[fallthrough]];
-
-    case QTextCursor::PreviousWord:
-    case QTextCursor::WordLeft:
-        newPosition = priv->previousCursorPosition( position, QTextLayout::SkipWords );
-        break;
-
-    case QTextCursor::Up:
-    {
-        int i = line.lineNumber() - 1;
-
-        if ( i == -1 )
+        case QTextCursor::PreviousBlock:
         {
             if ( blockIt == priv->blocksBegin() )
             {
                 return false;
             }
 
-            int blockPosition = blockIt.position();
-            QTextTable *table = qobject_cast<QTextTable *>( priv->frameAt( blockPosition ) );
+            blockIt = blockIt.previous();
 
-            if ( table )
+            newPosition = blockIt.position();
+            break;
+        }
+
+        case QTextCursor::PreviousCharacter:
+
+            if ( mode == QTextCursor::MoveAnchor && position != adjusted_anchor )
             {
-                QTextTableCell cell = table->cellAt( blockPosition );
+                newPosition = qMin( position, adjusted_anchor );
+            }
+            else
+            {
+                newPosition = priv->previousCursorPosition( position, QTextLayout::SkipCharacters );
+            }
 
-                if ( cell.firstPosition() == blockPosition )
+            break;
+
+        case QTextCursor::Left:
+
+            if ( mode == QTextCursor::MoveAnchor && position != adjusted_anchor )
+            {
+                newPosition = visualMovement ? qMax( position, adjusted_anchor )
+                              : qMin( position, adjusted_anchor );
+            }
+            else
+            {
+                newPosition = visualMovement ? priv->leftCursorPosition( position )
+                              : priv->previousCursorPosition( position, QTextLayout::SkipCharacters );
+            }
+
+            break;
+
+        case QTextCursor::StartOfWord:
+        {
+            if ( relativePos == 0 )
+            {
+                break;
+            }
+
+            // skip if already at word start
+            QTextEngine *engine = layout->engine();
+            const QCharAttributes *attributes = engine->attributes();
+
+            if ( ( relativePos == blockIt.length() - 1 )
+                    && ( attributes[relativePos - 1].whiteSpace || engine->atWordSeparator( relativePos - 1 ) ) )
+            {
+                return false;
+            }
+
+            if ( relativePos < blockIt.length() - 1 )
+            {
+                ++position;
+            }
+        }
+
+        [[fallthrough]];
+
+        case QTextCursor::PreviousWord:
+        case QTextCursor::WordLeft:
+            newPosition = priv->previousCursorPosition( position, QTextLayout::SkipWords );
+            break;
+
+        case QTextCursor::Up:
+        {
+            int i = line.lineNumber() - 1;
+
+            if ( i == -1 )
+            {
+                if ( blockIt == priv->blocksBegin() )
                 {
-                    int row = cell.row() - 1;
+                    return false;
+                }
 
-                    if ( row >= 0 )
+                int blockPosition = blockIt.position();
+                QTextTable *table = qobject_cast<QTextTable *>( priv->frameAt( blockPosition ) );
+
+                if ( table )
+                {
+                    QTextTableCell cell = table->cellAt( blockPosition );
+
+                    if ( cell.firstPosition() == blockPosition )
                     {
-                        blockPosition = table->cellAt( row, cell.column() ).lastPosition();
+                        int row = cell.row() - 1;
+
+                        if ( row >= 0 )
+                        {
+                            blockPosition = table->cellAt( row, cell.column() ).lastPosition();
+                        }
+                        else
+                        {
+                            // move to line above the table
+                            blockPosition = table->firstPosition() - 1;
+                        }
+
+                        blockIt = priv->blocksFind( blockPosition );
                     }
                     else
                     {
-                        // move to line above the table
-                        blockPosition = table->firstPosition() - 1;
+                        blockIt = blockIt.previous();
                     }
-
-                    blockIt = priv->blocksFind( blockPosition );
                 }
                 else
                 {
                     blockIt = blockIt.previous();
                 }
+
+                layout = blockLayout( blockIt );
+                i = layout->lineCount() - 1;
+            }
+
+            if ( layout->lineCount() )
+            {
+                QTextLine line = layout->lineAt( i );
+                newPosition = line.xToCursor( x ) + blockIt.position();
             }
             else
             {
-                blockIt = blockIt.previous();
+                newPosition = blockIt.position();
             }
 
-            layout = blockLayout( blockIt );
-            i = layout->lineCount() - 1;
+            adjustX = false;
+            break;
         }
 
-        if ( layout->lineCount() )
-        {
-            QTextLine line = layout->lineAt( i );
-            newPosition = line.xToCursor( x ) + blockIt.position();
-        }
-        else
-        {
-            newPosition = blockIt.position();
-        }
+        case QTextCursor::End:
+            newPosition = priv->length() - 1;
+            break;
 
-        adjustX = false;
-        break;
-    }
-
-    case QTextCursor::End:
-        newPosition = priv->length() - 1;
-        break;
-
-    case QTextCursor::EndOfLine:
-    {
-        if ( !line.isValid() || line.textLength() == 0 )
+        case QTextCursor::EndOfLine:
         {
-            if ( blockIt.length() >= 1 )
-                // position right before the block separator
+            if ( !line.isValid() || line.textLength() == 0 )
             {
-                newPosition = blockIt.position() + blockIt.length() - 1;
+                if ( blockIt.length() >= 1 )
+                    // position right before the block separator
+                {
+                    newPosition = blockIt.position() + blockIt.length() - 1;
+                }
+
+                break;
+            }
+
+            newPosition = blockIt.position() + line.textStart() + line.textLength();
+
+            if ( newPosition >= priv->length() )
+            {
+                newPosition = priv->length() - 1;
+            }
+
+            if ( line.lineNumber() < layout->lineCount() - 1 )
+            {
+                const QString text = blockIt.text();
+
+                // ###### this relies on spaces being the cause for linebreaks.
+                // this doesn't work with japanese
+                if ( text.at( line.textStart() + line.textLength() - 1 ).isSpace() )
+                {
+                    --newPosition;
+                }
             }
 
             break;
         }
 
-        newPosition = blockIt.position() + line.textStart() + line.textLength();
-
-        if ( newPosition >= priv->length() )
+        case QTextCursor::EndOfWord:
         {
-            newPosition = priv->length() - 1;
-        }
+            QTextEngine *engine = layout->engine();
+            const QCharAttributes *attributes = engine->attributes();
+            const int len = blockIt.length() - 1;
 
-        if ( line.lineNumber() < layout->lineCount() - 1 )
-        {
-            const QString text = blockIt.text();
-
-            // ###### this relies on spaces being the cause for linebreaks.
-            // this doesn't work with japanese
-            if ( text.at( line.textStart() + line.textLength() - 1 ).isSpace() )
+            if ( relativePos >= len )
             {
-                --newPosition;
+                return false;
             }
-        }
 
-        break;
-    }
-
-    case QTextCursor::EndOfWord:
-    {
-        QTextEngine *engine = layout->engine();
-        const QCharAttributes *attributes = engine->attributes();
-        const int len = blockIt.length() - 1;
-
-        if ( relativePos >= len )
-        {
-            return false;
-        }
-
-        if ( engine->atWordSeparator( relativePos ) )
-        {
-            ++relativePos;
-
-            while ( relativePos < len && engine->atWordSeparator( relativePos ) )
+            if ( engine->atWordSeparator( relativePos ) )
             {
                 ++relativePos;
-            }
-        }
-        else
-        {
-            while ( relativePos < len && !attributes[relativePos].whiteSpace && !engine->atWordSeparator( relativePos ) )
-            {
-                ++relativePos;
-            }
-        }
 
-        newPosition = blockIt.position() + relativePos;
-        break;
-    }
-
-    case QTextCursor::EndOfBlock:
-        if ( blockIt.length() >= 1 )
-        {
-            // position right before the block separator
-            newPosition = blockIt.position() + blockIt.length() - 1;
-        }
-
-        break;
-
-    case QTextCursor::NextBlock:
-    {
-        blockIt = blockIt.next();
-
-        if ( !blockIt.isValid() )
-        {
-            return false;
-        }
-
-        newPosition = blockIt.position();
-        break;
-    }
-
-    case QTextCursor::NextCharacter:
-
-        if ( mode == QTextCursor::MoveAnchor && position != adjusted_anchor )
-        {
-            newPosition = qMax( position, adjusted_anchor );
-        }
-        else
-        {
-            newPosition = priv->nextCursorPosition( position, QTextLayout::SkipCharacters );
-        }
-
-        break;
-
-    case QTextCursor::Right:
-
-        if ( mode == QTextCursor::MoveAnchor && position != adjusted_anchor )
-            newPosition = visualMovement ? qMin( position, adjusted_anchor )
-                          : qMax( position, adjusted_anchor );
-        else
-
-            newPosition = visualMovement ? priv->rightCursorPosition( position )
-                          : priv->nextCursorPosition( position, QTextLayout::SkipCharacters );
-
-        break;
-
-    case QTextCursor::NextWord:
-    case QTextCursor::WordRight:
-        newPosition = priv->nextCursorPosition( position, QTextLayout::SkipWords );
-        break;
-
-    case QTextCursor::Down:
-    {
-        int i = line.lineNumber() + 1;
-
-        if ( i >= layout->lineCount() )
-        {
-            int blockPosition = blockIt.position() + blockIt.length() - 1;
-            QTextTable *table = qobject_cast<QTextTable *>( priv->frameAt( blockPosition ) );
-
-            if ( table )
-            {
-                QTextTableCell cell = table->cellAt( blockPosition );
-
-                if ( cell.lastPosition() == blockPosition )
+                while ( relativePos < len && engine->atWordSeparator( relativePos ) )
                 {
-                    int row = cell.row() + cell.rowSpan();
+                    ++relativePos;
+                }
+            }
+            else
+            {
+                while ( relativePos < len && !attributes[relativePos].whiteSpace && !engine->atWordSeparator( relativePos ) )
+                {
+                    ++relativePos;
+                }
+            }
 
-                    if ( row < table->rows() )
+            newPosition = blockIt.position() + relativePos;
+            break;
+        }
+
+        case QTextCursor::EndOfBlock:
+            if ( blockIt.length() >= 1 )
+            {
+                // position right before the block separator
+                newPosition = blockIt.position() + blockIt.length() - 1;
+            }
+
+            break;
+
+        case QTextCursor::NextBlock:
+        {
+            blockIt = blockIt.next();
+
+            if ( !blockIt.isValid() )
+            {
+                return false;
+            }
+
+            newPosition = blockIt.position();
+            break;
+        }
+
+        case QTextCursor::NextCharacter:
+
+            if ( mode == QTextCursor::MoveAnchor && position != adjusted_anchor )
+            {
+                newPosition = qMax( position, adjusted_anchor );
+            }
+            else
+            {
+                newPosition = priv->nextCursorPosition( position, QTextLayout::SkipCharacters );
+            }
+
+            break;
+
+        case QTextCursor::Right:
+
+            if ( mode == QTextCursor::MoveAnchor && position != adjusted_anchor )
+                newPosition = visualMovement ? qMin( position, adjusted_anchor )
+                              : qMax( position, adjusted_anchor );
+            else
+
+                newPosition = visualMovement ? priv->rightCursorPosition( position )
+                              : priv->nextCursorPosition( position, QTextLayout::SkipCharacters );
+
+            break;
+
+        case QTextCursor::NextWord:
+        case QTextCursor::WordRight:
+            newPosition = priv->nextCursorPosition( position, QTextLayout::SkipWords );
+            break;
+
+        case QTextCursor::Down:
+        {
+            int i = line.lineNumber() + 1;
+
+            if ( i >= layout->lineCount() )
+            {
+                int blockPosition = blockIt.position() + blockIt.length() - 1;
+                QTextTable *table = qobject_cast<QTextTable *>( priv->frameAt( blockPosition ) );
+
+                if ( table )
+                {
+                    QTextTableCell cell = table->cellAt( blockPosition );
+
+                    if ( cell.lastPosition() == blockPosition )
                     {
-                        blockPosition = table->cellAt( row, cell.column() ).firstPosition();
+                        int row = cell.row() + cell.rowSpan();
+
+                        if ( row < table->rows() )
+                        {
+                            blockPosition = table->cellAt( row, cell.column() ).firstPosition();
+                        }
+                        else
+                        {
+                            // move to line below the table
+                            blockPosition = table->lastPosition() + 1;
+                        }
+
+                        blockIt = priv->blocksFind( blockPosition );
                     }
                     else
                     {
-                        // move to line below the table
-                        blockPosition = table->lastPosition() + 1;
+                        blockIt = blockIt.next();
                     }
-
-                    blockIt = priv->blocksFind( blockPosition );
                 }
                 else
                 {
                     blockIt = blockIt.next();
                 }
+
+                if ( blockIt == priv->blocksEnd() )
+                {
+                    return false;
+                }
+
+                layout = blockLayout( blockIt );
+                i = 0;
+            }
+
+            if ( layout->lineCount() )
+            {
+                QTextLine line = layout->lineAt( i );
+                newPosition = line.xToCursor( x ) + blockIt.position();
             }
             else
             {
-                blockIt = blockIt.next();
+                newPosition = blockIt.position();
             }
 
-            if ( blockIt == priv->blocksEnd() )
+            adjustX = false;
+            break;
+        }
+
+        case QTextCursor::NextCell:
+        case QTextCursor::PreviousCell:
+        case QTextCursor::NextRow:
+            [[fallthrough]];
+
+        case QTextCursor::PreviousRow:
+        {
+            QTextTable *table = qobject_cast<QTextTable *>( priv->frameAt( position ) );
+
+            if ( !table )
             {
                 return false;
             }
 
-            layout = blockLayout( blockIt );
-            i = 0;
-        }
+            QTextTableCell cell = table->cellAt( position );
+            Q_ASSERT( cell.isValid() );
+            int column = cell.column();
+            int row = cell.row();
+            const int currentRow = row;
 
-        if ( layout->lineCount() )
-        {
-            QTextLine line = layout->lineAt( i );
-            newPosition = line.xToCursor( x ) + blockIt.position();
-        }
-        else
-        {
-            newPosition = blockIt.position();
-        }
-
-        adjustX = false;
-        break;
-    }
-
-    case QTextCursor::NextCell:
-    case QTextCursor::PreviousCell:
-    case QTextCursor::NextRow:
-        [[fallthrough]];
-
-    case QTextCursor::PreviousRow:
-    {
-        QTextTable *table = qobject_cast<QTextTable *>( priv->frameAt( position ) );
-
-        if ( !table )
-        {
-            return false;
-        }
-
-        QTextTableCell cell = table->cellAt( position );
-        Q_ASSERT( cell.isValid() );
-        int column = cell.column();
-        int row = cell.row();
-        const int currentRow = row;
-
-        if ( op == QTextCursor::NextCell || op == QTextCursor::NextRow )
-        {
-            do
+            if ( op == QTextCursor::NextCell || op == QTextCursor::NextRow )
             {
-                column += cell.columnSpan();
-
-                if ( column >= table->columns() )
+                do
                 {
-                    column = 0;
-                    ++row;
-                }
+                    column += cell.columnSpan();
 
-                cell = table->cellAt( row, column );
-                // note we also continue while we have not reached a cell thats not merged with one above us
+                    if ( column >= table->columns() )
+                    {
+                        column = 0;
+                        ++row;
+                    }
+
+                    cell = table->cellAt( row, column );
+                    // note we also continue while we have not reached a cell thats not merged with one above us
+
+                }
+                while ( cell.isValid()
+                        && ( ( op == QTextCursor::NextRow && currentRow == cell.row() ) || cell.row() < row ) );
 
             }
-            while ( cell.isValid()
-                    && ( ( op == QTextCursor::NextRow && currentRow == cell.row() ) || cell.row() < row ) );
-
-        }
-        else if ( op == QTextCursor::PreviousCell || op == QTextCursor::PreviousRow )
-        {
-            do
+            else if ( op == QTextCursor::PreviousCell || op == QTextCursor::PreviousRow )
             {
-                --column;
-
-                if ( column < 0 )
+                do
                 {
-                    column = table->columns() - 1;
-                    --row;
+                    --column;
+
+                    if ( column < 0 )
+                    {
+                        column = table->columns() - 1;
+                        --row;
+                    }
+
+                    cell = table->cellAt( row, column );
+                    // note we also continue while we have not reached a cell thats not merged with one above us
+
                 }
-
-                cell = table->cellAt( row, column );
-                // note we also continue while we have not reached a cell thats not merged with one above us
-
+                while ( cell.isValid()
+                        && ( ( op == QTextCursor::PreviousRow && currentRow == cell.row() )
+                             || cell.row() < row ) );
             }
-            while ( cell.isValid()
-                    && ( ( op == QTextCursor::PreviousRow && currentRow == cell.row() )
-                         || cell.row() < row ) );
-        }
 
-        if ( cell.isValid() )
-        {
-            newPosition = cell.firstPosition();
-        }
+            if ( cell.isValid() )
+            {
+                newPosition = cell.firstPosition();
+            }
 
-        break;
-    }
+            break;
+        }
     }
 
     if ( mode == QTextCursor::KeepAnchor )
@@ -1408,15 +1408,15 @@ bool QTextCursor::movePosition( MoveOperation op, MoveMode mode, int n )
 
     switch ( op )
     {
-    case Start:
-    case StartOfLine:
-    case End:
-    case EndOfLine:
-        n = 1;
-        break;
+        case Start:
+        case StartOfLine:
+        case End:
+        case EndOfLine:
+            n = 1;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     int previousPosition = d->position;
@@ -1662,38 +1662,38 @@ void QTextCursor::select( SelectionType selection )
 
     switch ( selection )
     {
-    case LineUnderCursor:
-        movePosition( StartOfLine );
-        movePosition( EndOfLine, KeepAnchor );
-        break;
-
-    case WordUnderCursor:
-        movePosition( StartOfWord );
-        movePosition( EndOfWord, KeepAnchor );
-        break;
-
-    case BlockUnderCursor:
-        if ( block.length() == 1 ) // no content
-        {
+        case LineUnderCursor:
+            movePosition( StartOfLine );
+            movePosition( EndOfLine, KeepAnchor );
             break;
-        }
 
-        movePosition( StartOfBlock );
+        case WordUnderCursor:
+            movePosition( StartOfWord );
+            movePosition( EndOfWord, KeepAnchor );
+            break;
 
-        // also select the paragraph separator
-        if ( movePosition( PreviousBlock ) )
-        {
-            movePosition( EndOfBlock );
-            movePosition( NextBlock, KeepAnchor );
-        }
+        case BlockUnderCursor:
+            if ( block.length() == 1 ) // no content
+            {
+                break;
+            }
 
-        movePosition( EndOfBlock, KeepAnchor );
-        break;
+            movePosition( StartOfBlock );
 
-    case Document:
-        movePosition( Start );
-        movePosition( End, KeepAnchor );
-        break;
+            // also select the paragraph separator
+            if ( movePosition( PreviousBlock ) )
+            {
+                movePosition( EndOfBlock );
+                movePosition( NextBlock, KeepAnchor );
+            }
+
+            movePosition( EndOfBlock, KeepAnchor );
+            break;
+
+        case Document:
+            movePosition( Start );
+            movePosition( End, KeepAnchor );
+            break;
     }
 }
 

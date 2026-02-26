@@ -169,51 +169,51 @@ bool QAlphaWidget::eventFilter( QObject *o, QEvent *e )
 {
     switch ( e->type() )
     {
-    case QEvent::Move:
-        if ( o != widget )
-        {
+        case QEvent::Move:
+            if ( o != widget )
+            {
+                break;
+            }
+
+            move( widget->geometry().x(), widget->geometry().y() );
+            update();
             break;
-        }
 
-        move( widget->geometry().x(), widget->geometry().y() );
-        update();
-        break;
+        case QEvent::Hide:
+        case QEvent::Close:
+            if ( o != widget )
+            {
+                break;
+            }
 
-    case QEvent::Hide:
-    case QEvent::Close:
-        if ( o != widget )
-        {
-            break;
-        }
+            [[fallthrough]];
 
-        [[fallthrough]];
-
-    case QEvent::MouseButtonPress:
-    case QEvent::MouseButtonDblClick:
-        showWidget = false;
-        render();
-        break;
-
-    case QEvent::KeyPress:
-    {
-        QKeyEvent *ke = ( QKeyEvent * )e;
-
-        if ( ke->matches( QKeySequence::Cancel ) )
-        {
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonDblClick:
             showWidget = false;
-        }
-        else
+            render();
+            break;
+
+        case QEvent::KeyPress:
         {
-            duration = 0;
+            QKeyEvent *ke = ( QKeyEvent * )e;
+
+            if ( ke->matches( QKeySequence::Cancel ) )
+            {
+                showWidget = false;
+            }
+            else
+            {
+                duration = 0;
+            }
+
+            render();
+            break;
+
         }
 
-        render();
-        break;
-
-    }
-
-    default:
-        break;
+        default:
+            break;
     }
 
     return QWidget::eventFilter( o, e );
@@ -323,36 +323,36 @@ void QAlphaWidget::alphaBlend()
 
     switch ( frontImage.depth() )
     {
-    case 32:
-    {
-        uchar *mixed_data = mixedImage.bits();
-        const uchar *back_data = backImage.bits();
-        const uchar *front_data = frontImage.bits();
-
-        for ( int sy = 0; sy < sh; sy++ )
+        case 32:
         {
-            quint32 *mixed = ( quint32 * )mixed_data;
-            const quint32 *back = ( const quint32 * )back_data;
-            const quint32 *front = ( const quint32 * )front_data;
+            uchar *mixed_data = mixedImage.bits();
+            const uchar *back_data = backImage.bits();
+            const uchar *front_data = frontImage.bits();
 
-            for ( int sx = 0; sx < sw; sx++ )
+            for ( int sy = 0; sy < sh; sy++ )
             {
-                quint32 bp = back[sx];
-                quint32 fp = front[sx];
+                quint32 *mixed = ( quint32 * )mixed_data;
+                const quint32 *back = ( const quint32 * )back_data;
+                const quint32 *front = ( const quint32 * )front_data;
 
-                mixed[sx] =  qRgb( ( qRed( bp ) * ia + qRed( fp ) * a ) >> 8,
-                                   ( qGreen( bp ) * ia + qGreen( fp ) * a ) >> 8,
-                                   ( qBlue( bp ) * ia + qBlue( fp ) * a ) >> 8 );
+                for ( int sx = 0; sx < sw; sx++ )
+                {
+                    quint32 bp = back[sx];
+                    quint32 fp = front[sx];
+
+                    mixed[sx] =  qRgb( ( qRed( bp ) * ia + qRed( fp ) * a ) >> 8,
+                                       ( qGreen( bp ) * ia + qGreen( fp ) * a ) >> 8,
+                                       ( qBlue( bp ) * ia + qBlue( fp ) * a ) >> 8 );
+                }
+
+                mixed_data += bpl;
+                back_data += bpl;
+                front_data += bpl;
             }
-
-            mixed_data += bpl;
-            back_data += bpl;
-            front_data += bpl;
         }
-    }
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 

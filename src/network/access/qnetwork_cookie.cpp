@@ -454,21 +454,21 @@ static QDateTime parseDateString( const QString &dateString )
 
             switch ( end - 1 )
             {
-            case 4:
-                minutes = atoi( dateString.mid( at + 3, 2 ).constData() );
-                [[fallthrough]];
+                case 4:
+                    minutes = atoi( dateString.mid( at + 3, 2 ).constData() );
+                    [[fallthrough]];
 
-            case 2:
-                hours = atoi( dateString.mid( at + 1, 2 ).constData() );
-                break;
+                case 2:
+                    hours = atoi( dateString.mid( at + 1, 2 ).constData() );
+                    break;
 
-            case 1:
-                hours = atoi( dateString.mid( at + 1, 1 ).constData() );
-                break;
+                case 1:
+                    hours = atoi( dateString.mid( at + 1, 1 ).constData() );
+                    break;
 
-            default:
-                at += end;
-                continue;
+                default:
+                    at += end;
+                    continue;
             }
 
             if ( end != 1 )
@@ -666,34 +666,34 @@ static QDateTime parseDateString( const QString &dateString )
 
                 switch ( m )
                 {
-                case 2:
+                    case 2:
 
-                    // When we get 29 and the year ends up having only 28
-                    // See date.isValid below
-                    // Example: 29 23 Feb
-                    if ( d <= 29 )
-                    {
-                        found = false;
-                    }
+                        // When we get 29 and the year ends up having only 28
+                        // See date.isValid below
+                        // Example: 29 23 Feb
+                        if ( d <= 29 )
+                        {
+                            found = false;
+                        }
 
-                    break;
+                        break;
 
-                case 4:
-                case 6:
-                case 9:
-                case 11:
-                    if ( d <= 30 )
-                    {
-                        found = false;
-                    }
+                    case 4:
+                    case 6:
+                    case 9:
+                    case 11:
+                        if ( d <= 30 )
+                        {
+                            found = false;
+                        }
 
-                    break;
+                        break;
 
-                default:
-                    if ( d > 0 && d <= 31 )
-                    {
-                        found = false;
-                    }
+                    default:
+                        if ( d > 0 && d <= 31 )
+                        {
+                            found = false;
+                        }
                 }
 
                 if ( k == 0 )
@@ -885,107 +885,107 @@ QList<QNetworkCookie> QNetworkCookiePrivate::parseSetCookieHeaderLine( const QBy
         {
             switch ( cookieString.at( position++ ) )
             {
-            case ';':
-                // new field in the cookie
-                field = nextField( cookieString, position, false );
-                field.first = field.first.toLower(); // everything but the NAME=VALUE is case-insensitive
+                case ';':
+                    // new field in the cookie
+                    field = nextField( cookieString, position, false );
+                    field.first = field.first.toLower(); // everything but the NAME=VALUE is case-insensitive
 
-                if ( field.first == "expires" )
-                {
-                    position -= field.second.length();
-                    int end;
+                    if ( field.first == "expires" )
+                    {
+                        position -= field.second.length();
+                        int end;
 
-                    for ( end = position; end < length; ++end )
-                        if ( isValueSeparator( cookieString.at( end ) ) )
+                        for ( end = position; end < length; ++end )
+                            if ( isValueSeparator( cookieString.at( end ) ) )
+                            {
+                                break;
+                            }
+
+                        QString dateString = QString::fromUtf8( cookieString.mid( position, end - position ).trimmed() );
+                        position = end;
+
+                        QDateTime dt = parseDateString( dateString.toLower() );
+
+                        if ( dt.isValid() )
                         {
-                            break;
+                            cookie.setExpirationDate( dt );
                         }
 
-                    QString dateString = QString::fromUtf8( cookieString.mid( position, end - position ).trimmed() );
-                    position = end;
-
-                    QDateTime dt = parseDateString( dateString.toLower() );
-
-                    if ( dt.isValid() )
-                    {
-                        cookie.setExpirationDate( dt );
                     }
-
-                }
-                else if ( field.first == "domain" )
-                {
-                    QByteArray rawDomain = field.second;
-
-                    if ( !rawDomain.isEmpty() )
+                    else if ( field.first == "domain" )
                     {
-                        QString maybeLeadingDot;
+                        QByteArray rawDomain = field.second;
 
-                        if ( rawDomain.startsWith( '.' ) )
+                        if ( !rawDomain.isEmpty() )
                         {
-                            maybeLeadingDot = QLatin1Char( '.' );
-                            rawDomain = rawDomain.mid( 1 );
+                            QString maybeLeadingDot;
+
+                            if ( rawDomain.startsWith( '.' ) )
+                            {
+                                maybeLeadingDot = QLatin1Char( '.' );
+                                rawDomain = rawDomain.mid( 1 );
+                            }
+
+                            QString normalizedDomain = QUrl::fromAce( QUrl::toAce( QString::fromUtf8( rawDomain ) ) );
+
+                            if ( !normalizedDomain.isEmpty() )
+                            {
+                                cookie.setDomain( maybeLeadingDot + normalizedDomain );
+                            }
+                            else
+                            {
+                                return result;
+                            }
                         }
 
-                        QString normalizedDomain = QUrl::fromAce( QUrl::toAce( QString::fromUtf8( rawDomain ) ) );
+                    }
+                    else if ( field.first == "max-age" )
+                    {
+                        bool ok = false;
+                        int secs = field.second.toInt( &ok );
 
-                        if ( !normalizedDomain.isEmpty() )
+                        if ( ok )
                         {
-                            cookie.setDomain( maybeLeadingDot + normalizedDomain );
+                            if ( secs <= 0 )
+                            {
+                                cookie.setExpirationDate( QDateTime::fromTime_t( 0 ) );
+                            }
+                            else
+                            {
+                                cookie.setExpirationDate( now.addSecs( secs ) );
+                            }
+                        }
+
+                    }
+                    else if ( field.first == "path" )
+                    {
+                        if ( field.second.startsWith( '/' ) )
+                        {
+                            cookie.setPath( QString::fromUtf8( field.second ) );
                         }
                         else
                         {
-                            return result;
+                            cookie.setPath( QString() );
                         }
+
                     }
-
-                }
-                else if ( field.first == "max-age" )
-                {
-                    bool ok = false;
-                    int secs = field.second.toInt( &ok );
-
-                    if ( ok )
+                    else if ( field.first == "secure" )
                     {
-                        if ( secs <= 0 )
-                        {
-                            cookie.setExpirationDate( QDateTime::fromTime_t( 0 ) );
-                        }
-                        else
-                        {
-                            cookie.setExpirationDate( now.addSecs( secs ) );
-                        }
+                        cookie.setSecure( true );
+
                     }
-
-                }
-                else if ( field.first == "path" )
-                {
-                    if ( field.second.startsWith( '/' ) )
+                    else if ( field.first == "httponly" )
                     {
-                        cookie.setPath( QString::fromUtf8( field.second ) );
+                        cookie.setHttpOnly( true );
+
                     }
                     else
                     {
-                        cookie.setPath( QString() );
+                        // got an unknown field in the cookie
+                        // what do we do?
                     }
 
-                }
-                else if ( field.first == "secure" )
-                {
-                    cookie.setSecure( true );
-
-                }
-                else if ( field.first == "httponly" )
-                {
-                    cookie.setHttpOnly( true );
-
-                }
-                else
-                {
-                    // got an unknown field in the cookie
-                    // what do we do?
-                }
-
-                position = nextNonWhitespace( cookieString, position );
+                    position = nextNonWhitespace( cookieString, position );
             }
         }
 

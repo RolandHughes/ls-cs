@@ -863,14 +863,14 @@ int QString8::localeAwareCompare( QStringView8 str1, QStringView8 str2 )
 
     switch ( retval )
     {
-    case CSTR_LESS_THAN:
-        return -1;
+        case CSTR_LESS_THAN:
+            return -1;
 
-    case CSTR_GREATER_THAN:
-        return 1;
+        case CSTR_GREATER_THAN:
+            return 1;
 
-    default:
-        return 0;
+        default:
+            return 0;
     }
 
 #elif defined (Q_OS_DARWIN)

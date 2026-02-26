@@ -449,19 +449,19 @@ bool QProgressBar::event( QEvent *e )
 
     switch ( e->type() )
     {
-    case QEvent::StyleChange:
+        case QEvent::StyleChange:
 #ifdef Q_OS_DARWIN
-    case QEvent::MacSizeChange:
+        case QEvent::MacSizeChange:
 #endif
-        d->resetLayoutItemMargins();
-        break;
+            d->resetLayoutItemMargins();
+            break;
 
-    case QEvent::LocaleChange:
-        d->initDefaultFormat();
-        break;
+        case QEvent::LocaleChange:
+            d->initDefaultFormat();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QWidget::event( e );

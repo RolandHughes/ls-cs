@@ -881,31 +881,31 @@ void QWindowsNativeFileDialogBase::setMode( QPlatformFileDialogOptions::FileMode
 
     switch ( mode )
     {
-    case QPlatformFileDialogOptions::AnyFile:
-        if ( acceptMode == QPlatformFileDialogOptions::AcceptSave )
-        {
-            flags |= FOS_NOREADONLYRETURN;
-        }
+        case QPlatformFileDialogOptions::AnyFile:
+            if ( acceptMode == QPlatformFileDialogOptions::AcceptSave )
+            {
+                flags |= FOS_NOREADONLYRETURN;
+            }
 
-        if ( ! ( options & QFileDialog::FileDialogOption::DontConfirmOverwrite ) )
-        {
-            flags |= FOS_OVERWRITEPROMPT;
-        }
+            if ( ! ( options & QFileDialog::FileDialogOption::DontConfirmOverwrite ) )
+            {
+                flags |= FOS_OVERWRITEPROMPT;
+            }
 
-        break;
+            break;
 
-    case QPlatformFileDialogOptions::ExistingFile:
-        flags |= FOS_FILEMUSTEXIST;
-        break;
+        case QPlatformFileDialogOptions::ExistingFile:
+            flags |= FOS_FILEMUSTEXIST;
+            break;
 
-    case QPlatformFileDialogOptions::Directory:
-    case QPlatformFileDialogOptions::DirectoryOnly:
-        flags |= FOS_PICKFOLDERS | FOS_FILEMUSTEXIST;
-        break;
+        case QPlatformFileDialogOptions::Directory:
+        case QPlatformFileDialogOptions::DirectoryOnly:
+            flags |= FOS_PICKFOLDERS | FOS_FILEMUSTEXIST;
+            break;
 
-    case QPlatformFileDialogOptions::ExistingFiles:
-        flags |= FOS_FILEMUSTEXIST | FOS_ALLOWMULTISELECT;
-        break;
+        case QPlatformFileDialogOptions::ExistingFiles:
+            flags |= FOS_FILEMUSTEXIST | FOS_ALLOWMULTISELECT;
+            break;
 
     }
 
@@ -1199,19 +1199,19 @@ void QWindowsNativeFileDialogBase::setLabelText( QPlatformFileDialogOptions::Dia
 
     switch ( dlabel )
     {
-    case QPlatformFileDialogOptions::FileName:
-        m_fileDialog->SetFileNameLabel( tmp.data() );
-        break;
+        case QPlatformFileDialogOptions::FileName:
+            m_fileDialog->SetFileNameLabel( tmp.data() );
+            break;
 
-    case QPlatformFileDialogOptions::Accept:
-        m_fileDialog->SetOkButtonLabel( tmp.data() );
-        break;
+        case QPlatformFileDialogOptions::Accept:
+            m_fileDialog->SetOkButtonLabel( tmp.data() );
+            break;
 
-    case QPlatformFileDialogOptions::LookIn:
-    case QPlatformFileDialogOptions::Reject:
-    case QPlatformFileDialogOptions::FileType:
-    case QPlatformFileDialogOptions::DialogLabelCount:
-        break;
+        case QPlatformFileDialogOptions::LookIn:
+        case QPlatformFileDialogOptions::Reject:
+        case QPlatformFileDialogOptions::FileType:
+        case QPlatformFileDialogOptions::DialogLabelCount:
+            break;
     }
 }
 
@@ -1899,22 +1899,22 @@ bool useHelper( QPlatformTheme::DialogType type )
 
     switch ( type )
     {
-    case QPlatformTheme::FileDialog:
-        return QSysInfo::windowsVersion() >= QSysInfo::WV_XP;
+        case QPlatformTheme::FileDialog:
+            return QSysInfo::windowsVersion() >= QSysInfo::WV_XP;
 
-    case QPlatformTheme::ColorDialog:
+        case QPlatformTheme::ColorDialog:
 #ifdef USE_NATIVE_COLOR_DIALOG
-        return true;
+            return true;
 #else
-        break;
+            break;
 #endif
 
-    case QPlatformTheme::FontDialog:
-    case QPlatformTheme::MessageDialog:
-        break;
+        case QPlatformTheme::FontDialog:
+        case QPlatformTheme::MessageDialog:
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return false;
@@ -1929,25 +1929,25 @@ QPlatformDialogHelper *createHelper( QPlatformTheme::DialogType type )
 
     switch ( type )
     {
-    case QPlatformTheme::FileDialog:
+        case QPlatformTheme::FileDialog:
 
-        return new QWindowsFileDialogHelper();
+            return new QWindowsFileDialogHelper();
 
 
-    case QPlatformTheme::ColorDialog:
+        case QPlatformTheme::ColorDialog:
 
 #ifdef USE_NATIVE_COLOR_DIALOG
-        return new QWindowsColorDialogHelper();
+            return new QWindowsColorDialogHelper();
 #else
-        break;
+            break;
 #endif
 
-    case QPlatformTheme::FontDialog:
-    case QPlatformTheme::MessageDialog:
-        break;
+        case QPlatformTheme::FontDialog:
+        case QPlatformTheme::MessageDialog:
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return nullptr;

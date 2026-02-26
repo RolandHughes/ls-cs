@@ -101,47 +101,47 @@ int QMediaPlaylistNavigatorPrivate::nextItemPos( int steps ) const
 
     switch ( playbackMode )
     {
-    case QMediaPlaylist::CurrentItemOnce:
-        return /*currentPos == -1 ? lastValidPos :*/ -1;
+        case QMediaPlaylist::CurrentItemOnce:
+            return /*currentPos == -1 ? lastValidPos :*/ -1;
 
-    case QMediaPlaylist::CurrentItemInLoop:
-        return currentPos;
+        case QMediaPlaylist::CurrentItemInLoop:
+            return currentPos;
 
-    case QMediaPlaylist::Sequential:
-    {
-        int nextPos = currentPos + steps;
-        return nextPos < playlist->mediaCount() ? nextPos : -1;
-    }
-
-    case QMediaPlaylist::Loop:
-        return ( currentPos + steps ) % playlist->mediaCount();
-
-    case QMediaPlaylist::Random:
-    {
-        //TODO: limit the history size
-
-        if ( randomPositionsOffset == -1 )
+        case QMediaPlaylist::Sequential:
         {
-            randomModePositions.clear();
-            randomModePositions.append( currentPos );
-            randomPositionsOffset = 0;
+            int nextPos = currentPos + steps;
+            return nextPos < playlist->mediaCount() ? nextPos : -1;
         }
 
-        while ( randomModePositions.size() < randomPositionsOffset + steps + 1 )
+        case QMediaPlaylist::Loop:
+            return ( currentPos + steps ) % playlist->mediaCount();
+
+        case QMediaPlaylist::Random:
         {
-            randomModePositions.append( -1 );
+            //TODO: limit the history size
+
+            if ( randomPositionsOffset == -1 )
+            {
+                randomModePositions.clear();
+                randomModePositions.append( currentPos );
+                randomPositionsOffset = 0;
+            }
+
+            while ( randomModePositions.size() < randomPositionsOffset + steps + 1 )
+            {
+                randomModePositions.append( -1 );
+            }
+
+            int res = randomModePositions[randomPositionsOffset + steps];
+
+            if ( res < 0 || res >= playlist->mediaCount() )
+            {
+                res = qrand() % playlist->mediaCount();
+                randomModePositions[randomPositionsOffset + steps] = res;
+            }
+
+            return res;
         }
-
-        int res = randomModePositions[randomPositionsOffset + steps];
-
-        if ( res < 0 || res >= playlist->mediaCount() )
-        {
-            res = qrand() % playlist->mediaCount();
-            randomModePositions[randomPositionsOffset + steps] = res;
-        }
-
-        return res;
-    }
     }
 
     return -1;
@@ -161,57 +161,57 @@ int QMediaPlaylistNavigatorPrivate::previousItemPos( int steps ) const
 
     switch ( playbackMode )
     {
-    case QMediaPlaylist::CurrentItemOnce:
-        return -1;
+        case QMediaPlaylist::CurrentItemOnce:
+            return -1;
 
-    case QMediaPlaylist::CurrentItemInLoop:
-        return currentPos;
+        case QMediaPlaylist::CurrentItemInLoop:
+            return currentPos;
 
-    case QMediaPlaylist::Sequential:
-    {
-        int prevPos = currentPos == -1 ? playlist->mediaCount() - steps : currentPos - steps;
-        return prevPos >= 0 ? prevPos : -1;
-    }
-
-    case QMediaPlaylist::Loop:
-    {
-        int prevPos = currentPos - steps;
-
-        while ( prevPos < 0 )
+        case QMediaPlaylist::Sequential:
         {
-            prevPos += playlist->mediaCount();
+            int prevPos = currentPos == -1 ? playlist->mediaCount() - steps : currentPos - steps;
+            return prevPos >= 0 ? prevPos : -1;
         }
 
-        return prevPos;
-    }
-
-    case QMediaPlaylist::Random:
-    {
-        //TODO: limit the history size
-
-        if ( randomPositionsOffset == -1 )
+        case QMediaPlaylist::Loop:
         {
-            randomModePositions.clear();
-            randomModePositions.append( currentPos );
-            randomPositionsOffset = 0;
+            int prevPos = currentPos - steps;
+
+            while ( prevPos < 0 )
+            {
+                prevPos += playlist->mediaCount();
+            }
+
+            return prevPos;
         }
 
-        while ( randomPositionsOffset - steps < 0 )
+        case QMediaPlaylist::Random:
         {
-            randomModePositions.prepend( -1 );
-            randomPositionsOffset++;
+            //TODO: limit the history size
+
+            if ( randomPositionsOffset == -1 )
+            {
+                randomModePositions.clear();
+                randomModePositions.append( currentPos );
+                randomPositionsOffset = 0;
+            }
+
+            while ( randomPositionsOffset - steps < 0 )
+            {
+                randomModePositions.prepend( -1 );
+                randomPositionsOffset++;
+            }
+
+            int res = randomModePositions[randomPositionsOffset - steps];
+
+            if ( res < 0 || res >= playlist->mediaCount() )
+            {
+                res = qrand() % playlist->mediaCount();
+                randomModePositions[randomPositionsOffset - steps] = res;
+            }
+
+            return res;
         }
-
-        int res = randomModePositions[randomPositionsOffset - steps];
-
-        if ( res < 0 || res >= playlist->mediaCount() )
-        {
-            res = qrand() % playlist->mediaCount();
-            randomModePositions[randomPositionsOffset - steps] = res;
-        }
-
-        return res;
-    }
     }
 
     return -1;

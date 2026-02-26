@@ -65,45 +65,45 @@ void QSystemSemaphorePrivate::setErrorString( const QString &function )
     // EINVAL is handled in functions so they can give better error strings
     switch ( errno )
     {
-    case EPERM:
-    case EACCES:
-        errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: permission denied" ).formatArg( function );
-        error = QSystemSemaphore::PermissionDenied;
-        break;
+        case EPERM:
+        case EACCES:
+            errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: permission denied" ).formatArg( function );
+            error = QSystemSemaphore::PermissionDenied;
+            break;
 
-    case EEXIST:
-        errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: already exists" ).formatArg( function );
-        error = QSystemSemaphore::AlreadyExists;
-        break;
+        case EEXIST:
+            errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: already exists" ).formatArg( function );
+            error = QSystemSemaphore::AlreadyExists;
+            break;
 
-    case ENOENT:
-        errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: does not exist" ).formatArg( function );
-        error = QSystemSemaphore::NotFound;
-        break;
+        case ENOENT:
+            errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: does not exist" ).formatArg( function );
+            error = QSystemSemaphore::NotFound;
+            break;
 
-    case ERANGE:
-    case ENOMEM:
-    case ENOSPC:
-    case EMFILE:
-    case ENFILE:
-    case EOVERFLOW:
-        errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: out of resources" ).formatArg( function );
-        error = QSystemSemaphore::OutOfResources;
-        break;
+        case ERANGE:
+        case ENOMEM:
+        case ENOSPC:
+        case EMFILE:
+        case ENFILE:
+        case EOVERFLOW:
+            errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: out of resources" ).formatArg( function );
+            error = QSystemSemaphore::OutOfResources;
+            break;
 
-    case ENAMETOOLONG:
-        errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: name error" ).formatArg( function );
-        error = QSystemSemaphore::KeyError;
-        break;
+        case ENAMETOOLONG:
+            errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: name error" ).formatArg( function );
+            error = QSystemSemaphore::KeyError;
+            break;
 
-    default:
-        errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: unknown error %2" ).formatArg( function ).formatArg( errno );
-        error = QSystemSemaphore::UnknownError;
+        default:
+            errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: unknown error %2" ).formatArg( function ).formatArg( errno );
+            error = QSystemSemaphore::UnknownError;
 
 #if defined(LSCS_SHOW_DEBUG_CORE_SEMAPHORE)
-        qDebug() << errorString << "key" << key << "errno" << errno << EINVAL;
+            qDebug() << errorString << "key" << key << "errno" << errno << EINVAL;
 #endif
-        break;
+            break;
     }
 }
 

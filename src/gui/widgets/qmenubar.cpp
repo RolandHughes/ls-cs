@@ -540,8 +540,8 @@ void QMenuBarPrivate::calcActionRects( int max_width, int start ) const
     //calculate size
     const QFontMetrics fm = q->fontMetrics();
     const int hmargin = style->pixelMetric( QStyle::PM_MenuBarHMargin, nullptr, q ),
-          vmargin = style->pixelMetric( QStyle::PM_MenuBarVMargin, nullptr, q ),
-          icone = style->pixelMetric( QStyle::PM_SmallIconSize, nullptr, q );
+              vmargin = style->pixelMetric( QStyle::PM_MenuBarVMargin, nullptr, q ),
+              icone = style->pixelMetric( QStyle::PM_SmallIconSize, nullptr, q );
 
     for ( int i = 0; i < actions.count(); i++ )
     {
@@ -1099,51 +1099,51 @@ void QMenuBar::keyPressEvent( QKeyEvent *e )
 
     switch ( key )
     {
-    case Qt::Key_Up:
-    case Qt::Key_Down:
-    case Qt::Key_Enter:
-    case Qt::Key_Space:
-    case Qt::Key_Return:
-    {
-        if ( !style()->styleHint( QStyle::SH_MenuBar_AltKeyNavigation, nullptr, this ) || !d->currentAction )
+        case Qt::Key_Up:
+        case Qt::Key_Down:
+        case Qt::Key_Enter:
+        case Qt::Key_Space:
+        case Qt::Key_Return:
         {
+            if ( !style()->styleHint( QStyle::SH_MenuBar_AltKeyNavigation, nullptr, this ) || !d->currentAction )
+            {
+                break;
+            }
+
+            if ( d->currentAction->menu() )
+            {
+                d->popupAction( d->currentAction, true );
+            }
+            else if ( key == Qt::Key_Enter || key == Qt::Key_Return || key == Qt::Key_Space )
+            {
+                d->activateAction( d->currentAction, QAction::Trigger );
+                d->setCurrentAction( d->currentAction, false );
+                d->setKeyboardMode( false );
+            }
+
+            key_consumed = true;
             break;
         }
 
-        if ( d->currentAction->menu() )
+        case Qt::Key_Right:
+        case Qt::Key_Left:
         {
-            d->popupAction( d->currentAction, true );
-        }
-        else if ( key == Qt::Key_Enter || key == Qt::Key_Return || key == Qt::Key_Space )
-        {
-            d->activateAction( d->currentAction, QAction::Trigger );
-            d->setCurrentAction( d->currentAction, false );
-            d->setKeyboardMode( false );
-        }
-
-        key_consumed = true;
-        break;
-    }
-
-    case Qt::Key_Right:
-    case Qt::Key_Left:
-    {
-        if ( d->currentAction )
-        {
-            int index = d->actions.indexOf( d->currentAction );
-
-            if ( QAction *nextAction = d->getNextAction( index, key == Qt::Key_Left ? -1 : +1 ) )
+            if ( d->currentAction )
             {
-                d->setCurrentAction( nextAction, d->popupState, true );
-                key_consumed = true;
+                int index = d->actions.indexOf( d->currentAction );
+
+                if ( QAction *nextAction = d->getNextAction( index, key == Qt::Key_Left ? -1 : +1 ) )
+                {
+                    d->setCurrentAction( nextAction, d->popupState, true );
+                    key_consumed = true;
+                }
             }
+
+            break;
         }
 
-        break;
-    }
-
-    default:
-        key_consumed = false;
+        default:
+            key_consumed = false;
     }
 
     if ( !key_consumed && e->matches( QKeySequence::Cancel ) )
@@ -1521,76 +1521,76 @@ bool QMenuBar::event( QEvent *e )
 
     switch ( e->type() )
     {
-    case QEvent::KeyPress:
-    {
-        QKeyEvent *ke = ( QKeyEvent * )e;
-
-        if ( ke->key() == Qt::Key_Tab || ke->key() == Qt::Key_Backtab )
+        case QEvent::KeyPress:
         {
-            keyPressEvent( ke );
-            return true;
-        }
+            QKeyEvent *ke = ( QKeyEvent * )e;
 
-    }
-    break;
+            if ( ke->key() == Qt::Key_Tab || ke->key() == Qt::Key_Backtab )
+            {
+                keyPressEvent( ke );
+                return true;
+            }
+
+        }
+        break;
 
 #ifndef LSCS_NO_SHORTCUT
 
-    case QEvent::Shortcut:
-    {
-        QShortcutEvent *se = static_cast<QShortcutEvent *>( e );
-        int shortcutId = se->shortcutId();
-
-        for ( int j = 0; j < d->shortcutIndexMap.size(); ++j )
+        case QEvent::Shortcut:
         {
-            if ( shortcutId == d->shortcutIndexMap.value( j ) )
+            QShortcutEvent *se = static_cast<QShortcutEvent *>( e );
+            int shortcutId = se->shortcutId();
+
+            for ( int j = 0; j < d->shortcutIndexMap.size(); ++j )
             {
-                d->_q_internalShortcutActivated( j );
+                if ( shortcutId == d->shortcutIndexMap.value( j ) )
+                {
+                    d->_q_internalShortcutActivated( j );
+                }
             }
         }
-    }
-    break;
+        break;
 #endif
 
-    case QEvent::Show:
-        d->_q_updateLayout();
-        break;
+        case QEvent::Show:
+            d->_q_updateLayout();
+            break;
 
-    case QEvent::ShortcutOverride:
-    {
-        QKeyEvent *kev = static_cast<QKeyEvent *>( e );
-
-        //we only filter out escape if there is a current action
-        if ( kev->matches( QKeySequence::Cancel ) && d->currentAction )
+        case QEvent::ShortcutOverride:
         {
-            e->accept();
-            return true;
+            QKeyEvent *kev = static_cast<QKeyEvent *>( e );
+
+            //we only filter out escape if there is a current action
+            if ( kev->matches( QKeySequence::Cancel ) && d->currentAction )
+            {
+                e->accept();
+                return true;
+            }
         }
-    }
-    break;
+        break;
 
 #ifndef LSCS_NO_WHATSTHIS
 
-    case QEvent::QueryWhatsThis:
-        e->setAccepted( d->whatsThis.size() );
+        case QEvent::QueryWhatsThis:
+            e->setAccepted( d->whatsThis.size() );
 
-        if ( QAction *action = d->actionAt( static_cast<QHelpEvent *>( e )->pos() ) )
-        {
-            if ( action->whatsThis().size() || action->menu() )
+            if ( QAction *action = d->actionAt( static_cast<QHelpEvent *>( e )->pos() ) )
             {
-                e->accept();
+                if ( action->whatsThis().size() || action->menu() )
+                {
+                    e->accept();
+                }
             }
-        }
 
-        return true;
+            return true;
 #endif
 
-    case QEvent::LayoutDirectionChange:
-        d->_q_updateLayout();
-        break;
+        case QEvent::LayoutDirectionChange:
+            d->_q_updateLayout();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QWidget::event( e );
@@ -1610,13 +1610,13 @@ bool QMenuBar::eventFilter( QObject *object, QEvent *event )
     {
         switch ( event->type() )
         {
-        case QEvent::ShowToParent:
-        case QEvent::HideToParent:
-            d->_q_updateLayout();
-            break;
+            case QEvent::ShowToParent:
+            case QEvent::HideToParent:
+                d->_q_updateLayout();
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -1626,37 +1626,37 @@ bool QMenuBar::eventFilter( QObject *object, QEvent *event )
         {
             switch ( event->type() )
             {
-            case QEvent::KeyPress:
-            case QEvent::KeyRelease:
-            {
-                QKeyEvent *kev = static_cast<QKeyEvent *>( event );
-
-                if ( kev->key() == Qt::Key_Alt || kev->key() == Qt::Key_Meta )
+                case QEvent::KeyPress:
+                case QEvent::KeyRelease:
                 {
-                    if ( event->type() == QEvent::KeyPress )
+                    QKeyEvent *kev = static_cast<QKeyEvent *>( event );
+
+                    if ( kev->key() == Qt::Key_Alt || kev->key() == Qt::Key_Meta )
                     {
-                        // Alt-press does not interest us, we have the shortcut-override event
-                        break;
+                        if ( event->type() == QEvent::KeyPress )
+                        {
+                            // Alt-press does not interest us, we have the shortcut-override event
+                            break;
+                        }
+
+                        d->setKeyboardMode( !d->keyboardState );
                     }
-
-                    d->setKeyboardMode( !d->keyboardState );
                 }
-            }
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-            case QEvent::MouseButtonPress:
-            case QEvent::MouseButtonRelease:
-            case QEvent::MouseMove:
-            case QEvent::FocusIn:
-            case QEvent::FocusOut:
-            case QEvent::ActivationChange:
-                d->altPressed = false;
-                qApp->removeEventFilter( this );
-                break;
+                case QEvent::MouseButtonPress:
+                case QEvent::MouseButtonRelease:
+                case QEvent::MouseMove:
+                case QEvent::FocusIn:
+                case QEvent::FocusOut:
+                case QEvent::ActivationChange:
+                    d->altPressed = false;
+                    qApp->removeEventFilter( this );
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
 
         }
@@ -1928,27 +1928,27 @@ void QMenuBar::setCornerWidget( QWidget *w, Qt::Corner corner )
 
     switch ( corner )
     {
-    case Qt::TopLeftCorner:
-        if ( d->leftWidget )
-        {
-            d->leftWidget->removeEventFilter( this );
-        }
+        case Qt::TopLeftCorner:
+            if ( d->leftWidget )
+            {
+                d->leftWidget->removeEventFilter( this );
+            }
 
-        d->leftWidget = w;
-        break;
+            d->leftWidget = w;
+            break;
 
-    case Qt::TopRightCorner:
-        if ( d->rightWidget )
-        {
-            d->rightWidget->removeEventFilter( this );
-        }
+        case Qt::TopRightCorner:
+            if ( d->rightWidget )
+            {
+                d->rightWidget->removeEventFilter( this );
+            }
 
-        d->rightWidget = w;
-        break;
+            d->rightWidget = w;
+            break;
 
-    default:
-        qWarning( "QMenuBar::setCornerWidget: Only TopLeftCorner and TopRightCorner are supported" );
-        return;
+        default:
+            qWarning( "QMenuBar::setCornerWidget: Only TopLeftCorner and TopRightCorner are supported" );
+            return;
     }
 
     if ( w )
@@ -1969,17 +1969,17 @@ QWidget *QMenuBar::cornerWidget( Qt::Corner corner ) const
 
     switch ( corner )
     {
-    case Qt::TopLeftCorner:
-        w = d->leftWidget;
-        break;
+        case Qt::TopLeftCorner:
+            w = d->leftWidget;
+            break;
 
-    case Qt::TopRightCorner:
-        w = d->rightWidget;
-        break;
+        case Qt::TopRightCorner:
+            w = d->rightWidget;
+            break;
 
-    default:
-        qWarning( "QMenuBar::cornerWidget: Only TopLeftCorner and TopRightCorner are supported" );
-        break;
+        default:
+            qWarning( "QMenuBar::cornerWidget: Only TopLeftCorner and TopRightCorner are supported" );
+            break;
     }
 
     return w;

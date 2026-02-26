@@ -309,18 +309,18 @@ void QPushButton::keyPressEvent( QKeyEvent *e )
 
     switch ( e->key() )
     {
-    case Qt::Key_Enter:
-    case Qt::Key_Return:
-        if ( autoDefault() || d->defaultButton )
-        {
-            click();
-            break;
-        }
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+            if ( autoDefault() || d->defaultButton )
+            {
+                click();
+                break;
+            }
 
-        [[fallthrough]];
+            [[fallthrough]];
 
-    default:
-        QAbstractButton::keyPressEvent( e );
+        default:
+            QAbstractButton::keyPressEvent( e );
     }
 }
 

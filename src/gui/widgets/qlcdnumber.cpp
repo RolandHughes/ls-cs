@@ -68,44 +68,44 @@ static QString int2string( int num, int base, int ndigits, bool *oflow )
 
     switch ( base )
     {
-    case QLCDNumber::Hex:
-        s = QString( "%1" ).formatArg( num, ndigits, 16 );
-        break;
+        case QLCDNumber::Hex:
+            s = QString( "%1" ).formatArg( num, ndigits, 16 );
+            break;
 
-    case QLCDNumber::Dec:
-        s = QString( "%1" ).formatArg( num, ndigits, 10 );
-        break;
+        case QLCDNumber::Dec:
+            s = QString( "%1" ).formatArg( num, ndigits, 10 );
+            break;
 
-    case QLCDNumber::Oct:
-        s = QString( "%1" ).formatArg( num, ndigits, 8 );
-        break;
+        case QLCDNumber::Oct:
+            s = QString( "%1" ).formatArg( num, ndigits, 8 );
+            break;
 
-    case QLCDNumber::Bin:
-    {
-        char buf[42];
-        char *p = &buf[41];
-        uint n = num;
-        int len = 0;
-        *p = '\0';
-
-        do
+        case QLCDNumber::Bin:
         {
-            *--p = ( char )( ( n & 1 ) + '0' );
-            n >>= 1;
-            len++;
+            char buf[42];
+            char *p = &buf[41];
+            uint n = num;
+            int len = 0;
+            *p = '\0';
+
+            do
+            {
+                *--p = ( char )( ( n & 1 ) + '0' );
+                n >>= 1;
+                len++;
+            }
+            while ( n != 0 );
+
+            len = ndigits - len;
+
+            if ( len > 0 )
+            {
+                s.fill( QLatin1Char( ' ' ), len );
+            }
+
+            s += QString::fromLatin1( p );
         }
-        while ( n != 0 );
-
-        len = ndigits - len;
-
-        if ( len > 0 )
-        {
-            s.fill( QLatin1Char( ' ' ), len );
-        }
-
-        s += QString::fromLatin1( p );
-    }
-    break;
+        break;
     }
 
     if ( negative )
@@ -242,78 +242,78 @@ static const char *getSegments( char ch )             // gets list of segments f
 
     switch ( ch )
     {
-    case '-':
-        n = 10;
-        break;
+        case '-':
+            n = 10;
+            break;
 
-    case 'O':
-        n = 0;
-        break;
+        case 'O':
+            n = 0;
+            break;
 
-    case 'g':
-        n = 9;
-        break;
+        case 'g':
+            n = 9;
+            break;
 
-    case '.':
-        n = 11;
-        break;
+        case '.':
+            n = 11;
+            break;
 
-    case 'h':
-        n = 18;
-        break;
+        case 'h':
+            n = 18;
+            break;
 
-    case 'H':
-        n = 19;
-        break;
+        case 'H':
+            n = 19;
+            break;
 
-    case 'l':
-    case 'L':
-        n = 20;
-        break;
+        case 'l':
+        case 'L':
+            n = 20;
+            break;
 
-    case 'o':
-        n = 21;
-        break;
+        case 'o':
+            n = 21;
+            break;
 
-    case 'p':
-    case 'P':
-        n = 22;
-        break;
+        case 'p':
+        case 'P':
+            n = 22;
+            break;
 
-    case 'r':
-    case 'R':
-        n = 23;
-        break;
+        case 'r':
+        case 'R':
+            n = 23;
+            break;
 
-    case 's':
-    case 'S':
-        n = 5;
-        break;
+        case 's':
+        case 'S':
+            n = 5;
+            break;
 
-    case 'u':
-        n = 24;
-        break;
+        case 'u':
+            n = 24;
+            break;
 
-    case 'U':
-        n = 25;
-        break;
+        case 'U':
+            n = 25;
+            break;
 
-    case 'y':
-    case 'Y':
-        n = 26;
-        break;
+        case 'y':
+        case 'Y':
+            n = 26;
+            break;
 
-    case ':':
-        n = 27;
-        break;
+        case ':':
+            n = 27;
+            break;
 
-    case '\'':
-        n = 28;
-        break;
+        case '\'':
+            n = 28;
+            break;
 
-    default:
-        n = 29;
-        break;
+        default:
+            n = 29;
+            break;
     }
 
     return segments[n];
@@ -851,140 +851,140 @@ void QLCDNumberPrivate::drawSegment( const QPoint &pos, char segmentNo, QPainter
         //don't make any changes here
         switch ( segmentNo )
         {
-        case 0 :
-            ppt = pt;
-            LIGHT;
-            LINETO( segLen - 1, 0 );
-            DARK;
-            LINETO( segLen - width - 1, width );
-            LINETO( width, width );
-            LINETO( 0, 0 );
-            break;
+            case 0 :
+                ppt = pt;
+                LIGHT;
+                LINETO( segLen - 1, 0 );
+                DARK;
+                LINETO( segLen - width - 1, width );
+                LINETO( width, width );
+                LINETO( 0, 0 );
+                break;
 
-        case 1 :
-            pt += QPoint( 0, 1 );
-            ppt = pt;
-            LIGHT;
-            LINETO( width, width );
-            DARK;
-            LINETO( width, segLen - width / 2 - 2 );
-            LINETO( 0, segLen - 2 );
-            LIGHT;
-            LINETO( 0, 0 );
-            break;
+            case 1 :
+                pt += QPoint( 0, 1 );
+                ppt = pt;
+                LIGHT;
+                LINETO( width, width );
+                DARK;
+                LINETO( width, segLen - width / 2 - 2 );
+                LINETO( 0, segLen - 2 );
+                LIGHT;
+                LINETO( 0, 0 );
+                break;
 
-        case 2 :
-            pt += QPoint( segLen - 1, 1 );
-            ppt = pt;
-            DARK;
-            LINETO( 0, segLen - 2 );
-            LINETO( -width, segLen - width / 2 - 2 );
-            LIGHT;
-            LINETO( -width, width );
-            LINETO( 0, 0 );
-            break;
+            case 2 :
+                pt += QPoint( segLen - 1, 1 );
+                ppt = pt;
+                DARK;
+                LINETO( 0, segLen - 2 );
+                LINETO( -width, segLen - width / 2 - 2 );
+                LIGHT;
+                LINETO( -width, width );
+                LINETO( 0, 0 );
+                break;
 
-        case 3 :
-            pt += QPoint( 0, segLen );
-            ppt = pt;
-            LIGHT;
-            LINETO( width, -width / 2 );
-            LINETO( segLen - width - 1, -width / 2 );
-            LINETO( segLen - 1, 0 );
-            DARK;
+            case 3 :
+                pt += QPoint( 0, segLen );
+                ppt = pt;
+                LIGHT;
+                LINETO( width, -width / 2 );
+                LINETO( segLen - width - 1, -width / 2 );
+                LINETO( segLen - 1, 0 );
+                DARK;
 
-            if ( width & 1 )            // adjust for integer division error
-            {
-                LINETO( segLen - width - 3, width / 2 + 1 );
-                LINETO( width + 2, width / 2 + 1 );
-            }
-            else
-            {
-                LINETO( segLen - width - 1, width / 2 );
+                if ( width & 1 )            // adjust for integer division error
+                {
+                    LINETO( segLen - width - 3, width / 2 + 1 );
+                    LINETO( width + 2, width / 2 + 1 );
+                }
+                else
+                {
+                    LINETO( segLen - width - 1, width / 2 );
+                    LINETO( width, width / 2 );
+                }
+
+                LINETO( 0, 0 );
+                break;
+
+            case 4 :
+                pt += QPoint( 0, segLen + 1 );
+                ppt = pt;
+                LIGHT;
                 LINETO( width, width / 2 );
-            }
+                DARK;
+                LINETO( width, segLen - width - 2 );
+                LINETO( 0, segLen - 2 );
+                LIGHT;
+                LINETO( 0, 0 );
+                break;
 
-            LINETO( 0, 0 );
-            break;
+            case 5 :
+                pt += QPoint( segLen - 1, segLen + 1 );
+                ppt = pt;
+                DARK;
+                LINETO( 0, segLen - 2 );
+                LINETO( -width, segLen - width - 2 );
+                LIGHT;
+                LINETO( -width, width / 2 );
+                LINETO( 0, 0 );
+                break;
 
-        case 4 :
-            pt += QPoint( 0, segLen + 1 );
-            ppt = pt;
-            LIGHT;
-            LINETO( width, width / 2 );
-            DARK;
-            LINETO( width, segLen - width - 2 );
-            LINETO( 0, segLen - 2 );
-            LIGHT;
-            LINETO( 0, 0 );
-            break;
+            case 6 :
+                pt += QPoint( 0, segLen * 2 );
+                ppt = pt;
+                LIGHT;
+                LINETO( width, -width );
+                LINETO( segLen - width - 1, -width );
+                LINETO( segLen - 1, 0 );
+                DARK;
+                LINETO( 0, 0 );
+                break;
 
-        case 5 :
-            pt += QPoint( segLen - 1, segLen + 1 );
-            ppt = pt;
-            DARK;
-            LINETO( 0, segLen - 2 );
-            LINETO( -width, segLen - width - 2 );
-            LIGHT;
-            LINETO( -width, width / 2 );
-            LINETO( 0, 0 );
-            break;
+            case 7 :
+                if ( smallPoint )
+                {
+                    // if smallpoint place'.' between other digits
+                    pt += QPoint( segLen + width / 2, segLen * 2 );
+                }
+                else
+                {
+                    pt += QPoint( segLen / 2, segLen * 2 );
+                }
 
-        case 6 :
-            pt += QPoint( 0, segLen * 2 );
-            ppt = pt;
-            LIGHT;
-            LINETO( width, -width );
-            LINETO( segLen - width - 1, -width );
-            LINETO( segLen - 1, 0 );
-            DARK;
-            LINETO( 0, 0 );
-            break;
+                ppt = pt;
+                DARK;
+                LINETO( width, 0 );
+                LINETO( width, -width );
+                LIGHT;
+                LINETO( 0, -width );
+                LINETO( 0, 0 );
+                break;
 
-        case 7 :
-            if ( smallPoint )
-            {
-                // if smallpoint place'.' between other digits
-                pt += QPoint( segLen + width / 2, segLen * 2 );
-            }
-            else
-            {
-                pt += QPoint( segLen / 2, segLen * 2 );
-            }
+            case 8 :
+                pt += QPoint( segLen / 2 - width / 2 + 1, segLen / 2 + width );
+                ppt = pt;
+                DARK;
+                LINETO( width, 0 );
+                LINETO( width, -width );
+                LIGHT;
+                LINETO( 0, -width );
+                LINETO( 0, 0 );
+                break;
 
-            ppt = pt;
-            DARK;
-            LINETO( width, 0 );
-            LINETO( width, -width );
-            LIGHT;
-            LINETO( 0, -width );
-            LINETO( 0, 0 );
-            break;
+            case 9 :
+                pt += QPoint( segLen / 2 - width / 2 + 1, 3 * segLen / 2 + width );
+                ppt = pt;
+                DARK;
+                LINETO( width, 0 );
+                LINETO( width, -width );
+                LIGHT;
+                LINETO( 0, -width );
+                LINETO( 0, 0 );
+                break;
 
-        case 8 :
-            pt += QPoint( segLen / 2 - width / 2 + 1, segLen / 2 + width );
-            ppt = pt;
-            DARK;
-            LINETO( width, 0 );
-            LINETO( width, -width );
-            LIGHT;
-            LINETO( 0, -width );
-            LINETO( 0, 0 );
-            break;
-
-        case 9 :
-            pt += QPoint( segLen / 2 - width / 2 + 1, 3 * segLen / 2 + width );
-            ppt = pt;
-            DARK;
-            LINETO( width, 0 );
-            LINETO( width, -width );
-            LIGHT;
-            LINETO( 0, -width );
-            LINETO( 0, 0 );
-            break;
-
-        default :
-            qWarning( "QLCDNumber::drawSegment() Illegal segment id %d (%s)", segmentNo, lscsPrintable( q->objectName() ) );
+            default :
+                qWarning( "QLCDNumber::drawSegment() Illegal segment id %d (%s)", segmentNo, lscsPrintable( q->objectName() ) );
         }
 
         // End exact copy
@@ -1010,139 +1010,139 @@ void QLCDNumberPrivate::drawSegment( const QPoint &pos, char segmentNo, QPainter
     if ( shadow )
         switch ( segmentNo )
         {
-        case 0 :
-            ppt = pt;
-            LIGHT;
-            LINETO( segLen - 1, 0 );
-            DARK;
-            LINETO( segLen - width - 1, width );
-            LINETO( width, width );
-            LINETO( 0, 0 );
-            break;
+            case 0 :
+                ppt = pt;
+                LIGHT;
+                LINETO( segLen - 1, 0 );
+                DARK;
+                LINETO( segLen - width - 1, width );
+                LINETO( width, width );
+                LINETO( 0, 0 );
+                break;
 
-        case 1 :
-            pt += QPoint( 0, 1 );
-            ppt = pt;
-            LIGHT;
-            LINETO( width, width );
-            DARK;
-            LINETO( width, segLen - width / 2 - 2 );
-            LINETO( 0, segLen - 2 );
-            LIGHT;
-            LINETO( 0, 0 );
-            break;
+            case 1 :
+                pt += QPoint( 0, 1 );
+                ppt = pt;
+                LIGHT;
+                LINETO( width, width );
+                DARK;
+                LINETO( width, segLen - width / 2 - 2 );
+                LINETO( 0, segLen - 2 );
+                LIGHT;
+                LINETO( 0, 0 );
+                break;
 
-        case 2 :
-            pt += QPoint( segLen - 1, 1 );
-            ppt = pt;
-            DARK;
-            LINETO( 0, segLen - 2 );
-            LINETO( -width, segLen - width / 2 - 2 );
-            LIGHT;
-            LINETO( -width, width );
-            LINETO( 0, 0 );
-            break;
+            case 2 :
+                pt += QPoint( segLen - 1, 1 );
+                ppt = pt;
+                DARK;
+                LINETO( 0, segLen - 2 );
+                LINETO( -width, segLen - width / 2 - 2 );
+                LIGHT;
+                LINETO( -width, width );
+                LINETO( 0, 0 );
+                break;
 
-        case 3 :
-            pt += QPoint( 0, segLen );
-            ppt = pt;
-            LIGHT;
-            LINETO( width, -width / 2 );
-            LINETO( segLen - width - 1, -width / 2 );
-            LINETO( segLen - 1, 0 );
-            DARK;
+            case 3 :
+                pt += QPoint( 0, segLen );
+                ppt = pt;
+                LIGHT;
+                LINETO( width, -width / 2 );
+                LINETO( segLen - width - 1, -width / 2 );
+                LINETO( segLen - 1, 0 );
+                DARK;
 
-            if ( width & 1 )            // adjust for integer division error
-            {
-                LINETO( segLen - width - 3, width / 2 + 1 );
-                LINETO( width + 2, width / 2 + 1 );
-            }
-            else
-            {
-                LINETO( segLen - width - 1, width / 2 );
+                if ( width & 1 )            // adjust for integer division error
+                {
+                    LINETO( segLen - width - 3, width / 2 + 1 );
+                    LINETO( width + 2, width / 2 + 1 );
+                }
+                else
+                {
+                    LINETO( segLen - width - 1, width / 2 );
+                    LINETO( width, width / 2 );
+                }
+
+                LINETO( 0, 0 );
+                break;
+
+            case 4 :
+                pt += QPoint( 0, segLen + 1 );
+                ppt = pt;
+                LIGHT;
                 LINETO( width, width / 2 );
-            }
+                DARK;
+                LINETO( width, segLen - width - 2 );
+                LINETO( 0, segLen - 2 );
+                LIGHT;
+                LINETO( 0, 0 );
+                break;
 
-            LINETO( 0, 0 );
-            break;
+            case 5 :
+                pt += QPoint( segLen - 1, segLen + 1 );
+                ppt = pt;
+                DARK;
+                LINETO( 0, segLen - 2 );
+                LINETO( -width, segLen - width - 2 );
+                LIGHT;
+                LINETO( -width, width / 2 );
+                LINETO( 0, 0 );
+                break;
 
-        case 4 :
-            pt += QPoint( 0, segLen + 1 );
-            ppt = pt;
-            LIGHT;
-            LINETO( width, width / 2 );
-            DARK;
-            LINETO( width, segLen - width - 2 );
-            LINETO( 0, segLen - 2 );
-            LIGHT;
-            LINETO( 0, 0 );
-            break;
+            case 6 :
+                pt += QPoint( 0, segLen * 2 );
+                ppt = pt;
+                LIGHT;
+                LINETO( width, -width );
+                LINETO( segLen - width - 1, -width );
+                LINETO( segLen - 1, 0 );
+                DARK;
+                LINETO( 0, 0 );
+                break;
 
-        case 5 :
-            pt += QPoint( segLen - 1, segLen + 1 );
-            ppt = pt;
-            DARK;
-            LINETO( 0, segLen - 2 );
-            LINETO( -width, segLen - width - 2 );
-            LIGHT;
-            LINETO( -width, width / 2 );
-            LINETO( 0, 0 );
-            break;
+            case 7 :
+                if ( smallPoint ) // if smallpoint place'.' between other digits
+                {
+                    pt += QPoint( segLen + width / 2, segLen * 2 );
+                }
+                else
+                {
+                    pt += QPoint( segLen / 2, segLen * 2 );
+                }
 
-        case 6 :
-            pt += QPoint( 0, segLen * 2 );
-            ppt = pt;
-            LIGHT;
-            LINETO( width, -width );
-            LINETO( segLen - width - 1, -width );
-            LINETO( segLen - 1, 0 );
-            DARK;
-            LINETO( 0, 0 );
-            break;
+                ppt = pt;
+                DARK;
+                LINETO( width, 0 );
+                LINETO( width, -width );
+                LIGHT;
+                LINETO( 0, -width );
+                LINETO( 0, 0 );
+                break;
 
-        case 7 :
-            if ( smallPoint ) // if smallpoint place'.' between other digits
-            {
-                pt += QPoint( segLen + width / 2, segLen * 2 );
-            }
-            else
-            {
-                pt += QPoint( segLen / 2, segLen * 2 );
-            }
+            case 8 :
+                pt += QPoint( segLen / 2 - width / 2 + 1, segLen / 2 + width );
+                ppt = pt;
+                DARK;
+                LINETO( width, 0 );
+                LINETO( width, -width );
+                LIGHT;
+                LINETO( 0, -width );
+                LINETO( 0, 0 );
+                break;
 
-            ppt = pt;
-            DARK;
-            LINETO( width, 0 );
-            LINETO( width, -width );
-            LIGHT;
-            LINETO( 0, -width );
-            LINETO( 0, 0 );
-            break;
+            case 9 :
+                pt += QPoint( segLen / 2 - width / 2 + 1, 3 * segLen / 2 + width );
+                ppt = pt;
+                DARK;
+                LINETO( width, 0 );
+                LINETO( width, -width );
+                LIGHT;
+                LINETO( 0, -width );
+                LINETO( 0, 0 );
+                break;
 
-        case 8 :
-            pt += QPoint( segLen / 2 - width / 2 + 1, segLen / 2 + width );
-            ppt = pt;
-            DARK;
-            LINETO( width, 0 );
-            LINETO( width, -width );
-            LIGHT;
-            LINETO( 0, -width );
-            LINETO( 0, 0 );
-            break;
-
-        case 9 :
-            pt += QPoint( segLen / 2 - width / 2 + 1, 3 * segLen / 2 + width );
-            ppt = pt;
-            DARK;
-            LINETO( width, 0 );
-            LINETO( width, -width );
-            LIGHT;
-            LINETO( 0, -width );
-            LINETO( 0, 0 );
-            break;
-
-        default:
-            qWarning( "QLCDNumber::drawSegment() Illegal segment id %d (%s)", segmentNo, lscsPrintable( q->objectName() ) );
+            default:
+                qWarning( "QLCDNumber::drawSegment() Illegal segment id %d (%s)", segmentNo, lscsPrintable( q->objectName() ) );
         }
 
 #undef LINETO

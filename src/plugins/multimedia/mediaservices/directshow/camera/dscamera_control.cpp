@@ -49,27 +49,27 @@ void DSCameraControl::setState( QCamera::State state )
 
     switch ( state )
     {
-    case QCamera::UnloadedState:
-        succeeded = m_session->unload();
-        break;
+        case QCamera::UnloadedState:
+            succeeded = m_session->unload();
+            break;
 
-    case QCamera::LoadedState:
-    case QCamera::ActiveState:
-        if ( m_state == QCamera::UnloadedState && !m_session->load() )
-        {
-            return;
-        }
+        case QCamera::LoadedState:
+        case QCamera::ActiveState:
+            if ( m_state == QCamera::UnloadedState && !m_session->load() )
+            {
+                return;
+            }
 
-        if ( state == QCamera::ActiveState )
-        {
-            succeeded = m_session->startPreview();
-        }
-        else
-        {
-            succeeded = m_session->stopPreview();
-        }
+            if ( state == QCamera::ActiveState )
+            {
+                succeeded = m_session->startPreview();
+            }
+            else
+            {
+                succeeded = m_session->stopPreview();
+            }
 
-        break;
+            break;
     }
 
     if ( succeeded )
@@ -85,13 +85,13 @@ bool DSCameraControl::isCaptureModeSupported( QCamera::CaptureModes mode ) const
 
     switch ( mode )
     {
-    case QCamera::CaptureStillImage:
-        bCaptureSupported = true;
-        break;
+        case QCamera::CaptureStillImage:
+            bCaptureSupported = true;
+            break;
 
-    case QCamera::CaptureVideo:
-        bCaptureSupported = false;
-        break;
+        case QCamera::CaptureVideo:
+            bCaptureSupported = false;
+            break;
     }
 
     return bCaptureSupported;

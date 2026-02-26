@@ -77,50 +77,50 @@ void lscs_memfill32( quint32 *dest, quint32 value, int count )
 
     switch ( epilogueSize )
     {
-    case 15:
-        *dest++ = value;
+        case 15:
+            *dest++ = value;
 
-    case 14:
-        *dest++ = value;
+        case 14:
+            *dest++ = value;
 
-    case 13:
-        *dest++ = value;
+        case 13:
+            *dest++ = value;
 
-    case 12:
-        *dest++ = value;
+        case 12:
+            *dest++ = value;
 
-    case 11:
-        *dest++ = value;
+        case 11:
+            *dest++ = value;
 
-    case 10:
-        *dest++ = value;
+        case 10:
+            *dest++ = value;
 
-    case 9:
-        *dest++ = value;
+        case 9:
+            *dest++ = value;
 
-    case 8:
-        *dest++ = value;
+        case 8:
+            *dest++ = value;
 
-    case 7:
-        *dest++ = value;
+        case 7:
+            *dest++ = value;
 
-    case 6:
-        *dest++ = value;
+        case 6:
+            *dest++ = value;
 
-    case 5:
-        *dest++ = value;
+        case 5:
+            *dest++ = value;
 
-    case 4:
-        *dest++ = value;
+        case 4:
+            *dest++ = value;
 
-    case 3:
-        *dest++ = value;
+        case 3:
+            *dest++ = value;
 
-    case 2:
-        *dest++ = value;
+        case 2:
+            *dest++ = value;
 
-    case 1:
-        *dest++ = value;
+        case 1:
+            *dest++ = value;
     }
 }
 
@@ -331,25 +331,25 @@ void lscs_blend_rgb16_on_rgb16_neon( uchar *destPixels, int dbpl,
     switch ( w )
     {
 #define BLOCKBLIT(n) case n: blockBlit16<n>(dst, src, dstride, sstride, h); return;
-        BLOCKBLIT( 1 );
-        BLOCKBLIT( 2 );
-        BLOCKBLIT( 3 );
-        BLOCKBLIT( 4 );
-        BLOCKBLIT( 5 );
-        BLOCKBLIT( 6 );
-        BLOCKBLIT( 7 );
-        BLOCKBLIT( 8 );
-        BLOCKBLIT( 9 );
-        BLOCKBLIT( 10 );
-        BLOCKBLIT( 11 );
-        BLOCKBLIT( 12 );
-        BLOCKBLIT( 13 );
-        BLOCKBLIT( 14 );
-        BLOCKBLIT( 15 );
+            BLOCKBLIT( 1 );
+            BLOCKBLIT( 2 );
+            BLOCKBLIT( 3 );
+            BLOCKBLIT( 4 );
+            BLOCKBLIT( 5 );
+            BLOCKBLIT( 6 );
+            BLOCKBLIT( 7 );
+            BLOCKBLIT( 8 );
+            BLOCKBLIT( 9 );
+            BLOCKBLIT( 10 );
+            BLOCKBLIT( 11 );
+            BLOCKBLIT( 12 );
+            BLOCKBLIT( 13 );
+            BLOCKBLIT( 14 );
+            BLOCKBLIT( 15 );
 #undef BLOCKBLIT
 
-    default:
-        break;
+        default:
+            break;
     }
 
     pixman_composite_src_0565_0565_asm_neon ( w, h, dst, dstride, src, sstride );

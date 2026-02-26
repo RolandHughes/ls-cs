@@ -221,15 +221,15 @@ QLockFile::LockError QLockFilePrivate::tryLock_sys()
     {
         switch ( errno )
         {
-        case EEXIST:
-            return QLockFile::LockFailedError;
+            case EEXIST:
+                return QLockFile::LockFailedError;
 
-        case EACCES:
-        case EROFS:
-            return QLockFile::PermissionError;
+            case EACCES:
+            case EROFS:
+                return QLockFile::PermissionError;
 
-        default:
-            return QLockFile::UnknownError;
+            default:
+                return QLockFile::UnknownError;
         }
     }
 

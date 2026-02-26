@@ -426,7 +426,8 @@ operator
     &s,
     const sub_match<RandomAccessIterator> &m )
 {
-    std::basic_string<typename lscs_regex_detail_ns::regex_iterator_traits<RandomAccessIterator>::value_type, traits, Allocator> result;
+    std::basic_string<typename lscs_regex_detail_ns::regex_iterator_traits<RandomAccessIterator>::value_type, traits, Allocator>
+    result;
     result.reserve( s.size() + m.length() + 1 );
     return result.append( s ).append( m.first, m.second );
 }
@@ -438,7 +439,8 @@ operator
     const std::basic_string<typename lscs_regex_detail_ns::regex_iterator_traits<RandomAccessIterator>::value_type, traits, Allocator>
     &s )
 {
-    std::basic_string<typename lscs_regex_detail_ns::regex_iterator_traits<RandomAccessIterator>::value_type, traits, Allocator> result;
+    std::basic_string<typename lscs_regex_detail_ns::regex_iterator_traits<RandomAccessIterator>::value_type, traits, Allocator>
+    result;
     result.reserve( s.size() + m.length() + 1 );
     return result.append( m.first, m.second ).append( s );
 }

@@ -250,27 +250,27 @@ void QAuthenticatorPrivate::updateCredentials()
 
     switch ( method )
     {
-    case QAuthenticatorPrivate::Ntlm:
-        if ( ( separatorPosn = user.indexOf( QLatin1String( "\\" ) ) ) != -1 )
-        {
-            //domain name is present
-            realm.clear();
-            userDomain = user.left( separatorPosn );
-            extractedUser = user.mid( separatorPosn + 1 );
+        case QAuthenticatorPrivate::Ntlm:
+            if ( ( separatorPosn = user.indexOf( QLatin1String( "\\" ) ) ) != -1 )
+            {
+                //domain name is present
+                realm.clear();
+                userDomain = user.left( separatorPosn );
+                extractedUser = user.mid( separatorPosn + 1 );
 
-        }
-        else
-        {
-            extractedUser = user;
-            realm.clear();
+            }
+            else
+            {
+                extractedUser = user;
+                realm.clear();
+                userDomain.clear();
+            }
+
+            break;
+
+        default:
             userDomain.clear();
-        }
-
-        break;
-
-    default:
-        userDomain.clear();
-        break;
+            break;
     }
 }
 
@@ -326,41 +326,41 @@ void QAuthenticatorPrivate::parseHttpResponse( const QList<QPair<QByteArray, QBy
 
     switch ( method )
     {
-    case Basic:
-        this->options[QLatin1String( "realm" )] = realm = QString::fromLatin1( options.value( "realm" ) );
+        case Basic:
+            this->options[QLatin1String( "realm" )] = realm = QString::fromLatin1( options.value( "realm" ) );
 
-        if ( user.isEmpty() && password.isEmpty() )
+            if ( user.isEmpty() && password.isEmpty() )
+            {
+                phase = Done;
+            }
+
+            break;
+
+        case Ntlm:
+            // #### extract from header
+            break;
+
+        case DigestMd5:
         {
-            phase = Done;
+            this->options[QLatin1String( "realm" )] = realm = QString::fromLatin1( options.value( "realm" ) );
+
+            if ( options.value( "stale" ).toLower() == "true" )
+            {
+                phase = Start;
+            }
+
+            if ( user.isEmpty() && password.isEmpty() )
+            {
+                phase = Done;
+            }
+
+            break;
         }
 
-        break;
-
-    case Ntlm:
-        // #### extract from header
-        break;
-
-    case DigestMd5:
-    {
-        this->options[QLatin1String( "realm" )] = realm = QString::fromLatin1( options.value( "realm" ) );
-
-        if ( options.value( "stale" ).toLower() == "true" )
-        {
-            phase = Start;
-        }
-
-        if ( user.isEmpty() && password.isEmpty() )
-        {
-            phase = Done;
-        }
-
-        break;
-    }
-
-    default:
-        realm.clear();
-        challenge = QByteArray();
-        phase = Invalid;
+        default:
+            realm.clear();
+            challenge = QByteArray();
+            phase = Invalid;
     }
 }
 
@@ -371,108 +371,108 @@ QByteArray QAuthenticatorPrivate::calculateResponse( const QByteArray &requestMe
 
     switch ( method )
     {
-    case QAuthenticatorPrivate::None:
-        methodString = "";
-        phase = Done;
-        break;
-
-    case QAuthenticatorPrivate::Plain:
-        response = '\0' + user.toUtf8() + '\0' + password.toUtf8();
-        phase = Done;
-        break;
-
-    case QAuthenticatorPrivate::Basic:
-        methodString = "Basic ";
-        response = user.toLatin1() + ':' + password.toLatin1();
-        response = response.toBase64();
-        phase = Done;
-        break;
-
-    case QAuthenticatorPrivate::Login:
-        if ( challenge.contains( "VXNlciBOYW1lAA==" ) )
-        {
-            response = user.toUtf8().toBase64();
-            phase = Phase2;
-        }
-        else if ( challenge.contains( "UGFzc3dvcmQA" ) )
-        {
-            response = password.toUtf8().toBase64();
+        case QAuthenticatorPrivate::None:
+            methodString = "";
             phase = Done;
-        }
+            break;
 
-        break;
+        case QAuthenticatorPrivate::Plain:
+            response = '\0' + user.toUtf8() + '\0' + password.toUtf8();
+            phase = Done;
+            break;
 
-    case QAuthenticatorPrivate::CramMd5:
-        break;
+        case QAuthenticatorPrivate::Basic:
+            methodString = "Basic ";
+            response = user.toLatin1() + ':' + password.toLatin1();
+            response = response.toBase64();
+            phase = Done;
+            break;
 
-    case QAuthenticatorPrivate::DigestMd5:
-        methodString = "Digest ";
-        response = digestMd5Response( challenge, requestMethod, path );
-        phase = Done;
-        break;
+        case QAuthenticatorPrivate::Login:
+            if ( challenge.contains( "VXNlciBOYW1lAA==" ) )
+            {
+                response = user.toUtf8().toBase64();
+                phase = Phase2;
+            }
+            else if ( challenge.contains( "UGFzc3dvcmQA" ) )
+            {
+                response = password.toUtf8().toBase64();
+                phase = Done;
+            }
 
-    case QAuthenticatorPrivate::Ntlm:
-        methodString = "NTLM ";
+            break;
 
-        if ( challenge.isEmpty() )
-        {
+        case QAuthenticatorPrivate::CramMd5:
+            break;
+
+        case QAuthenticatorPrivate::DigestMd5:
+            methodString = "Digest ";
+            response = digestMd5Response( challenge, requestMethod, path );
+            phase = Done;
+            break;
+
+        case QAuthenticatorPrivate::Ntlm:
+            methodString = "NTLM ";
+
+            if ( challenge.isEmpty() )
+            {
 
 #if defined(Q_OS_WIN)
-            QByteArray phase1Token;
-
-            if ( user.isEmpty() )
-            {
-                // Only pull from system if no user was specified in authenticator
-                phase1Token = qNtlmPhase1_SSPI( this );
-            }
-
-            if ( ! phase1Token.isEmpty() )
-            {
-                response = phase1Token.toBase64();
-                phase = Phase2;
-
-            }
-            else
-#endif
-            {
-                response = qNtlmPhase1().toBase64();
+                QByteArray phase1Token;
 
                 if ( user.isEmpty() )
                 {
+                    // Only pull from system if no user was specified in authenticator
+                    phase1Token = qNtlmPhase1_SSPI( this );
+                }
+
+                if ( ! phase1Token.isEmpty() )
+                {
+                    response = phase1Token.toBase64();
+                    phase = Phase2;
+
+                }
+                else
+#endif
+                {
+                    response = qNtlmPhase1().toBase64();
+
+                    if ( user.isEmpty() )
+                    {
+                        phase = Done;
+                    }
+                    else
+                    {
+                        phase = Phase2;
+                    }
+                }
+
+            }
+            else
+            {
+
+#if defined(Q_OS_WIN)
+                QByteArray phase3Token;
+
+                if ( ntlmWindowsHandles )
+                {
+                    phase3Token = qNtlmPhase3_SSPI( this, QByteArray::fromBase64( challenge ) );
+                }
+
+                if ( !phase3Token.isEmpty() )
+                {
+                    response = phase3Token.toBase64();
                     phase = Done;
                 }
                 else
+#endif
                 {
-                    phase = Phase2;
+                    response = qNtlmPhase3( this, QByteArray::fromBase64( challenge ) ).toBase64();
+                    phase = Done;
                 }
             }
 
-        }
-        else
-        {
-
-#if defined(Q_OS_WIN)
-            QByteArray phase3Token;
-
-            if ( ntlmWindowsHandles )
-            {
-                phase3Token = qNtlmPhase3_SSPI( this, QByteArray::fromBase64( challenge ) );
-            }
-
-            if ( !phase3Token.isEmpty() )
-            {
-                response = phase3Token.toBase64();
-                phase = Done;
-            }
-            else
-#endif
-            {
-                response = qNtlmPhase3( this, QByteArray::fromBase64( challenge ) ).toBase64();
-                phase = Done;
-            }
-        }
-
-        break;
+            break;
     }
 
     return QByteArray( methodString ) + response;

@@ -771,29 +771,29 @@ QDBusMessage QDBusAbstractInterface::call( QDBus::CallMode mode, const QString &
 
     switch ( count )
     {
-    case 8:
-        argList.prepend( arg8 );
+        case 8:
+            argList.prepend( arg8 );
 
-    case 7:
-        argList.prepend( arg7 );
+        case 7:
+            argList.prepend( arg7 );
 
-    case 6:
-        argList.prepend( arg6 );
+        case 6:
+            argList.prepend( arg6 );
 
-    case 5:
-        argList.prepend( arg5 );
+        case 5:
+            argList.prepend( arg5 );
 
-    case 4:
-        argList.prepend( arg4 );
+        case 4:
+            argList.prepend( arg4 );
 
-    case 3:
-        argList.prepend( arg3 );
+        case 3:
+            argList.prepend( arg3 );
 
-    case 2:
-        argList.prepend( arg2 );
+        case 2:
+            argList.prepend( arg2 );
 
-    case 1:
-        argList.prepend( arg1 );
+        case 1:
+            argList.prepend( arg1 );
     }
 
     return callWithArgumentList( mode, method, argList );
@@ -837,29 +837,29 @@ QDBusPendingCall QDBusAbstractInterface::asyncCall( const QString &method, const
 
     switch ( count )
     {
-    case 8:
-        argList.prepend( arg8 );
+        case 8:
+            argList.prepend( arg8 );
 
-    case 7:
-        argList.prepend( arg7 );
+        case 7:
+            argList.prepend( arg7 );
 
-    case 6:
-        argList.prepend( arg6 );
+        case 6:
+            argList.prepend( arg6 );
 
-    case 5:
-        argList.prepend( arg5 );
+        case 5:
+            argList.prepend( arg5 );
 
-    case 4:
-        argList.prepend( arg4 );
+        case 4:
+            argList.prepend( arg4 );
 
-    case 3:
-        argList.prepend( arg3 );
+        case 3:
+            argList.prepend( arg3 );
 
-    case 2:
-        argList.prepend( arg2 );
+        case 2:
+            argList.prepend( arg2 );
 
-    case 1:
-        argList.prepend( arg1 );
+        case 1:
+            argList.prepend( arg1 );
     }
 
     return asyncCallWithArgumentList( method, argList );

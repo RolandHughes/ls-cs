@@ -533,38 +533,38 @@ void QGstreamerPlayerControl::updateMediaStatus()
 
     switch ( m_session->state() )
     {
-    case QMediaPlayer::StoppedState:
-        if ( m_currentResource.isNull() )
-        {
-            m_mediaStatus = QMediaPlayer::NoMedia;
-
-        }
-        else if ( oldStatus != QMediaPlayer::InvalidMedia )
-        {
-            m_mediaStatus = QMediaPlayer::LoadingMedia;
-        }
-
-        break;
-
-    case QMediaPlayer::PlayingState:
-    case QMediaPlayer::PausedState:
-        if ( m_currentState == QMediaPlayer::StoppedState )
-        {
-            m_mediaStatus = QMediaPlayer::LoadedMedia;
-        }
-        else
-        {
-            if ( m_bufferProgress == -1 || m_bufferProgress == 100 )
+        case QMediaPlayer::StoppedState:
+            if ( m_currentResource.isNull() )
             {
-                m_mediaStatus = QMediaPlayer::BufferedMedia;
+                m_mediaStatus = QMediaPlayer::NoMedia;
+
+            }
+            else if ( oldStatus != QMediaPlayer::InvalidMedia )
+            {
+                m_mediaStatus = QMediaPlayer::LoadingMedia;
+            }
+
+            break;
+
+        case QMediaPlayer::PlayingState:
+        case QMediaPlayer::PausedState:
+            if ( m_currentState == QMediaPlayer::StoppedState )
+            {
+                m_mediaStatus = QMediaPlayer::LoadedMedia;
             }
             else
             {
-                m_mediaStatus = QMediaPlayer::StalledMedia;
+                if ( m_bufferProgress == -1 || m_bufferProgress == 100 )
+                {
+                    m_mediaStatus = QMediaPlayer::BufferedMedia;
+                }
+                else
+                {
+                    m_mediaStatus = QMediaPlayer::StalledMedia;
+                }
             }
-        }
 
-        break;
+            break;
     }
 
     if ( m_currentState == QMediaPlayer::PlayingState && !m_resources->isGranted() )

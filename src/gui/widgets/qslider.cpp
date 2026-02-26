@@ -256,23 +256,23 @@ bool QSlider::event( QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::HoverEnter:
-    case QEvent::HoverLeave:
-    case QEvent::HoverMove:
-        if ( const QHoverEvent *he = static_cast<const QHoverEvent *>( event ) )
-        {
-            d->updateHoverControl( he->pos() );
-        }
+        case QEvent::HoverEnter:
+        case QEvent::HoverLeave:
+        case QEvent::HoverMove:
+            if ( const QHoverEvent *he = static_cast<const QHoverEvent *>( event ) )
+            {
+                d->updateHoverControl( he->pos() );
+            }
 
-        break;
+            break;
 
-    case QEvent::StyleChange:
-    case QEvent::MacSizeChange:
-        d->resetLayoutItemMargins();
-        break;
+        case QEvent::StyleChange:
+        case QEvent::MacSizeChange:
+            d->resetLayoutItemMargins();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QAbstractSlider::event( event );

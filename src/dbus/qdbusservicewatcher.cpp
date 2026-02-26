@@ -103,16 +103,16 @@ QStringList QDBusServiceWatcherPrivate::matchArgsForService( const QString &serv
 
     switch ( watchMode )
     {
-    case QDBusServiceWatcher::WatchForOwnerChange:
-        break;
+        case QDBusServiceWatcher::WatchForOwnerChange:
+            break;
 
-    case QDBusServiceWatcher::WatchForRegistration:
-        matchArgs << QString::fromLatin1( "", 0 );
-        break;
+        case QDBusServiceWatcher::WatchForRegistration:
+            matchArgs << QString::fromLatin1( "", 0 );
+            break;
 
-    case QDBusServiceWatcher::WatchForUnregistration:
-        matchArgs << QString() << QString::fromLatin1( "", 0 );
-        break;
+        case QDBusServiceWatcher::WatchForUnregistration:
+            matchArgs << QString() << QString::fromLatin1( "", 0 );
+            break;
     }
 
     return matchArgs;

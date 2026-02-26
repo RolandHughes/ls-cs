@@ -877,59 +877,59 @@ static bool addGlyphToPath( glyph_t glyph, const QFixedPoint &position, HDC hdc,
 
             switch ( curve->wType )
             {
-            case TT_PRIM_LINE:
-            {
-                for ( int i = 0; i < curve->cpfx; ++i )
+                case TT_PRIM_LINE:
                 {
-                    QPointF p = lscs_to_qpointf( curve->apfx[i], scale ) + oset;
-                    path->lineTo( p );
-                }
-
-                break;
-            }
-
-            case TT_PRIM_QSPLINE:
-            {
-                const QPainterPath::Element &elm = path->elementAt( path->elementCount() - 1 );
-                QPointF prev( elm.x, elm.y );
-                QPointF endPoint;
-
-                for ( int i = 0; i < curve->cpfx - 1; ++i )
-                {
-                    QPointF p1 = lscs_to_qpointf( curve->apfx[i], scale ) + oset;
-                    QPointF p2 = lscs_to_qpointf( curve->apfx[i + 1], scale ) + oset;
-
-                    if ( i < curve->cpfx - 2 )
+                    for ( int i = 0; i < curve->cpfx; ++i )
                     {
-                        endPoint = QPointF( ( p1.x() + p2.x() ) / 2, ( p1.y() + p2.y() ) / 2 );
-                    }
-                    else
-                    {
-                        endPoint = p2;
+                        QPointF p = lscs_to_qpointf( curve->apfx[i], scale ) + oset;
+                        path->lineTo( p );
                     }
 
-                    path->quadTo( p1, endPoint );
-                    prev = endPoint;
+                    break;
                 }
 
-                break;
-            }
-
-            case TT_PRIM_CSPLINE:
-            {
-                for ( int i = 0; i < curve->cpfx; )
+                case TT_PRIM_QSPLINE:
                 {
-                    QPointF p2 = lscs_to_qpointf( curve->apfx[i++], scale ) + oset;
-                    QPointF p3 = lscs_to_qpointf( curve->apfx[i++], scale ) + oset;
-                    QPointF p4 = lscs_to_qpointf( curve->apfx[i++], scale ) + oset;
-                    path->cubicTo( p2, p3, p4 );
+                    const QPainterPath::Element &elm = path->elementAt( path->elementCount() - 1 );
+                    QPointF prev( elm.x, elm.y );
+                    QPointF endPoint;
+
+                    for ( int i = 0; i < curve->cpfx - 1; ++i )
+                    {
+                        QPointF p1 = lscs_to_qpointf( curve->apfx[i], scale ) + oset;
+                        QPointF p2 = lscs_to_qpointf( curve->apfx[i + 1], scale ) + oset;
+
+                        if ( i < curve->cpfx - 2 )
+                        {
+                            endPoint = QPointF( ( p1.x() + p2.x() ) / 2, ( p1.y() + p2.y() ) / 2 );
+                        }
+                        else
+                        {
+                            endPoint = p2;
+                        }
+
+                        path->quadTo( p1, endPoint );
+                        prev = endPoint;
+                    }
+
+                    break;
                 }
 
-                break;
-            }
+                case TT_PRIM_CSPLINE:
+                {
+                    for ( int i = 0; i < curve->cpfx; )
+                    {
+                        QPointF p2 = lscs_to_qpointf( curve->apfx[i++], scale ) + oset;
+                        QPointF p3 = lscs_to_qpointf( curve->apfx[i++], scale ) + oset;
+                        QPointF p4 = lscs_to_qpointf( curve->apfx[i++], scale ) + oset;
+                        path->cubicTo( p2, p3, p4 );
+                    }
 
-            default:
-                qWarning( "QFontEngineWin::addOutlineToPath() Unhandled switch case" );
+                    break;
+                }
+
+                default:
+                    qWarning( "QFontEngineWin::addOutlineToPath() Unhandled switch case" );
             }
 
             offset += sizeof( TTPOLYCURVE ) + ( curve->cpfx - 1 ) * sizeof( POINTFX );
@@ -1185,8 +1185,8 @@ QWindowsNativeImage *QWindowsFontEngine::drawGDIGlyph( HFONT font, glyph_t glyph
 
     // The padding here needs to be kept in sync with the values in alphaMapBoundingBox.
     QWindowsNativeImage *ni = new QWindowsNativeImage( iw + 2 * margin,
-        ih + 2 * margin,
-        QWindowsNativeImage::systemFormat() );
+            ih + 2 * margin,
+            QWindowsNativeImage::systemFormat() );
 
     /*If cleartype is enabled we use the standard system format even on Windows CE
       and not the special textbuffer format we have to use if cleartype is disabled*/

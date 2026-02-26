@@ -124,7 +124,8 @@ public:
     NET_LSCS_SLOT_1( Private, void replyEncrypted() )
     NET_LSCS_SLOT_2( replyEncrypted )
 
-    NET_LSCS_SLOT_1( Private, void replySslErrors( const QList<QSslError> &errorList, bool *ignoreAll, QList<QSslError> *toBeIgnored ) )
+    NET_LSCS_SLOT_1( Private, void replySslErrors( const QList<QSslError> &errorList, bool *ignoreAll,
+                     QList<QSslError> *toBeIgnored ) )
     NET_LSCS_SLOT_2( replySslErrors )
 
     NET_LSCS_SLOT_1( Private, void replySslConfigurationChanged( const QSslConfiguration &sslConfig ) )

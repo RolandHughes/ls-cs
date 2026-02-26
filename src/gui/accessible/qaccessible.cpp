@@ -365,75 +365,75 @@ QPair< int, int > QAccessible::qAccessibleTextBoundaryHelper( const QTextCursor 
 
     switch ( boundaryType )
     {
-    case CharBoundary:
-        result.first = cursor.position();
-        cursor.movePosition( QTextCursor::NextCharacter, QTextCursor::KeepAnchor );
-        result.second = cursor.position();
-        break;
+        case CharBoundary:
+            result.first = cursor.position();
+            cursor.movePosition( QTextCursor::NextCharacter, QTextCursor::KeepAnchor );
+            result.second = cursor.position();
+            break;
 
-    case WordBoundary:
-        cursor.movePosition( QTextCursor::StartOfWord, QTextCursor::MoveAnchor );
-        result.first = cursor.position();
-        cursor.movePosition( QTextCursor::EndOfWord, QTextCursor::KeepAnchor );
-        result.second = cursor.position();
-        break;
+        case WordBoundary:
+            cursor.movePosition( QTextCursor::StartOfWord, QTextCursor::MoveAnchor );
+            result.first = cursor.position();
+            cursor.movePosition( QTextCursor::EndOfWord, QTextCursor::KeepAnchor );
+            result.second = cursor.position();
+            break;
 
-    case SentenceBoundary:
-    {
-        // QCursor does not provide functionality to move to next sentence.
-        // We therefore find the current block, then go through the block using
-        // QTextBoundaryFinder and find the sentence the \offset represents
-        cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
-        result.first = cursor.position();
-        cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
-        result.second = cursor.position();
-
-        QString blockText = cursor.selectedText();
-        const int offsetWithinBlockText = offsetCursor.position() - result.first;
-        QTextBoundaryFinder sentenceFinder( QTextBoundaryFinder::Sentence, blockText );
-
-        sentenceFinder.setPosition( offsetWithinBlockText );
-        int prevBoundary = offsetWithinBlockText;
-        int nextBoundary = offsetWithinBlockText;
-
-        if ( !( sentenceFinder.boundaryReasons() & QTextBoundaryFinder::StartOfItem ) )
+        case SentenceBoundary:
         {
-            prevBoundary = sentenceFinder.toPreviousBoundary();
+            // QCursor does not provide functionality to move to next sentence.
+            // We therefore find the current block, then go through the block using
+            // QTextBoundaryFinder and find the sentence the \offset represents
+            cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
+            result.first = cursor.position();
+            cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
+            result.second = cursor.position();
+
+            QString blockText = cursor.selectedText();
+            const int offsetWithinBlockText = offsetCursor.position() - result.first;
+            QTextBoundaryFinder sentenceFinder( QTextBoundaryFinder::Sentence, blockText );
+
+            sentenceFinder.setPosition( offsetWithinBlockText );
+            int prevBoundary = offsetWithinBlockText;
+            int nextBoundary = offsetWithinBlockText;
+
+            if ( !( sentenceFinder.boundaryReasons() & QTextBoundaryFinder::StartOfItem ) )
+            {
+                prevBoundary = sentenceFinder.toPreviousBoundary();
+            }
+
+            nextBoundary = sentenceFinder.toNextBoundary();
+
+            if ( nextBoundary != -1 )
+            {
+                result.second = result.first + nextBoundary;
+            }
+
+            if ( prevBoundary != -1 )
+            {
+                result.first += prevBoundary;
+            }
+
+            break;
         }
 
-        nextBoundary = sentenceFinder.toNextBoundary();
+        case LineBoundary:
+            cursor.movePosition( QTextCursor::StartOfLine, QTextCursor::MoveAnchor );
+            result.first = cursor.position();
+            cursor.movePosition( QTextCursor::EndOfLine, QTextCursor::KeepAnchor );
+            result.second = cursor.position();
+            break;
 
-        if ( nextBoundary != -1 )
-        {
-            result.second = result.first + nextBoundary;
-        }
+        case ParagraphBoundary:
+            cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
+            result.first = cursor.position();
+            cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
+            result.second = cursor.position();
+            break;
 
-        if ( prevBoundary != -1 )
-        {
-            result.first += prevBoundary;
-        }
-
-        break;
-    }
-
-    case LineBoundary:
-        cursor.movePosition( QTextCursor::StartOfLine, QTextCursor::MoveAnchor );
-        result.first = cursor.position();
-        cursor.movePosition( QTextCursor::EndOfLine, QTextCursor::KeepAnchor );
-        result.second = cursor.position();
-        break;
-
-    case ParagraphBoundary:
-        cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
-        result.first = cursor.position();
-        cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
-        result.second = cursor.position();
-        break;
-
-    case NoBoundary:
-        result.first = 0;
-        result.second = characterCount;
-        break;
+        case NoBoundary:
+            result.first = 0;
+            result.second = characterCount;
+            break;
     }
 
     return result;
@@ -937,28 +937,28 @@ QString QAccessibleTextInterface::textBeforeOffset( int offset, QAccessible::Tex
 
     switch ( boundaryType )
     {
-    case QAccessible::CharBoundary:
-        type = QTextBoundaryFinder::Grapheme;
-        break;
+        case QAccessible::CharBoundary:
+            type = QTextBoundaryFinder::Grapheme;
+            break;
 
-    case QAccessible::WordBoundary:
-        type = QTextBoundaryFinder::Word;
-        break;
+        case QAccessible::WordBoundary:
+            type = QTextBoundaryFinder::Word;
+            break;
 
-    case QAccessible::SentenceBoundary:
-        type = QTextBoundaryFinder::Sentence;
-        break;
+        case QAccessible::SentenceBoundary:
+            type = QTextBoundaryFinder::Sentence;
+            break;
 
-    case QAccessible::LineBoundary:
-    case QAccessible::ParagraphBoundary:
-        return textLineBoundary( -1, txt, offset, startOffset, endOffset );
+        case QAccessible::LineBoundary:
+        case QAccessible::ParagraphBoundary:
+            return textLineBoundary( -1, txt, offset, startOffset, endOffset );
 
-    case QAccessible::NoBoundary:
-        return QString();
+        case QAccessible::NoBoundary:
+            return QString();
 
-    default:
-        // error, may want to throw
-        break;
+        default:
+            // error, may want to throw
+            break;
     }
 
     // keep behavior in sync with QTextCursor::movePosition()!
@@ -1014,30 +1014,30 @@ QString QAccessibleTextInterface::textAfterOffset( int offset, QAccessible::Text
 
     switch ( boundaryType )
     {
-    case QAccessible::CharBoundary:
-        type = QTextBoundaryFinder::Grapheme;
-        break;
+        case QAccessible::CharBoundary:
+            type = QTextBoundaryFinder::Grapheme;
+            break;
 
-    case QAccessible::WordBoundary:
-        type = QTextBoundaryFinder::Word;
-        break;
+        case QAccessible::WordBoundary:
+            type = QTextBoundaryFinder::Word;
+            break;
 
-    case QAccessible::SentenceBoundary:
-        type = QTextBoundaryFinder::Sentence;
-        break;
+        case QAccessible::SentenceBoundary:
+            type = QTextBoundaryFinder::Sentence;
+            break;
 
-    case QAccessible::LineBoundary:
-    case QAccessible::ParagraphBoundary:
-        // Lines can not use QTextBoundaryFinder since Line there means any potential line-break.
-        return textLineBoundary( 1, txt, offset, startOffset, endOffset );
+        case QAccessible::LineBoundary:
+        case QAccessible::ParagraphBoundary:
+            // Lines can not use QTextBoundaryFinder since Line there means any potential line-break.
+            return textLineBoundary( 1, txt, offset, startOffset, endOffset );
 
-    case QAccessible::NoBoundary:
-        // return empty, this function currently only supports single lines, so there can be no line after
-        return QString();
+        case QAccessible::NoBoundary:
+            // return empty, this function currently only supports single lines, so there can be no line after
+            return QString();
 
-    default:
-        // error, may want to throw
-        break;
+        default:
+            // error, may want to throw
+            break;
     }
 
     // keep behavior in sync with QTextCursor::movePosition()!
@@ -1116,30 +1116,30 @@ QString QAccessibleTextInterface::textAtOffset( int offset, QAccessible::TextBou
 
     switch ( boundaryType )
     {
-    case QAccessible::CharBoundary:
-        type = QTextBoundaryFinder::Grapheme;
-        break;
+        case QAccessible::CharBoundary:
+            type = QTextBoundaryFinder::Grapheme;
+            break;
 
-    case QAccessible::WordBoundary:
-        type = QTextBoundaryFinder::Word;
-        break;
+        case QAccessible::WordBoundary:
+            type = QTextBoundaryFinder::Word;
+            break;
 
-    case QAccessible::SentenceBoundary:
-        type = QTextBoundaryFinder::Sentence;
-        break;
+        case QAccessible::SentenceBoundary:
+            type = QTextBoundaryFinder::Sentence;
+            break;
 
-    case QAccessible::LineBoundary:
-    case QAccessible::ParagraphBoundary:
-        return textLineBoundary( 0, txt, offset, startOffset, endOffset );
+        case QAccessible::LineBoundary:
+        case QAccessible::ParagraphBoundary:
+            return textLineBoundary( 0, txt, offset, startOffset, endOffset );
 
-    case QAccessible::NoBoundary:
-        *startOffset = 0;
-        *endOffset = txt.length();
-        return txt;
+        case QAccessible::NoBoundary:
+            *startOffset = 0;
+            *endOffset = txt.length();
+            return txt;
 
-    default:
-        // error, may want to throw
-        break;
+        default:
+            // error, may want to throw
+            break;
     }
 
     QTextBoundaryFinder boundary( type, txt );

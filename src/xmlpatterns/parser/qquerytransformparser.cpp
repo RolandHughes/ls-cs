@@ -206,36 +206,36 @@ static void allowedIn( const QueryLanguages allowedLanguages,
      * and XSL-T is the language, it's ok. */
     if ( !isInternal &&
             ( !allowedLanguages.testFlag( parseInfo->languageAccent ) && !( allowedLanguages.testFlag( QXmlQuery::XPath20 ) &&
-                parseInfo->languageAccent == QXmlQuery::XSLT20 ) ) )
+                    parseInfo->languageAccent == QXmlQuery::XSLT20 ) ) )
     {
 
         QString langName;
 
         switch ( parseInfo->languageAccent )
         {
-        case QXmlQuery::XPath20:
-            langName = QLatin1String( "XPath 2.0" );
-            break;
+            case QXmlQuery::XPath20:
+                langName = QLatin1String( "XPath 2.0" );
+                break;
 
-        case QXmlQuery::XSLT20:
-            langName = QLatin1String( "XSL-T 2.0" );
-            break;
+            case QXmlQuery::XSLT20:
+                langName = QLatin1String( "XSL-T 2.0" );
+                break;
 
-        case QXmlQuery::XQuery10:
-            langName = QLatin1String( "XQuery 1.0" );
-            break;
+            case QXmlQuery::XQuery10:
+                langName = QLatin1String( "XQuery 1.0" );
+                break;
 
-        case QXmlQuery::XmlSchema11IdentityConstraintSelector:
-            langName = QtXmlPatterns::tr( "W3C XML Schema identity constraint selector" );
-            break;
+            case QXmlQuery::XmlSchema11IdentityConstraintSelector:
+                langName = QtXmlPatterns::tr( "W3C XML Schema identity constraint selector" );
+                break;
 
-        case QXmlQuery::XmlSchema11IdentityConstraintField:
-            langName = QtXmlPatterns::tr( "W3C XML Schema identity constraint field" );
-            break;
+            case QXmlQuery::XmlSchema11IdentityConstraintField:
+                langName = QtXmlPatterns::tr( "W3C XML Schema identity constraint field" );
+                break;
         }
 
         parseInfo->staticContext->error( QtXmlPatterns::tr( "A construct was encountered "
-                                                            "which is disallowed in the current language(%1)." ).formatArg( langName ),
+                                         "which is disallowed in the current language(%1)." ).formatArg( langName ),
                                          ReportContext::XPST0003,
                                          fromYYLTYPE( sourceLocator, parseInfo ) );
 
@@ -354,7 +354,7 @@ static void registerNamedTemplate( const QXmlName &name,
     if ( e )
     {
         parseInfo->staticContext->error( QtXmlPatterns::tr( "A template with name %1 "
-                                                            "has already been declared." )
+                                         "has already been declared." )
                                          .formatArg( formatKeyword( parseInfo->staticContext->namePool(),
                                                  name ) ),
                                          ReportContext::XTSE0660,
@@ -789,7 +789,7 @@ static void checkVariableCircularity( const VariableDeclaration::Ptr &var,
         if ( var->slot == ref->slot() && type == ref->variableDeclaration()->type )
         {
             parseInfo->staticContext->error( QtXmlPatterns::tr( "The initialization of variable %1 "
-                                                                "depends on itself" ).formatArg( formatKeyword( var, parseInfo->staticContext->namePool() ) ),
+                                             "depends on itself" ).formatArg( formatKeyword( var, parseInfo->staticContext->namePool() ) ),
                                              parseInfo->isXSLT() ? ReportContext::XTDE0640 : ReportContext::XQST0054, ref );
             return;
         }
@@ -895,38 +895,38 @@ static Expression::Ptr pushVariable( const QXmlName name,
 
     switch ( type )
     {
-    case VariableDeclaration::FunctionArgument:
-    case VariableDeclaration::ExpressionVariable:
-    {
-        slot = parseInfo->allocateExpressionSlot();
-        break;
-    }
+        case VariableDeclaration::FunctionArgument:
+        case VariableDeclaration::ExpressionVariable:
+        {
+            slot = parseInfo->allocateExpressionSlot();
+            break;
+        }
 
-    case VariableDeclaration::GlobalVariable:
-    {
-        slot = parseInfo->allocateGlobalVariableSlot();
-        break;
-    }
+        case VariableDeclaration::GlobalVariable:
+        {
+            slot = parseInfo->allocateGlobalVariableSlot();
+            break;
+        }
 
-    case VariableDeclaration::RangeVariable:
-    {
-        slot = parseInfo->staticContext->allocateRangeSlot();
-        break;
-    }
+        case VariableDeclaration::RangeVariable:
+        {
+            slot = parseInfo->staticContext->allocateRangeSlot();
+            break;
+        }
 
-    case VariableDeclaration::PositionalVariable:
-    {
-        slot = parseInfo->allocatePositionalSlot();
-        break;
-    }
+        case VariableDeclaration::PositionalVariable:
+        {
+            slot = parseInfo->allocatePositionalSlot();
+            break;
+        }
 
-    case VariableDeclaration::TemplateParameter:
-        // do nothing, template parameters doesn't use context slots, they are hashed on the name
-        break;
+        case VariableDeclaration::TemplateParameter:
+            // do nothing, template parameters doesn't use context slots, they are hashed on the name
+            break;
 
-    case VariableDeclaration::ExternalVariable:
-        // do nothing, external variables doesn't use context slots/stack frames
-        break;
+        case VariableDeclaration::ExternalVariable:
+            // do nothing, external variables doesn't use context slots/stack frames
+            break;
     }
 
     const VariableDeclaration::Ptr var( new VariableDeclaration( name, slot, type, seqType ) );
@@ -1019,45 +1019,45 @@ static Expression::Ptr resolveVariable( const QXmlName &name,
     {
         switch ( var->type )
         {
-        case VariableDeclaration::RangeVariable:
-        {
-            retval = create( new RangeVariableReference( var->expression(), var->slot ), sourceLocator, parseInfo );
-            break;
-        }
+            case VariableDeclaration::RangeVariable:
+            {
+                retval = create( new RangeVariableReference( var->expression(), var->slot ), sourceLocator, parseInfo );
+                break;
+            }
 
-        case VariableDeclaration::GlobalVariable:
-            /* From the perspective of an ExpressionVariableReference, it can't tell
-             * a difference between a global and a local expression variable. However, the cache
-             * mechanism must. */
-            [[fallthrough]];
+            case VariableDeclaration::GlobalVariable:
+                /* From the perspective of an ExpressionVariableReference, it can't tell
+                 * a difference between a global and a local expression variable. However, the cache
+                 * mechanism must. */
+                [[fallthrough]];
 
-        case VariableDeclaration::ExpressionVariable:
-        {
-            retval = create( new ExpressionVariableReference( var->slot, var.data() ), sourceLocator, parseInfo );
-            break;
-        }
+            case VariableDeclaration::ExpressionVariable:
+            {
+                retval = create( new ExpressionVariableReference( var->slot, var.data() ), sourceLocator, parseInfo );
+                break;
+            }
 
-        case VariableDeclaration::FunctionArgument:
-        {
-            retval = create( new ArgumentReference( var->sequenceType, var->slot ), sourceLocator, parseInfo );
-            break;
-        }
+            case VariableDeclaration::FunctionArgument:
+            {
+                retval = create( new ArgumentReference( var->sequenceType, var->slot ), sourceLocator, parseInfo );
+                break;
+            }
 
-        case VariableDeclaration::PositionalVariable:
-        {
-            retval = create( new PositionalVariableReference( var->slot ), sourceLocator, parseInfo );
-            break;
-        }
+            case VariableDeclaration::PositionalVariable:
+            {
+                retval = create( new PositionalVariableReference( var->slot ), sourceLocator, parseInfo );
+                break;
+            }
 
-        case VariableDeclaration::TemplateParameter:
-        {
-            retval = create( new TemplateParameterReference( var.data() ), sourceLocator, parseInfo );
-            break;
-        }
+            case VariableDeclaration::TemplateParameter:
+            {
+                retval = create( new TemplateParameterReference( var.data() ), sourceLocator, parseInfo );
+                break;
+            }
 
-        case VariableDeclaration::ExternalVariable:
-            /* This code path will never be hit, but the case  * label silences a warning. See above. */
-            ;
+            case VariableDeclaration::ExternalVariable:
+                /* This code path will never be hit, but the case  * label silences a warning. See above. */
+                ;
         }
 
         Q_ASSERT( retval );
@@ -2179,30 +2179,30 @@ static const yytype_uint16 yydefact[] =
 static const yytype_int16 yydefgoto[] =
 {
     -1,     2,     3,   185,     7,     8,     9,    10,    77,   593,
-    669,   756,   366,   367,    78,    79,   320,    80,    81,   350,
-    82,    83,    84,    85,    86,    87,    88,   458,    89,   356,
-    532,    90,    91,    92,   386,    93,   383,   560,   606,    94,
-    641,   676,    95,   353,    96,   664,   589,   590,   730,   341,
-    97,   631,   632,   633,   634,   635,    98,    99,   100,   733,
-    189,   753,   324,   101,   102,   678,   709,   738,   806,   809,
-    553,   103,   686,   717,   796,   718,   719,   720,   579,   580,
-    619,   659,   692,   512,   104,   105,   654,   687,   722,   797,
-    803,   106,   644,   677,   707,   794,   800,   708,   107,   567,
-    614,   725,   774,   784,   656,   785,   804,   108,   109,   110,
-    111,   112,   113,   287,   114,   292,   115,   116,   295,   298,
-    117,   118,   119,   120,   121,   122,   123,   124,   281,   125,
-    282,   126,   283,   127,   128,   129,   306,   130,   131,   393,
-    132,   133,   134,   253,   626,   437,   438,   520,   468,   521,
-    522,   694,   312,   135,   136,   137,   314,   427,   138,   139,
-    140,   190,   141,   142,   143,   144,   145,   146,   147,   148,
-    149,   150,   219,   151,   152,   153,   154,   433,   155,   156,
-    157,   380,   554,   681,   479,   555,   650,   342,   710,   158,
-    159,   160,   161,   162,   475,   193,   163,   164,   165,   166,
-    338,   339,   526,   375,   340,   246,   167,   505,   477,   498,
-    573,   499,   500,   168,   169,   170,   370,   171,   172,   173,
-    174,   175,   176,   177,   598,   178,   194,   335,   179,   524,
-    180,   181,   556,   241,   541,   182,   183
-};
+        669,   756,   366,   367,    78,    79,   320,    80,    81,   350,
+        82,    83,    84,    85,    86,    87,    88,   458,    89,   356,
+        532,    90,    91,    92,   386,    93,   383,   560,   606,    94,
+        641,   676,    95,   353,    96,   664,   589,   590,   730,   341,
+        97,   631,   632,   633,   634,   635,    98,    99,   100,   733,
+        189,   753,   324,   101,   102,   678,   709,   738,   806,   809,
+        553,   103,   686,   717,   796,   718,   719,   720,   579,   580,
+        619,   659,   692,   512,   104,   105,   654,   687,   722,   797,
+        803,   106,   644,   677,   707,   794,   800,   708,   107,   567,
+        614,   725,   774,   784,   656,   785,   804,   108,   109,   110,
+        111,   112,   113,   287,   114,   292,   115,   116,   295,   298,
+        117,   118,   119,   120,   121,   122,   123,   124,   281,   125,
+        282,   126,   283,   127,   128,   129,   306,   130,   131,   393,
+        132,   133,   134,   253,   626,   437,   438,   520,   468,   521,
+        522,   694,   312,   135,   136,   137,   314,   427,   138,   139,
+        140,   190,   141,   142,   143,   144,   145,   146,   147,   148,
+        149,   150,   219,   151,   152,   153,   154,   433,   155,   156,
+        157,   380,   554,   681,   479,   555,   650,   342,   710,   158,
+        159,   160,   161,   162,   475,   193,   163,   164,   165,   166,
+        338,   339,   526,   375,   340,   246,   167,   505,   477,   498,
+        573,   499,   500,   168,   169,   170,   370,   171,   172,   173,
+        174,   175,   176,   177,   598,   178,   194,   335,   179,   524,
+        180,   181,   556,   241,   541,   182,   183
+    };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
@@ -2210,117 +2210,117 @@ static const yytype_int16 yydefgoto[] =
 static const yytype_int16 yypact[] =
 {
     -63,   -28,   185,    86,   337,  -668,   117,  -668,  -668,  -668,
-    734,  -668,  -668,   181,   253,   156,  -668,   213,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,   212,  -668,   -12,   230,   337,
-    342,  -668,   -38,   189,   298,  -668,  -668,   188,   272,   353,
-    -668,  -668,    71,   316,  -668,  -668,   318,   239,   276,   134,
-    188,   900,  -668,   334,   282,  -668,  -668,   233,  -668,   367,
-    -668,  -668,   133,   290,   295,  -668,  1730,  1730,   345,  -668,
-    -668,   -38,   305,  -668,   -36,   396,   334,  -668,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,  -668,  -668,   334,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,   369,
-    370,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,   307,
-    389,  -668,   601,   173,    24,   -22,    32,  -668,   338,   267,
-    393,   394,  1398,  -668,  -668,  -668,  -668,  -668,   334,  -668,
-    59,  -668,  -668,   166,  -668,   339,  -668,  -668,  -668,   395,
-    -668,  -668,  -668,  -668,  -668,  -668,   341,  -668,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,
-    340,  -668,  -668,   347,   337,   291,   360,   493,   373,   349,
-    1885,    64,  -668,   334,  -668,   226,   392,  -668,   358,  -668,
-    304,   334,  -668,  -668,   188,   167,   174,   206,    21,   188,
-    430,   342,   -53,   351,   188,   334,     6,  -668,  -668,  -668,
-    -668,    79,   287,  -668,   353,   353,  -668,  -668,  -668,  1232,
-    336,    18,   403,   344,  -668,   324,  1232,   334,  -668,   308,
-    -668,   337,  -668,  -668,    23,  -668,   416,  -668,   342,   342,
-    166,   166,   353,   334,   334,  -668,  1232,  -668,  -668,  -668,
-    -668,  -668,  1232,  1232,  1398,  1398,  -668,  -668,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,
-    -668,  1398,  1398,  1398,  -668,  -668,  1398,  1398,  -668,  -668,
-    -668,  -668,  1398,  -668,  -668,  1398,  -668,  -668,  1398,   352,
-    447,   448,   449,  -668,  -668,  1066,  -668,  -668,  -668,  -668,
-    -668,  1730,  1564,  1232,   108,  -668,  1232,  1232,  -668,  -668,
-    -668,   337,   461,  -668,  -668,  -668,  -668,   282,   374,   378,
-    282,  -668,  -668,  -668,     0,    51,  -668,  -668,   416,   342,
-    -668,   226,   343,   226,  1232,  -668,  -668,   337,  -668,  -668,
-    291,  -668,  -668,   291,  -668,  -668,   437,   337,   372,   376,
-    421,    26,   408,   337,   291,   342,   384,    -1,   431,  -668,
-    355,  -668,  -668,    52,    69,  -668,  -668,  -668,   466,   466,
-    -668,   356,   482,   337,   435,   484,   337,   353,   485,  -668,
-    453,  -668,  -668,   379,  -668,   365,   368,  -668,   371,   377,
-    466,  -668,  -668,   380,  -668,  -668,   389,  -668,  -668,  -668,
-    -668,   168,    24,   -22,    32,  -668,   456,   456,   342,   342,
-    -668,   459,  -668,   191,  -668,   375,   404,  -668,  -668,  -668,
-    383,   369,   370,   386,   291,  -668,   442,   388,    -6,   342,
-    -668,   342,  -668,  -668,  -668,  -668,  -668,  -668,   465,   391,
-    291,  -668,  -668,   157,   291,   337,   337,    16,   291,  -668,
-    409,  -668,   348,   291,  -668,  -668,   415,    -6,   466,   353,
-    -668,   342,  -668,   342,  -668,   416,   456,   440,   495,   239,
-    381,   454,   507,   425,   457,   507,   466,   463,  -668,  -668,
-    -668,  -668,  -668,  -668,   462,  -668,   282,   282,  -668,   121,
-    -668,  -668,  -668,  -668,  -668,  -668,   412,  -668,  -668,   512,
-    433,   417,  1232,  -668,  -668,  -668,  -668,   337,  -668,  -668,
-    513,  -668,   497,  -668,   422,   423,  -668,  -668,  -668,  -668,
-    -668,  -668,   291,  -668,   291,   291,  -668,  -668,  -668,   504,
-    515,   188,  -668,  -668,    83,   416,   466,   432,   432,  -668,
-    -668,  1232,   508,   476,   450,  -668,   492,  1232,  -668,   337,
-    291,  -668,  -668,   291,   547,   566,  1232,   539,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,  -668,   543,  1730,    62,   536,
-    -668,   419,   353,  -668,  -668,  -668,  -668,  -668,   353,    84,
-    -668,  -668,   291,  1804,  -668,   291,    46,  -668,   445,   446,
-    -668,   353,  1232,  -668,    33,   524,   550,  -668,  -668,  -668,
-    1232,   515,  -668,   537,  -668,  -668,   528,  -668,  -668,   421,
-    1232,  -668,   466,   466,   504,  -668,  1232,  -668,   404,  1899,
-    1899,   567,  -668,   140,   148,  -668,   339,  -668,  -668,  1232,
-    -668,   573,  -668,  -668,  -668,  -668,  -668,    92,   226,   226,
-    -668,  1232,   337,  -668,  -668,   342,   456,  -668,  -668,   -23,
-    -668,   574,  -668,  -668,   466,   552,   148,   148,  1804,   464,
-    1899,  1899,  1899,  1899,  -668,  1232,   291,    11,  -668,  -668,
-    -668,  -668,   582,   472,  -668,  -668,    10,    47,   584,  -668,
-    337,   569,  -668,  1232,  -668,   234,  -668,  -668,   506,   148,
-    148,  -668,  -668,  -668,  -668,   555,  1232,  -668,  -668,    63,
-    250,  -668,  -668,   556,  1232,  -668,  -668,  -668,  -668,   479,
-    -668,   559,  -668,  -668,  -668,   481,  -668,  1232,  -668,  -668,
-    291,  -668,   373,   488,   353,  -668,   562,  -668,  -668,  -668,
-    -668,  -668,   342,  -668,  -668,  -668,   353,   191,  1232,   353,
-    1232,  -668,  -668,   578,  -668,   337,   521,   466,   353,   542,
-    466,   487,  -668,   466,  -668,   373,  -668,   466,   534,   466,
-    -668,   600,  1232,   538,   125,  -668,   416,  1232,   495,  1232,
-    -668,  1232,    -2,  -668,  -668,  -668,   291,  -668,   544,  -668,
-    -668,   342,  1232,  -668,  -668,  1232,    10,  -668,  -668,  -668,
-    11,  -668,  -668,    47,   490,  -668,  -668,  -668,  1232,    63,
-    -668,  -668
-};
+        734,  -668,  -668,   181,   253,   156,  -668,   213,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,   212,  -668,   -12,   230,   337,
+        342,  -668,   -38,   189,   298,  -668,  -668,   188,   272,   353,
+        -668,  -668,    71,   316,  -668,  -668,   318,   239,   276,   134,
+        188,   900,  -668,   334,   282,  -668,  -668,   233,  -668,   367,
+        -668,  -668,   133,   290,   295,  -668,  1730,  1730,   345,  -668,
+        -668,   -38,   305,  -668,   -36,   396,   334,  -668,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,  -668,  -668,   334,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,   369,
+        370,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,   307,
+        389,  -668,   601,   173,    24,   -22,    32,  -668,   338,   267,
+        393,   394,  1398,  -668,  -668,  -668,  -668,  -668,   334,  -668,
+        59,  -668,  -668,   166,  -668,   339,  -668,  -668,  -668,   395,
+        -668,  -668,  -668,  -668,  -668,  -668,   341,  -668,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,
+        340,  -668,  -668,   347,   337,   291,   360,   493,   373,   349,
+        1885,    64,  -668,   334,  -668,   226,   392,  -668,   358,  -668,
+        304,   334,  -668,  -668,   188,   167,   174,   206,    21,   188,
+        430,   342,   -53,   351,   188,   334,     6,  -668,  -668,  -668,
+        -668,    79,   287,  -668,   353,   353,  -668,  -668,  -668,  1232,
+        336,    18,   403,   344,  -668,   324,  1232,   334,  -668,   308,
+        -668,   337,  -668,  -668,    23,  -668,   416,  -668,   342,   342,
+        166,   166,   353,   334,   334,  -668,  1232,  -668,  -668,  -668,
+        -668,  -668,  1232,  1232,  1398,  1398,  -668,  -668,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,
+        -668,  1398,  1398,  1398,  -668,  -668,  1398,  1398,  -668,  -668,
+        -668,  -668,  1398,  -668,  -668,  1398,  -668,  -668,  1398,   352,
+        447,   448,   449,  -668,  -668,  1066,  -668,  -668,  -668,  -668,
+        -668,  1730,  1564,  1232,   108,  -668,  1232,  1232,  -668,  -668,
+        -668,   337,   461,  -668,  -668,  -668,  -668,   282,   374,   378,
+        282,  -668,  -668,  -668,     0,    51,  -668,  -668,   416,   342,
+        -668,   226,   343,   226,  1232,  -668,  -668,   337,  -668,  -668,
+        291,  -668,  -668,   291,  -668,  -668,   437,   337,   372,   376,
+        421,    26,   408,   337,   291,   342,   384,    -1,   431,  -668,
+        355,  -668,  -668,    52,    69,  -668,  -668,  -668,   466,   466,
+        -668,   356,   482,   337,   435,   484,   337,   353,   485,  -668,
+        453,  -668,  -668,   379,  -668,   365,   368,  -668,   371,   377,
+        466,  -668,  -668,   380,  -668,  -668,   389,  -668,  -668,  -668,
+        -668,   168,    24,   -22,    32,  -668,   456,   456,   342,   342,
+        -668,   459,  -668,   191,  -668,   375,   404,  -668,  -668,  -668,
+        383,   369,   370,   386,   291,  -668,   442,   388,    -6,   342,
+        -668,   342,  -668,  -668,  -668,  -668,  -668,  -668,   465,   391,
+        291,  -668,  -668,   157,   291,   337,   337,    16,   291,  -668,
+        409,  -668,   348,   291,  -668,  -668,   415,    -6,   466,   353,
+        -668,   342,  -668,   342,  -668,   416,   456,   440,   495,   239,
+        381,   454,   507,   425,   457,   507,   466,   463,  -668,  -668,
+        -668,  -668,  -668,  -668,   462,  -668,   282,   282,  -668,   121,
+        -668,  -668,  -668,  -668,  -668,  -668,   412,  -668,  -668,   512,
+        433,   417,  1232,  -668,  -668,  -668,  -668,   337,  -668,  -668,
+        513,  -668,   497,  -668,   422,   423,  -668,  -668,  -668,  -668,
+        -668,  -668,   291,  -668,   291,   291,  -668,  -668,  -668,   504,
+        515,   188,  -668,  -668,    83,   416,   466,   432,   432,  -668,
+        -668,  1232,   508,   476,   450,  -668,   492,  1232,  -668,   337,
+        291,  -668,  -668,   291,   547,   566,  1232,   539,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,  -668,   543,  1730,    62,   536,
+        -668,   419,   353,  -668,  -668,  -668,  -668,  -668,   353,    84,
+        -668,  -668,   291,  1804,  -668,   291,    46,  -668,   445,   446,
+        -668,   353,  1232,  -668,    33,   524,   550,  -668,  -668,  -668,
+        1232,   515,  -668,   537,  -668,  -668,   528,  -668,  -668,   421,
+        1232,  -668,   466,   466,   504,  -668,  1232,  -668,   404,  1899,
+        1899,   567,  -668,   140,   148,  -668,   339,  -668,  -668,  1232,
+        -668,   573,  -668,  -668,  -668,  -668,  -668,    92,   226,   226,
+        -668,  1232,   337,  -668,  -668,   342,   456,  -668,  -668,   -23,
+        -668,   574,  -668,  -668,   466,   552,   148,   148,  1804,   464,
+        1899,  1899,  1899,  1899,  -668,  1232,   291,    11,  -668,  -668,
+        -668,  -668,   582,   472,  -668,  -668,    10,    47,   584,  -668,
+        337,   569,  -668,  1232,  -668,   234,  -668,  -668,   506,   148,
+        148,  -668,  -668,  -668,  -668,   555,  1232,  -668,  -668,    63,
+        250,  -668,  -668,   556,  1232,  -668,  -668,  -668,  -668,   479,
+        -668,   559,  -668,  -668,  -668,   481,  -668,  1232,  -668,  -668,
+        291,  -668,   373,   488,   353,  -668,   562,  -668,  -668,  -668,
+        -668,  -668,   342,  -668,  -668,  -668,   353,   191,  1232,   353,
+        1232,  -668,  -668,   578,  -668,   337,   521,   466,   353,   542,
+        466,   487,  -668,   466,  -668,   373,  -668,   466,   534,   466,
+        -668,   600,  1232,   538,   125,  -668,   416,  1232,   495,  1232,
+        -668,  1232,    -2,  -668,  -668,  -668,   291,  -668,   544,  -668,
+        -668,   342,  1232,  -668,  -668,  1232,    10,  -668,  -668,  -668,
+        11,  -668,  -668,    47,   490,  -668,  -668,  -668,  1232,    63,
+        -668,  -668
+    };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
     -668,  -668,  -668,  -668,  -668,  -668,  -668,   613,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,  -668,  -285,  -668,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,   418,  -668,     5,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,  -668,  -668,   142,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,  -668,  -668,     4,  -668,   -51,
-    -668,  -668,   -35,  -668,  -397,  -340,   -47,   317,  -255,  -668,
-    -668,  -668,  -641,  -668,  -619,  -668,  -668,  -174,  -668,  -668,
-    -142,  -583,  -668,  -159,  -668,  -657,  -109,   216,  -668,    27,
-    -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -157,  -668,
-    -668,  -668,  -668,  -668,  -152,  -668,  -668,  -667,  -668,  -668,
-    -125,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,   387,
-    385,   131,   366,  -668,   397,  -668,   361,   359,  -668,  -668,
-    362,  -668,  -668,  -668,   535,  -668,  -668,  -668,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,  -668,  -245,  -668,   526,  -668,
-    -668,   279,  -294,  -668,  -668,   313,  -668,   194,   -91,    85,
-    -668,  -668,  -668,   -87,  -668,  -668,  -668,  -668,  -668,  -668,
-    -668,  -668,  -668,  -668,  -175,  -668,  -668,  -668,  -668,  -668,
-    -668,  -668,  -183,  -668,  -668,  -668,  -538,  -668,  -668,   -42,
-    -668,  -668,  -668,  -668,    67,  -668,  -668,  -327,  -668,  -668,
-    -668,  -668,  -668,  -668,  -668,     3,  -668,  -668,  -668,  -668,
-    -668,  -668,  -668,  -668,   458,  -668,  -668,   252,  -341,  -412,
-    -668,  -668,   -55,  -394,  -668,  -668,  -668,  -668,  -668,  -668,
-    -304,  -668,  -668,   467,   124,   469,   -11,  -668,   -24,  -170,
-    321,  -668,   639,  -668,  -308,    15,   -30
-};
+        -668,  -668,  -668,  -668,  -668,  -668,  -285,  -668,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,   418,  -668,     5,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,  -668,  -668,   142,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,  -668,  -668,     4,  -668,   -51,
+        -668,  -668,   -35,  -668,  -397,  -340,   -47,   317,  -255,  -668,
+        -668,  -668,  -641,  -668,  -619,  -668,  -668,  -174,  -668,  -668,
+        -142,  -583,  -668,  -159,  -668,  -657,  -109,   216,  -668,    27,
+        -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -157,  -668,
+        -668,  -668,  -668,  -668,  -152,  -668,  -668,  -667,  -668,  -668,
+        -125,  -668,  -668,  -668,  -668,  -668,  -668,  -668,  -668,   387,
+        385,   131,   366,  -668,   397,  -668,   361,   359,  -668,  -668,
+        362,  -668,  -668,  -668,   535,  -668,  -668,  -668,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,  -668,  -245,  -668,   526,  -668,
+        -668,   279,  -294,  -668,  -668,   313,  -668,   194,   -91,    85,
+        -668,  -668,  -668,   -87,  -668,  -668,  -668,  -668,  -668,  -668,
+        -668,  -668,  -668,  -668,  -175,  -668,  -668,  -668,  -668,  -668,
+        -668,  -668,  -183,  -668,  -668,  -668,  -538,  -668,  -668,   -42,
+        -668,  -668,  -668,  -668,    67,  -668,  -668,  -327,  -668,  -668,
+        -668,  -668,  -668,  -668,  -668,     3,  -668,  -668,  -668,  -668,
+        -668,  -668,  -668,  -668,   458,  -668,  -668,   252,  -341,  -412,
+        -668,  -668,   -55,  -394,  -668,  -668,  -668,  -668,  -668,  -668,
+        -304,  -668,  -668,   467,   124,   469,   -11,  -668,   -24,  -170,
+        321,  -668,   639,  -668,  -308,    15,   -30
+    };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
@@ -2993,8 +2993,8 @@ ParserContext *const parseInfo;
 
     switch ( yytype )
     {
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -3208,34 +3208,34 @@ static YYSIZE_T yytnamerr ( char *yyres, const char *yystr )
         for ( ;; )
             switch ( *++yyp )
             {
-            case '\'':
-            case ',':
-                goto do_not_strip_quotes;
-
-            case '\\':
-                if ( *++yyp != '\\' )
-                {
+                case '\'':
+                case ',':
                     goto do_not_strip_quotes;
-                }
 
-                [[fallthrough]];
+                case '\\':
+                    if ( *++yyp != '\\' )
+                    {
+                        goto do_not_strip_quotes;
+                    }
 
-            default:
-                if ( yyres )
-                {
-                    yyres[yyn] = *yyp;
-                }
+                    [[fallthrough]];
 
-                yyn++;
-                break;
+                default:
+                    if ( yyres )
+                    {
+                        yyres[yyn] = *yyp;
+                    }
 
-            case '"':
-                if ( yyres )
-                {
-                    yyres[yyn] = '\0';
-                }
+                    yyn++;
+                    break;
 
-                return yyn;
+                case '"':
+                    if ( yyres )
+                    {
+                        yyres[yyn] = '\0';
+                    }
+
+                    return yyn;
             }
 
 do_not_strip_quotes:
@@ -3292,9 +3292,9 @@ static YYSIZE_T yysyntax_error ( char *yyresult, int yystate, int yychar )
         static char const yyexpecting[] = ", expecting %s";
         static char const yyor[] = " or %s";
         char yyformat[sizeof yyunexpected
-                      + sizeof yyexpecting - 1
-                      + ( ( YYERROR_VERBOSE_ARGS_MAXIMUM - 2 )
-                          * ( sizeof yyor - 1 ) )];
+                             + sizeof yyexpecting - 1
+                             + ( ( YYERROR_VERBOSE_ARGS_MAXIMUM - 2 )
+                                 * ( sizeof yyor - 1 ) )];
         char const *yyprefix = yyexpecting;
 
         /* Start YYX at -YYN if negative to avoid negative indexes in
@@ -3734,10 +3734,10 @@ yyreduce:
 
     switch ( yyn )
     {
-    case 5:
-    {
+        case 5:
+        {
 
-        /* Suppress more compiler warnings about unused defines. */
+            /* Suppress more compiler warnings about unused defines. */
 #if    defined(YYNNTS)              \
 || defined(yyerrok)             \
 || defined(YYNSTATES)           \
@@ -3754,4387 +3754,4387 @@ yyreduce:
 || defined(YYLLOC_DEFAULT)
 #endif
 
-        if ( ( yyvsp[( 3 ) - ( 5 )].sval ) != QLatin1String( "1.0" ) )
-        {
-            const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
-
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "Version %1 is not supported. The supported "
-                                                                "XQuery version is 1.0." )
-                                             .formatArg( formatData( ( yyvsp[( 3 ) - ( 5 )].sval ) ) ), ReportContext::XQST0031, &ryy );
-        }
-    }
-    break;
-
-    case 7:
-    {
-        const QRegularExpression encNameRegExp( "[A-Za-z][A-Za-z0-9._\\-]*", QPatternOption::ExactMatchOption );
-
-        if ( ! encNameRegExp.match( ( yyvsp[( 2 ) - ( 2 )].sval ) ).hasMatch() )
-        {
-
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "The encoding %1 is invalid. "
-                                                                "It must contain Latin characters only, must not contain whitespace, and must match "
-                                                                "the regular expression %2." )
-                                             .formatArgs( formatKeyword( ( yyvsp[( 2 ) - ( 2 )].sval ) ), formatExpression( encNameRegExp.pattern() ) ),
-                                             ReportContext::XQST0087, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-    }
-    break;
-
-    case 8:
-    {
-        /* In XSL-T, we can have dangling variable references, so resolve them
-         * before we proceed with other steps, such as checking circularity. */
-        if ( parseInfo->isXSLT() )
-        {
-            using Hash = QMultiHash<QXmlName, Expression::Ptr>;
-
-            const Hash::const_iterator end( parseInfo->unresolvedVariableReferences.constEnd() );
-
-            for ( Hash::const_iterator it( parseInfo->unresolvedVariableReferences.constBegin() ); it != end; ++it )
+            if ( ( yyvsp[( 3 ) - ( 5 )].sval ) != QLatin1String( "1.0" ) )
             {
-                const Expression::Ptr body( resolveVariable( it.key(), ( yyloc ), parseInfo, true ) ); // TODO source locations vaise
-                Q_ASSERT( body );
-                it.value()->as<UnresolvedVariableReference>()->bindTo( body );
+                const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
+
+                parseInfo->staticContext->error( QtXmlPatterns::tr( "Version %1 is not supported. The supported "
+                                                 "XQuery version is 1.0." )
+                                                 .formatArg( formatData( ( yyvsp[( 3 ) - ( 5 )].sval ) ) ), ReportContext::XQST0031, &ryy );
             }
         }
+        break;
 
-        /* The UserFunction callsites aren't bound yet, so bind them(if possible!). */
+        case 7:
         {
-            const UserFunctionCallsite::List::const_iterator cend( parseInfo->userFunctionCallsites.constEnd() );
-            UserFunctionCallsite::List::const_iterator cit( parseInfo->userFunctionCallsites.constBegin() );
+            const QRegularExpression encNameRegExp( "[A-Za-z][A-Za-z0-9._\\-]*", QPatternOption::ExactMatchOption );
 
-            for ( ; cit != cend; ++cit ) /* For each callsite. */
+            if ( ! encNameRegExp.match( ( yyvsp[( 2 ) - ( 2 )].sval ) ).hasMatch() )
             {
-                const UserFunctionCallsite::Ptr callsite( *cit );
-                Q_ASSERT( callsite );
-                const UserFunction::List::const_iterator end( parseInfo->userFunctions.constEnd() );
-                UserFunction::List::const_iterator it( parseInfo->userFunctions.constBegin() );
 
-                for ( ; it != end; ++it ) /* For each UserFunction. */
+                parseInfo->staticContext->error( QtXmlPatterns::tr( "The encoding %1 is invalid. "
+                                                 "It must contain Latin characters only, must not contain whitespace, and must match "
+                                                 "the regular expression %2." )
+                                                 .formatArgs( formatKeyword( ( yyvsp[( 2 ) - ( 2 )].sval ) ), formatExpression( encNameRegExp.pattern() ) ),
+                                                 ReportContext::XQST0087, fromYYLTYPE( ( yyloc ), parseInfo ) );
+            }
+        }
+        break;
+
+        case 8:
+        {
+            /* In XSL-T, we can have dangling variable references, so resolve them
+             * before we proceed with other steps, such as checking circularity. */
+            if ( parseInfo->isXSLT() )
+            {
+                using Hash = QMultiHash<QXmlName, Expression::Ptr>;
+
+                const Hash::const_iterator end( parseInfo->unresolvedVariableReferences.constEnd() );
+
+                for ( Hash::const_iterator it( parseInfo->unresolvedVariableReferences.constBegin() ); it != end; ++it )
                 {
-                    const FunctionSignature::Ptr sign( ( *it )->signature() );
-                    Q_ASSERT( sign );
+                    const Expression::Ptr body( resolveVariable( it.key(), ( yyloc ), parseInfo, true ) ); // TODO source locations vaise
+                    Q_ASSERT( body );
+                    it.value()->as<UnresolvedVariableReference>()->bindTo( body );
+                }
+            }
 
-                    if ( callsite->isSignatureValid( sign ) )
+            /* The UserFunction callsites aren't bound yet, so bind them(if possible!). */
+            {
+                const UserFunctionCallsite::List::const_iterator cend( parseInfo->userFunctionCallsites.constEnd() );
+                UserFunctionCallsite::List::const_iterator cit( parseInfo->userFunctionCallsites.constBegin() );
+
+                for ( ; cit != cend; ++cit ) /* For each callsite. */
+                {
+                    const UserFunctionCallsite::Ptr callsite( *cit );
+                    Q_ASSERT( callsite );
+                    const UserFunction::List::const_iterator end( parseInfo->userFunctions.constEnd() );
+                    UserFunction::List::const_iterator it( parseInfo->userFunctions.constBegin() );
+
+                    for ( ; it != end; ++it ) /* For each UserFunction. */
                     {
-                        callsite->setSource( ( *it ),
-                                             parseInfo->allocateCacheSlots( ( *it )->argumentDeclarations().count() ) );
-                        break;
+                        const FunctionSignature::Ptr sign( ( *it )->signature() );
+                        Q_ASSERT( sign );
+
+                        if ( callsite->isSignatureValid( sign ) )
+                        {
+                            callsite->setSource( ( *it ),
+                                                 parseInfo->allocateCacheSlots( ( *it )->argumentDeclarations().count() ) );
+                            break;
+                        }
+                    }
+
+                    if ( it == end )
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "No function with signature %1 is available" )
+                                                         .formatArg( formatFunction( callsite ) ),
+                                                         ReportContext::XPST0017, fromYYLTYPE( ( yyloc ), parseInfo ) );
                     }
                 }
+            }
 
-                if ( it == end )
+            /* Mark callsites in UserFunction bodies as recursive, if they are. */
+            {
+                const UserFunction::List::const_iterator fend( parseInfo->userFunctions.constEnd() );
+                UserFunction::List::const_iterator fit( parseInfo->userFunctions.constBegin() );
+
+                for ( ; fit != fend; ++fit )
                 {
-                    parseInfo->staticContext->error( QtXmlPatterns::tr( "No function with signature %1 is available" )
-                                                     .formatArg( formatFunction( callsite ) ),
+                    CallTargetDescription::List signList;
+                    signList.append( ( *fit )->signature() );
+                    CallTargetDescription::checkCallsiteCircularity( signList, ( *fit )->body() );
+                }
+            }
+
+            /* Now, check all global variables for circularity.  This is done
+             * backwards because global variables are only in scope below them,
+             * in XQuery. */
+            {
+                const VariableDeclaration::List::const_iterator start( parseInfo->declaredVariables.constBegin() );
+                VariableDeclaration::List::const_iterator it( parseInfo->declaredVariables.constEnd() );
+
+                while ( it != start )
+                {
+                    --it;
+
+                    if ( ( *it )->type != VariableDeclaration::ExpressionVariable && ( *it )->type != VariableDeclaration::GlobalVariable )
+                    {
+                        continue;   /* We want to ignore 'external' variables. */
+                    }
+
+                    FunctionSignature::List signList;
+                    checkVariableCircularity( *it, ( *it )->expression(), ( *it )->type, signList, parseInfo );
+                    ExpressionFactory::registerLastPath( ( *it )->expression() );
+                    parseInfo->finalizePushedVariable( 1, false ); /* Warn if it's unused. */
+                }
+            }
+
+            /* Generate code for doing initial template name calling. One problem
+             * is that we compilation in the initial template name, since we throw away the
+             * code if we don't have the requested template. */
+            if ( parseInfo->languageAccent == QXmlQuery::XSLT20
+                    && !parseInfo->initialTemplateName.isNull()
+                    && parseInfo->namedTemplates.contains( parseInfo->initialTemplateName ) )
+            {
+                parseInfo->queryBody = create( new CallTemplate( parseInfo->initialTemplateName,
+                                               WithParam::Hash() ),
+                                               ( yyloc ), parseInfo );
+                parseInfo->templateCalls.append( parseInfo->queryBody );
+                /* We just discard the template body that XSLTTokenizer generated. */
+            }
+            else
+            {
+                parseInfo->queryBody = ( yyvsp[( 2 ) - ( 2 )].expr );
+            }
+        }
+        break;
+
+        case 10:
+        {
+            // TODO add to namespace context
+            parseInfo->moduleNamespace = parseInfo->staticContext->namePool()->allocateNamespace( ( yyvsp[( 3 ) - ( 6 )].sval ) );
+        }
+        break;
+
+        case 12:
+        {
+            allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+
+            if ( parseInfo->hasSecondPrologPart )
+                parseInfo->staticContext->error( QtXmlPatterns::tr( "A default namespace declaration must occur before function, "
+                                                 "variable, and option declarations." ), ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
+        }
+        break;
+
+        case 13:
+        {
+            if ( parseInfo->hasSecondPrologPart )
+                parseInfo->staticContext->error( QtXmlPatterns::tr( "A default namespace declaration must occur before function, "
+                                                 "variable, and option declarations." ), ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
+        }
+        break;
+
+        case 14:
+        {
+            if ( parseInfo->hasSecondPrologPart )
+                parseInfo->staticContext->error( QtXmlPatterns::tr( "Namespace declarations must occur before function, "
+                                                 "variable, and option declarations." ), ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
+        }
+        break;
+
+        case 15:
+        {
+            allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+
+            if ( parseInfo->hasSecondPrologPart )
+                parseInfo->staticContext->error( QtXmlPatterns::tr( "Module imports must occur before function, "
+                                                 "variable, and option declarations." ), ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
+        }
+        break;
+
+        case 17:
+        {
+            parseInfo->hasSecondPrologPart = true;
+        }
+        break;
+
+        case 18:
+        {
+            parseInfo->hasSecondPrologPart = true;
+        }
+        break;
+
+        case 19:
+        {
+            allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+            parseInfo->hasSecondPrologPart = true;
+        }
+        break;
+
+        case 20:
+            /* Line 1269 of yacc.c.  */
+#line 1596 "querytransformparser.ypp"
+            {
+                Template::Ptr temp( create( new Template( parseInfo->currentImportPrecedence, ( yyvsp[( 5 ) - ( 7 )].sequenceType ) ), ( yyloc ),
+                                            parseInfo ) );
+
+                registerNamedTemplate( ( yyvsp[( 3 ) - ( 7 )].qName ), typeCheckTemplateBody( ( yyvsp[( 6 ) - ( 7 )].expr ),
+                                       ( yyvsp[( 5 ) - ( 7 )].sequenceType ), parseInfo ),
+                                       parseInfo, ( yylsp[( 1 ) - ( 7 )] ), temp );
+                temp->templateParameters = parseInfo->templateParameters;
+                parseInfo->templateParametersHandled();
+            }
+            break;
+
+        case 21:
+            /* Line 1269 of yacc.c.  */
+#line 1606 "querytransformparser.ypp"
+            {
+                parseInfo->isParsingPattern = true;
+            }
+            break;
+
+        case 22:
+            /* Line 1269 of yacc.c.  */
+#line 1610 "querytransformparser.ypp"
+            {
+                parseInfo->isParsingPattern = false;
+            }
+            break;
+
+        case 23:
+            /* Line 1269 of yacc.c.  */
+#line 1619 "querytransformparser.ypp"
+            {
+                /* In this grammar branch, we're guaranteed to be a template rule, but
+                 * may also be a named template. */
+
+                const ImportPrecedence ip = parseInfo->isFirstTemplate() ? 0 : parseInfo->currentImportPrecedence;
+                Expression::Ptr pattern( ( yyvsp[( 7 ) - ( 15 )].expr ) );
+                const TemplatePattern::ID templateID = parseInfo->allocateTemplateID();
+
+                Template::Ptr templ( create( new Template( ip, ( yyvsp[( 13 ) - ( 15 )].sequenceType ) ), ( yyloc ), parseInfo ) );
+                templ->body = typeCheckTemplateBody( ( yyvsp[( 14 ) - ( 15 )].expr ), ( yyvsp[( 13 ) - ( 15 )].sequenceType ), parseInfo );
+                templ->templateParameters = parseInfo->templateParameters;
+                parseInfo->templateParametersHandled();
+
+                TemplatePattern::Vector ourPatterns;
+
+                /* We do it as per 6.4 Conflict Resolution for Template Rules:
+                 *
+                 * "If the pattern contains multiple alternatives separated by |, then
+                 * the template rule is treated equivalently to a set of template
+                 * rules, one for each alternative. However, it is not an error if a
+                 * node matches more than one of the alternatives." */
+                while ( pattern->is( Expression::IDCombineNodes ) )
+                {
+                    const Expression::List operands( pattern->operands() );
+                    pattern = operands.first();
+
+                    loadPattern( operands.at( 1 ), ourPatterns, templateID, ( yyvsp[( 11 ) - ( 15 )].enums.Double ), templ );
+                }
+
+                loadPattern( pattern, ourPatterns, templateID, ( yyvsp[( 11 ) - ( 15 )].enums.Double ), templ );
+
+                if ( !( yyvsp[( 3 ) - ( 15 )].qName ).isNull() )
+                {
+                    registerNamedTemplate( ( yyvsp[( 3 ) - ( 15 )].qName ), ( yyvsp[( 14 ) - ( 15 )].expr ), parseInfo, ( yylsp[( 1 ) - ( 15 )] ),
+                                           templ );
+                }
+
+                /* Now, let's add it to all the relevant templates. */
+                for ( int i = 0; i < ( yyvsp[( 10 ) - ( 15 )].qNameVector ).count(); ++i ) /* For each mode. */
+                {
+                    const QXmlName &modeName = ( yyvsp[( 10 ) - ( 15 )].qNameVector ).at( i );
+
+                    if ( modeName == QXmlName( StandardNamespaces::InternalXSLT, StandardLocalNames::all ) &&
+                            ( yyvsp[( 10 ) - ( 15 )].qNameVector ).count() > 1 )
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "The keyword %1 cannot occur with any other mode name." )
+                                                         .formatArg( formatKeyword( QLatin1String( "#all" ) ) ),
+                                                         ReportContext::XTSE0530,
+                                                         fromYYLTYPE( ( yyloc ), parseInfo ) );
+                    }
+
+                    /* For each pattern the template use. */
+                    const TemplateMode::Ptr mode( parseInfo->modeFor( modeName ) );
+
+                    for ( int t = 0; t < ourPatterns.count(); ++t )
+                    {
+                        mode->templatePatterns.append( ourPatterns.at( t ) );
+                    }
+                }
+            }
+            break;
+
+        case 24:
+            /* Line 1269 of yacc.c.  */
+#line 1673 "querytransformparser.ypp"
+            {
+                ( yyval.enums.Double ) = std::numeric_limits<xsDouble>::quiet_NaN();
+            }
+            break;
+
+        case 25:
+            /* Line 1269 of yacc.c.  */
+#line 1678 "querytransformparser.ypp"
+            {
+                const AtomicValue::Ptr val( Decimal::fromLexical( ( yyvsp[( 2 ) - ( 2 )].sval ) ) );
+
+                if ( val->hasError() )
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "Value of attribute %1 must be of type %2, has type %3." )
+                                                     .formatArgs( formatKeyword( "priority" ),
+                                                             formatType( parseInfo->staticContext->namePool(), BuiltinTypes::xsDecimal ),
+                                                             formatData( ( yyvsp[( 2 ) - ( 2 )].sval ) ) ), ReportContext::XTSE0530, fromYYLTYPE( ( yyloc ), parseInfo ) );
+
+                }
+                else
+                {
+                    ( yyval.enums.Double ) = val->as<Numeric>()->toDouble();
+                }
+            }
+            break;
+
+        case 26:
+            /* Line 1269 of yacc.c.  */
+#line 1694 "querytransformparser.ypp"
+            {
+                ( yyval.qName ) = QXmlName();
+            }
+            break;
+
+        case 28:
+            /* Line 1269 of yacc.c.  */
+#line 1700 "querytransformparser.ypp"
+            {
+                ( yyval.qName ) = ( yyvsp[( 2 ) - ( 2 )].qName );
+            }
+            break;
+
+        case 30:
+            /* Line 1269 of yacc.c.  */
+#line 1706 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+            }
+            break;
+
+        case 32:
+            /* Line 1269 of yacc.c.  */
+#line 1711 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+            }
+            break;
+
+        case 33:
+            /* Line 1269 of yacc.c.  */
+#line 1715 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+            }
+            break;
+
+        case 34:
+            /* Line 1269 of yacc.c.  */
+#line 1719 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+            }
+            break;
+
+        case 39:
+            /* Line 1269 of yacc.c.  */
+#line 1730 "querytransformparser.ypp"
+            {
+                if ( !( yyvsp[( 6 ) - ( 7 )].enums.Bool ) )
+                {
+                    allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+                }
+
+                if ( ( yyvsp[( 3 ) - ( 7 )].sval ) == QLatin1String( "xmlns" ) )
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "It is not possible to redeclare prefix %1." )
+                                                     .formatArg( formatKeyword( QLatin1String( "xmlns" ) ) ),
+                                                     ReportContext::XQST0070, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else if ( ( yyvsp[( 5 ) - ( 7 )].sval ) == CommonNamespaces::XML || ( yyvsp[( 3 ) - ( 7 )].sval ) == QLatin1String( "xml" ) )
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr(
+                                                         "The prefix %1 cannot be bound. By default, it is already bound "
+                                                         "to the namespace %2." )
+                                                     .formatArg( formatKeyword( "xml" ) )
+                                                     .formatArg( formatURI( CommonNamespaces::XML ) ),
+                                                     ReportContext::XQST0070,
+                                                     fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else if ( parseInfo->declaredPrefixes.contains( ( yyvsp[( 3 ) - ( 7 )].sval ) ) )
+                {
+                    /* This includes the case where the user has bound a default prefix(such
+                     * as 'local') and now tries to do it again. */
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "Prefix %1 is already declared in the prolog." )
+                                                     .formatArg( formatKeyword( ( yyvsp[( 3 ) - ( 7 )].sval ) ) ),
+                                                     ReportContext::XQST0033, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    parseInfo->declaredPrefixes.append( ( yyvsp[( 3 ) - ( 7 )].sval ) );
+
+                    if ( ( yyvsp[( 5 ) - ( 7 )].sval ).isEmpty() )
+                    {
+                        parseInfo->staticContext->namespaceBindings()->addBinding( QXmlName( StandardNamespaces::UndeclarePrefix,
+                                StandardLocalNames::empty,
+                                parseInfo->staticContext->namePool()->allocatePrefix( ( yyvsp[( 3 ) - ( 7 )].sval ) ) ) );
+                    }
+                    else
+                    {
+                        parseInfo->staticContext->namespaceBindings()->addBinding( parseInfo->staticContext->namePool()->allocateBinding( (
+                                    yyvsp[( 3 ) - ( 7 )].sval ), ( yyvsp[( 5 ) - ( 7 )].sval ) ) );
+                    }
+                }
+            }
+            break;
+
+        case 40:
+            /* Line 1269 of yacc.c.  */
+#line 1776 "querytransformparser.ypp"
+            {
+                if ( parseInfo->hasDeclaration( ParserContext::BoundarySpaceDecl ) )
+                {
+                    parseInfo->staticContext->error( prologMessage( "declare boundary-space" ),
+                                                     ReportContext::XQST0068, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    parseInfo->staticContext->setBoundarySpacePolicy( ( yyvsp[( 3 ) - ( 4 )].enums.boundarySpacePolicy ) );
+                    parseInfo->registerDeclaration( ParserContext::BoundarySpaceDecl );
+                }
+            }
+            break;
+
+        case 41:
+            /* Line 1269 of yacc.c.  */
+#line 1790 "querytransformparser.ypp"
+            {
+                ( yyval.enums.boundarySpacePolicy ) = StaticContext::BSPStrip;
+            }
+            break;
+
+        case 42:
+            /* Line 1269 of yacc.c.  */
+#line 1795 "querytransformparser.ypp"
+            {
+                ( yyval.enums.boundarySpacePolicy ) = StaticContext::BSPPreserve;
+            }
+            break;
+
+        case 45:
+            /* Line 1269 of yacc.c.  */
+#line 1804 "querytransformparser.ypp"
+            {
+                if ( parseInfo->hasDeclaration( ParserContext::DeclareDefaultElementNamespace ) )
+                {
+                    parseInfo->staticContext->error( prologMessage( "declare default element namespace" ),
+                                                     ReportContext::XQST0066, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    parseInfo->staticContext->namespaceBindings()->addBinding( QXmlName(
+                                parseInfo->staticContext->namePool()->allocateNamespace( ( yyvsp[( 5 ) - ( 6 )].sval ) ), StandardLocalNames::empty ) );
+                    parseInfo->registerDeclaration( ParserContext::DeclareDefaultElementNamespace );
+                }
+            }
+            break;
+
+        case 46:
+            /* Line 1269 of yacc.c.  */
+#line 1819 "querytransformparser.ypp"
+            {
+                if ( parseInfo->hasDeclaration( ParserContext::DeclareDefaultFunctionNamespace ) )
+                {
+                    parseInfo->staticContext->error( prologMessage( "declare default function namespace" ),
+                                                     ReportContext::XQST0066, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    parseInfo->staticContext->setDefaultFunctionNamespace( ( yyvsp[( 5 ) - ( 6 )].sval ) );
+                    parseInfo->registerDeclaration( ParserContext::DeclareDefaultFunctionNamespace );
+                }
+            }
+            break;
+
+        case 47:
+            /* Line 1269 of yacc.c.  */
+#line 1833 "querytransformparser.ypp"
+            {
+                if ( ( yyvsp[( 3 ) - ( 5 )].qName ).prefix() == StandardPrefixes::empty )
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "The name of an option must have a prefix. "
+                                                     "There is no default namespace for options." ),
+                                                     ReportContext::XPST0081, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+            }
+            break;
+
+        case 48:
+            /* Line 1269 of yacc.c.  */
+#line 1843 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+
+                if ( parseInfo->hasDeclaration( ParserContext::OrderingModeDecl ) )
+                {
+                    parseInfo->staticContext->error( prologMessage( "declare ordering" ),
+                                                     ReportContext::XQST0065, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    parseInfo->registerDeclaration( ParserContext::OrderingModeDecl );
+                    parseInfo->staticContext->setOrderingMode( ( yyvsp[( 3 ) - ( 4 )].enums.orderingMode ) );
+                }
+            }
+            break;
+
+        case 49:
+            /* Line 1269 of yacc.c.  */
+#line 1858 "querytransformparser.ypp"
+            {
+                ( yyval.enums.orderingMode ) = StaticContext::Ordered;
+            }
+            break;
+
+        case 50:
+            /* Line 1269 of yacc.c.  */
+#line 1862 "querytransformparser.ypp"
+            {
+                ( yyval.enums.orderingMode ) = StaticContext::Unordered;
+            }
+            break;
+
+        case 51:
+            /* Line 1269 of yacc.c.  */
+#line 1867 "querytransformparser.ypp"
+            {
+                if ( parseInfo->hasDeclaration( ParserContext::EmptyOrderDecl ) )
+                {
+                    parseInfo->staticContext->error( prologMessage( "declare default order" ),
+                                                     ReportContext::XQST0069, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    parseInfo->registerDeclaration( ParserContext::EmptyOrderDecl );
+                    parseInfo->staticContext->setOrderingEmptySequence( ( yyvsp[( 4 ) - ( 5 )].enums.orderingEmptySequence ) );
+                }
+            }
+            break;
+
+        case 52:
+            /* Line 1269 of yacc.c.  */
+#line 1881 "querytransformparser.ypp"
+            {
+                ( yyval.enums.orderingEmptySequence ) = StaticContext::Least;
+            }
+            break;
+
+        case 53:
+            /* Line 1269 of yacc.c.  */
+#line 1885 "querytransformparser.ypp"
+            {
+                ( yyval.enums.orderingEmptySequence ) = StaticContext::Greatest;
+            }
+            break;
+
+        case 54:
+            /* Line 1269 of yacc.c.  */
+#line 1891 "querytransformparser.ypp"
+            {
+                if ( parseInfo->hasDeclaration( ParserContext::CopyNamespacesDecl ) )
+                {
+                    parseInfo->staticContext->error( prologMessage( "declare copy-namespaces" ),
+                                                     ReportContext::XQST0055, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    parseInfo->registerDeclaration( ParserContext::CopyNamespacesDecl );
+                }
+            }
+            break;
+
+        case 55:
+            /* Line 1269 of yacc.c.  */
+#line 1904 "querytransformparser.ypp"
+            {
+                parseInfo->preserveNamespacesMode = true;
+            }
+            break;
+
+        case 56:
+            /* Line 1269 of yacc.c.  */
+#line 1909 "querytransformparser.ypp"
+            {
+                parseInfo->preserveNamespacesMode = false;
+            }
+            break;
+
+        case 57:
+            /* Line 1269 of yacc.c.  */
+#line 1914 "querytransformparser.ypp"
+            {
+                parseInfo->inheritNamespacesMode = true;
+            }
+            break;
+
+        case 58:
+            /* Line 1269 of yacc.c.  */
+#line 1919 "querytransformparser.ypp"
+            {
+                parseInfo->inheritNamespacesMode = false;
+            }
+            break;
+
+        case 59:
+            /* Line 1269 of yacc.c.  */
+#line 1924 "querytransformparser.ypp"
+            {
+                if ( parseInfo->hasDeclaration( ParserContext::DefaultCollationDecl ) )
+                {
+                    parseInfo->staticContext->error( prologMessage( "declare default collation" ),
+                                                     ReportContext::XQST0038, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    const QUrl coll( resolveAndCheckCollation<ReportContext::XQST0038>( ( yyvsp[( 4 ) - ( 5 )].sval ), parseInfo, ( yyloc ) ) );
+
+                    parseInfo->registerDeclaration( ParserContext::DefaultCollationDecl );
+                    parseInfo->staticContext->setDefaultCollation( coll );
+                }
+            }
+            break;
+
+        case 60:
+            /* Line 1269 of yacc.c.  */
+#line 1940 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XSLT20 ), parseInfo, ( yyloc ), ( yyvsp[( 3 ) - ( 5 )].enums.Bool ) );
+
+                if ( parseInfo->hasDeclaration( ParserContext::BaseURIDecl ) )
+                {
+                    parseInfo->staticContext->error( prologMessage( "declare base-uri" ),
+                                                     ReportContext::XQST0032, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    parseInfo->registerDeclaration( ParserContext::BaseURIDecl );
+                    const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
+
+                    QUrl toBeBase( AnyURI::toQUrl<ReportContext::XQST0046>( ( yyvsp[( 4 ) - ( 5 )].sval ), parseInfo->staticContext, &ryy ) );
+
+                    /* Now we're guaranteed that base is a valid lexical representation, but it can still be relative. */
+
+                    if ( toBeBase.isRelative() )
+                    {
+                        toBeBase = parseInfo->staticContext->baseURI().resolved( toBeBase );
+                    }
+
+                    parseInfo->staticContext->setBaseURI( toBeBase );
+                }
+            }
+            break;
+
+        case 61:
+            /* Line 1269 of yacc.c.  */
+#line 1963 "querytransformparser.ypp"
+            {
+                parseInfo->staticContext->error( QtXmlPatterns::tr( "The Schema Import feature is not supported, "
+                                                 "and therefore %1 declarations cannot occur." )
+                                                 .formatArg( formatKeyword( "import schema" ) ),
+                                                 ReportContext::XQST0009, fromYYLTYPE( ( yyloc ), parseInfo ) );
+            }
+            break;
+
+        case 65:
+            /* Line 1269 of yacc.c.  */
+#line 1975 "querytransformparser.ypp"
+            {
+                if ( ( yyvsp[( 4 ) - ( 6 )].sval ).isEmpty() )
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "The target namespace of a %1 cannot be empty." )
+                                                     .formatArg( formatKeyword( "module import" ) ),
+                                                     ReportContext::XQST0088, fromYYLTYPE( ( yyloc ), parseInfo ) );
+
+                }
+                else
+                {
+                    /* This is temporary until we have implemented it. */
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "The module import feature is not supported" ),
+                                                     ReportContext::XQST0016, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+            }
+            break;
+
+        case 72:
+            /* Line 1269 of yacc.c.  */
+#line 2002 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 3 ) - ( 9 )].enums.Bool ) );
+
+                if ( variableByName( ( yyvsp[( 5 ) - ( 9 )].qName ), parseInfo ) )
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "A variable with name %1 has already "
+                                                     "been declared." )
+                                                     .formatArg( formatKeyword( parseInfo->staticContext->namePool()->toLexical( ( yyvsp[( 5 ) - ( 9 )].qName ) ) ) ),
+                                                     parseInfo->isXSLT() ? ReportContext::XTSE0630 : ReportContext::XQST0049,
+                                                     fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    if ( ( yyvsp[( 7 ) - ( 9 )].expr ) ) /* We got a value assigned. */
+                    {
+                        const Expression::Ptr checked
+                        ( TypeChecker::applyFunctionConversion( ( yyvsp[( 7 ) - ( 9 )].expr ), ( yyvsp[( 6 ) - ( 9 )].sequenceType ),
+                                                                parseInfo->staticContext,
+                                                                ( yyvsp[( 3 ) - ( 9 )].enums.Bool ) ? ReportContext::XTTE0570 : ReportContext::XPTY0004,
+                                                                ( yyvsp[( 3 ) - ( 9 )].enums.Bool ) ? TypeChecker::Options( TypeChecker::CheckFocus | TypeChecker::AutomaticallyConvert ) :
+                                                                TypeChecker::CheckFocus ) );
+
+                        pushVariable( ( yyvsp[( 5 ) - ( 9 )].qName ), ( yyvsp[( 6 ) - ( 9 )].sequenceType ), checked, VariableDeclaration::GlobalVariable,
+                                      ( yyloc ), parseInfo );
+                        parseInfo->declaredVariables.append( parseInfo->variables.last() );
+                    }
+                    else     /* We got an 'external' declaration. */
+                    {
+                        const SequenceType::Ptr varType( parseInfo->staticContext->
+                                                         externalVariableLoader()->announceExternalVariable( ( yyvsp[( 5 ) - ( 9 )].qName ), ( yyvsp[( 6 ) - ( 9 )].sequenceType ) ) );
+
+                        if ( varType )
+                        {
+                            /* We push the declaration such that we can see name clashes and so on, but we don't use it for tying
+                             * any references to it. */
+                            pushVariable( ( yyvsp[( 5 ) - ( 9 )].qName ), varType, Expression::Ptr(), VariableDeclaration::ExternalVariable, ( yyloc ),
+                                          parseInfo );
+                        }
+                        else if ( ( yyvsp[( 8 ) - ( 9 )].expr ) )
+                        {
+                            /* Ok, the xsl:param got a default value, we make it
+                             * available as a regular variable declaration. */
+                            // TODO turn into checked
+                            pushVariable( ( yyvsp[( 5 ) - ( 9 )].qName ), ( yyvsp[( 6 ) - ( 9 )].sequenceType ), ( yyvsp[( 8 ) - ( 9 )].expr ),
+                                          VariableDeclaration::GlobalVariable, ( yyloc ), parseInfo );
+                            // TODO ensure that duplicates are trapped.
+                        }
+                        else
+                        {
+                            parseInfo->staticContext->error( QtXmlPatterns::tr( "No value is available for the external "
+                                                             "variable with name %1." )
+                                                             .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 5 ) - ( 9 )].qName ) ) ),
+                                                             parseInfo->isXSLT() ? ReportContext::XTDE0050 : ReportContext::XPDY0002,
+                                                             fromYYLTYPE( ( yyloc ), parseInfo ) );
+                        }
+                    }
+                }
+            }
+            break;
+
+        case 73:
+            /* Line 1269 of yacc.c.  */
+#line 2056 "querytransformparser.ypp"
+            {
+                ( yyval.expr ).reset();
+            }
+            break;
+
+        case 74:
+            /* Line 1269 of yacc.c.  */
+#line 2060 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
+            }
+            break;
+
+        case 75:
+            /* Line 1269 of yacc.c.  */
+#line 2065 "querytransformparser.ypp"
+            {
+                ( yyval.expr ).reset();
+            }
+            break;
+
+        case 76:
+            /* Line 1269 of yacc.c.  */
+#line 2069 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
+            }
+            break;
+
+        case 77:
+            /* Line 1269 of yacc.c.  */
+#line 2074 "querytransformparser.ypp"
+            {
+                if ( parseInfo->hasDeclaration( ParserContext::ConstructionDecl ) )
+                {
+                    parseInfo->staticContext->error( prologMessage( "declare ordering" ),
+                                                     ReportContext::XQST0067, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    parseInfo->registerDeclaration( ParserContext::ConstructionDecl );
+                    parseInfo->staticContext->setConstructionMode( ( yyvsp[( 3 ) - ( 4 )].enums.constructionMode ) );
+                }
+            }
+            break;
+
+        case 78:
+            /* Line 1269 of yacc.c.  */
+#line 2088 "querytransformparser.ypp"
+            {
+                ( yyval.enums.constructionMode ) = StaticContext::CMStrip;
+            }
+            break;
+
+        case 79:
+            /* Line 1269 of yacc.c.  */
+#line 2092 "querytransformparser.ypp"
+            {
+                ( yyval.enums.constructionMode ) = StaticContext::CMPreserve;
+            }
+            break;
+
+        case 80:
+            /* Line 1269 of yacc.c.  */
+#line 2097 "querytransformparser.ypp"
+            {
+                ( yyval.enums.slot ) = parseInfo->currentExpressionSlot() - ( yyvsp[( 6 ) - ( 7 )].functionArguments ).count();
+            }
+            break;
+
+        case 81:
+            /* Line 1269 of yacc.c.  */
+#line 2101 "querytransformparser.ypp"
+            {
+                if ( !( yyvsp[( 3 ) - ( 11 )].enums.Bool ) )
+                {
+                    allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 3 ) - ( 11 )].enums.Bool ) );
+                }
+
+                /* If FunctionBody is null, it is 'external', otherwise the value is the body. */
+                const QXmlName::NamespaceCode ns( ( yyvsp[( 4 ) - ( 11 )].qName ).namespaceURI() );
+
+                if ( parseInfo->isXSLT() && !( yyvsp[( 4 ) - ( 11 )].qName ).hasPrefix() )
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "A stylesheet function must have a prefixed name." ),
+                                                     ReportContext::XTSE0740,
+                                                     fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+
+                if ( ( yyvsp[( 10 ) - ( 11 )].expr ) ) /* We got a function body. */
+                {
+                    if ( ns == StandardNamespaces::empty )
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "The namespace for a user defined function "
+                                                         "cannot be empty (try the predefined prefix %1, which exists for cases like this)" )
+                                                         .formatArg( formatKeyword( "local" ) ), ReportContext::XQST0060, fromYYLTYPE( ( yyloc ), parseInfo ) );
+
+                    }
+                    else if ( XPathHelper::isReservedNamespace( ns ) )
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "The namespace %1 is reserved; therefore "
+                                                         "user defined functions may not use it. Try the predefined prefix %2, which "
+                                                         "exists for these cases." )
+                                                         .formatArgs( formatURI( parseInfo->staticContext->namePool(), ns ), formatKeyword( "local" ) ),
+                                                         parseInfo->isXSLT() ? ReportContext::XTSE0080 : ReportContext::XQST0045, fromYYLTYPE( ( yyloc ), parseInfo ) );
+
+                    }
+                    else if ( parseInfo->moduleNamespace != StandardNamespaces::empty &&
+                              ns != parseInfo->moduleNamespace )
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "The namespace of a user defined "
+                                                         "function in a library module must be equivalent to the module namespace. "
+                                                         "In other words, it should be %1 instead of %2" )
+                                                         .formatArgs( formatURI( parseInfo->staticContext->namePool(), parseInfo->moduleNamespace ),
+                                                                 formatURI( parseInfo->staticContext->namePool(), ns ) ), ReportContext::XQST0048, fromYYLTYPE( ( yyloc ), parseInfo ) );
+
+                    }
+                    else
+                    {
+                        /* Apply function conversion such that the body matches the declared
+                         * return type. */
+                        const Expression::Ptr checked( TypeChecker::applyFunctionConversion( ( yyvsp[( 10 ) - ( 11 )].expr ),
+                                                       ( yyvsp[( 9 ) - ( 11 )].sequenceType ),
+                                                       parseInfo->staticContext,
+                                                       ReportContext::XPTY0004,
+                                                       TypeChecker::Options( TypeChecker::AutomaticallyConvert |
+                                                               TypeChecker::CheckFocus |
+                                                               TypeChecker::GeneratePromotion ) ) );
+
+                        const int argCount = ( yyvsp[( 6 ) - ( 11 )].functionArguments ).count();
+                        const FunctionSignature::Ptr sign( new FunctionSignature( ( yyvsp[( 4 ) - ( 11 )].qName ) /* name */,
+                                                           argCount /* minArgs */,
+                                                           argCount /* maxArgs */,
+                                                           ( yyvsp[( 9 ) - ( 11 )].sequenceType ) /* returnType */ ) );
+
+                        sign->setArguments( ( yyvsp[( 6 ) - ( 11 )].functionArguments ) );
+                        const UserFunction::List::const_iterator end( parseInfo->userFunctions.constEnd() );
+                        UserFunction::List::const_iterator it( parseInfo->userFunctions.constBegin() );
+
+                        for ( ; it != end; ++it )
+                        {
+                            if ( *( *it )->signature() == *sign )
+                            {
+                                parseInfo->staticContext->error( QtXmlPatterns::tr( "A function already exists with the signature %1." )
+                                                                 .formatArg( formatFunction( parseInfo->staticContext->namePool(), sign ) ),
+                                                                 parseInfo->isXSLT() ? ReportContext::XTSE0770 : ReportContext::XQST0034, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                            }
+                        }
+
+                        VariableDeclaration::List argDecls;
+
+                        for ( int i = 0; i < argCount; ++i )
+                        {
+                            argDecls.append( parseInfo->variables.at( i ) );
+                        }
+
+                        if ( ( yyvsp[( 8 ) - ( 11 )].enums.slot ) > -1 )
+                        {
+                            /* We have allocated slots, so now push them out of scope. */
+                            parseInfo->finalizePushedVariable( argCount );
+                        }
+
+                        parseInfo->userFunctions.append( UserFunction::Ptr( new UserFunction( sign, checked, ( yyvsp[( 8 ) - ( 11 )].enums.slot ),
+                                                         argDecls ) ) );
+                    }
+                }
+                else     /* We got an 'external' declaration. */
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "No external functions are supported. "
+                                                     "All supported functions can be used directly, "
+                                                     "without first declaring them as external" ),
                                                      ReportContext::XPST0017, fromYYLTYPE( ( yyloc ), parseInfo ) );
                 }
             }
-        }
+            break;
 
-        /* Mark callsites in UserFunction bodies as recursive, if they are. */
-        {
-            const UserFunction::List::const_iterator fend( parseInfo->userFunctions.constEnd() );
-            UserFunction::List::const_iterator fit( parseInfo->userFunctions.constBegin() );
-
-            for ( ; fit != fend; ++fit )
+        case 82:
+            /* Line 1269 of yacc.c.  */
+#line 2205 "querytransformparser.ypp"
             {
-                CallTargetDescription::List signList;
-                signList.append( ( *fit )->signature() );
-                CallTargetDescription::checkCallsiteCircularity( signList, ( *fit )->body() );
+                ( yyval.functionArguments ) = FunctionArgument::List();
             }
-        }
+            break;
 
-        /* Now, check all global variables for circularity.  This is done
-         * backwards because global variables are only in scope below them,
-         * in XQuery. */
-        {
-            const VariableDeclaration::List::const_iterator start( parseInfo->declaredVariables.constBegin() );
-            VariableDeclaration::List::const_iterator it( parseInfo->declaredVariables.constEnd() );
-
-            while ( it != start )
+        case 83:
+            /* Line 1269 of yacc.c.  */
+#line 2209 "querytransformparser.ypp"
             {
-                --it;
-
-                if ( ( *it )->type != VariableDeclaration::ExpressionVariable && ( *it )->type != VariableDeclaration::GlobalVariable )
-                {
-                    continue;   /* We want to ignore 'external' variables. */
-                }
-
-                FunctionSignature::List signList;
-                checkVariableCircularity( *it, ( *it )->expression(), ( *it )->type, signList, parseInfo );
-                ExpressionFactory::registerLastPath( ( *it )->expression() );
-                parseInfo->finalizePushedVariable( 1, false ); /* Warn if it's unused. */
+                FunctionArgument::List l;
+                l.append( ( yyvsp[( 1 ) - ( 1 )].functionArgument ) );
+                ( yyval.functionArguments ) = l;
             }
-        }
+            break;
 
-        /* Generate code for doing initial template name calling. One problem
-         * is that we compilation in the initial template name, since we throw away the
-         * code if we don't have the requested template. */
-        if ( parseInfo->languageAccent == QXmlQuery::XSLT20
-                && !parseInfo->initialTemplateName.isNull()
-                && parseInfo->namedTemplates.contains( parseInfo->initialTemplateName ) )
-        {
-            parseInfo->queryBody = create( new CallTemplate( parseInfo->initialTemplateName,
-                                           WithParam::Hash() ),
-                                           ( yyloc ), parseInfo );
-            parseInfo->templateCalls.append( parseInfo->queryBody );
-            /* We just discard the template body that XSLTTokenizer generated. */
-        }
-        else
-        {
-            parseInfo->queryBody = ( yyvsp[( 2 ) - ( 2 )].expr );
-        }
-    }
-    break;
-
-    case 10:
-    {
-        // TODO add to namespace context
-        parseInfo->moduleNamespace = parseInfo->staticContext->namePool()->allocateNamespace( ( yyvsp[( 3 ) - ( 6 )].sval ) );
-    }
-    break;
-
-    case 12:
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-
-        if ( parseInfo->hasSecondPrologPart )
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "A default namespace declaration must occur before function, "
-                                                                "variable, and option declarations." ), ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
-    }
-    break;
-
-    case 13:
-    {
-        if ( parseInfo->hasSecondPrologPart )
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "A default namespace declaration must occur before function, "
-                                                                "variable, and option declarations." ), ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
-    }
-    break;
-
-    case 14:
-    {
-        if ( parseInfo->hasSecondPrologPart )
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "Namespace declarations must occur before function, "
-                                                                "variable, and option declarations." ), ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
-    }
-    break;
-
-    case 15:
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-
-        if ( parseInfo->hasSecondPrologPart )
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "Module imports must occur before function, "
-                                                                "variable, and option declarations." ), ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
-    }
-    break;
-
-    case 17:
-    {
-        parseInfo->hasSecondPrologPart = true;
-    }
-    break;
-
-    case 18:
-    {
-        parseInfo->hasSecondPrologPart = true;
-    }
-    break;
-
-    case 19:
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-        parseInfo->hasSecondPrologPart = true;
-    }
-    break;
-
-    case 20:
-        /* Line 1269 of yacc.c.  */
-#line 1596 "querytransformparser.ypp"
-    {
-        Template::Ptr temp( create( new Template( parseInfo->currentImportPrecedence, ( yyvsp[( 5 ) - ( 7 )].sequenceType ) ), ( yyloc ),
-                                    parseInfo ) );
-
-        registerNamedTemplate( ( yyvsp[( 3 ) - ( 7 )].qName ), typeCheckTemplateBody( ( yyvsp[( 6 ) - ( 7 )].expr ),
-                               ( yyvsp[( 5 ) - ( 7 )].sequenceType ), parseInfo ),
-                               parseInfo, ( yylsp[( 1 ) - ( 7 )] ), temp );
-        temp->templateParameters = parseInfo->templateParameters;
-        parseInfo->templateParametersHandled();
-    }
-    break;
-
-    case 21:
-        /* Line 1269 of yacc.c.  */
-#line 1606 "querytransformparser.ypp"
-    {
-        parseInfo->isParsingPattern = true;
-    }
-    break;
-
-    case 22:
-        /* Line 1269 of yacc.c.  */
-#line 1610 "querytransformparser.ypp"
-    {
-        parseInfo->isParsingPattern = false;
-    }
-    break;
-
-    case 23:
-        /* Line 1269 of yacc.c.  */
-#line 1619 "querytransformparser.ypp"
-    {
-        /* In this grammar branch, we're guaranteed to be a template rule, but
-         * may also be a named template. */
-
-        const ImportPrecedence ip = parseInfo->isFirstTemplate() ? 0 : parseInfo->currentImportPrecedence;
-        Expression::Ptr pattern( ( yyvsp[( 7 ) - ( 15 )].expr ) );
-        const TemplatePattern::ID templateID = parseInfo->allocateTemplateID();
-
-        Template::Ptr templ( create( new Template( ip, ( yyvsp[( 13 ) - ( 15 )].sequenceType ) ), ( yyloc ), parseInfo ) );
-        templ->body = typeCheckTemplateBody( ( yyvsp[( 14 ) - ( 15 )].expr ), ( yyvsp[( 13 ) - ( 15 )].sequenceType ), parseInfo );
-        templ->templateParameters = parseInfo->templateParameters;
-        parseInfo->templateParametersHandled();
-
-        TemplatePattern::Vector ourPatterns;
-
-        /* We do it as per 6.4 Conflict Resolution for Template Rules:
-         *
-         * "If the pattern contains multiple alternatives separated by |, then
-         * the template rule is treated equivalently to a set of template
-         * rules, one for each alternative. However, it is not an error if a
-         * node matches more than one of the alternatives." */
-        while ( pattern->is( Expression::IDCombineNodes ) )
-        {
-            const Expression::List operands( pattern->operands() );
-            pattern = operands.first();
-
-            loadPattern( operands.at( 1 ), ourPatterns, templateID, ( yyvsp[( 11 ) - ( 15 )].enums.Double ), templ );
-        }
-
-        loadPattern( pattern, ourPatterns, templateID, ( yyvsp[( 11 ) - ( 15 )].enums.Double ), templ );
-
-        if ( !( yyvsp[( 3 ) - ( 15 )].qName ).isNull() )
-        {
-            registerNamedTemplate( ( yyvsp[( 3 ) - ( 15 )].qName ), ( yyvsp[( 14 ) - ( 15 )].expr ), parseInfo, ( yylsp[( 1 ) - ( 15 )] ),
-                                   templ );
-        }
-
-        /* Now, let's add it to all the relevant templates. */
-        for ( int i = 0; i < ( yyvsp[( 10 ) - ( 15 )].qNameVector ).count(); ++i ) /* For each mode. */
-        {
-            const QXmlName &modeName = ( yyvsp[( 10 ) - ( 15 )].qNameVector ).at( i );
-
-            if ( modeName == QXmlName( StandardNamespaces::InternalXSLT, StandardLocalNames::all ) &&
-                    ( yyvsp[( 10 ) - ( 15 )].qNameVector ).count() > 1 )
+        case 84:
+            /* Line 1269 of yacc.c.  */
+#line 2215 "querytransformparser.ypp"
             {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "The keyword %1 cannot occur with any other mode name." )
-                                                 .formatArg( formatKeyword( QLatin1String( "#all" ) ) ),
-                                                 ReportContext::XTSE0530,
-                                                 fromYYLTYPE( ( yyloc ), parseInfo ) );
-            }
-
-            /* For each pattern the template use. */
-            const TemplateMode::Ptr mode( parseInfo->modeFor( modeName ) );
-
-            for ( int t = 0; t < ourPatterns.count(); ++t )
-            {
-                mode->templatePatterns.append( ourPatterns.at( t ) );
-            }
-        }
-    }
-    break;
-
-    case 24:
-        /* Line 1269 of yacc.c.  */
-#line 1673 "querytransformparser.ypp"
-    {
-        ( yyval.enums.Double ) = std::numeric_limits<xsDouble>::quiet_NaN();
-    }
-    break;
-
-    case 25:
-        /* Line 1269 of yacc.c.  */
-#line 1678 "querytransformparser.ypp"
-    {
-        const AtomicValue::Ptr val( Decimal::fromLexical( ( yyvsp[( 2 ) - ( 2 )].sval ) ) );
-
-        if ( val->hasError() )
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "Value of attribute %1 must be of type %2, has type %3." )
-                                             .formatArgs( formatKeyword( "priority" ),
-                                                     formatType( parseInfo->staticContext->namePool(), BuiltinTypes::xsDecimal ),
-                                                     formatData( ( yyvsp[( 2 ) - ( 2 )].sval ) ) ), ReportContext::XTSE0530, fromYYLTYPE( ( yyloc ), parseInfo ) );
-
-        }
-        else
-        {
-            ( yyval.enums.Double ) = val->as<Numeric>()->toDouble();
-        }
-    }
-    break;
-
-    case 26:
-        /* Line 1269 of yacc.c.  */
-#line 1694 "querytransformparser.ypp"
-    {
-        ( yyval.qName ) = QXmlName();
-    }
-    break;
-
-    case 28:
-        /* Line 1269 of yacc.c.  */
-#line 1700 "querytransformparser.ypp"
-    {
-        ( yyval.qName ) = ( yyvsp[( 2 ) - ( 2 )].qName );
-    }
-    break;
-
-    case 30:
-        /* Line 1269 of yacc.c.  */
-#line 1706 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-    }
-    break;
-
-    case 32:
-        /* Line 1269 of yacc.c.  */
-#line 1711 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-    }
-    break;
-
-    case 33:
-        /* Line 1269 of yacc.c.  */
-#line 1715 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-    }
-    break;
-
-    case 34:
-        /* Line 1269 of yacc.c.  */
-#line 1719 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-    }
-    break;
-
-    case 39:
-        /* Line 1269 of yacc.c.  */
-#line 1730 "querytransformparser.ypp"
-    {
-        if ( !( yyvsp[( 6 ) - ( 7 )].enums.Bool ) )
-        {
-            allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-        }
-
-        if ( ( yyvsp[( 3 ) - ( 7 )].sval ) == QLatin1String( "xmlns" ) )
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "It is not possible to redeclare prefix %1." )
-                                             .formatArg( formatKeyword( QLatin1String( "xmlns" ) ) ),
-                                             ReportContext::XQST0070, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else if ( ( yyvsp[( 5 ) - ( 7 )].sval ) == CommonNamespaces::XML || ( yyvsp[( 3 ) - ( 7 )].sval ) == QLatin1String( "xml" ) )
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr(
-                                                 "The prefix %1 cannot be bound. By default, it is already bound "
-                                                 "to the namespace %2." )
-                                             .formatArg( formatKeyword( "xml" ) )
-                                             .formatArg( formatURI( CommonNamespaces::XML ) ),
-                                             ReportContext::XQST0070,
-                                             fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else if ( parseInfo->declaredPrefixes.contains( ( yyvsp[( 3 ) - ( 7 )].sval ) ) )
-        {
-            /* This includes the case where the user has bound a default prefix(such
-             * as 'local') and now tries to do it again. */
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "Prefix %1 is already declared in the prolog." )
-                                             .formatArg( formatKeyword( ( yyvsp[( 3 ) - ( 7 )].sval ) ) ),
-                                             ReportContext::XQST0033, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            parseInfo->declaredPrefixes.append( ( yyvsp[( 3 ) - ( 7 )].sval ) );
-
-            if ( ( yyvsp[( 5 ) - ( 7 )].sval ).isEmpty() )
-            {
-                parseInfo->staticContext->namespaceBindings()->addBinding( QXmlName( StandardNamespaces::UndeclarePrefix,
-                        StandardLocalNames::empty,
-                        parseInfo->staticContext->namePool()->allocatePrefix( ( yyvsp[( 3 ) - ( 7 )].sval ) ) ) );
-            }
-            else
-            {
-                parseInfo->staticContext->namespaceBindings()->addBinding( parseInfo->staticContext->namePool()->allocateBinding( (
-                            yyvsp[( 3 ) - ( 7 )].sval ), ( yyvsp[( 5 ) - ( 7 )].sval ) ) );
-            }
-        }
-    }
-    break;
-
-    case 40:
-        /* Line 1269 of yacc.c.  */
-#line 1776 "querytransformparser.ypp"
-    {
-        if ( parseInfo->hasDeclaration( ParserContext::BoundarySpaceDecl ) )
-        {
-            parseInfo->staticContext->error( prologMessage( "declare boundary-space" ),
-                                             ReportContext::XQST0068, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            parseInfo->staticContext->setBoundarySpacePolicy( ( yyvsp[( 3 ) - ( 4 )].enums.boundarySpacePolicy ) );
-            parseInfo->registerDeclaration( ParserContext::BoundarySpaceDecl );
-        }
-    }
-    break;
-
-    case 41:
-        /* Line 1269 of yacc.c.  */
-#line 1790 "querytransformparser.ypp"
-    {
-        ( yyval.enums.boundarySpacePolicy ) = StaticContext::BSPStrip;
-    }
-    break;
-
-    case 42:
-        /* Line 1269 of yacc.c.  */
-#line 1795 "querytransformparser.ypp"
-    {
-        ( yyval.enums.boundarySpacePolicy ) = StaticContext::BSPPreserve;
-    }
-    break;
-
-    case 45:
-        /* Line 1269 of yacc.c.  */
-#line 1804 "querytransformparser.ypp"
-    {
-        if ( parseInfo->hasDeclaration( ParserContext::DeclareDefaultElementNamespace ) )
-        {
-            parseInfo->staticContext->error( prologMessage( "declare default element namespace" ),
-                                             ReportContext::XQST0066, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            parseInfo->staticContext->namespaceBindings()->addBinding( QXmlName(
-                        parseInfo->staticContext->namePool()->allocateNamespace( ( yyvsp[( 5 ) - ( 6 )].sval ) ), StandardLocalNames::empty ) );
-            parseInfo->registerDeclaration( ParserContext::DeclareDefaultElementNamespace );
-        }
-    }
-    break;
-
-    case 46:
-        /* Line 1269 of yacc.c.  */
-#line 1819 "querytransformparser.ypp"
-    {
-        if ( parseInfo->hasDeclaration( ParserContext::DeclareDefaultFunctionNamespace ) )
-        {
-            parseInfo->staticContext->error( prologMessage( "declare default function namespace" ),
-                                             ReportContext::XQST0066, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            parseInfo->staticContext->setDefaultFunctionNamespace( ( yyvsp[( 5 ) - ( 6 )].sval ) );
-            parseInfo->registerDeclaration( ParserContext::DeclareDefaultFunctionNamespace );
-        }
-    }
-    break;
-
-    case 47:
-        /* Line 1269 of yacc.c.  */
-#line 1833 "querytransformparser.ypp"
-    {
-        if ( ( yyvsp[( 3 ) - ( 5 )].qName ).prefix() == StandardPrefixes::empty )
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "The name of an option must have a prefix. "
-                                                                "There is no default namespace for options." ),
-                                             ReportContext::XPST0081, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-    }
-    break;
-
-    case 48:
-        /* Line 1269 of yacc.c.  */
-#line 1843 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-
-        if ( parseInfo->hasDeclaration( ParserContext::OrderingModeDecl ) )
-        {
-            parseInfo->staticContext->error( prologMessage( "declare ordering" ),
-                                             ReportContext::XQST0065, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            parseInfo->registerDeclaration( ParserContext::OrderingModeDecl );
-            parseInfo->staticContext->setOrderingMode( ( yyvsp[( 3 ) - ( 4 )].enums.orderingMode ) );
-        }
-    }
-    break;
-
-    case 49:
-        /* Line 1269 of yacc.c.  */
-#line 1858 "querytransformparser.ypp"
-    {
-        ( yyval.enums.orderingMode ) = StaticContext::Ordered;
-    }
-    break;
-
-    case 50:
-        /* Line 1269 of yacc.c.  */
-#line 1862 "querytransformparser.ypp"
-    {
-        ( yyval.enums.orderingMode ) = StaticContext::Unordered;
-    }
-    break;
-
-    case 51:
-        /* Line 1269 of yacc.c.  */
-#line 1867 "querytransformparser.ypp"
-    {
-        if ( parseInfo->hasDeclaration( ParserContext::EmptyOrderDecl ) )
-        {
-            parseInfo->staticContext->error( prologMessage( "declare default order" ),
-                                             ReportContext::XQST0069, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            parseInfo->registerDeclaration( ParserContext::EmptyOrderDecl );
-            parseInfo->staticContext->setOrderingEmptySequence( ( yyvsp[( 4 ) - ( 5 )].enums.orderingEmptySequence ) );
-        }
-    }
-    break;
-
-    case 52:
-        /* Line 1269 of yacc.c.  */
-#line 1881 "querytransformparser.ypp"
-    {
-        ( yyval.enums.orderingEmptySequence ) = StaticContext::Least;
-    }
-    break;
-
-    case 53:
-        /* Line 1269 of yacc.c.  */
-#line 1885 "querytransformparser.ypp"
-    {
-        ( yyval.enums.orderingEmptySequence ) = StaticContext::Greatest;
-    }
-    break;
-
-    case 54:
-        /* Line 1269 of yacc.c.  */
-#line 1891 "querytransformparser.ypp"
-    {
-        if ( parseInfo->hasDeclaration( ParserContext::CopyNamespacesDecl ) )
-        {
-            parseInfo->staticContext->error( prologMessage( "declare copy-namespaces" ),
-                                             ReportContext::XQST0055, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            parseInfo->registerDeclaration( ParserContext::CopyNamespacesDecl );
-        }
-    }
-    break;
-
-    case 55:
-        /* Line 1269 of yacc.c.  */
-#line 1904 "querytransformparser.ypp"
-    {
-        parseInfo->preserveNamespacesMode = true;
-    }
-    break;
-
-    case 56:
-        /* Line 1269 of yacc.c.  */
-#line 1909 "querytransformparser.ypp"
-    {
-        parseInfo->preserveNamespacesMode = false;
-    }
-    break;
-
-    case 57:
-        /* Line 1269 of yacc.c.  */
-#line 1914 "querytransformparser.ypp"
-    {
-        parseInfo->inheritNamespacesMode = true;
-    }
-    break;
-
-    case 58:
-        /* Line 1269 of yacc.c.  */
-#line 1919 "querytransformparser.ypp"
-    {
-        parseInfo->inheritNamespacesMode = false;
-    }
-    break;
-
-    case 59:
-        /* Line 1269 of yacc.c.  */
-#line 1924 "querytransformparser.ypp"
-    {
-        if ( parseInfo->hasDeclaration( ParserContext::DefaultCollationDecl ) )
-        {
-            parseInfo->staticContext->error( prologMessage( "declare default collation" ),
-                                             ReportContext::XQST0038, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            const QUrl coll( resolveAndCheckCollation<ReportContext::XQST0038>( ( yyvsp[( 4 ) - ( 5 )].sval ), parseInfo, ( yyloc ) ) );
-
-            parseInfo->registerDeclaration( ParserContext::DefaultCollationDecl );
-            parseInfo->staticContext->setDefaultCollation( coll );
-        }
-    }
-    break;
-
-    case 60:
-        /* Line 1269 of yacc.c.  */
-#line 1940 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XSLT20 ), parseInfo, ( yyloc ), ( yyvsp[( 3 ) - ( 5 )].enums.Bool ) );
-
-        if ( parseInfo->hasDeclaration( ParserContext::BaseURIDecl ) )
-        {
-            parseInfo->staticContext->error( prologMessage( "declare base-uri" ),
-                                             ReportContext::XQST0032, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            parseInfo->registerDeclaration( ParserContext::BaseURIDecl );
-            const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
-
-            QUrl toBeBase( AnyURI::toQUrl<ReportContext::XQST0046>( ( yyvsp[( 4 ) - ( 5 )].sval ), parseInfo->staticContext, &ryy ) );
-
-            /* Now we're guaranteed that base is a valid lexical representation, but it can still be relative. */
-
-            if ( toBeBase.isRelative() )
-            {
-                toBeBase = parseInfo->staticContext->baseURI().resolved( toBeBase );
-            }
-
-            parseInfo->staticContext->setBaseURI( toBeBase );
-        }
-    }
-    break;
-
-    case 61:
-        /* Line 1269 of yacc.c.  */
-#line 1963 "querytransformparser.ypp"
-    {
-        parseInfo->staticContext->error( QtXmlPatterns::tr( "The Schema Import feature is not supported, "
-                                                            "and therefore %1 declarations cannot occur." )
-                                         .formatArg( formatKeyword( "import schema" ) ),
-                                         ReportContext::XQST0009, fromYYLTYPE( ( yyloc ), parseInfo ) );
-    }
-    break;
-
-    case 65:
-        /* Line 1269 of yacc.c.  */
-#line 1975 "querytransformparser.ypp"
-    {
-        if ( ( yyvsp[( 4 ) - ( 6 )].sval ).isEmpty() )
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "The target namespace of a %1 cannot be empty." )
-                                             .formatArg( formatKeyword( "module import" ) ),
-                                             ReportContext::XQST0088, fromYYLTYPE( ( yyloc ), parseInfo ) );
-
-        }
-        else
-        {
-            /* This is temporary until we have implemented it. */
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "The module import feature is not supported" ),
-                                             ReportContext::XQST0016, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-    }
-    break;
-
-    case 72:
-        /* Line 1269 of yacc.c.  */
-#line 2002 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 3 ) - ( 9 )].enums.Bool ) );
-
-        if ( variableByName( ( yyvsp[( 5 ) - ( 9 )].qName ), parseInfo ) )
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "A variable with name %1 has already "
-                                                                "been declared." )
-                                             .formatArg( formatKeyword( parseInfo->staticContext->namePool()->toLexical( ( yyvsp[( 5 ) - ( 9 )].qName ) ) ) ),
-                                             parseInfo->isXSLT() ? ReportContext::XTSE0630 : ReportContext::XQST0049,
-                                             fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            if ( ( yyvsp[( 7 ) - ( 9 )].expr ) ) /* We got a value assigned. */
-            {
-                const Expression::Ptr checked
-                ( TypeChecker::applyFunctionConversion( ( yyvsp[( 7 ) - ( 9 )].expr ), ( yyvsp[( 6 ) - ( 9 )].sequenceType ),
-                                                        parseInfo->staticContext,
-                                                        ( yyvsp[( 3 ) - ( 9 )].enums.Bool ) ? ReportContext::XTTE0570 : ReportContext::XPTY0004,
-                                                        ( yyvsp[( 3 ) - ( 9 )].enums.Bool ) ? TypeChecker::Options( TypeChecker::CheckFocus | TypeChecker::AutomaticallyConvert ) :
-                                                        TypeChecker::CheckFocus ) );
-
-                pushVariable( ( yyvsp[( 5 ) - ( 9 )].qName ), ( yyvsp[( 6 ) - ( 9 )].sequenceType ), checked, VariableDeclaration::GlobalVariable,
-                              ( yyloc ), parseInfo );
-                parseInfo->declaredVariables.append( parseInfo->variables.last() );
-            }
-            else     /* We got an 'external' declaration. */
-            {
-                const SequenceType::Ptr varType( parseInfo->staticContext->
-                                                 externalVariableLoader()->announceExternalVariable( ( yyvsp[( 5 ) - ( 9 )].qName ), ( yyvsp[( 6 ) - ( 9 )].sequenceType ) ) );
-
-                if ( varType )
-                {
-                    /* We push the declaration such that we can see name clashes and so on, but we don't use it for tying
-                     * any references to it. */
-                    pushVariable( ( yyvsp[( 5 ) - ( 9 )].qName ), varType, Expression::Ptr(), VariableDeclaration::ExternalVariable, ( yyloc ),
-                                  parseInfo );
-                }
-                else if ( ( yyvsp[( 8 ) - ( 9 )].expr ) )
-                {
-                    /* Ok, the xsl:param got a default value, we make it
-                     * available as a regular variable declaration. */
-                    // TODO turn into checked
-                    pushVariable( ( yyvsp[( 5 ) - ( 9 )].qName ), ( yyvsp[( 6 ) - ( 9 )].sequenceType ), ( yyvsp[( 8 ) - ( 9 )].expr ),
-                                  VariableDeclaration::GlobalVariable, ( yyloc ), parseInfo );
-                    // TODO ensure that duplicates are trapped.
-                }
-                else
-                {
-                    parseInfo->staticContext->error( QtXmlPatterns::tr( "No value is available for the external "
-                                                                        "variable with name %1." )
-                                                     .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 5 ) - ( 9 )].qName ) ) ),
-                                                     parseInfo->isXSLT() ? ReportContext::XTDE0050 : ReportContext::XPDY0002,
-                                                     fromYYLTYPE( ( yyloc ), parseInfo ) );
-                }
-            }
-        }
-    }
-    break;
-
-    case 73:
-        /* Line 1269 of yacc.c.  */
-#line 2056 "querytransformparser.ypp"
-    {
-        ( yyval.expr ).reset();
-    }
-    break;
-
-    case 74:
-        /* Line 1269 of yacc.c.  */
-#line 2060 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
-    }
-    break;
-
-    case 75:
-        /* Line 1269 of yacc.c.  */
-#line 2065 "querytransformparser.ypp"
-    {
-        ( yyval.expr ).reset();
-    }
-    break;
-
-    case 76:
-        /* Line 1269 of yacc.c.  */
-#line 2069 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
-    }
-    break;
-
-    case 77:
-        /* Line 1269 of yacc.c.  */
-#line 2074 "querytransformparser.ypp"
-    {
-        if ( parseInfo->hasDeclaration( ParserContext::ConstructionDecl ) )
-        {
-            parseInfo->staticContext->error( prologMessage( "declare ordering" ),
-                                             ReportContext::XQST0067, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            parseInfo->registerDeclaration( ParserContext::ConstructionDecl );
-            parseInfo->staticContext->setConstructionMode( ( yyvsp[( 3 ) - ( 4 )].enums.constructionMode ) );
-        }
-    }
-    break;
-
-    case 78:
-        /* Line 1269 of yacc.c.  */
-#line 2088 "querytransformparser.ypp"
-    {
-        ( yyval.enums.constructionMode ) = StaticContext::CMStrip;
-    }
-    break;
-
-    case 79:
-        /* Line 1269 of yacc.c.  */
-#line 2092 "querytransformparser.ypp"
-    {
-        ( yyval.enums.constructionMode ) = StaticContext::CMPreserve;
-    }
-    break;
-
-    case 80:
-        /* Line 1269 of yacc.c.  */
-#line 2097 "querytransformparser.ypp"
-    {
-        ( yyval.enums.slot ) = parseInfo->currentExpressionSlot() - ( yyvsp[( 6 ) - ( 7 )].functionArguments ).count();
-    }
-    break;
-
-    case 81:
-        /* Line 1269 of yacc.c.  */
-#line 2101 "querytransformparser.ypp"
-    {
-        if ( !( yyvsp[( 3 ) - ( 11 )].enums.Bool ) )
-        {
-            allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 3 ) - ( 11 )].enums.Bool ) );
-        }
-
-        /* If FunctionBody is null, it is 'external', otherwise the value is the body. */
-        const QXmlName::NamespaceCode ns( ( yyvsp[( 4 ) - ( 11 )].qName ).namespaceURI() );
-
-        if ( parseInfo->isXSLT() && !( yyvsp[( 4 ) - ( 11 )].qName ).hasPrefix() )
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "A stylesheet function must have a prefixed name." ),
-                                             ReportContext::XTSE0740,
-                                             fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-
-        if ( ( yyvsp[( 10 ) - ( 11 )].expr ) ) /* We got a function body. */
-        {
-            if ( ns == StandardNamespaces::empty )
-            {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "The namespace for a user defined function "
-                                                                    "cannot be empty (try the predefined prefix %1, which exists for cases like this)" )
-                                                 .formatArg( formatKeyword( "local" ) ), ReportContext::XQST0060, fromYYLTYPE( ( yyloc ), parseInfo ) );
-
-            }
-            else if ( XPathHelper::isReservedNamespace( ns ) )
-            {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "The namespace %1 is reserved; therefore "
-                                                                    "user defined functions may not use it. Try the predefined prefix %2, which "
-                                                                    "exists for these cases." )
-                                                 .formatArgs( formatURI( parseInfo->staticContext->namePool(), ns ), formatKeyword( "local" ) ),
-                                                 parseInfo->isXSLT() ? ReportContext::XTSE0080 : ReportContext::XQST0045, fromYYLTYPE( ( yyloc ), parseInfo ) );
-
-            }
-            else if ( parseInfo->moduleNamespace != StandardNamespaces::empty &&
-                      ns != parseInfo->moduleNamespace )
-            {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "The namespace of a user defined "
-                                                                    "function in a library module must be equivalent to the module namespace. "
-                                                                    "In other words, it should be %1 instead of %2" )
-                                                 .formatArgs( formatURI( parseInfo->staticContext->namePool(), parseInfo->moduleNamespace ),
-                                                         formatURI( parseInfo->staticContext->namePool(), ns ) ), ReportContext::XQST0048, fromYYLTYPE( ( yyloc ), parseInfo ) );
-
-            }
-            else
-            {
-                /* Apply function conversion such that the body matches the declared
-                 * return type. */
-                const Expression::Ptr checked( TypeChecker::applyFunctionConversion( ( yyvsp[( 10 ) - ( 11 )].expr ),
-                                               ( yyvsp[( 9 ) - ( 11 )].sequenceType ),
-                                               parseInfo->staticContext,
-                                               ReportContext::XPTY0004,
-                                               TypeChecker::Options( TypeChecker::AutomaticallyConvert |
-                                                       TypeChecker::CheckFocus |
-                                                       TypeChecker::GeneratePromotion ) ) );
-
-                const int argCount = ( yyvsp[( 6 ) - ( 11 )].functionArguments ).count();
-                const FunctionSignature::Ptr sign( new FunctionSignature( ( yyvsp[( 4 ) - ( 11 )].qName ) /* name */,
-                                                   argCount /* minArgs */,
-                                                   argCount /* maxArgs */,
-                                                   ( yyvsp[( 9 ) - ( 11 )].sequenceType ) /* returnType */ ) );
-
-                sign->setArguments( ( yyvsp[( 6 ) - ( 11 )].functionArguments ) );
-                const UserFunction::List::const_iterator end( parseInfo->userFunctions.constEnd() );
-                UserFunction::List::const_iterator it( parseInfo->userFunctions.constBegin() );
+                FunctionArgument::List::const_iterator it( ( yyvsp[( 1 ) - ( 3 )].functionArguments ).constBegin() );
+                const FunctionArgument::List::const_iterator end( ( yyvsp[( 1 ) - ( 3 )].functionArguments ).constEnd() );
 
                 for ( ; it != end; ++it )
                 {
-                    if ( *( *it )->signature() == *sign )
+                    if ( ( *it )->name() == ( yyvsp[( 3 ) - ( 3 )].functionArgument )->name() )
                     {
-                        parseInfo->staticContext->error( QtXmlPatterns::tr( "A function already exists with the signature %1." )
-                                                         .formatArg( formatFunction( parseInfo->staticContext->namePool(), sign ) ),
-                                                         parseInfo->isXSLT() ? ReportContext::XTSE0770 : ReportContext::XQST0034, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "An argument with name %1 has already "
+                                                         "been declared. Every argument name must be unique." )
+                                                         .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 3 ) - ( 3 )].functionArgument )->name() ) ),
+                                                         ReportContext::XQST0039, fromYYLTYPE( ( yyloc ), parseInfo ) );
                     }
                 }
 
-                VariableDeclaration::List argDecls;
-
-                for ( int i = 0; i < argCount; ++i )
-                {
-                    argDecls.append( parseInfo->variables.at( i ) );
-                }
-
-                if ( ( yyvsp[( 8 ) - ( 11 )].enums.slot ) > -1 )
-                {
-                    /* We have allocated slots, so now push them out of scope. */
-                    parseInfo->finalizePushedVariable( argCount );
-                }
-
-                parseInfo->userFunctions.append( UserFunction::Ptr( new UserFunction( sign, checked, ( yyvsp[( 8 ) - ( 11 )].enums.slot ),
-                                                 argDecls ) ) );
+                ( yyvsp[( 1 ) - ( 3 )].functionArguments ).append( ( yyvsp[( 3 ) - ( 3 )].functionArgument ) );
+                ( yyval.functionArguments ) = ( yyvsp[( 1 ) - ( 3 )].functionArguments );
             }
-        }
-        else     /* We got an 'external' declaration. */
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "No external functions are supported. "
-                                                                "All supported functions can be used directly, "
-                                                                "without first declaring them as external" ),
-                                             ReportContext::XPST0017, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-    }
-    break;
+            break;
 
-    case 82:
-        /* Line 1269 of yacc.c.  */
-#line 2205 "querytransformparser.ypp"
-    {
-        ( yyval.functionArguments ) = FunctionArgument::List();
-    }
-    break;
-
-    case 83:
-        /* Line 1269 of yacc.c.  */
-#line 2209 "querytransformparser.ypp"
-    {
-        FunctionArgument::List l;
-        l.append( ( yyvsp[( 1 ) - ( 1 )].functionArgument ) );
-        ( yyval.functionArguments ) = l;
-    }
-    break;
-
-    case 84:
-        /* Line 1269 of yacc.c.  */
-#line 2215 "querytransformparser.ypp"
-    {
-        FunctionArgument::List::const_iterator it( ( yyvsp[( 1 ) - ( 3 )].functionArguments ).constBegin() );
-        const FunctionArgument::List::const_iterator end( ( yyvsp[( 1 ) - ( 3 )].functionArguments ).constEnd() );
-
-        for ( ; it != end; ++it )
-        {
-            if ( ( *it )->name() == ( yyvsp[( 3 ) - ( 3 )].functionArgument )->name() )
-            {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "An argument with name %1 has already "
-                                                                    "been declared. Every argument name must be unique." )
-                                                 .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 3 ) - ( 3 )].functionArgument )->name() ) ),
-                                                 ReportContext::XQST0039, fromYYLTYPE( ( yyloc ), parseInfo ) );
-            }
-        }
-
-        ( yyvsp[( 1 ) - ( 3 )].functionArguments ).append( ( yyvsp[( 3 ) - ( 3 )].functionArgument ) );
-        ( yyval.functionArguments ) = ( yyvsp[( 1 ) - ( 3 )].functionArguments );
-    }
-    break;
-
-    case 85:
-        /* Line 1269 of yacc.c.  */
+        case 85:
+            /* Line 1269 of yacc.c.  */
 #line 2236 "querytransformparser.ypp"
-    {
-        pushVariable( ( yyvsp[( 2 ) - ( 3 )].qName ), ( yyvsp[( 3 ) - ( 3 )].sequenceType ), Expression::Ptr(),
-                      VariableDeclaration::FunctionArgument, ( yyloc ), parseInfo );
-        ( yyval.functionArgument ) = FunctionArgument::Ptr( new FunctionArgument( ( yyvsp[( 2 ) - ( 3 )].qName ),
-            ( yyvsp[( 3 ) - ( 3 )].sequenceType ) ) );
-    }
-    break;
+            {
+                pushVariable( ( yyvsp[( 2 ) - ( 3 )].qName ), ( yyvsp[( 3 ) - ( 3 )].sequenceType ), Expression::Ptr(),
+                              VariableDeclaration::FunctionArgument, ( yyloc ), parseInfo );
+                ( yyval.functionArgument ) = FunctionArgument::Ptr( new FunctionArgument( ( yyvsp[( 2 ) - ( 3 )].qName ),
+                                             ( yyvsp[( 3 ) - ( 3 )].sequenceType ) ) );
+            }
+            break;
 
-    case 86:
-        /* Line 1269 of yacc.c.  */
+        case 86:
+            /* Line 1269 of yacc.c.  */
 #line 2242 "querytransformparser.ypp"
-    {
-        ( yyval.expr ).reset();
-    }
-    break;
+            {
+                ( yyval.expr ).reset();
+            }
+            break;
 
-    case 88:
-        /* Line 1269 of yacc.c.  */
+        case 88:
+            /* Line 1269 of yacc.c.  */
 #line 2248 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = ( yyvsp[( 2 ) - ( 3 )].expr );
-    }
-    break;
+            {
+                ( yyval.expr ) = ( yyvsp[( 2 ) - ( 3 )].expr );
+            }
+            break;
 
-    case 91:
-        /* Line 1269 of yacc.c.  */
+        case 91:
+            /* Line 1269 of yacc.c.  */
 #line 2264 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new CombineNodes( ( yyvsp[( 1 ) - ( 3 )].expr ), CombineNodes::Union, ( yyvsp[( 3 ) - ( 3 )].expr ) ),
-                                 ( yyloc ),
-                                 parseInfo );
-    }
-    break;
+            {
+                ( yyval.expr ) = create( new CombineNodes( ( yyvsp[( 1 ) - ( 3 )].expr ), CombineNodes::Union, ( yyvsp[( 3 ) - ( 3 )].expr ) ),
+                                         ( yyloc ),
+                                         parseInfo );
+            }
+            break;
 
-    case 93:
-        /* Line 1269 of yacc.c.  */
+        case 93:
+            /* Line 1269 of yacc.c.  */
 #line 2270 "querytransformparser.ypp"
-    {
-        /* We write this into a node test. The spec says, 5.5.3 The Meaning of a Pattern:
-         * "Similarly, / matches a document node, and only a document node,
-         * because the result of the expression root(.)//(/) returns the root
-         * node of the tree containing the context node if and only if it is a
-         * document node." */
-        ( yyval.expr ) = create( new AxisStep( QXmlNodeModelIndex::AxisSelf, BuiltinTypes::document ), ( yyloc ), parseInfo );
-    }
-    break;
+            {
+                /* We write this into a node test. The spec says, 5.5.3 The Meaning of a Pattern:
+                 * "Similarly, / matches a document node, and only a document node,
+                 * because the result of the expression root(.)//(/) returns the root
+                 * node of the tree containing the context node if and only if it is a
+                 * document node." */
+                ( yyval.expr ) = create( new AxisStep( QXmlNodeModelIndex::AxisSelf, BuiltinTypes::document ), ( yyloc ), parseInfo );
+            }
+            break;
 
-    case 94:
-        /* Line 1269 of yacc.c.  */
+        case 94:
+            /* Line 1269 of yacc.c.  */
 #line 2279 "querytransformparser.ypp"
-    {
-        /* /axis::node-test
-         *       =>
-         * axis::node-test[parent::document-node()]
-         *
-         * In practice it looks like this. $2 is:
-         *
-         *     TruthPredicate
-         *          AxisStep    self::element(c)
-         *          TruthPredicate
-         *              AxisStep    parent::element(b)
-         *              AxisStep    parent::element(a)
-         *
-         * and we want this:
-         *
-         *      TruthPredicate
-         *          AxisStep    self::element(c)
-         *          TruthPredicate
-         *              AxisStep    self::element(b)
-         *              TruthPredicate
-         *                  AxisStep    parent::element(a)
-         *                  AxisStep    parent::document()
-         *
-         * So we want to rewrite the predicate deepest down into a
-         * another TruthPredicate containing the AxisStep.
-         *
-         * The simplest case where $2 is only an axis step is special. When $2 is:
-         *
-         *  AxisStep self::element(a)
-         *
-         * we want:
-         *
-         *  TruthPredicate
-         *      AxisStep self::element(a)
-         *      AxisStep parent::document()
-         */
-
-        /* First, find the target. */
-        Expression::Ptr target( ( yyvsp[( 2 ) - ( 2 )].expr ) );
-
-        while ( isPredicate( target->id() ) )
-        {
-            const Expression::Ptr candidate( target->operands().at( 1 ) );
-
-            if ( isPredicate( candidate->id() ) )
             {
-                target = candidate;
-            }
-            else
-            {
-                break;   /* target is now the last predicate. */
-            }
-        }
-
-        if ( target->is( Expression::IDAxisStep ) )
-        {
-            ( yyval.expr ) = create( GenericPredicate::create( ( yyvsp[( 2 ) - ( 2 )].expr ),
-                                     create( new AxisStep( QXmlNodeModelIndex::AxisParent, BuiltinTypes::document ), ( yyloc ), parseInfo ),
-                                     parseInfo->staticContext, fromYYLTYPE( ( yylsp[( 1 ) - ( 2 )] ), parseInfo ) ), ( yylsp[( 1 ) - ( 2 )] ), parseInfo );
-        }
-        else
-        {
-            const Expression::List targetOperands( target->operands() );
-            Expression::List newOps;
-            newOps.append( targetOperands.at( 0 ) );
-
-            newOps.append( create( GenericPredicate::create( targetOperands.at( 1 ),
-                                   create( new AxisStep( QXmlNodeModelIndex::AxisParent, BuiltinTypes::document ), ( yyloc ), parseInfo ),
-                                   parseInfo->staticContext, fromYYLTYPE( ( yylsp[( 1 ) - ( 2 )] ), parseInfo ) ), ( yylsp[( 1 ) - ( 2 )] ), parseInfo ) );
-
-            target->setOperands( newOps );
-            ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
-        }
-    }
-    break;
-
-    case 95:
-        /* Line 1269 of yacc.c.  */
-#line 2349 "querytransformparser.ypp"
-    {
-        /* //axis::node-test
-         *        =>
-         * axis::node-test[parent::node()]
-         *
-         * Spec says: "//para matches any para element that has a parent node."
-         */
-        ( yyval.expr ) = create( GenericPredicate::create( ( yyvsp[( 2 ) - ( 2 )].expr ),
-                                 create( new AxisStep( QXmlNodeModelIndex::AxisParent, BuiltinTypes::node ), ( yyloc ), parseInfo ),
-                                 parseInfo->staticContext, fromYYLTYPE( ( yylsp[( 1 ) - ( 2 )] ), parseInfo ) ), ( yylsp[( 1 ) - ( 2 )] ), parseInfo );
-    }
-    break;
-
-    case 97:
-        /* Line 1269 of yacc.c.  */
-#line 2361 "querytransformparser.ypp"
-    {
-        createIdPatternPath( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ), QXmlNodeModelIndex::AxisParent,
-                             ( yylsp[( 2 ) - ( 3 )] ), parseInfo );
-    }
-    break;
-
-    case 98:
-        /* Line 1269 of yacc.c.  */
-#line 2365 "querytransformparser.ypp"
-    {
-        createIdPatternPath( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ), QXmlNodeModelIndex::AxisAncestor,
-                             ( yylsp[( 2 ) - ( 3 )] ), parseInfo );
-    }
-    break;
-
-    case 99:
-        /* Line 1269 of yacc.c.  */
-#line 2370 "querytransformparser.ypp"
-    {
-        const Expression::List ands( ( yyvsp[( 1 ) - ( 1 )].expr )->operands() );
-        const FunctionSignature::Ptr signature( ( yyvsp[( 1 ) - ( 1 )].expr )->as<FunctionCall>()->signature() );
-        const QXmlName name( signature->name() );
-        const QXmlName key( StandardNamespaces::fn, StandardLocalNames::key );
-        const QXmlName id( StandardNamespaces::fn, StandardLocalNames::id );
-
-        if ( name == id )
-        {
-            const Expression::ID id = ands.first()->id();
-
-            if ( !isVariableReference( id ) && id != Expression::IDStringValue )
-            {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "When function %1 is used for matching inside a pattern, "
-                                                                    "the argument must be a variable reference or a string literal." )
-                                                 .formatArg( formatFunction( parseInfo->staticContext->namePool(), signature ) ),
-                                                 ReportContext::XPST0003,
-                                                 fromYYLTYPE( ( yyloc ), parseInfo ) );
-            }
-        }
-        else if ( name == key )
-        {
-            if ( ands.first()->id() != Expression::IDStringValue )
-            {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "In an XSL-T pattern, the first argument to function %1 "
-                                                                    "must be a string literal, when used for matching." )
-                                                 .formatArg( formatFunction( parseInfo->staticContext->namePool(), signature ) ),
-                                                 ReportContext::XPST0003,
-                                                 fromYYLTYPE( ( yyloc ), parseInfo ) );
-            }
-
-            const Expression::ID id2 = ands.at( 1 )->id();
-
-            if ( !isVariableReference( id2 ) &&
-                    id2 != Expression::IDStringValue &&
-                    id2 != Expression::IDIntegerValue &&
-                    id2 != Expression::IDBooleanValue &&
-                    id2 != Expression::IDFloat )
-            {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "In an XSL-T pattern, the first argument to function %1 "
-                                                                    "must be a literal or a variable reference, when used for matching." )
-                                                 .formatArg( formatFunction( parseInfo->staticContext->namePool(), signature ) ),
-                                                 ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
-            }
-
-            if ( ands.count() == 3 )
-            {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "In an XSL-T pattern, function %1 cannot have a third argument." )
-                                                 .formatArg( formatFunction( parseInfo->staticContext->namePool(), signature ) ),
-                                                 ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
-            }
-
-        }
-        else
-        {
-            const FunctionSignature::Hash signs( parseInfo->staticContext->functionSignatures()->functionSignatures() );
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "In an XSL-T pattern, only function %1 "
-                                                                "and %2, not %3, can be used for matching." )
-                                             .formatArgs( formatFunction( parseInfo->staticContext->namePool(), signs.value( id ) ),
-                                                     formatFunction( parseInfo->staticContext->namePool(), signs.value( key ) ),
-                                                     formatFunction( parseInfo->staticContext->namePool(), signature ) ), ReportContext::XPST0003,
-                                             fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-
-        ( yyval.expr ) = ( yyvsp[( 1 ) - ( 1 )].expr );
-    }
-    break;
-
-    case 101:
-        /* Line 1269 of yacc.c.  */
-#line 2440 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = createPatternPath( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ), QXmlNodeModelIndex::AxisParent,
-                                            ( yylsp[( 2 ) - ( 3 )] ), parseInfo );
-    }
-    break;
-
-    case 102:
-        /* Line 1269 of yacc.c.  */
-#line 2444 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = createPatternPath( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ),
-                                            QXmlNodeModelIndex::AxisAncestor,
-                                            ( yylsp[( 2 ) - ( 3 )] ), parseInfo );
-    }
-    break;
-
-    case 103:
-        /* Line 1269 of yacc.c.  */
-#line 2449 "querytransformparser.ypp"
-    {
-        const Expression::Ptr expr( findAxisStep( ( yyvsp[( 1 ) - ( 1 )].expr ) ) );
-
-        const QXmlNodeModelIndex::Axis axis = expr->as<AxisStep>()->axis();
-        AxisStep *const axisStep = expr->as<AxisStep>();
-
-        /* Here we constrain the possible axes, and we rewrite the axes as according
-         * to 5.5.3 The Meaning of a Pattern.
-         *
-         * However, we also rewrite axis child and attribute to axis self. The
-         * reason for this is that if we don't, we will match the children of
-         * the context node, instead of the context node itself. The formal
-         * definition of a pattern, root(.)//EE is insensitive to context,
-         * while the way we implement pattern, "the other way of seeing it",
-         * e.g from right to left, are very much. */
-
-        if ( axisStep->nodeTest() == BuiltinTypes::document || axis == QXmlNodeModelIndex::AxisChild )
-        {
-            axisStep->setAxis( QXmlNodeModelIndex::AxisSelf );
-
-        }
-        else if ( axis == QXmlNodeModelIndex::AxisAttribute )
-        {
-            axisStep->setAxis( QXmlNodeModelIndex::AxisSelf );
-
-            /* Consider that the user write attribute::node().  This is
-             * semantically equivalent to attribute::attribute(), but since we have changed
-             * the axis to axis self, we also need to change the node test, such that we
-             * have self::attribute(). */
-            if ( *axisStep->nodeTest() == *BuiltinTypes::node )
-            {
-                axisStep->setNodeTest( BuiltinTypes::attribute );
-            }
-
-        }
-        else
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "In an XSL-T pattern, axis %1 cannot be used, "
-                                                                "only axis %2 or %3 can." )
-                                             .formatArgs( formatKeyword( AxisStep::axisName( axis ) ),
-                                                     formatKeyword( AxisStep::axisName( QXmlNodeModelIndex::AxisChild ) ),
-                                                     formatKeyword( AxisStep::axisName( QXmlNodeModelIndex::AxisAttribute ) ) ),
-                                             ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-
-        ( yyval.expr ) = ( yyvsp[( 1 ) - ( 1 )].expr );
-    }
-    break;
-
-    case 105:
-        /* Line 1269 of yacc.c.  */
-#line 2494 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new ExpressionSequence( ( yyvsp[( 1 ) - ( 1 )].expressionList ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 106:
-        /* Line 1269 of yacc.c.  */
-#line 2499 "querytransformparser.ypp"
-    {
-        Expression::List l;
-        l.append( ( yyvsp[( 1 ) - ( 3 )].expr ) );
-        l.append( ( yyvsp[( 3 ) - ( 3 )].expr ) );
-        ( yyval.expressionList ) = l;
-    }
-    break;
-
-    case 107:
-        /* Line 1269 of yacc.c.  */
-#line 2506 "querytransformparser.ypp"
-    {
-        ( yyvsp[( 1 ) - ( 3 )].expressionList ).append( ( yyvsp[( 3 ) - ( 3 )].expr ) );
-        ( yyval.expressionList ) = ( yyvsp[( 1 ) - ( 3 )].expressionList );
-    }
-    break;
-
-    case 113:
-        /* Line 1269 of yacc.c.  */
-#line 2517 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = createDirAttributeValue( ( yyvsp[( 3 ) - ( 4 )].expressionList ), parseInfo, ( yyloc ) );
-    }
-    break;
-
-    case 114:
-        /* Line 1269 of yacc.c.  */
-#line 2522 "querytransformparser.ypp"
-    {
-        QVector<QXmlName> result;
-        result.append( QXmlName( StandardNamespaces::InternalXSLT, StandardLocalNames::Default ) );
-        ( yyval.qNameVector ) = result;
-    }
-    break;
-
-    case 115:
-        /* Line 1269 of yacc.c.  */
-#line 2528 "querytransformparser.ypp"
-    {
-        ( yyval.qNameVector ) = ( yyvsp[( 2 ) - ( 2 )].qNameVector );
-    }
-    break;
-
-    case 116:
-        /* Line 1269 of yacc.c.  */
-#line 2533 "querytransformparser.ypp"
-    {
-        ( yyval.qName ) = QXmlName( StandardNamespaces::InternalXSLT, StandardLocalNames::Default );
-    }
-    break;
-
-    case 117:
-        /* Line 1269 of yacc.c.  */
-#line 2537 "querytransformparser.ypp"
-    {
-        ( yyval.qName ) = ( yyvsp[( 2 ) - ( 2 )].qName );
-    }
-    break;
-
-    case 118:
-        /* Line 1269 of yacc.c.  */
-#line 2542 "querytransformparser.ypp"
-    {
-        QVector<QXmlName> result;
-        result.append( ( yyvsp[( 1 ) - ( 1 )].qName ) );
-        ( yyval.qNameVector ) = result;
-    }
-    break;
-
-    case 119:
-        /* Line 1269 of yacc.c.  */
-#line 2548 "querytransformparser.ypp"
-    {
-        ( yyvsp[( 1 ) - ( 3 )].qNameVector ).append( ( yyvsp[( 3 ) - ( 3 )].qName ) );
-        ( yyval.qNameVector ) = ( yyvsp[( 1 ) - ( 3 )].qNameVector );
-    }
-    break;
-
-    case 120:
-        /* Line 1269 of yacc.c.  */
-#line 2554 "querytransformparser.ypp"
-    {
-        ( yyval.qName ) = ( yyvsp[( 1 ) - ( 1 )].qName );
-    }
-    break;
-
-    case 121:
-        /* Line 1269 of yacc.c.  */
-#line 2558 "querytransformparser.ypp"
-    {
-        if ( ( yyvsp[( 1 ) - ( 1 )].sval ) == QLatin1String( "#current" ) )
-        {
-            ( yyval.qName ) = QXmlName( StandardNamespaces::InternalXSLT, StandardLocalNames::current );
-        }
-        else if ( ( yyvsp[( 1 ) - ( 1 )].sval ) == QLatin1String( "#default" ) )
-        {
-            ( yyval.qName ) = QXmlName( StandardNamespaces::InternalXSLT, StandardLocalNames::Default );
-        }
-        else if ( ( yyvsp[( 1 ) - ( 1 )].sval ) == QLatin1String( "#all" ) )
-        {
-            ( yyval.qName ) = QXmlName( StandardNamespaces::InternalXSLT, StandardLocalNames::all );
-        }
-        else
-        {
-            const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
-
-            if ( !QXmlUtils::isNCName( ( yyvsp[( 1 ) - ( 1 )].sval ) ) )
-            {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is an invalid template mode name." )
-                                                 .formatArg( formatKeyword( ( yyvsp[( 1 ) - ( 1 )].sval ) ) ),
-                                                 ReportContext::XTSE0550,
-                                                 fromYYLTYPE( ( yyloc ), parseInfo ) );
-            }
-
-            ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName( StandardNamespaces::empty, ( yyvsp[( 1 ) - ( 1 )].sval ) );
-        }
-    }
-    break;
-
-    case 124:
-        /* Line 1269 of yacc.c.  */
-#line 2587 "querytransformparser.ypp"
-    {
-        /* We're pushing the range variable here, not the positional. */
-        ( yyval.expr ) = pushVariable( ( yyvsp[( 3 ) - ( 7 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 7 )].sequenceType ) ),
-                                       ( yyvsp[( 7 ) - ( 7 )].expr ), VariableDeclaration::RangeVariable, ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 125:
-        /* Line 1269 of yacc.c.  */
-#line 2591 "querytransformparser.ypp"
-    {
-        /* It is ok this appears after PositionalVar, because currentRangeSlot()
-         * uses a different "channel" than currentPositionSlot(), so they can't trash
-         * each other. */
-        ( yyval.enums.slot ) = parseInfo->staticContext->currentRangeSlot();
-    }
-    break;
-
-    case 126:
-        /* Line 1269 of yacc.c.  */
-#line 2598 "querytransformparser.ypp"
-    {
-        Q_ASSERT( ( yyvsp[( 7 ) - ( 10 )].expr ) );
-        Q_ASSERT( ( yyvsp[( 10 ) - ( 10 )].expr ) );
-
-        /* We want the next last pushed variable, since we push the range variable after the
-         * positional variable. */
-        if ( ( yyvsp[( 5 ) - ( 10 )].enums.slot ) != -1 &&
-                parseInfo->variables.at( parseInfo->variables.count() - 2 )->name == ( yyvsp[( 3 ) - ( 10 )].qName ) )
-        {
-            /* Ok, a positional variable is used since its slot is not -1, and its name is equal
-             * to our range variable. This is an error. */
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "The name of a variable bound in a for-expression must be different "
-                                                                "from the positional variable. Hence, the two variables named %1 collide." )
-                                             .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 3 ) - ( 10 )].qName ) ) ),
-                                             ReportContext::XQST0089,
-                                             fromYYLTYPE( ( yyloc ), parseInfo ) );
-
-        }
-
-        const Expression::Ptr retBody( create( new ForClause( ( yyvsp[( 9 ) - ( 10 )].enums.slot ), ( yyvsp[( 8 ) - ( 10 )].expr ),
-                                               ( yyvsp[( 10 ) - ( 10 )].expr ), ( yyvsp[( 5 ) - ( 10 )].enums.slot ) ), ( yyloc ), parseInfo ) );
-        ReturnOrderBy *const rob = locateReturnClause( ( yyvsp[( 10 ) - ( 10 )].expr ) );
-
-        if ( rob )
-        {
-            ( yyval.expr ) = create( new OrderBy( rob->stability(), rob->orderSpecs(), retBody, rob ), ( yyloc ), parseInfo );
-        }
-        else
-        {
-            ( yyval.expr ) = retBody;
-        }
-
-        parseInfo->finalizePushedVariable();
-
-        if ( ( yyvsp[( 5 ) - ( 10 )].enums.slot ) != -1 ) /* We also have a positional variable to remove from the scope. */
-        {
-            parseInfo->finalizePushedVariable();
-        }
-    }
-    break;
-
-    case 127:
-        /* Line 1269 of yacc.c.  */
-#line 2632 "querytransformparser.ypp"
-    {
-        pushVariable( ( yyvsp[( 3 ) - ( 7 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 7 )].sequenceType ) ),
-                      ( yyvsp[( 7 ) - ( 7 )].expr ),
-                      VariableDeclaration::RangeVariable, ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 128:
-        /* Line 1269 of yacc.c.  */
-#line 2635 "querytransformparser.ypp"
-    {
-        /* It is ok this appears after PositionalVar, because currentRangeSlot()
-         * uses a different "channel" than currentPositionSlot(), so they can't trash
-         * each other. */
-        ( yyval.enums.slot ) = parseInfo->staticContext->currentRangeSlot();
-    }
-    break;
-
-    case 129:
-        /* Line 1269 of yacc.c.  */
-#line 2642 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new ForClause( ( yyvsp[( 9 ) - ( 10 )].enums.slot ), ( yyvsp[( 7 ) - ( 10 )].expr ),
-                                                ( yyvsp[( 10 ) - ( 10 )].expr ),
-                                                ( yyvsp[( 5 ) - ( 10 )].enums.slot ) ), ( yyloc ), parseInfo );
-
-        parseInfo->finalizePushedVariable();
-
-        if ( ( yyvsp[( 5 ) - ( 10 )].enums.slot ) != -1 ) /* We also have a positional variable to remove from the scope. */
-        {
-            parseInfo->finalizePushedVariable();
-        }
-    }
-    break;
-
-    case 133:
-        /* Line 1269 of yacc.c.  */
-#line 2656 "querytransformparser.ypp"
-    {
-        ( yyval.enums.slot ) = -1;
-    }
-    break;
-
-    case 134:
-        /* Line 1269 of yacc.c.  */
-#line 2661 "querytransformparser.ypp"
-    {
-        pushVariable( ( yyvsp[( 3 ) - ( 3 )].qName ), CommonSequenceTypes::ExactlyOneInteger, Expression::Ptr(),
-                      VariableDeclaration::PositionalVariable, ( yyloc ), parseInfo );
-        ( yyval.enums.slot ) = parseInfo->currentPositionSlot();
-    }
-    break;
-
-    case 135:
-        /* Line 1269 of yacc.c.  */
-#line 2668 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = pushVariable( ( yyvsp[( 4 ) - ( 7 )].qName ), quantificationType( ( yyvsp[( 5 ) - ( 7 )].sequenceType ) ),
-                                       ( yyvsp[( 7 ) - ( 7 )].expr ), VariableDeclaration::ExpressionVariable, ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 136:
-        /* Line 1269 of yacc.c.  */
-#line 2672 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 2 ) - ( 9 )].enums.Bool ) );
-
-        Q_ASSERT( parseInfo->variables.top()->name == ( yyvsp[( 4 ) - ( 9 )].qName ) );
-        ( yyval.expr ) = create( new LetClause( ( yyvsp[( 8 ) - ( 9 )].expr ), ( yyvsp[( 9 ) - ( 9 )].expr ),
-                                                parseInfo->variables.top() ),
-                                 ( yyloc ), parseInfo );
-        parseInfo->finalizePushedVariable();
-    }
-    break;
-
-    case 137:
-        /* Line 1269 of yacc.c.  */
-#line 2681 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = pushVariable( ( yyvsp[( 3 ) - ( 6 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 6 )].sequenceType ) ),
-                                       ( yyvsp[( 6 ) - ( 6 )].expr ), VariableDeclaration::ExpressionVariable, ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 138:
-        /* Line 1269 of yacc.c.  */
-#line 2683 "querytransformparser.ypp"
-    {
-        Q_ASSERT( parseInfo->variables.top()->name == ( yyvsp[( 3 ) - ( 8 )].qName ) );
-        ( yyval.expr ) = create( new LetClause( ( yyvsp[( 7 ) - ( 8 )].expr ), ( yyvsp[( 8 ) - ( 8 )].expr ),
-                                                parseInfo->variables.top() ),
-                                 ( yyloc ), parseInfo );
-        parseInfo->finalizePushedVariable();
-    }
-    break;
-
-    case 142:
-        /* Line 1269 of yacc.c.  */
-#line 2694 "querytransformparser.ypp"
-    {
-        if ( ( yyvsp[( 1 ) - ( 3 )].orderSpecs ).isEmpty() )
-        {
-            ( yyval.expr ) = ( yyvsp[( 3 ) - ( 3 )].expr );
-        }
-        else
-        {
-            ( yyval.expr ) = createReturnOrderBy( ( yyvsp[( 1 ) - ( 3 )].orderSpecs ), ( yyvsp[( 3 ) - ( 3 )].expr ),
-                                                  parseInfo->orderStability.pop(), ( yyloc ), parseInfo );
-        }
-    }
-    break;
-
-    case 143:
-        /* Line 1269 of yacc.c.  */
-#line 2702 "querytransformparser.ypp"
-    {
-        if ( ( yyvsp[( 3 ) - ( 5 )].orderSpecs ).isEmpty() )
-        {
-            ( yyval.expr ) = create( new IfThenClause( ( yyvsp[( 2 ) - ( 5 )].expr ), ( yyvsp[( 5 ) - ( 5 )].expr ),
-                                     create( new EmptySequence,
-                                             ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo );
-        }
-        else
-            ( yyval.expr ) = create( new IfThenClause( ( yyvsp[( 2 ) - ( 5 )].expr ),
-                                     createReturnOrderBy( ( yyvsp[( 3 ) - ( 5 )].orderSpecs ),
-                                         ( yyvsp[( 5 ) - ( 5 )].expr ), parseInfo->orderStability.pop(), ( yyloc ), parseInfo ),
-                                     create( new EmptySequence, ( yyloc ), parseInfo ) ),
-                                     ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 144:
-        /* Line 1269 of yacc.c.  */
-#line 2712 "querytransformparser.ypp"
-    {
-        ( yyval.orderSpecs ) = OrderSpecTransfer::List();
-    }
-    break;
-
-    case 146:
-        /* Line 1269 of yacc.c.  */
-#line 2718 "querytransformparser.ypp"
-    {
-        ( yyval.orderSpecs ) = ( yyvsp[( 2 ) - ( 2 )].orderSpecs );
-    }
-    break;
-
-    case 147:
-        /* Line 1269 of yacc.c.  */
-#line 2723 "querytransformparser.ypp"
-    {
-        OrderSpecTransfer::List list;
-        list += ( yyvsp[( 1 ) - ( 3 )].orderSpecs );
-        list.append( ( yyvsp[( 3 ) - ( 3 )].orderSpec ) );
-        ( yyval.orderSpecs ) = list;
-    }
-    break;
-
-    case 148:
-        /* Line 1269 of yacc.c.  */
-#line 2730 "querytransformparser.ypp"
-    {
-        OrderSpecTransfer::List list;
-        list.append( ( yyvsp[( 1 ) - ( 1 )].orderSpec ) );
-        ( yyval.orderSpecs ) = list;
-    }
-    break;
-
-    case 149:
-        /* Line 1269 of yacc.c.  */
-#line 2737 "querytransformparser.ypp"
-    {
-        ( yyval.orderSpec ) = OrderSpecTransfer( ( yyvsp[( 1 ) - ( 4 )].expr ),
-            OrderBy::OrderSpec( ( yyvsp[( 2 ) - ( 4 )].enums.sortDirection ), ( yyvsp[( 3 ) - ( 4 )].enums.orderingEmptySequence ) ) );
-    }
-    break;
-
-    case 150:
-        /* Line 1269 of yacc.c.  */
-#line 2742 "querytransformparser.ypp"
-    {
-        /* Where does the specification state the default value is ascending?
-         *
-         * It is implicit, in the first enumerated list in 3.8.3 Order By and Return Clauses:
-         *
-         * "If T1 and T2 are two tuples in the tuple stream, and V1 and V2 are the first pair
-         *  of values encountered when evaluating their orderspecs from left to right for
-         *  which one value is greater-than the other (as defined above), then:
-         *
-         *      1. If V1 is greater-than V2: If the orderspec specifies descending,
-         *         then T1 precedes T2 in the tuple stream; otherwise, T2 precedes T1 in the tuple stream.
-         *      2. If V2 is greater-than V1: If the orderspec specifies descending,
-         *         then T2 precedes T1 in the tuple stream; otherwise, T1 precedes T2 in the tuple stream."
-         *
-         * which means that if you don't specify anything, or you
-         * specify ascending, you get the same result.
-         */
-        ( yyval.enums.sortDirection ) = OrderBy::OrderSpec::Ascending;
-    }
-    break;
-
-    case 151:
-        /* Line 1269 of yacc.c.  */
-#line 2763 "querytransformparser.ypp"
-    {
-        ( yyval.enums.sortDirection ) = OrderBy::OrderSpec::Ascending;
-    }
-    break;
-
-    case 152:
-        /* Line 1269 of yacc.c.  */
-#line 2768 "querytransformparser.ypp"
-    {
-        ( yyval.enums.sortDirection ) = OrderBy::OrderSpec::Descending;
-    }
-    break;
-
-    case 153:
-        /* Line 1269 of yacc.c.  */
-#line 2773 "querytransformparser.ypp"
-    {
-        ( yyval.enums.orderingEmptySequence ) = parseInfo->staticContext->orderingEmptySequence();
-    }
-    break;
-
-    case 156:
-        /* Line 1269 of yacc.c.  */
-#line 2780 "querytransformparser.ypp"
-    {
-        if ( parseInfo->isXSLT() )
-        {
-            resolveAndCheckCollation<ReportContext::XTDE1035>( ( yyvsp[( 2 ) - ( 2 )].sval ), parseInfo, ( yyloc ) );
-        }
-        else
-        {
-            resolveAndCheckCollation<ReportContext::XQST0076>( ( yyvsp[( 2 ) - ( 2 )].sval ), parseInfo, ( yyloc ) );
-        }
-    }
-    break;
-
-    case 157:
-        /* Line 1269 of yacc.c.  */
-#line 2787 "querytransformparser.ypp"
-    {
-        /* We do nothing. We don't use collations, and we have this non-terminal
-         * in order to accept expressions. */
-    }
-    break;
-
-    case 158:
-        /* Line 1269 of yacc.c.  */
-#line 2793 "querytransformparser.ypp"
-    {
-        parseInfo->orderStability.push( OrderBy::StableOrder );
-    }
-    break;
-
-    case 159:
-        /* Line 1269 of yacc.c.  */
-#line 2797 "querytransformparser.ypp"
-    {
-        parseInfo->orderStability.push( OrderBy::UnstableOrder );
-    }
-    break;
-
-    case 162:
-        /* Line 1269 of yacc.c.  */
-#line 2805 "querytransformparser.ypp"
-    {
-        pushVariable( ( yyvsp[( 3 ) - ( 6 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 6 )].sequenceType ) ),
-                      ( yyvsp[( 6 ) - ( 6 )].expr ),
-                      VariableDeclaration::RangeVariable, ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 163:
-        /* Line 1269 of yacc.c.  */
-#line 2809 "querytransformparser.ypp"
-    {
-        ( yyval.enums.slot ) = parseInfo->staticContext->currentRangeSlot();
-    }
-    break;
-
-    case 164:
-        /* Line 1269 of yacc.c.  */
-#line 2811 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new QuantifiedExpression( ( yyvsp[( 8 ) - ( 9 )].enums.slot ),
-                                 QuantifiedExpression::Some, ( yyvsp[( 6 ) - ( 9 )].expr ), ( yyvsp[( 9 ) - ( 9 )].expr ) ), ( yyloc ), parseInfo );
-        parseInfo->finalizePushedVariable();
-    }
-    break;
-
-    case 165:
-        /* Line 1269 of yacc.c.  */
-#line 2819 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = pushVariable( ( yyvsp[( 3 ) - ( 6 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 6 )].sequenceType ) ),
-                                       ( yyvsp[( 6 ) - ( 6 )].expr ),
-                                       VariableDeclaration::RangeVariable, ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 166:
-        /* Line 1269 of yacc.c.  */
-#line 2823 "querytransformparser.ypp"
-    {
-        ( yyval.enums.slot ) = parseInfo->staticContext->currentRangeSlot();
-    }
-    break;
-
-    case 167:
-        /* Line 1269 of yacc.c.  */
-#line 2825 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new QuantifiedExpression( ( yyvsp[( 8 ) - ( 9 )].enums.slot ),
-                                 QuantifiedExpression::Some, ( yyvsp[( 7 ) - ( 9 )].expr ), ( yyvsp[( 9 ) - ( 9 )].expr ) ), ( yyloc ), parseInfo );
-        parseInfo->finalizePushedVariable();
-    }
-    break;
-
-    case 169:
-        /* Line 1269 of yacc.c.  */
-#line 2834 "querytransformparser.ypp"
-    {
-        pushVariable( ( yyvsp[( 3 ) - ( 6 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 6 )].sequenceType ) ),
-                      ( yyvsp[( 6 ) - ( 6 )].expr ),
-                      VariableDeclaration::RangeVariable, ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 170:
-        /* Line 1269 of yacc.c.  */
-#line 2838 "querytransformparser.ypp"
-    {
-        ( yyval.enums.slot ) = parseInfo->staticContext->currentRangeSlot();
-    }
-    break;
-
-    case 171:
-        /* Line 1269 of yacc.c.  */
-#line 2840 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new QuantifiedExpression( ( yyvsp[( 8 ) - ( 9 )].enums.slot ),
-                                 QuantifiedExpression::Every, ( yyvsp[( 6 ) - ( 9 )].expr ), ( yyvsp[( 9 ) - ( 9 )].expr ) ), ( yyloc ), parseInfo );
-        parseInfo->finalizePushedVariable();
-    }
-    break;
-
-    case 172:
-        /* Line 1269 of yacc.c.  */
-#line 2848 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = pushVariable( ( yyvsp[( 3 ) - ( 6 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 6 )].sequenceType ) ),
-                                       ( yyvsp[( 6 ) - ( 6 )].expr ),
-                                       VariableDeclaration::RangeVariable, ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 173:
-        /* Line 1269 of yacc.c.  */
-#line 2852 "querytransformparser.ypp"
-    {
-        ( yyval.enums.slot ) = parseInfo->staticContext->currentRangeSlot();
-    }
-    break;
-
-    case 174:
-        /* Line 1269 of yacc.c.  */
-#line 2854 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new QuantifiedExpression( ( yyvsp[( 8 ) - ( 9 )].enums.slot ),
-                                 QuantifiedExpression::Every, ( yyvsp[( 7 ) - ( 9 )].expr ), ( yyvsp[( 9 ) - ( 9 )].expr ) ), ( yyloc ), parseInfo );
-        parseInfo->finalizePushedVariable();
-    }
-    break;
-
-    case 176:
-        /* Line 1269 of yacc.c.  */
-#line 2863 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
-    }
-    break;
-
-    case 177:
-        /* Line 1269 of yacc.c.  */
-#line 2890 "querytransformparser.ypp"
-    {
-        parseInfo->typeswitchSource.push( ( yyvsp[( 3 ) - ( 4 )].expr ) );
-    }
-    break;
-
-    case 178:
-        /* Line 1269 of yacc.c.  */
-#line 2894 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-        parseInfo->typeswitchSource.pop();
-        ( yyval.expr ) = ( yyvsp[( 6 ) - ( 6 )].expr );
-    }
-    break;
-
-    case 179:
-        /* Line 1269 of yacc.c.  */
-#line 2901 "querytransformparser.ypp"
-    {
-        if ( !( yyvsp[( 2 ) - ( 3 )].qName ).isNull() )
-        {
-            pushVariable( ( yyvsp[( 2 ) - ( 3 )].qName ), ( yyvsp[( 3 ) - ( 3 )].sequenceType ), parseInfo->typeswitchSource.top(),
-                          VariableDeclaration::ExpressionVariable, ( yyloc ), parseInfo, false );
-        }
-    }
-    break;
-
-    case 180:
-        /* Line 1269 of yacc.c.  */
-#line 2909 "querytransformparser.ypp"
-    {
-        /* The variable shouldn't be in-scope for other case branches. */
-        if ( !( yyvsp[( 2 ) - ( 6 )].qName ).isNull() )
-        {
-            parseInfo->finalizePushedVariable();
-        }
-    }
-    break;
-
-    case 181:
-        /* Line 1269 of yacc.c.  */
-#line 2915 "querytransformparser.ypp"
-    {
-        const Expression::Ptr instanceOf( create( new InstanceOf( parseInfo->typeswitchSource.top(),
-                                          ( yyvsp[( 3 ) - ( 8 )].sequenceType ) ), ( yyloc ), parseInfo ) );
-        ( yyval.expr ) = create( new IfThenClause( instanceOf, ( yyvsp[( 6 ) - ( 8 )].expr ), ( yyvsp[( 8 ) - ( 8 )].expr ) ), ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 184:
-        /* Line 1269 of yacc.c.  */
-#line 2924 "querytransformparser.ypp"
-    {
-        ( yyval.qName ) = QXmlName();
-    }
-    break;
-
-    case 185:
-        /* Line 1269 of yacc.c.  */
-#line 2929 "querytransformparser.ypp"
-    {
-        ( yyval.qName ) = ( yyvsp[( 2 ) - ( 3 )].qName );
-    }
-    break;
-
-    case 186:
-        /* Line 1269 of yacc.c.  */
-#line 2934 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = ( yyvsp[( 3 ) - ( 3 )].expr );
-    }
-    break;
-
-    case 187:
-        /* Line 1269 of yacc.c.  */
-#line 2938 "querytransformparser.ypp"
-    {
-        if ( !( yyvsp[( 3 ) - ( 3 )].qName ).isNull() )
-        {
-            pushVariable( ( yyvsp[( 3 ) - ( 3 )].qName ), parseInfo->typeswitchSource.top()->staticType(),
-                          parseInfo->typeswitchSource.top(),
-                          VariableDeclaration::ExpressionVariable, ( yyloc ), parseInfo, false );
-        }
-    }
-    break;
-
-    case 188:
-        /* Line 1269 of yacc.c.  */
-#line 2947 "querytransformparser.ypp"
-    {
-        if ( !( yyvsp[( 3 ) - ( 6 )].qName ).isNull() )
-        {
-            parseInfo->finalizePushedVariable();
-        }
-
-        ( yyval.expr ) = ( yyvsp[( 6 ) - ( 6 )].expr );
-    }
-    break;
-
-    case 189:
-        /* Line 1269 of yacc.c.  */
-#line 2954 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new IfThenClause( ( yyvsp[( 3 ) - ( 8 )].expr ), ( yyvsp[( 6 ) - ( 8 )].expr ),
-                                 ( yyvsp[( 8 ) - ( 8 )].expr ) ),
-                                 ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 191:
-        /* Line 1269 of yacc.c.  */
-#line 2961 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new OrExpression( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 193:
-        /* Line 1269 of yacc.c.  */
-#line 2968 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new AndExpression( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 199:
-        /* Line 1269 of yacc.c.  */
-#line 2980 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new RangeExpression( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 201:
-        /* Line 1269 of yacc.c.  */
-#line 2987 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new ArithmeticExpression( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 2 ) - ( 3 )].enums.mathOperator ),
-                                 ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 202:
-        /* Line 1269 of yacc.c.  */
-#line 2992 "querytransformparser.ypp"
-    {
-        ( yyval.enums.mathOperator ) = AtomicMathematician::Add;
-    }
-    break;
-
-    case 203:
-        /* Line 1269 of yacc.c.  */
-#line 2993 "querytransformparser.ypp"
-    {
-        ( yyval.enums.mathOperator ) = AtomicMathematician::Substract;
-    }
-    break;
-
-    case 205:
-        /* Line 1269 of yacc.c.  */
-#line 2997 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new ArithmeticExpression( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 2 ) - ( 3 )].enums.mathOperator ),
-                                 ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 206:
-        /* Line 1269 of yacc.c.  */
-#line 3002 "querytransformparser.ypp"
-    {
-        ( yyval.enums.mathOperator ) = AtomicMathematician::Multiply;
-    }
-    break;
-
-    case 207:
-        /* Line 1269 of yacc.c.  */
-#line 3003 "querytransformparser.ypp"
-    {
-        ( yyval.enums.mathOperator ) = AtomicMathematician::Div;
-    }
-    break;
-
-    case 208:
-        /* Line 1269 of yacc.c.  */
-#line 3004 "querytransformparser.ypp"
-    {
-        ( yyval.enums.mathOperator ) = AtomicMathematician::IDiv;
-    }
-    break;
-
-    case 209:
-        /* Line 1269 of yacc.c.  */
-#line 3005 "querytransformparser.ypp"
-    {
-        ( yyval.enums.mathOperator ) = AtomicMathematician::Mod;
-    }
-    break;
-
-    case 211:
-        /* Line 1269 of yacc.c.  */
-#line 3009 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10
-                                   | QXmlQuery::XPath20
-                                   | QXmlQuery::XmlSchema11IdentityConstraintField
-                                   | QXmlQuery::XmlSchema11IdentityConstraintSelector ),
-                   parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new CombineNodes( ( yyvsp[( 1 ) - ( 3 )].expr ), CombineNodes::Union, ( yyvsp[( 3 ) - ( 3 )].expr ) ),
-                                 ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 213:
-        /* Line 1269 of yacc.c.  */
-#line 3020 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new CombineNodes( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 2 ) - ( 3 )].enums.combinedNodeOp ),
-                                 ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 216:
-        /* Line 1269 of yacc.c.  */
-#line 3029 "querytransformparser.ypp"
-    {
-        ( yyval.enums.combinedNodeOp ) = CombineNodes::Intersect;
-    }
-    break;
-
-    case 217:
-        /* Line 1269 of yacc.c.  */
-#line 3033 "querytransformparser.ypp"
-    {
-        ( yyval.enums.combinedNodeOp ) = CombineNodes::Except;
-    }
-    break;
-
-    case 219:
-        /* Line 1269 of yacc.c.  */
-#line 3039 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new InstanceOf( ( yyvsp[( 1 ) - ( 4 )].expr ),
-                                 SequenceType::Ptr( ( yyvsp[( 4 ) - ( 4 )].sequenceType ) ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 221:
-        /* Line 1269 of yacc.c.  */
-#line 3047 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new TreatAs( ( yyvsp[( 1 ) - ( 4 )].expr ), ( yyvsp[( 4 ) - ( 4 )].sequenceType ) ), ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 223:
-        /* Line 1269 of yacc.c.  */
-#line 3054 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new CastableAs( ( yyvsp[( 1 ) - ( 4 )].expr ), ( yyvsp[( 4 ) - ( 4 )].sequenceType ) ), ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 225:
-        /* Line 1269 of yacc.c.  */
-#line 3061 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new CastAs( ( yyvsp[( 1 ) - ( 4 )].expr ), ( yyvsp[( 4 ) - ( 4 )].sequenceType ) ), ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 227:
-        /* Line 1269 of yacc.c.  */
-#line 3068 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new UnaryExpression( ( yyvsp[( 1 ) - ( 2 )].enums.mathOperator ), ( yyvsp[( 2 ) - ( 2 )].expr ),
-                                 parseInfo->staticContext ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 228:
-        /* Line 1269 of yacc.c.  */
-#line 3074 "querytransformparser.ypp"
-    {
-        ( yyval.enums.mathOperator ) = AtomicMathematician::Add;
-    }
-    break;
-
-    case 229:
-        /* Line 1269 of yacc.c.  */
-#line 3078 "querytransformparser.ypp"
-    {
-        ( yyval.enums.mathOperator ) = AtomicMathematician::Substract;
-    }
-    break;
-
-    case 233:
-        /* Line 1269 of yacc.c.  */
-#line 3087 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new GeneralComparison( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 2 ) - ( 3 )].enums.valueOperator ),
-                                 ( yyvsp[( 3 ) - ( 3 )].expr ), parseInfo->isBackwardsCompat.top() ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 234:
-        /* Line 1269 of yacc.c.  */
-#line 3092 "querytransformparser.ypp"
-    {
-        ( yyval.enums.valueOperator ) = AtomicComparator::OperatorEqual;
-    }
-    break;
-
-    case 235:
-        /* Line 1269 of yacc.c.  */
-#line 3093 "querytransformparser.ypp"
-    {
-        ( yyval.enums.valueOperator ) = AtomicComparator::OperatorNotEqual;
-    }
-    break;
-
-    case 236:
-        /* Line 1269 of yacc.c.  */
-#line 3094 "querytransformparser.ypp"
-    {
-        ( yyval.enums.valueOperator ) = AtomicComparator::OperatorGreaterOrEqual;
-    }
-    break;
-
-    case 237:
-        /* Line 1269 of yacc.c.  */
-#line 3095 "querytransformparser.ypp"
-    {
-        ( yyval.enums.valueOperator ) = AtomicComparator::OperatorGreaterThan;
-    }
-    break;
-
-    case 238:
-        /* Line 1269 of yacc.c.  */
-#line 3096 "querytransformparser.ypp"
-    {
-        ( yyval.enums.valueOperator ) = AtomicComparator::OperatorLessOrEqual;
-    }
-    break;
-
-    case 239:
-        /* Line 1269 of yacc.c.  */
-#line 3097 "querytransformparser.ypp"
-    {
-        ( yyval.enums.valueOperator ) = AtomicComparator::OperatorLessThan;
-    }
-    break;
-
-    case 240:
-        /* Line 1269 of yacc.c.  */
-#line 3100 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new ValueComparison( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 2 ) - ( 3 )].enums.valueOperator ),
-                                 ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 241:
-        /* Line 1269 of yacc.c.  */
-#line 3104 "querytransformparser.ypp"
-    {
-        ( yyval.enums.valueOperator ) = AtomicComparator::OperatorEqual;
-    }
-    break;
-
-    case 242:
-        /* Line 1269 of yacc.c.  */
-#line 3105 "querytransformparser.ypp"
-    {
-        ( yyval.enums.valueOperator ) = AtomicComparator::OperatorNotEqual;
-    }
-    break;
-
-    case 243:
-        /* Line 1269 of yacc.c.  */
-#line 3106 "querytransformparser.ypp"
-    {
-        ( yyval.enums.valueOperator ) = AtomicComparator::OperatorGreaterOrEqual;
-    }
-    break;
-
-    case 244:
-        /* Line 1269 of yacc.c.  */
-#line 3107 "querytransformparser.ypp"
-    {
-        ( yyval.enums.valueOperator ) = AtomicComparator::OperatorGreaterThan;
-    }
-    break;
-
-    case 245:
-        /* Line 1269 of yacc.c.  */
-#line 3108 "querytransformparser.ypp"
-    {
-        ( yyval.enums.valueOperator ) = AtomicComparator::OperatorLessOrEqual;
-    }
-    break;
-
-    case 246:
-        /* Line 1269 of yacc.c.  */
-#line 3109 "querytransformparser.ypp"
-    {
-        ( yyval.enums.valueOperator ) = AtomicComparator::OperatorLessThan;
-    }
-    break;
-
-    case 247:
-        /* Line 1269 of yacc.c.  */
-#line 3112 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new NodeComparison( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 2 ) - ( 3 )].enums.nodeOperator ),
-                                 ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 248:
-        /* Line 1269 of yacc.c.  */
-#line 3116 "querytransformparser.ypp"
-    {
-        ( yyval.enums.nodeOperator ) = QXmlNodeModelIndex::Is;
-    }
-    break;
-
-    case 249:
-        /* Line 1269 of yacc.c.  */
-#line 3117 "querytransformparser.ypp"
-    {
-        ( yyval.enums.nodeOperator ) = QXmlNodeModelIndex::Precedes;
-    }
-    break;
-
-    case 250:
-        /* Line 1269 of yacc.c.  */
-#line 3118 "querytransformparser.ypp"
-    {
-        ( yyval.enums.nodeOperator ) = QXmlNodeModelIndex::Follows;
-    }
-    break;
-
-    case 251:
-        /* Line 1269 of yacc.c.  */
-#line 3121 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-        parseInfo->staticContext->error( QtXmlPatterns::tr( "The Schema Validation Feature is not supported. "
-                                                            "Hence, %1-expressions may not be used." )
-                                         .formatArg( formatKeyword( "validate" ) ),
-                                         ReportContext::XQST0075, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        /*
-        $$ = Validate::create($2, $1, parseInfo->staticContext);
-        */
-    }
-    break;
-
-    case 252:
-        /* Line 1269 of yacc.c.  */
-#line 3134 "querytransformparser.ypp"
-    {
-        ( yyval.enums.validationMode ) = Validate::Strict;
-    }
-    break;
-
-    case 253:
-        /* Line 1269 of yacc.c.  */
-#line 3135 "querytransformparser.ypp"
-    {
-        ( yyval.enums.validationMode ) = Validate::Strict;
-    }
-    break;
-
-    case 254:
-        /* Line 1269 of yacc.c.  */
-#line 3136 "querytransformparser.ypp"
-    {
-        ( yyval.enums.validationMode ) = Validate::Lax;
-    }
-    break;
-
-    case 255:
-        /* Line 1269 of yacc.c.  */
-#line 3139 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-
-        /* We don't support any pragmas, so we only do the
-         * necessary validation and use the fallback expression. */
-
-        if ( ( yyvsp[( 2 ) - ( 2 )].expr ) )
-        {
-            ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
-        }
-        else
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "None of the pragma expressions are supported. "
-                                                                "Therefore, a fallback expression "
-                                                                "must be present" ),
-                                             ReportContext::XQST0079, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-    }
-    break;
-
-    case 256:
-        /* Line 1269 of yacc.c.  */
-#line 3156 "querytransformparser.ypp"
-    {
-        ( yyval.expr ).reset();
-    }
-    break;
-
-    case 257:
-        /* Line 1269 of yacc.c.  */
-#line 3160 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = ( yyvsp[( 2 ) - ( 3 )].expr );
-    }
-    break;
-
-    case 260:
-        /* Line 1269 of yacc.c.  */
-#line 3168 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-    }
-    break;
-
-    case 263:
-        /* Line 1269 of yacc.c.  */
-#line 3176 "querytransformparser.ypp"
-    {
-        /* This is "/step". That is, fn:root(self::node()) treat as document-node()/RelativePathExpr. */
-        ( yyval.expr ) = create( new Path( createRootExpression( parseInfo, ( yyloc ) ), ( yyvsp[( 2 ) - ( 2 )].expr ) ), ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 264:
-        /* Line 1269 of yacc.c.  */
-#line 3182 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = createSlashSlashPath( createRootExpression( parseInfo, ( yyloc ) ), ( yyvsp[( 2 ) - ( 2 )].expr ), ( yyloc ),
-                                               parseInfo );
-    }
-    break;
-
-    case 265:
-        /* Line 1269 of yacc.c.  */
-#line 3186 "querytransformparser.ypp"
-    {
-        /* This is "/". That is, fn:root(self::node()) treat as document-node(). */
-        ( yyval.expr ) = createRootExpression( parseInfo, ( yyloc ) );
-    }
-    break;
-
-    case 268:
-        /* Line 1269 of yacc.c.  */
-#line 3196 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new Path( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ),
-                                           ( yyvsp[( 2 ) - ( 3 )].enums.pathKind ) ),
-                                 ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 269:
-        /* Line 1269 of yacc.c.  */
-#line 3200 "querytransformparser.ypp"
-    {
-        const Expression::Ptr orderBy( createReturnOrderBy( ( yyvsp[( 4 ) - ( 7 )].orderSpecs ), ( yyvsp[( 6 ) - ( 7 )].expr ),
-                                       parseInfo->orderStability.pop(), ( yyloc ), parseInfo ) );
-
-        ReturnOrderBy *const rob = orderBy->as<ReturnOrderBy>();
-        const Expression::Ptr path( create( new Path( ( yyvsp[( 1 ) - ( 7 )].expr ), orderBy, ( yyvsp[( 2 ) - ( 7 )].enums.pathKind ) ),
-                                            ( yyloc ), parseInfo ) );
-
-        ( yyval.expr ) = create( new OrderBy( rob->stability(), rob->orderSpecs(), path, rob ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 270:
-        /* Line 1269 of yacc.c.  */
-#line 3209 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = createSlashSlashPath( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 271:
-        /* Line 1269 of yacc.c.  */
-#line 3214 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = NodeSortExpression::wrapAround( ( yyvsp[( 1 ) - ( 1 )].expr ), parseInfo->staticContext );
-    }
-    break;
-
-    case 273:
-        /* Line 1269 of yacc.c.  */
-#line 3219 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new CurrentItemStore( ( yyvsp[( 2 ) - ( 2 )].expr ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 274:
-        /* Line 1269 of yacc.c.  */
-#line 3223 "querytransformparser.ypp"
-    {
-        const xsDouble version = ( yyvsp[( 1 ) - ( 1 )].sval ).toDouble();
-
-        parseInfo->isBackwardsCompat.push( version != 2 );
-
-        ( yyval.enums.Double ) = version;
-    }
-    break;
-
-    case 275:
-        /* Line 1269 of yacc.c.  */
-#line 3231 "querytransformparser.ypp"
-    {
-        if ( ( yyvsp[( 2 ) - ( 3 )].enums.Double ) < 2 )
-        {
-            ( yyval.expr ) = createCompatStore( ( yyvsp[( 3 ) - ( 3 )].expr ), ( yyloc ), parseInfo );
-        }
-        else
-        {
-            ( yyval.expr ) = ( yyvsp[( 3 ) - ( 3 )].expr );
-        }
-    }
-    break;
-
-    case 276:
-        /* Line 1269 of yacc.c.  */
-#line 3238 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XSLT20, parseInfo, ( yyloc ) );
-        Q_ASSERT( !( yyvsp[( 2 ) - ( 5 )].sval ).isEmpty() );
-        ( yyval.expr ) = create( new StaticBaseURIStore( QUrl( yyvsp[( 2 ) - ( 5 )].sval ), ( yyvsp[( 4 ) - ( 5 )].expr ) ), ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 277:
-        /* Line 1269 of yacc.c.  */
-#line 3245 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XSLT20 ), parseInfo, ( yyloc ) );
-        parseInfo->resolvers.push( parseInfo->staticContext->namespaceBindings() );
-        const NamespaceResolver::Ptr resolver( new DelegatingNamespaceResolver( parseInfo->staticContext->namespaceBindings() ) );
-        resolver->addBinding( QXmlName( parseInfo->staticContext->namePool()->allocateNamespace( ( yyvsp[( 5 ) - ( 6 )].sval ) ),
-                                        StandardLocalNames::empty,
-                                        parseInfo->staticContext->namePool()->allocatePrefix( ( yyvsp[( 3 ) - ( 6 )].sval ) ) ) );
-        parseInfo->staticContext->setNamespaceBindings( resolver );
-    }
-    break;
-
-    case 278:
-        /* Line 1269 of yacc.c.  */
-#line 3256 "querytransformparser.ypp"
-    {
-        parseInfo->staticContext->setNamespaceBindings( parseInfo->resolvers.pop() );
-        ( yyval.expr ) = ( yyvsp[( 8 ) - ( 9 )].expr );
-    }
-    break;
-
-    case 279:
-        /* Line 1269 of yacc.c.  */
-#line 3261 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new CallTemplate( ( yyvsp[( 2 ) - ( 5 )].qName ), parseInfo->templateWithParams ), ( yyloc ),
-                                 parseInfo );
-        parseInfo->templateWithParametersHandled();
-        parseInfo->templateCalls.append( ( yyval.expr ) );
-    }
-    break;
-
-    case 280:
-        /* Line 1269 of yacc.c.  */
-#line 3268 "querytransformparser.ypp"
-    {
-        parseInfo->startParsingWithParam();
-    }
-    break;
-
-    case 281:
-        /* Line 1269 of yacc.c.  */
-#line 3272 "querytransformparser.ypp"
-    {
-        parseInfo->endParsingWithParam();
-    }
-    break;
-
-    case 282:
-        /* Line 1269 of yacc.c.  */
-#line 3277 "querytransformparser.ypp"
-    {
-    }
-    break;
-
-    case 283:
-        /* Line 1269 of yacc.c.  */
-#line 3280 "querytransformparser.ypp"
-    {
-    }
-    break;
-
-    case 284:
-        /* Line 1269 of yacc.c.  */
-#line 3283 "querytransformparser.ypp"
-    {
-    }
-    break;
-
-    case 285:
-        /* Line 1269 of yacc.c.  */
-#line 3287 "querytransformparser.ypp"
-    {
-    }
-    break;
-
-    case 286:
-        /* Line 1269 of yacc.c.  */
-#line 3290 "querytransformparser.ypp"
-    {
-    }
-    break;
-
-    case 287:
-        /* Line 1269 of yacc.c.  */
-#line 3294 "querytransformparser.ypp"
-    {
-        /* Note, this grammar rule is invoked for @c xsl:param @em and @c
-         * xsl:with-param. */
-        const bool isParsingWithParam = parseInfo->isParsingWithParam();
-
-        /**
-         * @c xsl:param doesn't make life easy:
-         *
-         * If it only has @c name, it's default value is an empty
-         * string(hence has type @c xs:string), but the value that
-         * (maybe) is supplied can be anything, typically a node.
-         *
-         * Therefore, for that very common case we can't rely on
-         * the Expression's type, but have to force it to item()*.
-         *
-         * So if we're supplied the type item()*, we pass a null
-         * SequenceType. TemplateParameterReference recognizes this
-         * and has item()* as its static type, regardless of if the
-         * expression has a more specific type.
-         */
-        SequenceType::Ptr type;
-
-        if ( !( yyvsp[( 4 ) - ( 5 )].sequenceType )->is( CommonSequenceTypes::ZeroOrMoreItems ) )
-        {
-            type = ( yyvsp[( 4 ) - ( 5 )].sequenceType );
-        }
-
-        Expression::Ptr expr;
-
-        /* The default value is an empty sequence. */
-        if ( !( yyvsp[( 5 ) - ( 5 )].expr ) && ( ( type && ( yyvsp[( 4 ) - ( 5 )].sequenceType )->cardinality().allowsEmpty() )
-                || isParsingWithParam ) )
-        {
-            expr = create( new EmptySequence, ( yyloc ), parseInfo );
-        }
-        else
-        {
-            expr = ( yyvsp[( 5 ) - ( 5 )].expr );
-        }
-
-        /* We ensure we have some type, so CallTemplate, Template and friends
-         * are happy. */
-        if ( !isParsingWithParam && !type )
-        {
-            type = CommonSequenceTypes::ZeroOrMoreItems;
-        }
-
-        if ( ( yyvsp[( 1 ) - ( 5 )].enums.Bool ) )
-            /* TODO, handle tunnel parameters. */;
-        else
-        {
-            if ( ( !isParsingWithParam && VariableDeclaration::contains( parseInfo->templateParameters, ( yyvsp[( 3 ) - ( 5 )].qName ) ) ) ||
-                    ( isParsingWithParam && parseInfo->templateWithParams.contains( ( yyvsp[( 3 ) - ( 5 )].qName ) ) ) )
-            {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "Each name of a template parameter must be unique; %1 is duplicated." )
-                                                 .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 3 ) - ( 5 )].qName ) ) ),
-                                                 isParsingWithParam ? ReportContext::XTSE0670 : ReportContext::XTSE0580, fromYYLTYPE( ( yyloc ), parseInfo ) );
-            }
-            else
-            {
-                if ( isParsingWithParam )
-                {
-                    parseInfo->templateWithParams[( yyvsp[( 3 ) - ( 5 )].qName )] = WithParam::Ptr( new WithParam( ( yyvsp[( 3 ) - ( 5 )].qName ),
-                        ( yyvsp[( 4 ) - ( 5 )].sequenceType ), expr ) );
-                }
-                else
-                {
-                    Q_ASSERT( type );
-                    pushVariable( ( yyvsp[( 3 ) - ( 5 )].qName ), type, expr, VariableDeclaration::TemplateParameter, ( yyloc ), parseInfo );
-                    parseInfo->templateParameters.append( parseInfo->variables.top() );
-                }
-            }
-        }
-    }
-    break;
-
-    case 288:
-        /* Line 1269 of yacc.c.  */
-#line 3359 "querytransformparser.ypp"
-    {
-        ( yyval.enums.Bool ) = false;
-    }
-    break;
-
-    case 289:
-        /* Line 1269 of yacc.c.  */
-#line 3363 "querytransformparser.ypp"
-    {
-        ( yyval.enums.Bool ) = true;
-    }
-    break;
-
-    case 290:
-        /* Line 1269 of yacc.c.  */
-#line 3368 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = Expression::Ptr();
-    }
-    break;
-
-    case 291:
-        /* Line 1269 of yacc.c.  */
-#line 3372 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
-    }
-    break;
-
-    case 292:
-        /* Line 1269 of yacc.c.  */
-#line 3381 "querytransformparser.ypp"
-    {
-        ( yyval.enums.pathKind ) = Path::RegularPath;
-    }
-    break;
-
-    case 293:
-        /* Line 1269 of yacc.c.  */
-#line 3385 "querytransformparser.ypp"
-    {
-        ( yyval.enums.pathKind ) = Path::XSLTForEach;
-    }
-    break;
-
-    case 294:
-        /* Line 1269 of yacc.c.  */
-#line 3389 "querytransformparser.ypp"
-    {
-        ( yyval.enums.pathKind ) = Path::ForApplyTemplate;
-    }
-    break;
-
-    case 296:
-        /* Line 1269 of yacc.c.  */
-#line 3395 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( GenericPredicate::create( ( yyvsp[( 1 ) - ( 4 )].expr ), ( yyvsp[( 3 ) - ( 4 )].expr ),
-                                 parseInfo->staticContext, fromYYLTYPE( ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 299:
-        /* Line 1269 of yacc.c.  */
-#line 3403 "querytransformparser.ypp"
-    {
-        if ( ( yyvsp[( 1 ) - ( 1 )].enums.axis ) == QXmlNodeModelIndex::AxisAttribute )
-        {
-            parseInfo->nodeTestSource = BuiltinTypes::attribute;
-        }
-    }
-    break;
-
-    case 300:
-        /* Line 1269 of yacc.c.  */
-#line 3408 "querytransformparser.ypp"
-    {
-        if ( ( yyvsp[( 3 ) - ( 3 )].itemType ) )
-        {
-            /* A node test was explicitly specified. The un-abbreviated syntax was used. */
-            ( yyval.expr ) = create( new AxisStep( ( yyvsp[( 1 ) - ( 3 )].enums.axis ), ( yyvsp[( 3 ) - ( 3 )].itemType ) ), ( yyloc ),
-                                     parseInfo );
-        }
-        else
-        {
-            /* Quote from 3.2.1.1 Axes
-             *
-             * [Definition: Every axis has a principal node kind. If an axis
-             *  can contain elements, then the principal node kind is element;
-             *  otherwise, it is the kind of nodes that the axis can contain.] Thus:
-             * - For the attribute axis, the principal node kind is attribute.
-             * - For all other axes, the principal node kind is element. */
-
-            if ( ( yyvsp[( 1 ) - ( 3 )].enums.axis ) == QXmlNodeModelIndex::AxisAttribute )
-            {
-                ( yyval.expr ) = create( new AxisStep( QXmlNodeModelIndex::AxisAttribute, BuiltinTypes::attribute ), ( yyloc ), parseInfo );
-            }
-            else
-            {
-                ( yyval.expr ) = create( new AxisStep( ( yyvsp[( 1 ) - ( 3 )].enums.axis ), BuiltinTypes::element ), ( yyloc ), parseInfo );
-            }
-        }
-
-        parseInfo->restoreNodeTestSource();
-    }
-    break;
-
-    case 304:
-        /* Line 1269 of yacc.c.  */
-#line 3438 "querytransformparser.ypp"
-    {
-        if ( ( yyvsp[( 1 ) - ( 2 )].enums.axis ) == QXmlNodeModelIndex::AxisNamespace )
-        {
-            /* We don't raise XPST0010 here because the namespace axis isn't an optional
-             * axis. It simply is not part of the XQuery grammar. */
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "The %1-axis is unsupported in XQuery" )
-                                             .formatArg( formatKeyword( "namespace" ) ),
-                                             ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            ( yyval.enums.axis ) = ( yyvsp[( 1 ) - ( 2 )].enums.axis );
-        }
-
-        switch ( ( yyvsp[( 1 ) - ( 2 )].enums.axis ) )
-        {
-        case QXmlNodeModelIndex::AxisAttribute:
-        {
-            allowedIn( QueryLanguages(  QXmlQuery::XPath20
-                                        | QXmlQuery::XQuery10
-                                        | QXmlQuery::XmlSchema11IdentityConstraintField
-                                        | QXmlQuery::XSLT20 ),
-                       parseInfo, ( yyloc ) );
-            break;
-        }
-
-        case QXmlNodeModelIndex::AxisChild:
-        {
-            allowedIn( QueryLanguages(  QXmlQuery::XPath20
-                                        | QXmlQuery::XQuery10
-                                        | QXmlQuery::XmlSchema11IdentityConstraintField
-                                        | QXmlQuery::XmlSchema11IdentityConstraintSelector
-                                        | QXmlQuery::XSLT20 ),
-                       parseInfo, ( yyloc ) );
-            break;
-        }
-
-        default:
-        {
-            allowedIn( QueryLanguages(  QXmlQuery::XPath20
-                                        | QXmlQuery::XQuery10
-                                        | QXmlQuery::XSLT20 ),
-                       parseInfo, ( yyloc ) );
-        }
-        }
-    }
-    break;
-
-    case 305:
-        /* Line 1269 of yacc.c.  */
-#line 3481 "querytransformparser.ypp"
-    {
-        ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisAncestorOrSelf  ;
-    }
-    break;
-
-    case 306:
-        /* Line 1269 of yacc.c.  */
-#line 3482 "querytransformparser.ypp"
-    {
-        ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisAncestor        ;
-    }
-    break;
-
-    case 307:
-        /* Line 1269 of yacc.c.  */
-#line 3483 "querytransformparser.ypp"
-    {
-        ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisAttribute       ;
-    }
-    break;
-
-    case 308:
-        /* Line 1269 of yacc.c.  */
-#line 3484 "querytransformparser.ypp"
-    {
-        ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisChild           ;
-    }
-    break;
-
-    case 309:
-        /* Line 1269 of yacc.c.  */
-#line 3485 "querytransformparser.ypp"
-    {
-        ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisDescendantOrSelf;
-    }
-    break;
-
-    case 310:
-        /* Line 1269 of yacc.c.  */
-#line 3486 "querytransformparser.ypp"
-    {
-        ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisDescendant      ;
-    }
-    break;
-
-    case 311:
-        /* Line 1269 of yacc.c.  */
-#line 3487 "querytransformparser.ypp"
-    {
-        ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisFollowing       ;
-    }
-    break;
-
-    case 312:
-        /* Line 1269 of yacc.c.  */
-#line 3488 "querytransformparser.ypp"
-    {
-        ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisPreceding       ;
-    }
-    break;
-
-    case 313:
-        /* Line 1269 of yacc.c.  */
-#line 3489 "querytransformparser.ypp"
-    {
-        ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisFollowingSibling;
-    }
-    break;
-
-    case 314:
-        /* Line 1269 of yacc.c.  */
-#line 3490 "querytransformparser.ypp"
-    {
-        ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisPrecedingSibling;
-    }
-    break;
-
-    case 315:
-        /* Line 1269 of yacc.c.  */
-#line 3491 "querytransformparser.ypp"
-    {
-        ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisParent          ;
-    }
-    break;
-
-    case 316:
-        /* Line 1269 of yacc.c.  */
-#line 3492 "querytransformparser.ypp"
-    {
-        ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisSelf            ;
-    }
-    break;
-
-    case 317:
-        /* Line 1269 of yacc.c.  */
-#line 3495 "querytransformparser.ypp"
-    {
-        parseInfo->nodeTestSource = BuiltinTypes::attribute;
-    }
-    break;
-
-    case 318:
-        /* Line 1269 of yacc.c.  */
-#line 3499 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XSLT20 | QXmlQuery::XmlSchema11IdentityConstraintField ),
-                   parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new AxisStep( QXmlNodeModelIndex::AxisAttribute, ( yyvsp[( 3 ) - ( 3 )].itemType ) ), ( yyloc ),
-                                 parseInfo );
-
-        parseInfo->restoreNodeTestSource();
-    }
-    break;
-
-    case 319:
-        /* Line 1269 of yacc.c.  */
-#line 3506 "querytransformparser.ypp"
-    {
-        ItemType::Ptr nodeTest;
-
-        if ( parseInfo->isParsingPattern && *( yyvsp[( 1 ) - ( 1 )].itemType ) == *BuiltinTypes::node )
-        {
-            nodeTest = BuiltinTypes::xsltNodeTest;
-        }
-        else
-        {
-            nodeTest = ( yyvsp[( 1 ) - ( 1 )].itemType );
-        }
-
-        ( yyval.expr ) = create( new AxisStep( QXmlNodeModelIndex::AxisChild, nodeTest ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 320:
-        /* Line 1269 of yacc.c.  */
-#line 3517 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new AxisStep( QXmlNodeModelIndex::AxisAttribute, ( yyvsp[( 1 ) - ( 1 )].itemType ) ), ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 322:
-        /* Line 1269 of yacc.c.  */
-#line 3524 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new AxisStep( QXmlNodeModelIndex::AxisParent, BuiltinTypes::node ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 324:
-        /* Line 1269 of yacc.c.  */
-#line 3530 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-    }
-    break;
-
-    case 325:
-        /* Line 1269 of yacc.c.  */
-#line 3535 "querytransformparser.ypp"
-    {
-        ( yyval.itemType ) = QNameTest::create( parseInfo->nodeTestSource, ( yyvsp[( 1 ) - ( 1 )].qName ) );
-    }
-    break;
-
-    case 327:
-        /* Line 1269 of yacc.c.  */
-#line 3541 "querytransformparser.ypp"
-    {
-        ( yyval.itemType ) = parseInfo->nodeTestSource;
-    }
-    break;
-
-    case 328:
-        /* Line 1269 of yacc.c.  */
-#line 3545 "querytransformparser.ypp"
-    {
-        const NamePool::Ptr np( parseInfo->staticContext->namePool() );
-        const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
-
-        const QXmlName::NamespaceCode ns( QNameConstructor::namespaceForPrefix( np->allocatePrefix( ( yyvsp[( 1 ) - ( 1 )].sval ) ),
-                                          parseInfo->staticContext, &ryy ) );
-
-        ( yyval.itemType ) = NamespaceNameTest::create( parseInfo->nodeTestSource, ns );
-    }
-    break;
-
-    case 329:
-        /* Line 1269 of yacc.c.  */
-#line 3554 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        const QXmlName::LocalNameCode c = parseInfo->staticContext->namePool()->allocateLocalName( ( yyvsp[( 1 ) - ( 1 )].sval ) );
-        ( yyval.itemType ) = LocalNameTest::create( parseInfo->nodeTestSource, c );
-    }
-    break;
-
-    case 331:
-        /* Line 1269 of yacc.c.  */
-#line 3562 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( GenericPredicate::create( ( yyvsp[( 1 ) - ( 4 )].expr ), ( yyvsp[( 3 ) - ( 4 )].expr ),
-                                 parseInfo->staticContext, fromYYLTYPE( ( yylsp[( 4 ) - ( 4 )] ), parseInfo ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 339:
-        /* Line 1269 of yacc.c.  */
-#line 3575 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new ApplyTemplate( parseInfo->modeFor( ( yyvsp[( 2 ) - ( 5 )].qName ) ),
-                                 parseInfo->templateWithParams,
-                                 parseInfo->modeFor( QXmlName( StandardNamespaces::InternalXSLT,
-                                     StandardLocalNames::Default ) ) ),
-                                 ( yylsp[( 1 ) - ( 5 )] ), parseInfo );
-        parseInfo->templateWithParametersHandled();
-    }
-    break;
-
-    case 341:
-        /* Line 1269 of yacc.c.  */
-#line 3586 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new Literal( AtomicString::fromValue( ( yyvsp[( 1 ) - ( 1 )].sval ) ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 342:
-        /* Line 1269 of yacc.c.  */
-#line 3591 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = createNumericLiteral<Double>( ( yyvsp[( 1 ) - ( 1 )].sval ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 343:
-        /* Line 1269 of yacc.c.  */
-#line 3596 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = createNumericLiteral<Numeric>( ( yyvsp[( 1 ) - ( 1 )].sval ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 344:
-        /* Line 1269 of yacc.c.  */
-#line 3602 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = resolveVariable( ( yyvsp[( 2 ) - ( 2 )].qName ), ( yyloc ), parseInfo, false );
-    }
-    break;
-
-    case 345:
-        /* Line 1269 of yacc.c.  */
-#line 3608 "querytransformparser.ypp"
-    {
-        /* See: http://www.w3.org/TR/xpath20/#id-variables */
-        ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName( QString(), ( yyvsp[( 1 ) - ( 1 )].sval ) );
-    }
-    break;
-
-    case 346:
-        /* Line 1269 of yacc.c.  */
-#line 3613 "querytransformparser.ypp"
-    {
-        ( yyval.qName ) = ( yyvsp[( 1 ) - ( 1 )].qName );
-    }
-    break;
-
-    case 347:
-        /* Line 1269 of yacc.c.  */
-#line 3618 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = ( yyvsp[( 2 ) - ( 3 )].expr );
-    }
-    break;
-
-    case 348:
-        /* Line 1269 of yacc.c.  */
-#line 3623 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-        ( yyval.expr ) = create( new EmptySequence, ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 349:
-        /* Line 1269 of yacc.c.  */
-#line 3629 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new ContextItem(), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 350:
-        /* Line 1269 of yacc.c.  */
-#line 3634 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
-    }
-    break;
-
-    case 351:
-        /* Line 1269 of yacc.c.  */
-#line 3639 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-
-        if ( XPathHelper::isReservedNamespace( ( yyvsp[( 1 ) - ( 4 )].qName ).namespaceURI() ) ||
-                ( yyvsp[( 1 ) - ( 4 )].qName ).namespaceURI() == StandardNamespaces::InternalXSLT )
-        {
-            /* We got a call to a builtin function. */
-            const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
-
-            const Expression::Ptr
-            func( parseInfo->staticContext->
-                  functionSignatures()->createFunctionCall( ( yyvsp[( 1 ) - ( 4 )].qName ), ( yyvsp[( 3 ) - ( 4 )].expressionList ),
-                          parseInfo->staticContext, &ryy ) );
-
-            if ( func )
-            {
-                ( yyval.expr ) = create( func, ( yyloc ), parseInfo );
-            }
-            else
-            {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "No function with name %1 is available." )
-                                                 .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 1 ) - ( 4 )].qName ) ) ),
-                                                 ReportContext::XPST0017, fromYYLTYPE( ( yyloc ), parseInfo ) );
-            }
-        }
-        else     /* It's a call to a function created with 'declare function'.*/
-        {
-            ( yyval.expr ) = create( new UserFunctionCallsite( ( yyvsp[( 1 ) - ( 4 )].qName ),
-                                     ( yyvsp[( 3 ) - ( 4 )].expressionList ).count() ),
-                                     ( yyloc ), parseInfo );
-
-            ( yyval.expr )->setOperands( ( yyvsp[( 3 ) - ( 4 )].expressionList ) );
-            parseInfo->userFunctionCallsites.append( ( yyval.expr ) );
-        }
-    }
-    break;
-
-    case 352:
-        /* Line 1269 of yacc.c.  */
-#line 3668 "querytransformparser.ypp"
-    {
-        ( yyval.expressionList ) = Expression::List();
-    }
-    break;
-
-    case 353:
-        /* Line 1269 of yacc.c.  */
-#line 3673 "querytransformparser.ypp"
-    {
-        Expression::List list;
-        list.append( ( yyvsp[( 1 ) - ( 1 )].expr ) );
-        ( yyval.expressionList ) = list;
-    }
-    break;
-
-    case 355:
-        /* Line 1269 of yacc.c.  */
-#line 3682 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
-    }
-    break;
-
-    case 360:
-        /* Line 1269 of yacc.c.  */
-#line 3726 "querytransformparser.ypp"
-    {
-        ( yyval.enums.tokenizerPosition ) = parseInfo->tokenizer->commenceScanOnly();
-        parseInfo->scanOnlyStack.push( true );
-    }
-    break;
-
-    case 361:
-        /* Line 1269 of yacc.c.  */
-#line 3735 "querytransformparser.ypp"
-    {
-        ++parseInfo->elementConstructorDepth;
-        Expression::List constructors;
-
-        parseInfo->resolvers.push( parseInfo->staticContext->namespaceBindings() );
-
-        /* Fix up attributes and namespace declarations. */
-        const NamespaceResolver::Ptr resolver( new DelegatingNamespaceResolver( parseInfo->staticContext->namespaceBindings() ) );
-        const NamePool::Ptr namePool( parseInfo->staticContext->namePool() );
-        const int len = ( yyvsp[( 4 ) - ( 4 )].attributeHolders ).size();
-        QSet<QXmlName::PrefixCode> usedDeclarations;
-
-        /* Whether xmlns="" has been encountered. */
-        bool hasDefaultDeclaration = false;
-
-        /* For each attribute & namespace declaration, do: */
-        for ( int i = 0; i < len; ++i )
-        {
-            QString strLocalName;
-            QString strPrefix;
-
-            XPathHelper::splitQName( ( yyvsp[( 4 ) - ( 4 )].attributeHolders ).at( i ).first, strPrefix, strLocalName );
-            const QXmlName::PrefixCode prefix = namePool->allocatePrefix( strPrefix );
-
-            /* This can seem a bit weird. However, this name is ending up in a QXmlName
-             * which consider its prefix a... prefix. So, a namespace binding name can in some cases
-             * be a local name, but that's just as the initial syntactical construct. */
-            const QXmlName::LocalNameCode localName = namePool->allocatePrefix( strLocalName );
-
-            /* Not that localName is "foo" in "xmlns:foo" and that prefix is "xmlns". */
-
-            if ( prefix == StandardPrefixes::xmlns ||
-                    ( prefix == StandardPrefixes::empty && localName == StandardPrefixes::xmlns ) )
-            {
-                if ( localName == StandardPrefixes::xmlns )
-                {
-                    hasDefaultDeclaration = true;
-                }
-
-                /* We have a namespace declaration. */
-
-                const Expression::Ptr nsExpr( ( yyvsp[( 4 ) - ( 4 )].attributeHolders ).at( i ).second );
-
-                const QString strNamespace( nsExpr->is( Expression::IDEmptySequence ) ? QString() :
-                                            nsExpr->as<Literal>()->item().stringValue() );
-
-                const QXmlName::NamespaceCode ns = namePool->allocateNamespace( strNamespace );
-
-                if ( ns == StandardNamespaces::empty )
-                {
-                    if ( localName != StandardPrefixes::xmlns )
-                    {
-                        parseInfo->staticContext->error(
-                            QtXmlPatterns::tr( "The namespace URI cannot be the empty string when binding to a prefix, %1." )
-                            .formatArg( formatURI( strPrefix ) ),
-                            ReportContext::XQST0085, fromYYLTYPE( ( yyloc ), parseInfo ) );
-                    }
-                }
-                else if ( !AnyURI::isValid( strNamespace ) )
-                {
-                    parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is an invalid namespace URI." ).formatArg( formatURI( strNamespace ) ),
-                                                     ReportContext::XQST0022, fromYYLTYPE( ( yyloc ), parseInfo ) );
-                }
-
-                if ( prefix == StandardPrefixes::xmlns && localName == StandardPrefixes::xmlns )
-                {
-                    parseInfo->staticContext->error( QtXmlPatterns::tr( "It is not possible to bind to the prefix %1" )
-                                                     .formatArg( formatKeyword( "xmlns" ) ),
-                                                     ReportContext::XQST0070, fromYYLTYPE( ( yyloc ), parseInfo ) );
-                }
-
-                if ( ns == StandardNamespaces::xml && localName != StandardPrefixes::xml )
-                {
-                    parseInfo->staticContext->error(
-                        QtXmlPatterns::tr( "Namespace %1 can only be bound to %2 (and it is, in either case, pre-declared)." )
-                        .formatArg( formatURI( namePool->stringForNamespace( StandardNamespaces::xml ) ) )
-                        .formatArg( formatKeyword( "xml" ) ),
-                        ReportContext::XQST0070, fromYYLTYPE( ( yyloc ), parseInfo ) );
-                }
-
-                if ( localName == StandardPrefixes::xml && ns != StandardNamespaces::xml )
-                {
-                    parseInfo->staticContext->error(
-                        QtXmlPatterns::tr( "Prefix %1 can only be bound to %2 (and it is, in either case, pre-declared)." )
-                        .formatArg( formatKeyword( "xml" ) )
-                        .formatArg( formatURI( namePool->stringForNamespace( StandardNamespaces::xml ) ) ),
-                        ReportContext::XQST0070, fromYYLTYPE( ( yyloc ), parseInfo ) );
-                }
-
-                QXmlName nb;
-
-                if ( localName == StandardPrefixes::xmlns )
-                {
-                    nb = QXmlName( ns, StandardLocalNames::empty );
-                }
-                else
-                {
-                    nb = QXmlName( ns, StandardLocalNames::empty, localName );
-                }
-
-                if ( usedDeclarations.contains( nb.prefix() ) )
-                {
-                    parseInfo->staticContext->error( QtXmlPatterns::tr( "Two namespace declaration attributes have the same name: %1." )
-                                                     .formatArg( formatKeyword( namePool->stringForPrefix( nb.prefix() ) ) ),
-                                                     ReportContext::XQST0071, fromYYLTYPE( ( yyloc ), parseInfo ) );
-
-                }
-                else
-                {
-                    usedDeclarations.insert( nb.prefix() );
-                }
-
-                /* If the user has bound the XML namespace correctly, we in either
-                 * case don't want to output it.
+                /* /axis::node-test
+                 *       =>
+                 * axis::node-test[parent::document-node()]
                  *
-                 * We only have to check the namespace parts since the above checks has ensured
-                 * consistency in the prefix parts. */
-                if ( ns != StandardNamespaces::xml )
+                 * In practice it looks like this. $2 is:
+                 *
+                 *     TruthPredicate
+                 *          AxisStep    self::element(c)
+                 *          TruthPredicate
+                 *              AxisStep    parent::element(b)
+                 *              AxisStep    parent::element(a)
+                 *
+                 * and we want this:
+                 *
+                 *      TruthPredicate
+                 *          AxisStep    self::element(c)
+                 *          TruthPredicate
+                 *              AxisStep    self::element(b)
+                 *              TruthPredicate
+                 *                  AxisStep    parent::element(a)
+                 *                  AxisStep    parent::document()
+                 *
+                 * So we want to rewrite the predicate deepest down into a
+                 * another TruthPredicate containing the AxisStep.
+                 *
+                 * The simplest case where $2 is only an axis step is special. When $2 is:
+                 *
+                 *  AxisStep self::element(a)
+                 *
+                 * we want:
+                 *
+                 *  TruthPredicate
+                 *      AxisStep self::element(a)
+                 *      AxisStep parent::document()
+                 */
+
+                /* First, find the target. */
+                Expression::Ptr target( ( yyvsp[( 2 ) - ( 2 )].expr ) );
+
+                while ( isPredicate( target->id() ) )
                 {
-                    /* We don't want default namespace declarations when the
-                     * default namespace already is empty. */
-                    if ( !( ns == StandardNamespaces::empty          &&
-                            localName == StandardNamespaces::xmlns   &&
-                            resolver->lookupNamespaceURI( StandardPrefixes::empty ) == StandardNamespaces::empty ) )
+                    const Expression::Ptr candidate( target->operands().at( 1 ) );
+
+                    if ( isPredicate( candidate->id() ) )
                     {
-                        constructors.append( create( new NamespaceConstructor( nb ), ( yyloc ), parseInfo ) );
-                        resolver->addBinding( nb );
+                        target = candidate;
+                    }
+                    else
+                    {
+                        break;   /* target is now the last predicate. */
                     }
                 }
-            }
-        }
 
-        if ( parseInfo->elementConstructorDepth == 1 && !hasDefaultDeclaration )
-        {
-            /* TODO But mostly this isn't needed, since the default element
-             * namespace is empty? How does this at all work? */
-            const QXmlName def( resolver->lookupNamespaceURI( StandardPrefixes::empty ), StandardLocalNames::empty );
-            constructors.append( create( new NamespaceConstructor( def ), ( yyloc ), parseInfo ) );
-        }
-
-        parseInfo->staticContext->setNamespaceBindings( resolver );
-        ( yyval.expressionList ) = constructors;
-
-        /* Resolve the name of the element, now that the namespace attributes are read. */
-        {
-            const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
-
-            const QXmlName ele = QNameConstructor::expandQName<StaticContext::Ptr,
-            ReportContext::XPST0081,
-            ReportContext::XPST0081>( ( yyvsp[( 2 ) - ( 4 )].sval ), parseInfo->staticContext, resolver, &ryy );
-            parseInfo->tagStack.push( ele );
-        }
-
-        parseInfo->tokenizer->resumeTokenizationFrom( ( yyvsp[( 3 ) - ( 4 )].enums.tokenizerPosition ) );
-    }
-    break;
-
-    case 362:
-        /* Line 1269 of yacc.c.  */
-#line 3881 "querytransformparser.ypp"
-    {
-        /* We add the content constructor after the attribute constructors. This might result
-         * in nested ExpressionSequences, but it will be optimized away later on. */
-
-        Expression::List attributes( ( yyvsp[( 5 ) - ( 8 )].expressionList ) );
-        const NamePool::Ptr namePool( parseInfo->staticContext->namePool() );
-        const int len = ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).size();
-        QSet<QXmlName> declaredAttributes;
-        declaredAttributes.reserve( len );
-
-        /* For each namespace, resolve its name(now that we have resolved the namespace declarations) and
-         * turn it into an attribute constructor. */
-        for ( int i = 0; i < len; ++i )
-        {
-            QString strLocalName;
-            QString strPrefix;
-
-            XPathHelper::splitQName( ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).at( i ).first, strPrefix, strLocalName );
-            const QXmlName::PrefixCode prefix = namePool->allocatePrefix( strPrefix );
-            const QXmlName::LocalNameCode localName = namePool->allocateLocalName( strLocalName );
-
-            if ( prefix == StandardPrefixes::xmlns ||
-                    ( prefix == StandardPrefixes::empty && localName == StandardLocalNames::xmlns ) )
-            {
-                const Expression::ID id = ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).at( i ).second->id();
-
-                if ( id == Expression::IDStringValue || id == Expression::IDEmptySequence )
+                if ( target->is( Expression::IDAxisStep ) )
                 {
-                    /* It's a namespace declaration, and we've already handled those above. */
-                    continue;
+                    ( yyval.expr ) = create( GenericPredicate::create( ( yyvsp[( 2 ) - ( 2 )].expr ),
+                                             create( new AxisStep( QXmlNodeModelIndex::AxisParent, BuiltinTypes::document ), ( yyloc ), parseInfo ),
+                                             parseInfo->staticContext, fromYYLTYPE( ( yylsp[( 1 ) - ( 2 )] ), parseInfo ) ), ( yylsp[( 1 ) - ( 2 )] ), parseInfo );
                 }
                 else
                 {
-                    parseInfo->staticContext->error( QtXmlPatterns::tr( "The namespace URI must be a constant and cannot "
-                                                                        "use enclosed expressions." ),
-                                                     ReportContext::XQST0022, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                    const Expression::List targetOperands( target->operands() );
+                    Expression::List newOps;
+                    newOps.append( targetOperands.at( 0 ) );
+
+                    newOps.append( create( GenericPredicate::create( targetOperands.at( 1 ),
+                                           create( new AxisStep( QXmlNodeModelIndex::AxisParent, BuiltinTypes::document ), ( yyloc ), parseInfo ),
+                                           parseInfo->staticContext, fromYYLTYPE( ( yylsp[( 1 ) - ( 2 )] ), parseInfo ) ), ( yylsp[( 1 ) - ( 2 )] ), parseInfo ) );
+
+                    target->setOperands( newOps );
+                    ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
+                }
+            }
+            break;
+
+        case 95:
+            /* Line 1269 of yacc.c.  */
+#line 2349 "querytransformparser.ypp"
+            {
+                /* //axis::node-test
+                 *        =>
+                 * axis::node-test[parent::node()]
+                 *
+                 * Spec says: "//para matches any para element that has a parent node."
+                 */
+                ( yyval.expr ) = create( GenericPredicate::create( ( yyvsp[( 2 ) - ( 2 )].expr ),
+                                         create( new AxisStep( QXmlNodeModelIndex::AxisParent, BuiltinTypes::node ), ( yyloc ), parseInfo ),
+                                         parseInfo->staticContext, fromYYLTYPE( ( yylsp[( 1 ) - ( 2 )] ), parseInfo ) ), ( yylsp[( 1 ) - ( 2 )] ), parseInfo );
+            }
+            break;
+
+        case 97:
+            /* Line 1269 of yacc.c.  */
+#line 2361 "querytransformparser.ypp"
+            {
+                createIdPatternPath( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ), QXmlNodeModelIndex::AxisParent,
+                                     ( yylsp[( 2 ) - ( 3 )] ), parseInfo );
+            }
+            break;
+
+        case 98:
+            /* Line 1269 of yacc.c.  */
+#line 2365 "querytransformparser.ypp"
+            {
+                createIdPatternPath( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ), QXmlNodeModelIndex::AxisAncestor,
+                                     ( yylsp[( 2 ) - ( 3 )] ), parseInfo );
+            }
+            break;
+
+        case 99:
+            /* Line 1269 of yacc.c.  */
+#line 2370 "querytransformparser.ypp"
+            {
+                const Expression::List ands( ( yyvsp[( 1 ) - ( 1 )].expr )->operands() );
+                const FunctionSignature::Ptr signature( ( yyvsp[( 1 ) - ( 1 )].expr )->as<FunctionCall>()->signature() );
+                const QXmlName name( signature->name() );
+                const QXmlName key( StandardNamespaces::fn, StandardLocalNames::key );
+                const QXmlName id( StandardNamespaces::fn, StandardLocalNames::id );
+
+                if ( name == id )
+                {
+                    const Expression::ID id = ands.first()->id();
+
+                    if ( !isVariableReference( id ) && id != Expression::IDStringValue )
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "When function %1 is used for matching inside a pattern, "
+                                                         "the argument must be a variable reference or a string literal." )
+                                                         .formatArg( formatFunction( parseInfo->staticContext->namePool(), signature ) ),
+                                                         ReportContext::XPST0003,
+                                                         fromYYLTYPE( ( yyloc ), parseInfo ) );
+                    }
+                }
+                else if ( name == key )
+                {
+                    if ( ands.first()->id() != Expression::IDStringValue )
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "In an XSL-T pattern, the first argument to function %1 "
+                                                         "must be a string literal, when used for matching." )
+                                                         .formatArg( formatFunction( parseInfo->staticContext->namePool(), signature ) ),
+                                                         ReportContext::XPST0003,
+                                                         fromYYLTYPE( ( yyloc ), parseInfo ) );
+                    }
+
+                    const Expression::ID id2 = ands.at( 1 )->id();
+
+                    if ( !isVariableReference( id2 ) &&
+                            id2 != Expression::IDStringValue &&
+                            id2 != Expression::IDIntegerValue &&
+                            id2 != Expression::IDBooleanValue &&
+                            id2 != Expression::IDFloat )
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "In an XSL-T pattern, the first argument to function %1 "
+                                                         "must be a literal or a variable reference, when used for matching." )
+                                                         .formatArg( formatFunction( parseInfo->staticContext->namePool(), signature ) ),
+                                                         ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                    }
+
+                    if ( ands.count() == 3 )
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "In an XSL-T pattern, function %1 cannot have a third argument." )
+                                                         .formatArg( formatFunction( parseInfo->staticContext->namePool(), signature ) ),
+                                                         ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                    }
+
+                }
+                else
+                {
+                    const FunctionSignature::Hash signs( parseInfo->staticContext->functionSignatures()->functionSignatures() );
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "In an XSL-T pattern, only function %1 "
+                                                     "and %2, not %3, can be used for matching." )
+                                                     .formatArgs( formatFunction( parseInfo->staticContext->namePool(), signs.value( id ) ),
+                                                             formatFunction( parseInfo->staticContext->namePool(), signs.value( key ) ),
+                                                             formatFunction( parseInfo->staticContext->namePool(), signature ) ), ReportContext::XPST0003,
+                                                     fromYYLTYPE( ( yyloc ), parseInfo ) );
                 }
 
+                ( yyval.expr ) = ( yyvsp[( 1 ) - ( 1 )].expr );
             }
-            else
+            break;
+
+        case 101:
+            /* Line 1269 of yacc.c.  */
+#line 2440 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = createPatternPath( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ), QXmlNodeModelIndex::AxisParent,
+                                                    ( yylsp[( 2 ) - ( 3 )] ), parseInfo );
+            }
+            break;
+
+        case 102:
+            /* Line 1269 of yacc.c.  */
+#line 2444 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = createPatternPath( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ),
+                                                    QXmlNodeModelIndex::AxisAncestor,
+                                                    ( yylsp[( 2 ) - ( 3 )] ), parseInfo );
+            }
+            break;
+
+        case 103:
+            /* Line 1269 of yacc.c.  */
+#line 2449 "querytransformparser.ypp"
+            {
+                const Expression::Ptr expr( findAxisStep( ( yyvsp[( 1 ) - ( 1 )].expr ) ) );
+
+                const QXmlNodeModelIndex::Axis axis = expr->as<AxisStep>()->axis();
+                AxisStep *const axisStep = expr->as<AxisStep>();
+
+                /* Here we constrain the possible axes, and we rewrite the axes as according
+                 * to 5.5.3 The Meaning of a Pattern.
+                 *
+                 * However, we also rewrite axis child and attribute to axis self. The
+                 * reason for this is that if we don't, we will match the children of
+                 * the context node, instead of the context node itself. The formal
+                 * definition of a pattern, root(.)//EE is insensitive to context,
+                 * while the way we implement pattern, "the other way of seeing it",
+                 * e.g from right to left, are very much. */
+
+                if ( axisStep->nodeTest() == BuiltinTypes::document || axis == QXmlNodeModelIndex::AxisChild )
+                {
+                    axisStep->setAxis( QXmlNodeModelIndex::AxisSelf );
+
+                }
+                else if ( axis == QXmlNodeModelIndex::AxisAttribute )
+                {
+                    axisStep->setAxis( QXmlNodeModelIndex::AxisSelf );
+
+                    /* Consider that the user write attribute::node().  This is
+                     * semantically equivalent to attribute::attribute(), but since we have changed
+                     * the axis to axis self, we also need to change the node test, such that we
+                     * have self::attribute(). */
+                    if ( *axisStep->nodeTest() == *BuiltinTypes::node )
+                    {
+                        axisStep->setNodeTest( BuiltinTypes::attribute );
+                    }
+
+                }
+                else
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "In an XSL-T pattern, axis %1 cannot be used, "
+                                                     "only axis %2 or %3 can." )
+                                                     .formatArgs( formatKeyword( AxisStep::axisName( axis ) ),
+                                                             formatKeyword( AxisStep::axisName( QXmlNodeModelIndex::AxisChild ) ),
+                                                             formatKeyword( AxisStep::axisName( QXmlNodeModelIndex::AxisAttribute ) ) ),
+                                                     ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+
+                ( yyval.expr ) = ( yyvsp[( 1 ) - ( 1 )].expr );
+            }
+            break;
+
+        case 105:
+            /* Line 1269 of yacc.c.  */
+#line 2494 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new ExpressionSequence( ( yyvsp[( 1 ) - ( 1 )].expressionList ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 106:
+            /* Line 1269 of yacc.c.  */
+#line 2499 "querytransformparser.ypp"
+            {
+                Expression::List l;
+                l.append( ( yyvsp[( 1 ) - ( 3 )].expr ) );
+                l.append( ( yyvsp[( 3 ) - ( 3 )].expr ) );
+                ( yyval.expressionList ) = l;
+            }
+            break;
+
+        case 107:
+            /* Line 1269 of yacc.c.  */
+#line 2506 "querytransformparser.ypp"
+            {
+                ( yyvsp[( 1 ) - ( 3 )].expressionList ).append( ( yyvsp[( 3 ) - ( 3 )].expr ) );
+                ( yyval.expressionList ) = ( yyvsp[( 1 ) - ( 3 )].expressionList );
+            }
+            break;
+
+        case 113:
+            /* Line 1269 of yacc.c.  */
+#line 2517 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = createDirAttributeValue( ( yyvsp[( 3 ) - ( 4 )].expressionList ), parseInfo, ( yyloc ) );
+            }
+            break;
+
+        case 114:
+            /* Line 1269 of yacc.c.  */
+#line 2522 "querytransformparser.ypp"
+            {
+                QVector<QXmlName> result;
+                result.append( QXmlName( StandardNamespaces::InternalXSLT, StandardLocalNames::Default ) );
+                ( yyval.qNameVector ) = result;
+            }
+            break;
+
+        case 115:
+            /* Line 1269 of yacc.c.  */
+#line 2528 "querytransformparser.ypp"
+            {
+                ( yyval.qNameVector ) = ( yyvsp[( 2 ) - ( 2 )].qNameVector );
+            }
+            break;
+
+        case 116:
+            /* Line 1269 of yacc.c.  */
+#line 2533 "querytransformparser.ypp"
+            {
+                ( yyval.qName ) = QXmlName( StandardNamespaces::InternalXSLT, StandardLocalNames::Default );
+            }
+            break;
+
+        case 117:
+            /* Line 1269 of yacc.c.  */
+#line 2537 "querytransformparser.ypp"
+            {
+                ( yyval.qName ) = ( yyvsp[( 2 ) - ( 2 )].qName );
+            }
+            break;
+
+        case 118:
+            /* Line 1269 of yacc.c.  */
+#line 2542 "querytransformparser.ypp"
+            {
+                QVector<QXmlName> result;
+                result.append( ( yyvsp[( 1 ) - ( 1 )].qName ) );
+                ( yyval.qNameVector ) = result;
+            }
+            break;
+
+        case 119:
+            /* Line 1269 of yacc.c.  */
+#line 2548 "querytransformparser.ypp"
+            {
+                ( yyvsp[( 1 ) - ( 3 )].qNameVector ).append( ( yyvsp[( 3 ) - ( 3 )].qName ) );
+                ( yyval.qNameVector ) = ( yyvsp[( 1 ) - ( 3 )].qNameVector );
+            }
+            break;
+
+        case 120:
+            /* Line 1269 of yacc.c.  */
+#line 2554 "querytransformparser.ypp"
+            {
+                ( yyval.qName ) = ( yyvsp[( 1 ) - ( 1 )].qName );
+            }
+            break;
+
+        case 121:
+            /* Line 1269 of yacc.c.  */
+#line 2558 "querytransformparser.ypp"
+            {
+                if ( ( yyvsp[( 1 ) - ( 1 )].sval ) == QLatin1String( "#current" ) )
+                {
+                    ( yyval.qName ) = QXmlName( StandardNamespaces::InternalXSLT, StandardLocalNames::current );
+                }
+                else if ( ( yyvsp[( 1 ) - ( 1 )].sval ) == QLatin1String( "#default" ) )
+                {
+                    ( yyval.qName ) = QXmlName( StandardNamespaces::InternalXSLT, StandardLocalNames::Default );
+                }
+                else if ( ( yyvsp[( 1 ) - ( 1 )].sval ) == QLatin1String( "#all" ) )
+                {
+                    ( yyval.qName ) = QXmlName( StandardNamespaces::InternalXSLT, StandardLocalNames::all );
+                }
+                else
+                {
+                    const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
+
+                    if ( !QXmlUtils::isNCName( ( yyvsp[( 1 ) - ( 1 )].sval ) ) )
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is an invalid template mode name." )
+                                                         .formatArg( formatKeyword( ( yyvsp[( 1 ) - ( 1 )].sval ) ) ),
+                                                         ReportContext::XTSE0550,
+                                                         fromYYLTYPE( ( yyloc ), parseInfo ) );
+                    }
+
+                    ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName( StandardNamespaces::empty, ( yyvsp[( 1 ) - ( 1 )].sval ) );
+                }
+            }
+            break;
+
+        case 124:
+            /* Line 1269 of yacc.c.  */
+#line 2587 "querytransformparser.ypp"
+            {
+                /* We're pushing the range variable here, not the positional. */
+                ( yyval.expr ) = pushVariable( ( yyvsp[( 3 ) - ( 7 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 7 )].sequenceType ) ),
+                                               ( yyvsp[( 7 ) - ( 7 )].expr ), VariableDeclaration::RangeVariable, ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 125:
+            /* Line 1269 of yacc.c.  */
+#line 2591 "querytransformparser.ypp"
+            {
+                /* It is ok this appears after PositionalVar, because currentRangeSlot()
+                 * uses a different "channel" than currentPositionSlot(), so they can't trash
+                 * each other. */
+                ( yyval.enums.slot ) = parseInfo->staticContext->currentRangeSlot();
+            }
+            break;
+
+        case 126:
+            /* Line 1269 of yacc.c.  */
+#line 2598 "querytransformparser.ypp"
+            {
+                Q_ASSERT( ( yyvsp[( 7 ) - ( 10 )].expr ) );
+                Q_ASSERT( ( yyvsp[( 10 ) - ( 10 )].expr ) );
+
+                /* We want the next last pushed variable, since we push the range variable after the
+                 * positional variable. */
+                if ( ( yyvsp[( 5 ) - ( 10 )].enums.slot ) != -1 &&
+                        parseInfo->variables.at( parseInfo->variables.count() - 2 )->name == ( yyvsp[( 3 ) - ( 10 )].qName ) )
+                {
+                    /* Ok, a positional variable is used since its slot is not -1, and its name is equal
+                     * to our range variable. This is an error. */
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "The name of a variable bound in a for-expression must be different "
+                                                     "from the positional variable. Hence, the two variables named %1 collide." )
+                                                     .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 3 ) - ( 10 )].qName ) ) ),
+                                                     ReportContext::XQST0089,
+                                                     fromYYLTYPE( ( yyloc ), parseInfo ) );
+
+                }
+
+                const Expression::Ptr retBody( create( new ForClause( ( yyvsp[( 9 ) - ( 10 )].enums.slot ), ( yyvsp[( 8 ) - ( 10 )].expr ),
+                                                       ( yyvsp[( 10 ) - ( 10 )].expr ), ( yyvsp[( 5 ) - ( 10 )].enums.slot ) ), ( yyloc ), parseInfo ) );
+                ReturnOrderBy *const rob = locateReturnClause( ( yyvsp[( 10 ) - ( 10 )].expr ) );
+
+                if ( rob )
+                {
+                    ( yyval.expr ) = create( new OrderBy( rob->stability(), rob->orderSpecs(), retBody, rob ), ( yyloc ), parseInfo );
+                }
+                else
+                {
+                    ( yyval.expr ) = retBody;
+                }
+
+                parseInfo->finalizePushedVariable();
+
+                if ( ( yyvsp[( 5 ) - ( 10 )].enums.slot ) != -1 ) /* We also have a positional variable to remove from the scope. */
+                {
+                    parseInfo->finalizePushedVariable();
+                }
+            }
+            break;
+
+        case 127:
+            /* Line 1269 of yacc.c.  */
+#line 2632 "querytransformparser.ypp"
+            {
+                pushVariable( ( yyvsp[( 3 ) - ( 7 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 7 )].sequenceType ) ),
+                              ( yyvsp[( 7 ) - ( 7 )].expr ),
+                              VariableDeclaration::RangeVariable, ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 128:
+            /* Line 1269 of yacc.c.  */
+#line 2635 "querytransformparser.ypp"
+            {
+                /* It is ok this appears after PositionalVar, because currentRangeSlot()
+                 * uses a different "channel" than currentPositionSlot(), so they can't trash
+                 * each other. */
+                ( yyval.enums.slot ) = parseInfo->staticContext->currentRangeSlot();
+            }
+            break;
+
+        case 129:
+            /* Line 1269 of yacc.c.  */
+#line 2642 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new ForClause( ( yyvsp[( 9 ) - ( 10 )].enums.slot ), ( yyvsp[( 7 ) - ( 10 )].expr ),
+                                                        ( yyvsp[( 10 ) - ( 10 )].expr ),
+                                                        ( yyvsp[( 5 ) - ( 10 )].enums.slot ) ), ( yyloc ), parseInfo );
+
+                parseInfo->finalizePushedVariable();
+
+                if ( ( yyvsp[( 5 ) - ( 10 )].enums.slot ) != -1 ) /* We also have a positional variable to remove from the scope. */
+                {
+                    parseInfo->finalizePushedVariable();
+                }
+            }
+            break;
+
+        case 133:
+            /* Line 1269 of yacc.c.  */
+#line 2656 "querytransformparser.ypp"
+            {
+                ( yyval.enums.slot ) = -1;
+            }
+            break;
+
+        case 134:
+            /* Line 1269 of yacc.c.  */
+#line 2661 "querytransformparser.ypp"
+            {
+                pushVariable( ( yyvsp[( 3 ) - ( 3 )].qName ), CommonSequenceTypes::ExactlyOneInteger, Expression::Ptr(),
+                              VariableDeclaration::PositionalVariable, ( yyloc ), parseInfo );
+                ( yyval.enums.slot ) = parseInfo->currentPositionSlot();
+            }
+            break;
+
+        case 135:
+            /* Line 1269 of yacc.c.  */
+#line 2668 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = pushVariable( ( yyvsp[( 4 ) - ( 7 )].qName ), quantificationType( ( yyvsp[( 5 ) - ( 7 )].sequenceType ) ),
+                                               ( yyvsp[( 7 ) - ( 7 )].expr ), VariableDeclaration::ExpressionVariable, ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 136:
+            /* Line 1269 of yacc.c.  */
+#line 2672 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 2 ) - ( 9 )].enums.Bool ) );
+
+                Q_ASSERT( parseInfo->variables.top()->name == ( yyvsp[( 4 ) - ( 9 )].qName ) );
+                ( yyval.expr ) = create( new LetClause( ( yyvsp[( 8 ) - ( 9 )].expr ), ( yyvsp[( 9 ) - ( 9 )].expr ),
+                                                        parseInfo->variables.top() ),
+                                         ( yyloc ), parseInfo );
+                parseInfo->finalizePushedVariable();
+            }
+            break;
+
+        case 137:
+            /* Line 1269 of yacc.c.  */
+#line 2681 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = pushVariable( ( yyvsp[( 3 ) - ( 6 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 6 )].sequenceType ) ),
+                                               ( yyvsp[( 6 ) - ( 6 )].expr ), VariableDeclaration::ExpressionVariable, ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 138:
+            /* Line 1269 of yacc.c.  */
+#line 2683 "querytransformparser.ypp"
+            {
+                Q_ASSERT( parseInfo->variables.top()->name == ( yyvsp[( 3 ) - ( 8 )].qName ) );
+                ( yyval.expr ) = create( new LetClause( ( yyvsp[( 7 ) - ( 8 )].expr ), ( yyvsp[( 8 ) - ( 8 )].expr ),
+                                                        parseInfo->variables.top() ),
+                                         ( yyloc ), parseInfo );
+                parseInfo->finalizePushedVariable();
+            }
+            break;
+
+        case 142:
+            /* Line 1269 of yacc.c.  */
+#line 2694 "querytransformparser.ypp"
+            {
+                if ( ( yyvsp[( 1 ) - ( 3 )].orderSpecs ).isEmpty() )
+                {
+                    ( yyval.expr ) = ( yyvsp[( 3 ) - ( 3 )].expr );
+                }
+                else
+                {
+                    ( yyval.expr ) = createReturnOrderBy( ( yyvsp[( 1 ) - ( 3 )].orderSpecs ), ( yyvsp[( 3 ) - ( 3 )].expr ),
+                                                          parseInfo->orderStability.pop(), ( yyloc ), parseInfo );
+                }
+            }
+            break;
+
+        case 143:
+            /* Line 1269 of yacc.c.  */
+#line 2702 "querytransformparser.ypp"
+            {
+                if ( ( yyvsp[( 3 ) - ( 5 )].orderSpecs ).isEmpty() )
+                {
+                    ( yyval.expr ) = create( new IfThenClause( ( yyvsp[( 2 ) - ( 5 )].expr ), ( yyvsp[( 5 ) - ( 5 )].expr ),
+                                             create( new EmptySequence,
+                                                     ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo );
+                }
+                else
+                    ( yyval.expr ) = create( new IfThenClause( ( yyvsp[( 2 ) - ( 5 )].expr ),
+                                             createReturnOrderBy( ( yyvsp[( 3 ) - ( 5 )].orderSpecs ),
+                                                     ( yyvsp[( 5 ) - ( 5 )].expr ), parseInfo->orderStability.pop(), ( yyloc ), parseInfo ),
+                                             create( new EmptySequence, ( yyloc ), parseInfo ) ),
+                                             ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 144:
+            /* Line 1269 of yacc.c.  */
+#line 2712 "querytransformparser.ypp"
+            {
+                ( yyval.orderSpecs ) = OrderSpecTransfer::List();
+            }
+            break;
+
+        case 146:
+            /* Line 1269 of yacc.c.  */
+#line 2718 "querytransformparser.ypp"
+            {
+                ( yyval.orderSpecs ) = ( yyvsp[( 2 ) - ( 2 )].orderSpecs );
+            }
+            break;
+
+        case 147:
+            /* Line 1269 of yacc.c.  */
+#line 2723 "querytransformparser.ypp"
+            {
+                OrderSpecTransfer::List list;
+                list += ( yyvsp[( 1 ) - ( 3 )].orderSpecs );
+                list.append( ( yyvsp[( 3 ) - ( 3 )].orderSpec ) );
+                ( yyval.orderSpecs ) = list;
+            }
+            break;
+
+        case 148:
+            /* Line 1269 of yacc.c.  */
+#line 2730 "querytransformparser.ypp"
+            {
+                OrderSpecTransfer::List list;
+                list.append( ( yyvsp[( 1 ) - ( 1 )].orderSpec ) );
+                ( yyval.orderSpecs ) = list;
+            }
+            break;
+
+        case 149:
+            /* Line 1269 of yacc.c.  */
+#line 2737 "querytransformparser.ypp"
+            {
+                ( yyval.orderSpec ) = OrderSpecTransfer( ( yyvsp[( 1 ) - ( 4 )].expr ),
+                                      OrderBy::OrderSpec( ( yyvsp[( 2 ) - ( 4 )].enums.sortDirection ), ( yyvsp[( 3 ) - ( 4 )].enums.orderingEmptySequence ) ) );
+            }
+            break;
+
+        case 150:
+            /* Line 1269 of yacc.c.  */
+#line 2742 "querytransformparser.ypp"
+            {
+                /* Where does the specification state the default value is ascending?
+                 *
+                 * It is implicit, in the first enumerated list in 3.8.3 Order By and Return Clauses:
+                 *
+                 * "If T1 and T2 are two tuples in the tuple stream, and V1 and V2 are the first pair
+                 *  of values encountered when evaluating their orderspecs from left to right for
+                 *  which one value is greater-than the other (as defined above), then:
+                 *
+                 *      1. If V1 is greater-than V2: If the orderspec specifies descending,
+                 *         then T1 precedes T2 in the tuple stream; otherwise, T2 precedes T1 in the tuple stream.
+                 *      2. If V2 is greater-than V1: If the orderspec specifies descending,
+                 *         then T2 precedes T1 in the tuple stream; otherwise, T1 precedes T2 in the tuple stream."
+                 *
+                 * which means that if you don't specify anything, or you
+                 * specify ascending, you get the same result.
+                 */
+                ( yyval.enums.sortDirection ) = OrderBy::OrderSpec::Ascending;
+            }
+            break;
+
+        case 151:
+            /* Line 1269 of yacc.c.  */
+#line 2763 "querytransformparser.ypp"
+            {
+                ( yyval.enums.sortDirection ) = OrderBy::OrderSpec::Ascending;
+            }
+            break;
+
+        case 152:
+            /* Line 1269 of yacc.c.  */
+#line 2768 "querytransformparser.ypp"
+            {
+                ( yyval.enums.sortDirection ) = OrderBy::OrderSpec::Descending;
+            }
+            break;
+
+        case 153:
+            /* Line 1269 of yacc.c.  */
+#line 2773 "querytransformparser.ypp"
+            {
+                ( yyval.enums.orderingEmptySequence ) = parseInfo->staticContext->orderingEmptySequence();
+            }
+            break;
+
+        case 156:
+            /* Line 1269 of yacc.c.  */
+#line 2780 "querytransformparser.ypp"
+            {
+                if ( parseInfo->isXSLT() )
+                {
+                    resolveAndCheckCollation<ReportContext::XTDE1035>( ( yyvsp[( 2 ) - ( 2 )].sval ), parseInfo, ( yyloc ) );
+                }
+                else
+                {
+                    resolveAndCheckCollation<ReportContext::XQST0076>( ( yyvsp[( 2 ) - ( 2 )].sval ), parseInfo, ( yyloc ) );
+                }
+            }
+            break;
+
+        case 157:
+            /* Line 1269 of yacc.c.  */
+#line 2787 "querytransformparser.ypp"
+            {
+                /* We do nothing. We don't use collations, and we have this non-terminal
+                 * in order to accept expressions. */
+            }
+            break;
+
+        case 158:
+            /* Line 1269 of yacc.c.  */
+#line 2793 "querytransformparser.ypp"
+            {
+                parseInfo->orderStability.push( OrderBy::StableOrder );
+            }
+            break;
+
+        case 159:
+            /* Line 1269 of yacc.c.  */
+#line 2797 "querytransformparser.ypp"
+            {
+                parseInfo->orderStability.push( OrderBy::UnstableOrder );
+            }
+            break;
+
+        case 162:
+            /* Line 1269 of yacc.c.  */
+#line 2805 "querytransformparser.ypp"
+            {
+                pushVariable( ( yyvsp[( 3 ) - ( 6 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 6 )].sequenceType ) ),
+                              ( yyvsp[( 6 ) - ( 6 )].expr ),
+                              VariableDeclaration::RangeVariable, ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 163:
+            /* Line 1269 of yacc.c.  */
+#line 2809 "querytransformparser.ypp"
+            {
+                ( yyval.enums.slot ) = parseInfo->staticContext->currentRangeSlot();
+            }
+            break;
+
+        case 164:
+            /* Line 1269 of yacc.c.  */
+#line 2811 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new QuantifiedExpression( ( yyvsp[( 8 ) - ( 9 )].enums.slot ),
+                                         QuantifiedExpression::Some, ( yyvsp[( 6 ) - ( 9 )].expr ), ( yyvsp[( 9 ) - ( 9 )].expr ) ), ( yyloc ), parseInfo );
+                parseInfo->finalizePushedVariable();
+            }
+            break;
+
+        case 165:
+            /* Line 1269 of yacc.c.  */
+#line 2819 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = pushVariable( ( yyvsp[( 3 ) - ( 6 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 6 )].sequenceType ) ),
+                                               ( yyvsp[( 6 ) - ( 6 )].expr ),
+                                               VariableDeclaration::RangeVariable, ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 166:
+            /* Line 1269 of yacc.c.  */
+#line 2823 "querytransformparser.ypp"
+            {
+                ( yyval.enums.slot ) = parseInfo->staticContext->currentRangeSlot();
+            }
+            break;
+
+        case 167:
+            /* Line 1269 of yacc.c.  */
+#line 2825 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new QuantifiedExpression( ( yyvsp[( 8 ) - ( 9 )].enums.slot ),
+                                         QuantifiedExpression::Some, ( yyvsp[( 7 ) - ( 9 )].expr ), ( yyvsp[( 9 ) - ( 9 )].expr ) ), ( yyloc ), parseInfo );
+                parseInfo->finalizePushedVariable();
+            }
+            break;
+
+        case 169:
+            /* Line 1269 of yacc.c.  */
+#line 2834 "querytransformparser.ypp"
+            {
+                pushVariable( ( yyvsp[( 3 ) - ( 6 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 6 )].sequenceType ) ),
+                              ( yyvsp[( 6 ) - ( 6 )].expr ),
+                              VariableDeclaration::RangeVariable, ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 170:
+            /* Line 1269 of yacc.c.  */
+#line 2838 "querytransformparser.ypp"
+            {
+                ( yyval.enums.slot ) = parseInfo->staticContext->currentRangeSlot();
+            }
+            break;
+
+        case 171:
+            /* Line 1269 of yacc.c.  */
+#line 2840 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new QuantifiedExpression( ( yyvsp[( 8 ) - ( 9 )].enums.slot ),
+                                         QuantifiedExpression::Every, ( yyvsp[( 6 ) - ( 9 )].expr ), ( yyvsp[( 9 ) - ( 9 )].expr ) ), ( yyloc ), parseInfo );
+                parseInfo->finalizePushedVariable();
+            }
+            break;
+
+        case 172:
+            /* Line 1269 of yacc.c.  */
+#line 2848 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = pushVariable( ( yyvsp[( 3 ) - ( 6 )].qName ), quantificationType( ( yyvsp[( 4 ) - ( 6 )].sequenceType ) ),
+                                               ( yyvsp[( 6 ) - ( 6 )].expr ),
+                                               VariableDeclaration::RangeVariable, ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 173:
+            /* Line 1269 of yacc.c.  */
+#line 2852 "querytransformparser.ypp"
+            {
+                ( yyval.enums.slot ) = parseInfo->staticContext->currentRangeSlot();
+            }
+            break;
+
+        case 174:
+            /* Line 1269 of yacc.c.  */
+#line 2854 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new QuantifiedExpression( ( yyvsp[( 8 ) - ( 9 )].enums.slot ),
+                                         QuantifiedExpression::Every, ( yyvsp[( 7 ) - ( 9 )].expr ), ( yyvsp[( 9 ) - ( 9 )].expr ) ), ( yyloc ), parseInfo );
+                parseInfo->finalizePushedVariable();
+            }
+            break;
+
+        case 176:
+            /* Line 1269 of yacc.c.  */
+#line 2863 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
+            }
+            break;
+
+        case 177:
+            /* Line 1269 of yacc.c.  */
+#line 2890 "querytransformparser.ypp"
+            {
+                parseInfo->typeswitchSource.push( ( yyvsp[( 3 ) - ( 4 )].expr ) );
+            }
+            break;
+
+        case 178:
+            /* Line 1269 of yacc.c.  */
+#line 2894 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+                parseInfo->typeswitchSource.pop();
+                ( yyval.expr ) = ( yyvsp[( 6 ) - ( 6 )].expr );
+            }
+            break;
+
+        case 179:
+            /* Line 1269 of yacc.c.  */
+#line 2901 "querytransformparser.ypp"
+            {
+                if ( !( yyvsp[( 2 ) - ( 3 )].qName ).isNull() )
+                {
+                    pushVariable( ( yyvsp[( 2 ) - ( 3 )].qName ), ( yyvsp[( 3 ) - ( 3 )].sequenceType ), parseInfo->typeswitchSource.top(),
+                                  VariableDeclaration::ExpressionVariable, ( yyloc ), parseInfo, false );
+                }
+            }
+            break;
+
+        case 180:
+            /* Line 1269 of yacc.c.  */
+#line 2909 "querytransformparser.ypp"
+            {
+                /* The variable shouldn't be in-scope for other case branches. */
+                if ( !( yyvsp[( 2 ) - ( 6 )].qName ).isNull() )
+                {
+                    parseInfo->finalizePushedVariable();
+                }
+            }
+            break;
+
+        case 181:
+            /* Line 1269 of yacc.c.  */
+#line 2915 "querytransformparser.ypp"
+            {
+                const Expression::Ptr instanceOf( create( new InstanceOf( parseInfo->typeswitchSource.top(),
+                                                  ( yyvsp[( 3 ) - ( 8 )].sequenceType ) ), ( yyloc ), parseInfo ) );
+                ( yyval.expr ) = create( new IfThenClause( instanceOf, ( yyvsp[( 6 ) - ( 8 )].expr ), ( yyvsp[( 8 ) - ( 8 )].expr ) ), ( yyloc ),
+                                         parseInfo );
+            }
+            break;
+
+        case 184:
+            /* Line 1269 of yacc.c.  */
+#line 2924 "querytransformparser.ypp"
+            {
+                ( yyval.qName ) = QXmlName();
+            }
+            break;
+
+        case 185:
+            /* Line 1269 of yacc.c.  */
+#line 2929 "querytransformparser.ypp"
+            {
+                ( yyval.qName ) = ( yyvsp[( 2 ) - ( 3 )].qName );
+            }
+            break;
+
+        case 186:
+            /* Line 1269 of yacc.c.  */
+#line 2934 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = ( yyvsp[( 3 ) - ( 3 )].expr );
+            }
+            break;
+
+        case 187:
+            /* Line 1269 of yacc.c.  */
+#line 2938 "querytransformparser.ypp"
+            {
+                if ( !( yyvsp[( 3 ) - ( 3 )].qName ).isNull() )
+                {
+                    pushVariable( ( yyvsp[( 3 ) - ( 3 )].qName ), parseInfo->typeswitchSource.top()->staticType(),
+                                  parseInfo->typeswitchSource.top(),
+                                  VariableDeclaration::ExpressionVariable, ( yyloc ), parseInfo, false );
+                }
+            }
+            break;
+
+        case 188:
+            /* Line 1269 of yacc.c.  */
+#line 2947 "querytransformparser.ypp"
+            {
+                if ( !( yyvsp[( 3 ) - ( 6 )].qName ).isNull() )
+                {
+                    parseInfo->finalizePushedVariable();
+                }
+
+                ( yyval.expr ) = ( yyvsp[( 6 ) - ( 6 )].expr );
+            }
+            break;
+
+        case 189:
+            /* Line 1269 of yacc.c.  */
+#line 2954 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new IfThenClause( ( yyvsp[( 3 ) - ( 8 )].expr ), ( yyvsp[( 6 ) - ( 8 )].expr ),
+                                         ( yyvsp[( 8 ) - ( 8 )].expr ) ),
+                                         ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 191:
+            /* Line 1269 of yacc.c.  */
+#line 2961 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new OrExpression( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 193:
+            /* Line 1269 of yacc.c.  */
+#line 2968 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new AndExpression( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ),
+                                         parseInfo );
+            }
+            break;
+
+        case 199:
+            /* Line 1269 of yacc.c.  */
+#line 2980 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new RangeExpression( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ),
+                                         parseInfo );
+            }
+            break;
+
+        case 201:
+            /* Line 1269 of yacc.c.  */
+#line 2987 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new ArithmeticExpression( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 2 ) - ( 3 )].enums.mathOperator ),
+                                         ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 202:
+            /* Line 1269 of yacc.c.  */
+#line 2992 "querytransformparser.ypp"
+            {
+                ( yyval.enums.mathOperator ) = AtomicMathematician::Add;
+            }
+            break;
+
+        case 203:
+            /* Line 1269 of yacc.c.  */
+#line 2993 "querytransformparser.ypp"
+            {
+                ( yyval.enums.mathOperator ) = AtomicMathematician::Substract;
+            }
+            break;
+
+        case 205:
+            /* Line 1269 of yacc.c.  */
+#line 2997 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new ArithmeticExpression( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 2 ) - ( 3 )].enums.mathOperator ),
+                                         ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 206:
+            /* Line 1269 of yacc.c.  */
+#line 3002 "querytransformparser.ypp"
+            {
+                ( yyval.enums.mathOperator ) = AtomicMathematician::Multiply;
+            }
+            break;
+
+        case 207:
+            /* Line 1269 of yacc.c.  */
+#line 3003 "querytransformparser.ypp"
+            {
+                ( yyval.enums.mathOperator ) = AtomicMathematician::Div;
+            }
+            break;
+
+        case 208:
+            /* Line 1269 of yacc.c.  */
+#line 3004 "querytransformparser.ypp"
+            {
+                ( yyval.enums.mathOperator ) = AtomicMathematician::IDiv;
+            }
+            break;
+
+        case 209:
+            /* Line 1269 of yacc.c.  */
+#line 3005 "querytransformparser.ypp"
+            {
+                ( yyval.enums.mathOperator ) = AtomicMathematician::Mod;
+            }
+            break;
+
+        case 211:
+            /* Line 1269 of yacc.c.  */
+#line 3009 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10
+                                           | QXmlQuery::XPath20
+                                           | QXmlQuery::XmlSchema11IdentityConstraintField
+                                           | QXmlQuery::XmlSchema11IdentityConstraintSelector ),
+                           parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new CombineNodes( ( yyvsp[( 1 ) - ( 3 )].expr ), CombineNodes::Union, ( yyvsp[( 3 ) - ( 3 )].expr ) ),
+                                         ( yyloc ),
+                                         parseInfo );
+            }
+            break;
+
+        case 213:
+            /* Line 1269 of yacc.c.  */
+#line 3020 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new CombineNodes( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 2 ) - ( 3 )].enums.combinedNodeOp ),
+                                         ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 216:
+            /* Line 1269 of yacc.c.  */
+#line 3029 "querytransformparser.ypp"
+            {
+                ( yyval.enums.combinedNodeOp ) = CombineNodes::Intersect;
+            }
+            break;
+
+        case 217:
+            /* Line 1269 of yacc.c.  */
+#line 3033 "querytransformparser.ypp"
+            {
+                ( yyval.enums.combinedNodeOp ) = CombineNodes::Except;
+            }
+            break;
+
+        case 219:
+            /* Line 1269 of yacc.c.  */
+#line 3039 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new InstanceOf( ( yyvsp[( 1 ) - ( 4 )].expr ),
+                                         SequenceType::Ptr( ( yyvsp[( 4 ) - ( 4 )].sequenceType ) ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 221:
+            /* Line 1269 of yacc.c.  */
+#line 3047 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new TreatAs( ( yyvsp[( 1 ) - ( 4 )].expr ), ( yyvsp[( 4 ) - ( 4 )].sequenceType ) ), ( yyloc ),
+                                         parseInfo );
+            }
+            break;
+
+        case 223:
+            /* Line 1269 of yacc.c.  */
+#line 3054 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new CastableAs( ( yyvsp[( 1 ) - ( 4 )].expr ), ( yyvsp[( 4 ) - ( 4 )].sequenceType ) ), ( yyloc ),
+                                         parseInfo );
+            }
+            break;
+
+        case 225:
+            /* Line 1269 of yacc.c.  */
+#line 3061 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new CastAs( ( yyvsp[( 1 ) - ( 4 )].expr ), ( yyvsp[( 4 ) - ( 4 )].sequenceType ) ), ( yyloc ),
+                                         parseInfo );
+            }
+            break;
+
+        case 227:
+            /* Line 1269 of yacc.c.  */
+#line 3068 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new UnaryExpression( ( yyvsp[( 1 ) - ( 2 )].enums.mathOperator ), ( yyvsp[( 2 ) - ( 2 )].expr ),
+                                         parseInfo->staticContext ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 228:
+            /* Line 1269 of yacc.c.  */
+#line 3074 "querytransformparser.ypp"
+            {
+                ( yyval.enums.mathOperator ) = AtomicMathematician::Add;
+            }
+            break;
+
+        case 229:
+            /* Line 1269 of yacc.c.  */
+#line 3078 "querytransformparser.ypp"
+            {
+                ( yyval.enums.mathOperator ) = AtomicMathematician::Substract;
+            }
+            break;
+
+        case 233:
+            /* Line 1269 of yacc.c.  */
+#line 3087 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new GeneralComparison( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 2 ) - ( 3 )].enums.valueOperator ),
+                                         ( yyvsp[( 3 ) - ( 3 )].expr ), parseInfo->isBackwardsCompat.top() ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 234:
+            /* Line 1269 of yacc.c.  */
+#line 3092 "querytransformparser.ypp"
+            {
+                ( yyval.enums.valueOperator ) = AtomicComparator::OperatorEqual;
+            }
+            break;
+
+        case 235:
+            /* Line 1269 of yacc.c.  */
+#line 3093 "querytransformparser.ypp"
+            {
+                ( yyval.enums.valueOperator ) = AtomicComparator::OperatorNotEqual;
+            }
+            break;
+
+        case 236:
+            /* Line 1269 of yacc.c.  */
+#line 3094 "querytransformparser.ypp"
+            {
+                ( yyval.enums.valueOperator ) = AtomicComparator::OperatorGreaterOrEqual;
+            }
+            break;
+
+        case 237:
+            /* Line 1269 of yacc.c.  */
+#line 3095 "querytransformparser.ypp"
+            {
+                ( yyval.enums.valueOperator ) = AtomicComparator::OperatorGreaterThan;
+            }
+            break;
+
+        case 238:
+            /* Line 1269 of yacc.c.  */
+#line 3096 "querytransformparser.ypp"
+            {
+                ( yyval.enums.valueOperator ) = AtomicComparator::OperatorLessOrEqual;
+            }
+            break;
+
+        case 239:
+            /* Line 1269 of yacc.c.  */
+#line 3097 "querytransformparser.ypp"
+            {
+                ( yyval.enums.valueOperator ) = AtomicComparator::OperatorLessThan;
+            }
+            break;
+
+        case 240:
+            /* Line 1269 of yacc.c.  */
+#line 3100 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new ValueComparison( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 2 ) - ( 3 )].enums.valueOperator ),
+                                         ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 241:
+            /* Line 1269 of yacc.c.  */
+#line 3104 "querytransformparser.ypp"
+            {
+                ( yyval.enums.valueOperator ) = AtomicComparator::OperatorEqual;
+            }
+            break;
+
+        case 242:
+            /* Line 1269 of yacc.c.  */
+#line 3105 "querytransformparser.ypp"
+            {
+                ( yyval.enums.valueOperator ) = AtomicComparator::OperatorNotEqual;
+            }
+            break;
+
+        case 243:
+            /* Line 1269 of yacc.c.  */
+#line 3106 "querytransformparser.ypp"
+            {
+                ( yyval.enums.valueOperator ) = AtomicComparator::OperatorGreaterOrEqual;
+            }
+            break;
+
+        case 244:
+            /* Line 1269 of yacc.c.  */
+#line 3107 "querytransformparser.ypp"
+            {
+                ( yyval.enums.valueOperator ) = AtomicComparator::OperatorGreaterThan;
+            }
+            break;
+
+        case 245:
+            /* Line 1269 of yacc.c.  */
+#line 3108 "querytransformparser.ypp"
+            {
+                ( yyval.enums.valueOperator ) = AtomicComparator::OperatorLessOrEqual;
+            }
+            break;
+
+        case 246:
+            /* Line 1269 of yacc.c.  */
+#line 3109 "querytransformparser.ypp"
+            {
+                ( yyval.enums.valueOperator ) = AtomicComparator::OperatorLessThan;
+            }
+            break;
+
+        case 247:
+            /* Line 1269 of yacc.c.  */
+#line 3112 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new NodeComparison( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 2 ) - ( 3 )].enums.nodeOperator ),
+                                         ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 248:
+            /* Line 1269 of yacc.c.  */
+#line 3116 "querytransformparser.ypp"
+            {
+                ( yyval.enums.nodeOperator ) = QXmlNodeModelIndex::Is;
+            }
+            break;
+
+        case 249:
+            /* Line 1269 of yacc.c.  */
+#line 3117 "querytransformparser.ypp"
+            {
+                ( yyval.enums.nodeOperator ) = QXmlNodeModelIndex::Precedes;
+            }
+            break;
+
+        case 250:
+            /* Line 1269 of yacc.c.  */
+#line 3118 "querytransformparser.ypp"
+            {
+                ( yyval.enums.nodeOperator ) = QXmlNodeModelIndex::Follows;
+            }
+            break;
+
+        case 251:
+            /* Line 1269 of yacc.c.  */
+#line 3121 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+                parseInfo->staticContext->error( QtXmlPatterns::tr( "The Schema Validation Feature is not supported. "
+                                                 "Hence, %1-expressions may not be used." )
+                                                 .formatArg( formatKeyword( "validate" ) ),
+                                                 ReportContext::XQST0075, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                /*
+                $$ = Validate::create($2, $1, parseInfo->staticContext);
+                */
+            }
+            break;
+
+        case 252:
+            /* Line 1269 of yacc.c.  */
+#line 3134 "querytransformparser.ypp"
+            {
+                ( yyval.enums.validationMode ) = Validate::Strict;
+            }
+            break;
+
+        case 253:
+            /* Line 1269 of yacc.c.  */
+#line 3135 "querytransformparser.ypp"
+            {
+                ( yyval.enums.validationMode ) = Validate::Strict;
+            }
+            break;
+
+        case 254:
+            /* Line 1269 of yacc.c.  */
+#line 3136 "querytransformparser.ypp"
+            {
+                ( yyval.enums.validationMode ) = Validate::Lax;
+            }
+            break;
+
+        case 255:
+            /* Line 1269 of yacc.c.  */
+#line 3139 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+
+                /* We don't support any pragmas, so we only do the
+                 * necessary validation and use the fallback expression. */
+
+                if ( ( yyvsp[( 2 ) - ( 2 )].expr ) )
+                {
+                    ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
+                }
+                else
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "None of the pragma expressions are supported. "
+                                                     "Therefore, a fallback expression "
+                                                     "must be present" ),
+                                                     ReportContext::XQST0079, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+            }
+            break;
+
+        case 256:
+            /* Line 1269 of yacc.c.  */
+#line 3156 "querytransformparser.ypp"
+            {
+                ( yyval.expr ).reset();
+            }
+            break;
+
+        case 257:
+            /* Line 1269 of yacc.c.  */
+#line 3160 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = ( yyvsp[( 2 ) - ( 3 )].expr );
+            }
+            break;
+
+        case 260:
+            /* Line 1269 of yacc.c.  */
+#line 3168 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+            }
+            break;
+
+        case 263:
+            /* Line 1269 of yacc.c.  */
+#line 3176 "querytransformparser.ypp"
+            {
+                /* This is "/step". That is, fn:root(self::node()) treat as document-node()/RelativePathExpr. */
+                ( yyval.expr ) = create( new Path( createRootExpression( parseInfo, ( yyloc ) ), ( yyvsp[( 2 ) - ( 2 )].expr ) ), ( yyloc ),
+                                         parseInfo );
+            }
+            break;
+
+        case 264:
+            /* Line 1269 of yacc.c.  */
+#line 3182 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = createSlashSlashPath( createRootExpression( parseInfo, ( yyloc ) ), ( yyvsp[( 2 ) - ( 2 )].expr ), ( yyloc ),
+                                                       parseInfo );
+            }
+            break;
+
+        case 265:
+            /* Line 1269 of yacc.c.  */
+#line 3186 "querytransformparser.ypp"
+            {
+                /* This is "/". That is, fn:root(self::node()) treat as document-node(). */
+                ( yyval.expr ) = createRootExpression( parseInfo, ( yyloc ) );
+            }
+            break;
+
+        case 268:
+            /* Line 1269 of yacc.c.  */
+#line 3196 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new Path( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ),
+                                                   ( yyvsp[( 2 ) - ( 3 )].enums.pathKind ) ),
+                                         ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 269:
+            /* Line 1269 of yacc.c.  */
+#line 3200 "querytransformparser.ypp"
+            {
+                const Expression::Ptr orderBy( createReturnOrderBy( ( yyvsp[( 4 ) - ( 7 )].orderSpecs ), ( yyvsp[( 6 ) - ( 7 )].expr ),
+                                               parseInfo->orderStability.pop(), ( yyloc ), parseInfo ) );
+
+                ReturnOrderBy *const rob = orderBy->as<ReturnOrderBy>();
+                const Expression::Ptr path( create( new Path( ( yyvsp[( 1 ) - ( 7 )].expr ), orderBy, ( yyvsp[( 2 ) - ( 7 )].enums.pathKind ) ),
+                                                    ( yyloc ), parseInfo ) );
+
+                ( yyval.expr ) = create( new OrderBy( rob->stability(), rob->orderSpecs(), path, rob ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 270:
+            /* Line 1269 of yacc.c.  */
+#line 3209 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = createSlashSlashPath( ( yyvsp[( 1 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 271:
+            /* Line 1269 of yacc.c.  */
+#line 3214 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = NodeSortExpression::wrapAround( ( yyvsp[( 1 ) - ( 1 )].expr ), parseInfo->staticContext );
+            }
+            break;
+
+        case 273:
+            /* Line 1269 of yacc.c.  */
+#line 3219 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new CurrentItemStore( ( yyvsp[( 2 ) - ( 2 )].expr ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 274:
+            /* Line 1269 of yacc.c.  */
+#line 3223 "querytransformparser.ypp"
+            {
+                const xsDouble version = ( yyvsp[( 1 ) - ( 1 )].sval ).toDouble();
+
+                parseInfo->isBackwardsCompat.push( version != 2 );
+
+                ( yyval.enums.Double ) = version;
+            }
+            break;
+
+        case 275:
+            /* Line 1269 of yacc.c.  */
+#line 3231 "querytransformparser.ypp"
+            {
+                if ( ( yyvsp[( 2 ) - ( 3 )].enums.Double ) < 2 )
+                {
+                    ( yyval.expr ) = createCompatStore( ( yyvsp[( 3 ) - ( 3 )].expr ), ( yyloc ), parseInfo );
+                }
+                else
+                {
+                    ( yyval.expr ) = ( yyvsp[( 3 ) - ( 3 )].expr );
+                }
+            }
+            break;
+
+        case 276:
+            /* Line 1269 of yacc.c.  */
+#line 3238 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XSLT20, parseInfo, ( yyloc ) );
+                Q_ASSERT( !( yyvsp[( 2 ) - ( 5 )].sval ).isEmpty() );
+                ( yyval.expr ) = create( new StaticBaseURIStore( QUrl( yyvsp[( 2 ) - ( 5 )].sval ), ( yyvsp[( 4 ) - ( 5 )].expr ) ), ( yyloc ),
+                                         parseInfo );
+            }
+            break;
+
+        case 277:
+            /* Line 1269 of yacc.c.  */
+#line 3245 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XSLT20 ), parseInfo, ( yyloc ) );
+                parseInfo->resolvers.push( parseInfo->staticContext->namespaceBindings() );
+                const NamespaceResolver::Ptr resolver( new DelegatingNamespaceResolver( parseInfo->staticContext->namespaceBindings() ) );
+                resolver->addBinding( QXmlName( parseInfo->staticContext->namePool()->allocateNamespace( ( yyvsp[( 5 ) - ( 6 )].sval ) ),
+                                                StandardLocalNames::empty,
+                                                parseInfo->staticContext->namePool()->allocatePrefix( ( yyvsp[( 3 ) - ( 6 )].sval ) ) ) );
+                parseInfo->staticContext->setNamespaceBindings( resolver );
+            }
+            break;
+
+        case 278:
+            /* Line 1269 of yacc.c.  */
+#line 3256 "querytransformparser.ypp"
+            {
+                parseInfo->staticContext->setNamespaceBindings( parseInfo->resolvers.pop() );
+                ( yyval.expr ) = ( yyvsp[( 8 ) - ( 9 )].expr );
+            }
+            break;
+
+        case 279:
+            /* Line 1269 of yacc.c.  */
+#line 3261 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new CallTemplate( ( yyvsp[( 2 ) - ( 5 )].qName ), parseInfo->templateWithParams ), ( yyloc ),
+                                         parseInfo );
+                parseInfo->templateWithParametersHandled();
+                parseInfo->templateCalls.append( ( yyval.expr ) );
+            }
+            break;
+
+        case 280:
+            /* Line 1269 of yacc.c.  */
+#line 3268 "querytransformparser.ypp"
+            {
+                parseInfo->startParsingWithParam();
+            }
+            break;
+
+        case 281:
+            /* Line 1269 of yacc.c.  */
+#line 3272 "querytransformparser.ypp"
+            {
+                parseInfo->endParsingWithParam();
+            }
+            break;
+
+        case 282:
+            /* Line 1269 of yacc.c.  */
+#line 3277 "querytransformparser.ypp"
+            {
+            }
+            break;
+
+        case 283:
+            /* Line 1269 of yacc.c.  */
+#line 3280 "querytransformparser.ypp"
+            {
+            }
+            break;
+
+        case 284:
+            /* Line 1269 of yacc.c.  */
+#line 3283 "querytransformparser.ypp"
+            {
+            }
+            break;
+
+        case 285:
+            /* Line 1269 of yacc.c.  */
+#line 3287 "querytransformparser.ypp"
+            {
+            }
+            break;
+
+        case 286:
+            /* Line 1269 of yacc.c.  */
+#line 3290 "querytransformparser.ypp"
+            {
+            }
+            break;
+
+        case 287:
+            /* Line 1269 of yacc.c.  */
+#line 3294 "querytransformparser.ypp"
+            {
+                /* Note, this grammar rule is invoked for @c xsl:param @em and @c
+                 * xsl:with-param. */
+                const bool isParsingWithParam = parseInfo->isParsingWithParam();
+
+                /**
+                 * @c xsl:param doesn't make life easy:
+                 *
+                 * If it only has @c name, it's default value is an empty
+                 * string(hence has type @c xs:string), but the value that
+                 * (maybe) is supplied can be anything, typically a node.
+                 *
+                 * Therefore, for that very common case we can't rely on
+                 * the Expression's type, but have to force it to item()*.
+                 *
+                 * So if we're supplied the type item()*, we pass a null
+                 * SequenceType. TemplateParameterReference recognizes this
+                 * and has item()* as its static type, regardless of if the
+                 * expression has a more specific type.
+                 */
+                SequenceType::Ptr type;
+
+                if ( !( yyvsp[( 4 ) - ( 5 )].sequenceType )->is( CommonSequenceTypes::ZeroOrMoreItems ) )
+                {
+                    type = ( yyvsp[( 4 ) - ( 5 )].sequenceType );
+                }
+
+                Expression::Ptr expr;
+
+                /* The default value is an empty sequence. */
+                if ( !( yyvsp[( 5 ) - ( 5 )].expr ) && ( ( type && ( yyvsp[( 4 ) - ( 5 )].sequenceType )->cardinality().allowsEmpty() )
+                        || isParsingWithParam ) )
+                {
+                    expr = create( new EmptySequence, ( yyloc ), parseInfo );
+                }
+                else
+                {
+                    expr = ( yyvsp[( 5 ) - ( 5 )].expr );
+                }
+
+                /* We ensure we have some type, so CallTemplate, Template and friends
+                 * are happy. */
+                if ( !isParsingWithParam && !type )
+                {
+                    type = CommonSequenceTypes::ZeroOrMoreItems;
+                }
+
+                if ( ( yyvsp[( 1 ) - ( 5 )].enums.Bool ) )
+                    /* TODO, handle tunnel parameters. */;
+                else
+                {
+                    if ( ( !isParsingWithParam && VariableDeclaration::contains( parseInfo->templateParameters, ( yyvsp[( 3 ) - ( 5 )].qName ) ) ) ||
+                            ( isParsingWithParam && parseInfo->templateWithParams.contains( ( yyvsp[( 3 ) - ( 5 )].qName ) ) ) )
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "Each name of a template parameter must be unique; %1 is duplicated." )
+                                                         .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 3 ) - ( 5 )].qName ) ) ),
+                                                         isParsingWithParam ? ReportContext::XTSE0670 : ReportContext::XTSE0580, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                    }
+                    else
+                    {
+                        if ( isParsingWithParam )
+                        {
+                            parseInfo->templateWithParams[( yyvsp[( 3 ) - ( 5 )].qName )] = WithParam::Ptr( new WithParam( ( yyvsp[( 3 ) - ( 5 )].qName ),
+                                    ( yyvsp[( 4 ) - ( 5 )].sequenceType ), expr ) );
+                        }
+                        else
+                        {
+                            Q_ASSERT( type );
+                            pushVariable( ( yyvsp[( 3 ) - ( 5 )].qName ), type, expr, VariableDeclaration::TemplateParameter, ( yyloc ), parseInfo );
+                            parseInfo->templateParameters.append( parseInfo->variables.top() );
+                        }
+                    }
+                }
+            }
+            break;
+
+        case 288:
+            /* Line 1269 of yacc.c.  */
+#line 3359 "querytransformparser.ypp"
+            {
+                ( yyval.enums.Bool ) = false;
+            }
+            break;
+
+        case 289:
+            /* Line 1269 of yacc.c.  */
+#line 3363 "querytransformparser.ypp"
+            {
+                ( yyval.enums.Bool ) = true;
+            }
+            break;
+
+        case 290:
+            /* Line 1269 of yacc.c.  */
+#line 3368 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = Expression::Ptr();
+            }
+            break;
+
+        case 291:
+            /* Line 1269 of yacc.c.  */
+#line 3372 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
+            }
+            break;
+
+        case 292:
+            /* Line 1269 of yacc.c.  */
+#line 3381 "querytransformparser.ypp"
+            {
+                ( yyval.enums.pathKind ) = Path::RegularPath;
+            }
+            break;
+
+        case 293:
+            /* Line 1269 of yacc.c.  */
+#line 3385 "querytransformparser.ypp"
+            {
+                ( yyval.enums.pathKind ) = Path::XSLTForEach;
+            }
+            break;
+
+        case 294:
+            /* Line 1269 of yacc.c.  */
+#line 3389 "querytransformparser.ypp"
+            {
+                ( yyval.enums.pathKind ) = Path::ForApplyTemplate;
+            }
+            break;
+
+        case 296:
+            /* Line 1269 of yacc.c.  */
+#line 3395 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( GenericPredicate::create( ( yyvsp[( 1 ) - ( 4 )].expr ), ( yyvsp[( 3 ) - ( 4 )].expr ),
+                                         parseInfo->staticContext, fromYYLTYPE( ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 299:
+            /* Line 1269 of yacc.c.  */
+#line 3403 "querytransformparser.ypp"
+            {
+                if ( ( yyvsp[( 1 ) - ( 1 )].enums.axis ) == QXmlNodeModelIndex::AxisAttribute )
+                {
+                    parseInfo->nodeTestSource = BuiltinTypes::attribute;
+                }
+            }
+            break;
+
+        case 300:
+            /* Line 1269 of yacc.c.  */
+#line 3408 "querytransformparser.ypp"
+            {
+                if ( ( yyvsp[( 3 ) - ( 3 )].itemType ) )
+                {
+                    /* A node test was explicitly specified. The un-abbreviated syntax was used. */
+                    ( yyval.expr ) = create( new AxisStep( ( yyvsp[( 1 ) - ( 3 )].enums.axis ), ( yyvsp[( 3 ) - ( 3 )].itemType ) ), ( yyloc ),
+                                             parseInfo );
+                }
+                else
+                {
+                    /* Quote from 3.2.1.1 Axes
+                     *
+                     * [Definition: Every axis has a principal node kind. If an axis
+                     *  can contain elements, then the principal node kind is element;
+                     *  otherwise, it is the kind of nodes that the axis can contain.] Thus:
+                     * - For the attribute axis, the principal node kind is attribute.
+                     * - For all other axes, the principal node kind is element. */
+
+                    if ( ( yyvsp[( 1 ) - ( 3 )].enums.axis ) == QXmlNodeModelIndex::AxisAttribute )
+                    {
+                        ( yyval.expr ) = create( new AxisStep( QXmlNodeModelIndex::AxisAttribute, BuiltinTypes::attribute ), ( yyloc ), parseInfo );
+                    }
+                    else
+                    {
+                        ( yyval.expr ) = create( new AxisStep( ( yyvsp[( 1 ) - ( 3 )].enums.axis ), BuiltinTypes::element ), ( yyloc ), parseInfo );
+                    }
+                }
+
+                parseInfo->restoreNodeTestSource();
+            }
+            break;
+
+        case 304:
+            /* Line 1269 of yacc.c.  */
+#line 3438 "querytransformparser.ypp"
+            {
+                if ( ( yyvsp[( 1 ) - ( 2 )].enums.axis ) == QXmlNodeModelIndex::AxisNamespace )
+                {
+                    /* We don't raise XPST0010 here because the namespace axis isn't an optional
+                     * axis. It simply is not part of the XQuery grammar. */
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "The %1-axis is unsupported in XQuery" )
+                                                     .formatArg( formatKeyword( "namespace" ) ),
+                                                     ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    ( yyval.enums.axis ) = ( yyvsp[( 1 ) - ( 2 )].enums.axis );
+                }
+
+                switch ( ( yyvsp[( 1 ) - ( 2 )].enums.axis ) )
+                {
+                    case QXmlNodeModelIndex::AxisAttribute:
+                    {
+                        allowedIn( QueryLanguages(  QXmlQuery::XPath20
+                                                    | QXmlQuery::XQuery10
+                                                    | QXmlQuery::XmlSchema11IdentityConstraintField
+                                                    | QXmlQuery::XSLT20 ),
+                                   parseInfo, ( yyloc ) );
+                        break;
+                    }
+
+                    case QXmlNodeModelIndex::AxisChild:
+                    {
+                        allowedIn( QueryLanguages(  QXmlQuery::XPath20
+                                                    | QXmlQuery::XQuery10
+                                                    | QXmlQuery::XmlSchema11IdentityConstraintField
+                                                    | QXmlQuery::XmlSchema11IdentityConstraintSelector
+                                                    | QXmlQuery::XSLT20 ),
+                                   parseInfo, ( yyloc ) );
+                        break;
+                    }
+
+                    default:
+                    {
+                        allowedIn( QueryLanguages(  QXmlQuery::XPath20
+                                                    | QXmlQuery::XQuery10
+                                                    | QXmlQuery::XSLT20 ),
+                                   parseInfo, ( yyloc ) );
+                    }
+                }
+            }
+            break;
+
+        case 305:
+            /* Line 1269 of yacc.c.  */
+#line 3481 "querytransformparser.ypp"
+            {
+                ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisAncestorOrSelf  ;
+            }
+            break;
+
+        case 306:
+            /* Line 1269 of yacc.c.  */
+#line 3482 "querytransformparser.ypp"
+            {
+                ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisAncestor        ;
+            }
+            break;
+
+        case 307:
+            /* Line 1269 of yacc.c.  */
+#line 3483 "querytransformparser.ypp"
+            {
+                ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisAttribute       ;
+            }
+            break;
+
+        case 308:
+            /* Line 1269 of yacc.c.  */
+#line 3484 "querytransformparser.ypp"
+            {
+                ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisChild           ;
+            }
+            break;
+
+        case 309:
+            /* Line 1269 of yacc.c.  */
+#line 3485 "querytransformparser.ypp"
+            {
+                ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisDescendantOrSelf;
+            }
+            break;
+
+        case 310:
+            /* Line 1269 of yacc.c.  */
+#line 3486 "querytransformparser.ypp"
+            {
+                ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisDescendant      ;
+            }
+            break;
+
+        case 311:
+            /* Line 1269 of yacc.c.  */
+#line 3487 "querytransformparser.ypp"
+            {
+                ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisFollowing       ;
+            }
+            break;
+
+        case 312:
+            /* Line 1269 of yacc.c.  */
+#line 3488 "querytransformparser.ypp"
+            {
+                ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisPreceding       ;
+            }
+            break;
+
+        case 313:
+            /* Line 1269 of yacc.c.  */
+#line 3489 "querytransformparser.ypp"
+            {
+                ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisFollowingSibling;
+            }
+            break;
+
+        case 314:
+            /* Line 1269 of yacc.c.  */
+#line 3490 "querytransformparser.ypp"
+            {
+                ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisPrecedingSibling;
+            }
+            break;
+
+        case 315:
+            /* Line 1269 of yacc.c.  */
+#line 3491 "querytransformparser.ypp"
+            {
+                ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisParent          ;
+            }
+            break;
+
+        case 316:
+            /* Line 1269 of yacc.c.  */
+#line 3492 "querytransformparser.ypp"
+            {
+                ( yyval.enums.axis ) = QXmlNodeModelIndex::AxisSelf            ;
+            }
+            break;
+
+        case 317:
+            /* Line 1269 of yacc.c.  */
+#line 3495 "querytransformparser.ypp"
+            {
+                parseInfo->nodeTestSource = BuiltinTypes::attribute;
+            }
+            break;
+
+        case 318:
+            /* Line 1269 of yacc.c.  */
+#line 3499 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XSLT20 | QXmlQuery::XmlSchema11IdentityConstraintField ),
+                           parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new AxisStep( QXmlNodeModelIndex::AxisAttribute, ( yyvsp[( 3 ) - ( 3 )].itemType ) ), ( yyloc ),
+                                         parseInfo );
+
+                parseInfo->restoreNodeTestSource();
+            }
+            break;
+
+        case 319:
+            /* Line 1269 of yacc.c.  */
+#line 3506 "querytransformparser.ypp"
+            {
+                ItemType::Ptr nodeTest;
+
+                if ( parseInfo->isParsingPattern && *( yyvsp[( 1 ) - ( 1 )].itemType ) == *BuiltinTypes::node )
+                {
+                    nodeTest = BuiltinTypes::xsltNodeTest;
+                }
+                else
+                {
+                    nodeTest = ( yyvsp[( 1 ) - ( 1 )].itemType );
+                }
+
+                ( yyval.expr ) = create( new AxisStep( QXmlNodeModelIndex::AxisChild, nodeTest ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 320:
+            /* Line 1269 of yacc.c.  */
+#line 3517 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new AxisStep( QXmlNodeModelIndex::AxisAttribute, ( yyvsp[( 1 ) - ( 1 )].itemType ) ), ( yyloc ),
+                                         parseInfo );
+            }
+            break;
+
+        case 322:
+            /* Line 1269 of yacc.c.  */
+#line 3524 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new AxisStep( QXmlNodeModelIndex::AxisParent, BuiltinTypes::node ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 324:
+            /* Line 1269 of yacc.c.  */
+#line 3530 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+            }
+            break;
+
+        case 325:
+            /* Line 1269 of yacc.c.  */
+#line 3535 "querytransformparser.ypp"
+            {
+                ( yyval.itemType ) = QNameTest::create( parseInfo->nodeTestSource, ( yyvsp[( 1 ) - ( 1 )].qName ) );
+            }
+            break;
+
+        case 327:
+            /* Line 1269 of yacc.c.  */
+#line 3541 "querytransformparser.ypp"
+            {
+                ( yyval.itemType ) = parseInfo->nodeTestSource;
+            }
+            break;
+
+        case 328:
+            /* Line 1269 of yacc.c.  */
+#line 3545 "querytransformparser.ypp"
+            {
+                const NamePool::Ptr np( parseInfo->staticContext->namePool() );
+                const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
+
+                const QXmlName::NamespaceCode ns( QNameConstructor::namespaceForPrefix( np->allocatePrefix( ( yyvsp[( 1 ) - ( 1 )].sval ) ),
+                                                  parseInfo->staticContext, &ryy ) );
+
+                ( yyval.itemType ) = NamespaceNameTest::create( parseInfo->nodeTestSource, ns );
+            }
+            break;
+
+        case 329:
+            /* Line 1269 of yacc.c.  */
+#line 3554 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                const QXmlName::LocalNameCode c = parseInfo->staticContext->namePool()->allocateLocalName( ( yyvsp[( 1 ) - ( 1 )].sval ) );
+                ( yyval.itemType ) = LocalNameTest::create( parseInfo->nodeTestSource, c );
+            }
+            break;
+
+        case 331:
+            /* Line 1269 of yacc.c.  */
+#line 3562 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( GenericPredicate::create( ( yyvsp[( 1 ) - ( 4 )].expr ), ( yyvsp[( 3 ) - ( 4 )].expr ),
+                                         parseInfo->staticContext, fromYYLTYPE( ( yylsp[( 4 ) - ( 4 )] ), parseInfo ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 339:
+            /* Line 1269 of yacc.c.  */
+#line 3575 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new ApplyTemplate( parseInfo->modeFor( ( yyvsp[( 2 ) - ( 5 )].qName ) ),
+                                         parseInfo->templateWithParams,
+                                         parseInfo->modeFor( QXmlName( StandardNamespaces::InternalXSLT,
+                                                 StandardLocalNames::Default ) ) ),
+                                         ( yylsp[( 1 ) - ( 5 )] ), parseInfo );
+                parseInfo->templateWithParametersHandled();
+            }
+            break;
+
+        case 341:
+            /* Line 1269 of yacc.c.  */
+#line 3586 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new Literal( AtomicString::fromValue( ( yyvsp[( 1 ) - ( 1 )].sval ) ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 342:
+            /* Line 1269 of yacc.c.  */
+#line 3591 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = createNumericLiteral<Double>( ( yyvsp[( 1 ) - ( 1 )].sval ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 343:
+            /* Line 1269 of yacc.c.  */
+#line 3596 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = createNumericLiteral<Numeric>( ( yyvsp[( 1 ) - ( 1 )].sval ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 344:
+            /* Line 1269 of yacc.c.  */
+#line 3602 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = resolveVariable( ( yyvsp[( 2 ) - ( 2 )].qName ), ( yyloc ), parseInfo, false );
+            }
+            break;
+
+        case 345:
+            /* Line 1269 of yacc.c.  */
+#line 3608 "querytransformparser.ypp"
+            {
+                /* See: http://www.w3.org/TR/xpath20/#id-variables */
+                ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName( QString(), ( yyvsp[( 1 ) - ( 1 )].sval ) );
+            }
+            break;
+
+        case 346:
+            /* Line 1269 of yacc.c.  */
+#line 3613 "querytransformparser.ypp"
+            {
+                ( yyval.qName ) = ( yyvsp[( 1 ) - ( 1 )].qName );
+            }
+            break;
+
+        case 347:
+            /* Line 1269 of yacc.c.  */
+#line 3618 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = ( yyvsp[( 2 ) - ( 3 )].expr );
+            }
+            break;
+
+        case 348:
+            /* Line 1269 of yacc.c.  */
+#line 3623 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+                ( yyval.expr ) = create( new EmptySequence, ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 349:
+            /* Line 1269 of yacc.c.  */
+#line 3629 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new ContextItem(), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 350:
+            /* Line 1269 of yacc.c.  */
+#line 3634 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = ( yyvsp[( 2 ) - ( 2 )].expr );
+            }
+            break;
+
+        case 351:
+            /* Line 1269 of yacc.c.  */
+#line 3639 "querytransformparser.ypp"
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+
+                if ( XPathHelper::isReservedNamespace( ( yyvsp[( 1 ) - ( 4 )].qName ).namespaceURI() ) ||
+                        ( yyvsp[( 1 ) - ( 4 )].qName ).namespaceURI() == StandardNamespaces::InternalXSLT )
+                {
+                    /* We got a call to a builtin function. */
+                    const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
+
+                    const Expression::Ptr
+                    func( parseInfo->staticContext->
+                          functionSignatures()->createFunctionCall( ( yyvsp[( 1 ) - ( 4 )].qName ), ( yyvsp[( 3 ) - ( 4 )].expressionList ),
+                                  parseInfo->staticContext, &ryy ) );
+
+                    if ( func )
+                    {
+                        ( yyval.expr ) = create( func, ( yyloc ), parseInfo );
+                    }
+                    else
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "No function with name %1 is available." )
+                                                         .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 1 ) - ( 4 )].qName ) ) ),
+                                                         ReportContext::XPST0017, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                    }
+                }
+                else     /* It's a call to a function created with 'declare function'.*/
+                {
+                    ( yyval.expr ) = create( new UserFunctionCallsite( ( yyvsp[( 1 ) - ( 4 )].qName ),
+                                             ( yyvsp[( 3 ) - ( 4 )].expressionList ).count() ),
+                                             ( yyloc ), parseInfo );
+
+                    ( yyval.expr )->setOperands( ( yyvsp[( 3 ) - ( 4 )].expressionList ) );
+                    parseInfo->userFunctionCallsites.append( ( yyval.expr ) );
+                }
+            }
+            break;
+
+        case 352:
+            /* Line 1269 of yacc.c.  */
+#line 3668 "querytransformparser.ypp"
+            {
+                ( yyval.expressionList ) = Expression::List();
+            }
+            break;
+
+        case 353:
+            /* Line 1269 of yacc.c.  */
+#line 3673 "querytransformparser.ypp"
+            {
+                Expression::List list;
+                list.append( ( yyvsp[( 1 ) - ( 1 )].expr ) );
+                ( yyval.expressionList ) = list;
+            }
+            break;
+
+        case 355:
+            /* Line 1269 of yacc.c.  */
+#line 3682 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ) );
+            }
+            break;
+
+        case 360:
+            /* Line 1269 of yacc.c.  */
+#line 3726 "querytransformparser.ypp"
+            {
+                ( yyval.enums.tokenizerPosition ) = parseInfo->tokenizer->commenceScanOnly();
+                parseInfo->scanOnlyStack.push( true );
+            }
+            break;
+
+        case 361:
+            /* Line 1269 of yacc.c.  */
+#line 3735 "querytransformparser.ypp"
+            {
+                ++parseInfo->elementConstructorDepth;
+                Expression::List constructors;
+
+                parseInfo->resolvers.push( parseInfo->staticContext->namespaceBindings() );
+
+                /* Fix up attributes and namespace declarations. */
+                const NamespaceResolver::Ptr resolver( new DelegatingNamespaceResolver( parseInfo->staticContext->namespaceBindings() ) );
+                const NamePool::Ptr namePool( parseInfo->staticContext->namePool() );
+                const int len = ( yyvsp[( 4 ) - ( 4 )].attributeHolders ).size();
+                QSet<QXmlName::PrefixCode> usedDeclarations;
+
+                /* Whether xmlns="" has been encountered. */
+                bool hasDefaultDeclaration = false;
+
+                /* For each attribute & namespace declaration, do: */
+                for ( int i = 0; i < len; ++i )
+                {
+                    QString strLocalName;
+                    QString strPrefix;
+
+                    XPathHelper::splitQName( ( yyvsp[( 4 ) - ( 4 )].attributeHolders ).at( i ).first, strPrefix, strLocalName );
+                    const QXmlName::PrefixCode prefix = namePool->allocatePrefix( strPrefix );
+
+                    /* This can seem a bit weird. However, this name is ending up in a QXmlName
+                     * which consider its prefix a... prefix. So, a namespace binding name can in some cases
+                     * be a local name, but that's just as the initial syntactical construct. */
+                    const QXmlName::LocalNameCode localName = namePool->allocatePrefix( strLocalName );
+
+                    /* Not that localName is "foo" in "xmlns:foo" and that prefix is "xmlns". */
+
+                    if ( prefix == StandardPrefixes::xmlns ||
+                            ( prefix == StandardPrefixes::empty && localName == StandardPrefixes::xmlns ) )
+                    {
+                        if ( localName == StandardPrefixes::xmlns )
+                        {
+                            hasDefaultDeclaration = true;
+                        }
+
+                        /* We have a namespace declaration. */
+
+                        const Expression::Ptr nsExpr( ( yyvsp[( 4 ) - ( 4 )].attributeHolders ).at( i ).second );
+
+                        const QString strNamespace( nsExpr->is( Expression::IDEmptySequence ) ? QString() :
+                                                    nsExpr->as<Literal>()->item().stringValue() );
+
+                        const QXmlName::NamespaceCode ns = namePool->allocateNamespace( strNamespace );
+
+                        if ( ns == StandardNamespaces::empty )
+                        {
+                            if ( localName != StandardPrefixes::xmlns )
+                            {
+                                parseInfo->staticContext->error(
+                                    QtXmlPatterns::tr( "The namespace URI cannot be the empty string when binding to a prefix, %1." )
+                                    .formatArg( formatURI( strPrefix ) ),
+                                    ReportContext::XQST0085, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                            }
+                        }
+                        else if ( !AnyURI::isValid( strNamespace ) )
+                        {
+                            parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is an invalid namespace URI." ).formatArg( formatURI( strNamespace ) ),
+                                                             ReportContext::XQST0022, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                        }
+
+                        if ( prefix == StandardPrefixes::xmlns && localName == StandardPrefixes::xmlns )
+                        {
+                            parseInfo->staticContext->error( QtXmlPatterns::tr( "It is not possible to bind to the prefix %1" )
+                                                             .formatArg( formatKeyword( "xmlns" ) ),
+                                                             ReportContext::XQST0070, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                        }
+
+                        if ( ns == StandardNamespaces::xml && localName != StandardPrefixes::xml )
+                        {
+                            parseInfo->staticContext->error(
+                                QtXmlPatterns::tr( "Namespace %1 can only be bound to %2 (and it is, in either case, pre-declared)." )
+                                .formatArg( formatURI( namePool->stringForNamespace( StandardNamespaces::xml ) ) )
+                                .formatArg( formatKeyword( "xml" ) ),
+                                ReportContext::XQST0070, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                        }
+
+                        if ( localName == StandardPrefixes::xml && ns != StandardNamespaces::xml )
+                        {
+                            parseInfo->staticContext->error(
+                                QtXmlPatterns::tr( "Prefix %1 can only be bound to %2 (and it is, in either case, pre-declared)." )
+                                .formatArg( formatKeyword( "xml" ) )
+                                .formatArg( formatURI( namePool->stringForNamespace( StandardNamespaces::xml ) ) ),
+                                ReportContext::XQST0070, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                        }
+
+                        QXmlName nb;
+
+                        if ( localName == StandardPrefixes::xmlns )
+                        {
+                            nb = QXmlName( ns, StandardLocalNames::empty );
+                        }
+                        else
+                        {
+                            nb = QXmlName( ns, StandardLocalNames::empty, localName );
+                        }
+
+                        if ( usedDeclarations.contains( nb.prefix() ) )
+                        {
+                            parseInfo->staticContext->error( QtXmlPatterns::tr( "Two namespace declaration attributes have the same name: %1." )
+                                                             .formatArg( formatKeyword( namePool->stringForPrefix( nb.prefix() ) ) ),
+                                                             ReportContext::XQST0071, fromYYLTYPE( ( yyloc ), parseInfo ) );
+
+                        }
+                        else
+                        {
+                            usedDeclarations.insert( nb.prefix() );
+                        }
+
+                        /* If the user has bound the XML namespace correctly, we in either
+                         * case don't want to output it.
+                         *
+                         * We only have to check the namespace parts since the above checks has ensured
+                         * consistency in the prefix parts. */
+                        if ( ns != StandardNamespaces::xml )
+                        {
+                            /* We don't want default namespace declarations when the
+                             * default namespace already is empty. */
+                            if ( !( ns == StandardNamespaces::empty          &&
+                                    localName == StandardNamespaces::xmlns   &&
+                                    resolver->lookupNamespaceURI( StandardPrefixes::empty ) == StandardNamespaces::empty ) )
+                            {
+                                constructors.append( create( new NamespaceConstructor( nb ), ( yyloc ), parseInfo ) );
+                                resolver->addBinding( nb );
+                            }
+                        }
+                    }
+                }
+
+                if ( parseInfo->elementConstructorDepth == 1 && !hasDefaultDeclaration )
+                {
+                    /* TODO But mostly this isn't needed, since the default element
+                     * namespace is empty? How does this at all work? */
+                    const QXmlName def( resolver->lookupNamespaceURI( StandardPrefixes::empty ), StandardLocalNames::empty );
+                    constructors.append( create( new NamespaceConstructor( def ), ( yyloc ), parseInfo ) );
+                }
+
+                parseInfo->staticContext->setNamespaceBindings( resolver );
+                ( yyval.expressionList ) = constructors;
+
+                /* Resolve the name of the element, now that the namespace attributes are read. */
+                {
+                    const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
+
+                    const QXmlName ele = QNameConstructor::expandQName<StaticContext::Ptr,
+                                   ReportContext::XPST0081,
+                                   ReportContext::XPST0081>( ( yyvsp[( 2 ) - ( 4 )].sval ), parseInfo->staticContext, resolver, &ryy );
+                    parseInfo->tagStack.push( ele );
+                }
+
+                parseInfo->tokenizer->resumeTokenizationFrom( ( yyvsp[( 3 ) - ( 4 )].enums.tokenizerPosition ) );
+            }
+            break;
+
+        case 362:
+            /* Line 1269 of yacc.c.  */
+#line 3881 "querytransformparser.ypp"
+            {
+                /* We add the content constructor after the attribute constructors. This might result
+                 * in nested ExpressionSequences, but it will be optimized away later on. */
+
+                Expression::List attributes( ( yyvsp[( 5 ) - ( 8 )].expressionList ) );
+                const NamePool::Ptr namePool( parseInfo->staticContext->namePool() );
+                const int len = ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).size();
+                QSet<QXmlName> declaredAttributes;
+                declaredAttributes.reserve( len );
+
+                /* For each namespace, resolve its name(now that we have resolved the namespace declarations) and
+                 * turn it into an attribute constructor. */
+                for ( int i = 0; i < len; ++i )
+                {
+                    QString strLocalName;
+                    QString strPrefix;
+
+                    XPathHelper::splitQName( ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).at( i ).first, strPrefix, strLocalName );
+                    const QXmlName::PrefixCode prefix = namePool->allocatePrefix( strPrefix );
+                    const QXmlName::LocalNameCode localName = namePool->allocateLocalName( strLocalName );
+
+                    if ( prefix == StandardPrefixes::xmlns ||
+                            ( prefix == StandardPrefixes::empty && localName == StandardLocalNames::xmlns ) )
+                    {
+                        const Expression::ID id = ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).at( i ).second->id();
+
+                        if ( id == Expression::IDStringValue || id == Expression::IDEmptySequence )
+                        {
+                            /* It's a namespace declaration, and we've already handled those above. */
+                            continue;
+                        }
+                        else
+                        {
+                            parseInfo->staticContext->error( QtXmlPatterns::tr( "The namespace URI must be a constant and cannot "
+                                                             "use enclosed expressions." ),
+                                                             ReportContext::XQST0022, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                        }
+
+                    }
+                    else
+                    {
+                        const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
+                        const QXmlName att = QNameConstructor::expandQName<StaticContext::Ptr,
+                                       ReportContext::XPST0081,
+                                       ReportContext::XPST0081>( ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).at( i ).first, parseInfo->staticContext,
+                                               parseInfo->staticContext->namespaceBindings(),
+                                               &ryy, true );
+
+                        if ( declaredAttributes.contains( att ) )
+                        {
+                            parseInfo->staticContext->error( QtXmlPatterns::tr( "An attribute with name %1 has already appeared on this element." )
+                                                             .formatArg( formatKeyword( parseInfo->staticContext->namePool(), att ) ),
+                                                             ReportContext::XQST0040, fromYYLTYPE( ( yyloc ), parseInfo ) );
+
+                        }
+                        else
+                        {
+                            declaredAttributes.insert( att );
+                        }
+
+                        /* wrapLiteral() needs the SourceLocationReflection of the AttributeConstructor, but
+                         * it's unknown inside the arguments to its constructor. Hence we have to do this workaround of setting
+                         * it twice.
+                         *
+                         * The AttributeConstructor's arguments are just dummies. */
+                        const Expression::Ptr ctor( create( new AttributeConstructor( ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).at( i ).second,
+                                                            ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).at( i ).second ), ( yyloc ), parseInfo ) );
+
+                        Expression::List ops;
+                        ops.append( wrapLiteral( toItem( QNameValue::fromValue( namePool, att ) ), parseInfo->staticContext, ctor.data() ) );
+                        ops.append( ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).at( i ).second );
+                        ctor->setOperands( ops );
+
+                        attributes.append( ctor );
+                    }
+                }
+
+                Expression::Ptr contentOp;
+
+                if ( attributes.isEmpty() )
+                {
+                    contentOp = ( yyvsp[( 8 ) - ( 8 )].expr );
+                }
+                else
+                {
+                    attributes.append( ( yyvsp[( 8 ) - ( 8 )].expr ) );
+                    contentOp = create( new ExpressionSequence( attributes ), ( yyloc ), parseInfo );
+                }
+
+                const Expression::Ptr name( create( new Literal( toItem( QNameValue::fromValue( parseInfo->staticContext->namePool(),
+                                                    parseInfo->tagStack.top() ) ) ), ( yyloc ), parseInfo ) );
+                ( yyval.expr ) = create( new ElementConstructor( name, contentOp, parseInfo->isXSLT() ), ( yyloc ), parseInfo );
+
+                /* Restore the old context. We don't want the namespaces
+                 * to be in-scope for expressions appearing after the
+                 * element they appeared on. */
+                parseInfo->staticContext->setNamespaceBindings( parseInfo->resolvers.pop() );
+                parseInfo->tagStack.pop();
+
+                --parseInfo->elementConstructorDepth;
+            }
+            break;
+
+        case 363:
+            /* Line 1269 of yacc.c.  */
+#line 3977 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new EmptySequence(), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 364:
+            /* Line 1269 of yacc.c.  */
+#line 3981 "querytransformparser.ypp"
+            {
+                if ( !( yyvsp[( 4 ) - ( 5 )].qName ).isLexicallyEqual( parseInfo->tagStack.top() ) )
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "A direct element constructor is not "
+                                                     "well-formed. %1 is ended with %2." )
+                                                     .formatArgs( formatKeyword( parseInfo->staticContext->namePool()->toLexical( parseInfo->tagStack.top() ) ),
+                                                             formatKeyword( parseInfo->staticContext->namePool()->toLexical( ( yyvsp[( 4 ) - ( 5 )].qName ) ) ) ),
+                                                     ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+
+                if ( ( yyvsp[( 2 ) - ( 5 )].expressionList ).isEmpty() )
+                {
+                    ( yyval.expr ) = create( new EmptySequence(), ( yyloc ), parseInfo );
+
+                }
+                else if ( ( yyvsp[( 2 ) - ( 5 )].expressionList ).size() == 1 )
+                {
+                    ( yyval.expr ) = ( yyvsp[( 2 ) - ( 5 )].expressionList ).first();
+
+                }
+                else
+                {
+                    ( yyval.expr ) = create( new ExpressionSequence( ( yyvsp[( 2 ) - ( 5 )].expressionList ) ), ( yyloc ), parseInfo );
+                }
+            }
+            break;
+
+        case 365:
+            /* Line 1269 of yacc.c.  */
+#line 4000 "querytransformparser.ypp"
+            {
+                ( yyval.attributeHolders ) = AttributeHolderVector();
+            }
+            break;
+
+        case 366:
+            /* Line 1269 of yacc.c.  */
+#line 4004 "querytransformparser.ypp"
+            {
+                ( yyvsp[( 1 ) - ( 2 )].attributeHolders ).append( ( yyvsp[( 2 ) - ( 2 )].attributeHolder ) );
+                ( yyval.attributeHolders ) = ( yyvsp[( 1 ) - ( 2 )].attributeHolders );
+            }
+            break;
+
+        case 367:
+            /* Line 1269 of yacc.c.  */
+#line 4010 "querytransformparser.ypp"
+            {
+                ( yyval.attributeHolder ) = qMakePair( ( yyvsp[( 1 ) - ( 3 )].sval ), ( yyvsp[( 3 ) - ( 3 )].expr ) );
+            }
+            break;
+
+        case 368:
+            /* Line 1269 of yacc.c.  */
+#line 4015 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = createDirAttributeValue( ( yyvsp[( 2 ) - ( 3 )].expressionList ), parseInfo, ( yyloc ) );
+            }
+            break;
+
+        case 369:
+            /* Line 1269 of yacc.c.  */
+#line 4020 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = createDirAttributeValue( ( yyvsp[( 2 ) - ( 3 )].expressionList ), parseInfo, ( yyloc ) );
+            }
+            break;
+
+        case 370:
+            /* Line 1269 of yacc.c.  */
+#line 4025 "querytransformparser.ypp"
+            {
+                ( yyval.expressionList ) = Expression::List();
+            }
+            break;
+
+        case 371:
+            /* Line 1269 of yacc.c.  */
+#line 4029 "querytransformparser.ypp"
+            {
+                Expression::Ptr content( ( yyvsp[( 1 ) - ( 2 )].expr ) );
+
+                if ( parseInfo->isBackwardsCompat.top() )
+                {
+                    content = create( GenericPredicate::createFirstItem( content ), ( yyloc ), parseInfo );
+                }
+
+                ( yyvsp[( 2 ) - ( 2 )].expressionList ).prepend( createSimpleContent( content, ( yyloc ), parseInfo ) );
+                ( yyval.expressionList ) = ( yyvsp[( 2 ) - ( 2 )].expressionList );
+            }
+            break;
+
+        case 372:
+            /* Line 1269 of yacc.c.  */
+#line 4039 "querytransformparser.ypp"
+            {
+                ( yyvsp[( 2 ) - ( 2 )].expressionList ).prepend( create( new Literal( AtomicString::fromValue( ( yyvsp[( 1 ) - ( 2 )].sval ) ) ),
+                        ( yyloc ),
+                        parseInfo ) );
+                ( yyval.expressionList ) = ( yyvsp[( 2 ) - ( 2 )].expressionList );
+            }
+            break;
+
+        case 373:
+            /* Line 1269 of yacc.c.  */
+#line 4045 "querytransformparser.ypp"
+            {
+                ( yyval.expressionList ) = Expression::List();
+                parseInfo->isPreviousEnclosedExpr = false;
+            }
+            break;
+
+        case 374:
+            /* Line 1269 of yacc.c.  */
+#line 4050 "querytransformparser.ypp"
+            {
+                ( yyvsp[( 1 ) - ( 2 )].expressionList ).append( ( yyvsp[( 2 ) - ( 2 )].expr ) );
+                ( yyval.expressionList ) = ( yyvsp[( 1 ) - ( 2 )].expressionList );
+                parseInfo->isPreviousEnclosedExpr = false;
+            }
+            break;
+
+        case 375:
+            /* Line 1269 of yacc.c.  */
+#line 4056 "querytransformparser.ypp"
+            {
+                if ( parseInfo->staticContext->boundarySpacePolicy() == StaticContext::BSPStrip &&
+                        XPathHelper::isWhitespaceOnly( ( yyvsp[( 2 ) - ( 2 )].sval ) ) )
+                {
+                    ( yyval.expressionList ) = ( yyvsp[( 1 ) - ( 2 )].expressionList );
+                }
+                else
+                {
+                    ( yyvsp[( 1 ) - ( 2 )].expressionList ).append( create( new TextNodeConstructor( create( new Literal( AtomicString::fromValue( (
+                                yyvsp[( 2 ) - ( 2 )].sval ) ) ), ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo ) );
+                    ( yyval.expressionList ) = ( yyvsp[( 1 ) - ( 2 )].expressionList );
+                    parseInfo->isPreviousEnclosedExpr = false;
+                }
+            }
+            break;
+
+        case 376:
+            /* Line 1269 of yacc.c.  */
+#line 4070 "querytransformparser.ypp"
+            {
+                ( yyvsp[( 1 ) - ( 2 )].expressionList ).append( create( new TextNodeConstructor( create( new Literal( AtomicString::fromValue( (
+                            yyvsp[( 2 ) - ( 2 )].sval ) ) ), ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo ) );
+                ( yyval.expressionList ) = ( yyvsp[( 1 ) - ( 2 )].expressionList );
+                parseInfo->isPreviousEnclosedExpr = false;
+            }
+            break;
+
+        case 377:
+            /* Line 1269 of yacc.c.  */
+#line 4076 "querytransformparser.ypp"
+            {
+                /* We insert a text node constructor that send an empty text node between
+                 * the two enclosed expressions, in order to ensure that no space is inserted.
+                 *
+                 * However, we only do it when we have no node constructors. */
+                if ( parseInfo->isPreviousEnclosedExpr &&
+                        BuiltinTypes::xsAnyAtomicType->xdtTypeMatches( ( yyvsp[( 2 ) - ( 2 )].expr )->staticType()->itemType() ) &&
+                        BuiltinTypes::xsAnyAtomicType->xdtTypeMatches( ( yyvsp[( 1 ) - ( 2 )].expressionList ).last()->staticType()->itemType() ) )
+                {
+                    ( yyvsp[( 1 ) - ( 2 )].expressionList ).append( create( new TextNodeConstructor( create( new Literal( AtomicString::fromValue(
+                                QString() ) ), ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo ) );
+                }
+                else
+                {
+                    parseInfo->isPreviousEnclosedExpr = true;
+                }
+
+                ( yyvsp[( 1 ) - ( 2 )].expressionList ).append( createCopyOf( ( yyvsp[( 2 ) - ( 2 )].expr ), parseInfo, ( yyloc ) ) );
+                ( yyval.expressionList ) = ( yyvsp[( 1 ) - ( 2 )].expressionList );
+            }
+            break;
+
+        case 378:
+            /* Line 1269 of yacc.c.  */
+#line 4093 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new CommentConstructor( create( new Literal( AtomicString::fromValue( ( yyvsp[( 2 ) - ( 2 )].sval ) ) ),
+                                         ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 379:
+            /* Line 1269 of yacc.c.  */
+#line 4098 "querytransformparser.ypp"
             {
                 const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
-                const QXmlName att = QNameConstructor::expandQName<StaticContext::Ptr,
-                      ReportContext::XPST0081,
-                      ReportContext::XPST0081>( ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).at( i ).first, parseInfo->staticContext,
-                                                parseInfo->staticContext->namespaceBindings(),
-                                                &ryy, true );
+                NCNameConstructor::validateTargetName<StaticContext::Ptr,
+                                  ReportContext::XPST0003,
+                                  ReportContext::XPST0003>( ( yyvsp[( 2 ) - ( 3 )].sval ),
+                                          parseInfo->staticContext, &ryy );
 
-                if ( declaredAttributes.contains( att ) )
+                ( yyval.expr ) = create( new ProcessingInstructionConstructor(
+                                             create( new Literal( AtomicString::fromValue( ( yyvsp[( 2 ) - ( 3 )].sval ) ) ), ( yyloc ), parseInfo ),
+                                             create( new Literal( AtomicString::fromValue( ( yyvsp[( 3 ) - ( 3 )].sval ) ) ), ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 387:
+            /* Line 1269 of yacc.c.  */
+#line 4119 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 2 ) - ( 3 )].enums.Bool ) );
+
+                ( yyval.expr ) = create( new DocumentConstructor( ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 388:
+            /* Line 1269 of yacc.c.  */
+#line 4126 "querytransformparser.ypp"
+            {
+                /* This value is incremented before the action below is executed. */
+                ++parseInfo->elementConstructorDepth;
+            }
+            break;
+
+        case 389:
+            /* Line 1269 of yacc.c.  */
+#line 4131 "querytransformparser.ypp"
+            {
+                Q_ASSERT( 5 );
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 2 ) - ( 5 )].enums.Bool ) );
+
+                Expression::Ptr effExpr;
+
+                if ( ( yyvsp[( 5 ) - ( 5 )].expr ) )
                 {
-                    parseInfo->staticContext->error( QtXmlPatterns::tr( "An attribute with name %1 has already appeared on this element." )
-                                                     .formatArg( formatKeyword( parseInfo->staticContext->namePool(), att ) ),
-                                                     ReportContext::XQST0040, fromYYLTYPE( ( yyloc ), parseInfo ) );
-
+                    effExpr = createCopyOf( ( yyvsp[( 5 ) - ( 5 )].expr ), parseInfo, ( yyloc ) );
                 }
                 else
                 {
-                    declaredAttributes.insert( att );
+                    effExpr = create( new EmptySequence(), ( yyloc ), parseInfo );
                 }
 
-                /* wrapLiteral() needs the SourceLocationReflection of the AttributeConstructor, but
-                 * it's unknown inside the arguments to its constructor. Hence we have to do this workaround of setting
-                 * it twice.
-                 *
-                 * The AttributeConstructor's arguments are just dummies. */
-                const Expression::Ptr ctor( create( new AttributeConstructor( ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).at( i ).second,
-                                                    ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).at( i ).second ), ( yyloc ), parseInfo ) );
+                const QXmlName::NamespaceCode ns = parseInfo->resolvers.top()->lookupNamespaceURI( StandardPrefixes::empty );
 
-                Expression::List ops;
-                ops.append( wrapLiteral( toItem( QNameValue::fromValue( namePool, att ) ), parseInfo->staticContext, ctor.data() ) );
-                ops.append( ( yyvsp[( 7 ) - ( 8 )].attributeHolders ).at( i ).second );
-                ctor->setOperands( ops );
+                /* Ensure the default namespace gets counted as an in-scope binding, if such a one exists. If we're
+                 * a child of another constructor, it has already been done. */
+                if ( parseInfo->elementConstructorDepth == 1 && ns != StandardNamespaces::empty )
+                {
+                    Expression::List exprList;
 
-                attributes.append( ctor );
+                    /* We append the namespace constructor before the body, in order to
+                     * comply with QAbstractXmlPushHandler's contract. */
+                    const QXmlName def( parseInfo->resolvers.top()->lookupNamespaceURI( StandardPrefixes::empty ), StandardLocalNames::empty );
+                    exprList.append( create( new NamespaceConstructor( def ), ( yyloc ), parseInfo ) );
+
+                    exprList.append( effExpr );
+
+                    effExpr = create( new ExpressionSequence( exprList ), ( yyloc ), parseInfo );
+                }
+
+                --parseInfo->elementConstructorDepth;
+                ( yyval.expr ) = create( new ElementConstructor( ( yyvsp[( 3 ) - ( 5 )].expr ), effExpr, parseInfo->isXSLT() ), ( yyloc ),
+                                         parseInfo );
             }
-        }
+            break;
 
-        Expression::Ptr contentOp;
-
-        if ( attributes.isEmpty() )
-        {
-            contentOp = ( yyvsp[( 8 ) - ( 8 )].expr );
-        }
-        else
-        {
-            attributes.append( ( yyvsp[( 8 ) - ( 8 )].expr ) );
-            contentOp = create( new ExpressionSequence( attributes ), ( yyloc ), parseInfo );
-        }
-
-        const Expression::Ptr name( create( new Literal( toItem( QNameValue::fromValue( parseInfo->staticContext->namePool(),
-                                            parseInfo->tagStack.top() ) ) ), ( yyloc ), parseInfo ) );
-        ( yyval.expr ) = create( new ElementConstructor( name, contentOp, parseInfo->isXSLT() ), ( yyloc ), parseInfo );
-
-        /* Restore the old context. We don't want the namespaces
-         * to be in-scope for expressions appearing after the
-         * element they appeared on. */
-        parseInfo->staticContext->setNamespaceBindings( parseInfo->resolvers.pop() );
-        parseInfo->tagStack.pop();
-
-        --parseInfo->elementConstructorDepth;
-    }
-    break;
-
-    case 363:
-        /* Line 1269 of yacc.c.  */
-#line 3977 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new EmptySequence(), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 364:
-        /* Line 1269 of yacc.c.  */
-#line 3981 "querytransformparser.ypp"
-    {
-        if ( !( yyvsp[( 4 ) - ( 5 )].qName ).isLexicallyEqual( parseInfo->tagStack.top() ) )
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "A direct element constructor is not "
-                                                                "well-formed. %1 is ended with %2." )
-                                             .formatArgs( formatKeyword( parseInfo->staticContext->namePool()->toLexical( parseInfo->tagStack.top() ) ),
-                                                     formatKeyword( parseInfo->staticContext->namePool()->toLexical( ( yyvsp[( 4 ) - ( 5 )].qName ) ) ) ),
-                                             ReportContext::XPST0003, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-
-        if ( ( yyvsp[( 2 ) - ( 5 )].expressionList ).isEmpty() )
-        {
-            ( yyval.expr ) = create( new EmptySequence(), ( yyloc ), parseInfo );
-
-        }
-        else if ( ( yyvsp[( 2 ) - ( 5 )].expressionList ).size() == 1 )
-        {
-            ( yyval.expr ) = ( yyvsp[( 2 ) - ( 5 )].expressionList ).first();
-
-        }
-        else
-        {
-            ( yyval.expr ) = create( new ExpressionSequence( ( yyvsp[( 2 ) - ( 5 )].expressionList ) ), ( yyloc ), parseInfo );
-        }
-    }
-    break;
-
-    case 365:
-        /* Line 1269 of yacc.c.  */
-#line 4000 "querytransformparser.ypp"
-    {
-        ( yyval.attributeHolders ) = AttributeHolderVector();
-    }
-    break;
-
-    case 366:
-        /* Line 1269 of yacc.c.  */
-#line 4004 "querytransformparser.ypp"
-    {
-        ( yyvsp[( 1 ) - ( 2 )].attributeHolders ).append( ( yyvsp[( 2 ) - ( 2 )].attributeHolder ) );
-        ( yyval.attributeHolders ) = ( yyvsp[( 1 ) - ( 2 )].attributeHolders );
-    }
-    break;
-
-    case 367:
-        /* Line 1269 of yacc.c.  */
-#line 4010 "querytransformparser.ypp"
-    {
-        ( yyval.attributeHolder ) = qMakePair( ( yyvsp[( 1 ) - ( 3 )].sval ), ( yyvsp[( 3 ) - ( 3 )].expr ) );
-    }
-    break;
-
-    case 368:
-        /* Line 1269 of yacc.c.  */
-#line 4015 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = createDirAttributeValue( ( yyvsp[( 2 ) - ( 3 )].expressionList ), parseInfo, ( yyloc ) );
-    }
-    break;
-
-    case 369:
-        /* Line 1269 of yacc.c.  */
-#line 4020 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = createDirAttributeValue( ( yyvsp[( 2 ) - ( 3 )].expressionList ), parseInfo, ( yyloc ) );
-    }
-    break;
-
-    case 370:
-        /* Line 1269 of yacc.c.  */
-#line 4025 "querytransformparser.ypp"
-    {
-        ( yyval.expressionList ) = Expression::List();
-    }
-    break;
-
-    case 371:
-        /* Line 1269 of yacc.c.  */
-#line 4029 "querytransformparser.ypp"
-    {
-        Expression::Ptr content( ( yyvsp[( 1 ) - ( 2 )].expr ) );
-
-        if ( parseInfo->isBackwardsCompat.top() )
-        {
-            content = create( GenericPredicate::createFirstItem( content ), ( yyloc ), parseInfo );
-        }
-
-        ( yyvsp[( 2 ) - ( 2 )].expressionList ).prepend( createSimpleContent( content, ( yyloc ), parseInfo ) );
-        ( yyval.expressionList ) = ( yyvsp[( 2 ) - ( 2 )].expressionList );
-    }
-    break;
-
-    case 372:
-        /* Line 1269 of yacc.c.  */
-#line 4039 "querytransformparser.ypp"
-    {
-        ( yyvsp[( 2 ) - ( 2 )].expressionList ).prepend( create( new Literal( AtomicString::fromValue( ( yyvsp[( 1 ) - ( 2 )].sval ) ) ),
-                ( yyloc ),
-                parseInfo ) );
-        ( yyval.expressionList ) = ( yyvsp[( 2 ) - ( 2 )].expressionList );
-    }
-    break;
-
-    case 373:
-        /* Line 1269 of yacc.c.  */
-#line 4045 "querytransformparser.ypp"
-    {
-        ( yyval.expressionList ) = Expression::List();
-        parseInfo->isPreviousEnclosedExpr = false;
-    }
-    break;
-
-    case 374:
-        /* Line 1269 of yacc.c.  */
-#line 4050 "querytransformparser.ypp"
-    {
-        ( yyvsp[( 1 ) - ( 2 )].expressionList ).append( ( yyvsp[( 2 ) - ( 2 )].expr ) );
-        ( yyval.expressionList ) = ( yyvsp[( 1 ) - ( 2 )].expressionList );
-        parseInfo->isPreviousEnclosedExpr = false;
-    }
-    break;
-
-    case 375:
-        /* Line 1269 of yacc.c.  */
-#line 4056 "querytransformparser.ypp"
-    {
-        if ( parseInfo->staticContext->boundarySpacePolicy() == StaticContext::BSPStrip &&
-                XPathHelper::isWhitespaceOnly( ( yyvsp[( 2 ) - ( 2 )].sval ) ) )
-        {
-            ( yyval.expressionList ) = ( yyvsp[( 1 ) - ( 2 )].expressionList );
-        }
-        else
-        {
-            ( yyvsp[( 1 ) - ( 2 )].expressionList ).append( create( new TextNodeConstructor( create( new Literal( AtomicString::fromValue( (
-                        yyvsp[( 2 ) - ( 2 )].sval ) ) ), ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo ) );
-            ( yyval.expressionList ) = ( yyvsp[( 1 ) - ( 2 )].expressionList );
-            parseInfo->isPreviousEnclosedExpr = false;
-        }
-    }
-    break;
-
-    case 376:
-        /* Line 1269 of yacc.c.  */
-#line 4070 "querytransformparser.ypp"
-    {
-        ( yyvsp[( 1 ) - ( 2 )].expressionList ).append( create( new TextNodeConstructor( create( new Literal( AtomicString::fromValue( (
-                    yyvsp[( 2 ) - ( 2 )].sval ) ) ), ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo ) );
-        ( yyval.expressionList ) = ( yyvsp[( 1 ) - ( 2 )].expressionList );
-        parseInfo->isPreviousEnclosedExpr = false;
-    }
-    break;
-
-    case 377:
-        /* Line 1269 of yacc.c.  */
-#line 4076 "querytransformparser.ypp"
-    {
-        /* We insert a text node constructor that send an empty text node between
-         * the two enclosed expressions, in order to ensure that no space is inserted.
-         *
-         * However, we only do it when we have no node constructors. */
-        if ( parseInfo->isPreviousEnclosedExpr &&
-                BuiltinTypes::xsAnyAtomicType->xdtTypeMatches( ( yyvsp[( 2 ) - ( 2 )].expr )->staticType()->itemType() ) &&
-                BuiltinTypes::xsAnyAtomicType->xdtTypeMatches( ( yyvsp[( 1 ) - ( 2 )].expressionList ).last()->staticType()->itemType() ) )
-        {
-            ( yyvsp[( 1 ) - ( 2 )].expressionList ).append( create( new TextNodeConstructor( create( new Literal( AtomicString::fromValue(
-                        QString() ) ), ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo ) );
-        }
-        else
-        {
-            parseInfo->isPreviousEnclosedExpr = true;
-        }
-
-        ( yyvsp[( 1 ) - ( 2 )].expressionList ).append( createCopyOf( ( yyvsp[( 2 ) - ( 2 )].expr ), parseInfo, ( yyloc ) ) );
-        ( yyval.expressionList ) = ( yyvsp[( 1 ) - ( 2 )].expressionList );
-    }
-    break;
-
-    case 378:
-        /* Line 1269 of yacc.c.  */
-#line 4093 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new CommentConstructor( create( new Literal( AtomicString::fromValue( ( yyvsp[( 2 ) - ( 2 )].sval ) ) ),
-                                 ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 379:
-        /* Line 1269 of yacc.c.  */
-#line 4098 "querytransformparser.ypp"
-    {
-        const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
-        NCNameConstructor::validateTargetName<StaticContext::Ptr,
-        ReportContext::XPST0003,
-        ReportContext::XPST0003>( ( yyvsp[( 2 ) - ( 3 )].sval ),
-                                  parseInfo->staticContext, &ryy );
-
-        ( yyval.expr ) = create( new ProcessingInstructionConstructor(
-                                     create( new Literal( AtomicString::fromValue( ( yyvsp[( 2 ) - ( 3 )].sval ) ) ), ( yyloc ), parseInfo ),
-                                     create( new Literal( AtomicString::fromValue( ( yyvsp[( 3 ) - ( 3 )].sval ) ) ), ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 387:
-        /* Line 1269 of yacc.c.  */
-#line 4119 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 2 ) - ( 3 )].enums.Bool ) );
-
-        ( yyval.expr ) = create( new DocumentConstructor( ( yyvsp[( 3 ) - ( 3 )].expr ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 388:
-        /* Line 1269 of yacc.c.  */
-#line 4126 "querytransformparser.ypp"
-    {
-        /* This value is incremented before the action below is executed. */
-        ++parseInfo->elementConstructorDepth;
-    }
-    break;
-
-    case 389:
-        /* Line 1269 of yacc.c.  */
-#line 4131 "querytransformparser.ypp"
-    {
-        Q_ASSERT( 5 );
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 2 ) - ( 5 )].enums.Bool ) );
-
-        Expression::Ptr effExpr;
-
-        if ( ( yyvsp[( 5 ) - ( 5 )].expr ) )
-        {
-            effExpr = createCopyOf( ( yyvsp[( 5 ) - ( 5 )].expr ), parseInfo, ( yyloc ) );
-        }
-        else
-        {
-            effExpr = create( new EmptySequence(), ( yyloc ), parseInfo );
-        }
-
-        const QXmlName::NamespaceCode ns = parseInfo->resolvers.top()->lookupNamespaceURI( StandardPrefixes::empty );
-
-        /* Ensure the default namespace gets counted as an in-scope binding, if such a one exists. If we're
-         * a child of another constructor, it has already been done. */
-        if ( parseInfo->elementConstructorDepth == 1 && ns != StandardNamespaces::empty )
-        {
-            Expression::List exprList;
-
-            /* We append the namespace constructor before the body, in order to
-             * comply with QAbstractXmlPushHandler's contract. */
-            const QXmlName def( parseInfo->resolvers.top()->lookupNamespaceURI( StandardPrefixes::empty ), StandardLocalNames::empty );
-            exprList.append( create( new NamespaceConstructor( def ), ( yyloc ), parseInfo ) );
-
-            exprList.append( effExpr );
-
-            effExpr = create( new ExpressionSequence( exprList ), ( yyloc ), parseInfo );
-        }
-
-        --parseInfo->elementConstructorDepth;
-        ( yyval.expr ) = create( new ElementConstructor( ( yyvsp[( 3 ) - ( 5 )].expr ), effExpr, parseInfo->isXSLT() ), ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 390:
-        /* Line 1269 of yacc.c.  */
+        case 390:
+            /* Line 1269 of yacc.c.  */
 #line 4165 "querytransformparser.ypp"
-    {
-        ( yyval.enums.Bool ) = false;
-    }
-    break;
-
-    case 391:
-        /* Line 1269 of yacc.c.  */
-#line 4169 "querytransformparser.ypp"
-    {
-        ( yyval.enums.Bool ) = true;
-    }
-    break;
-
-    case 392:
-        /* Line 1269 of yacc.c.  */
-#line 4177 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 2 ) - ( 4 )].enums.Bool ) );
-
-        const Expression::Ptr name( create( new AttributeNameValidator( ( yyvsp[( 3 ) - ( 4 )].expr ) ), ( yyloc ), parseInfo ) );
-
-        if ( ( yyvsp[( 4 ) - ( 4 )].expr ) )
-        {
-            ( yyval.expr ) = create( new AttributeConstructor( name, createSimpleContent( ( yyvsp[( 4 ) - ( 4 )].expr ), ( yyloc ),
-                                     parseInfo ) ),
-                                     ( yyloc ), parseInfo );
-        }
-        else
-        {
-            ( yyval.expr ) = create( new AttributeConstructor( name, create( new EmptySequence(), ( yyloc ), parseInfo ) ), ( yyloc ),
-                                     parseInfo );
-        }
-    }
-    break;
-
-    case 393:
-        /* Line 1269 of yacc.c.  */
-#line 4189 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new TextNodeConstructor( createSimpleContent( ( yyvsp[( 3 ) - ( 3 )].expr ), ( yyloc ), parseInfo ) ),
-                                 ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 394:
-        /* Line 1269 of yacc.c.  */
-#line 4194 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 2 ) - ( 3 )].enums.Bool ) );
-
-        ( yyval.expr ) = create( new CommentConstructor( createSimpleContent( ( yyvsp[( 3 ) - ( 3 )].expr ), ( yyloc ), parseInfo ) ),
-                                 ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 395:
-        /* Line 1269 of yacc.c.  */
-#line 4201 "querytransformparser.ypp"
-    {
-        allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 2 ) - ( 3 )].expr ) );
-
-        if ( ( yyvsp[( 3 ) - ( 3 )].expr ) )
-        {
-            ( yyval.expr ) = create( new ProcessingInstructionConstructor( ( yyvsp[( 2 ) - ( 3 )].expr ),
-                                     createSimpleContent( ( yyvsp[( 3 ) - ( 3 )].expr ), ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo );
-        }
-        else
-        {
-            ( yyval.expr ) = create( new ProcessingInstructionConstructor( ( yyvsp[( 2 ) - ( 3 )].expr ), create( new EmptySequence(),
-                                     ( yyloc ),
-                                     parseInfo ) ), ( yyloc ), parseInfo );
-        }
-    }
-    break;
-
-    case 396:
-        /* Line 1269 of yacc.c.  */
-#line 4212 "querytransformparser.ypp"
-    {
-        parseInfo->nodeTestSource = BuiltinTypes::attribute;
-    }
-    break;
-
-    case 397:
-        /* Line 1269 of yacc.c.  */
-#line 4216 "querytransformparser.ypp"
-    {
-        parseInfo->restoreNodeTestSource();
-    }
-    break;
-
-    case 398:
-        /* Line 1269 of yacc.c.  */
-#line 4219 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new Literal( toItem( QNameValue::fromValue( parseInfo->staticContext->namePool(),
-                                              ( yyvsp[( 2 ) - ( 3 )].qName ) ) ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 400:
-        /* Line 1269 of yacc.c.  */
-#line 4225 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new Literal( toItem( QNameValue::fromValue( parseInfo->staticContext->namePool(),
-                                              ( yyvsp[( 1 ) - ( 1 )].qName ) ) ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 402:
-        /* Line 1269 of yacc.c.  */
-#line 4231 "querytransformparser.ypp"
-    {
-        if ( BuiltinTypes::xsQName->xdtTypeMatches( ( yyvsp[( 1 ) - ( 1 )].expr )->staticType()->itemType() ) )
-        {
-            ( yyval.expr ) = ( yyvsp[( 1 ) - ( 1 )].expr );
-        }
-        else
-        {
-            ( yyval.expr ) = create( new QNameConstructor( ( yyvsp[( 1 ) - ( 1 )].expr ),
-                                     parseInfo->staticContext->namespaceBindings() ),
-                                     ( yyloc ), parseInfo );
-        }
-    }
-    break;
-
-    case 403:
-        /* Line 1269 of yacc.c.  */
-#line 4246 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new NCNameConstructor( create( new Literal( AtomicString::fromValue( ( yyvsp[( 1 ) - ( 1 )].sval ) ) ),
-                                 ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 404:
-        /* Line 1269 of yacc.c.  */
-#line 4250 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new NCNameConstructor( ( yyvsp[( 1 ) - ( 1 )].expr ) ), ( yyloc ), parseInfo );
-    }
-    break;
-
-    case 405:
-        /* Line 1269 of yacc.c.  */
-#line 4259 "querytransformparser.ypp"
-    {
-        ( yyval.expr ) = create( new ComputedNamespaceConstructor( ( yyvsp[( 2 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ) ),
-                                 ( yyloc ),
-                                 parseInfo );
-    }
-    break;
-
-    case 406:
-        /* Line 1269 of yacc.c.  */
-#line 4264 "querytransformparser.ypp"
-    {
-        ( yyval.sequenceType ) = makeGenericSequenceType( ( yyvsp[( 1 ) - ( 1 )].itemType ), Cardinality::exactlyOne() );
-    }
-    break;
-
-    case 407:
-        /* Line 1269 of yacc.c.  */
-#line 4268 "querytransformparser.ypp"
-    {
-        ( yyval.sequenceType ) = makeGenericSequenceType( ( yyvsp[( 1 ) - ( 2 )].itemType ), Cardinality::zeroOrOne() );
-    }
-    break;
-
-    case 408:
-        /* Line 1269 of yacc.c.  */
-#line 4273 "querytransformparser.ypp"
-    {
-        ( yyval.sequenceType ) = CommonSequenceTypes::ZeroOrMoreItems;
-    }
-    break;
-
-    case 409:
-        /* Line 1269 of yacc.c.  */
-#line 4277 "querytransformparser.ypp"
-    {
-        ( yyval.sequenceType ) = ( yyvsp[( 2 ) - ( 2 )].sequenceType );
-    }
-    break;
-
-    case 410:
-        /* Line 1269 of yacc.c.  */
-#line 4282 "querytransformparser.ypp"
-    {
-        ( yyval.sequenceType ) = makeGenericSequenceType( ( yyvsp[( 1 ) - ( 2 )].itemType ), ( yyvsp[( 2 ) - ( 2 )].cardinality ) );
-    }
-    break;
-
-    case 411:
-        /* Line 1269 of yacc.c.  */
-#line 4287 "querytransformparser.ypp"
-    {
-        ( yyval.sequenceType ) = CommonSequenceTypes::Empty;
-    }
-    break;
-
-    case 412:
-        /* Line 1269 of yacc.c.  */
-#line 4291 "querytransformparser.ypp"
-    {
-        ( yyval.cardinality ) = Cardinality::exactlyOne();
-    }
-    break;
-
-    case 413:
-        /* Line 1269 of yacc.c.  */
-#line 4292 "querytransformparser.ypp"
-    {
-        ( yyval.cardinality ) = Cardinality::oneOrMore();
-    }
-    break;
-
-    case 414:
-        /* Line 1269 of yacc.c.  */
-#line 4293 "querytransformparser.ypp"
-    {
-        ( yyval.cardinality ) = Cardinality::zeroOrMore();
-    }
-    break;
-
-    case 415:
-        /* Line 1269 of yacc.c.  */
-#line 4294 "querytransformparser.ypp"
-    {
-        ( yyval.cardinality ) = Cardinality::zeroOrOne();
-    }
-    break;
-
-    case 419:
-        /* Line 1269 of yacc.c.  */
-#line 4300 "querytransformparser.ypp"
-    {
-        ( yyval.itemType ) = BuiltinTypes::item;
-    }
-    break;
-
-    case 420:
-        /* Line 1269 of yacc.c.  */
-#line 4305 "querytransformparser.ypp"
-    {
-        const SchemaType::Ptr t( parseInfo->staticContext->schemaDefinitions()->createSchemaType( ( yyvsp[( 1 ) - ( 1 )].qName ) ) );
-
-        if ( !t )
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "The name %1 does not refer to any schema type." )
-                                             .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 1 ) - ( 1 )].qName ) ) ), ReportContext::XPST0051,
-                                             fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-        else if ( BuiltinTypes::xsAnyAtomicType->wxsTypeMatches( t ) )
-        {
-            ( yyval.itemType ) = AtomicType::Ptr( t );
-        }
-        else
-        {
-            /* Try to give an intelligent message. */
-            if ( t->isComplexType() )
             {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is an complex type. Casting to complex "
-                                                                    "types is not possible. However, casting "
-                                                                    "to atomic types such as %2 works." )
-                                                 .formatArg( formatType( parseInfo->staticContext->namePool(), t ) )
-                                                 .formatArg( formatType( parseInfo->staticContext->namePool(), BuiltinTypes::xsInteger ) ),
-                                                 ReportContext::XPST0051, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                ( yyval.enums.Bool ) = false;
+            }
+            break;
+
+        case 391:
+            /* Line 1269 of yacc.c.  */
+#line 4169 "querytransformparser.ypp"
+            {
+                ( yyval.enums.Bool ) = true;
+            }
+            break;
+
+        case 392:
+            /* Line 1269 of yacc.c.  */
+#line 4177 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 2 ) - ( 4 )].enums.Bool ) );
+
+                const Expression::Ptr name( create( new AttributeNameValidator( ( yyvsp[( 3 ) - ( 4 )].expr ) ), ( yyloc ), parseInfo ) );
+
+                if ( ( yyvsp[( 4 ) - ( 4 )].expr ) )
+                {
+                    ( yyval.expr ) = create( new AttributeConstructor( name, createSimpleContent( ( yyvsp[( 4 ) - ( 4 )].expr ), ( yyloc ),
+                                             parseInfo ) ),
+                                             ( yyloc ), parseInfo );
+                }
+                else
+                {
+                    ( yyval.expr ) = create( new AttributeConstructor( name, create( new EmptySequence(), ( yyloc ), parseInfo ) ), ( yyloc ),
+                                             parseInfo );
+                }
+            }
+            break;
+
+        case 393:
+            /* Line 1269 of yacc.c.  */
+#line 4189 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new TextNodeConstructor( createSimpleContent( ( yyvsp[( 3 ) - ( 3 )].expr ), ( yyloc ), parseInfo ) ),
+                                         ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 394:
+            /* Line 1269 of yacc.c.  */
+#line 4194 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 2 ) - ( 3 )].enums.Bool ) );
+
+                ( yyval.expr ) = create( new CommentConstructor( createSimpleContent( ( yyvsp[( 3 ) - ( 3 )].expr ), ( yyloc ), parseInfo ) ),
+                                         ( yyloc ),
+                                         parseInfo );
+            }
+            break;
+
+        case 395:
+            /* Line 1269 of yacc.c.  */
+#line 4201 "querytransformparser.ypp"
+            {
+                allowedIn( QXmlQuery::XQuery10, parseInfo, ( yyloc ), ( yyvsp[( 2 ) - ( 3 )].expr ) );
+
+                if ( ( yyvsp[( 3 ) - ( 3 )].expr ) )
+                {
+                    ( yyval.expr ) = create( new ProcessingInstructionConstructor( ( yyvsp[( 2 ) - ( 3 )].expr ),
+                                             createSimpleContent( ( yyvsp[( 3 ) - ( 3 )].expr ), ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo );
+                }
+                else
+                {
+                    ( yyval.expr ) = create( new ProcessingInstructionConstructor( ( yyvsp[( 2 ) - ( 3 )].expr ), create( new EmptySequence(),
+                                             ( yyloc ),
+                                             parseInfo ) ), ( yyloc ), parseInfo );
+                }
+            }
+            break;
+
+        case 396:
+            /* Line 1269 of yacc.c.  */
+#line 4212 "querytransformparser.ypp"
+            {
+                parseInfo->nodeTestSource = BuiltinTypes::attribute;
+            }
+            break;
+
+        case 397:
+            /* Line 1269 of yacc.c.  */
+#line 4216 "querytransformparser.ypp"
+            {
+                parseInfo->restoreNodeTestSource();
+            }
+            break;
+
+        case 398:
+            /* Line 1269 of yacc.c.  */
+#line 4219 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new Literal( toItem( QNameValue::fromValue( parseInfo->staticContext->namePool(),
+                                                      ( yyvsp[( 2 ) - ( 3 )].qName ) ) ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 400:
+            /* Line 1269 of yacc.c.  */
+#line 4225 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new Literal( toItem( QNameValue::fromValue( parseInfo->staticContext->namePool(),
+                                                      ( yyvsp[( 1 ) - ( 1 )].qName ) ) ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 402:
+            /* Line 1269 of yacc.c.  */
+#line 4231 "querytransformparser.ypp"
+            {
+                if ( BuiltinTypes::xsQName->xdtTypeMatches( ( yyvsp[( 1 ) - ( 1 )].expr )->staticType()->itemType() ) )
+                {
+                    ( yyval.expr ) = ( yyvsp[( 1 ) - ( 1 )].expr );
+                }
+                else
+                {
+                    ( yyval.expr ) = create( new QNameConstructor( ( yyvsp[( 1 ) - ( 1 )].expr ),
+                                             parseInfo->staticContext->namespaceBindings() ),
+                                             ( yyloc ), parseInfo );
+                }
+            }
+            break;
+
+        case 403:
+            /* Line 1269 of yacc.c.  */
+#line 4246 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new NCNameConstructor( create( new Literal( AtomicString::fromValue( ( yyvsp[( 1 ) - ( 1 )].sval ) ) ),
+                                         ( yyloc ), parseInfo ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 404:
+            /* Line 1269 of yacc.c.  */
+#line 4250 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new NCNameConstructor( ( yyvsp[( 1 ) - ( 1 )].expr ) ), ( yyloc ), parseInfo );
+            }
+            break;
+
+        case 405:
+            /* Line 1269 of yacc.c.  */
+#line 4259 "querytransformparser.ypp"
+            {
+                ( yyval.expr ) = create( new ComputedNamespaceConstructor( ( yyvsp[( 2 ) - ( 3 )].expr ), ( yyvsp[( 3 ) - ( 3 )].expr ) ),
+                                         ( yyloc ),
+                                         parseInfo );
+            }
+            break;
+
+        case 406:
+            /* Line 1269 of yacc.c.  */
+#line 4264 "querytransformparser.ypp"
+            {
+                ( yyval.sequenceType ) = makeGenericSequenceType( ( yyvsp[( 1 ) - ( 1 )].itemType ), Cardinality::exactlyOne() );
+            }
+            break;
+
+        case 407:
+            /* Line 1269 of yacc.c.  */
+#line 4268 "querytransformparser.ypp"
+            {
+                ( yyval.sequenceType ) = makeGenericSequenceType( ( yyvsp[( 1 ) - ( 2 )].itemType ), Cardinality::zeroOrOne() );
+            }
+            break;
+
+        case 408:
+            /* Line 1269 of yacc.c.  */
+#line 4273 "querytransformparser.ypp"
+            {
+                ( yyval.sequenceType ) = CommonSequenceTypes::ZeroOrMoreItems;
+            }
+            break;
+
+        case 409:
+            /* Line 1269 of yacc.c.  */
+#line 4277 "querytransformparser.ypp"
+            {
+                ( yyval.sequenceType ) = ( yyvsp[( 2 ) - ( 2 )].sequenceType );
+            }
+            break;
+
+        case 410:
+            /* Line 1269 of yacc.c.  */
+#line 4282 "querytransformparser.ypp"
+            {
+                ( yyval.sequenceType ) = makeGenericSequenceType( ( yyvsp[( 1 ) - ( 2 )].itemType ), ( yyvsp[( 2 ) - ( 2 )].cardinality ) );
+            }
+            break;
+
+        case 411:
+            /* Line 1269 of yacc.c.  */
+#line 4287 "querytransformparser.ypp"
+            {
+                ( yyval.sequenceType ) = CommonSequenceTypes::Empty;
+            }
+            break;
+
+        case 412:
+            /* Line 1269 of yacc.c.  */
+#line 4291 "querytransformparser.ypp"
+            {
+                ( yyval.cardinality ) = Cardinality::exactlyOne();
+            }
+            break;
+
+        case 413:
+            /* Line 1269 of yacc.c.  */
+#line 4292 "querytransformparser.ypp"
+            {
+                ( yyval.cardinality ) = Cardinality::oneOrMore();
+            }
+            break;
+
+        case 414:
+            /* Line 1269 of yacc.c.  */
+#line 4293 "querytransformparser.ypp"
+            {
+                ( yyval.cardinality ) = Cardinality::zeroOrMore();
+            }
+            break;
+
+        case 415:
+            /* Line 1269 of yacc.c.  */
+#line 4294 "querytransformparser.ypp"
+            {
+                ( yyval.cardinality ) = Cardinality::zeroOrOne();
+            }
+            break;
+
+        case 419:
+            /* Line 1269 of yacc.c.  */
+#line 4300 "querytransformparser.ypp"
+            {
+                ( yyval.itemType ) = BuiltinTypes::item;
+            }
+            break;
+
+        case 420:
+            /* Line 1269 of yacc.c.  */
+#line 4305 "querytransformparser.ypp"
+            {
+                const SchemaType::Ptr t( parseInfo->staticContext->schemaDefinitions()->createSchemaType( ( yyvsp[( 1 ) - ( 1 )].qName ) ) );
+
+                if ( !t )
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "The name %1 does not refer to any schema type." )
+                                                     .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 1 ) - ( 1 )].qName ) ) ), ReportContext::XPST0051,
+                                                     fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+                else if ( BuiltinTypes::xsAnyAtomicType->wxsTypeMatches( t ) )
+                {
+                    ( yyval.itemType ) = AtomicType::Ptr( t );
+                }
+                else
+                {
+                    /* Try to give an intelligent message. */
+                    if ( t->isComplexType() )
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is an complex type. Casting to complex "
+                                                         "types is not possible. However, casting "
+                                                         "to atomic types such as %2 works." )
+                                                         .formatArg( formatType( parseInfo->staticContext->namePool(), t ) )
+                                                         .formatArg( formatType( parseInfo->staticContext->namePool(), BuiltinTypes::xsInteger ) ),
+                                                         ReportContext::XPST0051, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                    }
+                    else
+                    {
+                        parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is not an atomic type. Casting "
+                                                         "is only possible to atomic types." )
+                                                         .formatArg( formatType( parseInfo->staticContext->namePool(), t ) ),
+                                                         ReportContext::XPST0051, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                    }
+                }
+            }
+            break;
+
+        case 428:
+            /* Line 1269 of yacc.c.  */
+#line 4349 "querytransformparser.ypp"
+            {
+                ( yyval.itemType ) = BuiltinTypes::node;
+            }
+            break;
+
+        case 429:
+            /* Line 1269 of yacc.c.  */
+#line 4354 "querytransformparser.ypp"
+            {
+                ( yyval.itemType ) = BuiltinTypes::document;
+            }
+            break;
+
+        case 430:
+            /* Line 1269 of yacc.c.  */
+#line 4359 "querytransformparser.ypp"
+            {
+                // TODO support for document element testing
+                ( yyval.itemType ) = BuiltinTypes::document;
+            }
+            break;
+
+        case 433:
+            /* Line 1269 of yacc.c.  */
+#line 4368 "querytransformparser.ypp"
+            {
+                ( yyval.itemType ) = BuiltinTypes::text;
+            }
+            break;
+
+        case 434:
+            /* Line 1269 of yacc.c.  */
+#line 4373 "querytransformparser.ypp"
+            {
+                ( yyval.itemType ) = BuiltinTypes::comment;
+            }
+            break;
+
+        case 435:
+            /* Line 1269 of yacc.c.  */
+#line 4378 "querytransformparser.ypp"
+            {
+                ( yyval.itemType ) = BuiltinTypes::pi;
+            }
+            break;
+
+        case 436:
+            /* Line 1269 of yacc.c.  */
+#line 4383 "querytransformparser.ypp"
+            {
+                ( yyval.itemType ) = LocalNameTest::create( BuiltinTypes::pi,
+                                     parseInfo->staticContext->namePool()->allocateLocalName( ( yyvsp[( 3 ) - ( 4 )].sval ) ) );
+            }
+            break;
+
+        case 437:
+            /* Line 1269 of yacc.c.  */
+#line 4388 "querytransformparser.ypp"
+            {
+                if ( QXmlUtils::isNCName( ( yyvsp[( 3 ) - ( 4 )].sval ) ) )
+                {
+                    ( yyval.itemType ) = LocalNameTest::create( BuiltinTypes::pi,
+                                         parseInfo->staticContext->namePool()->allocateLocalName( ( yyvsp[( 3 ) - ( 4 )].sval ) ) );
+                }
+                else
+                {
+                    parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is not a valid name for a "
+                                                     "processing-instruction." )
+                                                     .formatArg( formatKeyword( ( yyvsp[( 3 ) - ( 4 )].sval ) ) ),
+                                                     ReportContext::XPTY0004,
+                                                     fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+            }
+            break;
+
+        case 440:
+            /* Line 1269 of yacc.c.  */
+#line 4407 "querytransformparser.ypp"
+            {
+                ( yyval.itemType ) = BuiltinTypes::attribute;
+            }
+            break;
+
+        case 441:
+            /* Line 1269 of yacc.c.  */
+#line 4412 "querytransformparser.ypp"
+            {
+                ( yyval.itemType ) = BuiltinTypes::attribute;
+            }
+            break;
+
+        case 442:
+            /* Line 1269 of yacc.c.  */
+#line 4417 "querytransformparser.ypp"
+            {
+                ( yyval.itemType ) = QNameTest::create( BuiltinTypes::attribute, ( yyvsp[( 3 ) - ( 4 )].qName ) );
+            }
+            break;
+
+        case 443:
+            /* Line 1269 of yacc.c.  */
+#line 4421 "querytransformparser.ypp"
+            {
+                const SchemaType::Ptr t( parseInfo->staticContext->schemaDefinitions()->createSchemaType( ( yyvsp[( 5 ) - ( 6 )].qName ) ) );
+
+                if ( t )
+                {
+                    ( yyval.itemType ) = BuiltinTypes::attribute;
+                }
+                else
+                {
+                    parseInfo->staticContext->error( unknownType().formatArg( formatKeyword( parseInfo->staticContext->namePool(),
+                                                     ( yyvsp[( 5 ) - ( 6 )].qName ) ) ),
+                                                     ReportContext::XPST0008, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+            }
+            break;
+
+        case 444:
+            /* Line 1269 of yacc.c.  */
+#line 4433 "querytransformparser.ypp"
+            {
+                const SchemaType::Ptr t( parseInfo->staticContext->schemaDefinitions()->createSchemaType( ( yyvsp[( 5 ) - ( 6 )].qName ) ) );
+
+                if ( t )
+                {
+                    ( yyval.itemType ) = BuiltinTypes::attribute;
+                }
+                else
+                {
+                    parseInfo->staticContext->error( unknownType().formatArg( formatKeyword( parseInfo->staticContext->namePool(),
+                                                     ( yyvsp[( 5 ) - ( 6 )].qName ) ) ),
+                                                     ReportContext::XPST0008, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                }
+            }
+            break;
+
+        case 445:
+            /* Line 1269 of yacc.c.  */
+#line 4446 "querytransformparser.ypp"
+            {
+                parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is not in the in-scope attribute "
+                                                 "declarations. Note that the schema import "
+                                                 "feature is not supported." )
+                                                 .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 3 ) - ( 4 )].qName ) ) ),
+                                                 ReportContext::XPST0008, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                ( yyval.itemType ).reset();
+            }
+            break;
+
+        case 446:
+        {
+            ( yyval.itemType ) = BuiltinTypes::element;
+        }
+        break;
+
+        case 447:
+        {
+            ( yyval.itemType ) = BuiltinTypes::element;
+        }
+        break;
+
+        case 448:
+        {
+            ( yyval.itemType ) = QNameTest::create( BuiltinTypes::element, ( yyvsp[( 3 ) - ( 4 )].qName ) );
+        }
+        break;
+
+        case 449:
+        {
+            const SchemaType::Ptr t( parseInfo->staticContext->schemaDefinitions()->createSchemaType( ( yyvsp[( 5 ) - ( 7 )].qName ) ) );
+
+            if ( t )
+            {
+                ( yyval.itemType ) = BuiltinTypes::element;
             }
             else
             {
-                parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is not an atomic type. Casting "
-                                                                    "is only possible to atomic types." )
-                                                 .formatArg( formatType( parseInfo->staticContext->namePool(), t ) ),
-                                                 ReportContext::XPST0051, fromYYLTYPE( ( yyloc ), parseInfo ) );
+                parseInfo->staticContext->error( unknownType()
+                                                 .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 5 ) - ( 7 )].qName ) ) ),
+                                                 ReportContext::XPST0008, fromYYLTYPE( ( yyloc ), parseInfo ) );
             }
         }
-    }
-    break;
+        break;
 
-    case 428:
-        /* Line 1269 of yacc.c.  */
-#line 4349 "querytransformparser.ypp"
-    {
-        ( yyval.itemType ) = BuiltinTypes::node;
-    }
-    break;
-
-    case 429:
-        /* Line 1269 of yacc.c.  */
-#line 4354 "querytransformparser.ypp"
-    {
-        ( yyval.itemType ) = BuiltinTypes::document;
-    }
-    break;
-
-    case 430:
-        /* Line 1269 of yacc.c.  */
-#line 4359 "querytransformparser.ypp"
-    {
-        // TODO support for document element testing
-        ( yyval.itemType ) = BuiltinTypes::document;
-    }
-    break;
-
-    case 433:
-        /* Line 1269 of yacc.c.  */
-#line 4368 "querytransformparser.ypp"
-    {
-        ( yyval.itemType ) = BuiltinTypes::text;
-    }
-    break;
-
-    case 434:
-        /* Line 1269 of yacc.c.  */
-#line 4373 "querytransformparser.ypp"
-    {
-        ( yyval.itemType ) = BuiltinTypes::comment;
-    }
-    break;
-
-    case 435:
-        /* Line 1269 of yacc.c.  */
-#line 4378 "querytransformparser.ypp"
-    {
-        ( yyval.itemType ) = BuiltinTypes::pi;
-    }
-    break;
-
-    case 436:
-        /* Line 1269 of yacc.c.  */
-#line 4383 "querytransformparser.ypp"
-    {
-        ( yyval.itemType ) = LocalNameTest::create( BuiltinTypes::pi,
-            parseInfo->staticContext->namePool()->allocateLocalName( ( yyvsp[( 3 ) - ( 4 )].sval ) ) );
-    }
-    break;
-
-    case 437:
-        /* Line 1269 of yacc.c.  */
-#line 4388 "querytransformparser.ypp"
-    {
-        if ( QXmlUtils::isNCName( ( yyvsp[( 3 ) - ( 4 )].sval ) ) )
+        case 450:
         {
-            ( yyval.itemType ) = LocalNameTest::create( BuiltinTypes::pi,
-                parseInfo->staticContext->namePool()->allocateLocalName( ( yyvsp[( 3 ) - ( 4 )].sval ) ) );
+            const SchemaType::Ptr t( parseInfo->staticContext->schemaDefinitions()->createSchemaType( ( yyvsp[( 5 ) - ( 7 )].qName ) ) );
+
+            if ( t )
+            {
+                ( yyval.itemType ) = BuiltinTypes::element;
+            }
+            else
+            {
+                parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is an unknown schema type." )
+                                                 .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 5 ) - ( 7 )].qName ) ) ),
+                                                 ReportContext::XPST0008, fromYYLTYPE( ( yyloc ), parseInfo ) );
+            }
         }
-        else
+        break;
+
+        case 453:
         {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is not a valid name for a "
-                                                                "processing-instruction." )
-                                             .formatArg( formatKeyword( ( yyvsp[( 3 ) - ( 4 )].sval ) ) ),
-                                             ReportContext::XPTY0004,
-                                             fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-    }
-    break;
-
-    case 440:
-        /* Line 1269 of yacc.c.  */
-#line 4407 "querytransformparser.ypp"
-    {
-        ( yyval.itemType ) = BuiltinTypes::attribute;
-    }
-    break;
-
-    case 441:
-        /* Line 1269 of yacc.c.  */
-#line 4412 "querytransformparser.ypp"
-    {
-        ( yyval.itemType ) = BuiltinTypes::attribute;
-    }
-    break;
-
-    case 442:
-        /* Line 1269 of yacc.c.  */
-#line 4417 "querytransformparser.ypp"
-    {
-        ( yyval.itemType ) = QNameTest::create( BuiltinTypes::attribute, ( yyvsp[( 3 ) - ( 4 )].qName ) );
-    }
-    break;
-
-    case 443:
-        /* Line 1269 of yacc.c.  */
-#line 4421 "querytransformparser.ypp"
-    {
-        const SchemaType::Ptr t( parseInfo->staticContext->schemaDefinitions()->createSchemaType( ( yyvsp[( 5 ) - ( 6 )].qName ) ) );
-
-        if ( t )
-        {
-            ( yyval.itemType ) = BuiltinTypes::attribute;
-        }
-        else
-        {
-            parseInfo->staticContext->error( unknownType().formatArg( formatKeyword( parseInfo->staticContext->namePool(),
-                                             ( yyvsp[( 5 ) - ( 6 )].qName ) ) ),
+            parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is not in the in-scope attribute "
+                                             "declarations. Note that the schema import "
+                                             "feature is not supported." )
+                                             .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 3 ) - ( 4 )].qName ) ) ),
                                              ReportContext::XPST0008, fromYYLTYPE( ( yyloc ), parseInfo ) );
+            ( yyval.itemType ).reset();
         }
-    }
-    break;
+        break;
 
-    case 444:
-        /* Line 1269 of yacc.c.  */
-#line 4433 "querytransformparser.ypp"
-    {
-        const SchemaType::Ptr t( parseInfo->staticContext->schemaDefinitions()->createSchemaType( ( yyvsp[( 5 ) - ( 6 )].qName ) ) );
-
-        if ( t )
+        case 455:
         {
-            ( yyval.itemType ) = BuiltinTypes::attribute;
+            ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName( StandardNamespaces::empty, ( yyvsp[( 1 ) - ( 1 )].sval ) );
         }
-        else
+        break;
+
+        case 457:
         {
-            parseInfo->staticContext->error( unknownType().formatArg( formatKeyword( parseInfo->staticContext->namePool(),
-                                             ( yyvsp[( 5 ) - ( 6 )].qName ) ) ),
-                                             ReportContext::XPST0008, fromYYLTYPE( ( yyloc ), parseInfo ) );
+            if ( parseInfo->nodeTestSource == BuiltinTypes::element )
+            {
+                ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName(
+                                      parseInfo->staticContext->namespaceBindings()->lookupNamespaceURI( StandardPrefixes::empty ), ( yyvsp[( 1 ) - ( 1 )].sval ) );
+            }
+            else
+            {
+                ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName( StandardNamespaces::empty,
+                                  ( yyvsp[( 1 ) - ( 1 )].sval ) );
+            }
         }
-    }
-    break;
+        break;
 
-    case 445:
-        /* Line 1269 of yacc.c.  */
-#line 4446 "querytransformparser.ypp"
-    {
-        parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is not in the in-scope attribute "
-                                                            "declarations. Note that the schema import "
-                                                            "feature is not supported." )
-                                         .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 3 ) - ( 4 )].qName ) ) ),
-                                         ReportContext::XPST0008, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        ( yyval.itemType ).reset();
-    }
-    break;
-
-    case 446:
-    {
-        ( yyval.itemType ) = BuiltinTypes::element;
-    }
-    break;
-
-    case 447:
-    {
-        ( yyval.itemType ) = BuiltinTypes::element;
-    }
-    break;
-
-    case 448:
-    {
-        ( yyval.itemType ) = QNameTest::create( BuiltinTypes::element, ( yyvsp[( 3 ) - ( 4 )].qName ) );
-    }
-    break;
-
-    case 449:
-    {
-        const SchemaType::Ptr t( parseInfo->staticContext->schemaDefinitions()->createSchemaType( ( yyvsp[( 5 ) - ( 7 )].qName ) ) );
-
-        if ( t )
-        {
-            ( yyval.itemType ) = BuiltinTypes::element;
-        }
-        else
-        {
-            parseInfo->staticContext->error( unknownType()
-                                             .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 5 ) - ( 7 )].qName ) ) ),
-                                             ReportContext::XPST0008, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-    }
-    break;
-
-    case 450:
-    {
-        const SchemaType::Ptr t( parseInfo->staticContext->schemaDefinitions()->createSchemaType( ( yyvsp[( 5 ) - ( 7 )].qName ) ) );
-
-        if ( t )
-        {
-            ( yyval.itemType ) = BuiltinTypes::element;
-        }
-        else
-        {
-            parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is an unknown schema type." )
-                                             .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 5 ) - ( 7 )].qName ) ) ),
-                                             ReportContext::XPST0008, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        }
-    }
-    break;
-
-    case 453:
-    {
-        parseInfo->staticContext->error( QtXmlPatterns::tr( "%1 is not in the in-scope attribute "
-                                                            "declarations. Note that the schema import "
-                                                            "feature is not supported." )
-                                         .formatArg( formatKeyword( parseInfo->staticContext->namePool(), ( yyvsp[( 3 ) - ( 4 )].qName ) ) ),
-                                         ReportContext::XPST0008, fromYYLTYPE( ( yyloc ), parseInfo ) );
-        ( yyval.itemType ).reset();
-    }
-    break;
-
-    case 455:
-    {
-        ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName( StandardNamespaces::empty, ( yyvsp[( 1 ) - ( 1 )].sval ) );
-    }
-    break;
-
-    case 457:
-    {
-        if ( parseInfo->nodeTestSource == BuiltinTypes::element )
+        case 462:
         {
             ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName(
-                                  parseInfo->staticContext->namespaceBindings()->lookupNamespaceURI( StandardPrefixes::empty ), ( yyvsp[( 1 ) - ( 1 )].sval ) );
+                                  parseInfo->staticContext->defaultFunctionNamespace(), ( yyvsp[( 1 ) - ( 1 )].sval ) );
         }
-        else
+        break;
+
+        case 463:
         {
-            ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName( StandardNamespaces::empty,
-                              ( yyvsp[( 1 ) - ( 1 )].sval ) );
+            ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName( StandardNamespaces::InternalXSLT,
+                              ( yyvsp[( 2 ) - ( 2 )].sval ) );
         }
-    }
-    break;
+        break;
 
-    case 462:
-    {
-        ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName(
-                              parseInfo->staticContext->defaultFunctionNamespace(), ( yyvsp[( 1 ) - ( 1 )].sval ) );
-    }
-    break;
-
-    case 463:
-    {
-        ( yyval.qName ) = parseInfo->staticContext->namePool()->allocateQName( StandardNamespaces::InternalXSLT,
-                          ( yyvsp[( 2 ) - ( 2 )].sval ) );
-    }
-    break;
-
-    case 466:
-        /* Line 1269 of yacc.c.  */
+        case 466:
+            /* Line 1269 of yacc.c.  */
 #line 4552 "querytransformparser.ypp"
-    {
-        parseInfo->staticContext->error( QtXmlPatterns::tr( "The name of an extension expression must be in "
-                                                            "a namespace." ),
-                                         ReportContext::XPST0081, fromYYLTYPE( ( yyloc ), parseInfo ) );
-    }
-    break;
+            {
+                parseInfo->staticContext->error( QtXmlPatterns::tr( "The name of an extension expression must be in "
+                                                 "a namespace." ),
+                                                 ReportContext::XPST0081, fromYYLTYPE( ( yyloc ), parseInfo ) );
+            }
+            break;
 
-    case 469:
-        /* Line 1269 of yacc.c.  */
+        case 469:
+            /* Line 1269 of yacc.c.  */
 #line 4562 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-    }
-    break;
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+            }
+            break;
 
-    case 470:
-        /* Line 1269 of yacc.c.  */
+        case 470:
+            /* Line 1269 of yacc.c.  */
 #line 4566 "querytransformparser.ypp"
-    {
-        allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
-    }
-    break;
+            {
+                allowedIn( QueryLanguages( QXmlQuery::XQuery10 | QXmlQuery::XPath20 ), parseInfo, ( yyloc ) );
+            }
+            break;
 
-    case 471:
-        /* Line 1269 of yacc.c.  */
+        case 471:
+            /* Line 1269 of yacc.c.  */
 #line 4571 "querytransformparser.ypp"
-    {
+            {
 
-        const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
+                const ReflectYYLTYPE ryy( ( yyloc ), parseInfo );
 
-        ( yyval.qName ) = QNameConstructor::
-        expandQName<StaticContext::Ptr,
-        ReportContext::XPST0081,
-        ReportContext::XPST0081>( ( yyvsp[( 1 ) - ( 1 )].sval ), parseInfo->staticContext,
-                                  parseInfo->staticContext->namespaceBindings(), &ryy );
+                ( yyval.qName ) = QNameConstructor::
+                                  expandQName<StaticContext::Ptr,
+                                  ReportContext::XPST0081,
+                                  ReportContext::XPST0081>( ( yyvsp[( 1 ) - ( 1 )].sval ), parseInfo->staticContext,
+                                          parseInfo->staticContext->namespaceBindings(), &ryy );
 
-    }
-    break;
+            }
+            break;
 
-    case 472:
-        /* Line 1269 of yacc.c.  */
+        case 472:
+            /* Line 1269 of yacc.c.  */
 #line 4583 "querytransformparser.ypp"
-    {
-        ( yyval.qName ) = parseInfo->staticContext->namePool()->fromClarkName( ( yyvsp[( 1 ) - ( 1 )].sval ) );
-    }
-    break;
+            {
+                ( yyval.qName ) = parseInfo->staticContext->namePool()->fromClarkName( ( yyvsp[( 1 ) - ( 1 )].sval ) );
+            }
+            break;
 
 
-        /* Line 1269 of yacc.c.  */
+            /* Line 1269 of yacc.c.  */
 #line 7763 "qquerytransformparser.cpp"
 
-    default:
-        break;
+        default:
+            break;
     }
 
     YY_SYMBOL_PRINT ( "-> $$ =", yyr1[yyn], &yyval, &yyloc );
@@ -8402,29 +8402,29 @@ QString Tokenizer::tokenToString( const Token &token )
 {
     switch ( token.type )
     {
-    case NCNAME:
-    case QNAME:
-    case NUMBER:
-    case XPATH2_NUMBER:
-        return token.value;
+        case NCNAME:
+        case QNAME:
+        case NUMBER:
+        case XPATH2_NUMBER:
+            return token.value;
 
-    case STRING_LITERAL:
-        return QLatin1Char( '"' ) + token.value + QLatin1Char( '"' );
+        case STRING_LITERAL:
+            return QLatin1Char( '"' ) + token.value + QLatin1Char( '"' );
 
-    default:
-    {
-        const QString raw( QString::fromLatin1( yytname[YYTRANSLATE( token.type )] ) );
-
-        /* Remove the quotes. */
-        if ( raw.at( 0 ) == QLatin1Char( '"' ) && raw.length() > 1 )
+        default:
         {
-            return raw.mid( 1, raw.length() - 2 );
+            const QString raw( QString::fromLatin1( yytname[YYTRANSLATE( token.type )] ) );
+
+            /* Remove the quotes. */
+            if ( raw.at( 0 ) == QLatin1Char( '"' ) && raw.length() > 1 )
+            {
+                return raw.mid( 1, raw.length() - 2 );
+            }
+            else
+            {
+                return raw;
+            }
         }
-        else
-        {
-            return raw;
-        }
-    }
     }
 }
 

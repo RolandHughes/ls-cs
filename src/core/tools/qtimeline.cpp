@@ -304,26 +304,26 @@ QTimeLine::CurveShape QTimeLine::curveShape() const
 
     switch ( d->easingCurve.type() )
     {
-    case QEasingCurve::InOutSine:
-        return EaseInOutCurve;
+        case QEasingCurve::InOutSine:
+            return EaseInOutCurve;
 
-    case QEasingCurve::InCurve:
-        return EaseInCurve;
+        case QEasingCurve::InCurve:
+            return EaseInCurve;
 
-    case QEasingCurve::OutCurve:
-        return EaseOutCurve;
+        case QEasingCurve::OutCurve:
+            return EaseOutCurve;
 
-    case QEasingCurve::Linear:
-        return LinearCurve;
+        case QEasingCurve::Linear:
+            return LinearCurve;
 
-    case QEasingCurve::SineCurve:
-        return SineCurve;
+        case QEasingCurve::SineCurve:
+            return SineCurve;
 
-    case QEasingCurve::CosineCurve:
-        return CosineCurve;
+        case QEasingCurve::CosineCurve:
+            return CosineCurve;
 
-    default:
-        return EaseInOutCurve;
+        default:
+            return EaseInOutCurve;
     }
 }
 
@@ -331,33 +331,33 @@ void QTimeLine::setCurveShape( CurveShape shape )
 {
     switch ( shape )
     {
-    case EaseInOutCurve:
-        setEasingCurve( QEasingCurve( QEasingCurve::InOutSine ) );
-        break;
+        case EaseInOutCurve:
+            setEasingCurve( QEasingCurve( QEasingCurve::InOutSine ) );
+            break;
 
-    case EaseInCurve:
-        setEasingCurve( QEasingCurve( QEasingCurve::InCurve ) );
-        break;
+        case EaseInCurve:
+            setEasingCurve( QEasingCurve( QEasingCurve::InCurve ) );
+            break;
 
-    case EaseOutCurve:
-        setEasingCurve( QEasingCurve( QEasingCurve::OutCurve ) );
-        break;
+        case EaseOutCurve:
+            setEasingCurve( QEasingCurve( QEasingCurve::OutCurve ) );
+            break;
 
-    case LinearCurve:
-        setEasingCurve( QEasingCurve( QEasingCurve::Linear ) );
-        break;
+        case LinearCurve:
+            setEasingCurve( QEasingCurve( QEasingCurve::Linear ) );
+            break;
 
-    case SineCurve:
-        setEasingCurve( QEasingCurve( QEasingCurve::SineCurve ) );
-        break;
+        case SineCurve:
+            setEasingCurve( QEasingCurve( QEasingCurve::SineCurve ) );
+            break;
 
-    case CosineCurve:
-        setEasingCurve( QEasingCurve( QEasingCurve::CosineCurve ) );
-        break;
+        case CosineCurve:
+            setEasingCurve( QEasingCurve( QEasingCurve::CosineCurve ) );
+            break;
 
-    default:
-        setEasingCurve( QEasingCurve( QEasingCurve::InOutSine ) );
-        break;
+        default:
+            setEasingCurve( QEasingCurve( QEasingCurve::InOutSine ) );
+            break;
     }
 }
 

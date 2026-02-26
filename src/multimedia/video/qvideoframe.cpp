@@ -257,81 +257,81 @@ bool QVideoFrame::map( QAbstractVideoBuffer::MapMode mode )
     else
         switch ( d->pixelFormat )
         {
-        case Format_Invalid:
-        case Format_ARGB32:
-        case Format_ARGB32_Premultiplied:
-        case Format_RGB32:
-        case Format_RGB24:
-        case Format_RGB565:
-        case Format_RGB555:
-        case Format_ARGB8565_Premultiplied:
-        case Format_BGRA32:
-        case Format_BGRA32_Premultiplied:
-        case Format_BGR32:
-        case Format_BGR24:
-        case Format_BGR565:
-        case Format_BGR555:
-        case Format_BGRA5658_Premultiplied:
-        case Format_AYUV444:
-        case Format_AYUV444_Premultiplied:
-        case Format_YUV444:
-        case Format_UYVY:
-        case Format_YUYV:
-        case Format_Y8:
-        case Format_Y16:
-        case Format_Jpeg:
-        case Format_CameraRaw:
-        case Format_AdobeDng:
-        case Format_User:
-            // Single plane or opaque format.
-            break;
+            case Format_Invalid:
+            case Format_ARGB32:
+            case Format_ARGB32_Premultiplied:
+            case Format_RGB32:
+            case Format_RGB24:
+            case Format_RGB565:
+            case Format_RGB555:
+            case Format_ARGB8565_Premultiplied:
+            case Format_BGRA32:
+            case Format_BGRA32_Premultiplied:
+            case Format_BGR32:
+            case Format_BGR24:
+            case Format_BGR565:
+            case Format_BGR555:
+            case Format_BGRA5658_Premultiplied:
+            case Format_AYUV444:
+            case Format_AYUV444_Premultiplied:
+            case Format_YUV444:
+            case Format_UYVY:
+            case Format_YUYV:
+            case Format_Y8:
+            case Format_Y16:
+            case Format_Jpeg:
+            case Format_CameraRaw:
+            case Format_AdobeDng:
+            case Format_User:
+                // Single plane or opaque format.
+                break;
 
-        case Format_YUV420P:
-        case Format_YV12:
-        {
-            // The UV stride is usually half the Y stride and is 32-bit aligned.
-            // However it's not always the case, at least on Windows where the
-            // UV planes are sometimes not aligned.
-            // We calculate the stride using the UV byte count to always
-            // have a correct stride.
-            const int height = d->size.height();
-            const int yStride = d->bytesPerLine[0];
-            const int uvStride = ( d->mappedBytes - ( yStride * height ) ) / height;
+            case Format_YUV420P:
+            case Format_YV12:
+            {
+                // The UV stride is usually half the Y stride and is 32-bit aligned.
+                // However it's not always the case, at least on Windows where the
+                // UV planes are sometimes not aligned.
+                // We calculate the stride using the UV byte count to always
+                // have a correct stride.
+                const int height = d->size.height();
+                const int yStride = d->bytesPerLine[0];
+                const int uvStride = ( d->mappedBytes - ( yStride * height ) ) / height;
 
-            // Three planes, the second and third vertically and horizontally subsampled.
-            d->planeCount = 3;
-            d->bytesPerLine[2] = d->bytesPerLine[1] = uvStride;
-            d->data[1] = d->data[0] + ( yStride * height );
-            d->data[2] = d->data[1] + ( uvStride * height / 2 );
-            break;
-        }
+                // Three planes, the second and third vertically and horizontally subsampled.
+                d->planeCount = 3;
+                d->bytesPerLine[2] = d->bytesPerLine[1] = uvStride;
+                d->data[1] = d->data[0] + ( yStride * height );
+                d->data[2] = d->data[1] + ( uvStride * height / 2 );
+                break;
+            }
 
-        case Format_NV12:
-        case Format_NV21:
-        case Format_IMC2:
-        case Format_IMC4:
-        {
-            // Semi planar, Full resolution Y plane with interleaved subsampled U and V planes.
-            d->planeCount = 2;
-            d->bytesPerLine[1] = d->bytesPerLine[0];
-            d->data[1] = d->data[0] + ( d->bytesPerLine[0] * d->size.height() );
-            break;
-        }
+            case Format_NV12:
+            case Format_NV21:
+            case Format_IMC2:
+            case Format_IMC4:
+            {
+                // Semi planar, Full resolution Y plane with interleaved subsampled U and V planes.
+                d->planeCount = 2;
+                d->bytesPerLine[1] = d->bytesPerLine[0];
+                d->data[1] = d->data[0] + ( d->bytesPerLine[0] * d->size.height() );
+                break;
+            }
 
-        case Format_IMC1:
-        case Format_IMC3:
-        {
-            // Three planes, the second and third vertically and horizontally subsumpled,
-            // but with lines padded to the width of the first plane.
-            d->planeCount = 3;
-            d->bytesPerLine[2] = d->bytesPerLine[1] = d->bytesPerLine[0];
-            d->data[1] = d->data[0] + ( d->bytesPerLine[0] * d->size.height() );
-            d->data[2] = d->data[1] + ( d->bytesPerLine[1] * d->size.height() / 2 );
-            break;
-        }
+            case Format_IMC1:
+            case Format_IMC3:
+            {
+                // Three planes, the second and third vertically and horizontally subsumpled,
+                // but with lines padded to the width of the first plane.
+                d->planeCount = 3;
+                d->bytesPerLine[2] = d->bytesPerLine[1] = d->bytesPerLine[0];
+                d->data[1] = d->data[0] + ( d->bytesPerLine[0] * d->size.height() );
+                d->data[2] = d->data[1] + ( d->bytesPerLine[1] * d->size.height() / 2 );
+                break;
+            }
 
-        default:
-            break;
+            default:
+                break;
         }
 
     d->mappedCount++;
@@ -458,32 +458,32 @@ QVideoFrame::PixelFormat QVideoFrame::pixelFormatFromImageFormat( QImage::Format
 {
     switch ( format )
     {
-    case QImage::Format_RGB32:
-    case QImage::Format_RGBX8888:
-        return Format_RGB32;
+        case QImage::Format_RGB32:
+        case QImage::Format_RGBX8888:
+            return Format_RGB32;
 
-    case QImage::Format_ARGB32:
-    case QImage::Format_RGBA8888:
-        return Format_ARGB32;
+        case QImage::Format_ARGB32:
+        case QImage::Format_RGBA8888:
+            return Format_ARGB32;
 
-    case QImage::Format_ARGB32_Premultiplied:
-    case QImage::Format_RGBA8888_Premultiplied:
-        return Format_ARGB32_Premultiplied;
+        case QImage::Format_ARGB32_Premultiplied:
+        case QImage::Format_RGBA8888_Premultiplied:
+            return Format_ARGB32_Premultiplied;
 
-    case QImage::Format_RGB16:
-        return Format_RGB565;
+        case QImage::Format_RGB16:
+            return Format_RGB565;
 
-    case QImage::Format_ARGB8565_Premultiplied:
-        return Format_ARGB8565_Premultiplied;
+        case QImage::Format_ARGB8565_Premultiplied:
+            return Format_ARGB8565_Premultiplied;
 
-    case QImage::Format_RGB555:
-        return Format_RGB555;
+        case QImage::Format_RGB555:
+            return Format_RGB555;
 
-    case QImage::Format_RGB888:
-        return Format_RGB24;
+        case QImage::Format_RGB888:
+            return Format_RGB24;
 
-    default:
-        return Format_Invalid;
+        default:
+            return Format_Invalid;
     }
 }
 
@@ -491,62 +491,62 @@ QImage::Format QVideoFrame::imageFormatFromPixelFormat( PixelFormat format )
 {
     switch ( format )
     {
-    case Format_Invalid:
-        return QImage::Format_Invalid;
+        case Format_Invalid:
+            return QImage::Format_Invalid;
 
-    case Format_ARGB32:
-        return QImage::Format_ARGB32;
+        case Format_ARGB32:
+            return QImage::Format_ARGB32;
 
-    case Format_ARGB32_Premultiplied:
-        return QImage::Format_ARGB32_Premultiplied;
+        case Format_ARGB32_Premultiplied:
+            return QImage::Format_ARGB32_Premultiplied;
 
-    case Format_RGB32:
-        return QImage::Format_RGB32;
+        case Format_RGB32:
+            return QImage::Format_RGB32;
 
-    case Format_RGB24:
-        return QImage::Format_RGB888;
+        case Format_RGB24:
+            return QImage::Format_RGB888;
 
-    case Format_RGB565:
-        return QImage::Format_RGB16;
+        case Format_RGB565:
+            return QImage::Format_RGB16;
 
-    case Format_RGB555:
-        return QImage::Format_RGB555;
+        case Format_RGB555:
+            return QImage::Format_RGB555;
 
-    case Format_ARGB8565_Premultiplied:
-        return QImage::Format_ARGB8565_Premultiplied;
+        case Format_ARGB8565_Premultiplied:
+            return QImage::Format_ARGB8565_Premultiplied;
 
-    case Format_BGRA32:
-    case Format_BGRA32_Premultiplied:
-    case Format_BGR32:
-    case Format_BGR24:
-        return QImage::Format_Invalid;
+        case Format_BGRA32:
+        case Format_BGRA32_Premultiplied:
+        case Format_BGR32:
+        case Format_BGR24:
+            return QImage::Format_Invalid;
 
-    case Format_BGR565:
-    case Format_BGR555:
-    case Format_BGRA5658_Premultiplied:
-    case Format_AYUV444:
-    case Format_AYUV444_Premultiplied:
-    case Format_YUV444:
-    case Format_YUV420P:
-    case Format_YV12:
-    case Format_UYVY:
-    case Format_YUYV:
-    case Format_NV12:
-    case Format_NV21:
-    case Format_IMC1:
-    case Format_IMC2:
-    case Format_IMC3:
-    case Format_IMC4:
-    case Format_Y8:
-    case Format_Y16:
-    case Format_Jpeg:
-    case Format_CameraRaw:
-    case Format_AdobeDng:
-        return QImage::Format_Invalid;
+        case Format_BGR565:
+        case Format_BGR555:
+        case Format_BGRA5658_Premultiplied:
+        case Format_AYUV444:
+        case Format_AYUV444_Premultiplied:
+        case Format_YUV444:
+        case Format_YUV420P:
+        case Format_YV12:
+        case Format_UYVY:
+        case Format_YUYV:
+        case Format_NV12:
+        case Format_NV21:
+        case Format_IMC1:
+        case Format_IMC2:
+        case Format_IMC3:
+        case Format_IMC4:
+        case Format_Y8:
+        case Format_Y16:
+        case Format_Jpeg:
+        case Format_CameraRaw:
+        case Format_AdobeDng:
+            return QImage::Format_Invalid;
 
-    case Format_User:
-    default:
-        return QImage::Format_Invalid;
+        case Format_User:
+        default:
+            return QImage::Format_Invalid;
     }
 }
 
@@ -698,107 +698,107 @@ QDebug operator<<( QDebug dbg, QVideoFrame::PixelFormat pf )
 
     switch ( pf )
     {
-    case QVideoFrame::Format_Invalid:
-        return dbg << "Format_Invalid";
+        case QVideoFrame::Format_Invalid:
+            return dbg << "Format_Invalid";
 
-    case QVideoFrame::Format_ARGB32:
-        return dbg << "Format_ARGB32";
+        case QVideoFrame::Format_ARGB32:
+            return dbg << "Format_ARGB32";
 
-    case QVideoFrame::Format_ARGB32_Premultiplied:
-        return dbg << "Format_ARGB32_Premultiplied";
+        case QVideoFrame::Format_ARGB32_Premultiplied:
+            return dbg << "Format_ARGB32_Premultiplied";
 
-    case QVideoFrame::Format_RGB32:
-        return dbg << "Format_RGB32";
+        case QVideoFrame::Format_RGB32:
+            return dbg << "Format_RGB32";
 
-    case QVideoFrame::Format_RGB24:
-        return dbg << "Format_RGB24";
+        case QVideoFrame::Format_RGB24:
+            return dbg << "Format_RGB24";
 
-    case QVideoFrame::Format_RGB565:
-        return dbg << "Format_RGB565";
+        case QVideoFrame::Format_RGB565:
+            return dbg << "Format_RGB565";
 
-    case QVideoFrame::Format_RGB555:
-        return dbg << "Format_RGB555";
+        case QVideoFrame::Format_RGB555:
+            return dbg << "Format_RGB555";
 
-    case QVideoFrame::Format_ARGB8565_Premultiplied:
-        return dbg << "Format_ARGB8565_Premultiplied";
+        case QVideoFrame::Format_ARGB8565_Premultiplied:
+            return dbg << "Format_ARGB8565_Premultiplied";
 
-    case QVideoFrame::Format_BGRA32:
-        return dbg << "Format_BGRA32";
+        case QVideoFrame::Format_BGRA32:
+            return dbg << "Format_BGRA32";
 
-    case QVideoFrame::Format_BGRA32_Premultiplied:
-        return dbg << "Format_BGRA32_Premultiplied";
+        case QVideoFrame::Format_BGRA32_Premultiplied:
+            return dbg << "Format_BGRA32_Premultiplied";
 
-    case QVideoFrame::Format_BGR32:
-        return dbg << "Format_BGR32";
+        case QVideoFrame::Format_BGR32:
+            return dbg << "Format_BGR32";
 
-    case QVideoFrame::Format_BGR24:
-        return dbg << "Format_BGR24";
+        case QVideoFrame::Format_BGR24:
+            return dbg << "Format_BGR24";
 
-    case QVideoFrame::Format_BGR565:
-        return dbg << "Format_BGR565";
+        case QVideoFrame::Format_BGR565:
+            return dbg << "Format_BGR565";
 
-    case QVideoFrame::Format_BGR555:
-        return dbg << "Format_BGR555";
+        case QVideoFrame::Format_BGR555:
+            return dbg << "Format_BGR555";
 
-    case QVideoFrame::Format_BGRA5658_Premultiplied:
-        return dbg << "Format_BGRA5658_Premultiplied";
+        case QVideoFrame::Format_BGRA5658_Premultiplied:
+            return dbg << "Format_BGRA5658_Premultiplied";
 
-    case QVideoFrame::Format_AYUV444:
-        return dbg << "Format_AYUV444";
+        case QVideoFrame::Format_AYUV444:
+            return dbg << "Format_AYUV444";
 
-    case QVideoFrame::Format_AYUV444_Premultiplied:
-        return dbg << "Format_AYUV444_Premultiplied";
+        case QVideoFrame::Format_AYUV444_Premultiplied:
+            return dbg << "Format_AYUV444_Premultiplied";
 
-    case QVideoFrame::Format_YUV444:
-        return dbg << "Format_YUV444";
+        case QVideoFrame::Format_YUV444:
+            return dbg << "Format_YUV444";
 
-    case QVideoFrame::Format_YUV420P:
-        return dbg << "Format_YUV420P";
+        case QVideoFrame::Format_YUV420P:
+            return dbg << "Format_YUV420P";
 
-    case QVideoFrame::Format_YV12:
-        return dbg << "Format_YV12";
+        case QVideoFrame::Format_YV12:
+            return dbg << "Format_YV12";
 
-    case QVideoFrame::Format_UYVY:
-        return dbg << "Format_UYVY";
+        case QVideoFrame::Format_UYVY:
+            return dbg << "Format_UYVY";
 
-    case QVideoFrame::Format_YUYV:
-        return dbg << "Format_YUYV";
+        case QVideoFrame::Format_YUYV:
+            return dbg << "Format_YUYV";
 
-    case QVideoFrame::Format_NV12:
-        return dbg << "Format_NV12";
+        case QVideoFrame::Format_NV12:
+            return dbg << "Format_NV12";
 
-    case QVideoFrame::Format_NV21:
-        return dbg << "Format_NV21";
+        case QVideoFrame::Format_NV21:
+            return dbg << "Format_NV21";
 
-    case QVideoFrame::Format_IMC1:
-        return dbg << "Format_IMC1";
+        case QVideoFrame::Format_IMC1:
+            return dbg << "Format_IMC1";
 
-    case QVideoFrame::Format_IMC2:
-        return dbg << "Format_IMC2";
+        case QVideoFrame::Format_IMC2:
+            return dbg << "Format_IMC2";
 
-    case QVideoFrame::Format_IMC3:
-        return dbg << "Format_IMC3";
+        case QVideoFrame::Format_IMC3:
+            return dbg << "Format_IMC3";
 
-    case QVideoFrame::Format_IMC4:
-        return dbg << "Format_IMC4";
+        case QVideoFrame::Format_IMC4:
+            return dbg << "Format_IMC4";
 
-    case QVideoFrame::Format_Y8:
-        return dbg << "Format_Y8";
+        case QVideoFrame::Format_Y8:
+            return dbg << "Format_Y8";
 
-    case QVideoFrame::Format_Y16:
-        return dbg << "Format_Y16";
+        case QVideoFrame::Format_Y16:
+            return dbg << "Format_Y16";
 
-    case QVideoFrame::Format_Jpeg:
-        return dbg << "Format_Jpeg";
+        case QVideoFrame::Format_Jpeg:
+            return dbg << "Format_Jpeg";
 
-    case QVideoFrame::Format_AdobeDng:
-        return dbg << "Format_AdobeDng";
+        case QVideoFrame::Format_AdobeDng:
+            return dbg << "Format_AdobeDng";
 
-    case QVideoFrame::Format_CameraRaw:
-        return dbg << "Format_CameraRaw";
+        case QVideoFrame::Format_CameraRaw:
+            return dbg << "Format_CameraRaw";
 
-    default:
-        return dbg << QString( "UserType(%1)" ).formatArg( int( pf ) );
+        default:
+            return dbg << QString( "UserType(%1)" ).formatArg( int( pf ) );
     }
 }
 
@@ -809,17 +809,17 @@ QDebug operator<<( QDebug dbg, QVideoFrame::FieldType f )
 
     switch ( f )
     {
-    case QVideoFrame::TopField:
-        return dbg << "TopField";
+        case QVideoFrame::TopField:
+            return dbg << "TopField";
 
-    case QVideoFrame::BottomField:
-        return dbg << "BottomField";
+        case QVideoFrame::BottomField:
+            return dbg << "BottomField";
 
-    case QVideoFrame::InterlacedFrame:
-        return dbg << "InterlacedFrame";
+        case QVideoFrame::InterlacedFrame:
+            return dbg << "InterlacedFrame";
 
-    default:
-        return dbg << "ProgressiveFrame";
+        default:
+            return dbg << "ProgressiveFrame";
     }
 }
 static QString qFormatTimeStamps( qint64 start, qint64 end )

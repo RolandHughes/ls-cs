@@ -637,15 +637,15 @@ Qt::LayoutDirection QTextBlock::textDirection() const
             switch ( iter_beg->direction() )
             {
 
-            case QChar::DirL:
-                return Qt::LeftToRight;
+                case QChar::DirL:
+                    return Qt::LeftToRight;
 
-            case QChar::DirR:
-            case QChar::DirAL:
-                return Qt::RightToLeft;
+                case QChar::DirR:
+                case QChar::DirAL:
+                    return Qt::RightToLeft;
 
-            default:
-                break;
+                default:
+                    break;
             }
 
             ++iter_beg;

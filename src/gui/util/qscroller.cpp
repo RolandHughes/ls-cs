@@ -314,22 +314,22 @@ Qt::GestureType QScroller::grabGesture( QObject *target, ScrollerGestureType scr
 
     switch ( scrollGestureType )
     {
-    case LeftMouseButtonGesture:
-        button = Qt::LeftButton;
-        break;
+        case LeftMouseButtonGesture:
+            button = Qt::LeftButton;
+            break;
 
-    case RightMouseButtonGesture:
-        button = Qt::RightButton;
-        break;
+        case RightMouseButtonGesture:
+            button = Qt::RightButton;
+            break;
 
-    case MiddleMouseButtonGesture:
-        button = Qt::MiddleButton;
-        break;
+        case MiddleMouseButtonGesture:
+            button = Qt::MiddleButton;
+            break;
 
-    default:
-    case TouchGesture:
-        button = Qt::NoButton;
-        break; // NoButton == Touch
+        default:
+        case TouchGesture:
+            button = Qt::NoButton;
+            break; // NoButton == Touch
     }
 
     sp->recognizer = new QFlickGestureRecognizer( button );
@@ -511,39 +511,39 @@ QPointF QScroller::velocity() const
 
     switch ( state() )
     {
-    case Dragging:
-        return d->releaseVelocity;
+        case Dragging:
+            return d->releaseVelocity;
 
-    case Scrolling:
-    {
-        QPointF vel;
-        qint64 now = d->monotonicTimer.elapsed();
-
-        if ( ! d->xSegments.isEmpty() )
+        case Scrolling:
         {
-            const QScrollerPrivate::ScrollSegment &s = d->xSegments.head();
-            qreal progress = qreal( now - s.startTime ) / qreal( s.deltaTime );
-            qreal v = qSign( s.deltaPos ) * qreal( s.deltaTime ) / qreal( 1000 ) * sp->decelerationFactor
-                      * qreal( 0.5 ) * differentialForProgress( s.curve, progress );
-            vel.setX( v );
+            QPointF vel;
+            qint64 now = d->monotonicTimer.elapsed();
+
+            if ( ! d->xSegments.isEmpty() )
+            {
+                const QScrollerPrivate::ScrollSegment &s = d->xSegments.head();
+                qreal progress = qreal( now - s.startTime ) / qreal( s.deltaTime );
+                qreal v = qSign( s.deltaPos ) * qreal( s.deltaTime ) / qreal( 1000 ) * sp->decelerationFactor
+                          * qreal( 0.5 ) * differentialForProgress( s.curve, progress );
+                vel.setX( v );
+            }
+
+            if ( ! d->ySegments.isEmpty() )
+            {
+                const QScrollerPrivate::ScrollSegment &s = d->ySegments.head();
+                qreal progress = qreal( now - s.startTime ) / qreal( s.deltaTime );
+
+                qreal v = qSign( s.deltaPos ) * qreal( s.deltaTime ) / qreal( 1000 ) * sp->decelerationFactor
+                          * qreal( 0.5 ) * differentialForProgress( s.curve, progress );
+
+                vel.setY( v );
+            }
+
+            return vel;
         }
 
-        if ( ! d->ySegments.isEmpty() )
-        {
-            const QScrollerPrivate::ScrollSegment &s = d->ySegments.head();
-            qreal progress = qreal( now - s.startTime ) / qreal( s.deltaTime );
-
-            qreal v = qSign( s.deltaPos ) * qreal( s.deltaTime ) / qreal( 1000 ) * sp->decelerationFactor
-                      * qreal( 0.5 ) * differentialForProgress( s.curve, progress );
-
-            vel.setY( v );
-        }
-
-        return vel;
-    }
-
-    default:
-        return QPointF( 0, 0 );
+        default:
+            return QPointF( 0, 0 );
     }
 }
 
@@ -805,20 +805,20 @@ const char *QScrollerPrivate::stateName( QScroller::State state )
 {
     switch ( state )
     {
-    case QScroller::Inactive:
-        return "inactive";
+        case QScroller::Inactive:
+            return "inactive";
 
-    case QScroller::Pressed:
-        return "pressed";
+        case QScroller::Pressed:
+            return "pressed";
 
-    case QScroller::Dragging:
-        return "dragging";
+        case QScroller::Dragging:
+            return "dragging";
 
-    case QScroller::Scrolling:
-        return "scrolling";
+        case QScroller::Scrolling:
+            return "scrolling";
 
-    default:
-        return "(invalid)";
+        default:
+            return "(invalid)";
     }
 }
 
@@ -826,17 +826,17 @@ const char *QScrollerPrivate::inputName( QScroller::Input input )
 {
     switch ( input )
     {
-    case QScroller::InputPress:
-        return "press";
+        case QScroller::InputPress:
+            return "press";
 
-    case QScroller::InputMove:
-        return "move";
+        case QScroller::InputMove:
+            return "move";
 
-    case QScroller::InputRelease:
-        return "release";
+        case QScroller::InputRelease:
+            return "release";
 
-    default:
-        return "(invalid)";
+        default:
+            return "(invalid)";
     }
 }
 
@@ -1803,46 +1803,46 @@ void QScrollerPrivate::setState( QScroller::State newstate )
 
     switch ( newstate )
     {
-    case QScroller::Inactive:
+        case QScroller::Inactive:
 #ifndef LSCS_NO_ANIMATION
-        scrollTimer->stop();
+            scrollTimer->stop();
 #endif
 
-        // send the last scroll event (but only after the current state change was finished)
-        if ( !firstScroll )
-        {
-            sendLastScroll = true;
-        }
+            // send the last scroll event (but only after the current state change was finished)
+            if ( !firstScroll )
+            {
+                sendLastScroll = true;
+            }
 
-        releaseVelocity = QPointF( 0, 0 );
-        break;
+            releaseVelocity = QPointF( 0, 0 );
+            break;
 
-    case QScroller::Pressed:
+        case QScroller::Pressed:
 #ifndef LSCS_NO_ANIMATION
-        scrollTimer->stop();
+            scrollTimer->stop();
 #endif
 
-        oldVelocity = releaseVelocity;
-        releaseVelocity = QPointF( 0, 0 );
-        break;
+            oldVelocity = releaseVelocity;
+            releaseVelocity = QPointF( 0, 0 );
+            break;
 
-    case QScroller::Dragging:
-        dragDistance = QPointF( 0, 0 );
+        case QScroller::Dragging:
+            dragDistance = QPointF( 0, 0 );
 #ifndef LSCS_NO_ANIMATION
 
-        if ( state == QScroller::Pressed )
-        {
+            if ( state == QScroller::Pressed )
+            {
+                scrollTimer->start();
+            }
+
+#endif
+            break;
+
+        case QScroller::Scrolling:
+#ifndef LSCS_NO_ANIMATION
             scrollTimer->start();
-        }
-
 #endif
-        break;
-
-    case QScroller::Scrolling:
-#ifndef LSCS_NO_ANIMATION
-        scrollTimer->start();
-#endif
-        break;
+            break;
     }
 
     qSwap( state, newstate );
@@ -1941,7 +1941,7 @@ void QScrollerPrivate::setContentPositionHelperDragging( const QPointF &deltaPos
 
 #if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "  --> new position:" << newClampedPos << "- new overshoot:" << overshootPosition <<
-                "- overshoot x/y?:" << overshootPosition;
+             "- overshoot x/y?:" << overshootPosition;
 #endif
 }
 
@@ -1997,7 +1997,7 @@ void QScrollerPrivate::setContentPositionHelperScrolling()
 
 #if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "QScroller::setContentPositionHelperScrolling()\n"
-                "  --> overshoot:" << overshootPosition << "- new pos:" << newPos;
+             "  --> overshoot:" << overshootPosition << "- new pos:" << newPos;
 #endif
 
     QPointF newClampedPos = clampToRect( newPos, contentPosRange );

@@ -282,20 +282,20 @@ QTransform QPlatformScreen::transformBetween( Qt::ScreenOrientation a, Qt::Scree
 
     switch ( angle )
     {
-    case 90:
-        result.translate( target.width(), 0 );
-        break;
+        case 90:
+            result.translate( target.width(), 0 );
+            break;
 
-    case 180:
-        result.translate( target.width(), target.height() );
-        break;
+        case 180:
+            result.translate( target.width(), target.height() );
+            break;
 
-    case 270:
-        result.translate( 0, target.height() );
-        break;
+        case 270:
+            result.translate( 0, target.height() );
+            break;
 
-    default:
-        Q_ASSERT( false );
+        default:
+            Q_ASSERT( false );
     }
 
     result.rotate( angle );

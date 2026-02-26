@@ -189,121 +189,121 @@ static QVariant getValue( IWMHeaderInfo *header, const wchar_t *key )
     {
         switch ( type )
         {
-        case WMT_TYPE_DWORD:
-            if ( size == sizeof( DWORD ) )
+            case WMT_TYPE_DWORD:
+                if ( size == sizeof( DWORD ) )
+                {
+                    DWORD word;
+
+                    if ( header->GetAttributeByName(
+                                &streamNumber,
+                                key,
+                                &type,
+                                reinterpret_cast<BYTE *>( &word ),
+                                &size ) == S_OK )
+                    {
+                        return int( word );
+                    }
+                }
+
+                break;
+
+            case WMT_TYPE_STRING:
             {
-                DWORD word;
+                QString string;
+                string.resize( size / 2 ); // size is in bytes, string is in UTF16
 
                 if ( header->GetAttributeByName(
                             &streamNumber,
                             key,
                             &type,
-                            reinterpret_cast<BYTE *>( &word ),
+                            reinterpret_cast<BYTE *>( const_cast<ushort *>( string.utf16() ) ),
                             &size ) == S_OK )
                 {
-                    return int( word );
+                    return string;
                 }
             }
-
             break;
 
-        case WMT_TYPE_STRING:
-        {
-            QString string;
-            string.resize( size / 2 ); // size is in bytes, string is in UTF16
-
-            if ( header->GetAttributeByName(
-                        &streamNumber,
-                        key,
-                        &type,
-                        reinterpret_cast<BYTE *>( const_cast<ushort *>( string.utf16() ) ),
-                        &size ) == S_OK )
+            case WMT_TYPE_BINARY:
             {
-                return string;
-            }
-        }
-        break;
-
-        case WMT_TYPE_BINARY:
-        {
-            QByteArray bytes;
-            bytes.resize( size );
-
-            if ( header->GetAttributeByName(
-                        &streamNumber,
-                        key,
-                        &type,
-                        reinterpret_cast<BYTE *>( bytes.data() ),
-                        &size ) == S_OK )
-            {
-                return bytes;
-            }
-        }
-        break;
-
-        case WMT_TYPE_BOOL:
-            if ( size == sizeof( DWORD ) )
-            {
-                DWORD word;
+                QByteArray bytes;
+                bytes.resize( size );
 
                 if ( header->GetAttributeByName(
                             &streamNumber,
                             key,
                             &type,
-                            reinterpret_cast<BYTE *>( &word ),
+                            reinterpret_cast<BYTE *>( bytes.data() ),
                             &size ) == S_OK )
                 {
-                    return bool( word );
+                    return bytes;
                 }
             }
-
             break;
 
-        case WMT_TYPE_QWORD:
-            if ( size == sizeof( QWORD ) )
-            {
-                QWORD word;
-
-                if ( header->GetAttributeByName(
-                            &streamNumber,
-                            key,
-                            &type,
-                            reinterpret_cast<BYTE *>( &word ),
-                            &size ) == S_OK )
+            case WMT_TYPE_BOOL:
+                if ( size == sizeof( DWORD ) )
                 {
-                    return qint64( word );
+                    DWORD word;
+
+                    if ( header->GetAttributeByName(
+                                &streamNumber,
+                                key,
+                                &type,
+                                reinterpret_cast<BYTE *>( &word ),
+                                &size ) == S_OK )
+                    {
+                        return bool( word );
+                    }
                 }
-            }
 
-            break;
+                break;
 
-        case WMT_TYPE_WORD:
-            if ( size == sizeof( WORD ) )
-            {
-                WORD word;
-
-                if ( header->GetAttributeByName(
-                            &streamNumber,
-                            key,
-                            &type,
-                            reinterpret_cast<BYTE *>( &word ),
-                            &size ) == S_OK )
+            case WMT_TYPE_QWORD:
+                if ( size == sizeof( QWORD ) )
                 {
-                    return short( word );
+                    QWORD word;
+
+                    if ( header->GetAttributeByName(
+                                &streamNumber,
+                                key,
+                                &type,
+                                reinterpret_cast<BYTE *>( &word ),
+                                &size ) == S_OK )
+                    {
+                        return qint64( word );
+                    }
                 }
-            }
 
-            break;
+                break;
 
-        case WMT_TYPE_GUID:
-            if ( size == 16 )
-            {
-            }
+            case WMT_TYPE_WORD:
+                if ( size == sizeof( WORD ) )
+                {
+                    WORD word;
 
-            break;
+                    if ( header->GetAttributeByName(
+                                &streamNumber,
+                                key,
+                                &type,
+                                reinterpret_cast<BYTE *>( &word ),
+                                &size ) == S_OK )
+                    {
+                        return short( word );
+                    }
+                }
 
-        default:
-            break;
+                break;
+
+            case WMT_TYPE_GUID:
+                if ( size == 16 )
+                {
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -319,70 +319,70 @@ static QVariant convertValue( const PROPVARIANT &var )
     switch ( var.vt )
     {
 
-    case VT_LPWSTR:
-    {
-        std::wstring tmp( var.pwszVal );
-        value = QString::fromStdWString( tmp );
-        break;
-    }
-
-    case VT_UI4:
-        value = uint( var.ulVal );
-        break;
-
-    case VT_UI8:
-        value = quint64( var.uhVal.QuadPart );
-        break;
-
-    case VT_BOOL:
-        value = bool( var.boolVal );
-        break;
-
-    case VT_FILETIME:
-        SYSTEMTIME sysDate;
-
-        if ( !FileTimeToSystemTime( &var.filetime, &sysDate ) )
+        case VT_LPWSTR:
         {
+            std::wstring tmp( var.pwszVal );
+            value = QString::fromStdWString( tmp );
             break;
         }
 
-        value = QDate( sysDate.wYear, sysDate.wMonth, sysDate.wDay );
-        break;
-
-    case VT_STREAM:
-    {
-        STATSTG stat;
-
-        if ( FAILED( var.pStream->Stat( &stat, STATFLAG_NONAME ) ) )
-        {
+        case VT_UI4:
+            value = uint( var.ulVal );
             break;
-        }
 
-        void *data = malloc( stat.cbSize.QuadPart );
-        ULONG read = 0;
+        case VT_UI8:
+            value = quint64( var.uhVal.QuadPart );
+            break;
 
-        if ( FAILED( var.pStream->Read( data, stat.cbSize.QuadPart, &read ) ) )
+        case VT_BOOL:
+            value = bool( var.boolVal );
+            break;
+
+        case VT_FILETIME:
+            SYSTEMTIME sysDate;
+
+            if ( !FileTimeToSystemTime( &var.filetime, &sysDate ) )
+            {
+                break;
+            }
+
+            value = QDate( sysDate.wYear, sysDate.wMonth, sysDate.wDay );
+            break;
+
+        case VT_STREAM:
         {
+            STATSTG stat;
+
+            if ( FAILED( var.pStream->Stat( &stat, STATFLAG_NONAME ) ) )
+            {
+                break;
+            }
+
+            void *data = malloc( stat.cbSize.QuadPart );
+            ULONG read = 0;
+
+            if ( FAILED( var.pStream->Read( data, stat.cbSize.QuadPart, &read ) ) )
+            {
+                free( data );
+                break;
+            }
+
+            value = QImage::fromData( reinterpret_cast<const uchar *>( data ), read );
             free( data );
-            break;
         }
-
-        value = QImage::fromData( reinterpret_cast<const uchar *>( data ), read );
-        free( data );
-    }
-    break;
-
-    case VT_VECTOR | VT_LPWSTR:
-        QStringList vList;
-
-        for ( ULONG i = 0; i < var.calpwstr.cElems; ++i )
-        {
-            std::wstring tmp( var.calpwstr.pElems[i] );
-            vList.append( QString::fromStdWString( tmp ) );
-        }
-
-        value = vList;
         break;
+
+        case VT_VECTOR | VT_LPWSTR:
+            QStringList vList;
+
+            for ( ULONG i = 0; i < var.calpwstr.cElems; ++i )
+            {
+                std::wstring tmp( var.calpwstr.pElems[i] );
+                vList.append( QString::fromStdWString( tmp ) );
+            }
+
+            value = vList;
+            break;
     }
 
     return value;

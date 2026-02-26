@@ -525,87 +525,87 @@ Q_GUI_EXPORT QDebug operator<<( QDebug debug, const QGesture *gesture )
 
     switch ( gesture->gestureType() )
     {
-    case Qt::TapGesture:
-        formatGestureHeader( debug, "QTapGesture", gesture );
+        case Qt::TapGesture:
+            formatGestureHeader( debug, "QTapGesture", gesture );
 
-        debug << ", position = ";
-        QtDebugUtils::formatQPoint( debug, static_cast<const QTapGesture *>( gesture )->position() );
+            debug << ", position = ";
+            QtDebugUtils::formatQPoint( debug, static_cast<const QTapGesture *>( gesture )->position() );
 
-        debug << ')';
+            debug << ')';
+            break;
+
+        case Qt::TapAndHoldGesture:
+        {
+            const QTapAndHoldGesture *tap = static_cast<const QTapAndHoldGesture *>( gesture );
+            formatGestureHeader( debug, "QTapAndHoldGesture", tap );
+
+            debug << ", position = ";
+            QtDebugUtils::formatQPoint( debug, tap->position() );
+
+            debug << ", timeout = " << tap->timeout() << ')';
+        }
         break;
 
-    case Qt::TapAndHoldGesture:
-    {
-        const QTapAndHoldGesture *tap = static_cast<const QTapAndHoldGesture *>( gesture );
-        formatGestureHeader( debug, "QTapAndHoldGesture", tap );
+        case Qt::PanGesture:
+        {
+            const QPanGesture *pan = static_cast<const QPanGesture *>( gesture );
+            formatGestureHeader( debug, "QPanGesture", pan );
 
-        debug << ", position = ";
-        QtDebugUtils::formatQPoint( debug, tap->position() );
+            debug << ", lastOffset = ";
+            QtDebugUtils::formatQPoint( debug, pan->lastOffset() );
 
-        debug << ", timeout = " << tap->timeout() << ')';
-    }
-    break;
+            debug << ", offset = ";
+            QtDebugUtils::formatQPoint( debug, pan->offset() );
 
-    case Qt::PanGesture:
-    {
-        const QPanGesture *pan = static_cast<const QPanGesture *>( gesture );
-        formatGestureHeader( debug, "QPanGesture", pan );
-
-        debug << ", lastOffset = ";
-        QtDebugUtils::formatQPoint( debug, pan->lastOffset() );
-
-        debug << ", offset = ";
-        QtDebugUtils::formatQPoint( debug, pan->offset() );
-
-        debug  << ", acceleration = " << pan->acceleration() << ", delta = ";
-        QtDebugUtils::formatQPoint( debug, pan->delta() );
-        debug << ')';
-    }
-    break;
-
-    case Qt::PinchGesture:
-    {
-        const QPinchGesture *pinch = static_cast<const QPinchGesture *>( gesture );
-        formatGestureHeader( debug, "QPinchGesture", pinch );
-
-        debug << ", totalChangeFlags = " << pinch->totalChangeFlags()
-              << ", changeFlags = " << pinch->changeFlags() << ",startCenterPoint=";
-        QtDebugUtils::formatQPoint( debug, pinch->startCenterPoint() );
-
-        debug << ", lastCenterPoint = ";
-        QtDebugUtils::formatQPoint( debug, pinch->lastCenterPoint() );
-
-        debug << ", centerPoint = ";
-        QtDebugUtils::formatQPoint( debug, pinch->centerPoint() );
-
-        debug << ",totalScaleFactor = " << pinch->totalScaleFactor()
-              << ", lastScaleFactor = " << pinch->lastScaleFactor()
-              << ", scaleFactor = " << pinch->scaleFactor()
-              << ", totalRotationAngle = " << pinch->totalRotationAngle()
-              << ", lastRotationAngle = " << pinch->lastRotationAngle()
-              << ", rotationAngle =" << pinch->rotationAngle() << ')';
-    }
-    break;
-
-    case Qt::SwipeGesture:
-    {
-        const QSwipeGesture *swipe = static_cast<const QSwipeGesture *>( gesture );
-        formatGestureHeader( debug, "QSwipeGesture", swipe );
-
-        debug << ", horizontalDirection = ";
-        QtDebugUtils::formatQEnum( debug, swipe->horizontalDirection() );
-
-        debug << ", verticalDirection = ";
-        QtDebugUtils::formatQEnum( debug, swipe->verticalDirection() );
-
-        debug << ", swipeAngle = " << swipe->swipeAngle() << ')';
-    }
-    break;
-
-    default:
-        formatGestureHeader( debug, "Custom gesture", gesture );
-        debug << ", type = " << gesture->gestureType() << ')';
+            debug  << ", acceleration = " << pan->acceleration() << ", delta = ";
+            QtDebugUtils::formatQPoint( debug, pan->delta() );
+            debug << ')';
+        }
         break;
+
+        case Qt::PinchGesture:
+        {
+            const QPinchGesture *pinch = static_cast<const QPinchGesture *>( gesture );
+            formatGestureHeader( debug, "QPinchGesture", pinch );
+
+            debug << ", totalChangeFlags = " << pinch->totalChangeFlags()
+                  << ", changeFlags = " << pinch->changeFlags() << ",startCenterPoint=";
+            QtDebugUtils::formatQPoint( debug, pinch->startCenterPoint() );
+
+            debug << ", lastCenterPoint = ";
+            QtDebugUtils::formatQPoint( debug, pinch->lastCenterPoint() );
+
+            debug << ", centerPoint = ";
+            QtDebugUtils::formatQPoint( debug, pinch->centerPoint() );
+
+            debug << ",totalScaleFactor = " << pinch->totalScaleFactor()
+                  << ", lastScaleFactor = " << pinch->lastScaleFactor()
+                  << ", scaleFactor = " << pinch->scaleFactor()
+                  << ", totalRotationAngle = " << pinch->totalRotationAngle()
+                  << ", lastRotationAngle = " << pinch->lastRotationAngle()
+                  << ", rotationAngle =" << pinch->rotationAngle() << ')';
+        }
+        break;
+
+        case Qt::SwipeGesture:
+        {
+            const QSwipeGesture *swipe = static_cast<const QSwipeGesture *>( gesture );
+            formatGestureHeader( debug, "QSwipeGesture", swipe );
+
+            debug << ", horizontalDirection = ";
+            QtDebugUtils::formatQEnum( debug, swipe->horizontalDirection() );
+
+            debug << ", verticalDirection = ";
+            QtDebugUtils::formatQEnum( debug, swipe->verticalDirection() );
+
+            debug << ", swipeAngle = " << swipe->swipeAngle() << ')';
+        }
+        break;
+
+        default:
+            formatGestureHeader( debug, "Custom gesture", gesture );
+            debug << ", type = " << gesture->gestureType() << ')';
+            break;
     }
 
     return debug;

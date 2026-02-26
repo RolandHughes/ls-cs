@@ -27,7 +27,7 @@
 #include <quniquepointer.h>
 
 template <typename T, typename Deleter = std::default_delete<LsCsPointer::lscs_add_missing_extent_t<T>>>
-class QScopedArrayPointer : public QUniqueArrayPointer<T, Deleter>
+          class QScopedArrayPointer : public QUniqueArrayPointer<T, Deleter>
 {
 public:
     using QUniqueArrayPointer<T, Deleter>::QUniqueArrayPointer;
@@ -44,7 +44,7 @@ void swap( QScopedArrayPointer<T, Deleter> &ptr1, QScopedArrayPointer<T, Deleter
 }
 
 template <typename T, typename = typename std::enable_if_t<std::is_array_v<T>>>
-QScopedArrayPointer<T> QMakeScoped( std::size_t size )
+          QScopedArrayPointer<T> QMakeScoped( std::size_t size )
 {
     return LsCsPointer::make_unique<T>( size );
 }

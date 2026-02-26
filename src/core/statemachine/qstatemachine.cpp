@@ -318,15 +318,15 @@ static QEvent *cloneEvent( QEvent *e )
 {
     switch ( e->type() )
     {
-    case QEvent::None:
-        return new QEvent( *e );
+        case QEvent::None:
+            return new QEvent( *e );
 
-    case QEvent::Timer:
-        return new QTimerEvent( *static_cast<QTimerEvent *>( e ) );
+        case QEvent::Timer:
+            return new QTimerEvent( *static_cast<QTimerEvent *>( e ) );
 
-    default:
-        Q_ASSERT_X( false, "cloneEvent()", "not implemented" );
-        break;
+        default:
+            Q_ASSERT_X( false, "cloneEvent()", "not implemented" );
+            break;
     }
 
     return nullptr;
@@ -661,7 +661,7 @@ void QStateMachinePrivate::microstep( QEvent *event, const QList<QAbstractTransi
 #endif
 
     QHash<QAbstractState *, QVector<QPropertyAssignment>> assignmentsForEnteredStates =
-        computePropertyAssignments( enteredStates, pendingRestorables );
+                computePropertyAssignments( enteredStates, pendingRestorables );
 
     if ( ! pendingRestorables.isEmpty() )
     {
@@ -1513,7 +1513,7 @@ QHash<QStateMachinePrivate::RestorableId, QVariant> QStateMachinePrivate::comput
     return restorables;
 }
 QHash<QAbstractState *, QVector<QPropertyAssignment>> QStateMachinePrivate::computePropertyAssignments(
-    const QList<QAbstractState *> &statesToEnter_sorted, QHash<RestorableId, QVariant> &pendingRestorables ) const
+            const QList<QAbstractState *> &statesToEnter_sorted, QHash<RestorableId, QVariant> &pendingRestorables ) const
 {
     QHash<QAbstractState *, QVector<QPropertyAssignment>> assignmentsForState;
 
@@ -1578,29 +1578,29 @@ void QStateMachinePrivate::setError( QStateMachine::Error errorCode, QAbstractSt
 
     switch ( errorCode )
     {
-    case QStateMachine::NoInitialStateError:
-        Q_ASSERT( currentContext != nullptr );
+        case QStateMachine::NoInitialStateError:
+            Q_ASSERT( currentContext != nullptr );
 
-        errorString = QStateMachine::tr( "Missing initial state in compound state '%1'" )
-                      .formatArg( currentContext->objectName() );
-        break;
+            errorString = QStateMachine::tr( "Missing initial state in compound state '%1'" )
+                          .formatArg( currentContext->objectName() );
+            break;
 
-    case QStateMachine::NoDefaultStateInHistoryStateError:
-        Q_ASSERT( currentContext != nullptr );
+        case QStateMachine::NoDefaultStateInHistoryStateError:
+            Q_ASSERT( currentContext != nullptr );
 
-        errorString = QStateMachine::tr( "Missing default state in history state '%1'" )
-                      .formatArg( currentContext->objectName() );
-        break;
+            errorString = QStateMachine::tr( "Missing default state in history state '%1'" )
+                          .formatArg( currentContext->objectName() );
+            break;
 
-    case QStateMachine::NoCommonAncestorForTransitionError:
-        Q_ASSERT( currentContext != nullptr );
+        case QStateMachine::NoCommonAncestorForTransitionError:
+            Q_ASSERT( currentContext != nullptr );
 
-        errorString = QStateMachine::tr( "No common ancestor for targets and source of transition from state '%1'" )
-                      .formatArg( currentContext->objectName() );
-        break;
+            errorString = QStateMachine::tr( "No common ancestor for targets and source of transition from state '%1'" )
+                          .formatArg( currentContext->objectName() );
+            break;
 
-    default:
-        errorString = QStateMachine::tr( "Unknown error" );
+        default:
+            errorString = QStateMachine::tr( "Unknown error" );
     };
 
     pendingErrorStates.clear();
@@ -1641,7 +1641,7 @@ void QStateMachinePrivate::setError( QStateMachine::Error errorCode, QAbstractSt
 #ifndef LSCS_NO_ANIMATION
 
 QPair<QList<QAbstractAnimation *>, QList<QAbstractAnimation *>> QStateMachinePrivate::initializeAnimation(
-    QAbstractAnimation *abstractAnimation, const QPropertyAssignment &prop )
+            QAbstractAnimation *abstractAnimation, const QPropertyAssignment &prop )
 {
     QList<QAbstractAnimation *> handledAnimations;
     QList<QAbstractAnimation *> localResetEndValues;
@@ -1943,13 +1943,13 @@ QAbstractTransition *QStateMachinePrivate::createInitialTransition() const
 
     switch ( root->childMode() )
     {
-    case QState::ExclusiveStates:
-        targets.append( root->initialState() );
-        break;
+        case QState::ExclusiveStates:
+            targets.append( root->initialState() );
+            break;
 
-    case QState::ParallelStates:
-        targets = QStatePrivate::get( root )->childStates();
-        break;
+        case QState::ParallelStates:
+            targets = QStatePrivate::get( root )->childStates();
+            break;
     }
 
     return new InitialTransition( targets );
@@ -2028,7 +2028,7 @@ void QStateMachinePrivate::_q_start()
     QHash<RestorableId, QVariant> pendingRestorables;
 
     QHash<QAbstractState *, QVector<QPropertyAssignment>> assignmentsForEnteredStates =
-        computePropertyAssignments( enteredStates, pendingRestorables );
+                computePropertyAssignments( enteredStates, pendingRestorables );
 
 #ifndef LSCS_NO_ANIMATION
     QList<QAbstractAnimation *> selectedAnimations = selectAnimations( transitions );
@@ -2167,27 +2167,27 @@ void QStateMachinePrivate::_q_process()
 
     switch ( stopProcessingReason )
     {
-    case EventQueueEmpty:
-        processedPendingEvents( didChange );
-        break;
+        case EventQueueEmpty:
+            processedPendingEvents( didChange );
+            break;
 
-    case Finished:
-        state = NotRunning;
-        cancelAllDelayedEvents();
-        unregisterAllTransitions();
+        case Finished:
+            state = NotRunning;
+            cancelAllDelayedEvents();
+            unregisterAllTransitions();
 
-        emitFinished();
-        emit q->runningChanged( false );
-        break;
+            emitFinished();
+            emit q->runningChanged( false );
+            break;
 
-    case Stopped:
-        state = NotRunning;
-        cancelAllDelayedEvents();
-        unregisterAllTransitions();
+        case Stopped:
+            state = NotRunning;
+            cancelAllDelayedEvents();
+            unregisterAllTransitions();
 
-        emit q->stopped();
-        emit q->runningChanged( false );
-        break;
+            emit q->stopped();
+            emit q->runningChanged( false );
+            break;
     }
 
     endMacrostep( didChange );
@@ -2329,20 +2329,20 @@ void QStateMachinePrivate::processEvents( EventProcessingMode processingMode )
 
     switch ( processingMode )
     {
-    case DirectProcessing:
-        if ( QThread::currentThread() == q->thread() )
-        {
-            _q_process();
+        case DirectProcessing:
+            if ( QThread::currentThread() == q->thread() )
+            {
+                _q_process();
+                break;
+            }
+
+            // processing must be done in the machine thread
+            [[fallthrough]];
+
+        case QueuedProcessing:
+            processingScheduled = true;
+            QMetaObject::invokeMethod( q, "_q_process", Qt::QueuedConnection );
             break;
-        }
-
-        // processing must be done in the machine thread
-        [[fallthrough]];
-
-    case QueuedProcessing:
-        processingScheduled = true;
-        QMetaObject::invokeMethod( q, "_q_process", Qt::QueuedConnection );
-        break;
     }
 }
 
@@ -2589,7 +2589,7 @@ void QStateMachinePrivate::registerSignalTransition( QSignalTransition *transiti
     }
 
     std::unique_ptr<CSBento<void ( QSignalEventGenerator::* )()>> slotBento =
-        std::make_unique<CSBento<void ( QSignalEventGenerator::* )()>>( &QSignalEventGenerator::execute );
+                std::make_unique<CSBento<void ( QSignalEventGenerator::* )()>>( &QSignalEventGenerator::execute );
 
     // emerald (on hold, statemachine passed data is missing, change this form LsCsSignal to QObject)
     LsCsSignal::connect( *sender, std::move( signalBento ), *m_signalEventGenerator, std::move( slotBento ),
@@ -2880,17 +2880,17 @@ void QStateMachine::start()
 
     switch ( d->state )
     {
-    case QStateMachinePrivate::NotRunning:
-        d->state = QStateMachinePrivate::Starting;
-        QMetaObject::invokeMethod( this, "_q_start", Qt::QueuedConnection );
-        break;
+        case QStateMachinePrivate::NotRunning:
+            d->state = QStateMachinePrivate::Starting;
+            QMetaObject::invokeMethod( this, "_q_start", Qt::QueuedConnection );
+            break;
 
-    case QStateMachinePrivate::Starting:
-        break;
+        case QStateMachinePrivate::Starting:
+            break;
 
-    case QStateMachinePrivate::Running:
-        qWarning( "QStateMachine::start() State machine is already running" );
-        break;
+        case QStateMachinePrivate::Running:
+            qWarning( "QStateMachine::start() State machine is already running" );
+            break;
     }
 }
 
@@ -2900,18 +2900,18 @@ void QStateMachine::stop()
 
     switch ( d->state )
     {
-    case QStateMachinePrivate::NotRunning:
-        break;
+        case QStateMachinePrivate::NotRunning:
+            break;
 
-    case QStateMachinePrivate::Starting:
-        // the machine will exit as soon as it enters the event processing loop
-        d->stop = true;
-        break;
+        case QStateMachinePrivate::Starting:
+            // the machine will exit as soon as it enters the event processing loop
+            d->stop = true;
+            break;
 
-    case QStateMachinePrivate::Running:
-        d->stop = true;
-        d->processEvents( QStateMachinePrivate::QueuedProcessing );
-        break;
+        case QStateMachinePrivate::Running:
+            d->stop = true;
+            d->processEvents( QStateMachinePrivate::QueuedProcessing );
+            break;
     }
 }
 
@@ -2934,13 +2934,13 @@ void QStateMachine::postEvent( QEvent *event, EventPriority priority )
     switch ( d->state )
     {
 
-    case QStateMachinePrivate::Running:
-    case QStateMachinePrivate::Starting:
-        break;
+        case QStateMachinePrivate::Running:
+        case QStateMachinePrivate::Starting:
+            break;
 
-    default:
-        qWarning( "QStateMachine::postEvent() Unable to post event when the state machine is not running" );
-        return;
+        default:
+            qWarning( "QStateMachine::postEvent() Unable to post event when the state machine is not running" );
+            return;
     }
 
     if ( ! event )
@@ -2955,13 +2955,13 @@ void QStateMachine::postEvent( QEvent *event, EventPriority priority )
 
     switch ( priority )
     {
-    case NormalPriority:
-        d->postExternalEvent( event );
-        break;
+        case NormalPriority:
+            d->postExternalEvent( event );
+            break;
 
-    case HighPriority:
-        d->postInternalEvent( event );
-        break;
+        case HighPriority:
+            d->postInternalEvent( event );
+            break;
     }
 
     d->processEvents( QStateMachinePrivate::QueuedProcessing );

@@ -123,80 +123,80 @@ QUrl AccelTree::baseUri( const QXmlNodeModelIndex &ni ) const
 {
     switch ( kind( toPreNumber( ni ) ) )
     {
-    case QXmlNodeModelIndex::Document:
-        return baseUri();
+        case QXmlNodeModelIndex::Document:
+            return baseUri();
 
-    case QXmlNodeModelIndex::Element:
-    {
-        const QXmlNodeModelIndex::Iterator::Ptr it( iterate( ni, QXmlNodeModelIndex::AxisAttribute ) );
-        QXmlNodeModelIndex next( it->next() );
-
-        while ( !next.isNull() )
+        case QXmlNodeModelIndex::Element:
         {
-            if ( next.name() == QXmlName( StandardNamespaces::xml, StandardLocalNames::base ) )
+            const QXmlNodeModelIndex::Iterator::Ptr it( iterate( ni, QXmlNodeModelIndex::AxisAttribute ) );
+            QXmlNodeModelIndex next( it->next() );
+
+            while ( !next.isNull() )
             {
-                const QUrl candidate( next.stringValue() );
-
-                //  TODO. The xml:base spec says to do URI escaping here.
-
-                if ( !candidate.isValid() )
+                if ( next.name() == QXmlName( StandardNamespaces::xml, StandardLocalNames::base ) )
                 {
-                    return QUrl();
-                }
-                else if ( candidate.isRelative() )
-                {
-                    const QXmlNodeModelIndex par( parent( ni ) );
+                    const QUrl candidate( next.stringValue() );
 
-                    if ( par.isNull() )
+                    //  TODO. The xml:base spec says to do URI escaping here.
+
+                    if ( !candidate.isValid() )
                     {
-                        return baseUri().resolved( candidate );
+                        return QUrl();
+                    }
+                    else if ( candidate.isRelative() )
+                    {
+                        const QXmlNodeModelIndex par( parent( ni ) );
+
+                        if ( par.isNull() )
+                        {
+                            return baseUri().resolved( candidate );
+                        }
+                        else
+                        {
+                            return par.baseUri().resolved( candidate );
+                        }
                     }
                     else
                     {
-                        return par.baseUri().resolved( candidate );
+                        return candidate;
                     }
                 }
-                else
-                {
-                    return candidate;
-                }
+
+                next = it->next();
             }
 
-            next = it->next();
+            /* We have no xml:base-attribute. Can any parent supply us a base URI? */
+            const QXmlNodeModelIndex par( parent( ni ) );
+
+            if ( par.isNull() )
+            {
+                return baseUri();
+            }
+            else
+            {
+                return par.baseUri();
+            }
         }
 
-        /* We have no xml:base-attribute. Can any parent supply us a base URI? */
-        const QXmlNodeModelIndex par( parent( ni ) );
-
-        if ( par.isNull() )
+        case QXmlNodeModelIndex::ProcessingInstruction:
+        case QXmlNodeModelIndex::Comment:
+        case QXmlNodeModelIndex::Attribute:
+        case QXmlNodeModelIndex::Text:
         {
-            return baseUri();
+            const QXmlNodeModelIndex par( ni.iterate( QXmlNodeModelIndex::AxisParent )->next() );
+
+            if ( par.isNull() )
+            {
+                return QUrl();
+            }
+            else
+            {
+                return par.baseUri();
+            }
         }
-        else
-        {
-            return par.baseUri();
-        }
-    }
 
-    case QXmlNodeModelIndex::ProcessingInstruction:
-    case QXmlNodeModelIndex::Comment:
-    case QXmlNodeModelIndex::Attribute:
-    case QXmlNodeModelIndex::Text:
-    {
-        const QXmlNodeModelIndex par( ni.iterate( QXmlNodeModelIndex::AxisParent )->next() );
-
-        if ( par.isNull() )
-        {
+        case QXmlNodeModelIndex::Namespace:
             return QUrl();
-        }
-        else
-        {
-            return par.baseUri();
-        }
-    }
-
-    case QXmlNodeModelIndex::Namespace:
-        return QUrl();
     }
 
     Q_ASSERT_X( false, Q_FUNC_INFO, "This line is never supposed to be reached." );
@@ -270,158 +270,158 @@ QXmlNodeModelIndex::Iterator::Ptr AccelTree::iterate( const QXmlNodeModelIndex &
 
     switch ( axis )
     {
-    case QXmlNodeModelIndex::AxisChildOrTop:
-    {
-        if ( ! hasParent( preNumber ) )
+        case QXmlNodeModelIndex::AxisChildOrTop:
         {
-            switch ( kind( preNumber ) )
+            if ( ! hasParent( preNumber ) )
             {
-            case QXmlNodeModelIndex::Comment:
-            case QXmlNodeModelIndex::ProcessingInstruction:
-            case QXmlNodeModelIndex::Element:
-            case QXmlNodeModelIndex::Text:
-                return makeSingletonIterator( ni );
+                switch ( kind( preNumber ) )
+                {
+                    case QXmlNodeModelIndex::Comment:
+                    case QXmlNodeModelIndex::ProcessingInstruction:
+                    case QXmlNodeModelIndex::Element:
+                    case QXmlNodeModelIndex::Text:
+                        return makeSingletonIterator( ni );
 
-            case QXmlNodeModelIndex::Attribute:
-            case QXmlNodeModelIndex::Document:
-            case QXmlNodeModelIndex::Namespace:
-                // do nothing
-                ;
+                    case QXmlNodeModelIndex::Attribute:
+                    case QXmlNodeModelIndex::Document:
+                    case QXmlNodeModelIndex::Namespace:
+                        // do nothing
+                        ;
+                }
             }
         }
-    }
 
-    [[fallthrough]];
+        [[fallthrough]];
 
-    case QXmlNodeModelIndex::AxisChild:
-    {
-        if ( hasChildren( preNumber ) )
+        case QXmlNodeModelIndex::AxisChild:
         {
-            return QXmlNodeModelIndex::Iterator::Ptr( new ChildIterator( this, preNumber ) );
+            if ( hasChildren( preNumber ) )
+            {
+                return QXmlNodeModelIndex::Iterator::Ptr( new ChildIterator( this, preNumber ) );
+            }
+            else
+            {
+                return makeEmptyIterator<QXmlNodeModelIndex>();
+            }
         }
-        else
+
+        case QXmlNodeModelIndex::AxisAncestor:
         {
+            if ( hasParent( preNumber ) )
+            {
+                return QXmlNodeModelIndex::Iterator::Ptr( new AncestorIterator<false>( this, preNumber ) );
+            }
+            else
+            {
+                return makeEmptyIterator<QXmlNodeModelIndex>();
+            }
+        }
+
+        case QXmlNodeModelIndex::AxisAncestorOrSelf:
+            return QXmlNodeModelIndex::Iterator::Ptr( new AncestorIterator<true>( this, preNumber ) );
+
+        case QXmlNodeModelIndex::AxisParent:
+        {
+            if ( hasParent( preNumber ) )
+            {
+                return makeSingletonIterator( createIndex( parent( preNumber ) ) );
+            }
+            else
+            {
+                return makeEmptyIterator<QXmlNodeModelIndex>();
+            }
+        }
+
+        case QXmlNodeModelIndex::AxisDescendant:
+        {
+            if ( hasChildren( preNumber ) )
+            {
+                return QXmlNodeModelIndex::Iterator::Ptr( new DescendantIterator<false>( this, preNumber ) );
+            }
+            else
+            {
+                return makeEmptyIterator<QXmlNodeModelIndex>();
+            }
+        }
+
+        case QXmlNodeModelIndex::AxisDescendantOrSelf:
+            return QXmlNodeModelIndex::Iterator::Ptr( new DescendantIterator<true>( this, preNumber ) );
+
+        case QXmlNodeModelIndex::AxisFollowing:
+        {
+            if ( preNumber == maximumPreNumber() )
+            {
+                return makeEmptyIterator<QXmlNodeModelIndex>();
+            }
+            else
+            {
+                return QXmlNodeModelIndex::Iterator::Ptr( new FollowingIterator( this, preNumber ) );
+            }
+        }
+
+        case QXmlNodeModelIndex::AxisAttributeOrTop:
+        {
+            if ( !hasParent( preNumber ) && kind( preNumber ) == QXmlNodeModelIndex::Attribute )
+            {
+                return makeSingletonIterator( ni );
+            }
+        }
+
+        [[fallthrough]];
+
+        case QXmlNodeModelIndex::AxisAttribute:
+        {
+            if ( hasChildren( preNumber ) && kind( preNumber + 1 ) == QXmlNodeModelIndex::Attribute )
+            {
+                return QXmlNodeModelIndex::Iterator::Ptr( new AttributeIterator( this, preNumber ) );
+            }
+            else
+            {
+                return makeEmptyIterator<QXmlNodeModelIndex>();
+            }
+        }
+
+        case QXmlNodeModelIndex::AxisPreceding:
+        {
+            if ( preNumber == 0 )
+            {
+                return makeEmptyIterator<QXmlNodeModelIndex>();
+            }
+            else
+            {
+                return QXmlNodeModelIndex::Iterator::Ptr( new PrecedingIterator( this, preNumber ) );
+            }
+        }
+
+        case QXmlNodeModelIndex::AxisSelf:
+            return makeSingletonIterator( createIndex( toPreNumber( ni ) ) );
+
+        case QXmlNodeModelIndex::AxisFollowingSibling:
+        {
+            if ( preNumber == maximumPreNumber() )
+            {
+                return makeEmptyIterator<QXmlNodeModelIndex>();
+            }
+            else
+            {
+                return QXmlNodeModelIndex::Iterator::Ptr( new SiblingIterator<true>( this, preNumber ) );
+            }
+        }
+
+        case QXmlNodeModelIndex::AxisPrecedingSibling:
+        {
+            if ( preNumber == 0 )
+            {
+                return makeEmptyIterator<QXmlNodeModelIndex>();
+            }
+            else
+            {
+                return QXmlNodeModelIndex::Iterator::Ptr( new SiblingIterator<false>( this, preNumber ) );
+            }
+        }
+
+        case QXmlNodeModelIndex::AxisNamespace:
             return makeEmptyIterator<QXmlNodeModelIndex>();
-        }
-    }
-
-    case QXmlNodeModelIndex::AxisAncestor:
-    {
-        if ( hasParent( preNumber ) )
-        {
-            return QXmlNodeModelIndex::Iterator::Ptr( new AncestorIterator<false>( this, preNumber ) );
-        }
-        else
-        {
-            return makeEmptyIterator<QXmlNodeModelIndex>();
-        }
-    }
-
-    case QXmlNodeModelIndex::AxisAncestorOrSelf:
-        return QXmlNodeModelIndex::Iterator::Ptr( new AncestorIterator<true>( this, preNumber ) );
-
-    case QXmlNodeModelIndex::AxisParent:
-    {
-        if ( hasParent( preNumber ) )
-        {
-            return makeSingletonIterator( createIndex( parent( preNumber ) ) );
-        }
-        else
-        {
-            return makeEmptyIterator<QXmlNodeModelIndex>();
-        }
-    }
-
-    case QXmlNodeModelIndex::AxisDescendant:
-    {
-        if ( hasChildren( preNumber ) )
-        {
-            return QXmlNodeModelIndex::Iterator::Ptr( new DescendantIterator<false>( this, preNumber ) );
-        }
-        else
-        {
-            return makeEmptyIterator<QXmlNodeModelIndex>();
-        }
-    }
-
-    case QXmlNodeModelIndex::AxisDescendantOrSelf:
-        return QXmlNodeModelIndex::Iterator::Ptr( new DescendantIterator<true>( this, preNumber ) );
-
-    case QXmlNodeModelIndex::AxisFollowing:
-    {
-        if ( preNumber == maximumPreNumber() )
-        {
-            return makeEmptyIterator<QXmlNodeModelIndex>();
-        }
-        else
-        {
-            return QXmlNodeModelIndex::Iterator::Ptr( new FollowingIterator( this, preNumber ) );
-        }
-    }
-
-    case QXmlNodeModelIndex::AxisAttributeOrTop:
-    {
-        if ( !hasParent( preNumber ) && kind( preNumber ) == QXmlNodeModelIndex::Attribute )
-        {
-            return makeSingletonIterator( ni );
-        }
-    }
-
-    [[fallthrough]];
-
-    case QXmlNodeModelIndex::AxisAttribute:
-    {
-        if ( hasChildren( preNumber ) && kind( preNumber + 1 ) == QXmlNodeModelIndex::Attribute )
-        {
-            return QXmlNodeModelIndex::Iterator::Ptr( new AttributeIterator( this, preNumber ) );
-        }
-        else
-        {
-            return makeEmptyIterator<QXmlNodeModelIndex>();
-        }
-    }
-
-    case QXmlNodeModelIndex::AxisPreceding:
-    {
-        if ( preNumber == 0 )
-        {
-            return makeEmptyIterator<QXmlNodeModelIndex>();
-        }
-        else
-        {
-            return QXmlNodeModelIndex::Iterator::Ptr( new PrecedingIterator( this, preNumber ) );
-        }
-    }
-
-    case QXmlNodeModelIndex::AxisSelf:
-        return makeSingletonIterator( createIndex( toPreNumber( ni ) ) );
-
-    case QXmlNodeModelIndex::AxisFollowingSibling:
-    {
-        if ( preNumber == maximumPreNumber() )
-        {
-            return makeEmptyIterator<QXmlNodeModelIndex>();
-        }
-        else
-        {
-            return QXmlNodeModelIndex::Iterator::Ptr( new SiblingIterator<true>( this, preNumber ) );
-        }
-    }
-
-    case QXmlNodeModelIndex::AxisPrecedingSibling:
-    {
-        if ( preNumber == 0 )
-        {
-            return makeEmptyIterator<QXmlNodeModelIndex>();
-        }
-        else
-        {
-            return QXmlNodeModelIndex::Iterator::Ptr( new SiblingIterator<false>( this, preNumber ) );
-        }
-    }
-
-    case QXmlNodeModelIndex::AxisNamespace:
-        return makeEmptyIterator<QXmlNodeModelIndex>();
     }
 
     Q_ASSERT( false );
@@ -580,82 +580,82 @@ QString AccelTree::stringValue( const QXmlNodeModelIndex &ni ) const
 
     switch ( kind( preNumber ) )
     {
-    case QXmlNodeModelIndex::Element:
-    {
-        /* Concatenate all text nodes that are descendants of this node. */
-        if ( !hasChildren( preNumber ) )
+        case QXmlNodeModelIndex::Element:
         {
-            return QString();
+            /* Concatenate all text nodes that are descendants of this node. */
+            if ( !hasChildren( preNumber ) )
+            {
+                return QString();
+            }
+
+            const AccelTree::PreNumber stop = preNumber + size( preNumber );
+            AccelTree::PreNumber pn = preNumber + 1; /* Jump over ourselves. */
+            QString result;
+
+            for ( ; pn <= stop; ++pn )
+            {
+                if ( kind( pn ) == QXmlNodeModelIndex::Text )
+                {
+                    if ( isCompressed( pn ) )
+                    {
+                        result += CompressedWhitespace::decompress( data.value( pn ) );
+                    }
+                    else
+                    {
+                        result += data.value( pn );
+                    }
+                }
+            }
+
+            return result;
         }
 
-        const AccelTree::PreNumber stop = preNumber + size( preNumber );
-        AccelTree::PreNumber pn = preNumber + 1; /* Jump over ourselves. */
-        QString result;
-
-        for ( ; pn <= stop; ++pn )
+        case QXmlNodeModelIndex::Text:
         {
-            if ( kind( pn ) == QXmlNodeModelIndex::Text )
+            if ( isCompressed( preNumber ) )
             {
-                if ( isCompressed( pn ) )
-                {
-                    result += CompressedWhitespace::decompress( data.value( pn ) );
-                }
-                else
-                {
-                    result += data.value( pn );
-                }
+                return CompressedWhitespace::decompress( data.value( preNumber ) );
             }
         }
 
-        return result;
-    }
+        [[fallthrough]];
 
-    case QXmlNodeModelIndex::Text:
-    {
-        if ( isCompressed( preNumber ) )
+        case QXmlNodeModelIndex::Attribute:
+        case QXmlNodeModelIndex::ProcessingInstruction:
+        case QXmlNodeModelIndex::Comment:
+            return data.value( preNumber );
+
+        case QXmlNodeModelIndex::Document:
         {
-            return CompressedWhitespace::decompress( data.value( preNumber ) );
-        }
-    }
+            /* Concatenate all text nodes in the whole document. */
 
-    [[fallthrough]];
+            QString result;
+            // Perhaps we can QString::reserve() the result based on the size?
+            const AccelTree::PreNumber max = maximumPreNumber();
 
-    case QXmlNodeModelIndex::Attribute:
-    case QXmlNodeModelIndex::ProcessingInstruction:
-    case QXmlNodeModelIndex::Comment:
-        return data.value( preNumber );
-
-    case QXmlNodeModelIndex::Document:
-    {
-        /* Concatenate all text nodes in the whole document. */
-
-        QString result;
-        // Perhaps we can QString::reserve() the result based on the size?
-        const AccelTree::PreNumber max = maximumPreNumber();
-
-        for ( AccelTree::PreNumber i = 0; i <= max; ++i )
-        {
-            if ( kind( i ) == QXmlNodeModelIndex::Text )
+            for ( AccelTree::PreNumber i = 0; i <= max; ++i )
             {
-                if ( isCompressed( i ) )
+                if ( kind( i ) == QXmlNodeModelIndex::Text )
                 {
-                    result += CompressedWhitespace::decompress( data.value( i ) );
-                }
-                else
-                {
-                    result += data.value( i );
+                    if ( isCompressed( i ) )
+                    {
+                        result += CompressedWhitespace::decompress( data.value( i ) );
+                    }
+                    else
+                    {
+                        result += data.value( i );
+                    }
                 }
             }
+
+            return result;
         }
 
-        return result;
-    }
-
-    default:
-    {
-        Q_ASSERT_X( false, Q_FUNC_INFO, "A node type which does not exist in the XPath Data Model was encountered." );
-        return QString(); /* Dummy, silence compiler warning. */
-    }
+        default:
+        {
+            Q_ASSERT_X( false, Q_FUNC_INFO, "A node type which does not exist in the XPath Data Model was encountered." );
+            return QString(); /* Dummy, silence compiler warning. */
+        }
     }
 }
 
@@ -691,21 +691,21 @@ Item::Iterator::Ptr AccelTree::sequencedTypedValue( const QXmlNodeModelIndex &n 
 
     switch ( kind( preNumber ) )
     {
-    case QXmlNodeModelIndex::Element:
-    case QXmlNodeModelIndex::Document:
-    case QXmlNodeModelIndex::Attribute:
-        return makeSingletonIterator( Item( UntypedAtomic::fromValue( stringValue( n ) ) ) );
+        case QXmlNodeModelIndex::Element:
+        case QXmlNodeModelIndex::Document:
+        case QXmlNodeModelIndex::Attribute:
+            return makeSingletonIterator( Item( UntypedAtomic::fromValue( stringValue( n ) ) ) );
 
-    case QXmlNodeModelIndex::Text:
-    case QXmlNodeModelIndex::ProcessingInstruction:
-    case QXmlNodeModelIndex::Comment:
-        return makeSingletonIterator( Item( AtomicString::fromValue( stringValue( n ) ) ) );
+        case QXmlNodeModelIndex::Text:
+        case QXmlNodeModelIndex::ProcessingInstruction:
+        case QXmlNodeModelIndex::Comment:
+            return makeSingletonIterator( Item( AtomicString::fromValue( stringValue( n ) ) ) );
 
-    default:
-    {
-        Q_ASSERT_X( false, Q_FUNC_INFO, "A node type which does not exist in the XPath Data Model was encountered." );
-        return Item::Iterator::Ptr(); /* Dummy, silence compiler warning. */
-    }
+        default:
+        {
+            Q_ASSERT_X( false, Q_FUNC_INFO, "A node type which does not exist in the XPath Data Model was encountered." );
+            return Item::Iterator::Ptr(); /* Dummy, silence compiler warning. */
+        }
     }
 }
 
@@ -722,82 +722,82 @@ void AccelTree::copyNodeTo( const QXmlNodeModelIndex &node,
 
     switch ( node.kind() )
     {
-    case QXmlNodeModelIndex::Element:
-    {
-        outputted.push( Binding() );
-
-        /* Add the namespace for our element name. */
-        const QXmlName elementName( node.name() );
-
-        receiver->startElement( elementName );
-
-        if ( !settings.testFlag( InheritNamespaces ) )
-            receiver->namespaceBinding( QXmlName( StandardNamespaces::StopNamespaceInheritance, 0,
-                                                  StandardPrefixes::StopNamespaceInheritance ) );
-
-        if ( settings.testFlag( PreserveNamespaces ) )
+        case QXmlNodeModelIndex::Element:
         {
-            node.sendNamespaces( receiver );
+            outputted.push( Binding() );
 
-        }
-        else
-        {
-            /* Find the namespaces that we actually use and add them to outputted. These are drawn
-             * from the element name, and the node's attributes. */
-            outputted.top().insert( elementName.prefix(), elementName.namespaceURI() );
+            /* Add the namespace for our element name. */
+            const QXmlName elementName( node.name() );
 
-            const QXmlNodeModelIndex::Iterator::Ptr attributes( iterate( node, QXmlNodeModelIndex::AxisAttribute ) );
-            QXmlNodeModelIndex attr( attributes->next() );
+            receiver->startElement( elementName );
 
-            while ( ! attr.isNull() )
+            if ( !settings.testFlag( InheritNamespaces ) )
+                receiver->namespaceBinding( QXmlName( StandardNamespaces::StopNamespaceInheritance, 0,
+                                                      StandardPrefixes::StopNamespaceInheritance ) );
+
+            if ( settings.testFlag( PreserveNamespaces ) )
             {
-                const QXmlName &attrName = attr.name();
-                outputted.top().insert( attrName.prefix(), attrName.namespaceURI() );
-                attr = attributes->next();
+                node.sendNamespaces( receiver );
+
+            }
+            else
+            {
+                /* Find the namespaces that we actually use and add them to outputted. These are drawn
+                 * from the element name, and the node's attributes. */
+                outputted.top().insert( elementName.prefix(), elementName.namespaceURI() );
+
+                const QXmlNodeModelIndex::Iterator::Ptr attributes( iterate( node, QXmlNodeModelIndex::AxisAttribute ) );
+                QXmlNodeModelIndex attr( attributes->next() );
+
+                while ( ! attr.isNull() )
+                {
+                    const QXmlName &attrName = attr.name();
+                    outputted.top().insert( attrName.prefix(), attrName.namespaceURI() );
+                    attr = attributes->next();
+                }
+
+                Binding::const_iterator it( outputted.top().constBegin() );
+                const Binding::const_iterator end( outputted.top().constEnd() );
+
+                for ( ; it != end; ++it )
+                {
+                    receiver->namespaceBinding( QXmlName( it.value(), 0, it.key() ) );
+                }
             }
 
-            Binding::const_iterator it( outputted.top().constBegin() );
-            const Binding::const_iterator end( outputted.top().constEnd() );
-
-            for ( ; it != end; ++it )
+            /* Send the attributes of the element. */
             {
-                receiver->namespaceBinding( QXmlName( it.value(), 0, it.key() ) );
+                QXmlNodeModelIndex::Iterator::Ptr attributes( node.iterate( QXmlNodeModelIndex::AxisAttribute ) );
+                QXmlNodeModelIndex attribute( attributes->next() );
+
+                while ( ! attribute.isNull() )
+                {
+                    const QString &v = attribute.stringValue();
+                    receiver->attribute( attribute.name(), QStringView( v ) );
+                    attribute = attributes->next();
+                }
             }
+
+            /* Send the children of the element. */
+            copyChildren( node, receiver, settings );
+
+            receiver->endElement();
+            outputted.pop();
+            break;
         }
 
-        /* Send the attributes of the element. */
+        case QXmlNodeModelIndex::Document:
         {
-            QXmlNodeModelIndex::Iterator::Ptr attributes( node.iterate( QXmlNodeModelIndex::AxisAttribute ) );
-            QXmlNodeModelIndex attribute( attributes->next() );
-
-            while ( ! attribute.isNull() )
-            {
-                const QString &v = attribute.stringValue();
-                receiver->attribute( attribute.name(), QStringView( v ) );
-                attribute = attributes->next();
-            }
+            /* We need to intercept and grab the elements of the document node, such
+             * that we preserve/inherit preference applies to them. */
+            receiver->startDocument();
+            copyChildren( node, receiver, settings );
+            receiver->endDocument();
+            break;
         }
 
-        /* Send the children of the element. */
-        copyChildren( node, receiver, settings );
-
-        receiver->endElement();
-        outputted.pop();
-        break;
-    }
-
-    case QXmlNodeModelIndex::Document:
-    {
-        /* We need to intercept and grab the elements of the document node, such
-         * that we preserve/inherit preference applies to them. */
-        receiver->startDocument();
-        copyChildren( node, receiver, settings );
-        receiver->endDocument();
-        break;
-    }
-
-    default:
-        receiver->item( node );
+        default:
+            receiver->item( node );
     }
 }
 

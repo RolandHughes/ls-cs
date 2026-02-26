@@ -79,20 +79,20 @@ void QFrame::initStyleOption( QStyleOptionFrame *option ) const
 
     switch ( frameShape )
     {
-    case QFrame::Box:
-    case QFrame::HLine:
-    case QFrame::VLine:
-    case QFrame::StyledPanel:
-    case QFrame::Panel:
-        option->lineWidth = d->lineWidth;
-        option->midLineWidth = d->midLineWidth;
-        break;
+        case QFrame::Box:
+        case QFrame::HLine:
+        case QFrame::VLine:
+        case QFrame::StyledPanel:
+        case QFrame::Panel:
+            option->lineWidth = d->lineWidth;
+            option->midLineWidth = d->midLineWidth;
+            break;
 
-    default:
-        // most frame styles do not handle customized line and midline widths
-        // (see updateFrameWidth()).
-        option->lineWidth = d->frameWidth;
-        break;
+        default:
+            // most frame styles do not handle customized line and midline widths
+            // (see updateFrameWidth()).
+            option->lineWidth = d->frameWidth;
+            break;
     }
 
     if ( frameShadow == Sunken )
@@ -148,16 +148,16 @@ void QFrame::setFrameStyle( int style )
 
         switch ( style & Shape_Mask )
         {
-        case HLine:
-            sp = QSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed, QSizePolicy::Line );
-            break;
+            case HLine:
+                sp = QSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed, QSizePolicy::Line );
+                break;
 
-        case VLine:
-            sp = QSizePolicy( QSizePolicy::Fixed, QSizePolicy::Minimum, QSizePolicy::Line );
-            break;
+            case VLine:
+                sp = QSizePolicy( QSizePolicy::Fixed, QSizePolicy::Minimum, QSizePolicy::Line );
+                break;
 
-        default:
-            sp = QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Preferred, QSizePolicy::Frame );
+            default:
+                sp = QSizePolicy( QSizePolicy::Preferred, QSizePolicy::Preferred, QSizePolicy::Frame );
         }
 
         setSizePolicy( sp );
@@ -262,14 +262,14 @@ QSize QFrame::sizeHint() const
     //   other.  For other shapes, QWidget::sizeHint() is used.
     switch ( d->frameStyle & Shape_Mask )
     {
-    case HLine:
-        return QSize( -1, 3 );
+        case HLine:
+            return QSize( -1, 3 );
 
-    case VLine:
-        return QSize( 3, -1 );
+        case VLine:
+            return QSize( 3, -1 );
 
-    default:
-        return QWidget::sizeHint();
+        default:
+            return QWidget::sizeHint();
     }
 }
 

@@ -71,56 +71,56 @@ void QAbstractXmlReceiver::sendAsNode( const QPatternist::Item &outputItem )
 
     switch ( asNode.kind() )
     {
-    case QXmlNodeModelIndex::Attribute:
-    {
-        const QString &v = outputItem.stringValue();
-        attribute( asNode.name(), QStringView( v ) );
-        return;
-    }
+        case QXmlNodeModelIndex::Attribute:
+        {
+            const QString &v = outputItem.stringValue();
+            attribute( asNode.name(), QStringView( v ) );
+            return;
+        }
 
-    case QXmlNodeModelIndex::Element:
-    {
-        startElement( asNode.name() );
+        case QXmlNodeModelIndex::Element:
+        {
+            startElement( asNode.name() );
 
-        /* First the namespaces, then attributes, then the children. */
-        asNode.sendNamespaces( this );
-        sendFromAxis<QXmlNodeModelIndex::AxisAttribute>( asNode );
-        sendFromAxis<QXmlNodeModelIndex::AxisChild>( asNode );
+            /* First the namespaces, then attributes, then the children. */
+            asNode.sendNamespaces( this );
+            sendFromAxis<QXmlNodeModelIndex::AxisAttribute>( asNode );
+            sendFromAxis<QXmlNodeModelIndex::AxisChild>( asNode );
 
-        endElement();
+            endElement();
 
-        return;
-    }
+            return;
+        }
 
-    case QXmlNodeModelIndex::Text:
-    {
-        const QString &v = asNode.stringValue();
-        characters( QStringView( v ) );
-        return;
-    }
+        case QXmlNodeModelIndex::Text:
+        {
+            const QString &v = asNode.stringValue();
+            characters( QStringView( v ) );
+            return;
+        }
 
-    case QXmlNodeModelIndex::ProcessingInstruction:
-    {
-        processingInstruction( asNode.name(), outputItem.stringValue() );
-        return;
-    }
+        case QXmlNodeModelIndex::ProcessingInstruction:
+        {
+            processingInstruction( asNode.name(), outputItem.stringValue() );
+            return;
+        }
 
-    case QXmlNodeModelIndex::Comment:
-    {
-        comment( outputItem.stringValue() );
-        return;
-    }
+        case QXmlNodeModelIndex::Comment:
+        {
+            comment( outputItem.stringValue() );
+            return;
+        }
 
-    case QXmlNodeModelIndex::Document:
-    {
-        startDocument();
-        sendFromAxis<QXmlNodeModelIndex::AxisChild>( asNode );
-        endDocument();
-        return;
-    }
+        case QXmlNodeModelIndex::Document:
+        {
+            startDocument();
+            sendFromAxis<QXmlNodeModelIndex::AxisChild>( asNode );
+            endDocument();
+            return;
+        }
 
-    case QXmlNodeModelIndex::Namespace:
-        Q_ASSERT_X( false, Q_FUNC_INFO, "QXmlNodeModelIndex::Namespace was not implemented" );
+        case QXmlNodeModelIndex::Namespace:
+            Q_ASSERT_X( false, Q_FUNC_INFO, "QXmlNodeModelIndex::Namespace was not implemented" );
     }
 
     Q_ASSERT_X( false, Q_FUNC_INFO, QString( "Unknown node type: %1" ).formatArg( asNode.kind() ).toUtf8().constData() );

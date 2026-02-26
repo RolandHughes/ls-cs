@@ -436,85 +436,85 @@ bool QWhatsThisPrivate::eventFilter( QObject *o, QEvent *e )
 
     switch ( e->type() )
     {
-    case QEvent::MouseButtonPress:
-    {
-        QMouseEvent *me = static_cast<QMouseEvent *>( e );
-
-        if ( me->button() == Qt::RightButton || customWhatsThis )
+        case QEvent::MouseButtonPress:
         {
-            return false;
+            QMouseEvent *me = static_cast<QMouseEvent *>( e );
+
+            if ( me->button() == Qt::RightButton || customWhatsThis )
+            {
+                return false;
+            }
+
+            QHelpEvent e( QEvent::WhatsThis, me->pos(), me->globalPos() );
+
+            if ( !QApplication::sendEvent( w, &e ) || ! e.isAccepted() )
+            {
+                leaveOnMouseRelease = true;
+            }
+
         }
-
-        QHelpEvent e( QEvent::WhatsThis, me->pos(), me->globalPos() );
-
-        if ( !QApplication::sendEvent( w, &e ) || ! e.isAccepted() )
-        {
-            leaveOnMouseRelease = true;
-        }
-
-    }
-    break;
-
-    case QEvent::MouseMove:
-    {
-        QMouseEvent *me = static_cast<QMouseEvent *>( e );
-        QHelpEvent e( QEvent::QueryWhatsThis, me->pos(), me->globalPos() );
-        bool sentEvent = QApplication::sendEvent( w, &e );
-
-#ifdef LSCS_NO_CURSOR
-        ( void ) sentEvent;
-#else
-        QApplication::changeOverrideCursor( ( !sentEvent || ! e.isAccepted() ) ?
-                                            Qt::ForbiddenCursor : Qt::WhatsThisCursor );
-#endif
-    }
-
-    [[fallthrough]];
-
-    case QEvent::MouseButtonRelease:
-    case QEvent::MouseButtonDblClick:
-        if ( leaveOnMouseRelease && e->type() == QEvent::MouseButtonRelease )
-        {
-            QWhatsThis::leaveWhatsThisMode();
-        }
-
-        if ( static_cast<QMouseEvent *>( e )->button() == Qt::RightButton || customWhatsThis )
-        {
-            return false;   // ignore RMB release
-        }
-
         break;
 
-    case QEvent::KeyPress:
-    {
-        QKeyEvent *kev = ( QKeyEvent * )e;
+        case QEvent::MouseMove:
+        {
+            QMouseEvent *me = static_cast<QMouseEvent *>( e );
+            QHelpEvent e( QEvent::QueryWhatsThis, me->pos(), me->globalPos() );
+            bool sentEvent = QApplication::sendEvent( w, &e );
 
-        if ( kev->matches( QKeySequence::Cancel ) )
-        {
-            QWhatsThis::leaveWhatsThisMode();
-            return true;
+#ifdef LSCS_NO_CURSOR
+            ( void ) sentEvent;
+#else
+            QApplication::changeOverrideCursor( ( !sentEvent || ! e.isAccepted() ) ?
+                                                Qt::ForbiddenCursor : Qt::WhatsThisCursor );
+#endif
         }
-        else if ( customWhatsThis )
-        {
-            return false;
-        }
-        else if ( kev->key() == Qt::Key_Menu ||
-                  ( kev->key() == Qt::Key_F10 &&
-                    kev->modifiers() == Qt::ShiftModifier ) )
-        {
-            // we don't react to these keys, they are used for context menus
-            return false;
-        }
-        else if ( kev->key() != Qt::Key_Shift && kev->key() != Qt::Key_Alt  // not a modifier key
-                  && kev->key() != Qt::Key_Control && kev->key() != Qt::Key_Meta )
-        {
-            QWhatsThis::leaveWhatsThisMode();
-        }
-    }
-    break;
 
-    default:
-        return false;
+        [[fallthrough]];
+
+        case QEvent::MouseButtonRelease:
+        case QEvent::MouseButtonDblClick:
+            if ( leaveOnMouseRelease && e->type() == QEvent::MouseButtonRelease )
+            {
+                QWhatsThis::leaveWhatsThisMode();
+            }
+
+            if ( static_cast<QMouseEvent *>( e )->button() == Qt::RightButton || customWhatsThis )
+            {
+                return false;   // ignore RMB release
+            }
+
+            break;
+
+        case QEvent::KeyPress:
+        {
+            QKeyEvent *kev = ( QKeyEvent * )e;
+
+            if ( kev->matches( QKeySequence::Cancel ) )
+            {
+                QWhatsThis::leaveWhatsThisMode();
+                return true;
+            }
+            else if ( customWhatsThis )
+            {
+                return false;
+            }
+            else if ( kev->key() == Qt::Key_Menu ||
+                      ( kev->key() == Qt::Key_F10 &&
+                        kev->modifiers() == Qt::ShiftModifier ) )
+            {
+                // we don't react to these keys, they are used for context menus
+                return false;
+            }
+            else if ( kev->key() != Qt::Key_Shift && kev->key() != Qt::Key_Alt  // not a modifier key
+                      && kev->key() != Qt::Key_Control && kev->key() != Qt::Key_Meta )
+            {
+                QWhatsThis::leaveWhatsThisMode();
+            }
+        }
+        break;
+
+        default:
+            return false;
     }
 
     return true;

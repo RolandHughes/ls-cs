@@ -548,7 +548,7 @@ struct lscs_is_flag : public std::integral_constant<bool, false>
 
 template <class T>
 struct lscs_is_flag<QFlags<T>>
-    : public std::integral_constant<bool, true>
+                                : public std::integral_constant<bool, true>
 {
 };
 

@@ -257,48 +257,48 @@ static void showToolTip( QHelpEvent *helpEvent, QWidget *widget, const QStyleOpt
 
     switch ( subControl )
     {
-    case QStyle::SC_TitleBarMinButton:
-        toolTip = QMdiSubWindow::tr( "Minimize" );
-        break;
+        case QStyle::SC_TitleBarMinButton:
+            toolTip = QMdiSubWindow::tr( "Minimize" );
+            break;
 
-    case QStyle::SC_TitleBarMaxButton:
-        toolTip = QMdiSubWindow::tr( "Maximize" );
-        break;
+        case QStyle::SC_TitleBarMaxButton:
+            toolTip = QMdiSubWindow::tr( "Maximize" );
+            break;
 
-    case QStyle::SC_TitleBarUnshadeButton:
-        toolTip = QMdiSubWindow::tr( "Unshade" );
-        break;
+        case QStyle::SC_TitleBarUnshadeButton:
+            toolTip = QMdiSubWindow::tr( "Unshade" );
+            break;
 
-    case QStyle::SC_TitleBarShadeButton:
-        toolTip = QMdiSubWindow::tr( "Shade" );
-        break;
+        case QStyle::SC_TitleBarShadeButton:
+            toolTip = QMdiSubWindow::tr( "Shade" );
+            break;
 
-    case QStyle::SC_TitleBarNormalButton:
-        if ( widget->isMaximized() || !qobject_cast<QMdiSubWindow *>( widget ) )
-        {
-            toolTip = QMdiSubWindow::tr( "Restore Down" );
-        }
-        else
-        {
-            toolTip = QMdiSubWindow::tr( "Restore" );
-        }
+        case QStyle::SC_TitleBarNormalButton:
+            if ( widget->isMaximized() || !qobject_cast<QMdiSubWindow *>( widget ) )
+            {
+                toolTip = QMdiSubWindow::tr( "Restore Down" );
+            }
+            else
+            {
+                toolTip = QMdiSubWindow::tr( "Restore" );
+            }
 
-        break;
+            break;
 
-    case QStyle::SC_TitleBarCloseButton:
-        toolTip = QMdiSubWindow::tr( "Close" );
-        break;
+        case QStyle::SC_TitleBarCloseButton:
+            toolTip = QMdiSubWindow::tr( "Close" );
+            break;
 
-    case QStyle::SC_TitleBarContextHelpButton:
-        toolTip = QMdiSubWindow::tr( "Help" );
-        break;
+        case QStyle::SC_TitleBarContextHelpButton:
+            toolTip = QMdiSubWindow::tr( "Help" );
+            break;
 
-    case QStyle::SC_TitleBarSysMenu:
-        toolTip = QMdiSubWindow::tr( "Menu" );
-        break;
+        case QStyle::SC_TitleBarSysMenu:
+            toolTip = QMdiSubWindow::tr( "Menu" );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     const QRect rect = widget->style()->subControlRect( complexControl, &opt, subControl, widget );
@@ -592,20 +592,20 @@ void ControllerWidget::mouseReleaseEvent( QMouseEvent *event )
     {
         switch ( activeControl )
         {
-        case QStyle::SC_MdiCloseButton:
-            emit _q_close();
-            break;
+            case QStyle::SC_MdiCloseButton:
+                emit _q_close();
+                break;
 
-        case QStyle::SC_MdiNormalButton:
-            emit _q_restore();
-            break;
+            case QStyle::SC_MdiNormalButton:
+                emit _q_restore();
+                break;
 
-        case QStyle::SC_MdiMinButton:
-            emit _q_minimize();
-            break;
+            case QStyle::SC_MdiMinButton:
+                emit _q_minimize();
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -1638,81 +1638,81 @@ void QMdiSubWindowPrivate::processClickedSubControl()
 
     switch ( activeSubControl )
     {
-    case QStyle::SC_TitleBarContextHelpButton:
+        case QStyle::SC_TitleBarContextHelpButton:
 #ifndef LSCS_NO_WHATSTHIS
-        QWhatsThis::enterWhatsThisMode();
+            QWhatsThis::enterWhatsThisMode();
 #endif
-        break;
-
-    case QStyle::SC_TitleBarShadeButton:
-        q->showShaded();
-        hoveredSubControl = QStyle::SC_TitleBarUnshadeButton;
-        break;
-
-    case QStyle::SC_TitleBarUnshadeButton:
-        if ( q->isShaded() )
-        {
-            hoveredSubControl = QStyle::SC_TitleBarShadeButton;
-        }
-
-        q->showNormal();
-        break;
-
-    case QStyle::SC_TitleBarMinButton:
-#if defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)
-        if ( qobject_cast<QMacStyle *>( q->style() ) )
-        {
-            if ( q->isMinimized() )
-            {
-                q->showNormal();
-            }
-            else
-            {
-                q->showMinimized();
-            }
-
             break;
-        }
 
-#endif
-        q->showMinimized();
-        break;
-
-    case QStyle::SC_TitleBarNormalButton:
-        if ( q->isShaded() )
-        {
-            hoveredSubControl = QStyle::SC_TitleBarMinButton;
-        }
-
-        q->showNormal();
-        break;
-
-    case QStyle::SC_TitleBarMaxButton:
-#if defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)
-        if ( qobject_cast<QMacStyle *>( q->style() ) )
-        {
-            if ( q->isMaximized() )
-            {
-                q->showNormal();
-            }
-            else
-            {
-                q->showMaximized();
-            }
-
+        case QStyle::SC_TitleBarShadeButton:
+            q->showShaded();
+            hoveredSubControl = QStyle::SC_TitleBarUnshadeButton;
             break;
-        }
+
+        case QStyle::SC_TitleBarUnshadeButton:
+            if ( q->isShaded() )
+            {
+                hoveredSubControl = QStyle::SC_TitleBarShadeButton;
+            }
+
+            q->showNormal();
+            break;
+
+        case QStyle::SC_TitleBarMinButton:
+#if defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)
+            if ( qobject_cast<QMacStyle *>( q->style() ) )
+            {
+                if ( q->isMinimized() )
+                {
+                    q->showNormal();
+                }
+                else
+                {
+                    q->showMinimized();
+                }
+
+                break;
+            }
 
 #endif
-        q->showMaximized();
-        break;
+            q->showMinimized();
+            break;
 
-    case QStyle::SC_TitleBarCloseButton:
-        q->close();
-        break;
+        case QStyle::SC_TitleBarNormalButton:
+            if ( q->isShaded() )
+            {
+                hoveredSubControl = QStyle::SC_TitleBarMinButton;
+            }
 
-    default:
-        break;
+            q->showNormal();
+            break;
+
+        case QStyle::SC_TitleBarMaxButton:
+#if defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)
+            if ( qobject_cast<QMacStyle *>( q->style() ) )
+            {
+                if ( q->isMaximized() )
+                {
+                    q->showNormal();
+                }
+                else
+                {
+                    q->showMaximized();
+                }
+
+                break;
+            }
+
+#endif
+            q->showMaximized();
+            break;
+
+        case QStyle::SC_TitleBarCloseButton:
+            q->close();
+            break;
+
+        default:
+            break;
     }
 }
 
@@ -1761,44 +1761,44 @@ QRegion QMdiSubWindowPrivate::getRegion( Operation operation ) const
 
     switch ( operation )
     {
-    case TopResize:
-        region = QRegion( titleBarHeight, 0, width - titleBarConst, frameWidth );
-        break;
+        case TopResize:
+            region = QRegion( titleBarHeight, 0, width - titleBarConst, frameWidth );
+            break;
 
-    case BottomResize:
-        region = QRegion( titleBarHeight, height - frameWidth, width - titleBarConst, frameWidth );
-        break;
+        case BottomResize:
+            region = QRegion( titleBarHeight, height - frameWidth, width - titleBarConst, frameWidth );
+            break;
 
-    case LeftResize:
-        region = QRegion( 0, titleBarHeight, frameWidth, height - titleBarConst );
-        break;
+        case LeftResize:
+            region = QRegion( 0, titleBarHeight, frameWidth, height - titleBarConst );
+            break;
 
-    case RightResize:
-        region = QRegion( width - frameWidth, titleBarHeight, frameWidth, height - titleBarConst );
-        break;
+        case RightResize:
+            region = QRegion( width - frameWidth, titleBarHeight, frameWidth, height - titleBarConst );
+            break;
 
-    case TopLeftResize:
-        region = QRegion( 0, 0, titleBarHeight, titleBarHeight )
-                 - QRegion( frameWidth, frameWidth, cornerConst, cornerConst );
-        break;
+        case TopLeftResize:
+            region = QRegion( 0, 0, titleBarHeight, titleBarHeight )
+                     - QRegion( frameWidth, frameWidth, cornerConst, cornerConst );
+            break;
 
-    case TopRightResize:
-        region =  QRegion( width - titleBarHeight, 0, titleBarHeight, titleBarHeight )
-                  - QRegion( width - titleBarHeight, frameWidth, cornerConst, cornerConst );
-        break;
+        case TopRightResize:
+            region =  QRegion( width - titleBarHeight, 0, titleBarHeight, titleBarHeight )
+                      - QRegion( width - titleBarHeight, frameWidth, cornerConst, cornerConst );
+            break;
 
-    case BottomLeftResize:
-        region = QRegion( 0, height - titleBarHeight, titleBarHeight, titleBarHeight )
-                 - QRegion( frameWidth, height - titleBarHeight, cornerConst, cornerConst );
-        break;
+        case BottomLeftResize:
+            region = QRegion( 0, height - titleBarHeight, titleBarHeight, titleBarHeight )
+                     - QRegion( frameWidth, height - titleBarHeight, cornerConst, cornerConst );
+            break;
 
-    case BottomRightResize:
-        region = QRegion( width - titleBarHeight, height - titleBarHeight, titleBarHeight, titleBarHeight )
-                 - QRegion( width - titleBarHeight, height - titleBarHeight, cornerConst, cornerConst );
-        break;
+        case BottomRightResize:
+            region = QRegion( width - titleBarHeight, height - titleBarHeight, titleBarHeight, titleBarHeight )
+                     - QRegion( width - titleBarHeight, height - titleBarHeight, cornerConst, cornerConst );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return region;
@@ -1894,26 +1894,26 @@ void QMdiSubWindowPrivate::ensureWindowState( Qt::WindowState state )
 
     switch ( state )
     {
-    case Qt::WindowMinimized:
-        windowStates &= ~Qt::WindowMaximized;
-        windowStates &= ~Qt::WindowFullScreen;
-        windowStates &= ~Qt::WindowNoState;
-        break;
+        case Qt::WindowMinimized:
+            windowStates &= ~Qt::WindowMaximized;
+            windowStates &= ~Qt::WindowFullScreen;
+            windowStates &= ~Qt::WindowNoState;
+            break;
 
-    case Qt::WindowMaximized:
-        windowStates &= ~Qt::WindowMinimized;
-        windowStates &= ~Qt::WindowFullScreen;
-        windowStates &= ~Qt::WindowNoState;
-        break;
+        case Qt::WindowMaximized:
+            windowStates &= ~Qt::WindowMinimized;
+            windowStates &= ~Qt::WindowFullScreen;
+            windowStates &= ~Qt::WindowNoState;
+            break;
 
-    case Qt::WindowNoState:
-        windowStates &= ~Qt::WindowMinimized;
-        windowStates &= ~Qt::WindowMaximized;
-        windowStates &= ~Qt::WindowFullScreen;
-        break;
+        case Qt::WindowNoState:
+            windowStates &= ~Qt::WindowMinimized;
+            windowStates &= ~Qt::WindowMaximized;
+            windowStates &= ~Qt::WindowFullScreen;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     if ( baseWidget )
@@ -3071,112 +3071,112 @@ bool QMdiSubWindow::eventFilter( QObject *object, QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::Show:
-        d->setActive( true );
-        break;
+        case QEvent::Show:
+            d->setActive( true );
+            break;
 
-    case QEvent::ShowToParent:
-        if ( !d->isWidgetHiddenByUs )
+        case QEvent::ShowToParent:
+            if ( !d->isWidgetHiddenByUs )
+            {
+                show();
+            }
+
+            break;
+
+        case QEvent::WindowStateChange:
         {
-            show();
-        }
+            QWindowStateChangeEvent *changeEvent = static_cast<QWindowStateChangeEvent *>( event );
 
-        break;
+            if ( changeEvent->isOverride() )
+            {
+                break;
+            }
 
-    case QEvent::WindowStateChange:
-    {
-        QWindowStateChangeEvent *changeEvent = static_cast<QWindowStateChangeEvent *>( event );
+            Qt::WindowStates oldState = changeEvent->oldState();
+            Qt::WindowStates newState = d->baseWidget->windowState();
 
-        if ( changeEvent->isOverride() )
-        {
+            if ( !( oldState & Qt::WindowMinimized ) && ( newState & Qt::WindowMinimized ) )
+            {
+                showMinimized();
+            }
+            else if ( !( oldState & Qt::WindowMaximized ) && ( newState & Qt::WindowMaximized ) )
+            {
+                showMaximized();
+            }
+            else if ( !( newState & ( Qt::WindowMaximized | Qt::WindowMinimized | Qt::WindowFullScreen ) ) )
+            {
+                showNormal();
+            }
+
             break;
         }
 
-        Qt::WindowStates oldState = changeEvent->oldState();
-        Qt::WindowStates newState = d->baseWidget->windowState();
-
-        if ( !( oldState & Qt::WindowMinimized ) && ( newState & Qt::WindowMinimized ) )
-        {
-            showMinimized();
-        }
-        else if ( !( oldState & Qt::WindowMaximized ) && ( newState & Qt::WindowMaximized ) )
-        {
-            showMaximized();
-        }
-        else if ( !( newState & ( Qt::WindowMaximized | Qt::WindowMinimized | Qt::WindowFullScreen ) ) )
-        {
-            showNormal();
-        }
-
-        break;
-    }
-
-    case QEvent::Enter:
-        d->currentOperation = QMdiSubWindowPrivate::None;
-        d->updateCursor();
-        break;
-
-    case QEvent::LayoutRequest:
-        d->updateGeometryConstraints();
-        break;
-
-    case QEvent::WindowTitleChange:
-        if ( d->ignoreWindowTitleChange )
-        {
+        case QEvent::Enter:
+            d->currentOperation = QMdiSubWindowPrivate::None;
+            d->updateCursor();
             break;
-        }
 
-        if ( object == d->baseWidget )
-        {
-            d->updateWindowTitle( true );
-            d->lastChildWindowTitle = d->baseWidget->windowTitle();
-#ifndef LSCS_NO_MENUBAR
+        case QEvent::LayoutRequest:
+            d->updateGeometryConstraints();
+            break;
 
-        }
-        else if ( maximizedButtonsWidget() && d->controlContainer->menuBar() && d->controlContainer->menuBar()
-                  ->cornerWidget( Qt::TopRightCorner ) == maximizedButtonsWidget() )
-        {
+        case QEvent::WindowTitleChange:
+            if ( d->ignoreWindowTitleChange )
+            {
+                break;
+            }
 
-            d->originalTitle = "";
-
-            if ( d->baseWidget && d->baseWidget->windowTitle() == windowTitle() )
+            if ( object == d->baseWidget )
             {
                 d->updateWindowTitle( true );
+                d->lastChildWindowTitle = d->baseWidget->windowTitle();
+#ifndef LSCS_NO_MENUBAR
+
             }
-            else
+            else if ( maximizedButtonsWidget() && d->controlContainer->menuBar() && d->controlContainer->menuBar()
+                      ->cornerWidget( Qt::TopRightCorner ) == maximizedButtonsWidget() )
             {
-                d->updateWindowTitle( false );
-            }
+
+                d->originalTitle = "";
+
+                if ( d->baseWidget && d->baseWidget->windowTitle() == windowTitle() )
+                {
+                    d->updateWindowTitle( true );
+                }
+                else
+                {
+                    d->updateWindowTitle( false );
+                }
 
 #endif
-        }
+            }
 
-        break;
+            break;
 
-    case QEvent::ModifiedChange:
-    {
-        if ( object != d->baseWidget )
+        case QEvent::ModifiedChange:
         {
+            if ( object != d->baseWidget )
+            {
+                break;
+            }
+
+            bool windowModified = d->baseWidget->isWindowModified();
+
+            if ( !windowModified && d->baseWidget->windowTitle() != windowTitle() )
+            {
+                break;
+            }
+
+            if ( windowTitle().contains( QLatin1String( "[*]" ) ) )
+            {
+                setWindowModified( windowModified );
+            }
+
             break;
         }
 
-        bool windowModified = d->baseWidget->isWindowModified();
-
-        if ( !windowModified && d->baseWidget->windowTitle() != windowTitle() )
-        {
+        default:
             break;
-        }
-
-        if ( windowTitle().contains( QLatin1String( "[*]" ) ) )
-        {
-            setWindowModified( windowModified );
-        }
-
-        break;
-    }
-
-    default:
-        break;
     }
 
     return QWidget::eventFilter( object, event );
@@ -3188,201 +3188,201 @@ bool QMdiSubWindow::event( QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::StyleChange:
-    {
-        bool wasShaded = isShaded();
-        bool wasMinimized = isMinimized();
-        bool wasMaximized = isMaximized();
-        // Don't emit subWindowActivated, the app doesn't have to know about our hacks
-        const QScopedValueRollback<bool> activationEnabledSaver( d->activationEnabled );
-        d->activationEnabled = false;
-
-        ensurePolished();
-        setContentsMargins( 0, 0, 0, 0 );
-
-        if ( wasMinimized || wasMaximized || wasShaded )
+        case QEvent::StyleChange:
         {
-            showNormal();
+            bool wasShaded = isShaded();
+            bool wasMinimized = isMinimized();
+            bool wasMaximized = isMaximized();
+            // Don't emit subWindowActivated, the app doesn't have to know about our hacks
+            const QScopedValueRollback<bool> activationEnabledSaver( d->activationEnabled );
+            d->activationEnabled = false;
+
+            ensurePolished();
+            setContentsMargins( 0, 0, 0, 0 );
+
+            if ( wasMinimized || wasMaximized || wasShaded )
+            {
+                showNormal();
+            }
+
+            d->updateGeometryConstraints();
+            resize( d->internalMinimumSize.expandedTo( size() ) );
+            d->updateMask();
+            d->updateDirtyRegions();
+
+            if ( wasShaded )
+            {
+                showShaded();
+            }
+            else if ( wasMinimized )
+            {
+                showMinimized();
+            }
+            else if ( wasMaximized )
+            {
+                showMaximized();
+            }
+
+            break;
         }
 
-        d->updateGeometryConstraints();
-        resize( d->internalMinimumSize.expandedTo( size() ) );
-        d->updateMask();
-        d->updateDirtyRegions();
+        case QEvent::ParentAboutToChange:
+            d->setActive( false );
+            break;
 
-        if ( wasShaded )
+        case QEvent::ParentChange:
         {
-            showShaded();
-        }
-        else if ( wasMinimized )
-        {
-            showMinimized();
-        }
-        else if ( wasMaximized )
-        {
-            showMaximized();
-        }
-
-        break;
-    }
-
-    case QEvent::ParentAboutToChange:
-        d->setActive( false );
-        break;
-
-    case QEvent::ParentChange:
-    {
-        bool wasResized = testAttribute( Qt::WA_Resized );
+            bool wasResized = testAttribute( Qt::WA_Resized );
 
 #ifndef LSCS_NO_MENUBAR
-        d->removeButtonsFromMenuBar();
+            d->removeButtonsFromMenuBar();
 #endif
 
-        d->currentOperation = QMdiSubWindowPrivate::None;
-        d->activeSubControl = QStyle::SC_None;
-        d->hoveredSubControl = QStyle::SC_None;
+            d->currentOperation = QMdiSubWindowPrivate::None;
+            d->activeSubControl = QStyle::SC_None;
+            d->hoveredSubControl = QStyle::SC_None;
 
 #ifndef LSCS_NO_RUBBERBAND
 
-        if ( d->isInRubberBandMode )
-        {
-            d->leaveRubberBandMode();
-        }
-
-#endif
-
-        d->isShadeMode = false;
-        d->isMaximizeMode = false;
-        d->isWidgetHiddenByUs = false;
-
-        if ( ! parent() )
-        {
-#if !defined(LSCS_NO_SIZEGRIP) && defined(Q_OS_DARWIN) && !defined(LSCS_NO_STYLE_MAC)
-
-            if ( qobject_cast<QMacStyle *>( style() ) )
+            if ( d->isInRubberBandMode )
             {
-                delete d->sizeGrip;
+                d->leaveRubberBandMode();
             }
 
 #endif
-            setOption( RubberBandResize, false );
-            setOption( RubberBandMove, false );
-        }
-        else
-        {
-            d->setWindowFlags( windowFlags() );
-        }
 
-        setContentsMargins( 0, 0, 0, 0 );
-        d->updateGeometryConstraints();
-        d->updateCursor();
-        d->updateMask();
-        d->updateDirtyRegions();
-        d->updateActions();
+            d->isShadeMode = false;
+            d->isMaximizeMode = false;
+            d->isWidgetHiddenByUs = false;
 
-        if ( !wasResized && testAttribute( Qt::WA_Resized ) )
-        {
-            setAttribute( Qt::WA_Resized, false );
-        }
+            if ( ! parent() )
+            {
+#if !defined(LSCS_NO_SIZEGRIP) && defined(Q_OS_DARWIN) && !defined(LSCS_NO_STYLE_MAC)
 
-        break;
-    }
+                if ( qobject_cast<QMacStyle *>( style() ) )
+                {
+                    delete d->sizeGrip;
+                }
 
-    case QEvent::WindowActivate:
-        if ( d->ignoreNextActivationEvent )
-        {
-            d->ignoreNextActivationEvent = false;
+#endif
+                setOption( RubberBandResize, false );
+                setOption( RubberBandMove, false );
+            }
+            else
+            {
+                d->setWindowFlags( windowFlags() );
+            }
+
+            setContentsMargins( 0, 0, 0, 0 );
+            d->updateGeometryConstraints();
+            d->updateCursor();
+            d->updateMask();
+            d->updateDirtyRegions();
+            d->updateActions();
+
+            if ( !wasResized && testAttribute( Qt::WA_Resized ) )
+            {
+                setAttribute( Qt::WA_Resized, false );
+            }
+
             break;
         }
 
-        d->isExplicitlyDeactivated = false;
-        d->setActive( true );
-        break;
+        case QEvent::WindowActivate:
+            if ( d->ignoreNextActivationEvent )
+            {
+                d->ignoreNextActivationEvent = false;
+                break;
+            }
 
-    case QEvent::WindowDeactivate:
-        if ( d->ignoreNextActivationEvent )
-        {
-            d->ignoreNextActivationEvent = false;
+            d->isExplicitlyDeactivated = false;
+            d->setActive( true );
             break;
-        }
 
-        d->isExplicitlyDeactivated = true;
-        d->setActive( false );
-        break;
+        case QEvent::WindowDeactivate:
+            if ( d->ignoreNextActivationEvent )
+            {
+                d->ignoreNextActivationEvent = false;
+                break;
+            }
 
-    case QEvent::WindowTitleChange:
-        if ( ! d->ignoreWindowTitleChange )
-        {
-            d->updateWindowTitle( false );
-        }
-
-        d->updateInternalWindowTitle();
-        break;
-
-    case QEvent::ModifiedChange:
-        if ( ! windowTitle().contains( "[*]" ) )
-        {
+            d->isExplicitlyDeactivated = true;
+            d->setActive( false );
             break;
-        }
+
+        case QEvent::WindowTitleChange:
+            if ( ! d->ignoreWindowTitleChange )
+            {
+                d->updateWindowTitle( false );
+            }
+
+            d->updateInternalWindowTitle();
+            break;
+
+        case QEvent::ModifiedChange:
+            if ( ! windowTitle().contains( "[*]" ) )
+            {
+                break;
+            }
 
 #ifndef LSCS_NO_MENUBAR
 
-        if ( maximizedButtonsWidget() && d->controlContainer->menuBar() && d->controlContainer->menuBar()
-                ->cornerWidget( Qt::TopRightCorner ) == maximizedButtonsWidget() )
-        {
-            window()->setWindowModified( isWindowModified() );
-        }
+            if ( maximizedButtonsWidget() && d->controlContainer->menuBar() && d->controlContainer->menuBar()
+                    ->cornerWidget( Qt::TopRightCorner ) == maximizedButtonsWidget() )
+            {
+                window()->setWindowModified( isWindowModified() );
+            }
 
 #endif
-        d->updateInternalWindowTitle();
-        break;
+            d->updateInternalWindowTitle();
+            break;
 
-    case QEvent::LayoutDirectionChange:
-        d->updateDirtyRegions();
-        break;
+        case QEvent::LayoutDirectionChange:
+            d->updateDirtyRegions();
+            break;
 
-    case QEvent::LayoutRequest:
-        d->updateGeometryConstraints();
-        break;
+        case QEvent::LayoutRequest:
+            d->updateGeometryConstraints();
+            break;
 
-    case QEvent::WindowIconChange:
-        d->menuIcon = windowIcon();
+        case QEvent::WindowIconChange:
+            d->menuIcon = windowIcon();
 
-        if ( d->menuIcon.isNull() )
-        {
-            d->menuIcon = style()->standardIcon( QStyle::SP_TitleBarMenuButton, nullptr, this );
-        }
+            if ( d->menuIcon.isNull() )
+            {
+                d->menuIcon = style()->standardIcon( QStyle::SP_TitleBarMenuButton, nullptr, this );
+            }
 
-        if ( d->controlContainer )
-        {
-            d->controlContainer->updateWindowIcon( d->menuIcon );
-        }
+            if ( d->controlContainer )
+            {
+                d->controlContainer->updateWindowIcon( d->menuIcon );
+            }
 
-        if ( !maximizedSystemMenuIconWidget() )
-        {
-            update( 0, 0, width(), d->titleBarHeight() );
-        }
+            if ( !maximizedSystemMenuIconWidget() )
+            {
+                update( 0, 0, width(), d->titleBarHeight() );
+            }
 
-        break;
+            break;
 
-    case QEvent::PaletteChange:
-        d->titleBarPalette = d->desktopPalette();
-        break;
+        case QEvent::PaletteChange:
+            d->titleBarPalette = d->desktopPalette();
+            break;
 
-    case QEvent::FontChange:
-        d->font = font();
-        break;
+        case QEvent::FontChange:
+            d->font = font();
+            break;
 
 #ifndef LSCS_NO_TOOLTIP
 
-    case QEvent::ToolTip:
-        showToolTip( static_cast<QHelpEvent *>( event ), this, d->titleBarOptions(),
-                     QStyle::CC_TitleBar, d->hoveredSubControl );
-        break;
+        case QEvent::ToolTip:
+            showToolTip( static_cast<QHelpEvent *>( event ), this, d->titleBarOptions(),
+                         QStyle::CC_TitleBar, d->hoveredSubControl );
+            break;
 #endif
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QWidget::event( event );
@@ -3973,63 +3973,63 @@ void QMdiSubWindow::keyPressEvent( QKeyEvent *keyEvent )
 
     switch ( keyEvent->key() )
     {
-    case Qt::Key_Right:
-        if ( keyEvent->modifiers() & Qt::ShiftModifier )
-        {
-            delta = QPoint( d->keyboardPageStep, 0 );
-        }
-        else
-        {
-            delta = QPoint( d->keyboardSingleStep, 0 );
-        }
+        case Qt::Key_Right:
+            if ( keyEvent->modifiers() & Qt::ShiftModifier )
+            {
+                delta = QPoint( d->keyboardPageStep, 0 );
+            }
+            else
+            {
+                delta = QPoint( d->keyboardSingleStep, 0 );
+            }
 
-        break;
+            break;
 
-    case Qt::Key_Up:
-        if ( keyEvent->modifiers() & Qt::ShiftModifier )
-        {
-            delta = QPoint( 0, -d->keyboardPageStep );
-        }
-        else
-        {
-            delta = QPoint( 0, -d->keyboardSingleStep );
-        }
+        case Qt::Key_Up:
+            if ( keyEvent->modifiers() & Qt::ShiftModifier )
+            {
+                delta = QPoint( 0, -d->keyboardPageStep );
+            }
+            else
+            {
+                delta = QPoint( 0, -d->keyboardSingleStep );
+            }
 
-        break;
+            break;
 
-    case Qt::Key_Left:
-        if ( keyEvent->modifiers() & Qt::ShiftModifier )
-        {
-            delta = QPoint( -d->keyboardPageStep, 0 );
-        }
-        else
-        {
-            delta = QPoint( -d->keyboardSingleStep, 0 );
-        }
+        case Qt::Key_Left:
+            if ( keyEvent->modifiers() & Qt::ShiftModifier )
+            {
+                delta = QPoint( -d->keyboardPageStep, 0 );
+            }
+            else
+            {
+                delta = QPoint( -d->keyboardSingleStep, 0 );
+            }
 
-        break;
+            break;
 
-    case Qt::Key_Down:
-        if ( keyEvent->modifiers() & Qt::ShiftModifier )
-        {
-            delta = QPoint( 0, d->keyboardPageStep );
-        }
-        else
-        {
-            delta = QPoint( 0, d->keyboardSingleStep );
-        }
+        case Qt::Key_Down:
+            if ( keyEvent->modifiers() & Qt::ShiftModifier )
+            {
+                delta = QPoint( 0, d->keyboardPageStep );
+            }
+            else
+            {
+                delta = QPoint( 0, d->keyboardSingleStep );
+            }
 
-        break;
+            break;
 
-    case Qt::Key_Escape:
-    case Qt::Key_Return:
-    case Qt::Key_Enter:
-        d->leaveInteractiveMode();
-        return;
+        case Qt::Key_Escape:
+        case Qt::Key_Return:
+        case Qt::Key_Enter:
+            d->leaveInteractiveMode();
+            return;
 
-    default:
-        keyEvent->ignore();
-        return;
+        default:
+            keyEvent->ignore();
+            return;
     }
 
 #ifndef LSCS_NO_CURSOR

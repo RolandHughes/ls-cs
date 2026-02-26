@@ -82,16 +82,16 @@ void QIconEngine::virtual_hook( int id, void *data )
 {
     switch ( id )
     {
-    case QIconEngine::AvailableSizesHook:
-    {
-        QIconEngine::AvailableSizesArgument &arg =
-            *reinterpret_cast<QIconEngine::AvailableSizesArgument *>( data );
-        arg.sizes.clear();
-        break;
-    }
+        case QIconEngine::AvailableSizesHook:
+        {
+            QIconEngine::AvailableSizesArgument &arg =
+                *reinterpret_cast<QIconEngine::AvailableSizesArgument *>( data );
+            arg.sizes.clear();
+            break;
+        }
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 

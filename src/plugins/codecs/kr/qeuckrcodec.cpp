@@ -153,44 +153,44 @@ QString QEucKrCodec::convertToUnicode( const char *chars, int len, ConverterStat
 
         switch ( nbuf )
         {
-        case 0:
-            if ( ch < 0x80 )
-            {
-                // ASCII
-                result += QLatin1Char( ch );
-            }
-            else if ( IsEucChar( ch ) )
-            {
+            case 0:
+                if ( ch < 0x80 )
+                {
+                    // ASCII
+                    result += QLatin1Char( ch );
+                }
+                else if ( IsEucChar( ch ) )
+                {
+                    // KSC 5601
+                    buf[0] = ch;
+                    nbuf = 1;
+                }
+                else
+                {
+                    // Invalid
+                    result += replacement;
+                    ++invalid;
+                }
+
+                break;
+
+            case 1:
+
                 // KSC 5601
-                buf[0] = ch;
-                nbuf = 1;
-            }
-            else
-            {
-                // Invalid
-                result += replacement;
-                ++invalid;
-            }
+                if ( IsEucChar( ch ) )
+                {
+                    uint u = lscs_Ksc5601ToUnicode( ( buf[0] << 8 ) |  ch );
+                    result += QValidChar( u );
+                }
+                else
+                {
+                    // Error
+                    result += replacement;
+                    ++invalid;
+                }
 
-            break;
-
-        case 1:
-
-            // KSC 5601
-            if ( IsEucChar( ch ) )
-            {
-                uint u = lscs_Ksc5601ToUnicode( ( buf[0] << 8 ) |  ch );
-                result += QValidChar( u );
-            }
-            else
-            {
-                // Error
-                result += replacement;
-                ++invalid;
-            }
-
-            nbuf = 0;
-            break;
+                nbuf = 0;
+                break;
         }
     }
 
@@ -3611,92 +3611,92 @@ QString QCP949Codec::convertToUnicode( const char *chars, int len, ConverterStat
 
         switch ( nbuf )
         {
-        case 0:
-            if ( ch < 0x80 )
-            {
-                // ASCII
-                result += QLatin1Char( ch );
-            }
-            else if ( IsEucChar( ch ) )
-            {
+            case 0:
+                if ( ch < 0x80 )
+                {
+                    // ASCII
+                    result += QLatin1Char( ch );
+                }
+                else if ( IsEucChar( ch ) )
+                {
+                    // KSC 5601
+                    buf[0] = ch;
+                    nbuf = 1;
+                }
+                else if ( IsCP949Char( ch ) )
+                {
+                    buf[0] = ch;
+                    nbuf = 1;
+                }
+                else
+                {
+                    // Invalid
+                    result += replacement;
+                    ++invalid;
+                }
+
+                break;
+
+            case 1:
+
                 // KSC 5601
-                buf[0] = ch;
-                nbuf = 1;
-            }
-            else if ( IsCP949Char( ch ) )
-            {
-                buf[0] = ch;
-                nbuf = 1;
-            }
-            else
-            {
-                // Invalid
-                result += replacement;
-                ++invalid;
-            }
+                if ( IsEucChar( ch ) && !IsCP949Char( buf[0] ) )
+                {
+                    uint u = lscs_Ksc5601ToUnicode( ( buf[0] << 8 ) |  ch );
+                    result += QValidChar( u );
+                }
+                else
+                {
+                    // Rest of CP949
+                    int row, column;
+                    nbuf = 0;
+                    row = buf[0] - 0x81;
 
-            break;
+                    if ( 0x41 <= ch && ch <= 0x5a )
+                    {
+                        column = ch - 0x41;
+                    }
+                    else if ( 0x61 <= ch && ch <= 0x7a )
+                    {
+                        column = ch - 0x61 + 26;
+                    }
+                    else if ( 0x81 <= ch && ch <= 0xfe )
+                    {
+                        column = ch - 0x81 + 52;
+                    }
+                    else
+                    {
+                        result += replacement;
+                        ++invalid;
+                        break;
+                    }
 
-        case 1:
+                    int internal_code;
 
-            // KSC 5601
-            if ( IsEucChar( ch ) && !IsCP949Char( buf[0] ) )
-            {
-                uint u = lscs_Ksc5601ToUnicode( ( buf[0] << 8 ) |  ch );
-                result += QValidChar( u );
-            }
-            else
-            {
-                // Rest of CP949
-                int row, column;
+                    if ( row < 32 )
+                    {
+                        internal_code = row * 178 + column;
+                    }
+                    else
+                    {
+                        internal_code = 3008 + row * 84 + column;
+                    }
+
+                    // check whether the conversion avialble in the table.
+                    if ( internal_code < 0 || internal_code >= 8822 )
+                    {
+                        result += replacement;
+                        ++invalid;
+                        break;
+                    }
+                    else
+                    {
+                        result += QValidChar( cp949_icode_to_unicode[internal_code] );
+                    }
+                }
+
                 nbuf = 0;
-                row = buf[0] - 0x81;
-
-                if ( 0x41 <= ch && ch <= 0x5a )
-                {
-                    column = ch - 0x41;
-                }
-                else if ( 0x61 <= ch && ch <= 0x7a )
-                {
-                    column = ch - 0x61 + 26;
-                }
-                else if ( 0x81 <= ch && ch <= 0xfe )
-                {
-                    column = ch - 0x81 + 52;
-                }
-                else
-                {
-                    result += replacement;
-                    ++invalid;
-                    break;
-                }
-
-                int internal_code;
-
-                if ( row < 32 )
-                {
-                    internal_code = row * 178 + column;
-                }
-                else
-                {
-                    internal_code = 3008 + row * 84 + column;
-                }
-
-                // check whether the conversion avialble in the table.
-                if ( internal_code < 0 || internal_code >= 8822 )
-                {
-                    result += replacement;
-                    ++invalid;
-                    break;
-                }
-                else
-                {
-                    result += QValidChar( cp949_icode_to_unicode[internal_code] );
-                }
-            }
-
-            nbuf = 0;
-            break;
+                break;
         }
     }
 

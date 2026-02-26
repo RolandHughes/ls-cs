@@ -113,48 +113,48 @@ public:
 
         switch ( att )
         {
-        case Qt::WA_SetLayoutDirection:
-            bit = 0;
-            break;
+            case Qt::WA_SetLayoutDirection:
+                bit = 0;
+                break;
 
-        case Qt::WA_RightToLeft:
-            bit = 1;
-            break;
+            case Qt::WA_RightToLeft:
+                bit = 1;
+                break;
 
-        case Qt::WA_SetStyle:
-            bit = 2;
-            break;
+            case Qt::WA_SetStyle:
+                bit = 2;
+                break;
 
-        case Qt::WA_Resized:
-            bit = 3;
-            break;
+            case Qt::WA_Resized:
+                bit = 3;
+                break;
 
-        case Qt::WA_DeleteOnClose:
-            bit = 4;
-            break;
+            case Qt::WA_DeleteOnClose:
+                bit = 4;
+                break;
 
-        case Qt::WA_NoSystemBackground:
-            bit = 5;
-            break;
+            case Qt::WA_NoSystemBackground:
+                bit = 5;
+                break;
 
-        case Qt::WA_OpaquePaintEvent:
-            bit = 6;
-            break;
+            case Qt::WA_OpaquePaintEvent:
+                bit = 6;
+                break;
 
-        case Qt::WA_SetPalette:
-            bit = 7;
-            break;
+            case Qt::WA_SetPalette:
+                bit = 7;
+                break;
 
-        case Qt::WA_SetFont:
-            bit = 8;
-            break;
+            case Qt::WA_SetFont:
+                bit = 8;
+                break;
 
-        case Qt::WA_WindowPropagation:
-            bit = 9;
-            break;
+            case Qt::WA_WindowPropagation:
+                bit = 9;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         return bit;

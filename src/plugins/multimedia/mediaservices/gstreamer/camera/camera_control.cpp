@@ -111,19 +111,19 @@ void CameraBinControl::setState( QCamera::State state )
 
         switch ( state )
         {
-        case QCamera::UnloadedState:
-            resourceSet = CamerabinResourcePolicy::NoResources;
-            break;
+            case QCamera::UnloadedState:
+                resourceSet = CamerabinResourcePolicy::NoResources;
+                break;
 
-        case QCamera::LoadedState:
-            resourceSet = CamerabinResourcePolicy::LoadedResources;
-            break;
+            case QCamera::LoadedState:
+                resourceSet = CamerabinResourcePolicy::LoadedResources;
+                break;
 
-        case QCamera::ActiveState:
-            resourceSet = captureMode() == QCamera::CaptureStillImage ?
-                          CamerabinResourcePolicy::ImageCaptureResources :
-                          CamerabinResourcePolicy::VideoCaptureResources;
-            break;
+            case QCamera::ActiveState:
+                resourceSet = captureMode() == QCamera::CaptureStillImage ?
+                              CamerabinResourcePolicy::ImageCaptureResources :
+                              CamerabinResourcePolicy::VideoCaptureResources;
+                break;
         }
 
         m_resourcePolicy->setResourceSet( resourceSet );
@@ -262,15 +262,15 @@ bool CameraBinControl::canChangeProperty( PropertyChangeType changeType, QCamera
 
     switch ( changeType )
     {
-    case QCameraControl::Viewfinder:
-        return true;
+        case QCameraControl::Viewfinder:
+            return true;
 
-    case QCameraControl::CaptureMode:
-    case QCameraControl::ImageEncodingSettings:
-    case QCameraControl::VideoEncodingSettings:
-    case QCameraControl::ViewfinderSettings:
-    default:
-        return status != QCamera::ActiveStatus;
+        case QCameraControl::CaptureMode:
+        case QCameraControl::ImageEncodingSettings:
+        case QCameraControl::VideoEncodingSettings:
+        case QCameraControl::ViewfinderSettings:
+        default:
+            return status != QCamera::ActiveStatus;
     }
 }
 

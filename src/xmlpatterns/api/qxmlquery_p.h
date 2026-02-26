@@ -60,7 +60,7 @@ public:
           m_networkAccessDelegator( new QPatternist::NetworkAccessDelegator( nullptr, nullptr ) )
     {
         m_networkAccessDelegator->m_variableURIManager = new QPatternist::URILoader( ownerObject(),
-            namePool.d, variableLoader() );
+                namePool.d, variableLoader() );
     }
 
     void detach()

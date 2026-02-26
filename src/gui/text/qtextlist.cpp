@@ -104,96 +104,96 @@ QString QTextList::itemText( const QTextBlock &blockIt ) const
 
     switch ( style )
     {
-    case QTextListFormat::ListDecimal:
-        result = QString::number( item );
+        case QTextListFormat::ListDecimal:
+            result = QString::number( item );
+            break;
+
+        // from the old richtext
+        case QTextListFormat::ListLowerAlpha:
+        case QTextListFormat::ListUpperAlpha:
+        {
+            const char baseChar = style == QTextListFormat::ListUpperAlpha ? 'A' : 'a';
+
+            int c = item;
+
+            while ( c > 0 )
+            {
+                c--;
+                result.prepend( QChar( baseChar + ( c % 26 ) ) );
+                c /= 26;
+            }
+        }
         break;
 
-    // from the old richtext
-    case QTextListFormat::ListLowerAlpha:
-    case QTextListFormat::ListUpperAlpha:
-    {
-        const char baseChar = style == QTextListFormat::ListUpperAlpha ? 'A' : 'a';
-
-        int c = item;
-
-        while ( c > 0 )
+        case QTextListFormat::ListLowerRoman:
+        case QTextListFormat::ListUpperRoman:
         {
-            c--;
-            result.prepend( QChar( baseChar + ( c % 26 ) ) );
-            c /= 26;
-        }
-    }
-    break;
-
-    case QTextListFormat::ListLowerRoman:
-    case QTextListFormat::ListUpperRoman:
-    {
-        if ( item < 5000 )
-        {
-            QByteArray romanNumeral;
-
-            // works for up to 4999 items
-            static const char romanSymbolsLower[] = "iiivixxxlxcccdcmmmm";
-            static const char romanSymbolsUpper[] = "IIIVIXXXLXCCCDCMMMM";
-            QByteArray romanSymbols; // wrap to have "mid"
-
-            if ( style == QTextListFormat::ListLowerRoman )
+            if ( item < 5000 )
             {
-                romanSymbols = QByteArray::fromRawData( romanSymbolsLower, sizeof( romanSymbolsLower ) );
-            }
-            else
-            {
-                romanSymbols = QByteArray::fromRawData( romanSymbolsUpper, sizeof( romanSymbolsUpper ) );
-            }
+                QByteArray romanNumeral;
 
-            int c[] = { 1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000 };
-            int n = item;
+                // works for up to 4999 items
+                static const char romanSymbolsLower[] = "iiivixxxlxcccdcmmmm";
+                static const char romanSymbolsUpper[] = "IIIVIXXXLXCCCDCMMMM";
+                QByteArray romanSymbols; // wrap to have "mid"
 
-            for ( int i = 12; i >= 0; n %= c[i], i-- )
-            {
-                int q = n / c[i];
-
-                if ( q > 0 )
+                if ( style == QTextListFormat::ListLowerRoman )
                 {
-                    int startDigit = i + ( i + 3 ) / 4;
-                    int numDigits;
+                    romanSymbols = QByteArray::fromRawData( romanSymbolsLower, sizeof( romanSymbolsLower ) );
+                }
+                else
+                {
+                    romanSymbols = QByteArray::fromRawData( romanSymbolsUpper, sizeof( romanSymbolsUpper ) );
+                }
 
-                    if ( i % 4 )
+                int c[] = { 1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000 };
+                int n = item;
+
+                for ( int i = 12; i >= 0; n %= c[i], i-- )
+                {
+                    int q = n / c[i];
+
+                    if ( q > 0 )
                     {
-                        // c[i] == 4|5|9|40|50|90|400|500|900
-                        if ( ( i - 2 ) % 4 )
+                        int startDigit = i + ( i + 3 ) / 4;
+                        int numDigits;
+
+                        if ( i % 4 )
                         {
-                            // c[i] == 4|9|40|90|400|900 => with subtraction (IV, IX, XL, XC, ...)
-                            numDigits = 2;
+                            // c[i] == 4|5|9|40|50|90|400|500|900
+                            if ( ( i - 2 ) % 4 )
+                            {
+                                // c[i] == 4|9|40|90|400|900 => with subtraction (IV, IX, XL, XC, ...)
+                                numDigits = 2;
+                            }
+                            else
+                            {
+                                // c[i] == 5|50|500 (V, L, D)
+                                numDigits = 1;
+                            }
                         }
                         else
                         {
-                            // c[i] == 5|50|500 (V, L, D)
-                            numDigits = 1;
+                            // c[i] == 1|10|100|1000 (I, II, III, X, XX, ...)
+                            numDigits = q;
                         }
-                    }
-                    else
-                    {
-                        // c[i] == 1|10|100|1000 (I, II, III, X, XX, ...)
-                        numDigits = q;
-                    }
 
-                    romanNumeral.append( romanSymbols.mid( startDigit, numDigits ) );
+                        romanNumeral.append( romanSymbols.mid( startDigit, numDigits ) );
+                    }
                 }
+
+                result = QString::fromLatin1( romanNumeral );
+            }
+            else
+            {
+                result = QLatin1String( "?" );
             }
 
-            result = QString::fromLatin1( romanNumeral );
         }
-        else
-        {
-            result = QLatin1String( "?" );
-        }
+        break;
 
-    }
-    break;
-
-    default:
-        Q_ASSERT( false );
+        default:
+            Q_ASSERT( false );
     }
 
     if ( blockIt.textDirection() == Qt::RightToLeft )

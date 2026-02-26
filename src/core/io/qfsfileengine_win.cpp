@@ -1093,16 +1093,16 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
 
     switch ( GetLastError() )
     {
-    case ERROR_ACCESS_DENIED:
-        q->setError( QFile::PermissionsError, lscs_error_string() );
-        break;
+        case ERROR_ACCESS_DENIED:
+            q->setError( QFile::PermissionsError, lscs_error_string() );
+            break;
 
-    case ERROR_INVALID_PARAMETER:
-        // size is out of bounds
-        [[fallthrough]];
+        case ERROR_INVALID_PARAMETER:
+            // size is out of bounds
+            [[fallthrough]];
 
-    default:
-        q->setError( QFile::UnspecifiedError, lscs_error_string() );
+        default:
+            q->setError( QFile::UnspecifiedError, lscs_error_string() );
     }
 
     ::CloseHandle( mapHandle );

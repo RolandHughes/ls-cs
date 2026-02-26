@@ -402,22 +402,22 @@ QByteArray qCompress( const uchar *data, int nbytes, int compressionLevel )
 
         switch ( res )
         {
-        case Z_OK:
-            bazip.resize( len + 4 );
-            bazip[0] = ( nbytes & 0xff000000 ) >> 24;
-            bazip[1] = ( nbytes & 0x00ff0000 ) >> 16;
-            bazip[2] = ( nbytes & 0x0000ff00 ) >> 8;
-            bazip[3] = ( nbytes & 0x000000ff );
-            break;
+            case Z_OK:
+                bazip.resize( len + 4 );
+                bazip[0] = ( nbytes & 0xff000000 ) >> 24;
+                bazip[1] = ( nbytes & 0x00ff0000 ) >> 16;
+                bazip[2] = ( nbytes & 0x0000ff00 ) >> 8;
+                bazip[3] = ( nbytes & 0x000000ff );
+                break;
 
-        case Z_MEM_ERROR:
-            qWarning( "qCompress() Z_MEM_ERROR: Not enough memory" );
-            bazip.resize( 0 );
-            break;
+            case Z_MEM_ERROR:
+                qWarning( "qCompress() Z_MEM_ERROR: Not enough memory" );
+                bazip.resize( 0 );
+                break;
 
-        case Z_BUF_ERROR:
-            len *= 2;
-            break;
+            case Z_BUF_ERROR:
+                len *= 2;
+                break;
         }
     }
     while ( res == Z_BUF_ERROR );
@@ -476,40 +476,40 @@ QByteArray qUncompress( const uchar *data, int nbytes )
 
         switch ( res )
         {
-        case Z_OK:
-            if ( len != alloc )
-            {
-                if ( len >= ( 1u << 31u ) - sizeof( QByteArray::Data ) )
+            case Z_OK:
+                if ( len != alloc )
                 {
-                    // does not support a huge size
-                    qWarning( "qUncompress() Input data is damaged" );
-                    return QByteArray();
+                    if ( len >= ( 1u << 31u ) - sizeof( QByteArray::Data ) )
+                    {
+                        // does not support a huge size
+                        qWarning( "qUncompress() Input data is damaged" );
+                        return QByteArray();
+                    }
                 }
-            }
 
-            d->ref.initializeOwned();
-            d->size  = len;
-            d->alloc = uint( len ) + 1u;
-            d->capacityReserved = false;
-            d->offset = sizeof( QByteArrayData );
-            d->data()[len] = 0;
+                d->ref.initializeOwned();
+                d->size  = len;
+                d->alloc = uint( len ) + 1u;
+                d->capacityReserved = false;
+                d->offset = sizeof( QByteArrayData );
+                d->data()[len] = 0;
 
-            {
-                QByteArrayDataPtr dataPtr = { d.take() };
-                return QByteArray( dataPtr );
-            }
+                {
+                    QByteArrayDataPtr dataPtr = { d.take() };
+                    return QByteArray( dataPtr );
+                }
 
-        case Z_MEM_ERROR:
-            qWarning( "qUncompress() Z_MEM_ERROR: Not enough memory" );
-            return QByteArray();
+            case Z_MEM_ERROR:
+                qWarning( "qUncompress() Z_MEM_ERROR: Not enough memory" );
+                return QByteArray();
 
-        case Z_BUF_ERROR:
-            len *= 2;
-            continue;
+            case Z_BUF_ERROR:
+                len *= 2;
+                continue;
 
-        case Z_DATA_ERROR:
-            qWarning( "qUncompress() Z_DATA_ERROR: Input data is damaged" );
-            return QByteArray();
+            case Z_DATA_ERROR:
+                qWarning( "qUncompress() Z_DATA_ERROR: Input data is damaged" );
+                return QByteArray();
         }
     }
 }
@@ -2195,20 +2195,20 @@ QByteArray &QByteArray::setNum( double n, char f, int prec )
 
     switch ( f )
     {
-    case 'f':
-        form = QLocaleData::DFDecimal;
-        break;
+        case 'f':
+            form = QLocaleData::DFDecimal;
+            break;
 
-    case 'e':
-        form = QLocaleData::DFExponent;
-        break;
+        case 'e':
+            form = QLocaleData::DFExponent;
+            break;
 
-    case 'g':
-        form = QLocaleData::DFSignificantDigits;
-        break;
+        case 'g':
+            form = QLocaleData::DFSignificantDigits;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     *this = QLocaleData::c()->doubleToString( n, prec, form, -1, flags ).toLatin1();

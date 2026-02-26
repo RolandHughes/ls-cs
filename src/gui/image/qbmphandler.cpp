@@ -318,22 +318,22 @@ static bool read_dib_body( QDataStream &s, const BMP_INFOHDR &bi, int offset, in
 
     switch ( nbits )
     {
-    case 32:
-    case 24:
-    case 16:
-        depth = 32;
-        format = transp ? QImage::Format_ARGB32 : QImage::Format_RGB32;
-        break;
+        case 32:
+        case 24:
+        case 16:
+            depth = 32;
+            format = transp ? QImage::Format_ARGB32 : QImage::Format_RGB32;
+            break;
 
-    case 8:
-    case 4:
-        depth = 8;
-        format = QImage::Format_Indexed8;
-        break;
+        case 8:
+        case 4:
+            depth = 8;
+            format = QImage::Format_Indexed8;
+            break;
 
-    default:
-        depth = 1;
-        format = QImage::Format_Mono;
+        default:
+            depth = 1;
+            format = QImage::Format_Mono;
     }
 
     if ( depth != 32 )
@@ -507,65 +507,65 @@ static bool read_dib_body( QDataStream &s, const BMP_INFOHDR &bi, int offset, in
                     else
                         switch ( b )
                         {
-                        case 0:                        // end of line
-                            x = 0;
-                            y++;
-                            p = data + ( h - y - 1 ) * bpl;
+                            case 0:                        // end of line
+                                x = 0;
+                                y++;
+                                p = data + ( h - y - 1 ) * bpl;
+                                break;
+
+                            case 2:                        // delta (jump)
+                            {
+                                quint8 tmp;
+                                d->getChar( ( char * )&tmp );
+                                x += tmp;
+                                d->getChar( ( char * )&tmp );
+                                y += tmp;
+                            }
+
+                                // Protection
+                            if ( ( uint )x >= ( uint )w )
+                            {
+                                x = w - 1;
+                            }
+
+                            if ( ( uint )y >= ( uint )h )
+                            {
+                                y = h - 1;
+                            }
+
+                            p = data + ( h - y - 1 ) * bpl + x;
                             break;
 
-                        case 2:                        // delta (jump)
-                        {
-                            quint8 tmp;
-                            d->getChar( ( char * )&tmp );
-                            x += tmp;
-                            d->getChar( ( char * )&tmp );
-                            y += tmp;
-                        }
+                            default:                // absolute mode
 
-                            // Protection
-                        if ( ( uint )x >= ( uint )w )
-                        {
-                            x = w - 1;
-                        }
+                                // Protection
+                                if ( p + b > endp )
+                                {
+                                    b = endp - p;
+                                }
 
-                        if ( ( uint )y >= ( uint )h )
-                        {
-                            y = h - 1;
-                        }
+                                i = ( c = b ) / 2;
 
-                        p = data + ( h - y - 1 ) * bpl + x;
-                        break;
+                                while ( i-- )
+                                {
+                                    d->getChar( ( char * )&b );
+                                    *p++ = b >> 4;
+                                    *p++ = b & 0x0f;
+                                }
 
-                        default:                // absolute mode
+                                if ( c & 1 )
+                                {
+                                    unsigned char tmp;
+                                    d->getChar( ( char * )&tmp );
+                                    *p++ = tmp >> 4;
+                                }
 
-                            // Protection
-                            if ( p + b > endp )
-                            {
-                                b = endp - p;
-                            }
+                                if ( ( ( ( c & 3 ) + 1 ) & 2 ) == 2 )
+                                {
+                                    d->getChar( nullptr ); // align on word boundary
+                                }
 
-                            i = ( c = b ) / 2;
-
-                            while ( i-- )
-                            {
-                                d->getChar( ( char * )&b );
-                                *p++ = b >> 4;
-                                *p++ = b & 0x0f;
-                            }
-
-                            if ( c & 1 )
-                            {
-                                unsigned char tmp;
-                                d->getChar( ( char * )&tmp );
-                                *p++ = tmp >> 4;
-                            }
-
-                            if ( ( ( ( c & 3 ) + 1 ) & 2 ) == 2 )
-                            {
-                                d->getChar( nullptr ); // align on word boundary
-                            }
-
-                            x += c;
+                                x += c;
                         }
 
                 }
@@ -648,52 +648,52 @@ static bool read_dib_body( QDataStream &s, const BMP_INFOHDR &bi, int offset, in
                     else
                         switch ( b )
                         {
-                        case 0:                        // end of line
-                            x = 0;
-                            y++;
-                            p = data + ( h - y - 1 ) * bpl;
+                            case 0:                        // end of line
+                                x = 0;
+                                y++;
+                                p = data + ( h - y - 1 ) * bpl;
+                                break;
+
+                            case 2:                        // delta (jump)
+                            {
+                                quint8 tmp;
+                                d->getChar( ( char * )&tmp );
+                                x += tmp;
+                                d->getChar( ( char * )&tmp );
+                                y += tmp;
+                            }
+
+                            if ( ( uint )x >= ( uint )w )
+                            {
+                                x = w - 1;
+                            }
+
+                            if ( ( uint )y >= ( uint )h )
+                            {
+                                y = h - 1;
+                            }
+
+                            p = data + ( h - y - 1 ) * bpl + x;
                             break;
 
-                        case 2:                        // delta (jump)
-                        {
-                            quint8 tmp;
-                            d->getChar( ( char * )&tmp );
-                            x += tmp;
-                            d->getChar( ( char * )&tmp );
-                            y += tmp;
-                        }
+                            default:                // absolute mode
+                                if ( p + b > endp )
+                                {
+                                    b = endp - p;
+                                }
 
-                        if ( ( uint )x >= ( uint )w )
-                        {
-                            x = w - 1;
-                        }
+                                if ( d->read( ( char * )p, b ) != b )
+                                {
+                                    return false;
+                                }
 
-                        if ( ( uint )y >= ( uint )h )
-                        {
-                            y = h - 1;
-                        }
+                                if ( ( b & 1 ) == 1 )
+                                {
+                                    d->getChar( nullptr ); // align on word boundary
+                                }
 
-                        p = data + ( h - y - 1 ) * bpl + x;
-                        break;
-
-                        default:                // absolute mode
-                            if ( p + b > endp )
-                            {
-                                b = endp - p;
-                            }
-
-                            if ( d->read( ( char * )p, b ) != b )
-                            {
-                                return false;
-                            }
-
-                            if ( ( b & 1 ) == 1 )
-                            {
-                                d->getChar( nullptr ); // align on word boundary
-                            }
-
-                            x += b;
-                            p += b;
+                                x += b;
+                                p += b;
                         }
 
                 }
@@ -1076,31 +1076,31 @@ bool QBmpHandler::write( const QImage &img )
 
     switch ( img.format() )
     {
-    case QImage::Format_Mono:
-    case QImage::Format_MonoLSB:
-    case QImage::Format_Indexed8:
-    case QImage::Format_RGB32:
-    case QImage::Format_ARGB32:
-        image = img;
-        break;
+        case QImage::Format_Mono:
+        case QImage::Format_MonoLSB:
+        case QImage::Format_Indexed8:
+        case QImage::Format_RGB32:
+        case QImage::Format_ARGB32:
+            image = img;
+            break;
 
-    case QImage::Format_Alpha8:
-    case QImage::Format_Grayscale8:
+        case QImage::Format_Alpha8:
+        case QImage::Format_Grayscale8:
 
-        image = img.convertToFormat( QImage::Format_Indexed8 );
-        break;
+            image = img.convertToFormat( QImage::Format_Indexed8 );
+            break;
 
-    default:
-        if ( img.hasAlphaChannel() )
-        {
-            image = img.convertToFormat( QImage::Format_ARGB32 );
-        }
-        else
-        {
-            image = img.convertToFormat( QImage::Format_RGB32 );
-        }
+        default:
+            if ( img.hasAlphaChannel() )
+            {
+                image = img.convertToFormat( QImage::Format_ARGB32 );
+            }
+            else
+            {
+                image = img.convertToFormat( QImage::Format_RGB32 );
+            }
 
-        break;
+            break;
     }
 
     QIODevice *d = device();
@@ -1178,19 +1178,19 @@ QVariant QBmpHandler::option( ImageOption option )
 
         switch ( infoHeader.biBitCount )
         {
-        case 32:
-        case 24:
-        case 16:
-            format = QImage::Format_RGB32;
-            break;
+            case 32:
+            case 24:
+            case 16:
+                format = QImage::Format_RGB32;
+                break;
 
-        case 8:
-        case 4:
-            format = QImage::Format_Indexed8;
-            break;
+            case 8:
+            case 4:
+                format = QImage::Format_Indexed8;
+                break;
 
-        default:
-            format = QImage::Format_Mono;
+            default:
+                format = QImage::Format_Mono;
         }
 
         return format;

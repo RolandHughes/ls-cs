@@ -96,7 +96,7 @@ QDebug operator<<( QDebug dbg, const QLayoutPolicy &p )
 {
     QDebugStateSaver saver( dbg );
     dbg.nospace() << "QLayoutPolicy(horizontalPolicy = " << p.horizontalPolicy()
-       << ", verticalPolicy = " << p.verticalPolicy() << ')';
+                  << ", verticalPolicy = " << p.verticalPolicy() << ')';
     return dbg;
 }
 

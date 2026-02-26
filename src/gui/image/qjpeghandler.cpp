@@ -199,18 +199,18 @@ static inline bool read_jpeg_format( QImage::Format &format, j_decompress_ptr ci
 
     switch ( cinfo->output_components )
     {
-    case 1:
-        format = QImage::Format_Grayscale8;
-        break;
+        case 1:
+            format = QImage::Format_Grayscale8;
+            break;
 
-    case 3:
-    case 4:
-        format = QImage::Format_RGB32;
-        break;
+        case 3:
+        case 4:
+            format = QImage::Format_RGB32;
+            break;
 
-    default:
-        result = false;
-        break;
+        default:
+            result = false;
+            break;
     }
 
     cinfo->output_scanline = cinfo->output_height;
@@ -224,17 +224,17 @@ static bool ensureValidImage( QImage *dest, struct jpeg_decompress_struct *info,
 
     switch ( info->output_components )
     {
-    case 1:
-        format = QImage::Format_Grayscale8;
-        break;
+        case 1:
+            format = QImage::Format_Grayscale8;
+            break;
 
-    case 3:
-    case 4:
-        format = QImage::Format_RGB32;
-        break;
+        case 3:
+        case 4:
+            format = QImage::Format_RGB32;
+            break;
 
-    default:
-        return false; // unsupported format
+        default:
+            return false; // unsupported format
     }
 
     if ( dest->size() != size || dest->format() != format )
@@ -670,29 +670,29 @@ static bool write_jpeg_image( const QImage &image, QIODevice *device, volatile i
 
         switch ( image.format() )
         {
-        case QImage::Format_Mono:
-        case QImage::Format_MonoLSB:
-        case QImage::Format_Indexed8:
-            gray = true;
+            case QImage::Format_Mono:
+            case QImage::Format_MonoLSB:
+            case QImage::Format_Indexed8:
+                gray = true;
 
-            for ( int i = image.colorCount(); gray && i; i-- )
-            {
-                gray = gray & qIsGray( cmap[i - 1] );
-            }
+                for ( int i = image.colorCount(); gray && i; i-- )
+                {
+                    gray = gray & qIsGray( cmap[i - 1] );
+                }
 
-            cinfo.input_components = gray ? 1 : 3;
-            cinfo.in_color_space = gray ? JCS_GRAYSCALE : JCS_RGB;
-            break;
+                cinfo.input_components = gray ? 1 : 3;
+                cinfo.in_color_space = gray ? JCS_GRAYSCALE : JCS_RGB;
+                break;
 
-        case QImage::Format_Grayscale8:
-            gray = true;
-            cinfo.input_components = 1;
-            cinfo.in_color_space = JCS_GRAYSCALE;
-            break;
+            case QImage::Format_Grayscale8:
+                gray = true;
+                cinfo.input_components = 1;
+                cinfo.in_color_space = JCS_GRAYSCALE;
+                break;
 
-        default:
-            cinfo.input_components = 3;
-            cinfo.in_color_space = JCS_RGB;
+            default:
+                cinfo.input_components = 3;
+                cinfo.in_color_space = JCS_RGB;
         }
 
         jpeg_set_defaults( &cinfo );
@@ -739,123 +739,123 @@ static bool write_jpeg_image( const QImage &image, QIODevice *device, volatile i
 
             switch ( image.format() )
             {
-            case QImage::Format_Mono:
-            case QImage::Format_MonoLSB:
-                if ( gray )
-                {
-                    const uchar *data = image.constScanLine( cinfo.next_scanline );
-
-                    if ( image.format() == QImage::Format_MonoLSB )
+                case QImage::Format_Mono:
+                case QImage::Format_MonoLSB:
+                    if ( gray )
                     {
-                        for ( int i = 0; i < w; i++ )
+                        const uchar *data = image.constScanLine( cinfo.next_scanline );
+
+                        if ( image.format() == QImage::Format_MonoLSB )
                         {
-                            bool bit = !!( *( data + ( i >> 3 ) ) & ( 1 << ( i & 7 ) ) );
-                            row[i] = qRed( cmap[bit] );
+                            for ( int i = 0; i < w; i++ )
+                            {
+                                bool bit = !!( *( data + ( i >> 3 ) ) & ( 1 << ( i & 7 ) ) );
+                                row[i] = qRed( cmap[bit] );
+                            }
+                        }
+                        else
+                        {
+                            for ( int i = 0; i < w; i++ )
+                            {
+                                bool bit = !!( *( data + ( i >> 3 ) ) & ( 1 << ( 7 - ( i & 7 ) ) ) );
+                                row[i] = qRed( cmap[bit] );
+                            }
                         }
                     }
                     else
                     {
-                        for ( int i = 0; i < w; i++ )
+                        const uchar *data = image.constScanLine( cinfo.next_scanline );
+
+                        if ( image.format() == QImage::Format_MonoLSB )
                         {
-                            bool bit = !!( *( data + ( i >> 3 ) ) & ( 1 << ( 7 - ( i & 7 ) ) ) );
-                            row[i] = qRed( cmap[bit] );
+                            for ( int i = 0; i < w; i++ )
+                            {
+                                bool bit = !!( *( data + ( i >> 3 ) ) & ( 1 << ( i & 7 ) ) );
+                                *row++ = qRed( cmap[bit] );
+                                *row++ = qGreen( cmap[bit] );
+                                *row++ = qBlue( cmap[bit] );
+                            }
+                        }
+                        else
+                        {
+                            for ( int i = 0; i < w; i++ )
+                            {
+                                bool bit = !!( *( data + ( i >> 3 ) ) & ( 1 << ( 7 - ( i & 7 ) ) ) );
+                                *row++ = qRed( cmap[bit] );
+                                *row++ = qGreen( cmap[bit] );
+                                *row++ = qBlue( cmap[bit] );
+                            }
                         }
                     }
-                }
-                else
-                {
-                    const uchar *data = image.constScanLine( cinfo.next_scanline );
 
-                    if ( image.format() == QImage::Format_MonoLSB )
+                    break;
+
+                case QImage::Format_Indexed8:
+                    if ( gray )
                     {
+                        const uchar *pix = image.constScanLine( cinfo.next_scanline );
+
                         for ( int i = 0; i < w; i++ )
                         {
-                            bool bit = !!( *( data + ( i >> 3 ) ) & ( 1 << ( i & 7 ) ) );
-                            *row++ = qRed( cmap[bit] );
-                            *row++ = qGreen( cmap[bit] );
-                            *row++ = qBlue( cmap[bit] );
+                            *row = qRed( cmap[*pix] );
+                            ++row;
+                            ++pix;
                         }
                     }
                     else
                     {
+                        const uchar *pix = image.constScanLine( cinfo.next_scanline );
+
                         for ( int i = 0; i < w; i++ )
                         {
-                            bool bit = !!( *( data + ( i >> 3 ) ) & ( 1 << ( 7 - ( i & 7 ) ) ) );
-                            *row++ = qRed( cmap[bit] );
-                            *row++ = qGreen( cmap[bit] );
-                            *row++ = qBlue( cmap[bit] );
+                            *row++ = qRed( cmap[*pix] );
+                            *row++ = qGreen( cmap[*pix] );
+                            *row++ = qBlue( cmap[*pix] );
+                            ++pix;
                         }
                     }
-                }
 
-                break;
+                    break;
 
-            case QImage::Format_Indexed8:
-                if ( gray )
+                case QImage::Format_Grayscale8:
+                    memcpy( row, image.constScanLine( cinfo.next_scanline ), w );
+                    break;
+
+                case QImage::Format_RGB888:
+                    memcpy( row, image.constScanLine( cinfo.next_scanline ), w * 3 );
+                    break;
+
+                case QImage::Format_RGB32:
+                case QImage::Format_ARGB32:
+                case QImage::Format_ARGB32_Premultiplied:
                 {
-                    const uchar *pix = image.constScanLine( cinfo.next_scanline );
+                    const QRgb *rgb = ( const QRgb * )image.constScanLine( cinfo.next_scanline );
 
                     for ( int i = 0; i < w; i++ )
                     {
-                        *row = qRed( cmap[*pix] );
-                        ++row;
-                        ++pix;
+                        *row++ = qRed( *rgb );
+                        *row++ = qGreen( *rgb );
+                        *row++ = qBlue( *rgb );
+                        ++rgb;
                     }
                 }
-                else
+                break;
+
+                default:
                 {
-                    const uchar *pix = image.constScanLine( cinfo.next_scanline );
+                    // (Testing shows that this way is actually faster than converting to RGB888 + memcpy)
+                    QImage rowImg = image.copy( 0, cinfo.next_scanline, w, 1 ).convertToFormat( QImage::Format_RGB32 );
+                    const QRgb *rgb = ( const QRgb * )rowImg.constScanLine( 0 );
 
                     for ( int i = 0; i < w; i++ )
                     {
-                        *row++ = qRed( cmap[*pix] );
-                        *row++ = qGreen( cmap[*pix] );
-                        *row++ = qBlue( cmap[*pix] );
-                        ++pix;
+                        *row++ = qRed( *rgb );
+                        *row++ = qGreen( *rgb );
+                        *row++ = qBlue( *rgb );
+                        ++rgb;
                     }
                 }
-
                 break;
-
-            case QImage::Format_Grayscale8:
-                memcpy( row, image.constScanLine( cinfo.next_scanline ), w );
-                break;
-
-            case QImage::Format_RGB888:
-                memcpy( row, image.constScanLine( cinfo.next_scanline ), w * 3 );
-                break;
-
-            case QImage::Format_RGB32:
-            case QImage::Format_ARGB32:
-            case QImage::Format_ARGB32_Premultiplied:
-            {
-                const QRgb *rgb = ( const QRgb * )image.constScanLine( cinfo.next_scanline );
-
-                for ( int i = 0; i < w; i++ )
-                {
-                    *row++ = qRed( *rgb );
-                    *row++ = qGreen( *rgb );
-                    *row++ = qBlue( *rgb );
-                    ++rgb;
-                }
-            }
-            break;
-
-            default:
-            {
-                // (Testing shows that this way is actually faster than converting to RGB888 + memcpy)
-                QImage rowImg = image.copy( 0, cinfo.next_scanline, w, 1 ).convertToFormat( QImage::Format_RGB32 );
-                const QRgb *rgb = ( const QRgb * )rowImg.constScanLine( 0 );
-
-                for ( int i = 0; i < w; i++ )
-                {
-                    *row++ = qRed( *rgb );
-                    *row++ = qGreen( *rgb );
-                    *row++ = qBlue( *rgb );
-                    ++rgb;
-                }
-            }
-            break;
             }
 
             jpeg_write_scanlines( &cinfo, row_pointer, 1 );
@@ -1074,29 +1074,29 @@ static QImageIOHandler::Transformations exif2Qt( int exifOrientation )
 {
     switch ( exifOrientation )
     {
-    case 1: // normal
-        return QImageIOHandler::TransformationNone;
+        case 1: // normal
+            return QImageIOHandler::TransformationNone;
 
-    case 2: // mirror horizontal
-        return QImageIOHandler::TransformationMirror;
+        case 2: // mirror horizontal
+            return QImageIOHandler::TransformationMirror;
 
-    case 3: // rotate 180
-        return QImageIOHandler::TransformationRotate180;
+        case 3: // rotate 180
+            return QImageIOHandler::TransformationRotate180;
 
-    case 4: // mirror vertical
-        return QImageIOHandler::TransformationFlip;
+        case 4: // mirror vertical
+            return QImageIOHandler::TransformationFlip;
 
-    case 5: // mirror horizontal and rotate 270 CW
-        return QImageIOHandler::TransformationFlipAndRotate90;
+        case 5: // mirror horizontal and rotate 270 CW
+            return QImageIOHandler::TransformationFlipAndRotate90;
 
-    case 6: // rotate 90 CW
-        return QImageIOHandler::TransformationRotate90;
+        case 6: // rotate 90 CW
+            return QImageIOHandler::TransformationRotate90;
 
-    case 7: // mirror horizontal and rotate 90 CW
-        return QImageIOHandler::TransformationMirrorAndRotate90;
+        case 7: // mirror horizontal and rotate 90 CW
+            return QImageIOHandler::TransformationMirrorAndRotate90;
 
-    case 8: // rotate 270 CW
-        return QImageIOHandler::TransformationRotate270;
+        case 8: // rotate 270 CW
+            return QImageIOHandler::TransformationRotate270;
     }
 
     qWarning( "QImageIOHandler::Transformations::exif2Qt() Invalid EXIF orientation" );
@@ -1344,42 +1344,42 @@ QVariant QJpegHandler::option( ImageOption option )
 {
     switch ( option )
     {
-    case Quality:
-        return d->quality;
+        case Quality:
+            return d->quality;
 
-    case ScaledSize:
-        return d->scaledSize;
+        case ScaledSize:
+            return d->scaledSize;
 
-    case ScaledClipRect:
-        return d->scaledClipRect;
+        case ScaledClipRect:
+            return d->scaledClipRect;
 
-    case ClipRect:
-        return d->clipRect;
+        case ClipRect:
+            return d->clipRect;
 
-    case Description:
-        d->readJpegHeader( device() );
-        return d->description;
+        case Description:
+            d->readJpegHeader( device() );
+            return d->description;
 
-    case Size:
-        d->readJpegHeader( device() );
-        return d->size;
+        case Size:
+            d->readJpegHeader( device() );
+            return d->size;
 
-    case ImageFormat:
-        d->readJpegHeader( device() );
-        return d->format;
+        case ImageFormat:
+            d->readJpegHeader( device() );
+            return d->format;
 
-    case OptimizedWrite:
-        return d->optimize;
+        case OptimizedWrite:
+            return d->optimize;
 
-    case ProgressiveScanWrite:
-        return d->progressive;
+        case ProgressiveScanWrite:
+            return d->progressive;
 
-    case ImageTransformation:
-        d->readJpegHeader( device() );
-        return int( d->transformation );
+        case ImageTransformation:
+            d->readJpegHeader( device() );
+            return int( d->transformation );
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QVariant();
@@ -1389,46 +1389,46 @@ void QJpegHandler::setOption( ImageOption option, const QVariant &value )
 {
     switch ( option )
     {
-    case Quality:
-        d->quality = value.toInt();
-        break;
+        case Quality:
+            d->quality = value.toInt();
+            break;
 
-    case ScaledSize:
-        d->scaledSize = value.toSize();
-        break;
+        case ScaledSize:
+            d->scaledSize = value.toSize();
+            break;
 
-    case ScaledClipRect:
-        d->scaledClipRect = value.toRect();
-        break;
+        case ScaledClipRect:
+            d->scaledClipRect = value.toRect();
+            break;
 
-    case ClipRect:
-        d->clipRect = value.toRect();
-        break;
+        case ClipRect:
+            d->clipRect = value.toRect();
+            break;
 
-    case Description:
-        d->description = value.toString();
-        break;
+        case Description:
+            d->description = value.toString();
+            break;
 
-    case OptimizedWrite:
-        d->optimize = value.toBool();
-        break;
+        case OptimizedWrite:
+            d->optimize = value.toBool();
+            break;
 
-    case ProgressiveScanWrite:
-        d->progressive = value.toBool();
-        break;
+        case ProgressiveScanWrite:
+            d->progressive = value.toBool();
+            break;
 
-    case ImageTransformation:
-    {
-        int transformation = value.toInt();
-
-        if ( transformation > 0 && transformation < 8 )
+        case ImageTransformation:
         {
-            d->transformation = QImageIOHandler::Transformations( transformation );
-        }
-    }
+            int transformation = value.toInt();
 
-    default:
-        break;
+            if ( transformation > 0 && transformation < 8 )
+            {
+                d->transformation = QImageIOHandler::Transformations( transformation );
+            }
+        }
+
+        default:
+            break;
     }
 }
 

@@ -262,7 +262,8 @@ void QPrintPreviewDialogPrivate::init( QPrinter *_printer )
     }
 
     QObject::connect( zoomFactor->lineEdit(), &QLineEdit::editingFinished, q, &QPrintPreviewDialog::_q_zoomFactorChanged );
-    QObject::connect( zoomFactor, lscs_mp_cast<int>( &QComboBox::currentIndexChanged ), q, &QPrintPreviewDialog::_q_zoomFactorChanged );
+    QObject::connect( zoomFactor, lscs_mp_cast<int>( &QComboBox::currentIndexChanged ), q,
+                      &QPrintPreviewDialog::_q_zoomFactorChanged );
 
     QPrintPreviewMainWindow *mw = new QPrintPreviewMainWindow( q );
     QToolBar *toolbar = new QToolBar( mw );

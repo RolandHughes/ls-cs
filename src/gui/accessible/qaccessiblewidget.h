@@ -44,7 +44,7 @@ public:
     int indexOfChild( const QAccessibleInterface *child ) const override;
 
     QVector<QPair<QAccessibleInterface *, QAccessible::Relation>>
-    relations( QAccessible::Relation match = QAccessible::AllRelations ) const override;
+            relations( QAccessible::Relation match = QAccessible::AllRelations ) const override;
 
     QAccessibleInterface *focusChild() const override;
 

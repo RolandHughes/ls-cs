@@ -223,35 +223,35 @@ void CameraBinRecorder::setState( QMediaRecorder::State state )
 
     switch ( state )
     {
-    case QMediaRecorder::StoppedState:
-        m_state = state;
-        m_status = QMediaRecorder::FinalizingStatus;
-        m_session->stopVideoRecording();
-        break;
-
-    case QMediaRecorder::PausedState:
-        emit error( QMediaRecorder::ResourceError, tr( "QMediaRecorder::pause() is not supported by camerabin2." ) );
-        break;
-
-    case QMediaRecorder::RecordingState:
-
-        if ( m_session->status() != QCamera::ActiveStatus )
-        {
-            emit error( QMediaRecorder::ResourceError, tr( "Service has not been started" ) );
-
-        }
-        else if ( !m_session->cameraControl()->resourcePolicy()->canCapture() )
-        {
-            emit error( QMediaRecorder::ResourceError, tr( "Recording permissions are not available" ) );
-
-        }
-        else
-        {
-            m_session->recordVideo();
+        case QMediaRecorder::StoppedState:
             m_state = state;
-            m_status = QMediaRecorder::RecordingStatus;
-            emit actualLocationChanged( m_session->outputLocation() );
-        }
+            m_status = QMediaRecorder::FinalizingStatus;
+            m_session->stopVideoRecording();
+            break;
+
+        case QMediaRecorder::PausedState:
+            emit error( QMediaRecorder::ResourceError, tr( "QMediaRecorder::pause() is not supported by camerabin2." ) );
+            break;
+
+        case QMediaRecorder::RecordingState:
+
+            if ( m_session->status() != QCamera::ActiveStatus )
+            {
+                emit error( QMediaRecorder::ResourceError, tr( "Service has not been started" ) );
+
+            }
+            else if ( !m_session->cameraControl()->resourcePolicy()->canCapture() )
+            {
+                emit error( QMediaRecorder::ResourceError, tr( "Recording permissions are not available" ) );
+
+            }
+            else
+            {
+                m_session->recordVideo();
+                m_state = state;
+                m_status = QMediaRecorder::RecordingStatus;
+                emit actualLocationChanged( m_session->outputLocation() );
+            }
     }
 
     if ( m_state != oldState )

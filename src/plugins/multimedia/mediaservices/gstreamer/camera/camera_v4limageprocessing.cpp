@@ -58,55 +58,55 @@ bool CameraBinV4LImageProcessing::isParameterValueSupported(
     switch ( parameter )
     {
 
-    case QCameraImageProcessingControl::WhiteBalancePreset:
-    {
-        const QCameraImageProcessing::WhiteBalanceMode checkedValue =
-            value.value<QCameraImageProcessing::WhiteBalanceMode>();
-        const QCameraImageProcessing::WhiteBalanceMode firstAllowedValue =
-            ( *sourceValueInfo ).minimumValue ? QCameraImageProcessing::WhiteBalanceAuto
-            : QCameraImageProcessing::WhiteBalanceManual;
-        const QCameraImageProcessing::WhiteBalanceMode secondAllowedValue =
-            ( *sourceValueInfo ).maximumValue ? QCameraImageProcessing::WhiteBalanceAuto
-            : QCameraImageProcessing::WhiteBalanceManual;
-
-        if ( checkedValue != firstAllowedValue
-                && checkedValue != secondAllowedValue )
+        case QCameraImageProcessingControl::WhiteBalancePreset:
         {
-            return false;
+            const QCameraImageProcessing::WhiteBalanceMode checkedValue =
+                value.value<QCameraImageProcessing::WhiteBalanceMode>();
+            const QCameraImageProcessing::WhiteBalanceMode firstAllowedValue =
+                ( *sourceValueInfo ).minimumValue ? QCameraImageProcessing::WhiteBalanceAuto
+                : QCameraImageProcessing::WhiteBalanceManual;
+            const QCameraImageProcessing::WhiteBalanceMode secondAllowedValue =
+                ( *sourceValueInfo ).maximumValue ? QCameraImageProcessing::WhiteBalanceAuto
+                : QCameraImageProcessing::WhiteBalanceManual;
+
+            if ( checkedValue != firstAllowedValue
+                    && checkedValue != secondAllowedValue )
+            {
+                return false;
+            }
         }
-    }
-    break;
+        break;
 
-    case QCameraImageProcessingControl::ColorTemperature:
-    {
-        const qint32 checkedValue = value.toInt();
-
-        if ( checkedValue < ( *sourceValueInfo ).minimumValue
-                || checkedValue > ( *sourceValueInfo ).maximumValue )
+        case QCameraImageProcessingControl::ColorTemperature:
         {
-            return false;
+            const qint32 checkedValue = value.toInt();
+
+            if ( checkedValue < ( *sourceValueInfo ).minimumValue
+                    || checkedValue > ( *sourceValueInfo ).maximumValue )
+            {
+                return false;
+            }
         }
-    }
-    break;
+        break;
 
-    case QCameraImageProcessingControl::ContrastAdjustment: // falling back
-    case QCameraImageProcessingControl::SaturationAdjustment: // falling back
-    case QCameraImageProcessingControl::BrightnessAdjustment: // falling back
-    case QCameraImageProcessingControl::SharpeningAdjustment:
-    {
-        const qint32 sourceValue = sourceImageProcessingParameterValue(
-                                       value.toReal(), ( *sourceValueInfo ) );
-
-        if ( sourceValue < ( *sourceValueInfo ).minimumValue
-                || sourceValue > ( *sourceValueInfo ).maximumValue )
+        case QCameraImageProcessingControl::ContrastAdjustment: // falling back
+        case QCameraImageProcessingControl::SaturationAdjustment: // falling back
+        case QCameraImageProcessingControl::BrightnessAdjustment: // falling back
+        case QCameraImageProcessingControl::SharpeningAdjustment:
         {
-            return false;
-        }
-    }
-    break;
+            const qint32 sourceValue = sourceImageProcessingParameterValue(
+                                           value.toReal(), ( *sourceValueInfo ) );
 
-    default:
-        return false;
+            if ( sourceValue < ( *sourceValueInfo ).minimumValue
+                    || sourceValue > ( *sourceValueInfo ).maximumValue )
+            {
+                return false;
+            }
+        }
+        break;
+
+        default:
+            return false;
     }
 
     return true;
@@ -153,25 +153,25 @@ QVariant CameraBinV4LImageProcessing::parameter(
     switch ( parameter )
     {
 
-    case QCameraImageProcessingControl::WhiteBalancePreset:
-        return QVariant::fromValue<QCameraImageProcessing::WhiteBalanceMode>(
-                   control.value ? QCameraImageProcessing::WhiteBalanceAuto
-                   : QCameraImageProcessing::WhiteBalanceManual );
+        case QCameraImageProcessingControl::WhiteBalancePreset:
+            return QVariant::fromValue<QCameraImageProcessing::WhiteBalanceMode>(
+                       control.value ? QCameraImageProcessing::WhiteBalanceAuto
+                       : QCameraImageProcessing::WhiteBalanceManual );
 
-    case QCameraImageProcessingControl::ColorTemperature:
-        return QVariant::fromValue<qint32>( control.value );
+        case QCameraImageProcessingControl::ColorTemperature:
+            return QVariant::fromValue<qint32>( control.value );
 
-    case QCameraImageProcessingControl::ContrastAdjustment: // falling back
-    case QCameraImageProcessingControl::SaturationAdjustment: // falling back
-    case QCameraImageProcessingControl::BrightnessAdjustment: // falling back
-    case QCameraImageProcessingControl::SharpeningAdjustment:
-    {
-        return scaledImageProcessingParameterValue(
-                   control.value, ( *sourceValueInfo ) );
-    }
+        case QCameraImageProcessingControl::ContrastAdjustment: // falling back
+        case QCameraImageProcessingControl::SaturationAdjustment: // falling back
+        case QCameraImageProcessingControl::BrightnessAdjustment: // falling back
+        case QCameraImageProcessingControl::SharpeningAdjustment:
+        {
+            return scaledImageProcessingParameterValue(
+                       control.value, ( *sourceValueInfo ) );
+        }
 
-    default:
-        return QVariant();
+        default:
+            return QVariant();
     }
 }
 
@@ -206,37 +206,37 @@ void CameraBinV4LImageProcessing::setParameter(
     switch ( parameter )
     {
 
-    case QCameraImageProcessingControl::WhiteBalancePreset:
-    {
-        const QCameraImageProcessing::WhiteBalanceMode m =
-            value.value<QCameraImageProcessing::WhiteBalanceMode>();
-
-        if ( m != QCameraImageProcessing::WhiteBalanceAuto
-                && m != QCameraImageProcessing::WhiteBalanceManual )
+        case QCameraImageProcessingControl::WhiteBalancePreset:
         {
+            const QCameraImageProcessing::WhiteBalanceMode m =
+                value.value<QCameraImageProcessing::WhiteBalanceMode>();
+
+            if ( m != QCameraImageProcessing::WhiteBalanceAuto
+                    && m != QCameraImageProcessing::WhiteBalanceManual )
+            {
+                lscs_safe_close( fd );
+                return;
+            }
+
+            control.value = ( m == QCameraImageProcessing::WhiteBalanceAuto ) ? true : false;
+        }
+        break;
+
+        case QCameraImageProcessingControl::ColorTemperature:
+            control.value = value.toInt();
+            break;
+
+        case QCameraImageProcessingControl::ContrastAdjustment: // falling back
+        case QCameraImageProcessingControl::SaturationAdjustment: // falling back
+        case QCameraImageProcessingControl::BrightnessAdjustment: // falling back
+        case QCameraImageProcessingControl::SharpeningAdjustment:
+            control.value = sourceImageProcessingParameterValue(
+                                value.toReal(), ( *sourceValueInfo ) );
+            break;
+
+        default:
             lscs_safe_close( fd );
             return;
-        }
-
-        control.value = ( m == QCameraImageProcessing::WhiteBalanceAuto ) ? true : false;
-    }
-    break;
-
-    case QCameraImageProcessingControl::ColorTemperature:
-        control.value = value.toInt();
-        break;
-
-    case QCameraImageProcessingControl::ContrastAdjustment: // falling back
-    case QCameraImageProcessingControl::SaturationAdjustment: // falling back
-    case QCameraImageProcessingControl::BrightnessAdjustment: // falling back
-    case QCameraImageProcessingControl::SharpeningAdjustment:
-        control.value = sourceImageProcessingParameterValue(
-                            value.toReal(), ( *sourceValueInfo ) );
-        break;
-
-    default:
-        lscs_safe_close( fd );
-        return;
     }
 
     if ( ::ioctl( fd, VIDIOC_S_CTRL, &control ) != 0 )

@@ -180,7 +180,7 @@ using lscs_fontTable_func_ptr = bool ( * )( void *, uint, uchar *, uint * );
 struct QGlyphLayout
 {
     static constexpr const int SpaceRequired = sizeof( glyph_t ) + sizeof( QFixed ) + sizeof( QFixedPoint )
-        + sizeof( QGlyphAttributes ) + sizeof( QGlyphJustification );
+            + sizeof( QGlyphAttributes ) + sizeof( QGlyphJustification );
 
     QGlyphLayout()
         : numGlyphs( 0 )

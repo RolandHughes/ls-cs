@@ -252,26 +252,26 @@ static void sm_performSaveYourself( QXcbSessionManager *sm )
 
     switch ( sm_saveType )
     {
-    case SmSaveBoth:
-        sm->appCommitData();
+        case SmSaveBoth:
+            sm->appCommitData();
 
-        if ( sm_isshutdown && sm_cancel )
-        {
-            break;   // we cancelled the shutdown, no need to save state
-        }
+            if ( sm_isshutdown && sm_cancel )
+            {
+                break;   // we cancelled the shutdown, no need to save state
+            }
 
-        [[fallthrough]];
+            [[fallthrough]];
 
-    case SmSaveLocal:
-        sm->appSaveState();
-        break;
+        case SmSaveLocal:
+            sm->appSaveState();
+            break;
 
-    case SmSaveGlobal:
-        sm->appCommitData();
-        break;
+        case SmSaveGlobal:
+            sm->appCommitData();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     if ( sm_phase2 && ! sm_in_phase2 )

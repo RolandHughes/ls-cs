@@ -83,35 +83,35 @@ Item::Iterator::Ptr EvaluationCache<IsForGlobal>::evaluateSequence( const Dynami
 
     switch ( cell.cacheState )
     {
-    case ItemSequenceCacheCell::Full:
-    {
-        /**
-         * We don't use makeListIterator() here because the MIPSPro compiler can't handle it.
-         */
-        return Item::Iterator::Ptr( new ListIterator<Item, Item::List>( cell.cachedItems ) );
-    }
+        case ItemSequenceCacheCell::Full:
+        {
+            /**
+             * We don't use makeListIterator() here because the MIPSPro compiler can't handle it.
+             */
+            return Item::Iterator::Ptr( new ListIterator<Item, Item::List>( cell.cachedItems ) );
+        }
 
-    case ItemSequenceCacheCell::Empty:
-    {
-        cell.inUse = true;
-        cell.sourceIterator = m_operand->evaluateSequence( IsForGlobal ? topFocusContext( context ) : context );
-        cell.cacheState = ItemSequenceCacheCell::PartiallyPopulated;
-    }
+        case ItemSequenceCacheCell::Empty:
+        {
+            cell.inUse = true;
+            cell.sourceIterator = m_operand->evaluateSequence( IsForGlobal ? topFocusContext( context ) : context );
+            cell.cacheState = ItemSequenceCacheCell::PartiallyPopulated;
+        }
 
-    [[fallthrough]];
+        [[fallthrough]];
 
-    case ItemSequenceCacheCell::PartiallyPopulated:
-    {
-        cell.inUse = false;
-        Q_ASSERT_X( cells.at( m_varSlot ).sourceIterator, Q_FUNC_INFO, "Cache inconsistency." );
-        return Item::Iterator::Ptr( new CachingIterator( cells, m_varSlot, IsForGlobal ? topFocusContext( context ) : context ) );
-    }
+        case ItemSequenceCacheCell::PartiallyPopulated:
+        {
+            cell.inUse = false;
+            Q_ASSERT_X( cells.at( m_varSlot ).sourceIterator, Q_FUNC_INFO, "Cache inconsistency." );
+            return Item::Iterator::Ptr( new CachingIterator( cells, m_varSlot, IsForGlobal ? topFocusContext( context ) : context ) );
+        }
 
-    default:
-    {
-        Q_ASSERT_X( false, Q_FUNC_INFO, "This path is invalid." );
-        return Item::Iterator::Ptr();
-    }
+        default:
+        {
+            Q_ASSERT_X( false, Q_FUNC_INFO, "This path is invalid." );
+            return Item::Iterator::Ptr();
+        }
     }
 }
 

@@ -556,34 +556,34 @@ bool QTextStreamPrivate::scan( QString *newToken, int maxlen, TokenDelimiter del
 
             switch ( delimiter )
             {
-            case Space:
-                if ( ch.isSpace() )
-                {
-                    foundToken = true;
-                    delimSize = 1;
-                }
+                case Space:
+                    if ( ch.isSpace() )
+                    {
+                        foundToken = true;
+                        delimSize = 1;
+                    }
 
-                break;
+                    break;
 
-            case NotSpace:
-                if ( !ch.isSpace() )
-                {
-                    foundToken = true;
-                    delimSize = 1;
-                }
+                case NotSpace:
+                    if ( !ch.isSpace() )
+                    {
+                        foundToken = true;
+                        delimSize = 1;
+                    }
 
-                break;
+                    break;
 
-            case EndOfLine:
-                if ( ch == '\n' )
-                {
-                    foundToken = true;
-                    delimSize = ( lastChar == '\r' ) ? 2 : 1;
-                    consumeDelimiter = true;
-                }
+                case EndOfLine:
+                    if ( ch == '\n' )
+                    {
+                        foundToken = true;
+                        delimSize = ( lastChar == '\r' ) ? 2 : 1;
+                        consumeDelimiter = true;
+                    }
 
-                lastChar = ch;
-                break;
+                    lastChar = ch;
+                    break;
             }
         }
 
@@ -1380,229 +1380,229 @@ QTextStreamPrivate::NumberParsingStatus QTextStreamPrivate::getNumber( quint64 *
 
     switch ( base )
     {
-    case 2:
-    {
-        QChar pf1;
-        QChar pf2;
-        QChar dig;
-
-        // Parse prefix '0b'
-        if ( ! getChar( &pf1 ) || pf1 != '0' )
+        case 2:
         {
-            return npsInvalidPrefix;
-        }
+            QChar pf1;
+            QChar pf2;
+            QChar dig;
 
-        if ( ! getChar( &pf2 ) || pf2.toLower()[0] != 'b' )
-        {
-            return npsInvalidPrefix;
-        }
-
-        // Parse digits
-        int ndigits = 0;
-
-        while ( getChar( &dig ) )
-        {
-
-            if ( dig == '0' )
+            // Parse prefix '0b'
+            if ( ! getChar( &pf1 ) || pf1 != '0' )
             {
-                val = val << 1;
-
-            }
-            else if ( dig == '1' )
-            {
-                val = val << 1;
-                val += 1;
-
-            }
-            else
-            {
-                ungetChar( dig );
-                break;
+                return npsInvalidPrefix;
             }
 
-            ndigits++;
-        }
-
-        if ( ndigits == 0 )
-        {
-            // Unwind the prefix and abort
-            ungetChar( pf2 );
-            ungetChar( pf1 );
-
-            return npsMissingDigit;
-        }
-
-        break;
-    }
-
-    case 8:
-    {
-        QChar pf;
-        QChar dig;
-
-        // Parse prefix '0'
-        if ( ! getChar( &pf ) || pf != '0' )
-        {
-            return npsInvalidPrefix;
-        }
-
-        // Parse digits
-        int ndigits = 0;
-
-        while ( getChar( &dig ) )
-        {
-            int n = dig.unicode();
-
-            if ( n >= '0' && n <= '7' )
+            if ( ! getChar( &pf2 ) || pf2.toLower()[0] != 'b' )
             {
-                val *= 8;
-                val += n - '0';
-
-            }
-            else
-            {
-                ungetChar( dig );
-                break;
+                return npsInvalidPrefix;
             }
 
-            ndigits++;
-        }
+            // Parse digits
+            int ndigits = 0;
 
-        if ( ndigits == 0 )
-        {
-            // Unwind the prefix and abort
-            ungetChar( pf );
-            return npsMissingDigit;
-        }
-
-        break;
-    }
-
-    case 10:
-    {
-        // Parse sign (or first digit)
-        QChar sign;
-        int ndigits = 0;
-
-        if ( ! getChar( &sign ) )
-        {
-            return npsMissingDigit;
-        }
-
-        if ( sign != locale.negativeSign() && sign != locale.positiveSign() )
-        {
-            if ( ! sign.isDigit() )
+            while ( getChar( &dig ) )
             {
-                ungetChar( sign );
+
+                if ( dig == '0' )
+                {
+                    val = val << 1;
+
+                }
+                else if ( dig == '1' )
+                {
+                    val = val << 1;
+                    val += 1;
+
+                }
+                else
+                {
+                    ungetChar( dig );
+                    break;
+                }
+
+                ndigits++;
+            }
+
+            if ( ndigits == 0 )
+            {
+                // Unwind the prefix and abort
+                ungetChar( pf2 );
+                ungetChar( pf1 );
+
                 return npsMissingDigit;
             }
 
-            val += sign.digitValue();
-            ndigits++;
+            break;
         }
 
-        // Parse digits
-        QChar ch;
-
-        while ( getChar( &ch ) )
+        case 8:
         {
+            QChar pf;
+            QChar dig;
 
-            if ( ch.isDigit() )
+            // Parse prefix '0'
+            if ( ! getChar( &pf ) || pf != '0' )
             {
-                val *= 10;
-                val += ch.digitValue();
-
-            }
-            else if ( locale != QLocale::c() && ch == locale.groupSeparator() )
-            {
-                continue;
-
-            }
-            else
-            {
-                ungetChar( ch );
-                break;
+                return npsInvalidPrefix;
             }
 
-            ndigits++;
+            // Parse digits
+            int ndigits = 0;
+
+            while ( getChar( &dig ) )
+            {
+                int n = dig.unicode();
+
+                if ( n >= '0' && n <= '7' )
+                {
+                    val *= 8;
+                    val += n - '0';
+
+                }
+                else
+                {
+                    ungetChar( dig );
+                    break;
+                }
+
+                ndigits++;
+            }
+
+            if ( ndigits == 0 )
+            {
+                // Unwind the prefix and abort
+                ungetChar( pf );
+                return npsMissingDigit;
+            }
+
+            break;
         }
 
-        if ( ndigits == 0 )
+        case 10:
         {
-            return npsMissingDigit;
-        }
+            // Parse sign (or first digit)
+            QChar sign;
+            int ndigits = 0;
 
-        if ( sign == locale.negativeSign() )
-        {
-            qint64 ival = qint64( val );
-
-            if ( ival > 0 )
+            if ( ! getChar( &sign ) )
             {
-                ival = -ival;
+                return npsMissingDigit;
             }
 
-            val = quint64( ival );
+            if ( sign != locale.negativeSign() && sign != locale.positiveSign() )
+            {
+                if ( ! sign.isDigit() )
+                {
+                    ungetChar( sign );
+                    return npsMissingDigit;
+                }
+
+                val += sign.digitValue();
+                ndigits++;
+            }
+
+            // Parse digits
+            QChar ch;
+
+            while ( getChar( &ch ) )
+            {
+
+                if ( ch.isDigit() )
+                {
+                    val *= 10;
+                    val += ch.digitValue();
+
+                }
+                else if ( locale != QLocale::c() && ch == locale.groupSeparator() )
+                {
+                    continue;
+
+                }
+                else
+                {
+                    ungetChar( ch );
+                    break;
+                }
+
+                ndigits++;
+            }
+
+            if ( ndigits == 0 )
+            {
+                return npsMissingDigit;
+            }
+
+            if ( sign == locale.negativeSign() )
+            {
+                qint64 ival = qint64( val );
+
+                if ( ival > 0 )
+                {
+                    ival = -ival;
+                }
+
+                val = quint64( ival );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case 16:
-    {
-        QChar pf1;
-        QChar pf2;
-        QChar dig;
-
-        // Parse prefix ' 0x'
-        if ( ! getChar( &pf1 ) || pf1 != '0' )
+        case 16:
         {
+            QChar pf1;
+            QChar pf2;
+            QChar dig;
+
+            // Parse prefix ' 0x'
+            if ( ! getChar( &pf1 ) || pf1 != '0' )
+            {
+                return npsInvalidPrefix;
+            }
+
+            if ( ! getChar( &pf2 ) || pf2.toLower()[0] != 'x' )
+            {
+                return npsInvalidPrefix;
+            }
+
+            // Parse digits
+            int ndigits = 0;
+
+            while ( getChar( &dig ) )
+            {
+                int n = dig.toLower()[0].unicode();
+
+                if ( n >= '0' && n <= '9' )
+                {
+                    val <<= 4;
+                    val += n - '0';
+
+                }
+                else if ( n >= 'a' && n <= 'f' )
+                {
+                    val <<= 4;
+                    val += 10 + ( n - 'a' );
+
+                }
+                else
+                {
+                    ungetChar( dig );
+                    break;
+                }
+
+                ndigits++;
+            }
+
+            if ( ndigits == 0 )
+            {
+                return npsMissingDigit;
+            }
+
+            break;
+        }
+
+        default:
+            // Unsupported integerBase
             return npsInvalidPrefix;
-        }
-
-        if ( ! getChar( &pf2 ) || pf2.toLower()[0] != 'x' )
-        {
-            return npsInvalidPrefix;
-        }
-
-        // Parse digits
-        int ndigits = 0;
-
-        while ( getChar( &dig ) )
-        {
-            int n = dig.toLower()[0].unicode();
-
-            if ( n >= '0' && n <= '9' )
-            {
-                val <<= 4;
-                val += n - '0';
-
-            }
-            else if ( n >= 'a' && n <= 'f' )
-            {
-                val <<= 4;
-                val += 10 + ( n - 'a' );
-
-            }
-            else
-            {
-                ungetChar( dig );
-                break;
-            }
-
-            ndigits++;
-        }
-
-        if ( ndigits == 0 )
-        {
-            return npsMissingDigit;
-        }
-
-        break;
-    }
-
-    default:
-        // Unsupported integerBase
-        return npsInvalidPrefix;
     }
 
     if ( ret )
@@ -1684,75 +1684,75 @@ bool QTextStreamPrivate::getReal( double *f )
     {
         switch ( c.unicode() )
         {
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-            input = InputDigit;
-            break;
-
-        case 'i':
-        case 'I':
-            input = InputI;
-            break;
-
-        case 'n':
-        case 'N':
-            input = InputN;
-            break;
-
-        case 'f':
-        case 'F':
-            input = InputF;
-            break;
-
-        case 'a':
-        case 'A':
-            input = InputA;
-            break;
-
-        case 't':
-        case 'T':
-            input = InputT;
-            break;
-
-        default:
-        {
-            QString lc = c.toLower();
-
-            if ( lc == locale.decimalPoint().toLower() )
-            {
-                input = InputDot;
-
-            }
-            else if ( lc == locale.exponential().toLower() )
-            {
-                input = InputExp;
-
-            }
-            else if ( lc == locale.negativeSign().toLower() || lc == locale.positiveSign().toLower() )
-            {
-                input = InputSign;
-
-            }
-            else if ( locale != QLocale::c() && lc == locale.groupSeparator().toLower() )
-            {
-                // backward compatibility, not a digit
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
                 input = InputDigit;
+                break;
 
-            }
-            else
+            case 'i':
+            case 'I':
+                input = InputI;
+                break;
+
+            case 'n':
+            case 'N':
+                input = InputN;
+                break;
+
+            case 'f':
+            case 'F':
+                input = InputF;
+                break;
+
+            case 'a':
+            case 'A':
+                input = InputA;
+                break;
+
+            case 't':
+            case 'T':
+                input = InputT;
+                break;
+
+            default:
             {
-                input = None;
+                QString lc = c.toLower();
+
+                if ( lc == locale.decimalPoint().toLower() )
+                {
+                    input = InputDot;
+
+                }
+                else if ( lc == locale.exponential().toLower() )
+                {
+                    input = InputExp;
+
+                }
+                else if ( lc == locale.negativeSign().toLower() || lc == locale.positiveSign().toLower() )
+                {
+                    input = InputSign;
+
+                }
+                else if ( locale != QLocale::c() && lc == locale.groupSeparator().toLower() )
+                {
+                    // backward compatibility, not a digit
+                    input = InputDigit;
+
+                }
+                else
+                {
+                    input = None;
+                }
             }
-        }
-        break;
+            break;
         }
 
         state = ParserState( table[state][input] );
@@ -2122,17 +2122,17 @@ QTextStream &QTextStream::operator<<( double f )
 
     switch ( realNumberNotation() )
     {
-    case FixedNotation:
-        form = QLocaleData::DFDecimal;
-        break;
+        case FixedNotation:
+            form = QLocaleData::DFDecimal;
+            break;
 
-    case ScientificNotation:
-        form = QLocaleData::DFExponent;
-        break;
+        case ScientificNotation:
+            form = QLocaleData::DFExponent;
+            break;
 
-    case SmartNotation:
-        form = QLocaleData::DFSignificantDigits;
-        break;
+        case SmartNotation:
+            form = QLocaleData::DFSignificantDigits;
+            break;
     }
 
     uint flags = 0;

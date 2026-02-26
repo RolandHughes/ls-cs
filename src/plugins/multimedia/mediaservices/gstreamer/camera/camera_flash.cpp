@@ -49,29 +49,29 @@ QCameraExposure::FlashModes CameraBinFlash::flashMode() const
 
     switch ( flashMode )
     {
-    case GST_PHOTOGRAPHY_FLASH_MODE_AUTO:
-        modes |= QCameraExposure::FlashAuto;
-        break;
+        case GST_PHOTOGRAPHY_FLASH_MODE_AUTO:
+            modes |= QCameraExposure::FlashAuto;
+            break;
 
-    case GST_PHOTOGRAPHY_FLASH_MODE_OFF:
-        modes |= QCameraExposure::FlashOff;
-        break;
+        case GST_PHOTOGRAPHY_FLASH_MODE_OFF:
+            modes |= QCameraExposure::FlashOff;
+            break;
 
-    case GST_PHOTOGRAPHY_FLASH_MODE_ON:
-        modes |= QCameraExposure::FlashOn;
-        break;
+        case GST_PHOTOGRAPHY_FLASH_MODE_ON:
+            modes |= QCameraExposure::FlashOn;
+            break;
 
-    case GST_PHOTOGRAPHY_FLASH_MODE_FILL_IN:
-        modes |= QCameraExposure::FlashFill;
-        break;
+        case GST_PHOTOGRAPHY_FLASH_MODE_FILL_IN:
+            modes |= QCameraExposure::FlashFill;
+            break;
 
-    case GST_PHOTOGRAPHY_FLASH_MODE_RED_EYE:
-        modes |= QCameraExposure::FlashRedEyeReduction;
-        break;
+        case GST_PHOTOGRAPHY_FLASH_MODE_RED_EYE:
+            modes |= QCameraExposure::FlashRedEyeReduction;
+            break;
 
-    default:
-        modes |= QCameraExposure::FlashAuto;
-        break;
+        default:
+            modes |= QCameraExposure::FlashAuto;
+            break;
     }
 
     return modes;

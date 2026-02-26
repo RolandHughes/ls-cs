@@ -36,9 +36,9 @@ class AVFCameraService;
 using AVFAtomicInt64 = QAtomicInteger<qint64>;
 
 @interface AVFMediaAssetWriter : NSObject<AVCaptureVideoDataOutputSampleBufferDelegate,
-AVCaptureAudioDataOutputSampleBufferDelegate>
+    AVCaptureAudioDataOutputSampleBufferDelegate>
 {
-    @private
+@private
     AVFCameraService *m_service;
 
     AVFScopedPointer<AVAssetWriterInput> m_cameraWriterInput;
@@ -64,10 +64,10 @@ AVCaptureAudioDataOutputSampleBufferDelegate>
 
     QAtomicInt m_state;
 
-    @public
+@public
     AVFAtomicInt64 m_durationInMs;
 
-    @private
+@private
     CMTime m_startTime;
     CMTime m_lastTimeStamp;
 
@@ -78,10 +78,10 @@ AVCaptureAudioDataOutputSampleBufferDelegate>
 - ( id )initWithDelegate: ( AVFMediaRecorderControlIOS * )delegate;
 
 - ( bool )setupWithFileURL: ( NSURL * )fileURL
-cameraService: ( AVFCameraService * )service
-audioSettings: ( NSDictionary * )audioSettings
-videoSettings: ( NSDictionary * )videoSettings
-transform: ( CGAffineTransform )transform;
+    cameraService: ( AVFCameraService * )service
+    audioSettings: ( NSDictionary * )audioSettings
+    videoSettings: ( NSDictionary * )videoSettings
+    transform: ( CGAffineTransform )transform;
 
 // This to be called from the recorder control's thread:
 - ( void )start;

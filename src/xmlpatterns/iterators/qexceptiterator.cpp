@@ -69,28 +69,28 @@ Item ExceptIterator::next()
 
         switch ( m_node1.asNode().compareOrder( m_node2.asNode() ) )
         {
-        case QXmlNodeModelIndex::Precedes:
-            return fromFirstOperand();
-
-        case QXmlNodeModelIndex::Follows:
-        {
-            m_node2 = m_it2->next();
-
-            if ( m_node2 )
-            {
-                continue;
-            }
-            else
-            {
+            case QXmlNodeModelIndex::Precedes:
                 return fromFirstOperand();
-            }
-        }
 
-        default:
-        {
-            m_node1 = m_it1->next();
-            m_node2 = m_it2->next();
-        }
+            case QXmlNodeModelIndex::Follows:
+            {
+                m_node2 = m_it2->next();
+
+                if ( m_node2 )
+                {
+                    continue;
+                }
+                else
+                {
+                    return fromFirstOperand();
+                }
+            }
+
+            default:
+            {
+                m_node1 = m_it1->next();
+                m_node2 = m_it2->next();
+            }
         }
     }
 }

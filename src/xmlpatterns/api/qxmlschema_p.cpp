@@ -37,7 +37,7 @@ QXmlSchemaPrivate::QXmlSchemaPrivate( const QXmlNamePool &namePool )
 {
     m_networkAccessManager = new QPatternist::ReferenceCountedValue<QNetworkAccessManager>( new QNetworkAccessManager() );
     m_messageHandler = new QPatternist::ReferenceCountedValue<QAbstractMessageHandler>( new
-        QPatternist::ColoringMessageHandler() );
+            QPatternist::ColoringMessageHandler() );
 }
 
 QXmlSchemaPrivate::QXmlSchemaPrivate( const QPatternist::XsdSchemaContext::Ptr &schemaContext )
@@ -48,7 +48,7 @@ QXmlSchemaPrivate::QXmlSchemaPrivate( const QPatternist::XsdSchemaContext::Ptr &
 {
     m_networkAccessManager = new QPatternist::ReferenceCountedValue<QNetworkAccessManager>( new QNetworkAccessManager() );
     m_messageHandler = new QPatternist::ReferenceCountedValue<QAbstractMessageHandler>( new
-        QPatternist::ColoringMessageHandler() );
+            QPatternist::ColoringMessageHandler() );
 }
 
 QXmlSchemaPrivate::QXmlSchemaPrivate( const QXmlSchemaPrivate &other )

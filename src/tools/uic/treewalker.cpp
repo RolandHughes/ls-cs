@@ -76,20 +76,20 @@ void TreeWalker::acceptLayoutItem( DomLayoutItem *layoutItem )
 {
     switch ( layoutItem->kind() )
     {
-    case DomLayoutItem::Widget:
-        acceptWidget( layoutItem->elementWidget() );
-        return;
+        case DomLayoutItem::Widget:
+            acceptWidget( layoutItem->elementWidget() );
+            return;
 
-    case DomLayoutItem::Layout:
-        acceptLayout( layoutItem->elementLayout() );
-        return;
+        case DomLayoutItem::Layout:
+            acceptLayout( layoutItem->elementLayout() );
+            return;
 
-    case DomLayoutItem::Spacer:
-        acceptSpacer( layoutItem->elementSpacer() );
-        return;
+        case DomLayoutItem::Spacer:
+            acceptSpacer( layoutItem->elementSpacer() );
+            return;
 
-    case DomLayoutItem::Unknown:
-        break;
+        case DomLayoutItem::Unknown:
+            break;
     }
 
     Q_ASSERT( 0 );
@@ -204,41 +204,41 @@ void TreeWalker::acceptProperty( DomProperty *property )
 {
     switch ( property->kind() )
     {
-    case DomProperty::Bool:
-    case DomProperty::Color:
-    case DomProperty::Cstring:
-    case DomProperty::Cursor:
-    case DomProperty::CursorShape:
-    case DomProperty::Enum:
-    case DomProperty::Font:
-    case DomProperty::Pixmap:
-    case DomProperty::IconSet:
-    case DomProperty::Palette:
-    case DomProperty::Point:
-    case DomProperty::PointF:
-    case DomProperty::Rect:
-    case DomProperty::RectF:
-    case DomProperty::Set:
-    case DomProperty::Locale:
-    case DomProperty::SizePolicy:
-    case DomProperty::Size:
-    case DomProperty::SizeF:
-    case DomProperty::String:
-    case DomProperty::Number:
-    case DomProperty::LongLong:
-    case DomProperty::Char:
-    case DomProperty::Date:
-    case DomProperty::Time:
-    case DomProperty::DateTime:
-    case DomProperty::Url:
-    case DomProperty::Unknown:
-    case DomProperty::StringList:
-    case DomProperty::Float:
-    case DomProperty::Double:
-    case DomProperty::UInt:
-    case DomProperty::ULongLong:
-    case DomProperty::Brush:
-        break;
+        case DomProperty::Bool:
+        case DomProperty::Color:
+        case DomProperty::Cstring:
+        case DomProperty::Cursor:
+        case DomProperty::CursorShape:
+        case DomProperty::Enum:
+        case DomProperty::Font:
+        case DomProperty::Pixmap:
+        case DomProperty::IconSet:
+        case DomProperty::Palette:
+        case DomProperty::Point:
+        case DomProperty::PointF:
+        case DomProperty::Rect:
+        case DomProperty::RectF:
+        case DomProperty::Set:
+        case DomProperty::Locale:
+        case DomProperty::SizePolicy:
+        case DomProperty::Size:
+        case DomProperty::SizeF:
+        case DomProperty::String:
+        case DomProperty::Number:
+        case DomProperty::LongLong:
+        case DomProperty::Char:
+        case DomProperty::Date:
+        case DomProperty::Time:
+        case DomProperty::DateTime:
+        case DomProperty::Url:
+        case DomProperty::Unknown:
+        case DomProperty::StringList:
+        case DomProperty::Float:
+        case DomProperty::Double:
+        case DomProperty::UInt:
+        case DomProperty::ULongLong:
+        case DomProperty::Brush:
+            break;
     }
 }
 

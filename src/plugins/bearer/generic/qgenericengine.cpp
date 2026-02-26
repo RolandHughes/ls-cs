@@ -103,20 +103,20 @@ static QNetworkConfiguration::BearerType qGetInterfaceType( const QString &inter
     {
         switch ( physicalMedium )
         {
-        case NdisPhysicalMediumWirelessLan:
-            return QNetworkConfiguration::BearerWLAN;
+            case NdisPhysicalMediumWirelessLan:
+                return QNetworkConfiguration::BearerWLAN;
 
-        case NdisPhysicalMediumBluetooth:
-            return QNetworkConfiguration::BearerBluetooth;
+            case NdisPhysicalMediumBluetooth:
+                return QNetworkConfiguration::BearerBluetooth;
 
-        case NdisPhysicalMediumWiMax:
-            return QNetworkConfiguration::BearerWiMAX;
+            case NdisPhysicalMediumWiMax:
+                return QNetworkConfiguration::BearerWiMAX;
 
-        default:
+            default:
 #ifdef BEARER_MANAGEMENT_DEBUG
-            qDebug() << "Physical Medium" << physicalMedium;
+                qDebug() << "Physical Medium" << physicalMedium;
 #endif
-            return QNetworkConfiguration::BearerEthernet;
+                return QNetworkConfiguration::BearerEthernet;
         }
     }
 

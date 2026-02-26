@@ -136,7 +136,7 @@ inline QLibraryHandle *QLibraryStore::lscs_findLibrary( const QString &fileName,
 {
     QMutexLocker locker( &lscs_library_mutex );
     QLibraryStore *data = instance();
-    
+
     // check if this library is already loaded
     QLibraryHandle *lib = nullptr;
 

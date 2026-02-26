@@ -72,7 +72,8 @@ static void lscs_releaseSecureTransportContext( SSLContextRef context )
     CFRelease( context );
 }
 
-static bool lscs_setSessionProtocol( SSLContextRef context, const QSslConfigurationPrivate &configuration, QTcpSocket *plainSocket )
+static bool lscs_setSessionProtocol( SSLContextRef context, const QSslConfigurationPrivate &configuration,
+                                     QTcpSocket *plainSocket )
 {
     Q_ASSERT( context );
 
@@ -583,23 +584,23 @@ QSsl::SslProtocol QSslSocketBackendPrivate::sessionProtocol() const
 
     switch ( protocol )
     {
-    case kSSLProtocol2:
-        return QSsl::SslV2;
+        case kSSLProtocol2:
+            return QSsl::SslV2;
 
-    case kSSLProtocol3:
-        return QSsl::SslV3;
+        case kSSLProtocol3:
+            return QSsl::SslV3;
 
-    case kTLSProtocol1:
-        return QSsl::TlsV1_0;
+        case kTLSProtocol1:
+            return QSsl::TlsV1_0;
 
-    case kTLSProtocol11:
-        return QSsl::TlsV1_1;
+        case kTLSProtocol11:
+            return QSsl::TlsV1_1;
 
-    case kTLSProtocol12:
-        return QSsl::TlsV1_2;
+        case kTLSProtocol12:
+            return QSsl::TlsV1_2;
 
-    default:
-        return QSsl::UnknownProtocol;
+        default:
+            return QSsl::UnknownProtocol;
     }
 }
 
@@ -752,180 +753,180 @@ QSslCipher QSslSocketBackendPrivate::QSslCipher_from_SSLCipherSuite( SSLCipherSu
 
     switch ( cipher )
     {
-    case SSL_RSA_WITH_NULL_MD5:
-        ciph.d->name = QLatin1String( "NULL-MD5" );
-        ciph.d->protocol = QSsl::SslV3;
-        break;
+        case SSL_RSA_WITH_NULL_MD5:
+            ciph.d->name = QLatin1String( "NULL-MD5" );
+            ciph.d->protocol = QSsl::SslV3;
+            break;
 
-    case SSL_RSA_WITH_NULL_SHA:
-        ciph.d->name = QLatin1String( "NULL-SHA" );
-        ciph.d->protocol = QSsl::SslV3;
-        break;
+        case SSL_RSA_WITH_NULL_SHA:
+            ciph.d->name = QLatin1String( "NULL-SHA" );
+            ciph.d->protocol = QSsl::SslV3;
+            break;
 
-    case SSL_RSA_WITH_RC4_128_MD5:
-        ciph.d->name = QLatin1String( "RC4-MD5" );
-        ciph.d->protocol = QSsl::SslV3;
-        break;
+        case SSL_RSA_WITH_RC4_128_MD5:
+            ciph.d->name = QLatin1String( "RC4-MD5" );
+            ciph.d->protocol = QSsl::SslV3;
+            break;
 
-    case SSL_RSA_WITH_RC4_128_SHA:
-        ciph.d->name = QLatin1String( "RC4-SHA" );
-        ciph.d->protocol = QSsl::SslV3;
-        break;
+        case SSL_RSA_WITH_RC4_128_SHA:
+            ciph.d->name = QLatin1String( "RC4-SHA" );
+            ciph.d->protocol = QSsl::SslV3;
+            break;
 
-    case TLS_RSA_WITH_3DES_EDE_CBC_SHA:
-        ciph.d->name = QLatin1String( "DES-CBC3-SHA" );
-        break;
+        case TLS_RSA_WITH_3DES_EDE_CBC_SHA:
+            ciph.d->name = QLatin1String( "DES-CBC3-SHA" );
+            break;
 
-    case TLS_RSA_WITH_AES_128_CBC_SHA:
-        ciph.d->name = QLatin1String( "AES128-SHA" );
-        break;
+        case TLS_RSA_WITH_AES_128_CBC_SHA:
+            ciph.d->name = QLatin1String( "AES128-SHA" );
+            break;
 
-    case TLS_RSA_WITH_AES_128_CBC_SHA256:
-        ciph.d->name = QLatin1String( "AES128-SHA256" );
-        break;
+        case TLS_RSA_WITH_AES_128_CBC_SHA256:
+            ciph.d->name = QLatin1String( "AES128-SHA256" );
+            break;
 
-    case TLS_RSA_WITH_AES_256_CBC_SHA:
-        ciph.d->name = QLatin1String( "AES256-SHA" );
-        break;
+        case TLS_RSA_WITH_AES_256_CBC_SHA:
+            ciph.d->name = QLatin1String( "AES256-SHA" );
+            break;
 
-    case TLS_RSA_WITH_AES_256_CBC_SHA256:
-        ciph.d->name = QLatin1String( "AES256-SHA256" );
-        break;
+        case TLS_RSA_WITH_AES_256_CBC_SHA256:
+            ciph.d->name = QLatin1String( "AES256-SHA256" );
+            break;
 
-    case TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA:
-        ciph.d->name = QLatin1String( "DHE-RSA-DES-CBC3-SHA" );
-        break;
+        case TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA:
+            ciph.d->name = QLatin1String( "DHE-RSA-DES-CBC3-SHA" );
+            break;
 
-    case TLS_DHE_RSA_WITH_AES_128_CBC_SHA:
-        ciph.d->name = QLatin1String( "DHE-RSA-AES128-SHA" );
-        break;
+        case TLS_DHE_RSA_WITH_AES_128_CBC_SHA:
+            ciph.d->name = QLatin1String( "DHE-RSA-AES128-SHA" );
+            break;
 
-    case TLS_DHE_RSA_WITH_AES_128_CBC_SHA256:
-        ciph.d->name = QLatin1String( "DHE-RSA-AES128-SHA256" );
-        break;
+        case TLS_DHE_RSA_WITH_AES_128_CBC_SHA256:
+            ciph.d->name = QLatin1String( "DHE-RSA-AES128-SHA256" );
+            break;
 
-    case TLS_DHE_RSA_WITH_AES_256_CBC_SHA:
-        ciph.d->name = QLatin1String( "DHE-RSA-AES256-SHA" );
-        break;
+        case TLS_DHE_RSA_WITH_AES_256_CBC_SHA:
+            ciph.d->name = QLatin1String( "DHE-RSA-AES256-SHA" );
+            break;
 
-    case TLS_DHE_RSA_WITH_AES_256_CBC_SHA256:
-        ciph.d->name = QLatin1String( "DHE-RSA-AES256-SHA256" );
-        break;
+        case TLS_DHE_RSA_WITH_AES_256_CBC_SHA256:
+            ciph.d->name = QLatin1String( "DHE-RSA-AES256-SHA256" );
+            break;
 
-    case TLS_ECDH_ECDSA_WITH_NULL_SHA:
-        ciph.d->name = QLatin1String( "ECDH-ECDSA-NULL-SHA" );
-        break;
+        case TLS_ECDH_ECDSA_WITH_NULL_SHA:
+            ciph.d->name = QLatin1String( "ECDH-ECDSA-NULL-SHA" );
+            break;
 
-    case TLS_ECDH_ECDSA_WITH_RC4_128_SHA:
-        ciph.d->name = QLatin1String( "ECDH-ECDSA-RC4-SHA" );
-        break;
+        case TLS_ECDH_ECDSA_WITH_RC4_128_SHA:
+            ciph.d->name = QLatin1String( "ECDH-ECDSA-RC4-SHA" );
+            break;
 
-    case TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA:
-        ciph.d->name = QLatin1String( "ECDH-ECDSA-DES-CBC3-SHA" );
-        break;
+        case TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA:
+            ciph.d->name = QLatin1String( "ECDH-ECDSA-DES-CBC3-SHA" );
+            break;
 
-    case TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA:
-        ciph.d->name = QLatin1String( "ECDH-ECDSA-AES128-SHA" );
-        break;
+        case TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA:
+            ciph.d->name = QLatin1String( "ECDH-ECDSA-AES128-SHA" );
+            break;
 
-    case TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256:
-        ciph.d->name = QLatin1String( "ECDH-ECDSA-AES128-SHA256" );
-        break;
+        case TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256:
+            ciph.d->name = QLatin1String( "ECDH-ECDSA-AES128-SHA256" );
+            break;
 
-    case TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA:
-        ciph.d->name = QLatin1String( "ECDH-ECDSA-AES256-SHA" );
-        break;
+        case TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA:
+            ciph.d->name = QLatin1String( "ECDH-ECDSA-AES256-SHA" );
+            break;
 
-    case TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384:
-        ciph.d->name = QLatin1String( "ECDH-ECDSA-AES256-SHA384" );
-        break;
+        case TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384:
+            ciph.d->name = QLatin1String( "ECDH-ECDSA-AES256-SHA384" );
+            break;
 
-    case TLS_ECDH_RSA_WITH_NULL_SHA:
-        ciph.d->name = QLatin1String( "ECDH-RSA-NULL-SHA" );
-        break;
+        case TLS_ECDH_RSA_WITH_NULL_SHA:
+            ciph.d->name = QLatin1String( "ECDH-RSA-NULL-SHA" );
+            break;
 
-    case TLS_ECDH_RSA_WITH_RC4_128_SHA:
-        ciph.d->name = QLatin1String( "ECDH-RSA-AES256-SHA" );
-        break;
+        case TLS_ECDH_RSA_WITH_RC4_128_SHA:
+            ciph.d->name = QLatin1String( "ECDH-RSA-AES256-SHA" );
+            break;
 
-    case TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA:
-        ciph.d->name = QLatin1String( "ECDH-RSA-DES-CBC3-SHA" );
-        break;
+        case TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA:
+            ciph.d->name = QLatin1String( "ECDH-RSA-DES-CBC3-SHA" );
+            break;
 
-    case TLS_ECDH_RSA_WITH_AES_128_CBC_SHA:
-        ciph.d->name = QLatin1String( "ECDH-RSA-AES128-SHA" );
-        break;
+        case TLS_ECDH_RSA_WITH_AES_128_CBC_SHA:
+            ciph.d->name = QLatin1String( "ECDH-RSA-AES128-SHA" );
+            break;
 
-    case TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256:
-        ciph.d->name = QLatin1String( "ECDH-RSA-AES128-SHA256" );
-        break;
+        case TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256:
+            ciph.d->name = QLatin1String( "ECDH-RSA-AES128-SHA256" );
+            break;
 
-    case TLS_ECDH_RSA_WITH_AES_256_CBC_SHA:
-        ciph.d->name = QLatin1String( "ECDH-RSA-AES256-SHA" );
-        break;
+        case TLS_ECDH_RSA_WITH_AES_256_CBC_SHA:
+            ciph.d->name = QLatin1String( "ECDH-RSA-AES256-SHA" );
+            break;
 
-    case TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384:
-        ciph.d->name = QLatin1String( "ECDH-RSA-AES256-SHA384" );
-        break;
+        case TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384:
+            ciph.d->name = QLatin1String( "ECDH-RSA-AES256-SHA384" );
+            break;
 
-    case TLS_ECDHE_ECDSA_WITH_NULL_SHA:
-        ciph.d->name = QLatin1String( "ECDHE-ECDSA-NULL-SHA" );
-        break;
+        case TLS_ECDHE_ECDSA_WITH_NULL_SHA:
+            ciph.d->name = QLatin1String( "ECDHE-ECDSA-NULL-SHA" );
+            break;
 
-    case TLS_ECDHE_ECDSA_WITH_RC4_128_SHA:
-        ciph.d->name = QLatin1String( "ECDHE-ECDSA-RC4-SHA" );
-        break;
+        case TLS_ECDHE_ECDSA_WITH_RC4_128_SHA:
+            ciph.d->name = QLatin1String( "ECDHE-ECDSA-RC4-SHA" );
+            break;
 
-    case TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA:
-        ciph.d->name = QLatin1String( "ECDHE-ECDSA-DES-CBC3-SHA" );
-        break;
+        case TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA:
+            ciph.d->name = QLatin1String( "ECDHE-ECDSA-DES-CBC3-SHA" );
+            break;
 
-    case TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA:
-        ciph.d->name = QLatin1String( "ECDHE-ECDSA-AES128-SHA" );
-        break;
+        case TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA:
+            ciph.d->name = QLatin1String( "ECDHE-ECDSA-AES128-SHA" );
+            break;
 
-    case TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256:
-        ciph.d->name = QLatin1String( "ECDHE-ECDSA-AES128-SHA256" );
-        break;
+        case TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256:
+            ciph.d->name = QLatin1String( "ECDHE-ECDSA-AES128-SHA256" );
+            break;
 
-    case TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA:
-        ciph.d->name = QLatin1String( "ECDHE-ECDSA-AES256-SHA" );
-        break;
+        case TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA:
+            ciph.d->name = QLatin1String( "ECDHE-ECDSA-AES256-SHA" );
+            break;
 
-    case TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384:
-        ciph.d->name = QLatin1String( "ECDHE-ECDSA-AES256-SHA384" );
-        break;
+        case TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384:
+            ciph.d->name = QLatin1String( "ECDHE-ECDSA-AES256-SHA384" );
+            break;
 
-    case TLS_ECDHE_RSA_WITH_NULL_SHA:
-        ciph.d->name = QLatin1String( "ECDHE-RSA-NULL-SHA" );
-        break;
+        case TLS_ECDHE_RSA_WITH_NULL_SHA:
+            ciph.d->name = QLatin1String( "ECDHE-RSA-NULL-SHA" );
+            break;
 
-    case TLS_ECDHE_RSA_WITH_RC4_128_SHA:
-        ciph.d->name = QLatin1String( "ECDHE-RSA-AES256-SHA" );
-        break;
+        case TLS_ECDHE_RSA_WITH_RC4_128_SHA:
+            ciph.d->name = QLatin1String( "ECDHE-RSA-AES256-SHA" );
+            break;
 
-    case TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA:
-        ciph.d->name = QLatin1String( "ECDHE-RSA-DES-CBC3-SHA" );
-        break;
+        case TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA:
+            ciph.d->name = QLatin1String( "ECDHE-RSA-DES-CBC3-SHA" );
+            break;
 
-    case TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA:
-        ciph.d->name = QLatin1String( "ECDHE-RSA-AES128-SHA" );
-        break;
+        case TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA:
+            ciph.d->name = QLatin1String( "ECDHE-RSA-AES128-SHA" );
+            break;
 
-    case TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256:
-        ciph.d->name = QLatin1String( "ECDHE-RSA-AES128-SHA256" );
-        break;
+        case TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256:
+            ciph.d->name = QLatin1String( "ECDHE-RSA-AES128-SHA256" );
+            break;
 
-    case TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA:
-        ciph.d->name = QLatin1String( "ECDHE-RSA-AES256-SHA" );
-        break;
+        case TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA:
+            ciph.d->name = QLatin1String( "ECDHE-RSA-AES256-SHA" );
+            break;
 
-    case TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384:
-        ciph.d->name = QLatin1String( "ECDHE-RSA-AES256-SHA384" );
-        break;
+        case TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384:
+            ciph.d->name = QLatin1String( "ECDHE-RSA-AES256-SHA384" );
+            break;
 
-    default:
-        return ciph;
+        default:
+            return ciph;
     }
 
     ciph.d->isNull = false;
@@ -1432,17 +1433,17 @@ bool QSslSocketBackendPrivate::verifyPeerTrust()
 
     switch ( trustResult )
     {
-    case kSecTrustResultUnspecified:
-    case kSecTrustResultProceed:
-        break;
+        case kSecTrustResultUnspecified:
+        case kSecTrustResultProceed:
+            break;
 
-    default:
-        if ( !canIgnoreVerify )
-        {
-            const QSslError error( QSslError::CertificateUntrusted, configuration.peerCertificate );
-            errors << error;
-            emit q->peerVerifyError( error );
-        }
+        default:
+            if ( !canIgnoreVerify )
+            {
+                const QSslError error( QSslError::CertificateUntrusted, configuration.peerCertificate );
+                errors << error;
+                emit q->peerVerifyError( error );
+            }
     }
 
     // report errors

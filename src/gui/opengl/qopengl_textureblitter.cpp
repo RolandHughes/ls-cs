@@ -96,12 +96,12 @@ static const char fragment_shader_external_oes[] =
 static const GLfloat vertex_buffer_data[] =
 {
     -1,-1, 0,
-    -1, 1, 0,
-    1,-1, 0,
-    -1, 1, 0,
-    1,-1, 0,
-    1, 1, 0
-};
+        -1, 1, 0,
+        1,-1, 0,
+        -1, 1, 0,
+        1,-1, 0,
+        1, 1, 0
+    };
 
 static const GLfloat texture_buffer_data[] =
 {
@@ -195,15 +195,15 @@ static inline QOpenGLTextureBlitterPrivate::ProgramIndex targetToProgramIndex( G
 {
     switch ( target )
     {
-    case GL_TEXTURE_2D:
-        return QOpenGLTextureBlitterPrivate::TEXTURE_2D;
+        case GL_TEXTURE_2D:
+            return QOpenGLTextureBlitterPrivate::TEXTURE_2D;
 
-    case GL_TEXTURE_EXTERNAL_OES:
-        return QOpenGLTextureBlitterPrivate::TEXTURE_EXTERNAL_OES;
+        case GL_TEXTURE_EXTERNAL_OES:
+            return QOpenGLTextureBlitterPrivate::TEXTURE_EXTERNAL_OES;
 
-    default:
-        qWarning( "Unsupported texture target 0x%x", target );
-        return QOpenGLTextureBlitterPrivate::TEXTURE_2D;
+        default:
+            qWarning( "Unsupported texture target 0x%x", target );
+            return QOpenGLTextureBlitterPrivate::TEXTURE_2D;
     }
 }
 

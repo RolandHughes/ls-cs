@@ -699,63 +699,63 @@ bool QObject::event( QEvent *e )
     switch ( e->type() )
     {
 
-    case QEvent::Timer:
-        timerEvent( ( QTimerEvent * ) e );
-        break;
+        case QEvent::Timer:
+            timerEvent( ( QTimerEvent * ) e );
+            break;
 
-    case QEvent::ChildAdded:
-    case QEvent::ChildPolished:
-    case QEvent::ChildRemoved:
-        childEvent( ( QChildEvent * )e );
-        break;
+        case QEvent::ChildAdded:
+        case QEvent::ChildPolished:
+        case QEvent::ChildRemoved:
+            childEvent( ( QChildEvent * )e );
+            break;
 
-    case QEvent::DeferredDelete:
-        delete this;
-        break;
+        case QEvent::DeferredDelete:
+            delete this;
+            break;
 
-    case QEvent::MetaCall:
-    {
-        CSMetaCallEvent *metaCallEvent = dynamic_cast<CSMetaCallEvent *>( e );
-        metaCallEvent->placeMetaCall( this );
-
-        break;
-    }
-
-    case QEvent::ThreadChange:
-    {
-        QThreadData *threadData = m_threadData;
-        QAbstractEventDispatcher *eventDispatcher = threadData->eventDispatcher.load();
-
-        if ( eventDispatcher )
+        case QEvent::MetaCall:
         {
-            QList<QTimerInfo> timers = eventDispatcher->registeredTimers( this );
+            CSMetaCallEvent *metaCallEvent = dynamic_cast<CSMetaCallEvent *>( e );
+            metaCallEvent->placeMetaCall( this );
 
-            if ( ! timers.isEmpty() )
-            {
-                // set m_inThreadChangeEvent to true tells the dispatcher not to release timer
-                // ids back to the pool (since the timer ids are moving to a new thread)
-
-                m_inThreadChangeEvent = true;
-                eventDispatcher->unregisterTimers( this );
-                m_inThreadChangeEvent = false;
-
-                // using csArgument directly since the datatype contains a comma
-                QMetaObject::invokeMethod( this, "internal_reregisterTimers", Qt::QueuedConnection,
-                                           LSCSArgument<QList<QTimerInfo>> ( timers ) );
-            }
-        }
-
-        break;
-    }
-
-    default:
-        if ( e->type() >= QEvent::User )
-        {
-            customEvent( e );
             break;
         }
 
-        return false;
+        case QEvent::ThreadChange:
+        {
+            QThreadData *threadData = m_threadData;
+            QAbstractEventDispatcher *eventDispatcher = threadData->eventDispatcher.load();
+
+            if ( eventDispatcher )
+            {
+                QList<QTimerInfo> timers = eventDispatcher->registeredTimers( this );
+
+                if ( ! timers.isEmpty() )
+                {
+                    // set m_inThreadChangeEvent to true tells the dispatcher not to release timer
+                    // ids back to the pool (since the timer ids are moving to a new thread)
+
+                    m_inThreadChangeEvent = true;
+                    eventDispatcher->unregisterTimers( this );
+                    m_inThreadChangeEvent = false;
+
+                    // using csArgument directly since the datatype contains a comma
+                    QMetaObject::invokeMethod( this, "internal_reregisterTimers", Qt::QueuedConnection,
+                                               LSCSArgument<QList<QTimerInfo>> ( timers ) );
+                }
+            }
+
+            break;
+        }
+
+        default:
+            if ( e->type() >= QEvent::User )
+            {
+                customEvent( e );
+                break;
+            }
+
+            return false;
     }
 
     return true;
@@ -984,7 +984,7 @@ void QObject::queueSlot( LsCsSignal::PendingSlot data, LsCsSignal::ConnectionKin
     if ( kind == LsCsSignal::ConnectionKind::QueuedConnection )
     {
         CSMetaCallEvent *event = new CSMetaCallEvent( slot_Bento.release(), teaCup.release(),
-            sender, signal_index );
+                sender, signal_index );
 
         QCoreApplication::postEvent( this, event );
 
@@ -1004,7 +1004,7 @@ void QObject::queueSlot( LsCsSignal::PendingSlot data, LsCsSignal::ConnectionKin
 
         // store the signal data, false indicates the data will not be copied
         CSMetaCallEvent *event = new CSMetaCallEvent( slot_Bento.release(), teaCup.release(),
-            sender, signal_index, &semaphore );
+                sender, signal_index, &semaphore );
 
         QCoreApplication::postEvent( this, event );
 

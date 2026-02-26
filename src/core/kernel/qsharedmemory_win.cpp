@@ -50,41 +50,41 @@ void QSharedMemoryPrivate::setErrorString( const QString &function )
 
     switch ( windowsError )
     {
-    case ERROR_ALREADY_EXISTS:
-        error = QSharedMemory::AlreadyExists;
-        errorString = QSharedMemory::tr( "%1: already exists" ).formatArg( function );
-        break;
+        case ERROR_ALREADY_EXISTS:
+            error = QSharedMemory::AlreadyExists;
+            errorString = QSharedMemory::tr( "%1: already exists" ).formatArg( function );
+            break;
 
-    case ERROR_FILE_NOT_FOUND:
-        error = QSharedMemory::NotFound;
-        errorString = QSharedMemory::tr( "%1: does not exist" ).formatArg( function );
-        break;
+        case ERROR_FILE_NOT_FOUND:
+            error = QSharedMemory::NotFound;
+            errorString = QSharedMemory::tr( "%1: does not exist" ).formatArg( function );
+            break;
 
-    case ERROR_COMMITMENT_LIMIT:
-        error = QSharedMemory::InvalidSize;
-        errorString = QSharedMemory::tr( "%1: invalid size" ).formatArg( function );
-        break;
+        case ERROR_COMMITMENT_LIMIT:
+            error = QSharedMemory::InvalidSize;
+            errorString = QSharedMemory::tr( "%1: invalid size" ).formatArg( function );
+            break;
 
-    case ERROR_NO_SYSTEM_RESOURCES:
-    case ERROR_NOT_ENOUGH_MEMORY:
-        error = QSharedMemory::OutOfResources;
-        errorString = QSharedMemory::tr( "%1: out of resources" ).formatArg( function );
-        break;
+        case ERROR_NO_SYSTEM_RESOURCES:
+        case ERROR_NOT_ENOUGH_MEMORY:
+            error = QSharedMemory::OutOfResources;
+            errorString = QSharedMemory::tr( "%1: out of resources" ).formatArg( function );
+            break;
 
-    case ERROR_ACCESS_DENIED:
-        error = QSharedMemory::PermissionDenied;
-        errorString = QSharedMemory::tr( "%1: permission denied" ).formatArg( function );
-        break;
+        case ERROR_ACCESS_DENIED:
+            error = QSharedMemory::PermissionDenied;
+            errorString = QSharedMemory::tr( "%1: permission denied" ).formatArg( function );
+            break;
 
-    default:
-        errorString = QSharedMemory::tr( "%1: unknown error %2" ).formatArg( function ).formatArg( windowsError );
-        error = QSharedMemory::UnknownError;
+        default:
+            errorString = QSharedMemory::tr( "%1: unknown error %2" ).formatArg( function ).formatArg( windowsError );
+            error = QSharedMemory::UnknownError;
 
 #if defined(LSCS_SHOW_DEBUG_CORE)
-        qDebug() << errorString << "key" << key;
+            qDebug() << errorString << "key" << key;
 #endif
 
-        break;
+            break;
     }
 }
 

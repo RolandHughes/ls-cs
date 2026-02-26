@@ -530,51 +530,51 @@ void QLayout::widgetEvent( QEvent *e )
     switch ( e->type() )
     {
 
-    case QEvent::Resize:
-        if ( d->activated )
-        {
-            QResizeEvent *r = ( QResizeEvent * )e;
-            d->doResize( r->size() );
-        }
-        else
-        {
-            activate();
-        }
+        case QEvent::Resize:
+            if ( d->activated )
+            {
+                QResizeEvent *r = ( QResizeEvent * )e;
+                d->doResize( r->size() );
+            }
+            else
+            {
+                activate();
+            }
 
-        break;
+            break;
 
-    case QEvent::ChildRemoved:
-    {
-        QChildEvent *c = ( QChildEvent * )e;
-
-        if ( c->child()->isWidgetType() )
+        case QEvent::ChildRemoved:
         {
+            QChildEvent *c = ( QChildEvent * )e;
+
+            if ( c->child()->isWidgetType() )
+            {
 
 
 #ifndef LSCS_NO_MENUBAR
 
-            if ( c->child() == d->menubar )
-            {
-                d->menubar = nullptr;
-            }
+                if ( c->child() == d->menubar )
+                {
+                    d->menubar = nullptr;
+                }
 
 #endif
-            removeWidgetRecursively( this, c->child() );
-        }
-    }
-
-    break;
-
-    case QEvent::LayoutRequest:
-        if ( static_cast<QWidget *>( parent() )->isVisible() )
-        {
-            activate();
+                removeWidgetRecursively( this, c->child() );
+            }
         }
 
         break;
 
-    default:
-        break;
+        case QEvent::LayoutRequest:
+            if ( static_cast<QWidget *>( parent() )->isVisible() )
+            {
+                activate();
+            }
+
+            break;
+
+        default:
+            break;
     }
 }
 
@@ -1005,68 +1005,68 @@ bool QLayout::activate()
 
     switch ( d->constraint )
     {
-    case SetFixedSize:
-        // will trigger resize
-        mw->setFixedSize( totalSizeHint() );
-        break;
+        case SetFixedSize:
+            // will trigger resize
+            mw->setFixedSize( totalSizeHint() );
+            break;
 
-    case SetMinimumSize:
-        mw->setMinimumSize( totalMinimumSize() );
-        break;
+        case SetMinimumSize:
+            mw->setMinimumSize( totalMinimumSize() );
+            break;
 
-    case SetMaximumSize:
-        mw->setMaximumSize( totalMaximumSize() );
-        break;
+        case SetMaximumSize:
+            mw->setMaximumSize( totalMaximumSize() );
+            break;
 
-    case SetMinAndMaxSize:
-        mw->setMinimumSize( totalMinimumSize() );
-        mw->setMaximumSize( totalMaximumSize() );
-        break;
+        case SetMinAndMaxSize:
+            mw->setMinimumSize( totalMinimumSize() );
+            mw->setMaximumSize( totalMaximumSize() );
+            break;
 
-    case SetDefaultConstraint:
-    {
-        bool widthSet = explMin & Qt::Horizontal;
-        bool heightSet = explMin & Qt::Vertical;
-
-        if ( mw->isWindow() )
+        case SetDefaultConstraint:
         {
-            QSize ms = totalMinimumSize();
+            bool widthSet = explMin & Qt::Horizontal;
+            bool heightSet = explMin & Qt::Vertical;
 
-            if ( widthSet )
+            if ( mw->isWindow() )
             {
-                ms.setWidth( mw->minimumSize().width() );
+                QSize ms = totalMinimumSize();
+
+                if ( widthSet )
+                {
+                    ms.setWidth( mw->minimumSize().width() );
+                }
+
+                if ( heightSet )
+                {
+                    ms.setHeight( mw->minimumSize().height() );
+                }
+
+                mw->setMinimumSize( ms );
+
+            }
+            else if ( !widthSet || !heightSet )
+            {
+                QSize ms = mw->minimumSize();
+
+                if ( !widthSet )
+                {
+                    ms.setWidth( 0 );
+                }
+
+                if ( !heightSet )
+                {
+                    ms.setHeight( 0 );
+                }
+
+                mw->setMinimumSize( ms );
             }
 
-            if ( heightSet )
-            {
-                ms.setHeight( mw->minimumSize().height() );
-            }
-
-            mw->setMinimumSize( ms );
-
+            break;
         }
-        else if ( !widthSet || !heightSet )
-        {
-            QSize ms = mw->minimumSize();
 
-            if ( !widthSet )
-            {
-                ms.setWidth( 0 );
-            }
-
-            if ( !heightSet )
-            {
-                ms.setHeight( 0 );
-            }
-
-            mw->setMinimumSize( ms );
-        }
-
-        break;
-    }
-
-    case SetNoConstraint:
-        break;
+        case SetNoConstraint:
+            break;
     }
 
     d->doResize( mw->size() );

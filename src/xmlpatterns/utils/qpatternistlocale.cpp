@@ -34,38 +34,38 @@ QString escape( const QString &input )
     {
         switch ( input.at( i ).unicode() )
         {
-        case '<':
-        {
-            rich += QLatin1String( "&lt;" );
-            break;
-        }
+            case '<':
+            {
+                rich += QLatin1String( "&lt;" );
+                break;
+            }
 
-        case '>':
-        {
-            rich += QLatin1String( "&gt;" );
-            break;
-        }
+            case '>':
+            {
+                rich += QLatin1String( "&gt;" );
+                break;
+            }
 
-        case '&':
-        {
-            rich += QLatin1String( "&amp;" );
-            break;
-        }
+            case '&':
+            {
+                rich += QLatin1String( "&amp;" );
+                break;
+            }
 
-        case '"':
-        {
-            rich += QLatin1String( "&quot;" );
-            break;
-        }
+            case '"':
+            {
+                rich += QLatin1String( "&quot;" );
+                break;
+            }
 
-        case '\'':
-        {
-            rich += QLatin1String( "&apos;" );
-            break;
-        }
+            case '\'':
+            {
+                rich += QLatin1String( "&apos;" );
+                break;
+            }
 
-        default:
-            rich += input.at( i );
+            default:
+                rich += input.at( i );
         }
     }
 

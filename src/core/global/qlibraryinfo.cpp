@@ -71,11 +71,11 @@ public:
 
         if ( ls )
         {
-            if (CONFIGURATION_SETTINGS_LOADED)
+            if ( CONFIGURATION_SETTINGS_LOADED )
             {
                 return ls->settings.data();
             }
-            
+
             if ( ls->reloadOnQAppAvailable && QCoreApplication::instance() != nullptr )
             {
                 ls->load();
@@ -98,11 +98,11 @@ QLibrarySettings::QLibrarySettings()
 
 void QLibrarySettings::load()
 {
-    if (CONFIGURATION_SETTINGS_LOADED)
+    if ( CONFIGURATION_SETTINGS_LOADED )
     {
         return;
     }
-    
+
     settings.reset( QLibraryInfoPrivate::findConfiguration() );
     reloadOnQAppAvailable = ( settings.data() == nullptr && QCoreApplication::instance() == nullptr );
 
@@ -130,72 +130,76 @@ void QLibrarySettings::load()
         }
     }
 
-    if (settings != nullptr)
+    if ( settings != nullptr )
     {
 #if defined(Q_OS_WIN)
 
         bool changedPath = false;
-        QString dosPath( QString::fromUtf8( std::getenv("PATH"));
-        QDir prefix( settings->value("Paths/Prefix").toString())
-        
-        QString libPath = settings->value("Paths/Libraries").toString();
-        QDir libDir( prefix);
-        libDir.cd( libPath);
-        libPath = libDir.canonicalPath();
-        
-        if ( libPath.length() > 0) 
-        {
-            if (dosPath.contains(libPath))
+        QString dosPath( QString::fromUtf8( std::getenv( "PATH" ) );
+                         QDir prefix( settings->value( "Paths/Prefix" ).toString() )
+
+                         QString libPath = settings->value( "Paths/Libraries" ).toString();
+                         QDir libDir( prefix );
+                         libDir.cd( libPath );
+                         libPath = libDir.canonicalPath();
+
+                         if ( libPath.length() > 0 )
+    {
+        if ( dosPath.contains( libPath ) )
             {
-            // do nothing
+                // do nothing
             }
             else
             {
                 changedPath = true;
-                if (dosPath.length() > 0)
+
+                if ( dosPath.length() > 0 )
                 {
-                    libPath.append(";");
+                    libPath.append( ";" );
                 }
-                dosPath.prepend(libPath);
+
+                dosPath.prepend( libPath );
             }
         }
-        
-        QString pluginPath = settings->value("Paths/Plugins").toString();
-        QDir pluginDir( prefix);
-        pluginDir.cd( pluginPath);
-        pluginPath = pluginDir.canonicalPath();
-        
-        if (( pluginPath.length() > 0) && (dosPath.contains(pluginPath)))
-        {
-            // do nothing
-        }
-        else
-        {
-            changedPath = true;
-            if (dosPath.length() > 0)
+
+        QString pluginPath = settings->value( "Paths/Plugins" ).toString();
+                             QDir pluginDir( prefix );
+                             pluginDir.cd( pluginPath );
+                             pluginPath = pluginDir.canonicalPath();
+
+                             if ( ( pluginPath.length() > 0 ) && ( dosPath.contains( pluginPath ) ) )
+    {
+        // do nothing
+    }
+    else
+    {
+        changedPath = true;
+
+        if ( dosPath.length() > 0 )
             {
-                pluginPath.append(";");
+                pluginPath.append( ";" );
             }
-            dosPath.prepend(pluginPath);
+
+            dosPath.prepend( pluginPath );
         }
-        
-        if (changedPath)
-        {
-            setenv("PATH", dosPath.data(), 1);
+
+        if ( changedPath )
+    {
+        setenv( "PATH", dosPath.data(), 1 );
         }
 #endif
-        
+
     }
 }
 
 QSettings *QLibraryInfoPrivate::findConfiguration()
 {
-   
+
     /* See if they have a CONF_FILE_NAME locally with the executable
      * Very common during development/testing.
      */
     QString qtconfig;
-    
+
     if ( QCoreApplication::instance() )
     {
 
@@ -218,7 +222,7 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
 #endif
         {
             QDir pwd( QCoreApplication::applicationDirPath() );
-            qtconfig = pwd.filePath( QString::fromUtf8(CONF_FILE_NAME ));
+            qtconfig = pwd.filePath( QString::fromUtf8( CONF_FILE_NAME ) );
         }
     }
 
@@ -229,51 +233,51 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
         return tmp;
     }
 
-    /* 
-     * While it is not a good idea unless you are distributing an 
+    /*
+     * While it is not a good idea unless you are distributing an
      * entire application directory tree, the developer could have
      * resource compiled their .conf. Check there first.
      */
-    qtconfig = QString::fromUtf8(CONF_RESOURCE_PATH);
-    
+    qtconfig = QString::fromUtf8( CONF_RESOURCE_PATH );
+
     if ( QFile::exists( qtconfig ) )
     {
         QSettings *tmp = new QSettings( qtconfig, QSettings::IniFormat );
         CONFIGURATION_SETTINGS_LOADED = true;
         return tmp;
     }
-    
-    
+
+
     /*
-     * Someone could have mungy-puffled the CMake definitions so 
+     * Someone could have mungy-puffled the CMake definitions so
      * a full path got loaded as the data value instead of a directory
      * tree based on the prefix. Check for mungy-puffle first.
     */
-    QDir systemDataPath( QString::fromUtf8(LsCsLibraryInfo::lscsData ));
-    qtconfig = systemDataPath.filePath( QString::fromUtf8(CONF_FILE_NAME));
-        
+    QDir systemDataPath( QString::fromUtf8( LsCsLibraryInfo::lscsData ) );
+    qtconfig = systemDataPath.filePath( QString::fromUtf8( CONF_FILE_NAME ) );
+
     if ( QFile::exists( qtconfig ) )
     {
         QSettings *tmp = new QSettings( qtconfig, QSettings::IniFormat );
         CONFIGURATION_SETTINGS_LOADED = true;
         return tmp;
     }
-    
+
     /*
-     * Good. This is how it is supposed to work. The data value is 
+     * Good. This is how it is supposed to work. The data value is
      * supposed to be based on the prefix.
      */
-    QDir fullDataPath( QString::fromUtf8( LsCsLibraryInfo::install_prefix ));
-    fullDataPath.cd( QString::fromUtf8(LsCsLibraryInfo::lscsData));
-    qtconfig = fullDataPath.filePath( QString::fromUtf8(CONF_FILE_NAME));
-	
+    QDir fullDataPath( QString::fromUtf8( LsCsLibraryInfo::install_prefix ) );
+    fullDataPath.cd( QString::fromUtf8( LsCsLibraryInfo::lscsData ) );
+    qtconfig = fullDataPath.filePath( QString::fromUtf8( CONF_FILE_NAME ) );
+
     if ( QFile::exists( qtconfig ) )
     {
         QSettings *tmp = new QSettings( qtconfig, QSettings::IniFormat );
         CONFIGURATION_SETTINGS_LOADED = true;
         return tmp;
     }
-	    
+
     qDebug() << "config file not found";
 
     return nullptr;     // no luck
@@ -317,39 +321,39 @@ QString QLibraryInfo::location( LibraryLocation loc )
 
         switch ( loc )
         {
-        // TODO:: see if this needs to be LsCsLibraryInfo::install_prefix
-        case PrefixPath:
-            key = "Prefix";
-            defaultValue = ".";
-            break;
+            // TODO:: see if this needs to be LsCsLibraryInfo::install_prefix
+            case PrefixPath:
+                key = "Prefix";
+                defaultValue = ".";
+                break;
 
-        case PluginsPath:
-            key = "Plugins";
-            defaultValue = ".";  //LsCsLibraryInfo::plugins;
-            break;
+            case PluginsPath:
+                key = "Plugins";
+                defaultValue = ".";  //LsCsLibraryInfo::plugins;
+                break;
 
-        case TranslationsPath:
-            key = "Translations";
-            defaultValue = "translations";
-            break;
+            case TranslationsPath:
+                key = "Translations";
+                defaultValue = "translations";
+                break;
 
-        case SettingsPath:
-            key = "Settings";
-            defaultValue = ".";
-            break;
+            case SettingsPath:
+                key = "Settings";
+                defaultValue = ".";
+                break;
 
-        case LibrariesPath:
-            key = "Libraries";
-            defaultValue = ".";    //LsCsLibraryInfo::libraries;
-            break;
+            case LibrariesPath:
+                key = "Libraries";
+                defaultValue = ".";    //LsCsLibraryInfo::libraries;
+                break;
 
-        case BinariesPath:
-            key = "Binaries";
-            defaultValue = ".";    //LsCsLibraryInfo::binaries;
-            break;
+            case BinariesPath:
+                key = "Binaries";
+                defaultValue = ".";    //LsCsLibraryInfo::binaries;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         if ( ! key.isEmpty() )
@@ -382,32 +386,32 @@ QString QLibraryInfo::location( LibraryLocation loc )
         switch ( loc )
         {
 
-        case PrefixPath:
-            retval = ".";
-            break;
+            case PrefixPath:
+                retval = ".";
+                break;
 
-        case PluginsPath:
-            retval = ".";    //LsCsLibraryInfo::plugins;
-            break;
+            case PluginsPath:
+                retval = ".";    //LsCsLibraryInfo::plugins;
+                break;
 
-        case TranslationsPath:
-            retval = "translations";
-            break;
+            case TranslationsPath:
+                retval = "translations";
+                break;
 
-        case SettingsPath:
-            retval = "settings";
-            break;
+            case SettingsPath:
+                retval = "settings";
+                break;
 
-        case LibrariesPath:
-            retval = ".";    //LsCsLibraryInfo::libraries;
-            break;
+            case LibrariesPath:
+                retval = ".";    //LsCsLibraryInfo::libraries;
+                break;
 
-        case BinariesPath:
-            retval = ".";    //LsCsLibraryInfo::binaries;
-            break;
+            case BinariesPath:
+                retval = ".";    //LsCsLibraryInfo::binaries;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -472,12 +476,12 @@ QStringList QLibraryInfo::platformPluginArguments( const QString &platformName )
      * This needs to use the previously loaded scoped pointer.
      */
     QLibrarySettings *ls = lscs_library_settings();
-    
+
     QSettings *settingsPtr = nullptr;
-    
-    if (CONFIGURATION_SETTINGS_LOADED)
+
+    if ( CONFIGURATION_SETTINGS_LOADED )
     {
-          settingsPtr = ls->settings.data();
+        settingsPtr = ls->settings.data();
     }
     else
     {

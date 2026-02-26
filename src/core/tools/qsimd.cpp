@@ -264,11 +264,11 @@ static quint64 detectProcessorFeatures()
     };
 
     static constexpr const quint64 AllAVX512 = ( Q_UINT64_C( 1 ) << CpuFeatureAVX512F )    |
-        ( Q_UINT64_C( 1 ) << CpuFeatureAVX512CD )   |
-        ( Q_UINT64_C( 1 ) << CpuFeatureAVX512ER )   | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512PF ) |
-        ( Q_UINT64_C( 1 ) << CpuFeatureAVX512BW )   | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512DQ ) |
-        ( Q_UINT64_C( 1 ) << CpuFeatureAVX512VL )   |
-        ( Q_UINT64_C( 1 ) << CpuFeatureAVX512IFMA ) | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512VBMI );
+            ( Q_UINT64_C( 1 ) << CpuFeatureAVX512CD )   |
+            ( Q_UINT64_C( 1 ) << CpuFeatureAVX512ER )   | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512PF ) |
+            ( Q_UINT64_C( 1 ) << CpuFeatureAVX512BW )   | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512DQ ) |
+            ( Q_UINT64_C( 1 ) << CpuFeatureAVX512VL )   |
+            ( Q_UINT64_C( 1 ) << CpuFeatureAVX512IFMA ) | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512VBMI );
 
     static constexpr const quint64 AllAVX2 = ( Q_UINT64_C( 1 ) << CpuFeatureAVX2 ) | AllAVX512;
     static constexpr const quint64 AllAVX = ( Q_UINT64_C( 1 ) << CpuFeatureAVX ) | AllAVX2;
@@ -586,9 +586,9 @@ static const int features_indices[] = { 0 };
  dspr2
 */
 static const char features_string[] =
-" dsp\0"
-" dspr2\0"
-"\0";
+    " dsp\0"
+    " dspr2\0"
+    "\0";
 
 static const int features_indices[] =
 {
@@ -599,36 +599,36 @@ static const int features_indices[] =
 
 static const char features_string[] =
 
-" sse3\0"
-" sse2\0"
-" avx512vbmi\0"
-" ssse3\0"
-" fma\0"
-" cmpxchg16b\0"
-" sse4.1\0"
-" sse4.2\0"
-" movbe\0"
-" popcnt\0"
-" aes\0"
-" avx\0"
-" f16c\0"
-" rdrand\0"
-" bmi\0"
-" hle\0"
-" avx2\0"
-" bmi2\0"
-" rtm\0"
-" avx512f\0"
-" avx512dq\0"
-" rdseed\0"
-" avx512ifma\0"
-" avx512pf\0"
-" avx512er\0"
-" avx512cd\0"
-" sha\0"
-" avx512bw\0"
-" avx512vl\0"
-"\0";
+    " sse3\0"
+    " sse2\0"
+    " avx512vbmi\0"
+    " ssse3\0"
+    " fma\0"
+    " cmpxchg16b\0"
+    " sse4.1\0"
+    " sse4.2\0"
+    " movbe\0"
+    " popcnt\0"
+    " aes\0"
+    " avx\0"
+    " f16c\0"
+    " rdrand\0"
+    " bmi\0"
+    " hle\0"
+    " avx2\0"
+    " bmi2\0"
+    " rtm\0"
+    " avx512f\0"
+    " avx512dq\0"
+    " rdseed\0"
+    " avx512ifma\0"
+    " avx512pf\0"
+    " avx512er\0"
+    " avx512cd\0"
+    " sha\0"
+    " avx512bw\0"
+    " avx512vl\0"
+    "\0";
 static const quint8 features_indices[] =
 {
     0,    6,   12,    5,    5,    5,    5,    5,

@@ -648,31 +648,31 @@ QVariant QDoubleSpinBoxPrivate::validateAndInterpret( QString &input, int &pos,
 
     switch ( len )
     {
-    case 0:
-        state = max != min ? QValidator::Intermediate : QValidator::Invalid;
-        goto end;
-
-    case 1:
-        if ( copy.at( 0 ) == locale.decimalPoint() || ( plus && copy.at( 0 ) == '+' ) || ( minus && copy.at( 0 ) == '-' ) )
-        {
-            state = QValidator::Intermediate;
+        case 0:
+            state = max != min ? QValidator::Intermediate : QValidator::Invalid;
             goto end;
-        }
 
-        break;
+        case 1:
+            if ( copy.at( 0 ) == locale.decimalPoint() || ( plus && copy.at( 0 ) == '+' ) || ( minus && copy.at( 0 ) == '-' ) )
+            {
+                state = QValidator::Intermediate;
+                goto end;
+            }
 
-    case 2:
-        if ( copy.at( 1 ) == locale.decimalPoint()
-                && ( ( plus && copy.at( 0 ) == QLatin1Char( '+' ) ) || ( minus && copy.at( 0 ) == QLatin1Char( '-' ) ) ) )
-        {
-            state = QValidator::Intermediate;
-            goto end;
-        }
+            break;
 
-        break;
+        case 2:
+            if ( copy.at( 1 ) == locale.decimalPoint()
+                    && ( ( plus && copy.at( 0 ) == QLatin1Char( '+' ) ) || ( minus && copy.at( 0 ) == QLatin1Char( '-' ) ) ) )
+            {
+                state = QValidator::Intermediate;
+                goto end;
+            }
 
-    default:
-        break;
+            break;
+
+        default:
+            break;
     }
 
     if ( copy.at( 0 ) == locale.groupSeparator() )

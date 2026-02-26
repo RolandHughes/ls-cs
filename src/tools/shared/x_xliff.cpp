@@ -81,26 +81,26 @@ static QString dataType( const TranslatorMessage &m )
 
     switch ( extHash )
     {
-    case COMBINE4CHARS( 0, 'c', 'p', 'p' ):
-    case COMBINE4CHARS( 0, 'c', 'x', 'x' ):
-    case COMBINE4CHARS( 0, 'c', '+', '+' ):
-    case COMBINE4CHARS( 0, 'h', 'p', 'p' ):
-    case COMBINE4CHARS( 0, 'h', 'x', 'x' ):
-    case COMBINE4CHARS( 0, 'h', '+', '+' ):
-        return QString( "cpp" );
+        case COMBINE4CHARS( 0, 'c', 'p', 'p' ):
+        case COMBINE4CHARS( 0, 'c', 'x', 'x' ):
+        case COMBINE4CHARS( 0, 'c', '+', '+' ):
+        case COMBINE4CHARS( 0, 'h', 'p', 'p' ):
+        case COMBINE4CHARS( 0, 'h', 'x', 'x' ):
+        case COMBINE4CHARS( 0, 'h', '+', '+' ):
+            return QString( "cpp" );
 
-    case COMBINE4CHARS( 0, 0, 0, 'c' ):
-    case COMBINE4CHARS( 0, 0, 0, 'h' ):
-    case COMBINE4CHARS( 0, 0, 'c', 'c' ):
-    case COMBINE4CHARS( 0, 0, 'c', 'h' ):
-    case COMBINE4CHARS( 0, 0, 'h', 'h' ):
-        return QString( "c" );
+        case COMBINE4CHARS( 0, 0, 0, 'c' ):
+        case COMBINE4CHARS( 0, 0, 0, 'h' ):
+        case COMBINE4CHARS( 0, 0, 'c', 'c' ):
+        case COMBINE4CHARS( 0, 0, 'c', 'h' ):
+        case COMBINE4CHARS( 0, 0, 'h', 'h' ):
+            return QString( "c" );
 
-    case COMBINE4CHARS( 0, 0, 'u', 'i' ):
-        return QString::fromLatin1( dataTypeUIFile ); //### form?
+        case COMBINE4CHARS( 0, 0, 'u', 'i' ):
+            return QString::fromLatin1( dataTypeUIFile ); //### form?
 
-    default:
-        return QString( "plaintext" );                // we give up
+        default:
+            return QString( "plaintext" );                // we give up
     }
 }
 
@@ -172,37 +172,37 @@ static QString protect( const QString &str, bool makePhs = true )
 
         switch ( c.unicode() )
         {
-        case '\"':
-            result += QLatin1String( "&quot;" );
-            break;
+            case '\"':
+                result += QLatin1String( "&quot;" );
+                break;
 
-        case '&':
-            result += QLatin1String( "&amp;" );
-            break;
+            case '&':
+                result += QLatin1String( "&amp;" );
+                break;
 
-        case '>':
-            result += QLatin1String( "&gt;" );
-            break;
+            case '>':
+                result += QLatin1String( "&gt;" );
+                break;
 
-        case '<':
-            result += QLatin1String( "&lt;" );
-            break;
+            case '<':
+                result += QLatin1String( "&lt;" );
+                break;
 
-        case '\'':
-            result += QLatin1String( "&apos;" );
-            break;
+            case '\'':
+                result += QLatin1String( "&apos;" );
+                break;
 
-        default:
-            if ( c < 0x20 && c != '\r' && c != '\n' && c != '\t' )
-            {
-                result += numericEntity( c.unicode(), makePhs );
+            default:
+                if ( c < 0x20 && c != '\r' && c != '\n' && c != '\t' )
+                {
+                    result += numericEntity( c.unicode(), makePhs );
 
-            }
-            else
-            {
-                // this also covers surrogates
-                result += c;
-            }
+                }
+                else
+                {
+                    // this also covers surrogates
+                    result += c;
+                }
         }
     }
 
@@ -331,8 +331,8 @@ static void writeTransUnits( QTextStream &ts, const TranslatorMessage &msg, cons
 
     QStringList::const_iterator
     srcit    = sources.begin(), srcend = sources.end(),
-                                oldsrcit = oldsources.begin(), oldsrcend = oldsources.end(),
-                                                               transit  = translns.begin(), transend = translns.end();
+    oldsrcit = oldsources.begin(), oldsrcend = oldsources.end(),
+    transit  = translns.begin(), transend = translns.end();
 
     int plural = 0;
     QString source;

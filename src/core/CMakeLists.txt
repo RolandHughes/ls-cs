@@ -14,24 +14,24 @@ target_compile_definitions(LsCsCore
    -DBUILDING_LIB_LSCS_STRING
 )
 
-if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-
-    add_library(ls_libtool_ep SHARED IMPORTED GLOBAL)
-
-    add_dependencies(ls_libtool_ep  ls_libtool)
-    set_target_properties(ls_libtool_ep PROPERTIES IMPORTED_LOCATION "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so")
-
-    include_directories( "${LIBTOOL_INSTALL_PREFIX}/include" )
-
-    add_dependencies(LsCsCore ls_libtool)
-
-    target_link_libraries(LsCsCore PRIVATE ls_libtool_ep)
-
-    
-elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-    add_dependencies(LsCsCore ls_libtool)
-    target_link_libraries(LsCsCore PRIVATE ls_libtoola)
-endif()
+#if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
+#
+#    add_library(ls_libtool_ep SHARED IMPORTED GLOBAL)
+#
+#    add_dependencies(ls_libtool_ep  ls_libtool)
+#    set_target_properties(ls_libtool_ep PROPERTIES IMPORTED_LOCATION "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so")
+#
+#    include_directories( "${LIBTOOL_INSTALL_PREFIX}/include" )
+#
+#    add_dependencies(LsCsCore ls_libtool)
+#
+#    target_link_libraries(LsCsCore PRIVATE ls_libtool_ep)
+#
+#    
+#elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+#    add_dependencies(LsCsCore ls_libtool)
+#    target_link_libraries(LsCsCore PRIVATE ls_libtoola)
+#endif()
 
 
 if (GTK2_FOUND)

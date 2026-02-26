@@ -171,64 +171,64 @@ QString QSjisCodec::convertToUnicode( const char *chars, int len, ConverterState
 
         switch ( nbuf )
         {
-        case 0:
-            if ( ch < 0x80 )
-            {
-                result += QValidChar( ch );
-            }
-            else if ( IsKana( ch ) )
-            {
-                // JIS X 0201 Latin or JIS X 0201 Kana
-                u = conv->jisx0201ToUnicode( ch );
-                result += QValidChar( u );
-            }
-            else if ( IsSjisChar1( ch ) )
-            {
-                // JIS X 0208
-                buf[0] = ch;
-                nbuf = 1;
-            }
-            else
-            {
-                // Invalid
-                result += replacement;
-                ++invalid;
-            }
-
-            break;
-
-        case 1:
-
-            // JIS X 0208
-            if ( IsSjisChar2( ch ) )
-            {
-                if ( ( u = conv->sjisibmvdcToUnicode( buf[0], ch ) ) )
+            case 0:
+                if ( ch < 0x80 )
                 {
+                    result += QValidChar( ch );
+                }
+                else if ( IsKana( ch ) )
+                {
+                    // JIS X 0201 Latin or JIS X 0201 Kana
+                    u = conv->jisx0201ToUnicode( ch );
                     result += QValidChar( u );
                 }
-                else if ( ( u = conv->cp932ToUnicode( buf[0], ch ) ) )
+                else if ( IsSjisChar1( ch ) )
                 {
-                    result += QValidChar( u );
-                }
-                else if ( IsUserDefinedChar1( buf[0] ) )
-                {
-                    result += QChar::ReplacementCharacter;
+                    // JIS X 0208
+                    buf[0] = ch;
+                    nbuf = 1;
                 }
                 else
                 {
-                    u = conv->sjisToUnicode( buf[0], ch );
-                    result += QValidChar( u );
+                    // Invalid
+                    result += replacement;
+                    ++invalid;
                 }
-            }
-            else
-            {
-                // Invalid
-                result += replacement;
-                ++invalid;
-            }
 
-            nbuf = 0;
-            break;
+                break;
+
+            case 1:
+
+                // JIS X 0208
+                if ( IsSjisChar2( ch ) )
+                {
+                    if ( ( u = conv->sjisibmvdcToUnicode( buf[0], ch ) ) )
+                    {
+                        result += QValidChar( u );
+                    }
+                    else if ( ( u = conv->cp932ToUnicode( buf[0], ch ) ) )
+                    {
+                        result += QValidChar( u );
+                    }
+                    else if ( IsUserDefinedChar1( buf[0] ) )
+                    {
+                        result += QChar::ReplacementCharacter;
+                    }
+                    else
+                    {
+                        u = conv->sjisToUnicode( buf[0], ch );
+                        result += QValidChar( u );
+                    }
+                }
+                else
+                {
+                    // Invalid
+                    result += replacement;
+                    ++invalid;
+                }
+
+                nbuf = 0;
+                break;
         }
     }
 

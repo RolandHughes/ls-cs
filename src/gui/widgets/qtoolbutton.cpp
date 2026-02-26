@@ -420,37 +420,37 @@ void QToolButton::actionEvent( QActionEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::ActionChanged:
-        if ( action == d->defaultAction )
-        {
-            setDefaultAction( action ); // update button state
-        }
+        case QEvent::ActionChanged:
+            if ( action == d->defaultAction )
+            {
+                setDefaultAction( action ); // update button state
+            }
 
-        break;
+            break;
 
-    case QEvent::ActionAdded:
-        connect( action, &QAction::triggered, this, &QToolButton::_q_actionTriggered );
-        break;
+        case QEvent::ActionAdded:
+            connect( action, &QAction::triggered, this, &QToolButton::_q_actionTriggered );
+            break;
 
-    case QEvent::ActionRemoved:
-        if ( d->defaultAction == action )
-        {
-            d->defaultAction = nullptr;
-        }
+        case QEvent::ActionRemoved:
+            if ( d->defaultAction == action )
+            {
+                d->defaultAction = nullptr;
+            }
 
 #ifndef LSCS_NO_MENU
 
-        if ( action == d->menuAction )
-        {
-            d->menuAction = nullptr;
-        }
+            if ( action == d->menuAction )
+            {
+                d->menuAction = nullptr;
+            }
 
 #endif
-        action->disconnect( this );
-        break;
+            action->disconnect( this );
+            break;
 
-    default:
-        ;
+        default:
+            ;
     }
 
     QAbstractButton::actionEvent( event );
@@ -1017,18 +1017,18 @@ bool QToolButton::event( QEvent *event )
 {
     switch ( event->type() )
     {
-    case QEvent::HoverEnter:
-    case QEvent::HoverLeave:
-    case QEvent::HoverMove:
-        if ( const QHoverEvent *he = static_cast<const QHoverEvent *>( event ) )
-        {
-            d_func()->updateHoverControl( he->pos() );
-        }
+        case QEvent::HoverEnter:
+        case QEvent::HoverLeave:
+        case QEvent::HoverMove:
+            if ( const QHoverEvent *he = static_cast<const QHoverEvent *>( event ) )
+            {
+                d_func()->updateHoverControl( he->pos() );
+            }
 
-        break;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QAbstractButton::event( event );

@@ -51,30 +51,30 @@ Tokenizer::Token TokenRevealer::nextToken( YYLTYPE *const sourceLocator )
     /* Indent. */
     switch ( type )
     {
-    case CURLY_LBRACE:
-    {
-        m_result += QLatin1Char( '\n' ) + m_indentationString + asString + QLatin1Char( '\n' );
-        m_indentationString.append( QLatin1String( "    " ) );
-        m_result += m_indentationString;
-        break;
-    }
+        case CURLY_LBRACE:
+        {
+            m_result += QLatin1Char( '\n' ) + m_indentationString + asString + QLatin1Char( '\n' );
+            m_indentationString.append( QLatin1String( "    " ) );
+            m_result += m_indentationString;
+            break;
+        }
 
-    case CURLY_RBRACE:
-    {
-        m_indentationString.chop( 4 );
-        m_result += QLatin1Char( '\n' ) + m_indentationString + asString;
-        break;
-    }
+        case CURLY_RBRACE:
+        {
+            m_indentationString.chop( 4 );
+            m_result += QLatin1Char( '\n' ) + m_indentationString + asString;
+            break;
+        }
 
-    case SEMI_COLON:
-    case COMMA:
-    {
-        m_result += asString + QLatin1Char( '\n' ) + m_indentationString;
-        break;
-    }
+        case SEMI_COLON:
+        case COMMA:
+        {
+            m_result += asString + QLatin1Char( '\n' ) + m_indentationString;
+            break;
+        }
 
-    default:
-        m_result += asString + QLatin1Char( ' ' );
+        default:
+            m_result += asString + QLatin1Char( ' ' );
     }
 
     return token;

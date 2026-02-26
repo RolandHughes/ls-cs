@@ -299,21 +299,21 @@ static void getWordBreaks( const QString &str, QCharAttributes *attributes )
 
             switch ( last_bClass )
             {
-            case QUnicodeTables::WordBreak_Katakana:
-                currentWordType = WordType_HiraganaKatakana;
-                attributes[pos].wordStart = true;
-                break;
+                case QUnicodeTables::WordBreak_Katakana:
+                    currentWordType = WordType_HiraganaKatakana;
+                    attributes[pos].wordStart = true;
+                    break;
 
-            case QUnicodeTables::WordBreak_HebrewLetter:
-            case QUnicodeTables::WordBreak_ALetter:
-            case QUnicodeTables::WordBreak_Numeric:
-                currentWordType = WordType_AlphaNumeric;
-                attributes[pos].wordStart = true;
-                break;
+                case QUnicodeTables::WordBreak_HebrewLetter:
+                case QUnicodeTables::WordBreak_ALetter:
+                case QUnicodeTables::WordBreak_Numeric:
+                    currentWordType = WordType_AlphaNumeric;
+                    attributes[pos].wordStart = true;
+                    break;
 
-            default:
-                currentWordType = WordType_None;
-                break;
+                default:
+                    currentWordType = WordType_None;
+                    break;
             }
         }
     }
@@ -404,23 +404,23 @@ static void getSentenceBreaks( const QString &str, QCharAttributes *attributes )
 
                 switch ( t_bClass )
                 {
-                case QUnicodeTables::SentenceBreak_Any:
-                case QUnicodeTables::SentenceBreak_Extend:
-                case QUnicodeTables::SentenceBreak_Sp:
-                case QUnicodeTables::SentenceBreak_Numeric:
-                case QUnicodeTables::SentenceBreak_SContinue:
-                case QUnicodeTables::SentenceBreak_Close:
-                    continue;
+                    case QUnicodeTables::SentenceBreak_Any:
+                    case QUnicodeTables::SentenceBreak_Extend:
+                    case QUnicodeTables::SentenceBreak_Sp:
+                    case QUnicodeTables::SentenceBreak_Numeric:
+                    case QUnicodeTables::SentenceBreak_SContinue:
+                    case QUnicodeTables::SentenceBreak_Close:
+                        continue;
 
-                case QUnicodeTables::SentenceBreak_Lower:
-                    k    = tmp_k;
-                    iter = tmp_iter;
+                    case QUnicodeTables::SentenceBreak_Lower:
+                        k    = tmp_k;
+                        iter = tmp_iter;
 
-                    state = SB::Initial;
-                    break;
+                        state = SB::Initial;
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
                 }
 
                 break;
@@ -476,35 +476,35 @@ inline NumClass toClass( QUnicodeTables::LineBreakClass lbc, QChar::Category cat
 {
     switch ( lbc )
     {
-    case QUnicodeTables::LineBreak_AL:
-        if ( category == QChar::Symbol_Math )
-        {
+        case QUnicodeTables::LineBreak_AL:
+            if ( category == QChar::Symbol_Math )
+            {
+                return NumClass::SYIS;
+            }
+
+            break;
+
+        case QUnicodeTables::LineBreak_PR:
+        case QUnicodeTables::LineBreak_PO:
+            return NumClass::PRPO;
+
+        case QUnicodeTables::LineBreak_OP:
+        case QUnicodeTables::LineBreak_HY:
+            return NumClass::OPHY;
+
+        case QUnicodeTables::LineBreak_NU:
+            return NumClass::NU;
+
+        case QUnicodeTables::LineBreak_SY:
+        case QUnicodeTables::LineBreak_IS:
             return NumClass::SYIS;
-        }
 
-        break;
+        case QUnicodeTables::LineBreak_CL:
+        case QUnicodeTables::LineBreak_CP:
+            return NumClass::CLCP;
 
-    case QUnicodeTables::LineBreak_PR:
-    case QUnicodeTables::LineBreak_PO:
-        return NumClass::PRPO;
-
-    case QUnicodeTables::LineBreak_OP:
-    case QUnicodeTables::LineBreak_HY:
-        return NumClass::OPHY;
-
-    case QUnicodeTables::LineBreak_NU:
-        return NumClass::NU;
-
-    case QUnicodeTables::LineBreak_SY:
-    case QUnicodeTables::LineBreak_IS:
-        return NumClass::SYIS;
-
-    case QUnicodeTables::LineBreak_CL:
-    case QUnicodeTables::LineBreak_CP:
-        return NumClass::CLCP;
-
-    default:
-        break;
+        default:
+            break;
     }
 
     return NumClass::XX;
@@ -606,27 +606,27 @@ static void getLineBreaks( const QString &str, QCharAttributes *attributes )
             switch ( LB::actionTable[n_row][n_col] )
             {
 
-            case LB::NumAction::Break:
+                case LB::NumAction::Break:
 
-                // do not change breaks before and after the expression
-                for ( int j = n_begin + 1; j < k; ++j )
-                {
-                    attributes[j].lineBreak = false;
-                }
+                    // do not change breaks before and after the expression
+                    for ( int j = n_begin + 1; j < k; ++j )
+                    {
+                        attributes[j].lineBreak = false;
+                    }
 
-                [[fallthrough]];
+                    [[fallthrough]];
 
-            case LB::NumAction::None:
-                n_row = LB::NumClass::XX;    // reset state
-                break;
+                case LB::NumAction::None:
+                    n_row = LB::NumClass::XX;    // reset state
+                    break;
 
-            case LB::NumAction::Start:
-                n_begin = k;
-                [[fallthrough]];
+                case LB::NumAction::Start:
+                    n_begin = k;
+                    [[fallthrough]];
 
-            default:
-                n_row = n_col;
-                break;
+                default:
+                    n_row = n_col;
+                    break;
             }
         }
 
@@ -669,51 +669,51 @@ static void getLineBreaks( const QString &str, QCharAttributes *attributes )
         switch ( LB::breakTable[x_bClass][cur_bClass < QUnicodeTables::LineBreak_SA ? cur_bClass : QUnicodeTables::LineBreak_AL] )
         {
 
-        case LB::Action::DirectBreak:
-            attributes[k].lineBreak = true;
-            break;
-
-        case LB::Action::IndirectBreak:
-            if ( last_bClass == QUnicodeTables::LineBreak_SP )
-            {
+            case LB::Action::DirectBreak:
                 attributes[k].lineBreak = true;
-            }
+                break;
 
-            break;
+            case LB::Action::IndirectBreak:
+                if ( last_bClass == QUnicodeTables::LineBreak_SP )
+                {
+                    attributes[k].lineBreak = true;
+                }
 
-        case LB::Action::CombiningIndirectBreak:
-            if ( last_bClass != QUnicodeTables::LineBreak_SP )
-            {
-                last_bClass = cur_bClass;
-                continue;
-            }
+                break;
 
-            attributes[k].lineBreak = true;
-            break;
+            case LB::Action::CombiningIndirectBreak:
+                if ( last_bClass != QUnicodeTables::LineBreak_SP )
+                {
+                    last_bClass = cur_bClass;
+                    continue;
+                }
 
-        case LB::Action::CombiningProhibitedBreak:
-            if ( last_bClass != QUnicodeTables::LineBreak_SP )
-            {
-                last_bClass = cur_bClass;
-                continue;
-            }
-
-            break;
-
-        case LB::ProhibitedBreakAfterHebrewPlusHyphen:
-            if ( last_bClass != QUnicodeTables::LineBreak_HL )
-            {
                 attributes[k].lineBreak = true;
-            }
+                break;
 
-            break;
+            case LB::Action::CombiningProhibitedBreak:
+                if ( last_bClass != QUnicodeTables::LineBreak_SP )
+                {
+                    last_bClass = cur_bClass;
+                    continue;
+                }
 
-        case LB::Action::ProhibitedBreak:
+                break;
 
-        // nothing to do
+            case LB::ProhibitedBreakAfterHebrewPlusHyphen:
+                if ( last_bClass != QUnicodeTables::LineBreak_HL )
+                {
+                    attributes[k].lineBreak = true;
+                }
 
-        default:
-            break;
+                break;
+
+            case LB::Action::ProhibitedBreak:
+
+            // nothing to do
+
+            default:
+                break;
         }
 
         x_bClass    = cur_bClass;

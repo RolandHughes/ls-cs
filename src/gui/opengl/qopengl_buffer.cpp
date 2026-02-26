@@ -343,17 +343,17 @@ void *QOpenGLBuffer::map( QOpenGLBuffer::Access access )
 
         switch ( access )
         {
-        case QOpenGLBuffer::ReadOnly:
-            rangeAccess = QOpenGLBuffer::RangeRead;
-            break;
+            case QOpenGLBuffer::ReadOnly:
+                rangeAccess = QOpenGLBuffer::RangeRead;
+                break;
 
-        case QOpenGLBuffer::WriteOnly:
-            rangeAccess = QOpenGLBuffer::RangeWrite;
-            break;
+            case QOpenGLBuffer::WriteOnly:
+                rangeAccess = QOpenGLBuffer::RangeWrite;
+                break;
 
-        case QOpenGLBuffer::ReadWrite:
-            rangeAccess = QOpenGLBuffer::RangeRead | QOpenGLBuffer::RangeWrite;
-            break;
+            case QOpenGLBuffer::ReadWrite:
+                rangeAccess = QOpenGLBuffer::RangeRead | QOpenGLBuffer::RangeWrite;
+                break;
         }
 
         return d->funcs->glMapBufferRange( d->type, 0, size(), rangeAccess );

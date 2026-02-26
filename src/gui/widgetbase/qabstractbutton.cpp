@@ -239,41 +239,41 @@ void QAbstractButtonPrivate::moveFocus( int key )
 
             switch ( key )
             {
-            case Qt::Key_Up:
-                if ( p.y() < goal.y() )
-                {
-                    candidate = button;
-                    bestScore = score;
-                }
+                case Qt::Key_Up:
+                    if ( p.y() < goal.y() )
+                    {
+                        candidate = button;
+                        bestScore = score;
+                    }
 
-                break;
+                    break;
 
-            case Qt::Key_Down:
-                if ( p.y() > goal.y() )
-                {
-                    candidate = button;
-                    bestScore = score;
-                }
+                case Qt::Key_Down:
+                    if ( p.y() > goal.y() )
+                    {
+                        candidate = button;
+                        bestScore = score;
+                    }
 
-                break;
+                    break;
 
-            case Qt::Key_Left:
-                if ( p.x() < goal.x() )
-                {
-                    candidate = button;
-                    bestScore = score;
-                }
+                case Qt::Key_Left:
+                    if ( p.x() < goal.x() )
+                    {
+                        candidate = button;
+                        bestScore = score;
+                    }
 
-                break;
+                    break;
 
-            case Qt::Key_Right:
-                if ( p.x() > goal.x() )
-                {
-                    candidate = button;
-                    bestScore = score;
-                }
+                case Qt::Key_Right:
+                    if ( p.x() > goal.x() )
+                    {
+                        candidate = button;
+                        bestScore = score;
+                    }
 
-                break;
+                    break;
             }
         }
     }
@@ -871,24 +871,24 @@ bool QAbstractButton::event( QEvent *e )
     {
         switch ( e->type() )
         {
-        case QEvent::TabletPress:
-        case QEvent::TabletRelease:
-        case QEvent::TabletMove:
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonRelease:
-        case QEvent::MouseButtonDblClick:
-        case QEvent::MouseMove:
-        case QEvent::HoverMove:
-        case QEvent::HoverEnter:
-        case QEvent::HoverLeave:
-        case QEvent::ContextMenu:
+            case QEvent::TabletPress:
+            case QEvent::TabletRelease:
+            case QEvent::TabletMove:
+            case QEvent::MouseButtonPress:
+            case QEvent::MouseButtonRelease:
+            case QEvent::MouseButtonDblClick:
+            case QEvent::MouseMove:
+            case QEvent::HoverMove:
+            case QEvent::HoverEnter:
+            case QEvent::HoverLeave:
+            case QEvent::ContextMenu:
 #ifndef LSCS_NO_WHEELEVENT
-        case QEvent::Wheel:
+            case QEvent::Wheel:
 #endif
-            return true;
+                return true;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -1025,93 +1025,93 @@ void QAbstractButton::keyPressEvent( QKeyEvent *e )
 
     switch ( e->key() )
     {
-    case Qt::Key_Enter:
-    case Qt::Key_Return:
-        e->ignore();
-        break;
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+            e->ignore();
+            break;
 
-    case Qt::Key_Select:
-    case Qt::Key_Space:
-        if ( !e->isAutoRepeat() )
+        case Qt::Key_Select:
+        case Qt::Key_Space:
+            if ( !e->isAutoRepeat() )
+            {
+                setDown( true );
+                repaint(); //flush paint event before invoking potentially expensive operation
+                QApplication::flush();
+                d->emitPressed();
+            }
+
+            break;
+
+        case Qt::Key_Up:
+            next = false;
+            [[fallthrough]];
+
+        case Qt::Key_Left:
+        case Qt::Key_Right:
+        case Qt::Key_Down:
         {
-            setDown( true );
-            repaint(); //flush paint event before invoking potentially expensive operation
-            QApplication::flush();
-            d->emitPressed();
-        }
-
-        break;
-
-    case Qt::Key_Up:
-        next = false;
-        [[fallthrough]];
-
-    case Qt::Key_Left:
-    case Qt::Key_Right:
-    case Qt::Key_Down:
-    {
 
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-        if ( ( QApplication::keypadNavigationEnabled() && ( e->key() == Qt::Key_Left || e->key() == Qt::Key_Right ) )
-                || ( ! QApplication::navigationMode() == Qt::NavigationModeKeypadDirectional
-                     || ( e->key() == Qt::Key_Up || e->key() == Qt::Key_Down ) ) )
-        {
-            e->ignore();
-            return;
-        }
+            if ( ( QApplication::keypadNavigationEnabled() && ( e->key() == Qt::Key_Left || e->key() == Qt::Key_Right ) )
+                    || ( ! QApplication::navigationMode() == Qt::NavigationModeKeypadDirectional
+                         || ( e->key() == Qt::Key_Up || e->key() == Qt::Key_Down ) ) )
+            {
+                e->ignore();
+                return;
+            }
 
 #endif
-        QWidget *pw = parentWidget();
+            QWidget *pw = parentWidget();
 
-        if ( d->autoExclusive
+            if ( d->autoExclusive
 
 #ifndef LSCS_NO_BUTTONGROUP
-                || d->group
+                    || d->group
 #endif
 
 #ifndef LSCS_NO_ITEMVIEWS
-                || ( pw && qobject_cast<QAbstractItemView *>( pw->parentWidget() ) )
+                    || ( pw && qobject_cast<QAbstractItemView *>( pw->parentWidget() ) )
 #endif
-           )
-        {
-
-            d->moveFocus( e->key() );
-
-            if ( hasFocus() )
+               )
             {
-                // nothing happend, propagate
-                e->ignore();
+
+                d->moveFocus( e->key() );
+
+                if ( hasFocus() )
+                {
+                    // nothing happend, propagate
+                    e->ignore();
+                }
+
+            }
+            else
+            {
+                QWidget *w = pw ? pw : this;
+                bool reverse = ( w->layoutDirection() == Qt::RightToLeft );
+
+                if ( ( e->key() == Qt::Key_Left && !reverse ) || ( e->key() == Qt::Key_Right && reverse ) )
+                {
+                    next = false;
+                }
+
+                focusNextPrevChild( next );
             }
 
+            break;
         }
-        else
-        {
-            QWidget *w = pw ? pw : this;
-            bool reverse = ( w->layoutDirection() == Qt::RightToLeft );
 
-            if ( ( e->key() == Qt::Key_Left && !reverse ) || ( e->key() == Qt::Key_Right && reverse ) )
+        default:
+            if ( e->matches( QKeySequence::Cancel ) && d->down )
             {
-                next = false;
+                setDown( false );
+                repaint(); //flush paint event before invoking potentially expensive operation
+                QApplication::flush();
+                d->emitReleased();
+                return;
             }
 
-            focusNextPrevChild( next );
-        }
-
-        break;
-    }
-
-    default:
-        if ( e->matches( QKeySequence::Cancel ) && d->down )
-        {
-            setDown( false );
-            repaint(); //flush paint event before invoking potentially expensive operation
-            QApplication::flush();
-            d->emitReleased();
-            return;
-        }
-
-        e->ignore();
+            e->ignore();
     }
 }
 
@@ -1126,17 +1126,17 @@ void QAbstractButton::keyReleaseEvent( QKeyEvent *e )
 
     switch ( e->key() )
     {
-    case Qt::Key_Select:
-    case Qt::Key_Space:
-        if ( !e->isAutoRepeat() && d->down )
-        {
-            d->click();
-        }
+        case Qt::Key_Select:
+        case Qt::Key_Space:
+            if ( !e->isAutoRepeat() && d->down )
+            {
+                d->click();
+            }
 
-        break;
+            break;
 
-    default:
-        e->ignore();
+        default:
+            e->ignore();
     }
 }
 
@@ -1214,18 +1214,18 @@ void QAbstractButton::changeEvent( QEvent *e )
 
     switch ( e->type() )
     {
-    case QEvent::EnabledChange:
-        if ( ! isEnabled() && d->down )
-        {
-            d->down = false;
-            d->emitReleased();
-        }
+        case QEvent::EnabledChange:
+            if ( ! isEnabled() && d->down )
+            {
+                d->down = false;
+                d->emitReleased();
+            }
 
-        break;
+            break;
 
-    default:
-        d->sizeHint = QSize();
-        break;
+        default:
+            d->sizeHint = QSize();
+            break;
     }
 
     QWidget::changeEvent( e );

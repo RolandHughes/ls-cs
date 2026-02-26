@@ -1220,45 +1220,45 @@ QString QFileDialog::labelText( DialogLabel label ) const
 
     switch ( label )
     {
-    case LookIn:
-        return d->qFileDialogUi->lookInLabel->text();
+        case LookIn:
+            return d->qFileDialogUi->lookInLabel->text();
 
-    case FileName:
-        return d->qFileDialogUi->fileNameLabel->text();
+        case FileName:
+            return d->qFileDialogUi->fileNameLabel->text();
 
-    case FileType:
-        return d->qFileDialogUi->fileTypeLabel->text();
+        case FileType:
+            return d->qFileDialogUi->fileTypeLabel->text();
 
-    case Accept:
-        if ( acceptMode() == AcceptOpen )
-        {
-            button = d->qFileDialogUi->buttonBox->button( QDialogButtonBox::Open );
-        }
-        else
-        {
-            button = d->qFileDialogUi->buttonBox->button( QDialogButtonBox::Save );
-        }
+        case Accept:
+            if ( acceptMode() == AcceptOpen )
+            {
+                button = d->qFileDialogUi->buttonBox->button( QDialogButtonBox::Open );
+            }
+            else
+            {
+                button = d->qFileDialogUi->buttonBox->button( QDialogButtonBox::Save );
+            }
 
-        if ( button )
-        {
-            return button->text();
-        }
+            if ( button )
+            {
+                return button->text();
+            }
 
-        break;
+            break;
 
-    case Reject:
-        button = d->qFileDialogUi->buttonBox->button( QDialogButtonBox::Cancel );
+        case Reject:
+            button = d->qFileDialogUi->buttonBox->button( QDialogButtonBox::Cancel );
 
-        if ( button )
-        {
-            return button->text();
-        }
+            if ( button )
+            {
+                return button->text();
+            }
 
-        break;
+            break;
 
-    case DialogLabelCount:
-        // do nothing
-        break;
+        case DialogLabelCount:
+            // do nothing
+            break;
     }
 
     return QString();
@@ -1497,98 +1497,21 @@ void QFileDialog::accept()
 
     switch ( fileMode() )
     {
-    case DirectoryOnly:
-    case Directory:
-    {
-        QString fn = files.first();
-        QFileInfo info( fn );
-
-        if ( !info.exists() )
+        case DirectoryOnly:
+        case Directory:
         {
-            info = QFileInfo( d->getEnvironmentVariable( fn ) );
-        }
+            QString fn = files.first();
+            QFileInfo info( fn );
 
-        if ( !info.exists() )
-        {
-#ifndef LSCS_NO_MESSAGEBOX
-            QString message = tr( "%1\nDirectory not found" );
-            QMessageBox::warning( this, windowTitle(), message.formatArg( info.fileName() ) );
-#endif
-            return;
-        }
-
-        if ( info.isDir() )
-        {
-            d->emitFilesSelected( files );
-            QDialog::accept();
-        }
-
-        return;
-    }
-
-    case AnyFile:
-    {
-        QString fn = files.first();
-        QFileInfo info( fn );
-
-        if ( info.isDir() )
-        {
-            setDirectory( info.absoluteFilePath() );
-            return;
-        }
-
-        if ( !info.exists() )
-        {
-            int maxNameLength = d->maxNameLength( info.path() );
-
-            if ( maxNameLength >= 0 && info.fileName().length() > maxNameLength )
+            if ( !info.exists() )
             {
-                return;
-            }
-        }
-
-        // check if we have to ask for permission to overwrite the file
-        if ( !info.exists() || !confirmOverwrite() || acceptMode() == AcceptOpen )
-        {
-            d->emitFilesSelected( QStringList( fn ) );
-            QDialog::accept();
-
-#ifndef LSCS_NO_MESSAGEBOX
-        }
-        else
-        {
-
-            auto result = QMessageBox::warning( this, windowTitle(),
-                                                tr( "%1 already exists.\nDo you want to replace it?" ).formatArg( info.fileName() ),
-                                                QMessageBox::Yes | QMessageBox::No, QMessageBox::No );
-
-            if ( result == QMessageBox::Yes )
-            {
-                d->emitFilesSelected( QStringList( fn ) );
-                QDialog::accept();
-            }
-
-#endif
-        }
-
-        return;
-    }
-
-    case ExistingFile:
-    case ExistingFiles:
-        for ( int i = 0; i < files.count(); ++i )
-        {
-            QFileInfo info( files.at( i ) );
-
-            if ( ! info.exists() )
-            {
-                info = QFileInfo( d->getEnvironmentVariable( files.at( i ) ) );
+                info = QFileInfo( d->getEnvironmentVariable( fn ) );
             }
 
             if ( !info.exists() )
             {
 #ifndef LSCS_NO_MESSAGEBOX
-                QString message = tr( "%1\nFile not found." );
+                QString message = tr( "%1\nDirectory not found" );
                 QMessageBox::warning( this, windowTitle(), message.formatArg( info.fileName() ) );
 #endif
                 return;
@@ -1596,15 +1519,92 @@ void QFileDialog::accept()
 
             if ( info.isDir() )
             {
-                setDirectory( info.absoluteFilePath() );
-                d->lineEdit()->clear();
-                return;
+                d->emitFilesSelected( files );
+                QDialog::accept();
             }
+
+            return;
         }
 
-        d->emitFilesSelected( files );
-        QDialog::accept();
-        return;
+        case AnyFile:
+        {
+            QString fn = files.first();
+            QFileInfo info( fn );
+
+            if ( info.isDir() )
+            {
+                setDirectory( info.absoluteFilePath() );
+                return;
+            }
+
+            if ( !info.exists() )
+            {
+                int maxNameLength = d->maxNameLength( info.path() );
+
+                if ( maxNameLength >= 0 && info.fileName().length() > maxNameLength )
+                {
+                    return;
+                }
+            }
+
+            // check if we have to ask for permission to overwrite the file
+            if ( !info.exists() || !confirmOverwrite() || acceptMode() == AcceptOpen )
+            {
+                d->emitFilesSelected( QStringList( fn ) );
+                QDialog::accept();
+
+#ifndef LSCS_NO_MESSAGEBOX
+            }
+            else
+            {
+
+                auto result = QMessageBox::warning( this, windowTitle(),
+                                                    tr( "%1 already exists.\nDo you want to replace it?" ).formatArg( info.fileName() ),
+                                                    QMessageBox::Yes | QMessageBox::No, QMessageBox::No );
+
+                if ( result == QMessageBox::Yes )
+                {
+                    d->emitFilesSelected( QStringList( fn ) );
+                    QDialog::accept();
+                }
+
+#endif
+            }
+
+            return;
+        }
+
+        case ExistingFile:
+        case ExistingFiles:
+            for ( int i = 0; i < files.count(); ++i )
+            {
+                QFileInfo info( files.at( i ) );
+
+                if ( ! info.exists() )
+                {
+                    info = QFileInfo( d->getEnvironmentVariable( files.at( i ) ) );
+                }
+
+                if ( !info.exists() )
+                {
+#ifndef LSCS_NO_MESSAGEBOX
+                    QString message = tr( "%1\nFile not found." );
+                    QMessageBox::warning( this, windowTitle(), message.formatArg( info.fileName() ) );
+#endif
+                    return;
+                }
+
+                if ( info.isDir() )
+                {
+                    setDirectory( info.absoluteFilePath() );
+                    d->lineEdit()->clear();
+                    return;
+                }
+            }
+
+            d->emitFilesSelected( files );
+            QDialog::accept();
+            return;
     }
 }
 
@@ -1699,30 +1699,30 @@ bool QFileDialogPrivate::itemViewKeyboardEvent( QKeyEvent *event )
 
     switch ( event->key() )
     {
-    case Qt::Key_Backspace:
-        _q_navigateToParent();
-        return true;
+        case Qt::Key_Backspace:
+            _q_navigateToParent();
+            return true;
 
-    case Qt::Key_Back:
+        case Qt::Key_Back:
 #ifdef LSCS_KEYPAD_NAVIGATION
-        if ( QApplication::keypadNavigationEnabled() )
-        {
-            return false;
-        }
+            if ( QApplication::keypadNavigationEnabled() )
+            {
+                return false;
+            }
 
 #endif
 
-    case Qt::Key_Left:
-        if ( event->key() == Qt::Key_Back || event->modifiers() == Qt::AltModifier )
-        {
-            _q_navigateBackward();
-            return true;
-        }
+        case Qt::Key_Left:
+            if ( event->key() == Qt::Key_Back || event->modifiers() == Qt::AltModifier )
+            {
+                _q_navigateBackward();
+                return true;
+            }
 
-        break;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return false;

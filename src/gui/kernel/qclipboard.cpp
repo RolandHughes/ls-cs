@@ -222,20 +222,20 @@ void QClipboard::emitChanged( Mode mode )
 {
     switch ( mode )
     {
-    case Clipboard:
-        emit dataChanged();
-        break;
+        case Clipboard:
+            emit dataChanged();
+            break;
 
-    case Selection:
-        emit selectionChanged();
-        break;
+        case Selection:
+            emit selectionChanged();
+            break;
 
-    case FindBuffer:
-        emit findBufferChanged();
-        break;
+        case FindBuffer:
+            emit findBufferChanged();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     emit changed( mode );

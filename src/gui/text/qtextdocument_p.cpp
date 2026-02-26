@@ -1046,190 +1046,190 @@ int QTextDocumentPrivate::undoRedo( bool undo )
 
         switch ( c.command )
         {
-        case QTextUndoCommand::Inserted:
-            remove( c.pos, c.length, ( QTextUndoCommand::Operation )c.operation );
+            case QTextUndoCommand::Inserted:
+                remove( c.pos, c.length, ( QTextUndoCommand::Operation )c.operation );
 
 #if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
-            qDebug( "QTextDocument::undoRedo() Erase from = %d, length = %d", c.pos, c.length );
+                qDebug( "QTextDocument::undoRedo() Erase from = %d, length = %d", c.pos, c.length );
 #endif
 
-            c.command = QTextUndoCommand::Removed;
-            editPos = c.pos;
-            editLength = 0;
-            break;
-
-        case QTextUndoCommand::Removed:
-#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
-            qDebug( "QTextDocument::undoRedo() Insert format = %d, from = %d, length = %d, strpos = %d",
-                    c.format, c.pos, c.length, c.strPos );
-#endif
-
-            insert_string( c.pos, c.strPos, c.length, c.format, ( QTextUndoCommand::Operation )c.operation );
-
-            c.command = QTextUndoCommand::Inserted;
-
-            if ( editPos != ( int )c.pos )
-            {
+                c.command = QTextUndoCommand::Removed;
+                editPos = c.pos;
                 editLength = 0;
-            }
+                break;
 
-            editPos = c.pos;
-            editLength += c.length;
-            break;
-
-        case QTextUndoCommand::BlockInserted:
-        case QTextUndoCommand::BlockAdded:
-            remove_block( c.pos, &c.blockFormat, c.command, ( QTextUndoCommand::Operation )c.operation );
-
+            case QTextUndoCommand::Removed:
 #if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
-            qDebug( "QTextDocument::undoRedo() Block remove from = %d", c.pos );
+                qDebug( "QTextDocument::undoRedo() Insert format = %d, from = %d, length = %d, strpos = %d",
+                        c.format, c.pos, c.length, c.strPos );
 #endif
 
-            if ( c.command == QTextUndoCommand::BlockInserted )
-            {
-                c.command = QTextUndoCommand::BlockRemoved;
-            }
-            else
-            {
-                c.command = QTextUndoCommand::BlockDeleted;
-            }
+                insert_string( c.pos, c.strPos, c.length, c.format, ( QTextUndoCommand::Operation )c.operation );
 
-            editPos = c.pos;
-            editLength = 0;
-            break;
+                c.command = QTextUndoCommand::Inserted;
 
-        case QTextUndoCommand::BlockRemoved:
-        case QTextUndoCommand::BlockDeleted:
-
-#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
-            qDebug( "QTextDocument::undoRedo() Block insert charformat = %d, blockformat = %d, pos = %d, strpos = %d",
-                    c.format, c.blockFormat, c.pos, c.strPos );
-#endif
-
-            insert_block( c.pos, c.strPos, c.format, c.blockFormat, ( QTextUndoCommand::Operation )c.operation, c.command );
-            resetBlockRevision += 1;
-
-            if ( c.command == QTextUndoCommand::BlockRemoved )
-            {
-                c.command = QTextUndoCommand::BlockInserted;
-            }
-            else
-            {
-                c.command = QTextUndoCommand::BlockAdded;
-            }
-
-            if ( editPos != ( int )c.pos )
-            {
-                editLength = 0;
-            }
-
-            editPos = c.pos;
-            editLength += 1;
-            break;
-
-        case QTextUndoCommand::CharFormatChanged:
-        {
-            resetBlockRevision = -1; // ## TODO
-
-#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
-            qDebug( "QTextDocument::undoRedo() Char Format format = %d,  from = %d,  length = %d",
-                    c.format, c.pos, c.length );
-#endif
-
-            FragmentIterator it = find( c.pos );
-            Q_ASSERT( !it.atEnd() );
-
-            int oldFormat = it.value()->format;
-            setCharFormat( c.pos, c.length, formats.charFormat( c.format ) );
-            c.format = oldFormat;
-
-            if ( editPos != ( int )c.pos )
-            {
-                editLength = 0;
-            }
-
-            editPos = c.pos;
-            editLength += c.length;
-            break;
-        }
-
-        case QTextUndoCommand::BlockFormatChanged:
-        {
-            resetBlockRevision = -1; // ## TODO
-
-#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
-            qDebug( "QTextDocument::undoRedo() Block Format format = %d, pos = %d", c.format, c.pos );
-#endif
-
-            QTextBlock it = blocksFind( c.pos );
-            Q_ASSERT( it.isValid() );
-
-            int oldFormat = block( it )->format;
-            block( it )->format = c.format;
-            QTextBlockGroup *oldGroup = qobject_cast<QTextBlockGroup *>( objectForFormat( formats.blockFormat( oldFormat ) ) );
-            QTextBlockGroup *group = qobject_cast<QTextBlockGroup *>( objectForFormat( formats.blockFormat( c.format ) ) );
-            c.format = oldFormat;
-
-            if ( group != oldGroup )
-            {
-                if ( oldGroup )
+                if ( editPos != ( int )c.pos )
                 {
-                    oldGroup->blockRemoved( it );
+                    editLength = 0;
                 }
 
-                if ( group )
-                {
-                    group->blockInserted( it );
-                }
-            }
-            else if ( group )
-            {
-                group->blockFormatChanged( it );
-            }
+                editPos = c.pos;
+                editLength += c.length;
+                break;
 
-            documentChange( it.position(), it.length() );
-            editPos = -1;
-            break;
-        }
-
-        case QTextUndoCommand::GroupFormatChange:
-        {
-            resetBlockRevision = -1; // ## TODO
+            case QTextUndoCommand::BlockInserted:
+            case QTextUndoCommand::BlockAdded:
+                remove_block( c.pos, &c.blockFormat, c.command, ( QTextUndoCommand::Operation )c.operation );
 
 #if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
-            qDebug( "QTextDocument::undoRedo() Group format change" );
+                qDebug( "QTextDocument::undoRedo() Block remove from = %d", c.pos );
 #endif
 
-            QTextObject *object = objectForIndex( c.objectIndex );
-            int oldFormat = formats.objectFormatIndex( c.objectIndex );
-            changeObjectFormat( object, c.format );
-            c.format = oldFormat;
-            editPos = -1;
-            break;
-        }
+                if ( c.command == QTextUndoCommand::BlockInserted )
+                {
+                    c.command = QTextUndoCommand::BlockRemoved;
+                }
+                else
+                {
+                    c.command = QTextUndoCommand::BlockDeleted;
+                }
 
-        case QTextUndoCommand::CursorMoved:
-            editPos = c.pos;
-            editLength = 0;
-            break;
+                editPos = c.pos;
+                editLength = 0;
+                break;
 
-        case QTextUndoCommand::Custom:
-            resetBlockRevision = -1; // ## TODO
+            case QTextUndoCommand::BlockRemoved:
+            case QTextUndoCommand::BlockDeleted:
 
-            if ( undo )
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
+                qDebug( "QTextDocument::undoRedo() Block insert charformat = %d, blockformat = %d, pos = %d, strpos = %d",
+                        c.format, c.blockFormat, c.pos, c.strPos );
+#endif
+
+                insert_block( c.pos, c.strPos, c.format, c.blockFormat, ( QTextUndoCommand::Operation )c.operation, c.command );
+                resetBlockRevision += 1;
+
+                if ( c.command == QTextUndoCommand::BlockRemoved )
+                {
+                    c.command = QTextUndoCommand::BlockInserted;
+                }
+                else
+                {
+                    c.command = QTextUndoCommand::BlockAdded;
+                }
+
+                if ( editPos != ( int )c.pos )
+                {
+                    editLength = 0;
+                }
+
+                editPos = c.pos;
+                editLength += 1;
+                break;
+
+            case QTextUndoCommand::CharFormatChanged:
             {
-                c.custom->undo();
+                resetBlockRevision = -1; // ## TODO
+
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
+                qDebug( "QTextDocument::undoRedo() Char Format format = %d,  from = %d,  length = %d",
+                        c.format, c.pos, c.length );
+#endif
+
+                FragmentIterator it = find( c.pos );
+                Q_ASSERT( !it.atEnd() );
+
+                int oldFormat = it.value()->format;
+                setCharFormat( c.pos, c.length, formats.charFormat( c.format ) );
+                c.format = oldFormat;
+
+                if ( editPos != ( int )c.pos )
+                {
+                    editLength = 0;
+                }
+
+                editPos = c.pos;
+                editLength += c.length;
+                break;
             }
-            else
+
+            case QTextUndoCommand::BlockFormatChanged:
             {
-                c.custom->redo();
+                resetBlockRevision = -1; // ## TODO
+
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
+                qDebug( "QTextDocument::undoRedo() Block Format format = %d, pos = %d", c.format, c.pos );
+#endif
+
+                QTextBlock it = blocksFind( c.pos );
+                Q_ASSERT( it.isValid() );
+
+                int oldFormat = block( it )->format;
+                block( it )->format = c.format;
+                QTextBlockGroup *oldGroup = qobject_cast<QTextBlockGroup *>( objectForFormat( formats.blockFormat( oldFormat ) ) );
+                QTextBlockGroup *group = qobject_cast<QTextBlockGroup *>( objectForFormat( formats.blockFormat( c.format ) ) );
+                c.format = oldFormat;
+
+                if ( group != oldGroup )
+                {
+                    if ( oldGroup )
+                    {
+                        oldGroup->blockRemoved( it );
+                    }
+
+                    if ( group )
+                    {
+                        group->blockInserted( it );
+                    }
+                }
+                else if ( group )
+                {
+                    group->blockFormatChanged( it );
+                }
+
+                documentChange( it.position(), it.length() );
+                editPos = -1;
+                break;
             }
 
-            editPos = -1;
-            break;
+            case QTextUndoCommand::GroupFormatChange:
+            {
+                resetBlockRevision = -1; // ## TODO
 
-        default:
-            Q_ASSERT( false );
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
+                qDebug( "QTextDocument::undoRedo() Group format change" );
+#endif
+
+                QTextObject *object = objectForIndex( c.objectIndex );
+                int oldFormat = formats.objectFormatIndex( c.objectIndex );
+                changeObjectFormat( object, c.format );
+                c.format = oldFormat;
+                editPos = -1;
+                break;
+            }
+
+            case QTextUndoCommand::CursorMoved:
+                editPos = c.pos;
+                editLength = 0;
+                break;
+
+            case QTextUndoCommand::Custom:
+                resetBlockRevision = -1; // ## TODO
+
+                if ( undo )
+                {
+                    c.custom->undo();
+                }
+                else
+                {
+                    c.custom->redo();
+                }
+
+                editPos = -1;
+                break;
+
+            default:
+                Q_ASSERT( false );
         }
 
         if ( resetBlockRevision >= 0 )

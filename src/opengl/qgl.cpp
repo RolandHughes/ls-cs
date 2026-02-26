@@ -787,28 +787,28 @@ QGLFormat::OpenGLVersionFlags qOpenGLVersionFlagsFromString( const QString &vers
         {
             switch ( versionString[2].toLatin1() )
             {
-            case '5':
-                versionFlags |= QGLFormat::OpenGL_Version_1_5;
-                [[fallthrough]];
+                case '5':
+                    versionFlags |= QGLFormat::OpenGL_Version_1_5;
+                    [[fallthrough]];
 
-            case '4':
-                versionFlags |= QGLFormat::OpenGL_Version_1_4;
-                [[fallthrough]];
+                case '4':
+                    versionFlags |= QGLFormat::OpenGL_Version_1_4;
+                    [[fallthrough]];
 
-            case '3':
-                versionFlags |= QGLFormat::OpenGL_Version_1_3;
-                [[fallthrough]];
+                case '3':
+                    versionFlags |= QGLFormat::OpenGL_Version_1_3;
+                    [[fallthrough]];
 
-            case '2':
-                versionFlags |= QGLFormat::OpenGL_Version_1_2;
-                [[fallthrough]];
+                case '2':
+                    versionFlags |= QGLFormat::OpenGL_Version_1_2;
+                    [[fallthrough]];
 
-            case '1':
-                versionFlags |= QGLFormat::OpenGL_Version_1_1;
-                [[fallthrough]];
+                case '1':
+                    versionFlags |= QGLFormat::OpenGL_Version_1_1;
+                    [[fallthrough]];
 
-            default:
-                break;
+                default:
+                    break;
             }
 
         }
@@ -840,26 +840,26 @@ QGLFormat::OpenGLVersionFlags qOpenGLVersionFlagsFromString( const QString &vers
 
             switch ( versionString[2].toLatin1() )
             {
-            case '3':
-                versionFlags |= QGLFormat::OpenGL_Version_3_3;
-                [[fallthrough]];
+                case '3':
+                    versionFlags |= QGLFormat::OpenGL_Version_3_3;
+                    [[fallthrough]];
 
-            case '2':
-                versionFlags |= QGLFormat::OpenGL_Version_3_2;
-                [[fallthrough]];
+                case '2':
+                    versionFlags |= QGLFormat::OpenGL_Version_3_2;
+                    [[fallthrough]];
 
-            case '1':
-                versionFlags |= QGLFormat::OpenGL_Version_3_1;
-                [[fallthrough]];
+                case '1':
+                    versionFlags |= QGLFormat::OpenGL_Version_3_1;
+                    [[fallthrough]];
 
-            case '0':
-                break;
+                case '0':
+                    break;
 
-            default:
-                versionFlags |= QGLFormat::OpenGL_Version_3_1 |
-                                QGLFormat::OpenGL_Version_3_2 |
-                                QGLFormat::OpenGL_Version_3_3;
-                break;
+                default:
+                    versionFlags |= QGLFormat::OpenGL_Version_3_1 |
+                                    QGLFormat::OpenGL_Version_3_2 |
+                                    QGLFormat::OpenGL_Version_3_3;
+                    break;
             }
 
         }
@@ -880,26 +880,26 @@ QGLFormat::OpenGLVersionFlags qOpenGLVersionFlagsFromString( const QString &vers
 
             switch ( versionString[2].toLatin1() )
             {
-            case '3':
-                versionFlags |= QGLFormat::OpenGL_Version_4_3;
-                [[fallthrough]];
+                case '3':
+                    versionFlags |= QGLFormat::OpenGL_Version_4_3;
+                    [[fallthrough]];
 
-            case '2':
-                versionFlags |= QGLFormat::OpenGL_Version_4_2;
-                [[fallthrough]];
+                case '2':
+                    versionFlags |= QGLFormat::OpenGL_Version_4_2;
+                    [[fallthrough]];
 
-            case '1':
-                versionFlags |= QGLFormat::OpenGL_Version_4_1;
-                [[fallthrough]];
+                case '1':
+                    versionFlags |= QGLFormat::OpenGL_Version_4_1;
+                    [[fallthrough]];
 
-            case '0':
-                break;
+                case '0':
+                    break;
 
-            default:
-                versionFlags |= QGLFormat::OpenGL_Version_4_1 |
-                                QGLFormat::OpenGL_Version_4_2 |
-                                QGLFormat::OpenGL_Version_4_3;
-                break;
+                default:
+                    versionFlags |= QGLFormat::OpenGL_Version_4_1 |
+                                    QGLFormat::OpenGL_Version_4_2 |
+                                    QGLFormat::OpenGL_Version_4_3;
+                    break;
             }
 
         }
@@ -1024,21 +1024,21 @@ QDebug operator<<( QDebug dbg, const QGLFormat &f )
 
     QDebugStateSaver saver( dbg );
     dbg.nospace() << "QGLFormat("
-       << "options " << d->opts
-       << ", plane " << d->pln
-       << ", depthBufferSize " << d->depthSize
-       << ", accumBufferSize " << d->accumSize
-       << ", stencilBufferSize " << d->stencilSize
-       << ", redBufferSize " << d->redSize
-       << ", greenBufferSize " << d->greenSize
-       << ", blueBufferSize " << d->blueSize
-       << ", alphaBufferSize " << d->alphaSize
-       << ", samples " << d->numSamples
-       << ", swapInterval " << d->swapInterval
-       << ", majorVersion " << d->majorVersion
-       << ", minorVersion " << d->minorVersion
-       << ", profile " << d->profile
-       << ')';
+                  << "options " << d->opts
+                  << ", plane " << d->pln
+                  << ", depthBufferSize " << d->depthSize
+                  << ", accumBufferSize " << d->accumSize
+                  << ", stencilBufferSize " << d->stencilSize
+                  << ", redBufferSize " << d->redSize
+                  << ", greenBufferSize " << d->greenSize
+                  << ", blueBufferSize " << d->blueSize
+                  << ", alphaBufferSize " << d->alphaSize
+                  << ", samples " << d->numSamples
+                  << ", swapInterval " << d->swapInterval
+                  << ", majorVersion " << d->majorVersion
+                  << ", minorVersion " << d->minorVersion
+                  << ", profile " << d->profile
+                  << ')';
 
     return dbg;
 }
@@ -1963,86 +1963,86 @@ QGLTexture *QGLContextPrivate::bindTexture( const QImage &image, GLenum target, 
 
     switch ( target_format )
     {
-    case QImage::Format_ARGB32:
-        if ( premul )
-        {
-            img = img.convertToFormat( target_format = QImage::Format_ARGB32_Premultiplied );
+        case QImage::Format_ARGB32:
+            if ( premul )
+            {
+                img = img.convertToFormat( target_format = QImage::Format_ARGB32_Premultiplied );
 
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLContext::bindTexture() Converted ARGB32 to ARGB32_Premultiplied (%d ms)",
-                    time.elapsed() );
+                qDebug( "QGLContext::bindTexture() Converted ARGB32 to ARGB32_Premultiplied (%d ms)",
+                        time.elapsed() );
 #endif
-        }
+            }
 
-        break;
+            break;
 
-    case QImage::Format_ARGB32_Premultiplied:
-        if ( ! premul )
-        {
-            img = img.convertToFormat( target_format = QImage::Format_ARGB32 );
+        case QImage::Format_ARGB32_Premultiplied:
+            if ( ! premul )
+            {
+                img = img.convertToFormat( target_format = QImage::Format_ARGB32 );
 
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            printf( "Converted ARGB32_Premultiplied to ARGB32 (%d ms)\n", time.elapsed() );
+                printf( "Converted ARGB32_Premultiplied to ARGB32 (%d ms)\n", time.elapsed() );
 #endif
-        }
+            }
 
-        break;
+            break;
 
-    case QImage::Format_RGBA8888:
-        if ( premul )
-        {
-            img = img.convertToFormat( target_format = QImage::Format_RGBA8888_Premultiplied );
+        case QImage::Format_RGBA8888:
+            if ( premul )
+            {
+                img = img.convertToFormat( target_format = QImage::Format_RGBA8888_Premultiplied );
 
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLContext::bindTexture() Converted RGBA8888 to RGBA8888_Premultiplied (%d ms)",
-                    time.elapsed() );
+                qDebug( "QGLContext::bindTexture() Converted RGBA8888 to RGBA8888_Premultiplied (%d ms)",
+                        time.elapsed() );
 #endif
-        }
+            }
 
-        break;
+            break;
 
-    case QImage::Format_RGBA8888_Premultiplied:
-        if ( ! premul )
-        {
-            img = img.convertToFormat( target_format = QImage::Format_RGBA8888 );
+        case QImage::Format_RGBA8888_Premultiplied:
+            if ( ! premul )
+            {
+                img = img.convertToFormat( target_format = QImage::Format_RGBA8888 );
 
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLContext::bindTexture() Converted RGBA8888_Premultiplied to RGBA8888 (%d ms)",
-                    time.elapsed() );
+                qDebug( "QGLContext::bindTexture() Converted RGBA8888_Premultiplied to RGBA8888 (%d ms)",
+                        time.elapsed() );
 #endif
-        }
+            }
 
-        break;
+            break;
 
-    case QImage::Format_RGB16:
-        pixel_type = GL_UNSIGNED_SHORT_5_6_5;
-        externalFormat = GL_RGB;
-        internalFormat = GL_RGB;
-        needsbyteswap = false;
-        break;
+        case QImage::Format_RGB16:
+            pixel_type = GL_UNSIGNED_SHORT_5_6_5;
+            externalFormat = GL_RGB;
+            internalFormat = GL_RGB;
+            needsbyteswap = false;
+            break;
 
-    case QImage::Format_RGB32:
-    case QImage::Format_RGBX8888:
-        break;
+        case QImage::Format_RGB32:
+        case QImage::Format_RGBX8888:
+            break;
 
-    default:
-        if ( img.hasAlphaChannel() )
-        {
-            img = img.convertToFormat( premul ? QImage::Format_ARGB32_Premultiplied : QImage::Format_ARGB32 );
+        default:
+            if ( img.hasAlphaChannel() )
+            {
+                img = img.convertToFormat( premul ? QImage::Format_ARGB32_Premultiplied : QImage::Format_ARGB32 );
 
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLContext::bindTexture() Converted to 32-bit alpha format (%d ms)", time.elapsed() );
+                qDebug( "QGLContext::bindTexture() Converted to 32-bit alpha format (%d ms)", time.elapsed() );
 #endif
 
-        }
-        else
-        {
-            img = img.convertToFormat( QImage::Format_RGB32 );
+            }
+            else
+            {
+                img = img.convertToFormat( QImage::Format_RGB32 );
 
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
-            qDebug( "QGLContext::bindTexture() Converted to 32-bit (%d ms)", time.elapsed() );
+                qDebug( "QGLContext::bindTexture() Converted to 32-bit (%d ms)", time.elapsed() );
 #endif
-        }
+            }
     }
 
     if ( options & QGLContext::InvertedYBindOption )
@@ -4016,22 +4016,22 @@ QSize QGLTexture::bindCompressedTextureDDS( const char *buf, int len )
 
     switch ( ddsHeader->ddsPixelFormat.dwFourCC )
     {
-    case FOURCC_DXT1:
-        format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-        blockSize = 8;
-        break;
+        case FOURCC_DXT1:
+            format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+            blockSize = 8;
+            break;
 
-    case FOURCC_DXT3:
-        format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-        break;
+        case FOURCC_DXT3:
+            format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+            break;
 
-    case FOURCC_DXT5:
-        format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-        break;
+        case FOURCC_DXT5:
+            format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+            break;
 
-    default:
-        qWarning( "QGLContext::bindTexture(): DDS image format not supported." );
-        return QSize();
+        default:
+            qWarning( "QGLContext::bindTexture(): DDS image format not supported." );
+            return QSize();
     }
 
     const GLubyte *pixels =
@@ -4100,43 +4100,43 @@ QSize QGLTexture::bindCompressedTexturePVR( const char *buf, int len )
 
     switch ( pvrHeader->flags & PVR_FORMAT_MASK )
     {
-    case PVR_FORMAT_PVRTC2:
-        if ( pvrHeader->alphaMask )
-        {
-            textureFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
-        }
-        else
-        {
-            textureFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
-        }
+        case PVR_FORMAT_PVRTC2:
+            if ( pvrHeader->alphaMask )
+            {
+                textureFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
+            }
+            else
+            {
+                textureFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
+            }
 
-        minWidth = 16;
-        minHeight = 8;
-        break;
+            minWidth = 16;
+            minHeight = 8;
+            break;
 
-    case PVR_FORMAT_PVRTC4:
-        if ( pvrHeader->alphaMask )
-        {
-            textureFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
-        }
-        else
-        {
-            textureFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
-        }
+        case PVR_FORMAT_PVRTC4:
+            if ( pvrHeader->alphaMask )
+            {
+                textureFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
+            }
+            else
+            {
+                textureFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
+            }
 
-        minWidth = 8;
-        minHeight = 8;
-        break;
+            minWidth = 8;
+            minHeight = 8;
+            break;
 
-    case PVR_FORMAT_ETC1:
-        textureFormat = GL_ETC1_RGB8_OES;
-        minWidth = 4;
-        minHeight = 4;
-        break;
+        case PVR_FORMAT_ETC1:
+            textureFormat = GL_ETC1_RGB8_OES;
+            minWidth = 4;
+            minHeight = 4;
+            break;
 
-    default:
-        qWarning( "QGLContext::bindTexture(): PVR image format 0x%x not supported.", int( pvrHeader->flags & PVR_FORMAT_MASK ) );
-        return QSize();
+        default:
+            qWarning( "QGLContext::bindTexture(): PVR image format 0x%x not supported.", int( pvrHeader->flags & PVR_FORMAT_MASK ) );
+            return QSize();
     }
 
     // Bail out if the necessary extension is not present.

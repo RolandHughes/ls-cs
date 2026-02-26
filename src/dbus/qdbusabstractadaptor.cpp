@@ -430,18 +430,18 @@ int QDBusAdaptorConnector::lscs_metacall( QMetaObject::Call _c, int _id, void **
     {
         switch ( _id )
         {
-        case 0:
-            relaySlot( _a );
-            break; // HAND EDIT: add the _a parameter
+            case 0:
+                relaySlot( _a );
+                break; // HAND EDIT: add the _a parameter
 
-        case 1:
-            polish();
-            break;
+            case 1:
+                polish();
+                break;
 
-        case 2:
-            relaySignal( ( *reinterpret_cast< QObject*( * )>( _a[1] ) ),( *reinterpret_cast< const QMetaObject*( * )>( _a[2] ) ),
-                         ( *reinterpret_cast< int( * )>( _a[3] ) ),( *reinterpret_cast< const QVariantList( * )>( _a[4] ) ) );
-            break;
+            case 2:
+                relaySignal( ( *reinterpret_cast< QObject*( * )>( _a[1] ) ),( *reinterpret_cast< const QMetaObject*( * )>( _a[2] ) ),
+                             ( *reinterpret_cast< int( * )>( _a[3] ) ),( *reinterpret_cast< const QVariantList( * )>( _a[4] ) ) );
+                break;
         }
 
         _id -= 3;

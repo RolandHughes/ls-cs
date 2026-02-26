@@ -88,29 +88,29 @@ ItemType::Ptr XPathHelper::typeFromKind( const QXmlNodeModelIndex::NodeKind node
 {
     switch ( nodeKind )
     {
-    case QXmlNodeModelIndex::Element:
-        return BuiltinTypes::element;
+        case QXmlNodeModelIndex::Element:
+            return BuiltinTypes::element;
 
-    case QXmlNodeModelIndex::Attribute:
-        return BuiltinTypes::attribute;
+        case QXmlNodeModelIndex::Attribute:
+            return BuiltinTypes::attribute;
 
-    case QXmlNodeModelIndex::Text:
-        return BuiltinTypes::text;
+        case QXmlNodeModelIndex::Text:
+            return BuiltinTypes::text;
 
-    case QXmlNodeModelIndex::ProcessingInstruction:
-        return BuiltinTypes::pi;
+        case QXmlNodeModelIndex::ProcessingInstruction:
+            return BuiltinTypes::pi;
 
-    case QXmlNodeModelIndex::Comment:
-        return BuiltinTypes::comment;
+        case QXmlNodeModelIndex::Comment:
+            return BuiltinTypes::comment;
 
-    case QXmlNodeModelIndex::Document:
-        return BuiltinTypes::document;
+        case QXmlNodeModelIndex::Document:
+            return BuiltinTypes::document;
 
-    default:
-    {
-        Q_ASSERT_X( false, Q_FUNC_INFO, "A node type that does not exist in the XPath Data Model was encountered." );
-        return ItemType::Ptr(); /* Dummy, silence compiler warning. */
-    }
+        default:
+        {
+            Q_ASSERT_X( false, Q_FUNC_INFO, "A node type that does not exist in the XPath Data Model was encountered." );
+            return ItemType::Ptr(); /* Dummy, silence compiler warning. */
+        }
     }
 }
 

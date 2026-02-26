@@ -824,8 +824,8 @@ static inline void sendExtendedPressRelease( QWindow *w, int k,
         ushort count = 1 )
 {
     QWindowSystemInterface::handleExtendedKeyEvent( w, QEvent::KeyPress, k, mods, nativeScanCode, nativeVirtualKey, nativeModifiers,
-        text,
-        autorep, count );
+            text,
+            autorep, count );
     QWindowSystemInterface::handleExtendedKeyEvent( w, QEvent::KeyRelease, k, mods, nativeScanCode, nativeVirtualKey, nativeModifiers,
             text,
             autorep, count );
@@ -1076,51 +1076,51 @@ bool QWindowsKeyMapper::translateKeyEventInternal( QWindow *window, const MSG &m
     {
         switch ( code )
         {
-        case Qt::Key_Left:
-        case Qt::Key_Right:
-        case Qt::Key_Up:
-        case Qt::Key_Down:
-        case Qt::Key_PageUp:
-        case Qt::Key_PageDown:
-        case Qt::Key_Home:
-        case Qt::Key_End:
-        case Qt::Key_Insert:
-        case Qt::Key_Delete:
-        case Qt::Key_Asterisk:
-        case Qt::Key_Plus:
-        case Qt::Key_Minus:
-        case Qt::Key_Period:
-        case Qt::Key_Comma:
-        case Qt::Key_0:
-        case Qt::Key_1:
-        case Qt::Key_2:
-        case Qt::Key_3:
-        case Qt::Key_4:
-        case Qt::Key_5:
-        case Qt::Key_6:
-        case Qt::Key_7:
-        case Qt::Key_8:
-        case Qt::Key_9:
+            case Qt::Key_Left:
+            case Qt::Key_Right:
+            case Qt::Key_Up:
+            case Qt::Key_Down:
+            case Qt::Key_PageUp:
+            case Qt::Key_PageDown:
+            case Qt::Key_Home:
+            case Qt::Key_End:
+            case Qt::Key_Insert:
+            case Qt::Key_Delete:
+            case Qt::Key_Asterisk:
+            case Qt::Key_Plus:
+            case Qt::Key_Minus:
+            case Qt::Key_Period:
+            case Qt::Key_Comma:
+            case Qt::Key_0:
+            case Qt::Key_1:
+            case Qt::Key_2:
+            case Qt::Key_3:
+            case Qt::Key_4:
+            case Qt::Key_5:
+            case Qt::Key_6:
+            case Qt::Key_7:
+            case Qt::Key_8:
+            case Qt::Key_9:
 
-            if ( ( msg.wParam >= '0' && msg.wParam <= '9' ) || ( msg.wParam >= VK_OEM_PLUS && msg.wParam <= VK_OEM_3 ) )
-            {
-                // do nothing
+                if ( ( msg.wParam >= '0' && msg.wParam <= '9' ) || ( msg.wParam >= VK_OEM_PLUS && msg.wParam <= VK_OEM_3 ) )
+                {
+                    // do nothing
 
-            }
-            else
-            {
-                state |= int( Qt::KeypadModifier );
-            }
+                }
+                else
+                {
+                    state |= int( Qt::KeypadModifier );
+                }
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-        default:
-            if ( uint( msg.lParam ) == 0x004c0001 || uint( msg.lParam ) == 0xc04c0001 )
-            {
-                state |= Qt::KeypadModifier;
-            }
+            default:
+                if ( uint( msg.lParam ) == 0x004c0001 || uint( msg.lParam ) == 0xc04c0001 )
+                {
+                    state |= Qt::KeypadModifier;
+                }
 
-            break;
+                break;
         }
 
     }
@@ -1130,14 +1130,14 @@ bool QWindowsKeyMapper::translateKeyEventInternal( QWindow *window, const MSG &m
 
         switch ( code )
         {
-        case Qt::Key_Enter:
-        case Qt::Key_Slash:
-        case Qt::Key_NumLock:
-            state |= Qt::KeypadModifier;
-            break;
+            case Qt::Key_Enter:
+            case Qt::Key_Slash:
+            case Qt::Key_NumLock:
+                state |= Qt::KeypadModifier;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -1282,20 +1282,20 @@ bool QWindowsKeyMapper::translateKeyEventInternal( QWindow *window, const MSG &m
         {
             switch ( code )
             {
-            case Qt::Key_Escape:
-            case Qt::Key_Tab:
-            case Qt::Key_Enter:
-            case Qt::Key_F4:
-                // Send the event on to Windows
-                return false;
+                case Qt::Key_Escape:
+                case Qt::Key_Tab:
+                case Qt::Key_Enter:
+                case Qt::Key_F4:
+                    // Send the event on to Windows
+                    return false;
 
-            case Qt::Key_Space:
-                // do not pass this key to windows, we will process it ourselves
-                showSystemMenu( receiver );
-                return true;
+                case Qt::Key_Space:
+                    // do not pass this key to windows, we will process it ourselves
+                    showSystemMenu( receiver );
+                    return true;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
 

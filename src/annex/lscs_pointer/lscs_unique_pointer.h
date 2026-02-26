@@ -142,7 +142,7 @@ private:
 };
 
 template <typename T, typename... Args, typename = typename std::enable_if_t<! std::is_array_v<T>>>
-LsCsUniquePointer<T> make_unique( Args &&... args )
+          LsCsUniquePointer<T> make_unique( Args &&... args )
 {
     return std::make_unique<T>( std::forward<Args>( args )... );
 }

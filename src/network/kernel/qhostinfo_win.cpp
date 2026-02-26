@@ -74,17 +74,17 @@ static void translateWSAError( int error, QHostInfo *results )
 {
     switch ( error )
     {
-    case WSAHOST_NOT_FOUND: // authoritative not found
-    case WSATRY_AGAIN:      // non authoritative not found
-    case WSANO_DATA:        // valid name, no associated address
-        results->setError( QHostInfo::HostNotFound );
-        results->setErrorString( QHostInfoAgent::tr( "Host not found" ) );
-        return;
+        case WSAHOST_NOT_FOUND: // authoritative not found
+        case WSATRY_AGAIN:      // non authoritative not found
+        case WSANO_DATA:        // valid name, no associated address
+            results->setError( QHostInfo::HostNotFound );
+            results->setErrorString( QHostInfoAgent::tr( "Host not found" ) );
+            return;
 
-    default:
-        results->setError( QHostInfo::UnknownError );
-        results->setErrorString( QHostInfoAgent::tr( "Unknown error (%1)" ).formatArg( error ) );
-        return;
+        default:
+            results->setError( QHostInfo::UnknownError );
+            results->setErrorString( QHostInfoAgent::tr( "Unknown error (%1)" ).formatArg( error ) );
+            return;
     }
 }
 
@@ -195,34 +195,34 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
             {
                 switch ( p->ai_family )
                 {
-                case AF_INET:
-                {
-                    QHostAddress addr;
-                    addr.setAddress( ntohl( ( ( sockaddr_in * ) p->ai_addr )->sin_addr.s_addr ) );
-
-                    if ( ! addresses.contains( addr ) )
+                    case AF_INET:
                     {
-                        addresses.append( addr );
+                        QHostAddress addr;
+                        addr.setAddress( ntohl( ( ( sockaddr_in * ) p->ai_addr )->sin_addr.s_addr ) );
+
+                        if ( ! addresses.contains( addr ) )
+                        {
+                            addresses.append( addr );
+                        }
                     }
-                }
 
-                break;
+                    break;
 
-                case AF_INET6:
-                {
-                    QHostAddress addr;
-                    addr.setAddress( ( ( sockaddr_in6 * ) p->ai_addr )->sin6_addr.s6_addr );
-
-                    if ( !addresses.contains( addr ) )
+                    case AF_INET6:
                     {
-                        addresses.append( addr );
-                    }
-                }
-                break;
+                        QHostAddress addr;
+                        addr.setAddress( ( ( sockaddr_in6 * ) p->ai_addr )->sin6_addr.s6_addr );
 
-                default:
-                    results.setError( QHostInfo::UnknownError );
-                    results.setErrorString( tr( "Unknown address type" ) );
+                        if ( !addresses.contains( addr ) )
+                        {
+                            addresses.append( addr );
+                        }
+                    }
+                    break;
+
+                    default:
+                        results.setError( QHostInfo::UnknownError );
+                        results.setErrorString( tr( "Unknown address type" ) );
                 }
             }
 
@@ -249,21 +249,21 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
 
             switch ( ent->h_addrtype )
             {
-            case AF_INET:
-                for ( p = ent->h_addr_list; *p != nullptr; p++ )
-                {
-                    long *ip4Addr = ( long * ) *p;
-                    QHostAddress temp;
-                    temp.setAddress( ntohl( *ip4Addr ) );
-                    addresses << temp;
-                }
+                case AF_INET:
+                    for ( p = ent->h_addr_list; *p != nullptr; p++ )
+                    {
+                        long *ip4Addr = ( long * ) *p;
+                        QHostAddress temp;
+                        temp.setAddress( ntohl( *ip4Addr ) );
+                        addresses << temp;
+                    }
 
-                break;
+                    break;
 
-            default:
-                results.setError( QHostInfo::UnknownError );
-                results.setErrorString( tr( "Unknown address type" ) );
-                break;
+                default:
+                    results.setError( QHostInfo::UnknownError );
+                    results.setErrorString( tr( "Unknown address type" ) );
+                    break;
             }
 
             results.setAddresses( addresses );

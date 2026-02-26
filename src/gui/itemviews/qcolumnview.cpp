@@ -364,30 +364,30 @@ QModelIndex QColumnView::moveCursor( CursorAction cursorAction, Qt::KeyboardModi
 
     switch ( cursorAction )
     {
-    case MoveLeft:
-        if ( current.parent().isValid() && current.parent() != rootIndex() )
-        {
-            return ( current.parent() );
-        }
-        else
-        {
-            return current;
-        }
+        case MoveLeft:
+            if ( current.parent().isValid() && current.parent() != rootIndex() )
+            {
+                return ( current.parent() );
+            }
+            else
+            {
+                return current;
+            }
 
 
-    case MoveRight:
-        if ( model()->hasChildren( current ) )
-        {
-            return model()->index( 0, 0, current );
-        }
-        else
-        {
-            return current.sibling( current.row() + 1, current.column() );
-        }
+        case MoveRight:
+            if ( model()->hasChildren( current ) )
+            {
+                return model()->index( 0, 0, current );
+            }
+            else
+            {
+                return current.sibling( current.row() + 1, current.column() );
+            }
 
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QModelIndex();

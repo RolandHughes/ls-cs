@@ -457,66 +457,66 @@ void lscs_transform_image_rasterize( DestT *destPixels, int dbpl,
 
             switch ( i & 7 )
             {
-            case 7:
-                blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
-                               ( v >> 16 ) * sbpl )[u >> 16] );
-                u += dudx;
-                v += dvdx;
-                ++line;
+                case 7:
+                    blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
+                                   ( v >> 16 ) * sbpl )[u >> 16] );
+                    u += dudx;
+                    v += dvdx;
+                    ++line;
 
-                [[fallthrough]];
+                    [[fallthrough]];
 
-            case 6:
-                blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
-                               ( v >> 16 ) * sbpl )[u >> 16] );
-                u += dudx;
-                v += dvdx;
-                ++line;
+                case 6:
+                    blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
+                                   ( v >> 16 ) * sbpl )[u >> 16] );
+                    u += dudx;
+                    v += dvdx;
+                    ++line;
 
-                [[fallthrough]];
+                    [[fallthrough]];
 
-            case 5:
-                blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
-                               ( v >> 16 ) * sbpl )[u >> 16] );
-                u += dudx;
-                v += dvdx;
-                ++line;
+                case 5:
+                    blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
+                                   ( v >> 16 ) * sbpl )[u >> 16] );
+                    u += dudx;
+                    v += dvdx;
+                    ++line;
 
-                [[fallthrough]];
+                    [[fallthrough]];
 
-            case 4:
-                blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
-                               ( v >> 16 ) * sbpl )[u >> 16] );
-                u += dudx;
-                v += dvdx;
-                ++line;
+                case 4:
+                    blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
+                                   ( v >> 16 ) * sbpl )[u >> 16] );
+                    u += dudx;
+                    v += dvdx;
+                    ++line;
 
-                [[fallthrough]];
+                    [[fallthrough]];
 
-            case 3:
-                blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
-                               ( v >> 16 ) * sbpl )[u >> 16] );
-                u += dudx;
-                v += dvdx;
-                ++line;
+                case 3:
+                    blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
+                                   ( v >> 16 ) * sbpl )[u >> 16] );
+                    u += dudx;
+                    v += dvdx;
+                    ++line;
 
-                [[fallthrough]];
+                    [[fallthrough]];
 
-            case 2:
-                blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
-                               ( v >> 16 ) * sbpl )[u >> 16] );
-                u += dudx;
-                v += dvdx;
-                ++line;
+                case 2:
+                    blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
+                                   ( v >> 16 ) * sbpl )[u >> 16] );
+                    u += dudx;
+                    v += dvdx;
+                    ++line;
 
-                [[fallthrough]];
+                    [[fallthrough]];
 
-            case 1:
-                blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
-                               ( v >> 16 ) * sbpl )[u >> 16] );
-                u += dudx;
-                v += dvdx;
-                ++line;
+                case 1:
+                    blender.write( line, reinterpret_cast<const SrcT *>( reinterpret_cast<const uchar *>( srcPixels ) +
+                                   ( v >> 16 ) * sbpl )[u >> 16] );
+                    u += dudx;
+                    v += dvdx;
+                    ++line;
             }
 
             // End of the scan line, with per-pixel checks.
@@ -583,36 +583,36 @@ void lscs_transform_image( DestT *destPixels, int dbpl,
     // rearrange array such that topmost vertex is at index 0.
     switch ( topmost )
     {
-    case 1:
-    {
-        QTransformImageVertex t = v[0];
-
-        for ( int i = 0; i < 3; ++i )
+        case 1:
         {
-            v[i] = v[i + 1];
+            QTransformImageVertex t = v[0];
+
+            for ( int i = 0; i < 3; ++i )
+            {
+                v[i] = v[i + 1];
+            }
+
+            v[3] = t;
         }
-
-        v[3] = t;
-    }
-    break;
-
-    case 2:
-        qSwap( v[0], v[2] );
-        qSwap( v[1], v[3] );
         break;
 
-    case 3:
-    {
-        QTransformImageVertex t = v[3];
+        case 2:
+            qSwap( v[0], v[2] );
+            qSwap( v[1], v[3] );
+            break;
 
-        for ( int i = 3; i > 0; --i )
+        case 3:
         {
-            v[i] = v[i - 1];
-        }
+            QTransformImageVertex t = v[3];
 
-        v[0] = t;
-    }
-    break;
+            for ( int i = 3; i > 0; --i )
+            {
+                v[i] = v[i - 1];
+            }
+
+            v[0] = t;
+        }
+        break;
     }
 
     // if necessary, swap vertex 1 and 3 such that 1 is to the left of 3.

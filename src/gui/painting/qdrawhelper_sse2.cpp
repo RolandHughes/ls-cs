@@ -268,28 +268,28 @@ void lscs_memfill32( quint32 *dest, quint32 value, int count )
     {
         switch ( count )
         {
-        case 6:
-            *dest++ = value;
-            [[fallthrough]];
+            case 6:
+                *dest++ = value;
+                [[fallthrough]];
 
-        case 5:
-            *dest++ = value;
-            [[fallthrough]];
+            case 5:
+                *dest++ = value;
+                [[fallthrough]];
 
-        case 4:
-            *dest++ = value;
-            [[fallthrough]];
+            case 4:
+                *dest++ = value;
+                [[fallthrough]];
 
-        case 3:
-            *dest++ = value;
-            [[fallthrough]];
+            case 3:
+                *dest++ = value;
+                [[fallthrough]];
 
-        case 2:
-            *dest++ = value;
-            [[fallthrough]];
+            case 2:
+                *dest++ = value;
+                [[fallthrough]];
 
-        case 1:
-            *dest   = value;
+            case 1:
+                *dest   = value;
         }
 
         return;
@@ -299,19 +299,19 @@ void lscs_memfill32( quint32 *dest, quint32 value, int count )
 
     switch ( align )
     {
-    case 4:
-        *dest++ = value;
-        --count;
-        [[fallthrough]];
+        case 4:
+            *dest++ = value;
+            --count;
+            [[fallthrough]];
 
-    case 8:
-        *dest++ = value;
-        --count;
-        [[fallthrough]];
+        case 8:
+            *dest++ = value;
+            --count;
+            [[fallthrough]];
 
-    case 12:
-        *dest++ = value;
-        --count;
+        case 12:
+            *dest++ = value;
+            --count;
     }
 
     const int rest = count & 0x3;
@@ -320,16 +320,16 @@ void lscs_memfill32( quint32 *dest, quint32 value, int count )
     {
         switch ( rest )
         {
-        case 3:
-            dest[count - 3] = value;
-            [[fallthrough]];
+            case 3:
+                dest[count - 3] = value;
+                [[fallthrough]];
 
-        case 2:
-            dest[count - 2] = value;
-            [[fallthrough]];
+            case 2:
+                dest[count - 2] = value;
+                [[fallthrough]];
 
-        case 1:
-            dest[count - 1] = value;
+            case 1:
+                dest[count - 1] = value;
         }
     }
 
@@ -350,16 +350,16 @@ void lscs_memfill32( quint32 *dest, quint32 value, int count )
 
     switch ( count128 & 0x3 )
     {
-    case 3:
-        _mm_stream_si128( dst128++, value128 );
-        [[fallthrough]];
+        case 3:
+            _mm_stream_si128( dst128++, value128 );
+            [[fallthrough]];
 
-    case 2:
-        _mm_stream_si128( dst128++, value128 );
-        [[fallthrough]];
+        case 2:
+            _mm_stream_si128( dst128++, value128 );
+            [[fallthrough]];
 
-    case 1:
-        _mm_stream_si128( dst128++, value128 );
+        case 1:
+            _mm_stream_si128( dst128++, value128 );
     }
 }
 
@@ -410,12 +410,12 @@ void lscs_memfill16( quint16 *dest, quint16 value, int count )
     {
         switch ( count )
         {
-        case 2:
-            *dest++ = value;
-            [[fallthrough]];
+            case 2:
+                *dest++ = value;
+                [[fallthrough]];
 
-        case 1:
-            *dest = value;
+            case 1:
+                *dest = value;
         }
 
         return;
@@ -425,9 +425,9 @@ void lscs_memfill16( quint16 *dest, quint16 value, int count )
 
     switch ( align )
     {
-    case 2:
-        *dest++ = value;
-        --count;
+        case 2:
+            *dest++ = value;
+            --count;
     }
 
     const quint32 value32 = ( value << 16 ) | value;

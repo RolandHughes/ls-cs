@@ -50,17 +50,17 @@ toff_t qtiffSeekProc( thandle_t fd, toff_t off, int whence )
 
     switch ( whence )
     {
-    case SEEK_SET:
-        device->seek( off );
-        break;
+        case SEEK_SET:
+            device->seek( off );
+            break;
 
-    case SEEK_CUR:
-        device->seek( device->pos() + off );
-        break;
+        case SEEK_CUR:
+            device->seek( device->pos() + off );
+            break;
 
-    case SEEK_END:
-        device->seek( device->size() + off );
-        break;
+        case SEEK_END:
+            device->seek( device->size() + off );
+            break;
     }
 
     return device->pos();
@@ -375,20 +375,20 @@ bool QTiffHandler::read( QImage *image )
     {
         switch ( resUnit )
         {
-        case RESUNIT_CENTIMETER:
-            image->setDotsPerMeterX( qRound( resX * 100 ) );
-            image->setDotsPerMeterY( qRound( resY * 100 ) );
-            break;
+            case RESUNIT_CENTIMETER:
+                image->setDotsPerMeterX( qRound( resX * 100 ) );
+                image->setDotsPerMeterY( qRound( resY * 100 ) );
+                break;
 
-        case RESUNIT_INCH:
-            image->setDotsPerMeterX( qRound( resX * ( 100 / 2.54 ) ) );
-            image->setDotsPerMeterY( qRound( resY * ( 100 / 2.54 ) ) );
-            break;
+            case RESUNIT_INCH:
+                image->setDotsPerMeterX( qRound( resX * ( 100 / 2.54 ) ) );
+                image->setDotsPerMeterY( qRound( resY * ( 100 / 2.54 ) ) );
+                break;
 
-        default:
-            // do nothing as defaults have already
-            // been set within the QImage class
-            break;
+            default:
+                // do nothing as defaults have already
+                // been set within the QImage class
+                break;
         }
     }
 
@@ -402,75 +402,75 @@ bool QTiffHandler::read( QImage *image )
             // TIFFReadRGBAImageOriented() flip the image but does not rotate them
             switch ( orientationTag )
             {
-            case 5:
-                rotate_right_mirror_horizontal( image );
-                break;
+                case 5:
+                    rotate_right_mirror_horizontal( image );
+                    break;
 
-            case 6:
-                rotate_right_mirror_vertical( image );
-                break;
+                case 6:
+                    rotate_right_mirror_vertical( image );
+                    break;
 
-            case 7:
-                rotate_right_mirror_horizontal( image );
-                break;
+                case 7:
+                    rotate_right_mirror_horizontal( image );
+                    break;
 
-            case 8:
-                rotate_right_mirror_vertical( image );
-                break;
+                case 8:
+                    rotate_right_mirror_vertical( image );
+                    break;
             }
         }
         else
         {
             switch ( orientationTag )
             {
-            case 1: // default orientation
-                break;
+                case 1: // default orientation
+                    break;
 
-            case 2: // mirror horizontal
-                *image = image->mirrored( true, false );
-                break;
+                case 2: // mirror horizontal
+                    *image = image->mirrored( true, false );
+                    break;
 
-            case 3: // mirror both
-                *image = image->mirrored( true, true );
-                break;
+                case 3: // mirror both
+                    *image = image->mirrored( true, true );
+                    break;
 
-            case 4: // mirror vertical
-                *image = image->mirrored( false, true );
-                break;
+                case 4: // mirror vertical
+                    *image = image->mirrored( false, true );
+                    break;
 
-            case 5:   // rotate right mirror horizontal
-            {
-                QMatrix transformation;
-                transformation.rotate( 90 );
-                *image = image->transformed( transformation );
-                *image = image->mirrored( true, false );
-                break;
-            }
+                case 5:   // rotate right mirror horizontal
+                {
+                    QMatrix transformation;
+                    transformation.rotate( 90 );
+                    *image = image->transformed( transformation );
+                    *image = image->mirrored( true, false );
+                    break;
+                }
 
-            case 6:   // rotate right
-            {
-                QMatrix transformation;
-                transformation.rotate( 90 );
-                *image = image->transformed( transformation );
-                break;
-            }
+                case 6:   // rotate right
+                {
+                    QMatrix transformation;
+                    transformation.rotate( 90 );
+                    *image = image->transformed( transformation );
+                    break;
+                }
 
-            case 7:   // rotate right, mirror vertical
-            {
-                QMatrix transformation;
-                transformation.rotate( 90 );
-                *image = image->transformed( transformation );
-                *image = image->mirrored( false, true );
-                break;
-            }
+                case 7:   // rotate right, mirror vertical
+                {
+                    QMatrix transformation;
+                    transformation.rotate( 90 );
+                    *image = image->transformed( transformation );
+                    *image = image->mirrored( false, true );
+                    break;
+                }
 
-            case 8:   // rotate left
-            {
-                QMatrix transformation;
-                transformation.rotate( 270 );
-                *image = image->transformed( transformation );
-                break;
-            }
+                case 8:   // rotate left
+                {
+                    QMatrix transformation;
+                    transformation.rotate( 270 );
+                    *image = image->transformed( transformation );
+                    break;
+                }
             }
         }
     }

@@ -104,7 +104,7 @@ QModelIndex QFileSystemModel::index( int row, int column, const QModelIndex &par
 
     // get the parent node
     QFileSystemModelPrivate::QFileSystemNode *parentNode = ( d->indexValid( parent ) ? d->node( parent ) :
-        const_cast<QFileSystemModelPrivate::QFileSystemNode *>( &d->root ) );
+            const_cast<QFileSystemModelPrivate::QFileSystemNode *>( &d->root ) );
     Q_ASSERT( parentNode );
 
     // get the internal pointer for the index
@@ -458,7 +458,7 @@ void QFileSystemModel::timerEvent( QTimerEvent *event )
             if ( ! node->hasInformation() )
             {
                 d->fileInfoGatherer.fetchExtendedInformation( d->toFetch.at( i ).dir,
-                                   QStringList( d->toFetch.at( i ).file ) );
+                        QStringList( d->toFetch.at( i ).file ) );
             }
         }
 
@@ -669,13 +669,13 @@ QVariant QFileSystemModel::myComputer( int role ) const
 
     switch ( role )
     {
-    case Qt::DisplayRole:
-        return QFileSystemModelPrivate::myComputer();
+        case Qt::DisplayRole:
+            return QFileSystemModelPrivate::myComputer();
 
 #ifndef LSCS_NO_FILESYSTEMWATCHER
 
-    case Qt::DecorationRole:
-        return d->fileInfoGatherer.iconProvider()->icon( QFileIconProvider::Computer );
+        case Qt::DecorationRole:
+            return d->fileInfoGatherer.iconProvider()->icon( QFileIconProvider::Computer );
 #endif
     }
 
@@ -693,71 +693,71 @@ QVariant QFileSystemModel::data( const QModelIndex &index, int role ) const
 
     switch ( role )
     {
-    case Qt::EditRole:
-    case Qt::DisplayRole:
-        switch ( index.column() )
-        {
-        case 0:
-            return d->displayName( index );
+        case Qt::EditRole:
+        case Qt::DisplayRole:
+            switch ( index.column() )
+            {
+                case 0:
+                    return d->displayName( index );
 
-        case 1:
-            return d->size( index );
+                case 1:
+                    return d->size( index );
 
-        case 2:
-            return d->type( index );
+                case 2:
+                    return d->type( index );
 
-        case 3:
-            return d->time( index );
+                case 3:
+                    return d->time( index );
 
-        default:
-            qWarning( "QFileSystemModel::data() Invalid display role for column %d", index.column() );
+                default:
+                    qWarning( "QFileSystemModel::data() Invalid display role for column %d", index.column() );
+                    break;
+            }
+
             break;
-        }
 
-        break;
+        case FilePathRole:
+            return filePath( index );
 
-    case FilePathRole:
-        return filePath( index );
+        case FileNameRole:
+            return d->name( index );
 
-    case FileNameRole:
-        return d->name( index );
-
-    case Qt::DecorationRole:
-        if ( index.column() == 0 )
-        {
-            QIcon icon = d->icon( index );
+        case Qt::DecorationRole:
+            if ( index.column() == 0 )
+            {
+                QIcon icon = d->icon( index );
 
 #ifndef LSCS_NO_FILESYSTEMWATCHER
 
-            if ( icon.isNull() )
-            {
-                if ( d->node( index )->isDir() )
+                if ( icon.isNull() )
                 {
-                    icon = d->fileInfoGatherer.iconProvider()->icon( QFileIconProvider::Folder );
+                    if ( d->node( index )->isDir() )
+                    {
+                        icon = d->fileInfoGatherer.iconProvider()->icon( QFileIconProvider::Folder );
+                    }
+                    else
+                    {
+                        icon = d->fileInfoGatherer.iconProvider()->icon( QFileIconProvider::File );
+                    }
                 }
-                else
-                {
-                    icon = d->fileInfoGatherer.iconProvider()->icon( QFileIconProvider::File );
-                }
-            }
 
 #endif
-            return icon;
-        }
+                return icon;
+            }
 
-        break;
+            break;
 
-    case Qt::TextAlignmentRole:
-        if ( index.column() == 1 )
-        {
-            return Qt::AlignRight;
-        }
+        case Qt::TextAlignmentRole:
+            if ( index.column() == 1 )
+            {
+                return Qt::AlignRight;
+            }
 
-        break;
+            break;
 
-    case FilePermissions:
-        int p = permissions( index );
-        return p;
+        case FilePermissions:
+            int p = permissions( index );
+            return p;
     }
 
     return QVariant();
@@ -971,20 +971,20 @@ QVariant QFileSystemModel::headerData( int section, Qt::Orientation orientation,
 {
     switch ( role )
     {
-    case Qt::DecorationRole:
-        if ( section == 0 )
-        {
-            // ### TODO something is still 2 pixels off
-            QImage pixmap( 16, 1, QImage::Format_Mono );
-            pixmap.fill( 0 );
-            pixmap.setAlphaChannel( pixmap.createAlphaMask() );
-            return pixmap;
-        }
+        case Qt::DecorationRole:
+            if ( section == 0 )
+            {
+                // ### TODO something is still 2 pixels off
+                QImage pixmap( 16, 1, QImage::Format_Mono );
+                pixmap.fill( 0 );
+                pixmap.setAlphaChannel( pixmap.createAlphaMask() );
+                return pixmap;
+            }
 
-        break;
+            break;
 
-    case Qt::TextAlignmentRole:
-        return Qt::AlignLeft;
+        case Qt::TextAlignmentRole:
+            return Qt::AlignLeft;
     }
 
     if ( orientation != Qt::Horizontal || role != Qt::DisplayRole )
@@ -996,29 +996,29 @@ QVariant QFileSystemModel::headerData( int section, Qt::Orientation orientation,
 
     switch ( section )
     {
-    case 0:
-        returnValue = tr( "Name" );
-        break;
+        case 0:
+            returnValue = tr( "Name" );
+            break;
 
-    case 1:
-        returnValue = tr( "Size" );
-        break;
+        case 1:
+            returnValue = tr( "Size" );
+            break;
 
-    case 2:
+        case 2:
 
 #ifdef Q_OS_DARWIN
-        returnValue = tr( "Kind", "Match OS X Finder" );
+            returnValue = tr( "Kind", "Match OS X Finder" );
 #else
-        returnValue = tr( "Type", "All other platforms" );
+            returnValue = tr( "Type", "All other platforms" );
 #endif
-        break;
+            break;
 
-    case 3:
-        returnValue = tr( "Date Modified" );
-        break;
+        case 3:
+            returnValue = tr( "Date Modified" );
+            break;
 
-    default:
-        return QVariant();
+        default:
+            return QVariant();
     }
 
     return returnValue;
@@ -1200,67 +1200,67 @@ public:
     {
         switch ( sortColumn )
         {
-        case 0:
-        {
+            case 0:
+            {
 
 #ifndef Q_OS_DARWIN
-            // place directories before files
-            bool left = l->isDir();
-            bool right = r->isDir();
+                // place directories before files
+                bool left = l->isDir();
+                bool right = r->isDir();
 
-            if ( left ^ right )
-            {
-                return left;
-            }
+                if ( left ^ right )
+                {
+                    return left;
+                }
 
 #endif
 
-            return QFileSystemModelPrivate::naturalCompare( l->fileName,
-                    r->fileName, Qt::CaseInsensitive ) < 0;
-        }
-
-        case 1:
-        {
-            // Directories go first
-            bool left = l->isDir();
-            bool right = r->isDir();
-
-            if ( left ^ right )
-            {
-                return left;
+                return QFileSystemModelPrivate::naturalCompare( l->fileName,
+                        r->fileName, Qt::CaseInsensitive ) < 0;
             }
 
-            qint64 sizeDifference = l->size() - r->size();
-
-            if ( sizeDifference == 0 )
+            case 1:
             {
-                return QFileSystemModelPrivate::naturalCompare( l->fileName, r->fileName, Qt::CaseInsensitive ) < 0;
+                // Directories go first
+                bool left = l->isDir();
+                bool right = r->isDir();
+
+                if ( left ^ right )
+                {
+                    return left;
+                }
+
+                qint64 sizeDifference = l->size() - r->size();
+
+                if ( sizeDifference == 0 )
+                {
+                    return QFileSystemModelPrivate::naturalCompare( l->fileName, r->fileName, Qt::CaseInsensitive ) < 0;
+                }
+
+                return sizeDifference < 0;
             }
 
-            return sizeDifference < 0;
-        }
-
-        case 2:
-        {
-            int compare = QString::localeAwareCompare( l->type(), r->type() );
-
-            if ( compare == 0 )
+            case 2:
             {
-                return QFileSystemModelPrivate::naturalCompare( l->fileName, r->fileName, Qt::CaseInsensitive ) < 0;
+                int compare = QString::localeAwareCompare( l->type(), r->type() );
+
+                if ( compare == 0 )
+                {
+                    return QFileSystemModelPrivate::naturalCompare( l->fileName, r->fileName, Qt::CaseInsensitive ) < 0;
+                }
+
+                return compare < 0;
             }
 
-            return compare < 0;
-        }
-
-        case 3:
-        {
-            if ( l->lastModified() == r->lastModified() )
+            case 3:
             {
-                return QFileSystemModelPrivate::naturalCompare( l->fileName, r->fileName, Qt::CaseInsensitive ) < 0;
-            }
+                if ( l->lastModified() == r->lastModified() )
+                {
+                    return QFileSystemModelPrivate::naturalCompare( l->fileName, r->fileName, Qt::CaseInsensitive ) < 0;
+                }
 
-            return l->lastModified() < r->lastModified();
-        }
+                return l->lastModified() < r->lastModified();
+            }
 
         }
 
@@ -1421,35 +1421,35 @@ bool QFileSystemModel::dropMimeData( const QMimeData *data, Qt::DropAction actio
 
     switch ( action )
     {
-    case Qt::CopyAction:
-        for ( ; it != urls.constEnd(); ++it )
-        {
-            QString path = ( *it ).toLocalFile();
-            success = QFile::copy( path, to + QFileInfo( path ).fileName() ) && success;
-        }
+        case Qt::CopyAction:
+            for ( ; it != urls.constEnd(); ++it )
+            {
+                QString path = ( *it ).toLocalFile();
+                success = QFile::copy( path, to + QFileInfo( path ).fileName() ) && success;
+            }
 
-        break;
+            break;
 
-    case Qt::LinkAction:
-        for ( ; it != urls.constEnd(); ++it )
-        {
-            QString path = ( *it ).toLocalFile();
-            success = QFile::link( path, to + QFileInfo( path ).fileName() ) && success;
-        }
+        case Qt::LinkAction:
+            for ( ; it != urls.constEnd(); ++it )
+            {
+                QString path = ( *it ).toLocalFile();
+                success = QFile::link( path, to + QFileInfo( path ).fileName() ) && success;
+            }
 
-        break;
+            break;
 
-    case Qt::MoveAction:
-        for ( ; it != urls.constEnd(); ++it )
-        {
-            QString path = ( *it ).toLocalFile();
-            success = QFile::rename( path, to + QFileInfo( path ).fileName() ) && success;
-        }
+        case Qt::MoveAction:
+            for ( ; it != urls.constEnd(); ++it )
+            {
+                QString path = ( *it ).toLocalFile();
+                success = QFile::rename( path, to + QFileInfo( path ).fileName() ) && success;
+            }
 
-        break;
+            break;
 
-    default:
-        return false;
+        default:
+            return false;
     }
 
     return success;

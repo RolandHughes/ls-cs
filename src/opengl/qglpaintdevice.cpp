@@ -42,27 +42,27 @@ int QGLPaintDevice::metric( QPaintDevice::PaintDeviceMetric metric ) const
 {
     switch ( metric )
     {
-    case PdmWidth:
-        return size().width();
+        case PdmWidth:
+            return size().width();
 
-    case PdmHeight:
-        return size().height();
+        case PdmHeight:
+            return size().height();
 
-    case PdmDepth:
-    {
-        const QGLFormat f = format();
-        return f.redBufferSize() + f.greenBufferSize() + f.blueBufferSize() + f.alphaBufferSize();
-    }
+        case PdmDepth:
+        {
+            const QGLFormat f = format();
+            return f.redBufferSize() + f.greenBufferSize() + f.blueBufferSize() + f.alphaBufferSize();
+        }
 
-    case PdmDevicePixelRatio:
-        return 1;
+        case PdmDevicePixelRatio:
+            return 1;
 
-    case PdmDevicePixelRatioScaled:
-        return 1 * QPaintDevice::devicePixelRatioFScale();
+        case PdmDevicePixelRatioScaled:
+            return 1 * QPaintDevice::devicePixelRatioFScale();
 
-    default:
-        qWarning( "QGLPaintDevice::metric() - metric %d not known", metric );
-        return 0;
+        default:
+            qWarning( "QGLPaintDevice::metric() - metric %d not known", metric );
+            return 0;
     }
 }
 
@@ -222,29 +222,29 @@ QGLPaintDevice *QGLPaintDevice::getDevice( QPaintDevice *pd )
 
     switch ( pd->devType() )
     {
-    case QInternal::Widget:
-        // Should not be called on a non-gl widget:
-        Q_ASSERT( qobject_cast<QGLWidget *>( static_cast<QWidget *>( pd ) ) );
-        glpd = &( static_cast<QGLWidget *>( pd )->d_func()->glDevice );
-        break;
+        case QInternal::Widget:
+            // Should not be called on a non-gl widget:
+            Q_ASSERT( qobject_cast<QGLWidget *>( static_cast<QWidget *>( pd ) ) );
+            glpd = &( static_cast<QGLWidget *>( pd )->d_func()->glDevice );
+            break;
 
-    case QInternal::Pbuffer:
-        glpd = &( static_cast<QGLPixelBuffer *>( pd )->d_func()->glDevice );
-        break;
+        case QInternal::Pbuffer:
+            glpd = &( static_cast<QGLPixelBuffer *>( pd )->d_func()->glDevice );
+            break;
 
-    case QInternal::FramebufferObject:
-        glpd = &( static_cast<QGLFramebufferObject *>( pd )->d_func()->glDevice );
-        break;
+        case QInternal::FramebufferObject:
+            glpd = &( static_cast<QGLFramebufferObject *>( pd )->d_func()->glDevice );
+            break;
 
-    case QInternal::Pixmap:
-    {
-        qWarning( "Pixmap type not supported for GL rendering" );
-        break;
-    }
+        case QInternal::Pixmap:
+        {
+            qWarning( "Pixmap type not supported for GL rendering" );
+            break;
+        }
 
-    default:
-        qWarning( "QGLPaintDevice::getDevice() - Unknown device type %d", pd->devType() );
-        break;
+        default:
+            qWarning( "QGLPaintDevice::getDevice() - Unknown device type %d", pd->devType() );
+            break;
     }
 
     return glpd;

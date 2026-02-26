@@ -474,32 +474,32 @@ void QDialog::keyPressEvent( QKeyEvent *e )
         {
             switch ( e->key() )
             {
-            case Qt::Key_Enter:
-            case Qt::Key_Return:
-            {
-                QList<QPushButton *> list = findChildren<QPushButton *>();
-
-                for ( int i = 0; i < list.size(); ++i )
+                case Qt::Key_Enter:
+                case Qt::Key_Return:
                 {
-                    QPushButton *pb = list.at( i );
+                    QList<QPushButton *> list = findChildren<QPushButton *>();
 
-                    if ( pb->isDefault() && pb->isVisible() )
+                    for ( int i = 0; i < list.size(); ++i )
                     {
-                        if ( pb->isEnabled() )
-                        {
-                            pb->click();
-                        }
+                        QPushButton *pb = list.at( i );
 
-                        return;
+                        if ( pb->isDefault() && pb->isVisible() )
+                        {
+                            if ( pb->isEnabled() )
+                            {
+                                pb->click();
+                            }
+
+                            return;
+                        }
                     }
                 }
-            }
 
-            break;
+                break;
 
-            default:
-                e->ignore();
-                return;
+                default:
+                    e->ignore();
+                    return;
             }
         }
         else

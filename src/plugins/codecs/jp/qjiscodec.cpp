@@ -237,83 +237,83 @@ QString QJisCodec::convertToUnicode( const char *chars, int len, ConverterState 
 
             switch ( nbuf )
             {
-            case 0:
-                if ( ch == '$' || strchr( Esc_CHARS, ch ) )
-                {
-                    buf[nbuf++] = ch;
-                }
-                else
-                {
-                    nbuf = 0;
-                    esc = false;
-                }
-
-                break;
-
-            case 1:
-                if ( buf[0] == '$' )
-                {
-                    if ( strchr( Esc_CHARS, ch ) )
+                case 0:
+                    if ( ch == '$' || strchr( Esc_CHARS, ch ) )
                     {
                         buf[nbuf++] = ch;
                     }
                     else
                     {
-                        switch ( ch )
-                        {
-                        case '@':
-                            state = JISX0208_1978;        // Esc $ @
-                            break;
+                        nbuf = 0;
+                        esc = false;
+                    }
 
-                        case 'B':
-                            state = JISX0208_1983;        // Esc $ B
-                            break;
+                    break;
+
+                case 1:
+                    if ( buf[0] == '$' )
+                    {
+                        if ( strchr( Esc_CHARS, ch ) )
+                        {
+                            buf[nbuf++] = ch;
+                        }
+                        else
+                        {
+                            switch ( ch )
+                            {
+                                case '@':
+                                    state = JISX0208_1978;        // Esc $ @
+                                    break;
+
+                                case 'B':
+                                    state = JISX0208_1983;        // Esc $ B
+                                    break;
+                            }
+
+                            nbuf = 0;
+                            esc = false;
+                        }
+                    }
+                    else
+                    {
+                        if ( buf[0] == '(' )
+                        {
+                            switch ( ch )
+                            {
+                                case 'B':
+                                    state = Ascii;        // Esc (B
+                                    break;
+
+                                case 'I':
+                                    state = JISX0201_Kana;        // Esc (I
+                                    break;
+
+                                case 'J':
+                                    state = JISX0201_Latin;        // Esc (J
+                                    break;
+                            }
                         }
 
                         nbuf = 0;
                         esc = false;
                     }
-                }
-                else
-                {
-                    if ( buf[0] == '(' )
+
+                    break;
+
+                case 2:
+                    if ( buf[1] == '(' )
                     {
                         switch ( ch )
                         {
-                        case 'B':
-                            state = Ascii;        // Esc (B
-                            break;
-
-                        case 'I':
-                            state = JISX0201_Kana;        // Esc (I
-                            break;
-
-                        case 'J':
-                            state = JISX0201_Latin;        // Esc (J
-                            break;
+                            case 'D':
+                                state = JISX0212;        // Esc $ (D
+                                break;
                         }
                     }
 
                     nbuf = 0;
                     esc = false;
-                }
-
-                break;
-
-            case 2:
-                if ( buf[1] == '(' )
-                {
-                    switch ( ch )
-                    {
-                    case 'D':
-                        state = JISX0212;        // Esc $ (D
-                        break;
-                    }
-                }
-
-                nbuf = 0;
-                esc = false;
-                break;
+                    break;
             }
         }
         else
@@ -351,62 +351,62 @@ QString QJisCodec::convertToUnicode( const char *chars, int len, ConverterState 
 
                 switch ( nbuf )
                 {
-                case 0:
-                    switch ( state )
-                    {
-                    case Ascii:
-                        if ( ch < 0x80 )
+                    case 0:
+                        switch ( state )
                         {
-                            result += QLatin1Char( ch );
-                            break;
+                            case Ascii:
+                                if ( ch < 0x80 )
+                                {
+                                    result += QLatin1Char( ch );
+                                    break;
+                                }
+
+                            /* fall through */
+                            case JISX0201_Latin:
+                                u = conv->jisx0201ToUnicode( ch );
+                                result += QValidChar( u );
+                                break;
+
+                            case JISX0201_Kana:
+                                u = conv->jisx0201ToUnicode( ch | 0x80 );
+                                result += QValidChar( u );
+                                break;
+
+                            case JISX0208_1978:
+                            case JISX0208_1983:
+                            case JISX0212:
+                                buf[nbuf++] = ch;
+                                break;
+
+                            default:
+                                result += QChar::ReplacementCharacter;
+                                break;
                         }
 
-                    /* fall through */
-                    case JISX0201_Latin:
-                        u = conv->jisx0201ToUnicode( ch );
-                        result += QValidChar( u );
                         break;
 
-                    case JISX0201_Kana:
-                        u = conv->jisx0201ToUnicode( ch | 0x80 );
-                        result += QValidChar( u );
+                    case 1:
+                        switch ( state )
+                        {
+                            case JISX0208_1978:
+                            case JISX0208_1983:
+                                u = conv->jisx0208ToUnicode( buf[0] & 0x7f, ch & 0x7f );
+                                result += QValidChar( u );
+                                break;
+
+                            case JISX0212:
+                                u = conv->jisx0212ToUnicode( buf[0] & 0x7f, ch & 0x7f );
+                                result += QValidChar( u );
+                                break;
+
+                            default:
+                                result += replacement;
+                                ++invalid;
+                                break;
+                        }
+
+                        nbuf = 0;
                         break;
-
-                    case JISX0208_1978:
-                    case JISX0208_1983:
-                    case JISX0212:
-                        buf[nbuf++] = ch;
-                        break;
-
-                    default:
-                        result += QChar::ReplacementCharacter;
-                        break;
-                    }
-
-                    break;
-
-                case 1:
-                    switch ( state )
-                    {
-                    case JISX0208_1978:
-                    case JISX0208_1983:
-                        u = conv->jisx0208ToUnicode( buf[0] & 0x7f, ch & 0x7f );
-                        result += QValidChar( u );
-                        break;
-
-                    case JISX0212:
-                        u = conv->jisx0212ToUnicode( buf[0] & 0x7f, ch & 0x7f );
-                        result += QValidChar( u );
-                        break;
-
-                    default:
-                        result += replacement;
-                        ++invalid;
-                        break;
-                    }
-
-                    nbuf = 0;
-                    break;
                 }
             }
         }

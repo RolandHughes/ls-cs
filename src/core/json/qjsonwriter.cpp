@@ -60,39 +60,39 @@ static QString escapedString( const QString &s )
 
                 switch ( uc )
                 {
-                case 0x22:
-                    retval.append( '"' );
-                    break;
+                    case 0x22:
+                        retval.append( '"' );
+                        break;
 
-                case 0x5c:
-                    retval.append( '\\' );
-                    break;
+                    case 0x5c:
+                        retval.append( '\\' );
+                        break;
 
-                case 0x8:
-                    retval.append( 'b' );
-                    break;
+                    case 0x8:
+                        retval.append( 'b' );
+                        break;
 
-                case 0xc:
-                    retval.append( 'f' );
-                    break;
+                    case 0xc:
+                        retval.append( 'f' );
+                        break;
 
-                case 0xa:
-                    retval.append( 'n' );
-                    break;
+                    case 0xa:
+                        retval.append( 'n' );
+                        break;
 
-                case 0xd:
-                    retval.append( 'r' );
-                    break;
+                    case 0xd:
+                        retval.append( 'r' );
+                        break;
 
-                case 0x9:
-                    retval.append( 't' );
-                    break;
+                    case 0x9:
+                        retval.append( 't' );
+                        break;
 
-                default:
-                    retval.append( "u00" );
+                    default:
+                        retval.append( "u00" );
 
-                    retval.append( hexdig( uc >> 4 ) );
-                    retval.append( hexdig( uc & 0xf ) );
+                        retval.append( hexdig( uc >> 4 ) );
+                        retval.append( hexdig( uc & 0xf ) );
                 }
 
             }
@@ -142,46 +142,46 @@ static void valueToJson( const QJsonValue &value, QString &retval, int indent, b
     switch ( type )
     {
 
-    case QJsonValue::Bool:
-        retval += value.toBool() ? QString( "true" ) : QString( "false" );
-        break;
+        case QJsonValue::Bool:
+            retval += value.toBool() ? QString( "true" ) : QString( "false" );
+            break;
 
-    case QJsonValue::Double:
-    {
-        const double d = value.toDouble();
-
-        if ( std::isfinite( d ) )
+        case QJsonValue::Double:
         {
-            retval += QString::number( d, 'g', std::numeric_limits<double>::digits10 + 2 );
+            const double d = value.toDouble();
 
+            if ( std::isfinite( d ) )
+            {
+                retval += QString::number( d, 'g', std::numeric_limits<double>::digits10 + 2 );
+
+            }
+            else
+            {
+                retval += "null";
+            }
+
+            break;
         }
-        else
-        {
+
+        case QJsonValue::String:
+            retval += '"' + escapedString( value.toString() ) + '"';
+            break;
+
+        case QJsonValue::Array:
+            retval += compact ? "[" : "[\n";
+            lscs_internal_arrayToStr( value.toArray(), retval, indent + ( compact ? 0 : 1 ), compact );
+            retval += QString( 4 * indent, ' ' ) + "]";
+            break;
+
+        case QJsonValue::Object:
+            retval += compact ? "{" : "{\n";
+            lscs_internal_objectToStr( value.toObject(), retval, indent + ( compact ? 0 : 1 ), compact );
+            retval += QString( 4 * indent, ' ' ) + "}";
+            break;
+
+        case QJsonValue::Null:
+        default:
             retval += "null";
-        }
-
-        break;
-    }
-
-    case QJsonValue::String:
-        retval += '"' + escapedString( value.toString() ) + '"';
-        break;
-
-    case QJsonValue::Array:
-        retval += compact ? "[" : "[\n";
-        lscs_internal_arrayToStr( value.toArray(), retval, indent + ( compact ? 0 : 1 ), compact );
-        retval += QString( 4 * indent, ' ' ) + "]";
-        break;
-
-    case QJsonValue::Object:
-        retval += compact ? "{" : "{\n";
-        lscs_internal_objectToStr( value.toObject(), retval, indent + ( compact ? 0 : 1 ), compact );
-        retval += QString( 4 * indent, ' ' ) + "}";
-        break;
-
-    case QJsonValue::Null:
-    default:
-        retval += "null";
     }
 }
 

@@ -44,17 +44,17 @@ public:
     {
         switch ( mode )
         {
-        case QClipboard::Selection:
-            modeAtom = XCB_ATOM_PRIMARY;
-            break;
+            case QClipboard::Selection:
+                modeAtom = XCB_ATOM_PRIMARY;
+                break;
 
-        case QClipboard::Clipboard:
-            modeAtom = m_clipboard->atom( QXcbAtom::CLIPBOARD );
-            break;
+            case QClipboard::Clipboard:
+                modeAtom = m_clipboard->atom( QXcbAtom::CLIPBOARD );
+                break;
 
-        default:
-            qWarning( "QXcbClipboardMime: Internal error: Unsupported clipboard mode" );
-            break;
+            default:
+                qWarning( "QXcbClipboardMime: Internal error: Unsupported clipboard mode" );
+                break;
         }
     }
 

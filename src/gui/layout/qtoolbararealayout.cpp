@@ -219,19 +219,19 @@ QToolBarAreaLayoutInfo::QToolBarAreaLayoutInfo( QInternal::DockPosition pos )
 {
     switch ( pos )
     {
-    case QInternal::LeftDock:
-    case QInternal::RightDock:
-        o = Qt::Vertical;
-        break;
+        case QInternal::LeftDock:
+        case QInternal::RightDock:
+            o = Qt::Vertical;
+            break;
 
-    case QInternal::TopDock:
-    case QInternal::BottomDock:
-        o = Qt::Horizontal;
-        break;
+        case QInternal::TopDock:
+        case QInternal::BottomDock:
+            o = Qt::Horizontal;
+            break;
 
-    default:
-        o = Qt::Horizontal;
-        break;
+        default:
+            o = Qt::Horizontal;
+            break;
     }
 }
 
@@ -740,40 +740,40 @@ int QToolBarAreaLayoutInfo::distance( const QPoint &pos ) const
 {
     switch ( dockPos )
     {
-    case QInternal::LeftDock:
-        if ( pos.y() < rect.bottom() )
-        {
-            return pos.x() - rect.right();
-        }
+        case QInternal::LeftDock:
+            if ( pos.y() < rect.bottom() )
+            {
+                return pos.x() - rect.right();
+            }
 
-        break;
+            break;
 
-    case QInternal::RightDock:
-        if ( pos.y() < rect.bottom() )
-        {
-            return rect.left() - pos.x();
-        }
+        case QInternal::RightDock:
+            if ( pos.y() < rect.bottom() )
+            {
+                return rect.left() - pos.x();
+            }
 
-        break;
+            break;
 
-    case QInternal::TopDock:
-        if ( pos.x() < rect.right() )
-        {
-            return pos.y() - rect.bottom();
-        }
+        case QInternal::TopDock:
+            if ( pos.x() < rect.right() )
+            {
+                return pos.y() - rect.bottom();
+            }
 
-        break;
+            break;
 
-    case QInternal::BottomDock:
-        if ( pos.x() < rect.right() )
-        {
-            return rect.top() - pos.y();
-        }
+        case QInternal::BottomDock:
+            if ( pos.x() < rect.right() )
+            {
+                return rect.top() - pos.y();
+            }
 
-        break;
+            break;
 
-    case QInternal::DockCount:
-        break;
+        case QInternal::DockCount:
+            break;
     }
 
     return -1;

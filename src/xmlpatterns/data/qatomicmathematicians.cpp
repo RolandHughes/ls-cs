@@ -67,52 +67,52 @@ Item DecimalMathematician::calculate( const Item &o1,
 {
     switch ( op )
     {
-    case Div:
-    {
-        if ( o2.as<Numeric>()->toInteger() == 0 )
+        case Div:
         {
-            context->error( divZeroInvalid(), ReportContext::FOAR0001, this );
-            return Item(); /* Silences source code analyzer warning. */
+            if ( o2.as<Numeric>()->toInteger() == 0 )
+            {
+                context->error( divZeroInvalid(), ReportContext::FOAR0001, this );
+                return Item(); /* Silences source code analyzer warning. */
+            }
+            else
+            {
+                return toItem( Decimal::fromValue( o1.as<Numeric>()->toDecimal() / o2.as<Numeric>()->toDecimal() ) );
+            }
         }
-        else
+
+        case IDiv:
         {
-            return toItem( Decimal::fromValue( o1.as<Numeric>()->toDecimal() / o2.as<Numeric>()->toDecimal() ) );
+            if ( o2.as<Numeric>()->toInteger() == 0 )
+            {
+                context->error( idivZeroInvalid(), ReportContext::FOAR0001, this );
+                return Item(); /* Silences source code analyzer warning. */
+            }
+            else
+                return Integer::fromValue( static_cast<xsInteger>( o1.as<Numeric>()->toDecimal() /
+                                           o2.as<Numeric>()->toDecimal() ) );
         }
-    }
 
-    case IDiv:
-    {
-        if ( o2.as<Numeric>()->toInteger() == 0 )
+        case Substract:
+            return toItem( Decimal::fromValue( o1.as<Numeric>()->toDecimal() - o2.as<Numeric>()->toDecimal() ) );
+
+        case Mod:
         {
-            context->error( idivZeroInvalid(), ReportContext::FOAR0001, this );
-            return Item(); /* Silences source code analyzer warning. */
+            if ( o2.as<Numeric>()->toInteger() == 0 )
+            {
+                context->error( modZeroInvalid(), ReportContext::FOAR0001, this );
+                return Item(); /* Silences source code analyzer warning. */
+            }
+            else
+            {
+                return toItem( Decimal::fromValue( ::fmod( o1.as<Numeric>()->toDecimal(), o2.as<Numeric>()->toDecimal() ) ) );
+            }
         }
-        else
-            return Integer::fromValue( static_cast<xsInteger>( o1.as<Numeric>()->toDecimal() /
-                                       o2.as<Numeric>()->toDecimal() ) );
-    }
 
-    case Substract:
-        return toItem( Decimal::fromValue( o1.as<Numeric>()->toDecimal() - o2.as<Numeric>()->toDecimal() ) );
+        case Multiply:
+            return toItem( Decimal::fromValue( o1.as<Numeric>()->toDecimal() * o2.as<Numeric>()->toDecimal() ) );
 
-    case Mod:
-    {
-        if ( o2.as<Numeric>()->toInteger() == 0 )
-        {
-            context->error( modZeroInvalid(), ReportContext::FOAR0001, this );
-            return Item(); /* Silences source code analyzer warning. */
-        }
-        else
-        {
-            return toItem( Decimal::fromValue( ::fmod( o1.as<Numeric>()->toDecimal(), o2.as<Numeric>()->toDecimal() ) ) );
-        }
-    }
-
-    case Multiply:
-        return toItem( Decimal::fromValue( o1.as<Numeric>()->toDecimal() * o2.as<Numeric>()->toDecimal() ) );
-
-    case Add:
-        return toItem( Decimal::fromValue( o1.as<Numeric>()->toDecimal() + o2.as<Numeric>()->toDecimal() ) );
+        case Add:
+            return toItem( Decimal::fromValue( o1.as<Numeric>()->toDecimal() + o2.as<Numeric>()->toDecimal() ) );
     }
 
     Q_ASSERT( false );
@@ -126,53 +126,53 @@ Item IntegerMathematician::calculate( const Item &o1,
 {
     switch ( op )
     {
-    case Div:
-        if ( o2.as<Numeric>()->toInteger() == 0 )
+        case Div:
+            if ( o2.as<Numeric>()->toInteger() == 0 )
+            {
+                context->error( divZeroInvalid(), ReportContext::FOAR0001, this );
+                return Item(); /* Silences source code analyzer warning. */
+            }
+            else     /* C++ automatically performs truncation of long integer(xsInteger). */
+            {
+                return toItem( Decimal::fromValue( o1.as<Numeric>()->toDecimal() / o2.as<Numeric>()->toDecimal() ) );
+            }
+
+        case IDiv:
         {
-            context->error( divZeroInvalid(), ReportContext::FOAR0001, this );
-            return Item(); /* Silences source code analyzer warning. */
-        }
-        else     /* C++ automatically performs truncation of long integer(xsInteger). */
-        {
-            return toItem( Decimal::fromValue( o1.as<Numeric>()->toDecimal() / o2.as<Numeric>()->toDecimal() ) );
+            if ( o2.as<Numeric>()->toInteger() == 0 )
+            {
+                context->error( idivZeroInvalid(), ReportContext::FOAR0001, this );
+                return Item(); /* Silences source code analyzer warning. */
+            }
+            else     /* C++ automatically performs truncation of long integer(xsInteger). */
+            {
+                return Integer::fromValue( o1.as<Numeric>()->toInteger() / o2.as<Numeric>()->toInteger() );
+            }
         }
 
-    case IDiv:
-    {
-        if ( o2.as<Numeric>()->toInteger() == 0 )
+        case Substract:
+            return Integer::fromValue( o1.as<Numeric>()->toInteger() - o2.as<Numeric>()->toInteger() );
+
+        case Mod:
         {
-            context->error( idivZeroInvalid(), ReportContext::FOAR0001, this );
-            return Item(); /* Silences source code analyzer warning. */
+            const xsInteger divisor = o2.as<Numeric>()->toInteger();
+
+            if ( divisor == 0 )
+            {
+                context->error( modZeroInvalid(), ReportContext::FOAR0001, this );
+                return Item(); /* Silences source code analyzer warning. */
+            }
+            else
+            {
+                return Integer::fromValue( o1.as<Numeric>()->toInteger() % divisor );
+            }
         }
-        else     /* C++ automatically performs truncation of long integer(xsInteger). */
-        {
-            return Integer::fromValue( o1.as<Numeric>()->toInteger() / o2.as<Numeric>()->toInteger() );
-        }
-    }
 
-    case Substract:
-        return Integer::fromValue( o1.as<Numeric>()->toInteger() - o2.as<Numeric>()->toInteger() );
+        case Multiply:
+            return Integer::fromValue( o1.as<Numeric>()->toInteger() * o2.as<Numeric>()->toInteger() );
 
-    case Mod:
-    {
-        const xsInteger divisor = o2.as<Numeric>()->toInteger();
-
-        if ( divisor == 0 )
-        {
-            context->error( modZeroInvalid(), ReportContext::FOAR0001, this );
-            return Item(); /* Silences source code analyzer warning. */
-        }
-        else
-        {
-            return Integer::fromValue( o1.as<Numeric>()->toInteger() % divisor );
-        }
-    }
-
-    case Multiply:
-        return Integer::fromValue( o1.as<Numeric>()->toInteger() * o2.as<Numeric>()->toInteger() );
-
-    case Add:
-        return Integer::fromValue( o1.as<Numeric>()->toInteger() + o2.as<Numeric>()->toInteger() );
+        case Add:
+            return Integer::fromValue( o1.as<Numeric>()->toInteger() + o2.as<Numeric>()->toInteger() );
     }
 
     Q_ASSERT( false );
@@ -191,74 +191,74 @@ Item DurationNumericMathematician::calculate( const Item &o1,
 
     switch ( op )
     {
-    case Div:
-    {
-        if ( qIsInf( dbl ) )
+        case Div:
         {
-            return duration->fromValue( 0 );
-        }
-        else if ( qIsNaN( dbl ) )
-        {
-            context->error( QtXmlPatterns::tr(
-                                "Dividing a value of type %1 by %2 (not-a-number) "
-                                "is not allowed." )
-                            .formatArg( formatType( context->namePool(),
-                                                    duration->type() ) )
-                            .formatArg( formatData( "NaN" ) ),
-                            ReportContext::FOCA0005,
-                            this );
-            return Item();
-        }
-        else if ( Double::isEqual( dbl, 0 ) )
-        {
-            context->error( QtXmlPatterns::tr(
-                                "Dividing a value of type %1 by %2 or %3 (plus or "
-                                "minus zero) is not allowed." )
-                            .formatArg( formatType( context->namePool(),
-                                                    duration->type() ) )
-                            .formatArg( formatData( "-0" ) )
-                            .formatArg( formatData( "0" ) ),
-                            ReportContext::FODT0002,
-                            this );
-            return Item();
+            if ( qIsInf( dbl ) )
+            {
+                return duration->fromValue( 0 );
+            }
+            else if ( qIsNaN( dbl ) )
+            {
+                context->error( QtXmlPatterns::tr(
+                                    "Dividing a value of type %1 by %2 (not-a-number) "
+                                    "is not allowed." )
+                                .formatArg( formatType( context->namePool(),
+                                                        duration->type() ) )
+                                .formatArg( formatData( "NaN" ) ),
+                                ReportContext::FOCA0005,
+                                this );
+                return Item();
+            }
+            else if ( Double::isEqual( dbl, 0 ) )
+            {
+                context->error( QtXmlPatterns::tr(
+                                    "Dividing a value of type %1 by %2 or %3 (plus or "
+                                    "minus zero) is not allowed." )
+                                .formatArg( formatType( context->namePool(),
+                                                        duration->type() ) )
+                                .formatArg( formatData( "-0" ) )
+                                .formatArg( formatData( "0" ) ),
+                                ReportContext::FODT0002,
+                                this );
+                return Item();
+            }
+
+            return duration->fromValue( static_cast<AbstractDuration::Value>( duration->value() / dbl ) );
         }
 
-        return duration->fromValue( static_cast<AbstractDuration::Value>( duration->value() / dbl ) );
-    }
-
-    case Multiply:
-    {
-        if ( Double::isEqual( dbl, 0 ) )
+        case Multiply:
         {
-            return duration->fromValue( 0 );
-        }
-        else if ( qIsNaN( dbl ) )
-        {
-            context->error( QtXmlPatterns::tr( "Dividing a value of type %1 by %2 (not-a-number) is not allowed." )
-                            .formatArg( formatType( context->namePool(), duration->type() ) )
-                            .formatArg( formatData( "NaN" ) ),
-                            ReportContext::FOCA0005,
-                            this );
-            return Item();
-        }
-        else if ( qIsInf( dbl ) )
-        {
-            context->error( QtXmlPatterns::tr( "Multiplication of a value of type %1 by %2 or %3 "
-                                               "(plus or minus infinity) is not allowed." )
-                            .formatArg( formatType( context->namePool(), duration->type() ) )
-                            .formatArg( formatData( "-INF" ) )
-                            .formatArg( formatData( "INF" ) ), ReportContext::FODT0002, this );
-            return Item();
+            if ( Double::isEqual( dbl, 0 ) )
+            {
+                return duration->fromValue( 0 );
+            }
+            else if ( qIsNaN( dbl ) )
+            {
+                context->error( QtXmlPatterns::tr( "Dividing a value of type %1 by %2 (not-a-number) is not allowed." )
+                                .formatArg( formatType( context->namePool(), duration->type() ) )
+                                .formatArg( formatData( "NaN" ) ),
+                                ReportContext::FOCA0005,
+                                this );
+                return Item();
+            }
+            else if ( qIsInf( dbl ) )
+            {
+                context->error( QtXmlPatterns::tr( "Multiplication of a value of type %1 by %2 or %3 "
+                                                   "(plus or minus infinity) is not allowed." )
+                                .formatArg( formatType( context->namePool(), duration->type() ) )
+                                .formatArg( formatData( "-INF" ) )
+                                .formatArg( formatData( "INF" ) ), ReportContext::FODT0002, this );
+                return Item();
+            }
+
+            return duration->fromValue( static_cast<AbstractDuration::Value>( duration->value() * dbl ) );
         }
 
-        return duration->fromValue( static_cast<AbstractDuration::Value>( duration->value() * dbl ) );
-    }
-
-    default:
-    {
-        Q_ASSERT( false );
-        return Item(); /* Silence warning. */
-    }
+        default:
+        {
+            Q_ASSERT( false );
+            return Item(); /* Silence warning. */
+        }
     }
 }
 
@@ -272,20 +272,20 @@ Item DurationDurationMathematician::calculate( const Item &o1,
 
     switch ( op )
     {
-    case Div:
-        return toItem( Decimal::fromValue( static_cast<xsDecimal>( duration->value() ) / op2 ) );
+        case Div:
+            return toItem( Decimal::fromValue( static_cast<xsDecimal>( duration->value() ) / op2 ) );
 
-    case Substract:
-        return duration->fromValue( duration->value() - op2 );
+        case Substract:
+            return duration->fromValue( duration->value() - op2 );
 
-    case Add:
-        return duration->fromValue( duration->value() + op2 );
+        case Add:
+            return duration->fromValue( duration->value() + op2 );
 
-    default:
-    {
-        Q_ASSERT( false );
-        return Item(); /* Silence warning. */
-    }
+        default:
+        {
+            Q_ASSERT( false );
+            return Item(); /* Silence warning. */
+        }
     }
 }
 

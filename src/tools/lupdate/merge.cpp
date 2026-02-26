@@ -423,20 +423,20 @@ makeObsolete:
 
                     switch ( m.type() )
                     {
-                    case TranslatorMessage::Type::Finished:
-                        newType = TranslatorMessage::Type::Vanished;
-                        ++obsoleted;
-                        break;
+                        case TranslatorMessage::Type::Finished:
+                            newType = TranslatorMessage::Type::Vanished;
+                            ++obsoleted;
+                            break;
 
-                    case TranslatorMessage::Type::Unfinished:
+                        case TranslatorMessage::Type::Unfinished:
 
-                        newType = TranslatorMessage::Type::Obsolete;
-                        ++obsoleted;
-                        break;
+                            newType = TranslatorMessage::Type::Obsolete;
+                            ++obsoleted;
+                            break;
 
-                    default:
-                        newType = m.type();
-                        break;
+                        default:
+                            newType = m.type();
+                            break;
                     }
 
                     m.clearReferences();
@@ -511,34 +511,34 @@ outdateSource:
                 {
                     switch ( m.type() )
                     {
-                    case TranslatorMessage::Type::Finished:
-                    default:
-                        if ( m.isPlural() == mv->isPlural() )
-                        {
-                            newType = TranslatorMessage::Type::Finished;
-                        }
-                        else
-                        {
+                        case TranslatorMessage::Type::Finished:
+                        default:
+                            if ( m.isPlural() == mv->isPlural() )
+                            {
+                                newType = TranslatorMessage::Type::Finished;
+                            }
+                            else
+                            {
+                                newType = TranslatorMessage::Type::Unfinished;
+                            }
+
+                            ++known;
+                            break;
+
+                        case TranslatorMessage::Type::Unfinished:
                             newType = TranslatorMessage::Type::Unfinished;
-                        }
+                            ++known;
+                            break;
 
-                        ++known;
-                        break;
+                        case TranslatorMessage::Type::Vanished:
+                            newType = TranslatorMessage::Type::Finished;
+                            ++neww;
+                            break;
 
-                    case TranslatorMessage::Type::Unfinished:
-                        newType = TranslatorMessage::Type::Unfinished;
-                        ++known;
-                        break;
-
-                    case TranslatorMessage::Type::Vanished:
-                        newType = TranslatorMessage::Type::Finished;
-                        ++neww;
-                        break;
-
-                    case TranslatorMessage::Type::Obsolete:
-                        newType = TranslatorMessage::Type::Unfinished;
-                        ++neww;
-                        break;
+                        case TranslatorMessage::Type::Obsolete:
+                            newType = TranslatorMessage::Type::Unfinished;
+                            ++neww;
+                            break;
                     }
                 }
 

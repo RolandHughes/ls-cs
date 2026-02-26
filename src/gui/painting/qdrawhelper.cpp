@@ -4834,41 +4834,41 @@ static inline Operator getOperator( const QSpanData *data, const QSpan *spans, i
 
     switch ( data->type )
     {
-    case QSpanData::Solid:
-        solidSource = data->solid.color.isOpaque();
-        op.srcFetch   = nullptr;
-        op.srcFetch64 = nullptr;
-        break;
+        case QSpanData::Solid:
+            solidSource = data->solid.color.isOpaque();
+            op.srcFetch   = nullptr;
+            op.srcFetch64 = nullptr;
+            break;
 
-    case QSpanData::LinearGradient:
-        solidSource = !data->gradient.alphaColor;
-        getLinearGradientValues( &op.linear, data );
-        op.srcFetch = lscs_fetch_linear_gradient;
-        op.srcFetch64 = lscs_fetch_linear_gradient_rgb64;
-        break;
+        case QSpanData::LinearGradient:
+            solidSource = !data->gradient.alphaColor;
+            getLinearGradientValues( &op.linear, data );
+            op.srcFetch = lscs_fetch_linear_gradient;
+            op.srcFetch64 = lscs_fetch_linear_gradient_rgb64;
+            break;
 
-    case QSpanData::RadialGradient:
-        solidSource = !data->gradient.alphaColor;
-        getRadialGradientValues( &op.radial, data );
-        op.srcFetch = lscs_fetch_radial_gradient;
-        op.srcFetch64 = lscs_fetch_radial_gradient_rgb64;
-        break;
+        case QSpanData::RadialGradient:
+            solidSource = !data->gradient.alphaColor;
+            getRadialGradientValues( &op.radial, data );
+            op.srcFetch = lscs_fetch_radial_gradient;
+            op.srcFetch64 = lscs_fetch_radial_gradient_rgb64;
+            break;
 
-    case QSpanData::ConicalGradient:
-        solidSource = !data->gradient.alphaColor;
-        op.srcFetch = lscs_fetch_conical_gradient;
-        op.srcFetch64 = lscs_fetch_conical_gradient_rgb64;
-        break;
+        case QSpanData::ConicalGradient:
+            solidSource = !data->gradient.alphaColor;
+            op.srcFetch = lscs_fetch_conical_gradient;
+            op.srcFetch64 = lscs_fetch_conical_gradient_rgb64;
+            break;
 
-    case QSpanData::Texture:
-        solidSource = !data->texture.hasAlpha;
-        op.srcFetch = sourceFetch[getBlendType( data )][data->texture.format];
-        op.srcFetch64 = sourceFetch64[getBlendType( data )][data->texture.format];
-        break;
+        case QSpanData::Texture:
+            solidSource = !data->texture.hasAlpha;
+            op.srcFetch = sourceFetch[getBlendType( data )][data->texture.format];
+            op.srcFetch64 = sourceFetch64[getBlendType( data )][data->texture.format];
+            break;
 
-    default:
-        // error, may want to throw
-        break;
+        default:
+            // error, may want to throw
+            break;
     }
 
     op.mode = data->rasterBuffer->compositionMode;
@@ -4885,37 +4885,37 @@ static inline Operator getOperator( const QSpanData *data, const QSpan *spans, i
     {
         switch ( data->rasterBuffer->format )
         {
-        case QImage::Format_RGB32:
-        case QImage::Format_ARGB32_Premultiplied:
-            // don't clear destFetch as it sets up the pointer correctly to save one copy
-            break;
-
-        default:
-        {
-            if ( data->type == QSpanData::Texture && data->texture.const_alpha != 256 )
-            {
+            case QImage::Format_RGB32:
+            case QImage::Format_ARGB32_Premultiplied:
+                // don't clear destFetch as it sets up the pointer correctly to save one copy
                 break;
-            }
 
-            const QSpan *lastSpan = spans + spanCount;
-            bool alphaSpans = false;
-
-            while ( spans < lastSpan )
+            default:
             {
-                if ( spans->coverage != 255 )
+                if ( data->type == QSpanData::Texture && data->texture.const_alpha != 256 )
                 {
-                    alphaSpans = true;
                     break;
                 }
 
-                ++spans;
-            }
+                const QSpan *lastSpan = spans + spanCount;
+                bool alphaSpans = false;
 
-            if ( !alphaSpans )
-            {
-                op.destFetch = nullptr;
+                while ( spans < lastSpan )
+                {
+                    if ( spans->coverage != 255 )
+                    {
+                        alphaSpans = true;
+                        break;
+                    }
+
+                    ++spans;
+                }
+
+                if ( !alphaSpans )
+                {
+                    op.destFetch = nullptr;
+                }
             }
-        }
         }
     }
 
@@ -7939,41 +7939,41 @@ inline void lscs_memfill_template( T *dest, T color, int count )
 
     switch ( count & 0x07 )
     {
-    case 0:
-        do
-        {
-            *dest++ = color;
-            [[fallthrough]];
+        case 0:
+            do
+            {
+                *dest++ = color;
+                [[fallthrough]];
 
-        case 7:
-            *dest++ = color;
-            [[fallthrough]];
+            case 7:
+                *dest++ = color;
+                [[fallthrough]];
 
-        case 6:
-            *dest++ = color;
-            [[fallthrough]];
+            case 6:
+                *dest++ = color;
+                [[fallthrough]];
 
-        case 5:
-            *dest++ = color;
-            [[fallthrough]];
+            case 5:
+                *dest++ = color;
+                [[fallthrough]];
 
-        case 4:
-            *dest++ = color;
-            [[fallthrough]];
+            case 4:
+                *dest++ = color;
+                [[fallthrough]];
 
-        case 3:
-            *dest++ = color;
-            [[fallthrough]];
+            case 3:
+                *dest++ = color;
+                [[fallthrough]];
 
-        case 2:
-            *dest++ = color;
-            [[fallthrough]];
+            case 2:
+                *dest++ = color;
+                [[fallthrough]];
 
-        case 1:
-            *dest++ = color;
+            case 1:
+                *dest++ = color;
 
-        }
-        while ( --n > 0 );
+            }
+            while ( --n > 0 );
     }
 }
 
@@ -7984,11 +7984,11 @@ inline void lscs_memfill_template( quint16 *dest, quint16 value, int count )
     {
         switch ( count )
         {
-        case 2:
-            *dest++ = value;
+            case 2:
+                *dest++ = value;
 
-        case 1:
-            *dest = value;
+            case 1:
+                *dest = value;
         }
 
         return;
@@ -7998,9 +7998,9 @@ inline void lscs_memfill_template( quint16 *dest, quint16 value, int count )
 
     switch ( align )
     {
-    case 2:
-        *dest++ = value;
-        --count;
+        case 2:
+            *dest++ = value;
+            --count;
     }
 
     const quint32 value32 = ( value << 16 ) | value;

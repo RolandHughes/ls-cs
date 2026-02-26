@@ -209,42 +209,106 @@ QString QGb18030Codec::convertToUnicode( const char *chars, int len, ConverterSt
 
         switch ( nbuf )
         {
-        case 0:
-            if ( IsLatin( ch ) )
-            {
-                // ASCII
-                resultData[unicodeLen] = ch;
-                ++unicodeLen;
-            }
-            else if ( Is1stByte( ch ) )
-            {
-                // GB18030?
-                buf[0] = ch;
-                nbuf = 1;
-            }
-            else
-            {
-                // Invalid
-                resultData[unicodeLen] = replacement;
-                ++unicodeLen;
-                ++invalid;
-            }
-
-            break;
-
-        case 1:
-
-            // GB18030 2 bytes
-            if ( Is2ndByteIn2Bytes( ch ) )
-            {
-                buf[1] = ch;
-                int clen = 2;
-                uint u = lscs_Gb18030ToUnicode( buf, clen );
-
-                if ( clen == 2 )
+            case 0:
+                if ( IsLatin( ch ) )
                 {
-                    resultData[unicodeLen] = qValidChar( static_cast<ushort>( u ) );
+                    // ASCII
+                    resultData[unicodeLen] = ch;
                     ++unicodeLen;
+                }
+                else if ( Is1stByte( ch ) )
+                {
+                    // GB18030?
+                    buf[0] = ch;
+                    nbuf = 1;
+                }
+                else
+                {
+                    // Invalid
+                    resultData[unicodeLen] = replacement;
+                    ++unicodeLen;
+                    ++invalid;
+                }
+
+                break;
+
+            case 1:
+
+                // GB18030 2 bytes
+                if ( Is2ndByteIn2Bytes( ch ) )
+                {
+                    buf[1] = ch;
+                    int clen = 2;
+                    uint u = lscs_Gb18030ToUnicode( buf, clen );
+
+                    if ( clen == 2 )
+                    {
+                        resultData[unicodeLen] = qValidChar( static_cast<ushort>( u ) );
+                        ++unicodeLen;
+                    }
+                    else
+                    {
+                        resultData[unicodeLen] = replacement;
+                        ++unicodeLen;
+                        ++invalid;
+                    }
+
+                    nbuf = 0;
+                }
+                else if ( Is2ndByteIn4Bytes( ch ) )
+                {
+                    buf[1] = ch;
+                    nbuf = 2;
+                }
+                else
+                {
+                    // Error
+                    resultData[unicodeLen] = replacement;
+                    ++unicodeLen;
+                    ++invalid;
+                    nbuf = 0;
+                }
+
+                break;
+
+            case 2:
+
+                // GB18030 3 bytes
+                if ( Is3rdByte( ch ) )
+                {
+                    buf[2] = ch;
+                    nbuf = 3;
+                }
+                else
+                {
+                    resultData[unicodeLen] = replacement;
+                    ++unicodeLen;
+                    ++invalid;
+                    nbuf = 0;
+                }
+
+                break;
+
+            case 3:
+
+                // GB18030 4 bytes
+                if ( Is4thByte( ch ) )
+                {
+                    buf[3] = ch;
+                    int clen = 4;
+                    uint u = lscs_Gb18030ToUnicode( buf, clen );
+
+                    if ( clen == 4 )
+                    {
+                        resultData[unicodeLen] = qValidChar( u );
+                        ++unicodeLen;
+                    }
+                    else
+                    {
+                        resultData[unicodeLen] = replacement;
+                        ++unicodeLen;
+                        ++invalid;
+                    }
                 }
                 else
                 {
@@ -254,71 +318,7 @@ QString QGb18030Codec::convertToUnicode( const char *chars, int len, ConverterSt
                 }
 
                 nbuf = 0;
-            }
-            else if ( Is2ndByteIn4Bytes( ch ) )
-            {
-                buf[1] = ch;
-                nbuf = 2;
-            }
-            else
-            {
-                // Error
-                resultData[unicodeLen] = replacement;
-                ++unicodeLen;
-                ++invalid;
-                nbuf = 0;
-            }
-
-            break;
-
-        case 2:
-
-            // GB18030 3 bytes
-            if ( Is3rdByte( ch ) )
-            {
-                buf[2] = ch;
-                nbuf = 3;
-            }
-            else
-            {
-                resultData[unicodeLen] = replacement;
-                ++unicodeLen;
-                ++invalid;
-                nbuf = 0;
-            }
-
-            break;
-
-        case 3:
-
-            // GB18030 4 bytes
-            if ( Is4thByte( ch ) )
-            {
-                buf[3] = ch;
-                int clen = 4;
-                uint u = lscs_Gb18030ToUnicode( buf, clen );
-
-                if ( clen == 4 )
-                {
-                    resultData[unicodeLen] = qValidChar( u );
-                    ++unicodeLen;
-                }
-                else
-                {
-                    resultData[unicodeLen] = replacement;
-                    ++unicodeLen;
-                    ++invalid;
-                }
-            }
-            else
-            {
-                resultData[unicodeLen] = replacement;
-                ++unicodeLen;
-                ++invalid;
-            }
-
-            nbuf = 0;
-            break;
+                break;
         }
     }
 
@@ -414,62 +414,62 @@ QString QGbkCodec::convertToUnicode( const char *chars, int len, ConverterState 
 
         switch ( nbuf )
         {
-        case 0:
-            if ( IsLatin( ch ) )
-            {
-                // ASCII
-                resultData[unicodeLen] = ch;
-                ++unicodeLen;
-            }
-            else if ( Is1stByte( ch ) )
-            {
-                // GBK 1st byte?
-                buf[0] = ch;
-                nbuf = 1;
-            }
-            else
-            {
-                // Invalid
-                resultData[unicodeLen] = replacement;
-                ++unicodeLen;
-                ++invalid;
-            }
-
-            break;
-
-        case 1:
-
-            // GBK 2nd byte
-            if ( Is2ndByteIn2Bytes( ch ) )
-            {
-                buf[1] = ch;
-                int clen = 2;
-                uint u = lscs_Gb18030ToUnicode( buf, clen );
-
-                if ( clen == 2 )
+            case 0:
+                if ( IsLatin( ch ) )
                 {
-                    resultData[unicodeLen] = qValidChar( static_cast<ushort>( u ) );
+                    // ASCII
+                    resultData[unicodeLen] = ch;
                     ++unicodeLen;
+                }
+                else if ( Is1stByte( ch ) )
+                {
+                    // GBK 1st byte?
+                    buf[0] = ch;
+                    nbuf = 1;
                 }
                 else
                 {
+                    // Invalid
                     resultData[unicodeLen] = replacement;
                     ++unicodeLen;
                     ++invalid;
                 }
 
-                nbuf = 0;
-            }
-            else
-            {
-                // Error
-                resultData[unicodeLen] = replacement;
-                ++unicodeLen;
-                ++invalid;
-                nbuf = 0;
-            }
+                break;
 
-            break;
+            case 1:
+
+                // GBK 2nd byte
+                if ( Is2ndByteIn2Bytes( ch ) )
+                {
+                    buf[1] = ch;
+                    int clen = 2;
+                    uint u = lscs_Gb18030ToUnicode( buf, clen );
+
+                    if ( clen == 2 )
+                    {
+                        resultData[unicodeLen] = qValidChar( static_cast<ushort>( u ) );
+                        ++unicodeLen;
+                    }
+                    else
+                    {
+                        resultData[unicodeLen] = replacement;
+                        ++unicodeLen;
+                        ++invalid;
+                    }
+
+                    nbuf = 0;
+                }
+                else
+                {
+                    // Error
+                    resultData[unicodeLen] = replacement;
+                    ++unicodeLen;
+                    ++invalid;
+                    nbuf = 0;
+                }
+
+                break;
         }
     }
 
@@ -606,62 +606,62 @@ QString QGb2312Codec::convertToUnicode( const char *chars, int len, ConverterSta
 
         switch ( nbuf )
         {
-        case 0:
-            if ( IsLatin( ch ) )
-            {
-                // ASCII
-                resultData[unicodeLen] = ch;
-                ++unicodeLen;
-            }
-            else if ( IsByteInGb2312( ch ) )
-            {
-                // GB2312 1st byte?
-                buf[0] = ch;
-                nbuf = 1;
-            }
-            else
-            {
-                // Invalid
-                resultData[unicodeLen] = replacement;
-                ++unicodeLen;
-                ++invalid;
-            }
-
-            break;
-
-        case 1:
-
-            // GB2312 2nd byte
-            if ( IsByteInGb2312( ch ) )
-            {
-                buf[1] = ch;
-                int clen = 2;
-                uint u = lscs_Gb18030ToUnicode( buf, clen );
-
-                if ( clen == 2 )
+            case 0:
+                if ( IsLatin( ch ) )
                 {
-                    resultData[unicodeLen] = qValidChar( static_cast<ushort>( u ) );
+                    // ASCII
+                    resultData[unicodeLen] = ch;
                     ++unicodeLen;
+                }
+                else if ( IsByteInGb2312( ch ) )
+                {
+                    // GB2312 1st byte?
+                    buf[0] = ch;
+                    nbuf = 1;
                 }
                 else
                 {
+                    // Invalid
                     resultData[unicodeLen] = replacement;
                     ++unicodeLen;
                     ++invalid;
                 }
 
-                nbuf = 0;
-            }
-            else
-            {
-                // Error
-                resultData[unicodeLen] = replacement;
-                ++unicodeLen;
-                ++invalid;
-                nbuf = 0;
-            }
+                break;
 
-            break;
+            case 1:
+
+                // GB2312 2nd byte
+                if ( IsByteInGb2312( ch ) )
+                {
+                    buf[1] = ch;
+                    int clen = 2;
+                    uint u = lscs_Gb18030ToUnicode( buf, clen );
+
+                    if ( clen == 2 )
+                    {
+                        resultData[unicodeLen] = qValidChar( static_cast<ushort>( u ) );
+                        ++unicodeLen;
+                    }
+                    else
+                    {
+                        resultData[unicodeLen] = replacement;
+                        ++unicodeLen;
+                        ++invalid;
+                    }
+
+                    nbuf = 0;
+                }
+                else
+                {
+                    // Error
+                    resultData[unicodeLen] = replacement;
+                    ++unicodeLen;
+                    ++invalid;
+                    nbuf = 0;
+                }
+
+                break;
         }
     }
 

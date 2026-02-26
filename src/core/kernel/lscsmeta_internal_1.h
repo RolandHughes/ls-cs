@@ -160,7 +160,7 @@ struct lscs_is_enum_or_flag : public std::is_enum<T>
 
 template<class T>
 struct lscs_is_enum_or_flag<QFlags<T>>
-    : public std::integral_constant<bool, true>
+                                        : public std::integral_constant<bool, true>
 {
 };
 
@@ -172,7 +172,7 @@ struct lscs_underlying_type
 
 template<class T>
 struct lscs_underlying_type<QFlags<T>>
-    : public std::underlying_type<T>
+                                        : public std::underlying_type<T>
 {
 };
 
@@ -587,7 +587,7 @@ void CSBento<FunctionReturn ( * )( FunctionArgs... )>::invoke( QObject *,
     // dynamic cast will return a valid ptr if the slot has equal or less parameters
     // retrieve ptr to teaCup object, which contains the data
     const LsCsSignal::Internal::TeaCup<FunctionArgs...> *teaCup = dynamic_cast<const LsCsSignal::Internal::TeaCup<FunctionArgs...> *>
-        ( dataPack );
+            ( dataPack );
 
     if ( teaCup )
     {
@@ -659,7 +659,7 @@ void CSBento<MethodReturn ( MethodClass::* )( MethodArgs... )>::invoke( QObject 
         // dynamic cast will return a valid ptr if the slot has equal or less parameters
         // retrieve ptr to teaCup object, which contains the data
         const LsCsSignal::Internal::TeaCup<MethodArgs...> *teaCup = dynamic_cast<const LsCsSignal::Internal::TeaCup<MethodArgs...> *>
-            ( dataPack );
+                ( dataPack );
 
         if ( teaCup )
         {
@@ -734,7 +734,7 @@ void CSBento<MethodReturn( MethodClass::* )( MethodArgs... ) const>::invoke( QOb
 
         // retrieve ptr to teaCup object, which contains the data
         const LsCsSignal::Internal::TeaCup<MethodArgs...> *teaCup = dynamic_cast<const LsCsSignal::Internal::TeaCup<MethodArgs...> *>
-            ( dataPack );
+                ( dataPack );
 
         if ( teaCup )
         {

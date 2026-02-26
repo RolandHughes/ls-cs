@@ -193,14 +193,14 @@ QString ColorOutput::colorify( const QString &message, int colorID ) const
         if ( foregroundCode )
         {
             finalMessage.append( ColorOutputPrivate::escapeCode( QString::fromLatin1( ColorOutputPrivate::foregrounds[foregroundCode -
-                                 1] ) ) );
+                                                1] ) ) );
             closureNeeded = true;
         }
 
         if ( backgroundCode )
         {
             finalMessage.append( ColorOutputPrivate::escapeCode( QString::fromLatin1( ColorOutputPrivate::backgrounds[backgroundCode -
-                                 1] ) ) );
+                                                1] ) ) );
             closureNeeded = true;
         }
 

@@ -178,24 +178,24 @@ int QSvgFontStyle::SVGToQtWeight( int weight )
 {
     switch ( weight )
     {
-    case 100:
-    case 200:
-        return QFont::Light;
+        case 100:
+        case 200:
+            return QFont::Light;
 
-    case 300:
-    case 400:
-        return QFont::Normal;
+        case 300:
+        case 400:
+            return QFont::Normal;
 
-    case 500:
-    case 600:
-        return QFont::DemiBold;
+        case 500:
+        case 600:
+            return QFont::DemiBold;
 
-    case 700:
-    case 800:
-        return QFont::Bold;
+        case 700:
+        case 800:
+            return QFont::Bold;
 
-    case 900:
-        return QFont::Black;
+        case 900:
+            return QFont::Black;
     }
 
     return QFont::Normal;
@@ -785,114 +785,114 @@ void QSvgAnimateTransform::resolveMatrix( const QSvgNode *node )
 
     switch ( m_type )
     {
-    case Translate:
-    {
-        startElem *= 3;
-        endElem   *= 3;
-        qreal from1, from2;
-        qreal to1, to2;
-        from1 = m_args[startElem++];
-        from2 = m_args[startElem++];
-        to1   = m_args[endElem++];
-        to2   = m_args[endElem++];
-
-        qreal transXDiff = ( to1 - from1 ) * percentOfAnimation;
-        qreal transX = from1 + transXDiff;
-        qreal transYDiff = ( to2 - from2 ) * percentOfAnimation;
-        qreal transY = from2 + transYDiff;
-        m_transform = QTransform();
-        m_transform.translate( transX, transY );
-        break;
-    }
-
-    case Scale:
-    {
-        startElem *= 3;
-        endElem   *= 3;
-        qreal from1, from2;
-        qreal to1, to2;
-        from1 = m_args[startElem++];
-        from2 = m_args[startElem++];
-        to1   = m_args[endElem++];
-        to2   = m_args[endElem++];
-
-        qreal transXDiff = ( to1 - from1 ) * percentOfAnimation;
-        qreal transX = from1 + transXDiff;
-        qreal transYDiff = ( to2 - from2 ) * percentOfAnimation;
-        qreal transY = from2 + transYDiff;
-
-        if ( transY == 0 )
+        case Translate:
         {
-            transY = transX;
+            startElem *= 3;
+            endElem   *= 3;
+            qreal from1, from2;
+            qreal to1, to2;
+            from1 = m_args[startElem++];
+            from2 = m_args[startElem++];
+            to1   = m_args[endElem++];
+            to2   = m_args[endElem++];
+
+            qreal transXDiff = ( to1 - from1 ) * percentOfAnimation;
+            qreal transX = from1 + transXDiff;
+            qreal transYDiff = ( to2 - from2 ) * percentOfAnimation;
+            qreal transY = from2 + transYDiff;
+            m_transform = QTransform();
+            m_transform.translate( transX, transY );
+            break;
         }
 
-        m_transform = QTransform();
-        m_transform.scale( transX, transY );
-        break;
-    }
+        case Scale:
+        {
+            startElem *= 3;
+            endElem   *= 3;
+            qreal from1, from2;
+            qreal to1, to2;
+            from1 = m_args[startElem++];
+            from2 = m_args[startElem++];
+            to1   = m_args[endElem++];
+            to2   = m_args[endElem++];
 
-    case Rotate:
-    {
-        startElem *= 3;
-        endElem   *= 3;
-        qreal from1, from2, from3;
-        qreal to1, to2, to3;
-        from1 = m_args[startElem++];
-        from2 = m_args[startElem++];
-        from3 = m_args[startElem++];
-        to1   = m_args[endElem++];
-        to2   = m_args[endElem++];
-        to3   = m_args[endElem++];
+            qreal transXDiff = ( to1 - from1 ) * percentOfAnimation;
+            qreal transX = from1 + transXDiff;
+            qreal transYDiff = ( to2 - from2 ) * percentOfAnimation;
+            qreal transY = from2 + transYDiff;
 
-        qreal rotationDiff = ( to1 - from1 ) * percentOfAnimation;
-        //qreal rotation = from1 + rotationDiff;
+            if ( transY == 0 )
+            {
+                transY = transX;
+            }
 
-        qreal transXDiff = ( to2 - from2 ) * percentOfAnimation;
-        qreal transX = from2 + transXDiff;
-        qreal transYDiff = ( to3 - from3 ) * percentOfAnimation;
-        qreal transY = from3 + transYDiff;
-        m_transform = QTransform();
-        m_transform.translate( transX, transY );
-        m_transform.rotate( rotationDiff );
-        m_transform.translate( -transX, -transY );
-        break;
-    }
+            m_transform = QTransform();
+            m_transform.scale( transX, transY );
+            break;
+        }
 
-    case SkewX:
-    {
-        startElem *= 3;
-        endElem   *= 3;
-        qreal from1;
-        qreal to1;
-        from1 = m_args[startElem++];
-        to1   = m_args[endElem++];
+        case Rotate:
+        {
+            startElem *= 3;
+            endElem   *= 3;
+            qreal from1, from2, from3;
+            qreal to1, to2, to3;
+            from1 = m_args[startElem++];
+            from2 = m_args[startElem++];
+            from3 = m_args[startElem++];
+            to1   = m_args[endElem++];
+            to2   = m_args[endElem++];
+            to3   = m_args[endElem++];
 
-        qreal transXDiff = ( to1 - from1 ) * percentOfAnimation;
-        qreal transX = from1 + transXDiff;
-        m_transform = QTransform();
-        m_transform.shear( qTan( transX * deg2rad ), 0 );
-        break;
-    }
+            qreal rotationDiff = ( to1 - from1 ) * percentOfAnimation;
+            //qreal rotation = from1 + rotationDiff;
 
-    case SkewY:
-    {
-        startElem *= 3;
-        endElem   *= 3;
-        qreal from1;
-        qreal to1;
-        from1 = m_args[startElem++];
-        to1   = m_args[endElem++];
+            qreal transXDiff = ( to2 - from2 ) * percentOfAnimation;
+            qreal transX = from2 + transXDiff;
+            qreal transYDiff = ( to3 - from3 ) * percentOfAnimation;
+            qreal transY = from3 + transYDiff;
+            m_transform = QTransform();
+            m_transform.translate( transX, transY );
+            m_transform.rotate( rotationDiff );
+            m_transform.translate( -transX, -transY );
+            break;
+        }
+
+        case SkewX:
+        {
+            startElem *= 3;
+            endElem   *= 3;
+            qreal from1;
+            qreal to1;
+            from1 = m_args[startElem++];
+            to1   = m_args[endElem++];
+
+            qreal transXDiff = ( to1 - from1 ) * percentOfAnimation;
+            qreal transX = from1 + transXDiff;
+            m_transform = QTransform();
+            m_transform.shear( qTan( transX * deg2rad ), 0 );
+            break;
+        }
+
+        case SkewY:
+        {
+            startElem *= 3;
+            endElem   *= 3;
+            qreal from1;
+            qreal to1;
+            from1 = m_args[startElem++];
+            to1   = m_args[endElem++];
 
 
-        qreal transYDiff = ( to1 - from1 ) * percentOfAnimation;
-        qreal transY = from1 + transYDiff;
-        m_transform = QTransform();
-        m_transform.shear( 0, qTan( transY * deg2rad ) );
-        break;
-    }
+            qreal transYDiff = ( to1 - from1 ) * percentOfAnimation;
+            qreal transY = from1 + transYDiff;
+            m_transform = QTransform();
+            m_transform.shear( 0, qTan( transY * deg2rad ) );
+            break;
+        }
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 

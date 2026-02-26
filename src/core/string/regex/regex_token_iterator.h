@@ -286,7 +286,7 @@ inline regex_token_iterator<typename std::basic_string<charT, ST, SA>::const_ite
     regex_constants::match_flag_type m = regex_constants::match_default )
 {
     return regex_token_iterator<typename std::basic_string<charT, ST, SA>::const_iterator, charT, traits>( p.begin(), p.end(), e,
-           submatch, m );
+            submatch, m );
 }
 
 template <class charT, class traits, std::size_t N>
@@ -303,7 +303,7 @@ inline regex_token_iterator<typename std::basic_string<charT, ST, SA>::const_ite
     regex_constants::match_flag_type m = regex_constants::match_default )
 {
     return regex_token_iterator<typename std::basic_string<charT, ST, SA>::const_iterator, charT, traits>( p.begin(), p.end(), e,
-           submatch, m );
+            submatch, m );
 }
 
 template <class charT, class traits>
@@ -319,7 +319,7 @@ inline regex_token_iterator<typename std::basic_string<charT, ST, SA>::const_ite
     regex_constants::match_flag_type m = regex_constants::match_default )
 {
     return regex_token_iterator<typename std::basic_string<charT, ST, SA>::const_iterator, charT, traits>( p.begin(), p.end(), e,
-           submatch, m );
+            submatch, m );
 }
 
 

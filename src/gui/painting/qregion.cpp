@@ -126,21 +126,21 @@ void QRegion::exec( const QByteArray &buffer, int ver, QDataStream::ByteOrder by
 
             switch ( id )
             {
-            case QRGN_OR:
-                rgn = r1.united( r2 );
-                break;
+                case QRGN_OR:
+                    rgn = r1.united( r2 );
+                    break;
 
-            case QRGN_AND:
-                rgn = r1.intersected( r2 );
-                break;
+                case QRGN_AND:
+                    rgn = r1.intersected( r2 );
+                    break;
 
-            case QRGN_SUB:
-                rgn = r1.subtracted( r2 );
-                break;
+                case QRGN_SUB:
+                    rgn = r1.subtracted( r2 );
+                    break;
 
-            case QRGN_XOR:
-                rgn = r1.xored( r2 );
-                break;
+                case QRGN_XOR:
+                    rgn = r1.xored( r2 );
+                    break;
             }
 
         }

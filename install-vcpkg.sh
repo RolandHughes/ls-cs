@@ -2,12 +2,6 @@
 #
 # install VCPKG
 #
-sudo apt update
-
-sudo apt install -y zip unzip build-essential pkg-config git curl \
-        fakeroot hashdeep dpkg-dev cmake ninja-build mercurial \
-        mercurial-common git tree synaptic python3 help2man texinfo \
-		libcups2-dev
 
 # Too many things posted online tell you to install in /OPT. Trouble
 # with that is simple things like "vcpkg list" need root prive to
@@ -24,12 +18,8 @@ cd $HOME/vcpkg
 
 sudo ln -s $HOME/vcpkg/vcpkg /usr/local/bin/vcpkg
 
+# vcpkg integrate install
 # now test the install
 #
-vcpkg install vcpkg-cmake:x64-linux
-vcpkg install zlib:x64-linux  
-vcpkg install sdl3:x64-linux
-vcpkg install sqlite3:x64-linux
-vcpkg install hunspell:x64-linux
-vcpkg install libltdl:x64-linux
+# vcpkg install vcpkg-cmake:x64-linux
 

@@ -42,35 +42,35 @@ private:
     {
         switch ( DerivedType )
         {
-        case TypeNormalizedString:
-            return BuiltinTypes::xsNormalizedString;
+            case TypeNormalizedString:
+                return BuiltinTypes::xsNormalizedString;
 
-        case TypeToken:
-            return BuiltinTypes::xsToken;
+            case TypeToken:
+                return BuiltinTypes::xsToken;
 
-        case TypeLanguage:
-            return BuiltinTypes::xsLanguage;
+            case TypeLanguage:
+                return BuiltinTypes::xsLanguage;
 
-        case TypeNMTOKEN:
-            return BuiltinTypes::xsNMTOKEN;
+            case TypeNMTOKEN:
+                return BuiltinTypes::xsNMTOKEN;
 
-        case TypeName:
-            return BuiltinTypes::xsName;
+            case TypeName:
+                return BuiltinTypes::xsName;
 
-        case TypeNCName:
-            return BuiltinTypes::xsNCName;
+            case TypeNCName:
+                return BuiltinTypes::xsNCName;
 
-        case TypeID:
-            return BuiltinTypes::xsID;
+            case TypeID:
+                return BuiltinTypes::xsID;
 
-        case TypeIDREF:
-            return BuiltinTypes::xsIDREF;
+            case TypeIDREF:
+                return BuiltinTypes::xsIDREF;
 
-        case TypeENTITY:
-            return BuiltinTypes::xsENTITY;
+            case TypeENTITY:
+                return BuiltinTypes::xsENTITY;
 
-        case TypeString:
-            return BuiltinTypes::xsString;
+            case TypeString:
+                return BuiltinTypes::xsString;
         }
 
         Q_ASSERT_X( false, Q_FUNC_INFO, "This line is not supposed to be reached." );
@@ -227,88 +227,88 @@ public:
     {
         switch ( DerivedType )
         {
-        case TypeString:
-            return AtomicValue::Ptr( new DerivedString( lexical ) );
+            case TypeString:
+                return AtomicValue::Ptr( new DerivedString( lexical ) );
 
-        case TypeNormalizedString:
-            return AtomicValue::Ptr( new DerivedString( attributeNormalize( lexical ) ) );
+            case TypeNormalizedString:
+                return AtomicValue::Ptr( new DerivedString( attributeNormalize( lexical ) ) );
 
-        case TypeToken:
-            return AtomicValue::Ptr( new DerivedString( lexical.simplified() ) );
-
-        case TypeLanguage:
-        {
-            const QString simplified( lexical.trimmed() );
-
-            const QRegularExpression validate( "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*", QPatternOption::ExactMatchOption );
-            Q_ASSERT( validate.isValid() );
-
-            if ( validate.match( simplified ).hasMatch() )
-            {
+            case TypeToken:
                 return AtomicValue::Ptr( new DerivedString( lexical.simplified() ) );
-            }
-            else
-            {
-                return error( np, simplified );
-            }
-        }
 
-        case TypeNMTOKEN:
-        {
-            const QString trimmed( lexical.trimmed() );
-
-            if ( isValidNMTOKEN( trimmed ) )
+            case TypeLanguage:
             {
-                return AtomicValue::Ptr( new DerivedString( trimmed ) );
-            }
-            else
-            {
-                return error( np, trimmed );
-            }
-        }
+                const QString simplified( lexical.trimmed() );
 
-        case TypeName:
-        {
-            const QString simplified( lexical.simplified() );
+                const QRegularExpression validate( "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*", QPatternOption::ExactMatchOption );
+                Q_ASSERT( validate.isValid() );
 
-            if ( isValidName( simplified ) )
-            {
-                return AtomicValue::Ptr( new DerivedString( simplified ) );
+                if ( validate.match( simplified ).hasMatch() )
+                {
+                    return AtomicValue::Ptr( new DerivedString( lexical.simplified() ) );
+                }
+                else
+                {
+                    return error( np, simplified );
+                }
             }
-            else
-            {
-                return error( np, simplified );
-            }
-        }
 
-        case TypeID:
-        case TypeIDREF:
-        case TypeENTITY:
-        case TypeNCName:
-        {
-            /* We treat xs:ID, xs:ENTITY, xs:IDREF and xs:NCName in the exact same
-             * way, except for the type annotation.
-             *
-             * We use trimmed() instead of simplified() because it's
-             * faster and whitespace isn't allowed between
-             * non-whitespace characters anyway, for these types. */
-            const QString trimmed( lexical.trimmed() );
-
-            if ( QXmlUtils::isNCName( trimmed ) )
+            case TypeNMTOKEN:
             {
-                return AtomicValue::Ptr( new DerivedString( trimmed ) );
-            }
-            else
-            {
-                return error( np, trimmed );
-            }
-        }
+                const QString trimmed( lexical.trimmed() );
 
-        default:
-        {
-            Q_ASSERT_X( false, Q_FUNC_INFO, "This line is not supposed to be reached." );
-            return AtomicValue::Ptr();
-        }
+                if ( isValidNMTOKEN( trimmed ) )
+                {
+                    return AtomicValue::Ptr( new DerivedString( trimmed ) );
+                }
+                else
+                {
+                    return error( np, trimmed );
+                }
+            }
+
+            case TypeName:
+            {
+                const QString simplified( lexical.simplified() );
+
+                if ( isValidName( simplified ) )
+                {
+                    return AtomicValue::Ptr( new DerivedString( simplified ) );
+                }
+                else
+                {
+                    return error( np, simplified );
+                }
+            }
+
+            case TypeID:
+            case TypeIDREF:
+            case TypeENTITY:
+            case TypeNCName:
+            {
+                /* We treat xs:ID, xs:ENTITY, xs:IDREF and xs:NCName in the exact same
+                 * way, except for the type annotation.
+                 *
+                 * We use trimmed() instead of simplified() because it's
+                 * faster and whitespace isn't allowed between
+                 * non-whitespace characters anyway, for these types. */
+                const QString trimmed( lexical.trimmed() );
+
+                if ( QXmlUtils::isNCName( trimmed ) )
+                {
+                    return AtomicValue::Ptr( new DerivedString( trimmed ) );
+                }
+                else
+                {
+                    return error( np, trimmed );
+                }
+            }
+
+            default:
+            {
+                Q_ASSERT_X( false, Q_FUNC_INFO, "This line is not supposed to be reached." );
+                return AtomicValue::Ptr();
+            }
         }
     }
 

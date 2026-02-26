@@ -114,7 +114,7 @@ static bool currentProcessIsService()
 
     static PtrGetUserName ptrGetUserName = ( PtrGetUserName )QSystemLibrary::resolve( QLatin1String( "Advapi32" ), "GetUserNameW" );
     static PtrLookupAccountName ptrLookupAccountName = ( PtrLookupAccountName )QSystemLibrary::resolve( QLatin1String( "Advapi32" ),
-        "LookupAccountNameW" );
+            "LookupAccountNameW" );
 
     if ( ptrGetUserName && ptrLookupAccountName )
     {
@@ -263,21 +263,21 @@ static QList<QNetworkProxy> filterProxyListByCapabilities( const QList<QNetworkP
 
     switch ( query.queryType() )
     {
-    case QNetworkProxyQuery::TcpSocket:
-        requiredCaps = QNetworkProxy::TunnelingCapability;
-        break;
+        case QNetworkProxyQuery::TcpSocket:
+            requiredCaps = QNetworkProxy::TunnelingCapability;
+            break;
 
-    case QNetworkProxyQuery::UdpSocket:
-        requiredCaps = QNetworkProxy::UdpTunnelingCapability;
-        break;
+        case QNetworkProxyQuery::UdpSocket:
+            requiredCaps = QNetworkProxy::UdpTunnelingCapability;
+            break;
 
-    case QNetworkProxyQuery::TcpServer:
-        requiredCaps = QNetworkProxy::ListeningCapability;
-        break;
+        case QNetworkProxyQuery::TcpServer:
+            requiredCaps = QNetworkProxy::ListeningCapability;
+            break;
 
-    default:
-        return proxyList;
-        break;
+        default:
+            return proxyList;
+            break;
     }
 
     QList<QNetworkProxy> result;
@@ -620,9 +620,9 @@ void QWindowsSystemProxy::init()
     ptrWinHttpGetProxyForUrl = ( PtrWinHttpGetProxyForUrl )lib.resolve( "WinHttpGetProxyForUrl" );
 
     ptrWinHttpGetDefaultProxyConfiguration   = ( PtrWinHttpGetDefaultProxyConfiguration )
-        lib.resolve( "WinHttpGetDefaultProxyConfiguration" );
+            lib.resolve( "WinHttpGetDefaultProxyConfiguration" );
     ptrWinHttpGetIEProxyConfigForCurrentUser = ( PtrWinHttpGetIEProxyConfigForCurrentUser )
-        lib.resolve( "WinHttpGetIEProxyConfigForCurrentUser" );
+            lib.resolve( "WinHttpGetIEProxyConfigForCurrentUser" );
 
     // Try to obtain the Internet Explorer configuration.
     WINHTTP_CURRENT_USER_IE_PROXY_CONFIG ieProxyConfig;

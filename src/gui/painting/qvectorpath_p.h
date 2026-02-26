@@ -136,21 +136,21 @@ public:
     {
         switch ( mode )
         {
-        case QPaintEngine::ConvexMode:
-            return ConvexPolygonHint | ImplicitClose;
+            case QPaintEngine::ConvexMode:
+                return ConvexPolygonHint | ImplicitClose;
 
-        case QPaintEngine::OddEvenMode:
-            return PolygonHint | OddEvenFill | ImplicitClose;
+            case QPaintEngine::OddEvenMode:
+                return PolygonHint | OddEvenFill | ImplicitClose;
 
-        case QPaintEngine::WindingMode:
+            case QPaintEngine::WindingMode:
 
-            return PolygonHint | WindingFill | ImplicitClose;
+                return PolygonHint | WindingFill | ImplicitClose;
 
-        case QPaintEngine::PolylineMode:
-            return PolygonHint;
+            case QPaintEngine::PolylineMode:
+                return PolygonHint;
 
-        default:
-            return 0;
+            default:
+                return 0;
         }
     }
 

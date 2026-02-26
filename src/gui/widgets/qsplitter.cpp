@@ -168,18 +168,18 @@ bool QSplitterHandle::event( QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::HoverEnter:
-        d->hover = true;
-        update();
-        break;
+        case QEvent::HoverEnter:
+            d->hover = true;
+            update();
+            break;
 
-    case QEvent::HoverLeave:
-        d->hover = false;
-        update();
-        break;
+        case QEvent::HoverLeave:
+            d->hover = false;
+            update();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QWidget::event( event );
@@ -1283,33 +1283,33 @@ bool QSplitter::event( QEvent *e )
 
     switch ( e->type() )
     {
-    case QEvent::Hide:
+        case QEvent::Hide:
 
-        // Reset firstShow to false here since things can be done to the splitter in between
-        if ( ! d->firstShow )
-        {
-            d->firstShow = true;
-        }
+            // Reset firstShow to false here since things can be done to the splitter in between
+            if ( ! d->firstShow )
+            {
+                d->firstShow = true;
+            }
 
-        break;
-
-    case QEvent::Show:
-        if ( !d->firstShow )
-        {
             break;
-        }
 
-        d->firstShow = false;
-        [[fallthrough]];
+        case QEvent::Show:
+            if ( !d->firstShow )
+            {
+                break;
+            }
 
-    case QEvent::HideToParent:
-    case QEvent::ShowToParent:
-    case QEvent::LayoutRequest:
-        d->recalc( isVisible() );
-        break;
+            d->firstShow = false;
+            [[fallthrough]];
 
-    default:
-        break;
+        case QEvent::HideToParent:
+        case QEvent::ShowToParent:
+        case QEvent::LayoutRequest:
+            d->recalc( isVisible() );
+            break;
+
+        default:
+            break;
     }
 
     return QWidget::event( e );

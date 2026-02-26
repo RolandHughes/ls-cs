@@ -492,82 +492,82 @@ static int64_t lscs_internal_convertToInt64( const QVariant &data, bool *ok )
     switch ( data.type() )
     {
 
-    case QVariant::Bool:
-        return int64_t( data.getData<bool>() );
+        case QVariant::Bool:
+            return int64_t( data.getData<bool>() );
 
-    case QVariant::Int:
-        return int64_t( data.getData<int>() );
+        case QVariant::Int:
+            return int64_t( data.getData<int>() );
 
-    case QVariant::UInt:
-        return int64_t( int( data.getData<uint>() ) );
+        case QVariant::UInt:
+            return int64_t( int( data.getData<uint>() ) );
 
-    case QVariant::Short:
-        return int64_t( data.getData<short>() );
+        case QVariant::Short:
+            return int64_t( data.getData<short>() );
 
-    case QVariant::UShort:
-        return int64_t( short( data.getData<ushort>() ) );
+        case QVariant::UShort:
+            return int64_t( short( data.getData<ushort>() ) );
 
-    case QVariant::Long:
-        return int64_t( data.getData<long>() );
+        case QVariant::Long:
+            return int64_t( data.getData<long>() );
 
-    case QVariant::ULong:
-        return int64_t( long( data.getData<ulong>() ) );
+        case QVariant::ULong:
+            return int64_t( long( data.getData<ulong>() ) );
 
-    case QVariant::LongLong:
-        return int64_t( data.getData<qint64>() );
+        case QVariant::LongLong:
+            return int64_t( data.getData<qint64>() );
 
-    case QVariant::ULongLong:
-        return int64_t( data.getData<quint64>() );
+        case QVariant::ULongLong:
+            return int64_t( data.getData<quint64>() );
 
-    case QVariant::Double:
-        return int64_t( data.getData<double>() );
+        case QVariant::Double:
+            return int64_t( data.getData<double>() );
 
-    case QVariant::Float:
-        return int64_t( data.getData<float>() );
+        case QVariant::Float:
+            return int64_t( data.getData<float>() );
 
-    case QVariant::Char:
-        return int64_t( static_cast<signed char>( data.getData<char>() ) );
+        case QVariant::Char:
+            return int64_t( static_cast<signed char>( data.getData<char>() ) );
 
-    case QVariant::SChar:
-        return int64_t( data.getData<signed char>() );
+        case QVariant::SChar:
+            return int64_t( data.getData<signed char>() );
 
-    case QVariant::UChar:
-        return int64_t( static_cast<signed char>( data.getData<uchar>() ) );
+        case QVariant::UChar:
+            return int64_t( static_cast<signed char>( data.getData<uchar>() ) );
 
-    case QVariant::QChar:
-        return int64_t( static_cast<int32_t>( data.getData<QChar32>().unicode() ) );
+        case QVariant::QChar:
+            return int64_t( static_cast<int32_t>( data.getData<QChar32>().unicode() ) );
 
-    case QVariant::String8:
-        return data.getData<QString>().toInteger<int64_t>( ok );
+        case QVariant::String8:
+            return data.getData<QString>().toInteger<int64_t>( ok );
 
-    case QVariant::String16:
-        return data.getData<QString16>().toInteger<int64_t>( ok );
+        case QVariant::String16:
+            return data.getData<QString16>().toInteger<int64_t>( ok );
 
-    case QVariant::ByteArray:
-        return data.getData<QByteArray>().toLongLong( ok );
+        case QVariant::ByteArray:
+            return data.getData<QByteArray>().toLongLong( ok );
 
-    case QVariant::JsonValue:
-    {
-        QJsonValue tmp = data.getData<QJsonValue>();
-
-        if ( tmp.isDouble() )
+        case QVariant::JsonValue:
         {
-            return int64_t( tmp.toDouble() );
+            QJsonValue tmp = data.getData<QJsonValue>();
 
+            if ( tmp.isDouble() )
+            {
+                return int64_t( tmp.toDouble() );
+
+            }
+            else
+            {
+                break;
+            }
         }
-        else
-        {
+
+        default:
+            if ( data.isEnum() )
+            {
+                return data.enumToInt();
+            }
+
             break;
-        }
-    }
-
-    default:
-        if ( data.isEnum() )
-        {
-            return data.enumToInt();
-        }
-
-        break;
     }
 
     *ok = false;
@@ -582,82 +582,82 @@ static uint64_t lscs_internal_convertToUInt64( const QVariant &data, bool *ok )
     switch ( data.type() )
     {
 
-    case QVariant::Bool:
-        return uint64_t( data.getData<bool>() );
+        case QVariant::Bool:
+            return uint64_t( data.getData<bool>() );
 
-    case QVariant::Int:
-        return uint64_t( uint( data.getData<int>() ) );
+        case QVariant::Int:
+            return uint64_t( uint( data.getData<int>() ) );
 
-    case QVariant::UInt:
-        return uint64_t( data.getData<uint>() );
+        case QVariant::UInt:
+            return uint64_t( data.getData<uint>() );
 
-    case QVariant::Short:
-        return uint64_t( ushort( data.getData<short>() ) );
+        case QVariant::Short:
+            return uint64_t( ushort( data.getData<short>() ) );
 
-    case QVariant::UShort:
-        return uint64_t( data.getData<ushort>() );
+        case QVariant::UShort:
+            return uint64_t( data.getData<ushort>() );
 
-    case QVariant::Long:
-        return uint64_t( ulong( data.getData<long>() ) );
+        case QVariant::Long:
+            return uint64_t( ulong( data.getData<long>() ) );
 
-    case QVariant::ULong:
-        return uint64_t( data.getData<ulong>() );
+        case QVariant::ULong:
+            return uint64_t( data.getData<ulong>() );
 
-    case QVariant::LongLong:
-        return uint64_t( data.getData<qint64>() );
+        case QVariant::LongLong:
+            return uint64_t( data.getData<qint64>() );
 
-    case QVariant::ULongLong:
-        return uint64_t( data.getData<quint64>() );
+        case QVariant::ULongLong:
+            return uint64_t( data.getData<quint64>() );
 
-    case QVariant::Double:
-        return uint64_t( data.getData<double>() );
+        case QVariant::Double:
+            return uint64_t( data.getData<double>() );
 
-    case QVariant::Float:
-        return uint64_t( data.getData<float>() );
+        case QVariant::Float:
+            return uint64_t( data.getData<float>() );
 
-    case QVariant::Char:
-        return uint64_t( static_cast<unsigned char>( data.getData<char>() ) );
+        case QVariant::Char:
+            return uint64_t( static_cast<unsigned char>( data.getData<char>() ) );
 
-    case QVariant::SChar:
-        return uint64_t( static_cast<unsigned char>( data.getData<signed char>() ) );
+        case QVariant::SChar:
+            return uint64_t( static_cast<unsigned char>( data.getData<signed char>() ) );
 
-    case QVariant::UChar:
-        return uint64_t( data.getData<uchar>() );
+        case QVariant::UChar:
+            return uint64_t( data.getData<uchar>() );
 
-    case QVariant::QChar:
-        return uint64_t( data.getData<QChar32>().unicode() );
+        case QVariant::QChar:
+            return uint64_t( data.getData<QChar32>().unicode() );
 
-    case QVariant::String8:
-        return data.getData<QString>().toInteger<uint64_t>( ok );
+        case QVariant::String8:
+            return data.getData<QString>().toInteger<uint64_t>( ok );
 
-    case QVariant::String16:
-        return data.getData<QString16>().toInteger<uint64_t>( ok );
+        case QVariant::String16:
+            return data.getData<QString16>().toInteger<uint64_t>( ok );
 
-    case QVariant::ByteArray:
-        return data.getData<QByteArray>().toULongLong( ok );
+        case QVariant::ByteArray:
+            return data.getData<QByteArray>().toULongLong( ok );
 
-    case QVariant::JsonValue:
-    {
-        QJsonValue tmp = data.getData<QJsonValue>();
-
-        if ( tmp.isDouble() )
+        case QVariant::JsonValue:
         {
-            return uint64_t( tmp.toDouble() );
+            QJsonValue tmp = data.getData<QJsonValue>();
 
+            if ( tmp.isDouble() )
+            {
+                return uint64_t( tmp.toDouble() );
+
+            }
+            else
+            {
+                break;
+            }
         }
-        else
-        {
+
+        default:
+            if ( data.isEnum() )
+            {
+                return data.enumToUInt();
+            }
+
             break;
-        }
-    }
-
-    default:
-        if ( data.isEnum() )
-        {
-            return data.enumToUInt();
-        }
-
-        break;
     }
 
     *ok = false;
@@ -672,840 +672,1070 @@ bool QVariant::lscs_internal_convert( uint current_userType, uint new_userType )
     switch ( new_userType )
     {
 
-    case QVariant::Bool:
-
-        switch ( current_userType )
-        {
-        case QVariant::Int:
-        case QVariant::UInt:
-        case QVariant::Short:
-        case QVariant::UShort:
-        case QVariant::Long:
-        case QVariant::ULong:
-        case QVariant::LongLong:
-        case QVariant::ULongLong:
-        case QVariant::Double:
-        case QVariant::Float:
-        case QVariant::Char:
-        case QVariant::SChar:
-        case QVariant::UChar:
-        {
-            bool tmp = lscs_internal_convertToUInt64( *this, &retval ) != 0;
-            setValue( tmp );
-            break;
-        }
-
-        case QVariant::ByteArray:
-        {
-
-            QByteArray str = getData<QByteArray>().toLower();
-
-            if ( str == QByteArray( "0" ) || str == QByteArray( "false" ) || str.isEmpty() )
-            {
-                setValue( false );
-            }
-            else
-            {
-                setValue( true );
-            }
-
-            break;
-        }
-
-        case QVariant::String:
-        {
-
-            QString str = getData<QString>().toLower();
-
-            if ( str == "0" || str == "false" || str.isEmpty() )
-            {
-                setValue( false );
-            }
-            else
-            {
-                setValue( true );
-            }
-
-            break;
-        }
-
-        case QVariant::String16:
-        {
-
-            QString16 str = getData<QString16>().toLower();
-
-            if ( str == u"0" || str == u"false" || str.isEmpty() )
-            {
-                setValue( false );
-            }
-            else
-            {
-                setValue( true );
-            }
-
-            break;
-        }
-
-        case QVariant::QChar:
-
-            if ( getData<QChar32>().isNull() )
-            {
-                setValue( false );
-            }
-            else
-            {
-                setValue( true );
-            }
-
-            break;
-
-        case QVariant::JsonValue:
-        {
-
-            QJsonValue tmp = getData<QJsonValue>();
-
-            if ( tmp.isBool() )
-            {
-                setValue( tmp.toBool() );
-
-            }
-            else if ( tmp.isDouble() )
-            {
-
-                if ( tmp.toDouble() == 0 )
-                {
-                    setValue( false );
-                }
-                else
-                {
-                    setValue( true );
-                }
-
-            }
-            else if ( tmp.isString() )
-            {
-                QString str = tmp.toString().toLower();
-
-                if ( str == QString( "0" ) || str == QString( "false" ) || str.isEmpty() )
-                {
-                    setValue( false );
-                }
-                else
-                {
-                    setValue( true );
-                }
-
-            }
-            else
-            {
-                setValue( false );
-            }
-
-            break;
-        }
-
-        default:
-            setValue( false );
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::Int:
-    {
-        int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
-        int data    = 0;
-
-        if ( retval )
-        {
-            data = safe_cast<int>( tmp, &retval );
-        }
-
-        setValue( data );
-        break;
-    }
-
-    case QVariant::UInt:
-    {
-        uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
-        uint data    = 0;
-
-        if ( retval )
-        {
-            data = safe_cast<uint>( tmp, &retval );
-        }
-
-        setValue( data );
-        break;
-    }
-
-    case QVariant::Short:
-    {
-        int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
-        short data  = 0;
-
-        if ( retval )
-        {
-            data = safe_cast<short>( tmp, &retval );
-        }
-
-        setValue( data );
-        break;
-    }
-
-    case QVariant::UShort:
-    {
-        uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
-        ushort data  = 0;
-
-        if ( retval )
-        {
-            data = safe_cast<ushort>( tmp, &retval );
-        }
-
-        setValue( data );
-        break;
-    }
-
-    case QVariant::Long:
-    {
-        int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
-        long data   = 0;
-
-        if ( retval )
-        {
-            data = safe_cast<long>( tmp, &retval );
-        }
-
-        setValue( data );
-        break;
-    }
-
-    case QVariant::ULong:
-    {
-        uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
-        ulong data   = 0;
-
-        if ( retval )
-        {
-            data = safe_cast<ulong>( tmp, &retval );
-        }
-
-        setValue( data );
-        break;
-    }
-
-    case QVariant::LongLong:
-    {
-        int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
-        qint64 data = 0;
-
-        if ( retval )
-        {
-            data = safe_cast<qint64>( tmp, &retval );
-        }
-
-        setValue( data );
-        break;
-    }
-
-    case QVariant::ULongLong:
-    {
-        uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
-        quint64 data = 0;
-
-        if ( retval )
-        {
-            data = safe_cast<quint64>( tmp, &retval );
-        }
-
-        setValue( data );
-        break;
-    }
-
-    case QVariant::Double:
-    {
-
-        switch ( current_userType )
-        {
-
         case QVariant::Bool:
-        {
-            double tmp = getData<bool>();
-            setValue( tmp );
+
+            switch ( current_userType )
+            {
+                case QVariant::Int:
+                case QVariant::UInt:
+                case QVariant::Short:
+                case QVariant::UShort:
+                case QVariant::Long:
+                case QVariant::ULong:
+                case QVariant::LongLong:
+                case QVariant::ULongLong:
+                case QVariant::Double:
+                case QVariant::Float:
+                case QVariant::Char:
+                case QVariant::SChar:
+                case QVariant::UChar:
+                {
+                    bool tmp = lscs_internal_convertToUInt64( *this, &retval ) != 0;
+                    setValue( tmp );
+                    break;
+                }
+
+                case QVariant::ByteArray:
+                {
+
+                    QByteArray str = getData<QByteArray>().toLower();
+
+                    if ( str == QByteArray( "0" ) || str == QByteArray( "false" ) || str.isEmpty() )
+                    {
+                        setValue( false );
+                    }
+                    else
+                    {
+                        setValue( true );
+                    }
+
+                    break;
+                }
+
+                case QVariant::String:
+                {
+
+                    QString str = getData<QString>().toLower();
+
+                    if ( str == "0" || str == "false" || str.isEmpty() )
+                    {
+                        setValue( false );
+                    }
+                    else
+                    {
+                        setValue( true );
+                    }
+
+                    break;
+                }
+
+                case QVariant::String16:
+                {
+
+                    QString16 str = getData<QString16>().toLower();
+
+                    if ( str == u"0" || str == u"false" || str.isEmpty() )
+                    {
+                        setValue( false );
+                    }
+                    else
+                    {
+                        setValue( true );
+                    }
+
+                    break;
+                }
+
+                case QVariant::QChar:
+
+                    if ( getData<QChar32>().isNull() )
+                    {
+                        setValue( false );
+                    }
+                    else
+                    {
+                        setValue( true );
+                    }
+
+                    break;
+
+                case QVariant::JsonValue:
+                {
+
+                    QJsonValue tmp = getData<QJsonValue>();
+
+                    if ( tmp.isBool() )
+                    {
+                        setValue( tmp.toBool() );
+
+                    }
+                    else if ( tmp.isDouble() )
+                    {
+
+                        if ( tmp.toDouble() == 0 )
+                        {
+                            setValue( false );
+                        }
+                        else
+                        {
+                            setValue( true );
+                        }
+
+                    }
+                    else if ( tmp.isString() )
+                    {
+                        QString str = tmp.toString().toLower();
+
+                        if ( str == QString( "0" ) || str == QString( "false" ) || str.isEmpty() )
+                        {
+                            setValue( false );
+                        }
+                        else
+                        {
+                            setValue( true );
+                        }
+
+                    }
+                    else
+                    {
+                        setValue( false );
+                    }
+
+                    break;
+                }
+
+                default:
+                    setValue( false );
+                    retval = false;
+            }
+
             break;
-        }
 
         case QVariant::Int:
-        case QVariant::UInt:
-        case QVariant::Short:
-        case QVariant::UShort:
-        case QVariant::Long:
-        case QVariant::ULong:
-        case QVariant::LongLong:
-        case QVariant::ULongLong:
-        case QVariant::Char:
-        case QVariant::SChar:
-        case QVariant::UChar:
         {
             int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
-            double data  = 0;
+            int data    = 0;
 
             if ( retval )
             {
-                data = safe_cast<double>( tmp, &retval );
+                data = safe_cast<int>( tmp, &retval );
             }
 
             setValue( data );
             break;
         }
 
-        case QVariant::Float:
-        {
-            double tmp = getData<float>();
-            setValue( tmp );
-            break;
-        }
-
-        case QVariant::ByteArray:
-        {
-            double tmp = getData<QByteArray>().toDouble();
-            setValue( tmp );
-            break;
-        }
-
-        case QVariant::String:
-        {
-            double tmp = getData<QString>().toDouble();
-            setValue( tmp );
-            break;
-        }
-
-        case QVariant::String16:
-        {
-            double tmp = getData<QString16>().toDouble();
-            setValue( tmp );
-            break;
-        }
-
-        case QVariant::JsonValue:
-        {
-            QJsonValue tmp = getData<QJsonValue>();
-
-            if ( tmp.isDouble() )
-            {
-                setValue( tmp.toDouble() );
-
-            }
-            else if ( tmp.isString() )
-            {
-                double value = tmp.toString().toDouble();
-                setValue( value );
-
-            }
-            else
-            {
-                setValue( 0.0 );
-                retval = false;
-            }
-
-            break;
-        }
-
-        default:
-            setValue( 0.0 );
-            retval = false;
-        }
-
-        break;
-    }
-
-    case QVariant::Float:
-    {
-
-        switch ( current_userType )
-        {
-
-        case QVariant::Bool:
-        {
-            float tmp = getData<bool>();
-            setValue( tmp );
-            break;
-        }
-
-        case QVariant::Int:
         case QVariant::UInt:
-        case QVariant::Short:
-        case QVariant::UShort:
-        case QVariant::Long:
-        case QVariant::ULong:
-        case QVariant::LongLong:
-        case QVariant::ULongLong:
-        case QVariant::Char:
-        case QVariant::SChar:
-        case QVariant::UChar:
-        {
-            int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
-            float data  = 0;
-
-            if ( retval )
-            {
-                data = safe_cast<double>( tmp, &retval );
-            }
-
-            setValue( data );
-            break;
-        }
-
-        case QVariant::Double:
-        {
-            float tmp = getData<double>();
-            setValue( tmp );
-            break;
-        }
-
-        case QVariant::ByteArray:
-        {
-            float tmp = getData<QByteArray>().toFloat();
-            setValue( tmp );
-            break;
-        }
-
-        case QVariant::String:
-        {
-            float tmp = getData<QString>().toFloat();
-            setValue( tmp );
-            break;
-        }
-
-        case QVariant::String16:
-        {
-            float tmp = getData<QString16>().toFloat();
-            setValue( tmp );
-            break;
-        }
-
-        case QVariant::JsonValue:
-        {
-            QJsonValue tmp = getData<QJsonValue>();
-
-            if ( tmp.isDouble() )
-            {
-                setValue<float>( tmp.toDouble() );
-
-            }
-            else if ( tmp.isString() )
-            {
-                double value = tmp.toString().toDouble();
-                setValue<float>( value );
-
-            }
-            else
-            {
-                setValue<float>( 0.0 );
-                retval = false;
-            }
-
-            break;
-        }
-
-        default:
-            setValue<float>( 0.0 );
-            retval = false;
-        }
-
-        break;
-    }
-
-    case QVariant::Char:
-    {
-        char data = 0;
-
-        if constexpr ( std::is_signed_v<char> )
-        {
-            int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
-
-            if ( retval )
-            {
-                data = safe_cast<char>( tmp, &retval );
-            }
-
-        }
-        else
         {
             uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
+            uint data    = 0;
 
             if ( retval )
             {
-                data = safe_cast<char>( tmp, &retval );
-            }
-        }
-
-        setValue( data );
-        break;
-    }
-
-    case QVariant::SChar:
-    {
-        int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
-        signed char data = 0;
-
-        if ( retval )
-        {
-            data = safe_cast<signed char>( tmp, &retval );
-        }
-
-        setValue( data );
-        break;
-    }
-
-    case QVariant::UChar:
-    {
-        uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
-        uchar data   = 0;
-
-        if ( retval )
-        {
-            data = safe_cast<uchar>( tmp, &retval );
-        }
-
-        setValue( data );
-        break;
-    }
-
-    case QVariant::QChar:
-
-        switch ( current_userType )
-        {
-        case QVariant::Int:
-        case QVariant::UInt:
-        case QVariant::Short:
-        case QVariant::UShort:
-        case QVariant::Long:
-        case QVariant::ULong:
-        case QVariant::LongLong:
-        case QVariant::ULongLong:
-        case QVariant::Float:
-        case QVariant::Double:
-        case QVariant::Char:
-        case QVariant::SChar:
-        case QVariant::UChar:
-        case QVariant::ByteArray:
-        case QVariant::String8:
-        case QVariant::String16:
-        case QVariant::JsonValue:
-        {
-            uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
-            QChar32 data = 0;
-
-            if ( retval )
-            {
-                data = safe_cast<char32_t>( tmp, &retval );
+                data = safe_cast<uint>( tmp, &retval );
             }
 
             setValue( data );
             break;
         }
 
-        default:
-            setValue( QChar32() );
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::ByteArray:
-    {
-
-        switch ( current_userType )
-        {
-
-        case QVariant::Bool:
-        {
-            bool tmp = getData<bool>();
-
-            if ( tmp )
-            {
-                setValue<QByteArray>( "true" );
-            }
-            else
-            {
-                setValue<QByteArray>( "false" );
-            }
-
-            break;
-        }
-
-        case QVariant::Int:
-            setValue<QByteArray>( QByteArray::number( getData<int>() ) );
-            break;
-
-        case QVariant::UInt:
-            setValue<QByteArray>( QByteArray::number( getData<unsigned int>() ) );
-            break;
-
-        case QVariant::Long:
-            setValue<QByteArray>( QByteArray::number( static_cast<qint64>( getData<long>() ) ) );
-            break;
-
-        case QVariant::ULong:
-            setValue<QByteArray>( QByteArray::number( static_cast<quint64>( getData<unsigned long>() ) ) );
-            break;
-
-        case QVariant::LongLong:
-            setValue<QByteArray>( QByteArray::number( getData<long long>() ) );
-            break;
-
-        case QVariant::ULongLong:
-            setValue<QByteArray>( QByteArray::number( getData<unsigned long long>() ) );
-            break;
-
-        case QVariant::Double:
-            setValue<QByteArray>( QByteArray::number( getData<double>(), 'g', std::numeric_limits<double>::digits10 ) );
-            break;
-
-        case QVariant::Float:
-            setValue<QByteArray>( QByteArray::number( getData<float>(), 'g', std::numeric_limits<float>::digits10 ) );
-            break;
-
         case QVariant::Short:
-            setValue<QByteArray>( QByteArray::number( getData<short>() ) );
+        {
+            int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
+            short data  = 0;
+
+            if ( retval )
+            {
+                data = safe_cast<short>( tmp, &retval );
+            }
+
+            setValue( data );
             break;
+        }
 
         case QVariant::UShort:
-            setValue<QByteArray>( QByteArray::number( getData<unsigned short>() ) );
+        {
+            uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
+            ushort data  = 0;
+
+            if ( retval )
+            {
+                data = safe_cast<ushort>( tmp, &retval );
+            }
+
+            setValue( data );
             break;
+        }
+
+        case QVariant::Long:
+        {
+            int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
+            long data   = 0;
+
+            if ( retval )
+            {
+                data = safe_cast<long>( tmp, &retval );
+            }
+
+            setValue( data );
+            break;
+        }
+
+        case QVariant::ULong:
+        {
+            uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
+            ulong data   = 0;
+
+            if ( retval )
+            {
+                data = safe_cast<ulong>( tmp, &retval );
+            }
+
+            setValue( data );
+            break;
+        }
+
+        case QVariant::LongLong:
+        {
+            int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
+            qint64 data = 0;
+
+            if ( retval )
+            {
+                data = safe_cast<qint64>( tmp, &retval );
+            }
+
+            setValue( data );
+            break;
+        }
+
+        case QVariant::ULongLong:
+        {
+            uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
+            quint64 data = 0;
+
+            if ( retval )
+            {
+                data = safe_cast<quint64>( tmp, &retval );
+            }
+
+            setValue( data );
+            break;
+        }
+
+        case QVariant::Double:
+        {
+
+            switch ( current_userType )
+            {
+
+                case QVariant::Bool:
+                {
+                    double tmp = getData<bool>();
+                    setValue( tmp );
+                    break;
+                }
+
+                case QVariant::Int:
+                case QVariant::UInt:
+                case QVariant::Short:
+                case QVariant::UShort:
+                case QVariant::Long:
+                case QVariant::ULong:
+                case QVariant::LongLong:
+                case QVariant::ULongLong:
+                case QVariant::Char:
+                case QVariant::SChar:
+                case QVariant::UChar:
+                {
+                    int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
+                    double data  = 0;
+
+                    if ( retval )
+                    {
+                        data = safe_cast<double>( tmp, &retval );
+                    }
+
+                    setValue( data );
+                    break;
+                }
+
+                case QVariant::Float:
+                {
+                    double tmp = getData<float>();
+                    setValue( tmp );
+                    break;
+                }
+
+                case QVariant::ByteArray:
+                {
+                    double tmp = getData<QByteArray>().toDouble();
+                    setValue( tmp );
+                    break;
+                }
+
+                case QVariant::String:
+                {
+                    double tmp = getData<QString>().toDouble();
+                    setValue( tmp );
+                    break;
+                }
+
+                case QVariant::String16:
+                {
+                    double tmp = getData<QString16>().toDouble();
+                    setValue( tmp );
+                    break;
+                }
+
+                case QVariant::JsonValue:
+                {
+                    QJsonValue tmp = getData<QJsonValue>();
+
+                    if ( tmp.isDouble() )
+                    {
+                        setValue( tmp.toDouble() );
+
+                    }
+                    else if ( tmp.isString() )
+                    {
+                        double value = tmp.toString().toDouble();
+                        setValue( value );
+
+                    }
+                    else
+                    {
+                        setValue( 0.0 );
+                        retval = false;
+                    }
+
+                    break;
+                }
+
+                default:
+                    setValue( 0.0 );
+                    retval = false;
+            }
+
+            break;
+        }
+
+        case QVariant::Float:
+        {
+
+            switch ( current_userType )
+            {
+
+                case QVariant::Bool:
+                {
+                    float tmp = getData<bool>();
+                    setValue( tmp );
+                    break;
+                }
+
+                case QVariant::Int:
+                case QVariant::UInt:
+                case QVariant::Short:
+                case QVariant::UShort:
+                case QVariant::Long:
+                case QVariant::ULong:
+                case QVariant::LongLong:
+                case QVariant::ULongLong:
+                case QVariant::Char:
+                case QVariant::SChar:
+                case QVariant::UChar:
+                {
+                    int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
+                    float data  = 0;
+
+                    if ( retval )
+                    {
+                        data = safe_cast<double>( tmp, &retval );
+                    }
+
+                    setValue( data );
+                    break;
+                }
+
+                case QVariant::Double:
+                {
+                    float tmp = getData<double>();
+                    setValue( tmp );
+                    break;
+                }
+
+                case QVariant::ByteArray:
+                {
+                    float tmp = getData<QByteArray>().toFloat();
+                    setValue( tmp );
+                    break;
+                }
+
+                case QVariant::String:
+                {
+                    float tmp = getData<QString>().toFloat();
+                    setValue( tmp );
+                    break;
+                }
+
+                case QVariant::String16:
+                {
+                    float tmp = getData<QString16>().toFloat();
+                    setValue( tmp );
+                    break;
+                }
+
+                case QVariant::JsonValue:
+                {
+                    QJsonValue tmp = getData<QJsonValue>();
+
+                    if ( tmp.isDouble() )
+                    {
+                        setValue<float>( tmp.toDouble() );
+
+                    }
+                    else if ( tmp.isString() )
+                    {
+                        double value = tmp.toString().toDouble();
+                        setValue<float>( value );
+
+                    }
+                    else
+                    {
+                        setValue<float>( 0.0 );
+                        retval = false;
+                    }
+
+                    break;
+                }
+
+                default:
+                    setValue<float>( 0.0 );
+                    retval = false;
+            }
+
+            break;
+        }
 
         case QVariant::Char:
         {
-            QByteArray tmp;
+            char data = 0;
 
-            auto ch = getData<char>();
-
-            if ( ch != 0 )
+            if constexpr ( std::is_signed_v<char> )
             {
-                tmp.append( ch );
-            }
+                int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
 
-            setValue<QByteArray>( tmp );
-            break;
-        }
+                if ( retval )
+                {
+                    data = safe_cast<char>( tmp, &retval );
+                }
 
-        case QVariant::QChar:
-        {
-            auto tmp = getData<QChar32>();
-
-            if ( tmp.isNull() )
-            {
-                setValue<QByteArray>( "" );
             }
             else
             {
-                setValue<QByteArray>( QString( tmp ).toUtf8() );
+                uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
+
+                if ( retval )
+                {
+                    data = safe_cast<char>( tmp, &retval );
+                }
             }
 
+            setValue( data );
             break;
         }
 
         case QVariant::SChar:
         {
-            QByteArray tmp;
+            int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
+            signed char data = 0;
 
-            auto ch = getData<signed char>();
-
-            if ( ch != 0 )
+            if ( retval )
             {
-                tmp.append( ch );
+                data = safe_cast<signed char>( tmp, &retval );
             }
 
-            setValue<QByteArray>( tmp );
+            setValue( data );
             break;
         }
 
         case QVariant::UChar:
         {
-            QByteArray tmp;
+            uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
+            uchar data   = 0;
 
-            auto ch = getData<unsigned char>();
-
-            if ( ch != 0 )
+            if ( retval )
             {
-                tmp.append( ch );
+                data = safe_cast<uchar>( tmp, &retval );
             }
 
-            setValue<QByteArray>( tmp );
+            setValue( data );
+            break;
+        }
+
+        case QVariant::QChar:
+
+            switch ( current_userType )
+            {
+                case QVariant::Int:
+                case QVariant::UInt:
+                case QVariant::Short:
+                case QVariant::UShort:
+                case QVariant::Long:
+                case QVariant::ULong:
+                case QVariant::LongLong:
+                case QVariant::ULongLong:
+                case QVariant::Float:
+                case QVariant::Double:
+                case QVariant::Char:
+                case QVariant::SChar:
+                case QVariant::UChar:
+                case QVariant::ByteArray:
+                case QVariant::String8:
+                case QVariant::String16:
+                case QVariant::JsonValue:
+                {
+                    uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
+                    QChar32 data = 0;
+
+                    if ( retval )
+                    {
+                        data = safe_cast<char32_t>( tmp, &retval );
+                    }
+
+                    setValue( data );
+                    break;
+                }
+
+                default:
+                    setValue( QChar32() );
+                    retval = false;
+            }
+
+            break;
+
+        case QVariant::ByteArray:
+        {
+
+            switch ( current_userType )
+            {
+
+                case QVariant::Bool:
+                {
+                    bool tmp = getData<bool>();
+
+                    if ( tmp )
+                    {
+                        setValue<QByteArray>( "true" );
+                    }
+                    else
+                    {
+                        setValue<QByteArray>( "false" );
+                    }
+
+                    break;
+                }
+
+                case QVariant::Int:
+                    setValue<QByteArray>( QByteArray::number( getData<int>() ) );
+                    break;
+
+                case QVariant::UInt:
+                    setValue<QByteArray>( QByteArray::number( getData<unsigned int>() ) );
+                    break;
+
+                case QVariant::Long:
+                    setValue<QByteArray>( QByteArray::number( static_cast<qint64>( getData<long>() ) ) );
+                    break;
+
+                case QVariant::ULong:
+                    setValue<QByteArray>( QByteArray::number( static_cast<quint64>( getData<unsigned long>() ) ) );
+                    break;
+
+                case QVariant::LongLong:
+                    setValue<QByteArray>( QByteArray::number( getData<long long>() ) );
+                    break;
+
+                case QVariant::ULongLong:
+                    setValue<QByteArray>( QByteArray::number( getData<unsigned long long>() ) );
+                    break;
+
+                case QVariant::Double:
+                    setValue<QByteArray>( QByteArray::number( getData<double>(), 'g', std::numeric_limits<double>::digits10 ) );
+                    break;
+
+                case QVariant::Float:
+                    setValue<QByteArray>( QByteArray::number( getData<float>(), 'g', std::numeric_limits<float>::digits10 ) );
+                    break;
+
+                case QVariant::Short:
+                    setValue<QByteArray>( QByteArray::number( getData<short>() ) );
+                    break;
+
+                case QVariant::UShort:
+                    setValue<QByteArray>( QByteArray::number( getData<unsigned short>() ) );
+                    break;
+
+                case QVariant::Char:
+                {
+                    QByteArray tmp;
+
+                    auto ch = getData<char>();
+
+                    if ( ch != 0 )
+                    {
+                        tmp.append( ch );
+                    }
+
+                    setValue<QByteArray>( tmp );
+                    break;
+                }
+
+                case QVariant::QChar:
+                {
+                    auto tmp = getData<QChar32>();
+
+                    if ( tmp.isNull() )
+                    {
+                        setValue<QByteArray>( "" );
+                    }
+                    else
+                    {
+                        setValue<QByteArray>( QString( tmp ).toUtf8() );
+                    }
+
+                    break;
+                }
+
+                case QVariant::SChar:
+                {
+                    QByteArray tmp;
+
+                    auto ch = getData<signed char>();
+
+                    if ( ch != 0 )
+                    {
+                        tmp.append( ch );
+                    }
+
+                    setValue<QByteArray>( tmp );
+                    break;
+                }
+
+                case QVariant::UChar:
+                {
+                    QByteArray tmp;
+
+                    auto ch = getData<unsigned char>();
+
+                    if ( ch != 0 )
+                    {
+                        tmp.append( ch );
+                    }
+
+                    setValue<QByteArray>( tmp );
+                    break;
+                }
+
+                case QVariant::String:
+                    setValue<QByteArray>( getData<QString>().toUtf8() );
+                    break;
+
+                case QVariant::String16:
+                    setValue<QByteArray>( getData<QString16>().toUtf8() );
+                    break;
+
+                case QVariant::Url:
+                    setValue<QByteArray>( getData<QUrl>().toEncoded() );
+                    break;
+
+                case QVariant::Uuid:
+                    setValue<QByteArray>( getData<QUuid>().toByteArray() );
+                    break;
+
+                default:
+                    retval = false;
+            }
+
             break;
         }
 
         case QVariant::String:
-            setValue<QByteArray>( getData<QString>().toUtf8() );
+        {
+            switch ( current_userType )
+            {
+
+                case QVariant::Bool:
+                {
+                    bool tmp = getData<bool>();
+
+                    if ( tmp )
+                    {
+                        setValue<QString>( "true" );
+                    }
+                    else
+                    {
+                        setValue<QString>( "false" );
+                    }
+
+                    break;
+                }
+
+                case QVariant::Int:
+                    setValue<QString>( QString::number( getData<int>() ) );
+                    break;
+
+                case QVariant::UInt:
+                    setValue<QString>( QString::number( getData<unsigned int>() ) );
+                    break;
+
+                case QVariant::Long:
+                    setValue<QString>( QString::number( getData<long>() ) );
+                    break;
+
+                case QVariant::ULong:
+                    setValue<QString>( QString::number( getData<unsigned long>() ) );
+                    break;
+
+                case QVariant::LongLong:
+                    setValue<QString>( QString::number( getData<long long>() ) );
+                    break;
+
+                case QVariant::ULongLong:
+                    setValue<QString>( QString::number( getData<unsigned long long>() ) );
+                    break;
+
+                case QVariant::Double:
+                    setValue<QString>( QString::number( getData<double>(), 'g', std::numeric_limits<double>::digits10 ) );
+                    break;
+
+                case QVariant::Float:
+                    setValue<QString>( QString::number( getData<float>(), 'g', std::numeric_limits<float>::digits10 ) );
+                    break;
+
+                case QVariant::Short:
+                    setValue<QString>( QString::number( getData<short>() ) );
+                    break;
+
+                case QVariant::UShort:
+                    setValue<QString>( QString::number( getData<unsigned short>() ) );
+                    break;
+
+                case QVariant::Char:
+                    setValue<QString>( QChar::fromLatin1( getData<char>() ) );
+                    break;
+
+                case QVariant::SChar:
+                    setValue<QString>( QChar::fromLatin1( getData<signed char>() ) );
+                    break;
+
+                case QVariant::UChar:
+                    setValue<QString>( QChar::fromLatin1( getData<unsigned char>() ) );
+                    break;
+
+                case QVariant::QChar:
+                {
+                    auto tmp = getData<QChar32>();
+
+                    if ( tmp.isNull() )
+                    {
+                        setValue<QString>( "" );
+                    }
+                    else
+                    {
+                        setValue<QString>( tmp );
+                    }
+
+                    break;
+                }
+
+                case QVariant::ByteArray:
+                    setValue<QString>( QString::fromUtf8( getData<QByteArray>() ) );
+                    break;
+
+                case QVariant::String16:
+                    setValue<QString>( QString::fromUtf16( getData<QString16>() ) );
+                    break;
+
+                case QVariant::StringList:
+                {
+                    QStringList tmp = getData<QStringList>();
+
+                    if ( tmp.count() == 1 )
+                    {
+                        setValue<QString>( tmp[0] );
+                    }
+
+                    break;
+                }
+
+                case QVariant::Date:
+                    setValue<QString>( getData<QDate>().toString( Qt::ISODate ) );
+                    break;
+
+                case QVariant::DateTime:
+                    setValue<QString>( getData<QDateTime>().toString( Qt::ISODate ) );
+                    break;
+
+                case QVariant::Time:
+                    setValue<QString>( getData<QTime>().toString( Qt::ISODate ) );
+                    break;
+
+                case QVariant::JsonValue:
+                {
+                    QJsonValue tmp = getData<QJsonValue>();
+
+                    if ( tmp.isBool() )
+                    {
+
+                        if ( tmp.toBool() )
+                        {
+                            setValue<QString>( "true" );
+                        }
+                        else
+                        {
+                            setValue<QString>( "false" );
+                        }
+
+                    }
+                    else if ( tmp.isDouble() )
+                    {
+                        setValue<QString>( QString::number( tmp.toDouble() ) );
+
+                    }
+                    else if ( tmp.isString() )
+                    {
+                        setValue<QString>( tmp.toString() );
+
+                    }
+                    else
+                    {
+                        retval = false;
+
+                    }
+
+                    break;
+                }
+
+                case QVariant::Url:
+                    setValue<QString>( getData<QUrl>().toString() );
+                    break;
+
+                case QVariant::Uuid:
+                    setValue<QString>( getData<QUuid>().toString() );
+                    break;
+
+                default:
+                    retval = false;
+            }
+
             break;
+        }
 
         case QVariant::String16:
-            setValue<QByteArray>( getData<QString16>().toUtf8() );
-            break;
-
-        case QVariant::Url:
-            setValue<QByteArray>( getData<QUrl>().toEncoded() );
-            break;
-
-        case QVariant::Uuid:
-            setValue<QByteArray>( getData<QUuid>().toByteArray() );
-            break;
-
-        default:
-            retval = false;
-        }
-
-        break;
-    }
-
-    case QVariant::String:
-    {
-        switch ( current_userType )
         {
 
-        case QVariant::Bool:
-        {
-            bool tmp = getData<bool>();
+            switch ( current_userType )
+            {
 
-            if ( tmp )
-            {
-                setValue<QString>( "true" );
-            }
-            else
-            {
-                setValue<QString>( "false" );
+                case QVariant::Bool:
+                {
+                    bool tmp = getData<bool>();
+
+                    if ( tmp )
+                    {
+                        setValue<QString16>( u"true" );
+                    }
+                    else
+                    {
+                        setValue<QString16>( u"false" );
+                    }
+
+                    break;
+                }
+
+                case QVariant::Int:
+                    setValue<QString16>( QString16::number( getData<int>() ) );
+                    break;
+
+                case QVariant::UInt:
+                    setValue<QString16>( QString16::number( getData<unsigned int>() ) );
+                    break;
+
+                case QVariant::Long:
+                    setValue<QString16>( QString16::number( getData<long>() ) );
+                    break;
+
+                case QVariant::ULong:
+                    setValue<QString16>( QString16::number( getData<unsigned long>() ) );
+                    break;
+
+                case QVariant::LongLong:
+                    setValue<QString16>( QString16::number( getData<long long>() ) );
+                    break;
+
+                case QVariant::ULongLong:
+                    setValue<QString16>( QString16::number( getData<unsigned long long>() ) );
+                    break;
+
+                case QVariant::Double:
+                    setValue<QString16>( QString16::number( getData<double>(), 'g', std::numeric_limits<double>::digits10 ) );
+                    break;
+
+                case QVariant::Float:
+                    setValue<QString16>( QString16::number( getData<float>(), 'g', std::numeric_limits<float>::digits10 ) );
+                    break;
+
+                case QVariant::Short:
+                    setValue<QString16>( QString16::number( getData<short>() ) );
+                    break;
+
+                case QVariant::UShort:
+                    setValue<QString16>( QString16::number( getData<unsigned short>() ) );
+                    break;
+
+                case QVariant::Char:
+                    setValue<QString16>( QChar::fromLatin1( getData<char>() ) );
+                    break;
+
+                case QVariant::SChar:
+                    setValue<QString16>( QChar::fromLatin1( getData<signed char>() ) );
+                    break;
+
+                case QVariant::UChar:
+                    setValue<QString16>( QChar::fromLatin1( getData<unsigned char>() ) );
+                    break;
+
+                case QVariant::QChar:
+                {
+                    auto tmp = getData<QChar32>();
+
+                    if ( tmp.isNull() )
+                    {
+                        setValue<QString16>( u"" );
+                    }
+                    else
+                    {
+                        setValue<QString16>( tmp );
+                    }
+
+                    break;
+                }
+
+                case QVariant::ByteArray:
+                    setValue<QString16>( QString16::fromUtf8( getData<QByteArray>() ) );
+                    break;
+
+                case QVariant::String:
+                    setValue<QString16>( QString16::fromUtf8( getData<QString>() ) );
+                    break;
+
+                case QVariant::StringList:
+                {
+                    QStringList tmp = getData<QStringList>();
+
+                    if ( tmp.count() == 1 )
+                    {
+                        setValue<QString16>( tmp[0].toUtf16() );
+                    }
+
+                    break;
+                }
+
+                case QVariant::Date:
+                    setValue<QString16>( getData<QDate>().toString( Qt::ISODate ).toUtf16() );
+                    break;
+
+                case QVariant::DateTime:
+                    setValue<QString16>( getData<QDateTime>().toString( Qt::ISODate ).toUtf16() );
+                    break;
+
+                case QVariant::Time:
+                    setValue<QString16>( getData<QTime>().toString( Qt::ISODate ).toUtf16() );
+                    break;
+
+                case QVariant::JsonValue:
+                {
+                    QJsonValue tmp = getData<QJsonValue>();
+
+                    if ( tmp.isBool() )
+                    {
+
+                        if ( tmp.toBool() )
+                        {
+                            setValue<QString16>( u"true" );
+                        }
+                        else
+                        {
+                            setValue<QString16>( u"false" );
+                        }
+
+                    }
+                    else if ( tmp.isDouble() )
+                    {
+                        setValue<QString16>( QString16::number( tmp.toDouble() ) );
+
+                    }
+                    else if ( tmp.isString() )
+                    {
+                        setValue<QString16>( tmp.toString().toUtf16() );
+
+                    }
+                    else
+                    {
+                        retval = false;
+
+                    }
+
+                    break;
+                }
+
+                case QVariant::Url:
+                    setValue<QString16>( getData<QUrl>().toString().toUtf16() );
+                    break;
+
+                case QVariant::Uuid:
+                    setValue<QString16>( getData<QUuid>().toString().toUtf16() );
+                    break;
+
+                default:
+                    retval = false;
             }
 
             break;
         }
-
-        case QVariant::Int:
-            setValue<QString>( QString::number( getData<int>() ) );
-            break;
-
-        case QVariant::UInt:
-            setValue<QString>( QString::number( getData<unsigned int>() ) );
-            break;
-
-        case QVariant::Long:
-            setValue<QString>( QString::number( getData<long>() ) );
-            break;
-
-        case QVariant::ULong:
-            setValue<QString>( QString::number( getData<unsigned long>() ) );
-            break;
-
-        case QVariant::LongLong:
-            setValue<QString>( QString::number( getData<long long>() ) );
-            break;
-
-        case QVariant::ULongLong:
-            setValue<QString>( QString::number( getData<unsigned long long>() ) );
-            break;
-
-        case QVariant::Double:
-            setValue<QString>( QString::number( getData<double>(), 'g', std::numeric_limits<double>::digits10 ) );
-            break;
-
-        case QVariant::Float:
-            setValue<QString>( QString::number( getData<float>(), 'g', std::numeric_limits<float>::digits10 ) );
-            break;
-
-        case QVariant::Short:
-            setValue<QString>( QString::number( getData<short>() ) );
-            break;
-
-        case QVariant::UShort:
-            setValue<QString>( QString::number( getData<unsigned short>() ) );
-            break;
-
-        case QVariant::Char:
-            setValue<QString>( QChar::fromLatin1( getData<char>() ) );
-            break;
-
-        case QVariant::SChar:
-            setValue<QString>( QChar::fromLatin1( getData<signed char>() ) );
-            break;
-
-        case QVariant::UChar:
-            setValue<QString>( QChar::fromLatin1( getData<unsigned char>() ) );
-            break;
-
-        case QVariant::QChar:
-        {
-            auto tmp = getData<QChar32>();
-
-            if ( tmp.isNull() )
-            {
-                setValue<QString>( "" );
-            }
-            else
-            {
-                setValue<QString>( tmp );
-            }
-
-            break;
-        }
-
-        case QVariant::ByteArray:
-            setValue<QString>( QString::fromUtf8( getData<QByteArray>() ) );
-            break;
-
-        case QVariant::String16:
-            setValue<QString>( QString::fromUtf16( getData<QString16>() ) );
-            break;
 
         case QVariant::StringList:
         {
-            QStringList tmp = getData<QStringList>();
 
-            if ( tmp.count() == 1 )
+            if ( current_userType == QVariant::String )
             {
-                setValue<QString>( tmp[0] );
+                QStringList list;
+                list.append( getData<QString>() );
+
+                setValue<QStringList>( list );
+
             }
-
-            break;
-        }
-
-        case QVariant::Date:
-            setValue<QString>( getData<QDate>().toString( Qt::ISODate ) );
-            break;
-
-        case QVariant::DateTime:
-            setValue<QString>( getData<QDateTime>().toString( Qt::ISODate ) );
-            break;
-
-        case QVariant::Time:
-            setValue<QString>( getData<QTime>().toString( Qt::ISODate ) );
-            break;
-
-        case QVariant::JsonValue:
-        {
-            QJsonValue tmp = getData<QJsonValue>();
-
-            if ( tmp.isBool() )
+            else if ( current_userType == QVariant::String16 )
             {
+                QStringList list;
+                list.append( QString::fromUtf16( getData<QString16>() ) );
 
-                if ( tmp.toBool() )
+                setValue<QStringList>( list );
+
+            }
+            else if ( current_userType == QVariant::List )
+            {
+                QList<QVariant> tmp = getData<QList<QVariant>>();
+
+                QStringList list;
+
+                for ( const QVariant &item : tmp )
                 {
-                    setValue<QString>( "true" );
-                }
-                else
-                {
-                    setValue<QString>( "false" );
+                    list.append( item.toString() );
                 }
 
-            }
-            else if ( tmp.isDouble() )
-            {
-                setValue<QString>( QString::number( tmp.toDouble() ) );
-
-            }
-            else if ( tmp.isString() )
-            {
-                setValue<QString>( tmp.toString() );
+                setValue<QStringList>( list );
 
             }
             else
@@ -1517,603 +1747,373 @@ bool QVariant::lscs_internal_convert( uint current_userType, uint new_userType )
             break;
         }
 
+        case QVariant::Date:
+        {
+            QDate tmp;
+
+            switch ( current_userType )
+            {
+                case QVariant::DateTime:
+                    tmp = getData<QDateTime>().date();
+                    break;
+
+                case QVariant::String:
+                    tmp = QDate::fromString( getData<QString>(), Qt::ISODate );
+                    break;
+
+                case QVariant::String16:
+                    tmp = QDate::fromString( QString::fromUtf16( getData<QString16>() ), Qt::ISODate );
+                    break;
+
+                // from QVariant::Time is invalid
+
+                default:
+                    retval = false;
+            }
+
+            setValue<QDate>( tmp );
+            return tmp.isValid();
+        }
+
+        case QVariant::Time:
+        {
+            QTime tmp;
+
+            switch ( current_userType )
+            {
+                // from QVariant::Date is invalid
+
+                case QVariant::DateTime:
+                    tmp = getData<QDateTime>().time();
+                    break;
+
+                case QVariant::String:
+                    tmp = QTime::fromString( getData<QString>(), Qt::ISODate );
+                    break;
+
+                case QVariant::String16:
+                    tmp = QTime::fromString( QString::fromUtf16( getData<QString16>() ), Qt::ISODate );
+                    break;
+
+                default:
+                    retval = false;
+            }
+
+            setValue<QTime>( tmp );
+            return tmp.isValid();
+        }
+
+        case QVariant::DateTime:
+        {
+            QDateTime tmp;
+
+            switch ( current_userType )
+            {
+
+                case QVariant::Date:
+                    tmp = QDateTime( getData<QDate>() );
+                    break;
+
+                case QVariant::String:
+                    tmp = QDateTime::fromString( getData<QString>(), Qt::ISODate );
+                    break;
+
+                case QVariant::String16:
+                    tmp = QDateTime::fromString( QString::fromUtf16( getData<QString16>() ), Qt::ISODate );
+                    break;
+
+                // from QVariant::Time is invalid
+
+                default:
+                    retval = false;
+            }
+
+            setValue<QDateTime>( tmp );
+            return tmp.isValid();
+        }
+
+        // next 5 are Container<QString, QVariant>
+
+        case QVariant::List:
+
+            if ( current_userType == QVariant::StringList )
+            {
+                QStringList tmp = getData<QStringList>();
+
+                QVariantList list;
+
+                for ( const QString &item : tmp )
+                {
+                    list.append( QVariant( item ) );
+                }
+
+                setValue<QVariantList>( list );
+
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                QJsonValue tmp = getData<QJsonValue>();
+
+                if ( ! tmp.isArray() )
+                {
+                    retval = false;
+                    break;
+                }
+
+                setValue<QVariantList>( tmp.toArray().toVariantList() );
+
+            }
+            else if ( current_userType == QVariant::JsonArray )
+            {
+                setValue<QVariantList>( getData<QJsonArray>().toVariantList() );
+
+            }
+            else
+            {
+                retval = false;
+            }
+
+            break;
+
+        case QVariant::Map:
+
+            if ( current_userType == QVariant::Hash )
+            {
+                QVariantHash tmp = getData<QVariantHash>();
+
+                QVariantMap result;
+
+                for ( auto iter = tmp.cbegin(); iter != tmp.cend(); ++iter )
+                {
+                    result.insert( iter.key(), std::move( iter.value() ) );
+                }
+
+                setValue<QVariantMap>( result );
+
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                QJsonValue tmp = getData<QJsonValue>();
+
+                if ( ! tmp.isObject() )
+                {
+                    retval = false;
+                    break;
+                }
+
+                setValue<QVariantMap>( tmp.toObject().toVariantMap() );
+
+            }
+            else if ( current_userType == QVariant::JsonObject )
+            {
+                setValue<QVariantMap>( getData<QJsonObject>().toVariantMap() );
+
+            }
+            else
+            {
+                retval = false;
+            }
+
+            break;
+
+        case QVariant::MultiMap:
+            // do nothing
+            break;
+
+        case QVariant::Hash:
+
+            if ( current_userType == QVariant::Map )
+            {
+                QVariantMap tmp = getData<QVariantMap>();
+
+                QVariantHash result;
+
+                for ( auto iter = tmp.cbegin(); iter != tmp.cend(); ++iter )
+                {
+                    result.insert( iter.key(), std::move( iter.value() ) );
+                }
+
+                setValue<QVariantHash>( result );
+
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                QJsonValue tmp = getData<QJsonValue>();
+
+                if ( ! tmp.isObject() )
+                {
+                    retval = false;
+                    break;
+                }
+
+                setValue<QVariantHash>( tmp.toObject().toVariantHash() );
+
+            }
+            else if ( current_userType == QVariant::JsonObject )
+            {
+                setValue<QVariantHash>( getData<QJsonObject>().toVariantHash() );
+
+            }
+            else
+            {
+                retval = false;
+
+            }
+
+            break;
+
+        case QVariant::MultiHash:
+            // do nothing
+            break;
+
+        case QVariant::Line:
+            if ( current_userType == QVariant::LineF )
+            {
+                setValue<QLine>( getData<QLineF>().toLine() );
+            }
+            else
+            {
+                retval = false;
+            }
+
+            break;
+
+        case QVariant::LineF:
+            if ( current_userType == QVariant::Line )
+            {
+                setValue<QLineF>( getData<QLine>() );
+            }
+            else
+            {
+                retval = false;
+            }
+
+            break;
+
+        case QVariant::Point:
+            if ( current_userType == QVariant::PointF )
+            {
+                setValue<QPoint>( getData<QPointF>().toPoint() );
+            }
+            else
+            {
+                retval = false;
+            }
+
+            break;
+
+        case QVariant::PointF:
+            if ( current_userType == QVariant::Point )
+            {
+                setValue<QPointF>( getData<QPoint>() );
+            }
+            else
+            {
+                retval = false;
+            }
+
+            break;
+
+        case QVariant::Rect:
+            if ( current_userType == QVariant::RectF )
+            {
+                setValue<QRect>( getData<QRectF>().toRect() );
+            }
+            else
+            {
+                retval = false;
+            }
+
+            break;
+
+        case QVariant::RectF:
+            if ( current_userType == QVariant::Rect )
+            {
+                setValue<QRectF>( getData<QRect>() );
+            }
+            else
+            {
+                retval = false;
+            }
+
+            break;
+
+        case QVariant::Size:
+            if ( current_userType == QVariant::SizeF )
+            {
+                setValue<QSize>( getData<QSizeF>().toSize() );
+            }
+            else
+            {
+                retval = false;
+            }
+
+            break;
+
+        case QVariant::SizeF:
+            if ( current_userType == QVariant::Size )
+            {
+                setValue<QSizeF>( getData<QSize>() );
+            }
+            else
+            {
+                retval = false;
+            }
+
+            break;
+
+        case QVariant::ModelIndex:
+            if ( current_userType == QVariant::PersistentModelIndex )
+            {
+                setValue<QModelIndex>( getData<QPersistentModelIndex>() );
+            }
+
+            break;
+
+        case QVariant::PersistentModelIndex:
+            if ( current_userType == QVariant::ModelIndex )
+            {
+                setValue<QPersistentModelIndex>( getData<QModelIndex>() );
+            }
+
+            break;
+
         case QVariant::Url:
-            setValue<QString>( getData<QUrl>().toString() );
+            switch ( current_userType )
+            {
+                case QVariant::String:
+                    setValue<QUrl>( QUrl( getData<QString>() ) );
+                    break;
+
+                case QVariant::String16:
+                    setValue<QUrl>( QUrl( QString::fromUtf16( getData<QString16>() ) ) );
+                    break;
+
+                default:
+                    retval = false;
+            }
+
             break;
 
         case QVariant::Uuid:
-            setValue<QString>( getData<QUuid>().toString() );
+            switch ( current_userType )
+            {
+                case QVariant::String:
+                    setValue<QUuid>( QUuid( getData<QString>() ) );
+                    break;
+
+                case QVariant::String16:
+                    setValue<QUuid>( QUuid( QString::fromUtf16( getData<QString16>() ) ) );
+                    break;
+
+                default:
+                    retval = false;
+            }
+
             break;
 
         default:
             retval = false;
-        }
-
-        break;
-    }
-
-    case QVariant::String16:
-    {
-
-        switch ( current_userType )
-        {
-
-        case QVariant::Bool:
-        {
-            bool tmp = getData<bool>();
-
-            if ( tmp )
-            {
-                setValue<QString16>( u"true" );
-            }
-            else
-            {
-                setValue<QString16>( u"false" );
-            }
-
-            break;
-        }
-
-        case QVariant::Int:
-            setValue<QString16>( QString16::number( getData<int>() ) );
-            break;
-
-        case QVariant::UInt:
-            setValue<QString16>( QString16::number( getData<unsigned int>() ) );
-            break;
-
-        case QVariant::Long:
-            setValue<QString16>( QString16::number( getData<long>() ) );
-            break;
-
-        case QVariant::ULong:
-            setValue<QString16>( QString16::number( getData<unsigned long>() ) );
-            break;
-
-        case QVariant::LongLong:
-            setValue<QString16>( QString16::number( getData<long long>() ) );
-            break;
-
-        case QVariant::ULongLong:
-            setValue<QString16>( QString16::number( getData<unsigned long long>() ) );
-            break;
-
-        case QVariant::Double:
-            setValue<QString16>( QString16::number( getData<double>(), 'g', std::numeric_limits<double>::digits10 ) );
-            break;
-
-        case QVariant::Float:
-            setValue<QString16>( QString16::number( getData<float>(), 'g', std::numeric_limits<float>::digits10 ) );
-            break;
-
-        case QVariant::Short:
-            setValue<QString16>( QString16::number( getData<short>() ) );
-            break;
-
-        case QVariant::UShort:
-            setValue<QString16>( QString16::number( getData<unsigned short>() ) );
-            break;
-
-        case QVariant::Char:
-            setValue<QString16>( QChar::fromLatin1( getData<char>() ) );
-            break;
-
-        case QVariant::SChar:
-            setValue<QString16>( QChar::fromLatin1( getData<signed char>() ) );
-            break;
-
-        case QVariant::UChar:
-            setValue<QString16>( QChar::fromLatin1( getData<unsigned char>() ) );
-            break;
-
-        case QVariant::QChar:
-        {
-            auto tmp = getData<QChar32>();
-
-            if ( tmp.isNull() )
-            {
-                setValue<QString16>( u"" );
-            }
-            else
-            {
-                setValue<QString16>( tmp );
-            }
-
-            break;
-        }
-
-        case QVariant::ByteArray:
-            setValue<QString16>( QString16::fromUtf8( getData<QByteArray>() ) );
-            break;
-
-        case QVariant::String:
-            setValue<QString16>( QString16::fromUtf8( getData<QString>() ) );
-            break;
-
-        case QVariant::StringList:
-        {
-            QStringList tmp = getData<QStringList>();
-
-            if ( tmp.count() == 1 )
-            {
-                setValue<QString16>( tmp[0].toUtf16() );
-            }
-
-            break;
-        }
-
-        case QVariant::Date:
-            setValue<QString16>( getData<QDate>().toString( Qt::ISODate ).toUtf16() );
-            break;
-
-        case QVariant::DateTime:
-            setValue<QString16>( getData<QDateTime>().toString( Qt::ISODate ).toUtf16() );
-            break;
-
-        case QVariant::Time:
-            setValue<QString16>( getData<QTime>().toString( Qt::ISODate ).toUtf16() );
-            break;
-
-        case QVariant::JsonValue:
-        {
-            QJsonValue tmp = getData<QJsonValue>();
-
-            if ( tmp.isBool() )
-            {
-
-                if ( tmp.toBool() )
-                {
-                    setValue<QString16>( u"true" );
-                }
-                else
-                {
-                    setValue<QString16>( u"false" );
-                }
-
-            }
-            else if ( tmp.isDouble() )
-            {
-                setValue<QString16>( QString16::number( tmp.toDouble() ) );
-
-            }
-            else if ( tmp.isString() )
-            {
-                setValue<QString16>( tmp.toString().toUtf16() );
-
-            }
-            else
-            {
-                retval = false;
-
-            }
-
-            break;
-        }
-
-        case QVariant::Url:
-            setValue<QString16>( getData<QUrl>().toString().toUtf16() );
-            break;
-
-        case QVariant::Uuid:
-            setValue<QString16>( getData<QUuid>().toString().toUtf16() );
-            break;
-
-        default:
-            retval = false;
-        }
-
-        break;
-    }
-
-    case QVariant::StringList:
-    {
-
-        if ( current_userType == QVariant::String )
-        {
-            QStringList list;
-            list.append( getData<QString>() );
-
-            setValue<QStringList>( list );
-
-        }
-        else if ( current_userType == QVariant::String16 )
-        {
-            QStringList list;
-            list.append( QString::fromUtf16( getData<QString16>() ) );
-
-            setValue<QStringList>( list );
-
-        }
-        else if ( current_userType == QVariant::List )
-        {
-            QList<QVariant> tmp = getData<QList<QVariant>>();
-
-            QStringList list;
-
-            for ( const QVariant &item : tmp )
-            {
-                list.append( item.toString() );
-            }
-
-            setValue<QStringList>( list );
-
-        }
-        else
-        {
-            retval = false;
-
-        }
-
-        break;
-    }
-
-    case QVariant::Date:
-    {
-        QDate tmp;
-
-        switch ( current_userType )
-        {
-        case QVariant::DateTime:
-            tmp = getData<QDateTime>().date();
-            break;
-
-        case QVariant::String:
-            tmp = QDate::fromString( getData<QString>(), Qt::ISODate );
-            break;
-
-        case QVariant::String16:
-            tmp = QDate::fromString( QString::fromUtf16( getData<QString16>() ), Qt::ISODate );
-            break;
-
-        // from QVariant::Time is invalid
-
-        default:
-            retval = false;
-        }
-
-        setValue<QDate>( tmp );
-        return tmp.isValid();
-    }
-
-    case QVariant::Time:
-    {
-        QTime tmp;
-
-        switch ( current_userType )
-        {
-        // from QVariant::Date is invalid
-
-        case QVariant::DateTime:
-            tmp = getData<QDateTime>().time();
-            break;
-
-        case QVariant::String:
-            tmp = QTime::fromString( getData<QString>(), Qt::ISODate );
-            break;
-
-        case QVariant::String16:
-            tmp = QTime::fromString( QString::fromUtf16( getData<QString16>() ), Qt::ISODate );
-            break;
-
-        default:
-            retval = false;
-        }
-
-        setValue<QTime>( tmp );
-        return tmp.isValid();
-    }
-
-    case QVariant::DateTime:
-    {
-        QDateTime tmp;
-
-        switch ( current_userType )
-        {
-
-        case QVariant::Date:
-            tmp = QDateTime( getData<QDate>() );
-            break;
-
-        case QVariant::String:
-            tmp = QDateTime::fromString( getData<QString>(), Qt::ISODate );
-            break;
-
-        case QVariant::String16:
-            tmp = QDateTime::fromString( QString::fromUtf16( getData<QString16>() ), Qt::ISODate );
-            break;
-
-        // from QVariant::Time is invalid
-
-        default:
-            retval = false;
-        }
-
-        setValue<QDateTime>( tmp );
-        return tmp.isValid();
-    }
-
-    // next 5 are Container<QString, QVariant>
-
-    case QVariant::List:
-
-        if ( current_userType == QVariant::StringList )
-        {
-            QStringList tmp = getData<QStringList>();
-
-            QVariantList list;
-
-            for ( const QString &item : tmp )
-            {
-                list.append( QVariant( item ) );
-            }
-
-            setValue<QVariantList>( list );
-
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            QJsonValue tmp = getData<QJsonValue>();
-
-            if ( ! tmp.isArray() )
-            {
-                retval = false;
-                break;
-            }
-
-            setValue<QVariantList>( tmp.toArray().toVariantList() );
-
-        }
-        else if ( current_userType == QVariant::JsonArray )
-        {
-            setValue<QVariantList>( getData<QJsonArray>().toVariantList() );
-
-        }
-        else
-        {
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::Map:
-
-        if ( current_userType == QVariant::Hash )
-        {
-            QVariantHash tmp = getData<QVariantHash>();
-
-            QVariantMap result;
-
-            for ( auto iter = tmp.cbegin(); iter != tmp.cend(); ++iter )
-            {
-                result.insert( iter.key(), std::move( iter.value() ) );
-            }
-
-            setValue<QVariantMap>( result );
-
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            QJsonValue tmp = getData<QJsonValue>();
-
-            if ( ! tmp.isObject() )
-            {
-                retval = false;
-                break;
-            }
-
-            setValue<QVariantMap>( tmp.toObject().toVariantMap() );
-
-        }
-        else if ( current_userType == QVariant::JsonObject )
-        {
-            setValue<QVariantMap>( getData<QJsonObject>().toVariantMap() );
-
-        }
-        else
-        {
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::MultiMap:
-        // do nothing
-        break;
-
-    case QVariant::Hash:
-
-        if ( current_userType == QVariant::Map )
-        {
-            QVariantMap tmp = getData<QVariantMap>();
-
-            QVariantHash result;
-
-            for ( auto iter = tmp.cbegin(); iter != tmp.cend(); ++iter )
-            {
-                result.insert( iter.key(), std::move( iter.value() ) );
-            }
-
-            setValue<QVariantHash>( result );
-
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            QJsonValue tmp = getData<QJsonValue>();
-
-            if ( ! tmp.isObject() )
-            {
-                retval = false;
-                break;
-            }
-
-            setValue<QVariantHash>( tmp.toObject().toVariantHash() );
-
-        }
-        else if ( current_userType == QVariant::JsonObject )
-        {
-            setValue<QVariantHash>( getData<QJsonObject>().toVariantHash() );
-
-        }
-        else
-        {
-            retval = false;
-
-        }
-
-        break;
-
-    case QVariant::MultiHash:
-        // do nothing
-        break;
-
-    case QVariant::Line:
-        if ( current_userType == QVariant::LineF )
-        {
-            setValue<QLine>( getData<QLineF>().toLine() );
-        }
-        else
-        {
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::LineF:
-        if ( current_userType == QVariant::Line )
-        {
-            setValue<QLineF>( getData<QLine>() );
-        }
-        else
-        {
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::Point:
-        if ( current_userType == QVariant::PointF )
-        {
-            setValue<QPoint>( getData<QPointF>().toPoint() );
-        }
-        else
-        {
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::PointF:
-        if ( current_userType == QVariant::Point )
-        {
-            setValue<QPointF>( getData<QPoint>() );
-        }
-        else
-        {
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::Rect:
-        if ( current_userType == QVariant::RectF )
-        {
-            setValue<QRect>( getData<QRectF>().toRect() );
-        }
-        else
-        {
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::RectF:
-        if ( current_userType == QVariant::Rect )
-        {
-            setValue<QRectF>( getData<QRect>() );
-        }
-        else
-        {
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::Size:
-        if ( current_userType == QVariant::SizeF )
-        {
-            setValue<QSize>( getData<QSizeF>().toSize() );
-        }
-        else
-        {
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::SizeF:
-        if ( current_userType == QVariant::Size )
-        {
-            setValue<QSizeF>( getData<QSize>() );
-        }
-        else
-        {
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::ModelIndex:
-        if ( current_userType == QVariant::PersistentModelIndex )
-        {
-            setValue<QModelIndex>( getData<QPersistentModelIndex>() );
-        }
-
-        break;
-
-    case QVariant::PersistentModelIndex:
-        if ( current_userType == QVariant::ModelIndex )
-        {
-            setValue<QPersistentModelIndex>( getData<QModelIndex>() );
-        }
-
-        break;
-
-    case QVariant::Url:
-        switch ( current_userType )
-        {
-        case QVariant::String:
-            setValue<QUrl>( QUrl( getData<QString>() ) );
-            break;
-
-        case QVariant::String16:
-            setValue<QUrl>( QUrl( QString::fromUtf16( getData<QString16>() ) ) );
-            break;
-
-        default:
-            retval = false;
-        }
-
-        break;
-
-    case QVariant::Uuid:
-        switch ( current_userType )
-        {
-        case QVariant::String:
-            setValue<QUuid>( QUuid( getData<QString>() ) );
-            break;
-
-        case QVariant::String16:
-            setValue<QUuid>( QUuid( QString::fromUtf16( getData<QString16>() ) ) );
-            break;
-
-        default:
-            retval = false;
-        }
-
-        break;
-
-    default:
-        retval = false;
     }
 
     if ( ! retval )
@@ -2141,494 +2141,494 @@ void QVariant::lscs_internal_create( uint typeId, const void *other )
     switch ( typeId )
     {
 
-    case QVariant::Bool:
+        case QVariant::Bool:
 
-        if ( other == nullptr )
-        {
-            setValue<bool>( false );
-        }
-        else
-        {
-            setValue<bool>( *static_cast<const bool *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Int:
-
-        if ( other == nullptr )
-        {
-            setValue<int>( 0 );
-        }
-        else
-        {
-            setValue<int>( *static_cast<const int *>( other ) );
-        }
-
-        break;
-
-    case QVariant::UInt:
-
-        if ( other == nullptr )
-        {
-            setValue<uint>( 0u );
-        }
-        else
-        {
-            setValue<uint>( *static_cast<const uint *>( other ) );
-        }
-
-        break;
-
-    case QVariant::LongLong:
-
-        if ( other == nullptr )
-        {
-            setValue<qint64>( 0 );
-        }
-        else
-        {
-            setValue<qint64>( *static_cast<const qint64 *>( other ) );
-        }
-
-        break;
-
-    case QVariant::ULongLong:
-
-        if ( other == nullptr )
-        {
-            setValue<quint64>( 0u );
-        }
-        else
-        {
-            setValue<quint64>( *static_cast<const quint64 *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Double:
-
-        if ( other == nullptr )
-        {
-            setValue<double>( 0.0 );
-        }
-        else
-        {
-            setValue<double>( *static_cast<const double *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Float:
-        if ( other == nullptr )
-        {
-            setValue<float>( 0.0f );
-        }
-        else
-        {
-            setValue<float>( *static_cast<const float *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Char:
-        if ( other == nullptr )
-        {
-            setValue<char>( '\0' );
-        }
-        else
-        {
-            setValue<char>( *static_cast<const char *>( other ) );
-        }
-
-        break;
-
-    case QVariant::QChar:
-        if ( other == nullptr )
-        {
-            setValue<QChar32>( '\0' );
-        }
-        else
-        {
-            setValue<QChar32>( *static_cast<const QChar32 *>( other ) );
-        }
-
-        break;
-
-    case QVariant::String8:
-        if ( other == nullptr )
-        {
-            setValue<QString8>( "" );
-        }
-        else
-        {
-            setValue<QString8>( *static_cast<const QString8 *>( other ) );
-        }
-
-        break;
-
-    case QVariant::String16:
-        if ( other == nullptr )
-        {
-            setValue<QString16>( u"" );
-        }
-        else
-        {
-            setValue<QString16>( *static_cast<const QString16 *>( other ) );
-        }
-
-        break;
-
-    case QVariant::StringList:
-        if ( other == nullptr )
-        {
-            setValue<QStringList>( QStringList() );
-        }
-        else
-        {
-            setValue<QStringList>( *static_cast<const QStringList *>( other ) );
-        }
-
-        break;
-
-    case QVariant::ByteArray:
-        if ( other == nullptr )
-        {
-            setValue<QByteArray>( QByteArray() );
-        }
-        else
-        {
-            setValue<QByteArray>( *static_cast<const QByteArray *>( other ) );
-        }
-
-        break;
-
-    case QVariant::BitArray:
-        if ( other == nullptr )
-        {
-            setValue<QBitArray>( QBitArray() );
-        }
-        else
-        {
-            setValue<QBitArray>( *static_cast<const QBitArray *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Date:
-        if ( other == nullptr )
-        {
-            setValue<QDate>( QDate() );
-        }
-        else
-        {
-            setValue<QDate>( *static_cast<const QDate *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Time:
-        if ( other == nullptr )
-        {
-            setValue<QTime>( QTime() );
-        }
-        else
-        {
-            setValue<QTime>( *static_cast<const QTime *>( other ) );
-        }
-
-        break;
-
-    case QVariant::DateTime:
-        if ( other == nullptr )
-        {
-            setValue<QDateTime>( QDateTime() );
-        }
-        else
-        {
-            setValue<QDateTime>( *static_cast<const QDateTime *>( other ) );
-        }
-
-        break;
-
-    case QVariant::EasingCurve:
-        if ( other == nullptr )
-        {
-            setValue<QEasingCurve>( QEasingCurve() );
-        }
-        else
-        {
-            setValue<QEasingCurve>( *static_cast<const QEasingCurve *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Locale:
-        if ( other == nullptr )
-        {
-            setValue<QLocale>( QLocale() );
-        }
-        else
-        {
-            setValue<QLocale>( *static_cast<const QLocale *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Rect:
-        if ( other == nullptr )
-        {
-            setValue<QRect>( QRect() );
-        }
-        else
-        {
-            setValue<QRect>( *static_cast<const QRect *>( other ) );
-        }
-
-        break;
-
-    case QVariant::RectF:
-        if ( other == nullptr )
-        {
-            setValue<QRectF>( QRectF() );
-        }
-        else
-        {
-            setValue<QRectF>( *static_cast<const QRectF *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Size:
-        if ( other == nullptr )
-        {
-            setValue<QSize>( QSize() );
-        }
-        else
-        {
-            setValue<QSize>( *static_cast<const QSize *>( other ) );
-        }
-
-        break;
-
-    case QVariant::SizeF:
-        if ( other == nullptr )
-        {
-            setValue<QSizeF>( QSizeF() );
-        }
-        else
-        {
-            setValue<QSizeF>( *static_cast<const QSizeF *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Line:
-        if ( other == nullptr )
-        {
-            setValue<QLine>( QLine() );
-        }
-        else
-        {
-            setValue<QLine>( *static_cast<const QLine *>( other ) );
-        }
-
-        break;
-
-    case QVariant::LineF:
-        if ( other == nullptr )
-        {
-            setValue<QLineF>( QLineF() );
-        }
-        else
-        {
-            setValue<QLineF>( *static_cast<const QLineF *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Point:
-        if ( other == nullptr )
-        {
-            setValue<QPoint>( QPoint() );
-        }
-        else
-        {
-            setValue<QPoint>( *static_cast<const QPoint *>( other ) );
-        }
-
-        break;
-
-    case QVariant::PointF:
-        if ( other == nullptr )
-        {
-            setValue<QPointF>( QPointF() );
-        }
-        else
-        {
-            setValue<QPointF>( *static_cast<const QPointF *>( other ) );
-        }
-
-        break;
-
-    // next 5 are Container<QString, QVariant>
-
-    case QVariant::List:
-        if ( other == nullptr )
-        {
-            setValue<QVariantList>( QVariantList() );
-        }
-        else
-        {
-            setValue<QVariantList>( *static_cast<const QVariantList *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Map:
-        if ( other == nullptr )
-        {
-            setValue<QVariantMap>( QVariantMap() );
-        }
-        else
-        {
-            setValue<QVariantMap>( *static_cast<const QVariantMap *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Hash:
-        if ( other == nullptr )
-        {
-            setValue<QVariantHash>( QVariantHash() );
-        }
-        else
-        {
-            setValue<QVariantHash>( *static_cast<const QVariantHash *>( other ) );
-        }
-
-        break;
-
-    case QVariant::MultiMap:
-        if ( other == nullptr )
-        {
-            setValue<QVariantMultiMap>( QVariantMultiMap() );
-        }
-        else
-        {
-            setValue<QVariantMultiMap>( *static_cast<const QVariantMultiMap *>( other ) );
-        }
-
-        break;
-
-    case QVariant::MultiHash:
-        if ( other == nullptr )
-        {
-            setValue<QVariantMultiHash>( QVariantMultiHash() );
-        }
-        else
-        {
-            setValue<QVariantMultiHash>( *static_cast<const QVariantMultiHash *>( other ) );
-        }
-
-        break;
-
-    case QVariant::RegularExpression:
-        if ( other == nullptr )
-        {
-            setValue<QRegularExpression8>( QRegularExpression8() );
-        }
-        else
-        {
-            setValue<QRegularExpression8>( *static_cast<const QRegularExpression8 *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Uuid:
-        if ( other == nullptr )
-        {
-            setValue<QUuid>( QUuid() );
-        }
-        else
-        {
-            setValue<QUuid>( *static_cast<const QUuid *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Url:
-        if ( other == nullptr )
-        {
-            setValue<QUrl>( QUrl() );
-        }
-        else
-        {
-            setValue<QUrl>( *static_cast<const QUrl *>( other ) );
-        }
-
-        break;
-
-    case QVariant::ModelIndex:
-        if ( other == nullptr )
-        {
-            setValue<QModelIndex>( QModelIndex() );
-        }
-        else
-        {
-            setValue<QModelIndex>( *static_cast<const QModelIndex *>( other ) );
-        }
-
-        break;
-
-    case QVariant::PersistentModelIndex:
-        if ( other == nullptr )
-        {
-            setValue<QPersistentModelIndex>( QPersistentModelIndex() );
-        }
-        else
-        {
-            setValue<QPersistentModelIndex>( *static_cast<const QPersistentModelIndex *>( other ) );
-        }
-
-        break;
-
-    case QVariant::ObjectStar:
-        if ( other == nullptr )
-        {
-            setValue<QObject *>( nullptr );
-        }
-        else
-        {
-            setValue<QObject *>( *static_cast<QObject *const *>( other ) );
-        }
-
-        break;
-
-    case QVariant::Invalid:
-        clear();
-        break;
-
-    default:
-        // call lscs_internal_create in gui, etc
-        bool done = false;
-
-        for ( const auto ptr : m_variantClients )
-        {
-            done = ptr->lscs_internal_create( typeId, other, *this );
-
-            if ( done )
+            if ( other == nullptr )
             {
-                break;
+                setValue<bool>( false );
             }
-        }
+            else
+            {
+                setValue<bool>( *static_cast<const bool *>( other ) );
+            }
 
-        if ( ! done )
-        {
+            break;
+
+        case QVariant::Int:
+
+            if ( other == nullptr )
+            {
+                setValue<int>( 0 );
+            }
+            else
+            {
+                setValue<int>( *static_cast<const int *>( other ) );
+            }
+
+            break;
+
+        case QVariant::UInt:
+
+            if ( other == nullptr )
+            {
+                setValue<uint>( 0u );
+            }
+            else
+            {
+                setValue<uint>( *static_cast<const uint *>( other ) );
+            }
+
+            break;
+
+        case QVariant::LongLong:
+
+            if ( other == nullptr )
+            {
+                setValue<qint64>( 0 );
+            }
+            else
+            {
+                setValue<qint64>( *static_cast<const qint64 *>( other ) );
+            }
+
+            break;
+
+        case QVariant::ULongLong:
+
+            if ( other == nullptr )
+            {
+                setValue<quint64>( 0u );
+            }
+            else
+            {
+                setValue<quint64>( *static_cast<const quint64 *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Double:
+
+            if ( other == nullptr )
+            {
+                setValue<double>( 0.0 );
+            }
+            else
+            {
+                setValue<double>( *static_cast<const double *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Float:
+            if ( other == nullptr )
+            {
+                setValue<float>( 0.0f );
+            }
+            else
+            {
+                setValue<float>( *static_cast<const float *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Char:
+            if ( other == nullptr )
+            {
+                setValue<char>( '\0' );
+            }
+            else
+            {
+                setValue<char>( *static_cast<const char *>( other ) );
+            }
+
+            break;
+
+        case QVariant::QChar:
+            if ( other == nullptr )
+            {
+                setValue<QChar32>( '\0' );
+            }
+            else
+            {
+                setValue<QChar32>( *static_cast<const QChar32 *>( other ) );
+            }
+
+            break;
+
+        case QVariant::String8:
+            if ( other == nullptr )
+            {
+                setValue<QString8>( "" );
+            }
+            else
+            {
+                setValue<QString8>( *static_cast<const QString8 *>( other ) );
+            }
+
+            break;
+
+        case QVariant::String16:
+            if ( other == nullptr )
+            {
+                setValue<QString16>( u"" );
+            }
+            else
+            {
+                setValue<QString16>( *static_cast<const QString16 *>( other ) );
+            }
+
+            break;
+
+        case QVariant::StringList:
+            if ( other == nullptr )
+            {
+                setValue<QStringList>( QStringList() );
+            }
+            else
+            {
+                setValue<QStringList>( *static_cast<const QStringList *>( other ) );
+            }
+
+            break;
+
+        case QVariant::ByteArray:
+            if ( other == nullptr )
+            {
+                setValue<QByteArray>( QByteArray() );
+            }
+            else
+            {
+                setValue<QByteArray>( *static_cast<const QByteArray *>( other ) );
+            }
+
+            break;
+
+        case QVariant::BitArray:
+            if ( other == nullptr )
+            {
+                setValue<QBitArray>( QBitArray() );
+            }
+            else
+            {
+                setValue<QBitArray>( *static_cast<const QBitArray *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Date:
+            if ( other == nullptr )
+            {
+                setValue<QDate>( QDate() );
+            }
+            else
+            {
+                setValue<QDate>( *static_cast<const QDate *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Time:
+            if ( other == nullptr )
+            {
+                setValue<QTime>( QTime() );
+            }
+            else
+            {
+                setValue<QTime>( *static_cast<const QTime *>( other ) );
+            }
+
+            break;
+
+        case QVariant::DateTime:
+            if ( other == nullptr )
+            {
+                setValue<QDateTime>( QDateTime() );
+            }
+            else
+            {
+                setValue<QDateTime>( *static_cast<const QDateTime *>( other ) );
+            }
+
+            break;
+
+        case QVariant::EasingCurve:
+            if ( other == nullptr )
+            {
+                setValue<QEasingCurve>( QEasingCurve() );
+            }
+            else
+            {
+                setValue<QEasingCurve>( *static_cast<const QEasingCurve *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Locale:
+            if ( other == nullptr )
+            {
+                setValue<QLocale>( QLocale() );
+            }
+            else
+            {
+                setValue<QLocale>( *static_cast<const QLocale *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Rect:
+            if ( other == nullptr )
+            {
+                setValue<QRect>( QRect() );
+            }
+            else
+            {
+                setValue<QRect>( *static_cast<const QRect *>( other ) );
+            }
+
+            break;
+
+        case QVariant::RectF:
+            if ( other == nullptr )
+            {
+                setValue<QRectF>( QRectF() );
+            }
+            else
+            {
+                setValue<QRectF>( *static_cast<const QRectF *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Size:
+            if ( other == nullptr )
+            {
+                setValue<QSize>( QSize() );
+            }
+            else
+            {
+                setValue<QSize>( *static_cast<const QSize *>( other ) );
+            }
+
+            break;
+
+        case QVariant::SizeF:
+            if ( other == nullptr )
+            {
+                setValue<QSizeF>( QSizeF() );
+            }
+            else
+            {
+                setValue<QSizeF>( *static_cast<const QSizeF *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Line:
+            if ( other == nullptr )
+            {
+                setValue<QLine>( QLine() );
+            }
+            else
+            {
+                setValue<QLine>( *static_cast<const QLine *>( other ) );
+            }
+
+            break;
+
+        case QVariant::LineF:
+            if ( other == nullptr )
+            {
+                setValue<QLineF>( QLineF() );
+            }
+            else
+            {
+                setValue<QLineF>( *static_cast<const QLineF *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Point:
+            if ( other == nullptr )
+            {
+                setValue<QPoint>( QPoint() );
+            }
+            else
+            {
+                setValue<QPoint>( *static_cast<const QPoint *>( other ) );
+            }
+
+            break;
+
+        case QVariant::PointF:
+            if ( other == nullptr )
+            {
+                setValue<QPointF>( QPointF() );
+            }
+            else
+            {
+                setValue<QPointF>( *static_cast<const QPointF *>( other ) );
+            }
+
+            break;
+
+        // next 5 are Container<QString, QVariant>
+
+        case QVariant::List:
+            if ( other == nullptr )
+            {
+                setValue<QVariantList>( QVariantList() );
+            }
+            else
+            {
+                setValue<QVariantList>( *static_cast<const QVariantList *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Map:
+            if ( other == nullptr )
+            {
+                setValue<QVariantMap>( QVariantMap() );
+            }
+            else
+            {
+                setValue<QVariantMap>( *static_cast<const QVariantMap *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Hash:
+            if ( other == nullptr )
+            {
+                setValue<QVariantHash>( QVariantHash() );
+            }
+            else
+            {
+                setValue<QVariantHash>( *static_cast<const QVariantHash *>( other ) );
+            }
+
+            break;
+
+        case QVariant::MultiMap:
+            if ( other == nullptr )
+            {
+                setValue<QVariantMultiMap>( QVariantMultiMap() );
+            }
+            else
+            {
+                setValue<QVariantMultiMap>( *static_cast<const QVariantMultiMap *>( other ) );
+            }
+
+            break;
+
+        case QVariant::MultiHash:
+            if ( other == nullptr )
+            {
+                setValue<QVariantMultiHash>( QVariantMultiHash() );
+            }
+            else
+            {
+                setValue<QVariantMultiHash>( *static_cast<const QVariantMultiHash *>( other ) );
+            }
+
+            break;
+
+        case QVariant::RegularExpression:
+            if ( other == nullptr )
+            {
+                setValue<QRegularExpression8>( QRegularExpression8() );
+            }
+            else
+            {
+                setValue<QRegularExpression8>( *static_cast<const QRegularExpression8 *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Uuid:
+            if ( other == nullptr )
+            {
+                setValue<QUuid>( QUuid() );
+            }
+            else
+            {
+                setValue<QUuid>( *static_cast<const QUuid *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Url:
+            if ( other == nullptr )
+            {
+                setValue<QUrl>( QUrl() );
+            }
+            else
+            {
+                setValue<QUrl>( *static_cast<const QUrl *>( other ) );
+            }
+
+            break;
+
+        case QVariant::ModelIndex:
+            if ( other == nullptr )
+            {
+                setValue<QModelIndex>( QModelIndex() );
+            }
+            else
+            {
+                setValue<QModelIndex>( *static_cast<const QModelIndex *>( other ) );
+            }
+
+            break;
+
+        case QVariant::PersistentModelIndex:
+            if ( other == nullptr )
+            {
+                setValue<QPersistentModelIndex>( QPersistentModelIndex() );
+            }
+            else
+            {
+                setValue<QPersistentModelIndex>( *static_cast<const QPersistentModelIndex *>( other ) );
+            }
+
+            break;
+
+        case QVariant::ObjectStar:
+            if ( other == nullptr )
+            {
+                setValue<QObject *>( nullptr );
+            }
+            else
+            {
+                setValue<QObject *>( *static_cast<QObject *const *>( other ) );
+            }
+
+            break;
+
+        case QVariant::Invalid:
             clear();
-        }
+            break;
 
-        break;
+        default:
+            // call lscs_internal_create in gui, etc
+            bool done = false;
+
+            for ( const auto ptr : m_variantClients )
+            {
+                done = ptr->lscs_internal_create( typeId, other, *this );
+
+                if ( done )
+                {
+                    break;
+                }
+            }
+
+            if ( ! done )
+            {
+                clear();
+            }
+
+            break;
     }
 }
 
@@ -2645,1050 +2645,1050 @@ bool QVariant::canConvert( uint newType ) const
     switch ( newType )
     {
 
-    case QVariant::Bool:
+        case QVariant::Bool:
 
-        if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
-        {
-            return true;
+            if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::Char || current_userType == QVariant::QChar )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::Char || current_userType == QVariant::QChar )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::ByteArray )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::ByteArray )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
 
-        }
+            }
 
-        break;
+            break;
 
-    case QVariant::Int:
+        case QVariant::Int:
 
-        if ( current_userType == QVariant::Bool )
-        {
-            return true;
+            if ( current_userType == QVariant::Bool )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::UInt )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::UInt )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::Char  || current_userType == QVariant::QChar )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::Char  || current_userType == QVariant::QChar )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::ByteArray )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::ByteArray )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
 
-        }
-        else
-        {
+            }
+            else
+            {
 
-            if ( isEnum() )
+                if ( isEnum() )
+                {
+                    return true;
+                }
+            }
+
+            break;
+
+        case QVariant::UInt:
+
+            if ( current_userType == QVariant::Bool )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Int )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Char  || current_userType == QVariant::QChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::ByteArray )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::JsonValue )
             {
                 return true;
             }
-        }
-
-        break;
-
-    case QVariant::UInt:
-
-        if ( current_userType == QVariant::Bool )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Int )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Char  || current_userType == QVariant::QChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::ByteArray )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
-        }
-
-        break;
-
-    case QVariant::LongLong:
-
-        if ( current_userType == QVariant::Bool )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::ULongLong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Char  || current_userType == QVariant::QChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::ByteArray )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
-
-        }
-
-        break;
-
-    case QVariant::ULongLong:
-
-        if ( current_userType == QVariant::Bool )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::LongLong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Char  || current_userType == QVariant::QChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::ByteArray )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
-
-        }
-
-        break;
-
-    case QVariant::Short:
-    case QVariant::UShort:
-    case QVariant::Long:
-    case QVariant::ULong:
-    case QVariant::SChar:
-    case QVariant::UChar:
-
-        if ( current_userType == QVariant::Bool )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Char  || current_userType == QVariant::QChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::ByteArray )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
-
-        }
-
-        break;
-
-    case QVariant::Double:
-
-        if ( current_userType == QVariant::Bool )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Float )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::ByteArray )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
-        }
-
-        break;
-
-    case QVariant::Float:
-
-        if ( current_userType == QVariant::Bool )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Double )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::ByteArray )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
-
-        }
-
-        break;
-
-    case QVariant::Char:
-
-        if ( current_userType == QVariant::Bool )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::QChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::ByteArray )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
-
-        }
-
-        break;
-
-    case QVariant::QChar:
-
-        if ( current_userType == QVariant::Bool )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Char )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::ByteArray )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
-
-        }
-
-        break;
-
-    case QVariant::ByteArray:
-
-        if ( current_userType == QVariant::Bool )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Char || current_userType == QVariant::QChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Color )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Url )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Uuid )
-        {
-            return true;
-        }
-
-        break;
-
-    case QVariant::String8:
-    case QVariant::String16:
-
-        if ( current_userType == QVariant::Bool )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::QChar )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::ByteArray )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::String || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::StringList )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Date || current_userType == QVariant::DateTime )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Time )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Color )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Font )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::KeySequence )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Url )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Uuid )
-        {
-            return true;
-
-        }
-
-        break;
-
-    case QVariant::StringList:
-
-        if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::List )
-        {
-            return true;
-        }
-
-        break;
-
-    case QVariant::Image:
-
-        if ( current_userType == QVariant::Pixmap || current_userType == QVariant::Bitmap )
-        {
-            return true;
-        }
-
-        break;
-
-    case QVariant::Pixmap:
-
-        if ( current_userType == QVariant::Image )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Bitmap )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Brush )
-        {
-            return true;
-        }
-
-        break;
-
-    case QVariant::Bitmap:
-
-        if ( current_userType == QVariant::Pixmap || current_userType == QVariant::Image )
-        {
-            return true;
-        }
-
-        break;
-
-    case QVariant::KeySequence:
-
-        if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-
-        break;
-
-    case QVariant::Font:
-
-        if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-        }
-
-        break;
-
-    case QVariant::Color:
-
-        if ( current_userType == QVariant::ByteArray )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::Brush )
-        {
-            return true;
-
-        }
-
-        break;
-
-    case QVariant::Brush:
-
-        if ( current_userType == QVariant::Color || current_userType == QVariant::Pixmap )
-        {
-            return true;
-        }
-
-        break;
-
-    case QVariant::Date:
-    case QVariant::Time:
-
-        if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-
-        }
-        else if ( current_userType == QVariant::DateTime )
-        {
-            return true;
-        }
-
-        break;
 
-    case QVariant::DateTime:
+            break;
+
+        case QVariant::LongLong:
+
+            if ( current_userType == QVariant::Bool )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::ULongLong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Char  || current_userType == QVariant::QChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::ByteArray )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
+
+            }
+
+            break;
+
+        case QVariant::ULongLong:
+
+            if ( current_userType == QVariant::Bool )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::LongLong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Char  || current_userType == QVariant::QChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::ByteArray )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
+
+            }
+
+            break;
+
+        case QVariant::Short:
+        case QVariant::UShort:
+        case QVariant::Long:
+        case QVariant::ULong:
+        case QVariant::SChar:
+        case QVariant::UChar:
+
+            if ( current_userType == QVariant::Bool )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Char  || current_userType == QVariant::QChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::ByteArray )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
+
+            }
+
+            break;
+
+        case QVariant::Double:
+
+            if ( current_userType == QVariant::Bool )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Float )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::ByteArray )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
+            }
+
+            break;
+
+        case QVariant::Float:
+
+            if ( current_userType == QVariant::Bool )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Double )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::ByteArray )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
+
+            }
+
+            break;
+
+        case QVariant::Char:
+
+            if ( current_userType == QVariant::Bool )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::QChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::ByteArray )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
+
+            }
+
+            break;
+
+        case QVariant::QChar:
+
+            if ( current_userType == QVariant::Bool )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Char )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::ByteArray )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
+
+            }
+
+            break;
+
+        case QVariant::ByteArray:
+
+            if ( current_userType == QVariant::Bool )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Char || current_userType == QVariant::QChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::SChar || current_userType == QVariant::UChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Color )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Url )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Uuid )
+            {
+                return true;
+            }
+
+            break;
+
+        case QVariant::String8:
+        case QVariant::String16:
+
+            if ( current_userType == QVariant::Bool )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Int || current_userType == QVariant::UInt )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Long || current_userType == QVariant::ULong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::LongLong || current_userType == QVariant::ULongLong )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Double || current_userType == QVariant::Float )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Short || current_userType == QVariant::UShort )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::QChar )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::ByteArray )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::String || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::StringList )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Date || current_userType == QVariant::DateTime )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Time )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Color )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Font )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::KeySequence )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Url )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Uuid )
+            {
+                return true;
+
+            }
+
+            break;
+
+        case QVariant::StringList:
+
+            if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::List )
+            {
+                return true;
+            }
+
+            break;
+
+        case QVariant::Image:
+
+            if ( current_userType == QVariant::Pixmap || current_userType == QVariant::Bitmap )
+            {
+                return true;
+            }
+
+            break;
+
+        case QVariant::Pixmap:
+
+            if ( current_userType == QVariant::Image )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Bitmap )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Brush )
+            {
+                return true;
+            }
+
+            break;
+
+        case QVariant::Bitmap:
+
+            if ( current_userType == QVariant::Pixmap || current_userType == QVariant::Image )
+            {
+                return true;
+            }
+
+            break;
+
+        case QVariant::KeySequence:
+
+            if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+
+            break;
+
+        case QVariant::Font:
+
+            if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+            }
+
+            break;
+
+        case QVariant::Color:
+
+            if ( current_userType == QVariant::ByteArray )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+
+            }
+            else if ( current_userType == QVariant::Brush )
+            {
+                return true;
+
+            }
+
+            break;
+
+        case QVariant::Brush:
+
+            if ( current_userType == QVariant::Color || current_userType == QVariant::Pixmap )
+            {
+                return true;
+            }
+
+            break;
+
+        case QVariant::Date:
+        case QVariant::Time:
 
-        if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
+            if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::Date )
-        {
-            return true;
-        }
+            }
+            else if ( current_userType == QVariant::DateTime )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case QVariant::List:
+        case QVariant::DateTime:
 
-        if ( current_userType == QVariant::StringList )
-        {
-            return true;
+            if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::JsonArray )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::Date )
+            {
+                return true;
+            }
 
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
+            break;
 
-        }
+        case QVariant::List:
 
-        break;
+            if ( current_userType == QVariant::StringList )
+            {
+                return true;
 
-    case QVariant::Map:
+            }
+            else if ( current_userType == QVariant::JsonArray )
+            {
+                return true;
 
-        if ( current_userType == QVariant::Hash )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::JsonObject )
-        {
-            return true;
+            }
 
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
+            break;
 
-        }
+        case QVariant::Map:
 
-        break;
+            if ( current_userType == QVariant::Hash )
+            {
+                return true;
 
-    case QVariant::Hash:
+            }
+            else if ( current_userType == QVariant::JsonObject )
+            {
+                return true;
 
-        if ( current_userType == QVariant::Map )
-        {
-            return true;
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
 
-        }
-        else if ( current_userType == QVariant::JsonObject )
-        {
-            return true;
+            }
 
-        }
-        else if ( current_userType == QVariant::JsonValue )
-        {
-            return true;
+            break;
 
-        }
+        case QVariant::Hash:
 
-        break;
+            if ( current_userType == QVariant::Map )
+            {
+                return true;
 
-    case QVariant::Line:
+            }
+            else if ( current_userType == QVariant::JsonObject )
+            {
+                return true;
 
-        if ( current_userType == QVariant::LineF )
-        {
-            return true;
-        }
+            }
+            else if ( current_userType == QVariant::JsonValue )
+            {
+                return true;
 
-        break;
+            }
 
-    case QVariant::LineF:
+            break;
 
-        if ( current_userType == QVariant::Line )
-        {
-            return true;
-        }
+        case QVariant::Line:
 
-        break;
+            if ( current_userType == QVariant::LineF )
+            {
+                return true;
+            }
 
-    case QVariant::Point:
+            break;
 
-        if ( current_userType == QVariant::PointF )
-        {
-            return true;
-        }
+        case QVariant::LineF:
 
-        break;
+            if ( current_userType == QVariant::Line )
+            {
+                return true;
+            }
 
-    case QVariant::PointF:
+            break;
 
-        if ( current_userType == QVariant::Point )
-        {
-            return true;
-        }
+        case QVariant::Point:
 
-        break;
+            if ( current_userType == QVariant::PointF )
+            {
+                return true;
+            }
 
-    case QVariant::Rect:
+            break;
 
-        if ( current_userType == QVariant::RectF )
-        {
-            return true;
-        }
+        case QVariant::PointF:
 
-        break;
+            if ( current_userType == QVariant::Point )
+            {
+                return true;
+            }
 
-    case QVariant::RectF:
+            break;
 
-        if ( current_userType == QVariant::Rect )
-        {
-            return true;
-        }
+        case QVariant::Rect:
 
-        break;
+            if ( current_userType == QVariant::RectF )
+            {
+                return true;
+            }
 
-    case QVariant::Size:
+            break;
 
-        if ( current_userType == QVariant::SizeF )
-        {
-            return true;
-        }
+        case QVariant::RectF:
 
-        break;
+            if ( current_userType == QVariant::Rect )
+            {
+                return true;
+            }
 
-    case QVariant::SizeF:
+            break;
 
-        if ( current_userType == QVariant::Size )
-        {
-            return true;
-        }
+        case QVariant::Size:
 
-        break;
+            if ( current_userType == QVariant::SizeF )
+            {
+                return true;
+            }
 
-    case QVariant::ModelIndex:
+            break;
 
-        if ( current_userType == QVariant::PersistentModelIndex )
-        {
-            return true;
-        }
+        case QVariant::SizeF:
 
-        break;
+            if ( current_userType == QVariant::Size )
+            {
+                return true;
+            }
 
-    case QVariant::PersistentModelIndex:
+            break;
 
-        if ( current_userType == QVariant::ModelIndex )
-        {
-            return true;
-        }
+        case QVariant::ModelIndex:
 
-        break;
+            if ( current_userType == QVariant::PersistentModelIndex )
+            {
+                return true;
+            }
 
-    case QVariant::Url:
+            break;
 
-        if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-        }
+        case QVariant::PersistentModelIndex:
 
-        break;
+            if ( current_userType == QVariant::ModelIndex )
+            {
+                return true;
+            }
 
-    case QVariant::Uuid:
+            break;
 
-        if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
-        {
-            return true;
-        }
+        case QVariant::Url:
 
-        break;
+            if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+            }
 
-    default:
-        return false;
+            break;
+
+        case QVariant::Uuid:
+
+            if ( current_userType == QVariant::String8 || current_userType == QVariant::String16 )
+            {
+                return true;
+            }
+
+            break;
+
+        default:
+            return false;
     }
 
     return false;
@@ -3819,414 +3819,414 @@ bool QVariant::lscs_internal_load( QDataStream &stream, uint type )
     switch ( type )
     {
 
-    case QVariant::Bool:
-    {
-        qint8 tmp;
-        stream >> tmp;
-
-        setValue<bool>( tmp );
-        break;
-    }
-
-    case QVariant::Short:
-    {
-        qint16 tmp;
-        stream >> tmp;
-
-        setValue<short>( tmp );
-        break;
-    }
-
-    case QVariant::UShort:
-    {
-        quint16 tmp;
-        stream >> tmp;
-
-        setValue<unsigned short>( tmp );
-        break;
-    }
-
-    case QVariant::Int:
-    {
-        qint32 tmp;
-        stream >> tmp;
-
-        setValue<int>( tmp );
-        break;
-    }
-
-    case QVariant::UInt:
-    {
-        quint32 tmp;
-        stream >> tmp;
-
-        setValue<unsigned int>( tmp );
-        break;
-    }
-
-    case QVariant::Long:
-    {
-        qint64 tmp;
-        stream >> tmp;
-
-        setValue<long>( tmp );
-        break;
-    }
-
-    case QVariant::ULong:
-    {
-        quint64 tmp;
-        stream >> tmp;
-
-        setValue<unsigned long>( tmp );
-        break;
-    }
-
-    case QVariant::LongLong:
-    {
-        qint64 tmp;
-        stream >> tmp;
-
-        setValue<long long>( tmp );
-        break;
-    }
-
-    case QVariant::ULongLong:
-    {
-        quint64 tmp;
-        stream >> tmp;
-
-        setValue<unsigned long long>( tmp );
-        break;
-    }
-
-    case QVariant::Double:
-    {
-        double tmp;
-        stream >> tmp;
-
-        setValue<double>( tmp );
-        break;
-    }
-
-    case QVariant::Float:
-    {
-        float tmp;
-        stream >> tmp;
-
-        setValue<float>( tmp );
-        break;
-    }
-
-    case QVariant::Char:
-    {
-        // force a char to be signed
-        signed char tmp;
-        stream >> tmp;
-
-        setValue<char>( tmp );
-        break;
-    }
-
-    case QVariant::UChar:
-    {
-        unsigned char tmp;
-        stream >> tmp;
-
-        setValue<unsigned char>( tmp );
-        break;
-    }
-
-    case QVariant::SChar:
-    {
-        // force a char to be signed
-        signed char tmp;
-        stream >> tmp;
-
-        setValue<signed char>( tmp );
-        break;
-    }
-
-    case QVariant::QChar:
-    {
-        QChar32 tmp;
-        stream >> tmp;
-
-        setValue<QChar32>( tmp );
-        break;
-    }
-
-    case QVariant::BitArray:
-    {
-        QBitArray tmp;
-        stream >> tmp;
-
-        setValue<QBitArray>( tmp );
-        break;
-    }
-
-    case QVariant::ByteArray:
-    {
-        QByteArray tmp;
-        stream >> tmp;
-
-        setValue<QByteArray>( tmp );
-        break;
-    }
-
-    case QVariant::String8:
-    {
-        QString tmp;
-        stream >> tmp;
-
-        setValue<QString>( tmp );
-        break;
-    }
-
-    case QVariant::String16:
-    {
-        QString16 tmp;
-        stream >> tmp;
-
-        setValue<QString16>( tmp );
-        break;
-    }
-
-    case QVariant::RegularExpression:
-    {
-        QRegularExpression tmp;
-        stream >> tmp;
-
-        setValue<QRegularExpression>( tmp );
-        break;
-    }
-
-    case QVariant::StringList:
-    {
-        QStringList tmp;
-        stream >> tmp;
-
-        setValue<QStringList>( tmp );
-        break;
-    }
-
-    case QVariant::List:
-    {
-        QVariantList tmp;
-        stream >> tmp;
-
-        setValue<QVariantList>( tmp );
-        break;
-    }
-
-    case QVariant::Map:
-    {
-        QVariantMap tmp;
-        stream >> tmp;
-
-        setValue<QVariantMap>( tmp );
-        break;
-    }
-
-    case QVariant::MultiMap:
-    {
-        QVariantMultiMap tmp;
-        stream >> tmp;
-
-        setValue<QVariantMultiMap>( tmp );
-        break;
-    }
-
-    case QVariant::Hash:
-    {
-        QVariantHash tmp;
-        stream >> tmp;
-
-        setValue<QVariantHash>( tmp );
-        break;
-    }
-
-    case QVariant::MultiHash:
-    {
-        QVariantMultiHash tmp;
-        stream >> tmp;
-
-        setValue<QVariantMultiHash>( tmp );
-        break;
-    }
-
-    case QVariant::Date:
-    {
-        QDate tmp;
-        stream >> tmp;
-
-        setValue<QDate>( tmp );
-        break;
-    }
-
-    case QVariant::Time:
-    {
-        QTime tmp;
-        stream >> tmp;
-
-        setValue<QTime>( tmp );
-        break;
-    }
-
-    case QVariant::DateTime:
-    {
-        QDateTime tmp;
-        stream >> tmp;
-
-        setValue<QDateTime>( tmp );
-        break;
-    }
-
-    case QVariant::Locale:
-    {
-        QLocale tmp;
-        stream >> tmp;
-
-        setValue<QLocale>( tmp );
-        break;
-    }
-
-    case QVariant::JsonValue:
-    case QVariant::JsonObject:
-    case QVariant::JsonArray:
-    case QVariant::JsonDocument:
-        return false;
-
-    case QVariant::Line:
-    {
-        QLine tmp;
-        stream >> tmp;
-
-        setValue<QLine>( tmp );
-        break;
-    }
-
-    case QVariant::LineF:
-    {
-        QLineF tmp;
-        stream >> tmp;
-
-        setValue<QLineF>( tmp );
-        break;
-    }
-
-    case QVariant::Point:
-    {
-        QPoint tmp;
-        stream >> tmp;
-
-        setValue<QPoint>( tmp );
-        break;
-    }
-
-    case QVariant::PointF:
-    {
-        QPointF tmp;
-        stream >> tmp;
-
-        setValue<QPointF>( tmp );
-        break;
-    }
-
-    case QVariant::Rect:
-    {
-        QRect tmp;
-        stream >> tmp;
-
-        setValue<QRect>( tmp );
-        break;
-    }
-
-    case QVariant::RectF:
-    {
-        QRectF tmp;
-        stream >> tmp;
-
-        setValue<QRectF>( tmp );
-        break;
-    }
-
-    case QVariant::Size:
-    {
-        QSize tmp;
-        stream >> tmp;
-
-        setValue<QSize>( tmp );
-        break;
-    }
-
-    case QVariant::SizeF:
-    {
-        QSizeF tmp;
-        stream >> tmp;
-
-        setValue<QSizeF>( tmp );
-        break;
-    }
-
-    case QVariant::EasingCurve:
-    {
-        QEasingCurve tmp;
-        stream >> tmp;
-
-        setValue<QEasingCurve>( tmp );
-        break;
-    }
-
-    case QVariant::ModelIndex:
-    case QVariant::PersistentModelIndex:
-        return false;
-
-    case QVariant::Url:
-    {
-        QUrl tmp;
-        stream >> tmp;
-
-        setValue<QUrl>( tmp );
-        break;
-    }
-
-    case QVariant::Uuid:
-    {
-        QUuid tmp;
-        stream >> tmp;
-
-        setValue<QUuid>( tmp );
-        break;
-    }
-
-    case QVariant::Invalid:
-    case QVariant::Void:
-    case QVariant::VoidStar:
-    case QVariant::ObjectStar:
-    case QVariant::WidgetStar:
-        return false;
-
-    default:
-        // call lscs_internal_save in gui, etc
-        bool done = false;
-
-        for ( const auto ptr : m_variantClients )
+        case QVariant::Bool:
         {
-            done = ptr->lscs_internal_load( stream, type, *this );
+            qint8 tmp;
+            stream >> tmp;
 
-            if ( done )
-            {
-                break;
-            }
+            setValue<bool>( tmp );
+            break;
         }
 
-        if ( ! done )
+        case QVariant::Short:
         {
+            qint16 tmp;
+            stream >> tmp;
+
+            setValue<short>( tmp );
+            break;
+        }
+
+        case QVariant::UShort:
+        {
+            quint16 tmp;
+            stream >> tmp;
+
+            setValue<unsigned short>( tmp );
+            break;
+        }
+
+        case QVariant::Int:
+        {
+            qint32 tmp;
+            stream >> tmp;
+
+            setValue<int>( tmp );
+            break;
+        }
+
+        case QVariant::UInt:
+        {
+            quint32 tmp;
+            stream >> tmp;
+
+            setValue<unsigned int>( tmp );
+            break;
+        }
+
+        case QVariant::Long:
+        {
+            qint64 tmp;
+            stream >> tmp;
+
+            setValue<long>( tmp );
+            break;
+        }
+
+        case QVariant::ULong:
+        {
+            quint64 tmp;
+            stream >> tmp;
+
+            setValue<unsigned long>( tmp );
+            break;
+        }
+
+        case QVariant::LongLong:
+        {
+            qint64 tmp;
+            stream >> tmp;
+
+            setValue<long long>( tmp );
+            break;
+        }
+
+        case QVariant::ULongLong:
+        {
+            quint64 tmp;
+            stream >> tmp;
+
+            setValue<unsigned long long>( tmp );
+            break;
+        }
+
+        case QVariant::Double:
+        {
+            double tmp;
+            stream >> tmp;
+
+            setValue<double>( tmp );
+            break;
+        }
+
+        case QVariant::Float:
+        {
+            float tmp;
+            stream >> tmp;
+
+            setValue<float>( tmp );
+            break;
+        }
+
+        case QVariant::Char:
+        {
+            // force a char to be signed
+            signed char tmp;
+            stream >> tmp;
+
+            setValue<char>( tmp );
+            break;
+        }
+
+        case QVariant::UChar:
+        {
+            unsigned char tmp;
+            stream >> tmp;
+
+            setValue<unsigned char>( tmp );
+            break;
+        }
+
+        case QVariant::SChar:
+        {
+            // force a char to be signed
+            signed char tmp;
+            stream >> tmp;
+
+            setValue<signed char>( tmp );
+            break;
+        }
+
+        case QVariant::QChar:
+        {
+            QChar32 tmp;
+            stream >> tmp;
+
+            setValue<QChar32>( tmp );
+            break;
+        }
+
+        case QVariant::BitArray:
+        {
+            QBitArray tmp;
+            stream >> tmp;
+
+            setValue<QBitArray>( tmp );
+            break;
+        }
+
+        case QVariant::ByteArray:
+        {
+            QByteArray tmp;
+            stream >> tmp;
+
+            setValue<QByteArray>( tmp );
+            break;
+        }
+
+        case QVariant::String8:
+        {
+            QString tmp;
+            stream >> tmp;
+
+            setValue<QString>( tmp );
+            break;
+        }
+
+        case QVariant::String16:
+        {
+            QString16 tmp;
+            stream >> tmp;
+
+            setValue<QString16>( tmp );
+            break;
+        }
+
+        case QVariant::RegularExpression:
+        {
+            QRegularExpression tmp;
+            stream >> tmp;
+
+            setValue<QRegularExpression>( tmp );
+            break;
+        }
+
+        case QVariant::StringList:
+        {
+            QStringList tmp;
+            stream >> tmp;
+
+            setValue<QStringList>( tmp );
+            break;
+        }
+
+        case QVariant::List:
+        {
+            QVariantList tmp;
+            stream >> tmp;
+
+            setValue<QVariantList>( tmp );
+            break;
+        }
+
+        case QVariant::Map:
+        {
+            QVariantMap tmp;
+            stream >> tmp;
+
+            setValue<QVariantMap>( tmp );
+            break;
+        }
+
+        case QVariant::MultiMap:
+        {
+            QVariantMultiMap tmp;
+            stream >> tmp;
+
+            setValue<QVariantMultiMap>( tmp );
+            break;
+        }
+
+        case QVariant::Hash:
+        {
+            QVariantHash tmp;
+            stream >> tmp;
+
+            setValue<QVariantHash>( tmp );
+            break;
+        }
+
+        case QVariant::MultiHash:
+        {
+            QVariantMultiHash tmp;
+            stream >> tmp;
+
+            setValue<QVariantMultiHash>( tmp );
+            break;
+        }
+
+        case QVariant::Date:
+        {
+            QDate tmp;
+            stream >> tmp;
+
+            setValue<QDate>( tmp );
+            break;
+        }
+
+        case QVariant::Time:
+        {
+            QTime tmp;
+            stream >> tmp;
+
+            setValue<QTime>( tmp );
+            break;
+        }
+
+        case QVariant::DateTime:
+        {
+            QDateTime tmp;
+            stream >> tmp;
+
+            setValue<QDateTime>( tmp );
+            break;
+        }
+
+        case QVariant::Locale:
+        {
+            QLocale tmp;
+            stream >> tmp;
+
+            setValue<QLocale>( tmp );
+            break;
+        }
+
+        case QVariant::JsonValue:
+        case QVariant::JsonObject:
+        case QVariant::JsonArray:
+        case QVariant::JsonDocument:
             return false;
+
+        case QVariant::Line:
+        {
+            QLine tmp;
+            stream >> tmp;
+
+            setValue<QLine>( tmp );
+            break;
         }
 
-        break;
+        case QVariant::LineF:
+        {
+            QLineF tmp;
+            stream >> tmp;
+
+            setValue<QLineF>( tmp );
+            break;
+        }
+
+        case QVariant::Point:
+        {
+            QPoint tmp;
+            stream >> tmp;
+
+            setValue<QPoint>( tmp );
+            break;
+        }
+
+        case QVariant::PointF:
+        {
+            QPointF tmp;
+            stream >> tmp;
+
+            setValue<QPointF>( tmp );
+            break;
+        }
+
+        case QVariant::Rect:
+        {
+            QRect tmp;
+            stream >> tmp;
+
+            setValue<QRect>( tmp );
+            break;
+        }
+
+        case QVariant::RectF:
+        {
+            QRectF tmp;
+            stream >> tmp;
+
+            setValue<QRectF>( tmp );
+            break;
+        }
+
+        case QVariant::Size:
+        {
+            QSize tmp;
+            stream >> tmp;
+
+            setValue<QSize>( tmp );
+            break;
+        }
+
+        case QVariant::SizeF:
+        {
+            QSizeF tmp;
+            stream >> tmp;
+
+            setValue<QSizeF>( tmp );
+            break;
+        }
+
+        case QVariant::EasingCurve:
+        {
+            QEasingCurve tmp;
+            stream >> tmp;
+
+            setValue<QEasingCurve>( tmp );
+            break;
+        }
+
+        case QVariant::ModelIndex:
+        case QVariant::PersistentModelIndex:
+            return false;
+
+        case QVariant::Url:
+        {
+            QUrl tmp;
+            stream >> tmp;
+
+            setValue<QUrl>( tmp );
+            break;
+        }
+
+        case QVariant::Uuid:
+        {
+            QUuid tmp;
+            stream >> tmp;
+
+            setValue<QUuid>( tmp );
+            break;
+        }
+
+        case QVariant::Invalid:
+        case QVariant::Void:
+        case QVariant::VoidStar:
+        case QVariant::ObjectStar:
+        case QVariant::WidgetStar:
+            return false;
+
+        default:
+            // call lscs_internal_save in gui, etc
+            bool done = false;
+
+            for ( const auto ptr : m_variantClients )
+            {
+                done = ptr->lscs_internal_load( stream, type, *this );
+
+                if ( done )
+                {
+                    break;
+                }
+            }
+
+            if ( ! done )
+            {
+                return false;
+            }
+
+            break;
     }
 
     return retval;
@@ -4239,208 +4239,208 @@ bool QVariant::lscs_internal_save( QDataStream &stream, uint type ) const
     switch ( type )
     {
 
-    case QVariant::Bool:
-        stream << static_cast<qint8>( getData<bool>() );
-        break;
+        case QVariant::Bool:
+            stream << static_cast<qint8>( getData<bool>() );
+            break;
 
-    case QVariant::Short:
-        stream << static_cast<qint16>( getData<short>() );
-        break;
+        case QVariant::Short:
+            stream << static_cast<qint16>( getData<short>() );
+            break;
 
-    case QVariant::UShort:
-        stream << static_cast<quint16>( getData<unsigned short>() );
-        break;
+        case QVariant::UShort:
+            stream << static_cast<quint16>( getData<unsigned short>() );
+            break;
 
-    case QVariant::Int:
-        stream << static_cast<qint32>( getData<int>() );
-        break;
+        case QVariant::Int:
+            stream << static_cast<qint32>( getData<int>() );
+            break;
 
-    case QVariant::UInt:
-        stream << static_cast<qint32>( getData<unsigned int>() );
-        break;
+        case QVariant::UInt:
+            stream << static_cast<qint32>( getData<unsigned int>() );
+            break;
 
-    case QVariant::Long:
-        stream << static_cast<qint64>( getData<long>() );
-        break;
+        case QVariant::Long:
+            stream << static_cast<qint64>( getData<long>() );
+            break;
 
-    case QVariant::ULong:
-        stream << static_cast<qint64>( getData<unsigned long>() );
-        break;
+        case QVariant::ULong:
+            stream << static_cast<qint64>( getData<unsigned long>() );
+            break;
 
-    case QVariant::LongLong:
-        stream << static_cast<qint64>( getData<long long>() );
-        break;
+        case QVariant::LongLong:
+            stream << static_cast<qint64>( getData<long long>() );
+            break;
 
-    case QVariant::ULongLong:
-        stream << static_cast<qint64>( getData<unsigned long long>() );
-        break;
+        case QVariant::ULongLong:
+            stream << static_cast<qint64>( getData<unsigned long long>() );
+            break;
 
-    case QVariant::Double:
-        stream << static_cast<double>( getData<double>() );
-        break;
+        case QVariant::Double:
+            stream << static_cast<double>( getData<double>() );
+            break;
 
-    case QVariant::Float:
-        stream << static_cast<float>( getData<float>() );
-        break;
+        case QVariant::Float:
+            stream << static_cast<float>( getData<float>() );
+            break;
 
-    case QVariant::Char:
-        // force a char to be signed
-        stream << static_cast<signed char>( getData<char>() );
-        break;
+        case QVariant::Char:
+            // force a char to be signed
+            stream << static_cast<signed char>( getData<char>() );
+            break;
 
-    case QVariant::UChar:
-        stream << static_cast<unsigned char>( getData<unsigned char>() );
-        break;
+        case QVariant::UChar:
+            stream << static_cast<unsigned char>( getData<unsigned char>() );
+            break;
 
-    case QVariant::SChar:
-        stream << static_cast<signed char>( getData<signed char>() );
-        break;
+        case QVariant::SChar:
+            stream << static_cast<signed char>( getData<signed char>() );
+            break;
 
-    case QVariant::QChar:
-        stream << static_cast<QChar32>( getData<QChar32>() );
-        break;
+        case QVariant::QChar:
+            stream << static_cast<QChar32>( getData<QChar32>() );
+            break;
 
-    case QVariant::BitArray:
-        stream << static_cast<QBitArray>( getData<QBitArray>() );
-        break;
+        case QVariant::BitArray:
+            stream << static_cast<QBitArray>( getData<QBitArray>() );
+            break;
 
-    case QVariant::ByteArray:
-        stream << static_cast<QByteArray>( getData<QByteArray>() );
-        break;
+        case QVariant::ByteArray:
+            stream << static_cast<QByteArray>( getData<QByteArray>() );
+            break;
 
-    case QVariant::String8:
-        stream << static_cast<QString>( getData<QString>() );
-        break;
+        case QVariant::String8:
+            stream << static_cast<QString>( getData<QString>() );
+            break;
 
-    case QVariant::String16:
-        stream << static_cast<QString16>( getData<QString16>() );
-        break;
+        case QVariant::String16:
+            stream << static_cast<QString16>( getData<QString16>() );
+            break;
 
-    case QVariant::RegularExpression:
-        stream << static_cast<QRegularExpression>( getData<QRegularExpression>() );
-        break;
+        case QVariant::RegularExpression:
+            stream << static_cast<QRegularExpression>( getData<QRegularExpression>() );
+            break;
 
-    case QVariant::StringList:
-        stream << static_cast<QStringList>( getData<QStringList>() );
-        break;
+        case QVariant::StringList:
+            stream << static_cast<QStringList>( getData<QStringList>() );
+            break;
 
-    case QVariant::List:
-        stream << static_cast<QVariantList>( getData<QVariantList>() );
-        break;
+        case QVariant::List:
+            stream << static_cast<QVariantList>( getData<QVariantList>() );
+            break;
 
-    case QVariant::Map:
-        stream << static_cast<QVariantMap>( getData<QVariantMap>() );
-        break;
+        case QVariant::Map:
+            stream << static_cast<QVariantMap>( getData<QVariantMap>() );
+            break;
 
-    case QVariant::MultiMap:
-        stream << static_cast<QVariantMultiMap>( getData<QVariantMultiMap>() );
-        break;
+        case QVariant::MultiMap:
+            stream << static_cast<QVariantMultiMap>( getData<QVariantMultiMap>() );
+            break;
 
-    case QVariant::Hash:
-        stream << static_cast<QVariantHash>( getData<QVariantHash>() );
-        break;
+        case QVariant::Hash:
+            stream << static_cast<QVariantHash>( getData<QVariantHash>() );
+            break;
 
-    case QVariant::MultiHash:
-        stream << static_cast<QVariantMultiHash>( getData<QVariantMultiHash>() );
-        break;
+        case QVariant::MultiHash:
+            stream << static_cast<QVariantMultiHash>( getData<QVariantMultiHash>() );
+            break;
 
-    case QVariant::Date:
-        stream << static_cast<QDate>( getData<QDate>() );
-        break;
+        case QVariant::Date:
+            stream << static_cast<QDate>( getData<QDate>() );
+            break;
 
-    case QVariant::Time:
-        stream << static_cast<QTime>( getData<QTime>() );
-        break;
+        case QVariant::Time:
+            stream << static_cast<QTime>( getData<QTime>() );
+            break;
 
-    case QVariant::DateTime:
-        stream << static_cast<QDateTime>( getData<QDateTime>() );
-        break;
+        case QVariant::DateTime:
+            stream << static_cast<QDateTime>( getData<QDateTime>() );
+            break;
 
-    case QVariant::Locale:
-        stream << static_cast<QLocale>( getData<QLocale>() );
-        break;
+        case QVariant::Locale:
+            stream << static_cast<QLocale>( getData<QLocale>() );
+            break;
 
-    case QVariant::JsonValue:
-    case QVariant::JsonObject:
-    case QVariant::JsonArray:
-    case QVariant::JsonDocument:
-        return false;
-
-    case QVariant::Line:
-        stream << static_cast<QLine>( getData<QLine>() );
-        break;
-
-    case QVariant::LineF:
-        stream << static_cast<QLineF>( getData<QLineF>() );
-        break;
-
-    case QVariant::Point:
-        stream << static_cast<QPoint>( getData<QPoint>() );
-        break;
-
-    case QVariant::PointF:
-        stream << static_cast<QPointF>( getData<QPointF>() );
-        break;
-
-    case QVariant::Rect:
-        stream << static_cast<QRect>( getData<QRect>() );
-        break;
-
-    case QVariant::RectF:
-        stream << static_cast<QRectF>( getData<QRectF>() );
-        break;
-
-    case QVariant::Size:
-        stream << static_cast<QSize>( getData<QSize>() );
-        break;
-
-    case QVariant::SizeF:
-        stream << static_cast<QSizeF>( getData<QSizeF>() );
-        break;
-
-    case QVariant::EasingCurve:
-        stream << static_cast<QEasingCurve>( getData<QEasingCurve>() );
-        break;
-
-    case QVariant::ModelIndex:
-    case QVariant::PersistentModelIndex:
-        return false;
-
-    case QVariant::Url:
-        stream << static_cast<QUrl>( getData<QUrl>() );
-        break;
-
-    case QVariant::Uuid:
-        stream << static_cast<QUuid>( getData<QUuid>() );
-        break;
-
-    case QVariant::Invalid:
-    case QVariant::Void:
-    case QVariant::VoidStar:
-    case QVariant::ObjectStar:
-    case QVariant::WidgetStar:
-        return false;
-
-    default:
-        // call lscs_internal_save in gui, etc
-        bool done = false;
-
-        for ( const auto ptr : m_variantClients )
-        {
-            done = ptr->lscs_internal_save( stream, type, *this );
-
-            if ( done )
-            {
-                break;
-            }
-        }
-
-        if ( ! done )
-        {
+        case QVariant::JsonValue:
+        case QVariant::JsonObject:
+        case QVariant::JsonArray:
+        case QVariant::JsonDocument:
             return false;
-        }
 
-        break;
+        case QVariant::Line:
+            stream << static_cast<QLine>( getData<QLine>() );
+            break;
+
+        case QVariant::LineF:
+            stream << static_cast<QLineF>( getData<QLineF>() );
+            break;
+
+        case QVariant::Point:
+            stream << static_cast<QPoint>( getData<QPoint>() );
+            break;
+
+        case QVariant::PointF:
+            stream << static_cast<QPointF>( getData<QPointF>() );
+            break;
+
+        case QVariant::Rect:
+            stream << static_cast<QRect>( getData<QRect>() );
+            break;
+
+        case QVariant::RectF:
+            stream << static_cast<QRectF>( getData<QRectF>() );
+            break;
+
+        case QVariant::Size:
+            stream << static_cast<QSize>( getData<QSize>() );
+            break;
+
+        case QVariant::SizeF:
+            stream << static_cast<QSizeF>( getData<QSizeF>() );
+            break;
+
+        case QVariant::EasingCurve:
+            stream << static_cast<QEasingCurve>( getData<QEasingCurve>() );
+            break;
+
+        case QVariant::ModelIndex:
+        case QVariant::PersistentModelIndex:
+            return false;
+
+        case QVariant::Url:
+            stream << static_cast<QUrl>( getData<QUrl>() );
+            break;
+
+        case QVariant::Uuid:
+            stream << static_cast<QUuid>( getData<QUuid>() );
+            break;
+
+        case QVariant::Invalid:
+        case QVariant::Void:
+        case QVariant::VoidStar:
+        case QVariant::ObjectStar:
+        case QVariant::WidgetStar:
+            return false;
+
+        default:
+            // call lscs_internal_save in gui, etc
+            bool done = false;
+
+            for ( const auto ptr : m_variantClients )
+            {
+                done = ptr->lscs_internal_save( stream, type, *this );
+
+                if ( done )
+                {
+                    break;
+                }
+            }
+
+            if ( ! done )
+            {
+                return false;
+            }
+
+            break;
     }
 
     return retval;

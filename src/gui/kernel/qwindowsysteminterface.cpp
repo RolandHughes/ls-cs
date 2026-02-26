@@ -57,7 +57,7 @@ void QWindowSystemInterface::handleEnterEvent( QWindow *tlw, const QPointF &loca
     {
         QWindowSystemInterfacePrivate::EnterEvent *e =
             new QWindowSystemInterfacePrivate::EnterEvent( tlw, QHighDpi::fromNativeLocalPosition( local, tlw ),
-                QHighDpi::fromNativePixels( global, tlw ) );
+                    QHighDpi::fromNativePixels( global, tlw ) );
 
         QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
     }
@@ -125,7 +125,7 @@ void QWindowSystemInterface::handleApplicationStateChanged( Qt::ApplicationState
 void QWindowSystemInterface::handleGeometryChange( QWindow *tlw, const QRect &newRect, const QRect &oldRect )
 {
     QWindowSystemInterfacePrivate::GeometryChangeEvent *e = new QWindowSystemInterfacePrivate::GeometryChangeEvent( tlw,
-        QHighDpi::fromNativePixels( newRect, tlw ), QHighDpi::fromNativePixels( oldRect, tlw ) );
+            QHighDpi::fromNativePixels( newRect, tlw ), QHighDpi::fromNativePixels( oldRect, tlw ) );
 
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
 }
@@ -152,7 +152,7 @@ void QWindowSystemInterface::handleMouseEvent( QWindow *w, ulong timestamp, cons
 {
     QWindowSystemInterfacePrivate::MouseEvent *e =
         new QWindowSystemInterfacePrivate::MouseEvent( w, timestamp, QHighDpi::fromNativeLocalPosition( local, w ),
-            QHighDpi::fromNativePixels( global, w ), b, mods, source );
+                QHighDpi::fromNativePixels( global, w ), b, mods, source );
 
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
 }
@@ -168,8 +168,8 @@ void QWindowSystemInterface::handleFrameStrutMouseEvent( QWindow *w, ulong times
         Qt::MouseButtons b, Qt::KeyboardModifiers mods, Qt::MouseEventSource source )
 {
     QWindowSystemInterfacePrivate::MouseEvent *e = new QWindowSystemInterfacePrivate::MouseEvent( w, timestamp,
-        QWindowSystemInterfacePrivate::FrameStrutMouse,
-        QHighDpi::fromNativeLocalPosition( local, w ), QHighDpi::fromNativePixels( global, w ), b, mods, source );
+            QWindowSystemInterfacePrivate::FrameStrutMouse,
+            QHighDpi::fromNativeLocalPosition( local, w ), QHighDpi::fromNativePixels( global, w ), b, mods, source );
 
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
 }
@@ -194,8 +194,8 @@ bool QWindowSystemInterface::handleShortcutEvent( QWindow *window, ulong timesta
         // key event, so that the target that accepted the shortcut override event can handle it. Note that we only
         // do this if the shortcut map hasn't found a partial shortcut match yet. If it has, the shortcut can not be overridden
         QWindowSystemInterfacePrivate::KeyEvent *shortcutOverrideEvent = new QWindowSystemInterfacePrivate::KeyEvent( window,
-            timestamp, QEvent::ShortcutOverride, keyCode, modifiers, nativeScanCode, nativeVirtualKey, nativeModifiers,
-            text, autorepeat, count );
+                timestamp, QEvent::ShortcutOverride, keyCode, modifiers, nativeScanCode, nativeVirtualKey, nativeModifiers,
+                text, autorepeat, count );
 
         {
             // FIXME: Template handleWindowSystemEvent to support both sync and async delivery
@@ -287,7 +287,7 @@ bool QWindowSystemInterface::handleExtendedKeyEvent( QWindow *tlw, ulong timesta
 
     QWindowSystemInterfacePrivate::KeyEvent *e =
         new QWindowSystemInterfacePrivate::KeyEvent( tlw, timestamp, type, key, modifiers,
-            nativeScanCode, nativeVirtualKey, nativeModifiers, text, autorep, count );
+                nativeScanCode, nativeVirtualKey, nativeModifiers, text, autorep, count );
 
     return QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
 }
@@ -336,7 +336,7 @@ void QWindowSystemInterface::handleWheelEvent( QWindow *tlw, ulong timestamp, co
     }
 
     event = new QWindowSystemInterfacePrivate::WheelEvent( tlw, timestamp, QHighDpi::fromNativeLocalPosition( local, tlw ),
-        QHighDpi::fromNativePixels( global, tlw ), pixelDelta, angleDelta, mods, phase, source );
+            QHighDpi::fromNativePixels( global, tlw ), pixelDelta, angleDelta, mods, phase, source );
 
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( event );
 }
@@ -547,7 +547,7 @@ void QWindowSystemInterface::handleTouchCancelEvent( QWindow *w, ulong timestamp
 {
     QWindowSystemInterfacePrivate::TouchEvent *e =
         new QWindowSystemInterfacePrivate::TouchEvent( w, timestamp, QEvent::TouchCancel, device,
-            QList<QTouchEvent::TouchPoint>(), mods );
+                QList<QTouchEvent::TouchPoint>(), mods );
 
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
 }
@@ -564,7 +564,7 @@ void QWindowSystemInterface::handleScreenGeometryChange( QScreen *screen, const 
 {
     QWindowSystemInterfacePrivate::ScreenGeometryEvent *e =
         new QWindowSystemInterfacePrivate::ScreenGeometryEvent( screen, QHighDpi::fromNativeScreenGeometry( geometry, screen ),
-            QHighDpi::fromNative( availableGeometry, screen, geometry.topLeft() ) );
+                QHighDpi::fromNative( availableGeometry, screen, geometry.topLeft() ) );
 
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
 }
@@ -594,7 +594,7 @@ void QWindowSystemInterface::handleThemeChange( QWindow *tlw )
 void QWindowSystemInterface::handleExposeEvent( QWindow *tlw, const QRegion &region )
 {
     QWindowSystemInterfacePrivate::ExposeEvent *e = new QWindowSystemInterfacePrivate::ExposeEvent( tlw,
-        QHighDpi::fromNativeLocalExposedRegion( region, tlw ) );
+            QHighDpi::fromNativeLocalExposedRegion( region, tlw ) );
 
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
 }
@@ -650,8 +650,8 @@ bool QWindowSystemInterface::sendWindowSystemEvents( QEventLoop::ProcessEventsFl
     while ( QWindowSystemInterfacePrivate::windowSystemEventsQueued() )
     {
         QWindowSystemInterfacePrivate::WindowSystemEvent *event = ( flags & QEventLoop::ExcludeUserInputEvents ) ?
-            QWindowSystemInterfacePrivate::getNonUserInputWindowSystemEvent() :
-            QWindowSystemInterfacePrivate::getWindowSystemEvent();
+                QWindowSystemInterfacePrivate::getNonUserInputWindowSystemEvent() :
+                QWindowSystemInterfacePrivate::getWindowSystemEvent();
 
         if ( !event )
         {
@@ -748,8 +748,8 @@ void QWindowSystemInterface::handleTabletEvent( QWindow *w, ulong timestamp, con
         qreal tangentialPressure, qreal rotation, int z, qint64 uid, Qt::KeyboardModifiers modifiers )
 {
     QWindowSystemInterfacePrivate::TabletEvent *e = new QWindowSystemInterfacePrivate::TabletEvent( w,
-        timestamp, QHighDpi::fromNativeLocalPosition( local, w ), QHighDpi::fromNativePixels( global, w ),
-        device, pointerType, buttons, pressure, xTilt, yTilt, tangentialPressure, rotation, z, uid, modifiers );
+            timestamp, QHighDpi::fromNativeLocalPosition( local, w ), QHighDpi::fromNativePixels( global, w ),
+            device, pointerType, buttons, pressure, xTilt, yTilt, tangentialPressure, rotation, z, uid, modifiers );
 
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
 }
@@ -811,7 +811,7 @@ void QWindowSystemInterface::handleGestureEvent( QWindow *window, ulong timestam
         QPointF &local, QPointF &global )
 {
     QWindowSystemInterfacePrivate::GestureEvent *e = new QWindowSystemInterfacePrivate::GestureEvent( window,
-        timestamp, type, local, global );
+            timestamp, type, local, global );
 
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
 }
@@ -820,7 +820,7 @@ void QWindowSystemInterface::handleGestureEventWithRealValue( QWindow *window, u
         qreal value, QPointF &local, QPointF &global )
 {
     QWindowSystemInterfacePrivate::GestureEvent *e = new QWindowSystemInterfacePrivate::GestureEvent( window,
-        timestamp, type, local, global );
+            timestamp, type, local, global );
 
     e->realValue = value;
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
@@ -831,7 +831,7 @@ void QWindowSystemInterface::handleGestureEventWithSequenceIdAndValue( QWindow *
         ulong sequenceId, quint64 value, QPointF &local, QPointF &global )
 {
     QWindowSystemInterfacePrivate::GestureEvent *e = new QWindowSystemInterfacePrivate::GestureEvent( window,
-        timestamp, type, local, global );
+            timestamp, type, local, global );
 
     e->sequenceId = sequenceId;
     e->intValue = value;
@@ -851,7 +851,7 @@ void QWindowSystemInterface::handleContextMenuEvent( QWindow *w, bool mouseTrigg
         Qt::KeyboardModifiers modifiers )
 {
     QWindowSystemInterfacePrivate::ContextMenuEvent *e = new QWindowSystemInterfacePrivate::ContextMenuEvent( w,
-        mouseTriggered, pos, globalPos, modifiers );
+            mouseTriggered, pos, globalPos, modifiers );
 
     QWindowSystemInterfacePrivate::handleWindowSystemEvent( e );
 }
@@ -871,7 +871,7 @@ Q_GUI_EXPORT QDebug operator<<( QDebug dbg, const QWindowSystemInterface::TouchP
     QDebugStateSaver saver( dbg );
 
     dbg.nospace() << "TouchPoint(" << p.id << " @" << p.area << " normalized " << p.normalPosition
-       << " press " << p.pressure << " vel " << p.velocity << " state " << ( int )p.state;
+                  << " press " << p.pressure << " vel " << p.velocity << " state " << ( int )p.state;
 
     return dbg;
 }

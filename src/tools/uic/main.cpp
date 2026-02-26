@@ -43,15 +43,15 @@ void showHelp( const char *appName )
     }
 
     fprintf( stderr, "Usage: %s [options] <uifile>\n\n"
-                     "  -h, -help                 display this help and exit\n"
-                     "  -v, -version              display version\n"
-                     "  -d, -dependencies         display the dependencies\n"
-                     "  -o <file>                 place the output into <file>\n"
-                     "  -tr <func>                use func() for i18n\n"
-                     "  -p, -no-protection        disable header protection\n"
-                     "  -n, -no-implicit-includes disable generation of #include-directives\n"
-                     "  -g <name>                 change generator\n"
-                     "\n", appName );
+             "  -h, -help                 display this help and exit\n"
+             "  -v, -version              display version\n"
+             "  -d, -dependencies         display the dependencies\n"
+             "  -o <file>                 place the output into <file>\n"
+             "  -tr <func>                use func() for i18n\n"
+             "  -p, -no-protection        disable header protection\n"
+             "  -n, -no-implicit-includes disable generation of #include-directives\n"
+             "  -g <name>                 change generator\n"
+             "\n", appName );
 }
 
 int runUic( int argc, char *argv[] )
@@ -222,7 +222,7 @@ int runUic( int argc, char *argv[] )
 int main( int argc, char *argv[] )
 {
 #if defined(LSCS_PACKAGE_BUILD)
-    QCoreApplication::setAttribute( Qt::AA_UseSystemConf, true);
+    QCoreApplication::setAttribute( Qt::AA_UseSystemConf, true );
 #endif
 
     return runUic( argc, argv );

@@ -410,48 +410,48 @@ static inline QFontDatabase::WritingSystem writingSystemFromCharSet( uchar charS
 {
     switch ( charSet )
     {
-    case ANSI_CHARSET:
-    case EASTEUROPE_CHARSET:
-    case BALTIC_CHARSET:
-    case TURKISH_CHARSET:
-        return QFontDatabase::Latin;
+        case ANSI_CHARSET:
+        case EASTEUROPE_CHARSET:
+        case BALTIC_CHARSET:
+        case TURKISH_CHARSET:
+            return QFontDatabase::Latin;
 
-    case GREEK_CHARSET:
-        return QFontDatabase::Greek;
+        case GREEK_CHARSET:
+            return QFontDatabase::Greek;
 
-    case RUSSIAN_CHARSET:
-        return QFontDatabase::Cyrillic;
+        case RUSSIAN_CHARSET:
+            return QFontDatabase::Cyrillic;
 
-    case HEBREW_CHARSET:
-        return QFontDatabase::Hebrew;
+        case HEBREW_CHARSET:
+            return QFontDatabase::Hebrew;
 
-    case ARABIC_CHARSET:
-        return QFontDatabase::Arabic;
+        case ARABIC_CHARSET:
+            return QFontDatabase::Arabic;
 
-    case THAI_CHARSET:
-        return QFontDatabase::Thai;
+        case THAI_CHARSET:
+            return QFontDatabase::Thai;
 
-    case GB2312_CHARSET:
-        return QFontDatabase::SimplifiedChinese;
+        case GB2312_CHARSET:
+            return QFontDatabase::SimplifiedChinese;
 
-    case CHINESEBIG5_CHARSET:
-        return QFontDatabase::TraditionalChinese;
+        case CHINESEBIG5_CHARSET:
+            return QFontDatabase::TraditionalChinese;
 
-    case SHIFTJIS_CHARSET:
-        return QFontDatabase::Japanese;
+        case SHIFTJIS_CHARSET:
+            return QFontDatabase::Japanese;
 
-    case HANGUL_CHARSET:
-    case JOHAB_CHARSET:
-        return QFontDatabase::Korean;
+        case HANGUL_CHARSET:
+        case JOHAB_CHARSET:
+            return QFontDatabase::Korean;
 
-    case VIETNAMESE_CHARSET:
-        return QFontDatabase::Vietnamese;
+        case VIETNAMESE_CHARSET:
+            return QFontDatabase::Vietnamese;
 
-    case SYMBOL_CHARSET:
-        return QFontDatabase::Symbol;
+        case SYMBOL_CHARSET:
+            return QFontDatabase::Symbol;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QFontDatabase::Any;
@@ -1534,28 +1534,28 @@ LOGFONT QWindowsFontDatabase::fontDefToLOGFONT( const QFontDef &request )
 
     switch ( request.styleHint )
     {
-    case QFont::Helvetica:
-        hint = FF_SWISS;
-        break;
+        case QFont::Helvetica:
+            hint = FF_SWISS;
+            break;
 
-    case QFont::Times:
-        hint = FF_ROMAN;
-        break;
+        case QFont::Times:
+            hint = FF_ROMAN;
+            break;
 
-    case QFont::Courier:
-        hint = FF_MODERN;
-        break;
+        case QFont::Courier:
+            hint = FF_MODERN;
+            break;
 
-    case QFont::OldEnglish:
-        hint = FF_DECORATIVE;
-        break;
+        case QFont::OldEnglish:
+            hint = FF_DECORATIVE;
+            break;
 
-    case QFont::System:
-        hint = FF_MODERN;
-        break;
+        case QFont::System:
+            hint = FF_MODERN;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     lf.lfPitchAndFamily = DEFAULT_PITCH | hint;
@@ -1604,31 +1604,31 @@ QStringList QWindowsFontDatabase::extraTryFontsForFamily( const QString &family 
 
             switch ( lid & 0xff )
             {
-            case LANG_CHINESE:
-                if ( lid == 0x0804 || lid == 0x1004 )
-                {
-                    // China mainland and Singapore
-                    tryFonts = ch_CN_tryFonts;
-                }
-                else
-                {
-                    tryFonts = ch_TW_tryFonts;
-                    // Taiwan, Hong Kong and Macau
-                }
+                case LANG_CHINESE:
+                    if ( lid == 0x0804 || lid == 0x1004 )
+                    {
+                        // China mainland and Singapore
+                        tryFonts = ch_CN_tryFonts;
+                    }
+                    else
+                    {
+                        tryFonts = ch_TW_tryFonts;
+                        // Taiwan, Hong Kong and Macau
+                    }
 
-                break;
+                    break;
 
-            case LANG_JAPANESE:
-                tryFonts = jp_tryFonts;
-                break;
+                case LANG_JAPANESE:
+                    tryFonts = jp_tryFonts;
+                    break;
 
-            case LANG_KOREAN:
-                tryFonts = kr_tryFonts;
-                break;
+                case LANG_KOREAN:
+                    tryFonts = kr_tryFonts;
+                    break;
 
-            default:
-                tryFonts = other_tryFonts;
-                break;
+                default:
+                    tryFonts = other_tryFonts;
+                    break;
             }
         }
 
@@ -1660,30 +1660,30 @@ QString QWindowsFontDatabase::familyForStyleHint( QFont::StyleHint styleHint )
 {
     switch ( styleHint )
     {
-    case QFont::Times:
-        return QString( "Times New Roman" );
+        case QFont::Times:
+            return QString( "Times New Roman" );
 
-    case QFont::Courier:
-        return QString( "Courier New" );
+        case QFont::Courier:
+            return QString( "Courier New" );
 
-    case QFont::Monospace:
-        return QString( "Courier New" );
+        case QFont::Monospace:
+            return QString( "Courier New" );
 
-    case QFont::Cursive:
-        return QString( "Comic Sans MS" );
+        case QFont::Cursive:
+            return QString( "Comic Sans MS" );
 
-    case QFont::Fantasy:
-        return QString( "Impact" );
+        case QFont::Fantasy:
+            return QString( "Impact" );
 
-    case QFont::Decorative:
-        return QString( "Old English" );
+        case QFont::Decorative:
+            return QString( "Old English" );
 
-    case QFont::Helvetica:
-        return QString( "Arial" );
+        case QFont::Helvetica:
+            return QString( "Arial" );
 
-    case QFont::System:
-    default:
-        break;
+        case QFont::System:
+        default:
+            break;
     }
 
     return QString( "MS Shell Dlg 2" );

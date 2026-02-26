@@ -132,7 +132,8 @@ void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count( st
 
     if ( ( std::numeric_limits<std::ptrdiff_t>::max )() / states < states )
     {
-        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
+        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT,
+                                        ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
         return;
     }
 
@@ -140,7 +141,8 @@ void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count( st
 
     if ( ( std::numeric_limits<std::ptrdiff_t>::max )() / dist < states )
     {
-        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
+        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT,
+                                        ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
         return;
     }
 
@@ -148,7 +150,8 @@ void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count( st
 
     if ( ( std::numeric_limits<std::ptrdiff_t>::max )() - k < states )
     {
-        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
+        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT,
+                                        ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
         return;
     }
 
@@ -163,7 +166,8 @@ void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count( st
 
     if ( ( std::numeric_limits<std::ptrdiff_t>::max )() / dist < states )
     {
-        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
+        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT,
+                                        ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
         return;
     }
 
@@ -171,7 +175,8 @@ void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count( st
 
     if ( ( std::numeric_limits<std::ptrdiff_t>::max )() - k < states )
     {
-        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
+        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT,
+                                        ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
         return;
     }
 

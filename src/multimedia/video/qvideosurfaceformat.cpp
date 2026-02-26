@@ -462,33 +462,33 @@ QDebug operator<<( QDebug dbg, QVideoSurfaceFormat::YCbCrColorSpace cs )
 
     switch ( cs )
     {
-    case QVideoSurfaceFormat::YCbCr_BT601:
-        dbg << "YCbCr_BT601";
-        break;
+        case QVideoSurfaceFormat::YCbCr_BT601:
+            dbg << "YCbCr_BT601";
+            break;
 
-    case QVideoSurfaceFormat::YCbCr_BT709:
-        dbg << "YCbCr_BT709";
-        break;
+        case QVideoSurfaceFormat::YCbCr_BT709:
+            dbg << "YCbCr_BT709";
+            break;
 
-    case QVideoSurfaceFormat::YCbCr_JPEG:
-        dbg << "YCbCr_JPEG";
-        break;
+        case QVideoSurfaceFormat::YCbCr_JPEG:
+            dbg << "YCbCr_JPEG";
+            break;
 
-    case QVideoSurfaceFormat::YCbCr_xvYCC601:
-        dbg << "YCbCr_xvYCC601";
-        break;
+        case QVideoSurfaceFormat::YCbCr_xvYCC601:
+            dbg << "YCbCr_xvYCC601";
+            break;
 
-    case QVideoSurfaceFormat::YCbCr_xvYCC709:
-        dbg << "YCbCr_xvYCC709";
-        break;
+        case QVideoSurfaceFormat::YCbCr_xvYCC709:
+            dbg << "YCbCr_xvYCC709";
+            break;
 
-    case QVideoSurfaceFormat::YCbCr_CustomMatrix:
-        dbg << "YCbCr_CustomMatrix";
-        break;
+        case QVideoSurfaceFormat::YCbCr_CustomMatrix:
+            dbg << "YCbCr_CustomMatrix";
+            break;
 
-    default:
-        dbg << "YCbCr_Undefined";
-        break;
+        default:
+            dbg << "YCbCr_Undefined";
+            break;
     }
 
     return dbg;
@@ -501,13 +501,13 @@ QDebug operator<<( QDebug dbg, QVideoSurfaceFormat::Direction dir )
 
     switch ( dir )
     {
-    case QVideoSurfaceFormat::BottomToTop:
-        dbg << "BottomToTop";
-        break;
+        case QVideoSurfaceFormat::BottomToTop:
+            dbg << "BottomToTop";
+            break;
 
-    case QVideoSurfaceFormat::TopToBottom:
-        dbg << "TopToBottom";
-        break;
+        case QVideoSurfaceFormat::TopToBottom:
+            dbg << "TopToBottom";
+            break;
     }
 
     return dbg;

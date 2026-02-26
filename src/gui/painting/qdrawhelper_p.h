@@ -605,20 +605,20 @@ public:
 
         switch ( data->gradient.spread )
         {
-        case QGradient::RepeatSpread:
-            FETCH_RADIAL_LOOP( FETCH_RADIAL_LOOP_CLAMP_REPEAT )
-            break;
+            case QGradient::RepeatSpread:
+                FETCH_RADIAL_LOOP( FETCH_RADIAL_LOOP_CLAMP_REPEAT )
+                break;
 
-        case QGradient::ReflectSpread:
-            FETCH_RADIAL_LOOP( FETCH_RADIAL_LOOP_CLAMP_REFLECT )
-            break;
+            case QGradient::ReflectSpread:
+                FETCH_RADIAL_LOOP( FETCH_RADIAL_LOOP_CLAMP_REFLECT )
+                break;
 
-        case QGradient::PadSpread:
-            FETCH_RADIAL_LOOP( FETCH_RADIAL_LOOP_CLAMP_PAD )
-            break;
+            case QGradient::PadSpread:
+                FETCH_RADIAL_LOOP( FETCH_RADIAL_LOOP_CLAMP_PAD )
+                break;
 
-        default:
-            Q_ASSERT( false );
+            default:
+                Q_ASSERT( false );
         }
     }
 };

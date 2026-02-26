@@ -446,108 +446,108 @@ static QVariant x509ExtensionToValue( X509_EXTENSION *ext )
 
     switch ( nid )
     {
-    case NID_basic_constraints:
-    {
-        BASIC_CONSTRAINTS *basic = reinterpret_cast<BASIC_CONSTRAINTS *>( q_X509V3_EXT_d2i( ext ) );
-
-        QVariantMap result;
-        result[QLatin1String( "ca" )] = basic->ca ? true : false;
-
-        if ( basic->pathlen )
+        case NID_basic_constraints:
         {
-            result["pathLenConstraint"] = ( qint64 )q_ASN1_INTEGER_get( basic->pathlen );
-        }
+            BASIC_CONSTRAINTS *basic = reinterpret_cast<BASIC_CONSTRAINTS *>( q_X509V3_EXT_d2i( ext ) );
 
-        q_BASIC_CONSTRAINTS_free( basic );
-        return result;
-    }
-    break;
+            QVariantMap result;
+            result[QLatin1String( "ca" )] = basic->ca ? true : false;
 
-    case NID_info_access:
-    {
-        AUTHORITY_INFO_ACCESS *info = reinterpret_cast<AUTHORITY_INFO_ACCESS *>( q_X509V3_EXT_d2i( ext ) );
-
-        QVariantMap result;
-
-        for ( int i = 0; i < q_SKM_sk_num( ACCESS_DESCRIPTION, info ); i++ )
-        {
-            ACCESS_DESCRIPTION *ad = q_SKM_sk_value( ACCESS_DESCRIPTION, info, i );
-
-            GENERAL_NAME *name = ad->location;
-
-            if ( name->type == GEN_URI )
+            if ( basic->pathlen )
             {
-                int len = q_ASN1_STRING_length( name->d.uniformResourceIdentifier );
+                result["pathLenConstraint"] = ( qint64 )q_ASN1_INTEGER_get( basic->pathlen );
+            }
 
-                if ( len < 0 || len >= 8192 )
+            q_BASIC_CONSTRAINTS_free( basic );
+            return result;
+        }
+        break;
+
+        case NID_info_access:
+        {
+            AUTHORITY_INFO_ACCESS *info = reinterpret_cast<AUTHORITY_INFO_ACCESS *>( q_X509V3_EXT_d2i( ext ) );
+
+            QVariantMap result;
+
+            for ( int i = 0; i < q_SKM_sk_num( ACCESS_DESCRIPTION, info ); i++ )
+            {
+                ACCESS_DESCRIPTION *ad = q_SKM_sk_value( ACCESS_DESCRIPTION, info, i );
+
+                GENERAL_NAME *name = ad->location;
+
+                if ( name->type == GEN_URI )
                 {
-                    // broken name
-                    continue;
+                    int len = q_ASN1_STRING_length( name->d.uniformResourceIdentifier );
+
+                    if ( len < 0 || len >= 8192 )
+                    {
+                        // broken name
+                        continue;
+                    }
+
+                    const char *uriStr = reinterpret_cast<const char *>( q_ASN1_STRING_data( name->d.uniformResourceIdentifier ) );
+                    const QString uri = QString::fromUtf8( uriStr, len );
+
+                    result[QString::fromUtf8( QSslCertificatePrivate::asn1ObjectName( ad->method ) )] = uri;
+
                 }
-
-                const char *uriStr = reinterpret_cast<const char *>( q_ASN1_STRING_data( name->d.uniformResourceIdentifier ) );
-                const QString uri = QString::fromUtf8( uriStr, len );
-
-                result[QString::fromUtf8( QSslCertificatePrivate::asn1ObjectName( ad->method ) )] = uri;
-
+                else
+                {
+                    qWarning() << "x509ExtensionToValue() Location type unknown, " << name->type;
+                }
             }
-            else
-            {
-                qWarning() << "x509ExtensionToValue() Location type unknown, " << name->type;
-            }
-        }
 
 #if OPENSSL_VERSION_NUMBER >= 0x10000000L && OPENSSL_VERSION_NUMBER < 0x10100000L
-        q_sk_pop_free( ( _STACK * )info, reinterpret_cast<void( * )( void * )>( q_sk_free ) );
+            q_sk_pop_free( ( _STACK * )info, reinterpret_cast<void( * )( void * )>( q_sk_free ) );
 #elif OPENSSL_VERSION_NUMBER >= 0x10100000L
-        q_OPENSSL_sk_pop_free( ( _STACK * )info, reinterpret_cast<void( * )( void * )>( q_OPENSSL_sk_free ) );
+            q_OPENSSL_sk_pop_free( ( _STACK * )info, reinterpret_cast<void( * )( void * )>( q_OPENSSL_sk_free ) );
 #else
-        q_sk_pop_free( ( STACK * )info, reinterpret_cast<void( * )( void * )>( q_sk_free ) );
+            q_sk_pop_free( ( STACK * )info, reinterpret_cast<void( * )( void * )>( q_sk_free ) );
 #endif
-        return result;
-    }
-    break;
-
-    case NID_subject_key_identifier:
-    {
-        void *ext_internal = q_X509V3_EXT_d2i( ext );
-
-        // we cast away the const-ness here because some versions of openssl
-        // don't use const for the parameters in the functions pointers stored
-        // in the object.
-        X509V3_EXT_METHOD *meth = const_cast<X509V3_EXT_METHOD *>( q_X509V3_EXT_get( ext ) );
-
-        return QVariant( QString::fromUtf8( meth->i2s( meth, ext_internal ) ) );
-    }
-    break;
-
-    case NID_authority_key_identifier:
-    {
-        AUTHORITY_KEYID *auth_key = reinterpret_cast<AUTHORITY_KEYID *>( q_X509V3_EXT_d2i( ext ) );
-
-        QVariantMap result;
-
-        // keyid
-        if ( auth_key->keyid )
-        {
-            QByteArray keyid( reinterpret_cast<const char *>( auth_key->keyid->data ),
-                              auth_key->keyid->length );
-            result[QLatin1String( "keyid" )] = keyid.toHex();
+            return result;
         }
+        break;
 
-        // issuer
-        // TODO: GENERAL_NAMES
-
-        // serial
-        if ( auth_key->serial )
+        case NID_subject_key_identifier:
         {
-            result[QLatin1String( "serial" )] = ( qint64 )q_ASN1_INTEGER_get( auth_key->serial );
-        }
+            void *ext_internal = q_X509V3_EXT_d2i( ext );
 
-        q_AUTHORITY_KEYID_free( auth_key );
-        return result;
-    }
-    break;
+            // we cast away the const-ness here because some versions of openssl
+            // don't use const for the parameters in the functions pointers stored
+            // in the object.
+            X509V3_EXT_METHOD *meth = const_cast<X509V3_EXT_METHOD *>( q_X509V3_EXT_get( ext ) );
+
+            return QVariant( QString::fromUtf8( meth->i2s( meth, ext_internal ) ) );
+        }
+        break;
+
+        case NID_authority_key_identifier:
+        {
+            AUTHORITY_KEYID *auth_key = reinterpret_cast<AUTHORITY_KEYID *>( q_X509V3_EXT_d2i( ext ) );
+
+            QVariantMap result;
+
+            // keyid
+            if ( auth_key->keyid )
+            {
+                QByteArray keyid( reinterpret_cast<const char *>( auth_key->keyid->data ),
+                                  auth_key->keyid->length );
+                result[QLatin1String( "keyid" )] = keyid.toHex();
+            }
+
+            // issuer
+            // TODO: GENERAL_NAMES
+
+            // serial
+            if ( auth_key->serial )
+            {
+                result[QLatin1String( "serial" )] = ( qint64 )q_ASN1_INTEGER_get( auth_key->serial );
+            }
+
+            q_AUTHORITY_KEYID_free( auth_key );
+            return result;
+        }
+        break;
     }
 
     return QVariant();

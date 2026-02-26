@@ -113,186 +113,186 @@ inline QtWindows::WindowsEventType windowsEventType( UINT message, WPARAM wParam
 {
     switch ( message )
     {
-    case WM_PAINT:
-    case WM_ERASEBKGND:
-        return QtWindows::ExposeEvent;
+        case WM_PAINT:
+        case WM_ERASEBKGND:
+            return QtWindows::ExposeEvent;
 
-    case WM_CLOSE:
-        return QtWindows::CloseEvent;
+        case WM_CLOSE:
+            return QtWindows::CloseEvent;
 
-    case WM_DESTROY:
-        return QtWindows::DestroyEvent;
+        case WM_DESTROY:
+            return QtWindows::DestroyEvent;
 
-    case WM_ACTIVATEAPP:
-        return ( int )wParamIn ?
-               QtWindows::ActivateApplicationEvent : QtWindows::DeactivateApplicationEvent;
+        case WM_ACTIVATEAPP:
+            return ( int )wParamIn ?
+                   QtWindows::ActivateApplicationEvent : QtWindows::DeactivateApplicationEvent;
 
-    case WM_MOUSEACTIVATE:
-        return QtWindows::MouseActivateWindowEvent;
+        case WM_MOUSEACTIVATE:
+            return QtWindows::MouseActivateWindowEvent;
 
-    case WM_ACTIVATE:
-        return  LOWORD( wParamIn ) == WA_INACTIVE ?
-                QtWindows::DeactivateWindowEvent : QtWindows::ActivateWindowEvent;
+        case WM_ACTIVATE:
+            return  LOWORD( wParamIn ) == WA_INACTIVE ?
+                    QtWindows::DeactivateWindowEvent : QtWindows::ActivateWindowEvent;
 
-    case WM_SETCURSOR:
-        return QtWindows::CursorEvent;
+        case WM_SETCURSOR:
+            return QtWindows::CursorEvent;
 
-    case WM_MOUSELEAVE:
-        return QtWindows::MouseEvent;
+        case WM_MOUSELEAVE:
+            return QtWindows::MouseEvent;
 
-    case WM_HSCROLL:
-        return QtWindows::ScrollEvent;
+        case WM_HSCROLL:
+            return QtWindows::ScrollEvent;
 
-    case WM_MOUSEWHEEL:
-    case WM_MOUSEHWHEEL:
-        return QtWindows::MouseWheelEvent;
+        case WM_MOUSEWHEEL:
+        case WM_MOUSEHWHEEL:
+            return QtWindows::MouseWheelEvent;
 
-    case WM_WINDOWPOSCHANGING:
-        return QtWindows::GeometryChangingEvent;
+        case WM_WINDOWPOSCHANGING:
+            return QtWindows::GeometryChangingEvent;
 
-    case WM_MOVE:
-        return QtWindows::MoveEvent;
+        case WM_MOVE:
+            return QtWindows::MoveEvent;
 
-    case WM_SHOWWINDOW:
-        if ( wParamIn )
-        {
-            return lParamIn == SW_PARENTOPENING ? QtWindows::ShowEventOnParentRestoring : QtWindows::ShowEvent;
-        }
+        case WM_SHOWWINDOW:
+            if ( wParamIn )
+            {
+                return lParamIn == SW_PARENTOPENING ? QtWindows::ShowEventOnParentRestoring : QtWindows::ShowEvent;
+            }
 
-        return QtWindows::HideEvent;
+            return QtWindows::HideEvent;
 
-    case WM_SIZE:
-        return QtWindows::ResizeEvent;
+        case WM_SIZE:
+            return QtWindows::ResizeEvent;
 
-    case WM_NCCALCSIZE:
-        return QtWindows::CalculateSize;
+        case WM_NCCALCSIZE:
+            return QtWindows::CalculateSize;
 
-    case WM_NCHITTEST:
-        return QtWindows::NonClientHitTest;
+        case WM_NCHITTEST:
+            return QtWindows::NonClientHitTest;
 
-    case WM_GETMINMAXINFO:
-        return QtWindows::QuerySizeHints;
+        case WM_GETMINMAXINFO:
+            return QtWindows::QuerySizeHints;
 
-    case WM_KEYDOWN:                        // keyboard event
-    case WM_SYSKEYDOWN:
-        return QtWindows::KeyDownEvent;
+        case WM_KEYDOWN:                        // keyboard event
+        case WM_SYSKEYDOWN:
+            return QtWindows::KeyDownEvent;
 
-    case WM_KEYUP:
-    case WM_SYSKEYUP:
-    case WM_CHAR:
-        return QtWindows::KeyEvent;
+        case WM_KEYUP:
+        case WM_SYSKEYUP:
+        case WM_CHAR:
+            return QtWindows::KeyEvent;
 
-    case WM_IME_CHAR:
-        return QtWindows::InputMethodKeyEvent;
+        case WM_IME_CHAR:
+            return QtWindows::InputMethodKeyEvent;
 
-    case WM_IME_KEYDOWN:
-        return QtWindows::InputMethodKeyDownEvent;
+        case WM_IME_KEYDOWN:
+            return QtWindows::InputMethodKeyDownEvent;
 
 #ifdef WM_INPUTLANGCHANGE
 
-    case WM_INPUTLANGCHANGE:
-        return QtWindows::KeyboardLayoutChangeEvent;
+        case WM_INPUTLANGCHANGE:
+            return QtWindows::KeyboardLayoutChangeEvent;
 #endif
 
-    case WM_TOUCH:
-        return QtWindows::TouchEvent;
+        case WM_TOUCH:
+            return QtWindows::TouchEvent;
 
-    case WM_CHANGECBCHAIN:
-    case WM_DRAWCLIPBOARD:
-    case WM_RENDERFORMAT:
-    case WM_RENDERALLFORMATS:
-    case WM_DESTROYCLIPBOARD:
-        return QtWindows::ClipboardEvent;
+        case WM_CHANGECBCHAIN:
+        case WM_DRAWCLIPBOARD:
+        case WM_RENDERFORMAT:
+        case WM_RENDERALLFORMATS:
+        case WM_DESTROYCLIPBOARD:
+            return QtWindows::ClipboardEvent;
 
-    case WM_IME_STARTCOMPOSITION:
-        return QtWindows::InputMethodStartCompositionEvent;
+        case WM_IME_STARTCOMPOSITION:
+            return QtWindows::InputMethodStartCompositionEvent;
 
-    case WM_IME_ENDCOMPOSITION:
-        return QtWindows::InputMethodEndCompositionEvent;
+        case WM_IME_ENDCOMPOSITION:
+            return QtWindows::InputMethodEndCompositionEvent;
 
-    case WM_IME_COMPOSITION:
-        return QtWindows::InputMethodCompositionEvent;
+        case WM_IME_COMPOSITION:
+            return QtWindows::InputMethodCompositionEvent;
 
-    case WM_IME_REQUEST:
-        return QtWindows::InputMethodRequest;
+        case WM_IME_REQUEST:
+            return QtWindows::InputMethodRequest;
 
-    case WM_IME_NOTIFY:
-        switch ( int( wParamIn ) )
-        {
-        case IMN_OPENCANDIDATE:
-            return QtWindows::InputMethodOpenCandidateWindowEvent;
+        case WM_IME_NOTIFY:
+            switch ( int( wParamIn ) )
+            {
+                case IMN_OPENCANDIDATE:
+                    return QtWindows::InputMethodOpenCandidateWindowEvent;
 
-        case IMN_CLOSECANDIDATE:
-            return QtWindows::InputMethodCloseCandidateWindowEvent;
+                case IMN_CLOSECANDIDATE:
+                    return QtWindows::InputMethodCloseCandidateWindowEvent;
 
-        default:
+                default:
+                    break;
+            }
+
             break;
-        }
 
-        break;
+        case WM_GETOBJECT:
+            return QtWindows::AccessibleObjectFromWindowRequest;
 
-    case WM_GETOBJECT:
-        return QtWindows::AccessibleObjectFromWindowRequest;
+        case WM_SETFOCUS:
+            return QtWindows::FocusInEvent;
 
-    case WM_SETFOCUS:
-        return QtWindows::FocusInEvent;
+        case WM_KILLFOCUS:
+            return QtWindows::FocusOutEvent;
 
-    case WM_KILLFOCUS:
-        return QtWindows::FocusOutEvent;
+        // Among other things, WM_SETTINGCHANGE happens when the taskbar is moved
+        // and therefore the "working area" changes.
+        // http://msdn.microsoft.com/en-us/library/ms695534(v=vs.85).aspx
+        case WM_SETTINGCHANGE:
+            return QtWindows::SettingChangedEvent;
 
-    // Among other things, WM_SETTINGCHANGE happens when the taskbar is moved
-    // and therefore the "working area" changes.
-    // http://msdn.microsoft.com/en-us/library/ms695534(v=vs.85).aspx
-    case WM_SETTINGCHANGE:
-        return QtWindows::SettingChangedEvent;
+        case WM_DISPLAYCHANGE:
+            return QtWindows::DisplayChangedEvent;
 
-    case WM_DISPLAYCHANGE:
-        return QtWindows::DisplayChangedEvent;
-
-    case WM_THEMECHANGED:
+        case WM_THEMECHANGED:
 #ifdef WM_SYSCOLORCHANGE // Windows 7: Handle color change as theme change (QTBUG-34170).
-    case WM_SYSCOLORCHANGE:
+        case WM_SYSCOLORCHANGE:
 #endif
-        return QtWindows::ThemeChanged;
+            return QtWindows::ThemeChanged;
 
-    case WM_DWMCOMPOSITIONCHANGED:
-        return QtWindows::CompositionSettingsChanged;
+        case WM_DWMCOMPOSITIONCHANGED:
+            return QtWindows::CompositionSettingsChanged;
 #ifndef LSCS_NO_CONTEXTMENU
 
-    case WM_CONTEXTMENU:
+        case WM_CONTEXTMENU:
 
-        return QtWindows::ContextMenu;
+            return QtWindows::ContextMenu;
 #endif
 
-    case WM_SYSCOMMAND:
-        if ( ( wParamIn & 0xfff0 ) == SC_CONTEXTHELP )
-        {
-            return QtWindows::WhatsThisEvent;
-        }
+        case WM_SYSCOMMAND:
+            if ( ( wParamIn & 0xfff0 ) == SC_CONTEXTHELP )
+            {
+                return QtWindows::WhatsThisEvent;
+            }
 
-        break;
+            break;
 
 #if ! defined(LSCS_NO_SESSIONMANAGER)
 
-    case WM_QUERYENDSESSION:
-        return QtWindows::QueryEndSessionApplicationEvent;
+        case WM_QUERYENDSESSION:
+            return QtWindows::QueryEndSessionApplicationEvent;
 
-    case WM_ENDSESSION:
+        case WM_ENDSESSION:
 
-        return QtWindows::EndSessionApplicationEvent;
+            return QtWindows::EndSessionApplicationEvent;
 #endif
 
 #if defined(WM_APPCOMMAND)
 
-    case WM_APPCOMMAND:
-        return QtWindows::AppCommandEvent;
+        case WM_APPCOMMAND:
+            return QtWindows::AppCommandEvent;
 #endif
 
-    case WM_GESTURE:
-        return QtWindows::GestureEvent;
+        case WM_GESTURE:
+            return QtWindows::GestureEvent;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     if ( message >= WM_NCMOUSEMOVE && message <= WM_NCMBUTTONDBLCLK )

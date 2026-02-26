@@ -39,74 +39,74 @@ static QNetworkReply::NetworkError statusCodeFromHttp( int httpStatusCode, const
     // we have an error
     switch ( httpStatusCode )
     {
-    case 400:               // Bad Request
-        code = QNetworkReply::ProtocolInvalidOperationError;
-        break;
+        case 400:               // Bad Request
+            code = QNetworkReply::ProtocolInvalidOperationError;
+            break;
 
-    case 401:               // Authorization required
-        code = QNetworkReply::AuthenticationRequiredError;
-        break;
+        case 401:               // Authorization required
+            code = QNetworkReply::AuthenticationRequiredError;
+            break;
 
-    case 403:               // Access denied
-        code = QNetworkReply::ContentOperationNotPermittedError;
-        break;
+        case 403:               // Access denied
+            code = QNetworkReply::ContentOperationNotPermittedError;
+            break;
 
-    case 404:               // Not Found
-        code = QNetworkReply::ContentNotFoundError;
-        break;
+        case 404:               // Not Found
+            code = QNetworkReply::ContentNotFoundError;
+            break;
 
-    case 405:               // Method Not Allowed
-        code = QNetworkReply::ContentOperationNotPermittedError;
-        break;
+        case 405:               // Method Not Allowed
+            code = QNetworkReply::ContentOperationNotPermittedError;
+            break;
 
-    case 407:
-        code = QNetworkReply::ProxyAuthenticationRequiredError;
-        break;
+        case 407:
+            code = QNetworkReply::ProxyAuthenticationRequiredError;
+            break;
 
-    case 409:               // Resource Conflict
-        code = QNetworkReply::ContentConflictError;
-        break;
+        case 409:               // Resource Conflict
+            code = QNetworkReply::ContentConflictError;
+            break;
 
-    case 410:               // Content no longer available
-        code = QNetworkReply::ContentGoneError;
-        break;
+        case 410:               // Content no longer available
+            code = QNetworkReply::ContentGoneError;
+            break;
 
-    case 418:               // I'm a teapot
-        code = QNetworkReply::ProtocolInvalidOperationError;
-        break;
+        case 418:               // I'm a teapot
+            code = QNetworkReply::ProtocolInvalidOperationError;
+            break;
 
-    case 500:               // Internal Server Error
-        code = QNetworkReply::InternalServerError;
-        break;
+        case 500:               // Internal Server Error
+            code = QNetworkReply::InternalServerError;
+            break;
 
-    case 501:               // Server does not support this functionality
-        code = QNetworkReply::OperationNotImplementedError;
-        break;
+        case 501:               // Server does not support this functionality
+            code = QNetworkReply::OperationNotImplementedError;
+            break;
 
-    case 503:               // Service unavailable
-        code = QNetworkReply::ServiceUnavailableError;
-        break;
+        case 503:               // Service unavailable
+            code = QNetworkReply::ServiceUnavailableError;
+            break;
 
-    default:
-        if ( httpStatusCode > 500 )
-        {
-            // some kind of server error
-            code = QNetworkReply::UnknownServerError;
+        default:
+            if ( httpStatusCode > 500 )
+            {
+                // some kind of server error
+                code = QNetworkReply::UnknownServerError;
 
-        }
-        else if ( httpStatusCode >= 400 )
-        {
-            // content error we did not handle above
-            code = QNetworkReply::UnknownContentError;
+            }
+            else if ( httpStatusCode >= 400 )
+            {
+                // content error we did not handle above
+                code = QNetworkReply::UnknownContentError;
 
-        }
-        else
-        {
-            qWarning( "QNetworkReply::statusCodeFromHttp() HTTP status code %d was not expected from url %s",
-                      httpStatusCode, lscsPrintable( url.toString() ) );
+            }
+            else
+            {
+                qWarning( "QNetworkReply::statusCodeFromHttp() HTTP status code %d was not expected from url %s",
+                          httpStatusCode, lscsPrintable( url.toString() ) );
 
-            code = QNetworkReply::ProtocolFailure;
-        }
+                code = QNetworkReply::ProtocolFailure;
+            }
     }
 
     return code;
@@ -144,17 +144,17 @@ static QByteArray makeCacheKey( QUrl &url, QNetworkProxy *proxy )
 
         switch ( proxy->type() )
         {
-        case QNetworkProxy::Socks5Proxy:
-            key.setScheme( "proxy-socks5" );
-            break;
+            case QNetworkProxy::Socks5Proxy:
+                key.setScheme( "proxy-socks5" );
+                break;
 
-        case QNetworkProxy::HttpProxy:
-        case QNetworkProxy::HttpCachingProxy:
-            key.setScheme( "proxy-http" );
-            break;
+            case QNetworkProxy::HttpProxy:
+            case QNetworkProxy::HttpCachingProxy:
+                key.setScheme( "proxy-http" );
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         if ( !key.scheme().isEmpty() )
@@ -320,7 +320,7 @@ void QHttpThreadDelegate::startRequest()
         httpConnection = new QNetworkAccessCachedHttpConnection( urlCopy.host(), urlCopy.port(), ssl, connectionType );
 #else
         httpConnection = new QNetworkAccessCachedHttpConnection( urlCopy.host(),
-            urlCopy.port(), ssl, connectionType, networkSession );
+                urlCopy.port(), ssl, connectionType, networkSession );
 #endif
 
 #ifdef LSCS_SSL

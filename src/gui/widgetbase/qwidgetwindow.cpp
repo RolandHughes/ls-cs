@@ -199,17 +199,17 @@ static inline bool shouldBePropagatedToWidget( QEvent *event )
 {
     switch ( event->type() )
     {
-    // Handing show events to widgets would cause them to be triggered twice
-    case QEvent::Show:
-    case QEvent::Hide:
-    case QEvent::Timer:
-    case QEvent::DynamicPropertyChange:
-    case QEvent::ChildAdded:
-    case QEvent::ChildRemoved:
-        return false;
+        // Handing show events to widgets would cause them to be triggered twice
+        case QEvent::Show:
+        case QEvent::Hide:
+        case QEvent::Timer:
+        case QEvent::DynamicPropertyChange:
+        case QEvent::ChildAdded:
+        case QEvent::ChildRemoved:
+            return false;
 
-    default:
-        return true;
+        default:
+            return true;
     }
 }
 
@@ -234,154 +234,154 @@ bool QWidgetWindow::event( QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::Close:
-        handleCloseEvent( static_cast<QCloseEvent *>( event ) );
-        return true;
+        case QEvent::Close:
+            handleCloseEvent( static_cast<QCloseEvent *>( event ) );
+            return true;
 
-    case QEvent::Enter:
-    case QEvent::Leave:
-        handleEnterLeaveEvent( event );
-        return true;
+        case QEvent::Enter:
+        case QEvent::Leave:
+            handleEnterLeaveEvent( event );
+            return true;
 
-    // these should not be sent to QWidget, the corresponding events
-    // are sent by QApplicationPrivate::notifyActiveWindowChange()
-    case QEvent::FocusIn:
-        handleFocusInEvent( static_cast<QFocusEvent *>( event ) );
-        [[fallthrough]];
+        // these should not be sent to QWidget, the corresponding events
+        // are sent by QApplicationPrivate::notifyActiveWindowChange()
+        case QEvent::FocusIn:
+            handleFocusInEvent( static_cast<QFocusEvent *>( event ) );
+            [[fallthrough]];
 
-    case QEvent::FocusOut:
-    {
-#ifndef LSCS_NO_ACCESSIBILITY
-        QAccessible::State state;
-        state.active = true;
-        QAccessibleStateChangeEvent ev( m_widget, state );
-        QAccessible::updateAccessibility( &ev );
-#endif
-        return false;
-    }
-
-    case QEvent::FocusAboutToChange:
-        if ( QApplicationPrivate::focus_widget )
+        case QEvent::FocusOut:
         {
-            if ( QApplicationPrivate::focus_widget->testAttribute( Qt::WA_InputMethodEnabled ) )
-            {
-                QGuiApplication::inputMethod()->commit();
-            }
-
-            QGuiApplication::sendSpontaneousEvent( QApplicationPrivate::focus_widget, event );
+#ifndef LSCS_NO_ACCESSIBILITY
+            QAccessible::State state;
+            state.active = true;
+            QAccessibleStateChangeEvent ev( m_widget, state );
+            QAccessible::updateAccessibility( &ev );
+#endif
+            return false;
         }
 
-        return true;
+        case QEvent::FocusAboutToChange:
+            if ( QApplicationPrivate::focus_widget )
+            {
+                if ( QApplicationPrivate::focus_widget->testAttribute( Qt::WA_InputMethodEnabled ) )
+                {
+                    QGuiApplication::inputMethod()->commit();
+                }
 
-    case QEvent::KeyPress:
-    case QEvent::KeyRelease:
-    case QEvent::ShortcutOverride:
-        handleKeyEvent( static_cast<QKeyEvent *>( event ) );
-        return true;
+                QGuiApplication::sendSpontaneousEvent( QApplicationPrivate::focus_widget, event );
+            }
 
-    case QEvent::MouseMove:
-    case QEvent::MouseButtonPress:
-    case QEvent::MouseButtonRelease:
-    case QEvent::MouseButtonDblClick:
-        handleMouseEvent( static_cast<QMouseEvent *>( event ) );
-        return true;
+            return true;
 
-    case QEvent::NonClientAreaMouseMove:
-    case QEvent::NonClientAreaMouseButtonPress:
-    case QEvent::NonClientAreaMouseButtonRelease:
-    case QEvent::NonClientAreaMouseButtonDblClick:
-        handleNonClientAreaMouseEvent( static_cast<QMouseEvent *>( event ) );
-        return true;
+        case QEvent::KeyPress:
+        case QEvent::KeyRelease:
+        case QEvent::ShortcutOverride:
+            handleKeyEvent( static_cast<QKeyEvent *>( event ) );
+            return true;
 
-    case QEvent::TouchBegin:
-    case QEvent::TouchUpdate:
-    case QEvent::TouchEnd:
-    case QEvent::TouchCancel:
-        handleTouchEvent( static_cast<QTouchEvent *>( event ) );
-        return true;
+        case QEvent::MouseMove:
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonRelease:
+        case QEvent::MouseButtonDblClick:
+            handleMouseEvent( static_cast<QMouseEvent *>( event ) );
+            return true;
 
-    case QEvent::Move:
-        handleMoveEvent( static_cast<QMoveEvent *>( event ) );
-        return true;
+        case QEvent::NonClientAreaMouseMove:
+        case QEvent::NonClientAreaMouseButtonPress:
+        case QEvent::NonClientAreaMouseButtonRelease:
+        case QEvent::NonClientAreaMouseButtonDblClick:
+            handleNonClientAreaMouseEvent( static_cast<QMouseEvent *>( event ) );
+            return true;
 
-    case QEvent::Resize:
-        handleResizeEvent( static_cast<QResizeEvent *>( event ) );
-        return true;
+        case QEvent::TouchBegin:
+        case QEvent::TouchUpdate:
+        case QEvent::TouchEnd:
+        case QEvent::TouchCancel:
+            handleTouchEvent( static_cast<QTouchEvent *>( event ) );
+            return true;
+
+        case QEvent::Move:
+            handleMoveEvent( static_cast<QMoveEvent *>( event ) );
+            return true;
+
+        case QEvent::Resize:
+            handleResizeEvent( static_cast<QResizeEvent *>( event ) );
+            return true;
 
 #ifndef LSCS_NO_WHEELEVENT
 
-    case QEvent::Wheel:
-        handleWheelEvent( static_cast<QWheelEvent *>( event ) );
-        return true;
+        case QEvent::Wheel:
+            handleWheelEvent( static_cast<QWheelEvent *>( event ) );
+            return true;
 #endif
 
 #ifndef LSCS_NO_DRAGANDDROP
 
-    case QEvent::DragEnter:
-    case QEvent::DragMove:
-        handleDragEnterMoveEvent( static_cast<QDragMoveEvent *>( event ) );
-        return true;
+        case QEvent::DragEnter:
+        case QEvent::DragMove:
+            handleDragEnterMoveEvent( static_cast<QDragMoveEvent *>( event ) );
+            return true;
 
-    case QEvent::DragLeave:
-        handleDragLeaveEvent( static_cast<QDragLeaveEvent *>( event ) );
-        return true;
+        case QEvent::DragLeave:
+            handleDragLeaveEvent( static_cast<QDragLeaveEvent *>( event ) );
+            return true;
 
-    case QEvent::Drop:
-        handleDropEvent( static_cast<QDropEvent *>( event ) );
-        return true;
+        case QEvent::Drop:
+            handleDropEvent( static_cast<QDropEvent *>( event ) );
+            return true;
 #endif
 
-    case QEvent::Expose:
-        handleExposeEvent( static_cast<QExposeEvent *>( event ) );
+        case QEvent::Expose:
+            handleExposeEvent( static_cast<QExposeEvent *>( event ) );
+            return true;
+
+        case QEvent::WindowStateChange:
+            handleWindowStateChangedEvent( static_cast<QWindowStateChangeEvent *>( event ) );
+            return true;
+
+        case QEvent::ThemeChange:
+        {
+            QEvent widgetEvent( QEvent::ThemeChange );
+            QGuiApplication::sendSpontaneousEvent( m_widget, &widgetEvent );
+        }
+
         return true;
-
-    case QEvent::WindowStateChange:
-        handleWindowStateChangedEvent( static_cast<QWindowStateChangeEvent *>( event ) );
-        return true;
-
-    case QEvent::ThemeChange:
-    {
-        QEvent widgetEvent( QEvent::ThemeChange );
-        QGuiApplication::sendSpontaneousEvent( m_widget, &widgetEvent );
-    }
-
-    return true;
 
 #ifndef LSCS_NO_TABLETEVENT
 
-    case QEvent::TabletPress:
-    case QEvent::TabletMove:
-    case QEvent::TabletRelease:
-        handleTabletEvent( static_cast<QTabletEvent *>( event ) );
-        return true;
+        case QEvent::TabletPress:
+        case QEvent::TabletMove:
+        case QEvent::TabletRelease:
+            handleTabletEvent( static_cast<QTabletEvent *>( event ) );
+            return true;
 #endif
 
 #ifndef LSCS_NO_GESTURES
 
-    case QEvent::NativeGesture:
-        handleGestureEvent( static_cast<QNativeGestureEvent *>( event ) );
-        return true;
+        case QEvent::NativeGesture:
+            handleGestureEvent( static_cast<QNativeGestureEvent *>( event ) );
+            return true;
 #endif
 
 #ifndef LSCS_NO_CONTEXTMENU
 
-    case QEvent::ContextMenu:
-        handleContextMenuEvent( static_cast<QContextMenuEvent *>( event ) );
-        return true;
+        case QEvent::ContextMenu:
+            handleContextMenuEvent( static_cast<QContextMenuEvent *>( event ) );
+            return true;
 #endif
 
-    case QEvent::WindowBlocked:
-        lscs_button_down = nullptr;
-        break;
+        case QEvent::WindowBlocked:
+            lscs_button_down = nullptr;
+            break;
 
-    case QEvent::UpdateRequest:
-        // This is not the same as an UpdateRequest for a QWidget. That just
-        // syncs the backing store while here we also must mark as dirty.
-        m_widget->repaint();
-        return true;
+        case QEvent::UpdateRequest:
+            // This is not the same as an UpdateRequest for a QWidget. That just
+            // syncs the backing store while here we also must mark as dirty.
+            m_widget->repaint();
+            return true;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     if ( shouldBePropagatedToWidget( event ) && QCoreApplication::sendEvent( m_widget, event ) )
@@ -569,18 +569,18 @@ void QWidgetWindow::handleMouseEvent( QMouseEvent *event )
 
         switch ( event->type() )
         {
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonDblClick:
-            lscs_button_down = popupChild;
-            lscs_popup_down = activePopupWidget;
-            break;
+            case QEvent::MouseButtonPress:
+            case QEvent::MouseButtonDblClick:
+                lscs_button_down = popupChild;
+                lscs_popup_down = activePopupWidget;
+                break;
 
-        case QEvent::MouseButtonRelease:
-            releaseAfter = true;
-            break;
+            case QEvent::MouseButtonRelease:
+                releaseAfter = true;
+                break;
 
-        default:
-            break; // nothing for mouse move
+            default:
+                break; // nothing for mouse move
         }
 
         int oldOpenPopupCount = openPopupCount;
@@ -649,14 +649,14 @@ void QWidgetWindow::handleMouseEvent( QMouseEvent *event )
             // close disabled popups when a mouse button is pressed or released
             switch ( event->type() )
             {
-            case QEvent::MouseButtonPress:
-            case QEvent::MouseButtonDblClick:
-            case QEvent::MouseButtonRelease:
-                activePopupWidget->close();
-                break;
+                case QEvent::MouseButtonPress:
+                case QEvent::MouseButtonDblClick:
+                case QEvent::MouseButtonRelease:
+                    activePopupWidget->close();
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
 
@@ -1250,28 +1250,28 @@ void QWidgetWindow::handleWindowStateChangedEvent( QWindowStateChangeEvent *even
     // Determine the new widget state, remember maximized/full screen during minimized
     switch ( windowState() )
     {
-    case Qt::WindowNoState:
-        widgetState &= ~( Qt::WindowMinimized | Qt::WindowMaximized | Qt::WindowFullScreen );
-        break;
+        case Qt::WindowNoState:
+            widgetState &= ~( Qt::WindowMinimized | Qt::WindowMaximized | Qt::WindowFullScreen );
+            break;
 
-    case Qt::WindowMinimized:
-        widgetState |= Qt::WindowMinimized;
-        break;
+        case Qt::WindowMinimized:
+            widgetState |= Qt::WindowMinimized;
+            break;
 
-    case Qt::WindowMaximized:
-        updateNormalGeometry();
-        widgetState |= Qt::WindowMaximized;
-        widgetState &= ~( Qt::WindowMinimized | Qt::WindowFullScreen );
-        break;
+        case Qt::WindowMaximized:
+            updateNormalGeometry();
+            widgetState |= Qt::WindowMaximized;
+            widgetState &= ~( Qt::WindowMinimized | Qt::WindowFullScreen );
+            break;
 
-    case Qt::WindowFullScreen:
-        updateNormalGeometry();
-        widgetState |= Qt::WindowFullScreen;
-        widgetState &= ~( Qt::WindowMinimized );
-        break;
+        case Qt::WindowFullScreen:
+            updateNormalGeometry();
+            widgetState |= Qt::WindowFullScreen;
+            widgetState &= ~( Qt::WindowMinimized );
+            break;
 
-    case Qt::WindowActive: // Not handled by QWindow
-        break;
+        case Qt::WindowActive: // Not handled by QWindow
+            break;
     }
 
     // Sent event if the state changed (that is, it is not triggered by

@@ -1159,31 +1159,31 @@ void QLineControl::parseInputMask( const QString &maskFields )
         {
             switch ( c.unicode() )
             {
-            case 'A':
-            case 'a':
-            case 'N':
-            case 'n':
-            case 'X':
-            case 'x':
-            case '9':
-            case '0':
-            case 'D':
-            case 'd':
-            case '#':
-            case 'H':
-            case 'h':
-            case 'B':
-            case 'b':
-                s = false;
-                break;
+                case 'A':
+                case 'a':
+                case 'N':
+                case 'n':
+                case 'X':
+                case 'x':
+                case '9':
+                case '0':
+                case 'D':
+                case 'd':
+                case '#':
+                case 'H':
+                case 'h':
+                case 'B':
+                case 'b':
+                    s = false;
+                    break;
 
-            case '\\':
-                escape = true;
-                [[fallthrough]];
+                case '\\':
+                    escape = true;
+                    [[fallthrough]];
 
-            default:
-                s = true;
-                break;
+                default:
+                    s = true;
+                    break;
             }
 
             if ( ! escape )
@@ -1209,130 +1209,130 @@ bool QLineControl::isValidInput( QChar key, QChar mask ) const
 {
     switch ( mask.unicode() )
     {
-    case 'A':
-        if ( key.isLetter() )
-        {
-            return true;
-        }
+        case 'A':
+            if ( key.isLetter() )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case 'a':
-        if ( key.isLetter() || key == m_blank )
-        {
-            return true;
-        }
+        case 'a':
+            if ( key.isLetter() || key == m_blank )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case 'N':
-        if ( key.isLetterOrNumber() )
-        {
-            return true;
-        }
+        case 'N':
+            if ( key.isLetterOrNumber() )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case 'n':
-        if ( key.isLetterOrNumber() || key == m_blank )
-        {
-            return true;
-        }
+        case 'n':
+            if ( key.isLetterOrNumber() || key == m_blank )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case 'X':
-        if ( key.isPrint() )
-        {
-            return true;
-        }
+        case 'X':
+            if ( key.isPrint() )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case 'x':
-        if ( key.isPrint() || key == m_blank )
-        {
-            return true;
-        }
+        case 'x':
+            if ( key.isPrint() || key == m_blank )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case '9':
-        if ( key.isNumber() )
-        {
-            return true;
-        }
+        case '9':
+            if ( key.isNumber() )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case '0':
-        if ( key.isNumber() || key == m_blank )
-        {
-            return true;
-        }
+        case '0':
+            if ( key.isNumber() || key == m_blank )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case 'D':
-        if ( key.isNumber() && key.digitValue() > 0 )
-        {
-            return true;
-        }
+        case 'D':
+            if ( key.isNumber() && key.digitValue() > 0 )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case 'd':
-        if ( ( key.isNumber() && key.digitValue() > 0 ) || key == m_blank )
-        {
-            return true;
-        }
+        case 'd':
+            if ( ( key.isNumber() && key.digitValue() > 0 ) || key == m_blank )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case '#':
-        if ( key.isNumber() || key == QLatin1Char( '+' ) || key == QLatin1Char( '-' ) || key == m_blank )
-        {
-            return true;
-        }
+        case '#':
+            if ( key.isNumber() || key == QLatin1Char( '+' ) || key == QLatin1Char( '-' ) || key == m_blank )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case 'B':
-        if ( key == QLatin1Char( '0' ) || key == QLatin1Char( '1' ) )
-        {
-            return true;
-        }
+        case 'B':
+            if ( key == QLatin1Char( '0' ) || key == QLatin1Char( '1' ) )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case 'b':
-        if ( key == QLatin1Char( '0' ) || key == QLatin1Char( '1' ) || key == m_blank )
-        {
-            return true;
-        }
+        case 'b':
+            if ( key == QLatin1Char( '0' ) || key == QLatin1Char( '1' ) || key == m_blank )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case 'H':
-        if ( key.isNumber() || ( key >= QLatin1Char( 'a' ) && key <= QLatin1Char( 'f' ) ) || ( key >= QLatin1Char( 'A' ) &&
-                key <= QLatin1Char( 'F' ) ) )
-        {
-            return true;
-        }
+        case 'H':
+            if ( key.isNumber() || ( key >= QLatin1Char( 'a' ) && key <= QLatin1Char( 'f' ) ) || ( key >= QLatin1Char( 'A' ) &&
+                    key <= QLatin1Char( 'F' ) ) )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case 'h':
-        if ( key.isNumber() || ( key >= QLatin1Char( 'a' ) && key <= QLatin1Char( 'f' ) ) || ( key >= QLatin1Char( 'A' ) &&
-                key <= QLatin1Char( 'F' ) ) || key == m_blank )
-        {
-            return true;
-        }
+        case 'h':
+            if ( key.isNumber() || ( key >= QLatin1Char( 'a' ) && key <= QLatin1Char( 'f' ) ) || ( key >= QLatin1Char( 'A' ) &&
+                    key <= QLatin1Char( 'F' ) ) || key == m_blank )
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return false;
@@ -1434,16 +1434,16 @@ QString QLineControl::maskString( uint pos, const QString &str, bool clear ) con
                 {
                     switch ( m_maskData[i].caseMode )
                     {
-                    case MaskInputData::Upper:
-                        s += str[( int )strIndex].toUpper();
-                        break;
+                        case MaskInputData::Upper:
+                            s += str[( int )strIndex].toUpper();
+                            break;
 
-                    case MaskInputData::Lower:
-                        s += str[( int )strIndex].toLower();
-                        break;
+                        case MaskInputData::Lower:
+                            s += str[( int )strIndex].toLower();
+                            break;
 
-                    default:
-                        s += str[( int )strIndex];
+                        default:
+                            s += str[( int )strIndex];
                     }
 
                     ++i;
@@ -1473,16 +1473,16 @@ QString QLineControl::maskString( uint pos, const QString &str, bool clear ) con
 
                             switch ( m_maskData[n].caseMode )
                             {
-                            case MaskInputData::Upper:
-                                s += str[( int )strIndex].toUpper();
-                                break;
+                                case MaskInputData::Upper:
+                                    s += str[( int )strIndex].toUpper();
+                                    break;
 
-                            case MaskInputData::Lower:
-                                s += str[( int )strIndex].toLower();
-                                break;
+                                case MaskInputData::Lower:
+                                    s += str[( int )strIndex].toLower();
+                                    break;
 
-                            default:
-                                s += str[( int )strIndex];
+                                default:
+                                    s += str[( int )strIndex];
                             }
 
                             i = n + 1; // updates i to find + 1
@@ -1623,31 +1623,31 @@ void QLineControl::internalUndo( int until )
 
         switch ( cmd.type )
         {
-        case Insert:
-            m_text.remove( cmd.pos, 1 );
-            m_cursor = cmd.pos;
-            break;
+            case Insert:
+                m_text.remove( cmd.pos, 1 );
+                m_cursor = cmd.pos;
+                break;
 
-        case SetSelection:
-            m_selstart = cmd.selStart;
-            m_selend = cmd.selEnd;
-            m_cursor = cmd.pos;
-            break;
+            case SetSelection:
+                m_selstart = cmd.selStart;
+                m_selend = cmd.selEnd;
+                m_cursor = cmd.pos;
+                break;
 
-        case Remove:
-        case RemoveSelection:
-            m_text.insert( cmd.pos, cmd.uc );
-            m_cursor = cmd.pos + 1;
-            break;
+            case Remove:
+            case RemoveSelection:
+                m_text.insert( cmd.pos, cmd.uc );
+                m_cursor = cmd.pos + 1;
+                break;
 
-        case Delete:
-        case DeleteSelection:
-            m_text.insert( cmd.pos, cmd.uc );
-            m_cursor = cmd.pos;
-            break;
+            case Delete:
+            case DeleteSelection:
+                m_text.insert( cmd.pos, cmd.uc );
+                m_cursor = cmd.pos;
+                break;
 
-        case Separator:
-            continue;
+            case Separator:
+                continue;
         }
 
         if ( until < 0 && m_undoState )
@@ -1681,32 +1681,32 @@ void QLineControl::internalRedo()
 
         switch ( cmd.type )
         {
-        case Insert:
-            m_text.insert( cmd.pos, cmd.uc );
-            m_cursor = cmd.pos + 1;
-            break;
+            case Insert:
+                m_text.insert( cmd.pos, cmd.uc );
+                m_cursor = cmd.pos + 1;
+                break;
 
-        case SetSelection:
-            m_selstart = cmd.selStart;
-            m_selend = cmd.selEnd;
-            m_cursor = cmd.pos;
-            break;
+            case SetSelection:
+                m_selstart = cmd.selStart;
+                m_selend = cmd.selEnd;
+                m_cursor = cmd.pos;
+                break;
 
-        case Remove:
-        case Delete:
-        case RemoveSelection:
-        case DeleteSelection:
-            m_text.remove( cmd.pos, 1 );
-            m_selstart = cmd.selStart;
-            m_selend = cmd.selEnd;
-            m_cursor = cmd.pos;
-            break;
+            case Remove:
+            case Delete:
+            case RemoveSelection:
+            case DeleteSelection:
+                m_text.remove( cmd.pos, 1 );
+                m_selstart = cmd.selStart;
+                m_selend = cmd.selEnd;
+                m_cursor = cmd.pos;
+                break;
 
-        case Separator:
-            m_selstart = cmd.selStart;
-            m_selend = cmd.selEnd;
-            m_cursor = cmd.pos;
-            break;
+            case Separator:
+                m_selstart = cmd.selStart;
+                m_selend = cmd.selEnd;
+                m_cursor = cmd.pos;
+                break;
         }
 
         if ( m_undoState < ( int )m_history.size() )
@@ -1987,16 +1987,16 @@ void QLineControl::processShortcutOverrideEvent( QKeyEvent *ke )
         {
             switch ( ke->key() )
             {
-            case Qt::Key_Delete:
-            case Qt::Key_Home:
-            case Qt::Key_End:
-            case Qt::Key_Backspace:
-            case Qt::Key_Left:
-            case Qt::Key_Right:
-                ke->accept();
+                case Qt::Key_Delete:
+                case Qt::Key_Home:
+                case Qt::Key_End:
+                case Qt::Key_Backspace:
+                case Qt::Key_Left:
+                case Qt::Key_Right:
+                    ke->accept();
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
     }
@@ -2024,52 +2024,52 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
             // Ignoring the events lets the completer provide suitable default behavior
             switch ( event->key() )
             {
-            case Qt::Key_Escape:
-                event->ignore();
-                return;
+                case Qt::Key_Escape:
+                    event->ignore();
+                    return;
 
-            case Qt::Key_Enter:
-            case Qt::Key_Return:
-            case Qt::Key_F4:
+                case Qt::Key_Enter:
+                case Qt::Key_Return:
+                case Qt::Key_F4:
 #ifdef LSCS_KEYPAD_NAVIGATION
-            case Qt::Key_Select:
-                if ( !QApplication::keypadNavigationEnabled() )
-                {
-                    break;
-                }
+                case Qt::Key_Select:
+                    if ( !QApplication::keypadNavigationEnabled() )
+                    {
+                        break;
+                    }
 
 #endif
-                m_completer->popup()->hide(); // just hide. will end up propagating to parent
+                    m_completer->popup()->hide(); // just hide. will end up propagating to parent
 
-            default:
-                break; // normal key processing
+                default:
+                    break; // normal key processing
             }
         }
         else if ( completionMode == QCompleter::InlineCompletion )
         {
             switch ( event->key() )
             {
-            case Qt::Key_Enter:
-            case Qt::Key_Return:
-            case Qt::Key_F4:
+                case Qt::Key_Enter:
+                case Qt::Key_Return:
+                case Qt::Key_F4:
 #ifdef LSCS_KEYPAD_NAVIGATION
-            case Qt::Key_Select:
-                if ( !QApplication::keypadNavigationEnabled() )
-                {
-                    break;
-                }
+                case Qt::Key_Select:
+                    if ( !QApplication::keypadNavigationEnabled() )
+                    {
+                        break;
+                    }
 
 #endif
 
-                if ( !m_completer->currentCompletion().isEmpty() && hasSelectedText()
-                        && textAfterSelection().isEmpty() )
-                {
-                    setText( m_completer->currentCompletion() );
-                    inlineCompletionAccepted = true;
-                }
+                    if ( !m_completer->currentCompletion().isEmpty() && hasSelectedText()
+                            && textAfterSelection().isEmpty() )
+                    {
+                        setText( m_completer->currentCompletion() );
+                        inlineCompletionAccepted = true;
+                    }
 
-            default:
-                break; // normal key processing
+                default:
+                    break; // normal key processing
             }
         }
     }
@@ -2381,80 +2381,80 @@ void QLineControl::processKeyEvent( QKeyEvent *event )
         {
             switch ( event->key() )
             {
-            case Qt::Key_Backspace:
-                if ( !isReadOnly() )
-                {
-                    cursorWordBackward( true );
-                    del();
-                }
+                case Qt::Key_Backspace:
+                    if ( !isReadOnly() )
+                    {
+                        cursorWordBackward( true );
+                        del();
+                    }
 
-                break;
+                    break;
 #ifndef LSCS_NO_COMPLETER
 
-            case Qt::Key_Up:
-            case Qt::Key_Down:
-                complete( event->key() );
-                break;
+                case Qt::Key_Up:
+                case Qt::Key_Down:
+                    complete( event->key() );
+                    break;
 #endif
 
-            default:
-                if ( !handled )
-                {
-                    unknown = true;
-                }
+                default:
+                    if ( !handled )
+                    {
+                        unknown = true;
+                    }
             }
         }
         else     // ### check for *no* modifier
         {
             switch ( event->key() )
             {
-            case Qt::Key_Backspace:
-                if ( ! isReadOnly() )
-                {
-                    backspace();
+                case Qt::Key_Backspace:
+                    if ( ! isReadOnly() )
+                    {
+                        backspace();
 #ifndef LSCS_NO_COMPLETER
-                    complete( Qt::Key_Backspace );
+                        complete( Qt::Key_Backspace );
 #endif
-                }
+                    }
 
-                break;
+                    break;
 
 #ifdef LSCS_KEYPAD_NAVIGATION
 
-            case Qt::Key_Back:
-                if ( QApplication::keypadNavigationEnabled() && ! event->isAutoRepeat() && ! isReadOnly() )
-                {
-                    if ( text().length() == 0 )
+                case Qt::Key_Back:
+                    if ( QApplication::keypadNavigationEnabled() && ! event->isAutoRepeat() && ! isReadOnly() )
                     {
-                        setText( m_cancelText );
-
-                        if ( passwordEchoEditing() )
+                        if ( text().length() == 0 )
                         {
-                            updatePasswordEchoEditing( false );
+                            setText( m_cancelText );
+
+                            if ( passwordEchoEditing() )
+                            {
+                                updatePasswordEchoEditing( false );
+                            }
+
+                            emit editFocusChange( false );
+
+                        }
+                        else if ( !m_deleteAllTimer )
+                        {
+                            m_deleteAllTimer = startTimer( 750 );
                         }
 
-                        emit editFocusChange( false );
-
                     }
-                    else if ( !m_deleteAllTimer )
+                    else
                     {
-                        m_deleteAllTimer = startTimer( 750 );
+                        unknown = true;
                     }
 
-                }
-                else
-                {
-                    unknown = true;
-                }
-
-                break;
+                    break;
 #endif
 
-            default:
-                if ( !handled )
-                {
-                    unknown = true;
-                }
+                default:
+                    if ( !handled )
+                    {
+                        unknown = true;
+                    }
             }
         }
     }

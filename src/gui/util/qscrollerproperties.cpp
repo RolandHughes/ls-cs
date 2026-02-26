@@ -142,68 +142,68 @@ QVariant QScrollerProperties::scrollMetric( ScrollMetric metric ) const
 {
     switch ( metric )
     {
-    case MousePressEventDelay:
-        return d->mousePressEventDelay;
+        case MousePressEventDelay:
+            return d->mousePressEventDelay;
 
-    case DragStartDistance:
-        return d->dragStartDistance;
+        case DragStartDistance:
+            return d->dragStartDistance;
 
-    case DragVelocitySmoothingFactor:
-        return d->dragVelocitySmoothingFactor;
+        case DragVelocitySmoothingFactor:
+            return d->dragVelocitySmoothingFactor;
 
-    case AxisLockThreshold:
-        return d->axisLockThreshold;
+        case AxisLockThreshold:
+            return d->axisLockThreshold;
 
-    case ScrollingCurve:
-        return d->scrollingCurve;
+        case ScrollingCurve:
+            return d->scrollingCurve;
 
-    case DecelerationFactor:
-        return d->decelerationFactor;
+        case DecelerationFactor:
+            return d->decelerationFactor;
 
-    case MinimumVelocity:
-        return d->minimumVelocity;
+        case MinimumVelocity:
+            return d->minimumVelocity;
 
-    case MaximumVelocity:
-        return d->maximumVelocity;
+        case MaximumVelocity:
+            return d->maximumVelocity;
 
-    case MaximumClickThroughVelocity:
-        return d->maximumClickThroughVelocity;
+        case MaximumClickThroughVelocity:
+            return d->maximumClickThroughVelocity;
 
-    case AcceleratingFlickMaximumTime:
-        return d->acceleratingFlickMaximumTime;
+        case AcceleratingFlickMaximumTime:
+            return d->acceleratingFlickMaximumTime;
 
-    case AcceleratingFlickSpeedupFactor:
-        return d->acceleratingFlickSpeedupFactor;
+        case AcceleratingFlickSpeedupFactor:
+            return d->acceleratingFlickSpeedupFactor;
 
-    case SnapPositionRatio:
-        return d->snapPositionRatio;
+        case SnapPositionRatio:
+            return d->snapPositionRatio;
 
-    case SnapTime:
-        return d->snapTime;
+        case SnapTime:
+            return d->snapTime;
 
-    case OvershootDragResistanceFactor:
-        return d->overshootDragResistanceFactor;
+        case OvershootDragResistanceFactor:
+            return d->overshootDragResistanceFactor;
 
-    case OvershootDragDistanceFactor:
-        return d->overshootDragDistanceFactor;
+        case OvershootDragDistanceFactor:
+            return d->overshootDragDistanceFactor;
 
-    case OvershootScrollDistanceFactor:
-        return d->overshootScrollDistanceFactor;
+        case OvershootScrollDistanceFactor:
+            return d->overshootScrollDistanceFactor;
 
-    case OvershootScrollTime:
-        return d->overshootScrollTime;
+        case OvershootScrollTime:
+            return d->overshootScrollTime;
 
-    case HorizontalOvershootPolicy:
-        return QVariant::fromValue( d->hOvershootPolicy );
+        case HorizontalOvershootPolicy:
+            return QVariant::fromValue( d->hOvershootPolicy );
 
-    case VerticalOvershootPolicy:
-        return QVariant::fromValue( d->vOvershootPolicy );
+        case VerticalOvershootPolicy:
+            return QVariant::fromValue( d->vOvershootPolicy );
 
-    case FrameRate:
-        return QVariant::fromValue( d->frameRate );
+        case FrameRate:
+            return QVariant::fromValue( d->frameRate );
 
-    case ScrollMetricCount:
-        break;
+        case ScrollMetricCount:
+            break;
     }
 
     return QVariant();
@@ -213,87 +213,87 @@ void QScrollerProperties::setScrollMetric( ScrollMetric metric, const QVariant &
 {
     switch ( metric )
     {
-    case MousePressEventDelay:
-        d->mousePressEventDelay = value.toReal();
-        break;
+        case MousePressEventDelay:
+            d->mousePressEventDelay = value.toReal();
+            break;
 
-    case DragStartDistance:
-        d->dragStartDistance = value.toReal();
-        break;
+        case DragStartDistance:
+            d->dragStartDistance = value.toReal();
+            break;
 
-    case DragVelocitySmoothingFactor:
-        d->dragVelocitySmoothingFactor = qBound( qreal( 0 ), value.toReal(), qreal( 1 ) );
-        break;
+        case DragVelocitySmoothingFactor:
+            d->dragVelocitySmoothingFactor = qBound( qreal( 0 ), value.toReal(), qreal( 1 ) );
+            break;
 
-    case AxisLockThreshold:
-        d->axisLockThreshold = qBound( qreal( 0 ), value.toReal(), qreal( 1 ) );
-        break;
+        case AxisLockThreshold:
+            d->axisLockThreshold = qBound( qreal( 0 ), value.toReal(), qreal( 1 ) );
+            break;
 
-    case ScrollingCurve:
-        d->scrollingCurve = value.toEasingCurve();
-        break;
+        case ScrollingCurve:
+            d->scrollingCurve = value.toEasingCurve();
+            break;
 
-    case DecelerationFactor:
-        d->decelerationFactor = value.toReal();
-        break;
+        case DecelerationFactor:
+            d->decelerationFactor = value.toReal();
+            break;
 
-    case MinimumVelocity:
-        d->minimumVelocity = value.toReal();
-        break;
+        case MinimumVelocity:
+            d->minimumVelocity = value.toReal();
+            break;
 
-    case MaximumVelocity:
-        d->maximumVelocity = value.toReal();
-        break;
+        case MaximumVelocity:
+            d->maximumVelocity = value.toReal();
+            break;
 
-    case MaximumClickThroughVelocity:
-        d->maximumClickThroughVelocity = value.toReal();
-        break;
+        case MaximumClickThroughVelocity:
+            d->maximumClickThroughVelocity = value.toReal();
+            break;
 
-    case AcceleratingFlickMaximumTime:
-        d->acceleratingFlickMaximumTime = value.toReal();
-        break;
+        case AcceleratingFlickMaximumTime:
+            d->acceleratingFlickMaximumTime = value.toReal();
+            break;
 
-    case AcceleratingFlickSpeedupFactor:
-        d->acceleratingFlickSpeedupFactor = value.toReal();
-        break;
+        case AcceleratingFlickSpeedupFactor:
+            d->acceleratingFlickSpeedupFactor = value.toReal();
+            break;
 
-    case SnapPositionRatio:
-        d->snapPositionRatio = qBound( qreal( 0 ), value.toReal(), qreal( 1 ) );
-        break;
+        case SnapPositionRatio:
+            d->snapPositionRatio = qBound( qreal( 0 ), value.toReal(), qreal( 1 ) );
+            break;
 
-    case SnapTime:
-        d->snapTime = value.toReal();
-        break;
+        case SnapTime:
+            d->snapTime = value.toReal();
+            break;
 
-    case OvershootDragResistanceFactor:
-        d->overshootDragResistanceFactor = value.toReal();
-        break;
+        case OvershootDragResistanceFactor:
+            d->overshootDragResistanceFactor = value.toReal();
+            break;
 
-    case OvershootDragDistanceFactor:
-        d->overshootDragDistanceFactor = qBound( qreal( 0 ), value.toReal(), qreal( 1 ) );
-        break;
+        case OvershootDragDistanceFactor:
+            d->overshootDragDistanceFactor = qBound( qreal( 0 ), value.toReal(), qreal( 1 ) );
+            break;
 
-    case OvershootScrollDistanceFactor:
-        d->overshootScrollDistanceFactor = qBound( qreal( 0 ), value.toReal(), qreal( 1 ) );
-        break;
+        case OvershootScrollDistanceFactor:
+            d->overshootScrollDistanceFactor = qBound( qreal( 0 ), value.toReal(), qreal( 1 ) );
+            break;
 
-    case OvershootScrollTime:
-        d->overshootScrollTime = value.toReal();
-        break;
+        case OvershootScrollTime:
+            d->overshootScrollTime = value.toReal();
+            break;
 
-    case HorizontalOvershootPolicy:
-        d->hOvershootPolicy = value.value<QScrollerProperties::OvershootPolicy>();
-        break;
+        case HorizontalOvershootPolicy:
+            d->hOvershootPolicy = value.value<QScrollerProperties::OvershootPolicy>();
+            break;
 
-    case VerticalOvershootPolicy:
-        d->vOvershootPolicy = value.value<QScrollerProperties::OvershootPolicy>();
-        break;
+        case VerticalOvershootPolicy:
+            d->vOvershootPolicy = value.value<QScrollerProperties::OvershootPolicy>();
+            break;
 
-    case FrameRate:
-        d->frameRate = value.value<QScrollerProperties::FrameRates>();
-        break;
+        case FrameRate:
+            d->frameRate = value.value<QScrollerProperties::FrameRates>();
+            break;
 
-    case ScrollMetricCount:
-        break;
+        case ScrollMetricCount:
+            break;
     }
 }

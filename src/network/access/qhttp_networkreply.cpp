@@ -400,7 +400,7 @@ void QHttpNetworkReplyPrivate::removeAutoDecompressHeader()
     QByteArray name( "content-length" );
 
     QList<QPair<QByteArray, QByteArray> >::iterator it = fields.begin(),
-          end = fields.end();
+                                                    end = fields.end();
 
     while ( it != end )
     {

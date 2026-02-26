@@ -482,50 +482,50 @@ void XSLTTokenizer::unexpectedContent( const ReportContext::ErrorCode code ) con
 
     switch ( tokenType() )
     {
-    case QXmlStreamReader::StartElement:
-    {
-        if ( isXSLT() )
+        case QXmlStreamReader::StartElement:
         {
-            switch ( currentElementName() )
+            if ( isXSLT() )
             {
-            case Include:
-                effectiveCode = ReportContext::XTSE0170;
-                break;
+                switch ( currentElementName() )
+                {
+                    case Include:
+                        effectiveCode = ReportContext::XTSE0170;
+                        break;
 
-            case Import:
-                effectiveCode = ReportContext::XTSE0190;
-                break;
+                    case Import:
+                        effectiveCode = ReportContext::XTSE0190;
+                        break;
 
-            default:
-                ;
+                    default:
+                        ;
+                }
             }
+
+            message = QtXmlPatterns::tr( "Element %1 is not allowed at this location." )
+                      .formatArg( formatKeyword( name() ) );
+            break;
         }
 
-        message = QtXmlPatterns::tr( "Element %1 is not allowed at this location." )
-                  .formatArg( formatKeyword( name() ) );
-        break;
-    }
-
-    case QXmlStreamReader::Characters:
-    {
-        if ( whitespaceToSkip() )
+        case QXmlStreamReader::Characters:
         {
-            return;
+            if ( whitespaceToSkip() )
+            {
+                return;
+            }
+
+            message = QtXmlPatterns::tr( "Text nodes are not allowed at this location." );
+            break;
         }
 
-        message = QtXmlPatterns::tr( "Text nodes are not allowed at this location." );
-        break;
-    }
+        case QXmlStreamReader::Invalid:
+        {
+            /* It's an issue with well-formedness. */
+            message = escape( errorString() );
+            break;
+        }
 
-    case QXmlStreamReader::Invalid:
-    {
-        /* It's an issue with well-formedness. */
-        message = escape( errorString() );
-        break;
-    }
-
-    default:
-        Q_ASSERT( false );
+        default:
+            Q_ASSERT( false );
     }
 
     error( message, effectiveCode );
@@ -547,21 +547,21 @@ QString XSLTTokenizer::readElementText()
     {
         switch ( readNext() )
         {
-        case QXmlStreamReader::Characters:
-        {
-            result += text().toString();
-            continue;
-        }
+            case QXmlStreamReader::Characters:
+            {
+                result += text().toString();
+                continue;
+            }
 
-        case QXmlStreamReader::Comment:
-        case QXmlStreamReader::ProcessingInstruction:
-            continue;
+            case QXmlStreamReader::Comment:
+            case QXmlStreamReader::ProcessingInstruction:
+                continue;
 
-        case QXmlStreamReader::EndElement:
-            return result;
+            case QXmlStreamReader::EndElement:
+                return result;
 
-        default:
-            unexpectedContent();
+            default:
+                unexpectedContent();
         }
     }
 
@@ -720,23 +720,23 @@ void XSLTTokenizer::handleStandardAttributes( const bool isXSLTElement )
 
         switch ( toToken( att.name() ) )
         {
-        case Type:
-        case Validation:
-        case UseAttributeSets:
-        case Version:
-            /* These are handled by other function such as
-             * handleValidationAttributes() and handleXSLTVersion(). */
-            continue;
+            case Type:
+            case Validation:
+            case UseAttributeSets:
+            case Version:
+                /* These are handled by other function such as
+                 * handleValidationAttributes() and handleXSLTVersion(). */
+                continue;
 
-        default:
-        {
-            if ( ! isXSLTElement )
+            default:
             {
-                // validateElement() will take care of it, and we
-                // don't want to flag non-standard XSL-T attributes
-                error( QtXmlPatterns::tr( "Unknown XSL-T attribute %1." ).formatArg( formatKeyword( att.name() ) ), ReportContext::XTSE0805 );
+                if ( ! isXSLTElement )
+                {
+                    // validateElement() will take care of it, and we
+                    // don't want to flag non-standard XSL-T attributes
+                    error( QtXmlPatterns::tr( "Unknown XSL-T attribute %1." ).formatArg( formatKeyword( att.name() ) ), ReportContext::XTSE0805 );
+                }
             }
-        }
         }
     }
 }
@@ -790,17 +790,17 @@ Tokenizer::Token XSLTTokenizer::nextToken( YYLTYPE *const sourceLocator )
     {
         switch ( m_state.top() )
         {
-        case OutsideDocumentElement:
-            outsideDocumentElement();
-            break;
+            case OutsideDocumentElement:
+                outsideDocumentElement();
+                break;
 
-        case InsideStylesheetModule:
-            insideStylesheetModule();
-            break;
+            case InsideStylesheetModule:
+                insideStylesheetModule();
+                break;
 
-        case InsideSequenceConstructor:
-            insideSequenceConstructor( &m_tokenSource );
-            break;
+            case InsideSequenceConstructor:
+                insideSequenceConstructor( &m_tokenSource );
+                break;
         }
 
         if ( m_tokenSource.isEmpty() )
@@ -869,109 +869,109 @@ void XSLTTokenizer::outsideDocumentElement()
     {
         switch ( readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            /* First, we synthesize one of the built-in templates,
-             * see section 6.6 Built-in Template Rules.
-             *
-             * Note that insideStylesheetModule() can be called multiple
-             * times so we can't do it there.  */
+            case QXmlStreamReader::StartElement:
             {
-                /* Start with the one for text nodes and attributes.
-                 * declare template matches (text() | @*) mode #all
-                 * {
-                 *      text{.}
-                 * };
-                 */
-
-                /* declare template matches (text() | @*) */
-                queueToken( DECLARE, &m_tokenSource );
-                queueToken( TEMPLATE, &m_tokenSource );
-                queueToken( MATCHES, &m_tokenSource );
-                queueToken( LPAREN, &m_tokenSource );
-                queueToken( TEXT, &m_tokenSource );
-                queueToken( LPAREN, &m_tokenSource );
-                queueToken( RPAREN, &m_tokenSource );
-                queueToken( BAR, &m_tokenSource );
-                queueToken( AT_SIGN, &m_tokenSource );
-                queueToken( STAR, &m_tokenSource );
-                queueToken( RPAREN, &m_tokenSource );
-
-                /* mode #all */
-                queueToken( MODE, &m_tokenSource );
-                queueToken( Token( NCNAME, QLatin1String( "#all" ) ), &m_tokenSource );
-                queueToken( CURLY_LBRACE, &m_tokenSource );
-
-                /* text{.} { */
-                queueToken( TEXT, &m_tokenSource );
-                queueToken( CURLY_LBRACE, &m_tokenSource );
-                queueToken( DOT, &m_tokenSource );
-                queueToken( CURLY_RBRACE, &m_tokenSource );
-
-                /* }; */
-                queueToken( CURLY_RBRACE, &m_tokenSource );
-                queueToken( SEMI_COLON, &m_tokenSource );
-            }
-
-            if ( isXSLT() && isStylesheetElement() )
-            {
-                handleStandardAttributes( true );
-                QStack<Token> onExitTokens;
-                handleXMLBase( &m_tokenSource, &onExitTokens, false );
-                handleXSLTVersion( &m_tokenSource, &onExitTokens, true, nullptr, false, true );
-                validateElement();
-                queueNamespaceDeclarations( &m_tokenSource, nullptr, true );
-
-                /* We're a regular stylesheet. */
-
-                pushState( InsideStylesheetModule );
-                insideStylesheetModule();
-
-            }
-            else
-            {
-                /* We're a simplified stylesheet. */
-
-                if ( !hasAttribute( CommonNamespaces::XSLT, "version" ) )
+                /* First, we synthesize one of the built-in templates,
+                 * see section 6.6 Built-in Template Rules.
+                 *
+                 * Note that insideStylesheetModule() can be called multiple
+                 * times so we can't do it there.  */
                 {
-                    error( QtXmlPatterns::tr( "In a simplified stylesheet module, attribute %1 must be present." )
-                           .formatArg( formatKeyword( QLatin1String( "version" ) ) ), ReportContext::XTSE0010 );
+                    /* Start with the one for text nodes and attributes.
+                     * declare template matches (text() | @*) mode #all
+                     * {
+                     *      text{.}
+                     * };
+                     */
+
+                    /* declare template matches (text() | @*) */
+                    queueToken( DECLARE, &m_tokenSource );
+                    queueToken( TEMPLATE, &m_tokenSource );
+                    queueToken( MATCHES, &m_tokenSource );
+                    queueToken( LPAREN, &m_tokenSource );
+                    queueToken( TEXT, &m_tokenSource );
+                    queueToken( LPAREN, &m_tokenSource );
+                    queueToken( RPAREN, &m_tokenSource );
+                    queueToken( BAR, &m_tokenSource );
+                    queueToken( AT_SIGN, &m_tokenSource );
+                    queueToken( STAR, &m_tokenSource );
+                    queueToken( RPAREN, &m_tokenSource );
+
+                    /* mode #all */
+                    queueToken( MODE, &m_tokenSource );
+                    queueToken( Token( NCNAME, QLatin1String( "#all" ) ), &m_tokenSource );
+                    queueToken( CURLY_LBRACE, &m_tokenSource );
+
+                    /* text{.} { */
+                    queueToken( TEXT, &m_tokenSource );
+                    queueToken( CURLY_LBRACE, &m_tokenSource );
+                    queueToken( DOT, &m_tokenSource );
+                    queueToken( CURLY_RBRACE, &m_tokenSource );
+
+                    /* }; */
+                    queueToken( CURLY_RBRACE, &m_tokenSource );
+                    queueToken( SEMI_COLON, &m_tokenSource );
                 }
 
-                QStack<Token> onExitTokens;
+                if ( isXSLT() && isStylesheetElement() )
+                {
+                    handleStandardAttributes( true );
+                    QStack<Token> onExitTokens;
+                    handleXMLBase( &m_tokenSource, &onExitTokens, false );
+                    handleXSLTVersion( &m_tokenSource, &onExitTokens, true, nullptr, false, true );
+                    validateElement();
+                    queueNamespaceDeclarations( &m_tokenSource, nullptr, true );
 
-                /* We synthesize this as exemplified in
-                 * 3.7 Simplified Stylesheet Modules. */
-                queueToken( DECLARE, &m_tokenSource );
-                queueToken( TEMPLATE, &m_tokenSource );
-                queueToken( MATCHES, &m_tokenSource );
+                    /* We're a regular stylesheet. */
+
+                    pushState( InsideStylesheetModule );
+                    insideStylesheetModule();
+
+                }
+                else
+                {
+                    /* We're a simplified stylesheet. */
+
+                    if ( !hasAttribute( CommonNamespaces::XSLT, "version" ) )
+                    {
+                        error( QtXmlPatterns::tr( "In a simplified stylesheet module, attribute %1 must be present." )
+                               .formatArg( formatKeyword( QLatin1String( "version" ) ) ), ReportContext::XTSE0010 );
+                    }
+
+                    QStack<Token> onExitTokens;
+
+                    /* We synthesize this as exemplified in
+                     * 3.7 Simplified Stylesheet Modules. */
+                    queueToken( DECLARE, &m_tokenSource );
+                    queueToken( TEMPLATE, &m_tokenSource );
+                    queueToken( MATCHES, &m_tokenSource );
+                    queueToken( LPAREN, &m_tokenSource );
+                    queueToken( SLASH, &m_tokenSource );
+                    queueToken( RPAREN, &m_tokenSource );
+                    queueToken( CURLY_LBRACE, &m_tokenSource );
+                    pushState( InsideSequenceConstructor );
+
+                    handleXSLTVersion( &m_tokenSource, &onExitTokens, false, nullptr, true );
+                    handleStandardAttributes( false );
+
+                    insideSequenceConstructor( &m_tokenSource, false );
+
+                    queueOnExit( onExitTokens, &m_tokenSource );
+                    queueToken( CURLY_RBRACE, &m_tokenSource );
+                    queueToken( CURLY_RBRACE, &m_tokenSource );
+                    queueToken( SEMI_COLON, &m_tokenSource );
+                }
+
+                queueToken( APPLY_TEMPLATE, &m_tokenSource );
                 queueToken( LPAREN, &m_tokenSource );
-                queueToken( SLASH, &m_tokenSource );
                 queueToken( RPAREN, &m_tokenSource );
-                queueToken( CURLY_LBRACE, &m_tokenSource );
-                pushState( InsideSequenceConstructor );
 
-                handleXSLTVersion( &m_tokenSource, &onExitTokens, false, nullptr, true );
-                handleStandardAttributes( false );
-
-                insideSequenceConstructor( &m_tokenSource, false );
-
-                queueOnExit( onExitTokens, &m_tokenSource );
-                queueToken( CURLY_RBRACE, &m_tokenSource );
-                queueToken( CURLY_RBRACE, &m_tokenSource );
-                queueToken( SEMI_COLON, &m_tokenSource );
+                break;
             }
 
-            queueToken( APPLY_TEMPLATE, &m_tokenSource );
-            queueToken( LPAREN, &m_tokenSource );
-            queueToken( RPAREN, &m_tokenSource );
-
-            break;
-        }
-
-        default:
-            /* Do nothing. */
-            ;
+            default:
+                /* Do nothing. */
+                ;
         }
     }
 
@@ -1160,133 +1160,133 @@ void XSLTTokenizer::insideChoose( TokenSource::Queue *const to )
     {
         switch ( readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            if ( isXSLT() )
+            case QXmlStreamReader::StartElement:
             {
-                QStack<Token> onExitTokens;
-                handleStandardAttributes( true );
-                validateElement();
+                if ( isXSLT() )
+                {
+                    QStack<Token> onExitTokens;
+                    handleStandardAttributes( true );
+                    validateElement();
 
-                switch ( currentElementName() )
-                {
-                case When:
-                {
-                    if ( hasHandledOtherwise )
+                    switch ( currentElementName() )
                     {
-                        error( QtXmlPatterns::tr( "Element %1 must come last." )
-                               .formatArg( formatKeyword( QLatin1String( "otherwise" ) ) ),
-                               ReportContext::XTSE0010 );
-                    }
+                        case When:
+                        {
+                            if ( hasHandledOtherwise )
+                            {
+                                error( QtXmlPatterns::tr( "Element %1 must come last." )
+                                       .formatArg( formatKeyword( QLatin1String( "otherwise" ) ) ),
+                                       ReportContext::XTSE0010 );
+                            }
 
-                    queueToken( IF, to );
-                    queueToken( LPAREN, to );
-                    queueExpression( readAttribute( QLatin1String( "test" ) ), to );
-                    queueToken( RPAREN, to );
-                    queueToken( THEN, to );
-                    queueToken( LPAREN, to );
-                    pushState( InsideSequenceConstructor );
-                    insideSequenceConstructor( to );
-                    queueToken( RPAREN, to );
-                    Q_ASSERT( tokenType() == QXmlStreamReader::EndElement );
-                    queueToken( ELSE, to );
-                    hasEncounteredAtLeastOneWhen = true;
-                    queueOnExit( onExitTokens, to );
-                    break;
+                            queueToken( IF, to );
+                            queueToken( LPAREN, to );
+                            queueExpression( readAttribute( QLatin1String( "test" ) ), to );
+                            queueToken( RPAREN, to );
+                            queueToken( THEN, to );
+                            queueToken( LPAREN, to );
+                            pushState( InsideSequenceConstructor );
+                            insideSequenceConstructor( to );
+                            queueToken( RPAREN, to );
+                            Q_ASSERT( tokenType() == QXmlStreamReader::EndElement );
+                            queueToken( ELSE, to );
+                            hasEncounteredAtLeastOneWhen = true;
+                            queueOnExit( onExitTokens, to );
+                            break;
+                        }
+
+                        case Otherwise:
+                        {
+                            if ( !hasEncounteredAtLeastOneWhen )
+                            {
+                                error( QtXmlPatterns::tr( "At least one %1-element must occur before %2." )
+                                       .formatArgs( formatKeyword( QLatin1String( "when" ) ),
+                                                    formatKeyword( QLatin1String( "otherwise" ) ) ), ReportContext::XTSE0010 );
+
+                            }
+                            else if ( hasHandledOtherwise )
+                            {
+                                error( QtXmlPatterns::tr( "Only one %1-element can appear." )
+                                       .formatArg( formatKeyword( "otherwise" ) ), ReportContext::XTSE0010 );
+                            }
+
+                            pushState( InsideSequenceConstructor );
+                            queueToken( LPAREN, to );
+                            insideSequenceConstructor( to, to );
+                            queueToken( RPAREN, to );
+                            hasHandledOtherwise = true;
+                            queueOnExit( onExitTokens, to );
+                            break;
+                        }
+
+                        default:
+                            unexpectedContent();
+                    }
                 }
-
-                case Otherwise:
+                else
                 {
-                    if ( !hasEncounteredAtLeastOneWhen )
-                    {
-                        error( QtXmlPatterns::tr( "At least one %1-element must occur before %2." )
-                               .formatArgs( formatKeyword( QLatin1String( "when" ) ),
-                                            formatKeyword( QLatin1String( "otherwise" ) ) ), ReportContext::XTSE0010 );
-
-                    }
-                    else if ( hasHandledOtherwise )
-                    {
-                        error( QtXmlPatterns::tr( "Only one %1-element can appear." )
-                               .formatArg( formatKeyword( "otherwise" ) ), ReportContext::XTSE0010 );
-                    }
-
-                    pushState( InsideSequenceConstructor );
-                    queueToken( LPAREN, to );
-                    insideSequenceConstructor( to, to );
-                    queueToken( RPAREN, to );
-                    hasHandledOtherwise = true;
-                    queueOnExit( onExitTokens, to );
-                    break;
-                }
-
-                default:
                     unexpectedContent();
                 }
-            }
-            else
-            {
-                unexpectedContent();
+
+                break;
             }
 
-            break;
-        }
-
-        case QXmlStreamReader::EndElement:
-        {
-            if ( isXSLT() )
+            case QXmlStreamReader::EndElement:
             {
-                switch ( currentElementName() )
+                if ( isXSLT() )
                 {
-                case Choose:
-                {
-                    if ( !hasEncounteredAtLeastOneWhen )
+                    switch ( currentElementName() )
                     {
-                        error( QtXmlPatterns::tr( "At least one %1-element must occur inside %2." )
-                               .formatArgs( formatKeyword( "when" ), formatKeyword( "choose" ) ), ReportContext::XTSE0010 );
-                    }
+                        case Choose:
+                        {
+                            if ( !hasEncounteredAtLeastOneWhen )
+                            {
+                                error( QtXmlPatterns::tr( "At least one %1-element must occur inside %2." )
+                                       .formatArgs( formatKeyword( "when" ), formatKeyword( "choose" ) ), ReportContext::XTSE0010 );
+                            }
 
-                    if ( !hasHandledOtherwise )
-                    {
-                        queueEmptySequence( to );
-                    }
+                            if ( !hasHandledOtherwise )
+                            {
+                                queueEmptySequence( to );
+                            }
 
-                    return;
+                            return;
+                        }
+
+                        case Otherwise:
+                            continue;
+
+                        default:
+                            unexpectedContent();
+                    }
                 }
-
-                case Otherwise:
-                    continue;
-
-                default:
+                else
+                {
                     unexpectedContent();
                 }
-            }
-            else
-            {
-                unexpectedContent();
+
+                break;
             }
 
-            break;
-        }
-
-        case QXmlStreamReader::Comment:
-        case QXmlStreamReader::ProcessingInstruction:
-            continue;
-
-        case QXmlStreamReader::Characters:
-        {
-            /* We ignore regardless of what xml:space says, see step 4 in
-             * 4.2 Stripping Whitespace from the Stylesheet. */
-            if ( isWhitespace() )
-            {
+            case QXmlStreamReader::Comment:
+            case QXmlStreamReader::ProcessingInstruction:
                 continue;
+
+            case QXmlStreamReader::Characters:
+            {
+                /* We ignore regardless of what xml:space says, see step 4 in
+                 * 4.2 Stripping Whitespace from the Stylesheet. */
+                if ( isWhitespace() )
+                {
+                    continue;
+                }
             }
-        }
 
-        [[fallthrough]];
+            [[fallthrough]];
 
-        default:
-            unexpectedContent();
-            break;
+            default:
+                unexpectedContent();
+                break;
         }
     }
 
@@ -1600,603 +1600,603 @@ bool XSLTTokenizer::insideSequenceConstructor( TokenSource::Queue *const to,
 
         switch ( tokenType() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            queueTextConstructor( characters, hasWrittenExpression, to );
-            handleXMLBase( to, &onExitTokens );
-
-            pushState( InsideSequenceConstructor );
-
-            commencingExpression( hasWrittenExpression, to );
-
-            if ( isXSLT() )
+            case QXmlStreamReader::StartElement:
             {
-                handleXSLTVersion( &m_tokenSource, &onExitTokens, true );
-                handleStandardAttributes( true );
-                validateElement();
-
-                queueNamespaceDeclarations( to, &onExitTokens );
-
-                switch ( currentElementName() )
-                {
-                case If:
-                {
-                    queueToken( IF, to );
-                    queueToken( LPAREN, to );
-
-                    queueExpression( readAttribute( QLatin1String( "test" ) ), to );
-                    queueToken( RPAREN, to );
-                    queueToken( THEN, to );
-
-                    queueToken( LPAREN, to );
-                    pushState( InsideSequenceConstructor );
-                    insideSequenceConstructor( to );
-
-                    break;
-                }
-
-                case Choose:
-                {
-                    insideChoose( to );
-                    break;
-                }
-
-                case ValueOf:
-                {
-                    /* We generate a computed text node constructor. */
-                    queueToken( TEXT, to );
-                    queueToken( CURLY_LBRACE, to );
-
-                    queueSimpleContentConstructor( ReportContext::XTSE0870, true, to,
-                                                   ! hasAttribute( "separator" ) && m_processingMode.top() == BackwardsCompatible );
-
-                    queueToken( CURLY_RBRACE, to );
-                    break;
-                }
-
-                case Sequence:
-                {
-                    queueExpression( readAttribute( QLatin1String( "select" ) ), to );
-                    parseFallbacksOnly();
-                    break;
-                }
-
-                case Text:
-                {
-                    queueToken( TEXT, to );
-                    queueToken( CURLY_LBRACE, to );
-
-                    queueToken( Token( STRING_LITERAL, readElementText() ), to );
-                    queueToken( CURLY_RBRACE, to );
-                    break;
-                }
-
-                case Variable:
-                {
-                    queueVariableDeclaration( VariableInstruction, to );
-
-                    /* We wrap the children in parantheses since we may
-                     * queue several expressions using the comma operator,
-                     * and in that case the let-binding is only in-scope
-                     * for the first expression. */
-                    queueToken( LPAREN, to );
-
-                    /* We don't want a comma outputted, we're expecting an
-                     * expression now. */
-                    hasWrittenExpression = false;
-
-                    onExitTokens.push( RPAREN );
-
-                    break;
-                }
-
-                case CallTemplate:
-                {
-                    queueToken( CALL_TEMPLATE, to );
-                    queueToken( Token( QNAME, readAttribute( QLatin1String( "name" ) ) ), to );
-                    queueToken( LPAREN, to );
-                    queueWithParams( CallTemplate, to );
-                    queueToken( RPAREN, to );
-                    break;
-                }
-
-                case ForEach:
-                {
-                    queueExpression( readAttribute( QLatin1String( "select" ) ), to );
-                    queueToken( MAP, to );
-                    pushState( InsideSequenceConstructor );
-
-                    TokenSource::Queue sorts;
-                    queueSorting( false, &sorts );
-
-
-                    if ( sorts.isEmpty() )
-                    {
-                        startStorageOfCurrent( to );
-                        insideSequenceConstructor( to, false );
-                        endStorageOfCurrent( to );
-                    }
-                    else
-                    {
-                        queueToken( SORT, to );
-                        *to += sorts;
-                        queueToken( RETURN, to );
-                        startStorageOfCurrent( to );
-                        insideSequenceConstructor( to, false );
-                        endStorageOfCurrent( to );
-                        queueToken( END_SORT, to );
-                    }
-
-                    break;
-                }
-
-                case XSLTTokenLookup::Comment:
-                {
-                    queueToken( COMMENT, to );
-                    queueToken( INTERNAL, to );
-                    queueToken( CURLY_LBRACE, to );
-                    queueSelectOrSequenceConstructor( ReportContext::XTSE0940, true, to );
-                    queueToken( CURLY_RBRACE, to );
-                    break;
-                }
-
-                case CopyOf:
-                {
-                    queueExpression( readAttribute( QLatin1String( "select" ) ), to );
-
-                    // TODO
-
-                    if ( readNext() == QXmlStreamReader::EndElement )
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        error( QtXmlPatterns::tr( "Element %1 cannot have children." ).formatArg( formatKeyword( QLatin1String( "copy-of" ) ) ),
-                               ReportContext::XTSE0010 );
-                    }
-
-                    break;
-                }
-
-                case AnalyzeString:
-                {
-                    // TODO
-                    skipSubTree();
-                    break;
-                }
-
-                case ResultDocument:
-                {
-                    // TODO
-                    pushState( InsideSequenceConstructor );
-                    insideSequenceConstructor( to );
-                    break;
-                }
-
-                case Copy:
-                {
-                    /* We translate:
-                     *      <xsl:copy>expr</xsl:copy>
-                     * into:
-                     *
-                     *  let $body := expr
-                     *  return
-                     *      if(self::element()) then
-                     *          element internal {node-name()} {$body}
-                     *      else if(self::document-node()) then
-                     *          document internal {$body}
-                     *      else (: This includes comments, processing-instructions,
-                     *              attributes, and comments. :)
-                     *          .
-                     *
-                     * TODO node identity is the same as the old node.
-                     * TODO namespace bindings are lost when elements are constructed
-                     */
-
-                    /* let $body := expr */
-                    queueToken( LET, to );
-                    queueToken( INTERNAL, to );
-                    queueToken( DOLLAR, to );
-                    queueToken( Token( NCNAME, QString( QLatin1Char( 'b' ) ) ), to ); // TODO we need an internal name
-                    queueToken( ASSIGN, to );
-                    queueToken( LPAREN, to );
-                    pushState( InsideSequenceConstructor );
-                    /* Don't queue an empty sequence, we want the dot. */
-                    insideSequenceConstructor( to );
-                    queueToken( RPAREN, to );
-                    queueToken( RETURN, to );
-
-                    /* if(self::element()) then */
-                    queueToken( IF, to );
-                    queueToken( LPAREN, to );
-                    queueToken( SELF, to );
-                    queueToken( COLONCOLON, to );
-                    queueToken( ELEMENT, to );
-                    queueToken( LPAREN, to );
-                    queueToken( RPAREN, to );
-                    queueToken( RPAREN, to );
-                    queueToken( THEN, to );
-
-                    /* element internal {node-name()} {$body} */
-                    queueToken( ELEMENT, to );
-                    queueToken( INTERNAL, to );
-                    queueToken( CURLY_LBRACE, to );
-                    queueToken( Token( NCNAME, QLatin1String( "node-name" ) ), to ); // TODO what if the default ns changes?
-                    queueToken( LPAREN, to );
-                    queueToken( DOT, to );
-                    queueToken( RPAREN, to );
-                    queueToken( CURLY_RBRACE, to );
-                    queueToken( CURLY_LBRACE, to );
-                    queueToken( DOLLAR, to );
-                    queueToken( Token( NCNAME, QString( QLatin1Char( 'b' ) ) ), to ); // TODO we need an internal name
-                    queueToken( CURLY_RBRACE, to );
-
-                    /* else if(self::document-node()) then */
-                    queueToken( ELSE, to );
-                    queueToken( IF, to );
-                    queueToken( LPAREN, to );
-                    queueToken( SELF, to );
-                    queueToken( COLONCOLON, to );
-                    queueToken( DOCUMENT_NODE, to );
-                    queueToken( LPAREN, to );
-                    queueToken( RPAREN, to );
-                    queueToken( RPAREN, to );
-                    queueToken( THEN, to );
-
-                    /* document internal {$body} */
-                    queueToken( DOCUMENT, to );
-                    queueToken( INTERNAL, to );
-                    queueToken( CURLY_LBRACE, to );
-                    queueToken( DOLLAR, to );
-                    queueToken( Token( NCNAME, QString( QLatin1Char( 'b' ) ) ), to ); // TODO we need an internal name
-                    queueToken( CURLY_RBRACE, to );
-
-                    /* else . */
-                    queueToken( ELSE, to );
-                    queueToken( DOT, to );
-
-                    break;
-                }
-
-                case XSLTTokenLookup::ProcessingInstruction:
-                {
-                    queueToken( PROCESSING_INSTRUCTION, to );
-                    queueToken( CURLY_LBRACE, to );
-                    queueAVT( readAttribute( QLatin1String( "name" ) ), to );
-                    queueToken( CURLY_RBRACE, to );
-                    queueToken( CURLY_LBRACE, to );
-                    queueSelectOrSequenceConstructor( ReportContext::XTSE0880, true, to );
-                    queueToken( CURLY_RBRACE, to );
-                    break;
-                }
-
-                case Document:
-                {
-                    handleValidationAttributes( false );
-
-                    // TODO base-URI
-                    queueToken( DOCUMENT, to );
-                    queueToken( INTERNAL, to );
-                    queueToken( CURLY_LBRACE, to );
-                    pushState( InsideSequenceConstructor );
-                    insideSequenceConstructor( to );
-                    queueToken( CURLY_RBRACE, to );
-                    break;
-                }
-
-                case Element:
-                {
-                    handleValidationAttributes( false );
-
-                    // TODO base-URI
-                    queueToken( ELEMENT, to );
-                    queueToken( INTERNAL, to );
-
-                    /* The name. */
-                    queueToken( CURLY_LBRACE, to );
-                    // TODO only strings allowed, not qname values.
-                    queueAVT( readAttribute( QLatin1String( "name" ) ), to );
-                    queueToken( CURLY_RBRACE, to );
-
-                    /* The sequence constructor. */
-                    queueToken( CURLY_LBRACE, to );
-                    pushState( InsideSequenceConstructor );
-                    insideSequenceConstructor( to );
-                    queueToken( CURLY_RBRACE, to );
-                    break;
-                }
-
-                case Attribute:
-                {
-                    handleValidationAttributes( false );
-
-                    // TODO base-URI
-                    queueToken( ATTRIBUTE, to );
-                    queueToken( INTERNAL, to );
-
-                    /* The name. */
-                    queueToken( CURLY_LBRACE, to );
-                    // TODO only strings allowed, not qname values.
-                    queueAVT( readAttribute( QLatin1String( "name" ) ), to );
-                    queueToken( CURLY_RBRACE, to );
-
-                    /* The sequence constructor. */
-                    queueToken( CURLY_LBRACE, to );
-                    queueSimpleContentConstructor( ReportContext::XTSE0840,
-                                                   true, to );
-                    queueToken( CURLY_RBRACE, to );
-                    break;
-                }
-
-                case Namespace:
-                {
-                    queueToken( NAMESPACE, to );
-
-                    /* The name. */
-                    queueToken( CURLY_LBRACE, to );
-                    queueAVT( readAttribute( QLatin1String( "name" ) ), to );
-                    queueToken( CURLY_RBRACE, to );
-
-                    /* The sequence constructor. */
-                    queueToken( CURLY_LBRACE, to );
-                    queueSelectOrSequenceConstructor( ReportContext::XTSE0910,
-                                                      false, to );
-                    queueToken( CURLY_RBRACE, to );
-                    break;
-                }
-
-                case PerformSort:
-                {
-                    /* For:
-                     * <xsl:perform-sort select="$in">
-                     *      <xsl:sort select="@key"/>
-                     * </xsl:perform-sort>
-                     *
-                     * we generate:
-                     *
-                     * $in map sort order by @key
-                     *         return .
-                     *         end_sort
-                     */
-
-                    /* In XQuery, the sort keys appear after the expression
-                     * supplying the initial sequence, while in
-                     * xsl:perform-sort, if a sequence constructor is used,
-                     * they appear in the opposite order. Hence, we need to
-                     * reorder it. */
-
-                    /* We store the attributes of xsl:perform-sort, before
-                     * queueSorting() advances the reader. */
-                    const QXmlStreamAttributes atts( m_currentAttributes );
-
-                    TokenSource::Queue sorts;
-                    queueSorting( true, &sorts );
-                    queueSelectOrSequenceConstructor( ReportContext::XTSE1040,
-                                                      true,
-                                                      to,
-                                                      &atts );
-                    /* queueSelectOrSequenceConstructor() positions us on EndElement. */
-                    effectiveInitialAdvance = false;
-                    queueToken( MAP, to );
-                    queueToken( SORT, to );
-                    *to += sorts;
-                    queueToken( RETURN, to );
-                    queueToken( DOT, to );
-                    queueToken( END_SORT, to );
-
-                    break;
-                }
-
-                case Message:
-                {
-                    // TODO
-                    queueEmptySequence( to );
-                    skipSubTree();
-                    break;
-                }
-
-                case ApplyTemplates:
-                {
-                    if ( hasAttribute( "select" ) )
-                    {
-                        queueExpression( readAttribute( QLatin1String( "select" ) ), to );
-
-                    }
-                    else
-                    {
-                        queueToken( CHILD, to );
-                        queueToken( COLONCOLON, to );
-                        queueToken( NODE, to );
-                        queueToken( LPAREN, to );
-                        queueToken( RPAREN, to );
-                    }
-
-                    bool hasMode = hasAttribute( "mode" );
-                    QString mode;
-
-                    if ( hasMode )
-                    {
-                        mode = readAttribute( QLatin1String( "mode" ) ).trimmed();
-                    }
-
-                    queueToken( FOR_APPLY_TEMPLATE, to );
-
-                    TokenSource::Queue sorts;
-                    queueSorting( false, &sorts, true );
-
-                    if ( !sorts.isEmpty() )
-                    {
-                        queueToken( SORT, to );
-                        *to += sorts;
-                        queueToken( RETURN, to );
-                    }
-
-                    queueToken( APPLY_TEMPLATE, to );
-
-                    if ( hasMode )
-                    {
-                        queueToken( MODE, to );
-                        queueToken( Token( mode.startsWith( QLatin1Char( '#' ) ) ? NCNAME : QNAME, mode ), to );
-                    }
-
-                    queueToken( LPAREN, to );
-                    queueWithParams( ApplyTemplates, to, false );
-                    queueToken( RPAREN, to );
-
-                    if ( !sorts.isEmpty() )
-                    {
-                        queueToken( END_SORT, to );
-                    }
-
-                    break;
-                }
-
-                default:
-                    unexpectedContent();
-                }
-
-                continue;
-            }
-            else
-            {
-                handleXSLTVersion( &m_tokenSource, &onExitTokens, true );
-                handleStandardAttributes( false );
-                handleValidationAttributes( false );
-
-                /* We're generating an element constructor. */
-                queueNamespaceDeclarations( to, &onExitTokens ); // TODO same in the isXSLT() branch
-                queueToken( ELEMENT, to );
-                queueToken( INTERNAL, to );
-                queueToken( Token( QNAME, qualifiedName().toString() ), to );
-                queueToken( CURLY_LBRACE, to );
-                const int len = m_currentAttributes.count();
-
-                for ( int i = 0; i < len; ++i )
-                {
-                    const QXmlStreamAttribute &at = m_currentAttributes.at( i );
-
-                    /* We don't want to generate constructors for XSL-T attributes. */
-                    if ( at.namespaceUri() == CommonNamespaces::XSLT )
-                    {
-                        continue;
-                    }
-
-                    queueToken( ATTRIBUTE, to );
-                    queueToken( INTERNAL, to );
-
-                    queueToken( Token( at.prefix().isEmpty() ? NCNAME : QNAME, at.qualifiedName().toString() ), to );
-                    queueToken( CURLY_LBRACE, to );
-                    queueAVT( at.value().toString(), to );
-                    queueToken( CURLY_RBRACE, to );
-                    queueToken( COMMA, to );
-                }
+                queueTextConstructor( characters, hasWrittenExpression, to );
+                handleXMLBase( to, &onExitTokens );
 
                 pushState( InsideSequenceConstructor );
-                insideSequenceConstructor( to );
-                Q_ASSERT( tokenType() == QXmlStreamReader::EndElement || hasError() );
-                continue;
-            }
 
-            unexpectedContent();
-            break;
-        }
+                commencingExpression( hasWrittenExpression, to );
 
-        case QXmlStreamReader::EndElement:
-        {
-            queueTextConstructor( characters, hasWrittenExpression, to );
-            leaveState();
-
-            if ( !hasWrittenExpression && queueEmptyOnEmpty )
-            {
-                queueEmptySequence( to );
-            }
-
-            queueOnExit( onExitTokens, to );
-
-            if ( isXSLT() )
-            {
-                Q_ASSERT( !isElement( Sequence ) );
-
-                switch ( currentElementName() )
+                if ( isXSLT() )
                 {
-                case When:
-                case Choose:
-                case ForEach:
-                case Otherwise:
-                case PerformSort:
-                case Message:
-                case ResultDocument:
-                case Copy:
-                case CallTemplate:
-                case Text:
-                case ValueOf:
+                    handleXSLTVersion( &m_tokenSource, &onExitTokens, true );
+                    handleStandardAttributes( true );
+                    validateElement();
+
+                    queueNamespaceDeclarations( to, &onExitTokens );
+
+                    switch ( currentElementName() )
+                    {
+                        case If:
+                        {
+                            queueToken( IF, to );
+                            queueToken( LPAREN, to );
+
+                            queueExpression( readAttribute( QLatin1String( "test" ) ), to );
+                            queueToken( RPAREN, to );
+                            queueToken( THEN, to );
+
+                            queueToken( LPAREN, to );
+                            pushState( InsideSequenceConstructor );
+                            insideSequenceConstructor( to );
+
+                            break;
+                        }
+
+                        case Choose:
+                        {
+                            insideChoose( to );
+                            break;
+                        }
+
+                        case ValueOf:
+                        {
+                            /* We generate a computed text node constructor. */
+                            queueToken( TEXT, to );
+                            queueToken( CURLY_LBRACE, to );
+
+                            queueSimpleContentConstructor( ReportContext::XTSE0870, true, to,
+                                                           ! hasAttribute( "separator" ) && m_processingMode.top() == BackwardsCompatible );
+
+                            queueToken( CURLY_RBRACE, to );
+                            break;
+                        }
+
+                        case Sequence:
+                        {
+                            queueExpression( readAttribute( QLatin1String( "select" ) ), to );
+                            parseFallbacksOnly();
+                            break;
+                        }
+
+                        case Text:
+                        {
+                            queueToken( TEXT, to );
+                            queueToken( CURLY_LBRACE, to );
+
+                            queueToken( Token( STRING_LITERAL, readElementText() ), to );
+                            queueToken( CURLY_RBRACE, to );
+                            break;
+                        }
+
+                        case Variable:
+                        {
+                            queueVariableDeclaration( VariableInstruction, to );
+
+                            /* We wrap the children in parantheses since we may
+                             * queue several expressions using the comma operator,
+                             * and in that case the let-binding is only in-scope
+                             * for the first expression. */
+                            queueToken( LPAREN, to );
+
+                            /* We don't want a comma outputted, we're expecting an
+                             * expression now. */
+                            hasWrittenExpression = false;
+
+                            onExitTokens.push( RPAREN );
+
+                            break;
+                        }
+
+                        case CallTemplate:
+                        {
+                            queueToken( CALL_TEMPLATE, to );
+                            queueToken( Token( QNAME, readAttribute( QLatin1String( "name" ) ) ), to );
+                            queueToken( LPAREN, to );
+                            queueWithParams( CallTemplate, to );
+                            queueToken( RPAREN, to );
+                            break;
+                        }
+
+                        case ForEach:
+                        {
+                            queueExpression( readAttribute( QLatin1String( "select" ) ), to );
+                            queueToken( MAP, to );
+                            pushState( InsideSequenceConstructor );
+
+                            TokenSource::Queue sorts;
+                            queueSorting( false, &sorts );
+
+
+                            if ( sorts.isEmpty() )
+                            {
+                                startStorageOfCurrent( to );
+                                insideSequenceConstructor( to, false );
+                                endStorageOfCurrent( to );
+                            }
+                            else
+                            {
+                                queueToken( SORT, to );
+                                *to += sorts;
+                                queueToken( RETURN, to );
+                                startStorageOfCurrent( to );
+                                insideSequenceConstructor( to, false );
+                                endStorageOfCurrent( to );
+                                queueToken( END_SORT, to );
+                            }
+
+                            break;
+                        }
+
+                        case XSLTTokenLookup::Comment:
+                        {
+                            queueToken( COMMENT, to );
+                            queueToken( INTERNAL, to );
+                            queueToken( CURLY_LBRACE, to );
+                            queueSelectOrSequenceConstructor( ReportContext::XTSE0940, true, to );
+                            queueToken( CURLY_RBRACE, to );
+                            break;
+                        }
+
+                        case CopyOf:
+                        {
+                            queueExpression( readAttribute( QLatin1String( "select" ) ), to );
+
+                            // TODO
+
+                            if ( readNext() == QXmlStreamReader::EndElement )
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                error( QtXmlPatterns::tr( "Element %1 cannot have children." ).formatArg( formatKeyword( QLatin1String( "copy-of" ) ) ),
+                                       ReportContext::XTSE0010 );
+                            }
+
+                            break;
+                        }
+
+                        case AnalyzeString:
+                        {
+                            // TODO
+                            skipSubTree();
+                            break;
+                        }
+
+                        case ResultDocument:
+                        {
+                            // TODO
+                            pushState( InsideSequenceConstructor );
+                            insideSequenceConstructor( to );
+                            break;
+                        }
+
+                        case Copy:
+                        {
+                            /* We translate:
+                             *      <xsl:copy>expr</xsl:copy>
+                             * into:
+                             *
+                             *  let $body := expr
+                             *  return
+                             *      if(self::element()) then
+                             *          element internal {node-name()} {$body}
+                             *      else if(self::document-node()) then
+                             *          document internal {$body}
+                             *      else (: This includes comments, processing-instructions,
+                             *              attributes, and comments. :)
+                             *          .
+                             *
+                             * TODO node identity is the same as the old node.
+                             * TODO namespace bindings are lost when elements are constructed
+                             */
+
+                            /* let $body := expr */
+                            queueToken( LET, to );
+                            queueToken( INTERNAL, to );
+                            queueToken( DOLLAR, to );
+                            queueToken( Token( NCNAME, QString( QLatin1Char( 'b' ) ) ), to ); // TODO we need an internal name
+                            queueToken( ASSIGN, to );
+                            queueToken( LPAREN, to );
+                            pushState( InsideSequenceConstructor );
+                            /* Don't queue an empty sequence, we want the dot. */
+                            insideSequenceConstructor( to );
+                            queueToken( RPAREN, to );
+                            queueToken( RETURN, to );
+
+                            /* if(self::element()) then */
+                            queueToken( IF, to );
+                            queueToken( LPAREN, to );
+                            queueToken( SELF, to );
+                            queueToken( COLONCOLON, to );
+                            queueToken( ELEMENT, to );
+                            queueToken( LPAREN, to );
+                            queueToken( RPAREN, to );
+                            queueToken( RPAREN, to );
+                            queueToken( THEN, to );
+
+                            /* element internal {node-name()} {$body} */
+                            queueToken( ELEMENT, to );
+                            queueToken( INTERNAL, to );
+                            queueToken( CURLY_LBRACE, to );
+                            queueToken( Token( NCNAME, QLatin1String( "node-name" ) ), to ); // TODO what if the default ns changes?
+                            queueToken( LPAREN, to );
+                            queueToken( DOT, to );
+                            queueToken( RPAREN, to );
+                            queueToken( CURLY_RBRACE, to );
+                            queueToken( CURLY_LBRACE, to );
+                            queueToken( DOLLAR, to );
+                            queueToken( Token( NCNAME, QString( QLatin1Char( 'b' ) ) ), to ); // TODO we need an internal name
+                            queueToken( CURLY_RBRACE, to );
+
+                            /* else if(self::document-node()) then */
+                            queueToken( ELSE, to );
+                            queueToken( IF, to );
+                            queueToken( LPAREN, to );
+                            queueToken( SELF, to );
+                            queueToken( COLONCOLON, to );
+                            queueToken( DOCUMENT_NODE, to );
+                            queueToken( LPAREN, to );
+                            queueToken( RPAREN, to );
+                            queueToken( RPAREN, to );
+                            queueToken( THEN, to );
+
+                            /* document internal {$body} */
+                            queueToken( DOCUMENT, to );
+                            queueToken( INTERNAL, to );
+                            queueToken( CURLY_LBRACE, to );
+                            queueToken( DOLLAR, to );
+                            queueToken( Token( NCNAME, QString( QLatin1Char( 'b' ) ) ), to ); // TODO we need an internal name
+                            queueToken( CURLY_RBRACE, to );
+
+                            /* else . */
+                            queueToken( ELSE, to );
+                            queueToken( DOT, to );
+
+                            break;
+                        }
+
+                        case XSLTTokenLookup::ProcessingInstruction:
+                        {
+                            queueToken( PROCESSING_INSTRUCTION, to );
+                            queueToken( CURLY_LBRACE, to );
+                            queueAVT( readAttribute( QLatin1String( "name" ) ), to );
+                            queueToken( CURLY_RBRACE, to );
+                            queueToken( CURLY_LBRACE, to );
+                            queueSelectOrSequenceConstructor( ReportContext::XTSE0880, true, to );
+                            queueToken( CURLY_RBRACE, to );
+                            break;
+                        }
+
+                        case Document:
+                        {
+                            handleValidationAttributes( false );
+
+                            // TODO base-URI
+                            queueToken( DOCUMENT, to );
+                            queueToken( INTERNAL, to );
+                            queueToken( CURLY_LBRACE, to );
+                            pushState( InsideSequenceConstructor );
+                            insideSequenceConstructor( to );
+                            queueToken( CURLY_RBRACE, to );
+                            break;
+                        }
+
+                        case Element:
+                        {
+                            handleValidationAttributes( false );
+
+                            // TODO base-URI
+                            queueToken( ELEMENT, to );
+                            queueToken( INTERNAL, to );
+
+                            /* The name. */
+                            queueToken( CURLY_LBRACE, to );
+                            // TODO only strings allowed, not qname values.
+                            queueAVT( readAttribute( QLatin1String( "name" ) ), to );
+                            queueToken( CURLY_RBRACE, to );
+
+                            /* The sequence constructor. */
+                            queueToken( CURLY_LBRACE, to );
+                            pushState( InsideSequenceConstructor );
+                            insideSequenceConstructor( to );
+                            queueToken( CURLY_RBRACE, to );
+                            break;
+                        }
+
+                        case Attribute:
+                        {
+                            handleValidationAttributes( false );
+
+                            // TODO base-URI
+                            queueToken( ATTRIBUTE, to );
+                            queueToken( INTERNAL, to );
+
+                            /* The name. */
+                            queueToken( CURLY_LBRACE, to );
+                            // TODO only strings allowed, not qname values.
+                            queueAVT( readAttribute( QLatin1String( "name" ) ), to );
+                            queueToken( CURLY_RBRACE, to );
+
+                            /* The sequence constructor. */
+                            queueToken( CURLY_LBRACE, to );
+                            queueSimpleContentConstructor( ReportContext::XTSE0840,
+                                                           true, to );
+                            queueToken( CURLY_RBRACE, to );
+                            break;
+                        }
+
+                        case Namespace:
+                        {
+                            queueToken( NAMESPACE, to );
+
+                            /* The name. */
+                            queueToken( CURLY_LBRACE, to );
+                            queueAVT( readAttribute( QLatin1String( "name" ) ), to );
+                            queueToken( CURLY_RBRACE, to );
+
+                            /* The sequence constructor. */
+                            queueToken( CURLY_LBRACE, to );
+                            queueSelectOrSequenceConstructor( ReportContext::XTSE0910,
+                                                              false, to );
+                            queueToken( CURLY_RBRACE, to );
+                            break;
+                        }
+
+                        case PerformSort:
+                        {
+                            /* For:
+                             * <xsl:perform-sort select="$in">
+                             *      <xsl:sort select="@key"/>
+                             * </xsl:perform-sort>
+                             *
+                             * we generate:
+                             *
+                             * $in map sort order by @key
+                             *         return .
+                             *         end_sort
+                             */
+
+                            /* In XQuery, the sort keys appear after the expression
+                             * supplying the initial sequence, while in
+                             * xsl:perform-sort, if a sequence constructor is used,
+                             * they appear in the opposite order. Hence, we need to
+                             * reorder it. */
+
+                            /* We store the attributes of xsl:perform-sort, before
+                             * queueSorting() advances the reader. */
+                            const QXmlStreamAttributes atts( m_currentAttributes );
+
+                            TokenSource::Queue sorts;
+                            queueSorting( true, &sorts );
+                            queueSelectOrSequenceConstructor( ReportContext::XTSE1040,
+                                                              true,
+                                                              to,
+                                                              &atts );
+                            /* queueSelectOrSequenceConstructor() positions us on EndElement. */
+                            effectiveInitialAdvance = false;
+                            queueToken( MAP, to );
+                            queueToken( SORT, to );
+                            *to += sorts;
+                            queueToken( RETURN, to );
+                            queueToken( DOT, to );
+                            queueToken( END_SORT, to );
+
+                            break;
+                        }
+
+                        case Message:
+                        {
+                            // TODO
+                            queueEmptySequence( to );
+                            skipSubTree();
+                            break;
+                        }
+
+                        case ApplyTemplates:
+                        {
+                            if ( hasAttribute( "select" ) )
+                            {
+                                queueExpression( readAttribute( QLatin1String( "select" ) ), to );
+
+                            }
+                            else
+                            {
+                                queueToken( CHILD, to );
+                                queueToken( COLONCOLON, to );
+                                queueToken( NODE, to );
+                                queueToken( LPAREN, to );
+                                queueToken( RPAREN, to );
+                            }
+
+                            bool hasMode = hasAttribute( "mode" );
+                            QString mode;
+
+                            if ( hasMode )
+                            {
+                                mode = readAttribute( QLatin1String( "mode" ) ).trimmed();
+                            }
+
+                            queueToken( FOR_APPLY_TEMPLATE, to );
+
+                            TokenSource::Queue sorts;
+                            queueSorting( false, &sorts, true );
+
+                            if ( !sorts.isEmpty() )
+                            {
+                                queueToken( SORT, to );
+                                *to += sorts;
+                                queueToken( RETURN, to );
+                            }
+
+                            queueToken( APPLY_TEMPLATE, to );
+
+                            if ( hasMode )
+                            {
+                                queueToken( MODE, to );
+                                queueToken( Token( mode.startsWith( QLatin1Char( '#' ) ) ? NCNAME : QNAME, mode ), to );
+                            }
+
+                            queueToken( LPAREN, to );
+                            queueWithParams( ApplyTemplates, to, false );
+                            queueToken( RPAREN, to );
+
+                            if ( !sorts.isEmpty() )
+                            {
+                                queueToken( END_SORT, to );
+                            }
+
+                            break;
+                        }
+
+                        default:
+                            unexpectedContent();
+                    }
+
+                    continue;
+                }
+                else
                 {
-                    hasWrittenExpression = true;
-                    break;
+                    handleXSLTVersion( &m_tokenSource, &onExitTokens, true );
+                    handleStandardAttributes( false );
+                    handleValidationAttributes( false );
+
+                    /* We're generating an element constructor. */
+                    queueNamespaceDeclarations( to, &onExitTokens ); // TODO same in the isXSLT() branch
+                    queueToken( ELEMENT, to );
+                    queueToken( INTERNAL, to );
+                    queueToken( Token( QNAME, qualifiedName().toString() ), to );
+                    queueToken( CURLY_LBRACE, to );
+                    const int len = m_currentAttributes.count();
+
+                    for ( int i = 0; i < len; ++i )
+                    {
+                        const QXmlStreamAttribute &at = m_currentAttributes.at( i );
+
+                        /* We don't want to generate constructors for XSL-T attributes. */
+                        if ( at.namespaceUri() == CommonNamespaces::XSLT )
+                        {
+                            continue;
+                        }
+
+                        queueToken( ATTRIBUTE, to );
+                        queueToken( INTERNAL, to );
+
+                        queueToken( Token( at.prefix().isEmpty() ? NCNAME : QNAME, at.qualifiedName().toString() ), to );
+                        queueToken( CURLY_LBRACE, to );
+                        queueAVT( at.value().toString(), to );
+                        queueToken( CURLY_RBRACE, to );
+                        queueToken( COMMA, to );
+                    }
+
+                    pushState( InsideSequenceConstructor );
+                    insideSequenceConstructor( to );
+                    Q_ASSERT( tokenType() == QXmlStreamReader::EndElement || hasError() );
+                    continue;
                 }
 
-                case If:
+                unexpectedContent();
+                break;
+            }
+
+            case QXmlStreamReader::EndElement:
+            {
+                queueTextConstructor( characters, hasWrittenExpression, to );
+                leaveState();
+
+                if ( !hasWrittenExpression && queueEmptyOnEmpty )
                 {
-                    queueToken( RPAREN, to );
-                    queueToken( ELSE, to );
                     queueEmptySequence( to );
-                    break;
                 }
 
-                case Function:
+                queueOnExit( onExitTokens, to );
+
+                if ( isXSLT() )
                 {
-                    queueToken( CURLY_RBRACE, to );
-                    queueToken( SEMI_COLON, to );
-                    break;
-                }
+                    Q_ASSERT( !isElement( Sequence ) );
 
-                case Template:
+                    switch ( currentElementName() )
+                    {
+                        case When:
+                        case Choose:
+                        case ForEach:
+                        case Otherwise:
+                        case PerformSort:
+                        case Message:
+                        case ResultDocument:
+                        case Copy:
+                        case CallTemplate:
+                        case Text:
+                        case ValueOf:
+                        {
+                            hasWrittenExpression = true;
+                            break;
+                        }
+
+                        case If:
+                        {
+                            queueToken( RPAREN, to );
+                            queueToken( ELSE, to );
+                            queueEmptySequence( to );
+                            break;
+                        }
+
+                        case Function:
+                        {
+                            queueToken( CURLY_RBRACE, to );
+                            queueToken( SEMI_COLON, to );
+                            break;
+                        }
+
+                        case Template:
+                        {
+                            endStorageOfCurrent( &m_tokenSource );
+
+                            queueToken( CURLY_RBRACE, to );
+                            queueToken( SEMI_COLON, to );
+                            break;
+                        }
+
+                        default:
+                            break;
+                    }
+
+                }
+                else
                 {
-                    endStorageOfCurrent( &m_tokenSource );
-
+                    /* We're closing a direct element constructor. */
+                    hasWrittenExpression = true;
                     queueToken( CURLY_RBRACE, to );
-                    queueToken( SEMI_COLON, to );
-                    break;
                 }
 
-                default:
-                    break;
+                return hasWrittenExpression;
+            }
+
+            case QXmlStreamReader::ProcessingInstruction:
+                [[fallthrough]];
+
+            case QXmlStreamReader::Comment:
+                /* do nothing, just ignore them. */
+                continue;
+
+            case QXmlStreamReader::Characters:
+            {
+                if ( whitespaceToSkip() )
+                {
+                    continue;
                 }
-
-            }
-            else
-            {
-                /* We're closing a direct element constructor. */
-                hasWrittenExpression = true;
-                queueToken( CURLY_RBRACE, to );
+                else
+                {
+                    characters += text().toString();
+                    continue;
+                }
             }
 
-            return hasWrittenExpression;
-        }
-
-        case QXmlStreamReader::ProcessingInstruction:
-            [[fallthrough]];
-
-        case QXmlStreamReader::Comment:
-            /* do nothing, just ignore them. */
-            continue;
-
-        case QXmlStreamReader::Characters:
-        {
-            if ( whitespaceToSkip() )
-            {
-                continue;
-            }
-            else
-            {
-                characters += text().toString();
-                continue;
-            }
-        }
-
-        default:
-            ;
+            default:
+                ;
         }
     }
 
@@ -2250,60 +2250,60 @@ void XSLTTokenizer::queueWithParams( const XSLTTokenLookup::NodeName parentName,
 
         switch ( tokenType() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            if ( hasQueuedParam )
+            case QXmlStreamReader::StartElement:
             {
-                queueToken( COMMA, to );
-            }
-
-            if ( isXSLT() && isElement( WithParam ) )
-            {
-                if ( hasAttribute( "tunnel" ) && attributeYesNo( QLatin1String( "tunnel" ) ) )
+                if ( hasQueuedParam )
                 {
-                    queueToken( TUNNEL, to );
+                    queueToken( COMMA, to );
                 }
 
-                queueVariableDeclaration( WithParamVariable, to );
-                hasQueuedParam = true;
-                continue;
+                if ( isXSLT() && isElement( WithParam ) )
+                {
+                    if ( hasAttribute( "tunnel" ) && attributeYesNo( QLatin1String( "tunnel" ) ) )
+                    {
+                        queueToken( TUNNEL, to );
+                    }
+
+                    queueVariableDeclaration( WithParamVariable, to );
+                    hasQueuedParam = true;
+                    continue;
+                }
+                else
+                {
+                    unexpectedContent();
+                }
             }
-            else
+
+            [[fallthrough]];
+
+            case QXmlStreamReader::EndElement:
             {
+                if ( isElement( parentName ) )
+                {
+                    return;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            case QXmlStreamReader::ProcessingInstruction:
+            case QXmlStreamReader::Comment:
+                continue;
+
+            case QXmlStreamReader::Characters:
+                if ( whitespaceToSkip() )
+                {
+                    continue;
+                }
+                else
+                {
+                    return;
+                }
+
+            default:
                 unexpectedContent();
-            }
-        }
-
-        [[fallthrough]];
-
-        case QXmlStreamReader::EndElement:
-        {
-            if ( isElement( parentName ) )
-            {
-                return;
-            }
-            else
-            {
-                continue;
-            }
-        }
-
-        case QXmlStreamReader::ProcessingInstruction:
-        case QXmlStreamReader::Comment:
-            continue;
-
-        case QXmlStreamReader::Characters:
-            if ( whitespaceToSkip() )
-            {
-                continue;
-            }
-            else
-            {
-                return;
-            }
-
-        default:
-            unexpectedContent();
         }
     }
 
@@ -2321,76 +2321,76 @@ void XSLTTokenizer::queueParams( const XSLTTokenLookup::NodeName parentName,
     {
         switch ( readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-
-            if ( isXSLT() && isElement( Param ) )
+            case QXmlStreamReader::StartElement:
             {
-                if ( hasQueuedParam )
+
+                if ( isXSLT() && isElement( Param ) )
                 {
-                    queueToken( COMMA, to );
-                }
-
-                validateElement();
-
-                if ( parentName == Function && m_currentAttributes.hasAttribute( "select" ) )
-                {
-                    error( QtXmlPatterns::tr( "The attribute %1 can not appear on %2, when it is a child of %3." )
-                           .formatArgs( formatKeyword( QLatin1String( "select" ) ),
-                                        formatKeyword( QLatin1String( "param" ) ),
-                                        formatKeyword( QLatin1String( "function" ) ) ), ReportContext::XTSE0760 );
-                }
-
-                if ( parentName == Function && m_currentAttributes.hasAttribute( "required" ) )
-                {
-                    error( QtXmlPatterns::tr( "The attribute %1 cannot appear on %2, when it is a child of %3." )
-                           .formatArgs( formatKeyword( QLatin1String( "required" ) ),
-                                        formatKeyword( QLatin1String( "param" ) ),
-                                        formatKeyword( QLatin1String( "function" ) ) ), ReportContext::XTSE0010 );
-                }
-
-                const bool hasTunnel = m_currentAttributes.hasAttribute( "tunnel" );
-                const bool isTunnel = hasTunnel ? attributeYesNo( QLatin1String( "tunnel" ) ) : false;
-
-                if ( isTunnel )
-                {
-                    if ( parentName == Function )
+                    if ( hasQueuedParam )
                     {
-                        /* See W3C public report 5650: http://www.w3.org/Bugs/Public/show_bug.cgi?id=5650 */
-                        error( QtXmlPatterns::tr( "A parameter in a function cannot be declared to be a tunnel." ),
-                               ReportContext::XTSE0010 );
+                        queueToken( COMMA, to );
                     }
-                    else
-                    {
-                        queueToken( TUNNEL, to );
-                    }
-                }
 
-                hasQueuedParam = true;
-                queueVariableDeclaration( parentName == Function ? FunctionParameter : TemplateParameter, to );
-                continue;
+                    validateElement();
+
+                    if ( parentName == Function && m_currentAttributes.hasAttribute( "select" ) )
+                    {
+                        error( QtXmlPatterns::tr( "The attribute %1 can not appear on %2, when it is a child of %3." )
+                               .formatArgs( formatKeyword( QLatin1String( "select" ) ),
+                                            formatKeyword( QLatin1String( "param" ) ),
+                                            formatKeyword( QLatin1String( "function" ) ) ), ReportContext::XTSE0760 );
+                    }
+
+                    if ( parentName == Function && m_currentAttributes.hasAttribute( "required" ) )
+                    {
+                        error( QtXmlPatterns::tr( "The attribute %1 cannot appear on %2, when it is a child of %3." )
+                               .formatArgs( formatKeyword( QLatin1String( "required" ) ),
+                                            formatKeyword( QLatin1String( "param" ) ),
+                                            formatKeyword( QLatin1String( "function" ) ) ), ReportContext::XTSE0010 );
+                    }
+
+                    const bool hasTunnel = m_currentAttributes.hasAttribute( "tunnel" );
+                    const bool isTunnel = hasTunnel ? attributeYesNo( QLatin1String( "tunnel" ) ) : false;
+
+                    if ( isTunnel )
+                    {
+                        if ( parentName == Function )
+                        {
+                            /* See W3C public report 5650: http://www.w3.org/Bugs/Public/show_bug.cgi?id=5650 */
+                            error( QtXmlPatterns::tr( "A parameter in a function cannot be declared to be a tunnel." ),
+                                   ReportContext::XTSE0010 );
+                        }
+                        else
+                        {
+                            queueToken( TUNNEL, to );
+                        }
+                    }
+
+                    hasQueuedParam = true;
+                    queueVariableDeclaration( parentName == Function ? FunctionParameter : TemplateParameter, to );
+                    continue;
+                }
+                else
+                {
+                    return;
+                }
             }
-            else
+
+            case QXmlStreamReader::Characters:
             {
+                if ( whitespaceToSkip() )
+                {
+                    continue;
+                }
+
+                [[fallthrough]];
+            }
+
+            case QXmlStreamReader::EndElement:
                 return;
-            }
-        }
 
-        case QXmlStreamReader::Characters:
-        {
-            if ( whitespaceToSkip() )
-            {
-                continue;
-            }
-
-            [[fallthrough]];
-        }
-
-        case QXmlStreamReader::EndElement:
-            return;
-
-        default:
-            break;
+            default:
+                break;
         }
     }
 }
@@ -2404,13 +2404,26 @@ bool XSLTTokenizer::skipSubTree( const bool exitOnContent )
     {
         switch ( readNext() )
         {
-        case QXmlStreamReader::Characters:
-        {
-            if ( whitespaceToSkip() )
+            case QXmlStreamReader::Characters:
             {
-                continue;
+                if ( whitespaceToSkip() )
+                {
+                    continue;
+                }
+                else
+                {
+                    hasContent = true;
+
+                    if ( exitOnContent )
+                    {
+                        return true;
+                    }
+
+                    break;
+                }
             }
-            else
+
+            case QXmlStreamReader::StartElement:
             {
                 hasContent = true;
 
@@ -2419,31 +2432,18 @@ bool XSLTTokenizer::skipSubTree( const bool exitOnContent )
                     return true;
                 }
 
+                ++depth;
                 break;
             }
-        }
 
-        case QXmlStreamReader::StartElement:
-        {
-            hasContent = true;
-
-            if ( exitOnContent )
+            case QXmlStreamReader::EndElement:
             {
-                return true;
+                --depth;
+                break;
             }
 
-            ++depth;
-            break;
-        }
-
-        case QXmlStreamReader::EndElement:
-        {
-            --depth;
-            break;
-        }
-
-        default:
-            continue;
+            default:
+                continue;
         }
 
         if ( depth == -1 )
@@ -2471,36 +2471,36 @@ void XSLTTokenizer::insideAttributeSet()
     {
         switch ( readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            if ( isXSLT() && isElement( AttributeSet ) )
+            case QXmlStreamReader::StartElement:
             {
-                // TODO
-                skipSubTree();
+                if ( isXSLT() && isElement( AttributeSet ) )
+                {
+                    // TODO
+                    skipSubTree();
+                }
+                else
+                {
+                    unexpectedContent();
+                }
             }
-            else
-            {
-                unexpectedContent();
-            }
-        }
 
-        case QXmlStreamReader::EndElement:
-            return;
+            case QXmlStreamReader::EndElement:
+                return;
 
-        case QXmlStreamReader::ProcessingInstruction:
-        case QXmlStreamReader::Comment:
-            continue;
-
-        case QXmlStreamReader::Characters:
-            if ( whitespaceToSkip() )
-            {
+            case QXmlStreamReader::ProcessingInstruction:
+            case QXmlStreamReader::Comment:
                 continue;
-            }
 
-            [[fallthrough]];
+            case QXmlStreamReader::Characters:
+                if ( whitespaceToSkip() )
+                {
+                    continue;
+                }
 
-        default:
-            unexpectedContent();
+                [[fallthrough]];
+
+            default:
+                unexpectedContent();
         }
     }
 
@@ -2513,147 +2513,147 @@ void XSLTTokenizer::insideStylesheetModule()
     {
         switch ( readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            if ( isXSLT() )
+            case QXmlStreamReader::StartElement:
             {
-                handleStandardAttributes( true );
-                handleXSLTVersion( nullptr, nullptr, true, nullptr, false );
-                validateElement();
-
-                /* Handle the various declarations. */
-                switch ( currentElementName() )
+                if ( isXSLT() )
                 {
-                case Template:
-                    insideTemplate();
-                    break;
+                    handleStandardAttributes( true );
+                    handleXSLTVersion( nullptr, nullptr, true, nullptr, false );
+                    validateElement();
 
-                case Function:
-                    insideFunction();
-                    break;
-
-                case Variable:
-                    queueVariableDeclaration( VariableDeclaration, &m_tokenSource );
-                    break;
-
-                case Param:
-                    queueVariableDeclaration( GlobalParameter, &m_tokenSource );
-                    break;
-
-                case ImportSchema:
-                {
-                    error( QtXmlPatterns::tr( "This processor is not Schema-aware and "
-                                              "therefore %1 cannot be used." ).formatArg( formatKeyword( toString( ImportSchema ) ) ),
-                           ReportContext::XTSE1660 );
-                    break;
-                }
-
-                case Output:
-                {
-                    // TODO
-                    skipSubTree();
-                    break;
-                }
-
-                case StripSpace:
-                case PreserveSpace:
-                {
-                    // TODO @elements
-                    skipSubTree( true );
-                    readNext();
-
-                    if ( !isEndElement() )
+                    /* Handle the various declarations. */
+                    switch ( currentElementName() )
                     {
-                        unexpectedContent();
+                        case Template:
+                            insideTemplate();
+                            break;
+
+                        case Function:
+                            insideFunction();
+                            break;
+
+                        case Variable:
+                            queueVariableDeclaration( VariableDeclaration, &m_tokenSource );
+                            break;
+
+                        case Param:
+                            queueVariableDeclaration( GlobalParameter, &m_tokenSource );
+                            break;
+
+                        case ImportSchema:
+                        {
+                            error( QtXmlPatterns::tr( "This processor is not Schema-aware and "
+                                                      "therefore %1 cannot be used." ).formatArg( formatKeyword( toString( ImportSchema ) ) ),
+                                   ReportContext::XTSE1660 );
+                            break;
+                        }
+
+                        case Output:
+                        {
+                            // TODO
+                            skipSubTree();
+                            break;
+                        }
+
+                        case StripSpace:
+                        case PreserveSpace:
+                        {
+                            // TODO @elements
+                            skipSubTree( true );
+                            readNext();
+
+                            if ( !isEndElement() )
+                            {
+                                unexpectedContent();
+                            }
+
+                            break;
+                        }
+
+                        case Include:
+                        {
+                            // TODO
+                            if ( skipSubTree( true ) )
+                            {
+                                unexpectedContent();
+                            }
+
+                            break;
+                        }
+
+                        case Import:
+                        {
+                            // TODO
+                            if ( skipSubTree( true ) )
+                            {
+                                unexpectedContent();
+                            }
+
+                            break;
+                        }
+
+                        case Key:
+                        {
+                            // TODO
+                            skipSubTree();
+                            break;
+                        }
+
+                        case AttributeSet:
+                            insideAttributeSet();
+                            break;
+
+                        default:
+                            if ( m_processingMode.top() != ForwardCompatible )
+                            {
+                                unexpectedContent();
+                            }
                     }
-
-                    break;
-                }
-
-                case Include:
-                {
-                    // TODO
-                    if ( skipSubTree( true ) )
-                    {
-                        unexpectedContent();
-                    }
-
-                    break;
-                }
-
-                case Import:
-                {
-                    // TODO
-                    if ( skipSubTree( true ) )
-                    {
-                        unexpectedContent();
-                    }
-
-                    break;
-                }
-
-                case Key:
-                {
-                    // TODO
-                    skipSubTree();
-                    break;
-                }
-
-                case AttributeSet:
-                    insideAttributeSet();
-                    break;
-
-                default:
-                    if ( m_processingMode.top() != ForwardCompatible )
-                    {
-                        unexpectedContent();
-                    }
-                }
-            }
-            else
-            {
-                /* We have a user-defined data element. See section 3.6.2. */
-
-                if ( namespaceUri().isEmpty() )
-                {
-                    error( QtXmlPatterns::tr( "Top level stylesheet elements must be "
-                                              "in a non null namespace, which %1 is not." ).formatArg( formatKeyword( name() ) ),
-                           ReportContext::XTSE0130 );
                 }
                 else
                 {
-                    skipSubTree();
+                    /* We have a user-defined data element. See section 3.6.2. */
+
+                    if ( namespaceUri().isEmpty() )
+                    {
+                        error( QtXmlPatterns::tr( "Top level stylesheet elements must be "
+                                                  "in a non null namespace, which %1 is not." ).formatArg( formatKeyword( name() ) ),
+                               ReportContext::XTSE0130 );
+                    }
+                    else
+                    {
+                        skipSubTree();
+                    }
                 }
+
+                break;
             }
 
-            break;
-        }
-
-        case QXmlStreamReader::Characters:
-        {
-            /* Regardless of xml:space, we skip whitespace, see step 4 in
-             * 4.2 Stripping Whitespace from the Stylesheet. */
-            if ( isWhitespace() )
+            case QXmlStreamReader::Characters:
             {
-                continue;
+                /* Regardless of xml:space, we skip whitespace, see step 4 in
+                 * 4.2 Stripping Whitespace from the Stylesheet. */
+                if ( isWhitespace() )
+                {
+                    continue;
+                }
+
+                unexpectedContent( ReportContext::XTSE0120 );
+                break;
             }
 
-            unexpectedContent( ReportContext::XTSE0120 );
-            break;
-        }
-
-        case QXmlStreamReader::EndElement:
-        {
-            if ( isXSLT() )
+            case QXmlStreamReader::EndElement:
             {
-                leaveState();
+                if ( isXSLT() )
+                {
+                    leaveState();
+                }
+
+                break;
             }
 
-            break;
-        }
-
-        default:
-            ;
+            default:
+                ;
         }
     }
 
@@ -2720,146 +2720,146 @@ void XSLTTokenizer::queueSorting( const bool oneSortRequired, TokenSource::Queue
     {
         switch ( readNext() )
         {
-        case QXmlStreamReader::EndElement:
-        {
-            /* Let's say we have no sequence constructor, but only
-             * ignorable space. In that case we will actually loop
-             * infinitely if we don't have this check. */
-            if ( isXSLT() )
+            case QXmlStreamReader::EndElement:
             {
-                switch ( currentElementName() )
+                /* Let's say we have no sequence constructor, but only
+                 * ignorable space. In that case we will actually loop
+                 * infinitely if we don't have this check. */
+                if ( isXSLT() )
                 {
-                case PerformSort:
-                case ForEach:
-                case ApplyTemplates:
-                    return;
+                    switch ( currentElementName() )
+                    {
+                        case PerformSort:
+                        case ForEach:
+                        case ApplyTemplates:
+                            return;
 
-                default:
-                    break;
+                        default:
+                            break;
+                    }
                 }
+
+                continue;
             }
 
-            continue;
-        }
-
-        case QXmlStreamReader::StartElement:
-        {
-            if ( isXSLT() && isElement( Sort ) )
+            case QXmlStreamReader::StartElement:
             {
-                if ( hasQueuedOneSort )
-                {
-                    queueToken( COMMA, to );
-                }
-
-                /* sorts are by default stable. */
-                if ( hasAttribute( "stable" ) )
+                if ( isXSLT() && isElement( Sort ) )
                 {
                     if ( hasQueuedOneSort )
                     {
-                        error( QtXmlPatterns::tr( "The attribute %1 can only appear on the first %2 element." )
-                               .formatArgs( formatKeyword( QLatin1String( "stable" ) ), formatKeyword( QLatin1String( "sort" ) ) ), ReportContext::XTSE0020 );
+                        queueToken( COMMA, to );
                     }
 
-                    if ( attributeYesNo( QLatin1String( "stable" ) ) )
+                    /* sorts are by default stable. */
+                    if ( hasAttribute( "stable" ) )
                     {
-                        queueToken( STABLE, to );
+                        if ( hasQueuedOneSort )
+                        {
+                            error( QtXmlPatterns::tr( "The attribute %1 can only appear on the first %2 element." )
+                                   .formatArgs( formatKeyword( QLatin1String( "stable" ) ), formatKeyword( QLatin1String( "sort" ) ) ), ReportContext::XTSE0020 );
+                        }
+
+                        if ( attributeYesNo( QLatin1String( "stable" ) ) )
+                        {
+                            queueToken( STABLE, to );
+                        }
                     }
-                }
 
-                if ( !hasQueuedOneSort )
-                {
-                    queueToken( ORDER, to );
-                    queueToken( BY, to );
-                }
-
-                /* We store a copy such that we can use them after
-                 * queueSelectOrSequenceConstructor() advances the reader. */
-                const QXmlStreamAttributes atts( m_currentAttributes );
-
-                const int before = to->count();
-
-                // TODO This doesn't work as is. @data-type can be an AVT.
-                if ( atts.hasAttribute( "data-type" ) )
-                {
-                    if ( readToggleAttribute( "data-type", "text", "number", &atts ) )
+                    if ( !hasQueuedOneSort )
                     {
-                        queueToken( Token( NCNAME, QLatin1String( "string" ) ), to );
+                        queueToken( ORDER, to );
+                        queueToken( BY, to );
+                    }
+
+                    /* We store a copy such that we can use them after
+                     * queueSelectOrSequenceConstructor() advances the reader. */
+                    const QXmlStreamAttributes atts( m_currentAttributes );
+
+                    const int before = to->count();
+
+                    // TODO This doesn't work as is. @data-type can be an AVT.
+                    if ( atts.hasAttribute( "data-type" ) )
+                    {
+                        if ( readToggleAttribute( "data-type", "text", "number", &atts ) )
+                        {
+                            queueToken( Token( NCNAME, QLatin1String( "string" ) ), to );
+                        }
+                        else
+                        {
+                            queueToken( Token( NCNAME, QLatin1String( "number" ) ), to );
+                        }
+                    }
+
+                    /* We queue these parantheses for the sake of the function
+                     * call for attribute data-type. In the case we don't have
+                     * such an attribute, the parantheses are just redundant. */
+                    queueToken( LPAREN, to );
+                    queueSelectOrSequenceConstructor( ReportContext::XTSE1015, true, to, nullptr, false );
+
+                    /* If neither a select attribute or a sequence constructor is supplied,
+                     * we are supposed to use the context item. */
+                    queueToken( RPAREN, to );
+
+                    if ( before == to->count() )
+                    {
+                        queueToken( DOT, to );
+                    }
+
+                    // TODO case-order
+                    // TODO lang
+
+                    // TODO This doesn't work as is. @order can be an AVT, and so can case-order and lang.
+                    if ( atts.hasAttribute( "order" ) && readToggleAttribute( "order", "descending", "ascending", &atts ) )
+                    {
+                        queueToken( DESCENDING, to );
+
                     }
                     else
                     {
-                        queueToken( Token( NCNAME, QLatin1String( "number" ) ), to );
+                        // default
+                        queueToken( ASCENDING, to );
                     }
-                }
 
-                /* We queue these parantheses for the sake of the function
-                 * call for attribute data-type. In the case we don't have
-                 * such an attribute, the parantheses are just redundant. */
-                queueToken( LPAREN, to );
-                queueSelectOrSequenceConstructor( ReportContext::XTSE1015, true, to, nullptr, false );
+                    if ( atts.hasAttribute( "collation" ) )
+                    {
+                        queueToken( INTERNAL, to );
+                        queueToken( COLLATION, to );
+                        queueAVT( atts.value( "collation" ).toString(), to );
+                    }
 
-                /* If neither a select attribute or a sequence constructor is supplied,
-                 * we are supposed to use the context item. */
-                queueToken( RPAREN, to );
-
-                if ( before == to->count() )
-                {
-                    queueToken( DOT, to );
-                }
-
-                // TODO case-order
-                // TODO lang
-
-                // TODO This doesn't work as is. @order can be an AVT, and so can case-order and lang.
-                if ( atts.hasAttribute( "order" ) && readToggleAttribute( "order", "descending", "ascending", &atts ) )
-                {
-                    queueToken( DESCENDING, to );
+                    hasQueuedOneSort = true;
+                    continue;
 
                 }
                 else
                 {
-                    // default
-                    queueToken( ASCENDING, to );
+                    break;
                 }
-
-                if ( atts.hasAttribute( "collation" ) )
-                {
-                    queueToken( INTERNAL, to );
-                    queueToken( COLLATION, to );
-                    queueAVT( atts.value( "collation" ).toString(), to );
-                }
-
-                hasQueuedOneSort = true;
-                continue;
-
             }
-            else
+
+            case QXmlStreamReader::Characters:
             {
+                if ( speciallyTreatWhitespace && isWhitespace() )
+                {
+                    continue;
+                }
+
+                if ( whitespaceToSkip() )
+                {
+                    continue;
+                }
+
+                /* We have an instruction which is a text node, we're done. */
                 break;
             }
-        }
 
-        case QXmlStreamReader::Characters:
-        {
-            if ( speciallyTreatWhitespace && isWhitespace() )
-            {
+            case QXmlStreamReader::ProcessingInstruction:
+            case QXmlStreamReader::Comment:
                 continue;
-            }
 
-            if ( whitespaceToSkip() )
-            {
-                continue;
-            }
-
-            /* We have an instruction which is a text node, we're done. */
-            break;
-        }
-
-        case QXmlStreamReader::ProcessingInstruction:
-        case QXmlStreamReader::Comment:
-            continue;
-
-        default:
-            unexpectedContent();
+            default:
+                unexpectedContent();
 
         };
 

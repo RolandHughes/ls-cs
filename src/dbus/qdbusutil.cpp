@@ -212,54 +212,54 @@ bool argToString( const QDBusArgument &busArg, QString &out )
 
     switch ( elementType )
     {
-    case QDBusArgument::BasicType:
-    case QDBusArgument::VariantType:
-        if ( !variantToString( busArg.asVariant(), out ) )
-        {
+        case QDBusArgument::BasicType:
+        case QDBusArgument::VariantType:
+            if ( !variantToString( busArg.asVariant(), out ) )
+            {
+                return false;
+            }
+
+            break;
+
+        case QDBusArgument::StructureType:
+            busArg.beginStructure();
+            doIterate = true;
+            break;
+
+        case QDBusArgument::ArrayType:
+            busArg.beginArray();
+            out += QLatin1Char( '{' );
+            doIterate = true;
+            break;
+
+        case QDBusArgument::MapType:
+            busArg.beginMap();
+            out += QLatin1Char( '{' );
+            doIterate = true;
+            break;
+
+        case QDBusArgument::MapEntryType:
+            busArg.beginMapEntry();
+
+            if ( !variantToString( busArg.asVariant(), out ) )
+            {
+                return false;
+            }
+
+            out += QLatin1String( " = " );
+
+            if ( !argToString( busArg, out ) )
+            {
+                return false;
+            }
+
+            busArg.endMapEntry();
+            break;
+
+        case QDBusArgument::UnknownType:
+        default:
+            out += QLatin1String( "<ERROR - Unknown Type>" );
             return false;
-        }
-
-        break;
-
-    case QDBusArgument::StructureType:
-        busArg.beginStructure();
-        doIterate = true;
-        break;
-
-    case QDBusArgument::ArrayType:
-        busArg.beginArray();
-        out += QLatin1Char( '{' );
-        doIterate = true;
-        break;
-
-    case QDBusArgument::MapType:
-        busArg.beginMap();
-        out += QLatin1Char( '{' );
-        doIterate = true;
-        break;
-
-    case QDBusArgument::MapEntryType:
-        busArg.beginMapEntry();
-
-        if ( !variantToString( busArg.asVariant(), out ) )
-        {
-            return false;
-        }
-
-        out += QLatin1String( " = " );
-
-        if ( !argToString( busArg, out ) )
-        {
-            return false;
-        }
-
-        busArg.endMapEntry();
-        break;
-
-    case QDBusArgument::UnknownType:
-    default:
-        out += QLatin1String( "<ERROR - Unknown Type>" );
-        return false;
     }
 
     if ( doIterate && !busArg.atEnd() )
@@ -279,26 +279,26 @@ bool argToString( const QDBusArgument &busArg, QString &out )
 
     switch ( elementType )
     {
-    case QDBusArgument::BasicType:
-    case QDBusArgument::VariantType:
-    case QDBusArgument::UnknownType:
-    case QDBusArgument::MapEntryType:
-        // nothing to do
-        break;
+        case QDBusArgument::BasicType:
+        case QDBusArgument::VariantType:
+        case QDBusArgument::UnknownType:
+        case QDBusArgument::MapEntryType:
+            // nothing to do
+            break;
 
-    case QDBusArgument::StructureType:
-        busArg.endStructure();
-        break;
+        case QDBusArgument::StructureType:
+            busArg.endStructure();
+            break;
 
-    case QDBusArgument::ArrayType:
-        out += QLatin1Char( '}' );
-        busArg.endArray();
-        break;
+        case QDBusArgument::ArrayType:
+            out += QLatin1Char( '}' );
+            busArg.endArray();
+            break;
 
-    case QDBusArgument::MapType:
-        out += QLatin1Char( '}' );
-        busArg.endMap();
-        break;
+        case QDBusArgument::MapType:
+            out += QLatin1Char( '}' );
+            busArg.endMap();
+            break;
     }
 
     if ( elementType != QDBusArgument::BasicType && elementType != QDBusArgument::VariantType

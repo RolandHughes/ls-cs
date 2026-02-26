@@ -1011,44 +1011,44 @@ void printXcbEvent( const char *message, xcb_generic_event_t *event )
 
     switch ( event->response_type & ~0x80 )
     {
-        PRINT_XCB_EVENT( XCB_KEY_PRESS );
-        PRINT_XCB_EVENT( XCB_KEY_RELEASE );
-        PRINT_XCB_EVENT( XCB_BUTTON_PRESS );
-        PRINT_XCB_EVENT( XCB_BUTTON_RELEASE );
-        PRINT_XCB_EVENT( XCB_MOTION_NOTIFY );
-        PRINT_XCB_EVENT( XCB_ENTER_NOTIFY );
-        PRINT_XCB_EVENT( XCB_LEAVE_NOTIFY );
-        PRINT_XCB_EVENT( XCB_FOCUS_IN );
-        PRINT_XCB_EVENT( XCB_FOCUS_OUT );
-        PRINT_XCB_EVENT( XCB_KEYMAP_NOTIFY );
-        PRINT_XCB_EVENT( XCB_EXPOSE );
-        PRINT_XCB_EVENT( XCB_GRAPHICS_EXPOSURE );
-        PRINT_XCB_EVENT( XCB_NO_EXPOSURE );
-        PRINT_XCB_EVENT( XCB_VISIBILITY_NOTIFY );
-        PRINT_XCB_EVENT( XCB_CREATE_NOTIFY );
-        PRINT_XCB_EVENT( XCB_DESTROY_NOTIFY );
-        PRINT_XCB_EVENT( XCB_UNMAP_NOTIFY );
-        PRINT_XCB_EVENT( XCB_MAP_NOTIFY );
-        PRINT_XCB_EVENT( XCB_MAP_REQUEST );
-        PRINT_XCB_EVENT( XCB_REPARENT_NOTIFY );
-        PRINT_XCB_EVENT( XCB_CONFIGURE_NOTIFY );
-        PRINT_XCB_EVENT( XCB_CONFIGURE_REQUEST );
-        PRINT_XCB_EVENT( XCB_GRAVITY_NOTIFY );
-        PRINT_XCB_EVENT( XCB_RESIZE_REQUEST );
-        PRINT_XCB_EVENT( XCB_CIRCULATE_NOTIFY );
-        PRINT_XCB_EVENT( XCB_CIRCULATE_REQUEST );
-        PRINT_XCB_EVENT( XCB_PROPERTY_NOTIFY );
-        PRINT_XCB_EVENT( XCB_SELECTION_CLEAR );
-        PRINT_XCB_EVENT( XCB_SELECTION_REQUEST );
-        PRINT_XCB_EVENT( XCB_SELECTION_NOTIFY );
-        PRINT_XCB_EVENT( XCB_COLORMAP_NOTIFY );
-        PRINT_XCB_EVENT( XCB_CLIENT_MESSAGE );
-        PRINT_XCB_EVENT( XCB_MAPPING_NOTIFY );
-        PRINT_XCB_EVENT( XCB_GE_GENERIC );
+            PRINT_XCB_EVENT( XCB_KEY_PRESS );
+            PRINT_XCB_EVENT( XCB_KEY_RELEASE );
+            PRINT_XCB_EVENT( XCB_BUTTON_PRESS );
+            PRINT_XCB_EVENT( XCB_BUTTON_RELEASE );
+            PRINT_XCB_EVENT( XCB_MOTION_NOTIFY );
+            PRINT_XCB_EVENT( XCB_ENTER_NOTIFY );
+            PRINT_XCB_EVENT( XCB_LEAVE_NOTIFY );
+            PRINT_XCB_EVENT( XCB_FOCUS_IN );
+            PRINT_XCB_EVENT( XCB_FOCUS_OUT );
+            PRINT_XCB_EVENT( XCB_KEYMAP_NOTIFY );
+            PRINT_XCB_EVENT( XCB_EXPOSE );
+            PRINT_XCB_EVENT( XCB_GRAPHICS_EXPOSURE );
+            PRINT_XCB_EVENT( XCB_NO_EXPOSURE );
+            PRINT_XCB_EVENT( XCB_VISIBILITY_NOTIFY );
+            PRINT_XCB_EVENT( XCB_CREATE_NOTIFY );
+            PRINT_XCB_EVENT( XCB_DESTROY_NOTIFY );
+            PRINT_XCB_EVENT( XCB_UNMAP_NOTIFY );
+            PRINT_XCB_EVENT( XCB_MAP_NOTIFY );
+            PRINT_XCB_EVENT( XCB_MAP_REQUEST );
+            PRINT_XCB_EVENT( XCB_REPARENT_NOTIFY );
+            PRINT_XCB_EVENT( XCB_CONFIGURE_NOTIFY );
+            PRINT_XCB_EVENT( XCB_CONFIGURE_REQUEST );
+            PRINT_XCB_EVENT( XCB_GRAVITY_NOTIFY );
+            PRINT_XCB_EVENT( XCB_RESIZE_REQUEST );
+            PRINT_XCB_EVENT( XCB_CIRCULATE_NOTIFY );
+            PRINT_XCB_EVENT( XCB_CIRCULATE_REQUEST );
+            PRINT_XCB_EVENT( XCB_PROPERTY_NOTIFY );
+            PRINT_XCB_EVENT( XCB_SELECTION_CLEAR );
+            PRINT_XCB_EVENT( XCB_SELECTION_REQUEST );
+            PRINT_XCB_EVENT( XCB_SELECTION_NOTIFY );
+            PRINT_XCB_EVENT( XCB_COLORMAP_NOTIFY );
+            PRINT_XCB_EVENT( XCB_CLIENT_MESSAGE );
+            PRINT_XCB_EVENT( XCB_MAPPING_NOTIFY );
+            PRINT_XCB_EVENT( XCB_GE_GENERIC );
 
-    default:
-        qDebug( "printXcbEvent() message = %s, event = unknown, response type = %d, sequence = %d",
-                message, int( event->response_type & ~0x80 ), int( event->sequence ) );
+        default:
+            qDebug( "printXcbEvent() message = %s, event = unknown, response type = %d, sequence = %d",
+                    message, int( event->response_type & ~0x80 ), int( event->sequence ) );
     }
 
 #else
@@ -1250,7 +1250,8 @@ void QXcbConnection::handleXcbError( xcb_generic_error_t *error )
         }
         else if ( m_callLog.at( i ).sequence > error->sequence )
         {
-            qDebug( "QXcbConnection::handleXcbError() Caused before = %s:%d", lscsPrintable( m_callLog.at( i ).file ), m_callLog.at( i ).line );
+            qDebug( "QXcbConnection::handleXcbError() Caused before = %s:%d", lscsPrintable( m_callLog.at( i ).file ),
+                    m_callLog.at( i ).line );
 
             if ( i > 0 )
             {
@@ -1263,7 +1264,8 @@ void QXcbConnection::handleXcbError( xcb_generic_error_t *error )
 
     if ( i == m_callLog.size() && !m_callLog.isEmpty() )
     {
-        qDebug( "QXcbConnection::handleXcbError() Caused after =  %s:%d", lscsPrintable( m_callLog.first().file ), m_callLog.first().line );
+        qDebug( "QXcbConnection::handleXcbError() Caused after =  %s:%d", lscsPrintable( m_callLog.first().file ),
+                m_callLog.first().line );
     }
 
 #endif
@@ -1295,90 +1297,90 @@ Qt::MouseButton QXcbConnection::translateMouseButton( xcb_button_t s )
 {
     switch ( s )
     {
-    case 1:
-        return Qt::LeftButton;
+        case 1:
+            return Qt::LeftButton;
 
-    case 2:
-        return Qt::MiddleButton;
+        case 2:
+            return Qt::MiddleButton;
 
-    case 3:
-        return Qt::RightButton;
+        case 3:
+            return Qt::RightButton;
 
-    // Button values 4-7 were already handled as Wheel events, and won't occur here.
-    case 8:
-        return Qt::BackButton;      // Also known as Qt::ExtraButton1
+        // Button values 4-7 were already handled as Wheel events, and won't occur here.
+        case 8:
+            return Qt::BackButton;      // Also known as Qt::ExtraButton1
 
-    case 9:
-        return Qt::ForwardButton;   // Also known as Qt::ExtraButton2
+        case 9:
+            return Qt::ForwardButton;   // Also known as Qt::ExtraButton2
 
-    case 10:
-        return Qt::ExtraButton3;
+        case 10:
+            return Qt::ExtraButton3;
 
-    case 11:
-        return Qt::ExtraButton4;
+        case 11:
+            return Qt::ExtraButton4;
 
-    case 12:
-        return Qt::ExtraButton5;
+        case 12:
+            return Qt::ExtraButton5;
 
-    case 13:
-        return Qt::ExtraButton6;
+        case 13:
+            return Qt::ExtraButton6;
 
-    case 14:
-        return Qt::ExtraButton7;
+        case 14:
+            return Qt::ExtraButton7;
 
-    case 15:
-        return Qt::ExtraButton8;
+        case 15:
+            return Qt::ExtraButton8;
 
-    case 16:
-        return Qt::ExtraButton9;
+        case 16:
+            return Qt::ExtraButton9;
 
-    case 17:
-        return Qt::ExtraButton10;
+        case 17:
+            return Qt::ExtraButton10;
 
-    case 18:
-        return Qt::ExtraButton11;
+        case 18:
+            return Qt::ExtraButton11;
 
-    case 19:
-        return Qt::ExtraButton12;
+        case 19:
+            return Qt::ExtraButton12;
 
-    case 20:
-        return Qt::ExtraButton13;
+        case 20:
+            return Qt::ExtraButton13;
 
-    case 21:
-        return Qt::ExtraButton14;
+        case 21:
+            return Qt::ExtraButton14;
 
-    case 22:
-        return Qt::ExtraButton15;
+        case 22:
+            return Qt::ExtraButton15;
 
-    case 23:
-        return Qt::ExtraButton16;
+        case 23:
+            return Qt::ExtraButton16;
 
-    case 24:
-        return Qt::ExtraButton17;
+        case 24:
+            return Qt::ExtraButton17;
 
-    case 25:
-        return Qt::ExtraButton18;
+        case 25:
+            return Qt::ExtraButton18;
 
-    case 26:
-        return Qt::ExtraButton19;
+        case 26:
+            return Qt::ExtraButton19;
 
-    case 27:
-        return Qt::ExtraButton20;
+        case 27:
+            return Qt::ExtraButton20;
 
-    case 28:
-        return Qt::ExtraButton21;
+        case 28:
+            return Qt::ExtraButton21;
 
-    case 29:
-        return Qt::ExtraButton22;
+        case 29:
+            return Qt::ExtraButton22;
 
-    case 30:
-        return Qt::ExtraButton23;
+        case 30:
+            return Qt::ExtraButton23;
 
-    case 31:
-        return Qt::ExtraButton24;
+        case 31:
+            return Qt::ExtraButton24;
 
-    default:
-        return Qt::NoButton;
+        default:
+            return Qt::NoButton;
     }
 }
 
@@ -1433,205 +1435,205 @@ void QXcbConnection::handleXcbEvent( xcb_generic_event_t *event )
     {
         switch ( response_type )
         {
-        case XCB_EXPOSE:
-            HANDLE_PLATFORM_WINDOW_EVENT( xcb_expose_event_t, window, handleExposeEvent );
-            break;
+            case XCB_EXPOSE:
+                HANDLE_PLATFORM_WINDOW_EVENT( xcb_expose_event_t, window, handleExposeEvent );
+                break;
 
-        // press/release/motion is only delivered here when XI 2.2+ is _not_ in use
-        case XCB_BUTTON_PRESS:
-        {
-            xcb_button_press_event_t *ev = ( xcb_button_press_event_t * )event;
-            m_keyboard->updateXKBStateFromCore( ev->state );
-
-            // event explicitly contains the state of the three first buttons,
-            // the rest we need to manage ourselves
-            m_buttons = ( m_buttons & ~0x7 ) | translateMouseButtons( ev->state );
-            m_buttons |= translateMouseButton( ev->detail );
-
-#if defined(LSCS_SHOW_DEBUG_PLATFORM)
-            qDebug( "QXcbConnection::handleXcbEvent() mouse press button = %d, state = %X",
-                    ev->detail, static_cast<unsigned int>( m_buttons ) );
-#endif
-
-            HANDLE_PLATFORM_WINDOW_EVENT( xcb_button_press_event_t, event, handleButtonPressEvent );
-            break;
-        }
-
-        case XCB_BUTTON_RELEASE:
-        {
-            xcb_button_release_event_t *ev = ( xcb_button_release_event_t * )event;
-            m_keyboard->updateXKBStateFromCore( ev->state );
-            m_buttons = ( m_buttons & ~0x7 ) | translateMouseButtons( ev->state );
-            m_buttons &= ~translateMouseButton( ev->detail );
-
-#if defined(LSCS_SHOW_DEBUG_PLATFORM)
-            qDebug( "QXcbConnection::handleXcbEvent() mouse release button = %d, state = %X",
-                    ev->detail, static_cast<unsigned int>( m_buttons ) );
-#endif
-
-            HANDLE_PLATFORM_WINDOW_EVENT( xcb_button_release_event_t, event, handleButtonReleaseEvent );
-            break;
-        }
-
-        case XCB_MOTION_NOTIFY:
-        {
-            xcb_motion_notify_event_t *ev = ( xcb_motion_notify_event_t * )event;
-            m_keyboard->updateXKBStateFromCore( ev->state );
-            m_buttons = ( m_buttons & ~0x7 ) | translateMouseButtons( ev->state );
-
-#if defined(LSCS_SHOW_DEBUG_PLATFORM)
-            qDebug( "QXcbConnection::handleXcbEvent() mouse move button = %d,%d, detail = %d, state = %X",
-                    ev->event_x, ev->event_y, ev->detail, static_cast<unsigned int>( m_buttons ) );
-#endif
-
-            HANDLE_PLATFORM_WINDOW_EVENT( xcb_motion_notify_event_t, event, handleMotionNotifyEvent );
-            break;
-        }
-
-        case XCB_CONFIGURE_NOTIFY:
-            HANDLE_PLATFORM_WINDOW_EVENT( xcb_configure_notify_event_t, event, handleConfigureNotifyEvent );
-            break;
-
-        case XCB_MAP_NOTIFY:
-            HANDLE_PLATFORM_WINDOW_EVENT( xcb_map_notify_event_t, event, handleMapNotifyEvent );
-            break;
-
-        case XCB_UNMAP_NOTIFY:
-            HANDLE_PLATFORM_WINDOW_EVENT( xcb_unmap_notify_event_t, event, handleUnmapNotifyEvent );
-            break;
-
-        case XCB_DESTROY_NOTIFY:
-            HANDLE_PLATFORM_WINDOW_EVENT( xcb_destroy_notify_event_t, event, handleDestroyNotifyEvent );
-            break;
-
-        case XCB_CLIENT_MESSAGE:
-            handleClientMessageEvent( ( xcb_client_message_event_t * )event );
-            break;
-
-        case XCB_ENTER_NOTIFY:
-
-#ifdef XCB_USE_XINPUT22
-            if ( isAtLeastXI22() && xi2MouseEvents() )
+            // press/release/motion is only delivered here when XI 2.2+ is _not_ in use
+            case XCB_BUTTON_PRESS:
             {
+                xcb_button_press_event_t *ev = ( xcb_button_press_event_t * )event;
+                m_keyboard->updateXKBStateFromCore( ev->state );
+
+                // event explicitly contains the state of the three first buttons,
+                // the rest we need to manage ourselves
+                m_buttons = ( m_buttons & ~0x7 ) | translateMouseButtons( ev->state );
+                m_buttons |= translateMouseButton( ev->detail );
+
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
+                qDebug( "QXcbConnection::handleXcbEvent() mouse press button = %d, state = %X",
+                        ev->detail, static_cast<unsigned int>( m_buttons ) );
+#endif
+
+                HANDLE_PLATFORM_WINDOW_EVENT( xcb_button_press_event_t, event, handleButtonPressEvent );
                 break;
             }
 
-#endif
-            HANDLE_PLATFORM_WINDOW_EVENT( xcb_enter_notify_event_t, event, handleEnterNotifyEvent );
-            break;
-
-        case XCB_LEAVE_NOTIFY:
-#ifdef XCB_USE_XINPUT22
-            if ( isAtLeastXI22() && xi2MouseEvents() )
+            case XCB_BUTTON_RELEASE:
             {
+                xcb_button_release_event_t *ev = ( xcb_button_release_event_t * )event;
+                m_keyboard->updateXKBStateFromCore( ev->state );
+                m_buttons = ( m_buttons & ~0x7 ) | translateMouseButtons( ev->state );
+                m_buttons &= ~translateMouseButton( ev->detail );
+
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
+                qDebug( "QXcbConnection::handleXcbEvent() mouse release button = %d, state = %X",
+                        ev->detail, static_cast<unsigned int>( m_buttons ) );
+#endif
+
+                HANDLE_PLATFORM_WINDOW_EVENT( xcb_button_release_event_t, event, handleButtonReleaseEvent );
                 break;
             }
 
+            case XCB_MOTION_NOTIFY:
+            {
+                xcb_motion_notify_event_t *ev = ( xcb_motion_notify_event_t * )event;
+                m_keyboard->updateXKBStateFromCore( ev->state );
+                m_buttons = ( m_buttons & ~0x7 ) | translateMouseButtons( ev->state );
+
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
+                qDebug( "QXcbConnection::handleXcbEvent() mouse move button = %d,%d, detail = %d, state = %X",
+                        ev->event_x, ev->event_y, ev->detail, static_cast<unsigned int>( m_buttons ) );
 #endif
-            m_keyboard->updateXKBStateFromCore( ( ( xcb_leave_notify_event_t * )event )->state );
-            HANDLE_PLATFORM_WINDOW_EVENT( xcb_leave_notify_event_t, event, handleLeaveNotifyEvent );
-            break;
 
-        case XCB_FOCUS_IN:
-            HANDLE_PLATFORM_WINDOW_EVENT( xcb_focus_in_event_t, event, handleFocusInEvent );
-            break;
+                HANDLE_PLATFORM_WINDOW_EVENT( xcb_motion_notify_event_t, event, handleMotionNotifyEvent );
+                break;
+            }
 
-        case XCB_FOCUS_OUT:
-            HANDLE_PLATFORM_WINDOW_EVENT( xcb_focus_out_event_t, event, handleFocusOutEvent );
-            break;
+            case XCB_CONFIGURE_NOTIFY:
+                HANDLE_PLATFORM_WINDOW_EVENT( xcb_configure_notify_event_t, event, handleConfigureNotifyEvent );
+                break;
 
-        case XCB_KEY_PRESS:
-        {
-            xcb_key_press_event_t *kp = ( xcb_key_press_event_t * )event;
-            m_keyboard->updateXKBStateFromCore( kp->state );
-            setTime( kp->time );
+            case XCB_MAP_NOTIFY:
+                HANDLE_PLATFORM_WINDOW_EVENT( xcb_map_notify_event_t, event, handleMapNotifyEvent );
+                break;
 
-            HANDLE_KEYBOARD_EVENT( xcb_key_press_event_t, handleKeyPressEvent );
-            break;
-        }
+            case XCB_UNMAP_NOTIFY:
+                HANDLE_PLATFORM_WINDOW_EVENT( xcb_unmap_notify_event_t, event, handleUnmapNotifyEvent );
+                break;
 
-        case XCB_KEY_RELEASE:
-            m_keyboard->updateXKBStateFromCore( ( ( xcb_key_release_event_t * )event )->state );
-            HANDLE_KEYBOARD_EVENT( xcb_key_release_event_t, handleKeyReleaseEvent );
-            break;
+            case XCB_DESTROY_NOTIFY:
+                HANDLE_PLATFORM_WINDOW_EVENT( xcb_destroy_notify_event_t, event, handleDestroyNotifyEvent );
+                break;
 
-        case XCB_MAPPING_NOTIFY:
-            m_keyboard->handleMappingNotifyEvent( ( xcb_mapping_notify_event_t * )event );
-            break;
+            case XCB_CLIENT_MESSAGE:
+                handleClientMessageEvent( ( xcb_client_message_event_t * )event );
+                break;
 
-        case XCB_SELECTION_REQUEST:
-        {
-            xcb_selection_request_event_t *sr = ( xcb_selection_request_event_t * )event;
+            case XCB_ENTER_NOTIFY:
+
+#ifdef XCB_USE_XINPUT22
+                if ( isAtLeastXI22() && xi2MouseEvents() )
+                {
+                    break;
+                }
+
+#endif
+                HANDLE_PLATFORM_WINDOW_EVENT( xcb_enter_notify_event_t, event, handleEnterNotifyEvent );
+                break;
+
+            case XCB_LEAVE_NOTIFY:
+#ifdef XCB_USE_XINPUT22
+                if ( isAtLeastXI22() && xi2MouseEvents() )
+                {
+                    break;
+                }
+
+#endif
+                m_keyboard->updateXKBStateFromCore( ( ( xcb_leave_notify_event_t * )event )->state );
+                HANDLE_PLATFORM_WINDOW_EVENT( xcb_leave_notify_event_t, event, handleLeaveNotifyEvent );
+                break;
+
+            case XCB_FOCUS_IN:
+                HANDLE_PLATFORM_WINDOW_EVENT( xcb_focus_in_event_t, event, handleFocusInEvent );
+                break;
+
+            case XCB_FOCUS_OUT:
+                HANDLE_PLATFORM_WINDOW_EVENT( xcb_focus_out_event_t, event, handleFocusOutEvent );
+                break;
+
+            case XCB_KEY_PRESS:
+            {
+                xcb_key_press_event_t *kp = ( xcb_key_press_event_t * )event;
+                m_keyboard->updateXKBStateFromCore( kp->state );
+                setTime( kp->time );
+
+                HANDLE_KEYBOARD_EVENT( xcb_key_press_event_t, handleKeyPressEvent );
+                break;
+            }
+
+            case XCB_KEY_RELEASE:
+                m_keyboard->updateXKBStateFromCore( ( ( xcb_key_release_event_t * )event )->state );
+                HANDLE_KEYBOARD_EVENT( xcb_key_release_event_t, handleKeyReleaseEvent );
+                break;
+
+            case XCB_MAPPING_NOTIFY:
+                m_keyboard->handleMappingNotifyEvent( ( xcb_mapping_notify_event_t * )event );
+                break;
+
+            case XCB_SELECTION_REQUEST:
+            {
+                xcb_selection_request_event_t *sr = ( xcb_selection_request_event_t * )event;
 
 #ifndef LSCS_NO_DRAGANDDROP
 
-            if ( sr->selection == atom( QXcbAtom::XdndSelection ) )
-            {
-                m_drag->handleSelectionRequest( sr );
-            }
-            else
-#endif
-            {
-#ifndef LSCS_NO_CLIPBOARD
-                m_clipboard->handleSelectionRequest( sr );
-#endif
-            }
-
-            break;
-        }
-
-        case XCB_SELECTION_CLEAR:
-            setTime( ( ( xcb_selection_clear_event_t * )event )->time );
-#ifndef LSCS_NO_CLIPBOARD
-            m_clipboard->handleSelectionClearRequest( ( xcb_selection_clear_event_t * )event );
-#endif
-            handled = true;
-            break;
-
-        case XCB_SELECTION_NOTIFY:
-            setTime( ( ( xcb_selection_notify_event_t * )event )->time );
-            handled = false;
-            break;
-
-        case XCB_PROPERTY_NOTIFY:
-        {
-            xcb_property_notify_event_t *pn = ( xcb_property_notify_event_t * )event;
-
-            if ( pn->atom == atom( QXcbAtom::_NET_WORKAREA ) )
-            {
-                QXcbVirtualDesktop *virtualDesktop = virtualDesktopForRootWindow( pn->window );
-
-                if ( virtualDesktop )
+                if ( sr->selection == atom( QXcbAtom::XdndSelection ) )
                 {
-                    virtualDesktop->updateWorkArea();
+                    m_drag->handleSelectionRequest( sr );
+                }
+                else
+#endif
+                {
+#ifndef LSCS_NO_CLIPBOARD
+                    m_clipboard->handleSelectionRequest( sr );
+#endif
                 }
 
-            }
-            else
-            {
-                HANDLE_PLATFORM_WINDOW_EVENT( xcb_property_notify_event_t, window, handlePropertyNotifyEvent );
                 break;
             }
 
-            break;
-        }
+            case XCB_SELECTION_CLEAR:
+                setTime( ( ( xcb_selection_clear_event_t * )event )->time );
+#ifndef LSCS_NO_CLIPBOARD
+                m_clipboard->handleSelectionClearRequest( ( xcb_selection_clear_event_t * )event );
+#endif
+                handled = true;
+                break;
+
+            case XCB_SELECTION_NOTIFY:
+                setTime( ( ( xcb_selection_notify_event_t * )event )->time );
+                handled = false;
+                break;
+
+            case XCB_PROPERTY_NOTIFY:
+            {
+                xcb_property_notify_event_t *pn = ( xcb_property_notify_event_t * )event;
+
+                if ( pn->atom == atom( QXcbAtom::_NET_WORKAREA ) )
+                {
+                    QXcbVirtualDesktop *virtualDesktop = virtualDesktopForRootWindow( pn->window );
+
+                    if ( virtualDesktop )
+                    {
+                        virtualDesktop->updateWorkArea();
+                    }
+
+                }
+                else
+                {
+                    HANDLE_PLATFORM_WINDOW_EVENT( xcb_property_notify_event_t, window, handlePropertyNotifyEvent );
+                    break;
+                }
+
+                break;
+            }
 
 #if defined(XCB_USE_XINPUT2)
 
-        case XCB_GE_GENERIC:
+            case XCB_GE_GENERIC:
 
-            // Here the windowEventListener is invoked from xi2HandleEvent()
-            if ( m_xi2Enabled && isXIEvent( event, m_xiOpCode ) )
-            {
-                xi2HandleEvent( reinterpret_cast<xcb_ge_event_t *>( event ) );
-            }
+                // Here the windowEventListener is invoked from xi2HandleEvent()
+                if ( m_xi2Enabled && isXIEvent( event, m_xiOpCode ) )
+                {
+                    xi2HandleEvent( reinterpret_cast<xcb_ge_event_t *>( event ) );
+                }
 
-            break;
+                break;
 #endif
 
-        default:
-            handled = false;
-            break;
+            default:
+                handled = false;
+                break;
         }
     }
 
@@ -1684,32 +1686,32 @@ void QXcbConnection::handleXcbEvent( xcb_generic_event_t *event )
             {
                 switch ( xkb_event->any.xkbType )
                 {
-                // XkbNewKkdNotify and XkbMapNotify together capture all sorts of keymap
-                // updates (e.g. xmodmap, xkbcomp, setxkbmap), with minimal redundent recompilations.
-                case XCB_XKB_STATE_NOTIFY:
-                    m_keyboard->updateXKBState( &xkb_event->state_notify );
-                    handled = true;
-                    break;
+                    // XkbNewKkdNotify and XkbMapNotify together capture all sorts of keymap
+                    // updates (e.g. xmodmap, xkbcomp, setxkbmap), with minimal redundent recompilations.
+                    case XCB_XKB_STATE_NOTIFY:
+                        m_keyboard->updateXKBState( &xkb_event->state_notify );
+                        handled = true;
+                        break;
 
-                case XCB_XKB_MAP_NOTIFY:
-                    m_keyboard->handleMappingNotifyEvent( &xkb_event->map_notify );
-                    handled = true;
-                    break;
+                    case XCB_XKB_MAP_NOTIFY:
+                        m_keyboard->handleMappingNotifyEvent( &xkb_event->map_notify );
+                        handled = true;
+                        break;
 
-                case XCB_XKB_NEW_KEYBOARD_NOTIFY:
-                {
-                    xcb_xkb_new_keyboard_notify_event_t *ev = &xkb_event->new_keyboard_notify;
-
-                    if ( ev->changed & XCB_XKB_NKN_DETAIL_KEYCODES )
+                    case XCB_XKB_NEW_KEYBOARD_NOTIFY:
                     {
-                        m_keyboard->updateKeymap();
+                        xcb_xkb_new_keyboard_notify_event_t *ev = &xkb_event->new_keyboard_notify;
+
+                        if ( ev->changed & XCB_XKB_NKN_DETAIL_KEYCODES )
+                        {
+                            m_keyboard->updateKeymap();
+                        }
+
+                        break;
                     }
 
-                    break;
-                }
-
-                default:
-                    break;
+                    default:
+                        break;
                 }
             }
 
@@ -1763,7 +1765,7 @@ void QXcbEventReader::start()
 void QXcbEventReader::registerForEvents()
 {
     QSocketNotifier *notifier = new QSocketNotifier( xcb_get_file_descriptor( m_connection->xcb_connection() ),
-        QSocketNotifier::Read, this );
+            QSocketNotifier::Read, this );
 
     QAbstractEventDispatcher *dispatcher = QApplicationPrivate::eventDispatcher;
 
@@ -2687,10 +2689,10 @@ void QXcbConnection::initializeXFixes()
 
     xfixes_first_event = reply->first_event;
     xcb_xfixes_query_version_cookie_t xfixes_query_cookie = xcb_xfixes_query_version( m_connection,
-        XCB_XFIXES_MAJOR_VERSION, XCB_XFIXES_MINOR_VERSION );
+            XCB_XFIXES_MAJOR_VERSION, XCB_XFIXES_MINOR_VERSION );
 
     xcb_xfixes_query_version_reply_t *xfixes_query = xcb_xfixes_query_version_reply ( m_connection,
-        xfixes_query_cookie, &error );
+            xfixes_query_cookie, &error );
 
     if ( !xfixes_query || error || xfixes_query->major_version < 2 )
     {
@@ -2715,10 +2717,10 @@ void QXcbConnection::initializeXRender()
     xcb_generic_error_t *error = nullptr;
 
     xcb_render_query_version_cookie_t xrender_query_cookie = xcb_render_query_version( m_connection,
-        XCB_RENDER_MAJOR_VERSION, XCB_RENDER_MINOR_VERSION );
+            XCB_RENDER_MAJOR_VERSION, XCB_RENDER_MINOR_VERSION );
 
     xcb_render_query_version_reply_t *xrender_query = xcb_render_query_version_reply( m_connection,
-        xrender_query_cookie, &error );
+            xrender_query_cookie, &error );
 
     if ( ! xrender_query || error || ( xrender_query->major_version == 0 && xrender_query->minor_version < 5 ) )
     {
@@ -2743,12 +2745,12 @@ void QXcbConnection::initializeXRandr()
 
     xcb_generic_error_t *error = nullptr;
     xcb_randr_query_version_cookie_t xrandr_query_cookie = xcb_randr_query_version( m_connection,
-        XCB_RANDR_MAJOR_VERSION, XCB_RANDR_MINOR_VERSION );
+            XCB_RANDR_MAJOR_VERSION, XCB_RANDR_MINOR_VERSION );
 
     has_randr_extension = true;
 
     xcb_randr_query_version_reply_t *xrandr_query = xcb_randr_query_version_reply( m_connection,
-        xrandr_query_cookie, &error );
+            xrandr_query_cookie, &error );
 
     if ( ! xrandr_query || error || ( xrandr_query->major_version < 1 || ( xrandr_query->major_version == 1 &&
                                       xrandr_query->minor_version < 2 ) ) )
@@ -2787,7 +2789,7 @@ void QXcbConnection::initializeXinerama()
     xcb_xinerama_is_active_cookie_t xinerama_query_cookie = xcb_xinerama_is_active( m_connection );
 
     xcb_xinerama_is_active_reply_t *xinerama_is_active = xcb_xinerama_is_active_reply( m_connection,
-        xinerama_query_cookie, &error );
+            xinerama_query_cookie, &error );
 
     has_xinerama_extension = xinerama_is_active && ! error && xinerama_is_active->state;
 

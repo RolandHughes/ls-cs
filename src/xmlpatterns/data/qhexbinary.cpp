@@ -76,7 +76,7 @@ AtomicValue::Ptr HexBinary::fromLexical( const NamePool::Ptr &np, const QString 
     {
         /* Catch a common case. */
         return ValidationError::createError( QtXmlPatterns::tr( "A value of type %1 must contain an even number of "
-                                                                "digits. The value %2 does not." )
+                                             "digits. The value %2 does not." )
                                              .formatArgs( formatType( np, BuiltinTypes::xsHexBinary ), formatData( QString::number( len ) ) ) );
     }
 

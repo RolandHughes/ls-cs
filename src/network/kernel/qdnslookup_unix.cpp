@@ -224,33 +224,33 @@ void QDnsLookupRunnable::query( const int requestType, const QByteArray &request
 
     switch ( header->rcode )
     {
-    case NOERROR:
-        break;
+        case NOERROR:
+            break;
 
-    case FORMERR:
-        reply->error = QDnsLookup::InvalidRequestError;
-        reply->errorString = tr( "Server was not able to process query" );
-        return;
+        case FORMERR:
+            reply->error = QDnsLookup::InvalidRequestError;
+            reply->errorString = tr( "Server was not able to process query" );
+            return;
 
-    case SERVFAIL:
-        reply->error = QDnsLookup::ServerFailureError;
-        reply->errorString = tr( "Server failure" );
-        return;
+        case SERVFAIL:
+            reply->error = QDnsLookup::ServerFailureError;
+            reply->errorString = tr( "Server failure" );
+            return;
 
-    case NXDOMAIN:
-        reply->error = QDnsLookup::NotFoundError;
-        reply->errorString = tr( "Non existent domain" );
-        return;
+        case NXDOMAIN:
+            reply->error = QDnsLookup::NotFoundError;
+            reply->errorString = tr( "Non existent domain" );
+            return;
 
-    case REFUSED:
-        reply->error = QDnsLookup::ServerRefusedError;
-        reply->errorString = tr( "Server refused to answer" );
-        return;
+        case REFUSED:
+            reply->error = QDnsLookup::ServerRefusedError;
+            reply->errorString = tr( "Server refused to answer" );
+            return;
 
-    default:
-        reply->error = QDnsLookup::InvalidReplyError;
-        reply->errorString = tr( "Invalid reply received" );
-        return;
+        default:
+            reply->error = QDnsLookup::InvalidReplyError;
+            reply->errorString = tr( "Invalid reply received" );
+            return;
     }
 
     // Check the reply is valid.

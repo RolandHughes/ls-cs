@@ -41,7 +41,7 @@ message( "*****************CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
 
 message( "*****************CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
 
-message( "*****************LIBTOOL_INSTALL_PREFIX ${LIBTOOL_INSTALL_PREFIX} ")
+# message( "*****************LIBTOOL_INSTALL_PREFIX ${LIBTOOL_INSTALL_PREFIX} ")
 
 
     
@@ -54,36 +54,36 @@ message( "*****************LIBTOOL_INSTALL_PREFIX ${LIBTOOL_INSTALL_PREFIX} ")
 # The hacky looking path for the configure command is a result of  
 # CMake forcing its own directory structure on external project.
 #
-include(ExternalProject)
+#include(ExternalProject)
 
-set(LS_LIBTOOL_BYPRODUCTS 
-   "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a"
-   "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la"
-   "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so"
-   "${LIBTOOL_INSTALL_PREFIX}/include/ltdl.h"
-   "${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_dlloader.h"
-   "${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_error.h"
-   "${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_system.h"
-)
+#set(LS_LIBTOOL_BYPRODUCTS 
+#   "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a"
+#   "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la"
+#   "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so"
+#   "${LIBTOOL_INSTALL_PREFIX}/include/ltdl.h"
+#   "${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_dlloader.h"
+#   "${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_error.h"
+#   "${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_system.h"
+#)
     
 # NOTE: If you change the file here you may need to change the libldtl install version.
 # Must provide BUILD_BYPRODUCTS when using ninja-build
-ExternalProject_Add(
-    ls_libtool
-    PREFIX "${CMAKE_BINARY_DIR}/ls_libtool"
-    DOWNLOAD_DIR "${CMAKE_BINARY_DIR}"
-    URL https://ftp.gnu.org/gnu/libtool/libtool-2.5.4.tar.gz
-    DOWNLOAD_NO_PROGRESS ON 
-    DOWNLOAD_EXTRACT_TIMESTAMP false
+#ExternalProject_Add(
+#    ls_libtool
+#    PREFIX "${CMAKE_BINARY_DIR}/ls_libtool"
+#    DOWNLOAD_DIR "${CMAKE_BINARY_DIR}"
+#    URL https://ftp.gnu.org/gnu/libtool/libtool-2.5.4.tar.gz
+#    DOWNLOAD_NO_PROGRESS ON 
+#    DOWNLOAD_EXTRACT_TIMESTAMP false
     
-    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy 
-        ${CMAKE_SOURCE_DIR}/libtool-configure.ac
-        ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure.ac
+#    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy 
+#        ${CMAKE_SOURCE_DIR}/libtool-configure.ac
+#        ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure.ac
         
-    CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure --prefix=${LIBTOOL_INSTALL_PREFIX} "CFLAGS=-g -O0" "CXXFLAGS=-g -O0"
-    BUILD_COMMAND make 
-    BUILD_BYPRODUCTS ${LS_LIBTOOL_BYPRODUCTS}
-)
+#    CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/ls_libtool/src/ls_libtool/configure --prefix=${LIBTOOL_INSTALL_PREFIX} "CFLAGS=-g -O0" "CXXFLAGS=-g -O0"
+#    BUILD_COMMAND make 
+#    BUILD_BYPRODUCTS ${LS_LIBTOOL_BYPRODUCTS}
+#)
 
 
 
@@ -608,69 +608,69 @@ endif()
 # libtool headers and libraries
 #
 
-if (BUILDING_DEBIAN)
-    install(
-      FILES
-      ${LIBTOOL_INSTALL_PREFIX}/include/ltdl.h
-      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-      COMPONENT Development
-    )
-else()
-    install(
-      FILES
-      ${LIBTOOL_INSTALL_PREFIX}/include/ltdl.h
-      DESTINATION ${LSCS_INST_INCLUDE}
-      COMPONENT Development
-    )
-endif()
+#if (BUILDING_DEBIAN)
+#    install(
+#      FILES
+#      ${LIBTOOL_INSTALL_PREFIX}/include/ltdl.h
+#      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+#      COMPONENT Development
+#    )
+#else()
+#    install(
+#      FILES
+#      ${LIBTOOL_INSTALL_PREFIX}/include/ltdl.h
+#      DESTINATION ${LSCS_INST_INCLUDE}
+#      COMPONENT Development
+#    )
+#endif()
 
-if (BUILDING_DEBIAN)
-    install(
-      FILES
-      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_dlloader.h
-      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_error.h
-      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_system.h
-      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-      COMPONENT Development
-    )
-else()
-    install(
-      FILES
-      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_dlloader.h
-      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_error.h
-      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_system.h
-      DESTINATION ${LSCS_INST_INCLUDE}
-      COMPONENT Development
-    )
-endif()
+#if (BUILDING_DEBIAN)
+#    install(
+#      FILES
+#      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_dlloader.h
+#      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_error.h
+#      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_system.h
+#      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+#      COMPONENT Development
+#    )
+#else()
+#    install(
+#      FILES
+#      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_dlloader.h
+#      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_error.h
+#      ${LIBTOOL_INSTALL_PREFIX}/include/libltdl/lt_system.h
+#      DESTINATION ${LSCS_INST_INCLUDE}
+#      COMPONENT Development
+#    )
+#endif()
 
 # NOTE:: Need dynamic way of determining major version of library or a for loop finding each 
 #        This hard coding bad.
-if (BUILDING_DEBIAN)
-    install(
-       FILES
-       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a
-       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la
-       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so
-       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7
-       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7.3.3
-       DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
-       COMPONENT Development
-       COMPONENT Runtime
-    )
-else()
-    install(
-       FILES
-       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a
-       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la
-       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so
-       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7
-       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7.3.3
-       DESTINATION ${LSCS_INST_LIB}
-       COMPONENT Development
-       COMPONENT Runtime
-    )
-endif()
+#if (BUILDING_DEBIAN)
+#    install(
+#       FILES
+#       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a
+#       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la
+#       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so
+#       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7
+#       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7.3.3
+#       DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+#       COMPONENT Development
+#       COMPONENT Runtime
+#    )
+#else()
+#    install(
+#       FILES
+#       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.a
+#       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.la
+#       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so
+#       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7
+#       ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so.7.3.3
+#       DESTINATION ${LSCS_INST_LIB}
+#       COMPONENT Development
+#       COMPONENT Runtime
+#    )
+#endif()
 
 if (BUILDING_DEBIAN)
     install(

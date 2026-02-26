@@ -707,47 +707,47 @@ void basic_regex_creator<charT, traits>::fixup_pointers( re_syntax_base *state )
 
         switch ( state->type )
         {
-        case syntax_element_recurse:
-            m_has_recursions = true;
+            case syntax_element_recurse:
+                m_has_recursions = true;
 
-            if ( state->next.i )
-            {
-                state->next.p = getaddress( state->next.i, state );
-            }
-            else
-            {
-                state->next.p = nullptr;
-            }
+                if ( state->next.i )
+                {
+                    state->next.p = getaddress( state->next.i, state );
+                }
+                else
+                {
+                    state->next.p = nullptr;
+                }
 
-            break;
+                break;
 
-        case syntax_element_rep:
-        case syntax_element_dot_rep:
-        case syntax_element_char_rep:
-        case syntax_element_short_set_rep:
-        case syntax_element_long_set_rep:
-            // set the state_id of this repeat:
-            static_cast<re_repeat *>( state )->state_id = m_repeater_id++;
-            [[fallthrough]];
+            case syntax_element_rep:
+            case syntax_element_dot_rep:
+            case syntax_element_char_rep:
+            case syntax_element_short_set_rep:
+            case syntax_element_long_set_rep:
+                // set the state_id of this repeat:
+                static_cast<re_repeat *>( state )->state_id = m_repeater_id++;
+                [[fallthrough]];
 
-        case syntax_element_alt:
-            std::memset( static_cast<re_alt *>( state )->_map, 0, sizeof( static_cast<re_alt *>( state )->_map ) );
-            static_cast<re_alt *>( state )->can_be_null = 0;
-            [[fallthrough]];
+            case syntax_element_alt:
+                std::memset( static_cast<re_alt *>( state )->_map, 0, sizeof( static_cast<re_alt *>( state )->_map ) );
+                static_cast<re_alt *>( state )->can_be_null = 0;
+                [[fallthrough]];
 
-        case syntax_element_jump:
-            static_cast<re_jump *>( state )->alt.p = getaddress( static_cast<re_jump *>( state )->alt.i, state );
-            [[fallthrough]];
+            case syntax_element_jump:
+                static_cast<re_jump *>( state )->alt.p = getaddress( static_cast<re_jump *>( state )->alt.i, state );
+                [[fallthrough]];
 
-        default:
-            if ( state->next.i )
-            {
-                state->next.p = getaddress( state->next.i, state );
-            }
-            else
-            {
-                state->next.p = nullptr;
-            }
+            default:
+                if ( state->next.i )
+                {
+                    state->next.p = getaddress( state->next.i, state );
+                }
+                else
+                {
+                    state->next.p = nullptr;
+                }
         }
 
         state = state->next.p;
@@ -764,149 +764,149 @@ void basic_regex_creator<charT, traits>::fixup_recursions( re_syntax_base *state
 
         switch ( state->type )
         {
-        case syntax_element_assert_backref:
-        {
-            // just check that the index is valid:
-            int idx = static_cast<const re_brace *>( state )->index;
-
-            if ( idx < 0 )
+            case syntax_element_assert_backref:
             {
-                idx = -idx - 1;
+                // just check that the index is valid:
+                int idx = static_cast<const re_brace *>( state )->index;
 
-                if ( idx >= 10000 )
+                if ( idx < 0 )
                 {
-                    idx = m_pdata->get_id( idx );
+                    idx = -idx - 1;
 
-                    if ( idx <= 0 )
+                    if ( idx >= 10000 )
                     {
-                        // check of sub-expression that doesn't exist
-                        if ( 0 == this->m_pdata->m_status ) // update the error code if not already set
-                        {
-                            this->m_pdata->m_status = lscs_regex_ns::regex_constants::error_bad_pattern;
-                        }
+                        idx = m_pdata->get_id( idx );
 
-                        // clear the expression, we should be empty
-                        this->m_pdata->m_expression     = nullptr;
-                        this->m_pdata->m_expression_len = 0;
-
-                        // and throw if required
-                        if ( 0 == ( this->flags() & regex_constants::no_except ) )
+                        if ( idx <= 0 )
                         {
-                            std::string message = "Encountered a forward reference to a marked sub-expression that does not exist.";
-                            lscs_regex_ns::regex_error e( message, lscs_regex_ns::regex_constants::error_bad_pattern, 0 );
-                            e.raise();
+                            // check of sub-expression that doesn't exist
+                            if ( 0 == this->m_pdata->m_status ) // update the error code if not already set
+                            {
+                                this->m_pdata->m_status = lscs_regex_ns::regex_constants::error_bad_pattern;
+                            }
+
+                            // clear the expression, we should be empty
+                            this->m_pdata->m_expression     = nullptr;
+                            this->m_pdata->m_expression_len = 0;
+
+                            // and throw if required
+                            if ( 0 == ( this->flags() & regex_constants::no_except ) )
+                            {
+                                std::string message = "Encountered a forward reference to a marked sub-expression that does not exist.";
+                                lscs_regex_ns::regex_error e( message, lscs_regex_ns::regex_constants::error_bad_pattern, 0 );
+                                e.raise();
+                            }
                         }
                     }
                 }
             }
-        }
-        break;
+            break;
 
-        case syntax_element_recurse:
-        {
-            bool ok = false;
-            re_syntax_base *p = base;
-            std::ptrdiff_t idx = static_cast<re_jump *>( state )->alt.i;
-
-            if ( idx > 10000 )
+            case syntax_element_recurse:
             {
-                // There may be more than one capture group with this hash, just do what Perl
-                // does and recurse to the leftmost:
+                bool ok = false;
+                re_syntax_base *p = base;
+                std::ptrdiff_t idx = static_cast<re_jump *>( state )->alt.i;
 
-                idx = m_pdata->get_id( static_cast<int>( idx ) );
-            }
-
-            if ( idx < 0 )
-            {
-                ok = false;
-
-            }
-            else
-            {
-                while ( p )
+                if ( idx > 10000 )
                 {
-                    if ( ( p->type == syntax_element_startmark ) && ( static_cast<re_brace *>( p )->index == idx ) )
+                    // There may be more than one capture group with this hash, just do what Perl
+                    // does and recurse to the leftmost:
+
+                    idx = m_pdata->get_id( static_cast<int>( idx ) );
+                }
+
+                if ( idx < 0 )
+                {
+                    ok = false;
+
+                }
+                else
+                {
+                    while ( p )
                     {
-
-                        // found the target of the recursion, set the jump target
-                        static_cast<re_jump *>( state )->alt.p = p;
-                        ok = true;
-
-                        // Now scan the target for nested repeats:
-                        p = p->next.p;
-                        int next_rep_id = 0;
-
-                        while ( p )
+                        if ( ( p->type == syntax_element_startmark ) && ( static_cast<re_brace *>( p )->index == idx ) )
                         {
-                            switch ( p->type )
-                            {
-                            case syntax_element_rep:
-                            case syntax_element_dot_rep:
-                            case syntax_element_char_rep:
-                            case syntax_element_short_set_rep:
-                            case syntax_element_long_set_rep:
-                                next_rep_id = static_cast<re_repeat *>( p )->state_id;
-                                break;
 
-                            case syntax_element_endmark:
-                                if ( static_cast<const re_brace *>( p )->index == idx )
+                            // found the target of the recursion, set the jump target
+                            static_cast<re_jump *>( state )->alt.p = p;
+                            ok = true;
+
+                            // Now scan the target for nested repeats:
+                            p = p->next.p;
+                            int next_rep_id = 0;
+
+                            while ( p )
+                            {
+                                switch ( p->type )
                                 {
-                                    next_rep_id = -1;
+                                    case syntax_element_rep:
+                                    case syntax_element_dot_rep:
+                                    case syntax_element_char_rep:
+                                    case syntax_element_short_set_rep:
+                                    case syntax_element_long_set_rep:
+                                        next_rep_id = static_cast<re_repeat *>( p )->state_id;
+                                        break;
+
+                                    case syntax_element_endmark:
+                                        if ( static_cast<const re_brace *>( p )->index == idx )
+                                        {
+                                            next_rep_id = -1;
+                                        }
+
+                                        break;
+
+                                    default:
+                                        break;
                                 }
 
-                                break;
+                                if ( next_rep_id )
+                                {
+                                    break;
+                                }
 
-                            default:
-                                break;
+                                p = p->next.p;
                             }
 
-                            if ( next_rep_id )
+                            if ( next_rep_id > 0 )
                             {
-                                break;
+                                static_cast<re_recurse *>( state )->state_id = next_rep_id - 1;
                             }
 
-                            p = p->next.p;
+                            break;
                         }
 
-                        if ( next_rep_id > 0 )
-                        {
-                            static_cast<re_recurse *>( state )->state_id = next_rep_id - 1;
-                        }
+                        p = p->next.p;
+                    }
+                }
 
-                        break;
+                if ( ! ok )
+                {
+                    // recursion to sub-expression that doesn't exist:
+                    if ( this->m_pdata->m_status == 0 )
+                    {
+                        // update the error code if not already set
+                        this->m_pdata->m_status = lscs_regex_ns::regex_constants::error_bad_pattern;
                     }
 
-                    p = p->next.p;
+                    // clear the expression, we should be empty:
+
+                    this->m_pdata->m_expression     = nullptr;
+                    this->m_pdata->m_expression_len = 0;
+
+                    // and throw if required
+                    if ( ( this->flags() & regex_constants::no_except ) == 0 )
+                    {
+                        std::string message = "Encountered a forward reference to a recursive sub-expression that does not exist.";
+                        lscs_regex_ns::regex_error e( message, lscs_regex_ns::regex_constants::error_bad_pattern, 0 );
+                        e.raise();
+                    }
                 }
             }
-
-            if ( ! ok )
-            {
-                // recursion to sub-expression that doesn't exist:
-                if ( this->m_pdata->m_status == 0 )
-                {
-                    // update the error code if not already set
-                    this->m_pdata->m_status = lscs_regex_ns::regex_constants::error_bad_pattern;
-                }
-
-                // clear the expression, we should be empty:
-
-                this->m_pdata->m_expression     = nullptr;
-                this->m_pdata->m_expression_len = 0;
-
-                // and throw if required
-                if ( ( this->flags() & regex_constants::no_except ) == 0 )
-                {
-                    std::string message = "Encountered a forward reference to a recursive sub-expression that does not exist.";
-                    lscs_regex_ns::regex_error e( message, lscs_regex_ns::regex_constants::error_bad_pattern, 0 );
-                    e.raise();
-                }
-            }
-        }
-        break;
-
-        default:
             break;
+
+            default:
+                break;
         }
 
         state = state->next.p;
@@ -931,56 +931,56 @@ void basic_regex_creator<charT, traits>::create_startmaps( re_syntax_base *state
     {
         switch ( state->type )
         {
-        case syntax_element_toggle_case:
-            // we need to track case changes here:
-            m_icase = static_cast<re_case *>( state )->icase;
-            state = state->next.p;
-            continue;
+            case syntax_element_toggle_case:
+                // we need to track case changes here:
+                m_icase = static_cast<re_case *>( state )->icase;
+                state = state->next.p;
+                continue;
 
-        case syntax_element_alt:
-        case syntax_element_rep:
-        case syntax_element_dot_rep:
-        case syntax_element_char_rep:
-        case syntax_element_short_set_rep:
-        case syntax_element_long_set_rep:
-            // just push the state onto our stack for now:
-            v.push_back( std::pair<bool, re_syntax_base *>( m_icase, state ) );
-            state = state->next.p;
-            break;
+            case syntax_element_alt:
+            case syntax_element_rep:
+            case syntax_element_dot_rep:
+            case syntax_element_char_rep:
+            case syntax_element_short_set_rep:
+            case syntax_element_long_set_rep:
+                // just push the state onto our stack for now:
+                v.push_back( std::pair<bool, re_syntax_base *>( m_icase, state ) );
+                state = state->next.p;
+                break;
 
-        case syntax_element_backstep:
-            // we need to calculate how big the backstep is:
-            static_cast<re_brace *>( state )->index = this->calculate_backstep( state->next.p );
+            case syntax_element_backstep:
+                // we need to calculate how big the backstep is:
+                static_cast<re_brace *>( state )->index = this->calculate_backstep( state->next.p );
 
-            if ( static_cast<re_brace *>( state )->index < 0 )
-            {
-                // Oops error:
-                if ( 0 == this->m_pdata->m_status ) // update the error code if not already set
+                if ( static_cast<re_brace *>( state )->index < 0 )
                 {
-                    this->m_pdata->m_status = lscs_regex_ns::regex_constants::error_bad_pattern;
+                    // Oops error:
+                    if ( 0 == this->m_pdata->m_status ) // update the error code if not already set
+                    {
+                        this->m_pdata->m_status = lscs_regex_ns::regex_constants::error_bad_pattern;
+                    }
+
+                    //
+                    // clear the expression, we should be empty:
+                    //
+                    this->m_pdata->m_expression     = nullptr;
+                    this->m_pdata->m_expression_len = 0;
+
+                    //
+                    // and throw if required:
+                    //
+                    if ( 0 == ( this->flags() & regex_constants::no_except ) )
+                    {
+                        std::string message = "Invalid lookbehind assertion encountered in the regular expression.";
+                        lscs_regex_ns::regex_error e( message, lscs_regex_ns::regex_constants::error_bad_pattern, 0 );
+                        e.raise();
+                    }
                 }
 
-                //
-                // clear the expression, we should be empty:
-                //
-                this->m_pdata->m_expression     = nullptr;
-                this->m_pdata->m_expression_len = 0;
+                [[fallthrough]];
 
-                //
-                // and throw if required:
-                //
-                if ( 0 == ( this->flags() & regex_constants::no_except ) )
-                {
-                    std::string message = "Invalid lookbehind assertion encountered in the regular expression.";
-                    lscs_regex_ns::regex_error e( message, lscs_regex_ns::regex_constants::error_bad_pattern, 0 );
-                    e.raise();
-                }
-            }
-
-            [[fallthrough]];
-
-        default:
-            state = state->next.p;
+            default:
+                state = state->next.p;
         }
     }
 
@@ -1029,116 +1029,116 @@ int basic_regex_creator<charT, traits>::calculate_backstep( re_syntax_base *stat
     {
         switch ( state->type )
         {
-        case syntax_element_startmark:
-            if ( ( static_cast<re_brace *>( state )->index == -1 )
-                    || ( static_cast<re_brace *>( state )->index == -2 ) )
+            case syntax_element_startmark:
+                if ( ( static_cast<re_brace *>( state )->index == -1 )
+                        || ( static_cast<re_brace *>( state )->index == -2 ) )
+                {
+                    state = static_cast<re_jump *>( state->next.p )->alt.p->next.p;
+                    continue;
+                }
+                else if ( static_cast<re_brace *>( state )->index == -3 )
+                {
+                    state = state->next.p->next.p;
+                    continue;
+                }
+
+                break;
+
+            case syntax_element_endmark:
+                if ( ( static_cast<re_brace *>( state )->index == -1 )
+                        || ( static_cast<re_brace *>( state )->index == -2 ) )
+                {
+                    return result;
+                }
+
+                break;
+
+            case syntax_element_literal:
+                result += static_cast<re_literal *>( state )->length;
+                break;
+
+            case syntax_element_wild:
+            case syntax_element_set:
+                result += 1;
+                break;
+
+            case syntax_element_dot_rep:
+            case syntax_element_char_rep:
+            case syntax_element_short_set_rep:
+            case syntax_element_backref:
+            case syntax_element_rep:
+            case syntax_element_combining:
+            case syntax_element_long_set_rep:
+            case syntax_element_backstep:
             {
-                state = static_cast<re_jump *>( state->next.p )->alt.p->next.p;
-                continue;
+                re_repeat *rep = static_cast<re_repeat *>( state );
+                // adjust the type of the state to allow for faster matching:
+                state->type = this->get_repeat_type( state );
+
+                if ( ( state->type == syntax_element_dot_rep )
+                        || ( state->type == syntax_element_char_rep )
+                        || ( state->type == syntax_element_short_set_rep ) )
+                {
+                    if ( rep->max != rep->min )
+                    {
+                        return -1;
+                    }
+
+                    result += static_cast<int>( rep->min );
+                    state = rep->alt.p;
+                    continue;
+
+                }
+                else if ( state->type == syntax_element_long_set_rep )
+                {
+                    assert( rep->next.p->type == syntax_element_long_set );
+
+                    if ( static_cast<re_set_long<m_type>*>( rep->next.p )->singleton == 0 )
+                    {
+                        return -1;
+                    }
+
+                    if ( rep->max != rep->min )
+                    {
+                        return -1;
+                    }
+
+                    result += static_cast<int>( rep->min );
+                    state = rep->alt.p;
+                    continue;
+                }
             }
-            else if ( static_cast<re_brace *>( state )->index == -3 )
-            {
-                state = state->next.p->next.p;
-                continue;
-            }
 
-            break;
+            return -1;
 
-        case syntax_element_endmark:
-            if ( ( static_cast<re_brace *>( state )->index == -1 )
-                    || ( static_cast<re_brace *>( state )->index == -2 ) )
-            {
-                return result;
-            }
-
-            break;
-
-        case syntax_element_literal:
-            result += static_cast<re_literal *>( state )->length;
-            break;
-
-        case syntax_element_wild:
-        case syntax_element_set:
-            result += 1;
-            break;
-
-        case syntax_element_dot_rep:
-        case syntax_element_char_rep:
-        case syntax_element_short_set_rep:
-        case syntax_element_backref:
-        case syntax_element_rep:
-        case syntax_element_combining:
-        case syntax_element_long_set_rep:
-        case syntax_element_backstep:
-        {
-            re_repeat *rep = static_cast<re_repeat *>( state );
-            // adjust the type of the state to allow for faster matching:
-            state->type = this->get_repeat_type( state );
-
-            if ( ( state->type == syntax_element_dot_rep )
-                    || ( state->type == syntax_element_char_rep )
-                    || ( state->type == syntax_element_short_set_rep ) )
-            {
-                if ( rep->max != rep->min )
+            case syntax_element_long_set:
+                if ( static_cast<re_set_long<m_type>*>( state )->singleton == 0 )
                 {
                     return -1;
                 }
 
-                result += static_cast<int>( rep->min );
-                state = rep->alt.p;
+                result += 1;
+                break;
+
+            case syntax_element_jump:
+                state = static_cast<re_jump *>( state )->alt.p;
                 continue;
 
-            }
-            else if ( state->type == syntax_element_long_set_rep )
+            case syntax_element_alt:
             {
-                assert( rep->next.p->type == syntax_element_long_set );
+                int r1 = calculate_backstep( state->next.p );
+                int r2 = calculate_backstep( static_cast<re_alt *>( state )->alt.p );
 
-                if ( static_cast<re_set_long<m_type>*>( rep->next.p )->singleton == 0 )
+                if ( ( r1 < 0 ) || ( r1 != r2 ) )
                 {
                     return -1;
                 }
 
-                if ( rep->max != rep->min )
-                {
-                    return -1;
-                }
-
-                result += static_cast<int>( rep->min );
-                state = rep->alt.p;
-                continue;
-            }
-        }
-
-        return -1;
-
-        case syntax_element_long_set:
-            if ( static_cast<re_set_long<m_type>*>( state )->singleton == 0 )
-            {
-                return -1;
+                return result + r1;
             }
 
-            result += 1;
-            break;
-
-        case syntax_element_jump:
-            state = static_cast<re_jump *>( state )->alt.p;
-            continue;
-
-        case syntax_element_alt:
-        {
-            int r1 = calculate_backstep( state->next.p );
-            int r2 = calculate_backstep( static_cast<re_alt *>( state )->alt.p );
-
-            if ( ( r1 < 0 ) || ( r1 != r2 ) )
-            {
-                return -1;
-            }
-
-            return result + r1;
-        }
-
-        default:
-            break;
+            default:
+                break;
         }
 
         state = state->next.p;
@@ -1165,208 +1165,26 @@ void basic_regex_creator<charT, traits>::create_startmap( re_syntax_base *state,
 
         switch ( state->type )
         {
-        case syntax_element_toggle_case:
-            l_icase = static_cast<re_case *>( state )->icase;
-            state = state->next.p;
-            break;
-
-        case syntax_element_literal:
-        {
-            // do not set anything in *pnull, set each element in l_map
-            // that could match the first character in the literal:
-
-            if ( l_map )
-            {
-                l_map[0] |= mask_init;
-                charT first_char = *static_cast<charT *>( static_cast<void *>( static_cast<re_literal *>( state ) + 1 ) );
-
-                char tmp = 0;
-
-                for ( unsigned int i = 0; i < ( 1u << CHAR_BIT ); ++i )
-                {
-                    if ( m_traits.translate( static_cast<charT>( tmp ), l_icase ) == first_char )
-                    {
-                        l_map[i] |= mask;
-                    }
-
-                    ++tmp;
-                }
-
-            }
-
-            return;
-        }
-
-        case syntax_element_end_line:
-        {
-            // next character must be a line separator (if there is one):
-            if ( l_map )
-            {
-                l_map[0] |= mask_init;
-                l_map[static_cast<unsigned>( '\n' )] |= mask;
-                l_map[static_cast<unsigned>( '\r' )] |= mask;
-                l_map[static_cast<unsigned>( '\f' )] |= mask;
-                l_map[0x85] |= mask;
-            }
-
-            // now figure out if we can match a NULL string at this point:
-            if ( pnull )
-            {
-                create_startmap( state->next.p, nullptr, pnull, mask );
-            }
-
-            return;
-        }
-
-        case syntax_element_recurse:
-        {
-            assert( static_cast<const re_jump *>( state )->alt.p->type == syntax_element_startmark );
-            recursion_sub = static_cast<re_brace *>( static_cast<const re_jump *>( state )->alt.p )->index;
-
-            if ( m_recursion_checks[recursion_sub] & 1u )
-            {
-                // Infinite recursion
-                if ( 0 == this->m_pdata->m_status ) // update the error code if not already set
-                {
-                    this->m_pdata->m_status = lscs_regex_ns::regex_constants::error_bad_pattern;
-                }
-
-                // clear the expression, we should be empty:
-                this->m_pdata->m_expression     = nullptr;
-                this->m_pdata->m_expression_len = 0;
-
-                // and throw if required:
-                if ( 0 == ( this->flags() & regex_constants::no_except ) )
-                {
-                    std::string message = "Encountered an infinite recursion.";
-                    lscs_regex_ns::regex_error e( message, lscs_regex_ns::regex_constants::error_bad_pattern, 0 );
-                    e.raise();
-                }
-
-            }
-            else if ( recursion_start == nullptr )
-            {
-                recursion_start = state;
-                recursion_restart = state->next.p;
-                state = static_cast<re_jump *>( state )->alt.p;
-                m_recursion_checks[recursion_sub] |= 1u;
+            case syntax_element_toggle_case:
+                l_icase = static_cast<re_case *>( state )->icase;
+                state = state->next.p;
                 break;
-            }
 
-            m_recursion_checks[recursion_sub] |= 1u;
-            // can not handle nested recursion here
-        }
-
-        [[fallthrough]];
-
-        case syntax_element_backref:
-
-            // can be null, and any character can match:
-            if ( pnull )
+            case syntax_element_literal:
             {
-                *pnull |= mask;
-            }
+                // do not set anything in *pnull, set each element in l_map
+                // that could match the first character in the literal:
 
-            [[fallthrough]];
-
-        case syntax_element_wild:
-        {
-            // can not be null, any character can match:
-            set_all_masks( l_map, mask );
-            return;
-        }
-
-        case syntax_element_accept:
-        case syntax_element_match:
-        {
-            // must be null, any character can match:
-            set_all_masks( l_map, mask );
-
-            if ( pnull )
-            {
-                *pnull |= mask;
-            }
-
-            return;
-        }
-
-        case syntax_element_word_start:
-        {
-            // recurse, then AND with all the word characters:
-            create_startmap( state->next.p, l_map, pnull, mask );
-
-            if ( l_map )
-            {
-                l_map[0] |= mask_init;
-
-                char tmp = 0;
-
-                for ( unsigned int i = 0; i < ( 1u << CHAR_BIT ); ++i )
-                {
-                    if ( ! m_traits.isctype( static_cast<charT>( tmp ), m_word_mask ) )
-                    {
-                        l_map[i] &= static_cast<unsigned char>( ~mask );
-                    }
-
-                    ++tmp;
-                }
-            }
-
-            return;
-        }
-
-        case syntax_element_word_end:
-        {
-            // recurse, then AND with all the word characters:
-            create_startmap( state->next.p, l_map, pnull, mask );
-
-            if ( l_map )
-            {
-                l_map[0] |= mask_init;
-
-                char tmp = 0;
-
-                for ( unsigned int i = 0; i < ( 1u << CHAR_BIT ); ++i )
-                {
-                    if ( m_traits.isctype( static_cast<charT>( tmp ), m_word_mask ) )
-                    {
-                        l_map[i] &= static_cast<unsigned char>( ~mask );
-                    }
-
-                    ++tmp;
-                }
-            }
-
-            return;
-        }
-
-        case syntax_element_buffer_end:
-        {
-            // we *must be null* :
-            if ( pnull )
-            {
-                *pnull |= mask;
-            }
-
-            return;
-        }
-
-        case syntax_element_long_set:
-            if ( l_map )
-            {
-                using m_type = typename traits::char_class_type;
-
-                if ( static_cast<re_set_long<m_type>*>( state )->singleton )
+                if ( l_map )
                 {
                     l_map[0] |= mask_init;
+                    charT first_char = *static_cast<charT *>( static_cast<void *>( static_cast<re_literal *>( state ) + 1 ) );
 
                     char tmp = 0;
 
                     for ( unsigned int i = 0; i < ( 1u << CHAR_BIT ); ++i )
                     {
-                        charT c = static_cast<charT>( tmp );
-
-                        if ( &c != re_is_set_member( &c, &c + 1, static_cast<re_set_long<m_type>*>( state ), *m_pdata, l_icase ) )
+                        if ( m_traits.translate( static_cast<charT>( tmp ), l_icase ) == first_char )
                         {
                             l_map[i] |= mask;
                         }
@@ -1375,130 +1193,93 @@ void basic_regex_creator<charT, traits>::create_startmap( re_syntax_base *state,
                     }
 
                 }
-                else
-                {
-                    set_all_masks( l_map, mask );
-                }
+
+                return;
             }
 
-            return;
-
-        case syntax_element_set:
-            if ( l_map )
+            case syntax_element_end_line:
             {
-                l_map[0] |= mask_init;
-
-                char tmp = 0;
-
-                for ( unsigned int i = 0; i < ( 1u << CHAR_BIT ); ++i )
-                {
-
-                    typename traits::char_type ch = m_traits.translate( static_cast<charT>( tmp ), l_icase );
-                    auto value = m_traits.toInt( ch );
-
-                    if ( static_cast<re_set *>( state )->_map[static_cast<unsigned char>( value )] )
-                    {
-                        l_map[i] |= mask;
-                    }
-
-                    ++tmp;
-                }
-            }
-
-            return;
-
-        case syntax_element_jump:
-            // take the jump
-            state = static_cast<re_alt *>( state )->alt.p;
-            not_last_jump = -1;
-            break;
-
-        case syntax_element_alt:
-        case syntax_element_rep:
-        case syntax_element_dot_rep:
-        case syntax_element_char_rep:
-        case syntax_element_short_set_rep:
-        case syntax_element_long_set_rep:
-        {
-            re_alt *rep = static_cast<re_alt *>( state );
-
-            if ( rep->_map[0] & mask_init )
-            {
+                // next character must be a line separator (if there is one):
                 if ( l_map )
                 {
-                    // copy previous results:
                     l_map[0] |= mask_init;
-
-                    for ( unsigned int i = 0; i <= UCHAR_MAX; ++i )
-                    {
-                        if ( rep->_map[i] & mask_any )
-                        {
-                            l_map[i] |= mask;
-                        }
-                    }
+                    l_map[static_cast<unsigned>( '\n' )] |= mask;
+                    l_map[static_cast<unsigned>( '\r' )] |= mask;
+                    l_map[static_cast<unsigned>( '\f' )] |= mask;
+                    l_map[0x85] |= mask;
                 }
 
+                // now figure out if we can match a NULL string at this point:
                 if ( pnull )
                 {
-                    if ( rep->can_be_null & mask_any )
-                    {
-                        *pnull |= mask;
-                    }
+                    create_startmap( state->next.p, nullptr, pnull, mask );
                 }
 
+                return;
             }
-            else
+
+            case syntax_element_recurse:
             {
-                // we haven't created a startmap for this alternative yet
-                // so take the union of the two options:
-                if ( is_bad_repeat( state ) )
+                assert( static_cast<const re_jump *>( state )->alt.p->type == syntax_element_startmark );
+                recursion_sub = static_cast<re_brace *>( static_cast<const re_jump *>( state )->alt.p )->index;
+
+                if ( m_recursion_checks[recursion_sub] & 1u )
                 {
-                    set_all_masks( l_map, mask );
-
-                    if ( pnull )
+                    // Infinite recursion
+                    if ( 0 == this->m_pdata->m_status ) // update the error code if not already set
                     {
-                        *pnull |= mask;
+                        this->m_pdata->m_status = lscs_regex_ns::regex_constants::error_bad_pattern;
                     }
 
-                    return;
+                    // clear the expression, we should be empty:
+                    this->m_pdata->m_expression     = nullptr;
+                    this->m_pdata->m_expression_len = 0;
+
+                    // and throw if required:
+                    if ( 0 == ( this->flags() & regex_constants::no_except ) )
+                    {
+                        std::string message = "Encountered an infinite recursion.";
+                        lscs_regex_ns::regex_error e( message, lscs_regex_ns::regex_constants::error_bad_pattern, 0 );
+                        e.raise();
+                    }
+
                 }
-
-                set_bad_repeat( state );
-                create_startmap( state->next.p, l_map, pnull, mask );
-
-                if ( ( state->type == syntax_element_alt )
-                        || ( static_cast<re_repeat *>( state )->min == 0 ) || ( not_last_jump == 0 ) )
+                else if ( recursion_start == nullptr )
                 {
-                    create_startmap( rep->alt.p, l_map, pnull, mask );
+                    recursion_start = state;
+                    recursion_restart = state->next.p;
+                    state = static_cast<re_jump *>( state )->alt.p;
+                    m_recursion_checks[recursion_sub] |= 1u;
+                    break;
                 }
-            }
-        }
 
-        return;
-
-        case syntax_element_soft_buffer_end:
-
-            // match newline or null:
-            if ( l_map )
-            {
-                l_map[0] |= mask_init;
-                l_map[static_cast<unsigned>( '\n' )] |= mask;
-                l_map[static_cast<unsigned>( '\r' )] |= mask;
+                m_recursion_checks[recursion_sub] |= 1u;
+                // can not handle nested recursion here
             }
 
-            if ( pnull )
+            [[fallthrough]];
+
+            case syntax_element_backref:
+
+                // can be null, and any character can match:
+                if ( pnull )
+                {
+                    *pnull |= mask;
+                }
+
+                [[fallthrough]];
+
+            case syntax_element_wild:
             {
-                *pnull |= mask;
+                // can not be null, any character can match:
+                set_all_masks( l_map, mask );
+                return;
             }
 
-            return;
-
-        case syntax_element_endmark:
-
-            // need to handle independent subs as a special case:
-            if ( static_cast<re_brace *>( state )->index < 0 )
+            case syntax_element_accept:
+            case syntax_element_match:
             {
-                // can be null, any character can match:
+                // must be null, any character can match:
                 set_all_masks( l_map, mask );
 
                 if ( pnull )
@@ -1507,72 +1288,291 @@ void basic_regex_creator<charT, traits>::create_startmap( re_syntax_base *state,
                 }
 
                 return;
-
-            }
-            else if ( recursion_start && ( recursion_sub != 0 ) && ( recursion_sub == static_cast<re_brace *>( state )->index ) )
-            {
-                // recursion termination:
-                recursion_start = nullptr;
-                state = recursion_restart;
-                break;
             }
 
-            //
-            // Normally we just go to the next state... but if this sub-expression is
-            // the target of a recursion, then we might be ending a recursion, in which
-            // case we should check whatever follows that recursion, as well as whatever
-            // follows this state:
-            //
-            if ( m_pdata->m_has_recursions && static_cast<re_brace *>( state )->index )
+            case syntax_element_word_start:
             {
-                bool ok = false;
-                re_syntax_base *p = m_pdata->m_first_state;
+                // recurse, then AND with all the word characters:
+                create_startmap( state->next.p, l_map, pnull, mask );
 
-                while ( p )
+                if ( l_map )
                 {
-                    if ( p->type == syntax_element_recurse )
-                    {
-                        re_brace *p2 = static_cast<re_brace *>( static_cast<re_jump *>( p )->alt.p );
+                    l_map[0] |= mask_init;
 
-                        if ( ( p2->type == syntax_element_startmark ) && ( p2->index == static_cast<re_brace *>( state )->index ) )
+                    char tmp = 0;
+
+                    for ( unsigned int i = 0; i < ( 1u << CHAR_BIT ); ++i )
+                    {
+                        if ( ! m_traits.isctype( static_cast<charT>( tmp ), m_word_mask ) )
                         {
-                            ok = true;
-                            break;
+                            l_map[i] &= static_cast<unsigned char>( ~mask );
+                        }
+
+                        ++tmp;
+                    }
+                }
+
+                return;
+            }
+
+            case syntax_element_word_end:
+            {
+                // recurse, then AND with all the word characters:
+                create_startmap( state->next.p, l_map, pnull, mask );
+
+                if ( l_map )
+                {
+                    l_map[0] |= mask_init;
+
+                    char tmp = 0;
+
+                    for ( unsigned int i = 0; i < ( 1u << CHAR_BIT ); ++i )
+                    {
+                        if ( m_traits.isctype( static_cast<charT>( tmp ), m_word_mask ) )
+                        {
+                            l_map[i] &= static_cast<unsigned char>( ~mask );
+                        }
+
+                        ++tmp;
+                    }
+                }
+
+                return;
+            }
+
+            case syntax_element_buffer_end:
+            {
+                // we *must be null* :
+                if ( pnull )
+                {
+                    *pnull |= mask;
+                }
+
+                return;
+            }
+
+            case syntax_element_long_set:
+                if ( l_map )
+                {
+                    using m_type = typename traits::char_class_type;
+
+                    if ( static_cast<re_set_long<m_type>*>( state )->singleton )
+                    {
+                        l_map[0] |= mask_init;
+
+                        char tmp = 0;
+
+                        for ( unsigned int i = 0; i < ( 1u << CHAR_BIT ); ++i )
+                        {
+                            charT c = static_cast<charT>( tmp );
+
+                            if ( &c != re_is_set_member( &c, &c + 1, static_cast<re_set_long<m_type>*>( state ), *m_pdata, l_icase ) )
+                            {
+                                l_map[i] |= mask;
+                            }
+
+                            ++tmp;
+                        }
+
+                    }
+                    else
+                    {
+                        set_all_masks( l_map, mask );
+                    }
+                }
+
+                return;
+
+            case syntax_element_set:
+                if ( l_map )
+                {
+                    l_map[0] |= mask_init;
+
+                    char tmp = 0;
+
+                    for ( unsigned int i = 0; i < ( 1u << CHAR_BIT ); ++i )
+                    {
+
+                        typename traits::char_type ch = m_traits.translate( static_cast<charT>( tmp ), l_icase );
+                        auto value = m_traits.toInt( ch );
+
+                        if ( static_cast<re_set *>( state )->_map[static_cast<unsigned char>( value )] )
+                        {
+                            l_map[i] |= mask;
+                        }
+
+                        ++tmp;
+                    }
+                }
+
+                return;
+
+            case syntax_element_jump:
+                // take the jump
+                state = static_cast<re_alt *>( state )->alt.p;
+                not_last_jump = -1;
+                break;
+
+            case syntax_element_alt:
+            case syntax_element_rep:
+            case syntax_element_dot_rep:
+            case syntax_element_char_rep:
+            case syntax_element_short_set_rep:
+            case syntax_element_long_set_rep:
+            {
+                re_alt *rep = static_cast<re_alt *>( state );
+
+                if ( rep->_map[0] & mask_init )
+                {
+                    if ( l_map )
+                    {
+                        // copy previous results:
+                        l_map[0] |= mask_init;
+
+                        for ( unsigned int i = 0; i <= UCHAR_MAX; ++i )
+                        {
+                            if ( rep->_map[i] & mask_any )
+                            {
+                                l_map[i] |= mask;
+                            }
                         }
                     }
 
-                    p = p->next.p;
-                }
+                    if ( pnull )
+                    {
+                        if ( rep->can_be_null & mask_any )
+                        {
+                            *pnull |= mask;
+                        }
+                    }
 
-                if ( ok && ( ( m_recursion_checks[static_cast<re_brace *>( state )->index] & 2u ) == 0 ) )
+                }
+                else
                 {
-                    m_recursion_checks[static_cast<re_brace *>( state )->index] |= 2u;
-                    create_startmap( p->next.p, l_map, pnull, mask );
+                    // we haven't created a startmap for this alternative yet
+                    // so take the union of the two options:
+                    if ( is_bad_repeat( state ) )
+                    {
+                        set_all_masks( l_map, mask );
+
+                        if ( pnull )
+                        {
+                            *pnull |= mask;
+                        }
+
+                        return;
+                    }
+
+                    set_bad_repeat( state );
+                    create_startmap( state->next.p, l_map, pnull, mask );
+
+                    if ( ( state->type == syntax_element_alt )
+                            || ( static_cast<re_repeat *>( state )->min == 0 ) || ( not_last_jump == 0 ) )
+                    {
+                        create_startmap( rep->alt.p, l_map, pnull, mask );
+                    }
                 }
             }
 
-            state = state->next.p;
-            break;
+            return;
 
-        case syntax_element_commit:
-            set_all_masks( l_map, mask );
-            // Continue scanning so we can figure out whether we can be null:
-            state = state->next.p;
-            break;
+            case syntax_element_soft_buffer_end:
 
-        case syntax_element_startmark:
+                // match newline or null:
+                if ( l_map )
+                {
+                    l_map[0] |= mask_init;
+                    l_map[static_cast<unsigned>( '\n' )] |= mask;
+                    l_map[static_cast<unsigned>( '\r' )] |= mask;
+                }
 
-            // need to handle independent subs as a special case:
-            if ( static_cast<re_brace *>( state )->index == -3 )
-            {
-                state = state->next.p->next.p;
+                if ( pnull )
+                {
+                    *pnull |= mask;
+                }
+
+                return;
+
+            case syntax_element_endmark:
+
+                // need to handle independent subs as a special case:
+                if ( static_cast<re_brace *>( state )->index < 0 )
+                {
+                    // can be null, any character can match:
+                    set_all_masks( l_map, mask );
+
+                    if ( pnull )
+                    {
+                        *pnull |= mask;
+                    }
+
+                    return;
+
+                }
+                else if ( recursion_start && ( recursion_sub != 0 ) && ( recursion_sub == static_cast<re_brace *>( state )->index ) )
+                {
+                    // recursion termination:
+                    recursion_start = nullptr;
+                    state = recursion_restart;
+                    break;
+                }
+
+                //
+                // Normally we just go to the next state... but if this sub-expression is
+                // the target of a recursion, then we might be ending a recursion, in which
+                // case we should check whatever follows that recursion, as well as whatever
+                // follows this state:
+                //
+                if ( m_pdata->m_has_recursions && static_cast<re_brace *>( state )->index )
+                {
+                    bool ok = false;
+                    re_syntax_base *p = m_pdata->m_first_state;
+
+                    while ( p )
+                    {
+                        if ( p->type == syntax_element_recurse )
+                        {
+                            re_brace *p2 = static_cast<re_brace *>( static_cast<re_jump *>( p )->alt.p );
+
+                            if ( ( p2->type == syntax_element_startmark ) && ( p2->index == static_cast<re_brace *>( state )->index ) )
+                            {
+                                ok = true;
+                                break;
+                            }
+                        }
+
+                        p = p->next.p;
+                    }
+
+                    if ( ok && ( ( m_recursion_checks[static_cast<re_brace *>( state )->index] & 2u ) == 0 ) )
+                    {
+                        m_recursion_checks[static_cast<re_brace *>( state )->index] |= 2u;
+                        create_startmap( p->next.p, l_map, pnull, mask );
+                    }
+                }
+
+                state = state->next.p;
                 break;
-            }
 
-            [[fallthrough]];
+            case syntax_element_commit:
+                set_all_masks( l_map, mask );
+                // Continue scanning so we can figure out whether we can be null:
+                state = state->next.p;
+                break;
 
-        default:
-            state = state->next.p;
+            case syntax_element_startmark:
+
+                // need to handle independent subs as a special case:
+                if ( static_cast<re_brace *>( state )->index == -3 )
+                {
+                    state = state->next.p->next.p;
+                    break;
+                }
+
+                [[fallthrough]];
+
+            default:
+                state = state->next.p;
         }
 
         ++not_last_jump;
@@ -1589,26 +1589,26 @@ unsigned basic_regex_creator<charT, traits>::get_restart_type( re_syntax_base *s
     {
         switch ( state->type )
         {
-        case syntax_element_startmark:
-        case syntax_element_endmark:
-            state = state->next.p;
-            continue;
+            case syntax_element_startmark:
+            case syntax_element_endmark:
+                state = state->next.p;
+                continue;
 
-        case syntax_element_start_line:
-            return regbase::restart_line;
+            case syntax_element_start_line:
+                return regbase::restart_line;
 
-        case syntax_element_word_start:
-            return regbase::restart_word;
+            case syntax_element_word_start:
+                return regbase::restart_word;
 
-        case syntax_element_buffer_start:
-            return regbase::restart_buf;
+            case syntax_element_buffer_start:
+                return regbase::restart_buf;
 
-        case syntax_element_restart_continue:
-            return regbase::restart_continue;
+            case syntax_element_restart_continue:
+                return regbase::restart_continue;
 
-        default:
-            state = nullptr;
-            continue;
+            default:
+                state = nullptr;
+                continue;
         }
     }
 
@@ -1646,25 +1646,25 @@ bool basic_regex_creator<charT, traits>::is_bad_repeat( re_syntax_base *pt )
 {
     switch ( pt->type )
     {
-    case syntax_element_rep:
-    case syntax_element_dot_rep:
-    case syntax_element_char_rep:
-    case syntax_element_short_set_rep:
-    case syntax_element_long_set_rep:
-    {
-        unsigned state_id = static_cast<re_repeat *>( pt )->state_id;
-
-        if ( state_id >= sizeof( m_bad_repeats ) * CHAR_BIT )
+        case syntax_element_rep:
+        case syntax_element_dot_rep:
+        case syntax_element_char_rep:
+        case syntax_element_short_set_rep:
+        case syntax_element_long_set_rep:
         {
-            return true;   // run out of bits, assume we can't traverse this one.
+            unsigned state_id = static_cast<re_repeat *>( pt )->state_id;
+
+            if ( state_id >= sizeof( m_bad_repeats ) * CHAR_BIT )
+            {
+                return true;   // run out of bits, assume we can't traverse this one.
+            }
+
+            static const uintmax_t one = 1uL;
+            return m_bad_repeats & ( one << state_id );
         }
 
-        static const uintmax_t one = 1uL;
-        return m_bad_repeats & ( one << state_id );
-    }
-
-    default:
-        return false;
+        default:
+            return false;
     }
 }
 
@@ -1673,24 +1673,24 @@ void basic_regex_creator<charT, traits>::set_bad_repeat( re_syntax_base *pt )
 {
     switch ( pt->type )
     {
-    case syntax_element_rep:
-    case syntax_element_dot_rep:
-    case syntax_element_char_rep:
-    case syntax_element_short_set_rep:
-    case syntax_element_long_set_rep:
-    {
-        unsigned state_id = static_cast<re_repeat *>( pt )->state_id;
-        static const uintmax_t one = 1uL;
-
-        if ( state_id <= sizeof( m_bad_repeats ) * CHAR_BIT )
+        case syntax_element_rep:
+        case syntax_element_dot_rep:
+        case syntax_element_char_rep:
+        case syntax_element_short_set_rep:
+        case syntax_element_long_set_rep:
         {
-            m_bad_repeats |= ( one << state_id );
-        }
-    }
-    break;
+            unsigned state_id = static_cast<re_repeat *>( pt )->state_id;
+            static const uintmax_t one = 1uL;
 
-    default:
+            if ( state_id <= sizeof( m_bad_repeats ) * CHAR_BIT )
+            {
+                m_bad_repeats |= ( one << state_id );
+            }
+        }
         break;
+
+        default:
+            break;
     }
 }
 
@@ -1706,25 +1706,25 @@ syntax_element_type basic_regex_creator<charT, traits>::get_repeat_type( re_synt
         {
             switch ( state->next.p->type )
             {
-            case lscs_regex_detail_ns::syntax_element_wild:
-                return lscs_regex_detail_ns::syntax_element_dot_rep;
+                case lscs_regex_detail_ns::syntax_element_wild:
+                    return lscs_regex_detail_ns::syntax_element_dot_rep;
 
-            case lscs_regex_detail_ns::syntax_element_literal:
-                return lscs_regex_detail_ns::syntax_element_char_rep;
+                case lscs_regex_detail_ns::syntax_element_literal:
+                    return lscs_regex_detail_ns::syntax_element_char_rep;
 
-            case lscs_regex_detail_ns::syntax_element_set:
-                return lscs_regex_detail_ns::syntax_element_short_set_rep;
+                case lscs_regex_detail_ns::syntax_element_set:
+                    return lscs_regex_detail_ns::syntax_element_short_set_rep;
 
-            case lscs_regex_detail_ns::syntax_element_long_set:
-                if ( static_cast<lscs_regex_detail_ns::re_set_long<m_type>*>( state->next.p )->singleton )
-                {
-                    return lscs_regex_detail_ns::syntax_element_long_set_rep;
-                }
+                case lscs_regex_detail_ns::syntax_element_long_set:
+                    if ( static_cast<lscs_regex_detail_ns::re_set_long<m_type>*>( state->next.p )->singleton )
+                    {
+                        return lscs_regex_detail_ns::syntax_element_long_set_rep;
+                    }
 
-                break;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
     }
@@ -1741,54 +1741,54 @@ void basic_regex_creator<charT, traits>::probe_leading_repeat( re_syntax_base *s
     {
         switch ( state->type )
         {
-        case syntax_element_startmark:
-            if ( static_cast<re_brace *>( state )->index >= 0 )
-            {
+            case syntax_element_startmark:
+                if ( static_cast<re_brace *>( state )->index >= 0 )
+                {
+                    state = state->next.p;
+                    continue;
+                }
+
+                if ( ( static_cast<re_brace *>( state )->index == -1 )
+                        || ( static_cast<re_brace *>( state )->index == -2 ) )
+                {
+                    // skip past the zero width assertion:
+                    state = static_cast<const re_jump *>( state->next.p )->alt.p->next.p;
+                    continue;
+                }
+
+                if ( static_cast<re_brace *>( state )->index == -3 )
+                {
+                    // Have to skip the leading jump state:
+                    state = state->next.p->next.p;
+                    continue;
+                }
+
+                return;
+
+            case syntax_element_endmark:
+            case syntax_element_start_line:
+            case syntax_element_end_line:
+            case syntax_element_word_boundary:
+            case syntax_element_within_word:
+            case syntax_element_word_start:
+            case syntax_element_word_end:
+            case syntax_element_buffer_start:
+            case syntax_element_buffer_end:
+            case syntax_element_restart_continue:
                 state = state->next.p;
-                continue;
-            }
+                break;
 
-            if ( ( static_cast<re_brace *>( state )->index == -1 )
-                    || ( static_cast<re_brace *>( state )->index == -2 ) )
-            {
-                // skip past the zero width assertion:
-                state = static_cast<const re_jump *>( state->next.p )->alt.p->next.p;
-                continue;
-            }
+            case syntax_element_dot_rep:
+            case syntax_element_char_rep:
+            case syntax_element_short_set_rep:
+            case syntax_element_long_set_rep:
+                if ( this->m_has_backrefs == 0 )
+                {
+                    static_cast<re_repeat *>( state )->leading = true;
+                }
 
-            if ( static_cast<re_brace *>( state )->index == -3 )
-            {
-                // Have to skip the leading jump state:
-                state = state->next.p->next.p;
-                continue;
-            }
-
-            return;
-
-        case syntax_element_endmark:
-        case syntax_element_start_line:
-        case syntax_element_end_line:
-        case syntax_element_word_boundary:
-        case syntax_element_within_word:
-        case syntax_element_word_start:
-        case syntax_element_word_end:
-        case syntax_element_buffer_start:
-        case syntax_element_buffer_end:
-        case syntax_element_restart_continue:
-            state = state->next.p;
-            break;
-
-        case syntax_element_dot_rep:
-        case syntax_element_char_rep:
-        case syntax_element_short_set_rep:
-        case syntax_element_long_set_rep:
-            if ( this->m_has_backrefs == 0 )
-            {
-                static_cast<re_repeat *>( state )->leading = true;
-            }
-
-        default:
-            return;
+            default:
+                return;
         }
     }
     while ( state );

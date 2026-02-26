@@ -65,49 +65,49 @@ AbstractXmlPullProvider::Event PullBridge::next()
 
             switch ( m_index.kind() )
             {
-            case QXmlNodeModelIndex::Attribute:
-            {
-                m_current = Attribute;
-                break;
-            }
+                case QXmlNodeModelIndex::Attribute:
+                {
+                    m_current = Attribute;
+                    break;
+                }
 
-            case QXmlNodeModelIndex::Comment:
-            {
-                m_current = Comment;
-                break;
-            }
+                case QXmlNodeModelIndex::Comment:
+                {
+                    m_current = Comment;
+                    break;
+                }
 
-            case QXmlNodeModelIndex::Element:
-            {
-                m_iterators.push( qMakePair( StartElement, m_index.iterate( QXmlNodeModelIndex::AxisChild ) ) );
-                m_current = StartElement;
-                break;
-            }
+                case QXmlNodeModelIndex::Element:
+                {
+                    m_iterators.push( qMakePair( StartElement, m_index.iterate( QXmlNodeModelIndex::AxisChild ) ) );
+                    m_current = StartElement;
+                    break;
+                }
 
-            case QXmlNodeModelIndex::Document:
-            {
-                m_iterators.push( qMakePair( StartDocument, m_index.iterate( QXmlNodeModelIndex::AxisChild ) ) );
-                m_current = StartDocument;
-                break;
-            }
+                case QXmlNodeModelIndex::Document:
+                {
+                    m_iterators.push( qMakePair( StartDocument, m_index.iterate( QXmlNodeModelIndex::AxisChild ) ) );
+                    m_current = StartDocument;
+                    break;
+                }
 
-            case QXmlNodeModelIndex::Namespace:
-            {
-                m_current = Namespace;
-                break;
-            }
+                case QXmlNodeModelIndex::Namespace:
+                {
+                    m_current = Namespace;
+                    break;
+                }
 
-            case QXmlNodeModelIndex::ProcessingInstruction:
-            {
-                m_current = ProcessingInstruction;
-                break;
-            }
+                case QXmlNodeModelIndex::ProcessingInstruction:
+                {
+                    m_current = ProcessingInstruction;
+                    break;
+                }
 
-            case QXmlNodeModelIndex::Text:
-            {
-                m_current = Text;
-                break;
-            }
+                case QXmlNodeModelIndex::Text:
+                {
+                    m_current = Text;
+                    break;
+                }
             }
         }
     }
@@ -121,31 +121,31 @@ AbstractXmlPullProvider::Event PullBridge::next()
         {
             switch ( m_iterators.top().first )
             {
-            case StartOfInput:
-            {
-                m_current = EndOfInput;
-                break;
-            }
+                case StartOfInput:
+                {
+                    m_current = EndOfInput;
+                    break;
+                }
 
-            case StartElement:
-            {
-                m_current = EndElement;
-                m_iterators.pop();
-                break;
-            }
+                case StartElement:
+                {
+                    m_current = EndElement;
+                    m_iterators.pop();
+                    break;
+                }
 
-            case StartDocument:
-            {
-                m_current = EndDocument;
-                m_iterators.pop();
-                break;
-            }
+                case StartDocument:
+                {
+                    m_current = EndDocument;
+                    m_iterators.pop();
+                    break;
+                }
 
-            default:
-            {
-                Q_ASSERT_X( false, Q_FUNC_INFO, "Invalid value." );
-                m_current = EndOfInput;
-            }
+                default:
+                {
+                    Q_ASSERT_X( false, Q_FUNC_INFO, "Invalid value." );
+                    m_current = EndOfInput;
+                }
             }
         }
 

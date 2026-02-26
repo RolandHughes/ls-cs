@@ -127,33 +127,33 @@ void QWindow::setVisibility( Visibility v )
 {
     switch ( v )
     {
-    case Hidden:
-        hide();
-        break;
+        case Hidden:
+            hide();
+            break;
 
-    case AutomaticVisibility:
-        show();
-        break;
+        case AutomaticVisibility:
+            show();
+            break;
 
-    case Windowed:
-        showNormal();
-        break;
+        case Windowed:
+            showNormal();
+            break;
 
-    case Minimized:
-        showMinimized();
-        break;
+        case Minimized:
+            showMinimized();
+            break;
 
-    case Maximized:
-        showMaximized();
-        break;
+        case Maximized:
+            showMaximized();
+            break;
 
-    case FullScreen:
-        showFullScreen();
-        break;
+        case FullScreen:
+            showFullScreen();
+            break;
 
-    default:
-        Q_ASSERT( false );
-        break;
+        default:
+            Q_ASSERT( false );
+            break;
     }
 }
 
@@ -167,25 +167,25 @@ void QWindowPrivate::updateVisibility()
     {
         switch ( windowState )
         {
-        case Qt::WindowMinimized:
-            visibility = QWindow::Minimized;
-            break;
+            case Qt::WindowMinimized:
+                visibility = QWindow::Minimized;
+                break;
 
-        case Qt::WindowMaximized:
-            visibility = QWindow::Maximized;
-            break;
+            case Qt::WindowMaximized:
+                visibility = QWindow::Maximized;
+                break;
 
-        case Qt::WindowFullScreen:
-            visibility = QWindow::FullScreen;
-            break;
+            case Qt::WindowFullScreen:
+                visibility = QWindow::FullScreen;
+                break;
 
-        case Qt::WindowNoState:
-            visibility = QWindow::Windowed;
-            break;
+            case Qt::WindowNoState:
+                visibility = QWindow::Windowed;
+                break;
 
-        default:
-            Q_ASSERT( false );
-            break;
+            default:
+                Q_ASSERT( false );
+                break;
         }
     }
     else
@@ -1471,156 +1471,156 @@ bool QWindow::event( QEvent *ev )
 {
     switch ( ev->type() )
     {
-    case QEvent::MouseMove:
-        mouseMoveEvent( static_cast<QMouseEvent *>( ev ) );
-        break;
+        case QEvent::MouseMove:
+            mouseMoveEvent( static_cast<QMouseEvent *>( ev ) );
+            break;
 
-    case QEvent::MouseButtonPress:
-        mousePressEvent( static_cast<QMouseEvent *>( ev ) );
-        break;
+        case QEvent::MouseButtonPress:
+            mousePressEvent( static_cast<QMouseEvent *>( ev ) );
+            break;
 
-    case QEvent::MouseButtonRelease:
-        mouseReleaseEvent( static_cast<QMouseEvent *>( ev ) );
-        break;
+        case QEvent::MouseButtonRelease:
+            mouseReleaseEvent( static_cast<QMouseEvent *>( ev ) );
+            break;
 
-    case QEvent::MouseButtonDblClick:
-        mouseDoubleClickEvent( static_cast<QMouseEvent *>( ev ) );
-        break;
+        case QEvent::MouseButtonDblClick:
+            mouseDoubleClickEvent( static_cast<QMouseEvent *>( ev ) );
+            break;
 
-    case QEvent::TouchBegin:
-    case QEvent::TouchUpdate:
-    case QEvent::TouchEnd:
-    case QEvent::TouchCancel:
-        touchEvent( static_cast<QTouchEvent *>( ev ) );
-        break;
+        case QEvent::TouchBegin:
+        case QEvent::TouchUpdate:
+        case QEvent::TouchEnd:
+        case QEvent::TouchCancel:
+            touchEvent( static_cast<QTouchEvent *>( ev ) );
+            break;
 
-    case QEvent::Move:
-        moveEvent( static_cast<QMoveEvent *>( ev ) );
-        break;
+        case QEvent::Move:
+            moveEvent( static_cast<QMoveEvent *>( ev ) );
+            break;
 
-    case QEvent::Resize:
-        resizeEvent( static_cast<QResizeEvent *>( ev ) );
-        break;
+        case QEvent::Resize:
+            resizeEvent( static_cast<QResizeEvent *>( ev ) );
+            break;
 
-    case QEvent::KeyPress:
-        keyPressEvent( static_cast<QKeyEvent *>( ev ) );
-        break;
+        case QEvent::KeyPress:
+            keyPressEvent( static_cast<QKeyEvent *>( ev ) );
+            break;
 
-    case QEvent::KeyRelease:
-        keyReleaseEvent( static_cast<QKeyEvent *>( ev ) );
-        break;
+        case QEvent::KeyRelease:
+            keyReleaseEvent( static_cast<QKeyEvent *>( ev ) );
+            break;
 
-    case QEvent::FocusIn:
-    {
-        focusInEvent( static_cast<QFocusEvent *>( ev ) );
+        case QEvent::FocusIn:
+        {
+            focusInEvent( static_cast<QFocusEvent *>( ev ) );
 #ifndef LSCS_NO_ACCESSIBILITY
-        QAccessible::State state;
-        state.active = true;
-        QAccessibleStateChangeEvent event( this, state );
-        QAccessible::updateAccessibility( &event );
+            QAccessible::State state;
+            state.active = true;
+            QAccessibleStateChangeEvent event( this, state );
+            QAccessible::updateAccessibility( &event );
 #endif
-        break;
-    }
+            break;
+        }
 
-    case QEvent::FocusOut:
-    {
-        focusOutEvent( static_cast<QFocusEvent *>( ev ) );
+        case QEvent::FocusOut:
+        {
+            focusOutEvent( static_cast<QFocusEvent *>( ev ) );
 #ifndef LSCS_NO_ACCESSIBILITY
-        QAccessible::State state;
-        state.active = true;
-        QAccessibleStateChangeEvent event( this, state );
-        QAccessible::updateAccessibility( &event );
+            QAccessible::State state;
+            state.active = true;
+            QAccessibleStateChangeEvent event( this, state );
+            QAccessible::updateAccessibility( &event );
 #endif
-        break;
-    }
+            break;
+        }
 
 #ifndef LSCS_NO_WHEELEVENT
 
-    case QEvent::Wheel:
-        wheelEvent( static_cast<QWheelEvent *>( ev ) );
-        break;
+        case QEvent::Wheel:
+            wheelEvent( static_cast<QWheelEvent *>( ev ) );
+            break;
 #endif
 
-    case QEvent::Close:
-        if ( ev->isAccepted() )
+        case QEvent::Close:
+            if ( ev->isAccepted() )
+            {
+                destroy();
+            }
+
+            break;
+
+        case QEvent::Expose:
+            exposeEvent( static_cast<QExposeEvent *>( ev ) );
+            break;
+
+        case QEvent::Show:
+            showEvent( static_cast<QShowEvent *>( ev ) );
+            break;
+
+        case QEvent::Hide:
+            hideEvent( static_cast<QHideEvent *>( ev ) );
+            break;
+
+        case QEvent::ApplicationWindowIconChange:
+            setIcon( icon() );
+            break;
+
+        case QEvent::WindowStateChange:
         {
-            destroy();
+            Q_D( QWindow );
+            emit windowStateChanged( d->windowState );
+            d->updateVisibility();
+            break;
         }
-
-        break;
-
-    case QEvent::Expose:
-        exposeEvent( static_cast<QExposeEvent *>( ev ) );
-        break;
-
-    case QEvent::Show:
-        showEvent( static_cast<QShowEvent *>( ev ) );
-        break;
-
-    case QEvent::Hide:
-        hideEvent( static_cast<QHideEvent *>( ev ) );
-        break;
-
-    case QEvent::ApplicationWindowIconChange:
-        setIcon( icon() );
-        break;
-
-    case QEvent::WindowStateChange:
-    {
-        Q_D( QWindow );
-        emit windowStateChanged( d->windowState );
-        d->updateVisibility();
-        break;
-    }
 
 #ifndef LSCS_NO_TABLETEVENT
 
-    case QEvent::TabletPress:
-    case QEvent::TabletMove:
-    case QEvent::TabletRelease:
-        tabletEvent( static_cast<QTabletEvent *>( ev ) );
-        break;
+        case QEvent::TabletPress:
+        case QEvent::TabletMove:
+        case QEvent::TabletRelease:
+            tabletEvent( static_cast<QTabletEvent *>( ev ) );
+            break;
 #endif
 
-    case QEvent::Timer:
-    {
-        Q_D( QWindow );
-
-        if ( static_cast<QTimerEvent *>( ev )->timerId() == d->updateTimer )
+        case QEvent::Timer:
         {
-            killTimer( d->updateTimer );
-            d->updateTimer = 0;
-            d->deliverUpdateRequest();
+            Q_D( QWindow );
 
-        }
-        else
-        {
-            QObject::event( ev );
-        }
-
-        break;
-    }
-
-    case QEvent::PlatformSurface:
-    {
-        if ( ( static_cast<QPlatformSurfaceEvent *>( ev ) )->surfaceEventType() == QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed )
-        {
-#ifndef LSCS_NO_OPENGL
-            QOpenGLContext *context = QOpenGLContext::currentContext();
-
-            if ( context && context->surface() == static_cast<QSurface *>( this ) )
+            if ( static_cast<QTimerEvent *>( ev )->timerId() == d->updateTimer )
             {
-                context->doneCurrent();
+                killTimer( d->updateTimer );
+                d->updateTimer = 0;
+                d->deliverUpdateRequest();
+
+            }
+            else
+            {
+                QObject::event( ev );
             }
 
-#endif
+            break;
         }
 
-        break;
-    }
+        case QEvent::PlatformSurface:
+        {
+            if ( ( static_cast<QPlatformSurfaceEvent *>( ev ) )->surfaceEventType() == QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed )
+            {
+#ifndef LSCS_NO_OPENGL
+                QOpenGLContext *context = QOpenGLContext::currentContext();
 
-    default:
-        return QObject::event( ev );
+                if ( context && context->surface() == static_cast<QSurface *>( this ) )
+                {
+                    context->doneCurrent();
+                }
+
+#endif
+            }
+
+            break;
+        }
+
+        default:
+            return QObject::event( ev );
     }
 
     return true;

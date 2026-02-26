@@ -299,41 +299,41 @@ public:
     {
         switch ( derivedType )
         {
-        case TypeByte:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "byte" ) );
+            case TypeByte:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "byte" ) );
 
-        case TypeInt:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "int" ) );
+            case TypeInt:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "int" ) );
 
-        case TypeLong:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "long" ) );
+            case TypeLong:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "long" ) );
 
-        case TypeNegativeInteger:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "negativeInteger" ) );
+            case TypeNegativeInteger:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "negativeInteger" ) );
 
-        case TypeNonNegativeInteger:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "nonNegativeInteger" ) );
+            case TypeNonNegativeInteger:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "nonNegativeInteger" ) );
 
-        case TypeNonPositiveInteger:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "nonPositiveInteger" ) );
+            case TypeNonPositiveInteger:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "nonPositiveInteger" ) );
 
-        case TypePositiveInteger:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "positiveInteger" ) );
+            case TypePositiveInteger:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "positiveInteger" ) );
 
-        case TypeShort:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "short" ) );
+            case TypeShort:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "short" ) );
 
-        case TypeUnsignedByte:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "unsignedByte" ) );
+            case TypeUnsignedByte:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "unsignedByte" ) );
 
-        case TypeUnsignedInt:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "unsignedInt" ) );
+            case TypeUnsignedInt:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "unsignedInt" ) );
 
-        case TypeUnsignedLong:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "unsignedLong" ) );
+            case TypeUnsignedLong:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "unsignedLong" ) );
 
-        case TypeUnsignedShort:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "unsignedShort" ) );
+            case TypeUnsignedShort:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "unsignedShort" ) );
         }
 
         Q_ASSERT_X( false, "DerivedIntegerType::name()", "Invalid value in instantiation." );
@@ -580,35 +580,35 @@ public:
     {
         switch ( derivedType )
         {
-        case TypeString:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "string" ) );
+            case TypeString:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "string" ) );
 
-        case TypeNormalizedString:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "normalizedString" ) );
+            case TypeNormalizedString:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "normalizedString" ) );
 
-        case TypeToken:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "token" ) );
+            case TypeToken:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "token" ) );
 
-        case TypeLanguage:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "language" ) );
+            case TypeLanguage:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "language" ) );
 
-        case TypeNMTOKEN:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "NMTOKEN" ) );
+            case TypeNMTOKEN:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "NMTOKEN" ) );
 
-        case TypeName:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "Name" ) );
+            case TypeName:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "Name" ) );
 
-        case TypeNCName:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "NCName" ) );
+            case TypeNCName:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "NCName" ) );
 
-        case TypeID:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "ID" ) );
+            case TypeID:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "ID" ) );
 
-        case TypeIDREF:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "IDREF" ) );
+            case TypeIDREF:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "IDREF" ) );
 
-        case TypeENTITY:
-            return np->allocateQName( StandardNamespaces::xs, QLatin1String( "ENTITY" ) );
+            case TypeENTITY:
+                return np->allocateQName( StandardNamespaces::xs, QLatin1String( "ENTITY" ) );
         }
 
         Q_ASSERT_X( false, "DerivedStringType::name()", "Invalid value in instantiation." );

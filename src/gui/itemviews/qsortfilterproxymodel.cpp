@@ -250,7 +250,7 @@ public:
         const QModelIndex &sourceParent, Qt::Orientation orient ) const;
 
     QVector<QPair<int, int >> proxy_intervals_for_source_items(
-        const QVector<int> &source_to_proxy, const QVector<int> &source_items ) const;
+                               const QVector<int> &source_to_proxy, const QVector<int> &source_items ) const;
 
     void insert_source_items( QVector<int> &source_to_proxy, QVector<int> &proxy_to_source,
                               const QVector<int> &source_items, const QModelIndex &sourceParent,
@@ -559,7 +559,7 @@ void QSortFilterProxyModelPrivate::sort_source_rows( QVector<int> &source_rows, 
 }
 
 QVector<QPair<int, int >> QSortFilterProxyModelPrivate::proxy_intervals_for_source_items(
-    const QVector<int> &source_to_proxy, const QVector<int> &source_items ) const
+                           const QVector<int> &source_to_proxy, const QVector<int> &source_items ) const
 {
     QVector<QPair<int, int>> proxy_intervals;
 
@@ -2752,46 +2752,46 @@ bool QSortFilterProxyModel::lessThan( const QModelIndex &source_left, const QMod
 
     switch ( l.userType() )
     {
-    case QVariant::Int:
-        return l.toInt() < r.toInt();
+        case QVariant::Int:
+            return l.toInt() < r.toInt();
 
-    case QVariant::UInt:
-        return l.toUInt() < r.toUInt();
+        case QVariant::UInt:
+            return l.toUInt() < r.toUInt();
 
-    case QVariant::LongLong:
-        return l.toLongLong() < r.toLongLong();
+        case QVariant::LongLong:
+            return l.toLongLong() < r.toLongLong();
 
-    case QVariant::ULongLong:
-        return l.toULongLong() < r.toULongLong();
+        case QVariant::ULongLong:
+            return l.toULongLong() < r.toULongLong();
 
-    case QVariant::Float:
-        return l.toFloat() < r.toFloat();
+        case QVariant::Float:
+            return l.toFloat() < r.toFloat();
 
-    case QVariant::Double:
-        return l.toDouble() < r.toDouble();
+        case QVariant::Double:
+            return l.toDouble() < r.toDouble();
 
-    case QVariant::Char:
-        return l.toChar() < r.toChar();
+        case QVariant::Char:
+            return l.toChar() < r.toChar();
 
-    case QVariant::Date:
-        return l.toDate() < r.toDate();
+        case QVariant::Date:
+            return l.toDate() < r.toDate();
 
-    case QVariant::Time:
-        return l.toTime() < r.toTime();
+        case QVariant::Time:
+            return l.toTime() < r.toTime();
 
-    case QVariant::DateTime:
-        return l.toDateTime() < r.toDateTime();
+        case QVariant::DateTime:
+            return l.toDateTime() < r.toDateTime();
 
-    case QVariant::String:
-    default:
-        if ( d->sort_localeaware )
-        {
-            return l.toString().localeAwareCompare( r.toString() ) < 0;
-        }
-        else
-        {
-            return l.toString().compare( r.toString(), d->sort_casesensitivity ) < 0;
-        }
+        case QVariant::String:
+        default:
+            if ( d->sort_localeaware )
+            {
+                return l.toString().localeAwareCompare( r.toString() ) < 0;
+            }
+            else
+            {
+                return l.toString().compare( r.toString(), d->sort_casesensitivity ) < 0;
+            }
     }
 
     return false;

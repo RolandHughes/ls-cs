@@ -317,23 +317,23 @@ const QString &NamePool::displayPrefix( const QXmlName::NamespaceCode nc ) const
 {
     switch ( nc )
     {
-    case StandardNamespaces::xmlns:
-        return m_prefixes.at( StandardPrefixes::xmlns );
+        case StandardNamespaces::xmlns:
+            return m_prefixes.at( StandardPrefixes::xmlns );
 
-    case StandardNamespaces::local:
-        return m_prefixes.at( StandardPrefixes::local );
+        case StandardNamespaces::local:
+            return m_prefixes.at( StandardPrefixes::local );
 
-    case StandardNamespaces::xs:
-        return m_prefixes.at( StandardPrefixes::xs );
+        case StandardNamespaces::xs:
+            return m_prefixes.at( StandardPrefixes::xs );
 
-    case StandardNamespaces::xml:
-        return m_prefixes.at( StandardPrefixes::xml );
+        case StandardNamespaces::xml:
+            return m_prefixes.at( StandardPrefixes::xml );
 
-    case StandardNamespaces::fn:
-        return m_prefixes.at( StandardPrefixes::fn );
+        case StandardNamespaces::fn:
+            return m_prefixes.at( StandardPrefixes::fn );
 
-    default:
-        return m_prefixes.at( StandardPrefixes::empty );
+        default:
+            return m_prefixes.at( StandardPrefixes::empty );
     }
 }
 

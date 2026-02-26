@@ -9,7 +9,7 @@ if [ `whoami` != root ]; then
     exit
 fi
 
-apt-get install jed jed-common jed-extra astyle hunspell meld
+apt-get install jed jed-common jed-extra astyle hunspell meld emacs
 
 add-apt-repository ppa:flatpak/stable
 apt-get update
@@ -20,7 +20,4 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 # We use apostrophe to edit our markdown documentation like README.md
 #
 flatpak install flathub org.gnome.gitlab.somas.Apostrophe
-
-flatpak install flathub org.gnu.emacs
 flatpak install flathub com.axosoft.GitKraken
-flatpak install flathub com.vscodium.codium

@@ -94,26 +94,26 @@ LSCS_FT_Outline *QOutlineMapper::convertPath( const QPainterPath &path )
         switch ( elm.type )
         {
 
-        case QPainterPath::MoveToElement:
-            if ( index == elmCount - 1 )
-            {
-                continue;
-            }
+            case QPainterPath::MoveToElement:
+                if ( index == elmCount - 1 )
+                {
+                    continue;
+                }
 
-            moveTo( elm );
-            break;
+                moveTo( elm );
+                break;
 
-        case QPainterPath::LineToElement:
-            lineTo( elm );
-            break;
+            case QPainterPath::LineToElement:
+                lineTo( elm );
+                break;
 
-        case QPainterPath::CurveToElement:
-            curveTo( elm, path.elementAt( index + 1 ), path.elementAt( index + 2 ) );
-            index += 2;
-            break;
+            case QPainterPath::CurveToElement:
+                curveTo( elm, path.elementAt( index + 1 ), path.elementAt( index + 2 ) );
+                index += 2;
+                break;
 
-        default:
-            break; // This will never hit..
+            default:
+                break; // This will never hit..
         }
     }
 
@@ -137,26 +137,26 @@ LSCS_FT_Outline *QOutlineMapper::convertPath( const QVectorPath &path )
         {
             switch ( elements[index] )
             {
-            case QPainterPath::MoveToElement:
-                if ( index == count - 1 )
-                {
-                    continue;
-                }
+                case QPainterPath::MoveToElement:
+                    if ( index == count - 1 )
+                    {
+                        continue;
+                    }
 
-                moveTo( points[index] );
-                break;
+                    moveTo( points[index] );
+                    break;
 
-            case QPainterPath::LineToElement:
-                lineTo( points[index] );
-                break;
+                case QPainterPath::LineToElement:
+                    lineTo( points[index] );
+                    break;
 
-            case QPainterPath::CurveToElement:
-                curveTo( points[index], points[index + 1], points[index + 2] );
-                index += 2;
-                break;
+                case QPainterPath::CurveToElement:
+                    curveTo( points[index], points[index + 1], points[index + 2] );
+                    index += 2;
+                    break;
 
-            default:
-                break; // this will never happen
+                default:
+                    break; // this will never happen
             }
         }
 
@@ -296,48 +296,48 @@ void QOutlineMapper::convertElements( const QPointF *elements,
         {
             switch ( *types )
             {
-            case QPainterPath::MoveToElement:
-            {
-                LSCS_FT_Vector pt_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
-
-                if ( i != 0 )
+                case QPainterPath::MoveToElement:
                 {
-                    m_contours << m_points.size() - 1;
+                    LSCS_FT_Vector pt_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
+
+                    if ( i != 0 )
+                    {
+                        m_contours << m_points.size() - 1;
+                    }
+
+                    m_points << pt_fixed;
+                    m_tags <<  LSCS_FT_CURVE_TAG_ON;
                 }
-
-                m_points << pt_fixed;
-                m_tags <<  LSCS_FT_CURVE_TAG_ON;
-            }
-            break;
-
-            case QPainterPath::LineToElement:
-            {
-                LSCS_FT_Vector pt_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
-                m_points << pt_fixed;
-                m_tags << LSCS_FT_CURVE_TAG_ON;
-            }
-            break;
-
-            case QPainterPath::CurveToElement:
-            {
-                LSCS_FT_Vector cp1_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
-                ++e;
-
-                LSCS_FT_Vector cp2_fixed = { qreal_to_fixed_26_6( ( e )->x() ), qreal_to_fixed_26_6( ( e )->y() ) };
-                ++e;
-
-                LSCS_FT_Vector ep_fixed = { qreal_to_fixed_26_6( ( e )->x() ), qreal_to_fixed_26_6( ( e )->y() ) };
-
-                m_points << cp1_fixed << cp2_fixed << ep_fixed;
-                m_tags << LSCS_FT_CURVE_TAG_CUBIC << LSCS_FT_CURVE_TAG_CUBIC << LSCS_FT_CURVE_TAG_ON;
-
-                types += 2;
-                i += 2;
-            }
-            break;
-
-            default:
                 break;
+
+                case QPainterPath::LineToElement:
+                {
+                    LSCS_FT_Vector pt_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
+                    m_points << pt_fixed;
+                    m_tags << LSCS_FT_CURVE_TAG_ON;
+                }
+                break;
+
+                case QPainterPath::CurveToElement:
+                {
+                    LSCS_FT_Vector cp1_fixed = { qreal_to_fixed_26_6( e->x() ), qreal_to_fixed_26_6( e->y() ) };
+                    ++e;
+
+                    LSCS_FT_Vector cp2_fixed = { qreal_to_fixed_26_6( ( e )->x() ), qreal_to_fixed_26_6( ( e )->y() ) };
+                    ++e;
+
+                    LSCS_FT_Vector ep_fixed = { qreal_to_fixed_26_6( ( e )->x() ), qreal_to_fixed_26_6( ( e )->y() ) };
+
+                    m_points << cp1_fixed << cp2_fixed << ep_fixed;
+                    m_tags << LSCS_FT_CURVE_TAG_CUBIC << LSCS_FT_CURVE_TAG_CUBIC << LSCS_FT_CURVE_TAG_ON;
+
+                    types += 2;
+                    i += 2;
+                }
+                break;
+
+                default:
+                    break;
             }
 
             ++types;
@@ -397,21 +397,21 @@ void QOutlineMapper::clipElements( const QPointF *elements,
         {
             switch ( types[i] )
             {
-            case QPainterPath::MoveToElement:
-                path.moveTo( elements[i] );
-                break;
+                case QPainterPath::MoveToElement:
+                    path.moveTo( elements[i] );
+                    break;
 
-            case QPainterPath::LineToElement:
-                path.lineTo( elements[i] );
-                break;
+                case QPainterPath::LineToElement:
+                    path.lineTo( elements[i] );
+                    break;
 
-            case QPainterPath::CurveToElement:
-                path.cubicTo( elements[i], elements[i + 1], elements[i + 2] );
-                i += 2;
-                break;
+                case QPainterPath::CurveToElement:
+                    path.cubicTo( elements[i], elements[i + 1], elements[i + 2] );
+                    i += 2;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
     }

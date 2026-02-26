@@ -315,7 +315,7 @@ void QVistaHelper::updateCustomMargins( bool vistaMargins )
         if ( QPlatformWindow *platformWindow = window->handle() )
         {
             QGuiApplication::platformNativeInterface()->setWindowProperty( platformWindow, QString( "WindowsCustomMargins" ),
-                customMarginsV );
+                    customMarginsV );
         }
     }
 }
@@ -549,50 +549,50 @@ bool QVistaHelper::winEvent( MSG *msg, long *result )
 {
     switch ( msg->message )
     {
-    case WM_NCHITTEST:
-    {
-        LRESULT lResult;
-
-        // Perform hit testing using DWM
-        if ( pDwmDefWindowProc( msg->hwnd, msg->message, msg->wParam, msg->lParam, &lResult ) )
+        case WM_NCHITTEST:
         {
-            // DWM returned a hit, no further processing necessary
-            *result = lResult;
-        }
-        else
-        {
-            // DWM didn't return a hit, process using DefWindowProc
-            lResult = DefWindowProc( msg->hwnd, msg->message, msg->wParam, msg->lParam );
+            LRESULT lResult;
 
-            // If DefWindowProc returns a window caption button, just return HTCLIENT (client area).
-            // This avoid unnecessary hits to Windows NT style caption buttons which are not visible but are
-            // located just under the Aero style window close button.
-            if ( lResult == HTCLOSE || lResult == HTMAXBUTTON || lResult == HTMINBUTTON || lResult == HTHELP )
+            // Perform hit testing using DWM
+            if ( pDwmDefWindowProc( msg->hwnd, msg->message, msg->wParam, msg->lParam, &lResult ) )
             {
-                *result = HTCLIENT;
+                // DWM returned a hit, no further processing necessary
+                *result = lResult;
             }
             else
             {
+                // DWM didn't return a hit, process using DefWindowProc
+                lResult = DefWindowProc( msg->hwnd, msg->message, msg->wParam, msg->lParam );
+
+                // If DefWindowProc returns a window caption button, just return HTCLIENT (client area).
+                // This avoid unnecessary hits to Windows NT style caption buttons which are not visible but are
+                // located just under the Aero style window close button.
+                if ( lResult == HTCLOSE || lResult == HTMAXBUTTON || lResult == HTMINBUTTON || lResult == HTHELP )
+                {
+                    *result = HTCLIENT;
+                }
+                else
+                {
+                    *result = lResult;
+                }
+            }
+
+            break;
+        }
+
+        default:
+            LRESULT lResult;
+
+            // Pass to DWM to handle
+            if ( pDwmDefWindowProc( msg->hwnd, msg->message, msg->wParam, msg->lParam, &lResult ) )
+            {
                 *result = lResult;
             }
-        }
-
-        break;
-    }
-
-    default:
-        LRESULT lResult;
-
-        // Pass to DWM to handle
-        if ( pDwmDefWindowProc( msg->hwnd, msg->message, msg->wParam, msg->lParam, &lResult ) )
-        {
-            *result = lResult;
-        }
-        // If the message wasn't handled by DWM, continue processing it as normal
-        else
-        {
-            return false;
-        }
+            // If the message wasn't handled by DWM, continue processing it as normal
+            else
+            {
+                return false;
+            }
     }
 
     return true;
@@ -618,20 +618,20 @@ void QVistaHelper::mouseEvent( QEvent *event )
 {
     switch ( event->type() )
     {
-    case QEvent::MouseMove:
-        mouseMoveEvent( static_cast<QMouseEvent *>( event ) );
-        break;
+        case QEvent::MouseMove:
+            mouseMoveEvent( static_cast<QMouseEvent *>( event ) );
+            break;
 
-    case QEvent::MouseButtonPress:
-        mousePressEvent( static_cast<QMouseEvent *>( event ) );
-        break;
+        case QEvent::MouseButtonPress:
+            mousePressEvent( static_cast<QMouseEvent *>( event ) );
+            break;
 
-    case QEvent::MouseButtonRelease:
-        mouseReleaseEvent( static_cast<QMouseEvent *>( event ) );
-        break;
+        case QEvent::MouseButtonRelease:
+            mouseReleaseEvent( static_cast<QMouseEvent *>( event ) );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -694,28 +694,28 @@ void QVistaHelper::mouseMoveEvent( QMouseEvent *event )
     {
         switch ( change )
         {
-        case resizeTop:
-        {
-            const int dy = event->pos().y() - pressedPos.y();
-
-            if ( ( dy > 0 && rect.height() > wizard->minimumHeight() )
-                    || ( dy < 0 && rect.height() < wizard->maximumHeight() ) )
+            case resizeTop:
             {
-                rect.setTop( rect.top() + dy );
+                const int dy = event->pos().y() - pressedPos.y();
+
+                if ( ( dy > 0 && rect.height() > wizard->minimumHeight() )
+                        || ( dy < 0 && rect.height() < wizard->maximumHeight() ) )
+                {
+                    rect.setTop( rect.top() + dy );
+                }
             }
-        }
-        break;
-
-        case movePosition:
-        {
-            QPoint newPos = event->pos() - pressedPos;
-            rect.moveLeft( rect.left() + newPos.x() );
-            rect.moveTop( rect.top() + newPos.y() );
             break;
-        }
 
-        default:
-            break;
+            case movePosition:
+            {
+                QPoint newPos = event->pos() - pressedPos;
+                rect.moveLeft( rect.left() + newPos.x() );
+                rect.moveTop( rect.top() + newPos.y() );
+                break;
+            }
+
+            default:
+                break;
         }
 
         wizard->setGeometry( rect );

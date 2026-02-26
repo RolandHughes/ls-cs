@@ -140,110 +140,110 @@ bool AccelTreeResourceLoader::streamToReceiver( QIODevice *const dev, AccelTreeB
 
         switch ( reader.tokenType() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            /* Send the name. */
-            receiver->startElement( np->allocateQName( reader.namespaceUri().toString(), reader.name().toString(),
-                                    reader.prefix().toString() ), reader.lineNumber(), reader.columnNumber() );
-
-            /* Send namespace declarations. */
-            const QXmlStreamNamespaceDeclarations &nss = reader.namespaceDeclarations();
-
-            /* The far most common case is for this to be empty. */
-            if ( ! nss.isEmpty() )
+            case QXmlStreamReader::StartElement:
             {
-                const int len = nss.size();
+                /* Send the name. */
+                receiver->startElement( np->allocateQName( reader.namespaceUri().toString(), reader.name().toString(),
+                                        reader.prefix().toString() ), reader.lineNumber(), reader.columnNumber() );
+
+                /* Send namespace declarations. */
+                const QXmlStreamNamespaceDeclarations &nss = reader.namespaceDeclarations();
+
+                /* The far most common case is for this to be empty. */
+                if ( ! nss.isEmpty() )
+                {
+                    const int len = nss.size();
+
+                    for ( int i = 0; i < len; ++i )
+                    {
+                        const QXmlStreamNamespaceDeclaration &ns = nss.at( i );
+                        receiver->namespaceBinding( np->allocateBinding( ns.prefix().toString(), ns.namespaceUri().toString() ) );
+                    }
+                }
+
+                /* Send attributes. */
+                const QXmlStreamAttributes &attrs = reader.attributes();
+                const int len = attrs.size();
 
                 for ( int i = 0; i < len; ++i )
                 {
-                    const QXmlStreamNamespaceDeclaration &ns = nss.at( i );
-                    receiver->namespaceBinding( np->allocateBinding( ns.prefix().toString(), ns.namespaceUri().toString() ) );
+                    const QXmlStreamAttribute &attr = attrs.at( i );
+
+                    receiver->attribute( np->allocateQName( attr.namespaceUri().toString(), attr.name().toString(),
+                                                            attr.prefix().toString() ), attr.value() );
                 }
+
+                continue;
             }
 
-            /* Send attributes. */
-            const QXmlStreamAttributes &attrs = reader.attributes();
-            const int len = attrs.size();
-
-            for ( int i = 0; i < len; ++i )
+            case QXmlStreamReader::EndElement:
             {
-                const QXmlStreamAttribute &attr = attrs.at( i );
-
-                receiver->attribute( np->allocateQName( attr.namespaceUri().toString(), attr.name().toString(),
-                                                        attr.prefix().toString() ), attr.value() );
+                receiver->endElement();
+                continue;
             }
 
-            continue;
-        }
-
-        case QXmlStreamReader::EndElement:
-        {
-            receiver->endElement();
-            continue;
-        }
-
-        case QXmlStreamReader::Characters:
-        {
-            if ( reader.isWhitespace() )
+            case QXmlStreamReader::Characters:
             {
-                receiver->whitespaceOnly( reader.text() );
+                if ( reader.isWhitespace() )
+                {
+                    receiver->whitespaceOnly( reader.text() );
+                }
+                else
+                {
+                    receiver->characters( reader.text() );
+                }
+
+                continue;
             }
-            else
+
+            case QXmlStreamReader::Comment:
             {
-                receiver->characters( reader.text() );
+                receiver->comment( reader.text().toString() );
+                continue;
             }
 
-            continue;
-        }
-
-        case QXmlStreamReader::Comment:
-        {
-            receiver->comment( reader.text().toString() );
-            continue;
-        }
-
-        case QXmlStreamReader::ProcessingInstruction:
-        {
-            receiver->processingInstruction( np->allocateQName( QString(), reader.processingInstructionTarget().toString() ),
-                                             reader.processingInstructionData().toString() );
-            continue;
-        }
-
-        case QXmlStreamReader::StartDocument:
-        {
-            receiver->startDocument();
-            continue;
-        }
-
-        case QXmlStreamReader::EndDocument:
-        {
-            receiver->endDocument();
-            continue;
-        }
-
-        case QXmlStreamReader::EntityReference:
-        case QXmlStreamReader::DTD:
-        {
-            /* We just ignore any DTD and entity references. */
-            continue;
-        }
-
-        case QXmlStreamReader::Invalid:
-        {
-            if ( context )
+            case QXmlStreamReader::ProcessingInstruction:
             {
-                context->error( escape( reader.errorString() ), ReportContext::FODC0002, QSourceLocation( uri, reader.lineNumber(),
-                                reader.columnNumber() ) );
+                receiver->processingInstruction( np->allocateQName( QString(), reader.processingInstructionTarget().toString() ),
+                                                 reader.processingInstructionData().toString() );
+                continue;
             }
 
-            return false;
-        }
+            case QXmlStreamReader::StartDocument:
+            {
+                receiver->startDocument();
+                continue;
+            }
 
-        case QXmlStreamReader::NoToken:
-        {
-            Q_ASSERT_X( false, Q_FUNC_INFO, "This token should never be received." );
-            return false;
-        }
+            case QXmlStreamReader::EndDocument:
+            {
+                receiver->endDocument();
+                continue;
+            }
+
+            case QXmlStreamReader::EntityReference:
+            case QXmlStreamReader::DTD:
+            {
+                /* We just ignore any DTD and entity references. */
+                continue;
+            }
+
+            case QXmlStreamReader::Invalid:
+            {
+                if ( context )
+                {
+                    context->error( escape( reader.errorString() ), ReportContext::FODC0002, QSourceLocation( uri, reader.lineNumber(),
+                                    reader.columnNumber() ) );
+                }
+
+                return false;
+            }
+
+            case QXmlStreamReader::NoToken:
+            {
+                Q_ASSERT_X( false, Q_FUNC_INFO, "This token should never be received." );
+                return false;
+            }
         }
     }
 

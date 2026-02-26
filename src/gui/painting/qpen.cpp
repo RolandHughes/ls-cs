@@ -237,28 +237,28 @@ QVector<qreal> QPen::dashPattern() const
 
         switch ( d->style )
         {
-        case Qt::DashLine:
-            dd->dashPattern.reserve( 2 );
-            dd->dashPattern << dash << space;
-            break;
+            case Qt::DashLine:
+                dd->dashPattern.reserve( 2 );
+                dd->dashPattern << dash << space;
+                break;
 
-        case Qt::DotLine:
-            dd->dashPattern.reserve( 2 );
-            dd->dashPattern << dot << space;
-            break;
+            case Qt::DotLine:
+                dd->dashPattern.reserve( 2 );
+                dd->dashPattern << dot << space;
+                break;
 
-        case Qt::DashDotLine:
-            dd->dashPattern.reserve( 4 );
-            dd->dashPattern << dash << space << dot << space;
-            break;
+            case Qt::DashDotLine:
+                dd->dashPattern.reserve( 4 );
+                dd->dashPattern << dash << space << dot << space;
+                break;
 
-        case Qt::DashDotDotLine:
-            dd->dashPattern.reserve( 6 );
-            dd->dashPattern << dash << space << dot << space << dot << space;
-            break;
+            case Qt::DashDotDotLine:
+                dd->dashPattern.reserve( 6 );
+                dd->dashPattern << dash << space << dot << space << dot << space;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -575,10 +575,10 @@ QDebug operator<<( QDebug dbg, const QPen &p )
 
     QDebugStateSaver saver( dbg );
     dbg.nospace() << "QPen(" << p.width() << ',' << p.brush()
-       << ',' << PEN_STYLES[p.style()] << ',' << int( p.capStyle() )
-       << ',' << int( p.joinStyle() ) << ',' << p.dashPattern()
-       << ',' << p.dashOffset()
-       << ',' << p.miterLimit() << ')';
+                  << ',' << PEN_STYLES[p.style()] << ',' << int( p.capStyle() )
+                  << ',' << int( p.joinStyle() ) << ',' << p.dashPattern()
+                  << ',' << p.dashOffset()
+                  << ',' << p.miterLimit() << ')';
 
     return dbg;
 }

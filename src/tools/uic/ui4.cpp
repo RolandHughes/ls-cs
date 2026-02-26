@@ -151,154 +151,154 @@ void DomUI::read( QXmlStreamReader &reader )
         switch ( reader.readNext() )
         {
 
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "author" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementAuthor( reader.readElementText() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "author" )
+                {
+                    setElementAuthor( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "comment" )
+                {
+                    setElementComment( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "exportmacro" )
+                {
+                    setElementExportMacro( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "class" )
+                {
+                    setElementClass( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "widget" )
+                {
+                    DomWidget *v = new DomWidget();
+                    v->read( reader );
+                    setElementWidget( v );
+                    continue;
+                }
+
+                if ( tag == "layoutdefault" )
+                {
+                    DomLayoutDefault *v = new DomLayoutDefault();
+                    v->read( reader );
+                    setElementLayoutDefault( v );
+                    continue;
+                }
+
+                if ( tag == "layoutfunction" )
+                {
+                    DomLayoutFunction *v = new DomLayoutFunction();
+                    v->read( reader );
+                    setElementLayoutFunction( v );
+                    continue;
+                }
+
+                if ( tag == "pixmapfunction" )
+                {
+                    setElementPixmapFunction( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "customwidgets" )
+                {
+                    DomCustomWidgets *v = new DomCustomWidgets();
+                    v->read( reader );
+                    setElementCustomWidgets( v );
+                    continue;
+                }
+
+                if ( tag == "tabstops" )
+                {
+                    DomTabStops *v = new DomTabStops();
+                    v->read( reader );
+                    setElementTabStops( v );
+                    continue;
+                }
+
+                if ( tag == "images" )
+                {
+                    DomImages *v = new DomImages();
+                    v->read( reader );
+                    setElementImages( v );
+                    continue;
+                }
+
+                if ( tag == "includes" )
+                {
+                    DomIncludes *v = new DomIncludes();
+                    v->read( reader );
+                    setElementIncludes( v );
+                    continue;
+                }
+
+                if ( tag == "resources" )
+                {
+                    DomResources *v = new DomResources();
+                    v->read( reader );
+                    setElementResources( v );
+                    continue;
+                }
+
+                if ( tag == "connections" )
+                {
+                    DomConnections *v = new DomConnections();
+                    v->read( reader );
+                    setElementConnections( v );
+                    continue;
+                }
+
+                if ( tag == "designerdata" )
+                {
+                    DomDesignerData *v = new DomDesignerData();
+                    v->read( reader );
+                    setElementDesignerdata( v );
+                    continue;
+                }
+
+                if ( tag == "slots" )
+                {
+                    DomSlots *v = new DomSlots();
+                    v->read( reader );
+                    setElementSlots( v );
+                    continue;
+                }
+
+                if ( tag == "buttongroups" )
+                {
+                    DomButtonGroups *v = new DomButtonGroups();
+                    v->read( reader );
+                    setElementButtonGroups( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomUI) " + tag );
             }
-
-            if ( tag == "comment" )
-            {
-                setElementComment( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "exportmacro" )
-            {
-                setElementExportMacro( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "class" )
-            {
-                setElementClass( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "widget" )
-            {
-                DomWidget *v = new DomWidget();
-                v->read( reader );
-                setElementWidget( v );
-                continue;
-            }
-
-            if ( tag == "layoutdefault" )
-            {
-                DomLayoutDefault *v = new DomLayoutDefault();
-                v->read( reader );
-                setElementLayoutDefault( v );
-                continue;
-            }
-
-            if ( tag == "layoutfunction" )
-            {
-                DomLayoutFunction *v = new DomLayoutFunction();
-                v->read( reader );
-                setElementLayoutFunction( v );
-                continue;
-            }
-
-            if ( tag == "pixmapfunction" )
-            {
-                setElementPixmapFunction( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "customwidgets" )
-            {
-                DomCustomWidgets *v = new DomCustomWidgets();
-                v->read( reader );
-                setElementCustomWidgets( v );
-                continue;
-            }
-
-            if ( tag == "tabstops" )
-            {
-                DomTabStops *v = new DomTabStops();
-                v->read( reader );
-                setElementTabStops( v );
-                continue;
-            }
-
-            if ( tag == "images" )
-            {
-                DomImages *v = new DomImages();
-                v->read( reader );
-                setElementImages( v );
-                continue;
-            }
-
-            if ( tag == "includes" )
-            {
-                DomIncludes *v = new DomIncludes();
-                v->read( reader );
-                setElementIncludes( v );
-                continue;
-            }
-
-            if ( tag == "resources" )
-            {
-                DomResources *v = new DomResources();
-                v->read( reader );
-                setElementResources( v );
-                continue;
-            }
-
-            if ( tag == "connections" )
-            {
-                DomConnections *v = new DomConnections();
-                v->read( reader );
-                setElementConnections( v );
-                continue;
-            }
-
-            if ( tag == "designerdata" )
-            {
-                DomDesignerData *v = new DomDesignerData();
-                v->read( reader );
-                setElementDesignerdata( v );
-                continue;
-            }
-
-            if ( tag == "slots" )
-            {
-                DomSlots *v = new DomSlots();
-                v->read( reader );
-                setElementSlots( v );
-                continue;
-            }
-
-            if ( tag == "buttongroups" )
-            {
-                DomButtonGroups *v = new DomButtonGroups();
-                v->read( reader );
-                setElementButtonGroups( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element (DomUI) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -776,36 +776,36 @@ void DomIncludes::read( QXmlStreamReader &reader )
         switch ( reader.readNext() )
         {
 
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "include" )
+            case QXmlStreamReader::StartElement:
             {
-                DomInclude *v = new DomInclude();
-                v->read( reader );
-                m_include.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "include" )
+                {
+                    DomInclude *v = new DomInclude();
+                    v->read( reader );
+                    m_include.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomIncludes) " + tag );
             }
-
-            reader.raiseError( "Unexpected element (DomIncludes) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( ! reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( ! reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -883,27 +883,27 @@ void DomInclude::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element (DomInclude) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element (DomInclude) " + tag );
             }
-
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -975,36 +975,36 @@ void DomResources::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "include" )
+            case QXmlStreamReader::StartElement:
             {
-                DomResource *v = new DomResource();
-                v->read( reader );
-                m_include.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "include" )
+                {
+                    DomResource *v = new DomResource();
+                    v->read( reader );
+                    m_include.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomResources) " + tag );
             }
-
-            reader.raiseError( "Unexpected element (DomResources) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -1078,27 +1078,27 @@ void DomResource::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element (DomResource) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element (DomResource) " + tag );
             }
-
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -1183,60 +1183,60 @@ void DomActionGroup::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "action" )
+            case QXmlStreamReader::StartElement:
             {
-                DomAction *v = new DomAction();
-                v->read( reader );
-                m_action.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "action" )
+                {
+                    DomAction *v = new DomAction();
+                    v->read( reader );
+                    m_action.append( v );
+                    continue;
+                }
+
+                if ( tag == "actiongroup" )
+                {
+                    DomActionGroup *v = new DomActionGroup();
+                    v->read( reader );
+                    m_actionGroup.append( v );
+                    continue;
+                }
+
+                if ( tag == "property" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_property.append( v );
+                    continue;
+                }
+
+                if ( tag == "attribute" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_attribute.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomActionGroup) " + tag );
             }
-
-            if ( tag == "actiongroup" )
-            {
-                DomActionGroup *v = new DomActionGroup();
-                v->read( reader );
-                m_actionGroup.append( v );
-                continue;
-            }
-
-            if ( tag == "property" )
-            {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_property.append( v );
-                continue;
-            }
-
-            if ( tag == "attribute" )
-            {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_attribute.append( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element (DomActionGroup) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -1365,44 +1365,44 @@ void DomAction::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "property" )
+            case QXmlStreamReader::StartElement:
             {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_property.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "property" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_property.append( v );
+                    continue;
+                }
+
+                if ( tag == "attribute" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_attribute.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomAction) " + tag );
             }
-
-            if ( tag == "attribute" )
-            {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_attribute.append( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element (DomAction) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -1494,27 +1494,27 @@ void DomActionRef::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element (DomActionRef) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element (DomActionRef) " + tag );
             }
-
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -1587,44 +1587,44 @@ void DomButtonGroup::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "property" )
+            case QXmlStreamReader::StartElement:
             {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_property.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "property" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_property.append( v );
+                    continue;
+                }
+
+                if ( tag == "attribute" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_attribute.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomButtonGroup) " + tag );
             }
-
-            if ( tag == "attribute" )
-            {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_attribute.append( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element (DomButtonGroup) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -1700,36 +1700,36 @@ void DomButtonGroups::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "buttongroup" )
+            case QXmlStreamReader::StartElement:
             {
-                DomButtonGroup *v = new DomButtonGroup();
-                v->read( reader );
-                m_buttonGroup.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "buttongroup" )
+                {
+                    DomButtonGroup *v = new DomButtonGroup();
+                    v->read( reader );
+                    m_buttonGroup.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomButtonGroups) " + tag );
             }
-
-            reader.raiseError( "Unexpected element (DomButtonGroups) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -1788,36 +1788,36 @@ void DomImages::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "image" )
+            case QXmlStreamReader::StartElement:
             {
-                DomImage *v = new DomImage();
-                v->read( reader );
-                m_image.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "image" )
+                {
+                    DomImage *v = new DomImage();
+                    v->read( reader );
+                    m_image.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomImages) " + tag );
             }
-
-            reader.raiseError( "Unexpected element (DomImages) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( ! reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( ! reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -1891,36 +1891,36 @@ void DomImage::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "data" )
+            case QXmlStreamReader::StartElement:
             {
-                DomImageData *v = new DomImageData();
-                v->read( reader );
-                setElementData( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "data" )
+                {
+                    DomImageData *v = new DomImageData();
+                    v->read( reader );
+                    setElementData( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomImage) " + tag );
             }
-
-            reader.raiseError( "Unexpected element (DomImage) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -2020,27 +2020,27 @@ void DomImageData::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element (DomImageData) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element (DomImageData) " + tag );
             }
-
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -2097,36 +2097,36 @@ void DomCustomWidgets::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "customwidget" )
+            case QXmlStreamReader::StartElement:
             {
-                DomCustomWidget *v = new DomCustomWidget();
-                v->read( reader );
-                m_customWidget.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "customwidget" )
+                {
+                    DomCustomWidget *v = new DomCustomWidget();
+                    v->read( reader );
+                    m_customWidget.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomCustomWidgets) " + tag );
             }
-
-            reader.raiseError( "Unexpected element (DomCustomWidgets) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -2197,27 +2197,27 @@ void DomHeader::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element (DomHeader) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element (DomHeader) " + tag );
             }
-
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -2295,114 +2295,114 @@ void DomCustomWidget::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "class" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementClass( reader.readElementText() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "class" )
+                {
+                    setElementClass( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "extends" )
+                {
+                    setElementExtends( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "header" )
+                {
+                    DomHeader *v = new DomHeader();
+                    v->read( reader );
+                    setElementHeader( v );
+                    continue;
+                }
+
+                if ( tag == "sizehint" )
+                {
+                    DomSize *v = new DomSize();
+                    v->read( reader );
+                    setElementSizeHint( v );
+                    continue;
+                }
+
+                if ( tag == "addpagemethod" )
+                {
+                    setElementAddPageMethod( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "container" )
+                {
+                    setElementContainer( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "sizepolicy" )
+                {
+                    DomSizePolicyData *v = new DomSizePolicyData();
+                    v->read( reader );
+                    setElementSizePolicy( v );
+                    continue;
+                }
+
+                if ( tag == "pixmap" )
+                {
+                    setElementPixmap( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "script" )
+                {
+                    DomScript *v = new DomScript();
+                    v->read( reader );
+                    setElementScript( v );
+                    continue;
+                }
+
+                if ( tag == "properties" )
+                {
+                    DomProperties *v = new DomProperties();
+                    v->read( reader );
+                    setElementProperties( v );
+                    continue;
+                }
+
+                if ( tag == "slots" )
+                {
+                    DomSlots *v = new DomSlots();
+                    v->read( reader );
+                    setElementSlots( v );
+                    continue;
+                }
+
+                if ( tag == "propertyspecifications" )
+                {
+                    DomPropertySpecifications *v = new DomPropertySpecifications();
+                    v->read( reader );
+                    setElementPropertyspecifications( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomCustomWidget) " + tag );
             }
-
-            if ( tag == "extends" )
-            {
-                setElementExtends( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "header" )
-            {
-                DomHeader *v = new DomHeader();
-                v->read( reader );
-                setElementHeader( v );
-                continue;
-            }
-
-            if ( tag == "sizehint" )
-            {
-                DomSize *v = new DomSize();
-                v->read( reader );
-                setElementSizeHint( v );
-                continue;
-            }
-
-            if ( tag == "addpagemethod" )
-            {
-                setElementAddPageMethod( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "container" )
-            {
-                setElementContainer( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "sizepolicy" )
-            {
-                DomSizePolicyData *v = new DomSizePolicyData();
-                v->read( reader );
-                setElementSizePolicy( v );
-                continue;
-            }
-
-            if ( tag == "pixmap" )
-            {
-                setElementPixmap( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "script" )
-            {
-                DomScript *v = new DomScript();
-                v->read( reader );
-                setElementScript( v );
-                continue;
-            }
-
-            if ( tag == "properties" )
-            {
-                DomProperties *v = new DomProperties();
-                v->read( reader );
-                setElementProperties( v );
-                continue;
-            }
-
-            if ( tag == "slots" )
-            {
-                DomSlots *v = new DomSlots();
-                v->read( reader );
-                setElementSlots( v );
-                continue;
-            }
-
-            if ( tag == "propertyspecifications" )
-            {
-                DomPropertySpecifications *v = new DomPropertySpecifications();
-                v->read( reader );
-                setElementPropertyspecifications( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element (DomCustomWidget) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -2718,36 +2718,36 @@ void DomProperties::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "property" )
+            case QXmlStreamReader::StartElement:
             {
-                DomPropertyData *v = new DomPropertyData();
-                v->read( reader );
-                m_property.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "property" )
+                {
+                    DomPropertyData *v = new DomPropertyData();
+                    v->read( reader );
+                    m_property.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomProperties) " + tag );
             }
-
-            reader.raiseError( "Unexpected element (DomProperties) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( ! reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( ! reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -2816,27 +2816,27 @@ void DomPropertyData::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element (DomPropertyData) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element (DomPropertyData) " + tag );
             }
-
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -2887,40 +2887,40 @@ void DomSizePolicyData::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "hordata" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementHorData( reader.readElementText().toInteger<int>() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "hordata" )
+                {
+                    setElementHorData( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "verdata" )
+                {
+                    setElementVerData( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomPolicyData) " + tag );
             }
-
-            if ( tag == "verdata" )
-            {
-                setElementVerData( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element (DomPolicyData) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -3021,27 +3021,27 @@ void DomLayoutDefault::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element (DomLayoutDefault) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element (DomLayoutDefault) " + tag );
             }
-
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -3116,27 +3116,27 @@ void DomLayoutFunction::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element (DomLayoutFunction) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element (DomLayoutFunction) " + tag );
             }
-
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -3191,34 +3191,34 @@ void DomTabStops::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "tabstop" )
+            case QXmlStreamReader::StartElement:
             {
-                m_tabStop.append( reader.readElementText() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "tabstop" )
+                {
+                    m_tabStop.append( reader.readElementText() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomTabStops) " + tag );
             }
-
-            reader.raiseError( "Unexpected element (DomTabStops) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -3352,52 +3352,52 @@ void DomLayout::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "property" )
+            case QXmlStreamReader::StartElement:
             {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_property.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "property" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_property.append( v );
+                    continue;
+                }
+
+                if ( tag == "attribute" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_attribute.append( v );
+                    continue;
+                }
+
+                if ( tag == "item" )
+                {
+                    DomLayoutItem *v = new DomLayoutItem();
+                    v->read( reader );
+                    m_item.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomLayout) " + tag );
             }
-
-            if ( tag == "attribute" )
-            {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_attribute.append( v );
-                continue;
-            }
-
-            if ( tag == "item" )
-            {
-                DomLayoutItem *v = new DomLayoutItem();
-                v->read( reader );
-                m_item.append( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element (DomLayout) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -3580,52 +3580,52 @@ void DomLayoutItem::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "widget" )
+            case QXmlStreamReader::StartElement:
             {
-                DomWidget *v = new DomWidget();
-                v->read( reader );
-                setElementWidget( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "widget" )
+                {
+                    DomWidget *v = new DomWidget();
+                    v->read( reader );
+                    setElementWidget( v );
+                    continue;
+                }
+
+                if ( tag == "layout" )
+                {
+                    DomLayout *v = new DomLayout();
+                    v->read( reader );
+                    setElementLayout( v );
+                    continue;
+                }
+
+                if ( tag == "spacer" )
+                {
+                    DomSpacer *v = new DomSpacer();
+                    v->read( reader );
+                    setElementSpacer( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomLayoutItem) " + tag );
             }
-
-            if ( tag == "layout" )
-            {
-                DomLayout *v = new DomLayout();
-                v->read( reader );
-                setElementLayout( v );
-                continue;
-            }
-
-            if ( tag == "spacer" )
-            {
-                DomSpacer *v = new DomSpacer();
-                v->read( reader );
-                setElementSpacer( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element (DomLayoutItem) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -3661,44 +3661,44 @@ void DomLayoutItem::write( QXmlStreamWriter &writer, const QString &tagName ) co
 
     switch ( kind() )
     {
-    case Widget:
-    {
-        DomWidget *v = elementWidget();
-
-        if ( v != nullptr )
+        case Widget:
         {
-            v->write( writer, "widget" );
+            DomWidget *v = elementWidget();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "widget" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case Layout:
-    {
-        DomLayout *v = elementLayout();
-
-        if ( v != nullptr )
+        case Layout:
         {
-            v->write( writer, "layout" );
+            DomLayout *v = elementLayout();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "layout" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case Spacer:
-    {
-        DomSpacer *v = elementSpacer();
-
-        if ( v != nullptr )
+        case Spacer:
         {
-            v->write( writer, "spacer" );
+            DomSpacer *v = elementSpacer();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "spacer" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    default:
-        break;
+        default:
+            break;
     }
 
     if ( !m_text.isEmpty() )
@@ -3781,36 +3781,36 @@ void DomRow::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "property" )
+            case QXmlStreamReader::StartElement:
             {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_property.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "property" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_property.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomRow)  " + tag );
             }
-
-            reader.raiseError( "Unexpected element (DomRow)  " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( ! reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( ! reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -3869,36 +3869,36 @@ void DomColumn::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "property" )
+            case QXmlStreamReader::StartElement:
             {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_property.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "property" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_property.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomColumn) " + tag );
             }
-
-            reader.raiseError( "Unexpected element (DomColumn) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -3989,44 +3989,44 @@ void DomItem::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "property" )
+            case QXmlStreamReader::StartElement:
             {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_property.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "property" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_property.append( v );
+                    continue;
+                }
+
+                if ( tag == "item" )
+                {
+                    DomItem *v = new DomItem();
+                    v->read( reader );
+                    m_item.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomItem) " + tag );
             }
-
-            if ( tag == "item" )
-            {
-                DomItem *v = new DomItem();
-                v->read( reader );
-                m_item.append( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element (DomItem) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -4212,136 +4212,136 @@ void DomWidget::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "class" )
+            case QXmlStreamReader::StartElement:
             {
-                m_class.append( reader.readElementText() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "class" )
+                {
+                    m_class.append( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "property" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_property.append( v );
+                    continue;
+                }
+
+                if ( tag == "script" )
+                {
+                    DomScript *v = new DomScript();
+                    v->read( reader );
+                    m_script.append( v );
+                    continue;
+                }
+
+                if ( tag == "widgetdata" )
+                {
+                    DomWidgetData *v = new DomWidgetData();
+                    v->read( reader );
+                    m_widgetData.append( v );
+                    continue;
+                }
+
+                if ( tag == "attribute" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_attribute.append( v );
+                    continue;
+                }
+
+                if ( tag == "row" )
+                {
+                    DomRow *v = new DomRow();
+                    v->read( reader );
+                    m_row.append( v );
+                    continue;
+                }
+
+                if ( tag == "column" )
+                {
+                    DomColumn *v = new DomColumn();
+                    v->read( reader );
+                    m_column.append( v );
+                    continue;
+                }
+
+                if ( tag == "item" )
+                {
+                    DomItem *v = new DomItem();
+                    v->read( reader );
+                    m_item.append( v );
+                    continue;
+                }
+
+                if ( tag == "layout" )
+                {
+                    DomLayout *v = new DomLayout();
+                    v->read( reader );
+                    m_layout.append( v );
+                    continue;
+                }
+
+                if ( tag == "widget" )
+                {
+                    DomWidget *v = new DomWidget();
+                    v->read( reader );
+                    m_widget.append( v );
+                    continue;
+                }
+
+                if ( tag == "action" )
+                {
+                    DomAction *v = new DomAction();
+                    v->read( reader );
+                    m_action.append( v );
+                    continue;
+                }
+
+                if ( tag == "actiongroup" )
+                {
+                    DomActionGroup *v = new DomActionGroup();
+                    v->read( reader );
+                    m_actionGroup.append( v );
+                    continue;
+                }
+
+                if ( tag == "addaction" )
+                {
+                    DomActionRef *v = new DomActionRef();
+                    v->read( reader );
+                    m_addAction.append( v );
+                    continue;
+                }
+
+                if ( tag == "zorder" )
+                {
+                    m_zOrder.append( reader.readElementText() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "property" )
-            {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_property.append( v );
-                continue;
-            }
-
-            if ( tag == "script" )
-            {
-                DomScript *v = new DomScript();
-                v->read( reader );
-                m_script.append( v );
-                continue;
-            }
-
-            if ( tag == "widgetdata" )
-            {
-                DomWidgetData *v = new DomWidgetData();
-                v->read( reader );
-                m_widgetData.append( v );
-                continue;
-            }
-
-            if ( tag == "attribute" )
-            {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_attribute.append( v );
-                continue;
-            }
-
-            if ( tag == "row" )
-            {
-                DomRow *v = new DomRow();
-                v->read( reader );
-                m_row.append( v );
-                continue;
-            }
-
-            if ( tag == "column" )
-            {
-                DomColumn *v = new DomColumn();
-                v->read( reader );
-                m_column.append( v );
-                continue;
-            }
-
-            if ( tag == "item" )
-            {
-                DomItem *v = new DomItem();
-                v->read( reader );
-                m_item.append( v );
-                continue;
-            }
-
-            if ( tag == "layout" )
-            {
-                DomLayout *v = new DomLayout();
-                v->read( reader );
-                m_layout.append( v );
-                continue;
-            }
-
-            if ( tag == "widget" )
-            {
-                DomWidget *v = new DomWidget();
-                v->read( reader );
-                m_widget.append( v );
-                continue;
-            }
-
-            if ( tag == "action" )
-            {
-                DomAction *v = new DomAction();
-                v->read( reader );
-                m_action.append( v );
-                continue;
-            }
-
-            if ( tag == "actiongroup" )
-            {
-                DomActionGroup *v = new DomActionGroup();
-                v->read( reader );
-                m_actionGroup.append( v );
-                continue;
-            }
-
-            if ( tag == "addaction" )
-            {
-                DomActionRef *v = new DomActionRef();
-                v->read( reader );
-                m_addAction.append( v );
-                continue;
-            }
-
-            if ( tag == "zorder" )
-            {
-                m_zOrder.append( reader.readElementText() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -4586,36 +4586,36 @@ void DomSpacer::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "property" )
+            case QXmlStreamReader::StartElement:
             {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_property.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "property" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_property.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( ! reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( ! reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -4697,46 +4697,46 @@ void DomColor::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "red" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementRed( reader.readElementText().toInteger<int>() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "red" )
+                {
+                    setElementRed( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "green" )
+                {
+                    setElementGreen( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "blue" )
+                {
+                    setElementBlue( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "green" )
-            {
-                setElementGreen( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "blue" )
-            {
-                setElementBlue( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -4853,36 +4853,36 @@ void DomGradientStop::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "color" )
+            case QXmlStreamReader::StartElement:
             {
-                DomColor *v = new DomColor();
-                v->read( reader );
-                setElementColor( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "color" )
+                {
+                    DomColor *v = new DomColor();
+                    v->read( reader );
+                    setElementColor( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -5092,36 +5092,36 @@ void DomGradient::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "gradientstop" )
+            case QXmlStreamReader::StartElement:
             {
-                DomGradientStop *v = new DomGradientStop();
-                v->read( reader );
-                m_gradientStop.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "gradientstop" )
+                {
+                    DomGradientStop *v = new DomGradientStop();
+                    v->read( reader );
+                    m_gradientStop.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element (DomGradient) " + tag );
             }
-
-            reader.raiseError( "Unexpected element (DomGradient) " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -5270,52 +5270,52 @@ void DomBrush::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "color" )
+            case QXmlStreamReader::StartElement:
             {
-                DomColor *v = new DomColor();
-                v->read( reader );
-                setElementColor( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "color" )
+                {
+                    DomColor *v = new DomColor();
+                    v->read( reader );
+                    setElementColor( v );
+                    continue;
+                }
+
+                if ( tag == "texture" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    setElementTexture( v );
+                    continue;
+                }
+
+                if ( tag == "gradient" )
+                {
+                    DomGradient *v = new DomGradient();
+                    v->read( reader );
+                    setElementGradient( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "texture" )
-            {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                setElementTexture( v );
-                continue;
-            }
-
-            if ( tag == "gradient" )
-            {
-                DomGradient *v = new DomGradient();
-                v->read( reader );
-                setElementGradient( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -5331,44 +5331,44 @@ void DomBrush::write( QXmlStreamWriter &writer, const QString &tagName ) const
 
     switch ( kind() )
     {
-    case Color:
-    {
-        DomColor *v = elementColor();
-
-        if ( v != nullptr )
+        case Color:
         {
-            v->write( writer, "color" );
+            DomColor *v = elementColor();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "color" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case Texture:
-    {
-        DomProperty *v = elementTexture();
-
-        if ( v != nullptr )
+        case Texture:
         {
-            v->write( writer, "texture" );
+            DomProperty *v = elementTexture();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "texture" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case Gradient:
-    {
-        DomGradient *v = elementGradient();
-
-        if ( v != nullptr )
+        case Gradient:
         {
-            v->write( writer, "gradient" );
+            DomGradient *v = elementGradient();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "gradient" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    default:
-        break;
+        default:
+            break;
     }
 
     if ( !m_text.isEmpty() )
@@ -5466,36 +5466,36 @@ void DomColorRole::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "brush" )
+            case QXmlStreamReader::StartElement:
             {
-                DomBrush *v = new DomBrush();
-                v->read( reader );
-                setElementBrush( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "brush" )
+                {
+                    DomBrush *v = new DomBrush();
+                    v->read( reader );
+                    setElementBrush( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( ! reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( ! reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -5578,44 +5578,44 @@ void DomColorGroup::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "colorrole" )
+            case QXmlStreamReader::StartElement:
             {
-                DomColorRole *v = new DomColorRole();
-                v->read( reader );
-                m_colorRole.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "colorrole" )
+                {
+                    DomColorRole *v = new DomColorRole();
+                    v->read( reader );
+                    m_colorRole.append( v );
+                    continue;
+                }
+
+                if ( tag == "color" )
+                {
+                    DomColor *v = new DomColor();
+                    v->read( reader );
+                    m_color.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "color" )
-            {
-                DomColor *v = new DomColor();
-                v->read( reader );
-                m_color.append( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -5694,52 +5694,52 @@ void DomPalette::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "active" )
+            case QXmlStreamReader::StartElement:
             {
-                DomColorGroup *v = new DomColorGroup();
-                v->read( reader );
-                setElementActive( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "active" )
+                {
+                    DomColorGroup *v = new DomColorGroup();
+                    v->read( reader );
+                    setElementActive( v );
+                    continue;
+                }
+
+                if ( tag == "inactive" )
+                {
+                    DomColorGroup *v = new DomColorGroup();
+                    v->read( reader );
+                    setElementInactive( v );
+                    continue;
+                }
+
+                if ( tag == "disabled" )
+                {
+                    DomColorGroup *v = new DomColorGroup();
+                    v->read( reader );
+                    setElementDisabled( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "inactive" )
-            {
-                DomColorGroup *v = new DomColorGroup();
-                v->read( reader );
-                setElementInactive( v );
-                continue;
-            }
-
-            if ( tag == "disabled" )
-            {
-                DomColorGroup *v = new DomColorGroup();
-                v->read( reader );
-                setElementDisabled( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -5878,88 +5878,88 @@ void DomFont::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "family" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementFamily( reader.readElementText() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "family" )
+                {
+                    setElementFamily( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "pointsize" )
+                {
+                    setElementPointSize( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "weight" )
+                {
+                    setElementWeight( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "italic" )
+                {
+                    setElementItalic( reader.readElementText() == "true" );
+                    continue;
+                }
+
+                if ( tag == "bold" )
+                {
+                    setElementBold( reader.readElementText() == "true" );
+                    continue;
+                }
+
+                if ( tag == "underline" )
+                {
+                    setElementUnderline( reader.readElementText() == "true" );
+                    continue;
+                }
+
+                if ( tag == "strikeout" )
+                {
+                    setElementStrikeOut( reader.readElementText() == "true" );
+                    continue;
+                }
+
+                if ( tag == "antialiasing" )
+                {
+                    setElementAntialiasing( reader.readElementText() == "true" );
+                    continue;
+                }
+
+                if ( tag == "stylestrategy" )
+                {
+                    setElementStyleStrategy( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "kerning" )
+                {
+                    setElementKerning( reader.readElementText() == "true" );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "pointsize" )
-            {
-                setElementPointSize( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "weight" )
-            {
-                setElementWeight( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "italic" )
-            {
-                setElementItalic( reader.readElementText() == "true" );
-                continue;
-            }
-
-            if ( tag == "bold" )
-            {
-                setElementBold( reader.readElementText() == "true" );
-                continue;
-            }
-
-            if ( tag == "underline" )
-            {
-                setElementUnderline( reader.readElementText() == "true" );
-                continue;
-            }
-
-            if ( tag == "strikeout" )
-            {
-                setElementStrikeOut( reader.readElementText() == "true" );
-                continue;
-            }
-
-            if ( tag == "antialiasing" )
-            {
-                setElementAntialiasing( reader.readElementText() == "true" );
-                continue;
-            }
-
-            if ( tag == "stylestrategy" )
-            {
-                setElementStyleStrategy( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "kerning" )
-            {
-                setElementKerning( reader.readElementText() == "true" );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -6165,40 +6165,40 @@ void DomPoint::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "x" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementX( reader.readElementText().toInteger<int>() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "x" )
+                {
+                    setElementX( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "y" )
+                {
+                    setElementY( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "y" )
-            {
-                setElementY( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -6280,52 +6280,52 @@ void DomRect::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "x" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementX( reader.readElementText().toInteger<int>() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "x" )
+                {
+                    setElementX( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "y" )
+                {
+                    setElementY( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "width" )
+                {
+                    setElementWidth( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "height" )
+                {
+                    setElementHeight( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "y" )
-            {
-                setElementY( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "width" )
-            {
-                setElementWidth( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "height" )
-            {
-                setElementHeight( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -6454,27 +6454,27 @@ void DomLocale::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( ! reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element " + tag );
             }
-
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( ! reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -6557,52 +6557,52 @@ void DomSizePolicy::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "hsizetype" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementHSizeType( reader.readElementText().toInteger<int>() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "hsizetype" )
+                {
+                    setElementHSizeType( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "vsizetype" )
+                {
+                    setElementVSizeType( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "horstretch" )
+                {
+                    setElementHorStretch( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "verstretch" )
+                {
+                    setElementVerStretch( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "vsizetype" )
-            {
-                setElementVSizeType( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "horstretch" )
-            {
-                setElementHorStretch( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "verstretch" )
-            {
-                setElementVerStretch( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( ! reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( ! reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -6722,40 +6722,40 @@ void DomSize::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "width" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementWidth( reader.readElementText().toInteger<int>() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "width" )
+                {
+                    setElementWidth( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "height" )
+                {
+                    setElementHeight( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "height" )
-            {
-                setElementHeight( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -6835,46 +6835,46 @@ void DomDate::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "year" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementYear( reader.readElementText().toInteger<int>() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "year" )
+                {
+                    setElementYear( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "month" )
+                {
+                    setElementMonth( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "day" )
+                {
+                    setElementDay( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "month" )
-            {
-                setElementMonth( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "day" )
-            {
-                setElementDay( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -6970,46 +6970,46 @@ void DomTime::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "hour" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementHour( reader.readElementText().toInteger<int>() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "hour" )
+                {
+                    setElementHour( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "minute" )
+                {
+                    setElementMinute( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "second" )
+                {
+                    setElementSecond( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "minute" )
-            {
-                setElementMinute( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "second" )
-            {
-                setElementSecond( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -7111,64 +7111,64 @@ void DomDateTime::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "hour" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementHour( reader.readElementText().toInteger<int>() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "hour" )
+                {
+                    setElementHour( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "minute" )
+                {
+                    setElementMinute( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "second" )
+                {
+                    setElementSecond( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "year" )
+                {
+                    setElementYear( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "month" )
+                {
+                    setElementMonth( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "day" )
+                {
+                    setElementDay( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "minute" )
-            {
-                setElementMinute( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "second" )
-            {
-                setElementSecond( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "year" )
-            {
-                setElementYear( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "month" )
-            {
-                setElementMonth( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "day" )
-            {
-                setElementDay( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( ! reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( ! reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -7340,34 +7340,34 @@ void DomStringList::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "string" )
+            case QXmlStreamReader::StartElement:
             {
-                m_string.append( reader.readElementText() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "string" )
+                {
+                    m_string.append( reader.readElementText() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -7460,27 +7460,27 @@ void DomResourcePixmap::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element " + tag );
             }
-
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -7589,92 +7589,92 @@ void DomResourceIcon::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "normaloff" )
+            case QXmlStreamReader::StartElement:
             {
-                DomResourcePixmap *v = new DomResourcePixmap();
-                v->read( reader );
-                setElementNormalOff( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "normaloff" )
+                {
+                    DomResourcePixmap *v = new DomResourcePixmap();
+                    v->read( reader );
+                    setElementNormalOff( v );
+                    continue;
+                }
+
+                if ( tag == "normalon" )
+                {
+                    DomResourcePixmap *v = new DomResourcePixmap();
+                    v->read( reader );
+                    setElementNormalOn( v );
+                    continue;
+                }
+
+                if ( tag == "disabledoff" )
+                {
+                    DomResourcePixmap *v = new DomResourcePixmap();
+                    v->read( reader );
+                    setElementDisabledOff( v );
+                    continue;
+                }
+
+                if ( tag == "disabledon" )
+                {
+                    DomResourcePixmap *v = new DomResourcePixmap();
+                    v->read( reader );
+                    setElementDisabledOn( v );
+                    continue;
+                }
+
+                if ( tag == "activeoff" )
+                {
+                    DomResourcePixmap *v = new DomResourcePixmap();
+                    v->read( reader );
+                    setElementActiveOff( v );
+                    continue;
+                }
+
+                if ( tag == "activeon" )
+                {
+                    DomResourcePixmap *v = new DomResourcePixmap();
+                    v->read( reader );
+                    setElementActiveOn( v );
+                    continue;
+                }
+
+                if ( tag == "selectedoff" )
+                {
+                    DomResourcePixmap *v = new DomResourcePixmap();
+                    v->read( reader );
+                    setElementSelectedOff( v );
+                    continue;
+                }
+
+                if ( tag == "selectedon" )
+                {
+                    DomResourcePixmap *v = new DomResourcePixmap();
+                    v->read( reader );
+                    setElementSelectedOn( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "normalon" )
-            {
-                DomResourcePixmap *v = new DomResourcePixmap();
-                v->read( reader );
-                setElementNormalOn( v );
-                continue;
-            }
-
-            if ( tag == "disabledoff" )
-            {
-                DomResourcePixmap *v = new DomResourcePixmap();
-                v->read( reader );
-                setElementDisabledOff( v );
-                continue;
-            }
-
-            if ( tag == "disabledon" )
-            {
-                DomResourcePixmap *v = new DomResourcePixmap();
-                v->read( reader );
-                setElementDisabledOn( v );
-                continue;
-            }
-
-            if ( tag == "activeoff" )
-            {
-                DomResourcePixmap *v = new DomResourcePixmap();
-                v->read( reader );
-                setElementActiveOff( v );
-                continue;
-            }
-
-            if ( tag == "activeon" )
-            {
-                DomResourcePixmap *v = new DomResourcePixmap();
-                v->read( reader );
-                setElementActiveOn( v );
-                continue;
-            }
-
-            if ( tag == "selectedoff" )
-            {
-                DomResourcePixmap *v = new DomResourcePixmap();
-                v->read( reader );
-                setElementSelectedOff( v );
-                continue;
-            }
-
-            if ( tag == "selectedon" )
-            {
-                DomResourcePixmap *v = new DomResourcePixmap();
-                v->read( reader );
-                setElementSelectedOn( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -7976,28 +7976,28 @@ void DomString::read( QXmlStreamReader &reader )
         switch ( reader.readNext() )
         {
 
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element " + tag );
-        }
-
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( ! reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element " + tag );
             }
 
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( ! reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -8058,40 +8058,40 @@ void DomPointF::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "x" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementX( reader.readElementText().toDouble() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "x" )
+                {
+                    setElementX( reader.readElementText().toDouble() );
+                    continue;
+                }
+
+                if ( tag == "y" )
+                {
+                    setElementY( reader.readElementText().toDouble() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "y" )
-            {
-                setElementY( reader.readElementText().toDouble() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -8173,52 +8173,52 @@ void DomRectF::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "x" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementX( reader.readElementText().toDouble() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "x" )
+                {
+                    setElementX( reader.readElementText().toDouble() );
+                    continue;
+                }
+
+                if ( tag == "y" )
+                {
+                    setElementY( reader.readElementText().toDouble() );
+                    continue;
+                }
+
+                if ( tag == "width" )
+                {
+                    setElementWidth( reader.readElementText().toDouble() );
+                    continue;
+                }
+
+                if ( tag == "height" )
+                {
+                    setElementHeight( reader.readElementText().toDouble() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "y" )
-            {
-                setElementY( reader.readElementText().toDouble() );
-                continue;
-            }
-
-            if ( tag == "width" )
-            {
-                setElementWidth( reader.readElementText().toDouble() );
-                continue;
-            }
-
-            if ( tag == "height" )
-            {
-                setElementHeight( reader.readElementText().toDouble() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -8328,40 +8328,40 @@ void DomSizeF::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "width" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementWidth( reader.readElementText().toDouble() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "width" )
+                {
+                    setElementWidth( reader.readElementText().toDouble() );
+                    continue;
+                }
+
+                if ( tag == "height" )
+                {
+                    setElementHeight( reader.readElementText().toDouble() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "height" )
-            {
-                setElementHeight( reader.readElementText().toDouble() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -8438,34 +8438,34 @@ void DomChar::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "unicode" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementUnicode( reader.readElementText().toInteger<int>() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "unicode" )
+                {
+                    setElementUnicode( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -8528,36 +8528,36 @@ void DomUrl::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "string" )
+            case QXmlStreamReader::StartElement:
             {
-                DomString *v = new DomString();
-                v->read( reader );
-                setElementString( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "string" )
+                {
+                    DomString *v = new DomString();
+                    v->read( reader );
+                    setElementString( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -8752,268 +8752,268 @@ void DomProperty::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "bool" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementBool( reader.readElementText() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "bool" )
+                {
+                    setElementBool( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "color" )
+                {
+                    DomColor *v = new DomColor();
+                    v->read( reader );
+                    setElementColor( v );
+                    continue;
+                }
+
+                if ( tag == "cstring" )
+                {
+                    setElementCstring( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "cursor" )
+                {
+                    setElementCursor( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "cursorshape" )
+                {
+                    setElementCursorShape( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "enum" )
+                {
+                    setElementEnum( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "font" )
+                {
+                    DomFont *v = new DomFont();
+                    v->read( reader );
+                    setElementFont( v );
+                    continue;
+                }
+
+                if ( tag == "iconset" )
+                {
+                    DomResourceIcon *v = new DomResourceIcon();
+                    v->read( reader );
+                    setElementIconSet( v );
+                    continue;
+                }
+
+                if ( tag == "pixmap" )
+                {
+                    DomResourcePixmap *v = new DomResourcePixmap();
+                    v->read( reader );
+                    setElementPixmap( v );
+                    continue;
+                }
+
+                if ( tag == "palette" )
+                {
+                    DomPalette *v = new DomPalette();
+                    v->read( reader );
+                    setElementPalette( v );
+                    continue;
+                }
+
+                if ( tag == "point" )
+                {
+                    DomPoint *v = new DomPoint();
+                    v->read( reader );
+                    setElementPoint( v );
+                    continue;
+                }
+
+                if ( tag == "rect" )
+                {
+                    DomRect *v = new DomRect();
+                    v->read( reader );
+                    setElementRect( v );
+                    continue;
+                }
+
+                if ( tag == "set" )
+                {
+                    setElementSet( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "locale" )
+                {
+                    DomLocale *v = new DomLocale();
+                    v->read( reader );
+                    setElementLocale( v );
+                    continue;
+                }
+
+                if ( tag == "sizepolicy" )
+                {
+                    DomSizePolicy *v = new DomSizePolicy();
+                    v->read( reader );
+                    setElementSizePolicy( v );
+                    continue;
+                }
+
+                if ( tag == "size" )
+                {
+                    DomSize *v = new DomSize();
+                    v->read( reader );
+                    setElementSize( v );
+                    continue;
+                }
+
+                if ( tag == "string" )
+                {
+                    DomString *v = new DomString();
+                    v->read( reader );
+                    setElementString( v );
+                    continue;
+                }
+
+                if ( tag == "stringlist" )
+                {
+                    DomStringList *v = new DomStringList();
+                    v->read( reader );
+                    setElementStringList( v );
+                    continue;
+                }
+
+                if ( tag == "number" )
+                {
+                    setElementNumber( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "float" )
+                {
+                    setElementFloat( reader.readElementText().toFloat() );
+                    continue;
+                }
+
+                if ( tag == "double" )
+                {
+                    setElementDouble( reader.readElementText().toDouble() );
+                    continue;
+                }
+
+                if ( tag == "date" )
+                {
+                    DomDate *v = new DomDate();
+                    v->read( reader );
+                    setElementDate( v );
+                    continue;
+                }
+
+                if ( tag == "time" )
+                {
+                    DomTime *v = new DomTime();
+                    v->read( reader );
+                    setElementTime( v );
+                    continue;
+                }
+
+                if ( tag == "datetime" )
+                {
+                    DomDateTime *v = new DomDateTime();
+                    v->read( reader );
+                    setElementDateTime( v );
+                    continue;
+                }
+
+                if ( tag == "pointf" )
+                {
+                    DomPointF *v = new DomPointF();
+                    v->read( reader );
+                    setElementPointF( v );
+                    continue;
+                }
+
+                if ( tag == "rectf" )
+                {
+                    DomRectF *v = new DomRectF();
+                    v->read( reader );
+                    setElementRectF( v );
+                    continue;
+                }
+
+                if ( tag == "sizef" )
+                {
+                    DomSizeF *v = new DomSizeF();
+                    v->read( reader );
+                    setElementSizeF( v );
+                    continue;
+                }
+
+                if ( tag == "longlong" )
+                {
+                    setElementLongLong( reader.readElementText().toInteger<quint64>() );
+                    continue;
+                }
+
+                if ( tag == "char" )
+                {
+                    DomChar *v = new DomChar();
+                    v->read( reader );
+                    setElementChar( v );
+                    continue;
+                }
+
+                if ( tag == "url" )
+                {
+                    DomUrl *v = new DomUrl();
+                    v->read( reader );
+                    setElementUrl( v );
+                    continue;
+                }
+
+                if ( tag == "uint" )
+                {
+                    setElementUInt( reader.readElementText().toInteger<uint>() );
+                    continue;
+                }
+
+                if ( tag == "ulonglong" )
+                {
+                    setElementULongLong( reader.readElementText().toInteger<quint64>() );
+                    continue;
+                }
+
+                if ( tag == "brush" )
+                {
+                    DomBrush *v = new DomBrush();
+                    v->read( reader );
+                    setElementBrush( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "color" )
-            {
-                DomColor *v = new DomColor();
-                v->read( reader );
-                setElementColor( v );
-                continue;
-            }
-
-            if ( tag == "cstring" )
-            {
-                setElementCstring( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "cursor" )
-            {
-                setElementCursor( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "cursorshape" )
-            {
-                setElementCursorShape( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "enum" )
-            {
-                setElementEnum( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "font" )
-            {
-                DomFont *v = new DomFont();
-                v->read( reader );
-                setElementFont( v );
-                continue;
-            }
-
-            if ( tag == "iconset" )
-            {
-                DomResourceIcon *v = new DomResourceIcon();
-                v->read( reader );
-                setElementIconSet( v );
-                continue;
-            }
-
-            if ( tag == "pixmap" )
-            {
-                DomResourcePixmap *v = new DomResourcePixmap();
-                v->read( reader );
-                setElementPixmap( v );
-                continue;
-            }
-
-            if ( tag == "palette" )
-            {
-                DomPalette *v = new DomPalette();
-                v->read( reader );
-                setElementPalette( v );
-                continue;
-            }
-
-            if ( tag == "point" )
-            {
-                DomPoint *v = new DomPoint();
-                v->read( reader );
-                setElementPoint( v );
-                continue;
-            }
-
-            if ( tag == "rect" )
-            {
-                DomRect *v = new DomRect();
-                v->read( reader );
-                setElementRect( v );
-                continue;
-            }
-
-            if ( tag == "set" )
-            {
-                setElementSet( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "locale" )
-            {
-                DomLocale *v = new DomLocale();
-                v->read( reader );
-                setElementLocale( v );
-                continue;
-            }
-
-            if ( tag == "sizepolicy" )
-            {
-                DomSizePolicy *v = new DomSizePolicy();
-                v->read( reader );
-                setElementSizePolicy( v );
-                continue;
-            }
-
-            if ( tag == "size" )
-            {
-                DomSize *v = new DomSize();
-                v->read( reader );
-                setElementSize( v );
-                continue;
-            }
-
-            if ( tag == "string" )
-            {
-                DomString *v = new DomString();
-                v->read( reader );
-                setElementString( v );
-                continue;
-            }
-
-            if ( tag == "stringlist" )
-            {
-                DomStringList *v = new DomStringList();
-                v->read( reader );
-                setElementStringList( v );
-                continue;
-            }
-
-            if ( tag == "number" )
-            {
-                setElementNumber( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            if ( tag == "float" )
-            {
-                setElementFloat( reader.readElementText().toFloat() );
-                continue;
-            }
-
-            if ( tag == "double" )
-            {
-                setElementDouble( reader.readElementText().toDouble() );
-                continue;
-            }
-
-            if ( tag == "date" )
-            {
-                DomDate *v = new DomDate();
-                v->read( reader );
-                setElementDate( v );
-                continue;
-            }
-
-            if ( tag == "time" )
-            {
-                DomTime *v = new DomTime();
-                v->read( reader );
-                setElementTime( v );
-                continue;
-            }
-
-            if ( tag == "datetime" )
-            {
-                DomDateTime *v = new DomDateTime();
-                v->read( reader );
-                setElementDateTime( v );
-                continue;
-            }
-
-            if ( tag == "pointf" )
-            {
-                DomPointF *v = new DomPointF();
-                v->read( reader );
-                setElementPointF( v );
-                continue;
-            }
-
-            if ( tag == "rectf" )
-            {
-                DomRectF *v = new DomRectF();
-                v->read( reader );
-                setElementRectF( v );
-                continue;
-            }
-
-            if ( tag == "sizef" )
-            {
-                DomSizeF *v = new DomSizeF();
-                v->read( reader );
-                setElementSizeF( v );
-                continue;
-            }
-
-            if ( tag == "longlong" )
-            {
-                setElementLongLong( reader.readElementText().toInteger<quint64>() );
-                continue;
-            }
-
-            if ( tag == "char" )
-            {
-                DomChar *v = new DomChar();
-                v->read( reader );
-                setElementChar( v );
-                continue;
-            }
-
-            if ( tag == "url" )
-            {
-                DomUrl *v = new DomUrl();
-                v->read( reader );
-                setElementUrl( v );
-                continue;
-            }
-
-            if ( tag == "uint" )
-            {
-                setElementUInt( reader.readElementText().toInteger<uint>() );
-                continue;
-            }
-
-            if ( tag == "ulonglong" )
-            {
-                setElementULongLong( reader.readElementText().toInteger<quint64>() );
-                continue;
-            }
-
-            if ( tag == "brush" )
-            {
-                DomBrush *v = new DomBrush();
-                v->read( reader );
-                setElementBrush( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -9034,332 +9034,332 @@ void DomProperty::write( QXmlStreamWriter &writer, const QString &tagName ) cons
 
     switch ( kind() )
     {
-    case Bool:
-    {
-        writer.writeTextElement( "bool", elementBool() );
-        break;
-    }
-
-    case Color:
-    {
-        DomColor *v = elementColor();
-
-        if ( v != nullptr )
+        case Bool:
         {
-            v->write( writer, "color" );
+            writer.writeTextElement( "bool", elementBool() );
+            break;
         }
 
-        break;
-    }
-
-    case Cstring:
-    {
-        writer.writeTextElement( "cstring", elementCstring() );
-        break;
-    }
-
-    case Cursor:
-    {
-        writer.writeTextElement( "cursor", QString::number( elementCursor() ) );
-        break;
-    }
-
-    case CursorShape:
-    {
-        writer.writeTextElement( "cursorShape", elementCursorShape() );
-        break;
-    }
-
-    case Enum:
-    {
-        writer.writeTextElement( "enum", elementEnum() );
-        break;
-    }
-
-    case Font:
-    {
-        DomFont *v = elementFont();
-
-        if ( v != nullptr )
+        case Color:
         {
-            v->write( writer, "font" );
+            DomColor *v = elementColor();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "color" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case IconSet:
-    {
-        DomResourceIcon *v = elementIconSet();
-
-        if ( v != nullptr )
+        case Cstring:
         {
-            v->write( writer, "iconset" );
+            writer.writeTextElement( "cstring", elementCstring() );
+            break;
         }
 
-        break;
-    }
-
-    case Pixmap:
-    {
-        DomResourcePixmap *v = elementPixmap();
-
-        if ( v != nullptr )
+        case Cursor:
         {
-            v->write( writer, "pixmap" );
+            writer.writeTextElement( "cursor", QString::number( elementCursor() ) );
+            break;
         }
 
-        break;
-    }
-
-    case Palette:
-    {
-        DomPalette *v = elementPalette();
-
-        if ( v != nullptr )
+        case CursorShape:
         {
-            v->write( writer, "palette" );
+            writer.writeTextElement( "cursorShape", elementCursorShape() );
+            break;
         }
 
-        break;
-    }
-
-    case Point:
-    {
-        DomPoint *v = elementPoint();
-
-        if ( v != nullptr )
+        case Enum:
         {
-            v->write( writer, "point" );
+            writer.writeTextElement( "enum", elementEnum() );
+            break;
         }
 
-        break;
-    }
-
-    case Rect:
-    {
-        DomRect *v = elementRect();
-
-        if ( v != nullptr )
+        case Font:
         {
-            v->write( writer, "rect" );
+            DomFont *v = elementFont();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "font" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case Set:
-    {
-        writer.writeTextElement( "set", elementSet() );
-        break;
-    }
-
-    case Locale:
-    {
-        DomLocale *v = elementLocale();
-
-        if ( v != nullptr )
+        case IconSet:
         {
-            v->write( writer, "locale" );
+            DomResourceIcon *v = elementIconSet();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "iconset" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case SizePolicy:
-    {
-        DomSizePolicy *v = elementSizePolicy();
-
-        if ( v != nullptr )
+        case Pixmap:
         {
-            v->write( writer, "sizepolicy" );
+            DomResourcePixmap *v = elementPixmap();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "pixmap" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case Size:
-    {
-        DomSize *v = elementSize();
-
-        if ( v != nullptr )
+        case Palette:
         {
-            v->write( writer, "size" );
+            DomPalette *v = elementPalette();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "palette" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case String:
-    {
-        DomString *v = elementString();
-
-        if ( v != nullptr )
+        case Point:
         {
-            v->write( writer, "string" );
+            DomPoint *v = elementPoint();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "point" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case StringList:
-    {
-        DomStringList *v = elementStringList();
-
-        if ( v != nullptr )
+        case Rect:
         {
-            v->write( writer, "stringlist" );
+            DomRect *v = elementRect();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "rect" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case Number:
-    {
-        writer.writeTextElement( "number", QString::number( elementNumber() ) );
-        break;
-    }
-
-    case Float:
-    {
-        writer.writeTextElement( "float", QString::number( elementFloat(), 'f', 8 ) );
-        break;
-    }
-
-    case Double:
-    {
-        writer.writeTextElement( "double", QString::number( elementDouble(), 'f', 15 ) );
-        break;
-    }
-
-    case Date:
-    {
-        DomDate *v = elementDate();
-
-        if ( v != nullptr )
+        case Set:
         {
-            v->write( writer, "date" );
+            writer.writeTextElement( "set", elementSet() );
+            break;
         }
 
-        break;
-    }
-
-    case Time:
-    {
-        DomTime *v = elementTime();
-
-        if ( v != nullptr )
+        case Locale:
         {
-            v->write( writer, "time" );
+            DomLocale *v = elementLocale();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "locale" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case DateTime:
-    {
-        DomDateTime *v = elementDateTime();
-
-        if ( v != nullptr )
+        case SizePolicy:
         {
-            v->write( writer, "datetime" );
+            DomSizePolicy *v = elementSizePolicy();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "sizepolicy" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case PointF:
-    {
-        DomPointF *v = elementPointF();
-
-        if ( v != nullptr )
+        case Size:
         {
-            v->write( writer, "pointf" );
+            DomSize *v = elementSize();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "size" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case RectF:
-    {
-        DomRectF *v = elementRectF();
-
-        if ( v != nullptr )
+        case String:
         {
-            v->write( writer, "rectf" );
+            DomString *v = elementString();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "string" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case SizeF:
-    {
-        DomSizeF *v = elementSizeF();
-
-        if ( v != nullptr )
+        case StringList:
         {
-            v->write( writer, "sizef" );
+            DomStringList *v = elementStringList();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "stringlist" );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case LongLong:
-    {
-        writer.writeTextElement( "longLong", QString::number( elementLongLong() ) );
-        break;
-    }
-
-    case Char:
-    {
-        DomChar *v = elementChar();
-
-        if ( v != nullptr )
+        case Number:
         {
-            v->write( writer, "char" );
+            writer.writeTextElement( "number", QString::number( elementNumber() ) );
+            break;
         }
 
-        break;
-    }
-
-    case Url:
-    {
-        DomUrl *v = elementUrl();
-
-        if ( v != nullptr )
+        case Float:
         {
-            v->write( writer, "url" );
+            writer.writeTextElement( "float", QString::number( elementFloat(), 'f', 8 ) );
+            break;
         }
 
-        break;
-    }
-
-    case UInt:
-    {
-        writer.writeTextElement( "UInt", QString::number( elementUInt() ) );
-        break;
-    }
-
-    case ULongLong:
-    {
-        writer.writeTextElement( "uLongLong", QString::number( elementULongLong() ) );
-        break;
-    }
-
-    case Brush:
-    {
-        DomBrush *v = elementBrush();
-
-        if ( v != nullptr )
+        case Double:
         {
-            v->write( writer, "brush" );
+            writer.writeTextElement( "double", QString::number( elementDouble(), 'f', 15 ) );
+            break;
         }
 
-        break;
-    }
+        case Date:
+        {
+            DomDate *v = elementDate();
 
-    default:
-        break;
+            if ( v != nullptr )
+            {
+                v->write( writer, "date" );
+            }
+
+            break;
+        }
+
+        case Time:
+        {
+            DomTime *v = elementTime();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "time" );
+            }
+
+            break;
+        }
+
+        case DateTime:
+        {
+            DomDateTime *v = elementDateTime();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "datetime" );
+            }
+
+            break;
+        }
+
+        case PointF:
+        {
+            DomPointF *v = elementPointF();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "pointf" );
+            }
+
+            break;
+        }
+
+        case RectF:
+        {
+            DomRectF *v = elementRectF();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "rectf" );
+            }
+
+            break;
+        }
+
+        case SizeF:
+        {
+            DomSizeF *v = elementSizeF();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "sizef" );
+            }
+
+            break;
+        }
+
+        case LongLong:
+        {
+            writer.writeTextElement( "longLong", QString::number( elementLongLong() ) );
+            break;
+        }
+
+        case Char:
+        {
+            DomChar *v = elementChar();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "char" );
+            }
+
+            break;
+        }
+
+        case Url:
+        {
+            DomUrl *v = elementUrl();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "url" );
+            }
+
+            break;
+        }
+
+        case UInt:
+        {
+            writer.writeTextElement( "UInt", QString::number( elementUInt() ) );
+            break;
+        }
+
+        case ULongLong:
+        {
+            writer.writeTextElement( "uLongLong", QString::number( elementULongLong() ) );
+            break;
+        }
+
+        case Brush:
+        {
+            DomBrush *v = elementBrush();
+
+            if ( v != nullptr )
+            {
+                v->write( writer, "brush" );
+            }
+
+            break;
+        }
+
+        default:
+            break;
     }
 
     if ( ! m_text.isEmpty() )
@@ -9778,36 +9778,36 @@ void DomConnections::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "connection" )
+            case QXmlStreamReader::StartElement:
             {
-                DomConnection *v = new DomConnection();
-                v->read( reader );
-                m_connection.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "connection" )
+                {
+                    DomConnection *v = new DomConnection();
+                    v->read( reader );
+                    m_connection.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -9866,60 +9866,60 @@ void DomConnection::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "sender" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementSender( reader.readElementText() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "sender" )
+                {
+                    setElementSender( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "signal" )
+                {
+                    setElementSignal( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "receiver" )
+                {
+                    setElementReceiver( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "slot" )
+                {
+                    setElementSlot( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "hints" )
+                {
+                    DomConnectionHints *v = new DomConnectionHints();
+                    v->read( reader );
+                    setElementHints( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "signal" )
-            {
-                setElementSignal( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "receiver" )
-            {
-                setElementReceiver( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "slot" )
-            {
-                setElementSlot( reader.readElementText() );
-                continue;
-            }
-
-            if ( tag == "hints" )
-            {
-                DomConnectionHints *v = new DomConnectionHints();
-                v->read( reader );
-                setElementHints( v );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -10057,36 +10057,36 @@ void DomConnectionHints::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "hint" )
+            case QXmlStreamReader::StartElement:
             {
-                DomConnectionHint *v = new DomConnectionHint();
-                v->read( reader );
-                m_hint.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "hint" )
+                {
+                    DomConnectionHint *v = new DomConnectionHint();
+                    v->read( reader );
+                    m_hint.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -10159,40 +10159,40 @@ void DomConnectionHint::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "x" )
+            case QXmlStreamReader::StartElement:
             {
-                setElementX( reader.readElementText().toInteger<int>() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "x" )
+                {
+                    setElementX( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                if ( tag == "y" )
+                {
+                    setElementY( reader.readElementText().toInteger<int>() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "y" )
-            {
-                setElementY( reader.readElementText().toInteger<int>() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -10294,27 +10294,27 @@ void DomScript::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element " + tag );
             }
-
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -10371,36 +10371,36 @@ void DomWidgetData::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "property" )
+            case QXmlStreamReader::StartElement:
             {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_property.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "property" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_property.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -10459,36 +10459,36 @@ void DomDesignerData::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement :
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "property" )
+            case QXmlStreamReader::StartElement :
             {
-                DomProperty *v = new DomProperty();
-                v->read( reader );
-                m_property.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "property" )
+                {
+                    DomProperty *v = new DomProperty();
+                    v->read( reader );
+                    m_property.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -10547,40 +10547,40 @@ void DomSlots::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "signal" )
+            case QXmlStreamReader::StartElement:
             {
-                m_signal.append( reader.readElementText() );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "signal" )
+                {
+                    m_signal.append( reader.readElementText() );
+                    continue;
+                }
+
+                if ( tag == "slot" )
+                {
+                    m_slot.append( reader.readElementText() );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            if ( tag == "slot" )
-            {
-                m_slot.append( reader.readElementText() );
-                continue;
-            }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -10651,36 +10651,36 @@ void DomPropertySpecifications::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-
-            if ( tag == "stringpropertyspecification" )
+            case QXmlStreamReader::StartElement:
             {
-                DomStringPropertySpecification *v = new DomStringPropertySpecification();
-                v->read( reader );
-                m_stringpropertyspecification.append( v );
-                continue;
+                const QString tag = reader.name().toString().toLower();
+
+                if ( tag == "stringpropertyspecification" )
+                {
+                    DomStringPropertySpecification *v = new DomStringPropertySpecification();
+                    v->read( reader );
+                    m_stringpropertyspecification.append( v );
+                    continue;
+                }
+
+                reader.raiseError( "Unexpected element " + tag );
             }
-
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
             break;
 
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
-            {
-                m_text.append( reader.text().toString() );
-            }
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
 
-            break;
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -10771,27 +10771,27 @@ void DomStringPropertySpecification::read( QXmlStreamReader &reader )
     {
         switch ( reader.readNext() )
         {
-        case QXmlStreamReader::StartElement:
-        {
-            const QString tag = reader.name().toString().toLower();
-            reader.raiseError( "Unexpected element " + tag );
-        }
-        break;
-
-        case QXmlStreamReader::EndElement:
-            finished = true;
-            break;
-
-        case QXmlStreamReader::Characters:
-            if ( !reader.isWhitespace() )
+            case QXmlStreamReader::StartElement:
             {
-                m_text.append( reader.text().toString() );
+                const QString tag = reader.name().toString().toLower();
+                reader.raiseError( "Unexpected element " + tag );
             }
-
             break;
 
-        default:
-            break;
+            case QXmlStreamReader::EndElement:
+                finished = true;
+                break;
+
+            case QXmlStreamReader::Characters:
+                if ( !reader.isWhitespace() )
+                {
+                    m_text.append( reader.text().toString() );
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }

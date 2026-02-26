@@ -224,18 +224,18 @@ bool QSystemTrayIconSys::event( QEvent *e )
 {
     switch ( e->type() )
     {
-    case QEvent::ToolTip:
-        QApplication::sendEvent( q, e );
-        break;
+        case QEvent::ToolTip:
+            QApplication::sendEvent( q, e );
+            break;
 
 #ifndef LSCS_NO_WHEELEVENT
 
-    case QEvent::Wheel:
-        return QApplication::sendEvent( q, e );
+        case QEvent::Wheel:
+            return QApplication::sendEvent( q, e );
 #endif
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QWidget::event( e );

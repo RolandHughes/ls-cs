@@ -1543,7 +1543,7 @@ void QMdiAreaPrivate::scrollBarPolicyChanged( Qt::Orientation orientation, Qt::S
     }
 
     const QMdiSubWindow::SubWindowOption option = orientation == Qt::Horizontal ?
-        QMdiSubWindow::AllowOutsideAreaHorizontally : QMdiSubWindow::AllowOutsideAreaVertically;
+            QMdiSubWindow::AllowOutsideAreaHorizontally : QMdiSubWindow::AllowOutsideAreaVertically;
 
     const bool enable = policy != Qt::ScrollBarAlwaysOff;
 
@@ -1933,44 +1933,44 @@ void QMdiAreaPrivate::updateTabBarGeometry()
 
     switch ( tabPosition )
     {
-    case QTabWidget::North:
-        q->setViewportMargins( 0, tabBarSizeHint.height(), 0, 0 );
-        tabBarRect = QRect( 0, 0, areaWidth, tabBarSizeHint.height() );
-        break;
+        case QTabWidget::North:
+            q->setViewportMargins( 0, tabBarSizeHint.height(), 0, 0 );
+            tabBarRect = QRect( 0, 0, areaWidth, tabBarSizeHint.height() );
+            break;
 
-    case QTabWidget::South:
-        q->setViewportMargins( 0, 0, 0, tabBarSizeHint.height() );
-        tabBarRect = QRect( 0, areaHeight - tabBarSizeHint.height(), areaWidth, tabBarSizeHint.height() );
-        break;
+        case QTabWidget::South:
+            q->setViewportMargins( 0, 0, 0, tabBarSizeHint.height() );
+            tabBarRect = QRect( 0, areaHeight - tabBarSizeHint.height(), areaWidth, tabBarSizeHint.height() );
+            break;
 
-    case QTabWidget::East:
-        if ( q->layoutDirection() == Qt::LeftToRight )
-        {
-            q->setViewportMargins( 0, 0, tabBarSizeHint.width(), 0 );
-        }
-        else
-        {
-            q->setViewportMargins( tabBarSizeHint.width(), 0, 0, 0 );
-        }
+        case QTabWidget::East:
+            if ( q->layoutDirection() == Qt::LeftToRight )
+            {
+                q->setViewportMargins( 0, 0, tabBarSizeHint.width(), 0 );
+            }
+            else
+            {
+                q->setViewportMargins( tabBarSizeHint.width(), 0, 0, 0 );
+            }
 
-        tabBarRect = QRect( areaWidth - tabBarSizeHint.width(), 0, tabBarSizeHint.width(), areaHeight );
-        break;
+            tabBarRect = QRect( areaWidth - tabBarSizeHint.width(), 0, tabBarSizeHint.width(), areaHeight );
+            break;
 
-    case QTabWidget::West:
-        if ( q->layoutDirection() == Qt::LeftToRight )
-        {
-            q->setViewportMargins( tabBarSizeHint.width(), 0, 0, 0 );
-        }
-        else
-        {
-            q->setViewportMargins( 0, 0, tabBarSizeHint.width(), 0 );
-        }
+        case QTabWidget::West:
+            if ( q->layoutDirection() == Qt::LeftToRight )
+            {
+                q->setViewportMargins( tabBarSizeHint.width(), 0, 0, 0 );
+            }
+            else
+            {
+                q->setViewportMargins( 0, 0, tabBarSizeHint.width(), 0 );
+            }
 
-        tabBarRect = QRect( 0, 0, tabBarSizeHint.width(), areaHeight );
-        break;
+            tabBarRect = QRect( 0, 0, tabBarSizeHint.width(), areaHeight );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
 #endif // LSCS_NO_TABWIDGET
@@ -2668,54 +2668,54 @@ bool QMdiArea::viewportEvent( QEvent *event )
     switch ( event->type() )
     {
 
-    case QEvent::ChildRemoved:
-    {
-        d->isSubWindowsTiled = false;
-        QObject *removedChild = static_cast<QChildEvent *>( event )->child();
-
-        for ( int i = 0; i < d->childWindows.size(); ++i )
+        case QEvent::ChildRemoved:
         {
-            QObject *child = d->childWindows.at( i );
+            d->isSubWindowsTiled = false;
+            QObject *removedChild = static_cast<QChildEvent *>( event )->child();
 
-            if ( ! child || child == removedChild || ! child->parent() || child->parent() != viewport() )
+            for ( int i = 0; i < d->childWindows.size(); ++i )
             {
+                QObject *child = d->childWindows.at( i );
 
-                if ( ! testOption( DontMaximizeSubWindowOnActivation ) )
+                if ( ! child || child == removedChild || ! child->parent() || child->parent() != viewport() )
                 {
-                    // In this case we can only rely on the child being a QObject
-                    // (or 0), but let's try and see if we can get more information.
 
-                    QWidget *mdiChild = qobject_cast<QWidget *>( removedChild );
-
-                    if ( mdiChild && mdiChild->isMaximized() )
+                    if ( ! testOption( DontMaximizeSubWindowOnActivation ) )
                     {
-                        d->showActiveWindowMaximized = true;
-                    }
-                }
+                        // In this case we can only rely on the child being a QObject
+                        // (or 0), but let's try and see if we can get more information.
 
-                d->disconnectSubWindow( child );
-                const bool activeRemoved = i == d->indicesToActivatedChildren.at( 0 );
-                d->childWindows.removeAt( i );
-                d->indicesToActivatedChildren.removeAll( i );
-                d->updateActiveWindow( i, activeRemoved );
-                d->arrangeMinimizedSubWindows();
-                break;
+                        QWidget *mdiChild = qobject_cast<QWidget *>( removedChild );
+
+                        if ( mdiChild && mdiChild->isMaximized() )
+                        {
+                            d->showActiveWindowMaximized = true;
+                        }
+                    }
+
+                    d->disconnectSubWindow( child );
+                    const bool activeRemoved = i == d->indicesToActivatedChildren.at( 0 );
+                    d->childWindows.removeAt( i );
+                    d->indicesToActivatedChildren.removeAll( i );
+                    d->updateActiveWindow( i, activeRemoved );
+                    d->arrangeMinimizedSubWindows();
+                    break;
+                }
             }
+
+            d->updateScrollBars();
+            break;
         }
 
-        d->updateScrollBars();
-        break;
-    }
+        case QEvent::Destroy:
+            d->isSubWindowsTiled = false;
+            d->resetActiveWindow();
+            d->childWindows.clear();
+            qWarning( "QMdiArea::viewportEvent() Use setViewport() to delete the viewport" );
+            break;
 
-    case QEvent::Destroy:
-        d->isSubWindowsTiled = false;
-        d->resetActiveWindow();
-        d->childWindows.clear();
-        qWarning( "QMdiArea::viewportEvent() Use setViewport() to delete the viewport" );
-        break;
-
-    default:
-        break;
+        default:
+            break;
     }
 
     return QAbstractScrollArea::viewportEvent( event );
@@ -2768,67 +2768,67 @@ bool QMdiArea::event( QEvent *event )
     switch ( event->type() )
     {
 
-    case QEvent::WindowActivate:
-    {
-        d->isActivated = true;
-
-        if ( d->childWindows.isEmpty() )
+        case QEvent::WindowActivate:
         {
+            d->isActivated = true;
+
+            if ( d->childWindows.isEmpty() )
+            {
+                break;
+            }
+
+            if ( !d->active )
+            {
+                d->activateCurrentWindow();
+            }
+
+            d->setChildActivationEnabled( false, true );
             break;
         }
 
-        if ( !d->active )
-        {
-            d->activateCurrentWindow();
-        }
+        case QEvent::WindowDeactivate:
+            d->isActivated = false;
+            d->setChildActivationEnabled( false, true );
+            break;
 
-        d->setChildActivationEnabled( false, true );
-        break;
-    }
+        case QEvent::StyleChange:
 
-    case QEvent::WindowDeactivate:
-        d->isActivated = false;
-        d->setChildActivationEnabled( false, true );
-        break;
-
-    case QEvent::StyleChange:
-
-        // Re-tile the views if we're in tiled mode. Re-tile means we will change
-        // the geometry of the children, which in turn means 'isSubWindowsTiled'
-        // is set to false, so we have to update the state at the end.
-        if ( d->isSubWindowsTiled )
-        {
-            tileSubWindows();
-            d->isSubWindowsTiled = true;
-        }
-
-        break;
-
-    case QEvent::WindowIconChange:
-        for ( QMdiSubWindow *window : d->childWindows )
-        {
-            if ( sanityCheck( window, "QMdiArea::WindowIconChange" ) )
+            // Re-tile the views if we're in tiled mode. Re-tile means we will change
+            // the geometry of the children, which in turn means 'isSubWindowsTiled'
+            // is set to false, so we have to update the state at the end.
+            if ( d->isSubWindowsTiled )
             {
-                QApplication::sendEvent( window, event );
+                tileSubWindows();
+                d->isSubWindowsTiled = true;
             }
-        }
 
-        break;
+            break;
 
-    case QEvent::Hide:
-        d->setActive( d->active, false, false );
-        d->setChildActivationEnabled( false );
-        break;
+        case QEvent::WindowIconChange:
+            for ( QMdiSubWindow *window : d->childWindows )
+            {
+                if ( sanityCheck( window, "QMdiArea::WindowIconChange" ) )
+                {
+                    QApplication::sendEvent( window, event );
+                }
+            }
+
+            break;
+
+        case QEvent::Hide:
+            d->setActive( d->active, false, false );
+            d->setChildActivationEnabled( false );
+            break;
 
 #ifndef LSCS_NO_TABBAR
 
-    case QEvent::LayoutDirectionChange:
-        d->updateTabBarGeometry();
-        break;
+        case QEvent::LayoutDirectionChange:
+            d->updateTabBarGeometry();
+            break;
 #endif
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QAbstractScrollArea::event( event );
@@ -2873,37 +2873,37 @@ bool QMdiArea::eventFilter( QObject *object, QEvent *event )
         switch ( keyEvent->key() )
         {
 
-        case Qt::Key_Control:
+            case Qt::Key_Control:
 
-            if ( keyPress )
-            {
-                area->d_func()->startTabToPreviousTimer();
-            }
-            else
-            {
-                area->d_func()->activateHighlightedWindow();
-            }
+                if ( keyPress )
+                {
+                    area->d_func()->startTabToPreviousTimer();
+                }
+                else
+                {
+                    area->d_func()->activateHighlightedWindow();
+                }
 
-            break;
+                break;
 
-        case Qt::Key_Tab:
-        case Qt::Key_Backtab:
-            if ( keyPress )
-            {
-                area->d_func()->highlightNextSubWindow( keyEvent->key() == Qt::Key_Tab ? 1 : -1 );
-            }
+            case Qt::Key_Tab:
+            case Qt::Key_Backtab:
+                if ( keyPress )
+                {
+                    area->d_func()->highlightNextSubWindow( keyEvent->key() == Qt::Key_Tab ? 1 : -1 );
+                }
 
-            return true;
+                return true;
 
 #ifndef LSCS_NO_RUBBERBAND
 
-        case Qt::Key_Escape:
-            area->d_func()->hideRubberBand();
-            break;
+            case Qt::Key_Escape:
+                area->d_func()->hideRubberBand();
+                break;
 #endif
 
-        default:
-            break;
+            default:
+                break;
         }
 
         return QAbstractScrollArea::eventFilter( object, event );
@@ -2937,74 +2937,74 @@ bool QMdiArea::eventFilter( QObject *object, QEvent *event )
     // QMdiSubWindow events:
     switch ( event->type() )
     {
-    case QEvent::Move:
-    case QEvent::Resize:
-        if ( d->tileCalledFromResizeEvent )
-        {
-            break;
-        }
-
-        d->updateScrollBars();
-
-        if ( ! subWindow->isMinimized() )
-        {
-            d->isSubWindowsTiled = false;
-        }
-
-        break;
-
-    case QEvent::Show:
-#if ! defined(LSCS_NO_TABBAR)
-        if ( d->tabBar )
-        {
-            const int tabIndex = d->childWindows.indexOf( subWindow );
-
-            if ( !d->tabBar->isTabEnabled( tabIndex ) )
+        case QEvent::Move:
+        case QEvent::Resize:
+            if ( d->tileCalledFromResizeEvent )
             {
-                d->tabBar->setTabEnabled( tabIndex, true );
+                break;
             }
-        }
+
+            d->updateScrollBars();
+
+            if ( ! subWindow->isMinimized() )
+            {
+                d->isSubWindowsTiled = false;
+            }
+
+            break;
+
+        case QEvent::Show:
+#if ! defined(LSCS_NO_TABBAR)
+            if ( d->tabBar )
+            {
+                const int tabIndex = d->childWindows.indexOf( subWindow );
+
+                if ( !d->tabBar->isTabEnabled( tabIndex ) )
+                {
+                    d->tabBar->setTabEnabled( tabIndex, true );
+                }
+            }
 
 #endif
 
-        [[fallthrough]];
+            [[fallthrough]];
 
-    case QEvent::Hide:
-        d->isSubWindowsTiled = false;
-        break;
+        case QEvent::Hide:
+            d->isSubWindowsTiled = false;
+            break;
 #ifndef LSCS_NO_RUBBERBAND
 
-    case QEvent::Close:
-        if ( d->childWindows.indexOf( subWindow ) == d->indexToHighlighted )
-        {
-            d->hideRubberBand();
-        }
+        case QEvent::Close:
+            if ( d->childWindows.indexOf( subWindow ) == d->indexToHighlighted )
+            {
+                d->hideRubberBand();
+            }
 
-        break;
+            break;
 #endif
 
 #if ! defined(LSCS_NO_TABBAR)
 
-    case QEvent::WindowTitleChange:
-    case QEvent::ModifiedChange:
-        if ( d->tabBar )
-        {
-            d->tabBar->setTabText( d->childWindows.indexOf( subWindow ), tabTextFor( subWindow ) );
-        }
+        case QEvent::WindowTitleChange:
+        case QEvent::ModifiedChange:
+            if ( d->tabBar )
+            {
+                d->tabBar->setTabText( d->childWindows.indexOf( subWindow ), tabTextFor( subWindow ) );
+            }
 
-        break;
+            break;
 
-    case QEvent::WindowIconChange:
-        if ( d->tabBar )
-        {
-            d->tabBar->setTabIcon( d->childWindows.indexOf( subWindow ), subWindow->windowIcon() );
-        }
+        case QEvent::WindowIconChange:
+            if ( d->tabBar )
+            {
+                d->tabBar->setTabIcon( d->childWindows.indexOf( subWindow ), subWindow->windowIcon() );
+            }
 
-        break;
+            break;
 #endif // LSCS_NO_TABBAR
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QAbstractScrollArea::eventFilter( object, event );

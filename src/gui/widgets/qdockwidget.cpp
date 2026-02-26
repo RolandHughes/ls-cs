@@ -1116,73 +1116,73 @@ void QDockWidgetPrivate::nonClientAreaMouseEvent( QMouseEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::NonClientAreaMouseButtonPress:
-        if ( !titleRect.contains( event->globalPos() ) )
-        {
+        case QEvent::NonClientAreaMouseButtonPress:
+            if ( !titleRect.contains( event->globalPos() ) )
+            {
+                break;
+            }
+
+            if ( state != nullptr )
+            {
+                break;
+            }
+
+            if ( qobject_cast<QMainWindow *>( q->parent() ) == nullptr &&
+                    qobject_cast<QDockWidgetGroupWindow *>( q->parent() ) == nullptr )
+            {
+                break;
+            }
+
+            if ( isAnimating() )
+            {
+                break;
+            }
+
+            initDrag( event->pos(), true );
+
+            if ( state == nullptr )
+            {
+                break;
+            }
+
+            state->ctrlDrag = event->modifiers() & Qt::ControlModifier;
+
+            startDrag();
             break;
-        }
 
-        if ( state != nullptr )
-        {
-            break;
-        }
-
-        if ( qobject_cast<QMainWindow *>( q->parent() ) == nullptr &&
-                qobject_cast<QDockWidgetGroupWindow *>( q->parent() ) == nullptr )
-        {
-            break;
-        }
-
-        if ( isAnimating() )
-        {
-            break;
-        }
-
-        initDrag( event->pos(), true );
-
-        if ( state == nullptr )
-        {
-            break;
-        }
-
-        state->ctrlDrag = event->modifiers() & Qt::ControlModifier;
-
-        startDrag();
-        break;
-
-    case QEvent::NonClientAreaMouseMove:
-        if ( state == nullptr || ! state->dragging )
-        {
-            break;
-        }
+        case QEvent::NonClientAreaMouseMove:
+            if ( state == nullptr || ! state->dragging )
+            {
+                break;
+            }
 
 #ifndef Q_OS_DARWIN
 
-        if ( state->nca )
-        {
-            endDrag();
-        }
+            if ( state->nca )
+            {
+                endDrag();
+            }
 
 #endif
-        break;
+            break;
 
-    case QEvent::NonClientAreaMouseButtonRelease:
+        case QEvent::NonClientAreaMouseButtonRelease:
 
 #ifdef Q_OS_DARWIN
-        if ( state )
-        {
-            endDrag();
-        }
+            if ( state )
+            {
+                endDrag();
+            }
 
 #endif
-        break;
+            break;
 
-    case QEvent::NonClientAreaMouseButtonDblClick:
-        _q_toggleTopLevel();
-        break;
+        case QEvent::NonClientAreaMouseButtonDblClick:
+            _q_toggleTopLevel();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -1451,31 +1451,31 @@ void QDockWidget::changeEvent( QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::ModifiedChange:
-    case QEvent::WindowTitleChange:
-        update( layout->titleArea() );
+        case QEvent::ModifiedChange:
+        case QEvent::WindowTitleChange:
+            update( layout->titleArea() );
 
 #ifndef LSCS_NO_ACTION
-        d->fixedWindowTitle = lscs_internal_parseWindowTitle( windowTitle(), this );
-        d->toggleViewAction->setText( d->fixedWindowTitle );
+            d->fixedWindowTitle = lscs_internal_parseWindowTitle( windowTitle(), this );
+            d->toggleViewAction->setText( d->fixedWindowTitle );
 #endif
 
 #ifndef LSCS_NO_TABBAR
-        {
-            if ( QMainWindowLayout *winLayout = lscs_mainwindow_layout_from_dock( this ) )
             {
-                if ( QDockAreaLayoutInfo *info = winLayout->layoutState.dockAreaLayout.info( this ) )
+                if ( QMainWindowLayout *winLayout = lscs_mainwindow_layout_from_dock( this ) )
                 {
-                    info->updateTabBar();
+                    if ( QDockAreaLayoutInfo *info = winLayout->layoutState.dockAreaLayout.info( this ) )
+                    {
+                        info->updateTabBar();
+                    }
                 }
             }
-        }
 #endif
 
-        break;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     QWidget::changeEvent( event );
@@ -1535,134 +1535,134 @@ bool QDockWidget::event( QEvent *event )
 
 #ifndef LSCS_NO_ACTION
 
-    case QEvent::Hide:
-        if ( layout != nullptr )
-        {
-            layout->keepSize( this );
-        }
+        case QEvent::Hide:
+            if ( layout != nullptr )
+            {
+                layout->keepSize( this );
+            }
 
-        d->toggleViewAction->setChecked( false );
-        emit visibilityChanged( false );
+            d->toggleViewAction->setChecked( false );
+            emit visibilityChanged( false );
+            break;
+
+        case QEvent::Show:
+        {
+            d->toggleViewAction->setChecked( true );
+            QPoint parentTopLeft( 0, 0 );
+
+            if ( isWindow() )
+            {
+                if ( const QWindow *window = windowHandle() )
+                {
+                    parentTopLeft = window->screen()->availableVirtualGeometry().topLeft();
+                }
+                else
+                {
+                    parentTopLeft = QGuiApplication::primaryScreen()->availableVirtualGeometry().topLeft();
+                }
+            }
+
+            emit visibilityChanged( geometry().right() >= parentTopLeft.x() && geometry().bottom() >= parentTopLeft.y() );
+        }
         break;
-
-    case QEvent::Show:
-    {
-        d->toggleViewAction->setChecked( true );
-        QPoint parentTopLeft( 0, 0 );
-
-        if ( isWindow() )
-        {
-            if ( const QWindow *window = windowHandle() )
-            {
-                parentTopLeft = window->screen()->availableVirtualGeometry().topLeft();
-            }
-            else
-            {
-                parentTopLeft = QGuiApplication::primaryScreen()->availableVirtualGeometry().topLeft();
-            }
-        }
-
-        emit visibilityChanged( geometry().right() >= parentTopLeft.x() && geometry().bottom() >= parentTopLeft.y() );
-    }
-    break;
 #endif
 
-    case QEvent::ApplicationLayoutDirectionChange:
-    case QEvent::LayoutDirectionChange:
-    case QEvent::StyleChange:
-    case QEvent::ParentChange:
-        d->updateButtons();
-        break;
+        case QEvent::ApplicationLayoutDirectionChange:
+        case QEvent::LayoutDirectionChange:
+        case QEvent::StyleChange:
+        case QEvent::ParentChange:
+            d->updateButtons();
+            break;
 
-    case QEvent::ZOrderChange:
-    {
-        bool onTop = false;
-
-        if ( win != nullptr )
+        case QEvent::ZOrderChange:
         {
-            const QObjectList &siblings = win->children();
-            onTop = siblings.count() > 0 && siblings.last() == ( QObject * )this;
+            bool onTop = false;
+
+            if ( win != nullptr )
+            {
+                const QObjectList &siblings = win->children();
+                onTop = siblings.count() > 0 && siblings.last() == ( QObject * )this;
+            }
+
+            if ( !isFloating() && layout != nullptr && onTop )
+            {
+                layout->raise( this );
+            }
+
+            break;
         }
 
-        if ( !isFloating() && layout != nullptr && onTop )
-        {
-            layout->raise( this );
-        }
+        case QEvent::WindowActivate:
+        case QEvent::WindowDeactivate:
+            update( qobject_cast<QDockWidgetLayout *>( this->layout() )->titleArea() );
+            break;
 
-        break;
-    }
+        case QEvent::ContextMenu:
+            if ( d->state )
+            {
+                event->accept();
+                return true;
+            }
 
-    case QEvent::WindowActivate:
-    case QEvent::WindowDeactivate:
-        update( qobject_cast<QDockWidgetLayout *>( this->layout() )->titleArea() );
-        break;
+            break;
 
-    case QEvent::ContextMenu:
-        if ( d->state )
-        {
-            event->accept();
+        // return true after calling the handler since we don't want
+        // them to be passed onto the default handlers
+        case QEvent::MouseButtonPress:
+            if ( d->mousePressEvent( static_cast<QMouseEvent *>( event ) ) )
+            {
+                return true;
+            }
+
+            break;
+
+        case QEvent::MouseButtonDblClick:
+            if ( d->mouseDoubleClickEvent( static_cast<QMouseEvent *>( event ) ) )
+            {
+                return true;
+            }
+
+            break;
+
+        case QEvent::MouseMove:
+            if ( d->mouseMoveEvent( static_cast<QMouseEvent *>( event ) ) )
+            {
+                return true;
+            }
+
+            break;
+
+        case QEvent::MouseButtonRelease:
+            if ( d->mouseReleaseEvent( static_cast<QMouseEvent *>( event ) ) )
+            {
+                return true;
+            }
+
+            break;
+
+        case QEvent::NonClientAreaMouseMove:
+        case QEvent::NonClientAreaMouseButtonPress:
+        case QEvent::NonClientAreaMouseButtonRelease:
+        case QEvent::NonClientAreaMouseButtonDblClick:
+            d->nonClientAreaMouseEvent( static_cast<QMouseEvent *>( event ) );
             return true;
-        }
 
-        break;
+        case QEvent::Move:
+            d->moveEvent( static_cast<QMoveEvent *>( event ) );
+            break;
 
-    // return true after calling the handler since we don't want
-    // them to be passed onto the default handlers
-    case QEvent::MouseButtonPress:
-        if ( d->mousePressEvent( static_cast<QMouseEvent *>( event ) ) )
-        {
-            return true;
-        }
+        case QEvent::Resize:
 
-        break;
+            // if the mainwindow is plugging us, we don't want to update undocked geometry
+            if ( isFloating() && layout != nullptr && layout->pluggingWidget != this )
+            {
+                d->undockedGeometry = geometry();
+            }
 
-    case QEvent::MouseButtonDblClick:
-        if ( d->mouseDoubleClickEvent( static_cast<QMouseEvent *>( event ) ) )
-        {
-            return true;
-        }
+            break;
 
-        break;
-
-    case QEvent::MouseMove:
-        if ( d->mouseMoveEvent( static_cast<QMouseEvent *>( event ) ) )
-        {
-            return true;
-        }
-
-        break;
-
-    case QEvent::MouseButtonRelease:
-        if ( d->mouseReleaseEvent( static_cast<QMouseEvent *>( event ) ) )
-        {
-            return true;
-        }
-
-        break;
-
-    case QEvent::NonClientAreaMouseMove:
-    case QEvent::NonClientAreaMouseButtonPress:
-    case QEvent::NonClientAreaMouseButtonRelease:
-    case QEvent::NonClientAreaMouseButtonDblClick:
-        d->nonClientAreaMouseEvent( static_cast<QMouseEvent *>( event ) );
-        return true;
-
-    case QEvent::Move:
-        d->moveEvent( static_cast<QMoveEvent *>( event ) );
-        break;
-
-    case QEvent::Resize:
-
-        // if the mainwindow is plugging us, we don't want to update undocked geometry
-        if ( isFloating() && layout != nullptr && layout->pluggingWidget != this )
-        {
-            d->undockedGeometry = geometry();
-        }
-
-        break;
-
-    default:
-        break;
+        default:
+            break;
     }
 
     return QWidget::event( event );

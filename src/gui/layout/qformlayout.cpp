@@ -1679,23 +1679,23 @@ QLayoutItem *QFormLayout::itemAt( int row, ItemRole role ) const
 
     switch ( role )
     {
-    case SpanningRole:
-        if ( QFormLayoutItem *item = d->m_matrix( row, 1 ) )
-            if ( item->fullRow )
+        case SpanningRole:
+            if ( QFormLayoutItem *item = d->m_matrix( row, 1 ) )
+                if ( item->fullRow )
+                {
+                    return item->item;
+                }
+
+            break;
+
+        case LabelRole:
+        case FieldRole:
+            if ( QFormLayoutItem *item = d->m_matrix( row, ( role == LabelRole ) ? 0 : 1 ) )
             {
                 return item->item;
             }
 
-        break;
-
-    case LabelRole:
-    case FieldRole:
-        if ( QFormLayoutItem *item = d->m_matrix( row, ( role == LabelRole ) ? 0 : 1 ) )
-        {
-            return item->item;
-        }
-
-        break;
+            break;
     }
 
     return nullptr;

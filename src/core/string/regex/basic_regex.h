@@ -631,12 +631,12 @@ basic_regex<charT, traits> &basic_regex<charT, traits>::do_assign( const typenam
     if ( ! m_pimpl.get() )
     {
         temp = std::shared_ptr<lscs_regex_detail_ns::basic_regex_implementation<charT, traits> >( new
-               lscs_regex_detail_ns::basic_regex_implementation<charT, traits>() );
+                lscs_regex_detail_ns::basic_regex_implementation<charT, traits>() );
     }
     else
     {
         temp = std::shared_ptr<lscs_regex_detail_ns::basic_regex_implementation<charT, traits> >( new
-               lscs_regex_detail_ns::basic_regex_implementation<charT, traits>( m_pimpl->m_ptraits ) );
+                lscs_regex_detail_ns::basic_regex_implementation<charT, traits>( m_pimpl->m_ptraits ) );
     }
 
     temp->assign( iter_first, iter_last, f );

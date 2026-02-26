@@ -74,17 +74,17 @@ QString Driver::findOrInsertLayoutItem( DomLayoutItem *ui_layoutItem )
 {
     switch ( ui_layoutItem->kind() )
     {
-    case DomLayoutItem::Widget:
-        return findOrInsertWidget( ui_layoutItem->elementWidget() );
+        case DomLayoutItem::Widget:
+            return findOrInsertWidget( ui_layoutItem->elementWidget() );
 
-    case DomLayoutItem::Spacer:
-        return findOrInsertSpacer( ui_layoutItem->elementSpacer() );
+        case DomLayoutItem::Spacer:
+            return findOrInsertSpacer( ui_layoutItem->elementSpacer() );
 
-    case DomLayoutItem::Layout:
-        return findOrInsertLayout( ui_layoutItem->elementLayout() );
+        case DomLayoutItem::Layout:
+            return findOrInsertLayout( ui_layoutItem->elementLayout() );
 
-    case DomLayoutItem::Unknown:
-        break;
+        case DomLayoutItem::Unknown:
+            break;
     }
 
     Q_ASSERT( 0 );

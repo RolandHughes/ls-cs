@@ -81,37 +81,37 @@ static QString standardLibraryErrorString( int errorCode )
 
     switch ( errorCode )
     {
-    case 0:
-        break;
+        case 0:
+            break;
 
-    case EACCES:
-        s = lscs_mark_tr( "QIODevice", "Permission denied" );
-        break;
+        case EACCES:
+            s = lscs_mark_tr( "QIODevice", "Permission denied" );
+            break;
 
-    case EMFILE:
-        s = lscs_mark_tr( "QIODevice", "Too many open files" );
-        break;
+        case EMFILE:
+            s = lscs_mark_tr( "QIODevice", "Too many open files" );
+            break;
 
-    case ENOENT:
-        s = lscs_mark_tr( "QIODevice", "No such file or directory" );
-        break;
+        case ENOENT:
+            s = lscs_mark_tr( "QIODevice", "No such file or directory" );
+            break;
 
-    case ENOSPC:
-        s = lscs_mark_tr( "QIODevice", "No space left on device" );
-        break;
+        case ENOSPC:
+            s = lscs_mark_tr( "QIODevice", "No space left on device" );
+            break;
 
-    default:
-    {
+        default:
+        {
 
 #if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && _POSIX_VERSION >= 200112L
-        QByteArray buf( 1024, '\0' );
-        ret = fromstrerror_helper( strerror_r( errorCode, buf.data(), buf.size() ), buf );
+            QByteArray buf( 1024, '\0' );
+            ret = fromstrerror_helper( strerror_r( errorCode, buf.data(), buf.size() ), buf );
 #else
-        ret = QString::fromUtf8( strerror( errorCode ) );
+            ret = QString::fromUtf8( strerror( errorCode ) );
 #endif
 
-        break;
-    }
+            break;
+        }
     }
 
     if ( s )
@@ -126,23 +126,23 @@ QString QSystemError::toString()
 {
     switch ( errorScope )
     {
-    case NativeError:
+        case NativeError:
 
 #if defined (Q_OS_WIN)
-        return windowsErrorString( errorCode );
+            return windowsErrorString( errorCode );
 #else
-        // unix: native and standard library are the same
-        [[fallthrough]];
+            // unix: native and standard library are the same
+            [[fallthrough]];
 #endif
 
-    case StandardLibraryError:
-        return standardLibraryErrorString( errorCode );
+        case StandardLibraryError:
+            return standardLibraryErrorString( errorCode );
 
-    case NoError:
-        return QString( "No error" );
+        case NoError:
+            return QString( "No error" );
 
-    default:
-        qWarning( "QSystemError::toString() Invalid error scope" );
-        return QString( "Unrecognized error" );
+        default:
+            qWarning( "QSystemError::toString() Invalid error scope" );
+            return QString( "Unrecognized error" );
     }
 }

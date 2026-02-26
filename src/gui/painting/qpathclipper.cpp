@@ -1104,67 +1104,67 @@ void QPathSegments::addPath( const QPainterPath &path )
 
         switch ( path.elementAt( i ).type )
         {
-        case QPainterPath::MoveToElement:
-            if ( hasMoveTo && last != lastMoveTo && !comparePoints( m_points.at( last ), m_points.at( lastMoveTo ) ) )
+            case QPainterPath::MoveToElement:
+                if ( hasMoveTo && last != lastMoveTo && !comparePoints( m_points.at( last ), m_points.at( lastMoveTo ) ) )
+                {
+                    m_segments << Segment( m_pathId, last, lastMoveTo );
+                }
+
+                hasMoveTo = true;
+                last = lastMoveTo = current;
+                break;
+
+            case QPainterPath::LineToElement:
+                m_segments << Segment( m_pathId, last, current );
+                last = current;
+                break;
+
+            case QPainterPath::CurveToElement:
             {
-                m_segments << Segment( m_pathId, last, lastMoveTo );
+                QBezier bezier = QBezier::fromPoints( m_points.at( last ), path.elementAt( i ), path.elementAt( i + 1 ),
+                                                      path.elementAt( i + 2 ) );
+
+                if ( isLine( bezier ) )
+                {
+                    m_segments << Segment( m_pathId, last, current );
+
+                }
+                else
+                {
+                    QRectF bounds = bezier.bounds();
+
+                    // threshold based on similar algorithm as in qtriangulatingstroker.cpp
+                    int threshold = qMin( 64, qMax( bounds.width(), bounds.height() ) * ( 2 * qreal( M_PI ) / 6 ) );
+
+                    if ( threshold < 3 )
+                    {
+                        threshold = 3;
+                    }
+
+                    qreal one_over_threshold_minus_1 = qreal( 1 ) / ( threshold - 1 );
+
+                    for ( int t = 1; t < threshold - 1; ++t )
+                    {
+                        currentPoint = bezier.pointAt( t * one_over_threshold_minus_1 );
+
+                        int index = m_points.size();
+                        m_segments << Segment( m_pathId, last, index );
+                        last = index;
+
+                        m_points << currentPoint;
+                    }
+
+                    m_segments << Segment( m_pathId, last, current );
+                }
             }
 
-            hasMoveTo = true;
-            last = lastMoveTo = current;
-            break;
-
-        case QPainterPath::LineToElement:
-            m_segments << Segment( m_pathId, last, current );
             last = current;
+            i += 2;
             break;
 
-        case QPainterPath::CurveToElement:
-        {
-            QBezier bezier = QBezier::fromPoints( m_points.at( last ), path.elementAt( i ), path.elementAt( i + 1 ),
-                                                  path.elementAt( i + 2 ) );
-
-            if ( isLine( bezier ) )
-            {
-                m_segments << Segment( m_pathId, last, current );
-
-            }
-            else
-            {
-                QRectF bounds = bezier.bounds();
-
-                // threshold based on similar algorithm as in qtriangulatingstroker.cpp
-                int threshold = qMin( 64, qMax( bounds.width(), bounds.height() ) * ( 2 * qreal( M_PI ) / 6 ) );
-
-                if ( threshold < 3 )
-                {
-                    threshold = 3;
-                }
-
-                qreal one_over_threshold_minus_1 = qreal( 1 ) / ( threshold - 1 );
-
-                for ( int t = 1; t < threshold - 1; ++t )
-                {
-                    currentPoint = bezier.pointAt( t * one_over_threshold_minus_1 );
-
-                    int index = m_points.size();
-                    m_segments << Segment( m_pathId, last, index );
-                    last = index;
-
-                    m_points << currentPoint;
-                }
-
-                m_segments << Segment( m_pathId, last, current );
-            }
-        }
-
-        last = current;
-        i += 2;
-        break;
-
-        default:
-            Q_ASSERT( false );
-            break;
+            default:
+                Q_ASSERT( false );
+                break;
         }
     }
 
@@ -1860,37 +1860,37 @@ QPainterPath QPathClipper::clip( Operation operation )
         {
             switch ( op )
             {
-            case BoolSub:
-                return subjectPath;
+                case BoolSub:
+                    return subjectPath;
 
-            case BoolAnd:
-                return QPainterPath();
+                case BoolAnd:
+                    return QPainterPath();
 
-            case BoolOr:
-            {
-                QPainterPath result = subjectPath;
-
-                if ( result.fillRule() == clipPath.fillRule() )
+                case BoolOr:
                 {
-                    result.addPath( clipPath );
+                    QPainterPath result = subjectPath;
 
+                    if ( result.fillRule() == clipPath.fillRule() )
+                    {
+                        result.addPath( clipPath );
+
+                    }
+                    else if ( result.fillRule() == Qt::WindingFill )
+                    {
+                        result = result.simplified();
+                        result.addPath( clipPath );
+
+                    }
+                    else
+                    {
+                        result.addPath( clipPath.simplified() );
+                    }
+
+                    return result;
                 }
-                else if ( result.fillRule() == Qt::WindingFill )
-                {
-                    result = result.simplified();
-                    result.addPath( clipPath );
 
-                }
-                else
-                {
-                    result.addPath( clipPath.simplified() );
-                }
-
-                return result;
-            }
-
-            default:
-                break;
+                default:
+                    break;
             }
         }
 
@@ -1900,17 +1900,17 @@ QPainterPath QPathClipper::clip( Operation operation )
             {
                 switch ( op )
                 {
-                case BoolSub:
-                    return QPainterPath();
+                    case BoolSub:
+                        return QPainterPath();
 
-                case BoolAnd:
-                    return subjectPath;
+                    case BoolAnd:
+                        return subjectPath;
 
-                case BoolOr:
-                    return clipPath;
+                    case BoolOr:
+                        return clipPath;
 
-                default:
-                    break;
+                    default:
+                        break;
                 }
             }
         }
@@ -1921,29 +1921,29 @@ QPainterPath QPathClipper::clip( Operation operation )
 
                 switch ( op )
                 {
-                case BoolSub:
-                    if ( clipPath.fillRule() == Qt::OddEvenFill )
-                    {
-                        QPainterPath result = clipPath;
-                        result.addRect( subjectBounds );
-                        return result;
+                    case BoolSub:
+                        if ( clipPath.fillRule() == Qt::OddEvenFill )
+                        {
+                            QPainterPath result = clipPath;
+                            result.addRect( subjectBounds );
+                            return result;
 
-                    }
-                    else
-                    {
-                        QPainterPath result = clipPath.simplified();
-                        result.addRect( subjectBounds );
-                        return result;
-                    }
+                        }
+                        else
+                        {
+                            QPainterPath result = clipPath.simplified();
+                            result.addRect( subjectBounds );
+                            return result;
+                        }
 
-                case BoolAnd:
-                    return clipPath;
+                    case BoolAnd:
+                        return clipPath;
 
-                case BoolOr:
-                    return subjectPath;
+                    case BoolOr:
+                        return subjectPath;
 
-                default:
-                    break;
+                    default:
+                        break;
                 }
             }
         }
@@ -2107,19 +2107,19 @@ static bool bool_op( bool a, bool b, QPathClipper::Operation op )
 {
     switch ( op )
     {
-    case QPathClipper::BoolAnd:
-        return a && b;
+        case QPathClipper::BoolAnd:
+            return a && b;
 
-    case QPathClipper::BoolOr:
-    case QPathClipper::Simplify:
-        return a || b;
+        case QPathClipper::BoolOr:
+        case QPathClipper::Simplify:
+            return a || b;
 
-    case QPathClipper::BoolSub:
-        return a && ! b;
+        case QPathClipper::BoolSub:
+            return a && ! b;
 
-    default:
-        Q_ASSERT( false );
-        return false;
+        default:
+            Q_ASSERT( false );
+            return false;
     }
 }
 
@@ -2289,30 +2289,30 @@ QVector<QPainterPath> toSubpaths( const QPainterPath &path )
 
         switch ( e.type )
         {
-        case QPainterPath::MoveToElement:
-            if ( current.elementCount() > 1 )
+            case QPainterPath::MoveToElement:
+                if ( current.elementCount() > 1 )
+                {
+                    subpaths += current;
+                }
+
+                current = QPainterPath();
+                current.moveTo( e );
+                break;
+
+            case QPainterPath::LineToElement:
+                current.lineTo( e );
+                break;
+
+            case QPainterPath::CurveToElement:
             {
-                subpaths += current;
+                current.cubicTo( e, path.elementAt( i + 1 ), path.elementAt( i + 2 ) );
+                i += 2;
+                break;
             }
 
-            current = QPainterPath();
-            current.moveTo( e );
-            break;
-
-        case QPainterPath::LineToElement:
-            current.lineTo( e );
-            break;
-
-        case QPainterPath::CurveToElement:
-        {
-            current.cubicTo( e, path.elementAt( i + 1 ), path.elementAt( i + 2 ) );
-            i += 2;
-            break;
-        }
-
-        case QPainterPath::CurveToDataElement:
-            Q_ASSERT( !"toSubpaths(), bad element type" );
-            break;
+            case QPainterPath::CurveToDataElement:
+                Q_ASSERT( !"toSubpaths(), bad element type" );
+                break;
         }
     }
 
@@ -2339,17 +2339,17 @@ bool compare( const QPointF &p, qreal t )
 {
     switch ( edge )
     {
-    case Left:
-        return p.x() < t;
+        case Left:
+            return p.x() < t;
 
-    case Right:
-        return p.x() > t;
+        case Right:
+            return p.x() > t;
 
-    case Top:
-        return p.y() < t;
+        case Top:
+            return p.y() < t;
 
-    default:
-        return p.y() > t;
+        default:
+            return p.y() > t;
     }
 }
 
@@ -2360,12 +2360,12 @@ QPointF intersectLine( const QPointF &a, const QPointF &b, qreal t )
 
     switch ( edge )
     {
-    case Left:
-    case Right:
-        return line.pointAt( ( t - a.x() ) / ( b.x() - a.x() ) );
+        case Left:
+        case Right:
+            return line.pointAt( ( t - a.x() ) / ( b.x() - a.x() ) );
 
-    default:
-        return line.pointAt( ( t - a.y() ) / ( b.y() - a.y() ) );
+        default:
+            return line.pointAt( ( t - a.y() ) / ( b.y() - a.y() ) );
     }
 }
 

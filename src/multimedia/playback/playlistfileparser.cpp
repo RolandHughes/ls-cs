@@ -330,24 +330,24 @@ void QPlaylistFileParserPrivate::processLine( int startIndex, int length )
 
         switch ( m_type )
         {
-        case QPlaylistFileParser::UNKNOWN:
-            emit q->error( QPlaylistFileParser::FormatError,
-                           QPlaylistFileParser::tr( "%1 playlist type is unknown" ).formatArg( m_root.toString() ) );
-            q->stop();
-            return;
+            case QPlaylistFileParser::UNKNOWN:
+                emit q->error( QPlaylistFileParser::FormatError,
+                               QPlaylistFileParser::tr( "%1 playlist type is unknown" ).formatArg( m_root.toString() ) );
+                q->stop();
+                return;
 
-        case QPlaylistFileParser::M3U:
-            m_currentParser = new M3UParser( q );
-            break;
+            case QPlaylistFileParser::M3U:
+                m_currentParser = new M3UParser( q );
+                break;
 
-        case QPlaylistFileParser::M3U8:
-            m_currentParser = new M3UParser( q );
-            m_utf8 = true;
-            break;
+            case QPlaylistFileParser::M3U8:
+                m_currentParser = new M3UParser( q );
+                m_utf8 = true;
+                break;
 
-        case QPlaylistFileParser::PLS:
-            m_currentParser = new PLSParser( q );
-            break;
+            case QPlaylistFileParser::PLS:
+                m_currentParser = new PLSParser( q );
+                break;
         }
 
         Q_ASSERT( m_currentParser );

@@ -1499,47 +1499,47 @@ void QRasterizer::rasterize( const QPainterPath &path, Qt::FillRule fillRule )
     {
         switch ( path.elementAt( i ).type )
         {
-        case QPainterPath::LineToElement:
-        {
-            LSCS_FT_Vector p1 = last;
-            LSCS_FT_Vector p2 = PointToVector( path.elementAt( i ) );
-            d->scanConverter.mergeLine( p1, p2 );
-            last = p2;
-            break;
-        }
-
-        case QPainterPath::MoveToElement:
-        {
-            if ( i != 0 )
+            case QPainterPath::LineToElement:
             {
-                LSCS_FT_Vector first = PointToVector( path.elementAt( subpathStart ) );
-
-                // close previous subpath
-                if ( first.x != last.x || first.y != last.y )
-                {
-                    d->scanConverter.mergeLine( last, first );
-                }
+                LSCS_FT_Vector p1 = last;
+                LSCS_FT_Vector p2 = PointToVector( path.elementAt( i ) );
+                d->scanConverter.mergeLine( p1, p2 );
+                last = p2;
+                break;
             }
 
-            subpathStart = i;
-            last = PointToVector( path.elementAt( i ) );
-            break;
-        }
+            case QPainterPath::MoveToElement:
+            {
+                if ( i != 0 )
+                {
+                    LSCS_FT_Vector first = PointToVector( path.elementAt( subpathStart ) );
 
-        case QPainterPath::CurveToElement:
-        {
-            LSCS_FT_Vector p1 = last;
-            LSCS_FT_Vector p2 = PointToVector( path.elementAt( i ) );
-            LSCS_FT_Vector p3 = PointToVector( path.elementAt( ++i ) );
-            LSCS_FT_Vector p4 = PointToVector( path.elementAt( ++i ) );
-            d->scanConverter.mergeCurve( p1, p2, p3, p4 );
-            last = p4;
-            break;
-        }
+                    // close previous subpath
+                    if ( first.x != last.x || first.y != last.y )
+                    {
+                        d->scanConverter.mergeLine( last, first );
+                    }
+                }
 
-        default:
-            Q_ASSERT( false );
-            break;
+                subpathStart = i;
+                last = PointToVector( path.elementAt( i ) );
+                break;
+            }
+
+            case QPainterPath::CurveToElement:
+            {
+                LSCS_FT_Vector p1 = last;
+                LSCS_FT_Vector p2 = PointToVector( path.elementAt( i ) );
+                LSCS_FT_Vector p3 = PointToVector( path.elementAt( ++i ) );
+                LSCS_FT_Vector p4 = PointToVector( path.elementAt( ++i ) );
+                d->scanConverter.mergeCurve( p1, p2, p3, p4 );
+                last = p4;
+                break;
+            }
+
+            default:
+                Q_ASSERT( false );
+                break;
         }
     }
 

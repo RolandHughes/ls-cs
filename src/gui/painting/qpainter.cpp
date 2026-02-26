@@ -84,13 +84,13 @@ static inline QGradient::CoordinateMode coordinateMode( const QBrush &brush )
 {
     switch ( brush.style() )
     {
-    case Qt::LinearGradientPattern:
-    case Qt::RadialGradientPattern:
-    case Qt::ConicalGradientPattern:
-        return brush.gradient()->coordinateMode();
+        case Qt::LinearGradientPattern:
+        case Qt::RadialGradientPattern:
+        case Qt::ConicalGradientPattern:
+            return brush.gradient()->coordinateMode();
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return QGradient::LogicalMode;
@@ -142,28 +142,28 @@ static bool lscs_painter_thread_test( int devType, int engineType, const char *w
 
     switch ( devType )
     {
-    case QInternal::Image:
-    case QInternal::Printer:
-    case QInternal::Picture:
-        // can be drawn onto these devices safely from any thread
-        break;
+        case QInternal::Image:
+        case QInternal::Printer:
+        case QInternal::Picture:
+            // can be drawn onto these devices safely from any thread
+            break;
 
-    default:
-        if ( QThread::currentThread() != qApp->thread()
-                // pixmaps cannot be targets unless threaded pixmaps are supported
-                && ( devType != QInternal::Pixmap || !platformIntegration->hasCapability( QPlatformIntegration::ThreadedPixmaps ) )
-                // framebuffer objects and such cannot be targets unless threaded GL is supported
-                && ( devType != QInternal::OpenGL || !platformIntegration->hasCapability( QPlatformIntegration::ThreadedOpenGL ) )
-                // widgets cannot be targets except for QGLWidget
-                && ( devType != QInternal::Widget || !platformIntegration->hasCapability( QPlatformIntegration::ThreadedOpenGL )
-                     || ( engineType != QPaintEngine::OpenGL && engineType != QPaintEngine::OpenGL2 ) ) )
-        {
-            qDebug( "lscs_painter_thread() Unsafe to use %s outside the GUI thread", what );
+        default:
+            if ( QThread::currentThread() != qApp->thread()
+                    // pixmaps cannot be targets unless threaded pixmaps are supported
+                    && ( devType != QInternal::Pixmap || !platformIntegration->hasCapability( QPlatformIntegration::ThreadedPixmaps ) )
+                    // framebuffer objects and such cannot be targets unless threaded GL is supported
+                    && ( devType != QInternal::OpenGL || !platformIntegration->hasCapability( QPlatformIntegration::ThreadedOpenGL ) )
+                    // widgets cannot be targets except for QGLWidget
+                    && ( devType != QInternal::Widget || !platformIntegration->hasCapability( QPlatformIntegration::ThreadedOpenGL )
+                         || ( engineType != QPaintEngine::OpenGL && engineType != QPaintEngine::OpenGL2 ) ) )
+            {
+                qDebug( "lscs_painter_thread() Unsafe to use %s outside the GUI thread", what );
 
-            return false;
-        }
+                return false;
+            }
 
-        break;
+            break;
     }
 
     return true;
@@ -387,8 +387,8 @@ void QPainterPrivate::draw_helper( const QPainterPath &originalPath, DrawOperati
                                            | QPaintEngine::ObjectBoundingModeGradients );
 
     const bool mustEmulateObjectBoundingModeGradients = extended
-        || ( ( state->emulationSpecifier & QPaintEngine::ObjectBoundingModeGradients )
-             && !engine->hasFeature( QPaintEngine::PatternTransform ) );
+            || ( ( state->emulationSpecifier & QPaintEngine::ObjectBoundingModeGradients )
+                 && !engine->hasFeature( QPaintEngine::PatternTransform ) );
 
     if ( !( state->emulationSpecifier & ~gradientStretch )
             && !mustEmulateObjectBoundingModeGradients )
@@ -786,7 +786,8 @@ void QPainterPrivate::updateEmulationSpecifier( QPainterState *s )
                            ( brushStyle == Qt::LinearGradientPattern ) );
         radialGradient = ( ( penBrushStyle == Qt::RadialGradientPattern ) ||
                            ( brushStyle == Qt::RadialGradientPattern ) );
-        extendedRadialGradient = radialGradient && ( lscs_isExtendedRadialGradient( penBrush ) || lscs_isExtendedRadialGradient( s->brush ) );
+        extendedRadialGradient = radialGradient && ( lscs_isExtendedRadialGradient( penBrush )
+                                 || lscs_isExtendedRadialGradient( s->brush ) );
 
         conicalGradient = ( ( penBrushStyle == Qt::ConicalGradientPattern ) ||
                             ( brushStyle == Qt::ConicalGradientPattern ) );
@@ -1343,58 +1344,58 @@ bool QPainter::begin( QPaintDevice *pd )
 
     switch ( pd->devType() )
     {
-    case QInternal::Pixmap:
-    {
-        QPixmap *pm = static_cast<QPixmap *>( pd );
-        Q_ASSERT( pm );
-
-        if ( pm->isNull() )
+        case QInternal::Pixmap:
         {
-            qWarning( "QPainter::begin() Unable to paint on a invalid pixmap" );
-            lscs_cleanup_painter_state( d );
-            return false;
+            QPixmap *pm = static_cast<QPixmap *>( pd );
+            Q_ASSERT( pm );
+
+            if ( pm->isNull() )
+            {
+                qWarning( "QPainter::begin() Unable to paint on a invalid pixmap" );
+                lscs_cleanup_painter_state( d );
+                return false;
+            }
+
+            if ( pm->depth() == 1 )
+            {
+                d->state->pen = QPen( Qt::color1 );
+                d->state->brush = QBrush( Qt::color0 );
+            }
+
+            break;
         }
 
-        if ( pm->depth() == 1 )
+        case QInternal::Image:
         {
-            d->state->pen = QPen( Qt::color1 );
-            d->state->brush = QBrush( Qt::color0 );
+            QImage *img = static_cast<QImage *>( pd );
+            Q_ASSERT( img );
+
+            if ( img->isNull() )
+            {
+                qWarning( "QPainter::begin() Unable to paint on a invalid image" );
+                lscs_cleanup_painter_state( d );
+                return false;
+
+            }
+            else if ( img->format() == QImage::Format_Indexed8 )
+            {
+                // Painting on indexed8 images is not supported.
+                qWarning( "QPainter::begin() Unable to paint on an image with a format of QImage::Format_Indexed8" );
+                lscs_cleanup_painter_state( d );
+                return false;
+            }
+
+            if ( img->depth() == 1 )
+            {
+                d->state->pen = QPen( Qt::color1 );
+                d->state->brush = QBrush( Qt::color0 );
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case QInternal::Image:
-    {
-        QImage *img = static_cast<QImage *>( pd );
-        Q_ASSERT( img );
-
-        if ( img->isNull() )
-        {
-            qWarning( "QPainter::begin() Unable to paint on a invalid image" );
-            lscs_cleanup_painter_state( d );
-            return false;
-
-        }
-        else if ( img->format() == QImage::Format_Indexed8 )
-        {
-            // Painting on indexed8 images is not supported.
-            qWarning( "QPainter::begin() Unable to paint on an image with a format of QImage::Format_Indexed8" );
-            lscs_cleanup_painter_state( d );
-            return false;
-        }
-
-        if ( img->depth() == 1 )
-        {
-            d->state->pen = QPen( Qt::color1 );
-            d->state->brush = QBrush( Qt::color0 );
-        }
-
-        break;
-    }
-
-    default:
-        break;
+        default:
+            break;
     }
 
     if ( d->state->ww == 0 )
@@ -1833,144 +1834,144 @@ QRegion QPainter::clipRegion() const
         switch ( info.clipType )
         {
 
-        case QPainterClipInfo::RegionClip:
-        {
-            QTransform matrix = ( info.matrix * d->invMatrix );
-
-            if ( lastWasNothing )
+            case QPainterClipInfo::RegionClip:
             {
-                region = info.region * matrix;
-                lastWasNothing = false;
-                continue;
-            }
+                QTransform matrix = ( info.matrix * d->invMatrix );
 
-            if ( info.operation == Qt::IntersectClip )
-            {
-                region &= info.region * matrix;
-
-            }
-            else if ( info.operation == Qt::NoClip )
-            {
-                lastWasNothing = true;
-                region = QRegion();
-
-            }
-            else
-            {
-                region = info.region * matrix;
-            }
-
-            break;
-        }
-
-        case QPainterClipInfo::PathClip:
-        {
-            QTransform matrix = ( info.matrix * d->invMatrix );
-
-            if ( lastWasNothing )
-            {
-                region = QRegion( ( info.path * matrix ).toFillPolygon().toPolygon(),
-                                  info.path.fillRule() );
-                lastWasNothing = false;
-                continue;
-            }
-
-            if ( info.operation == Qt::IntersectClip )
-            {
-                region &= QRegion( ( info.path * matrix ).toFillPolygon().toPolygon(),
-                                   info.path.fillRule() );
-
-            }
-            else if ( info.operation == Qt::NoClip )
-            {
-                lastWasNothing = true;
-                region = QRegion();
-
-            }
-            else
-            {
-                region = QRegion( ( info.path * matrix ).toFillPolygon().toPolygon(),
-                                  info.path.fillRule() );
-            }
-
-            break;
-        }
-
-        case QPainterClipInfo::RectClip:
-        {
-            QTransform matrix = ( info.matrix * d->invMatrix );
-
-            if ( lastWasNothing )
-            {
-                region = QRegion( info.rect ) * matrix;
-                lastWasNothing = false;
-                continue;
-            }
-
-            if ( info.operation == Qt::IntersectClip )
-            {
-                // Use rect intersection if possible.
-                if ( matrix.type() <= QTransform::TxScale )
+                if ( lastWasNothing )
                 {
-                    region &= matrix.mapRect( info.rect );
+                    region = info.region * matrix;
+                    lastWasNothing = false;
+                    continue;
+                }
+
+                if ( info.operation == Qt::IntersectClip )
+                {
+                    region &= info.region * matrix;
+
+                }
+                else if ( info.operation == Qt::NoClip )
+                {
+                    lastWasNothing = true;
+                    region = QRegion();
+
                 }
                 else
                 {
-                    region &= matrix.map( QRegion( info.rect ) );
+                    region = info.region * matrix;
                 }
 
-
-
-            }
-            else if ( info.operation == Qt::NoClip )
-            {
-                lastWasNothing = true;
-                region = QRegion();
-            }
-            else
-            {
-                region = QRegion( info.rect ) * matrix;
+                break;
             }
 
-            break;
-        }
-
-        case QPainterClipInfo::RectFClip:
-        {
-            QTransform matrix = ( info.matrix * d->invMatrix );
-
-            if ( lastWasNothing )
+            case QPainterClipInfo::PathClip:
             {
-                region = QRegion( info.rectf.toRect() ) * matrix;
-                lastWasNothing = false;
-                continue;
-            }
+                QTransform matrix = ( info.matrix * d->invMatrix );
 
-            if ( info.operation == Qt::IntersectClip )
-            {
-                // Use rect intersection if possible.
-                if ( matrix.type() <= QTransform::TxScale )
+                if ( lastWasNothing )
                 {
-                    region &= matrix.mapRect( info.rectf.toRect() );
+                    region = QRegion( ( info.path * matrix ).toFillPolygon().toPolygon(),
+                                      info.path.fillRule() );
+                    lastWasNothing = false;
+                    continue;
+                }
+
+                if ( info.operation == Qt::IntersectClip )
+                {
+                    region &= QRegion( ( info.path * matrix ).toFillPolygon().toPolygon(),
+                                       info.path.fillRule() );
+
+                }
+                else if ( info.operation == Qt::NoClip )
+                {
+                    lastWasNothing = true;
+                    region = QRegion();
+
                 }
                 else
                 {
-                    region &= matrix.map( QRegion( info.rectf.toRect() ) );
+                    region = QRegion( ( info.path * matrix ).toFillPolygon().toPolygon(),
+                                      info.path.fillRule() );
                 }
 
-            }
-            else if ( info.operation == Qt::NoClip )
-            {
-                lastWasNothing = true;
-                region = QRegion();
-            }
-            else
-            {
-                region = QRegion( info.rectf.toRect() ) * matrix;
+                break;
             }
 
-            break;
-        }
+            case QPainterClipInfo::RectClip:
+            {
+                QTransform matrix = ( info.matrix * d->invMatrix );
+
+                if ( lastWasNothing )
+                {
+                    region = QRegion( info.rect ) * matrix;
+                    lastWasNothing = false;
+                    continue;
+                }
+
+                if ( info.operation == Qt::IntersectClip )
+                {
+                    // Use rect intersection if possible.
+                    if ( matrix.type() <= QTransform::TxScale )
+                    {
+                        region &= matrix.mapRect( info.rect );
+                    }
+                    else
+                    {
+                        region &= matrix.map( QRegion( info.rect ) );
+                    }
+
+
+
+                }
+                else if ( info.operation == Qt::NoClip )
+                {
+                    lastWasNothing = true;
+                    region = QRegion();
+                }
+                else
+                {
+                    region = QRegion( info.rect ) * matrix;
+                }
+
+                break;
+            }
+
+            case QPainterClipInfo::RectFClip:
+            {
+                QTransform matrix = ( info.matrix * d->invMatrix );
+
+                if ( lastWasNothing )
+                {
+                    region = QRegion( info.rectf.toRect() ) * matrix;
+                    lastWasNothing = false;
+                    continue;
+                }
+
+                if ( info.operation == Qt::IntersectClip )
+                {
+                    // Use rect intersection if possible.
+                    if ( matrix.type() <= QTransform::TxScale )
+                    {
+                        region &= matrix.mapRect( info.rectf.toRect() );
+                    }
+                    else
+                    {
+                        region &= matrix.map( QRegion( info.rectf.toRect() ) );
+                    }
+
+                }
+                else if ( info.operation == Qt::NoClip )
+                {
+                    lastWasNothing = true;
+                    region = QRegion();
+                }
+                else
+                {
+                    region = QRegion( info.rectf.toRect() ) * matrix;
+                }
+
+                break;
+            }
         }
     }
 
@@ -4192,8 +4193,8 @@ void QPainter::drawGlyphRun( const QPointF &position, const QGlyphRun &glyphRun 
     std::shared_ptr<QRawFontPrivate> fontD = QRawFontPrivate::get( font );
 
     bool engineRequiresPretransformedGlyphPositions = d->extended
-        ? d->extended->requiresPretransformedGlyphPositions( fontD->fontEngine, d->state->matrix )
-        : d->engine->type() != QPaintEngine::CoreGraphics && ! d->state->matrix.isAffine();
+            ? d->extended->requiresPretransformedGlyphPositions( fontD->fontEngine, d->state->matrix )
+            : d->engine->type() != QPaintEngine::CoreGraphics && ! d->state->matrix.isAffine();
 
     for ( int i = 0; i < count; ++i )
     {

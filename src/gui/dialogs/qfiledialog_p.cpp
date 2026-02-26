@@ -169,14 +169,14 @@ void QFileDialogPrivate::updateFileNameLabel()
     {
         switch ( q_func()->fileMode() )
         {
-        case QFileDialog::DirectoryOnly:
-        case QFileDialog::Directory:
-            setLabelTextControl( QFileDialog::FileName, QFileDialog::tr( "Directory:" ) );
-            break;
+            case QFileDialog::DirectoryOnly:
+            case QFileDialog::Directory:
+                setLabelTextControl( QFileDialog::FileName, QFileDialog::tr( "Directory:" ) );
+                break;
 
-        default:
-            setLabelTextControl( QFileDialog::FileName, QFileDialog::tr( "File &name:" ) );
-            break;
+            default:
+                setLabelTextControl( QFileDialog::FileName, QFileDialog::tr( "File &name:" ) );
+                break;
         }
     }
 }
@@ -210,17 +210,17 @@ void QFileDialogPrivate::updateOkButtonText( bool saveAsOnFolder )
     {
         switch ( q->fileMode() )
         {
-        case QFileDialog::DirectoryOnly:
-        case QFileDialog::Directory:
-            setLabelTextControl( QFileDialog::Accept, QFileDialog::tr( "&Choose" ) );
-            break;
+            case QFileDialog::DirectoryOnly:
+            case QFileDialog::Directory:
+                setLabelTextControl( QFileDialog::Accept, QFileDialog::tr( "&Choose" ) );
+                break;
 
-        default:
-            setLabelTextControl( QFileDialog::Accept,
-                                 q->acceptMode() == QFileDialog::AcceptOpen ?
-                                 QFileDialog::tr( "&Open" )  :
-                                 QFileDialog::tr( "&Save" ) );
-            break;
+            default:
+                setLabelTextControl( QFileDialog::Accept,
+                                     q->acceptMode() == QFileDialog::AcceptOpen ?
+                                     QFileDialog::tr( "&Open" )  :
+                                     QFileDialog::tr( "&Save" ) );
+                break;
         }
     }
 }
@@ -566,47 +566,47 @@ void QFileDialogPrivate::setLabelTextControl( QFileDialog::DialogLabel label, co
 
     switch ( label )
     {
-    case QFileDialog::LookIn:
-        qFileDialogUi->lookInLabel->setText( text );
-        break;
+        case QFileDialog::LookIn:
+            qFileDialogUi->lookInLabel->setText( text );
+            break;
 
-    case QFileDialog::FileName:
-        qFileDialogUi->fileNameLabel->setText( text );
-        break;
+        case QFileDialog::FileName:
+            qFileDialogUi->fileNameLabel->setText( text );
+            break;
 
-    case QFileDialog::FileType:
-        qFileDialogUi->fileTypeLabel->setText( text );
-        break;
+        case QFileDialog::FileType:
+            qFileDialogUi->fileTypeLabel->setText( text );
+            break;
 
-    case QFileDialog::Accept:
-        if ( q_func()->acceptMode() == QFileDialog::AcceptOpen )
-        {
-            if ( QPushButton *button = qFileDialogUi->buttonBox->button( QDialogButtonBox::Open ) )
+        case QFileDialog::Accept:
+            if ( q_func()->acceptMode() == QFileDialog::AcceptOpen )
+            {
+                if ( QPushButton *button = qFileDialogUi->buttonBox->button( QDialogButtonBox::Open ) )
+                {
+                    button->setText( text );
+                }
+            }
+            else
+            {
+                if ( QPushButton *button = qFileDialogUi->buttonBox->button( QDialogButtonBox::Save ) )
+                {
+                    button->setText( text );
+                }
+            }
+
+            break;
+
+        case QFileDialog::Reject:
+            if ( QPushButton *button = qFileDialogUi->buttonBox->button( QDialogButtonBox::Cancel ) )
             {
                 button->setText( text );
             }
-        }
-        else
-        {
-            if ( QPushButton *button = qFileDialogUi->buttonBox->button( QDialogButtonBox::Save ) )
-            {
-                button->setText( text );
-            }
-        }
 
-        break;
+            break;
 
-    case QFileDialog::Reject:
-        if ( QPushButton *button = qFileDialogUi->buttonBox->button( QDialogButtonBox::Cancel ) )
-        {
-            button->setText( text );
-        }
-
-        break;
-
-    case QFileDialog::DialogLabelCount:
-        // do nothing
-        break;
+        case QFileDialog::DialogLabelCount:
+            // do nothing
+            break;
     }
 }
 
@@ -1511,7 +1511,7 @@ void QFileDialogPrivate::_q_autoCompleteFileName( const QString &text )
         if ( lineEdit()->hasFocus() )
             for ( int i = 0; i < oldFiles.count(); ++i )
                 qFileDialogUi->listView->selectionModel()->select( oldFiles.at( i ),
-                    QItemSelectionModel::Toggle | QItemSelectionModel::Rows );
+                        QItemSelectionModel::Toggle | QItemSelectionModel::Rows );
     }
 }
 
@@ -1558,84 +1558,51 @@ void QFileDialogPrivate::_q_updateOkButton()
     {
         switch ( fileMode )
         {
-        case QFileDialog::DirectoryOnly:
-        case QFileDialog::Directory:
-        {
-            QString fn = files.first();
-            QModelIndex idx = model->index( fn );
-
-            if ( !idx.isValid() )
+            case QFileDialog::DirectoryOnly:
+            case QFileDialog::Directory:
             {
-                idx = model->index( getEnvironmentVariable( fn ) );
-            }
-
-            if ( !idx.isValid() || !model->isDir( idx ) )
-            {
-                enableButton = false;
-            }
-
-            break;
-        }
-
-        case QFileDialog::AnyFile:
-        {
-            QString fn = files.first();
-            QFileInfo info( fn );
-            QModelIndex idx = model->index( fn );
-
-            QString fileDir;
-            QString fileName;
-
-            if ( info.isDir() )
-            {
-                fileDir = info.canonicalFilePath();
-            }
-            else
-            {
-                fileDir = fn.mid( 0, fn.lastIndexOf( '/' ) );
-                fileName = fn.mid( fileDir.length() + 1 );
-            }
-
-            if ( lineEditText.contains( ".." ) )
-            {
-                fileDir = info.canonicalFilePath();
-                fileName = info.fileName();
-            }
-
-            if ( fileDir == q->directory().canonicalPath() && fileName.isEmpty() )
-            {
-                enableButton = false;
-                break;
-            }
-
-            if ( idx.isValid() && model->isDir( idx ) )
-            {
-                isOpenDirectory = true;
-                enableButton = true;
-                break;
-            }
-
-            if ( !idx.isValid() )
-            {
-                int maxLength = maxNameLength( fileDir );
-                enableButton = maxLength < 0 || fileName.length() <= maxLength;
-            }
-
-            break;
-        }
-
-        case QFileDialog::ExistingFile:
-        case QFileDialog::ExistingFiles:
-            for ( int i = 0; i < files.count(); ++i )
-            {
-                QModelIndex idx = model->index( files.at( i ) );
+                QString fn = files.first();
+                QModelIndex idx = model->index( fn );
 
                 if ( !idx.isValid() )
                 {
-                    idx = model->index( getEnvironmentVariable( files.at( i ) ) );
+                    idx = model->index( getEnvironmentVariable( fn ) );
                 }
 
-                if ( !idx.isValid() )
+                if ( !idx.isValid() || !model->isDir( idx ) )
+                {
+                    enableButton = false;
+                }
+
+                break;
+            }
+
+            case QFileDialog::AnyFile:
+            {
+                QString fn = files.first();
+                QFileInfo info( fn );
+                QModelIndex idx = model->index( fn );
+
+                QString fileDir;
+                QString fileName;
+
+                if ( info.isDir() )
+                {
+                    fileDir = info.canonicalFilePath();
+                }
+                else
+                {
+                    fileDir = fn.mid( 0, fn.lastIndexOf( '/' ) );
+                    fileName = fn.mid( fileDir.length() + 1 );
+                }
+
+                if ( lineEditText.contains( ".." ) )
+                {
+                    fileDir = info.canonicalFilePath();
+                    fileName = info.fileName();
+                }
+
+                if ( fileDir == q->directory().canonicalPath() && fileName.isEmpty() )
                 {
                     enableButton = false;
                     break;
@@ -1644,14 +1611,47 @@ void QFileDialogPrivate::_q_updateOkButton()
                 if ( idx.isValid() && model->isDir( idx ) )
                 {
                     isOpenDirectory = true;
+                    enableButton = true;
                     break;
                 }
+
+                if ( !idx.isValid() )
+                {
+                    int maxLength = maxNameLength( fileDir );
+                    enableButton = maxLength < 0 || fileName.length() <= maxLength;
+                }
+
+                break;
             }
 
-            break;
+            case QFileDialog::ExistingFile:
+            case QFileDialog::ExistingFiles:
+                for ( int i = 0; i < files.count(); ++i )
+                {
+                    QModelIndex idx = model->index( files.at( i ) );
 
-        default:
-            break;
+                    if ( !idx.isValid() )
+                    {
+                        idx = model->index( getEnvironmentVariable( files.at( i ) ) );
+                    }
+
+                    if ( !idx.isValid() )
+                    {
+                        enableButton = false;
+                        break;
+                    }
+
+                    if ( idx.isValid() && model->isDir( idx ) )
+                    {
+                        isOpenDirectory = true;
+                        break;
+                    }
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 

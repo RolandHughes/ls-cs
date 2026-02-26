@@ -127,23 +127,23 @@ QDebug operator<<( QDebug dbg, QAbstractVideoBuffer::HandleType type )
 
     switch ( type )
     {
-    case QAbstractVideoBuffer::NoHandle:
-        return dbg << "NoHandle";
+        case QAbstractVideoBuffer::NoHandle:
+            return dbg << "NoHandle";
 
-    case QAbstractVideoBuffer::GLTextureHandle:
-        return dbg << "GLTextureHandle";
+        case QAbstractVideoBuffer::GLTextureHandle:
+            return dbg << "GLTextureHandle";
 
-    case QAbstractVideoBuffer::XvShmImageHandle:
-        return dbg << "XvShmImageHandle";
+        case QAbstractVideoBuffer::XvShmImageHandle:
+            return dbg << "XvShmImageHandle";
 
-    case QAbstractVideoBuffer::CoreImageHandle:
-        return dbg << "CoreImageHandle";
+        case QAbstractVideoBuffer::CoreImageHandle:
+            return dbg << "CoreImageHandle";
 
-    case QAbstractVideoBuffer::QPixmapHandle:
-        return dbg << "QPixmapHandle";
+        case QAbstractVideoBuffer::QPixmapHandle:
+            return dbg << "QPixmapHandle";
 
-    default:
-        return dbg << "UserHandle(" << int( type ) << ')';
+        default:
+            return dbg << "UserHandle(" << int( type ) << ')';
     }
 }
 QDebug operator<<( QDebug dbg, QAbstractVideoBuffer::MapMode mode )
@@ -153,16 +153,16 @@ QDebug operator<<( QDebug dbg, QAbstractVideoBuffer::MapMode mode )
 
     switch ( mode )
     {
-    case QAbstractVideoBuffer::ReadOnly:
-        return dbg << "ReadOnly";
+        case QAbstractVideoBuffer::ReadOnly:
+            return dbg << "ReadOnly";
 
-    case QAbstractVideoBuffer::ReadWrite:
-        return dbg << "ReadWrite";
+        case QAbstractVideoBuffer::ReadWrite:
+            return dbg << "ReadWrite";
 
-    case QAbstractVideoBuffer::WriteOnly:
-        return dbg << "WriteOnly";
+        case QAbstractVideoBuffer::WriteOnly:
+            return dbg << "WriteOnly";
 
-    default:
-        return dbg << "NotMapped";
+        default:
+            return dbg << "NotMapped";
     }
 }

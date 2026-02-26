@@ -444,93 +444,93 @@ QString QSettingsPrivate::variantToString( const QVariant &v )
 
     switch ( v.type() )
     {
-    case QVariant::Invalid:
-        result = "@Invalid()";
-        break;
+        case QVariant::Invalid:
+            result = "@Invalid()";
+            break;
 
-    case QVariant::ByteArray:
-    {
-        QByteArray a = v.toByteArray();
-        result  = QString( "@ByteArray(" );
-        result += QString::fromLatin1( a.constData(), a.size() );
-        result += QChar( ')' );
-        break;
-    }
-
-    case QVariant::String:
-    case QVariant::LongLong:
-    case QVariant::ULongLong:
-    case QVariant::Int:
-    case QVariant::UInt:
-    case QVariant::Bool:
-    case QVariant::Double:
-    case QVariant::KeySequence:
-    {
-        result = v.toString();
-
-        if ( result.startsWith( '@' ) )
+        case QVariant::ByteArray:
         {
-            result.prepend( '@' );
+            QByteArray a = v.toByteArray();
+            result  = QString( "@ByteArray(" );
+            result += QString::fromLatin1( a.constData(), a.size() );
+            result += QChar( ')' );
+            break;
         }
 
-        break;
-    }
-
-    case QVariant::Rect:
-    {
-        QRect r = v.value<QRect>();
-
-        result += QLatin1String( "@Rect(" );
-        result += QString::number( r.x() );
-        result += QLatin1Char( ' ' );
-        result += QString::number( r.y() );
-        result += QLatin1Char( ' ' );
-        result += QString::number( r.width() );
-        result += QLatin1Char( ' ' );
-        result += QString::number( r.height() );
-        result += QLatin1Char( ')' );
-        break;
-    }
-
-    case QVariant::Size:
-    {
-        QSize s = v.value<QSize>();
-
-        result += QLatin1String( "@Size(" );
-        result += QString::number( s.width() );
-        result += QLatin1Char( ' ' );
-        result += QString::number( s.height() );
-        result += QLatin1Char( ')' );
-        break;
-    }
-
-    case QVariant::Point:
-    {
-        QPoint p = v.value<QPoint>();
-
-        result += QLatin1String( "@Point(" );
-        result += QString::number( p.x() );
-        result += QLatin1Char( ' ' );
-        result += QString::number( p.y() );
-        result += QLatin1Char( ')' );
-        break;
-    }
-
-    default:
-    {
-        QByteArray data;
-
+        case QVariant::String:
+        case QVariant::LongLong:
+        case QVariant::ULongLong:
+        case QVariant::Int:
+        case QVariant::UInt:
+        case QVariant::Bool:
+        case QVariant::Double:
+        case QVariant::KeySequence:
         {
-            QDataStream s( &data, QIODevice::WriteOnly );
-            s << v;
+            result = v.toString();
+
+            if ( result.startsWith( '@' ) )
+            {
+                result.prepend( '@' );
+            }
+
+            break;
         }
 
-        result = "@Variant(";
-        result += QString::fromLatin1( data.constData(), data.size() );
-        result += ')';
+        case QVariant::Rect:
+        {
+            QRect r = v.value<QRect>();
 
-        break;
-    }
+            result += QLatin1String( "@Rect(" );
+            result += QString::number( r.x() );
+            result += QLatin1Char( ' ' );
+            result += QString::number( r.y() );
+            result += QLatin1Char( ' ' );
+            result += QString::number( r.width() );
+            result += QLatin1Char( ' ' );
+            result += QString::number( r.height() );
+            result += QLatin1Char( ')' );
+            break;
+        }
+
+        case QVariant::Size:
+        {
+            QSize s = v.value<QSize>();
+
+            result += QLatin1String( "@Size(" );
+            result += QString::number( s.width() );
+            result += QLatin1Char( ' ' );
+            result += QString::number( s.height() );
+            result += QLatin1Char( ')' );
+            break;
+        }
+
+        case QVariant::Point:
+        {
+            QPoint p = v.value<QPoint>();
+
+            result += QLatin1String( "@Point(" );
+            result += QString::number( p.x() );
+            result += QLatin1Char( ' ' );
+            result += QString::number( p.y() );
+            result += QLatin1Char( ')' );
+            break;
+        }
+
+        default:
+        {
+            QByteArray data;
+
+            {
+                QDataStream s( &data, QIODevice::WriteOnly );
+                s << v;
+            }
+
+            result = "@Variant(";
+            result += QString::fromLatin1( data.constData(), data.size() );
+            result += ')';
+
+            break;
+        }
     }
 
     return result;
@@ -763,63 +763,63 @@ void QSettingsPrivate::iniEscapedString( const QString &str, QByteArray &result,
 
         switch ( ch )
         {
-        case '\0':
-            result += "\\0";
-            escapeNextIfDigit = true;
-            break;
-
-        case '\a':
-            result += "\\a";
-            break;
-
-        case '\b':
-            result += "\\b";
-            break;
-
-        case '\f':
-            result += "\\f";
-            break;
-
-        case '\n':
-            result += "\\n";
-            break;
-
-        case '\r':
-            result += "\\r";
-            break;
-
-        case '\t':
-            result += "\\t";
-            break;
-
-        case '\v':
-            result += "\\v";
-            break;
-
-        case '"':
-        case '\\':
-            result += '\\';
-            result += ( char )ch;
-            break;
-
-        default:
-            if ( ch <= 0x1F || ( ch >= 0x7F && ! useCodec ) )
-            {
-                result += "\\x";
-                result += QByteArray::number( ch, 16 );
+            case '\0':
+                result += "\\0";
                 escapeNextIfDigit = true;
+                break;
 
-            }
-            else if ( useCodec )
-            {
-                result += codec->fromUnicode( str.mid( i, 1 ) );
+            case '\a':
+                result += "\\a";
+                break;
 
-            }
-            else
-            {
+            case '\b':
+                result += "\\b";
+                break;
+
+            case '\f':
+                result += "\\f";
+                break;
+
+            case '\n':
+                result += "\\n";
+                break;
+
+            case '\r':
+                result += "\\r";
+                break;
+
+            case '\t':
+                result += "\\t";
+                break;
+
+            case '\v':
+                result += "\\v";
+                break;
+
+            case '"':
+            case '\\':
+                result += '\\';
                 result += ( char )ch;
+                break;
 
-            }
+            default:
+                if ( ch <= 0x1F || ( ch >= 0x7F && ! useCodec ) )
+                {
+                    result += "\\x";
+                    result += QByteArray::number( ch, 16 );
+                    escapeNextIfDigit = true;
+
+                }
+                else if ( useCodec )
+                {
+                    result += codec->fromUnicode( str.mid( i, 1 ) );
+
+                }
+                else
+                {
+                    result += ( char )ch;
+
+                }
         }
     }
 
@@ -910,136 +910,136 @@ StNormal:
 
         switch ( str.at( i ) )
         {
-        case '\\':
-            ++i;
-
-            if ( i >= to )
-            {
-                goto end;
-            }
-
-            ch = str.at( i++ );
-
-            for ( int j = 0; j < numEscapeCodes; ++j )
-            {
-                if ( ch == escapeCodes[j][0] )
-                {
-                    stringResult += escapeCodes[j][1];
-                    goto StNormal;
-                }
-            }
-
-            if ( ch == 'x' )
-            {
-                escapeVal = 0;
+            case '\\':
+                ++i;
 
                 if ( i >= to )
                 {
                     goto end;
                 }
 
-                ch = str.at( i );
+                ch = str.at( i++ );
 
-                if ( ( ch >= '0' && ch <= '9' ) || ( ch >= 'A' && ch <= 'F' ) || ( ch >= 'a' && ch <= 'f' ) )
+                for ( int j = 0; j < numEscapeCodes; ++j )
                 {
-                    goto StHexEscape;
-                }
-
-            }
-            else if ( ch >= '0' && ch <= '7' )
-            {
-                escapeVal = ch - '0';
-                goto StOctEscape;
-
-            }
-            else if ( ch == '\n' || ch == '\r' )
-            {
-                if ( i < to )
-                {
-                    char ch2 = str.at( i );
-
-                    // \n, \r, \r\n, and \n\r are legitimate line terminators in INI files
-                    if ( ( ch2 == '\n' || ch2 == '\r' ) && ch2 != ch )
+                    if ( ch == escapeCodes[j][0] )
                     {
-                        ++i;
+                        stringResult += escapeCodes[j][1];
+                        goto StNormal;
                     }
                 }
 
-            }
-            else
-            {
-                // the character is skipped
-            }
-
-            chopLimit = stringResult.length();
-            break;
-
-        case '"':
-            ++i;
-            currentValueIsQuoted = true;
-            inQuotedString = ! inQuotedString;
-
-            if ( ! inQuotedString )
-            {
-                goto StSkipSpaces;
-            }
-
-            break;
-
-        case ',':
-            if ( ! inQuotedString )
-            {
-                if ( ! currentValueIsQuoted )
+                if ( ch == 'x' )
                 {
-                    iniChopTrailingSpaces( stringResult, chopLimit );
+                    escapeVal = 0;
+
+                    if ( i >= to )
+                    {
+                        goto end;
+                    }
+
+                    ch = str.at( i );
+
+                    if ( ( ch >= '0' && ch <= '9' ) || ( ch >= 'A' && ch <= 'F' ) || ( ch >= 'a' && ch <= 'f' ) )
+                    {
+                        goto StHexEscape;
+                    }
+
+                }
+                else if ( ch >= '0' && ch <= '7' )
+                {
+                    escapeVal = ch - '0';
+                    goto StOctEscape;
+
+                }
+                else if ( ch == '\n' || ch == '\r' )
+                {
+                    if ( i < to )
+                    {
+                        char ch2 = str.at( i );
+
+                        // \n, \r, \r\n, and \n\r are legitimate line terminators in INI files
+                        if ( ( ch2 == '\n' || ch2 == '\r' ) && ch2 != ch )
+                        {
+                            ++i;
+                        }
+                    }
+
+                }
+                else
+                {
+                    // the character is skipped
                 }
 
-                if ( ! isStringList )
-                {
-                    isStringList = true;
-                    stringListResult.clear();
-                    stringResult.squeeze();
-                }
+                chopLimit = stringResult.length();
+                break;
 
-                stringListResult.append( stringResult );
-                stringResult.clear();
-                currentValueIsQuoted = false;
+            case '"':
                 ++i;
+                currentValueIsQuoted = true;
+                inQuotedString = ! inQuotedString;
 
-                goto StSkipSpaces;
-            }
-
-            [[fallthrough]];
-
-        default:
-        {
-            int j = i + 1;
-
-            while ( j < to )
-            {
-                ch = str.at( j );
-
-                if ( ch == '\\' || ch == '"' || ch == ',' )
+                if ( ! inQuotedString )
                 {
-                    break;
+                    goto StSkipSpaces;
                 }
 
-                ++j;
-            }
+                break;
 
-            if ( codec )
+            case ',':
+                if ( ! inQuotedString )
+                {
+                    if ( ! currentValueIsQuoted )
+                    {
+                        iniChopTrailingSpaces( stringResult, chopLimit );
+                    }
+
+                    if ( ! isStringList )
+                    {
+                        isStringList = true;
+                        stringListResult.clear();
+                        stringResult.squeeze();
+                    }
+
+                    stringListResult.append( stringResult );
+                    stringResult.clear();
+                    currentValueIsQuoted = false;
+                    ++i;
+
+                    goto StSkipSpaces;
+                }
+
+                [[fallthrough]];
+
+            default:
             {
-                stringResult += codec->toUnicode( str.constData() + i, j - i );
+                int j = i + 1;
 
+                while ( j < to )
+                {
+                    ch = str.at( j );
+
+                    if ( ch == '\\' || ch == '"' || ch == ',' )
+                    {
+                        break;
+                    }
+
+                    ++j;
+                }
+
+                if ( codec )
+                {
+                    stringResult += codec->toUnicode( str.constData() + i, j - i );
+
+                }
+                else
+                {
+                    stringResult.append( QString::fromUtf8( str.mid( i, j - i ) ) );
+
+                }
+
+                i = j;
             }
-            else
-            {
-                stringResult.append( QString::fromUtf8( str.mid( i, j - i ) ) );
-
-            }
-
-            i = j;
-        }
         }
     }
 
@@ -1212,16 +1212,16 @@ static QString windowsConfigPath( int type )
     {
         switch ( type )
         {
-        case CSIDL_COMMON_APPDATA:
-            result = "C:\\temp\\qt-common";
-            break;
+            case CSIDL_COMMON_APPDATA:
+                result = "C:\\temp\\qt-common";
+                break;
 
-        case CSIDL_APPDATA:
-            result = "C:\\temp\\qt-user";
-            break;
+            case CSIDL_APPDATA:
+                result = "C:\\temp\\qt-user";
+                break;
 
-        default:
-            ;
+            default:
+                ;
         }
     }
 

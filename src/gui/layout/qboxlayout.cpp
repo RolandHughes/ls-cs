@@ -839,23 +839,23 @@ void QBoxLayout::setGeometry( const QRect &r )
 
             switch ( visualDir )
             {
-            case LeftToRight:
-                box->item->setGeometry( QRect( a.at( i ).pos, s.y(), a.at( i ).size, s.height() ) );
-                break;
+                case LeftToRight:
+                    box->item->setGeometry( QRect( a.at( i ).pos, s.y(), a.at( i ).size, s.height() ) );
+                    break;
 
-            case RightToLeft:
-                box->item->setGeometry( QRect( s.left() + s.right() - a.at( i ).pos - a.at( i ).size + 1,
-                                               s.y(), a.at( i ).size, s.height() ) );
-                break;
+                case RightToLeft:
+                    box->item->setGeometry( QRect( s.left() + s.right() - a.at( i ).pos - a.at( i ).size + 1,
+                                                   s.y(), a.at( i ).size, s.height() ) );
+                    break;
 
-            case TopToBottom:
-                box->item->setGeometry( QRect( s.x(), a.at( i ).pos, s.width(), a.at( i ).size ) );
-                break;
+                case TopToBottom:
+                    box->item->setGeometry( QRect( s.x(), a.at( i ).pos, s.width(), a.at( i ).size ) );
+                    break;
 
 
-            case BottomToTop:
-                box->item->setGeometry( QRect( s.x(), s.top() + s.bottom() - a.at( i ).pos - a.at( i ).size + 1,
-                                               s.width(), a.at( i ).size ) );
+                case BottomToTop:
+                    box->item->setGeometry( QRect( s.x(), s.top() + s.bottom() - a.at( i ).pos - a.at( i ).size + 1,
+                                                   s.width(), a.at( i ).size ) );
             }
         }
     }

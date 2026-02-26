@@ -45,26 +45,26 @@ void QSystemSemaphorePrivate::setErrorString( const QString &function )
 
     switch ( windowsError )
     {
-    case ERROR_NO_SYSTEM_RESOURCES:
-    case ERROR_NOT_ENOUGH_MEMORY:
-        error = QSystemSemaphore::OutOfResources;
-        errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: out of resources" ).formatArg( function );
-        break;
+        case ERROR_NO_SYSTEM_RESOURCES:
+        case ERROR_NOT_ENOUGH_MEMORY:
+            error = QSystemSemaphore::OutOfResources;
+            errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: out of resources" ).formatArg( function );
+            break;
 
-    case ERROR_ACCESS_DENIED:
-        error = QSystemSemaphore::PermissionDenied;
-        errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: permission denied" ).formatArg( function );
-        break;
+        case ERROR_ACCESS_DENIED:
+            error = QSystemSemaphore::PermissionDenied;
+            errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: permission denied" ).formatArg( function );
+            break;
 
-    default:
-        errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: unknown error %2" )
-                      .formatArg( function ).formatArg( windowsError );
-        error = QSystemSemaphore::UnknownError;
+        default:
+            errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: unknown error %2" )
+                          .formatArg( function ).formatArg( windowsError );
+            error = QSystemSemaphore::UnknownError;
 
 #if defined(LSCS_SHOW_DEBUG_CORE)
-        qDebug() << errorString << "key" << key;
+            qDebug() << errorString << "key" << key;
 #endif
-        break;
+            break;
     }
 }
 

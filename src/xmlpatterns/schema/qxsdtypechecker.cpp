@@ -729,7 +729,7 @@ bool XsdTypeChecker::checkConstrainingFacetsSignedInteger( long long value, cons
     {
         const XsdFacet::Ptr facet = facets.value( XsdFacet::Enumeration );
         const DerivedString<TypeString>::Ptr valueStr = DerivedString<TypeString>::fromLexical( m_namePool,
-            QString::number( value ) );
+                QString::number( value ) );
 
         const AtomicValue::List multiValue = facet->multiValue();
         bool found = false;
@@ -856,7 +856,7 @@ bool XsdTypeChecker::checkConstrainingFacetsUnsignedInteger( unsigned long long 
     {
         const XsdFacet::Ptr facet = facets.value( XsdFacet::Enumeration );
         const DerivedString<TypeString>::Ptr valueStr = DerivedString<TypeString>::fromLexical( m_namePool,
-            QString::number( value ) );
+                QString::number( value ) );
 
         const AtomicValue::List multiValue = facet->multiValue();
         bool found = false;
@@ -984,7 +984,7 @@ bool XsdTypeChecker::checkConstrainingFacetsDouble( double value, const QString 
         const XsdFacet::Ptr facet = facets.value( XsdFacet::Enumeration );
         const Numeric::Ptr valuePtr = Double::fromValue( value );
         const DerivedString<TypeString>::Ptr valueStr = DerivedString<TypeString>::fromLexical( m_namePool,
-            valuePtr->stringValue() );
+                valuePtr->stringValue() );
 
         const AtomicValue::List multiValue = facet->multiValue();
         bool found = false;
@@ -1087,7 +1087,7 @@ bool XsdTypeChecker::checkConstrainingFacetsDateTime( const QDateTime &value, co
     {
         const XsdFacet::Ptr facet = facets.value( XsdFacet::MaximumInclusive );
         const AbstractDateTime::Ptr facetValue = ValueFactory::fromLexical(
-                facet->value()->as<DerivedString<TypeString> >()->stringValue(), type, m_context, m_reflection );
+                    facet->value()->as<DerivedString<TypeString> >()->stringValue(), type, m_context, m_reflection );
 
         if ( facetValue->toDateTime() < value )
         {
@@ -1100,7 +1100,7 @@ bool XsdTypeChecker::checkConstrainingFacetsDateTime( const QDateTime &value, co
     {
         const XsdFacet::Ptr facet = facets.value( XsdFacet::MaximumExclusive );
         const AbstractDateTime::Ptr facetValue = ValueFactory::fromLexical(
-                facet->value()->as<DerivedString<TypeString> >()->stringValue(), type, m_context, m_reflection );
+                    facet->value()->as<DerivedString<TypeString> >()->stringValue(), type, m_context, m_reflection );
 
         if ( facetValue->toDateTime() <= value )
         {
@@ -1113,7 +1113,7 @@ bool XsdTypeChecker::checkConstrainingFacetsDateTime( const QDateTime &value, co
     {
         const XsdFacet::Ptr facet = facets.value( XsdFacet::MinimumInclusive );
         const AbstractDateTime::Ptr facetValue = ValueFactory::fromLexical(
-                facet->value()->as<DerivedString<TypeString> >()->stringValue(), type, m_context, m_reflection );
+                    facet->value()->as<DerivedString<TypeString> >()->stringValue(), type, m_context, m_reflection );
 
         if ( facetValue->toDateTime() > value )
         {
@@ -1126,7 +1126,7 @@ bool XsdTypeChecker::checkConstrainingFacetsDateTime( const QDateTime &value, co
     {
         const XsdFacet::Ptr facet = facets.value( XsdFacet::MinimumExclusive );
         const AbstractDateTime::Ptr facetValue = ValueFactory::fromLexical(
-                facet->value()->as<DerivedString<TypeString> >()->stringValue(), type, m_context, m_reflection );
+                    facet->value()->as<DerivedString<TypeString> >()->stringValue(), type, m_context, m_reflection );
 
         if ( facetValue->toDateTime() >= value )
         {
@@ -1145,7 +1145,7 @@ bool XsdTypeChecker::checkConstrainingFacetsDateTime( const QDateTime &value, co
         for ( int j = 0; j < multiValue.count(); ++j )
         {
             const AbstractDateTime::Ptr facetValue = ValueFactory::fromLexical( multiValue.at(
-                    j )->as<DerivedString<TypeString> >()->stringValue(), type, m_context, m_reflection );
+                        j )->as<DerivedString<TypeString> >()->stringValue(), type, m_context, m_reflection );
 
             if ( facetValue->toDateTime() == value )
             {

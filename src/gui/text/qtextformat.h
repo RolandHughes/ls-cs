@@ -76,14 +76,14 @@ public:
     {
         switch ( lengthType )
         {
-        case FixedLength:
-            return fixedValueOrPercentage;
+            case FixedLength:
+                return fixedValueOrPercentage;
 
-        case VariableLength:
-            return maximumLength;
+            case VariableLength:
+                return maximumLength;
 
-        case PercentageLength:
-            return fixedValueOrPercentage * maximumLength / qreal( 100 );
+            case PercentageLength:
+                return fixedValueOrPercentage * maximumLength / qreal( 100 );
         }
 
         return -1;
@@ -931,20 +931,20 @@ inline qreal QTextBlockFormat::lineHeight( qreal scriptLineHeight, qreal scaling
 {
     switch ( intProperty( LineHeightType ) )
     {
-    case SingleHeight:
-        return ( scriptLineHeight );
+        case SingleHeight:
+            return ( scriptLineHeight );
 
-    case ProportionalHeight:
-        return ( scriptLineHeight * doubleProperty( LineHeight ) / 100.0 );
+        case ProportionalHeight:
+            return ( scriptLineHeight * doubleProperty( LineHeight ) / 100.0 );
 
-    case FixedHeight:
-        return ( doubleProperty( LineHeight ) * scaling );
+        case FixedHeight:
+            return ( doubleProperty( LineHeight ) * scaling );
 
-    case MinimumHeight:
-        return ( qMax( scriptLineHeight, doubleProperty( LineHeight ) * scaling ) );
+        case MinimumHeight:
+            return ( qMax( scriptLineHeight, doubleProperty( LineHeight ) * scaling ) );
 
-    case LineDistanceHeight:
-        return ( scriptLineHeight + doubleProperty( LineHeight ) * scaling );
+        case LineDistanceHeight:
+            return ( scriptLineHeight + doubleProperty( LineHeight ) * scaling );
     }
 
     return ( 0 );

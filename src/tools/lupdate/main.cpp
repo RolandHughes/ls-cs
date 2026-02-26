@@ -343,7 +343,7 @@ static void processSources( Translator &fetchedTor, const QStringList &sourceFil
 int main( int argc, char **argv )
 {
 #if defined(LSCS_PACKAGE_BUILD)
-    QCoreApplication::setAttribute( Qt::AA_UseSystemConf, true);
+    QCoreApplication::setAttribute( Qt::AA_UseSystemConf, true );
 #endif
 
     QCoreApplication app( argc, argv );

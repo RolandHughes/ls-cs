@@ -810,66 +810,66 @@ void QTextEdit::keyPressEvent( QKeyEvent *e )
 
     switch ( e->key() )
     {
-    case Qt::Key_Select:
-        if ( QApplication::keypadNavigationEnabled() )
-        {
-            // code assumes linksaccessible + editable isn't meaningful
-            if ( d->control->textInteractionFlags() & Qt::TextEditable )
+        case Qt::Key_Select:
+            if ( QApplication::keypadNavigationEnabled() )
             {
-                setEditFocus( !hasEditFocus() );
-            }
-            else
-            {
-                if ( !hasEditFocus() )
+                // code assumes linksaccessible + editable isn't meaningful
+                if ( d->control->textInteractionFlags() & Qt::TextEditable )
                 {
-                    setEditFocus( true );
+                    setEditFocus( !hasEditFocus() );
                 }
                 else
                 {
-                    QTextCursor cursor = d->control->textCursor();
-                    QTextCharFormat charFmt = cursor.charFormat();
-
-                    if ( !( d->control->textInteractionFlags() & Qt::LinksAccessibleByKeyboard )
-                            || !cursor.hasSelection() || charFmt.anchorHref().isEmpty() )
+                    if ( !hasEditFocus() )
                     {
-                        e->accept();
+                        setEditFocus( true );
+                    }
+                    else
+                    {
+                        QTextCursor cursor = d->control->textCursor();
+                        QTextCharFormat charFmt = cursor.charFormat();
+
+                        if ( !( d->control->textInteractionFlags() & Qt::LinksAccessibleByKeyboard )
+                                || !cursor.hasSelection() || charFmt.anchorHref().isEmpty() )
+                        {
+                            e->accept();
+                            return;
+                        }
+                    }
+                }
+            }
+
+            break;
+
+        case Qt::Key_Back:
+        case Qt::Key_No:
+            if ( !QApplication::keypadNavigationEnabled()
+                    || ( QApplication::keypadNavigationEnabled() && !hasEditFocus() ) )
+            {
+                e->ignore();
+                return;
+            }
+
+            break;
+
+        default:
+            if ( QApplication::keypadNavigationEnabled() )
+            {
+                if ( !hasEditFocus() && !( e->modifiers() & Qt::ControlModifier ) )
+                {
+                    if ( e->text()[0].isPrint() )
+                    {
+                        setEditFocus( true );
+                    }
+                    else
+                    {
+                        e->ignore();
                         return;
                     }
                 }
             }
-        }
 
-        break;
-
-    case Qt::Key_Back:
-    case Qt::Key_No:
-        if ( !QApplication::keypadNavigationEnabled()
-                || ( QApplication::keypadNavigationEnabled() && !hasEditFocus() ) )
-        {
-            e->ignore();
-            return;
-        }
-
-        break;
-
-    default:
-        if ( QApplication::keypadNavigationEnabled() )
-        {
-            if ( !hasEditFocus() && !( e->modifiers() & Qt::ControlModifier ) )
-            {
-                if ( e->text()[0].isPrint() )
-                {
-                    setEditFocus( true );
-                }
-                else
-                {
-                    e->ignore();
-                    return;
-                }
-            }
-        }
-
-        break;
+            break;
     }
 
 #endif
@@ -914,41 +914,41 @@ void QTextEdit::keyPressEvent( QKeyEvent *e )
     {
         switch ( e->key() )
         {
-        case Qt::Key_Space:
-            e->accept();
+            case Qt::Key_Space:
+                e->accept();
 
-            if ( e->modifiers() & Qt::ShiftModifier )
-            {
-                d->vbar->triggerAction( QAbstractSlider::SliderPageStepSub );
-            }
-            else
-            {
-                d->vbar->triggerAction( QAbstractSlider::SliderPageStepAdd );
-            }
-
-            break;
-
-        default:
-            d->sendControlEvent( e );
-
-            if ( !e->isAccepted() && e->modifiers() == Qt::NoModifier )
-            {
-                if ( e->key() == Qt::Key_Home )
+                if ( e->modifiers() & Qt::ShiftModifier )
                 {
-                    d->vbar->triggerAction( QAbstractSlider::SliderToMinimum );
-                    e->accept();
+                    d->vbar->triggerAction( QAbstractSlider::SliderPageStepSub );
                 }
-                else if ( e->key() == Qt::Key_End )
+                else
                 {
-                    d->vbar->triggerAction( QAbstractSlider::SliderToMaximum );
-                    e->accept();
+                    d->vbar->triggerAction( QAbstractSlider::SliderPageStepAdd );
                 }
-            }
 
-            if ( !e->isAccepted() )
-            {
-                QAbstractScrollArea::keyPressEvent( e );
-            }
+                break;
+
+            default:
+                d->sendControlEvent( e );
+
+                if ( !e->isAccepted() && e->modifiers() == Qt::NoModifier )
+                {
+                    if ( e->key() == Qt::Key_Home )
+                    {
+                        d->vbar->triggerAction( QAbstractSlider::SliderToMinimum );
+                        e->accept();
+                    }
+                    else if ( e->key() == Qt::Key_End )
+                    {
+                        d->vbar->triggerAction( QAbstractSlider::SliderToMaximum );
+                        e->accept();
+                    }
+                }
+
+                if ( !e->isAccepted() )
+                {
+                    QAbstractScrollArea::keyPressEvent( e );
+                }
         }
 
         return;
@@ -981,45 +981,45 @@ void QTextEdit::keyPressEvent( QKeyEvent *e )
     {
         switch ( e->key() )
         {
-        case Qt::Key_Up:
-        case Qt::Key_Down:
-            if ( QApplication::keypadNavigationEnabled() )
-            {
-                // Cursor position didn't change, so we want to leave
-                // these keys to change focus.
-                e->ignore();
-                return;
-            }
-
-            break;
-
-        case Qt::Key_Back:
-            if ( !e->isAutoRepeat() )
-            {
+            case Qt::Key_Up:
+            case Qt::Key_Down:
                 if ( QApplication::keypadNavigationEnabled() )
                 {
-                    if ( document()->isEmpty() || !( d->control->textInteractionFlags() & Qt::TextEditable ) )
-                    {
-                        setEditFocus( false );
-                        e->accept();
-                    }
-                    else if ( !d->deleteAllTimer.isActive() )
-                    {
-                        e->accept();
-                        d->deleteAllTimer.start( 750, this );
-                    }
-                }
-                else
-                {
+                    // Cursor position didn't change, so we want to leave
+                    // these keys to change focus.
                     e->ignore();
                     return;
                 }
-            }
 
-            break;
+                break;
 
-        default:
-            break;
+            case Qt::Key_Back:
+                if ( !e->isAutoRepeat() )
+                {
+                    if ( QApplication::keypadNavigationEnabled() )
+                    {
+                        if ( document()->isEmpty() || !( d->control->textInteractionFlags() & Qt::TextEditable ) )
+                        {
+                            setEditFocus( false );
+                            e->accept();
+                        }
+                        else if ( !d->deleteAllTimer.isActive() )
+                        {
+                            e->accept();
+                            d->deleteAllTimer.start( 750, this );
+                        }
+                    }
+                    else
+                    {
+                        e->ignore();
+                        return;
+                    }
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -1455,20 +1455,20 @@ QVariant QTextEdit::inputMethodQuery( Qt::InputMethodQuery query, QVariant argum
 
     switch ( v.type() )
     {
-    case QVariant::RectF:
-        return v.toRectF().translated( offset );
+        case QVariant::RectF:
+            return v.toRectF().translated( offset );
 
-    case QVariant::PointF:
-        return v.toPointF() + offset;
+        case QVariant::PointF:
+            return v.toPointF() + offset;
 
-    case QVariant::Rect:
-        return v.toRect().translated( offset.toPoint() );
+        case QVariant::Rect:
+            return v.toRect().translated( offset.toPoint() );
 
-    case QVariant::Point:
-        return v.toPoint() + offset.toPoint();
+        case QVariant::Point:
+            return v.toPoint() + offset.toPoint();
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return v;

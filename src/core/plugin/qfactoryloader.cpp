@@ -218,7 +218,7 @@ void QFactoryLoader::setup()
 
                             mp_pluginsFound.last().keyFound = keyList[0];
                 */
-                
+
             }
 
             int keyUsageCount = 0;

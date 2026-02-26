@@ -329,7 +329,7 @@ QDebug operator<<( QDebug dbg, const QModelIndex &idx )
 {
     QDebugStateSaver saver( dbg );
     dbg.nospace() << "QModelIndex(" << idx.row() << ',' << idx.column()
-       << ',' << idx.internalPointer() << ',' << idx.model() << ')';
+                  << ',' << idx.internalPointer() << ',' << idx.model() << ')';
 
     return dbg;
 }
@@ -431,25 +431,25 @@ static SortType typeOfVariant( const QVariant &value )
 {
     switch ( value.userType() )
     {
-    case QVariant::Bool:
-    case QVariant::Int:
-    case QVariant::UInt:
-    case QVariant::LongLong:
-    case QVariant::ULongLong:
-    case QVariant::Char:
-    case QVariant::Short:
-    case QVariant::UShort:
-    case QVariant::UChar:
-    case QVariant::ULong:
-    case QVariant::Long:
-        return SortType::Type_Int;
+        case QVariant::Bool:
+        case QVariant::Int:
+        case QVariant::UInt:
+        case QVariant::LongLong:
+        case QVariant::ULongLong:
+        case QVariant::Char:
+        case QVariant::Short:
+        case QVariant::UShort:
+        case QVariant::UChar:
+        case QVariant::ULong:
+        case QVariant::Long:
+            return SortType::Type_Int;
 
-    case QVariant::Double:
-    case QVariant::Float:
-        return SortType::Type_Float;
+        case QVariant::Double:
+        case QVariant::Float:
+            return SortType::Type_Float;
 
-    default:
-        return SortType::Type_Other;
+        default:
+            return SortType::Type_Other;
     }
 }
 
@@ -1287,74 +1287,74 @@ QModelIndexList QAbstractItemModel::match( const QModelIndex &start, int role, c
                 switch ( matchType )
                 {
 
-                case Qt::MatchRegExp:
-                {
-                    QPatternOptionFlags options = QPatternOption::ExactMatchOption;
-
-                    if ( cs == Qt::CaseInsensitive )
+                    case Qt::MatchRegExp:
                     {
-                        options |= QPatternOption::CaseInsensitiveOption;
+                        QPatternOptionFlags options = QPatternOption::ExactMatchOption;
+
+                        if ( cs == Qt::CaseInsensitive )
+                        {
+                            options |= QPatternOption::CaseInsensitiveOption;
+                        }
+
+                        QRegularExpression8 regExp( text, options );
+
+                        if ( regExp.match( t ).hasMatch() )
+                        {
+                            result.append( idx );
+                        }
+
+                        break;
                     }
 
-                    QRegularExpression8 regExp( text, options );
-
-                    if ( regExp.match( t ).hasMatch() )
+                    case Qt::MatchWildcard:
                     {
-                        result.append( idx );
+                        QPatternOptionFlags options = QPatternOption::ExactMatchOption | QPatternOption::WildcardOption;
+
+                        if ( cs == Qt::CaseInsensitive )
+                        {
+                            options |= QPatternOption::CaseInsensitiveOption;
+                        }
+
+                        QRegularExpression8 regExp( text, options );
+
+                        if ( regExp.match( t ).hasMatch() )
+                        {
+                            result.append( idx );
+                        }
+
+                        break;
                     }
 
-                    break;
-                }
+                    case Qt::MatchStartsWith:
+                        if ( t.startsWith( text, cs ) )
+                        {
+                            result.append( idx );
+                        }
 
-                case Qt::MatchWildcard:
-                {
-                    QPatternOptionFlags options = QPatternOption::ExactMatchOption | QPatternOption::WildcardOption;
+                        break;
 
-                    if ( cs == Qt::CaseInsensitive )
-                    {
-                        options |= QPatternOption::CaseInsensitiveOption;
-                    }
+                    case Qt::MatchEndsWith:
+                        if ( t.endsWith( text, cs ) )
+                        {
+                            result.append( idx );
+                        }
 
-                    QRegularExpression8 regExp( text, options );
+                        break;
 
-                    if ( regExp.match( t ).hasMatch() )
-                    {
-                        result.append( idx );
-                    }
+                    case Qt::MatchFixedString:
+                        if ( t.compare( text, cs ) == 0 )
+                        {
+                            result.append( idx );
+                        }
 
-                    break;
-                }
+                        break;
 
-                case Qt::MatchStartsWith:
-                    if ( t.startsWith( text, cs ) )
-                    {
-                        result.append( idx );
-                    }
-
-                    break;
-
-                case Qt::MatchEndsWith:
-                    if ( t.endsWith( text, cs ) )
-                    {
-                        result.append( idx );
-                    }
-
-                    break;
-
-                case Qt::MatchFixedString:
-                    if ( t.compare( text, cs ) == 0 )
-                    {
-                        result.append( idx );
-                    }
-
-                    break;
-
-                case Qt::MatchContains:
-                default:
-                    if ( t.contains( text, cs ) )
-                    {
-                        result.append( idx );
-                    }
+                    case Qt::MatchContains:
+                    default:
+                        if ( t.contains( text, cs ) )
+                        {
+                            result.append( idx );
+                        }
                 }
             }
 

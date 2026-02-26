@@ -77,7 +77,7 @@
 #include <locale.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <ltdl.h>
+//#include <ltdl.h>
 #endif
 
 #include <algorithm>
@@ -634,39 +634,43 @@ void QCoreApplicationPrivate::init()
     }
 
     /*
-     * This logic must support both a full path to libraries and the 
+     * This logic must support both a full path to libraries and the
      * correct path-based-on-prefix value.
-     * 
+     *
      * NOTE: We will only load paths that actually exist at runtime.
      *       If your values point to a drive that gets mounted later
      *       they won't be loaded.
      */
-    QDir fullLibPath( QString::fromUtf8( LsCsLibraryInfo::install_prefix));
+    QDir fullLibPath( QString::fromUtf8( LsCsLibraryInfo::install_prefix ) );
     fullLibPath.cd( QString::fromUtf8( LsCsLibraryInfo::libraries ) );
     QString pathStr = fullLibPath.canonicalPath();
-    if (pathStr.length() > 0)
-    {
-        app_libpaths->append( pathStr);
-    }
-    
-    QDir libOnlyPath( QString::fromUtf8( LsCsLibraryInfo::libraries ) );
-    pathStr = libOnlyPath.canonicalPath();
-    if (pathStr.length() > 0)
+
+    if ( pathStr.length() > 0 )
     {
         app_libpaths->append( pathStr );
     }
-    
-    QDir fullPluginPath( QString::fromUtf8( LsCsLibraryInfo::install_prefix));
+
+    QDir libOnlyPath( QString::fromUtf8( LsCsLibraryInfo::libraries ) );
+    pathStr = libOnlyPath.canonicalPath();
+
+    if ( pathStr.length() > 0 )
+    {
+        app_libpaths->append( pathStr );
+    }
+
+    QDir fullPluginPath( QString::fromUtf8( LsCsLibraryInfo::install_prefix ) );
     fullPluginPath.cd( QString::fromUtf8( LsCsLibraryInfo::plugins ) );
     pathStr = fullPluginPath.canonicalPath();
-    if (pathStr.length() > 0)
+
+    if ( pathStr.length() > 0 )
     {
         app_libpaths->append( pathStr );
     }
 
     QDir pluginOnlyPath( QString::fromUtf8( LsCsLibraryInfo::plugins ) );
     pathStr = pluginOnlyPath.canonicalPath();
-    if (pathStr.length() > 0)
+
+    if ( pathStr.length() > 0 )
     {
         app_libpaths->append( pathStr );
     }
@@ -1909,8 +1913,8 @@ QStringList QCoreApplication::libraryPaths()
      * not-yet-released library changes, the logic really needs to support
      * the distribution directory tree. File and directory names are
      * subject to change so just walk the tree.
-     * 
-     * 
+     *
+     *
      * /usr/lib/LsCs
      * ├─/usr/lib/LsCs/plugins
      *   ├── iconengines

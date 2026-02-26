@@ -88,14 +88,14 @@ struct QSimplexConstraint
 
         switch ( ratio )
         {
-        case LessOrEqual:
-            return leftHandSide < constant;
+            case LessOrEqual:
+                return leftHandSide < constant;
 
-        case MoreOrEqual:
-            return leftHandSide > constant;
+            case MoreOrEqual:
+                return leftHandSide > constant;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -114,16 +114,16 @@ struct QSimplexConstraint
 
         switch ( ratio )
         {
-        case LessOrEqual:
-            result += QString::fromLatin1( "  (less) <= %1" ).formatArg( constant );
-            break;
+            case LessOrEqual:
+                result += QString::fromLatin1( "  (less) <= %1" ).formatArg( constant );
+                break;
 
-        case MoreOrEqual:
-            result += QString::fromLatin1( "  (more) >= %1" ).formatArg( constant );
-            break;
+            case MoreOrEqual:
+                result += QString::fromLatin1( "  (more) >= %1" ).formatArg( constant );
+                break;
 
-        default:
-            result += QString::fromLatin1( "  (eqal) == %1" ).formatArg( constant );
+            default:
+                result += QString::fromLatin1( "  (eqal) == %1" ).formatArg( constant );
         }
 
         return result;

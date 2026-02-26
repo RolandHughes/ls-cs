@@ -96,10 +96,10 @@ bool QXcbGlxIntegration::initialize( QXcbConnection *connection )
 
     xcb_generic_error_t *error = nullptr;
     xcb_glx_query_version_cookie_t xglx_query_cookie = xcb_glx_query_version( m_connection->xcb_connection(),
-        XCB_GLX_MAJOR_VERSION, XCB_GLX_MINOR_VERSION );
+            XCB_GLX_MAJOR_VERSION, XCB_GLX_MINOR_VERSION );
 
     xcb_glx_query_version_reply_t *xglx_query = xcb_glx_query_version_reply( m_connection->xcb_connection(),
-        xglx_query_cookie, &error );
+            xglx_query_cookie, &error );
 
     if ( ! xglx_query || error )
     {
@@ -193,7 +193,7 @@ QPlatformOpenGLContext *QXcbGlxIntegration::createPlatformOpenGLContext( QOpenGL
 {
     QXcbScreen *screen = static_cast<QXcbScreen *>( context->screen()->handle() );
     QGLXContext *platformContext = new QGLXContext( screen, context->format(),
-        context->shareHandle(), context->nativeHandle() );
+            context->shareHandle(), context->nativeHandle() );
     context->setNativeHandle( platformContext->nativeHandle() );
     return platformContext;
 }

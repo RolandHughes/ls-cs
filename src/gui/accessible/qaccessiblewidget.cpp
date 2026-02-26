@@ -466,64 +466,64 @@ QString QAccessibleWidget::text( QAccessible::Text t ) const
 
     switch ( t )
     {
-    case QAccessible::Name:
-        if ( !d->name.isEmpty() )
-        {
-            str = d->name;
-
-        }
-        else if ( !widget()->accessibleName().isEmpty() )
-        {
-            str = widget()->accessibleName();
-
-        }
-        else if ( widget()->isWindow() )
-        {
-            if ( widget()->isMinimized() )
+        case QAccessible::Name:
+            if ( !d->name.isEmpty() )
             {
-                str = lscs_internal_parseWindowTitle( widget()->windowIconText(), widget() );
+                str = d->name;
+
+            }
+            else if ( !widget()->accessibleName().isEmpty() )
+            {
+                str = widget()->accessibleName();
+
+            }
+            else if ( widget()->isWindow() )
+            {
+                if ( widget()->isMinimized() )
+                {
+                    str = lscs_internal_parseWindowTitle( widget()->windowIconText(), widget() );
+                }
+                else
+                {
+                    str = lscs_internal_parseWindowTitle( widget()->windowTitle(), widget() );
+                }
+
             }
             else
             {
-                str = lscs_internal_parseWindowTitle( widget()->windowTitle(), widget() );
+                str = lscs_accStripAmp( buddyString( widget() ) );
             }
 
-        }
-        else
-        {
-            str = lscs_accStripAmp( buddyString( widget() ) );
-        }
+            break;
 
-        break;
-
-    case QAccessible::Description:
-        str = widget()->accessibleDescription();
+        case QAccessible::Description:
+            str = widget()->accessibleDescription();
 
 #ifndef LSCS_NO_TOOLTIP
 
-        if ( str.isEmpty() )
-        {
-            str = widget()->toolTip();
-        }
+            if ( str.isEmpty() )
+            {
+                str = widget()->toolTip();
+            }
 
 #endif
-        break;
+            break;
 
-    case QAccessible::Help:
+        case QAccessible::Help:
 #ifndef LSCS_NO_WHATSTHIS
-        str = widget()->whatsThis();
+            str = widget()->whatsThis();
 #endif
-        break;
+            break;
 
-    case QAccessible::Accelerator:
-        str = lscs_accHotKey( buddyString( widget() ) );
-        break;
+        case QAccessible::Accelerator:
+            str = lscs_accHotKey( buddyString( widget() ) );
+            break;
 
-    case QAccessible::Value:
-        break;
+        case QAccessible::Value:
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return str;

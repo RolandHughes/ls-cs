@@ -1117,7 +1117,7 @@ void QGraphicsScenePrivate::storeMouseButtonsForMouseGrabber( QGraphicsSceneMous
         {
             mouseGrabberButtonDownPos.insert( Qt::MouseButton( i ),
                                               mouseGrabberItems.last()->d_ptr->genericMapFromScene( event->scenePos(),
-                                                  event->widget() ) );
+                                                      event->widget() ) );
             mouseGrabberButtonDownScenePos.insert( Qt::MouseButton( i ), event->scenePos() );
             mouseGrabberButtonDownScreenPos.insert( Qt::MouseButton( i ), event->screenPos() );
         }
@@ -1761,16 +1761,16 @@ void QGraphicsScene::render( QPainter *painter, const QRectF &target, const QRec
     // Scale according to the aspect ratio mode.
     switch ( aspectRatioMode )
     {
-    case Qt::KeepAspectRatio:
-        xratio = yratio = qMin( xratio, yratio );
-        break;
+        case Qt::KeepAspectRatio:
+            xratio = yratio = qMin( xratio, yratio );
+            break;
 
-    case Qt::KeepAspectRatioByExpanding:
-        xratio = yratio = qMax( xratio, yratio );
-        break;
+        case Qt::KeepAspectRatioByExpanding:
+            xratio = yratio = qMax( xratio, yratio );
+            break;
 
-    case Qt::IgnoreAspectRatio:
-        break;
+        case Qt::IgnoreAspectRatio:
+            break;
     }
 
     // Find all items to draw, and reverse the list (we want to draw
@@ -2026,19 +2026,19 @@ void QGraphicsScene::setSelectionArea( const QPainterPath &path,
 
     switch ( selectionOperation )
     {
-    case Qt::ReplaceSelection:
+        case Qt::ReplaceSelection:
 
-        // Unselect all items outside path.
-        for ( QGraphicsItem *item : unselectItems )
-        {
-            item->setSelected( false );
-            changed = true;
-        }
+            // Unselect all items outside path.
+            for ( QGraphicsItem *item : unselectItems )
+            {
+                item->setSelected( false );
+                changed = true;
+            }
 
-        break;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     // Reenable emitting selectionChanged() for individual items.
@@ -2764,278 +2764,278 @@ bool QGraphicsScene::event( QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::GraphicsSceneMousePress:
-    case QEvent::GraphicsSceneMouseMove:
-    case QEvent::GraphicsSceneMouseRelease:
-    case QEvent::GraphicsSceneMouseDoubleClick:
-    case QEvent::GraphicsSceneHoverEnter:
-    case QEvent::GraphicsSceneHoverLeave:
-    case QEvent::GraphicsSceneHoverMove:
-    case QEvent::TouchBegin:
-    case QEvent::TouchUpdate:
-    case QEvent::TouchEnd:
-        // Reset the under-mouse list to ensure that this event gets fresh
-        // item-under-mouse data. Be careful about this list; if people delete
-        // items from inside event handlers, this list can quickly end up
-        // having stale pointers in it. We need to clear it before dispatching
-        // events that use it.
-        // ### this should only be cleared if we received a new mouse move event,
-        // which relies on us fixing the replay mechanism in QGraphicsView.
-        d->cachedItemsUnderMouse.clear();
+        case QEvent::GraphicsSceneMousePress:
+        case QEvent::GraphicsSceneMouseMove:
+        case QEvent::GraphicsSceneMouseRelease:
+        case QEvent::GraphicsSceneMouseDoubleClick:
+        case QEvent::GraphicsSceneHoverEnter:
+        case QEvent::GraphicsSceneHoverLeave:
+        case QEvent::GraphicsSceneHoverMove:
+        case QEvent::TouchBegin:
+        case QEvent::TouchUpdate:
+        case QEvent::TouchEnd:
+            // Reset the under-mouse list to ensure that this event gets fresh
+            // item-under-mouse data. Be careful about this list; if people delete
+            // items from inside event handlers, this list can quickly end up
+            // having stale pointers in it. We need to clear it before dispatching
+            // events that use it.
+            // ### this should only be cleared if we received a new mouse move event,
+            // which relies on us fixing the replay mechanism in QGraphicsView.
+            d->cachedItemsUnderMouse.clear();
 
-    default:
-        break;
+        default:
+            break;
     }
 
     switch ( event->type() )
     {
-    case QEvent::GraphicsSceneDragEnter:
-        dragEnterEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneDragEnter:
+            dragEnterEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneDragMove:
-        dragMoveEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneDragMove:
+            dragMoveEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneDragLeave:
-        dragLeaveEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneDragLeave:
+            dragLeaveEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneDrop:
-        dropEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneDrop:
+            dropEvent( static_cast<QGraphicsSceneDragDropEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneContextMenu:
-        contextMenuEvent( static_cast<QGraphicsSceneContextMenuEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneContextMenu:
+            contextMenuEvent( static_cast<QGraphicsSceneContextMenuEvent *>( event ) );
+            break;
 
-    case QEvent::KeyPress:
-        if ( !d->focusItem )
-        {
-            QKeyEvent *k = static_cast<QKeyEvent *>( event );
-
-            if ( k->key() == Qt::Key_Tab || k->key() == Qt::Key_Backtab )
+        case QEvent::KeyPress:
+            if ( !d->focusItem )
             {
-                if ( !( k->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ) ) ) //### Add MetaModifier?
+                QKeyEvent *k = static_cast<QKeyEvent *>( event );
+
+                if ( k->key() == Qt::Key_Tab || k->key() == Qt::Key_Backtab )
                 {
-                    bool res = false;
-
-                    if ( k->key() == Qt::Key_Backtab
-                            || ( k->key() == Qt::Key_Tab && ( k->modifiers() & Qt::ShiftModifier ) ) )
+                    if ( !( k->modifiers() & ( Qt::ControlModifier | Qt::AltModifier ) ) ) //### Add MetaModifier?
                     {
-                        res = focusNextPrevChild( false );
-                    }
-                    else if ( k->key() == Qt::Key_Tab )
-                    {
-                        res = focusNextPrevChild( true );
-                    }
+                        bool res = false;
 
-                    if ( !res )
-                    {
-                        event->ignore();
-                    }
+                        if ( k->key() == Qt::Key_Backtab
+                                || ( k->key() == Qt::Key_Tab && ( k->modifiers() & Qt::ShiftModifier ) ) )
+                        {
+                            res = focusNextPrevChild( false );
+                        }
+                        else if ( k->key() == Qt::Key_Tab )
+                        {
+                            res = focusNextPrevChild( true );
+                        }
 
+                        if ( !res )
+                        {
+                            event->ignore();
+                        }
+
+                        return true;
+                    }
+                }
+            }
+
+            keyPressEvent( static_cast<QKeyEvent *>( event ) );
+            break;
+
+        case QEvent::KeyRelease:
+            keyReleaseEvent( static_cast<QKeyEvent *>( event ) );
+            break;
+
+        case QEvent::ShortcutOverride:
+        {
+            QGraphicsItem *parent = focusItem();
+
+            while ( parent )
+            {
+                d->sendEvent( parent, event );
+
+                if ( event->isAccepted() )
+                {
                     return true;
                 }
+
+                parent = parent->parentItem();
             }
         }
 
-        keyPressEvent( static_cast<QKeyEvent *>( event ) );
-        break;
+        return false;
 
-    case QEvent::KeyRelease:
-        keyReleaseEvent( static_cast<QKeyEvent *>( event ) );
-        break;
-
-    case QEvent::ShortcutOverride:
-    {
-        QGraphicsItem *parent = focusItem();
-
-        while ( parent )
+        case QEvent::GraphicsSceneMouseMove:
         {
-            d->sendEvent( parent, event );
-
-            if ( event->isAccepted() )
-            {
-                return true;
-            }
-
-            parent = parent->parentItem();
+            QGraphicsSceneMouseEvent *mouseEvent = static_cast<QGraphicsSceneMouseEvent *>( event );
+            d->lastSceneMousePos = mouseEvent->scenePos();
+            mouseMoveEvent( mouseEvent );
+            break;
         }
-    }
 
-    return false;
+        case QEvent::GraphicsSceneMousePress:
+            mousePressEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneMouseMove:
-    {
-        QGraphicsSceneMouseEvent *mouseEvent = static_cast<QGraphicsSceneMouseEvent *>( event );
-        d->lastSceneMousePos = mouseEvent->scenePos();
-        mouseMoveEvent( mouseEvent );
-        break;
-    }
+        case QEvent::GraphicsSceneMouseRelease:
+            mouseReleaseEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneMousePress:
-        mousePressEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneMouseDoubleClick:
+            mouseDoubleClickEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneMouseRelease:
-        mouseReleaseEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
-        break;
+        case QEvent::GraphicsSceneWheel:
+            wheelEvent( static_cast<QGraphicsSceneWheelEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneMouseDoubleClick:
-        mouseDoubleClickEvent( static_cast<QGraphicsSceneMouseEvent *>( event ) );
-        break;
+        case QEvent::FocusIn:
+            focusInEvent( static_cast<QFocusEvent *>( event ) );
+            break;
 
-    case QEvent::GraphicsSceneWheel:
-        wheelEvent( static_cast<QGraphicsSceneWheelEvent *>( event ) );
-        break;
+        case QEvent::FocusOut:
+            focusOutEvent( static_cast<QFocusEvent *>( event ) );
+            break;
 
-    case QEvent::FocusIn:
-        focusInEvent( static_cast<QFocusEvent *>( event ) );
-        break;
-
-    case QEvent::FocusOut:
-        focusOutEvent( static_cast<QFocusEvent *>( event ) );
-        break;
-
-    case QEvent::GraphicsSceneHoverEnter:
-    case QEvent::GraphicsSceneHoverLeave:
-    case QEvent::GraphicsSceneHoverMove:
-    {
-        QGraphicsSceneHoverEvent *hoverEvent = static_cast<QGraphicsSceneHoverEvent *>( event );
-        d->lastSceneMousePos = hoverEvent->scenePos();
-        d->dispatchHoverEvent( hoverEvent );
-        break;
-    }
-
-    case QEvent::Leave:
-        // hackieshly unpacking the viewport pointer from the leave event.
-        d->leaveScene( reinterpret_cast<QWidget *>( event->d ) );
-        break;
-
-    case QEvent::GraphicsSceneHelp:
-        helpEvent( static_cast<QGraphicsSceneHelpEvent *>( event ) );
-        break;
-
-    case QEvent::InputMethod:
-        inputMethodEvent( static_cast<QInputMethodEvent *>( event ) );
-        break;
-
-    case QEvent::WindowActivate:
-        if ( ! d->activationRefCount++ )
+        case QEvent::GraphicsSceneHoverEnter:
+        case QEvent::GraphicsSceneHoverLeave:
+        case QEvent::GraphicsSceneHoverMove:
         {
-            if ( d->lastActivePanel )
-            {
-                // Activate the last panel.
-                d->setActivePanelHelper( d->lastActivePanel, true );
+            QGraphicsSceneHoverEvent *hoverEvent = static_cast<QGraphicsSceneHoverEvent *>( event );
+            d->lastSceneMousePos = hoverEvent->scenePos();
+            d->dispatchHoverEvent( hoverEvent );
+            break;
+        }
 
-            }
-            else if ( d->tabFocusFirst && d->tabFocusFirst->isPanel() )
-            {
-                // Activate the panel of the first item in the tab focus
-                // chain.
-                d->setActivePanelHelper( d->tabFocusFirst, true );
+        case QEvent::Leave:
+            // hackieshly unpacking the viewport pointer from the leave event.
+            d->leaveScene( reinterpret_cast<QWidget *>( event->d ) );
+            break;
 
-            }
-            else
-            {
-                // Activate all toplevel items.
-                QEvent activateEvent( QEvent::WindowActivate );
+        case QEvent::GraphicsSceneHelp:
+            helpEvent( static_cast<QGraphicsSceneHelpEvent *>( event ) );
+            break;
 
-                for ( QGraphicsItem *item : items() )
+        case QEvent::InputMethod:
+            inputMethodEvent( static_cast<QInputMethodEvent *>( event ) );
+            break;
+
+        case QEvent::WindowActivate:
+            if ( ! d->activationRefCount++ )
+            {
+                if ( d->lastActivePanel )
                 {
-                    if ( item->isVisible() && ! item->isPanel() && ! item->parentItem() )
+                    // Activate the last panel.
+                    d->setActivePanelHelper( d->lastActivePanel, true );
+
+                }
+                else if ( d->tabFocusFirst && d->tabFocusFirst->isPanel() )
+                {
+                    // Activate the panel of the first item in the tab focus
+                    // chain.
+                    d->setActivePanelHelper( d->tabFocusFirst, true );
+
+                }
+                else
+                {
+                    // Activate all toplevel items.
+                    QEvent activateEvent( QEvent::WindowActivate );
+
+                    for ( QGraphicsItem *item : items() )
                     {
-                        sendEvent( item, &activateEvent );
+                        if ( item->isVisible() && ! item->isPanel() && ! item->parentItem() )
+                        {
+                            sendEvent( item, &activateEvent );
+                        }
                     }
                 }
             }
-        }
 
-        break;
+            break;
 
-    case QEvent::WindowDeactivate:
+        case QEvent::WindowDeactivate:
 
-        if ( ! d->activationRefCount )
-        {
-            if ( d->activePanel )
+            if ( ! d->activationRefCount )
             {
-                // Deactivate the active panel (but keep it so we can reactivate it later)
-
-                QGraphicsItem *lastActivePanel = d->activePanel;
-                d->setActivePanelHelper( nullptr, true );
-                d->lastActivePanel = lastActivePanel;
-
-            }
-            else
-            {
-                // Activate all toplevel items.
-                QEvent deactivateEvent( QEvent::WindowDeactivate );
-
-                for ( QGraphicsItem *item : items() )
+                if ( d->activePanel )
                 {
-                    if ( item->isVisible() && ! item->isPanel() && ! item->parentItem() )
+                    // Deactivate the active panel (but keep it so we can reactivate it later)
+
+                    QGraphicsItem *lastActivePanel = d->activePanel;
+                    d->setActivePanelHelper( nullptr, true );
+                    d->lastActivePanel = lastActivePanel;
+
+                }
+                else
+                {
+                    // Activate all toplevel items.
+                    QEvent deactivateEvent( QEvent::WindowDeactivate );
+
+                    for ( QGraphicsItem *item : items() )
                     {
-                        sendEvent( item, &deactivateEvent );
+                        if ( item->isVisible() && ! item->isPanel() && ! item->parentItem() )
+                        {
+                            sendEvent( item, &deactivateEvent );
+                        }
                     }
                 }
             }
+
+            break;
+
+        case QEvent::ApplicationFontChange:
+        {
+            // Resolve the existing scene font.
+            d->resolveFont();
+            break;
         }
 
-        break;
+        case QEvent::FontChange:
+            // Update the entire scene when the font changes.
+            update();
+            break;
 
-    case QEvent::ApplicationFontChange:
-    {
-        // Resolve the existing scene font.
-        d->resolveFont();
-        break;
-    }
+        case QEvent::ApplicationPaletteChange:
+        {
+            // Resolve the existing scene palette.
+            d->resolvePalette();
+            break;
+        }
 
-    case QEvent::FontChange:
-        // Update the entire scene when the font changes.
-        update();
-        break;
+        case QEvent::PaletteChange:
+            // Update the entire scene when the palette changes.
+            update();
+            break;
 
-    case QEvent::ApplicationPaletteChange:
-    {
-        // Resolve the existing scene palette.
-        d->resolvePalette();
-        break;
-    }
+        case QEvent::StyleChange:
+            // Reresolve all widgets' styles. Update all top-level widgets'
+            // geometries that do not have an explicit style set.
+            update();
+            break;
 
-    case QEvent::PaletteChange:
-        // Update the entire scene when the palette changes.
-        update();
-        break;
+        case QEvent::StyleAnimationUpdate:
+            // Because QGraphicsItem is not a QObject, QStyle driven
+            // animations are forced to update the whole scene
+            update();
+            break;
 
-    case QEvent::StyleChange:
-        // Reresolve all widgets' styles. Update all top-level widgets'
-        // geometries that do not have an explicit style set.
-        update();
-        break;
-
-    case QEvent::StyleAnimationUpdate:
-        // Because QGraphicsItem is not a QObject, QStyle driven
-        // animations are forced to update the whole scene
-        update();
-        break;
-
-    case QEvent::TouchBegin:
-    case QEvent::TouchUpdate:
-    case QEvent::TouchEnd:
-        d->touchEventHandler( static_cast<QTouchEvent *>( event ) );
-        break;
+        case QEvent::TouchBegin:
+        case QEvent::TouchUpdate:
+        case QEvent::TouchEnd:
+            d->touchEventHandler( static_cast<QTouchEvent *>( event ) );
+            break;
 
 #ifndef LSCS_NO_GESTURES
 
-    case QEvent::Gesture:
-    case QEvent::GestureOverride:
-        d->gestureEventHandler( static_cast<QGestureEvent *>( event ) );
-        break;
+        case QEvent::Gesture:
+        case QEvent::GestureOverride:
+            d->gestureEventHandler( static_cast<QGestureEvent *>( event ) );
+            break;
 #endif
 
-    default:
-        return QObject::event( event );
+        default:
+            return QObject::event( event );
     }
 
     return true;
@@ -3050,16 +3050,16 @@ bool QGraphicsScene::eventFilter( QObject *watched, QEvent *event )
 
     switch ( event->type() )
     {
-    case QEvent::ApplicationPaletteChange:
-        QApplication::postEvent( this, new QEvent( QEvent::ApplicationPaletteChange ) );
-        break;
+        case QEvent::ApplicationPaletteChange:
+            QApplication::postEvent( this, new QEvent( QEvent::ApplicationPaletteChange ) );
+            break;
 
-    case QEvent::ApplicationFontChange:
-        QApplication::postEvent( this, new QEvent( QEvent::ApplicationFontChange ) );
-        break;
+        case QEvent::ApplicationFontChange:
+            QApplication::postEvent( this, new QEvent( QEvent::ApplicationFontChange ) );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return false;
@@ -3225,30 +3225,30 @@ void QGraphicsScene::focusInEvent( QFocusEvent *focusEvent )
 
     switch ( focusEvent->reason() )
     {
-    case Qt::TabFocusReason:
-        if ( !focusNextPrevChild( true ) )
-        {
-            focusEvent->ignore();
-        }
+        case Qt::TabFocusReason:
+            if ( !focusNextPrevChild( true ) )
+            {
+                focusEvent->ignore();
+            }
 
-        break;
+            break;
 
-    case Qt::BacktabFocusReason:
-        if ( !focusNextPrevChild( false ) )
-        {
-            focusEvent->ignore();
-        }
+        case Qt::BacktabFocusReason:
+            if ( !focusNextPrevChild( false ) )
+            {
+                focusEvent->ignore();
+            }
 
-        break;
+            break;
 
-    default:
-        if ( d->passiveFocusItem )
-        {
-            // Set focus on the last focus item
-            setFocusItem( d->passiveFocusItem, focusEvent->reason() );
-        }
+        default:
+            if ( d->passiveFocusItem )
+            {
+                // Set focus on the last focus item
+                setFocusItem( d->passiveFocusItem, focusEvent->reason() );
+            }
 
-        break;
+            break;
     }
 }
 
@@ -3585,7 +3585,7 @@ void QGraphicsScene::wheelEvent( QGraphicsSceneWheelEvent *wheelEvent )
     Q_D( QGraphicsScene );
 
     QList<QGraphicsItem *> wheelCandidates = d->itemsAtPosition( wheelEvent->screenPos(),
-        wheelEvent->scenePos(), wheelEvent->widget() );
+            wheelEvent->scenePos(), wheelEvent->widget() );
 
     if ( ! wheelCandidates.isEmpty() )
     {
@@ -4430,7 +4430,7 @@ void QGraphicsScenePrivate::drawSubtreeRecursive( QGraphicsItem *item, QPainter 
         QGraphicsEffectSource *source = item->d_ptr->graphicsEffect->d_func()->source;
 
         QGraphicsItemEffectSourcePrivate *sourced = static_cast<QGraphicsItemEffectSourcePrivate *>
-            ( source->d_func() );
+                ( source->d_func() );
 
         sourced->info = &info;
         const QTransform restoreTransform = painter->worldTransform();
@@ -5660,24 +5660,24 @@ void QGraphicsScenePrivate::touchEventHandler( QTouchEvent *sceneTouchEvent )
 
         switch ( it.value().first )
         {
-        case Qt::TouchPointPressed:
-            // all touch points have pressed state
-            eventType = QEvent::TouchBegin;
-            break;
+            case Qt::TouchPointPressed:
+                // all touch points have pressed state
+                eventType = QEvent::TouchBegin;
+                break;
 
-        case Qt::TouchPointReleased:
-            // all touch points have released state
-            eventType = QEvent::TouchEnd;
-            break;
+            case Qt::TouchPointReleased:
+                // all touch points have released state
+                eventType = QEvent::TouchEnd;
+                break;
 
-        case Qt::TouchPointStationary:
-            // don't send the event if nothing changed
-            continue;
+            case Qt::TouchPointStationary:
+                // don't send the event if nothing changed
+                continue;
 
-        default:
-            // all other combinations
-            eventType = QEvent::TouchUpdate;
-            break;
+            default:
+                // all other combinations
+                eventType = QEvent::TouchUpdate;
+                break;
         }
 
         QTouchEvent touchEvent( eventType );
@@ -5691,39 +5691,39 @@ void QGraphicsScenePrivate::touchEventHandler( QTouchEvent *sceneTouchEvent )
 
         switch ( touchEvent.type() )
         {
-        case QEvent::TouchBegin:
-        {
-            // if the TouchBegin handler recurses, we assume that means the event
-            // has been implicitly accepted and continue to send touch events
-            item->d_ptr->acceptedTouchBeginEvent = true;
-
-            bool res = sendTouchBeginEvent( item, &touchEvent ) && touchEvent.isAccepted();
-
-            if ( ! res )
+            case QEvent::TouchBegin:
             {
-                // forget about these touch points, we didn't handle them
-                for ( int i = 0; i < touchEvent.touchPoints().count(); ++i )
+                // if the TouchBegin handler recurses, we assume that means the event
+                // has been implicitly accepted and continue to send touch events
+                item->d_ptr->acceptedTouchBeginEvent = true;
+
+                bool res = sendTouchBeginEvent( item, &touchEvent ) && touchEvent.isAccepted();
+
+                if ( ! res )
                 {
-                    const QTouchEvent::TouchPoint &touchPoint = touchEvent.touchPoints().at( i );
-                    itemForTouchPointId.remove( touchPoint.id() );
-                    sceneCurrentTouchPoints.remove( touchPoint.id() );
+                    // forget about these touch points, we didn't handle them
+                    for ( int i = 0; i < touchEvent.touchPoints().count(); ++i )
+                    {
+                        const QTouchEvent::TouchPoint &touchPoint = touchEvent.touchPoints().at( i );
+                        itemForTouchPointId.remove( touchPoint.id() );
+                        sceneCurrentTouchPoints.remove( touchPoint.id() );
+                    }
+
+                    ignoreSceneTouchEvent = false;
                 }
 
-                ignoreSceneTouchEvent = false;
+                break;
             }
 
-            break;
-        }
+            default:
+                if ( item->d_ptr->acceptedTouchBeginEvent )
+                {
+                    updateTouchPointsForItem( item, &touchEvent );
+                    ( void ) sendEvent( item, &touchEvent );
+                    ignoreSceneTouchEvent = false;
+                }
 
-        default:
-            if ( item->d_ptr->acceptedTouchBeginEvent )
-            {
-                updateTouchPointsForItem( item, &touchEvent );
-                ( void ) sendEvent( item, &touchEvent );
-                ignoreSceneTouchEvent = false;
-            }
-
-            break;
+                break;
         }
     }
 
@@ -6388,13 +6388,13 @@ void QGraphicsScenePrivate::gestureEventHandler( QGestureEvent *event )
     {
         switch ( g->state() )
         {
-        case Qt::GestureFinished:
-        case Qt::GestureCanceled:
-            gestureTargets.remove( g );
-            break;
+            case Qt::GestureFinished:
+            case Qt::GestureCanceled:
+                gestureTargets.remove( g );
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 

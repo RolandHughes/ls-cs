@@ -44,13 +44,13 @@ QNetworkAccessBackend *QNetworkAccessFileBackendFactory::create( QNetworkAccessM
     // is it an operation we know of?
     switch ( op )
     {
-    case QNetworkAccessManager::GetOperation:
-    case QNetworkAccessManager::PutOperation:
-        break;
+        case QNetworkAccessManager::GetOperation:
+        case QNetworkAccessManager::PutOperation:
+            break;
 
-    default:
-        // no, we can't handle this operation
-        return nullptr;
+        default:
+            // no, we can't handle this operation
+            return nullptr;
     }
 
     QUrl url = request.url();
@@ -148,22 +148,22 @@ void QNetworkAccessFileBackend::open()
 
     switch ( operation() )
     {
-    case QNetworkAccessManager::GetOperation:
-        mode = QIODevice::ReadOnly;
-        break;
+        case QNetworkAccessManager::GetOperation:
+            mode = QIODevice::ReadOnly;
+            break;
 
-    case QNetworkAccessManager::PutOperation:
-        mode = QIODevice::WriteOnly | QIODevice::Truncate;
-        uploadByteDevice = createUploadByteDevice();
+        case QNetworkAccessManager::PutOperation:
+            mode = QIODevice::WriteOnly | QIODevice::Truncate;
+            uploadByteDevice = createUploadByteDevice();
 
-        QObject::connect( uploadByteDevice, &QNonContiguousByteDevice::readyRead, this, &QNetworkAccessFileBackend::uploadReadyReadSlot );
-        QMetaObject::invokeMethod( this, "uploadReadyReadSlot", Qt::QueuedConnection );
+            QObject::connect( uploadByteDevice, &QNonContiguousByteDevice::readyRead, this, &QNetworkAccessFileBackend::uploadReadyReadSlot );
+            QMetaObject::invokeMethod( this, "uploadReadyReadSlot", Qt::QueuedConnection );
 
-        break;
+            break;
 
-    default:
-        Q_ASSERT_X( false, "QNetworkAccessFileBackend::open", "Received a request operation which can not be handled" );
-        return;
+        default:
+            Q_ASSERT_X( false, "QNetworkAccessFileBackend::open", "Received a request operation which can not be handled" );
+            return;
     }
 
     mode |= QIODevice::Unbuffered;

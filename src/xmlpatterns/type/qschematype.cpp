@@ -37,13 +37,13 @@ bool SchemaType::isSimpleType() const
 {
     switch ( category() )
     {
-    case SimpleTypeAtomic:
-    case SimpleTypeList:
-    case SimpleTypeUnion:
-        return true;
+        case SimpleTypeAtomic:
+        case SimpleTypeList:
+        case SimpleTypeUnion:
+            return true;
 
-    default:
-        return false;
+        default:
+            return false;
     }
 }
 

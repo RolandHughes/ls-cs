@@ -577,32 +577,32 @@ bool QXmlStreamReaderPrivate::scanUntil( const char *str, short tokenToInject )
 
         switch ( c )
         {
-        case '\r':
-            if ( ( c = filterCarriageReturn() ) == 0 )
-            {
-                break;
-            }
+            case '\r':
+                if ( ( c = filterCarriageReturn() ) == 0 )
+                {
+                    break;
+                }
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-        case '\n':
-            ++lineNumber;
-            lastLineStart = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
-            [[fallthrough]];
+            case '\n':
+                ++lineNumber;
+                lastLineStart = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
+                [[fallthrough]];
 
-        case '\t':
-            textBuffer += char32_t( c );
-            continue;
+            case '\t':
+                textBuffer += char32_t( c );
+                continue;
 
-        default:
-            if ( c < 0x20 || ( c > 0xFFFD && c < 0x10000 ) || c > 0x10FFFF )
-            {
-                raiseWellFormedError( QXmlStream::tr( "Invalid XML character." ) );
-                lineNumber = oldLineNumber;
-                return false;
-            }
+            default:
+                if ( c < 0x20 || ( c > 0xFFFD && c < 0x10000 ) || c > 0x10FFFF )
+                {
+                    raiseWellFormedError( QXmlStream::tr( "Invalid XML character." ) );
+                    lineNumber = oldLineNumber;
+                    return false;
+                }
 
-            textBuffer += char32_t( c );
+                textBuffer += char32_t( c );
         }
 
         // Second, attempt to lookup str
@@ -692,28 +692,28 @@ bool QXmlStreamReaderPrivate::scanAfterLangleBang()
 {
     switch ( peekChar() )
     {
-    case '[':
-        return scanString( spell[CDATA_START], CDATA_START, false );
+        case '[':
+            return scanString( spell[CDATA_START], CDATA_START, false );
 
-    case 'D':
-        return scanString( spell[DOCTYPE], DOCTYPE );
+        case 'D':
+            return scanString( spell[DOCTYPE], DOCTYPE );
 
-    case 'A':
-        return scanString( spell[ATTLIST], ATTLIST );
+        case 'A':
+            return scanString( spell[ATTLIST], ATTLIST );
 
-    case 'N':
-        return scanString( spell[NOTATION], NOTATION );
+        case 'N':
+            return scanString( spell[NOTATION], NOTATION );
 
-    case 'E':
-        if ( scanString( spell[ELEMENT], ELEMENT ) )
-        {
-            return true;
-        }
+        case 'E':
+            if ( scanString( spell[ELEMENT], ELEMENT ) )
+            {
+                return true;
+            }
 
-        return scanString( spell[ENTITY], ENTITY );
+            return scanString( spell[ENTITY], ENTITY );
 
-    default:
-        ;
+        default:
+            ;
     }
 
     return false;
@@ -723,14 +723,14 @@ bool QXmlStreamReaderPrivate::scanPublicOrSystem()
 {
     switch ( peekChar() )
     {
-    case 'S':
-        return scanString( spell[SYSTEM], SYSTEM );
+        case 'S':
+            return scanString( spell[SYSTEM], SYSTEM );
 
-    case 'P':
-        return scanString( spell[PUBLIC], PUBLIC );
+        case 'P':
+            return scanString( spell[PUBLIC], PUBLIC );
 
-    default:
-        ;
+        default:
+            ;
     }
 
     return false;
@@ -755,17 +755,17 @@ bool QXmlStreamReaderPrivate::scanAfterDefaultDecl()
 {
     switch ( peekChar() )
     {
-    case 'R':
-        return scanString( spell[REQUIRED], REQUIRED, false );
+        case 'R':
+            return scanString( spell[REQUIRED], REQUIRED, false );
 
-    case 'I':
-        return scanString( spell[IMPLIED], IMPLIED, false );
+        case 'I':
+            return scanString( spell[IMPLIED], IMPLIED, false );
 
-    case 'F':
-        return scanString( spell[FIXED], FIXED, false );
+        case 'F':
+            return scanString( spell[FIXED], FIXED, false );
 
-    default:
-        ;
+        default:
+            ;
     }
 
     return false;
@@ -775,45 +775,45 @@ bool QXmlStreamReaderPrivate::scanAttType()
 {
     switch ( peekChar() )
     {
-    case 'C':
-        return scanString( spell[CDATA], CDATA );
+        case 'C':
+            return scanString( spell[CDATA], CDATA );
 
-    case 'I':
-        if ( scanString( spell[ID], ID ) )
-        {
-            return true;
-        }
+        case 'I':
+            if ( scanString( spell[ID], ID ) )
+            {
+                return true;
+            }
 
-        if ( scanString( spell[IDREF], IDREF ) )
-        {
-            return true;
-        }
+            if ( scanString( spell[IDREF], IDREF ) )
+            {
+                return true;
+            }
 
-        return scanString( spell[IDREFS], IDREFS );
+            return scanString( spell[IDREFS], IDREFS );
 
-    case 'E':
-        if ( scanString( spell[ENTITY], ENTITY ) )
-        {
-            return true;
-        }
+        case 'E':
+            if ( scanString( spell[ENTITY], ENTITY ) )
+            {
+                return true;
+            }
 
-        return scanString( spell[ENTITIES], ENTITIES );
+            return scanString( spell[ENTITIES], ENTITIES );
 
-    case 'N':
-        if ( scanString( spell[NOTATION], NOTATION ) )
-        {
-            return true;
-        }
+        case 'N':
+            if ( scanString( spell[NOTATION], NOTATION ) )
+            {
+                return true;
+            }
 
-        if ( scanString( spell[NMTOKEN], NMTOKEN ) )
-        {
-            return true;
-        }
+            if ( scanString( spell[NMTOKEN], NMTOKEN ) )
+            {
+                return true;
+            }
 
-        return scanString( spell[NMTOKENS], NMTOKENS );
+            return scanString( spell[NMTOKENS], NMTOKENS );
 
-    default:
-        ;
+        default:
+            ;
     }
 
     return false;
@@ -828,57 +828,57 @@ inline int QXmlStreamReaderPrivate::fastScanLiteralContent()
     {
         switch ( ushort( c ) )
         {
-        case 0xfffe:
-        case 0xffff:
-        case 0:
-            /* The putChar() call is necessary so the parser re-gets
-             * the character from the input source, when raising an error. */
-            putChar( c );
-            return n;
-
-        case '\r':
-            if ( filterCarriageReturn() == 0 )
-            {
-                return n;
-            }
-
-            [[fallthrough]];
-
-        case '\n':
-            ++lineNumber;
-            lastLineStart = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
-
-            [[fallthrough]];
-
-        case ' ':
-        case '\t':
-            if ( normalizeLiterals )
-            {
-                textBuffer += ' ';
-            }
-            else
-            {
-                textBuffer += char32_t( c );
-            }
-
-            ++n;
-            break;
-
-        case '&':
-        case '<':
-        case '\"':
-        case '\'':
-            if ( !( c & 0xff0000 ) )
-            {
+            case 0xfffe:
+            case 0xffff:
+            case 0:
+                /* The putChar() call is necessary so the parser re-gets
+                 * the character from the input source, when raising an error. */
                 putChar( c );
                 return n;
-            }
 
-            [[fallthrough]];
+            case '\r':
+                if ( filterCarriageReturn() == 0 )
+                {
+                    return n;
+                }
 
-        default:
-            textBuffer += char32_t( c );
-            ++n;
+                [[fallthrough]];
+
+            case '\n':
+                ++lineNumber;
+                lastLineStart = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
+
+                [[fallthrough]];
+
+            case ' ':
+            case '\t':
+                if ( normalizeLiterals )
+                {
+                    textBuffer += ' ';
+                }
+                else
+                {
+                    textBuffer += char32_t( c );
+                }
+
+                ++n;
+                break;
+
+            case '&':
+            case '<':
+            case '\"':
+            case '\'':
+                if ( !( c & 0xff0000 ) )
+                {
+                    putChar( c );
+                    return n;
+                }
+
+                [[fallthrough]];
+
+            default:
+                textBuffer += char32_t( c );
+                ++n;
         }
     }
 
@@ -894,28 +894,28 @@ inline int QXmlStreamReaderPrivate::fastScanSpace()
     {
         switch ( c )
         {
-        case '\r':
-            if ( ( c = filterCarriageReturn() ) == 0 )
-            {
+            case '\r':
+                if ( ( c = filterCarriageReturn() ) == 0 )
+                {
+                    return n;
+                }
+
+                [[fallthrough]];
+
+            case '\n':
+                ++lineNumber;
+                lastLineStart = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
+                [[fallthrough]];
+
+            case ' ':
+            case '\t':
+                textBuffer += char32_t( c );
+                ++n;
+                break;
+
+            default:
+                putChar( c );
                 return n;
-            }
-
-            [[fallthrough]];
-
-        case '\n':
-            ++lineNumber;
-            lastLineStart = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
-            [[fallthrough]];
-
-        case ' ':
-        case '\t':
-            textBuffer += char32_t( c );
-            ++n;
-            break;
-
-        default:
-            putChar( c );
-            return n;
         }
     }
 
@@ -931,85 +931,85 @@ inline int QXmlStreamReaderPrivate::fastScanContentCharList()
     {
         switch ( ushort( c ) )
         {
-        case 0xfffe:
-        case 0xffff:
-        case 0:
-            putChar( c );
-            return n;
+            case 0xfffe:
+            case 0xffff:
+            case 0:
+                putChar( c );
+                return n;
 
-        case ']':
-        {
-            isWhitespace = false;
-            int pos = textBuffer.size();
-            textBuffer += QChar( ushort( c ) );
-            ++n;
-
-            while ( ( c = getChar() ) == ']' )
+            case ']':
             {
+                isWhitespace = false;
+                int pos = textBuffer.size();
                 textBuffer += QChar( ushort( c ) );
                 ++n;
-            }
 
-            if ( c == 0 )
-            {
-                putString( textBuffer, pos );
-                textBuffer.resize( pos );
+                while ( ( c = getChar() ) == ']' )
+                {
+                    textBuffer += QChar( ushort( c ) );
+                    ++n;
+                }
 
-            }
-            else if ( c == '>' && textBuffer.at( textBuffer.size() - 2 ) == ']' )
-            {
-                raiseWellFormedError( QXmlStream::tr( "Sequence ']]>' not allowed in content." ) );
+                if ( c == 0 )
+                {
+                    putString( textBuffer, pos );
+                    textBuffer.resize( pos );
 
-            }
-            else
-            {
-                putChar( c );
-                break;
-            }
+                }
+                else if ( c == '>' && textBuffer.at( textBuffer.size() - 2 ) == ']' )
+                {
+                    raiseWellFormedError( QXmlStream::tr( "Sequence ']]>' not allowed in content." ) );
 
-            return n;
-        }
-        break;
+                }
+                else
+                {
+                    putChar( c );
+                    break;
+                }
 
-        case '\r':
-            if ( ( c = filterCarriageReturn() ) == 0 )
-            {
                 return n;
             }
-
-            [[fallthrough]];
-
-        case '\n':
-            ++lineNumber;
-            lastLineStart = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
-            [[fallthrough]];
-
-        case ' ':
-        case '\t':
-            textBuffer += QChar( ushort( c ) );
-            ++n;
             break;
 
-        case '&':
-        case '<':
-            if ( !( c & 0xff0000 ) )
-            {
-                putChar( c );
-                return n;
-            }
+            case '\r':
+                if ( ( c = filterCarriageReturn() ) == 0 )
+                {
+                    return n;
+                }
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-        default:
-            if ( c < 0x20 )
-            {
-                putChar( c );
-                return n;
-            }
+            case '\n':
+                ++lineNumber;
+                lastLineStart = characterOffset + ( readBuffer_Iter - readBuffer.cbegin() );
+                [[fallthrough]];
 
-            isWhitespace = false;
-            textBuffer += QChar( ushort( c ) );
-            ++n;
+            case ' ':
+            case '\t':
+                textBuffer += QChar( ushort( c ) );
+                ++n;
+                break;
+
+            case '&':
+            case '<':
+                if ( !( c & 0xff0000 ) )
+                {
+                    putChar( c );
+                    return n;
+                }
+
+                [[fallthrough]];
+
+            default:
+                if ( c < 0x20 )
+                {
+                    putChar( c );
+                    return n;
+                }
+
+                isWhitespace = false;
+                textBuffer += QChar( ushort( c ) );
+                ++n;
         }
     }
 
@@ -1025,66 +1025,66 @@ inline int QXmlStreamReaderPrivate::fastScanName( int *prefix )
     {
         switch ( c )
         {
-        case '\n':
-        case ' ':
-        case '\t':
-        case '\r':
-        case '&':
-        case '#':
-        case '\'':
-        case '\"':
-        case '<':
-        case '>':
-        case '[':
-        case ']':
-        case '=':
-        case '%':
-        case '/':
-        case ';':
-        case '?':
-        case '!':
-        case '^':
-        case '|':
-        case ',':
-        case '(':
-        case ')':
-        case '+':
-        case '*':
-            putChar( c );
+            case '\n':
+            case ' ':
+            case '\t':
+            case '\r':
+            case '&':
+            case '#':
+            case '\'':
+            case '\"':
+            case '<':
+            case '>':
+            case '[':
+            case ']':
+            case '=':
+            case '%':
+            case '/':
+            case ';':
+            case '?':
+            case '!':
+            case '^':
+            case '|':
+            case ',':
+            case '(':
+            case ')':
+            case '+':
+            case '*':
+                putChar( c );
 
-            if ( prefix && *prefix == n + 1 )
-            {
-                *prefix = 0;
-                putChar( ':' );
-                --n;
-            }
-
-            return n;
-
-        case ':':
-            if ( prefix )
-            {
-                if ( *prefix == 0 )
+                if ( prefix && *prefix == n + 1 )
                 {
-                    *prefix = n + 2;
+                    *prefix = 0;
+                    putChar( ':' );
+                    --n;
                 }
-                else     // only one colon allowed according to the namespace spec.
+
+                return n;
+
+            case ':':
+                if ( prefix )
+                {
+                    if ( *prefix == 0 )
+                    {
+                        *prefix = n + 2;
+                    }
+                    else     // only one colon allowed according to the namespace spec.
+                    {
+                        putChar( c );
+                        return n;
+                    }
+                }
+                else
                 {
                     putChar( c );
                     return n;
                 }
-            }
-            else
-            {
-                putChar( c );
-                return n;
-            }
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-        default:
-            textBuffer += QChar( c );
-            ++n;
+            default:
+                textBuffer += QChar( c );
+                ++n;
         }
     }
 
@@ -1628,36 +1628,36 @@ void QXmlStreamReaderPrivate::checkPublicLiteral( QStringView publicId )
 
             switch ( uc )
             {
-            case ' ':
-            case '\n':
-            case '\r':
-            case '-':
-            case '(':
-            case ')':
-            case '+':
-            case ',':
-            case '.':
-            case '/':
-            case ':':
-            case '=':
-            case '?':
-            case ';':
-            case '!':
-            case '*':
-            case '#':
-            case '@':
-            case '$':
-            case '_':
-            case '%':
-            case '\'':
-            case '\"':
-                continue;
-
-            default:
-                if ( ( uc >= 'a' && uc <= 'z' ) || ( uc >= 'A' && uc <= 'Z' ) || ( uc >= '0' && uc <= '9' ) )
-                {
+                case ' ':
+                case '\n':
+                case '\r':
+                case '-':
+                case '(':
+                case ')':
+                case '+':
+                case ',':
+                case '.':
+                case '/':
+                case ':':
+                case '=':
+                case '?':
+                case ';':
+                case '!':
+                case '*':
+                case '#':
+                case '@':
+                case '$':
+                case '_':
+                case '%':
+                case '\'':
+                case '\"':
                     continue;
-                }
+
+                default:
+                    if ( ( uc >= 'a' && uc <= 'z' ) || ( uc >= 'A' && uc <= 'Z' ) || ( uc >= '0' && uc <= '9' ) )
+                    {
+                        continue;
+                    }
             }
         }
 
@@ -2034,43 +2034,43 @@ QString QXmlStreamReader::readElementText( ReadElementTextBehaviour behaviour )
         {
             switch ( readNext() )
             {
-            case Characters:
-            case EntityReference:
-                result.append( d->text );
-                break;
-
-            case EndElement:
-                return result;
-
-            case ProcessingInstruction:
-            case Comment:
-                break;
-
-            case StartElement:
-                if ( behaviour == SkipChildElements )
-                {
-                    skipCurrentElement();
+                case Characters:
+                case EntityReference:
+                    result.append( d->text );
                     break;
 
-                }
-                else if ( behaviour == IncludeChildElements )
-                {
-                    result += readElementText( behaviour );
+                case EndElement:
+                    return result;
+
+                case ProcessingInstruction:
+                case Comment:
                     break;
-                }
 
-                [[fallthrough]];
-
-            default:
-                if ( d->error || behaviour == ErrorOnUnexpectedElement )
-                {
-                    if ( ! d->error )
+                case StartElement:
+                    if ( behaviour == SkipChildElements )
                     {
-                        d->raiseError( UnexpectedElementError, QXmlStream::tr( "Expected character data." ) );
+                        skipCurrentElement();
+                        break;
+
+                    }
+                    else if ( behaviour == IncludeChildElements )
+                    {
+                        result += readElementText( behaviour );
+                        break;
                     }
 
-                    return result;
-                }
+                    [[fallthrough]];
+
+                default:
+                    if ( d->error || behaviour == ErrorOnUnexpectedElement )
+                    {
+                        if ( ! d->error )
+                        {
+                            d->raiseError( UnexpectedElementError, QXmlStream::tr( "Expected character data." ) );
+                        }
+
+                        return result;
+                    }
             }
         }
     }
@@ -3188,69 +3188,69 @@ void QXmlStreamWriter::writeCurrentToken( const QXmlStreamReader &reader )
 {
     switch ( reader.tokenType() )
     {
-    case QXmlStreamReader::NoToken:
-        break;
+        case QXmlStreamReader::NoToken:
+            break;
 
-    case QXmlStreamReader::StartDocument:
-        writeStartDocument();
-        break;
+        case QXmlStreamReader::StartDocument:
+            writeStartDocument();
+            break;
 
-    case QXmlStreamReader::EndDocument:
-        writeEndDocument();
-        break;
+        case QXmlStreamReader::EndDocument:
+            writeEndDocument();
+            break;
 
-    case QXmlStreamReader::StartElement:
-    {
-        QXmlStreamNamespaceDeclarations namespaceDeclarations = reader.namespaceDeclarations();
-
-        for ( int i = 0; i < namespaceDeclarations.size(); ++i )
+        case QXmlStreamReader::StartElement:
         {
-            const QXmlStreamNamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.at( i );
-            writeNamespace( namespaceDeclaration.namespaceUri().toString(),
-                            namespaceDeclaration.prefix().toString() );
+            QXmlStreamNamespaceDeclarations namespaceDeclarations = reader.namespaceDeclarations();
+
+            for ( int i = 0; i < namespaceDeclarations.size(); ++i )
+            {
+                const QXmlStreamNamespaceDeclaration &namespaceDeclaration = namespaceDeclarations.at( i );
+                writeNamespace( namespaceDeclaration.namespaceUri().toString(),
+                                namespaceDeclaration.prefix().toString() );
+            }
+
+            writeStartElement( reader.namespaceUri().toString(), reader.name().toString() );
+            writeAttributes( reader.attributes() );
         }
-
-        writeStartElement( reader.namespaceUri().toString(), reader.name().toString() );
-        writeAttributes( reader.attributes() );
-    }
-    break;
-
-    case QXmlStreamReader::EndElement:
-        writeEndElement();
         break;
 
-    case QXmlStreamReader::Characters:
-        if ( reader.isCDATA() )
-        {
-            writeCDATA( reader.text().toString() );
-        }
-        else
-        {
-            writeCharacters( reader.text().toString() );
-        }
+        case QXmlStreamReader::EndElement:
+            writeEndElement();
+            break;
 
-        break;
+        case QXmlStreamReader::Characters:
+            if ( reader.isCDATA() )
+            {
+                writeCDATA( reader.text().toString() );
+            }
+            else
+            {
+                writeCharacters( reader.text().toString() );
+            }
 
-    case QXmlStreamReader::Comment:
-        writeComment( reader.text().toString() );
-        break;
+            break;
 
-    case QXmlStreamReader::DTD:
-        writeDTD( reader.text().toString() );
-        break;
+        case QXmlStreamReader::Comment:
+            writeComment( reader.text().toString() );
+            break;
 
-    case QXmlStreamReader::EntityReference:
-        writeEntityReference( reader.name().toString() );
-        break;
+        case QXmlStreamReader::DTD:
+            writeDTD( reader.text().toString() );
+            break;
 
-    case QXmlStreamReader::ProcessingInstruction:
-        writeProcessingInstruction( reader.processingInstructionTarget().toString(),
-                                    reader.processingInstructionData().toString() );
-        break;
+        case QXmlStreamReader::EntityReference:
+            writeEntityReference( reader.name().toString() );
+            break;
 
-    default:
-        Q_ASSERT( reader.tokenType() != QXmlStreamReader::Invalid );
-        qWarning( "QXmlStreamWriter::writeCurrentToken() Invalid state" );
-        break;
+        case QXmlStreamReader::ProcessingInstruction:
+            writeProcessingInstruction( reader.processingInstructionTarget().toString(),
+                                        reader.processingInstructionData().toString() );
+            break;
+
+        default:
+            Q_ASSERT( reader.tokenType() != QXmlStreamReader::Invalid );
+            qWarning( "QXmlStreamWriter::writeCurrentToken() Invalid state" );
+            break;
     }
 }

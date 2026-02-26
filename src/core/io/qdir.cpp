@@ -248,43 +248,43 @@ bool QDirSortItemComparator::operator()( const QDirSortItem &n1, const QDirSortI
 
     switch ( sortBy )
     {
-    case QDir::Time:
-    {
-        QDateTime firstModified  = f1->item.lastModified();
-        QDateTime secondModified = f2->item.lastModified();
-
-        firstModified.setTimeZone( QTimeZone::utc() );
-        secondModified.setTimeZone( QTimeZone::utc() );
-
-        r = firstModified.msecsTo( secondModified );
-        break;
-    }
-
-    case QDir::Size:
-        r = f2->item.size() - f1->item.size();
-        break;
-
-    case QDir::Type:
-    {
-        bool ic = lscs_cmp_si_sort_flags & QDir::IgnoreCase;
-
-        if ( f1->suffix_cache.isEmpty() )
+        case QDir::Time:
         {
-            f1->suffix_cache = ic ? f1->item.suffix().toLower() : f1->item.suffix();
+            QDateTime firstModified  = f1->item.lastModified();
+            QDateTime secondModified = f2->item.lastModified();
+
+            firstModified.setTimeZone( QTimeZone::utc() );
+            secondModified.setTimeZone( QTimeZone::utc() );
+
+            r = firstModified.msecsTo( secondModified );
+            break;
         }
 
-        if ( f2->suffix_cache.isEmpty() )
+        case QDir::Size:
+            r = f2->item.size() - f1->item.size();
+            break;
+
+        case QDir::Type:
         {
-            f2->suffix_cache = ic ? f2->item.suffix().toLower() : f2->item.suffix();
+            bool ic = lscs_cmp_si_sort_flags & QDir::IgnoreCase;
+
+            if ( f1->suffix_cache.isEmpty() )
+            {
+                f1->suffix_cache = ic ? f1->item.suffix().toLower() : f1->item.suffix();
+            }
+
+            if ( f2->suffix_cache.isEmpty() )
+            {
+                f2->suffix_cache = ic ? f2->item.suffix().toLower() : f2->item.suffix();
+            }
+
+            r = lscs_cmp_si_sort_flags & QDir::LocaleAware
+                ? f1->suffix_cache.localeAwareCompare( f2->suffix_cache ) : f1->suffix_cache.compare( f2->suffix_cache );
         }
+        break;
 
-        r = lscs_cmp_si_sort_flags & QDir::LocaleAware
-            ? f1->suffix_cache.localeAwareCompare( f2->suffix_cache ) : f1->suffix_cache.compare( f2->suffix_cache );
-    }
-    break;
-
-    default:
-        ;
+        default:
+            ;
     }
 
     if ( r == 0 && sortBy != QDir::Unsorted )
@@ -1696,8 +1696,8 @@ static QDebug operator<<( QDebug debug, QDir::SortFlags sorting )
         }
 
         debug.noquote() << "QDir::SortFlags(" << lscsPrintable( type )
-             << '|'
-             << lscsPrintable( flags.join( "|" ) ) << ')';
+                        << '|'
+                        << lscsPrintable( flags.join( "|" ) ) << ')';
     }
 
     return debug;

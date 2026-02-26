@@ -89,17 +89,17 @@ protected:
     {
         switch ( m_role )
         {
-        case QAccessible::List:
-            return QAccessible::ListItem;
+            case QAccessible::List:
+                return QAccessible::ListItem;
 
-        case QAccessible::Table:
-            return QAccessible::Cell;
+            case QAccessible::Table:
+                return QAccessible::Cell;
 
-        case QAccessible::Tree:
-            return QAccessible::TreeItem;
+            case QAccessible::Tree:
+                return QAccessible::TreeItem;
 
-        default:
-            Q_ASSERT( 0 );
+            default:
+                Q_ASSERT( 0 );
         }
 
         return QAccessible::NoRole;

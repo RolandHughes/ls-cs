@@ -515,470 +515,470 @@ static bool bidiItemize( QTextEngine *engine, QScriptAnalysis *analysis, QBidiCo
         switch ( dirCurrent )
         {
 
-        // embedding and overrides (X1-X9 in the BiDi specs)
-        case QChar::DirRLE:
-        case QChar::DirRLO:
-        case QChar::DirLRE:
-        case QChar::DirLRO:
-        {
-            bool rtl = ( dirCurrent == QChar::DirRLE || dirCurrent == QChar::DirRLO );
-            hasBidi |= rtl;
-            bool override = ( dirCurrent == QChar::DirLRO || dirCurrent == QChar::DirRLO );
-
-            unsigned int level = control.level + 1;
-
-            if ( ( level % 2 != 0 ) == rtl )
+            // embedding and overrides (X1-X9 in the BiDi specs)
+            case QChar::DirRLE:
+            case QChar::DirRLO:
+            case QChar::DirLRE:
+            case QChar::DirLRO:
             {
-                ++level;
-            }
+                bool rtl = ( dirCurrent == QChar::DirRLE || dirCurrent == QChar::DirRLO );
+                hasBidi |= rtl;
+                bool override = ( dirCurrent == QChar::DirLRO || dirCurrent == QChar::DirRLO );
 
-            if ( level < MaxBidiLevel )
-            {
-                eor = current - 1;
-                appendItems( analysis, sor, eor, control, dir );
-                eor = current;
-                control.embed( rtl, override );
-                QChar::Direction edir = ( rtl ? QChar::DirR : QChar::DirL );
-                dir = status.eor = edir;
-                status.lastStrong = edir;
-            }
+                unsigned int level = control.level + 1;
 
-            break;
-        }
+                if ( ( level % 2 != 0 ) == rtl )
+                {
+                    ++level;
+                }
 
-        case QChar::DirPDF:
-        {
-            if ( control.canPop() )
-            {
-                if ( dir != control.direction() )
+                if ( level < MaxBidiLevel )
                 {
                     eor = current - 1;
                     appendItems( analysis, sor, eor, control, dir );
-                    dir = control.direction();
-                }
-
-                eor = current;
-                appendItems( analysis, sor, eor, control, dir );
-                control.pdf();
-                dir = QChar::DirON;
-                status.eor = QChar::DirON;
-                status.last = control.direction();
-
-                if ( control.override )
-                {
-                    dir = control.direction();
-                }
-                else
-                {
-                    dir = QChar::DirON;
-                }
-
-                status.lastStrong = control.direction();
-            }
-
-            break;
-        }
-
-        // strong types
-        case QChar::DirL:
-            if ( dir == QChar::DirON )
-            {
-                dir = QChar::DirL;
-            }
-
-            switch ( status.last )
-            {
-            case QChar::DirL:
-                eor = current;
-                status.eor = QChar::DirL;
-                break;
-
-            case QChar::DirR:
-            case QChar::DirAL:
-            case QChar::DirEN:
-            case QChar::DirAN:
-                if ( eor >= 0 )
-                {
-                    appendItems( analysis, sor, eor, control, dir );
-                    status.eor = dir = skipBoundryNeutrals( analysis, str_view, sor, eor, control );
-                }
-                else
-                {
                     eor = current;
-                    status.eor = dir;
+                    control.embed( rtl, override );
+                    QChar::Direction edir = ( rtl ? QChar::DirR : QChar::DirL );
+                    dir = status.eor = edir;
+                    status.lastStrong = edir;
                 }
 
                 break;
+            }
 
-            case QChar::DirES:
-            case QChar::DirET:
-            case QChar::DirCS:
-            case QChar::DirBN:
-            case QChar::DirB:
-            case QChar::DirS:
-            case QChar::DirWS:
-            case QChar::DirON:
-                if ( dir != QChar::DirL )
+            case QChar::DirPDF:
+            {
+                if ( control.canPop() )
                 {
-                    //last stuff takes embedding dir
-                    if ( control.direction() == QChar::DirR )
+                    if ( dir != control.direction() )
                     {
-                        if ( status.eor != QChar::DirR )
-                        {
-                            // AN or EN
-                            appendItems( analysis, sor, eor, control, dir );
-                            status.eor = QChar::DirON;
-                            dir = QChar::DirR;
-                        }
-
                         eor = current - 1;
                         appendItems( analysis, sor, eor, control, dir );
-                        status.eor = dir = skipBoundryNeutrals( analysis, str_view, sor, eor, control );
+                        dir = control.direction();
+                    }
 
+                    eor = current;
+                    appendItems( analysis, sor, eor, control, dir );
+                    control.pdf();
+                    dir = QChar::DirON;
+                    status.eor = QChar::DirON;
+                    status.last = control.direction();
+
+                    if ( control.override )
+                    {
+                        dir = control.direction();
                     }
                     else
                     {
-                        if ( status.eor != QChar::DirL )
+                        dir = QChar::DirON;
+                    }
+
+                    status.lastStrong = control.direction();
+                }
+
+                break;
+            }
+
+            // strong types
+            case QChar::DirL:
+                if ( dir == QChar::DirON )
+                {
+                    dir = QChar::DirL;
+                }
+
+                switch ( status.last )
+                {
+                    case QChar::DirL:
+                        eor = current;
+                        status.eor = QChar::DirL;
+                        break;
+
+                    case QChar::DirR:
+                    case QChar::DirAL:
+                    case QChar::DirEN:
+                    case QChar::DirAN:
+                        if ( eor >= 0 )
                         {
                             appendItems( analysis, sor, eor, control, dir );
-                            status.eor = QChar::DirON;
-                            dir = QChar::DirL;
+                            status.eor = dir = skipBoundryNeutrals( analysis, str_view, sor, eor, control );
+                        }
+                        else
+                        {
+                            eor = current;
+                            status.eor = dir;
+                        }
+
+                        break;
+
+                    case QChar::DirES:
+                    case QChar::DirET:
+                    case QChar::DirCS:
+                    case QChar::DirBN:
+                    case QChar::DirB:
+                    case QChar::DirS:
+                    case QChar::DirWS:
+                    case QChar::DirON:
+                        if ( dir != QChar::DirL )
+                        {
+                            //last stuff takes embedding dir
+                            if ( control.direction() == QChar::DirR )
+                            {
+                                if ( status.eor != QChar::DirR )
+                                {
+                                    // AN or EN
+                                    appendItems( analysis, sor, eor, control, dir );
+                                    status.eor = QChar::DirON;
+                                    dir = QChar::DirR;
+                                }
+
+                                eor = current - 1;
+                                appendItems( analysis, sor, eor, control, dir );
+                                status.eor = dir = skipBoundryNeutrals( analysis, str_view, sor, eor, control );
+
+                            }
+                            else
+                            {
+                                if ( status.eor != QChar::DirL )
+                                {
+                                    appendItems( analysis, sor, eor, control, dir );
+                                    status.eor = QChar::DirON;
+                                    dir = QChar::DirL;
+                                }
+                                else
+                                {
+                                    eor = current;
+                                    status.eor = QChar::DirL;
+                                    break;
+                                }
+                            }
                         }
                         else
                         {
                             eor = current;
                             status.eor = QChar::DirL;
-                            break;
                         }
-                    }
-                }
-                else
-                {
-                    eor = current;
-                    status.eor = QChar::DirL;
+
+                    default:
+                        break;
                 }
 
-            default:
+                status.lastStrong = QChar::DirL;
                 break;
-            }
 
-            status.lastStrong = QChar::DirL;
-            break;
-
-        case QChar::DirAL:
-        case QChar::DirR:
-            hasBidi = true;
-
-            if ( dir == QChar::DirON )
-            {
-                dir = QChar::DirR;
-            }
-
-            switch ( status.last )
-            {
-            case QChar::DirL:
-            case QChar::DirEN:
-            case QChar::DirAN:
-                if ( eor >= 0 )
-                {
-                    appendItems( analysis, sor, eor, control, dir );
-                }
-
-                [[fallthrough]];
-
-            case QChar::DirR:
             case QChar::DirAL:
-                dir = QChar::DirR;
-                eor = current;
-                status.eor = QChar::DirR;
-                break;
+            case QChar::DirR:
+                hasBidi = true;
 
-            case QChar::DirES:
-            case QChar::DirET:
-            case QChar::DirCS:
-            case QChar::DirBN:
-            case QChar::DirB:
-            case QChar::DirS:
-            case QChar::DirWS:
-            case QChar::DirON:
-                if ( status.eor != QChar::DirR && status.eor != QChar::DirAL )
-                {
-                    //last stuff takes embedding dir
-                    if ( control.direction() == QChar::DirR
-                            || status.lastStrong == QChar::DirR || status.lastStrong == QChar::DirAL )
-                    {
-                        appendItems( analysis, sor, eor, control, dir );
-                        dir = QChar::DirR;
-                        status.eor = QChar::DirON;
-                        eor = current;
-                    }
-                    else
-                    {
-                        eor = current - 1;
-                        appendItems( analysis, sor, eor, control, dir );
-                        dir = QChar::DirR;
-                        status.eor = QChar::DirON;
-                    }
-                }
-                else
-                {
-                    eor = current;
-                    status.eor = QChar::DirR;
-                }
-
-            default:
-                break;
-            }
-
-            status.lastStrong = dirCurrent;
-            break;
-
-        // weak types:
-
-        case QChar::DirNSM:
-            if ( eor == current - 1 )
-            {
-                eor = current;
-            }
-
-            break;
-
-        case QChar::DirEN:
-
-            // if last strong was AL change EN to AN
-            if ( status.lastStrong != QChar::DirAL )
-            {
                 if ( dir == QChar::DirON )
                 {
-                    if ( status.lastStrong == QChar::DirL )
-                    {
-                        dir = QChar::DirL;
-                    }
-                    else
-                    {
-                        dir = QChar::DirEN;
-                    }
+                    dir = QChar::DirR;
                 }
 
                 switch ( status.last )
                 {
-                case QChar::DirET:
-                    if ( status.lastStrong == QChar::DirR || status.lastStrong == QChar::DirAL )
-                    {
-                        appendItems( analysis, sor, eor, control, dir );
-                        status.eor = QChar::DirON;
-                        dir = QChar::DirAN;
-                    }
-
-                    [[fallthrough]];
-
-                case QChar::DirEN:
-                case QChar::DirL:
-                    eor = current;
-                    status.eor = dirCurrent;
-                    break;
-
-                case QChar::DirR:
-                case QChar::DirAL:
-                case QChar::DirAN:
-                    if ( eor >= 0 )
-                    {
-                        appendItems( analysis, sor, eor, control, dir );
-                    }
-                    else
-                    {
-                        eor = current;
-                    }
-
-                    status.eor = QChar::DirEN;
-                    dir = QChar::DirAN;
-                    break;
-
-                case QChar::DirES:
-                case QChar::DirCS:
-                    if ( status.eor == QChar::DirEN || dir == QChar::DirAN )
-                    {
-                        eor = current;
-                        break;
-                    }
-
-                    [[fallthrough]];
-
-                case QChar::DirBN:
-                case QChar::DirB:
-                case QChar::DirS:
-                case QChar::DirWS:
-                case QChar::DirON:
-                    if ( status.eor == QChar::DirR )
-                    {
-                        // neutrals go to R
-                        eor = current - 1;
-                        appendItems( analysis, sor, eor, control, dir );
-                        dir = QChar::DirON;
-                        status.eor = QChar::DirEN;
-                        dir = QChar::DirAN;
-                    }
-                    else if ( status.eor == QChar::DirL ||
-                              ( status.eor == QChar::DirEN && status.lastStrong == QChar::DirL ) )
-                    {
-                        eor = current;
-                        status.eor = dirCurrent;
-                    }
-                    else
-                    {
-                        // numbers on both sides, neutrals get right to left direction
-                        if ( dir != QChar::DirL )
+                    case QChar::DirL:
+                    case QChar::DirEN:
+                    case QChar::DirAN:
+                        if ( eor >= 0 )
                         {
                             appendItems( analysis, sor, eor, control, dir );
-                            dir = QChar::DirON;
-                            status.eor = QChar::DirON;
-                            eor = current - 1;
-                            dir = QChar::DirR;
-                            appendItems( analysis, sor, eor, control, dir );
-                            dir = QChar::DirON;
-                            status.eor = QChar::DirON;
-                            dir = QChar::DirAN;
+                        }
+
+                        [[fallthrough]];
+
+                    case QChar::DirR:
+                    case QChar::DirAL:
+                        dir = QChar::DirR;
+                        eor = current;
+                        status.eor = QChar::DirR;
+                        break;
+
+                    case QChar::DirES:
+                    case QChar::DirET:
+                    case QChar::DirCS:
+                    case QChar::DirBN:
+                    case QChar::DirB:
+                    case QChar::DirS:
+                    case QChar::DirWS:
+                    case QChar::DirON:
+                        if ( status.eor != QChar::DirR && status.eor != QChar::DirAL )
+                        {
+                            //last stuff takes embedding dir
+                            if ( control.direction() == QChar::DirR
+                                    || status.lastStrong == QChar::DirR || status.lastStrong == QChar::DirAL )
+                            {
+                                appendItems( analysis, sor, eor, control, dir );
+                                dir = QChar::DirR;
+                                status.eor = QChar::DirON;
+                                eor = current;
+                            }
+                            else
+                            {
+                                eor = current - 1;
+                                appendItems( analysis, sor, eor, control, dir );
+                                dir = QChar::DirR;
+                                status.eor = QChar::DirON;
+                            }
                         }
                         else
                         {
                             eor = current;
-                            status.eor = dirCurrent;
+                            status.eor = QChar::DirR;
+                        }
+
+                    default:
+                        break;
+                }
+
+                status.lastStrong = dirCurrent;
+                break;
+
+            // weak types:
+
+            case QChar::DirNSM:
+                if ( eor == current - 1 )
+                {
+                    eor = current;
+                }
+
+                break;
+
+            case QChar::DirEN:
+
+                // if last strong was AL change EN to AN
+                if ( status.lastStrong != QChar::DirAL )
+                {
+                    if ( dir == QChar::DirON )
+                    {
+                        if ( status.lastStrong == QChar::DirL )
+                        {
+                            dir = QChar::DirL;
+                        }
+                        else
+                        {
+                            dir = QChar::DirEN;
                         }
                     }
 
-                default:
-                    break;
-                }
+                    switch ( status.last )
+                    {
+                        case QChar::DirET:
+                            if ( status.lastStrong == QChar::DirR || status.lastStrong == QChar::DirAL )
+                            {
+                                appendItems( analysis, sor, eor, control, dir );
+                                status.eor = QChar::DirON;
+                                dir = QChar::DirAN;
+                            }
 
-                break;
-            }
+                            [[fallthrough]];
 
-            [[fallthrough]];
+                        case QChar::DirEN:
+                        case QChar::DirL:
+                            eor = current;
+                            status.eor = dirCurrent;
+                            break;
 
-        case QChar::DirAN:
-            hasBidi = true;
-            dirCurrent = QChar::DirAN;
+                        case QChar::DirR:
+                        case QChar::DirAL:
+                        case QChar::DirAN:
+                            if ( eor >= 0 )
+                            {
+                                appendItems( analysis, sor, eor, control, dir );
+                            }
+                            else
+                            {
+                                eor = current;
+                            }
 
-            if ( dir == QChar::DirON )
-            {
-                dir = QChar::DirAN;
-            }
+                            status.eor = QChar::DirEN;
+                            dir = QChar::DirAN;
+                            break;
 
-            switch ( status.last )
-            {
-            case QChar::DirL:
-            case QChar::DirAN:
-                eor = current;
-                status.eor = QChar::DirAN;
-                break;
+                        case QChar::DirES:
+                        case QChar::DirCS:
+                            if ( status.eor == QChar::DirEN || dir == QChar::DirAN )
+                            {
+                                eor = current;
+                                break;
+                            }
 
-            case QChar::DirR:
-            case QChar::DirAL:
-            case QChar::DirEN:
-                if ( eor >= 0 )
-                {
-                    appendItems( analysis, sor, eor, control, dir );
-                }
-                else
-                {
-                    eor = current;
-                }
+                            [[fallthrough]];
 
-                dir = QChar::DirAN;
-                status.eor = QChar::DirAN;
-                break;
+                        case QChar::DirBN:
+                        case QChar::DirB:
+                        case QChar::DirS:
+                        case QChar::DirWS:
+                        case QChar::DirON:
+                            if ( status.eor == QChar::DirR )
+                            {
+                                // neutrals go to R
+                                eor = current - 1;
+                                appendItems( analysis, sor, eor, control, dir );
+                                dir = QChar::DirON;
+                                status.eor = QChar::DirEN;
+                                dir = QChar::DirAN;
+                            }
+                            else if ( status.eor == QChar::DirL ||
+                                      ( status.eor == QChar::DirEN && status.lastStrong == QChar::DirL ) )
+                            {
+                                eor = current;
+                                status.eor = dirCurrent;
+                            }
+                            else
+                            {
+                                // numbers on both sides, neutrals get right to left direction
+                                if ( dir != QChar::DirL )
+                                {
+                                    appendItems( analysis, sor, eor, control, dir );
+                                    dir = QChar::DirON;
+                                    status.eor = QChar::DirON;
+                                    eor = current - 1;
+                                    dir = QChar::DirR;
+                                    appendItems( analysis, sor, eor, control, dir );
+                                    dir = QChar::DirON;
+                                    status.eor = QChar::DirON;
+                                    dir = QChar::DirAN;
+                                }
+                                else
+                                {
+                                    eor = current;
+                                    status.eor = dirCurrent;
+                                }
+                            }
 
-            case QChar::DirCS:
-                if ( status.eor == QChar::DirAN )
-                {
-                    eor = current;
+                        default:
+                            break;
+                    }
+
                     break;
                 }
 
                 [[fallthrough]];
 
-            case QChar::DirES:
-            case QChar::DirET:
-            case QChar::DirBN:
-            case QChar::DirB:
-            case QChar::DirS:
-            case QChar::DirWS:
-            case QChar::DirON:
-                if ( status.eor == QChar::DirR )
-                {
-                    // neutrals go to R
-                    eor = current - 1;
-                    appendItems( analysis, sor, eor, control, dir );
-                    status.eor = QChar::DirAN;
-                    dir = QChar::DirAN;
+            case QChar::DirAN:
+                hasBidi = true;
+                dirCurrent = QChar::DirAN;
 
-                }
-                else if ( status.eor == QChar::DirL ||
-                          ( status.eor == QChar::DirEN && status.lastStrong == QChar::DirL ) )
+                if ( dir == QChar::DirON )
                 {
+                    dir = QChar::DirAN;
+                }
+
+                switch ( status.last )
+                {
+                    case QChar::DirL:
+                    case QChar::DirAN:
+                        eor = current;
+                        status.eor = QChar::DirAN;
+                        break;
+
+                    case QChar::DirR:
+                    case QChar::DirAL:
+                    case QChar::DirEN:
+                        if ( eor >= 0 )
+                        {
+                            appendItems( analysis, sor, eor, control, dir );
+                        }
+                        else
+                        {
+                            eor = current;
+                        }
+
+                        dir = QChar::DirAN;
+                        status.eor = QChar::DirAN;
+                        break;
+
+                    case QChar::DirCS:
+                        if ( status.eor == QChar::DirAN )
+                        {
+                            eor = current;
+                            break;
+                        }
+
+                        [[fallthrough]];
+
+                    case QChar::DirES:
+                    case QChar::DirET:
+                    case QChar::DirBN:
+                    case QChar::DirB:
+                    case QChar::DirS:
+                    case QChar::DirWS:
+                    case QChar::DirON:
+                        if ( status.eor == QChar::DirR )
+                        {
+                            // neutrals go to R
+                            eor = current - 1;
+                            appendItems( analysis, sor, eor, control, dir );
+                            status.eor = QChar::DirAN;
+                            dir = QChar::DirAN;
+
+                        }
+                        else if ( status.eor == QChar::DirL ||
+                                  ( status.eor == QChar::DirEN && status.lastStrong == QChar::DirL ) )
+                        {
+                            eor = current;
+                            status.eor = dirCurrent;
+
+                        }
+                        else
+                        {
+                            // numbers on both sides, neutrals get right to left direction
+                            if ( dir != QChar::DirL )
+                            {
+                                appendItems( analysis, sor, eor, control, dir );
+                                status.eor = QChar::DirON;
+                                eor = current - 1;
+                                dir = QChar::DirR;
+                                appendItems( analysis, sor, eor, control, dir );
+                                status.eor = QChar::DirAN;
+                                dir = QChar::DirAN;
+                            }
+                            else
+                            {
+                                eor = current;
+                                status.eor = dirCurrent;
+                            }
+                        }
+
+                    default:
+                        break;
+                }
+
+                break;
+
+            case QChar::DirES:
+            case QChar::DirCS:
+                break;
+
+            case QChar::DirET:
+                if ( status.last == QChar::DirEN )
+                {
+                    dirCurrent = QChar::DirEN;
                     eor = current;
                     status.eor = dirCurrent;
+                }
 
-                }
-                else
-                {
-                    // numbers on both sides, neutrals get right to left direction
-                    if ( dir != QChar::DirL )
-                    {
-                        appendItems( analysis, sor, eor, control, dir );
-                        status.eor = QChar::DirON;
-                        eor = current - 1;
-                        dir = QChar::DirR;
-                        appendItems( analysis, sor, eor, control, dir );
-                        status.eor = QChar::DirAN;
-                        dir = QChar::DirAN;
-                    }
-                    else
-                    {
-                        eor = current;
-                        status.eor = dirCurrent;
-                    }
-                }
+                break;
+
+            // boundary neutrals should be ignored
+            case QChar::DirBN:
+                break;
+
+            // neutrals
+            case QChar::DirB:
+                // ### what do we do with newline and paragraph separators that come to here?
+                break;
+
+            case QChar::DirS:
+                // ### implement rule L1
+                break;
+
+            case QChar::DirWS:
+            case QChar::DirON:
+                break;
 
             default:
                 break;
-            }
-
-            break;
-
-        case QChar::DirES:
-        case QChar::DirCS:
-            break;
-
-        case QChar::DirET:
-            if ( status.last == QChar::DirEN )
-            {
-                dirCurrent = QChar::DirEN;
-                eor = current;
-                status.eor = dirCurrent;
-            }
-
-            break;
-
-        // boundary neutrals should be ignored
-        case QChar::DirBN:
-            break;
-
-        // neutrals
-        case QChar::DirB:
-            // ### what do we do with newline and paragraph separators that come to here?
-            break;
-
-        case QChar::DirS:
-            // ### implement rule L1
-            break;
-
-        case QChar::DirWS:
-        case QChar::DirON:
-            break;
-
-        default:
-            break;
         }
 
         if ( current >= ( int )length )
@@ -989,54 +989,54 @@ static bool bidiItemize( QTextEngine *engine, QScriptAnalysis *analysis, QBidiCo
         // set status.last as needed.
         switch ( dirCurrent )
         {
-        case QChar::DirET:
-        case QChar::DirES:
-        case QChar::DirCS:
-        case QChar::DirS:
-        case QChar::DirWS:
-        case QChar::DirON:
-            switch ( status.last )
-            {
-            case QChar::DirL:
-            case QChar::DirR:
-            case QChar::DirAL:
-            case QChar::DirEN:
-            case QChar::DirAN:
-                status.last = dirCurrent;
+            case QChar::DirET:
+            case QChar::DirES:
+            case QChar::DirCS:
+            case QChar::DirS:
+            case QChar::DirWS:
+            case QChar::DirON:
+                switch ( status.last )
+                {
+                    case QChar::DirL:
+                    case QChar::DirR:
+                    case QChar::DirAL:
+                    case QChar::DirEN:
+                    case QChar::DirAN:
+                        status.last = dirCurrent;
+                        break;
+
+                    default:
+                        status.last = QChar::DirON;
+                }
+
                 break;
 
-            default:
-                status.last = QChar::DirON;
-            }
+            case QChar::DirNSM:
+            case QChar::DirBN:
+                // ignore these
+                break;
 
-            break;
-
-        case QChar::DirNSM:
-        case QChar::DirBN:
-            // ignore these
-            break;
-
-        case QChar::DirLRO:
-        case QChar::DirLRE:
-            status.last = QChar::DirL;
-            break;
-
-        case QChar::DirRLO:
-        case QChar::DirRLE:
-            status.last = QChar::DirR;
-            break;
-
-        case QChar::DirEN:
-            if ( status.last == QChar::DirL )
-            {
+            case QChar::DirLRO:
+            case QChar::DirLRE:
                 status.last = QChar::DirL;
                 break;
-            }
 
-            [[fallthrough]];
+            case QChar::DirRLO:
+            case QChar::DirRLE:
+                status.last = QChar::DirR;
+                break;
 
-        default:
-            status.last = dirCurrent;
+            case QChar::DirEN:
+                if ( status.last == QChar::DirL )
+                {
+                    status.last = QChar::DirL;
+                    break;
+                }
+
+                [[fallthrough]];
+
+            default:
+                status.last = dirCurrent;
         }
 
         ++current;
@@ -1191,30 +1191,30 @@ static inline void lscs_getJustificationOpportunities( QStringView str, const QS
 
     switch ( si.analysis.script )
     {
-    case QChar::Script_Arabic:
-    case QChar::Script_Syriac:
-    case QChar::Script_Nko:
-    case QChar::Script_Mandaic:
-    case QChar::Script_Mongolian:
-    case QChar::Script_PhagsPa:
-    case QChar::Script_Manichaean:
-    case QChar::Script_Psalter_Pahlavi:
-        // same as default but inter character justification takes precedence
-        spaceAs = Justification_Arabic_Space;
-        break;
+        case QChar::Script_Arabic:
+        case QChar::Script_Syriac:
+        case QChar::Script_Nko:
+        case QChar::Script_Mandaic:
+        case QChar::Script_Mongolian:
+        case QChar::Script_PhagsPa:
+        case QChar::Script_Manichaean:
+        case QChar::Script_Psalter_Pahlavi:
+            // same as default but inter character justification takes precedence
+            spaceAs = Justification_Arabic_Space;
+            break;
 
-    case QChar::Script_Tibetan:
-    case QChar::Script_Hiragana:
-    case QChar::Script_Katakana:
-    case QChar::Script_Bopomofo:
-    case QChar::Script_Han:
-        // same as default but inter character justification is the only option
-        spaceAs = Justification_Character;
-        break;
+        case QChar::Script_Tibetan:
+        case QChar::Script_Hiragana:
+        case QChar::Script_Katakana:
+        case QChar::Script_Bopomofo:
+        case QChar::Script_Han:
+            // same as default but inter character justification is the only option
+            spaceAs = Justification_Character;
+            break;
 
-    default:
-        spaceAs = Justification_Space;
-        break;
+        default:
+            spaceAs = Justification_Space;
+            break;
     }
 
     lscs_getDefaultJustificationOpportunities( str, g, log_clusters, spaceAs );
@@ -1631,35 +1631,35 @@ int QTextEngine::shapeTextWithHarfbuzz( const QScriptItem &si, QStringView str, 
             // hide characters that should normally be invisible
             switch ( ch.unicode() )
             {
-            case QChar::LineFeed:
-            case 0x000c:                      // FormFeed
-            case QChar::CarriageReturn:
-            case QChar::LineSeparator:
-            case QChar::ParagraphSeparator:
-                g.attributes[infos_position].dontPrint = true;
-                break;
+                case QChar::LineFeed:
+                case 0x000c:                      // FormFeed
+                case QChar::CarriageReturn:
+                case QChar::LineSeparator:
+                case QChar::ParagraphSeparator:
+                    g.attributes[infos_position].dontPrint = true;
+                    break;
 
-            case QChar::SoftHyphen:
-                if ( ! actualFontEngine->symbol )
-                {
-                    // U+00AD [SOFT HYPHEN] is a default ignorable codepoint,
-                    // replace its glyph and metrics with ones for
-                    // U+002D [HYPHEN-MINUS] and make it visible if it appears at line-break
-                    g.glyphs[infos_position] = actualFontEngine->glyphIndex( '-' );
-
-                    if ( g.glyphs[infos_position] != 0 )
+                case QChar::SoftHyphen:
+                    if ( ! actualFontEngine->symbol )
                     {
-                        QGlyphLayout tmp = g.mid( infos_position, 1 );
-                        actualFontEngine->recalcAdvances( &tmp, Qt::EmptyFlag );
+                        // U+00AD [SOFT HYPHEN] is a default ignorable codepoint,
+                        // replace its glyph and metrics with ones for
+                        // U+002D [HYPHEN-MINUS] and make it visible if it appears at line-break
+                        g.glyphs[infos_position] = actualFontEngine->glyphIndex( '-' );
+
+                        if ( g.glyphs[infos_position] != 0 )
+                        {
+                            QGlyphLayout tmp = g.mid( infos_position, 1 );
+                            actualFontEngine->recalcAdvances( &tmp, Qt::EmptyFlag );
+                        }
+
+                        g.attributes[infos_position].dontPrint = true;
                     }
 
-                    g.attributes[infos_position].dontPrint = true;
-                }
+                    break;
 
-                break;
-
-            default:
-                break;
+                default:
+                    break;
             }
 
             current_cluster = infos[infos_position].cluster + offset_cluster;
@@ -2014,46 +2014,46 @@ void QTextEngine::itemize() const
 
         switch ( c.unicode() )
         {
-        case QChar::ObjectReplacementCharacter:
-            analysis->flags = QScriptAnalysis::Object;
-            break;
+            case QChar::ObjectReplacementCharacter:
+                analysis->flags = QScriptAnalysis::Object;
+                break;
 
-        case QChar::LineSeparator:
-            if ( analysis->bidiLevel % 2 )
-            {
-                --analysis->bidiLevel;
-            }
+            case QChar::LineSeparator:
+                if ( analysis->bidiLevel % 2 )
+                {
+                    --analysis->bidiLevel;
+                }
 
-            analysis->flags = QScriptAnalysis::LineOrParagraphSeparator;
+                analysis->flags = QScriptAnalysis::LineOrParagraphSeparator;
 
-            if ( option.flags() & QTextOption::ShowLineAndParagraphSeparators )
-            {
-                // visual line separator
-                tmp.chop( 1 );
-                tmp.append( UCHAR( '\u21B5' ) );
-            }
+                if ( option.flags() & QTextOption::ShowLineAndParagraphSeparators )
+                {
+                    // visual line separator
+                    tmp.chop( 1 );
+                    tmp.append( UCHAR( '\u21B5' ) );
+                }
 
-            break;
+                break;
 
-        case QChar::Tabulation:
-            analysis->flags     = QScriptAnalysis::Tab;
-            analysis->bidiLevel = control.baseLevel();
-            break;
-
-        case QChar::Space:
-        case QChar::Nbsp:
-            if ( option.flags() & QTextOption::ShowTabsAndSpaces )
-            {
-                analysis->flags     = QScriptAnalysis::Space;
+            case QChar::Tabulation:
+                analysis->flags     = QScriptAnalysis::Tab;
                 analysis->bidiLevel = control.baseLevel();
                 break;
-            }
 
-            [[fallthrough]];
+            case QChar::Space:
+            case QChar::Nbsp:
+                if ( option.flags() & QTextOption::ShowTabsAndSpaces )
+                {
+                    analysis->flags     = QScriptAnalysis::Space;
+                    analysis->bidiLevel = control.baseLevel();
+                    break;
+                }
 
-        default:
-            analysis->flags  = QScriptAnalysis::None;
-            break;
+                [[fallthrough]];
+
+            default:
+                analysis->flags  = QScriptAnalysis::None;
+                break;
         }
 
         ++analysis;
@@ -2078,16 +2078,16 @@ void QTextEngine::itemize() const
     {
         switch ( analysis[i].script )
         {
-        case QChar::Script_Latin:
-        case QChar::Script_Hiragana:
-        case QChar::Script_Katakana:
-        case QChar::Script_Bopomofo:
-        case QChar::Script_Han:
-            analysis[i].script = QChar::Script_Common;
-            break;
+            case QChar::Script_Latin:
+            case QChar::Script_Hiragana:
+            case QChar::Script_Katakana:
+            case QChar::Script_Bopomofo:
+            case QChar::Script_Han:
+                analysis[i].script = QChar::Script_Common;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -2186,14 +2186,14 @@ bool QTextEngine::isRightToLeft() const
 {
     switch ( option.textDirection() )
     {
-    case Qt::LeftToRight:
-        return false;
+        case Qt::LeftToRight:
+            return false;
 
-    case Qt::RightToLeft:
-        return true;
+        case Qt::RightToLeft:
+            return true;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     if ( ! layoutData )
@@ -2217,15 +2217,15 @@ bool QTextEngine::isRightToLeft( QStringView str )
 
         switch ( c.direction() )
         {
-        case QChar::DirL:
-            return false;
+            case QChar::DirL:
+                return false;
 
-        case QChar::DirR:
-        case QChar::DirAL:
-            return true;
+            case QChar::DirR:
+            case QChar::DirAL:
+                return true;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -2919,47 +2919,47 @@ void QTextEngine::justify( const QScriptLine &line )
 
             switch ( justification )
             {
-            case Justification_Prohibited:
-                break;
+                case Justification_Prohibited:
+                    break;
 
-            case Justification_Space:
-                [[fallthrough]];
+                case Justification_Space:
+                    [[fallthrough]];
 
-            case Justification_Arabic_Space:
-                if ( kashida_pos >= 0 )
-                {
-                    set( &justificationPoints[nPoints], kashida_type, g.mid( kashida_pos ), fontEngine( si ) );
-
-                    if ( justificationPoints[nPoints].kashidaWidth > 0 )
+                case Justification_Arabic_Space:
+                    if ( kashida_pos >= 0 )
                     {
-                        minKashida = qMin( minKashida, justificationPoints[nPoints].kashidaWidth );
-                        maxJustify = qMax( maxJustify, justificationPoints[nPoints].type );
-                        ++nPoints;
+                        set( &justificationPoints[nPoints], kashida_type, g.mid( kashida_pos ), fontEngine( si ) );
+
+                        if ( justificationPoints[nPoints].kashidaWidth > 0 )
+                        {
+                            minKashida = qMin( minKashida, justificationPoints[nPoints].kashidaWidth );
+                            maxJustify = qMax( maxJustify, justificationPoints[nPoints].type );
+                            ++nPoints;
+                        }
                     }
-                }
 
-                kashida_pos = -1;
-                kashida_type = Justification_Arabic_Normal;
+                    kashida_pos = -1;
+                    kashida_type = Justification_Arabic_Normal;
 
-                [[fallthrough]];
+                    [[fallthrough]];
 
-            case Justification_Character:
-                set( &justificationPoints[nPoints++], justification, g.mid( i ), fontEngine( si ) );
-                maxJustify = qMax( maxJustify, justification );
-                break;
+                case Justification_Character:
+                    set( &justificationPoints[nPoints++], justification, g.mid( i ), fontEngine( si ) );
+                    maxJustify = qMax( maxJustify, justification );
+                    break;
 
-            case Justification_Arabic_Normal  :
-            case Justification_Arabic_Waw     :
-            case Justification_Arabic_BaRa    :
-            case Justification_Arabic_Alef    :
-            case Justification_Arabic_HahDal  :
-            case Justification_Arabic_Seen    :
-            case Justification_Arabic_Kashida :
-                if ( justification >= kashida_type )
-                {
-                    kashida_pos = i;
-                    kashida_type = justification;
-                }
+                case Justification_Arabic_Normal  :
+                case Justification_Arabic_Waw     :
+                case Justification_Arabic_BaRa    :
+                case Justification_Arabic_Alef    :
+                case Justification_Arabic_HahDal  :
+                case Justification_Arabic_Seen    :
+                case Justification_Arabic_Kashida :
+                    if ( justification >= kashida_type )
+                    {
+                        kashida_pos = i;
+                        kashida_type = justification;
+                    }
             }
         }
 
@@ -3327,41 +3327,41 @@ bool QTextEngine::atWordSeparator( int position ) const
 
     switch ( c.unicode() )
     {
-    case '.':
-    case ',':
-    case '?':
-    case '!':
-    case '@':
-    case '#':
-    case '$':
-    case ':':
-    case ';':
-    case '-':
-    case '<':
-    case '>':
-    case '[':
-    case ']':
-    case '(':
-    case ')':
-    case '{':
-    case '}':
-    case '=':
-    case '/':
-    case '+':
-    case '%':
-    case '&':
-    case '^':
-    case '*':
-    case '\'':
-    case '"':
-    case '`':
-    case '~':
-    case '|':
-    case '\\':
-        return true;
+        case '.':
+        case ',':
+        case '?':
+        case '!':
+        case '@':
+        case '#':
+        case '$':
+        case ':':
+        case ';':
+        case '-':
+        case '<':
+        case '>':
+        case '[':
+        case ']':
+        case '(':
+        case ')':
+        case '{':
+        case '}':
+        case '=':
+        case '/':
+        case '+':
+        case '%':
+        case '&':
+        case '^':
+        case '*':
+        case '\'':
+        case '"':
+        case '`':
+        case '~':
+        case '|':
+        case '\\':
+            return true;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return false;
@@ -3896,26 +3896,26 @@ QFixed QTextEngine::calculateTabWidth( int item, QFixed x ) const
 
                     switch ( tabSpec.type )
                     {
-                    case QTextOption::CenterTab:
-                        length /= 2;
-                        [[fallthrough]];
+                        case QTextOption::CenterTab:
+                            length /= 2;
+                            [[fallthrough]];
 
-                    case QTextOption::DelimiterTab:
-                        [[fallthrough]];
+                        case QTextOption::DelimiterTab:
+                            [[fallthrough]];
 
-                    case QTextOption::RightTab:
-                        tab = QFixed::fromReal( tabSpec.position ) * dpiScale - length;
+                        case QTextOption::RightTab:
+                            tab = QFixed::fromReal( tabSpec.position ) * dpiScale - length;
 
-                        if ( tab < x )
-                        {
-                            // default to tab taking no space
-                            return QFixed();
-                        }
+                            if ( tab < x )
+                            {
+                                // default to tab taking no space
+                                return QFixed();
+                            }
 
-                        break;
+                            break;
 
-                    case QTextOption::LeftTab:
-                        break;
+                        case QTextOption::LeftTab:
+                            break;
                     }
                 }
 

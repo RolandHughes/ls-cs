@@ -61,30 +61,30 @@ QStyle *QStyleFactory::create( const QString &key )
 #endif
 
 #ifndef LSCS_NO_STYLE_FUSION
-                if ( style == "fusion" )
+        if ( style == "fusion" )
+        {
+            retval = new QFusionStyle;
+        }
+        else
+#endif
+
+#ifndef LSCS_NO_STYLE_GTK
+            if ( style == "gtk" || style == "gtk+" )
+            {
+                retval = new QGtkStyle;
+            }
+            else
+#endif
+
+#ifndef LSCS_NO_STYLE_MAC
+                if ( style.startsWith( "macintosh" ) )
                 {
-                    retval = new QFusionStyle;
+                    retval = new QMacStyle;
                 }
                 else
 #endif
 
-#ifndef LSCS_NO_STYLE_GTK
-                    if ( style == "gtk" || style == "gtk+" )
-                    {
-                        retval = new QGtkStyle;
-                    }
-                    else
-#endif
-
-#ifndef LSCS_NO_STYLE_MAC
-                        if ( style.startsWith( "macintosh" ) )
-                        {
-                            retval = new QMacStyle;
-                        }
-                        else
-#endif
-
-                        { } // Keep these here
+                { } // Keep these here
 
     if ( ! retval )
     {

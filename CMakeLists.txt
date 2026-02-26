@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 set(BUILD_MAJOR "0")
-set(BUILD_MINOR "2")
+set(BUILD_MINOR "3")
 set(BUILD_MICRO "1")
 
 # unused at this time: DBus, Declarative, and ScriptTools

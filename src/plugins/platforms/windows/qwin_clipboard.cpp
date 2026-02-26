@@ -273,53 +273,53 @@ bool QWindowsClipboard::clipboardViewerWndProc( HWND hwnd, UINT message, WPARAM 
 
     switch ( message )
     {
-    case WM_CHANGECBCHAIN:
-    {
-        const HWND toBeRemoved = reinterpret_cast<HWND>( wParam );
-
-        if ( toBeRemoved == m_nextClipboardViewer )
+        case WM_CHANGECBCHAIN:
         {
-            m_nextClipboardViewer = reinterpret_cast<HWND>( lParam );
-        }
-        else
-        {
-            propagateClipboardMessage( message, wParam, lParam );
-        }
-    }
+            const HWND toBeRemoved = reinterpret_cast<HWND>( wParam );
 
-    return true;
-
-    case wMClipboardUpdate:     // Clipboard Format listener (Vista onwards)
-    case WM_DRAWCLIPBOARD:
-    {
-        // Clipboard Viewer Chain handling (up to XP)
-        const bool owned = ownsClipboard();
-        emitChanged( QClipboard::Clipboard );
-
-        // clean up the clipboard object if we no longer own the clipboard
-        if ( !owned && m_data )
-        {
-            releaseIData();
-        }
-
-        if ( !m_formatListenerRegistered )
-        {
-            propagateClipboardMessage( message, wParam, lParam );
-        }
-    }
-
-    return true;
-
-    case WM_DESTROY:
-
-        // Recommended shutdown
-        if ( ownsClipboard() )
-        {
-            OleFlushClipboard();
-            releaseIData();
+            if ( toBeRemoved == m_nextClipboardViewer )
+            {
+                m_nextClipboardViewer = reinterpret_cast<HWND>( lParam );
+            }
+            else
+            {
+                propagateClipboardMessage( message, wParam, lParam );
+            }
         }
 
         return true;
+
+        case wMClipboardUpdate:     // Clipboard Format listener (Vista onwards)
+        case WM_DRAWCLIPBOARD:
+        {
+            // Clipboard Viewer Chain handling (up to XP)
+            const bool owned = ownsClipboard();
+            emitChanged( QClipboard::Clipboard );
+
+            // clean up the clipboard object if we no longer own the clipboard
+            if ( !owned && m_data )
+            {
+                releaseIData();
+            }
+
+            if ( !m_formatListenerRegistered )
+            {
+                propagateClipboardMessage( message, wParam, lParam );
+            }
+        }
+
+        return true;
+
+        case WM_DESTROY:
+
+            // Recommended shutdown
+            if ( ownsClipboard() )
+            {
+                OleFlushClipboard();
+                releaseIData();
+            }
+
+            return true;
 
     }
 

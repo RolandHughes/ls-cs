@@ -2579,7 +2579,7 @@ XsdFacet::Ptr XsdSchemaParser::parseTotalDigitsFacet()
 
     const QString value = readAttribute( QString::fromLatin1( "value" ) );
     DerivedInteger<TypePositiveInteger>::Ptr integer = DerivedInteger<TypePositiveInteger>::fromLexical( NamePool::Ptr(
-            m_namePool ), value );
+                m_namePool ), value );
 
     if ( integer->hasError() )
     {
@@ -2658,7 +2658,7 @@ XsdFacet::Ptr XsdSchemaParser::parseFractionDigitsFacet()
 
     const QString value = readAttribute( QString::fromLatin1( "value" ) );
     DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical( NamePool::Ptr(
-            m_namePool ), value );
+                m_namePool ), value );
 
     if ( integer->hasError() )
     {
@@ -2737,7 +2737,7 @@ XsdFacet::Ptr XsdSchemaParser::parseLengthFacet()
 
     const QString value = readAttribute( QString::fromLatin1( "value" ) );
     DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical( NamePool::Ptr(
-            m_namePool ), value );
+                m_namePool ), value );
 
     if ( integer->hasError() )
     {
@@ -2816,7 +2816,7 @@ XsdFacet::Ptr XsdSchemaParser::parseMinLengthFacet()
 
     const QString value = readAttribute( QString::fromLatin1( "value" ) );
     DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical( NamePool::Ptr(
-            m_namePool ), value );
+                m_namePool ), value );
 
     if ( integer->hasError() )
     {
@@ -2895,7 +2895,7 @@ XsdFacet::Ptr XsdSchemaParser::parseMaxLengthFacet()
 
     const QString value = readAttribute( QString::fromLatin1( "value" ) );
     DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical( NamePool::Ptr(
-            m_namePool ), value );
+                m_namePool ), value );
 
     if ( integer->hasError() )
     {
@@ -3620,7 +3620,7 @@ void XsdSchemaParser::resolveComplexContentType( const XsdComplexType::Ptr &comp
     }
 
     const XsdParticle::Ptr explicitContent = ( hasEmptyContent ? XsdParticle::Ptr() :
-        complexType->contentType()->particle() );
+            complexType->contentType()->particle() );
 
     // do all the other work (3, 4, 5 and 6) in the resolver, as they need access to the base type object
     m_schemaResolver->addComplexContentType( complexType, explicitContent, effectiveMixed );
@@ -7164,7 +7164,7 @@ bool XsdSchemaParser::parseMinMaxConstraint( const XsdParticle::Ptr &particle, c
         const QString value = readAttribute( QString::fromLatin1( "minOccurs" ) );
 
         DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical( NamePool::Ptr(
-                m_namePool ), value );
+                    m_namePool ), value );
 
         if ( integer->hasError() )
         {
@@ -7193,7 +7193,7 @@ bool XsdSchemaParser::parseMinMaxConstraint( const XsdParticle::Ptr &particle, c
         {
             particle->setMaximumOccursUnbounded( false );
             DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical( NamePool::Ptr(
-                    m_namePool ), value );
+                        m_namePool ), value );
 
             if ( integer->hasError() )
             {
@@ -7575,17 +7575,17 @@ QString XsdSchemaParser::readXPathAttribute( const QString &attributeName, XPath
 
     switch ( type )
     {
-    case XPath20:
-        language = QXmlQuery::XPath20;
-        break;
+        case XPath20:
+            language = QXmlQuery::XPath20;
+            break;
 
-    case XPathSelector:
-        language = QXmlQuery::XmlSchema11IdentityConstraintSelector;
-        break;
+        case XPathSelector:
+            language = QXmlQuery::XmlSchema11IdentityConstraintSelector;
+            break;
 
-    case XPathField:
-        language = QXmlQuery::XmlSchema11IdentityConstraintField;
-        break;
+        case XPathField:
+            language = QXmlQuery::XmlSchema11IdentityConstraintField;
+            break;
     };
 
     QXmlQuery query( language, namePool );

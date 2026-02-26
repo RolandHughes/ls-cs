@@ -324,71 +324,71 @@ int QDBusMetaType::signatureToType( const char *signature )
 
     switch ( signature[0] )
     {
-    case DBUS_TYPE_BOOLEAN:
-        return QVariant::Bool;
+        case DBUS_TYPE_BOOLEAN:
+            return QVariant::Bool;
 
-    case DBUS_TYPE_BYTE:
-        return QMetaType::UChar;
-
-    case DBUS_TYPE_INT16:
-        return QMetaType::Short;
-
-    case DBUS_TYPE_UINT16:
-        return QMetaType::UShort;
-
-    case DBUS_TYPE_INT32:
-        return QVariant::Int;
-
-    case DBUS_TYPE_UINT32:
-        return QVariant::UInt;
-
-    case DBUS_TYPE_INT64:
-        return QVariant::LongLong;
-
-    case DBUS_TYPE_UINT64:
-        return QVariant::ULongLong;
-
-    case DBUS_TYPE_DOUBLE:
-        return QVariant::Double;
-
-    case DBUS_TYPE_STRING:
-        return QVariant::String;
-
-    case DBUS_TYPE_OBJECT_PATH:
-        return QDBusMetaTypeId::objectpath;
-
-    case DBUS_TYPE_SIGNATURE:
-        return QDBusMetaTypeId::signature;
-
-    case DBUS_TYPE_UNIX_FD:
-        return QDBusMetaTypeId::unixfd;
-
-    case DBUS_TYPE_VARIANT:
-        return QDBusMetaTypeId::variant;
-
-    case DBUS_TYPE_ARRAY:       // special case
-        switch ( signature[1] )
-        {
         case DBUS_TYPE_BYTE:
-            return QVariant::ByteArray;
+            return QMetaType::UChar;
+
+        case DBUS_TYPE_INT16:
+            return QMetaType::Short;
+
+        case DBUS_TYPE_UINT16:
+            return QMetaType::UShort;
+
+        case DBUS_TYPE_INT32:
+            return QVariant::Int;
+
+        case DBUS_TYPE_UINT32:
+            return QVariant::UInt;
+
+        case DBUS_TYPE_INT64:
+            return QVariant::LongLong;
+
+        case DBUS_TYPE_UINT64:
+            return QVariant::ULongLong;
+
+        case DBUS_TYPE_DOUBLE:
+            return QVariant::Double;
 
         case DBUS_TYPE_STRING:
-            return QVariant::StringList;
-
-        case DBUS_TYPE_VARIANT:
-            return QVariant::List;
+            return QVariant::String;
 
         case DBUS_TYPE_OBJECT_PATH:
-            return qMetaTypeId<QList<QDBusObjectPath> >();
+            return QDBusMetaTypeId::objectpath;
 
         case DBUS_TYPE_SIGNATURE:
-            return qMetaTypeId<QList<QDBusSignature> >();
+            return QDBusMetaTypeId::signature;
 
-        }
+        case DBUS_TYPE_UNIX_FD:
+            return QDBusMetaTypeId::unixfd;
 
-    // fall through
-    default:
-        return QVariant::Invalid;
+        case DBUS_TYPE_VARIANT:
+            return QDBusMetaTypeId::variant;
+
+        case DBUS_TYPE_ARRAY:       // special case
+            switch ( signature[1] )
+            {
+                case DBUS_TYPE_BYTE:
+                    return QVariant::ByteArray;
+
+                case DBUS_TYPE_STRING:
+                    return QVariant::StringList;
+
+                case DBUS_TYPE_VARIANT:
+                    return QVariant::List;
+
+                case DBUS_TYPE_OBJECT_PATH:
+                    return qMetaTypeId<QList<QDBusObjectPath> >();
+
+                case DBUS_TYPE_SIGNATURE:
+                    return qMetaTypeId<QList<QDBusSignature> >();
+
+            }
+
+        // fall through
+        default:
+            return QVariant::Invalid;
     }
 }
 
@@ -408,43 +408,43 @@ const char *QDBusMetaType::typeToSignature( int type )
     // check if it's a static type
     switch ( type )
     {
-    case QMetaType::UChar:
-        return DBUS_TYPE_BYTE_AS_STRING;
+        case QMetaType::UChar:
+            return DBUS_TYPE_BYTE_AS_STRING;
 
-    case QVariant::Bool:
-        return DBUS_TYPE_BOOLEAN_AS_STRING;
+        case QVariant::Bool:
+            return DBUS_TYPE_BOOLEAN_AS_STRING;
 
-    case QMetaType::Short:
-        return DBUS_TYPE_INT16_AS_STRING;
+        case QMetaType::Short:
+            return DBUS_TYPE_INT16_AS_STRING;
 
-    case QMetaType::UShort:
-        return DBUS_TYPE_UINT16_AS_STRING;
+        case QMetaType::UShort:
+            return DBUS_TYPE_UINT16_AS_STRING;
 
-    case QVariant::Int:
-        return DBUS_TYPE_INT32_AS_STRING;
+        case QVariant::Int:
+            return DBUS_TYPE_INT32_AS_STRING;
 
-    case QVariant::UInt:
-        return DBUS_TYPE_UINT32_AS_STRING;
+        case QVariant::UInt:
+            return DBUS_TYPE_UINT32_AS_STRING;
 
-    case QVariant::LongLong:
-        return DBUS_TYPE_INT64_AS_STRING;
+        case QVariant::LongLong:
+            return DBUS_TYPE_INT64_AS_STRING;
 
-    case QVariant::ULongLong:
-        return DBUS_TYPE_UINT64_AS_STRING;
+        case QVariant::ULongLong:
+            return DBUS_TYPE_UINT64_AS_STRING;
 
-    case QVariant::Double:
-        return DBUS_TYPE_DOUBLE_AS_STRING;
+        case QVariant::Double:
+            return DBUS_TYPE_DOUBLE_AS_STRING;
 
-    case QVariant::String:
-        return DBUS_TYPE_STRING_AS_STRING;
+        case QVariant::String:
+            return DBUS_TYPE_STRING_AS_STRING;
 
-    case QVariant::StringList:
-        return DBUS_TYPE_ARRAY_AS_STRING
-               DBUS_TYPE_STRING_AS_STRING; // as
+        case QVariant::StringList:
+            return DBUS_TYPE_ARRAY_AS_STRING
+                   DBUS_TYPE_STRING_AS_STRING; // as
 
-    case QVariant::ByteArray:
-        return DBUS_TYPE_ARRAY_AS_STRING
-               DBUS_TYPE_BYTE_AS_STRING; // ay
+        case QVariant::ByteArray:
+            return DBUS_TYPE_ARRAY_AS_STRING
+                   DBUS_TYPE_BYTE_AS_STRING; // ay
     }
 
     QDBusMetaTypeId::init();

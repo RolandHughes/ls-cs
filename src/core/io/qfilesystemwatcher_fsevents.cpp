@@ -134,7 +134,7 @@ static void cleanupFSStream( FSEventStreamRef stream )
 }
 
 const FSEventStreamCreateFlags QtFSEventFlags = ( kFSEventStreamCreateFlagUseCFTypes |
-    kFSEventStreamCreateFlagNoDefer /* | kFSEventStreamCreateFlagWatchRoot*/ );
+        kFSEventStreamCreateFlagNoDefer /* | kFSEventStreamCreateFlagWatchRoot*/ );
 
 const CFTimeInterval Latency = 0.033; // This will do updates 30 times a second which is probably more than you need.
 #endif

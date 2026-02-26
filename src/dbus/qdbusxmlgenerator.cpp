@@ -360,7 +360,7 @@ QString qDBusGenerateMetaObjectXml( QString interface, const QMetaObject *mo, co
                 interface.prepend( QLatin1Char( '.' ) ).prepend( QCoreApplication::instance()->applicationName() );
                 QStringList domainName =
                     QCoreApplication::instance()->organizationDomain().split( QLatin1Char( '.' ),
-                        QString::SkipEmptyParts );
+                            QString::SkipEmptyParts );
 
                 if ( domainName.isEmpty() )
                 {

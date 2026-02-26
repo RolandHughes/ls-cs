@@ -1479,93 +1479,93 @@ void XsdSchemaResolver::resolveTermReference( const XsdParticle::Ptr &particle, 
 
     switch ( reference->type() )
     {
-    case XsdReference::Element:
-    {
-        const XsdElement::Ptr element = m_schema->element( reference->referenceName() );
-
-        if ( element )
+        case XsdReference::Element:
         {
-            particle->setTerm( element );
-        }
-        else
-        {
-            m_context->error( QtXmlPatterns::tr( "Reference %1 of %2 element cannot be resolved." )
-                              .formatArg( formatKeyword( m_namePool, reference->referenceName() ) )
-                              .formatArg( formatElement( "element" ) ),
-                              XsdSchemaContext::XSDError, reference->sourceLocation() );
-            return;
-        }
-    }
-    break;
+            const XsdElement::Ptr element = m_schema->element( reference->referenceName() );
 
-    case XsdReference::ModelGroup:
-    {
-        const XsdModelGroup::Ptr modelGroup = m_schema->elementGroup( reference->referenceName() );
-
-        if ( modelGroup )
-        {
-            if ( visitedGroups.contains( modelGroup->name( m_namePool ) ) )
+            if ( element )
             {
-                m_context->error( QtXmlPatterns::tr( "Circular group reference for %1." ).formatArg( formatKeyword( modelGroup->displayName(
-                                      m_namePool ) ) ),
-                                  XsdSchemaContext::XSDError, reference->sourceLocation() );
+                particle->setTerm( element );
             }
             else
             {
-                visitedGroups.insert( modelGroup->name( m_namePool ) );
-            }
-
-            particle->setTerm( modelGroup );
-
-            // start recursive iteration here as well to get all references resolved
-            const XsdParticle::List particles = modelGroup->particles();
-
-            for ( int i = 0; i < particles.count(); ++i )
-            {
-                resolveTermReference( particles.at( i ), visitedGroups );
-            }
-
-            if ( modelGroup->compositor() == XsdModelGroup::AllCompositor )
-            {
-                if ( m_allGroups.contains( reference ) )
-                {
-                    m_context->error( QtXmlPatterns::tr( "%1 element is not allowed in this scope" ).formatArg( formatElement( "all." ) ),
-                                      XsdSchemaContext::XSDError, reference->sourceLocation() );
-                    return;
-                }
-
-                if ( particle->maximumOccursUnbounded() || particle->maximumOccurs() != 1 )
-                {
-                    m_context->error( QtXmlPatterns::tr( "%1 element cannot have %2 attribute with value other than %3." )
-                                      .formatArg( formatElement( "all" ) )
-                                      .formatArg( formatAttribute( "maxOccurs" ) )
-                                      .formatArg( formatData( "1" ) ),
-                                      XsdSchemaContext::XSDError, reference->sourceLocation() );
-                    return;
-                }
-
-                if ( particle->minimumOccurs() != 0 && particle->minimumOccurs() != 1 )
-                {
-                    m_context->error( QtXmlPatterns::tr( "%1 element cannot have %2 attribute with value other than %3 or %4." )
-                                      .formatArg( formatElement( "all" ) )
-                                      .formatArg( formatAttribute( "minOccurs" ) )
-                                      .formatArg( formatData( "0" ) )
-                                      .formatArg( formatData( "1" ) ),
-                                      XsdSchemaContext::XSDError, reference->sourceLocation() );
-                    return;
-                }
+                m_context->error( QtXmlPatterns::tr( "Reference %1 of %2 element cannot be resolved." )
+                                  .formatArg( formatKeyword( m_namePool, reference->referenceName() ) )
+                                  .formatArg( formatElement( "element" ) ),
+                                  XsdSchemaContext::XSDError, reference->sourceLocation() );
+                return;
             }
         }
-        else
+        break;
+
+        case XsdReference::ModelGroup:
         {
-            m_context->error( QtXmlPatterns::tr( "Reference %1 of %2 element cannot be resolved." )
-                              .formatArg( formatKeyword( m_namePool, reference->referenceName() ) )
-                              .formatArg( formatElement( "group" ) ),
-                              XsdSchemaContext::XSDError, reference->sourceLocation() );
-            return;
+            const XsdModelGroup::Ptr modelGroup = m_schema->elementGroup( reference->referenceName() );
+
+            if ( modelGroup )
+            {
+                if ( visitedGroups.contains( modelGroup->name( m_namePool ) ) )
+                {
+                    m_context->error( QtXmlPatterns::tr( "Circular group reference for %1." ).formatArg( formatKeyword( modelGroup->displayName(
+                                          m_namePool ) ) ),
+                                      XsdSchemaContext::XSDError, reference->sourceLocation() );
+                }
+                else
+                {
+                    visitedGroups.insert( modelGroup->name( m_namePool ) );
+                }
+
+                particle->setTerm( modelGroup );
+
+                // start recursive iteration here as well to get all references resolved
+                const XsdParticle::List particles = modelGroup->particles();
+
+                for ( int i = 0; i < particles.count(); ++i )
+                {
+                    resolveTermReference( particles.at( i ), visitedGroups );
+                }
+
+                if ( modelGroup->compositor() == XsdModelGroup::AllCompositor )
+                {
+                    if ( m_allGroups.contains( reference ) )
+                    {
+                        m_context->error( QtXmlPatterns::tr( "%1 element is not allowed in this scope" ).formatArg( formatElement( "all." ) ),
+                                          XsdSchemaContext::XSDError, reference->sourceLocation() );
+                        return;
+                    }
+
+                    if ( particle->maximumOccursUnbounded() || particle->maximumOccurs() != 1 )
+                    {
+                        m_context->error( QtXmlPatterns::tr( "%1 element cannot have %2 attribute with value other than %3." )
+                                          .formatArg( formatElement( "all" ) )
+                                          .formatArg( formatAttribute( "maxOccurs" ) )
+                                          .formatArg( formatData( "1" ) ),
+                                          XsdSchemaContext::XSDError, reference->sourceLocation() );
+                        return;
+                    }
+
+                    if ( particle->minimumOccurs() != 0 && particle->minimumOccurs() != 1 )
+                    {
+                        m_context->error( QtXmlPatterns::tr( "%1 element cannot have %2 attribute with value other than %3 or %4." )
+                                          .formatArg( formatElement( "all" ) )
+                                          .formatArg( formatAttribute( "minOccurs" ) )
+                                          .formatArg( formatData( "0" ) )
+                                          .formatArg( formatData( "1" ) ),
+                                          XsdSchemaContext::XSDError, reference->sourceLocation() );
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                m_context->error( QtXmlPatterns::tr( "Reference %1 of %2 element cannot be resolved." )
+                                  .formatArg( formatKeyword( m_namePool, reference->referenceName() ) )
+                                  .formatArg( formatElement( "group" ) ),
+                                  XsdSchemaContext::XSDError, reference->sourceLocation() );
+                return;
+            }
         }
-    }
-    break;
+        break;
     }
 }
 

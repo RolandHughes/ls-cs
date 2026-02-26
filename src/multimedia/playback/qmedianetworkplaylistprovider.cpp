@@ -61,20 +61,20 @@ void QMediaNetworkPlaylistProviderPrivate::_q_handleParserError( QPlaylistFilePa
 
     switch ( error )
     {
-    case QPlaylistFileParser::NoError:
-        return;
+        case QPlaylistFileParser::NoError:
+            return;
 
-    case QPlaylistFileParser::FormatError:
-        playlistError = QMediaPlaylist::FormatError;
-        break;
+        case QPlaylistFileParser::FormatError:
+            playlistError = QMediaPlaylist::FormatError;
+            break;
 
-    case QPlaylistFileParser::FormatNotSupportedError:
-        playlistError = QMediaPlaylist::FormatNotSupportedError;
-        break;
+        case QPlaylistFileParser::FormatNotSupportedError:
+            playlistError = QMediaPlaylist::FormatNotSupportedError;
+            break;
 
-    case QPlaylistFileParser::NetworkError:
-        playlistError = QMediaPlaylist::NetworkError;
-        break;
+        case QPlaylistFileParser::NetworkError:
+            playlistError = QMediaPlaylist::NetworkError;
+            break;
     }
 
     parser.stop();

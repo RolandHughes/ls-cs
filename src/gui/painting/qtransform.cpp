@@ -133,44 +133,44 @@ QTransform QTransform::inverted( bool *invertible ) const
 
     switch ( inline_type() )
     {
-    case TxNone:
-        break;
+        case TxNone:
+            break;
 
-    case TxTranslate:
-        invert.affine._dx = -affine._dx;
-        invert.affine._dy = -affine._dy;
-        break;
+        case TxTranslate:
+            invert.affine._dx = -affine._dx;
+            invert.affine._dy = -affine._dy;
+            break;
 
-    case TxScale:
-        inv = !qFuzzyIsNull( affine._m11 );
-        inv &= !qFuzzyIsNull( affine._m22 );
+        case TxScale:
+            inv = !qFuzzyIsNull( affine._m11 );
+            inv &= !qFuzzyIsNull( affine._m22 );
 
-        if ( inv )
-        {
-            invert.affine._m11 = 1. / affine._m11;
-            invert.affine._m22 = 1. / affine._m22;
-            invert.affine._dx = -affine._dx * invert.affine._m11;
-            invert.affine._dy = -affine._dy * invert.affine._m22;
-        }
+            if ( inv )
+            {
+                invert.affine._m11 = 1. / affine._m11;
+                invert.affine._m22 = 1. / affine._m22;
+                invert.affine._dx = -affine._dx * invert.affine._m11;
+                invert.affine._dy = -affine._dy * invert.affine._m22;
+            }
 
-        break;
+            break;
 
-    case TxRotate:
-    case TxShear:
-        invert.affine = affine.inverted( &inv );
-        break;
+        case TxRotate:
+        case TxShear:
+            invert.affine = affine.inverted( &inv );
+            break;
 
-    default:
-        // general case
-        qreal det = determinant();
-        inv = !qFuzzyIsNull( det );
+        default:
+            // general case
+            qreal det = determinant();
+            inv = !qFuzzyIsNull( det );
 
-        if ( inv )
-        {
-            invert = adjoint() / det;
-        }
+            if ( inv )
+            {
+                invert = adjoint() / det;
+            }
 
-        break;
+            break;
     }
 
     if ( invertible )
@@ -207,30 +207,30 @@ QTransform &QTransform::translate( qreal dx, qreal dy )
 
     switch ( inline_type() )
     {
-    case TxNone:
-        affine._dx = dx;
-        affine._dy = dy;
-        break;
+        case TxNone:
+            affine._dx = dx;
+            affine._dy = dy;
+            break;
 
-    case TxTranslate:
-        affine._dx += dx;
-        affine._dy += dy;
-        break;
+        case TxTranslate:
+            affine._dx += dx;
+            affine._dy += dy;
+            break;
 
-    case TxScale:
-        affine._dx += dx * affine._m11;
-        affine._dy += dy * affine._m22;
-        break;
+        case TxScale:
+            affine._dx += dx * affine._m11;
+            affine._dy += dy * affine._m22;
+            break;
 
-    case TxProject:
-        m_33 += dx * m_13 + dy * m_23;
-        [[fallthrough]];
+        case TxProject:
+            m_33 += dx * m_13 + dy * m_23;
+            [[fallthrough]];
 
-    case TxShear:
-    case TxRotate:
-        affine._dx += dx * affine._m11 + dy * affine._m21;
-        affine._dy += dy * affine._m22 + dx * affine._m12;
-        break;
+        case TxShear:
+        case TxRotate:
+            affine._dx += dx * affine._m11 + dy * affine._m21;
+            affine._dy += dy * affine._m22 + dx * affine._m12;
+            break;
     }
 
     if ( m_dirty < TxTranslate )
@@ -288,27 +288,27 @@ QTransform &QTransform::scale( qreal sx, qreal sy )
 
     switch ( inline_type() )
     {
-    case TxNone:
-    case TxTranslate:
-        affine._m11 = sx;
-        affine._m22 = sy;
-        break;
+        case TxNone:
+        case TxTranslate:
+            affine._m11 = sx;
+            affine._m22 = sy;
+            break;
 
-    case TxProject:
-        m_13 *= sx;
-        m_23 *= sy;
-        [[fallthrough]];
+        case TxProject:
+            m_13 *= sx;
+            m_23 *= sy;
+            [[fallthrough]];
 
-    case TxRotate:
-    case TxShear:
-        affine._m12 *= sx;
-        affine._m21 *= sy;
-        [[fallthrough]];
+        case TxRotate:
+        case TxShear:
+            affine._m12 *= sx;
+            affine._m21 *= sy;
+            [[fallthrough]];
 
-    case TxScale:
-        affine._m11 *= sx;
-        affine._m22 *= sy;
-        break;
+        case TxScale:
+            affine._m11 *= sx;
+            affine._m22 *= sy;
+            break;
     }
 
     if ( m_dirty < TxScale )
@@ -366,40 +366,40 @@ QTransform &QTransform::shear( qreal sh, qreal sv )
 
     switch ( inline_type() )
     {
-    case TxNone:
-    case TxTranslate:
-        affine._m12 = sv;
-        affine._m21 = sh;
-        break;
+        case TxNone:
+        case TxTranslate:
+            affine._m12 = sv;
+            affine._m21 = sh;
+            break;
 
-    case TxScale:
-        affine._m12 = sv * affine._m22;
-        affine._m21 = sh * affine._m11;
-        break;
+        case TxScale:
+            affine._m12 = sv * affine._m22;
+            affine._m21 = sh * affine._m11;
+            break;
 
-    case TxProject:
-    {
-        qreal tm13 = sv * m_23;
-        qreal tm23 = sh * m_13;
-        m_13 += tm13;
-        m_23 += tm23;
-    }
+        case TxProject:
+        {
+            qreal tm13 = sv * m_23;
+            qreal tm23 = sh * m_13;
+            m_13 += tm13;
+            m_23 += tm23;
+        }
 
-    [[fallthrough]];
+        [[fallthrough]];
 
-    case TxRotate:
-    case TxShear:
-    {
-        qreal tm11 = sv * affine._m21;
-        qreal tm22 = sh * affine._m12;
-        qreal tm12 = sv * affine._m22;
-        qreal tm21 = sh * affine._m11;
-        affine._m11 += tm11;
-        affine._m12 += tm12;
-        affine._m21 += tm21;
-        affine._m22 += tm22;
-        break;
-    }
+        case TxRotate:
+        case TxShear:
+        {
+            qreal tm11 = sv * affine._m21;
+            qreal tm22 = sh * affine._m12;
+            qreal tm12 = sv * affine._m22;
+            qreal tm21 = sh * affine._m11;
+            affine._m11 += tm11;
+            affine._m12 += tm12;
+            affine._m21 += tm21;
+            affine._m22 += tm22;
+            break;
+        }
     }
 
     if ( m_dirty < TxShear )
@@ -459,51 +459,51 @@ QTransform &QTransform::rotate( qreal a, Qt::Axis axis )
     {
         switch ( inline_type() )
         {
-        case TxNone:
-        case TxTranslate:
-            affine._m11 = cosa;
-            affine._m12 = sina;
-            affine._m21 = -sina;
-            affine._m22 = cosa;
-            break;
+            case TxNone:
+            case TxTranslate:
+                affine._m11 = cosa;
+                affine._m12 = sina;
+                affine._m21 = -sina;
+                affine._m22 = cosa;
+                break;
 
-        case TxScale:
-        {
-            qreal tm11 = cosa * affine._m11;
-            qreal tm12 = sina * affine._m22;
-            qreal tm21 = -sina * affine._m11;
-            qreal tm22 = cosa * affine._m22;
+            case TxScale:
+            {
+                qreal tm11 = cosa * affine._m11;
+                qreal tm12 = sina * affine._m22;
+                qreal tm21 = -sina * affine._m11;
+                qreal tm22 = cosa * affine._m22;
 
-            affine._m11 = tm11;
-            affine._m12 = tm12;
-            affine._m21 = tm21;
-            affine._m22 = tm22;
-            break;
-        }
+                affine._m11 = tm11;
+                affine._m12 = tm12;
+                affine._m21 = tm21;
+                affine._m22 = tm22;
+                break;
+            }
 
-        case TxProject:
-        {
-            qreal tm13 = cosa * m_13 + sina * m_23;
-            qreal tm23 = -sina * m_13 + cosa * m_23;
-            m_13 = tm13;
-            m_23 = tm23;
-        }
+            case TxProject:
+            {
+                qreal tm13 = cosa * m_13 + sina * m_23;
+                qreal tm23 = -sina * m_13 + cosa * m_23;
+                m_13 = tm13;
+                m_23 = tm23;
+            }
 
-        [[fallthrough]];
+            [[fallthrough]];
 
-        case TxRotate:
-        case TxShear:
-        {
-            qreal tm11 = cosa * affine._m11 + sina * affine._m21;
-            qreal tm12 = cosa * affine._m12 + sina * affine._m22;
-            qreal tm21 = -sina * affine._m11 + cosa * affine._m21;
-            qreal tm22 = -sina * affine._m12 + cosa * affine._m22;
-            affine._m11 = tm11;
-            affine._m12 = tm12;
-            affine._m21 = tm21;
-            affine._m22 = tm22;
-            break;
-        }
+            case TxRotate:
+            case TxShear:
+            {
+                qreal tm11 = cosa * affine._m11 + sina * affine._m21;
+                qreal tm12 = cosa * affine._m12 + sina * affine._m22;
+                qreal tm21 = -sina * affine._m11 + cosa * affine._m21;
+                qreal tm22 = -sina * affine._m12 + cosa * affine._m22;
+                affine._m11 = tm11;
+                affine._m12 = tm12;
+                affine._m21 = tm21;
+                affine._m22 = tm22;
+                break;
+            }
         }
 
         if ( m_dirty < TxRotate )
@@ -553,50 +553,50 @@ QTransform &QTransform::rotateRadians( qreal a, Qt::Axis axis )
     {
         switch ( inline_type() )
         {
-        case TxNone:
-        case TxTranslate:
-            affine._m11 = cosa;
-            affine._m12 = sina;
-            affine._m21 = -sina;
-            affine._m22 = cosa;
-            break;
+            case TxNone:
+            case TxTranslate:
+                affine._m11 = cosa;
+                affine._m12 = sina;
+                affine._m21 = -sina;
+                affine._m22 = cosa;
+                break;
 
-        case TxScale:
-        {
-            qreal tm11 = cosa * affine._m11;
-            qreal tm12 = sina * affine._m22;
-            qreal tm21 = -sina * affine._m11;
-            qreal tm22 = cosa * affine._m22;
-            affine._m11 = tm11;
-            affine._m12 = tm12;
-            affine._m21 = tm21;
-            affine._m22 = tm22;
-            break;
-        }
+            case TxScale:
+            {
+                qreal tm11 = cosa * affine._m11;
+                qreal tm12 = sina * affine._m22;
+                qreal tm21 = -sina * affine._m11;
+                qreal tm22 = cosa * affine._m22;
+                affine._m11 = tm11;
+                affine._m12 = tm12;
+                affine._m21 = tm21;
+                affine._m22 = tm22;
+                break;
+            }
 
-        case TxProject:
-        {
-            qreal tm13 = cosa * m_13 + sina * m_23;
-            qreal tm23 = -sina * m_13 + cosa * m_23;
-            m_13 = tm13;
-            m_23 = tm23;
-        }
+            case TxProject:
+            {
+                qreal tm13 = cosa * m_13 + sina * m_23;
+                qreal tm23 = -sina * m_13 + cosa * m_23;
+                m_13 = tm13;
+                m_23 = tm23;
+            }
 
-        [[fallthrough]];
+            [[fallthrough]];
 
-        case TxRotate:
-        case TxShear:
-        {
-            qreal tm11 = cosa * affine._m11 + sina * affine._m21;
-            qreal tm12 = cosa * affine._m12 + sina * affine._m22;
-            qreal tm21 = -sina * affine._m11 + cosa * affine._m21;
-            qreal tm22 = -sina * affine._m12 + cosa * affine._m22;
-            affine._m11 = tm11;
-            affine._m12 = tm12;
-            affine._m21 = tm21;
-            affine._m22 = tm22;
-            break;
-        }
+            case TxRotate:
+            case TxShear:
+            {
+                qreal tm11 = cosa * affine._m11 + sina * affine._m21;
+                qreal tm12 = cosa * affine._m12 + sina * affine._m22;
+                qreal tm21 = -sina * affine._m11 + cosa * affine._m21;
+                qreal tm22 = -sina * affine._m12 + cosa * affine._m22;
+                affine._m11 = tm11;
+                affine._m12 = tm12;
+                affine._m21 = tm21;
+                affine._m22 = tm22;
+                break;
+            }
         }
 
         if ( m_dirty < TxRotate )
@@ -680,74 +680,74 @@ QTransform &QTransform::operator*=( const QTransform &o )
 
     switch ( t )
     {
-    case TxNone:
-        break;
+        case TxNone:
+            break;
 
-    case TxTranslate:
-        affine._dx += o.affine._dx;
-        affine._dy += o.affine._dy;
-        break;
+        case TxTranslate:
+            affine._dx += o.affine._dx;
+            affine._dy += o.affine._dy;
+            break;
 
-    case TxScale:
-    {
-        qreal m11 = affine._m11 * o.affine._m11;
-        qreal m22 = affine._m22 * o.affine._m22;
+        case TxScale:
+        {
+            qreal m11 = affine._m11 * o.affine._m11;
+            qreal m22 = affine._m22 * o.affine._m22;
 
-        qreal m31 = affine._dx * o.affine._m11 + o.affine._dx;
-        qreal m32 = affine._dy * o.affine._m22 + o.affine._dy;
+            qreal m31 = affine._dx * o.affine._m11 + o.affine._dx;
+            qreal m32 = affine._dy * o.affine._m22 + o.affine._dy;
 
-        affine._m11 = m11;
-        affine._m22 = m22;
-        affine._dx = m31;
-        affine._dy = m32;
-        break;
-    }
+            affine._m11 = m11;
+            affine._m22 = m22;
+            affine._dx = m31;
+            affine._dy = m32;
+            break;
+        }
 
-    case TxRotate:
-    case TxShear:
-    {
-        qreal m11 = affine._m11 * o.affine._m11 + affine._m12 * o.affine._m21;
-        qreal m12 = affine._m11 * o.affine._m12 + affine._m12 * o.affine._m22;
+        case TxRotate:
+        case TxShear:
+        {
+            qreal m11 = affine._m11 * o.affine._m11 + affine._m12 * o.affine._m21;
+            qreal m12 = affine._m11 * o.affine._m12 + affine._m12 * o.affine._m22;
 
-        qreal m21 = affine._m21 * o.affine._m11 + affine._m22 * o.affine._m21;
-        qreal m22 = affine._m21 * o.affine._m12 + affine._m22 * o.affine._m22;
+            qreal m21 = affine._m21 * o.affine._m11 + affine._m22 * o.affine._m21;
+            qreal m22 = affine._m21 * o.affine._m12 + affine._m22 * o.affine._m22;
 
-        qreal m31 = affine._dx * o.affine._m11 + affine._dy * o.affine._m21 + o.affine._dx;
-        qreal m32 = affine._dx * o.affine._m12 + affine._dy * o.affine._m22 + o.affine._dy;
+            qreal m31 = affine._dx * o.affine._m11 + affine._dy * o.affine._m21 + o.affine._dx;
+            qreal m32 = affine._dx * o.affine._m12 + affine._dy * o.affine._m22 + o.affine._dy;
 
-        affine._m11 = m11;
-        affine._m12 = m12;
-        affine._m21 = m21;
-        affine._m22 = m22;
-        affine._dx = m31;
-        affine._dy = m32;
-        break;
-    }
+            affine._m11 = m11;
+            affine._m12 = m12;
+            affine._m21 = m21;
+            affine._m22 = m22;
+            affine._dx = m31;
+            affine._dy = m32;
+            break;
+        }
 
-    case TxProject:
-    {
-        qreal m11 = affine._m11 * o.affine._m11 + affine._m12 * o.affine._m21 + m_13 * o.affine._dx;
-        qreal m12 = affine._m11 * o.affine._m12 + affine._m12 * o.affine._m22 + m_13 * o.affine._dy;
-        qreal m13 = affine._m11 * o.m_13 + affine._m12 * o.m_23 + m_13 * o.m_33;
+        case TxProject:
+        {
+            qreal m11 = affine._m11 * o.affine._m11 + affine._m12 * o.affine._m21 + m_13 * o.affine._dx;
+            qreal m12 = affine._m11 * o.affine._m12 + affine._m12 * o.affine._m22 + m_13 * o.affine._dy;
+            qreal m13 = affine._m11 * o.m_13 + affine._m12 * o.m_23 + m_13 * o.m_33;
 
-        qreal m21 = affine._m21 * o.affine._m11 + affine._m22 * o.affine._m21 + m_23 * o.affine._dx;
-        qreal m22 = affine._m21 * o.affine._m12 + affine._m22 * o.affine._m22 + m_23 * o.affine._dy;
-        qreal m23 = affine._m21 * o.m_13 + affine._m22 * o.m_23 + m_23 * o.m_33;
+            qreal m21 = affine._m21 * o.affine._m11 + affine._m22 * o.affine._m21 + m_23 * o.affine._dx;
+            qreal m22 = affine._m21 * o.affine._m12 + affine._m22 * o.affine._m22 + m_23 * o.affine._dy;
+            qreal m23 = affine._m21 * o.m_13 + affine._m22 * o.m_23 + m_23 * o.m_33;
 
-        qreal m31 = affine._dx * o.affine._m11 + affine._dy * o.affine._m21 + m_33 * o.affine._dx;
-        qreal m32 = affine._dx * o.affine._m12 + affine._dy * o.affine._m22 + m_33 * o.affine._dy;
-        qreal m33 = affine._dx * o.m_13 + affine._dy * o.m_23 + m_33 * o.m_33;
+            qreal m31 = affine._dx * o.affine._m11 + affine._dy * o.affine._m21 + m_33 * o.affine._dx;
+            qreal m32 = affine._dx * o.affine._m12 + affine._dy * o.affine._m22 + m_33 * o.affine._dy;
+            qreal m33 = affine._dx * o.m_13 + affine._dy * o.m_23 + m_33 * o.m_33;
 
-        affine._m11 = m11;
-        affine._m12 = m12;
-        m_13 = m13;
-        affine._m21 = m21;
-        affine._m22 = m22;
-        m_23 = m23;
-        affine._dx = m31;
-        affine._dy = m32;
-        m_33 = m33;
-    }
+            affine._m11 = m11;
+            affine._m12 = m12;
+            m_13 = m13;
+            affine._m21 = m21;
+            affine._m22 = m22;
+            m_23 = m23;
+            affine._dx = m31;
+            affine._dy = m32;
+            m_33 = m33;
+        }
     }
 
     m_dirty = t;
@@ -776,74 +776,74 @@ QTransform QTransform::operator*( const QTransform &m ) const
 
     switch ( type )
     {
-    case TxNone:
-        break;
+        case TxNone:
+            break;
 
-    case TxTranslate:
-        t.affine._dx = affine._dx + m.affine._dx;
-        t.affine._dy += affine._dy + m.affine._dy;
-        break;
+        case TxTranslate:
+            t.affine._dx = affine._dx + m.affine._dx;
+            t.affine._dy += affine._dy + m.affine._dy;
+            break;
 
-    case TxScale:
-    {
-        qreal m11 = affine._m11 * m.affine._m11;
-        qreal m22 = affine._m22 * m.affine._m22;
+        case TxScale:
+        {
+            qreal m11 = affine._m11 * m.affine._m11;
+            qreal m22 = affine._m22 * m.affine._m22;
 
-        qreal m31 = affine._dx * m.affine._m11 + m.affine._dx;
-        qreal m32 = affine._dy * m.affine._m22 + m.affine._dy;
+            qreal m31 = affine._dx * m.affine._m11 + m.affine._dx;
+            qreal m32 = affine._dy * m.affine._m22 + m.affine._dy;
 
-        t.affine._m11 = m11;
-        t.affine._m22 = m22;
-        t.affine._dx = m31;
-        t.affine._dy = m32;
-        break;
-    }
+            t.affine._m11 = m11;
+            t.affine._m22 = m22;
+            t.affine._dx = m31;
+            t.affine._dy = m32;
+            break;
+        }
 
-    case TxRotate:
-    case TxShear:
-    {
-        qreal m11 = affine._m11 * m.affine._m11 + affine._m12 * m.affine._m21;
-        qreal m12 = affine._m11 * m.affine._m12 + affine._m12 * m.affine._m22;
+        case TxRotate:
+        case TxShear:
+        {
+            qreal m11 = affine._m11 * m.affine._m11 + affine._m12 * m.affine._m21;
+            qreal m12 = affine._m11 * m.affine._m12 + affine._m12 * m.affine._m22;
 
-        qreal m21 = affine._m21 * m.affine._m11 + affine._m22 * m.affine._m21;
-        qreal m22 = affine._m21 * m.affine._m12 + affine._m22 * m.affine._m22;
+            qreal m21 = affine._m21 * m.affine._m11 + affine._m22 * m.affine._m21;
+            qreal m22 = affine._m21 * m.affine._m12 + affine._m22 * m.affine._m22;
 
-        qreal m31 = affine._dx * m.affine._m11 + affine._dy * m.affine._m21 + m.affine._dx;
-        qreal m32 = affine._dx * m.affine._m12 + affine._dy * m.affine._m22 + m.affine._dy;
+            qreal m31 = affine._dx * m.affine._m11 + affine._dy * m.affine._m21 + m.affine._dx;
+            qreal m32 = affine._dx * m.affine._m12 + affine._dy * m.affine._m22 + m.affine._dy;
 
-        t.affine._m11 = m11;
-        t.affine._m12 = m12;
-        t.affine._m21 = m21;
-        t.affine._m22 = m22;
-        t.affine._dx = m31;
-        t.affine._dy = m32;
-        break;
-    }
+            t.affine._m11 = m11;
+            t.affine._m12 = m12;
+            t.affine._m21 = m21;
+            t.affine._m22 = m22;
+            t.affine._dx = m31;
+            t.affine._dy = m32;
+            break;
+        }
 
-    case TxProject:
-    {
-        qreal m11 = affine._m11 * m.affine._m11 + affine._m12 * m.affine._m21 + m_13 * m.affine._dx;
-        qreal m12 = affine._m11 * m.affine._m12 + affine._m12 * m.affine._m22 + m_13 * m.affine._dy;
-        qreal m13 = affine._m11 * m.m_13 + affine._m12 * m.m_23 + m_13 * m.m_33;
+        case TxProject:
+        {
+            qreal m11 = affine._m11 * m.affine._m11 + affine._m12 * m.affine._m21 + m_13 * m.affine._dx;
+            qreal m12 = affine._m11 * m.affine._m12 + affine._m12 * m.affine._m22 + m_13 * m.affine._dy;
+            qreal m13 = affine._m11 * m.m_13 + affine._m12 * m.m_23 + m_13 * m.m_33;
 
-        qreal m21 = affine._m21 * m.affine._m11 + affine._m22 * m.affine._m21 + m_23 * m.affine._dx;
-        qreal m22 = affine._m21 * m.affine._m12 + affine._m22 * m.affine._m22 + m_23 * m.affine._dy;
-        qreal m23 = affine._m21 * m.m_13 + affine._m22 * m.m_23 + m_23 * m.m_33;
+            qreal m21 = affine._m21 * m.affine._m11 + affine._m22 * m.affine._m21 + m_23 * m.affine._dx;
+            qreal m22 = affine._m21 * m.affine._m12 + affine._m22 * m.affine._m22 + m_23 * m.affine._dy;
+            qreal m23 = affine._m21 * m.m_13 + affine._m22 * m.m_23 + m_23 * m.m_33;
 
-        qreal m31 = affine._dx * m.affine._m11 + affine._dy * m.affine._m21 + m_33 * m.affine._dx;
-        qreal m32 = affine._dx * m.affine._m12 + affine._dy * m.affine._m22 + m_33 * m.affine._dy;
-        qreal m33 = affine._dx * m.m_13 + affine._dy * m.m_23 + m_33 * m.m_33;
+            qreal m31 = affine._dx * m.affine._m11 + affine._dy * m.affine._m21 + m_33 * m.affine._dx;
+            qreal m32 = affine._dx * m.affine._m12 + affine._dy * m.affine._m22 + m_33 * m.affine._dy;
+            qreal m33 = affine._dx * m.m_13 + affine._dy * m.m_23 + m_33 * m.m_33;
 
-        t.affine._m11 = m11;
-        t.affine._m12 = m12;
-        t.m_13 = m13;
-        t.affine._m21 = m21;
-        t.affine._m22 = m22;
-        t.m_23 = m23;
-        t.affine._dx = m31;
-        t.affine._dy = m32;
-        t.m_33 = m33;
-    }
+            t.affine._m11 = m11;
+            t.affine._m12 = m12;
+            t.m_13 = m13;
+            t.affine._m21 = m21;
+            t.affine._m22 = m22;
+            t.m_23 = m23;
+            t.affine._dx = m31;
+            t.affine._dy = m32;
+            t.m_33 = m33;
+        }
     }
 
     t.m_dirty = type;
@@ -929,16 +929,16 @@ QDebug operator<<( QDebug dbg, const QTransform &m )
 
     QDebugStateSaver saver( dbg );
     dbg.nospace() << "QTransform(type=" << typeStr[m.type()] << ','
-       << " 11=" << m.m11()
-       << " 12=" << m.m12()
-       << " 13=" << m.m13()
-       << " 21=" << m.m21()
-       << " 22=" << m.m22()
-       << " 23=" << m.m23()
-       << " 31=" << m.m31()
-       << " 32=" << m.m32()
-       << " 33=" << m.m33()
-       << ')';
+                  << " 11=" << m.m11()
+                  << " 12=" << m.m12()
+                  << " 13=" << m.m13()
+                  << " 21=" << m.m21()
+                  << " 22=" << m.m22()
+                  << " 23=" << m.m23()
+                  << " 31=" << m.m31()
+                  << " 32=" << m.m32()
+                  << " 33=" << m.m33()
+                  << ')';
 
     return dbg;
 }
@@ -954,33 +954,33 @@ QPoint QTransform::map( const QPoint &p ) const
 
     switch ( t )
     {
-    case TxNone:
-        x = fx;
-        y = fy;
-        break;
+        case TxNone:
+            x = fx;
+            y = fy;
+            break;
 
-    case TxTranslate:
-        x = fx + affine._dx;
-        y = fy + affine._dy;
-        break;
+        case TxTranslate:
+            x = fx + affine._dx;
+            y = fy + affine._dy;
+            break;
 
-    case TxScale:
-        x = affine._m11 * fx + affine._dx;
-        y = affine._m22 * fy + affine._dy;
-        break;
+        case TxScale:
+            x = affine._m11 * fx + affine._dx;
+            y = affine._m22 * fy + affine._dy;
+            break;
 
-    case TxRotate:
-    case TxShear:
-    case TxProject:
-        x = affine._m11 * fx + affine._m21 * fy + affine._dx;
-        y = affine._m12 * fx + affine._m22 * fy + affine._dy;
+        case TxRotate:
+        case TxShear:
+        case TxProject:
+            x = affine._m11 * fx + affine._m21 * fy + affine._dx;
+            y = affine._m12 * fx + affine._m22 * fy + affine._dy;
 
-        if ( t == TxProject )
-        {
-            qreal w = 1. / ( m_13 * fx + m_23 * fy + m_33 );
-            x *= w;
-            y *= w;
-        }
+            if ( t == TxProject )
+            {
+                qreal w = 1. / ( m_13 * fx + m_23 * fy + m_33 );
+                x *= w;
+                y *= w;
+            }
     }
 
     return QPoint( qRound( x ), qRound( y ) );
@@ -999,33 +999,33 @@ QPointF QTransform::map( const QPointF &p ) const
 
     switch ( t )
     {
-    case TxNone:
-        x = fx;
-        y = fy;
-        break;
+        case TxNone:
+            x = fx;
+            y = fy;
+            break;
 
-    case TxTranslate:
-        x = fx + affine._dx;
-        y = fy + affine._dy;
-        break;
+        case TxTranslate:
+            x = fx + affine._dx;
+            y = fy + affine._dy;
+            break;
 
-    case TxScale:
-        x = affine._m11 * fx + affine._dx;
-        y = affine._m22 * fy + affine._dy;
-        break;
+        case TxScale:
+            x = affine._m11 * fx + affine._dx;
+            y = affine._m22 * fy + affine._dy;
+            break;
 
-    case TxRotate:
-    case TxShear:
-    case TxProject:
-        x = affine._m11 * fx + affine._m21 * fy + affine._dx;
-        y = affine._m12 * fx + affine._m22 * fy + affine._dy;
+        case TxRotate:
+        case TxShear:
+        case TxProject:
+            x = affine._m11 * fx + affine._m21 * fy + affine._dx;
+            y = affine._m12 * fx + affine._m22 * fy + affine._dy;
 
-        if ( t == TxProject )
-        {
-            qreal w = 1. / ( m_13 * fx + m_23 * fy + m_33 );
-            x *= w;
-            y *= w;
-        }
+            if ( t == TxProject )
+            {
+                qreal w = 1. / ( m_13 * fx + m_23 * fy + m_33 );
+                x *= w;
+                y *= w;
+            }
     }
 
     return QPointF( x, y );
@@ -1044,44 +1044,44 @@ QLine QTransform::map( const QLine &l ) const
 
     switch ( t )
     {
-    case TxNone:
-        x1 = fx1;
-        y1 = fy1;
-        x2 = fx2;
-        y2 = fy2;
-        break;
+        case TxNone:
+            x1 = fx1;
+            y1 = fy1;
+            x2 = fx2;
+            y2 = fy2;
+            break;
 
-    case TxTranslate:
-        x1 = fx1 + affine._dx;
-        y1 = fy1 + affine._dy;
-        x2 = fx2 + affine._dx;
-        y2 = fy2 + affine._dy;
-        break;
+        case TxTranslate:
+            x1 = fx1 + affine._dx;
+            y1 = fy1 + affine._dy;
+            x2 = fx2 + affine._dx;
+            y2 = fy2 + affine._dy;
+            break;
 
-    case TxScale:
-        x1 = affine._m11 * fx1 + affine._dx;
-        y1 = affine._m22 * fy1 + affine._dy;
-        x2 = affine._m11 * fx2 + affine._dx;
-        y2 = affine._m22 * fy2 + affine._dy;
-        break;
+        case TxScale:
+            x1 = affine._m11 * fx1 + affine._dx;
+            y1 = affine._m22 * fy1 + affine._dy;
+            x2 = affine._m11 * fx2 + affine._dx;
+            y2 = affine._m22 * fy2 + affine._dy;
+            break;
 
-    case TxRotate:
-    case TxShear:
-    case TxProject:
-        x1 = affine._m11 * fx1 + affine._m21 * fy1 + affine._dx;
-        y1 = affine._m12 * fx1 + affine._m22 * fy1 + affine._dy;
-        x2 = affine._m11 * fx2 + affine._m21 * fy2 + affine._dx;
-        y2 = affine._m12 * fx2 + affine._m22 * fy2 + affine._dy;
+        case TxRotate:
+        case TxShear:
+        case TxProject:
+            x1 = affine._m11 * fx1 + affine._m21 * fy1 + affine._dx;
+            y1 = affine._m12 * fx1 + affine._m22 * fy1 + affine._dy;
+            x2 = affine._m11 * fx2 + affine._m21 * fy2 + affine._dx;
+            y2 = affine._m12 * fx2 + affine._m22 * fy2 + affine._dy;
 
-        if ( t == TxProject )
-        {
-            qreal w = 1. / ( m_13 * fx1 + m_23 * fy1 + m_33 );
-            x1 *= w;
-            y1 *= w;
-            w = 1. / ( m_13 * fx2 + m_23 * fy2 + m_33 );
-            x2 *= w;
-            y2 *= w;
-        }
+            if ( t == TxProject )
+            {
+                qreal w = 1. / ( m_13 * fx1 + m_23 * fy1 + m_33 );
+                x1 *= w;
+                y1 *= w;
+                w = 1. / ( m_13 * fx2 + m_23 * fy2 + m_33 );
+                x2 *= w;
+                y2 *= w;
+            }
     }
 
     return QLine( qRound( x1 ), qRound( y1 ), qRound( x2 ), qRound( y2 ) );
@@ -1100,44 +1100,44 @@ QLineF QTransform::map( const QLineF &l ) const
 
     switch ( t )
     {
-    case TxNone:
-        x1 = fx1;
-        y1 = fy1;
-        x2 = fx2;
-        y2 = fy2;
-        break;
+        case TxNone:
+            x1 = fx1;
+            y1 = fy1;
+            x2 = fx2;
+            y2 = fy2;
+            break;
 
-    case TxTranslate:
-        x1 = fx1 + affine._dx;
-        y1 = fy1 + affine._dy;
-        x2 = fx2 + affine._dx;
-        y2 = fy2 + affine._dy;
-        break;
+        case TxTranslate:
+            x1 = fx1 + affine._dx;
+            y1 = fy1 + affine._dy;
+            x2 = fx2 + affine._dx;
+            y2 = fy2 + affine._dy;
+            break;
 
-    case TxScale:
-        x1 = affine._m11 * fx1 + affine._dx;
-        y1 = affine._m22 * fy1 + affine._dy;
-        x2 = affine._m11 * fx2 + affine._dx;
-        y2 = affine._m22 * fy2 + affine._dy;
-        break;
+        case TxScale:
+            x1 = affine._m11 * fx1 + affine._dx;
+            y1 = affine._m22 * fy1 + affine._dy;
+            x2 = affine._m11 * fx2 + affine._dx;
+            y2 = affine._m22 * fy2 + affine._dy;
+            break;
 
-    case TxRotate:
-    case TxShear:
-    case TxProject:
-        x1 = affine._m11 * fx1 + affine._m21 * fy1 + affine._dx;
-        y1 = affine._m12 * fx1 + affine._m22 * fy1 + affine._dy;
-        x2 = affine._m11 * fx2 + affine._m21 * fy2 + affine._dx;
-        y2 = affine._m12 * fx2 + affine._m22 * fy2 + affine._dy;
+        case TxRotate:
+        case TxShear:
+        case TxProject:
+            x1 = affine._m11 * fx1 + affine._m21 * fy1 + affine._dx;
+            y1 = affine._m12 * fx1 + affine._m22 * fy1 + affine._dy;
+            x2 = affine._m11 * fx2 + affine._m21 * fy2 + affine._dx;
+            y2 = affine._m12 * fx2 + affine._m22 * fy2 + affine._dy;
 
-        if ( t == TxProject )
-        {
-            qreal w = 1. / ( m_13 * fx1 + m_23 * fy1 + m_33 );
-            x1 *= w;
-            y1 *= w;
-            w = 1. / ( m_13 * fx2 + m_23 * fy2 + m_33 );
-            x2 *= w;
-            y2 *= w;
-        }
+            if ( t == TxProject )
+            {
+                qreal w = 1. / ( m_13 * fx1 + m_23 * fy1 + m_33 );
+                x1 *= w;
+                y1 *= w;
+                w = 1. / ( m_13 * fx2 + m_23 * fy2 + m_33 );
+                x2 *= w;
+                y2 *= w;
+            }
     }
 
     return QLineF( x1, y1, x2, y2 );
@@ -1372,39 +1372,39 @@ static QPainterPath mapProjective( const QTransform &transform, const QPainterPa
     {
         switch ( path.elementAt( i ).type )
         {
-        case QPainterPath::MoveToElement:
-            if ( i > 0 && lastMoveTo != last )
-            {
-                lineTo_clipped( result, transform, last, lastMoveTo, needsMoveTo );
-            }
+            case QPainterPath::MoveToElement:
+                if ( i > 0 && lastMoveTo != last )
+                {
+                    lineTo_clipped( result, transform, last, lastMoveTo, needsMoveTo );
+                }
 
-            lastMoveTo = path.elementAt( i );
-            last = path.elementAt( i );
-            needsMoveTo = true;
-            break;
+                lastMoveTo = path.elementAt( i );
+                last = path.elementAt( i );
+                needsMoveTo = true;
+                break;
 
-        case QPainterPath::LineToElement:
-            if ( lineTo_clipped( result, transform, last, path.elementAt( i ), needsMoveTo ) )
-            {
-                needsMoveTo = false;
-            }
+            case QPainterPath::LineToElement:
+                if ( lineTo_clipped( result, transform, last, path.elementAt( i ), needsMoveTo ) )
+                {
+                    needsMoveTo = false;
+                }
 
-            last = path.elementAt( i );
-            break;
+                last = path.elementAt( i );
+                break;
 
-        case QPainterPath::CurveToElement:
-            if ( cubicTo_clipped( result, transform, last, path.elementAt( i ), path.elementAt( i + 1 ), path.elementAt( i + 2 ),
-                                  needsMoveTo ) )
-            {
-                needsMoveTo = false;
-            }
+            case QPainterPath::CurveToElement:
+                if ( cubicTo_clipped( result, transform, last, path.elementAt( i ), path.elementAt( i + 1 ), path.elementAt( i + 2 ),
+                                      needsMoveTo ) )
+                {
+                    needsMoveTo = false;
+                }
 
-            i += 2;
-            last = path.elementAt( i );
-            break;
+                i += 2;
+                last = path.elementAt( i );
+                break;
 
-        default:
-            Q_ASSERT( false );
+            default:
+                Q_ASSERT( false );
         }
     }
 
@@ -1795,56 +1795,56 @@ QTransform::TransformationType QTransform::type() const
 
     switch ( static_cast<TransformationType>( m_dirty ) )
     {
-    case TxProject:
-        if ( ! qFuzzyIsNull( m_13 ) || ! qFuzzyIsNull( m_23 ) || ! qFuzzyIsNull( m_33 - 1 ) )
-        {
-            m_type = TxProject;
-            break;
-        }
-
-        [[fallthrough]];
-
-    case TxShear:
-    case TxRotate:
-        if ( ! qFuzzyIsNull( affine._m12 ) || ! qFuzzyIsNull( affine._m21 ) )
-        {
-            const qreal dot = affine._m11 * affine._m12 + affine._m21 * affine._m22;
-
-            if ( qFuzzyIsNull( dot ) )
+        case TxProject:
+            if ( ! qFuzzyIsNull( m_13 ) || ! qFuzzyIsNull( m_23 ) || ! qFuzzyIsNull( m_33 - 1 ) )
             {
-                m_type = TxRotate;
-            }
-            else
-            {
-                m_type = TxShear;
+                m_type = TxProject;
+                break;
             }
 
+            [[fallthrough]];
+
+        case TxShear:
+        case TxRotate:
+            if ( ! qFuzzyIsNull( affine._m12 ) || ! qFuzzyIsNull( affine._m21 ) )
+            {
+                const qreal dot = affine._m11 * affine._m12 + affine._m21 * affine._m22;
+
+                if ( qFuzzyIsNull( dot ) )
+                {
+                    m_type = TxRotate;
+                }
+                else
+                {
+                    m_type = TxShear;
+                }
+
+                break;
+            }
+
+            [[fallthrough]];
+
+        case TxScale:
+            if ( !qFuzzyIsNull( affine._m11 - 1 ) || !qFuzzyIsNull( affine._m22 - 1 ) )
+            {
+                m_type = TxScale;
+                break;
+            }
+
+            [[fallthrough]];
+
+        case TxTranslate:
+            if ( !qFuzzyIsNull( affine._dx ) || !qFuzzyIsNull( affine._dy ) )
+            {
+                m_type = TxTranslate;
+                break;
+            }
+
+            [[fallthrough]];
+
+        case TxNone:
+            m_type = TxNone;
             break;
-        }
-
-        [[fallthrough]];
-
-    case TxScale:
-        if ( !qFuzzyIsNull( affine._m11 - 1 ) || !qFuzzyIsNull( affine._m22 - 1 ) )
-        {
-            m_type = TxScale;
-            break;
-        }
-
-        [[fallthrough]];
-
-    case TxTranslate:
-        if ( !qFuzzyIsNull( affine._dx ) || !qFuzzyIsNull( affine._dy ) )
-        {
-            m_type = TxTranslate;
-            break;
-        }
-
-        [[fallthrough]];
-
-    case TxNone:
-        m_type = TxNone;
-        break;
     }
 
     m_dirty = TxNone;

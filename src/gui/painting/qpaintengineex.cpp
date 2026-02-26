@@ -200,31 +200,31 @@ void QPaintEngineExPrivate::replayClipOperations()
 
         switch ( info.clipType )
         {
-        case QPainterClipInfo::RegionClip:
-            q->clip( info.region, info.operation );
-            break;
+            case QPainterClipInfo::RegionClip:
+                q->clip( info.region, info.operation );
+                break;
 
-        case QPainterClipInfo::PathClip:
-            q->clip( info.path, info.operation );
-            break;
+            case QPainterClipInfo::PathClip:
+                q->clip( info.path, info.operation );
+                break;
 
-        case QPainterClipInfo::RectClip:
-            q->clip( info.rect, info.operation );
-            break;
+            case QPainterClipInfo::RectClip:
+                q->clip( info.rect, info.operation );
+                break;
 
-        case QPainterClipInfo::RectFClip:
-        {
-            qreal right = info.rectf.x() + info.rectf.width();
-            qreal bottom = info.rectf.y() + info.rectf.height();
+            case QPainterClipInfo::RectFClip:
+            {
+                qreal right = info.rectf.x() + info.rectf.width();
+                qreal bottom = info.rectf.y() + info.rectf.height();
 
-            qreal pts[] = { info.rectf.x(), info.rectf.y(), right,
-                            info.rectf.y(), right, bottom, info.rectf.x(), bottom
-                          };
+                qreal pts[] = { info.rectf.x(), info.rectf.y(), right,
+                                info.rectf.y(), right, bottom, info.rectf.x(), bottom
+                              };
 
-            QVectorPath vp( pts, 4, nullptr, QVectorPath::RectangleHint );
-            q->clip( vp, info.operation );
-            break;
-        }
+                QVectorPath vp( pts, 4, nullptr, QVectorPath::RectangleHint );
+                q->clip( vp, info.operation );
+                break;
+            }
         }
     }
 
@@ -515,29 +515,29 @@ void QPaintEngineEx::stroke( const QVectorPath &path, const QPen &pen )
             {
                 switch ( *types )
                 {
-                case QPainterPath::MoveToElement:
-                    d->activeStroker->moveTo( points[0], points[1] );
-                    points += 2;
-                    ++types;
-                    break;
+                    case QPainterPath::MoveToElement:
+                        d->activeStroker->moveTo( points[0], points[1] );
+                        points += 2;
+                        ++types;
+                        break;
 
-                case QPainterPath::LineToElement:
-                    d->activeStroker->lineTo( points[0], points[1] );
-                    points += 2;
-                    ++types;
-                    break;
+                    case QPainterPath::LineToElement:
+                        d->activeStroker->lineTo( points[0], points[1] );
+                        points += 2;
+                        ++types;
+                        break;
 
-                case QPainterPath::CurveToElement:
-                    d->activeStroker->cubicTo( points[0], points[1],
-                                               points[2], points[3], points[4], points[5] );
+                    case QPainterPath::CurveToElement:
+                        d->activeStroker->cubicTo( points[0], points[1],
+                                                   points[2], points[3], points[4], points[5] );
 
-                    points += 6;
-                    types += 3;
-                    flags |= QVectorPath::CurvedShapeMask;
-                    break;
+                        points += 6;
+                        types += 3;
+                        flags |= QVectorPath::CurvedShapeMask;
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
                 }
             }
 
@@ -599,38 +599,38 @@ void QPaintEngineEx::stroke( const QVectorPath &path, const QPen &pen )
                 {
                     switch ( *types )
                     {
-                    case QPainterPath::MoveToElement:
-                    {
-                        QPointF pt = ( *( const QPointF * ) points ) * state()->matrix;
-                        d->activeStroker->moveTo( pt.x(), pt.y() );
-                        points += 2;
-                        ++types;
-                        break;
-                    }
+                        case QPainterPath::MoveToElement:
+                        {
+                            QPointF pt = ( *( const QPointF * ) points ) * state()->matrix;
+                            d->activeStroker->moveTo( pt.x(), pt.y() );
+                            points += 2;
+                            ++types;
+                            break;
+                        }
 
-                    case QPainterPath::LineToElement:
-                    {
-                        QPointF pt = ( *( const QPointF * ) points ) * state()->matrix;
-                        d->activeStroker->lineTo( pt.x(), pt.y() );
-                        points += 2;
-                        ++types;
-                        break;
-                    }
+                        case QPainterPath::LineToElement:
+                        {
+                            QPointF pt = ( *( const QPointF * ) points ) * state()->matrix;
+                            d->activeStroker->lineTo( pt.x(), pt.y() );
+                            points += 2;
+                            ++types;
+                            break;
+                        }
 
-                    case QPainterPath::CurveToElement:
-                    {
-                        QPointF c1 = ( ( const QPointF * ) points )[0] * state()->matrix;
-                        QPointF c2 = ( ( const QPointF * ) points )[1] * state()->matrix;
-                        QPointF e =  ( ( const QPointF * ) points )[2] * state()->matrix;
-                        d->activeStroker->cubicTo( c1.x(), c1.y(), c2.x(), c2.y(), e.x(), e.y() );
-                        points += 6;
-                        types += 3;
-                        flags |= QVectorPath::CurvedShapeMask;
-                        break;
-                    }
+                        case QPainterPath::CurveToElement:
+                        {
+                            QPointF c1 = ( ( const QPointF * ) points )[0] * state()->matrix;
+                            QPointF c2 = ( ( const QPointF * ) points )[1] * state()->matrix;
+                            QPointF e =  ( ( const QPointF * ) points )[2] * state()->matrix;
+                            d->activeStroker->cubicTo( c1.x(), c1.y(), c2.x(), c2.y(), e.x(), e.y() );
+                            points += 6;
+                            types += 3;
+                            flags |= QVectorPath::CurvedShapeMask;
+                            break;
+                        }
 
-                    default:
-                        break;
+                        default:
+                            break;
                     }
                 }
 
@@ -1183,29 +1183,29 @@ Q_GUI_EXPORT QPainterPath lscs_painterPathFromVectorPath( const QVectorPath &pat
         {
             switch ( types[i] )
             {
-            case QPainterPath::MoveToElement:
-                p.moveTo( QPointF( points[id], points[id + 1] ) );
-                id += 2;
-                break;
+                case QPainterPath::MoveToElement:
+                    p.moveTo( QPointF( points[id], points[id + 1] ) );
+                    id += 2;
+                    break;
 
-            case QPainterPath::LineToElement:
-                p.lineTo( QPointF( points[id], points[id + 1] ) );
-                id += 2;
-                break;
+                case QPainterPath::LineToElement:
+                    p.lineTo( QPointF( points[id], points[id + 1] ) );
+                    id += 2;
+                    break;
 
-            case QPainterPath::CurveToElement:
-            {
-                QPointF p1( points[id], points[id + 1] );
-                QPointF p2( points[id + 2], points[id + 3] );
-                QPointF p3( points[id + 4], points[id + 5] );
-                p.cubicTo( p1, p2, p3 );
-                id += 6;
-                break;
-            }
+                case QPainterPath::CurveToElement:
+                {
+                    QPointF p1( points[id], points[id + 1] );
+                    QPointF p2( points[id + 2], points[id + 3] );
+                    QPointF p3( points[id + 4], points[id + 5] );
+                    p.cubicTo( p1, p2, p3 );
+                    id += 6;
+                    break;
+                }
 
-            case QPainterPath::CurveToDataElement:
-                ;
-                break;
+                case QPainterPath::CurveToDataElement:
+                    ;
+                    break;
             }
         }
 

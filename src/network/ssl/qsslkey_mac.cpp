@@ -34,20 +34,20 @@ static QByteArray wrapCCCrypt( CCOperation ccOp, QSslKeyPrivate::Cipher cipher, 
 
     switch ( cipher )
     {
-    case QSslKeyPrivate::DesCbc:
-        blockSize = kCCBlockSizeDES;
-        ccAlgorithm = kCCAlgorithmDES;
-        break;
+        case QSslKeyPrivate::DesCbc:
+            blockSize = kCCBlockSizeDES;
+            ccAlgorithm = kCCAlgorithmDES;
+            break;
 
-    case QSslKeyPrivate::DesEde3Cbc:
-        blockSize = kCCBlockSize3DES;
-        ccAlgorithm = kCCAlgorithm3DES;
-        break;
+        case QSslKeyPrivate::DesEde3Cbc:
+            blockSize = kCCBlockSize3DES;
+            ccAlgorithm = kCCAlgorithm3DES;
+            break;
 
-    case QSslKeyPrivate::Rc2Cbc:
-        blockSize = kCCBlockSizeRC2;
-        ccAlgorithm = kCCAlgorithmRC2;
-        break;
+        case QSslKeyPrivate::Rc2Cbc:
+            blockSize = kCCBlockSizeRC2;
+            ccAlgorithm = kCCAlgorithmRC2;
+            break;
     };
 
     size_t plainLength = 0;

@@ -109,7 +109,7 @@ static void initGtk()
 
         QGtk2PainterPrivate::gdk_pixmap_new = ( Ptr_gdk_pixmap_new )libgtk.resolve( "gdk_pixmap_new" );
         QGtk2PainterPrivate::gdk_pixbuf_get_from_drawable = ( Ptr_gdk_pixbuf_get_from_drawable )
-            libgtk.resolve( "gdk_pixbuf_get_from_drawable" );
+                libgtk.resolve( "gdk_pixbuf_get_from_drawable" );
         QGtk2PainterPrivate::gdk_draw_rectangle = ( Ptr_gdk_draw_rectangle )libgtk.resolve( "gdk_draw_rectangle" );
         QGtk2PainterPrivate::gdk_drawable_unref = ( Ptr_gdk_drawable_unref )libgtk.resolve( "gdk_drawable_unref" );
 

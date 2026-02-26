@@ -419,29 +419,29 @@ static const char *getFcFamilyForStyleHint( const QFont::StyleHint style )
 
     switch ( style )
     {
-    case QFont::SansSerif:
-        stylehint = "sans-serif";
-        break;
+        case QFont::SansSerif:
+            stylehint = "sans-serif";
+            break;
 
-    case QFont::Serif:
-        stylehint = "serif";
-        break;
+        case QFont::Serif:
+            stylehint = "serif";
+            break;
 
-    case QFont::TypeWriter:
-    case QFont::Monospace:
-        stylehint = "monospace";
-        break;
+        case QFont::TypeWriter:
+        case QFont::Monospace:
+            stylehint = "monospace";
+            break;
 
-    case QFont::Cursive:
-        stylehint = "cursive";
-        break;
+        case QFont::Cursive:
+            stylehint = "cursive";
+            break;
 
-    case QFont::Fantasy:
-        stylehint = "fantasy";
-        break;
+        case QFont::Fantasy:
+            stylehint = "fantasy";
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return stylehint;
@@ -601,7 +601,7 @@ static void populateFromPattern( FcPattern *pattern )
 
     QFont::Style style = ( slant_value == FC_SLANT_ITALIC )
                          ? QFont::StyleItalic : ( ( slant_value == FC_SLANT_OBLIQUE )
-                             ? QFont::StyleOblique : QFont::StyleNormal );
+                                 ? QFont::StyleOblique : QFont::StyleNormal );
 
     // Note, weight should really be an int but registerFont incorrectly uses an enum
     QFont::Weight weight = QFont::Weight( weightFromFcWeight( weight_value ) );
@@ -724,17 +724,17 @@ QFontEngine::HintStyle defaultHintStyleFromMatch( QFont::HintingPreference hinti
 {
     switch ( hintingPreference )
     {
-    case QFont::PreferNoHinting:
-        return QFontEngine::HintNone;
+        case QFont::PreferNoHinting:
+            return QFontEngine::HintNone;
 
-    case QFont::PreferVerticalHinting:
-        return QFontEngine::HintLight;
+        case QFont::PreferVerticalHinting:
+            return QFontEngine::HintLight;
 
-    case QFont::PreferFullHinting:
-        return QFontEngine::HintFull;
+        case QFont::PreferFullHinting:
+            return QFontEngine::HintFull;
 
-    case QFont::PreferDefaultHinting:
-        break;
+        case QFont::PreferDefaultHinting:
+            break;
     }
 
     if ( QHighDpiScaling::isActive() )
@@ -748,21 +748,21 @@ QFontEngine::HintStyle defaultHintStyleFromMatch( QFont::HintingPreference hinti
     {
         switch ( hint_style )
         {
-        case FC_HINT_NONE:
-            return QFontEngine::HintNone;
+            case FC_HINT_NONE:
+                return QFontEngine::HintNone;
 
-        case FC_HINT_SLIGHT:
-            return QFontEngine::HintLight;
+            case FC_HINT_SLIGHT:
+                return QFontEngine::HintLight;
 
-        case FC_HINT_MEDIUM:
-            return QFontEngine::HintMedium;
+            case FC_HINT_MEDIUM:
+                return QFontEngine::HintMedium;
 
-        case FC_HINT_FULL:
-            return QFontEngine::HintFull;
+            case FC_HINT_FULL:
+                return QFontEngine::HintFull;
 
-        default:
-            // emerald - should not happen, may want to throw
-            break;
+            default:
+                // emerald - should not happen, may want to throw
+                break;
         }
     }
 
@@ -790,25 +790,25 @@ QFontEngine::SubpixelAntialiasingType subpixelTypeFromMatch( FcPattern *match, b
     {
         switch ( subpixel )
         {
-        case FC_RGBA_UNKNOWN:
-        case FC_RGBA_NONE:
-            return QFontEngine::Subpixel_None;
+            case FC_RGBA_UNKNOWN:
+            case FC_RGBA_NONE:
+                return QFontEngine::Subpixel_None;
 
-        case FC_RGBA_RGB:
-            return QFontEngine::Subpixel_RGB;
+            case FC_RGBA_RGB:
+                return QFontEngine::Subpixel_RGB;
 
-        case FC_RGBA_BGR:
-            return QFontEngine::Subpixel_BGR;
+            case FC_RGBA_BGR:
+                return QFontEngine::Subpixel_BGR;
 
-        case FC_RGBA_VRGB:
-            return QFontEngine::Subpixel_VRGB;
+            case FC_RGBA_VRGB:
+                return QFontEngine::Subpixel_VRGB;
 
-        case FC_RGBA_VBGR:
-            return QFontEngine::Subpixel_VBGR;
+            case FC_RGBA_VBGR:
+                return QFontEngine::Subpixel_VBGR;
 
-        default:
-            // emerald - should not happen, may want to throw
-            break;
+            default:
+                // emerald - should not happen, may want to throw
+                break;
         }
     }
 

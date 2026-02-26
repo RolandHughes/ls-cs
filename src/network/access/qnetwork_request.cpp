@@ -243,34 +243,34 @@ static QByteArray headerName( QNetworkRequest::KnownHeaders header )
 {
     switch ( header )
     {
-    case QNetworkRequest::ContentTypeHeader:
-        return "Content-Type";
+        case QNetworkRequest::ContentTypeHeader:
+            return "Content-Type";
 
-    case QNetworkRequest::ContentLengthHeader:
-        return "Content-Length";
+        case QNetworkRequest::ContentLengthHeader:
+            return "Content-Length";
 
-    case QNetworkRequest::LocationHeader:
-        return "Location";
+        case QNetworkRequest::LocationHeader:
+            return "Location";
 
-    case QNetworkRequest::LastModifiedHeader:
-        return "Last-Modified";
+        case QNetworkRequest::LastModifiedHeader:
+            return "Last-Modified";
 
-    case QNetworkRequest::CookieHeader:
-        return "Cookie";
+        case QNetworkRequest::CookieHeader:
+            return "Cookie";
 
-    case QNetworkRequest::SetCookieHeader:
-        return "Set-Cookie";
+        case QNetworkRequest::SetCookieHeader:
+            return "Set-Cookie";
 
-    case QNetworkRequest::ContentDispositionHeader:
-        return "Content-Disposition";
+        case QNetworkRequest::ContentDispositionHeader:
+            return "Content-Disposition";
 
-    case QNetworkRequest::UserAgentHeader:
-        return "User-Agent";
+        case QNetworkRequest::UserAgentHeader:
+            return "User-Agent";
 
-    case QNetworkRequest::ServerHeader:
-        return "Server";
-        // no default:
-        // if new values are added, this will generate a compiler warning
+        case QNetworkRequest::ServerHeader:
+            return "Server";
+            // no default:
+            // if new values are added, this will generate a compiler warning
     }
 
     return QByteArray();
@@ -280,88 +280,88 @@ static QByteArray headerValue( QNetworkRequest::KnownHeaders header, const QVari
 {
     switch ( header )
     {
-    case QNetworkRequest::ContentTypeHeader:
-    case QNetworkRequest::ContentLengthHeader:
-    case QNetworkRequest::ContentDispositionHeader:
-    case QNetworkRequest::UserAgentHeader:
-    case QNetworkRequest::ServerHeader:
-        return value.toByteArray();
-
-    case QNetworkRequest::LocationHeader:
-        switch ( value.userType() )
-        {
-
-        case QVariant::Url:
-            return value.toUrl().toEncoded();
-
-        default:
+        case QNetworkRequest::ContentTypeHeader:
+        case QNetworkRequest::ContentLengthHeader:
+        case QNetworkRequest::ContentDispositionHeader:
+        case QNetworkRequest::UserAgentHeader:
+        case QNetworkRequest::ServerHeader:
             return value.toByteArray();
-        }
 
-    case QNetworkRequest::LastModifiedHeader:
-        switch ( value.userType() )
-        {
-
-        case QVariant::Date:
-        case QVariant::DateTime:
-            // generate RFC 1123/822 dates:
-            return QNetworkHeadersPrivate::toHttpDate( value.toDateTime() );
-
-        default:
-            return value.toByteArray();
-        }
-
-    case QNetworkRequest::CookieHeader:
-    {
-        QList<QNetworkCookie> cookies = value.value<QList<QNetworkCookie>>();
-
-        if ( cookies.isEmpty() && value.userType() == QVariant::typeToTypeId<QNetworkCookie>() )
-        {
-            cookies << value.value<QNetworkCookie>();
-        }
-
-        QByteArray result;
-        bool first = true;
-
-        for ( const QNetworkCookie &cookie : cookies )
-        {
-            if ( !first )
+        case QNetworkRequest::LocationHeader:
+            switch ( value.userType() )
             {
-                result += "; ";
+
+                case QVariant::Url:
+                    return value.toUrl().toEncoded();
+
+                default:
+                    return value.toByteArray();
             }
 
-            first = false;
-            result += cookie.toRawForm( QNetworkCookie::NameAndValueOnly );
-        }
-
-        return result;
-    }
-
-    case QNetworkRequest::SetCookieHeader:
-    {
-        QList<QNetworkCookie> cookies = value.value<QList<QNetworkCookie> >();
-
-        if ( cookies.isEmpty() && value.userType() == QVariant::typeToTypeId<QNetworkCookie>() )
-        {
-            cookies << value.value<QNetworkCookie>();
-        }
-
-        QByteArray result;
-        bool first = true;
-
-        for ( const QNetworkCookie &cookie : cookies )
-        {
-            if ( !first )
+        case QNetworkRequest::LastModifiedHeader:
+            switch ( value.userType() )
             {
-                result += ", ";
+
+                case QVariant::Date:
+                case QVariant::DateTime:
+                    // generate RFC 1123/822 dates:
+                    return QNetworkHeadersPrivate::toHttpDate( value.toDateTime() );
+
+                default:
+                    return value.toByteArray();
             }
 
-            first = false;
-            result += cookie.toRawForm( QNetworkCookie::Full );
+        case QNetworkRequest::CookieHeader:
+        {
+            QList<QNetworkCookie> cookies = value.value<QList<QNetworkCookie>>();
+
+            if ( cookies.isEmpty() && value.userType() == QVariant::typeToTypeId<QNetworkCookie>() )
+            {
+                cookies << value.value<QNetworkCookie>();
+            }
+
+            QByteArray result;
+            bool first = true;
+
+            for ( const QNetworkCookie &cookie : cookies )
+            {
+                if ( !first )
+                {
+                    result += "; ";
+                }
+
+                first = false;
+                result += cookie.toRawForm( QNetworkCookie::NameAndValueOnly );
+            }
+
+            return result;
         }
 
-        return result;
-    }
+        case QNetworkRequest::SetCookieHeader:
+        {
+            QList<QNetworkCookie> cookies = value.value<QList<QNetworkCookie> >();
+
+            if ( cookies.isEmpty() && value.userType() == QVariant::typeToTypeId<QNetworkCookie>() )
+            {
+                cookies << value.value<QNetworkCookie>();
+            }
+
+            QByteArray result;
+            bool first = true;
+
+            for ( const QNetworkCookie &cookie : cookies )
+            {
+                if ( !first )
+                {
+                    result += ", ";
+                }
+
+                first = false;
+                result += cookie.toRawForm( QNetworkCookie::Full );
+            }
+
+            return result;
+        }
     }
 
     return QByteArray();
@@ -376,58 +376,58 @@ static int parseHeaderName( const QByteArray &headerName )
 
     switch ( tolower( headerName.at( 0 ) ) )
     {
-    case 'c':
-        if ( qstricmp( headerName.constData(), "content-type" ) == 0 )
-        {
-            return QNetworkRequest::ContentTypeHeader;
-        }
+        case 'c':
+            if ( qstricmp( headerName.constData(), "content-type" ) == 0 )
+            {
+                return QNetworkRequest::ContentTypeHeader;
+            }
 
-        else if ( qstricmp( headerName.constData(), "content-length" ) == 0 )
-        {
-            return QNetworkRequest::ContentLengthHeader;
-        }
+            else if ( qstricmp( headerName.constData(), "content-length" ) == 0 )
+            {
+                return QNetworkRequest::ContentLengthHeader;
+            }
 
-        else if ( qstricmp( headerName.constData(), "cookie" ) == 0 )
-        {
-            return QNetworkRequest::CookieHeader;
-        }
+            else if ( qstricmp( headerName.constData(), "cookie" ) == 0 )
+            {
+                return QNetworkRequest::CookieHeader;
+            }
 
-        break;
+            break;
 
-    case 'l':
-        if ( qstricmp( headerName.constData(), "location" ) == 0 )
-        {
-            return QNetworkRequest::LocationHeader;
-        }
+        case 'l':
+            if ( qstricmp( headerName.constData(), "location" ) == 0 )
+            {
+                return QNetworkRequest::LocationHeader;
+            }
 
-        else if ( qstricmp( headerName.constData(), "last-modified" ) == 0 )
-        {
-            return QNetworkRequest::LastModifiedHeader;
-        }
+            else if ( qstricmp( headerName.constData(), "last-modified" ) == 0 )
+            {
+                return QNetworkRequest::LastModifiedHeader;
+            }
 
-        break;
+            break;
 
-    case 's':
-        if ( qstricmp( headerName.constData(), "set-cookie" ) == 0 )
-        {
-            return QNetworkRequest::SetCookieHeader;
+        case 's':
+            if ( qstricmp( headerName.constData(), "set-cookie" ) == 0 )
+            {
+                return QNetworkRequest::SetCookieHeader;
 
-        }
-        else if ( qstricmp( headerName.constData(), "server" ) == 0 )
-        {
-            return QNetworkRequest::ServerHeader;
+            }
+            else if ( qstricmp( headerName.constData(), "server" ) == 0 )
+            {
+                return QNetworkRequest::ServerHeader;
 
-        }
+            }
 
-        break;
+            break;
 
-    case 'u':
-        if ( qstricmp( headerName.constData(), "user-agent" ) == 0 )
-        {
-            return QNetworkRequest::UserAgentHeader;
-        }
+        case 'u':
+            if ( qstricmp( headerName.constData(), "user-agent" ) == 0 )
+            {
+                return QNetworkRequest::UserAgentHeader;
+            }
 
-        break;
+            break;
     }
 
     return -1; // nothing found
@@ -470,48 +470,48 @@ static QVariant parseHeaderValue( QNetworkRequest::KnownHeaders header, const QB
     // header is always a valid value
     switch ( header )
     {
-    case QNetworkRequest::UserAgentHeader:
-    case QNetworkRequest::ServerHeader:
-    case QNetworkRequest::ContentTypeHeader:
-        // copy exactly, convert to QString
-        return QString::fromLatin1( value );
+        case QNetworkRequest::UserAgentHeader:
+        case QNetworkRequest::ServerHeader:
+        case QNetworkRequest::ContentTypeHeader:
+            // copy exactly, convert to QString
+            return QString::fromLatin1( value );
 
-    case QNetworkRequest::ContentLengthHeader:
-    {
-        bool ok;
-        qint64 result = value.trimmed().toLongLong( &ok );
-
-        if ( ok )
+        case QNetworkRequest::ContentLengthHeader:
         {
-            return result;
+            bool ok;
+            qint64 result = value.trimmed().toLongLong( &ok );
+
+            if ( ok )
+            {
+                return result;
+            }
+
+            return QVariant();
         }
 
-        return QVariant();
-    }
-
-    case QNetworkRequest::LocationHeader:
-    {
-        QUrl result = QUrl::fromEncoded( value, QUrl::StrictMode );
-
-        if ( result.isValid() && !result.scheme().isEmpty() )
+        case QNetworkRequest::LocationHeader:
         {
-            return result;
+            QUrl result = QUrl::fromEncoded( value, QUrl::StrictMode );
+
+            if ( result.isValid() && !result.scheme().isEmpty() )
+            {
+                return result;
+            }
+
+            return QVariant();
         }
 
-        return QVariant();
-    }
+        case QNetworkRequest::LastModifiedHeader:
+            return parseHttpDate( value );
 
-    case QNetworkRequest::LastModifiedHeader:
-        return parseHttpDate( value );
+        case QNetworkRequest::CookieHeader:
+            return parseCookieHeader( value );
 
-    case QNetworkRequest::CookieHeader:
-        return parseCookieHeader( value );
+        case QNetworkRequest::SetCookieHeader:
+            return QVariant::fromValue( QNetworkCookie::parseCookies( value ) );
 
-    case QNetworkRequest::SetCookieHeader:
-        return QVariant::fromValue( QNetworkCookie::parseCookies( value ) );
-
-    default:
-        Q_ASSERT( 0 );
+        default:
+            Q_ASSERT( 0 );
     }
 
     return QVariant();
@@ -682,66 +682,66 @@ static int name_to_month( const char *month_str )
 {
     switch ( month_str[0] )
     {
-    case 'J':
-        switch ( month_str[1] )
-        {
-        case 'a':
-            return 1;
+        case 'J':
+            switch ( month_str[1] )
+            {
+                case 'a':
+                    return 1;
 
-        case 'u':
+                case 'u':
+                    switch ( month_str[2] )
+                    {
+                        case 'n':
+                            return 6;
+
+                        case 'l':
+                            return 7;
+
+                    }
+            }
+
+            break;
+
+        case 'F':
+            return 2;
+
+        case 'M':
             switch ( month_str[2] )
             {
-            case 'n':
-                return 6;
+                case 'r':
+                    return 3;
 
-            case 'l':
-                return 7;
+                case 'y':
+                    return 5;
 
             }
-        }
 
-        break;
+            break;
 
-    case 'F':
-        return 2;
+        case 'A':
+            switch ( month_str[1] )
+            {
+                case 'p':
+                    return 4;
 
-    case 'M':
-        switch ( month_str[2] )
-        {
-        case 'r':
-            return 3;
+                case 'u':
+                    return 8;
 
-        case 'y':
-            return 5;
+            }
 
-        }
+            break;
 
-        break;
+        case 'O':
+            return 10;
 
-    case 'A':
-        switch ( month_str[1] )
-        {
-        case 'p':
-            return 4;
+        case 'S':
+            return 9;
 
-        case 'u':
-            return 8;
+        case 'N':
+            return 11;
 
-        }
-
-        break;
-
-    case 'O':
-        return 10;
-
-    case 'S':
-        return 9;
-
-    case 'N':
-        return 11;
-
-    case 'D':
-        return 12;
+        case 'D':
+            return 12;
 
     }
 

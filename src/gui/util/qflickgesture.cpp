@@ -45,37 +45,37 @@ static QMouseEvent *copyMouseEvent( QEvent *e )
 {
     switch ( e->type() )
     {
-    case QEvent::MouseButtonPress:
-    case QEvent::MouseButtonRelease:
-    case QEvent::MouseMove:
-    {
-        QMouseEvent *me = static_cast<QMouseEvent *>( e );
-        QMouseEvent *cme = new QMouseEvent( me->type(), QPoint( 0, 0 ), me->windowPos(), me->screenPos(),
-                                            me->button(), me->buttons(), me->modifiers(), me->source() );
-        return cme;
-    }
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonRelease:
+        case QEvent::MouseMove:
+        {
+            QMouseEvent *me = static_cast<QMouseEvent *>( e );
+            QMouseEvent *cme = new QMouseEvent( me->type(), QPoint( 0, 0 ), me->windowPos(), me->screenPos(),
+                                                me->button(), me->buttons(), me->modifiers(), me->source() );
+            return cme;
+        }
 
 #ifndef LSCS_NO_GRAPHICSVIEW
 
-    case QEvent::GraphicsSceneMousePress:
-    case QEvent::GraphicsSceneMouseRelease:
-    case QEvent::GraphicsSceneMouseMove:
-    {
-        QGraphicsSceneMouseEvent *me = static_cast<QGraphicsSceneMouseEvent *>( e );
+        case QEvent::GraphicsSceneMousePress:
+        case QEvent::GraphicsSceneMouseRelease:
+        case QEvent::GraphicsSceneMouseMove:
+        {
+            QGraphicsSceneMouseEvent *me = static_cast<QGraphicsSceneMouseEvent *>( e );
 
-        QEvent::Type met = me->type() == QEvent::GraphicsSceneMousePress ? QEvent::MouseButtonPress :
-                           ( me->type() == QEvent::GraphicsSceneMouseRelease ? QEvent::MouseButtonRelease : QEvent::MouseMove );
+            QEvent::Type met = me->type() == QEvent::GraphicsSceneMousePress ? QEvent::MouseButtonPress :
+                               ( me->type() == QEvent::GraphicsSceneMouseRelease ? QEvent::MouseButtonRelease : QEvent::MouseMove );
 
-        QMouseEvent *cme = new QMouseEvent( met, QPoint( 0, 0 ), QPoint( 0, 0 ), me->screenPos(),
-                                            me->button(), me->buttons(), me->modifiers(), me->source() );
+            QMouseEvent *cme = new QMouseEvent( met, QPoint( 0, 0 ), QPoint( 0, 0 ), me->screenPos(),
+                                                me->button(), me->buttons(), me->modifiers(), me->source() );
 
-        return cme;
-    }
+            return cme;
+        }
 
 #endif
 
-    default:
-        return nullptr;
+        default:
+            return nullptr;
     }
 }
 
@@ -446,76 +446,76 @@ QGestureRecognizer::Result QFlickGestureRecognizer::recognize( QGesture *state, 
 
     switch ( event->type() )
     {
-    case QEvent::MouseButtonPress:
-    case QEvent::MouseButtonRelease:
-    case QEvent::MouseMove:
-        if ( ! receiverWidget )
-        {
-            return Ignore;
-        }
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonRelease:
+        case QEvent::MouseMove:
+            if ( ! receiverWidget )
+            {
+                return Ignore;
+            }
 
-        if ( button != Qt::NoButton )
-        {
-            me = static_cast<const QMouseEvent *>( event );
-            globalPos = me->globalPos();
-        }
+            if ( button != Qt::NoButton )
+            {
+                me = static_cast<const QMouseEvent *>( event );
+                globalPos = me->globalPos();
+            }
 
-        break;
+            break;
 
 #ifndef LSCS_NO_GRAPHICSVIEW
 
-    case QEvent::GraphicsSceneMousePress:
-    case QEvent::GraphicsSceneMouseRelease:
-    case QEvent::GraphicsSceneMouseMove:
-        if ( ! receiverGraphicsObject )
-        {
-            return Ignore;
-        }
+        case QEvent::GraphicsSceneMousePress:
+        case QEvent::GraphicsSceneMouseRelease:
+        case QEvent::GraphicsSceneMouseMove:
+            if ( ! receiverGraphicsObject )
+            {
+                return Ignore;
+            }
 
-        if ( button != Qt::NoButton )
-        {
-            gsme = static_cast<const QGraphicsSceneMouseEvent *>( event );
-            globalPos = gsme->screenPos();
-        }
+            if ( button != Qt::NoButton )
+            {
+                gsme = static_cast<const QGraphicsSceneMouseEvent *>( event );
+                globalPos = gsme->screenPos();
+            }
 
-        break;
+            break;
 #endif
 
-    case QEvent::TouchBegin:
-    case QEvent::TouchEnd:
-    case QEvent::TouchUpdate:
-        if ( button == Qt::NoButton )
-        {
-            te = static_cast<const QTouchEvent *>( event );
-
-            if ( ! te->touchPoints().isEmpty() )
+        case QEvent::TouchBegin:
+        case QEvent::TouchEnd:
+        case QEvent::TouchUpdate:
+            if ( button == Qt::NoButton )
             {
-                globalPos = te->touchPoints().at( 0 ).screenPos().toPoint();
+                te = static_cast<const QTouchEvent *>( event );
+
+                if ( ! te->touchPoints().isEmpty() )
+                {
+                    globalPos = te->touchPoints().at( 0 ).screenPos().toPoint();
+                }
             }
-        }
 
-        break;
+            break;
 
-    // consume all wheel events if the scroller is active
-    case QEvent::Wheel:
-        if ( d->macIgnoreWheel || ( scroller->state() != QScroller::Inactive ) )
-        {
-            return Ignore | ConsumeEventHint;
-        }
+        // consume all wheel events if the scroller is active
+        case QEvent::Wheel:
+            if ( d->macIgnoreWheel || ( scroller->state() != QScroller::Inactive ) )
+            {
+                return Ignore | ConsumeEventHint;
+            }
 
-        break;
+            break;
 
-    // consume all dbl click events if the scroller is active
-    case QEvent::MouseButtonDblClick:
-        if ( scroller->state() != QScroller::Inactive )
-        {
-            return Ignore | ConsumeEventHint;
-        }
+        // consume all dbl click events if the scroller is active
+        case QEvent::MouseButtonDblClick:
+            if ( scroller->state() != QScroller::Inactive )
+            {
+                return Ignore | ConsumeEventHint;
+            }
 
-        break;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
 #ifndef LSCS_NO_GRAPHICSVIEW
@@ -538,120 +538,120 @@ QGestureRecognizer::Result QFlickGestureRecognizer::recognize( QGesture *state, 
 
     switch ( event->type() )
     {
-    case QEvent::MouseButtonPress:
-        if ( me && me->button() == button && me->buttons() == button )
-        {
-            point = me->globalPos();
-            inputType = QScroller::InputPress;
-        }
-        else if ( me )
-        {
-            scroller->stop();
-            return CancelGesture;
-        }
+        case QEvent::MouseButtonPress:
+            if ( me && me->button() == button && me->buttons() == button )
+            {
+                point = me->globalPos();
+                inputType = QScroller::InputPress;
+            }
+            else if ( me )
+            {
+                scroller->stop();
+                return CancelGesture;
+            }
 
-        break;
+            break;
 
-    case QEvent::MouseButtonRelease:
-        if ( me && me->button() == button )
-        {
-            point = me->globalPos();
-            inputType = QScroller::InputRelease;
-        }
+        case QEvent::MouseButtonRelease:
+            if ( me && me->button() == button )
+            {
+                point = me->globalPos();
+                inputType = QScroller::InputRelease;
+            }
 
-        break;
+            break;
 
-    case QEvent::MouseMove:
-        if ( me && me->buttons() == button )
-        {
-            point = me->globalPos();
-            inputType = QScroller::InputMove;
-        }
+        case QEvent::MouseMove:
+            if ( me && me->buttons() == button )
+            {
+                point = me->globalPos();
+                inputType = QScroller::InputMove;
+            }
 
-        break;
+            break;
 
 #ifndef LSCS_NO_GRAPHICSVIEW
 
-    case QEvent::GraphicsSceneMousePress:
-        if ( gsme && gsme->button() == button && gsme->buttons() == button )
-        {
-            point = gsme->scenePos();
-            inputType = QScroller::InputPress;
-        }
-        else if ( gsme )
-        {
-            scroller->stop();
-            return CancelGesture;
-        }
+        case QEvent::GraphicsSceneMousePress:
+            if ( gsme && gsme->button() == button && gsme->buttons() == button )
+            {
+                point = gsme->scenePos();
+                inputType = QScroller::InputPress;
+            }
+            else if ( gsme )
+            {
+                scroller->stop();
+                return CancelGesture;
+            }
 
-        break;
+            break;
 
-    case QEvent::GraphicsSceneMouseRelease:
-        if ( gsme && gsme->button() == button )
-        {
-            point = gsme->scenePos();
-            inputType = QScroller::InputRelease;
-        }
+        case QEvent::GraphicsSceneMouseRelease:
+            if ( gsme && gsme->button() == button )
+            {
+                point = gsme->scenePos();
+                inputType = QScroller::InputRelease;
+            }
 
-        break;
+            break;
 
-    case QEvent::GraphicsSceneMouseMove:
-        if ( gsme && gsme->buttons() == button )
-        {
-            point = gsme->scenePos();
-            inputType = QScroller::InputMove;
-        }
+        case QEvent::GraphicsSceneMouseMove:
+            if ( gsme && gsme->buttons() == button )
+            {
+                point = gsme->scenePos();
+                inputType = QScroller::InputMove;
+            }
 
-        break;
+            break;
 #endif
 
-    case QEvent::TouchBegin:
-        inputType = QScroller::InputPress;
-        [[fallthrough]];
+        case QEvent::TouchBegin:
+            inputType = QScroller::InputPress;
+            [[fallthrough]];
 
-    case QEvent::TouchEnd:
-        if ( !inputType )
-        {
-            inputType = QScroller::InputRelease;
-        }
-
-        [[fallthrough]];
-
-    case QEvent::TouchUpdate:
-        if ( ! inputType )
-        {
-            inputType = QScroller::InputMove;
-        }
-
-        if ( te->device()->type() == QTouchDevice::TouchPad )
-        {
-            if ( te->touchPoints().count() != 2 )
+        case QEvent::TouchEnd:
+            if ( !inputType )
             {
-                // 2 fingers on pad
-                return Ignore;
+                inputType = QScroller::InputRelease;
             }
 
-            point = te->touchPoints().at( 0 ).startScenePos() +
-                    ( ( te->touchPoints().at( 0 ).scenePos() - te->touchPoints().at( 0 ).startScenePos() ) +
-                      ( te->touchPoints().at( 1 ).scenePos() - te->touchPoints().at( 1 ).startScenePos() ) ) / 2;
+            [[fallthrough]];
 
-        }
-        else
-        {
-            // TouchScreen
-            if ( te->touchPoints().count() != 1 )
+        case QEvent::TouchUpdate:
+            if ( ! inputType )
             {
-                // 1 finger on screen
-                return Ignore;
+                inputType = QScroller::InputMove;
             }
 
-            point = te->touchPoints().at( 0 ).scenePos();
-        }
+            if ( te->device()->type() == QTouchDevice::TouchPad )
+            {
+                if ( te->touchPoints().count() != 2 )
+                {
+                    // 2 fingers on pad
+                    return Ignore;
+                }
 
-        break;
+                point = te->touchPoints().at( 0 ).startScenePos() +
+                        ( ( te->touchPoints().at( 0 ).scenePos() - te->touchPoints().at( 0 ).startScenePos() ) +
+                          ( te->touchPoints().at( 1 ).scenePos() - te->touchPoints().at( 1 ).startScenePos() ) ) / 2;
 
-    default:
-        break;
+            }
+            else
+            {
+                // TouchScreen
+                if ( te->touchPoints().count() != 1 )
+                {
+                    // 1 finger on screen
+                    return Ignore;
+                }
+
+                point = te->touchPoints().at( 0 ).scenePos();
+            }
+
+            break;
+
+        default:
+            break;
     }
 
     // Check for an active scroller at globalPos
@@ -773,66 +773,66 @@ QGestureRecognizer::Result QFlickGestureRecognizer::recognize( QGesture *state, 
     {
         switch ( event->type() )
         {
-        case QEvent::MouseButtonPress:
+            case QEvent::MouseButtonPress:
 
 #ifndef LSCS_NO_GRAPHICSVIEW
-        case QEvent::GraphicsSceneMousePress:
+            case QEvent::GraphicsSceneMousePress:
 #endif
 
-            if ( scroller->state() == QScroller::Pressed )
-            {
-                int pressDelay = int( 1000 * scroller->scrollerProperties().scrollMetric( QScrollerProperties::MousePressEventDelay ).toReal() );
+                if ( scroller->state() == QScroller::Pressed )
+                {
+                    int pressDelay = int( 1000 * scroller->scrollerProperties().scrollMetric( QScrollerProperties::MousePressEventDelay ).toReal() );
 
-                if ( pressDelay > 0 )
+                    if ( pressDelay > 0 )
+                    {
+                        result |= ConsumeEventHint;
+
+                        PressDelayHandler::instance()->pressed( event, pressDelay );
+                        event->accept();
+                    }
+                }
+
+                [[fallthrough]];
+
+            case QEvent::TouchBegin:
+                q->setHotSpot( globalPos );
+                result |= scrollerIsActive ? TriggerGesture : MayBeGesture;
+                break;
+
+            case QEvent::MouseMove:
+#ifndef LSCS_NO_GRAPHICSVIEW
+            case QEvent::GraphicsSceneMouseMove:
+#endif
+                if ( PressDelayHandler::instance()->isDelaying() )
                 {
                     result |= ConsumeEventHint;
-
-                    PressDelayHandler::instance()->pressed( event, pressDelay );
-                    event->accept();
                 }
-            }
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-        case QEvent::TouchBegin:
-            q->setHotSpot( globalPos );
-            result |= scrollerIsActive ? TriggerGesture : MayBeGesture;
-            break;
-
-        case QEvent::MouseMove:
-#ifndef LSCS_NO_GRAPHICSVIEW
-        case QEvent::GraphicsSceneMouseMove:
-#endif
-            if ( PressDelayHandler::instance()->isDelaying() )
-            {
-                result |= ConsumeEventHint;
-            }
-
-            [[fallthrough]];
-
-        case QEvent::TouchUpdate:
-            result |= scrollerIsActive ? TriggerGesture : Ignore;
-            break;
+            case QEvent::TouchUpdate:
+                result |= scrollerIsActive ? TriggerGesture : Ignore;
+                break;
 
 #ifndef LSCS_NO_GRAPHICSVIEW
 
-        case QEvent::GraphicsSceneMouseRelease:
+            case QEvent::GraphicsSceneMouseRelease:
 #endif
-        case QEvent::MouseButtonRelease:
-            if ( PressDelayHandler::instance()->released( event, scrollerWasDragging || scrollerWasScrolling, scrollerIsActive ) )
-            {
-                result |= ConsumeEventHint;
-            }
+            case QEvent::MouseButtonRelease:
+                if ( PressDelayHandler::instance()->released( event, scrollerWasDragging || scrollerWasScrolling, scrollerIsActive ) )
+                {
+                    result |= ConsumeEventHint;
+                }
 
-            [[fallthrough]];
+                [[fallthrough]];
 
-        case QEvent::TouchEnd:
-            result |= scrollerIsActive ? FinishGesture : CancelGesture;
-            break;
+            case QEvent::TouchEnd:
+                result |= scrollerIsActive ? FinishGesture : CancelGesture;
+                break;
 
-        default:
-            result |= Ignore;
-            break;
+            default:
+                result |= Ignore;
+                break;
         }
     }
 

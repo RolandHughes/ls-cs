@@ -369,34 +369,34 @@ QByteArray QPdf::generatePath( const QPainterPath &path, const QTransform &matri
 
         switch ( elm.type )
         {
-        case QPainterPath::MoveToElement:
-            if ( start >= 0
-                    && path.elementAt( start ).x == path.elementAt( i-1 ).x
-                    && path.elementAt( start ).y == path.elementAt( i-1 ).y )
-            {
-                s << "h\n";
-            }
+            case QPainterPath::MoveToElement:
+                if ( start >= 0
+                        && path.elementAt( start ).x == path.elementAt( i-1 ).x
+                        && path.elementAt( start ).y == path.elementAt( i-1 ).y )
+                {
+                    s << "h\n";
+                }
 
-            s << matrix.map( QPointF( elm.x, elm.y ) ) << "m\n";
-            start = i;
-            break;
+                s << matrix.map( QPointF( elm.x, elm.y ) ) << "m\n";
+                start = i;
+                break;
 
-        case QPainterPath::LineToElement:
-            s << matrix.map( QPointF( elm.x, elm.y ) ) << "l\n";
-            break;
+            case QPainterPath::LineToElement:
+                s << matrix.map( QPointF( elm.x, elm.y ) ) << "l\n";
+                break;
 
-        case QPainterPath::CurveToElement:
-            Q_ASSERT( path.elementAt( i+1 ).type == QPainterPath::CurveToDataElement );
-            Q_ASSERT( path.elementAt( i+2 ).type == QPainterPath::CurveToDataElement );
-            s << matrix.map( QPointF( elm.x, elm.y ) )
-              << matrix.map( QPointF( path.elementAt( i+1 ).x, path.elementAt( i+1 ).y ) )
-              << matrix.map( QPointF( path.elementAt( i+2 ).x, path.elementAt( i+2 ).y ) )
-              << "c\n";
-            i += 2;
-            break;
+            case QPainterPath::CurveToElement:
+                Q_ASSERT( path.elementAt( i+1 ).type == QPainterPath::CurveToDataElement );
+                Q_ASSERT( path.elementAt( i+2 ).type == QPainterPath::CurveToDataElement );
+                s << matrix.map( QPointF( elm.x, elm.y ) )
+                  << matrix.map( QPointF( path.elementAt( i+1 ).x, path.elementAt( i+1 ).y ) )
+                  << matrix.map( QPointF( path.elementAt( i+2 ).x, path.elementAt( i+2 ).y ) )
+                  << "c\n";
+                i += 2;
+                break;
 
-        default:
-            qFatal( "QPdf::generatePath(), unhandled type: %d", elm.type );
+            default:
+                qFatal( "QPdf::generatePath(), unhandled type: %d", elm.type );
         }
     }
 
@@ -413,21 +413,21 @@ QByteArray QPdf::generatePath( const QPainterPath &path, const QTransform &matri
 
     switch ( flags )
     {
-    case ClipPath:
-        op = ( fillRule == Qt::WindingFill ) ? "W n\n" : "W* n\n";
-        break;
+        case ClipPath:
+            op = ( fillRule == Qt::WindingFill ) ? "W n\n" : "W* n\n";
+            break;
 
-    case FillPath:
-        op = ( fillRule == Qt::WindingFill ) ? "f\n" : "f*\n";
-        break;
+        case FillPath:
+            op = ( fillRule == Qt::WindingFill ) ? "f\n" : "f*\n";
+            break;
 
-    case StrokePath:
-        op = "S\n";
-        break;
+        case StrokePath:
+            op = "S\n";
+            break;
 
-    case FillAndStrokePath:
-        op = ( fillRule == Qt::WindingFill ) ? "B\n" : "B*\n";
-        break;
+        case FillAndStrokePath:
+            op = ( fillRule == Qt::WindingFill ) ? "B\n" : "B*\n";
+            break;
     }
 
     s << op;
@@ -1031,21 +1031,21 @@ void QPdfEngine::drawPolygon( const QPointF *points, int pointCount, PolygonDraw
 
     switch ( mode )
     {
-    case OddEvenMode:
-        p.setFillRule( Qt::OddEvenFill );
-        break;
+        case OddEvenMode:
+            p.setFillRule( Qt::OddEvenFill );
+            break;
 
-    case ConvexMode:
-    case WindingMode:
-        p.setFillRule( Qt::WindingFill );
-        break;
+        case ConvexMode:
+        case WindingMode:
+            p.setFillRule( Qt::WindingFill );
+            break;
 
-    case PolylineMode:
-        d->hasBrush = false;
-        break;
+        case PolylineMode:
+            d->hasBrush = false;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     p.moveTo( points[0] );
@@ -1506,20 +1506,20 @@ void QPdfEngine::setPen()
 
     switch ( d->pen.capStyle() )
     {
-    case Qt::FlatCap:
-        pdfCapStyle = 0;
-        break;
+        case Qt::FlatCap:
+            pdfCapStyle = 0;
+            break;
 
-    case Qt::SquareCap:
-        pdfCapStyle = 2;
-        break;
+        case Qt::SquareCap:
+            pdfCapStyle = 2;
+            break;
 
-    case Qt::RoundCap:
-        pdfCapStyle = 1;
-        break;
+        case Qt::RoundCap:
+            pdfCapStyle = 1;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     *d->currentPage << pdfCapStyle << "J ";
@@ -1528,22 +1528,22 @@ void QPdfEngine::setPen()
 
     switch ( d->pen.joinStyle() )
     {
-    case Qt::MiterJoin:
-    case Qt::SvgMiterJoin:
-        *d->currentPage << qMax( qreal( 1.0 ), d->pen.miterLimit() ) << "M ";
-        pdfJoinStyle = 0;
-        break;
+        case Qt::MiterJoin:
+        case Qt::SvgMiterJoin:
+            *d->currentPage << qMax( qreal( 1.0 ), d->pen.miterLimit() ) << "M ";
+            pdfJoinStyle = 0;
+            break;
 
-    case Qt::BevelJoin:
-        pdfJoinStyle = 2;
-        break;
+        case Qt::BevelJoin:
+            pdfJoinStyle = 2;
+            break;
 
-    case Qt::RoundJoin:
-        pdfJoinStyle = 1;
-        break;
+        case Qt::RoundJoin:
+            pdfJoinStyle = 1;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     *d->currentPage << pdfJoinStyle << "j ";
@@ -1684,51 +1684,51 @@ int QPdfEngine::metric( QPaintDevice::PaintDeviceMetric metricType ) const
 
     switch ( metricType )
     {
-    case QPaintDevice::PdmWidth:
-        val = d->m_pageLayout.paintRectPixels( d->resolution ).width();
-        break;
+        case QPaintDevice::PdmWidth:
+            val = d->m_pageLayout.paintRectPixels( d->resolution ).width();
+            break;
 
-    case QPaintDevice::PdmHeight:
-        val = d->m_pageLayout.paintRectPixels( d->resolution ).height();
-        break;
+        case QPaintDevice::PdmHeight:
+            val = d->m_pageLayout.paintRectPixels( d->resolution ).height();
+            break;
 
-    case QPaintDevice::PdmDpiX:
-    case QPaintDevice::PdmDpiY:
-        val = d->resolution;
-        break;
+        case QPaintDevice::PdmDpiX:
+        case QPaintDevice::PdmDpiY:
+            val = d->resolution;
+            break;
 
-    case QPaintDevice::PdmPhysicalDpiX:
-    case QPaintDevice::PdmPhysicalDpiY:
-        val = 1200;
-        break;
+        case QPaintDevice::PdmPhysicalDpiX:
+        case QPaintDevice::PdmPhysicalDpiY:
+            val = 1200;
+            break;
 
-    case QPaintDevice::PdmWidthMM:
-        val = qRound( d->m_pageLayout.paintRect( QPageSize::Unit::Millimeter ).width() );
-        break;
+        case QPaintDevice::PdmWidthMM:
+            val = qRound( d->m_pageLayout.paintRect( QPageSize::Unit::Millimeter ).width() );
+            break;
 
-    case QPaintDevice::PdmHeightMM:
-        val = qRound( d->m_pageLayout.paintRect( QPageSize::Unit::Millimeter ).height() );
-        break;
+        case QPaintDevice::PdmHeightMM:
+            val = qRound( d->m_pageLayout.paintRect( QPageSize::Unit::Millimeter ).height() );
+            break;
 
-    case QPaintDevice::PdmNumColors:
-        val = INT_MAX;
-        break;
+        case QPaintDevice::PdmNumColors:
+            val = INT_MAX;
+            break;
 
-    case QPaintDevice::PdmDepth:
-        val = 32;
-        break;
+        case QPaintDevice::PdmDepth:
+            val = 32;
+            break;
 
-    case QPaintDevice::PdmDevicePixelRatio:
-        val = 1;
-        break;
+        case QPaintDevice::PdmDevicePixelRatio:
+            val = 1;
+            break;
 
-    case QPaintDevice::PdmDevicePixelRatioScaled:
-        val = 1 * QPaintDevice::devicePixelRatioFScale();
-        break;
+        case QPaintDevice::PdmDevicePixelRatioScaled:
+            val = 1 * QPaintDevice::devicePixelRatioFScale();
+            break;
 
-    default:
-        qWarning( "QPdfWriter::metric() nvalid metric command" );
-        return 0;
+        default:
+            qWarning( "QPdfWriter::metric() nvalid metric command" );
+            return 0;
     }
 
     return val;
@@ -1958,7 +1958,7 @@ void QPdfEnginePrivate::embedFont( QFontSubset *font )
         QPdf::ByteStream s( &descriptor );
 
         s << "<< /Type /FontDescriptor\n"
-             "/FontName /Q";
+          "/FontName /Q";
 
         int tag = fontDescriptor;
 
@@ -1969,21 +1969,21 @@ void QPdfEnginePrivate::embedFont( QFontSubset *font )
         }
 
         s <<  '+' << postscriptName << "\n"
-                                       "/Flags " << 4 << "\n"
-                                       "/FontBBox ["
+          "/Flags " << 4 << "\n"
+          "/FontBBox ["
 
           << properties.boundingBox.x()*scale
           << -( properties.boundingBox.y() + properties.boundingBox.height() )*scale
           << ( properties.boundingBox.x() + properties.boundingBox.width() )*scale
           << -properties.boundingBox.y()*scale  << "]\n"
-        "/ItalicAngle " << properties.italicAngle.toReal() << "\n"
-        "/Ascent " << properties.ascent.toReal()*scale << "\n"
-        "/Descent " << -properties.descent.toReal()*scale << "\n"
-        "/CapHeight " << properties.capHeight.toReal()*scale << "\n"
-        "/StemV " << properties.lineWidth.toReal()*scale << "\n"
-        "/FontFile2 " << fontstream << "0 R\n"
+          "/ItalicAngle " << properties.italicAngle.toReal() << "\n"
+          "/Ascent " << properties.ascent.toReal()*scale << "\n"
+          "/Descent " << -properties.descent.toReal()*scale << "\n"
+          "/CapHeight " << properties.capHeight.toReal()*scale << "\n"
+          "/StemV " << properties.lineWidth.toReal()*scale << "\n"
+          "/FontFile2 " << fontstream << "0 R\n"
 
-        ">> endobj\n";
+          ">> endobj\n";
         write( descriptor );
     }
     {
@@ -1993,8 +1993,8 @@ void QPdfEnginePrivate::embedFont( QFontSubset *font )
 
         int length_object = requestObject();
         s << "<<\n"
-             "/Length1 " << fontData.size() << "\n"
-             "/Length " << length_object << "0 R\n";
+          "/Length1 " << fontData.size() << "\n"
+          "/Length " << length_object << "0 R\n";
 
         if ( do_compress )
         {
@@ -2002,7 +2002,7 @@ void QPdfEnginePrivate::embedFont( QFontSubset *font )
         }
 
         s << ">>\n"
-             "stream\n";
+          "stream\n";
         write( header );
         int len = writeCompressed( fontData );
         write( "endstream\n"
@@ -2016,14 +2016,14 @@ void QPdfEnginePrivate::embedFont( QFontSubset *font )
         QByteArray cid;
         QPdf::ByteStream s( &cid );
         s << "<< /Type /Font\n"
-             "/Subtype /CIDFontType2\n"
-             "/BaseFont /" << postscriptName << "\n"
-             "/CIDSystemInfo << /Registry (Adobe) /Ordering (Identity) /Supplement 0 >>\n"
-             "/FontDescriptor " << fontDescriptor << "0 R\n"
-             "/CIDToGIDMap /Identity\n"
+          "/Subtype /CIDFontType2\n"
+          "/BaseFont /" << postscriptName << "\n"
+          "/CIDSystemInfo << /Registry (Adobe) /Ordering (Identity) /Supplement 0 >>\n"
+          "/FontDescriptor " << fontDescriptor << "0 R\n"
+          "/CIDToGIDMap /Identity\n"
           << font->widthArray() <<
-        ">>\n"
-        "endobj\n";
+          ">>\n"
+          "endobj\n";
         write( cid );
     }
     {
@@ -2040,13 +2040,13 @@ void QPdfEnginePrivate::embedFont( QFontSubset *font )
         QByteArray font;
         QPdf::ByteStream s( &font );
         s << "<< /Type /Font\n"
-             "/Subtype /Type0\n"
-             "/BaseFont /" << postscriptName << "\n"
-             "/Encoding /Identity-H\n"
-             "/DescendantFonts [" << cidfont << "0 R]\n"
-             "/ToUnicode " << toUnicode << "0 R"
-             ">>\n"
-             "endobj\n";
+          "/Subtype /Type0\n"
+          "/BaseFont /" << postscriptName << "\n"
+          "/Encoding /Identity-H\n"
+          "/DescendantFonts [" << cidfont << "0 R]\n"
+          "/ToUnicode " << toUnicode << "0 R"
+          ">>\n"
+          "endobj\n";
         write( font );
     }
 }
@@ -2517,23 +2517,23 @@ int QPdfEnginePrivate::createShadingFunction( const QGradient *gradient, int fro
         QByteArray data;
         QPdf::ByteStream s( &data );
         s << "<<\n"
-             "/FunctionType 2\n"
-             "/Domain [0 1]\n"
-             "/N 1\n";
+          "/FunctionType 2\n"
+          "/Domain [0 1]\n"
+          "/N 1\n";
 
         if ( alpha )
         {
             s << "/C0 [" << stops.at( i ).second.alphaF() << "]\n"
-                 "/C1 [" << stops.at( i + 1 ).second.alphaF() << "]\n";
+              "/C1 [" << stops.at( i + 1 ).second.alphaF() << "]\n";
         }
         else
         {
             s << "/C0 [" << stops.at( i ).second.redF() << stops.at( i ).second.greenF() <<  stops.at( i ).second.blueF() << "]\n"
-                 "/C1 [" << stops.at( i + 1 ).second.redF() << stops.at( i + 1 ).second.greenF() <<  stops.at( i + 1 ).second.blueF() << "]\n";
+              "/C1 [" << stops.at( i + 1 ).second.redF() << stops.at( i + 1 ).second.greenF() <<  stops.at( i + 1 ).second.blueF() << "]\n";
         }
 
         s << ">>\n"
-             "endobj\n";
+          "endobj\n";
         write( data );
         functions << f;
     }
@@ -2588,9 +2588,9 @@ int QPdfEnginePrivate::createShadingFunction( const QGradient *gradient, int fro
         QByteArray data;
         QPdf::ByteStream s( &data );
         s << "<<\n"
-             "/FunctionType 3\n"
-             "/Domain [0 1]\n"
-             "/Bounds [";
+          "/FunctionType 3\n"
+          "/Domain [0 1]\n"
+          "/Bounds [";
 
         for ( int i = 1; i < gradientBounds.size(); ++i )
         {
@@ -2598,7 +2598,7 @@ int QPdfEnginePrivate::createShadingFunction( const QGradient *gradient, int fro
         }
 
         s << "]\n"
-             "/Encode [";
+          "/Encode [";
 
         for ( int i = 0; i < gradientBounds.size(); ++i )
         {
@@ -2606,7 +2606,7 @@ int QPdfEnginePrivate::createShadingFunction( const QGradient *gradient, int fro
         }
 
         s << "]\n"
-             "/Functions [";
+          "/Functions [";
 
         for ( int i = 0; i < gradientBounds.size(); ++i )
         {
@@ -2614,7 +2614,7 @@ int QPdfEnginePrivate::createShadingFunction( const QGradient *gradient, int fro
         }
 
         s << "]\n"
-             ">>\n";
+          ">>\n";
         write( data );
     }
     else
@@ -2638,43 +2638,43 @@ int QPdfEnginePrivate::generateLinearGradientShader( const QLinearGradient *grad
 
     switch ( gradient->spread() )
     {
-    case QGradient::PadSpread:
-        break;
+        case QGradient::PadSpread:
+            break;
 
-    case QGradient::ReflectSpread:
-        reflect = true;
-        [[fallthrough]];
+        case QGradient::ReflectSpread:
+            reflect = true;
+            [[fallthrough]];
 
-    case QGradient::RepeatSpread:
-    {
-        // calculate required bounds
-        QRectF pageRect = m_pageLayout.fullRectPixels( resolution );
-        QTransform inv = matrix.inverted();
-        QPointF page_rect[4] = { inv.map( pageRect.topLeft() ),
-                                 inv.map( pageRect.topRight() ),
-                                 inv.map( pageRect.bottomLeft() ),
-                                 inv.map( pageRect.bottomRight() )
-                               };
-
-        qreal length = offset.x()*offset.x() + offset.y()*offset.y();
-
-        // find the max and min values in offset and orth direction that are needed to cover
-        // the whole page
-        from = INT_MAX;
-        to = INT_MIN;
-
-        for ( int i = 0; i < 4; ++i )
+        case QGradient::RepeatSpread:
         {
-            qreal off = ( ( page_rect[i].x() - start.x() ) * offset.x() + ( page_rect[i].y() - start.y() ) * offset.y() )/length;
-            from = qMin( from, qFloor( off ) );
-            to = qMax( to, qCeil( off ) );
-        }
+            // calculate required bounds
+            QRectF pageRect = m_pageLayout.fullRectPixels( resolution );
+            QTransform inv = matrix.inverted();
+            QPointF page_rect[4] = { inv.map( pageRect.topLeft() ),
+                                     inv.map( pageRect.topRight() ),
+                                     inv.map( pageRect.bottomLeft() ),
+                                     inv.map( pageRect.bottomRight() )
+                                   };
 
-        stop = start + to * offset;
-        start = start + from * offset;
-        \
-        break;
-    }
+            qreal length = offset.x()*offset.x() + offset.y()*offset.y();
+
+            // find the max and min values in offset and orth direction that are needed to cover
+            // the whole page
+            from = INT_MAX;
+            to = INT_MIN;
+
+            for ( int i = 0; i < 4; ++i )
+            {
+                qreal off = ( ( page_rect[i].x() - start.x() ) * offset.x() + ( page_rect[i].y() - start.y() ) * offset.y() )/length;
+                from = qMin( from, qFloor( off ) );
+                to = qMax( to, qCeil( off ) );
+            }
+
+            stop = start + to * offset;
+            start = start + from * offset;
+            \
+            break;
+        }
     }
 
     int function = createShadingFunction( gradient, from, to, reflect, alpha );
@@ -2682,14 +2682,14 @@ int QPdfEnginePrivate::generateLinearGradientShader( const QLinearGradient *grad
     QByteArray shader;
     QPdf::ByteStream s( &shader );
     s << "<<\n"
-         "/ShadingType 2\n"
-         "/ColorSpace " << ( alpha ? "/DeviceGray\n" : "/DeviceRGB\n" ) <<
-         "/AntiAlias true\n"
-         "/Coords [" << start.x() << start.y() << stop.x() << stop.y() << "]\n"
-         "/Extend [true true]\n"
-         "/Function " << function << "0 R\n"
-         ">>\n"
-         "endobj\n";
+      "/ShadingType 2\n"
+      "/ColorSpace " << ( alpha ? "/DeviceGray\n" : "/DeviceRGB\n" ) <<
+      "/AntiAlias true\n"
+      "/Coords [" << start.x() << start.y() << stop.x() << stop.y() << "]\n"
+      "/Extend [true true]\n"
+      "/Function " << function << "0 R\n"
+      ">>\n"
+      "endobj\n";
     int shaderObject = addXrefEntry( -1 );
     write( shader );
     return shaderObject;
@@ -2710,52 +2710,52 @@ int QPdfEnginePrivate::generateRadialGradientShader( const QRadialGradient *grad
 
     switch ( gradient->spread() )
     {
-    case QGradient::PadSpread:
-        break;
+        case QGradient::PadSpread:
+            break;
 
-    case QGradient::ReflectSpread:
-        reflect = true;
-        [[fallthrough]];
+        case QGradient::ReflectSpread:
+            reflect = true;
+            [[fallthrough]];
 
-    case QGradient::RepeatSpread:
-    {
-        Q_ASSERT( qFuzzyIsNull( r0 ) ); // QPainter emulates if this is not 0
-
-        QRectF pageRect = m_pageLayout.fullRectPixels( resolution );
-        QTransform inv = matrix.inverted();
-        QPointF page_rect[4] = { inv.map( pageRect.topLeft() ),
-                                 inv.map( pageRect.topRight() ),
-                                 inv.map( pageRect.bottomLeft() ),
-                                 inv.map( pageRect.bottomRight() )
-                               };
-
-        // increase to until the whole page fits into it
-        bool done = false;
-
-        while ( !done )
+        case QGradient::RepeatSpread:
         {
-            QPointF center = QPointF( p0.x() + to*( p1.x() - p0.x() ), p0.y() + to*( p1.y() - p0.y() ) );
-            double radius = r0 + to*( r1 - r0 );
-            double r2 = radius*radius;
-            done = true;
+            Q_ASSERT( qFuzzyIsNull( r0 ) ); // QPainter emulates if this is not 0
 
-            for ( int i = 0; i < 4; ++i )
+            QRectF pageRect = m_pageLayout.fullRectPixels( resolution );
+            QTransform inv = matrix.inverted();
+            QPointF page_rect[4] = { inv.map( pageRect.topLeft() ),
+                                     inv.map( pageRect.topRight() ),
+                                     inv.map( pageRect.bottomLeft() ),
+                                     inv.map( pageRect.bottomRight() )
+                                   };
+
+            // increase to until the whole page fits into it
+            bool done = false;
+
+            while ( !done )
             {
-                QPointF off = page_rect[i] - center;
+                QPointF center = QPointF( p0.x() + to*( p1.x() - p0.x() ), p0.y() + to*( p1.y() - p0.y() ) );
+                double radius = r0 + to*( r1 - r0 );
+                double r2 = radius*radius;
+                done = true;
 
-                if ( off.x()*off.x() + off.y()*off.y() > r2 )
+                for ( int i = 0; i < 4; ++i )
                 {
-                    ++to;
-                    done = false;
-                    break;
+                    QPointF off = page_rect[i] - center;
+
+                    if ( off.x()*off.x() + off.y()*off.y() > r2 )
+                    {
+                        ++to;
+                        done = false;
+                        break;
+                    }
                 }
             }
-        }
 
-        p1 = QPointF( p0.x() + to*( p1.x() - p0.x() ), p0.y() + to*( p1.y() - p0.y() ) );
-        r1 = r0 + to*( r1 - r0 );
-        break;
-    }
+            p1 = QPointF( p0.x() + to*( p1.x() - p0.x() ), p0.y() + to*( p1.y() - p0.y() ) );
+            r1 = r0 + to*( r1 - r0 );
+            break;
+        }
     }
 
     int function = createShadingFunction( gradient, from, to, reflect, alpha );
@@ -2763,15 +2763,15 @@ int QPdfEnginePrivate::generateRadialGradientShader( const QRadialGradient *grad
     QByteArray shader;
     QPdf::ByteStream s( &shader );
     s << "<<\n"
-         "/ShadingType 3\n"
-         "/ColorSpace " << ( alpha ? "/DeviceGray\n" : "/DeviceRGB\n" ) <<
-         "/AntiAlias true\n"
-         "/Domain [0 1]\n"
-         "/Coords [" << p0.x() << p0.y() << r0 << p1.x() << p1.y() << r1 << "]\n"
-         "/Extend [true true]\n"
-         "/Function " << function << "0 R\n"
-         ">>\n"
-         "endobj\n";
+      "/ShadingType 3\n"
+      "/ColorSpace " << ( alpha ? "/DeviceGray\n" : "/DeviceRGB\n" ) <<
+      "/AntiAlias true\n"
+      "/Domain [0 1]\n"
+      "/Coords [" << p0.x() << p0.y() << r0 << p1.x() << p1.y() << r1 << "]\n"
+      "/Extend [true true]\n"
+      "/Function " << function << "0 R\n"
+      ">>\n"
+      "endobj\n";
     int shaderObject = addXrefEntry( -1 );
     write( shader );
     return shaderObject;
@@ -2781,15 +2781,15 @@ int QPdfEnginePrivate::generateGradientShader( const QGradient *gradient, const 
 {
     switch ( gradient->type() )
     {
-    case QGradient::LinearGradient:
-        return generateLinearGradientShader( static_cast<const QLinearGradient *>( gradient ), matrix, alpha );
+        case QGradient::LinearGradient:
+            return generateLinearGradientShader( static_cast<const QLinearGradient *>( gradient ), matrix, alpha );
 
-    case QGradient::RadialGradient:
-        return generateRadialGradientShader( static_cast<const QRadialGradient *>( gradient ), matrix, alpha );
+        case QGradient::RadialGradient:
+            return generateRadialGradientShader( static_cast<const QRadialGradient *>( gradient ), matrix, alpha );
 
-    case QGradient::ConicalGradient:
-    default:
-        qWarning() << "generateGradientShader() Implementation is missing";
+        case QGradient::ConicalGradient:
+        default:
+            qWarning() << "generateGradientShader() Implementation is missing";
     }
 
     return 0;
@@ -2812,10 +2812,10 @@ int QPdfEnginePrivate::gradientBrush( const QBrush &b, const QTransform &matrix,
     QByteArray str;
     QPdf::ByteStream s( &str );
     s << "<<\n"
-         "/Type /Pattern\n"
-         "/PatternType 2\n"
-         "/Shading " << shaderObject << "0 R\n"
-         "/Matrix ["
+      "/Type /Pattern\n"
+      "/PatternType 2\n"
+      "/Shading " << shaderObject << "0 R\n"
+      "/Matrix ["
       << m.m11()
       << m.m12()
       << m.m21()
@@ -2823,7 +2823,7 @@ int QPdfEnginePrivate::gradientBrush( const QBrush &b, const QTransform &matrix,
       << m.dx()
       << m.dy() << "]\n";
     s << ">>\n"
-         "endobj\n";
+      "endobj\n";
 
     int patternObj = addXrefEntry( -1 );
     write( str );
@@ -2859,20 +2859,20 @@ int QPdfEnginePrivate::gradientBrush( const QBrush &b, const QTransform &matrix,
             QByteArray form;
             QPdf::ByteStream f( &form );
             f << "<<\n"
-                 "/Type /XObject\n"
-                 "/Subtype /Form\n"
-                 "/BBox [0 0 " << pageRect.width() << pageRect.height() << "]\n"
-                 "/Group <</S /Transparency >>\n"
-                 "/Resources <<\n"
-                 "/Shading << /Shader" << alphaShaderObject << alphaShaderObject << "0 R >>\n"
-                 ">>\n";
+              "/Type /XObject\n"
+              "/Subtype /Form\n"
+              "/BBox [0 0 " << pageRect.width() << pageRect.height() << "]\n"
+              "/Group <</S /Transparency >>\n"
+              "/Resources <<\n"
+              "/Shading << /Shader" << alphaShaderObject << alphaShaderObject << "0 R >>\n"
+              ">>\n";
 
             f << "/Length " << content.length() << "\n"
-                 ">>\n"
-                 "stream\n"
+              ">>\n"
+              "stream\n"
               << content
               << "endstream\n"
-            "endobj\n";
+              "endobj\n";
 
             int softMaskFormObject = addXrefEntry( -1 );
             write( form );
@@ -2977,21 +2977,21 @@ int QPdfEnginePrivate::addBrushPattern( const QTransform &m, bool *specifyColor,
     QByteArray str;
     QPdf::ByteStream s( &str );
     s << "<<\n"
-         "/Type /Pattern\n"
-         "/PatternType 1\n"
-         "/PaintType " << paintType << "\n"
-         "/TilingType 1\n"
-         "/BBox [0 0 " << w << h << "]\n"
-         "/XStep " << w << "\n"
-         "/YStep " << h << "\n"
-         "/Matrix ["
+      "/Type /Pattern\n"
+      "/PatternType 1\n"
+      "/PaintType " << paintType << "\n"
+      "/TilingType 1\n"
+      "/BBox [0 0 " << w << h << "]\n"
+      "/XStep " << w << "\n"
+      "/YStep " << h << "\n"
+      "/Matrix ["
       << matrix.m11()
       << matrix.m12()
       << matrix.m21()
       << matrix.m22()
       << matrix.dx()
       << matrix.dy() << "]\n"
-    "/Resources \n<< "; // open resource tree
+      "/Resources \n<< "; // open resource tree
 
     if ( imageObject > 0 )
     {
@@ -2999,12 +2999,12 @@ int QPdfEnginePrivate::addBrushPattern( const QTransform &m, bool *specifyColor,
     }
 
     s << ">>\n"
-         "/Length " << pattern.length() << "\n"
-         ">>\n"
-         "stream\n"
+      "/Length " << pattern.length() << "\n"
+      ">>\n"
+      "stream\n"
       << pattern
       << "endstream\n"
-    "endobj\n";
+      "endobj\n";
 
     int patternObj = addXrefEntry( -1 );
     write( str );
@@ -3336,8 +3336,8 @@ void QPdfEnginePrivate::drawTextItem( const QPointF &p, const QTextItemInt &ti )
         }
 
         *currentPage << "> >>\n"
-                        "BDC\n"
-                        "<";
+                     "BDC\n"
+                     "<";
         int ge = end == ti.num_chars ? ti.num_glyphs : logClusters[end];
 
         for ( int gs = logClusters[pos]; gs < ge; ++gs )
@@ -3346,7 +3346,7 @@ void QPdfEnginePrivate::drawTextItem( const QPointF &p, const QTextItemInt &ti )
         }
 
         *currentPage << "> Tj\n"
-                        "EMC\n";
+                     "EMC\n";
         pos = end;
     }
     while ( pos < ti.num_chars );

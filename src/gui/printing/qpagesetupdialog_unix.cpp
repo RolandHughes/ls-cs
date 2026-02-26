@@ -413,32 +413,32 @@ void QPageSetupWidget::updateWidget()
     switch ( m_units )
     {
 
-    case QPageSize::Unit::Millimeter:
-        suffix = tr( "mm" );
-        break;
+        case QPageSize::Unit::Millimeter:
+            suffix = tr( "mm" );
+            break;
 
-    case QPageSize::Unit::Point:
-        suffix = tr( "pt" );
-        break;
+        case QPageSize::Unit::Point:
+            suffix = tr( "pt" );
+            break;
 
-    case QPageSize::Unit::Inch:
-        suffix = tr( "in" );
-        break;
+        case QPageSize::Unit::Inch:
+            suffix = tr( "in" );
+            break;
 
-    case QPageSize::Unit::Pica:
-        suffix = tr( "P/" );
-        break;
+        case QPageSize::Unit::Pica:
+            suffix = tr( "P/" );
+            break;
 
-    case QPageSize::Unit::Didot:
-        suffix = tr( "DD" );
-        break;
+        case QPageSize::Unit::Didot:
+            suffix = tr( "DD" );
+            break;
 
-    case QPageSize::Unit::Cicero:
-        suffix = tr( "CC" );
-        break;
+        case QPageSize::Unit::Cicero:
+            suffix = tr( "CC" );
+            break;
 
-    case QPageSize::Unit::DevicePixel:
-        break;
+        case QPageSize::Unit::DevicePixel:
+            break;
     }
 
     m_ui.unitCombo->setCurrentIndex( m_ui.unitCombo->findData( QVariant::fromValue( m_units ) ) );
@@ -508,9 +508,9 @@ void QPageSetupWidget::setupPrinter() const
     m_printer->setPageLayout( m_pageLayout );
 #if !defined(LSCS_NO_CUPS)
     QCUPSSupport::PagesPerSheet pagesPerSheet = m_ui.pagesPerSheetCombo->currentData()
-        .value<QCUPSSupport::PagesPerSheet>();
+            .value<QCUPSSupport::PagesPerSheet>();
     QCUPSSupport::PagesPerSheetLayout pagesPerSheetLayout = m_ui.pagesPerSheetLayoutCombo->currentData()
-        .value<QCUPSSupport::PagesPerSheetLayout>();
+            .value<QCUPSSupport::PagesPerSheetLayout>();
     QCUPSSupport::setPagesPerSheetLayout( m_printer, pagesPerSheet, pagesPerSheetLayout );
 #endif
 
@@ -575,29 +575,29 @@ void QPageSetupWidget::pagesPerSheetChanged()
 
     switch ( m_ui.pagesPerSheetCombo->currentData().toInt() )
     {
-    case QCUPSSupport::OnePagePerSheet:
-        m_pagePreview->setPagePreviewLayout( 1, 1 );
-        break;
+        case QCUPSSupport::OnePagePerSheet:
+            m_pagePreview->setPagePreviewLayout( 1, 1 );
+            break;
 
-    case QCUPSSupport::TwoPagesPerSheet:
-        m_pagePreview->setPagePreviewLayout( 1, 2 );
-        break;
+        case QCUPSSupport::TwoPagesPerSheet:
+            m_pagePreview->setPagePreviewLayout( 1, 2 );
+            break;
 
-    case QCUPSSupport::FourPagesPerSheet:
-        m_pagePreview->setPagePreviewLayout( 2, 2 );
-        break;
+        case QCUPSSupport::FourPagesPerSheet:
+            m_pagePreview->setPagePreviewLayout( 2, 2 );
+            break;
 
-    case QCUPSSupport::SixPagesPerSheet:
-        m_pagePreview->setPagePreviewLayout( 3, 2 );
-        break;
+        case QCUPSSupport::SixPagesPerSheet:
+            m_pagePreview->setPagePreviewLayout( 3, 2 );
+            break;
 
-    case QCUPSSupport::NinePagesPerSheet:
-        m_pagePreview->setPagePreviewLayout( 3, 3 );
-        break;
+        case QCUPSSupport::NinePagesPerSheet:
+            m_pagePreview->setPagePreviewLayout( 3, 3 );
+            break;
 
-    case QCUPSSupport::SixteenPagesPerSheet:
-        m_pagePreview->setPagePreviewLayout( 4, 4 );
-        break;
+        case QCUPSSupport::SixteenPagesPerSheet:
+            m_pagePreview->setPagePreviewLayout( 4, 4 );
+            break;
     }
 
 #endif

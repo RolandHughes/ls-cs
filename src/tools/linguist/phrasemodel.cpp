@@ -101,14 +101,14 @@ QVariant PhraseModel::headerData( int section, Qt::Orientation orientation, int 
     {
         switch ( section )
         {
-        case 0:
-            return tr( "Source phrase" );
+            case 0:
+                return tr( "Source phrase" );
 
-        case 1:
-            return tr( "Translation" );
+            case 1:
+                return tr( "Translation" );
 
-        case 2:
-            return tr( "Definition" );
+            case 2:
+                return tr( "Definition" );
         }
     }
 
@@ -147,20 +147,20 @@ bool PhraseModel::setData( const QModelIndex &index, const QVariant &value, int 
 
     switch ( column )
     {
-    case 0:
-        phrase->setSource( value.toString() );
-        break;
+        case 0:
+            phrase->setSource( value.toString() );
+            break;
 
-    case 1:
-        phrase->setTarget( value.toString() );
-        break;
+        case 1:
+            phrase->setTarget( value.toString() );
+            break;
 
-    case 2:
-        phrase->setDefinition( value.toString() );
-        break;
+        case 2:
+            phrase->setDefinition( value.toString() );
+            break;
 
-    default:
-        return false;
+        default:
+            return false;
     }
 
     emit dataChanged( index, index );
@@ -183,25 +183,25 @@ QVariant PhraseModel::data( const QModelIndex &index, int role ) const
     {
         switch ( column )
         {
-        case 0: // source phrase
-            return phrase->source().simplified();
+            case 0: // source phrase
+                return phrase->source().simplified();
 
-        case 1: // translation
-            return phrase->target().simplified();
+            case 1: // translation
+                return phrase->target().simplified();
 
-        case 2: // definition
-            return phrase->definition();
+            case 2: // definition
+                return phrase->definition();
         }
     }
     else if ( role == Qt::EditRole && column != 2 )
     {
         switch ( column )
         {
-        case 0: // source phrase
-            return phrase->source();
+            case 0: // source phrase
+                return phrase->source();
 
-        case 1: // translation
-            return phrase->target();
+            case 1: // translation
+                return phrase->target();
         }
     }
 

@@ -54,13 +54,13 @@ QNetworkAccessBackend *QNetworkAccessFtpBackendFactory::create( QNetworkAccessMa
     // is it an operation we know of?
     switch ( op )
     {
-    case QNetworkAccessManager::GetOperation:
-    case QNetworkAccessManager::PutOperation:
-        break;
+        case QNetworkAccessManager::GetOperation:
+        case QNetworkAccessManager::PutOperation:
+            break;
 
-    default:
-        // can not handle this operation
-        return nullptr;
+        default:
+            // can not handle this operation
+            return nullptr;
     }
 
     QUrl url = request.url();
@@ -282,17 +282,17 @@ void QNetworkAccessFtpBackend::ftpDone()
 
             switch ( ftp->error() )
             {
-            case QFtp::HostNotFound:
-                code = QNetworkReply::HostNotFoundError;
-                break;
+                case QFtp::HostNotFound:
+                    code = QNetworkReply::HostNotFoundError;
+                    break;
 
-            case QFtp::ConnectionRefused:
-                code = QNetworkReply::ConnectionRefusedError;
-                break;
+                case QFtp::ConnectionRefused:
+                    code = QNetworkReply::ConnectionRefusedError;
+                    break;
 
-            default:
-                code = QNetworkReply::ProtocolFailure;
-                break;
+                default:
+                    code = QNetworkReply::ProtocolFailure;
+                    break;
             }
 
             error( code, ftp->errorString() );

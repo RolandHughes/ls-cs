@@ -527,61 +527,61 @@ void QOpenGL2PaintEngineExPrivate::updateCompositionMode()
 
     switch ( q->state()->composition_mode )
     {
-    case QPainter::CompositionMode_SourceOver:
-        funcs.glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
-        break;
+        case QPainter::CompositionMode_SourceOver:
+            funcs.glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
+            break;
 
-    case QPainter::CompositionMode_DestinationOver:
-        funcs.glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_ONE );
-        break;
+        case QPainter::CompositionMode_DestinationOver:
+            funcs.glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_ONE );
+            break;
 
-    case QPainter::CompositionMode_Clear:
-        funcs.glBlendFunc( GL_ZERO, GL_ZERO );
-        break;
+        case QPainter::CompositionMode_Clear:
+            funcs.glBlendFunc( GL_ZERO, GL_ZERO );
+            break;
 
-    case QPainter::CompositionMode_Source:
-        funcs.glBlendFunc( GL_ONE, GL_ZERO );
-        break;
+        case QPainter::CompositionMode_Source:
+            funcs.glBlendFunc( GL_ONE, GL_ZERO );
+            break;
 
-    case QPainter::CompositionMode_Destination:
-        funcs.glBlendFunc( GL_ZERO, GL_ONE );
-        break;
+        case QPainter::CompositionMode_Destination:
+            funcs.glBlendFunc( GL_ZERO, GL_ONE );
+            break;
 
-    case QPainter::CompositionMode_SourceIn:
-        funcs.glBlendFunc( GL_DST_ALPHA, GL_ZERO );
-        break;
+        case QPainter::CompositionMode_SourceIn:
+            funcs.glBlendFunc( GL_DST_ALPHA, GL_ZERO );
+            break;
 
-    case QPainter::CompositionMode_DestinationIn:
-        funcs.glBlendFunc( GL_ZERO, GL_SRC_ALPHA );
-        break;
+        case QPainter::CompositionMode_DestinationIn:
+            funcs.glBlendFunc( GL_ZERO, GL_SRC_ALPHA );
+            break;
 
-    case QPainter::CompositionMode_SourceOut:
-        funcs.glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_ZERO );
-        break;
+        case QPainter::CompositionMode_SourceOut:
+            funcs.glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_ZERO );
+            break;
 
-    case QPainter::CompositionMode_DestinationOut:
-        funcs.glBlendFunc( GL_ZERO, GL_ONE_MINUS_SRC_ALPHA );
-        break;
+        case QPainter::CompositionMode_DestinationOut:
+            funcs.glBlendFunc( GL_ZERO, GL_ONE_MINUS_SRC_ALPHA );
+            break;
 
-    case QPainter::CompositionMode_SourceAtop:
-        funcs.glBlendFunc( GL_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-        break;
+        case QPainter::CompositionMode_SourceAtop:
+            funcs.glBlendFunc( GL_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+            break;
 
-    case QPainter::CompositionMode_DestinationAtop:
-        funcs.glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_SRC_ALPHA );
-        break;
+        case QPainter::CompositionMode_DestinationAtop:
+            funcs.glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_SRC_ALPHA );
+            break;
 
-    case QPainter::CompositionMode_Xor:
-        funcs.glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-        break;
+        case QPainter::CompositionMode_Xor:
+            funcs.glBlendFunc( GL_ONE_MINUS_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+            break;
 
-    case QPainter::CompositionMode_Plus:
-        funcs.glBlendFunc( GL_ONE, GL_ONE );
-        break;
+        case QPainter::CompositionMode_Plus:
+            funcs.glBlendFunc( GL_ONE, GL_ONE );
+            break;
 
-    default:
-        qWarning( "Unsupported composition mode" );
-        break;
+        default:
+            qWarning( "Unsupported composition mode" );
+            break;
     }
 
     compositionModeDirty = false;
@@ -1731,41 +1731,41 @@ void QOpenGL2PaintEngineEx::drawImage( const QRectF &dest, const QImage &image, 
     // Use specialized bind for formats we have specialized shaders for.
     switch ( image.format() )
     {
-    case QImage::Format_RGBA8888:
-    case QImage::Format_ARGB32:
-        d->shaderManager->setSrcPixelType( QOpenGLEngineShaderManager::NonPremultipliedImageSrc );
-        bindOption = Qt::EmptyFlag;
-        break;
+        case QImage::Format_RGBA8888:
+        case QImage::Format_ARGB32:
+            d->shaderManager->setSrcPixelType( QOpenGLEngineShaderManager::NonPremultipliedImageSrc );
+            bindOption = Qt::EmptyFlag;
+            break;
 
-    case QImage::Format_Alpha8:
-        if ( ctx->functions()->hasOpenGLFeature( QOpenGLFunctions::TextureRGFormats ) )
-        {
-            d->shaderManager->setSrcPixelType( QOpenGLEngineShaderManager::AlphaImageSrc );
-            bindOption = QOpenGLTextureCache::UseRedFor8BitBindOption;
-        }
-        else
-        {
+        case QImage::Format_Alpha8:
+            if ( ctx->functions()->hasOpenGLFeature( QOpenGLFunctions::TextureRGFormats ) )
+            {
+                d->shaderManager->setSrcPixelType( QOpenGLEngineShaderManager::AlphaImageSrc );
+                bindOption = QOpenGLTextureCache::UseRedFor8BitBindOption;
+            }
+            else
+            {
+                d->shaderManager->setSrcPixelType( QOpenGLEngineShaderManager::ImageSrc );
+            }
+
+            break;
+
+        case QImage::Format_Grayscale8:
+            if ( ctx->functions()->hasOpenGLFeature( QOpenGLFunctions::TextureRGFormats ) )
+            {
+                d->shaderManager->setSrcPixelType( QOpenGLEngineShaderManager::GrayscaleImageSrc );
+                bindOption = QOpenGLTextureCache::UseRedFor8BitBindOption;
+            }
+            else
+            {
+                d->shaderManager->setSrcPixelType( QOpenGLEngineShaderManager::ImageSrc );
+            }
+
+            break;
+
+        default:
             d->shaderManager->setSrcPixelType( QOpenGLEngineShaderManager::ImageSrc );
-        }
-
-        break;
-
-    case QImage::Format_Grayscale8:
-        if ( ctx->functions()->hasOpenGLFeature( QOpenGLFunctions::TextureRGFormats ) )
-        {
-            d->shaderManager->setSrcPixelType( QOpenGLEngineShaderManager::GrayscaleImageSrc );
-            bindOption = QOpenGLTextureCache::UseRedFor8BitBindOption;
-        }
-        else
-        {
-            d->shaderManager->setSrcPixelType( QOpenGLEngineShaderManager::ImageSrc );
-        }
-
-        break;
-
-    default:
-        d->shaderManager->setSrcPixelType( QOpenGLEngineShaderManager::ImageSrc );
-        break;
+            break;
     }
 
     ImageWithBindOptions imageWithOptions = { image, bindOption };
@@ -2293,7 +2293,7 @@ void QOpenGL2PaintEngineExPrivate::drawCachedGlyphs( QFontEngine::GlyphFormat gl
     }
 
     QOpenGLTextureGlyphCache::FilterMode filterMode = ( s->matrix.type() > QTransform::TxTranslate ) ?
-        QOpenGLTextureGlyphCache::Linear : QOpenGLTextureGlyphCache::Nearest;
+            QOpenGLTextureGlyphCache::Linear : QOpenGLTextureGlyphCache::Nearest;
 
     GLenum glFilterMode = filterMode == QOpenGLTextureGlyphCache::Linear ? GL_LINEAR : GL_NEAREST;
 
@@ -2805,34 +2805,34 @@ void QOpenGL2PaintEngineEx::clip( const QVectorPath &path, Qt::ClipOperation op 
 
     switch ( op )
     {
-    case Qt::NoClip:
-        if ( d->useSystemClip )
-        {
+        case Qt::NoClip:
+            if ( d->useSystemClip )
+            {
+                state()->clipTestEnabled = true;
+                state()->currentClip = 1;
+            }
+            else
+            {
+                state()->clipTestEnabled = false;
+            }
+
+            state()->rectangleClip = QRect( 0, 0, d->width, d->height );
+            state()->canRestoreClip = false;
+            d->updateClipScissorTest();
+            break;
+
+        case Qt::IntersectClip:
+            state()->rectangleClip = state()->rectangleClip.intersected( pathRect );
+            d->updateClipScissorTest();
+            d->resetClipIfNeeded();
+            ++d->maxClip;
+            d->writeClip( path, d->maxClip );
+            state()->currentClip = d->maxClip;
             state()->clipTestEnabled = true;
-            state()->currentClip = 1;
-        }
-        else
-        {
-            state()->clipTestEnabled = false;
-        }
+            break;
 
-        state()->rectangleClip = QRect( 0, 0, d->width, d->height );
-        state()->canRestoreClip = false;
-        d->updateClipScissorTest();
-        break;
-
-    case Qt::IntersectClip:
-        state()->rectangleClip = state()->rectangleClip.intersected( pathRect );
-        d->updateClipScissorTest();
-        d->resetClipIfNeeded();
-        ++d->maxClip;
-        d->writeClip( path, d->maxClip );
-        state()->currentClip = d->maxClip;
-        state()->clipTestEnabled = true;
-        break;
-
-    default:
-        break;
+        default:
+            break;
     }
 }
 

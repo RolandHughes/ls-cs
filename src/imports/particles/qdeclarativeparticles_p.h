@@ -46,8 +46,7 @@ public:
 class QDeclarativeParticleMotionLinear : public QDeclarativeParticleMotion
 {
     Q_OBJECT
-public:
-    QDeclarativeParticleMotionLinear( QObject *parent=0 )
+public: QDeclarativeParticleMotionLinear( QObject *parent=0 )
         : QDeclarativeParticleMotion( parent ) {}
 
     virtual void advance( QDeclarativeParticle &, int interval );
@@ -96,8 +95,7 @@ private:
 class QDeclarativeParticleMotionWander : public QDeclarativeParticleMotion
 {
     Q_OBJECT
-public:
-    QDeclarativeParticleMotionWander()
+public: QDeclarativeParticleMotionWander()
         : QDeclarativeParticleMotion(), particles( 0 ), _xvariance( 0 ), _yvariance( 0 ), _pace( 100 ) {}
 
     virtual void advance( QDeclarativeParticle &, int interval );

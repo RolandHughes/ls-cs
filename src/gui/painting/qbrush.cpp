@@ -257,18 +257,18 @@ void QBrushDataPointerDeleter::deleteData( QBrushData *d )
 {
     switch ( d->style )
     {
-    case Qt::TexturePattern:
-        delete static_cast<QTexturedBrushData *>( d );
-        break;
+        case Qt::TexturePattern:
+            delete static_cast<QTexturedBrushData *>( d );
+            break;
 
-    case Qt::LinearGradientPattern:
-    case Qt::RadialGradientPattern:
-    case Qt::ConicalGradientPattern:
-        delete static_cast<QGradientBrushData *>( d );
-        break;
+        case Qt::LinearGradientPattern:
+        case Qt::RadialGradientPattern:
+        case Qt::ConicalGradientPattern:
+            delete static_cast<QGradientBrushData *>( d );
+            break;
 
-    default:
-        delete d;
+        default:
+            delete d;
     }
 }
 
@@ -320,18 +320,18 @@ static bool qbrush_check_type( Qt::BrushStyle style )
 {
     switch ( style )
     {
-    case Qt::TexturePattern:
-        qWarning( "qbrush_check_type() Incorrect use of texture pattern" );
-        break;
+        case Qt::TexturePattern:
+            qWarning( "qbrush_check_type() Incorrect use of texture pattern" );
+            break;
 
-    case Qt::LinearGradientPattern:
-    case Qt::RadialGradientPattern:
-    case Qt::ConicalGradientPattern:
-        qWarning( "qbrush_check_type() Incorrect use of a gradient pattern" );
-        break;
+        case Qt::LinearGradientPattern:
+        case Qt::RadialGradientPattern:
+        case Qt::ConicalGradientPattern:
+            qWarning( "qbrush_check_type() Incorrect use of a gradient pattern" );
+            break;
 
-    default:
-        return true;
+        default:
+            return true;
     }
 
     return false;
@@ -341,30 +341,30 @@ void QBrush::init( const QColor &color, Qt::BrushStyle style )
 {
     switch ( style )
     {
-    case Qt::NoBrush:
-        d.reset( nullBrushInstance() );
-        d->ref.ref();
+        case Qt::NoBrush:
+            d.reset( nullBrushInstance() );
+            d->ref.ref();
 
-        if ( d->color != color )
-        {
-            setColor( color );
-        }
+            if ( d->color != color )
+            {
+                setColor( color );
+            }
 
-        return;
+            return;
 
-    case Qt::TexturePattern:
-        d.reset( new QTexturedBrushData );
-        break;
+        case Qt::TexturePattern:
+            d.reset( new QTexturedBrushData );
+            break;
 
-    case Qt::LinearGradientPattern:
-    case Qt::RadialGradientPattern:
-    case Qt::ConicalGradientPattern:
-        d.reset( new QGradientBrushData );
-        break;
+        case Qt::LinearGradientPattern:
+        case Qt::RadialGradientPattern:
+        case Qt::ConicalGradientPattern:
+            d.reset( new QGradientBrushData );
+            break;
 
-    default:
-        d.reset( new QBrushData );
-        break;
+        default:
+            d.reset( new QBrushData );
+            break;
     }
 
     d->ref.store( 1 );
@@ -486,54 +486,54 @@ void QBrush::detach( Qt::BrushStyle newStyle )
 
     switch ( newStyle )
     {
-    case Qt::TexturePattern:
-    {
-        QTexturedBrushData *tbd = new QTexturedBrushData;
-
-        if ( d->style == Qt::TexturePattern )
+        case Qt::TexturePattern:
         {
-            QTexturedBrushData *data = static_cast<QTexturedBrushData *>( d.data() );
+            QTexturedBrushData *tbd = new QTexturedBrushData;
 
-            if ( data->m_has_pixmap_texture )
+            if ( d->style == Qt::TexturePattern )
             {
-                tbd->setPixmap( data->pixmap() );
+                QTexturedBrushData *data = static_cast<QTexturedBrushData *>( d.data() );
+
+                if ( data->m_has_pixmap_texture )
+                {
+                    tbd->setPixmap( data->pixmap() );
+                }
+                else
+                {
+                    tbd->setImage( data->image() );
+                }
             }
-            else
-            {
-                tbd->setImage( data->image() );
-            }
+
+            x.reset( tbd );
+            break;
         }
 
-        x.reset( tbd );
-        break;
-    }
-
-    case Qt::LinearGradientPattern:
-    case Qt::RadialGradientPattern:
-    case Qt::ConicalGradientPattern:
-    {
-        QGradientBrushData *gbd = new QGradientBrushData;
-
-        switch ( d->style )
-        {
         case Qt::LinearGradientPattern:
         case Qt::RadialGradientPattern:
         case Qt::ConicalGradientPattern:
-            gbd->gradient =
-                static_cast<QGradientBrushData *>( d.data() )->gradient;
-            break;
+        {
+            QGradientBrushData *gbd = new QGradientBrushData;
 
-        default:
+            switch ( d->style )
+            {
+                case Qt::LinearGradientPattern:
+                case Qt::RadialGradientPattern:
+                case Qt::ConicalGradientPattern:
+                    gbd->gradient =
+                        static_cast<QGradientBrushData *>( d.data() )->gradient;
+                    break;
+
+                default:
+                    break;
+            }
+
+            x.reset( gbd );
             break;
         }
 
-        x.reset( gbd );
-        break;
-    }
-
-    default:
-        x.reset( new QBrushData );
-        break;
+        default:
+            x.reset( new QBrushData );
+            break;
     }
 
     x->ref.store( 1 );
@@ -730,73 +730,73 @@ bool QBrush::operator==( const QBrush &b ) const
 
     switch ( d->style )
     {
-    case Qt::TexturePattern:
-    {
-        // Note this produces false negatives if the textures have identical data,
-        // but does not share the same data in memory. Since equality is likely to
-        // be used to avoid iterating over the data for a texture update, this should
-        // still be better than doing an accurate comparison.
-
-        const QPixmap *us   = nullptr;
-        const QPixmap *them = nullptr;
-
-        qint64 cacheKey1, cacheKey2;
-
-        if ( qHasPixmapTexture( *this ) )
+        case Qt::TexturePattern:
         {
-            us = ( static_cast<QTexturedBrushData *>( d.data() ) )->m_pixmap;
-            cacheKey1 = us->cacheKey();
-        }
-        else
-        {
-            cacheKey1 = ( static_cast<QTexturedBrushData *>( d.data() ) )->image().cacheKey();
-        }
+            // Note this produces false negatives if the textures have identical data,
+            // but does not share the same data in memory. Since equality is likely to
+            // be used to avoid iterating over the data for a texture update, this should
+            // still be better than doing an accurate comparison.
 
-        if ( qHasPixmapTexture( b ) )
-        {
-            them = ( static_cast<QTexturedBrushData *>( b.d.data() ) )->m_pixmap;
-            cacheKey2 = them->cacheKey();
-        }
-        else
-        {
-            cacheKey2 = ( static_cast<QTexturedBrushData *>( b.d.data() ) )->image().cacheKey();
-        }
+            const QPixmap *us   = nullptr;
+            const QPixmap *them = nullptr;
 
-        if ( cacheKey1 != cacheKey2 )
-        {
+            qint64 cacheKey1, cacheKey2;
+
+            if ( qHasPixmapTexture( *this ) )
+            {
+                us = ( static_cast<QTexturedBrushData *>( d.data() ) )->m_pixmap;
+                cacheKey1 = us->cacheKey();
+            }
+            else
+            {
+                cacheKey1 = ( static_cast<QTexturedBrushData *>( d.data() ) )->image().cacheKey();
+            }
+
+            if ( qHasPixmapTexture( b ) )
+            {
+                them = ( static_cast<QTexturedBrushData *>( b.d.data() ) )->m_pixmap;
+                cacheKey2 = them->cacheKey();
+            }
+            else
+            {
+                cacheKey2 = ( static_cast<QTexturedBrushData *>( b.d.data() ) )->image().cacheKey();
+            }
+
+            if ( cacheKey1 != cacheKey2 )
+            {
+                return false;
+            }
+
+            if ( !us == !them ) // both images or both pixmaps
+            {
+                return true;
+            }
+
+            // Only raster QPixmaps use the same cachekeys as QImages.
+            if ( us && us->handle()->classId() == QPlatformPixmap::RasterClass )
+            {
+                return true;
+            }
+
+            if ( them && them->handle()->classId() == QPlatformPixmap::RasterClass )
+            {
+                return true;
+            }
+
             return false;
         }
 
-        if ( !us == !them ) // both images or both pixmaps
+        case Qt::LinearGradientPattern:
+        case Qt::RadialGradientPattern:
+        case Qt::ConicalGradientPattern:
         {
-            return true;
+            const QGradientBrushData *d1 = static_cast<QGradientBrushData *>( d.data() );
+            const QGradientBrushData *d2 = static_cast<QGradientBrushData *>( b.d.data() );
+            return d1->gradient == d2->gradient;
         }
 
-        // Only raster QPixmaps use the same cachekeys as QImages.
-        if ( us && us->handle()->classId() == QPlatformPixmap::RasterClass )
-        {
+        default:
             return true;
-        }
-
-        if ( them && them->handle()->classId() == QPlatformPixmap::RasterClass )
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    case Qt::LinearGradientPattern:
-    case Qt::RadialGradientPattern:
-    case Qt::ConicalGradientPattern:
-    {
-        const QGradientBrushData *d1 = static_cast<QGradientBrushData *>( d.data() );
-        const QGradientBrushData *d2 = static_cast<QGradientBrushData *>( b.d.data() );
-        return d1->gradient == d2->gradient;
-    }
-
-    default:
-        return true;
     }
 }
 

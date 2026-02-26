@@ -62,13 +62,13 @@ XsdAttributeUse::ValueConstraint::Ptr XsdAttributeUse::ValueConstraint::fromAttr
 
     switch ( constraint->variety() )
     {
-    case XsdAttribute::ValueConstraint::Fixed:
-        newConstraint->setVariety( Fixed );
-        break;
+        case XsdAttribute::ValueConstraint::Fixed:
+            newConstraint->setVariety( Fixed );
+            break;
 
-    case XsdAttribute::ValueConstraint::Default:
-        newConstraint->setVariety( Default );
-        break;
+        case XsdAttribute::ValueConstraint::Default:
+            newConstraint->setVariety( Default );
+            break;
     }
 
     newConstraint->setValue( constraint->value() );

@@ -221,119 +221,119 @@ enum CPUFeatures
 static constexpr const quint64 qCompilerCpuFeatures = 0
 
 #if defined __SHA__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureSHA )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureSHA )
 #endif
 
 #if defined __AES__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureAES )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureAES )
 #endif
 
 #if defined __RTM__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureRTM )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureRTM )
 #endif
 
 #ifdef __RDRND__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureRDRAND )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureRDRAND )
 #endif
 
 #ifdef __RDSEED__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureRDSEED )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureRDSEED )
 #endif
 
 #if defined __BMI__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureBMI )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureBMI )
 #endif
 
 #if defined __BMI2__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureBMI2 )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureBMI2 )
 #endif
 
 #if defined __F16C__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureF16C )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureF16C )
 #endif
 
 #if defined __POPCNT__
-    | ( Q_UINT64_C( 1 ) << CpuFeaturePOPCNT )
+        | ( Q_UINT64_C( 1 ) << CpuFeaturePOPCNT )
 #endif
 
 #if defined __MOVBE__           // GCC and Clang do not seem to define this
-    | ( Q_UINT64_C( 1 ) << CpuFeatureMOVBE )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureMOVBE )
 #endif
 
 #if defined __AVX512F__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512F )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512F )
 #endif
 
 #if defined __AVX512CD__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512CD )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512CD )
 #endif
 
 #if defined __AVX512ER__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512ER )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512ER )
 #endif
 
 #if defined __AVX512PF__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512PF )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512PF )
 #endif
 
 #if defined __AVX512BW__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512BW )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512BW )
 #endif
 
 #if defined __AVX512DQ__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512DQ )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512DQ )
 #endif
 #if defined __AVX512VL__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512VL )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512VL )
 #endif
 
 #if defined __AVX512IFMA__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512IFMA )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512IFMA )
 #endif
 #if defined __AVX512VBMI__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512VBMI )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureAVX512VBMI )
 #endif
 
 #if defined __AVX2__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureAVX2 )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureAVX2 )
 #endif
 
 #if defined __AVX__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureAVX )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureAVX )
 #endif
 
 #if defined __SSE4_2__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureSSE4_2 )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureSSE4_2 )
 #endif
 
 #if defined __SSE4_1__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureSSE4_1 )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureSSE4_1 )
 #endif
 
 #if defined __SSSE3__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureSSSE3 )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureSSSE3 )
 #endif
 
 #if defined __SSE3__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureSSE3 )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureSSE3 )
 #endif
 
 #if defined __SSE2__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureSSE2 )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureSSE2 )
 #endif
 
 #if defined __ARM_NEON__
-    | ( Q_UINT64_C( 1 ) << CpuFeatureNEON )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureNEON )
 #endif
 
 #if defined __mips_dsp
-    | ( Q_UINT64_C( 1 ) << CpuFeatureDSP )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureDSP )
 #endif
 
 #if defined __mips_dspr2
-    | ( Q_UINT64_C( 1 ) << CpuFeatureDSPR2 )
+        | ( Q_UINT64_C( 1 ) << CpuFeatureDSPR2 )
 #endif
-    ;
+        ;
 
 extern Q_CORE_EXPORT std::atomic<quint64> lscs_cpu_features;
 

@@ -706,35 +706,35 @@ void QIconLoaderEngine::virtual_hook( int id, void *data )
 
     switch ( id )
     {
-    case QIconEngine::AvailableSizesHook:
-    {
-        QIconEngine::AvailableSizesArgument &arg
-            = *reinterpret_cast<QIconEngine::AvailableSizesArgument *>( data );
-
-        const int infoSize = m_info.entries.size();
-        QList<QSize> sizes;
-
-        // Gets all sizes from the DirectoryInfo entries
-        for ( int i = 0 ; i < infoSize ; ++i )
+        case QIconEngine::AvailableSizesHook:
         {
-            int size = m_info.entries.at( i )->dir.size;
-            sizes.append( QSize( size, size ) );
+            QIconEngine::AvailableSizesArgument &arg
+                = *reinterpret_cast<QIconEngine::AvailableSizesArgument *>( data );
+
+            const int infoSize = m_info.entries.size();
+            QList<QSize> sizes;
+
+            // Gets all sizes from the DirectoryInfo entries
+            for ( int i = 0 ; i < infoSize ; ++i )
+            {
+                int size = m_info.entries.at( i )->dir.size;
+                sizes.append( QSize( size, size ) );
+            }
+
+            arg.sizes.swap( sizes ); // commit
         }
 
-        arg.sizes.swap( sizes ); // commit
-    }
+        break;
 
-    break;
+        case QIconEngine::IconNameHook:
+        {
+            QString &name = *reinterpret_cast<QString *>( data );
+            name = m_iconName;
+        }
+        break;
 
-    case QIconEngine::IconNameHook:
-    {
-        QString &name = *reinterpret_cast<QString *>( data );
-        name = m_iconName;
-    }
-    break;
-
-    default:
-        QIconEngine::virtual_hook( id, data );
+        default:
+            QIconEngine::virtual_hook( id, data );
     }
 }
 

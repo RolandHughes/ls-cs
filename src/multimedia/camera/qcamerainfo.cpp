@@ -169,9 +169,9 @@ QDebug operator<<( QDebug d, const QCameraInfo &camera )
     auto &metaObj = QCamera::staticMetaObject();
 
     d.maybeSpace() << QString( "QCameraInfo(deviceName = %1, position = %2, orientation = %3)" )
-     .formatArg( camera.deviceName() )
-     .formatArg( metaObj.enumerator( metaObj.indexOfEnumerator( "Position" ) ).valueToKey( camera.position() ) )
-     .formatArg( camera.orientation() );
+                   .formatArg( camera.deviceName() )
+                   .formatArg( metaObj.enumerator( metaObj.indexOfEnumerator( "Position" ) ).valueToKey( camera.position() ) )
+                   .formatArg( camera.orientation() );
 
     return d.space();
 }

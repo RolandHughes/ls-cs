@@ -241,52 +241,52 @@ QVariant::Type qDecodeTDSType( int type )
 
     switch ( type )
     {
-    case QTDSCHAR:
-    case QTDSTEXT:
-    case QTDSVARCHAR:
-        t = QVariant::String;
-        break;
+        case QTDSCHAR:
+        case QTDSTEXT:
+        case QTDSVARCHAR:
+            t = QVariant::String;
+            break;
 
-    case QTDSINT1:
-    case QTDSINT2:
-    case QTDSINT4:
-    case QTDSINT4_N:
-    case QTDSBIT:
-        t = QVariant::Int;
-        break;
+        case QTDSINT1:
+        case QTDSINT2:
+        case QTDSINT4:
+        case QTDSINT4_N:
+        case QTDSBIT:
+            t = QVariant::Int;
+            break;
 
-    case QTDSFLT4:
-    case QTDSFLT8:
-    case QTDSFLT8_N:
-    case QTDSMONEY4:
-    case QTDSMONEY:
-    case QTDSDECIMAL:
-    case QTDSNUMERIC:
+        case QTDSFLT4:
+        case QTDSFLT8:
+        case QTDSFLT8_N:
+        case QTDSMONEY4:
+        case QTDSMONEY:
+        case QTDSDECIMAL:
+        case QTDSNUMERIC:
 #ifdef QTDSNUMERIC_2
-    case QTDSNUMERIC_2:
+        case QTDSNUMERIC_2:
 #endif
 #ifdef QTDSDECIMAL_2
-    case QTDSDECIMAL_2:
+        case QTDSDECIMAL_2:
 #endif
-    case QTDSMONEY_N:
-        t = QVariant::Double;
-        break;
+        case QTDSMONEY_N:
+            t = QVariant::Double;
+            break;
 
-    case QTDSDATETIME4:
-    case QTDSDATETIME:
-    case QTDSDATETIME_N:
-        t = QVariant::DateTime;
-        break;
+        case QTDSDATETIME4:
+        case QTDSDATETIME:
+        case QTDSDATETIME_N:
+            t = QVariant::DateTime;
+            break;
 
-    case QTDSBINARY:
-    case QTDSVARBINARY:
-    case QTDSIMAGE:
-        t = QVariant::ByteArray;
-        break;
+        case QTDSBINARY:
+        case QTDSVARBINARY:
+        case QTDSIMAGE:
+            t = QVariant::ByteArray;
+            break;
 
-    default:
-        t = QVariant::Invalid;
-        break;
+        default:
+            t = QVariant::Invalid;
+            break;
     }
 
     return t;
@@ -391,65 +391,65 @@ bool QTDSResult::gotoNext( QSqlCachedResult::ValueCache &values, int index )
 
         switch ( d->rec.field( i ).type() )
         {
-        case QVariant::DateTime:
-            if ( qIsNull( d->buffer.at( i * 2 + 1 ) ) )
+            case QVariant::DateTime:
+                if ( qIsNull( d->buffer.at( i * 2 + 1 ) ) )
+                {
+                    values[idx] = QVariant( QVariant::DateTime );
+                }
+                else
+                {
+                    DBDATETIME *bdt = ( DBDATETIME * ) d->buffer.at( i * 2 );
+                    QDate date = QDate::fromString( QLatin1String( "1900-01-01" ), Qt::ISODate );
+                    QTime time = QTime::fromString( QLatin1String( "00:00:00" ), Qt::ISODate );
+                    values[idx] = QDateTime( date.addDays( bdt->dtdays ), time.addMSecs( int( bdt->dttime / 0.3 ) ) );
+                }
+
+                break;
+
+            case QVariant::Int:
+                if ( qIsNull( d->buffer.at( i * 2 + 1 ) ) )
+                {
+                    values[idx] = QVariant( QVariant::Int );
+                }
+                else
+                {
+                    values[idx] = *( ( int * )d->buffer.at( i * 2 ) );
+                }
+
+                break;
+
+            case QVariant::Double:
+            case QVariant::String:
+                if ( qIsNull( d->buffer.at( i * 2 + 1 ) ) )
+                {
+                    values[idx] = QVariant( QVariant::String );
+                }
+                else
+                {
+                    values[idx] = QString::fromLocal8Bit( ( const char * )d->buffer.at( i * 2 ) ).trimmed();
+                }
+
+                break;
+
+            case QVariant::ByteArray:
             {
-                values[idx] = QVariant( QVariant::DateTime );
-            }
-            else
-            {
-                DBDATETIME *bdt = ( DBDATETIME * ) d->buffer.at( i * 2 );
-                QDate date = QDate::fromString( QLatin1String( "1900-01-01" ), Qt::ISODate );
-                QTime time = QTime::fromString( QLatin1String( "00:00:00" ), Qt::ISODate );
-                values[idx] = QDateTime( date.addDays( bdt->dtdays ), time.addMSecs( int( bdt->dttime / 0.3 ) ) );
+                if ( qIsNull( d->buffer.at( i * 2 + 1 ) ) )
+                {
+                    values[idx] = QVariant( QVariant::ByteArray );
+                }
+                else
+                {
+                    values[idx] = QByteArray( ( const char * )d->buffer.at( i * 2 ) );
+                }
+
+                break;
             }
 
-            break;
-
-        case QVariant::Int:
-            if ( qIsNull( d->buffer.at( i * 2 + 1 ) ) )
-            {
-                values[idx] = QVariant( QVariant::Int );
-            }
-            else
-            {
-                values[idx] = *( ( int * )d->buffer.at( i * 2 ) );
-            }
-
-            break;
-
-        case QVariant::Double:
-        case QVariant::String:
-            if ( qIsNull( d->buffer.at( i * 2 + 1 ) ) )
-            {
-                values[idx] = QVariant( QVariant::String );
-            }
-            else
-            {
-                values[idx] = QString::fromLocal8Bit( ( const char * )d->buffer.at( i * 2 ) ).trimmed();
-            }
-
-            break;
-
-        case QVariant::ByteArray:
-        {
-            if ( qIsNull( d->buffer.at( i * 2 + 1 ) ) )
-            {
-                values[idx] = QVariant( QVariant::ByteArray );
-            }
-            else
-            {
-                values[idx] = QByteArray( ( const char * )d->buffer.at( i * 2 ) );
-            }
-
-            break;
-        }
-
-        default:
-            // should never happen, and we already fired
-            // a warning while binding.
-            values[idx] = QVariant();
-            break;
+            default:
+                // should never happen, and we already fired
+                // a warning while binding.
+                values[idx] = QVariant();
+                break;
         }
     }
 
@@ -511,35 +511,35 @@ bool QTDSResult::reset ( const QString &query )
 
         switch ( vType )
         {
-        case QVariant::Int:
-            p = malloc( 4 );
-            ret = dbbind( d->dbproc, i + 1, INTBIND, ( DBINT ) 4, ( unsigned char * )p );
-            break;
+            case QVariant::Int:
+                p = malloc( 4 );
+                ret = dbbind( d->dbproc, i + 1, INTBIND, ( DBINT ) 4, ( unsigned char * )p );
+                break;
 
-        case QVariant::Double:
-            // use string binding to prevent loss of precision
-            p = malloc( 50 );
-            ret = dbbind( d->dbproc, i + 1, STRINGBIND, 50, ( unsigned char * )p );
-            break;
+            case QVariant::Double:
+                // use string binding to prevent loss of precision
+                p = malloc( 50 );
+                ret = dbbind( d->dbproc, i + 1, STRINGBIND, 50, ( unsigned char * )p );
+                break;
 
-        case QVariant::String:
-            p = malloc( dbcollen( d->dbproc, i + 1 ) + 1 );
-            ret = dbbind( d->dbproc, i + 1, STRINGBIND, DBINT( dbcollen( d->dbproc, i + 1 ) + 1 ), ( unsigned char * )p );
-            break;
+            case QVariant::String:
+                p = malloc( dbcollen( d->dbproc, i + 1 ) + 1 );
+                ret = dbbind( d->dbproc, i + 1, STRINGBIND, DBINT( dbcollen( d->dbproc, i + 1 ) + 1 ), ( unsigned char * )p );
+                break;
 
-        case QVariant::DateTime:
-            p = malloc( 8 );
-            ret = dbbind( d->dbproc, i + 1, DATETIMEBIND, ( DBINT ) 8, ( unsigned char * )p );
-            break;
+            case QVariant::DateTime:
+                p = malloc( 8 );
+                ret = dbbind( d->dbproc, i + 1, DATETIMEBIND, ( DBINT ) 8, ( unsigned char * )p );
+                break;
 
-        case QVariant::ByteArray:
-            p = malloc( dbcollen( d->dbproc, i + 1 ) + 1 );
-            ret = dbbind( d->dbproc, i + 1, BINARYBIND, DBINT( dbcollen( d->dbproc, i + 1 ) + 1 ), ( unsigned char * )p );
-            break;
+            case QVariant::ByteArray:
+                p = malloc( dbcollen( d->dbproc, i + 1 ) + 1 );
+                ret = dbbind( d->dbproc, i + 1, BINARYBIND, DBINT( dbcollen( d->dbproc, i + 1 ) + 1 ), ( unsigned char * )p );
+                break;
 
-        default: //don't bind the field since we do not support it
-            qWarning( "QTDSResult::reset: Unsupported type for field \"%s\"", dbcolname( d->dbproc, i + 1 ) );
-            break;
+            default: //don't bind the field since we do not support it
+                qWarning( "QTDSResult::reset: Unsupported type for field \"%s\"", dbcolname( d->dbproc, i + 1 ) );
+                break;
         }
 
         if ( ret == SUCCEED )
@@ -640,19 +640,19 @@ bool QTDSDriver::hasFeature( DriverFeature f ) const
 {
     switch ( f )
     {
-    case Transactions:
-    case QuerySize:
-    case Unicode:
-    case SimpleLocking:
-    case EventNotifications:
-    case MultipleResultSets:
-        return false;
+        case Transactions:
+        case QuerySize:
+        case Unicode:
+        case SimpleLocking:
+        case EventNotifications:
+        case MultipleResultSets:
+            return false;
 
-    case BLOB:
-        return true;
+        case BLOB:
+            return true;
 
-    default:
-        return false;
+        default:
+            return false;
     }
 }
 

@@ -102,50 +102,50 @@ static Ending ending( QString str, QLocale::Language lang )
 
     switch ( str.at( str.length() - 1 ).unicode() )
     {
-    case 0x002e: // full stop
-        if ( str.endsWith( "..." ) )
-        {
-            return End_Ellipsis;
-        }
-        else
-        {
+        case 0x002e: // full stop
+            if ( str.endsWith( "..." ) )
+            {
+                return End_Ellipsis;
+            }
+            else
+            {
+                return End_FullStop;
+            }
+
+        case 0x0589: // armenian full stop
+        case 0x06d4: // arabic full stop
+        case 0x3002: // ideographic full stop
             return End_FullStop;
-        }
 
-    case 0x0589: // armenian full stop
-    case 0x06d4: // arabic full stop
-    case 0x3002: // ideographic full stop
-        return End_FullStop;
+        case 0x0021: // exclamation mark
+        case 0x003f: // question mark
+        case 0x00a1: // inverted exclamation mark
+        case 0x00bf: // inverted question mark
+        case 0x01c3: // latin letter retroflex click
+        case 0x037e: // greek question mark
+        case 0x061f: // arabic question mark
+        case 0x203c: // double exclamation mark
+        case 0x203d: // interrobang
+        case 0x2048: // question exclamation mark
+        case 0x2049: // exclamation question mark
+        case 0x2762: // heavy exclamation mark ornament
+        case 0xff01: // full width exclamation mark
+        case 0xff1f: // full width question mark
+            return End_Interrobang;
 
-    case 0x0021: // exclamation mark
-    case 0x003f: // question mark
-    case 0x00a1: // inverted exclamation mark
-    case 0x00bf: // inverted question mark
-    case 0x01c3: // latin letter retroflex click
-    case 0x037e: // greek question mark
-    case 0x061f: // arabic question mark
-    case 0x203c: // double exclamation mark
-    case 0x203d: // interrobang
-    case 0x2048: // question exclamation mark
-    case 0x2049: // exclamation question mark
-    case 0x2762: // heavy exclamation mark ornament
-    case 0xff01: // full width exclamation mark
-    case 0xff1f: // full width question mark
-        return End_Interrobang;
+        case 0x003b: // greek 'compatibility' questionmark
+            return lang == QLocale::Greek ? End_Interrobang : End_None;
 
-    case 0x003b: // greek 'compatibility' questionmark
-        return lang == QLocale::Greek ? End_Interrobang : End_None;
+        case 0x003a: // colon
 
-    case 0x003a: // colon
+        case 0xff1a: // full width colon
+            return End_Colon;
 
-    case 0xff1a: // full width colon
-        return End_Colon;
+        case 0x2026: // horizontal ellipsis
+            return End_Ellipsis;
 
-    case 0x2026: // horizontal ellipsis
-        return End_Ellipsis;
-
-    default:
-        return End_None;
+        default:
+            return End_None;
     }
 }
 
@@ -201,14 +201,14 @@ public:
         {
             switch ( section - m_dataModel->modelCount() )
             {
-            case 0:
-                return QString();
+                case 0:
+                    return QString();
 
-            case 1:
-                return MainWindow::tr( "Source Text" );
+                case 1:
+                    return MainWindow::tr( "Source Text" );
 
-            case 2:
-                return MainWindow::tr( "Index" );
+                case 2:
+                    return MainWindow::tr( "Index" );
             }
         }
 
@@ -238,17 +238,17 @@ public:
         {
             switch ( section - m_dataModel->modelCount() )
             {
-            case 0:
-                return QString();
+                case 0:
+                    return QString();
 
-            case 1:
-                return MainWindow::tr( "Context" );
+                case 1:
+                    return MainWindow::tr( "Context" );
 
-            case 2:
-                return MainWindow::tr( "Items" );
+                case 2:
+                    return MainWindow::tr( "Items" );
 
-            case 3:
-                return MainWindow::tr( "Index" );
+                case 3:
+                    return MainWindow::tr( "Index" );
             }
         }
 
@@ -675,22 +675,22 @@ bool MainWindow::openFiles( const QStringList &names, bool globalReadWrite )
 
                 int result = QMessageBox::information( this, tr( "Loading File" ),
                                                        tr( "File '%1' does not seem to be related to the currently open file(s) '%2'.\n\n"
-                                                           "Close the open file(s) first?" )
+                                                               "Close the open file(s) first?" )
                                                        .formatArgs( DataModel::prettifyPlainFileName( fname ), m_dataModel->condensedSrcFileNames( true ) ),
                                                        QMessageBox::Yes | QMessageBox::Default, QMessageBox::No, QMessageBox::Cancel | QMessageBox::Escape );
 
                 switch ( result )
                 {
-                case QMessageBox::Cancel:
-                    delete dm;
-                    return false;
+                    case QMessageBox::Cancel:
+                        delete dm;
+                        return false;
 
-                case QMessageBox::Yes:
-                    closeOld = true;
-                    break;
+                    case QMessageBox::Yes:
+                        closeOld = true;
+                        break;
 
-                case QMessageBox::No:
-                    break;
+                    case QMessageBox::No:
+                        break;
                 }
             }
 
@@ -705,29 +705,29 @@ bool MainWindow::openFiles( const QStringList &names, bool globalReadWrite )
 
                 int result = QMessageBox::information( this, tr( "Loading File" ),
                                                        tr( "File '%1' is not related to the file '%2' which is being loaded.\n\n"
-                                                           "Skip loading the first named file?" )
+                                                               "Skip loading the first named file?" )
                                                        .formatArgs( DataModel::prettifyPlainFileName( fname ), opened.first().dataModel->srcFileName( true ) ),
                                                        QMessageBox::Yes | QMessageBox::Default, QMessageBox::No, QMessageBox::Cancel | QMessageBox::Escape );
 
                 switch ( result )
                 {
 
-                case QMessageBox::Cancel:
-                    delete dm;
+                    case QMessageBox::Cancel:
+                        delete dm;
 
-                    for ( const OpenedFile &op : opened )
-                    {
-                        delete op.dataModel;
-                    }
+                        for ( const OpenedFile &op : opened )
+                        {
+                            delete op.dataModel;
+                        }
 
-                    return false;
+                        return false;
 
-                case QMessageBox::Yes:
-                    delete dm;
-                    continue;
+                    case QMessageBox::Yes:
+                        delete dm;
+                        continue;
 
-                case QMessageBox::No:
-                    break;
+                    case QMessageBox::No:
+                        break;
                 }
             }
         }
@@ -1112,18 +1112,18 @@ void MainWindow::print()
 
                         switch ( msgCargo->message().type() )
                         {
-                        case TranslatorMessage::Type::Finished:
-                            type = tr( "finished" );
-                            break;
+                            case TranslatorMessage::Type::Finished:
+                                type = tr( "finished" );
+                                break;
 
-                        case TranslatorMessage::Type::Unfinished:
-                            type = msgCargo->danger() ? tr( "unresolved" ) : QString( "unfinished" );
-                            break;
+                            case TranslatorMessage::Type::Unfinished:
+                                type = msgCargo->danger() ? tr( "unresolved" ) : QString( "unfinished" );
+                                break;
 
-                        case TranslatorMessage::Type::Obsolete:
-                        case TranslatorMessage::Type::Vanished:
-                            type = tr( "obsolete" );
-                            break;
+                            case TranslatorMessage::Type::Obsolete:
+                            case TranslatorMessage::Type::Vanished:
+                                type = tr( "obsolete" );
+                                break;
                         }
 
                         pout.addBox( 12, type, PrintOut::Normal, Qt::AlignRight );
@@ -1705,15 +1705,15 @@ bool MainWindow::maybeSaveAll()
     switch ( result )
     {
 
-    case QMessageBox::Cancel:
-        return false;
+        case QMessageBox::Cancel:
+            return false;
 
-    case QMessageBox::Yes:
-        saveAll();
-        return !m_dataModel->isModified();
+        case QMessageBox::Yes:
+            saveAll();
+            return !m_dataModel->isModified();
 
-    case QMessageBox::No:
-        break;
+        case QMessageBox::No:
+            break;
     }
 
     return true;
@@ -1733,15 +1733,15 @@ bool MainWindow::maybeSave( int model )
     switch ( result )
     {
 
-    case QMessageBox::Cancel:
-        return false;
+        case QMessageBox::Cancel:
+            return false;
 
-    case QMessageBox::Yes:
-        saveInternal( model );
-        return !m_dataModel->isModified( model );
+        case QMessageBox::Yes:
+            saveInternal( model );
+            return !m_dataModel->isModified( model );
 
-    case QMessageBox::No:
-        break;
+        case QMessageBox::No:
+            break;
     }
 
     return true;
@@ -2826,19 +2826,19 @@ bool MainWindow::maybeSavePhraseBook( PhraseBook *pb )
 
         switch ( result )
         {
-        case QMessageBox::Cancel:
-            return false;
-
-        case QMessageBox::Yes:
-            if ( !pb->save( pb->fileName() ) )
-            {
+            case QMessageBox::Cancel:
                 return false;
-            }
 
-            break;
+            case QMessageBox::Yes:
+                if ( !pb->save( pb->fileName() ) )
+                {
+                    return false;
+                }
 
-        case QMessageBox::No:
-            break;
+                break;
+
+            case QMessageBox::No:
+                break;
         }
     }
 

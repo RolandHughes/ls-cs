@@ -145,37 +145,37 @@ static QString protect( const QString &str )
 
         switch ( c.unicode() )
         {
-        case '\"':
-            result += QLatin1String( "&quot;" );
-            break;
+            case '\"':
+                result += QLatin1String( "&quot;" );
+                break;
 
-        case '&':
-            result += QLatin1String( "&amp;" );
-            break;
+            case '&':
+                result += QLatin1String( "&amp;" );
+                break;
 
-        case '>':
-            result += QLatin1String( "&gt;" );
-            break;
+            case '>':
+                result += QLatin1String( "&gt;" );
+                break;
 
-        case '<':
-            result += QLatin1String( "&lt;" );
-            break;
+            case '<':
+                result += QLatin1String( "&lt;" );
+                break;
 
-        case '\'':
-            result += QLatin1String( "&apos;" );
-            break;
+            case '\'':
+                result += QLatin1String( "&apos;" );
+                break;
 
-        default:
-            if ( c < 0x20 && c != '\r' && c != '\n' && c != '\t' )
-            {
-                result += QString( "&#%1;" ).formatArg( c );
+            default:
+                if ( c < 0x20 && c != '\r' && c != '\n' && c != '\t' )
+                {
+                    result += QString( "&#%1;" ).formatArg( c );
 
-            }
-            else
-            {
-                // this also covers surrogates
-                result += c;
-            }
+                }
+                else
+                {
+                    // this also covers surrogates
+                    result += c;
+                }
         }
     }
 

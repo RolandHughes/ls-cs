@@ -657,46 +657,46 @@ static void _q_boundGeometryToSizeConstraints( const QRectF &startGeometry,
 
     switch ( section )
     {
-    case Qt::LeftSection:
-        rect->setRect( startGeometry.right() - qRound( width ), startGeometry.top(),
-                       qRound( width ), startGeometry.height() );
-        break;
+        case Qt::LeftSection:
+            rect->setRect( startGeometry.right() - qRound( width ), startGeometry.top(),
+                           qRound( width ), startGeometry.height() );
+            break;
 
-    case Qt::TopLeftSection:
-        rect->setRect( startGeometry.right() - qRound( width ), startGeometry.bottom() - qRound( height ),
-                       qRound( width ), qRound( height ) );
-        break;
+        case Qt::TopLeftSection:
+            rect->setRect( startGeometry.right() - qRound( width ), startGeometry.bottom() - qRound( height ),
+                           qRound( width ), qRound( height ) );
+            break;
 
-    case Qt::TopSection:
-        rect->setRect( startGeometry.left(), startGeometry.bottom() - qRound( height ),
-                       startGeometry.width(), qRound( height ) );
-        break;
+        case Qt::TopSection:
+            rect->setRect( startGeometry.left(), startGeometry.bottom() - qRound( height ),
+                           startGeometry.width(), qRound( height ) );
+            break;
 
-    case Qt::TopRightSection:
-        rect->setTop( rect->bottom() - qRound( height ) );
-        rect->setWidth( qRound( width ) );
-        break;
+        case Qt::TopRightSection:
+            rect->setTop( rect->bottom() - qRound( height ) );
+            rect->setWidth( qRound( width ) );
+            break;
 
-    case Qt::RightSection:
-        rect->setWidth( qRound( width ) );
-        break;
+        case Qt::RightSection:
+            rect->setWidth( qRound( width ) );
+            break;
 
-    case Qt::BottomRightSection:
-        rect->setWidth( qRound( width ) );
-        rect->setHeight( qRound( height ) );
-        break;
+        case Qt::BottomRightSection:
+            rect->setWidth( qRound( width ) );
+            rect->setHeight( qRound( height ) );
+            break;
 
-    case Qt::BottomSection:
-        rect->setHeight( qRound( height ) );
-        break;
+        case Qt::BottomSection:
+            rect->setHeight( qRound( height ) );
+            break;
 
-    case Qt::BottomLeftSection:
-        rect->setRect( startGeometry.right() - qRound( width ), startGeometry.top(),
-                       qRound( width ), qRound( height ) );
-        break;
+        case Qt::BottomLeftSection:
+            rect->setRect( startGeometry.right() - qRound( width ), startGeometry.top(),
+                           qRound( width ), qRound( height ) );
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -719,59 +719,59 @@ void QGraphicsWidgetPrivate::windowFrameMouseMoveEvent( QGraphicsSceneMouseEvent
 
     switch ( windowData->grabbedSection )
     {
-    case Qt::LeftSection:
-        newGeometry = QRectF( windowData->startGeometry.topLeft()
-                              + QPointF( parentXDelta.dx(), parentXDelta.dy() ),
-                              windowData->startGeometry.size() - QSizeF( delta.dx(), delta.dy() ) );
-        break;
+        case Qt::LeftSection:
+            newGeometry = QRectF( windowData->startGeometry.topLeft()
+                                  + QPointF( parentXDelta.dx(), parentXDelta.dy() ),
+                                  windowData->startGeometry.size() - QSizeF( delta.dx(), delta.dy() ) );
+            break;
 
-    case Qt::TopLeftSection:
-        newGeometry = QRectF( windowData->startGeometry.topLeft()
-                              + QPointF( parentDelta.dx(), parentDelta.dy() ),
-                              windowData->startGeometry.size() - QSizeF( delta.dx(), delta.dy() ) );
-        break;
+        case Qt::TopLeftSection:
+            newGeometry = QRectF( windowData->startGeometry.topLeft()
+                                  + QPointF( parentDelta.dx(), parentDelta.dy() ),
+                                  windowData->startGeometry.size() - QSizeF( delta.dx(), delta.dy() ) );
+            break;
 
-    case Qt::TopSection:
-        newGeometry = QRectF( windowData->startGeometry.topLeft()
-                              + QPointF( parentYDelta.dx(), parentYDelta.dy() ),
-                              windowData->startGeometry.size() - QSizeF( 0, delta.dy() ) );
-        break;
+        case Qt::TopSection:
+            newGeometry = QRectF( windowData->startGeometry.topLeft()
+                                  + QPointF( parentYDelta.dx(), parentYDelta.dy() ),
+                                  windowData->startGeometry.size() - QSizeF( 0, delta.dy() ) );
+            break;
 
-    case Qt::TopRightSection:
-        newGeometry = QRectF( windowData->startGeometry.topLeft()
-                              + QPointF( parentYDelta.dx(), parentYDelta.dy() ),
-                              windowData->startGeometry.size() - QSizeF( -delta.dx(), delta.dy() ) );
-        break;
+        case Qt::TopRightSection:
+            newGeometry = QRectF( windowData->startGeometry.topLeft()
+                                  + QPointF( parentYDelta.dx(), parentYDelta.dy() ),
+                                  windowData->startGeometry.size() - QSizeF( -delta.dx(), delta.dy() ) );
+            break;
 
-    case Qt::RightSection:
-        newGeometry = QRectF( windowData->startGeometry.topLeft(),
-                              windowData->startGeometry.size() + QSizeF( delta.dx(), 0 ) );
-        break;
+        case Qt::RightSection:
+            newGeometry = QRectF( windowData->startGeometry.topLeft(),
+                                  windowData->startGeometry.size() + QSizeF( delta.dx(), 0 ) );
+            break;
 
-    case Qt::BottomRightSection:
-        newGeometry = QRectF( windowData->startGeometry.topLeft(),
-                              windowData->startGeometry.size() + QSizeF( delta.dx(), delta.dy() ) );
-        break;
+        case Qt::BottomRightSection:
+            newGeometry = QRectF( windowData->startGeometry.topLeft(),
+                                  windowData->startGeometry.size() + QSizeF( delta.dx(), delta.dy() ) );
+            break;
 
-    case Qt::BottomSection:
-        newGeometry = QRectF( windowData->startGeometry.topLeft(),
-                              windowData->startGeometry.size() + QSizeF( 0, delta.dy() ) );
-        break;
+        case Qt::BottomSection:
+            newGeometry = QRectF( windowData->startGeometry.topLeft(),
+                                  windowData->startGeometry.size() + QSizeF( 0, delta.dy() ) );
+            break;
 
-    case Qt::BottomLeftSection:
-        newGeometry = QRectF( windowData->startGeometry.topLeft()
-                              + QPointF( parentXDelta.dx(), parentXDelta.dy() ),
-                              windowData->startGeometry.size() - QSizeF( delta.dx(), -delta.dy() ) );
-        break;
+        case Qt::BottomLeftSection:
+            newGeometry = QRectF( windowData->startGeometry.topLeft()
+                                  + QPointF( parentXDelta.dx(), parentXDelta.dy() ),
+                                  windowData->startGeometry.size() - QSizeF( delta.dx(), -delta.dy() ) );
+            break;
 
-    case Qt::TitleBarArea:
-        newGeometry = QRectF( windowData->startGeometry.topLeft()
-                              + QPointF( parentDelta.dx(), parentDelta.dy() ),
-                              windowData->startGeometry.size() );
-        break;
+        case Qt::TitleBarArea:
+            newGeometry = QRectF( windowData->startGeometry.topLeft()
+                                  + QPointF( parentDelta.dx(), parentDelta.dy() ),
+                                  windowData->startGeometry.size() );
+            break;
 
-    case Qt::NoSection:
-        break;
+        case Qt::NoSection:
+            break;
     }
 
     if ( windowData->grabbedSection != Qt::NoSection )
@@ -830,41 +830,41 @@ void QGraphicsWidgetPrivate::windowFrameHoverMoveEvent( QGraphicsSceneHoverEvent
 
     switch ( q->windowFrameSectionAt( event->pos() ) )
     {
-    case Qt::TopLeftSection:
-    case Qt::BottomRightSection:
-        cursorShape = Qt::SizeFDiagCursor;
-        break;
+        case Qt::TopLeftSection:
+        case Qt::BottomRightSection:
+            cursorShape = Qt::SizeFDiagCursor;
+            break;
 
-    case Qt::TopRightSection:
-    case Qt::BottomLeftSection:
-        cursorShape = Qt::SizeBDiagCursor;
-        break;
+        case Qt::TopRightSection:
+        case Qt::BottomLeftSection:
+            cursorShape = Qt::SizeBDiagCursor;
+            break;
 
-    case Qt::LeftSection:
-    case Qt::RightSection:
-        cursorShape = Qt::SizeHorCursor;
-        break;
+        case Qt::LeftSection:
+        case Qt::RightSection:
+            cursorShape = Qt::SizeHorCursor;
+            break;
 
-    case Qt::TopSection:
-    case Qt::BottomSection:
-        cursorShape = Qt::SizeVerCursor;
-        break;
+        case Qt::TopSection:
+        case Qt::BottomSection:
+            cursorShape = Qt::SizeVerCursor;
+            break;
 
-    case Qt::TitleBarArea:
-        windowData->buttonRect = q->style()->subControlRect(
-                                     QStyle::CC_TitleBar, &bar, QStyle::SC_TitleBarCloseButton, nullptr );
+        case Qt::TitleBarArea:
+            windowData->buttonRect = q->style()->subControlRect(
+                                         QStyle::CC_TitleBar, &bar, QStyle::SC_TitleBarCloseButton, nullptr );
 
-        if ( windowData->buttonRect.contains( pos.toPoint() ) )
-        {
-            windowData->buttonMouseOver = true;
-        }
+            if ( windowData->buttonRect.contains( pos.toPoint() ) )
+            {
+                windowData->buttonMouseOver = true;
+            }
 
-        event->ignore();
-        break;
+            event->ignore();
+            break;
 
-    default:
-        needsSetCursorCall = false;
-        event->ignore();
+        default:
+            needsSetCursorCall = false;
+            event->ignore();
     }
 
 #ifndef LSCS_NO_CURSOR

@@ -245,27 +245,27 @@ QDBusReply<QDBusConnectionInterface::RegisterServiceReply> QDBusConnectionInterf
 
     switch ( qoption )
     {
-    case DontQueueService:
-        flags = DBUS_NAME_FLAG_DO_NOT_QUEUE;
-        break;
+        case DontQueueService:
+            flags = DBUS_NAME_FLAG_DO_NOT_QUEUE;
+            break;
 
-    case QueueService:
-        flags = 0;
-        break;
+        case QueueService:
+            flags = 0;
+            break;
 
-    case ReplaceExistingService:
-        flags = DBUS_NAME_FLAG_DO_NOT_QUEUE | DBUS_NAME_FLAG_REPLACE_EXISTING;
-        break;
+        case ReplaceExistingService:
+            flags = DBUS_NAME_FLAG_DO_NOT_QUEUE | DBUS_NAME_FLAG_REPLACE_EXISTING;
+            break;
     }
 
     switch ( roption )
     {
-    case DontAllowReplacement:
-        break;
+        case DontAllowReplacement:
+            break;
 
-    case AllowReplacement:
-        flags |= DBUS_NAME_FLAG_ALLOW_REPLACEMENT;
-        break;
+        case AllowReplacement:
+            flags |= DBUS_NAME_FLAG_ALLOW_REPLACEMENT;
+            break;
     }
 
     QDBusMessage reply = call( QLatin1String( "RequestName" ), serviceName, flags );
@@ -278,18 +278,18 @@ QDBusReply<QDBusConnectionInterface::RegisterServiceReply> QDBusConnectionInterf
 
         switch ( reply.arguments().at( 0 ).toUInt() )
         {
-        case DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER:
-        case DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER:
-            code = uint( ServiceRegistered );
-            break;
+            case DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER:
+            case DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER:
+                code = uint( ServiceRegistered );
+                break;
 
-        case DBUS_REQUEST_NAME_REPLY_EXISTS:
-            code = uint( ServiceNotRegistered );
-            break;
+            case DBUS_REQUEST_NAME_REPLY_EXISTS:
+                code = uint( ServiceNotRegistered );
+                break;
 
-        case DBUS_REQUEST_NAME_REPLY_IN_QUEUE:
-            code = uint( ServiceQueued );
-            break;
+            case DBUS_REQUEST_NAME_REPLY_IN_QUEUE:
+                code = uint( ServiceQueued );
+                break;
         }
 
         reply.setArguments( QVariantList() << code );

@@ -131,15 +131,15 @@ QRect QItemDelegatePrivate::textLayoutBounds( const QStyleOptionViewItem &option
 
     switch ( option.decorationPosition )
     {
-    case QStyleOptionViewItem::Left:
-    case QStyleOptionViewItem::Right:
-        rect.setWidth( wrapText && rect.isValid() ? rect.width() : ( QFIXED_MAX ) );
-        break;
+        case QStyleOptionViewItem::Left:
+        case QStyleOptionViewItem::Right:
+            rect.setWidth( wrapText && rect.isValid() ? rect.width() : ( QFIXED_MAX ) );
+            break;
 
-    case QStyleOptionViewItem::Top:
-    case QStyleOptionViewItem::Bottom:
-        rect.setWidth( wrapText ? option.decorationSize.width() : ( QFIXED_MAX ) );
-        break;
+        case QStyleOptionViewItem::Top:
+        case QStyleOptionViewItem::Bottom:
+            rect.setWidth( wrapText ? option.decorationSize.width() : ( QFIXED_MAX ) );
+            break;
     }
 
     return rect;
@@ -572,17 +572,17 @@ void QItemDelegate::drawCheck( QPainter *painter, const QStyleOptionViewItem &op
 
     switch ( state )
     {
-    case Qt::Unchecked:
-        opt.state |= QStyle::State_Off;
-        break;
+        case Qt::Unchecked:
+            opt.state |= QStyle::State_Off;
+            break;
 
-    case Qt::PartiallyChecked:
-        opt.state |= QStyle::State_NoChange;
-        break;
+        case Qt::PartiallyChecked:
+            opt.state |= QStyle::State_NoChange;
+            break;
 
-    case Qt::Checked:
-        opt.state |= QStyle::State_On;
-        break;
+        case Qt::Checked:
+            opt.state |= QStyle::State_On;
+            break;
     }
 
     const QWidget *widget = d->widget( option );
@@ -706,88 +706,88 @@ void QItemDelegate::doLayout( const QStyleOptionViewItem &option,
 
     switch ( option.decorationPosition )
     {
-    case QStyleOptionViewItem::Top:
-    {
-        if ( hasPixmap )
+        case QStyleOptionViewItem::Top:
         {
-            pm.setHeight( pm.height() + pixmapMargin ); // add space
+            if ( hasPixmap )
+            {
+                pm.setHeight( pm.height() + pixmapMargin ); // add space
+            }
+
+            h = hint ? textRect->height() : h - pm.height();
+
+            if ( option.direction == Qt::RightToLeft )
+            {
+                decoration.setRect( x, y, w - cw, pm.height() );
+                display.setRect( x, y + pm.height(), w - cw, h );
+            }
+            else
+            {
+                decoration.setRect( x + cw, y, w - cw, pm.height() );
+                display.setRect( x + cw, y + pm.height(), w - cw, h );
+            }
+
+            break;
         }
 
-        h = hint ? textRect->height() : h - pm.height();
-
-        if ( option.direction == Qt::RightToLeft )
+        case QStyleOptionViewItem::Bottom:
         {
-            decoration.setRect( x, y, w - cw, pm.height() );
-            display.setRect( x, y + pm.height(), w - cw, h );
-        }
-        else
-        {
-            decoration.setRect( x + cw, y, w - cw, pm.height() );
-            display.setRect( x + cw, y + pm.height(), w - cw, h );
-        }
+            if ( hasText )
+            {
+                textRect->setHeight( textRect->height() + textMargin ); // add space
+            }
 
-        break;
-    }
+            h = hint ? textRect->height() + pm.height() : h;
 
-    case QStyleOptionViewItem::Bottom:
-    {
-        if ( hasText )
-        {
-            textRect->setHeight( textRect->height() + textMargin ); // add space
-        }
+            if ( option.direction == Qt::RightToLeft )
+            {
+                display.setRect( x, y, w - cw, textRect->height() );
+                decoration.setRect( x, y + textRect->height(), w - cw, h - textRect->height() );
+            }
+            else
+            {
+                display.setRect( x + cw, y, w - cw, textRect->height() );
+                decoration.setRect( x + cw, y + textRect->height(), w - cw, h - textRect->height() );
+            }
 
-        h = hint ? textRect->height() + pm.height() : h;
-
-        if ( option.direction == Qt::RightToLeft )
-        {
-            display.setRect( x, y, w - cw, textRect->height() );
-            decoration.setRect( x, y + textRect->height(), w - cw, h - textRect->height() );
-        }
-        else
-        {
-            display.setRect( x + cw, y, w - cw, textRect->height() );
-            decoration.setRect( x + cw, y + textRect->height(), w - cw, h - textRect->height() );
+            break;
         }
 
-        break;
-    }
+        case QStyleOptionViewItem::Left:
+        {
+            if ( option.direction == Qt::LeftToRight )
+            {
+                decoration.setRect( x + cw, y, pm.width(), h );
+                display.setRect( decoration.right() + 1, y, w - pm.width() - cw, h );
+            }
+            else
+            {
+                display.setRect( x, y, w - pm.width() - cw, h );
+                decoration.setRect( display.right() + 1, y, pm.width(), h );
+            }
 
-    case QStyleOptionViewItem::Left:
-    {
-        if ( option.direction == Qt::LeftToRight )
-        {
-            decoration.setRect( x + cw, y, pm.width(), h );
-            display.setRect( decoration.right() + 1, y, w - pm.width() - cw, h );
-        }
-        else
-        {
-            display.setRect( x, y, w - pm.width() - cw, h );
-            decoration.setRect( display.right() + 1, y, pm.width(), h );
-        }
-
-        break;
-    }
-
-    case QStyleOptionViewItem::Right:
-    {
-        if ( option.direction == Qt::LeftToRight )
-        {
-            display.setRect( x + cw, y, w - pm.width() - cw, h );
-            decoration.setRect( display.right() + 1, y, pm.width(), h );
-        }
-        else
-        {
-            decoration.setRect( x, y, pm.width(), h );
-            display.setRect( decoration.right() + 1, y, w - pm.width() - cw, h );
+            break;
         }
 
-        break;
-    }
+        case QStyleOptionViewItem::Right:
+        {
+            if ( option.direction == Qt::LeftToRight )
+            {
+                display.setRect( x + cw, y, w - pm.width() - cw, h );
+                decoration.setRect( display.right() + 1, y, pm.width(), h );
+            }
+            else
+            {
+                decoration.setRect( x, y, pm.width(), h );
+                display.setRect( decoration.right() + 1, y, w - pm.width() - cw, h );
+            }
 
-    default:
-        qWarning( "QItemDelegate::doLayout() Decoration position is invalid" );
-        decoration = *pixmapRect;
-        break;
+            break;
+        }
+
+        default:
+            qWarning( "QItemDelegate::doLayout() Decoration position is invalid" );
+            decoration = *pixmapRect;
+            break;
     }
 
     if ( ! hint )
@@ -826,22 +826,22 @@ QPixmap QItemDelegate::decoration( const QStyleOptionViewItem &option, const QVa
 
     switch ( variant.type() )
     {
-    case QVariant::Icon:
-    {
-        QIcon::Mode mode = d->iconMode( option.state );
-        QIcon::State state = d->iconState( option.state );
-        return variant.value<QIcon>().pixmap( option.decorationSize, mode, state );
-    }
+        case QVariant::Icon:
+        {
+            QIcon::Mode mode = d->iconMode( option.state );
+            QIcon::State state = d->iconState( option.state );
+            return variant.value<QIcon>().pixmap( option.decorationSize, mode, state );
+        }
 
-    case QVariant::Color:
-    {
-        static QPixmap pixmap( option.decorationSize );
-        pixmap.fill( variant.value<QColor>() );
-        return pixmap;
-    }
+        case QVariant::Color:
+        {
+            static QPixmap pixmap( option.decorationSize );
+            pixmap.fill( variant.value<QColor>() );
+            return pixmap;
+        }
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return variant.value<QPixmap>();
@@ -911,43 +911,43 @@ QRect QItemDelegate::rect( const QStyleOptionViewItem &option, const QModelIndex
     {
         switch ( value.type() )
         {
-        case QVariant::Invalid:
-            break;
+            case QVariant::Invalid:
+                break;
 
-        case QVariant::Pixmap:
-        {
-            const QPixmap &pixmap = value.value<QPixmap>();
-            return QRect( QPoint( 0, 0 ), pixmap.size() / pixmap.devicePixelRatio() );
-        }
+            case QVariant::Pixmap:
+            {
+                const QPixmap &pixmap = value.value<QPixmap>();
+                return QRect( QPoint( 0, 0 ), pixmap.size() / pixmap.devicePixelRatio() );
+            }
 
-        case QVariant::Image:
-        {
-            const QImage &image = value.value<QImage>();
-            return QRect( QPoint( 0, 0 ), image.size() /  image.devicePixelRatio() );
-        }
+            case QVariant::Image:
+            {
+                const QImage &image = value.value<QImage>();
+                return QRect( QPoint( 0, 0 ), image.size() /  image.devicePixelRatio() );
+            }
 
-        case QVariant::Icon:
-        {
-            QIcon::Mode mode = d->iconMode( option.state );
-            QIcon::State state = d->iconState( option.state );
-            QIcon icon = value.value<QIcon>();
-            QSize size = icon.actualSize( option.decorationSize, mode, state );
-            return QRect( QPoint( 0, 0 ), size );
-        }
+            case QVariant::Icon:
+            {
+                QIcon::Mode mode = d->iconMode( option.state );
+                QIcon::State state = d->iconState( option.state );
+                QIcon icon = value.value<QIcon>();
+                QSize size = icon.actualSize( option.decorationSize, mode, state );
+                return QRect( QPoint( 0, 0 ), size );
+            }
 
-        case QVariant::Color:
-            return QRect( QPoint( 0, 0 ), option.decorationSize );
+            case QVariant::Color:
+                return QRect( QPoint( 0, 0 ), option.decorationSize );
 
-        case QVariant::String:
-        default:
-        {
-            const QString text = d->valueToText( value, option );
-            value = index.data( Qt::FontRole );
+            case QVariant::String:
+            default:
+            {
+                const QString text = d->valueToText( value, option );
+                value = index.data( Qt::FontRole );
 
-            QFont fnt = value.value<QFont>().resolve( option.font );
+                QFont fnt = value.value<QFont>().resolve( option.font );
 
-            return textRectangle( nullptr, d->textLayoutBounds( option ), fnt, text );
-        }
+                return textRectangle( nullptr, d->textLayoutBounds( option ), fnt, text );
+            }
         }
     }
 

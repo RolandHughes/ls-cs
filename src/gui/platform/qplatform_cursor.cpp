@@ -455,106 +455,106 @@ void QPlatformCursorImage::createSystemCursor( int id )
 
     switch ( id )
     {
-    // 16x16 cursors
-    case Qt::ArrowCursor:
-        systemCursorTable[Qt::ArrowCursor] =
-            new QPlatformCursorImage( cur_arrow_bits, mcur_arrow_bits, 16, 16, 0, 0 );
-        break;
+        // 16x16 cursors
+        case Qt::ArrowCursor:
+            systemCursorTable[Qt::ArrowCursor] =
+                new QPlatformCursorImage( cur_arrow_bits, mcur_arrow_bits, 16, 16, 0, 0 );
+            break;
 
-    case Qt::UpArrowCursor:
-        systemCursorTable[Qt::UpArrowCursor] =
-            new QPlatformCursorImage( cur_up_arrow_bits, mcur_up_arrow_bits, 16, 16, 7, 0 );
-        break;
+        case Qt::UpArrowCursor:
+            systemCursorTable[Qt::UpArrowCursor] =
+                new QPlatformCursorImage( cur_up_arrow_bits, mcur_up_arrow_bits, 16, 16, 7, 0 );
+            break;
 
-    case Qt::CrossCursor:
-        systemCursorTable[Qt::CrossCursor] =
-            new QPlatformCursorImage( cur_cross_bits, mcur_cross_bits, 16, 16, 7, 7 );
-        break;
+        case Qt::CrossCursor:
+            systemCursorTable[Qt::CrossCursor] =
+                new QPlatformCursorImage( cur_cross_bits, mcur_cross_bits, 16, 16, 7, 7 );
+            break;
 
-    case Qt::IBeamCursor:
-        systemCursorTable[Qt::IBeamCursor] =
-            new QPlatformCursorImage( cur_ibeam_bits, mcur_ibeam_bits, 16, 16, 7, 7 );
-        break;
+        case Qt::IBeamCursor:
+            systemCursorTable[Qt::IBeamCursor] =
+                new QPlatformCursorImage( cur_ibeam_bits, mcur_ibeam_bits, 16, 16, 7, 7 );
+            break;
 
-    case Qt::SizeVerCursor:
-        systemCursorTable[Qt::SizeVerCursor] =
-            new QPlatformCursorImage( cur_ver_bits, mcur_ver_bits, 16, 16, 7, 7 );
-        break;
+        case Qt::SizeVerCursor:
+            systemCursorTable[Qt::SizeVerCursor] =
+                new QPlatformCursorImage( cur_ver_bits, mcur_ver_bits, 16, 16, 7, 7 );
+            break;
 
-    case Qt::SizeHorCursor:
-        systemCursorTable[Qt::SizeHorCursor] =
-            new QPlatformCursorImage( cur_hor_bits, mcur_hor_bits, 16, 16, 7, 7 );
-        break;
+        case Qt::SizeHorCursor:
+            systemCursorTable[Qt::SizeHorCursor] =
+                new QPlatformCursorImage( cur_hor_bits, mcur_hor_bits, 16, 16, 7, 7 );
+            break;
 
-    case Qt::SizeBDiagCursor:
-        systemCursorTable[Qt::SizeBDiagCursor] =
-            new QPlatformCursorImage( cur_bdiag_bits, mcur_bdiag_bits, 16, 16, 7, 7 );
-        break;
+        case Qt::SizeBDiagCursor:
+            systemCursorTable[Qt::SizeBDiagCursor] =
+                new QPlatformCursorImage( cur_bdiag_bits, mcur_bdiag_bits, 16, 16, 7, 7 );
+            break;
 
-    case Qt::SizeFDiagCursor:
-        systemCursorTable[Qt::SizeFDiagCursor] =
-            new QPlatformCursorImage( cur_fdiag_bits, mcur_fdiag_bits, 16, 16, 7, 7 );
-        break;
+        case Qt::SizeFDiagCursor:
+            systemCursorTable[Qt::SizeFDiagCursor] =
+                new QPlatformCursorImage( cur_fdiag_bits, mcur_fdiag_bits, 16, 16, 7, 7 );
+            break;
 
-    case Qt::BlankCursor:
-        systemCursorTable[Qt::BlankCursor] =
-            new QPlatformCursorImage( nullptr, nullptr, 0, 0, 0, 0 );
-        break;
+        case Qt::BlankCursor:
+            systemCursorTable[Qt::BlankCursor] =
+                new QPlatformCursorImage( nullptr, nullptr, 0, 0, 0, 0 );
+            break;
 
-    // 20x20 cursors
-    case Qt::ForbiddenCursor:
-        systemCursorTable[Qt::ForbiddenCursor] =
-            new QPlatformCursorImage( forbidden_bits, forbiddenm_bits, 20, 20, 10, 10 );
-        break;
+        // 20x20 cursors
+        case Qt::ForbiddenCursor:
+            systemCursorTable[Qt::ForbiddenCursor] =
+                new QPlatformCursorImage( forbidden_bits, forbiddenm_bits, 20, 20, 10, 10 );
+            break;
 
-    // 32x32 cursors
-    case Qt::WaitCursor:
-        systemCursorTable[Qt::WaitCursor] =
-            new QPlatformCursorImage( wait_data_bits, wait_mask_bits, 32, 32, 15, 15 );
-        break;
+        // 32x32 cursors
+        case Qt::WaitCursor:
+            systemCursorTable[Qt::WaitCursor] =
+                new QPlatformCursorImage( wait_data_bits, wait_mask_bits, 32, 32, 15, 15 );
+            break;
 
-    case Qt::SplitVCursor:
-        systemCursorTable[Qt::SplitVCursor] =
-            new QPlatformCursorImage( vsplit_bits, vsplitm_bits, 32, 32, 15, 15 );
-        break;
+        case Qt::SplitVCursor:
+            systemCursorTable[Qt::SplitVCursor] =
+                new QPlatformCursorImage( vsplit_bits, vsplitm_bits, 32, 32, 15, 15 );
+            break;
 
-    case Qt::SplitHCursor:
-        systemCursorTable[Qt::SplitHCursor] =
-            new QPlatformCursorImage( hsplit_bits, hsplitm_bits, 32, 32, 15, 15 );
-        break;
+        case Qt::SplitHCursor:
+            systemCursorTable[Qt::SplitHCursor] =
+                new QPlatformCursorImage( hsplit_bits, hsplitm_bits, 32, 32, 15, 15 );
+            break;
 
-    case Qt::SizeAllCursor:
-        systemCursorTable[Qt::SizeAllCursor] =
-            new QPlatformCursorImage( size_all_data_bits, size_all_mask_bits, 32, 32, 15, 15 );
-        break;
+        case Qt::SizeAllCursor:
+            systemCursorTable[Qt::SizeAllCursor] =
+                new QPlatformCursorImage( size_all_data_bits, size_all_mask_bits, 32, 32, 15, 15 );
+            break;
 
-    case Qt::PointingHandCursor:
-        systemCursorTable[Qt::PointingHandCursor] =
-            new QPlatformCursorImage( phand_bits, phandm_bits, 32, 32, 0, 0 );
-        break;
+        case Qt::PointingHandCursor:
+            systemCursorTable[Qt::PointingHandCursor] =
+                new QPlatformCursorImage( phand_bits, phandm_bits, 32, 32, 0, 0 );
+            break;
 
-    case Qt::WhatsThisCursor:
-        systemCursorTable[Qt::WhatsThisCursor] =
-            new QPlatformCursorImage( whatsthis_bits, whatsthism_bits, 32, 32, 0, 0 );
-        break;
+        case Qt::WhatsThisCursor:
+            systemCursorTable[Qt::WhatsThisCursor] =
+                new QPlatformCursorImage( whatsthis_bits, whatsthism_bits, 32, 32, 0, 0 );
+            break;
 
-    case Qt::BusyCursor:
-        systemCursorTable[Qt::BusyCursor] =
-            new QPlatformCursorImage( busy_bits, busym_bits, 32, 32, 0, 0 );
-        break;
+        case Qt::BusyCursor:
+            systemCursorTable[Qt::BusyCursor] =
+                new QPlatformCursorImage( busy_bits, busym_bits, 32, 32, 0, 0 );
+            break;
 
-    case Qt::OpenHandCursor:
-        systemCursorTable[Qt::OpenHandCursor] =
-            new QPlatformCursorImage( openhand_bits, openhandm_bits, 16, 16, 8, 8 );
-        break;
+        case Qt::OpenHandCursor:
+            systemCursorTable[Qt::OpenHandCursor] =
+                new QPlatformCursorImage( openhand_bits, openhandm_bits, 16, 16, 8, 8 );
+            break;
 
-    case Qt::ClosedHandCursor:
-        systemCursorTable[Qt::ClosedHandCursor] =
-            new QPlatformCursorImage( closedhand_bits, closedhandm_bits, 16, 16, 8, 8 );
-        break;
+        case Qt::ClosedHandCursor:
+            systemCursorTable[Qt::ClosedHandCursor] =
+                new QPlatformCursorImage( closedhand_bits, closedhandm_bits, 16, 16, 8, 8 );
+            break;
 
-    default:
-        qWarning( "QPlatformCursorImage::createSystemCursor() Unknown system cursor %d", id );
+        default:
+            qWarning( "QPlatformCursorImage::createSystemCursor() Unknown system cursor %d", id );
     }
 }
 

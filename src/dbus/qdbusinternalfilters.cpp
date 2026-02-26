@@ -319,22 +319,22 @@ static QDBusMessage propertyWriteReply( const QDBusMessage &msg, const QString &
 {
     switch ( status )
     {
-    case PropertyNotFound:
-        return propertyNotFoundError( msg, interface_name, property_name );
+        case PropertyNotFound:
+            return propertyNotFoundError( msg, interface_name, property_name );
 
-    case PropertyTypeMismatch:
-        return msg.createErrorReply( QDBusError::InvalidArgs,
-                                     QString::fromLatin1( "Invalid arguments for writing to property %1%2%3" )
-                                     .arg( interface_name,
-                                           QString::fromLatin1( interface_name.isEmpty() ? "" : "." ),
-                                           QString::fromLatin1( property_name ) ) );
+        case PropertyTypeMismatch:
+            return msg.createErrorReply( QDBusError::InvalidArgs,
+                                         QString::fromLatin1( "Invalid arguments for writing to property %1%2%3" )
+                                         .arg( interface_name,
+                                               QString::fromLatin1( interface_name.isEmpty() ? "" : "." ),
+                                               QString::fromLatin1( property_name ) ) );
 
-    case PropertyWriteFailed:
-        return msg.createErrorReply( QDBusError::InternalError,
-                                     QString::fromLatin1( "Internal error" ) );
+        case PropertyWriteFailed:
+            return msg.createErrorReply( QDBusError::InternalError,
+                                         QString::fromLatin1( "Internal error" ) );
 
-    case PropertyWriteSuccess:
-        return msg.createReply();
+        case PropertyWriteSuccess:
+            return msg.createReply();
     }
 
     Q_ASSERT_X( false, "", "Should not be reached" );
@@ -486,7 +486,7 @@ QDBusMessage qDBusPropertySet( const QDBusConnectionPrivate::ObjectTreeNode &nod
 static QVariantMap &operator+=( QVariantMap &lhs, const QVariantMap &rhs )
 {
     QVariantMap::ConstIterator it = rhs.constBegin(),
-                end = rhs.constEnd();
+                               end = rhs.constEnd();
 
     for ( ; it != end; ++it )
     {

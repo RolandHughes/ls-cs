@@ -10,23 +10,13 @@ Many multi-national banks are using these same machines for the very same reason
 
 Initially we will focus on formal packaging: Deb, RPM, as well as ArmV8 for embedded systems. Toradex will be target of choice because it is what we have. All NXP derived ArmV8 should be able to utilize the code.
 
-The original license was LGPL V2.1 for CopperSpice. Right now not worth the pain of trying to flip it to BSD. Oddly enough it included these libraries that were BSD.
-
- * CsCrypto
- * LsCsLibGuarded
- * CsPaint
- * CsPointer
- * CsSignal
- * CsString
-
-Don't worry if you already have them installed. Any included with this get Ls added in front of the Cs so we don't have any naming/linking collisions. 
-
 **currently requires C++17 or newer.**
 
 ## Transitional
 Versions 0.2.1 and later are transitional experiments for things that may become part of [BasisDoctrina](https://sourceforge.net/projects/basisdoctrina/).
 
 Completed:
+* dropped support for Ubuntu 18.04 it may still work but you need newer versions of CMake and a few other things.
 * removed webkit
 * removed qdeclarative
 * removed system strings that said CopperSpice
@@ -35,45 +25,21 @@ Completed:
 * local build now deploys cmake files along with lscs.conf
 * removed RPATH ${origin}hacking CopperSpice relied upon. Secured environments will not allow you to do that.
 * cleaned up the install directory tree.
-* lscs.conf is now found where it should be and most legacy bugs that still exists in Qt today of not respecting paths is fixed. 
+* lscs.conf is now found where it should be and most legacy bugs that still exists in Qt today of not respecting paths is fixed. Cannot fix Libraries conf issue because Gnu LibTool does not work as advertised. It is supposed to have a compile option that will let it use itself to open all dependencies down the tree, but the official developer mailing list can't figure out how to make that work. Documentation for the project is really poor.
 
-Transitions currently taking place:
-* LsX rebranding
-* renaming and relocating Qt header files to avoid collisions
-* making SDL3 the primary underlying library. All QPlatform code will be replaced by a new LsXPlatform class based exclusively on SDL3.
-* UTF-8 for internal character encoding.
-* QChar will be replaced by LsXChar which will be based on work already done in BasisDoctrina. 
-* All flavors of QString will go away and be replaced by work already done in bd_string for BasisDoctrina. LsXString
-* Containers will become wrappers for STL templates/classes.
-* One by one all low level graphics classes will be replaced by wrappers for SDL3 functionality.
-* CUPS 3.x support.
+Remaining:
+* Modernize CUPS support.
+* VCPKG build on Windows
 
-Once we get the last of the Qt/CopperSpice stuff out:
-
-* A cross compile will then be created for ArmV8.
-* a VCPKG build for Windows will be created.
-
-
-Then we are done. No more work will be done on this library as all efforts will be devoted to BasisDoctrina.
-
-Only reason the project is going this route is to have a faster path of getting [RedDiamond](https://sourceforge.net/projects/reddiamond/) on Windows.
-
-## Introduction
-CopperSpice was a fork of one of the last true OpenSource versions of Qt 4.8.x with most of the QML removed along with other improvements. It also has some academic debacles. One of the main ones is the removal of Copy-On-Write. Yes, academics declared CoW bad and incompatible with exceptions but the speed improvement of CoW was and still is dramatic.
-See:
-https://www.logikalsolutions.com/wordpress/information-technology/qlist/
-
-It is theoretically possible to implement CoW making the existing QString typedef a wrapper class around the current QString8 and 
-QStringView making all pre-existing initial assignments a view until a write happens, but no work has been done on that in this library yet.
-https://www.copperspice.com/docs/cs_api/class_qstring8.html
-https://www.copperspice.com/docs/cs_api/class_qstringview.html
 
 ### Contributing
-This is a young project with a legacy code base. As such there is much along the lines of "grunt work" which would be great for beginning coders who need to how to use tools and get their feet wet with real projects. Must follow the [coding standard](https://lscs-software.com/LsCs-CodingStandard.html). In fact one of the early grunt work projects is converting the code base to the new coding standard preferred by embedded systems projects. In fact, fixing QComboBox should be a quick hit for one with just a bit of coding experience.
+No contributions.
+Once version 0.3.5 is fully packaged for Debian and RPM, this project will officially be abandoned. 
 
-Purging the legacy display plugins making SDL3 the singular graphics layer this library communicates with will require someone with a bit more skill.
+[LsX](https://codeberg.org/seasoned_geek) will be the re-branded package hosted on codeberg.org LsX will also get rid of most/all plugins. SDL3 will be its platform getting rid of a ton of legacy bugs and code. 
 
-Keep in mind this project cares primarily about embedded systems and secondarily about desktops. It will _never_ care about phones.
+The purpose of LsX is to experiment with using SDL3 as a base for a robust library so we can put what we learn into [BasisDoctrina](https://sourceforge.net/projects/basisdoctrina/).
+
 
 ## System Requirements
 
@@ -99,17 +65,6 @@ You will also find:
 Once you have successfully run a dependency script you can use one of the build scripts to build a package or a local development install.
 
 
-### Using the Ls-Cs Libraries
-
-Your cleanest examples are found in this repository. Also look at LsCsScintilla - soon to be renamed LsXScintilla - for its example directories.
-
-Your best example will be RedDiamond since that was created using both.
-https://sourceforge.net/p/reddiamond/code/ci/master/tree/
-
-You will note that project also has build*.sh files Thieving just a few files from that project should jump start your use of LsCs.
-
-As time allows examples will be added to this code base and instructions for them added to [the primary Web site](https://lscs-software.com/).
-
 ### Documentation
 
 For now there is only the CopperSpice documentation and it is quite a bit different from where we are.
@@ -122,7 +77,8 @@ You can download from that site for off-line use. At some point we will gen our 
 
 ### License
 
-This library is released under the LGPL V2.1 license. For more information refer to the LICENSE file provided with this project.
+This library is released under the LGPL V2.1 license. For more information refer to the LICENSE directory provided with this project.
+
 Would like to re-license under Eclipse Public License but a lot more CopperSpice/Qt code has to disappear first.
 
 ### References

@@ -265,43 +265,43 @@ void QGraphicsSceneBspTree::climbTree( QGraphicsSceneBspTreeVisitor *visitor, co
 
     switch ( node.type )
     {
-    case Node::Leaf:
-    {
-        visitor->visit( const_cast<QList<QGraphicsItem *>*>( &leaves[node.leafIndex] ) );
-        break;
-    }
-
-    case Node::Vertical:
-        if ( rect.left() < node.offset )
+        case Node::Leaf:
         {
-            climbTree( visitor, rect, childIndex );
+            visitor->visit( const_cast<QList<QGraphicsItem *>*>( &leaves[node.leafIndex] ) );
+            break;
+        }
 
-            if ( rect.right() >= node.offset )
+        case Node::Vertical:
+            if ( rect.left() < node.offset )
+            {
+                climbTree( visitor, rect, childIndex );
+
+                if ( rect.right() >= node.offset )
+                {
+                    climbTree( visitor, rect, childIndex + 1 );
+                }
+            }
+            else
             {
                 climbTree( visitor, rect, childIndex + 1 );
             }
-        }
-        else
-        {
-            climbTree( visitor, rect, childIndex + 1 );
-        }
 
-        break;
+            break;
 
-    case Node::Horizontal:
-        if ( rect.top() < node.offset )
-        {
-            climbTree( visitor, rect, childIndex );
+        case Node::Horizontal:
+            if ( rect.top() < node.offset )
+            {
+                climbTree( visitor, rect, childIndex );
 
-            if ( rect.bottom() >= node.offset )
+                if ( rect.bottom() >= node.offset )
+                {
+                    climbTree( visitor, rect, childIndex + 1 );
+                }
+            }
+            else
             {
                 climbTree( visitor, rect, childIndex + 1 );
             }
-        }
-        else
-        {
-            climbTree( visitor, rect, childIndex + 1 );
-        }
     }
 }
 

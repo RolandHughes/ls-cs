@@ -31,9 +31,9 @@
 #include <qsslsocket_p.h>
 
 const QSsl::SslOptions QSslConfigurationPrivate::defaultSslOptions = QSsl::SslOptionDisableEmptyFragments
-    | QSsl::SslOptionDisableLegacyRenegotiation
-    | QSsl::SslOptionDisableCompression
-    | QSsl::SslOptionDisableSessionPersistence;
+        | QSsl::SslOptionDisableLegacyRenegotiation
+        | QSsl::SslOptionDisableCompression
+        | QSsl::SslOptionDisableSessionPersistence;
 
 const char QSslConfiguration::NextProtocolSpdy3_0[] = "spdy/3";
 const char QSslConfiguration::NextProtocolHttp1_1[] = "http/1.1";
