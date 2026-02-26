@@ -959,14 +959,14 @@ void QImage::fill( uint pixel )
     else if ( d->depth == 16 )
     {
         lscs_rectfill<quint16>( reinterpret_cast<quint16 *>( d->data ), pixel,
-                              0, 0, d->width, d->height, d->bytes_per_line );
+                                0, 0, d->width, d->height, d->bytes_per_line );
         return;
 
     }
     else if ( d->depth == 24 )
     {
         lscs_rectfill<quint24>( reinterpret_cast<quint24 *>( d->data ), pixel,
-                              0, 0, d->width, d->height, d->bytes_per_line );
+                                0, 0, d->width, d->height, d->bytes_per_line );
         return;
     }
 
@@ -989,7 +989,7 @@ void QImage::fill( uint pixel )
     }
 
     lscs_rectfill<uint>( reinterpret_cast<uint *>( d->data ), pixel,
-                       0, 0, d->width, d->height, d->bytes_per_line );
+                         0, 0, d->width, d->height, d->bytes_per_line );
 }
 
 void QImage::fill( Qt::GlobalColor color )
@@ -3045,7 +3045,7 @@ int QImage::metric( PaintDeviceMetric metric ) const
                         trigy += m12;
 // END OF MACRO
 bool lscs_xForm_helper( const QTransform &trueMat, int xoffset, int type, int depth,
-                      uchar *dptr, int dbpl, int p_inc, int dHeight, const uchar *sptr, int sbpl, int sWidth, int sHeight )
+                        uchar *dptr, int dbpl, int p_inc, int dHeight, const uchar *sptr, int sbpl, int sWidth, int sHeight )
 {
     int m11 = int( trueMat.m11() * 4096.0 );
     int m12 = int( trueMat.m12() * 4096.0 );
@@ -3534,9 +3534,9 @@ static QImage rotated90( const QImage &image )
         case QImage::Format_RGB30:
         case QImage::Format_A2RGB30_Premultiplied:
             lscs_memrotate270( reinterpret_cast<const quint32 *>( image.bits() ),
-                             w, h, image.bytesPerLine(),
-                             reinterpret_cast<quint32 *>( out.bits() ),
-                             out.bytesPerLine() );
+                               w, h, image.bytesPerLine(),
+                               reinterpret_cast<quint32 *>( out.bits() ),
+                               out.bytesPerLine() );
             break;
 
         case QImage::Format_RGB666:
@@ -3545,27 +3545,27 @@ static QImage rotated90( const QImage &image )
         case QImage::Format_ARGB8555_Premultiplied:
         case QImage::Format_RGB888:
             lscs_memrotate270( reinterpret_cast<const quint24 *>( image.bits() ),
-                             w, h, image.bytesPerLine(),
-                             reinterpret_cast<quint24 *>( out.bits() ),
-                             out.bytesPerLine() );
+                               w, h, image.bytesPerLine(),
+                               reinterpret_cast<quint24 *>( out.bits() ),
+                               out.bytesPerLine() );
             break;
 
         case QImage::Format_RGB555:
         case QImage::Format_RGB16:
         case QImage::Format_ARGB4444_Premultiplied:
             lscs_memrotate270( reinterpret_cast<const quint16 *>( image.bits() ),
-                             w, h, image.bytesPerLine(),
-                             reinterpret_cast<quint16 *>( out.bits() ),
-                             out.bytesPerLine() );
+                               w, h, image.bytesPerLine(),
+                               reinterpret_cast<quint16 *>( out.bits() ),
+                               out.bytesPerLine() );
             break;
 
         case QImage::Format_Alpha8:
         case QImage::Format_Grayscale8:
         case QImage::Format_Indexed8:
             lscs_memrotate270( reinterpret_cast<const quint8 *>( image.bits() ),
-                             w, h, image.bytesPerLine(),
-                             reinterpret_cast<quint8 *>( out.bits() ),
-                             out.bytesPerLine() );
+                               w, h, image.bytesPerLine(),
+                               reinterpret_cast<quint8 *>( out.bits() ),
+                               out.bytesPerLine() );
             break;
 
         default:
@@ -3621,9 +3621,9 @@ static QImage rotated270( const QImage &image )
         case QImage::Format_RGB30:
         case QImage::Format_A2RGB30_Premultiplied:
             lscs_memrotate90( reinterpret_cast<const quint32 *>( image.bits() ),
-                            w, h, image.bytesPerLine(),
-                            reinterpret_cast<quint32 *>( out.bits() ),
-                            out.bytesPerLine() );
+                              w, h, image.bytesPerLine(),
+                              reinterpret_cast<quint32 *>( out.bits() ),
+                              out.bytesPerLine() );
             break;
 
         case QImage::Format_RGB666:
@@ -3632,27 +3632,27 @@ static QImage rotated270( const QImage &image )
         case QImage::Format_ARGB8555_Premultiplied:
         case QImage::Format_RGB888:
             lscs_memrotate90( reinterpret_cast<const quint24 *>( image.bits() ),
-                            w, h, image.bytesPerLine(),
-                            reinterpret_cast<quint24 *>( out.bits() ),
-                            out.bytesPerLine() );
+                              w, h, image.bytesPerLine(),
+                              reinterpret_cast<quint24 *>( out.bits() ),
+                              out.bytesPerLine() );
             break;
 
         case QImage::Format_RGB555:
         case QImage::Format_RGB16:
         case QImage::Format_ARGB4444_Premultiplied:
             lscs_memrotate90( reinterpret_cast<const quint16 *>( image.bits() ),
-                            w, h, image.bytesPerLine(),
-                            reinterpret_cast<quint16 *>( out.bits() ),
-                            out.bytesPerLine() );
+                              w, h, image.bytesPerLine(),
+                              reinterpret_cast<quint16 *>( out.bits() ),
+                              out.bytesPerLine() );
             break;
 
         case QImage::Format_Alpha8:
         case QImage::Format_Grayscale8:
         case QImage::Format_Indexed8:
             lscs_memrotate90( reinterpret_cast<const quint8 *>( image.bits() ),
-                            w, h, image.bytesPerLine(),
-                            reinterpret_cast<quint8 *>( out.bits() ),
-                            out.bytesPerLine() );
+                              w, h, image.bytesPerLine(),
+                              reinterpret_cast<quint8 *>( out.bits() ),
+                              out.bytesPerLine() );
             break;
 
         default:

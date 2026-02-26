@@ -108,7 +108,7 @@ public:
     NET_LSCS_SLOT_2( replyFinished )
 
     NET_LSCS_SLOT_1( Private, void replyDownloadMetaData( const QList <QPair <QByteArray,QByteArray>> &headers, int statusCode,
-                   const QString &reason, bool isPipelined, QSharedPointer <char> downloadBuffer, qint64 contentLength, bool isSpdy ) )
+                     const QString &reason, bool isPipelined, QSharedPointer <char> downloadBuffer, qint64 contentLength, bool isSpdy ) )
     NET_LSCS_SLOT_2( replyDownloadMetaData )
 
     NET_LSCS_SLOT_1( Private, void replyDownloadProgressSlot( qint64 bytesReceived, qint64 bytesTotal ) )
@@ -124,7 +124,8 @@ public:
     NET_LSCS_SLOT_1( Private, void replyEncrypted() )
     NET_LSCS_SLOT_2( replyEncrypted )
 
-    NET_LSCS_SLOT_1( Private, void replySslErrors( const QList<QSslError> &errorList, bool *ignoreAll, QList<QSslError> *toBeIgnored ) )
+    NET_LSCS_SLOT_1( Private, void replySslErrors( const QList<QSslError> &errorList, bool *ignoreAll,
+                     QList<QSslError> *toBeIgnored ) )
     NET_LSCS_SLOT_2( replySslErrors )
 
     NET_LSCS_SLOT_1( Private, void replySslConfigurationChanged( const QSslConfiguration &sslConfig ) )

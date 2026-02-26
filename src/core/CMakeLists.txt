@@ -6,12 +6,33 @@ set_target_properties(LsCsCore PROPERTIES
   SOVERSION ${BUILD_MAJOR}
 )
 
+
 target_compile_definitions(LsCsCore
    PRIVATE
    -DLSCS_BUILD_CORE_LIB
    -DBUILDING_LIB_LSCS_SIGNAL
    -DBUILDING_LIB_LSCS_STRING
 )
+
+#if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
+#
+#    add_library(ls_libtool_ep SHARED IMPORTED GLOBAL)
+#
+#    add_dependencies(ls_libtool_ep  ls_libtool)
+#    set_target_properties(ls_libtool_ep PROPERTIES IMPORTED_LOCATION "${LIBTOOL_INSTALL_PREFIX}/lib/libltdl.so")
+#
+#    include_directories( "${LIBTOOL_INSTALL_PREFIX}/include" )
+#
+#    add_dependencies(LsCsCore ls_libtool)
+#
+#    target_link_libraries(LsCsCore PRIVATE ls_libtool_ep)
+#
+#    
+#elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+#    add_dependencies(LsCsCore ls_libtool)
+#    target_link_libraries(LsCsCore PRIVATE ls_libtoola)
+#endif()
+
 
 if (GTK2_FOUND)
    target_link_libraries(LsCsCore
@@ -28,13 +49,15 @@ endif()
 target_include_directories(LsCsCore
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
-   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtCore>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtCore>
    $<INSTALL_INTERFACE:include>
-   $<INSTALL_INTERFACE:include/QtCore>
+   $<INSTALL_INTERFACE:include>/${PACKAGE_NAME}
+   $<INSTALL_INTERFACE:include/${PACKAGE_NAME}/QtCore>
 )
 
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}/animation
    ${CMAKE_CURRENT_SOURCE_DIR}/arch
@@ -133,6 +156,7 @@ if (LsCsSignal_FOUND)
             $<BUILD_INTERFACE:LsCsSignal::LsCsSignal>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libLsCsSignal.so>
          )
+         
 
       elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
          # link with import library in CS install lib directory
@@ -188,44 +212,17 @@ else()
    )
 endif()
 
-if (ZLIB_FOUND)
-   target_link_libraries(LsCsCore
+  
+target_link_libraries(LsCsCore
       PUBLIC
       ${ZLIB_LIBRARIES}
    )
 
-   target_include_directories(LsCsCore
+target_include_directories(LsCsCore
       PRIVATE
       ${ZLIB_INCLUDE_DIR}
    )
 
-else()
-   target_sources(LsCsCore
-      PRIVATE
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/adler32.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/compress.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/crc32.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/deflate.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/gzclose.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/gzlib.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/gzread.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/gzwrite.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/infback.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/inffast.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/inflate.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/inftrees.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/trees.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/uncompr.c
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib/zutil.c
-   )
-
-   include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty)
-endif()
-
-macro_generate_public("${CORE_PUBLIC_INCLUDES}" QtCore)
-macro_generate_private("${CORE_PRIVATE_INCLUDES}" QtCore)
-macro_generate_misc("${CORE_INCLUDES}" QtCore)
-macro_generate_misc("${CORE_REGEX_INCLUDES}" QtCore/regex)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    list(APPEND EXTRA_CORE_LDFLAGS
@@ -245,12 +242,22 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
       dl
       ${CMAKE_THREAD_LIBS_INIT}
    )
-   include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/forkfd)
+   
+#   target_link_libraries(LsCsCore
+#      PRIVATE
+#      ${LIBTOOL_INSTALL_PREFIX}/libltdl
+#   )
+   
+   include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/forkfd
+#                        ${LIBTOOL_INSTALL_PREFIX}/include
+#                        ${LIBTOOL_INSTALL_PREFIX}/include/libltdl
+   )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD|DragonFly)")
    target_link_libraries(LsCsCore
       PRIVATE
       ${CMAKE_THREAD_LIBS_INIT}
+#      ${LIBTOOL_INSTALL_PREFIX}/lib/libltdl
    )
    include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/forkfd)
 
@@ -307,6 +314,11 @@ set_target_properties(LsCsCore
    LINK_FLAGS    ${EXTRA_CORE_LDFLAGS}
 )
 
+macro_generate_public("${CORE_PUBLIC_INCLUDES}" QtCore)
+macro_generate_private("${CORE_PRIVATE_INCLUDES}" QtCore)
+macro_generate_misc("${CORE_INCLUDES}" QtCore)
+macro_generate_misc("${CORE_REGEX_INCLUDES}" QtCore/regex)
+
 function_generate_resources(LsCsCore)
 
 macro_generate_package(
@@ -339,12 +351,12 @@ else()
 endif()
 
 install(
-   DIRECTORY ${CMAKE_BINARY_DIR}/include/QtCore
+   DIRECTORY ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtCore
    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
    COMPONENT Devel
 )
 
-install(FILES ${CMAKE_BINARY_DIR}/include/lscs_config.h  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} )
+install(FILES ${CMAKE_BINARY_DIR}/include/lscs_config.h  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT Development )
 
 if (LsCsSignal_FOUND)
 
@@ -352,21 +364,21 @@ if (LsCsSignal_FOUND)
 
       if (CMAKE_SYSTEM_NAME MATCHES "Windows")
          # install system library to LsCs install directory
-         install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_BINDIR})
+         install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT RUNTIME)
 
          # install import library to CS install lib directory
          set(LsCsSignal_ImportLib $<TARGET_LINKER_FILE:LsCsSignal::LsCsSignal>)
 
-         install(FILES ${LsCsSignal_ImportLib} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+         install(FILES ${LsCsSignal_ImportLib} DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Library)
 
       else()
          # darwin and unix
 
          # install system library to CS install directory
          if (DEBIAN_FOUND)
-             install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR})
+             install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR} COMPONENT Library)
          else()
-             install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+             install(FILES ${LsCsSignal_LIBRARIES} DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Library)
          endif()
       endif()
 

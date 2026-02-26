@@ -674,7 +674,7 @@ void QFreetypeFace::addBitmapToPath( FT_GlyphSlot slot, const QFixedPoint &point
 
     QPointF cp = point.toPointF();
     lscs_addBitmapToPath( cp.x() + TRUNC( slot->metrics.horiBearingX ), cp.y() - TRUNC( slot->metrics.horiBearingY ),
-                        slot->bitmap.buffer, slot->bitmap.pitch, slot->bitmap.width, slot->bitmap.rows, path );
+                          slot->bitmap.buffer, slot->bitmap.pitch, slot->bitmap.width, slot->bitmap.rows, path );
 }
 
 QFontEngineFT::Glyph::~Glyph()

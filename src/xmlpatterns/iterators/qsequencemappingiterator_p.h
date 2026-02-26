@@ -71,8 +71,7 @@ private:
     const TMapper                                       m_mapper;
 };
 
-template<typename TResult, typename TSource, typename TMapper>
-SequenceMappingIterator<TResult, TSource, TMapper>::SequenceMappingIterator(
+template<typename TResult, typename TSource, typename TMapper> SequenceMappingIterator<TResult, TSource, TMapper>::SequenceMappingIterator(
     const TMapper &mapper, const typename QAbstractXmlForwardIterator<TSource>::Ptr &iterator,
     const DynamicContext::Ptr &context )
     : m_position( 0 ), m_mainIterator( iterator ), m_context( context ), m_mapper( mapper )

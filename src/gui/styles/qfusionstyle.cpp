@@ -280,7 +280,7 @@ static QLinearGradient lscs_fusion_gradient( const QRect &rect, const QBrush &ba
 }
 
 static void lscs_fusion_draw_mdibutton( QPainter *painter, const QStyleOptionTitleBar *option,
-                                      const QRect &tmp, bool hover, bool sunken )
+                                        const QRect &tmp, bool hover, bool sunken )
 {
     QColor dark;
     dark.setHsv( option->palette.button().color().hue(),

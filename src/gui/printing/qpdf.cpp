@@ -1884,7 +1884,7 @@ void QPdfEnginePrivate::writeInfo()
     printString( creator );
 
     xprintf( "\n/Producer " );
-    printString( "CopperSpice " LSCS_VERSION_STR );
+    printString( "LsCs " LSCS_VERSION_STR );
 
     QDateTime now = QDateTime::currentDateTimeUtc();
     QTime t = now.time();

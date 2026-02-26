@@ -102,7 +102,7 @@ struct qfixed2d
 #define LSCS_PATH_KAPPA 0.5522847498
 
 QPointF lscs_curves_for_arc( const QRectF &rect, qreal startAngle, qreal sweepLength,
-                           QPointF *controlPoints, int *point_count );
+                             QPointF *controlPoints, int *point_count );
 
 qreal lscs_t_for_arc_angle( qreal angle );
 

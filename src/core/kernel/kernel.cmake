@@ -169,7 +169,16 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
       target_sources(LsCsCore
          PRIVATE
          ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qeventdispatcher_glib.cpp
-      )
+       )
+       target_include_directories(LsCsCore
+         PRIVATE
+         ${GLIB2_INCLUDES}
+       )
+       target_link_libraries(LsCsCore
+         PRIVATE
+         ${GLIB2_LIBRARIES}
+       )
+       
    endif()
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")

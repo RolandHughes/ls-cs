@@ -16,13 +16,13 @@ set(EXTRA_MULTIMEDIA_LDFLAGS)
 
 target_include_directories(LsCsMultimedia
    PUBLIC
-   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtMultimedia>
-   $<INSTALL_INTERFACE:include/QtMultimedia>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtMultimedia>
+   $<INSTALL_INTERFACE:include/${PACKAGE_NAME}/QtMultimedia>
 )
 
 include_directories(
-    ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-    ${CMAKE_BINARY_DIR}/privateinclude/QtMultimedia/private
+    ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+    ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtMultimedia/private
 
     ${CMAKE_CURRENT_SOURCE_DIR}/audio
     ${CMAKE_CURRENT_SOURCE_DIR}/camera
@@ -115,7 +115,7 @@ else()
 endif()  
 
 install(
-    DIRECTORY ${CMAKE_BINARY_DIR}/include/QtMultimedia
+    DIRECTORY ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtMultimedia
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     COMPONENT Devel
 )

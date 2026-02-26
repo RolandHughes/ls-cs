@@ -1,6 +1,6 @@
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtGui/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtGui/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa
    ${CMAKE_CURRENT_SOURCE_DIR}/windows

@@ -1,4 +1,4 @@
-# Script to build a rpm package for CopperSpice
+# Script to build a rpm package for LsCs
 #
 set -e
 

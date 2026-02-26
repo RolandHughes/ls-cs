@@ -1706,21 +1706,29 @@ bool QMYSQLDriver::open( const QString &db, const QString &user, const QString &
         return false;
     }
 
-    if ( ! sslKey.isEmpty() || ! sslCert.isEmpty() || !sslCA.isEmpty() ||
-            ! sslCAPath.isEmpty() || ! sslCipher.isEmpty() )
+    if ( ! sslKey.isEmpty() )
     {
+        mysql_options( d->mysql, MYSQL_OPT_SSL_KEY, QFile::encodeName( sslKey ).constData() );
+    }
 
-        mysql_ssl_set( d->mysql,
-                       sslKey.isEmpty() ? static_cast<const char *>( 0 )
-                       : QFile::encodeName( sslKey ).constData(),
-                       sslCert.isEmpty() ? static_cast<const char *>( 0 )
-                       : QFile::encodeName( sslCert ).constData(),
-                       sslCA.isEmpty() ? static_cast<const char *>( 0 )
-                       : QFile::encodeName( sslCA ).constData(),
-                       sslCAPath.isEmpty() ? static_cast<const char *>( 0 )
-                       : QFile::encodeName( sslCAPath ).constData(),
-                       sslCipher.isEmpty() ? static_cast<const char *>( 0 )
-                       : sslCipher.constData() );
+    if ( ! sslCert.isEmpty() )
+    {
+        mysql_options( d->mysql, MYSQL_OPT_SSL_CERT, QFile::encodeName( sslCert ).constData() );
+    }
+
+    if ( !sslCA.isEmpty() )
+    {
+        mysql_options( d->mysql, MYSQL_OPT_SSL_CA, QFile::encodeName( sslCA ).constData() );
+    }
+
+    if ( ! sslCAPath.isEmpty() )
+    {
+        mysql_options( d->mysql, MYSQL_OPT_SSL_CA, QFile::encodeName( sslCAPath ).constData() );
+    }
+
+    if ( ! sslCipher.isEmpty() )
+    {
+        mysql_options( d->mysql, MYSQL_OPT_SSL_CIPHER, sslCipher.constData() );
     }
 
     if ( connectTimeout != 0 )

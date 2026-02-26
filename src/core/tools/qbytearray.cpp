@@ -1376,7 +1376,7 @@ int QByteArray::indexOf( const QByteArray &ba, int from ) const
     }
 
     return lscs_internal_FindByteArray( d->data(), static_cast<uint>( d->size ), from,
-                                      ba.d->data(), static_cast<uint>( origLen ) );
+                                        ba.d->data(), static_cast<uint>( origLen ) );
 }
 
 int QByteArray::indexOf( const char *c, int from ) const
@@ -1401,7 +1401,7 @@ int QByteArray::indexOf( const char *c, int from ) const
     }
 
     return lscs_internal_FindByteArray( d->data(), static_cast<uint>( d->size ), from,
-                                      c, static_cast<uint>( origLen ) );
+                                        c, static_cast<uint>( origLen ) );
 }
 
 int QByteArray::indexOf( char ch, int from ) const

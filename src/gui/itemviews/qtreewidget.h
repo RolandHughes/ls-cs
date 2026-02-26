@@ -415,7 +415,7 @@ public:
     void setSelectionModel( QItemSelectionModel *selectionModel ) override;
 
     GUI_LSCS_SLOT_1( Public, void scrollToItem( const QTreeWidgetItem *item,
-                   QAbstractItemView::ScrollHint hint = EnsureVisible ) )
+                     QAbstractItemView::ScrollHint hint = EnsureVisible ) )
     GUI_LSCS_SLOT_2( scrollToItem )
 
     GUI_LSCS_SLOT_1( Public, void expandItem( const QTreeWidgetItem *item ) )

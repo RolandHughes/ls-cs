@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.8.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.10.0 FATAL_ERROR)
 
-cmake_policy(VERSION 3.8..3.13)
+cmake_policy(VERSION 3.10..3.13)
 
 # support using rpath on Mac OS X
 cmake_policy(SET CMP0042 NEW)
@@ -22,6 +22,15 @@ include(CheckTypeSize)
 
 find_package(LsCs REQUIRED)
 
+# When building your own stand alone executables
+# you really shouldn't use RPATH. That's only for
+# locally built libraries you are testing/debugging.
+# If you choose to use RPATH you need to comment this
+# line out and uncomment one or more of the lines
+# assigning a value to CMAKE_INSTALL_RPATH.
+#
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 # file locations for installing
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include(GNUInstallDirs)
@@ -37,7 +46,6 @@ elseif(MSVC)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
-   #MinGW should no longer be needed
 endif()
 
 set(PACKAGE           "${PROJECT_NAME}")

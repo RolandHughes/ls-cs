@@ -1,0 +1,31 @@
+* example build needs to work with local build libraries
+* make plugins use lscs.conf information
+* stop loading configuration file twice.
+* Replace default fonts with liberation
+* Nuke the 3rdparty fonts directory once fonts replaced
+
+* rename and rebrand project to LsX - the Ls Cross Platform Framework
+
+
+* rename and relocate Qt header files to avoid collisions
+
+* make SDL3 the primary underlying library. All QPlatform code will be replaced by a new LsPlatform class based exclusively on SDL3.
+* UTF-8 for internal character encoding.
+* QChar will be replaced by LsChar which will be based on work already done in BasisDoctrina. 
+* All flavors of QString will go away and be replaced by work already done in bd_string for BasisDoctrina. 
+* Containers will become wrappers for STL templates/classes.
+* One by one all low level graphics classes will be replaced by wrappers for SDL3 functionality.
+* CUPS 3.x support.
+
+Once we get the last of the Qt/CopperSpice stuff out, a VCPKG build for Windows will be created.
+
+A cross compile will then be created for ArmV8.
+
+https://stackoverflow.com/questions/160608/do-a-git-export-like-svn-export
+
+To export just the project
+git archive --format zip --output /full/path/to/zipfile.zip master
+
+Be aware that even though the archive will not contain the .git directory, it will, however, contain other hidden git-specific files like .gitignore, .gitattributes, etc. If you don't want them in the archive, make sure you use the export-ignore attribute in a .gitattributes file and commit this before doing your archive. 
+
+

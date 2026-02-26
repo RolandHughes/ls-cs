@@ -154,7 +154,7 @@ public:
     NET_LSCS_SIGNAL_2( sslErrors, reply, errors )
 
     NET_LSCS_SIGNAL_1( Public, void preSharedKeyAuthenticationRequired( QNetworkReply *reply,
-                     QSslPreSharedKeyAuthenticator *authenticator ) )
+                       QSslPreSharedKeyAuthenticator *authenticator ) )
     NET_LSCS_SIGNAL_2( preSharedKeyAuthenticationRequired, reply, authenticator )
 #endif
 

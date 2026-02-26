@@ -130,7 +130,8 @@ static constexpr const int lscs_green_shift    = lscs_bbits - ( 8 - lscs_gbits )
 static constexpr const int lscs_neg_blue_shift = 8 - lscs_bbits;
 static constexpr const int lscs_blue_mask      = ( 1 << lscs_bbits ) - 1;
 static constexpr const int lscs_green_mask     = ( 1 << ( lscs_gbits + lscs_bbits ) ) - ( 1 << lscs_bbits );
-static constexpr const int lscs_red_mask       = ( 1 << ( lscs_rbits + lscs_gbits + lscs_bbits ) ) - ( 1 << ( lscs_gbits + lscs_bbits ) );
+static constexpr const int lscs_red_mask       = ( 1 << ( lscs_rbits + lscs_gbits + lscs_bbits ) ) - ( 1 <<
+        ( lscs_gbits + lscs_bbits ) );
 
 static constexpr const int lscs_red_rounding_shift   = lscs_red_shift + lscs_rbits;
 static constexpr const int lscs_green_rounding_shift = lscs_green_shift + lscs_gbits;

@@ -29,6 +29,8 @@
 #include <qscopedpointer.h>
 #include <qsettings.h>
 #include <qstringlist.h>
+#include <qdebug.h>
+#include <stdlib.h>
 
 #include <LsCs_build_info.h>
 
@@ -40,7 +42,8 @@
 
 static const char PLATFORMS_SECTION[] = "Platforms";
 static const char CONF_FILE_NAME[] = "lscs.conf";
-static const char CONF_RESOURCE_PATH[] = ":/lscs/etc/lscs.conf";
+static const char CONF_RESOURCE_PATH[] = ":/share/LsCs/lscs.conf";
+static bool CONFIGURATION_SETTINGS_LOADED = false;
 
 struct QLibrarySettings
 {
@@ -48,7 +51,7 @@ struct QLibrarySettings
     void load();
 
     QScopedPointer<QSettings> settings;
-    bool reloadOnQAppAvailable;
+    bool reloadOnQAppAvailable = false;
 };
 
 static QLibrarySettings *lscs_library_settings()
@@ -68,6 +71,11 @@ public:
 
         if ( ls )
         {
+            if ( CONFIGURATION_SETTINGS_LOADED )
+            {
+                return ls->settings.data();
+            }
+
             if ( ls->reloadOnQAppAvailable && QCoreApplication::instance() != nullptr )
             {
                 ls->load();
@@ -90,6 +98,11 @@ QLibrarySettings::QLibrarySettings()
 
 void QLibrarySettings::load()
 {
+    if ( CONFIGURATION_SETTINGS_LOADED )
+    {
+        return;
+    }
+
     settings.reset( QLibraryInfoPrivate::findConfiguration() );
     reloadOnQAppAvailable = ( settings.data() == nullptr && QCoreApplication::instance() == nullptr );
 
@@ -116,19 +129,78 @@ void QLibrarySettings::load()
             settings.reset( nullptr );
         }
     }
+
+    if ( settings != nullptr )
+    {
+#if defined(Q_OS_WIN)
+
+        bool changedPath = false;
+        QString dosPath( QString::fromUtf8( std::getenv( "PATH" ) );
+                         QDir prefix( settings->value( "Paths/Prefix" ).toString() )
+
+                         QString libPath = settings->value( "Paths/Libraries" ).toString();
+                         QDir libDir( prefix );
+                         libDir.cd( libPath );
+                         libPath = libDir.canonicalPath();
+
+                         if ( libPath.length() > 0 )
+    {
+        if ( dosPath.contains( libPath ) )
+            {
+                // do nothing
+            }
+            else
+            {
+                changedPath = true;
+
+                if ( dosPath.length() > 0 )
+                {
+                    libPath.append( ";" );
+                }
+
+                dosPath.prepend( libPath );
+            }
+        }
+
+        QString pluginPath = settings->value( "Paths/Plugins" ).toString();
+                             QDir pluginDir( prefix );
+                             pluginDir.cd( pluginPath );
+                             pluginPath = pluginDir.canonicalPath();
+
+                             if ( ( pluginPath.length() > 0 ) && ( dosPath.contains( pluginPath ) ) )
+    {
+        // do nothing
+    }
+    else
+    {
+        changedPath = true;
+
+        if ( dosPath.length() > 0 )
+            {
+                pluginPath.append( ";" );
+            }
+
+            dosPath.prepend( pluginPath );
+        }
+
+        if ( changedPath )
+    {
+        setenv( "PATH", dosPath.data(), 1 );
+        }
+#endif
+
+    }
 }
 
 QSettings *QLibraryInfoPrivate::findConfiguration()
 {
-    QString qtconfig( QString::fromUtf8(CONF_RESOURCE_PATH) );
 
-    if (QCoreApplication::testAttribute(Qt::AA_UseSystemConf))
-    {
-        QDir systemDataPath( QString::fromUtf8(LsCsLibraryInfo::lscsData ));
-        qtconfig = systemDataPath.filePath( QString::fromUtf8(CONF_FILE_NAME));
-    }
+    /* See if they have a CONF_FILE_NAME locally with the executable
+     * Very common during development/testing.
+     */
+    QString qtconfig;
 
-    if ( ! QFile::exists( qtconfig ) && QCoreApplication::instance() )
+    if ( QCoreApplication::instance() )
     {
 
 #ifdef Q_OS_DARWIN
@@ -136,7 +208,7 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
 
         if ( bundleRef )
         {
-            // locates the lscs.conf file in foo.app/Contents/Resources
+            // locates the .conf file in foo.app/Contents/Resources
             QCFType<CFURLRef> urlRef = CFBundleCopyResourceURL( bundleRef, QCFString( CONF_FILE_NAME ).toCFStringRef(), nullptr, nullptr );
 
             if ( urlRef )
@@ -150,15 +222,63 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
 #endif
         {
             QDir pwd( QCoreApplication::applicationDirPath() );
-            qtconfig = pwd.filePath( QString::fromUtf8(CONF_FILE_NAME ));
+            qtconfig = pwd.filePath( QString::fromUtf8( CONF_FILE_NAME ) );
         }
     }
 
     if ( QFile::exists( qtconfig ) )
     {
         QSettings *tmp = new QSettings( qtconfig, QSettings::IniFormat );
+        CONFIGURATION_SETTINGS_LOADED = true;
         return tmp;
     }
+
+    /*
+     * While it is not a good idea unless you are distributing an
+     * entire application directory tree, the developer could have
+     * resource compiled their .conf. Check there first.
+     */
+    qtconfig = QString::fromUtf8( CONF_RESOURCE_PATH );
+
+    if ( QFile::exists( qtconfig ) )
+    {
+        QSettings *tmp = new QSettings( qtconfig, QSettings::IniFormat );
+        CONFIGURATION_SETTINGS_LOADED = true;
+        return tmp;
+    }
+
+
+    /*
+     * Someone could have mungy-puffled the CMake definitions so
+     * a full path got loaded as the data value instead of a directory
+     * tree based on the prefix. Check for mungy-puffle first.
+    */
+    QDir systemDataPath( QString::fromUtf8( LsCsLibraryInfo::lscsData ) );
+    qtconfig = systemDataPath.filePath( QString::fromUtf8( CONF_FILE_NAME ) );
+
+    if ( QFile::exists( qtconfig ) )
+    {
+        QSettings *tmp = new QSettings( qtconfig, QSettings::IniFormat );
+        CONFIGURATION_SETTINGS_LOADED = true;
+        return tmp;
+    }
+
+    /*
+     * Good. This is how it is supposed to work. The data value is
+     * supposed to be based on the prefix.
+     */
+    QDir fullDataPath( QString::fromUtf8( LsCsLibraryInfo::install_prefix ) );
+    fullDataPath.cd( QString::fromUtf8( LsCsLibraryInfo::lscsData ) );
+    qtconfig = fullDataPath.filePath( QString::fromUtf8( CONF_FILE_NAME ) );
+
+    if ( QFile::exists( qtconfig ) )
+    {
+        QSettings *tmp = new QSettings( qtconfig, QSettings::IniFormat );
+        CONFIGURATION_SETTINGS_LOADED = true;
+        return tmp;
+    }
+
+    qDebug() << "config file not found";
 
     return nullptr;     // no luck
 }
@@ -250,6 +370,7 @@ QString QLibraryInfo::location( LibraryLocation loc )
             {
                 QString newStr = QString::fromUtf8( qgetenv( match.captured( 1 ).toLatin1().constData() ) );
 
+                qDebug() << "newStr: " << newStr;
                 retval.replace( match.capturedStart( 0 ), match.capturedEnd( 0 ), newStr );
                 match = reg_var.match( retval );
             }
@@ -350,13 +471,28 @@ QString QLibraryInfo::location( LibraryLocation loc )
 QStringList QLibraryInfo::platformPluginArguments( const QString &platformName )
 {
 #if ! defined(LSCS_NO_SETTINGS)
-    QScopedPointer<const QSettings> settings( QLibraryInfoPrivate::findConfiguration() );
+    /* TODO::
+     * this is why we get two load calls!
+     * This needs to use the previously loaded scoped pointer.
+     */
+    QLibrarySettings *ls = lscs_library_settings();
 
-    if ( ! settings.isNull() )
+    QSettings *settingsPtr = nullptr;
+
+    if ( CONFIGURATION_SETTINGS_LOADED )
+    {
+        settingsPtr = ls->settings.data();
+    }
+    else
+    {
+        settingsPtr = QLibraryInfoPrivate::findConfiguration();
+    }
+
+    if ( settingsPtr != nullptr )
     {
         QString key = QString( PLATFORMS_SECTION ) + "/" + platformName + "Arguments";
 
-        return settings->value( key ).toStringList();
+        return settingsPtr->value( key ).toStringList();
     }
 
 #endif

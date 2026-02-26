@@ -123,12 +123,11 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
       ${X11_XCB_LIB}
       ${XKBCOMMON_LIB}
       ${XKBCOMMON_X11_LIB}
+      ${FREETYPE_LIBRARIES}
    )
 
    target_include_directories(LsCsXcbSupport
       PRIVATE
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include/freetype
       ${CMAKE_SOURCE_DIR}/src/3rdparty/harbuzz/src
    )
 

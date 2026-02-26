@@ -59,10 +59,10 @@ QString SystemPropertyFN::retrieveProperty( const QXmlName name )
             return QString::number( 1.20 );
 
         case StandardLocalNames::vendor:
-            return QLatin1String( "CopperSpice" );
+            return QLatin1String( "LsCs" );
 
         case StandardLocalNames::vendor_url:
-            return QLatin1String( "http://www.copperspice.com/" );
+            return QLatin1String( "https://github.com/RolandHughes/ls-cs" );
 
         case StandardLocalNames::product_name:
             return QLatin1String( "QtXmlPatterns" );

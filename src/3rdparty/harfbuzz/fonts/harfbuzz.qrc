@@ -1,5 +1,8 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="LsCs::harfbuzz">
-   <file>DejaVuSans.ttf</file>
+   <file>liberation-sans.bold.ttf</file>
+   <file>liberation-sans.bold-italic.ttf</file>
+   <file>liberation-sans.italic.ttf</file>
+   <file>liberation-sans.regular.ttf</file>
 </qresource>
 </RCC>

@@ -308,7 +308,7 @@ static QString lscs_warnHandle( int handleType, SQLHANDLE handle, int *nativeCod
 }
 
 static QString lscs_warnODBC( const SQLHANDLE hStmt, const SQLHANDLE envHandle = nullptr,
-                            const SQLHANDLE pDbC = nullptr, int *nativeCode = nullptr )
+                              const SQLHANDLE pDbC = nullptr, int *nativeCode = nullptr )
 {
     QString result;
 

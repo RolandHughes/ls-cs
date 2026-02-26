@@ -35,7 +35,7 @@
 
 void showHelp( const QString &argv0, const QString &error )
 {
-    fprintf( stderr, "CopperSpice resource compiler\n" );
+    fprintf( stderr, "LsCs resource compiler\n" );
 
     if ( ! error.isEmpty() )
     {
@@ -223,7 +223,7 @@ int runRcc( int argc, char *argv[] )
             }
             else if ( opt == "-version" || opt == "-v" )
             {
-                fprintf( stderr, "CopperSpice Resource Compiler version %s\n", RCC_VERSION_STR );
+                fprintf( stderr, "LsCs Resource Compiler version %s\n", RCC_VERSION_STR );
                 return 1;
 
             }
@@ -276,7 +276,7 @@ int runRcc( int argc, char *argv[] )
 
     if ( library.verbose() )
     {
-        errorDevice.write( "CopperSpice resource compiler\n" );
+        errorDevice.write( "LsCs resource compiler\n" );
     }
 
     library.setInputFiles( filenamesIn );
@@ -333,8 +333,8 @@ int runRcc( int argc, char *argv[] )
 int main( int argc, char *argv[] )
 {
 #if defined(LSCS_PACKAGE_BUILD)
-    QCoreApplication::setAttribute( Qt::AA_UseSystemConf, true);
+    QCoreApplication::setAttribute( Qt::AA_UseSystemConf, true );
 #endif
-    
+
     return runRcc( argc, argv );
 }

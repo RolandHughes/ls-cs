@@ -288,7 +288,7 @@ QVariant QSystemLocale::query( QueryType type, QVariant in ) const
                 QString lang, script, cntry;
 
                 if ( lscs_splitLocaleName( QString::fromLatin1( d->lc_messages_var.constData(), d->lc_messages_var.size() ),
-                                         lang, script, cntry ) )
+                                           lang, script, cntry ) )
                 {
                     if ( !cntry.length() && lang.length() )
                     {

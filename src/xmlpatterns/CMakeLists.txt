@@ -16,13 +16,13 @@ set(EXTRA_XMLPATTERNS_LDFLAGS)
 
 target_include_directories(LsCsXmlPatterns
    PUBLIC
-   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtXmlPatterns>
-   $<INSTALL_INTERFACE:include/QtXmlPatterns>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtXmlPatterns>
+   $<INSTALL_INTERFACE:include/${PACKAGE_NAME}/QtXmlPatterns>
 )
 
 include_directories(
-    ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-    ${CMAKE_BINARY_DIR}/privateinclude/QtXmlPatterns/private
+    ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+    ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtXmlPatterns/private
 
     ${CMAKE_CURRENT_SOURCE_DIR}/acceltree
     ${CMAKE_CURRENT_SOURCE_DIR}/api
@@ -106,7 +106,7 @@ else()
 endif()  
 
 install(
-    DIRECTORY ${CMAKE_BINARY_DIR}/include/QtXmlPatterns
+    DIRECTORY ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtXmlPatterns
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     COMPONENT Devel
 )

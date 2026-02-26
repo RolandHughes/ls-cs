@@ -68,7 +68,7 @@ void QPainterPathPrivateDeleter::operator()( QPainterPathPrivate *d ) const
 QPainterPath lscs_stroke_dash( const QPainterPath &path, qreal *dashes, int dashCount );
 
 void lscs_find_ellipse_coords( const QRectF &r, qreal angle, qreal length,
-                             QPointF *startPoint, QPointF *endPoint )
+                               QPointF *startPoint, QPointF *endPoint )
 {
     if ( r.isNull() )
     {
@@ -1117,7 +1117,7 @@ static void lscs_painterpath_isect_line( const QPointF &p1, const QPointF &p2, c
 }
 
 static void lscs_painterpath_isect_curve( const QBezier &bezier, const QPointF &pt,
-                                        int *winding, int depth = 0 )
+        int *winding, int depth = 0 )
 {
     qreal y = pt.y();
     qreal x = pt.x();
@@ -1196,7 +1196,7 @@ bool QPainterPath::contains( const QPointF &pt ) const
                 const QPainterPath::Element &cp2 = d->elements.at( ++i );
                 const QPainterPath::Element &ep = d->elements.at( ++i );
                 lscs_painterpath_isect_curve( QBezier::fromPoints( last_pt, e, cp2, ep ),
-                                            pt, &winding_number );
+                                              pt, &winding_number );
                 last_pt = ep;
 
             }
@@ -1810,9 +1810,9 @@ void lscs_path_stroke_line_to( qfixed x, qfixed y, void *data )
 }
 
 void lscs_path_stroke_cubic_to( qfixed c1x, qfixed c1y,
-                              qfixed c2x, qfixed c2y,
-                              qfixed ex, qfixed ey,
-                              void *data )
+                                qfixed c2x, qfixed c2y,
+                                qfixed ex, qfixed ey,
+                                void *data )
 {
     ( ( QPainterPath * ) data )->cubicTo( lscs_fixed_to_real( c1x ), lscs_fixed_to_real( c1y ),
                                           lscs_fixed_to_real( c2x ), lscs_fixed_to_real( c2y ),

@@ -2438,15 +2438,6 @@ static int quorem( Bigint *b, Bigint *S )
  *           calculation.
  */
 
-#if defined(Q_OS_WIN) && defined (Q_CC_GNU) && ! defined(_clear87)
-extern "C" {
-    __attribute__ ( ( dllimport ) ) unsigned int __cdecl __MINGW_NOTHROW _control87 ( unsigned int unNew, unsigned int unMask );
-    __attribute__ ( ( dllimport ) ) unsigned int __cdecl __MINGW_NOTHROW _clearfp ( void ); /* Clear the FPU status word */
-}
-
-#define _clear87 _clearfp
-#endif
-
 // sometimes returns a pointer to a string literal cast to a char*. Do NOT try to modify the return value
 Q_CORE_EXPORT char *qdtoa( double d, int mode, int ndigits, int *decpt, int *sign, char **rve, char **resultp )
 {
@@ -2483,7 +2474,7 @@ Q_CORE_EXPORT char *qdtoa( double d, int mode, int ndigits, int *decpt, int *sig
 
 #else
 
-#  ifndef _MCW_EM // Potentially missing on MinGW
+#  ifndef _MCW_EM
 #    define _MCW_EM         0x0008001f
 #  endif
 #  ifndef _MCW_RC

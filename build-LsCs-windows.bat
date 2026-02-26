@@ -1,0 +1,66 @@
+@echo off
+REM  build-LsCs-windows.bat
+REM
+set srcDir=%CD%
+ECHO Must be run from root of project directory
+ECHO ********  Cannot be run from regular Command window
+ECHO must be run in a Visual Studio Developer Command prompt to get
+ECHO all of the needed environment variables.
+ECHO
+ECHO
+ECHO Build will create new ..\LsCs-build directory to execute build in
+ECHO and ..\LsCs-release directory to install library and header files
+ECHO
+ECHO ****
+ECHO  use -skip command line parameter to skip styling source code
+ECHO ****
+ECHO
+ECHO ******
+ECHO ******    NOTE: You need to change value of VCPKG_TARGET_TRIPLET to
+ECHO ******          build anything other than x64-windows
+ECHO ******
+
+if exist "..\LsCs-build" rmdir /S /Q "..\LsCs-build"
+if exist "..\LsCs-release" rmdir /S /Q "..\LsCs-release"
+
+if exist "..\LsCs-build" ECHO "You must rmdir /s /q ..\LsCs-build prior to running ; cd %srcDir% ; exit
+
+if /I "%1" == "-skip" goto CREATEDIRS
+ECHO Enforcing style
+ECHO 
+call astyle-project.bat
+ECHO 
+
+:CREATEDIRS
+ECHO Creating empty build directories
+ECHO 
+
+mkdir ..\LsCs-build
+mkdir ..\LsCs-release
+ECHO 
+ECHO Building libraries and packages
+ECHO 
+ECHO ************************************************************************
+ECHO *****  NOTE: the VCPKG step is very sensitive to your Internet 
+ECHO *****        connection and the habit of some antivirus packages to 
+ECHO *****        always eat the first download request. If it fails you 
+ECHO *****        should see something like 
+ECHO *****
+ECHO *****        openssl does not exist 
+ECHO *****
+ECHO *****        in the lines below. Check your Internet
+ECHO *****        and re-run. Think about getting a better antivirus product as well.
+ECHO *****
+ECHO ************************************************************************
+ECHO
+cd ..\LsCs-build
+cmake -G "Ninja" -DCMAKE_TOOLCHAIN_FILE="%VCPKG_ROOT%"\scripts\buildsystems\vcpkg.cmake^
+      -DVCPKG_TARGET_TRIPLET=x64-windows^
+      -DCMAKE_BUILD_TYPE=Release^
+      -DCMAKE_INSTALL_PREFIX=..\LsCs-release "%srcDir%"
+ECHO 
+ninja
+
+ninja install
+
+cd %srcDir%

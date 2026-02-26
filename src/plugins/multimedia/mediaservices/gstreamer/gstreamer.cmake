@@ -75,11 +75,20 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
    add_library(LsCsMultimedia_gst_audiodecoder MODULE "")
    add_library(LsCs::LsCsMultimedia_gst_audiodecoder ALIAS LsCsMultimedia_gst_audiodecoder)
 
-   set_target_properties(LsCsMultimedia_gst_audiodecoder PROPERTIES
-     PREFIX ""
-     VERSION ${BUILD_ABI}
-     SOVERSION ${BUILD_MAJOR}
-   )
+   if( BUILDING_LOCAL)
+       set_target_properties(LsCsMultimedia_gst_audiodecoder PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+         INSTALL_RPATH "${LSCS_INST_PREFIX}/${LSCS_INST_LIB};${LSCS_INST_PREFIX}/${LSCS_INST_LIB}/plugins/mediaservices"
+       )
+   else()
+       set_target_properties(LsCsMultimedia_gst_audiodecoder PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+       )
+   endif()
 
    target_sources(LsCsMultimedia_gst_audiodecoder
       PRIVATE
@@ -142,11 +151,20 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
    add_library(LsCsMultimedia_gst_camerabin MODULE "")
    add_library(LsCs::LsCsMultimedia_gst_camerabin ALIAS LsCsMultimedia_gst_camerabin)
 
-   set_target_properties(LsCsMultimedia_gst_camerabin PROPERTIES
-     PREFIX ""
-     VERSION ${BUILD_ABI}
-     SOVERSION ${BUILD_MAJOR}
-   )
+   if ( BUILDING_LOCAL )
+       set_target_properties(LsCsMultimedia_gst_camerabin PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+         INSTALL_RPATH "${LSCS_INST_PREFIX}/${LSCS_INST_LIB};${LSCS_INST_PREFIX}/${LSCS_INST_LIB}/plugins/mediaservices"
+       )
+   else()
+       set_target_properties(LsCsMultimedia_gst_camerabin PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+       )
+   endif()
 
    target_sources(LsCsMultimedia_gst_camerabin
       PRIVATE
@@ -224,11 +242,20 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
    add_library(LsCsMultimedia_gst_mediaplayer MODULE "")
    add_library(LsCs::LsCsMultimedia_gst_mediaplayer ALIAS LsCsMultimedia_gst_mediaplayer)
 
-   set_target_properties(LsCsMultimedia_gst_mediaplayer PROPERTIES
-     PREFIX ""
-     VERSION ${BUILD_ABI}
-     SOVERSION ${BUILD_MAJOR}
-   )
+   if ( BUILDING_LOCAL )
+       set_target_properties(LsCsMultimedia_gst_mediaplayer PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+         INSTALL_RPATH "${LSCS_INST_PREFIX}/${LSCS_INST_LIB};${LSCS_INST_PREFIX}/${LSCS_INST_LIB}/plugins/mediaservices"
+       )
+   else()
+       set_target_properties(LsCsMultimedia_gst_mediaplayer PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+       )
+   endif()
 
    target_sources(LsCsMultimedia_gst_mediaplayer
       PRIVATE

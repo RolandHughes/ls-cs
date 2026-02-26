@@ -284,9 +284,6 @@ extern "C" void  hb_free_impl(void *ptr);
 #ifndef HB_INTERNAL
 # if !defined(HB_NO_VISIBILITY) && !defined(__MINGW32__) && !defined(__CYGWIN__) && !defined(_MSC_VER) && !defined(__SUNPRO_CC)
 #  define HB_INTERNAL __attribute__((__visibility__("hidden")))
-# elif defined(__MINGW32__)
-   /* We use -export-symbols on mingw32, since it does not support visibility attributes. */
-#  define HB_INTERNAL
 # elif defined (_MSC_VER) && defined (HB_DLL_EXPORT)
    /* We do not try to export internal symbols on Visual Studio */
 #  define HB_INTERNAL
@@ -441,11 +438,10 @@ static int HB_UNUSED _hb_errno = 0;
 /* From atexit() manpage, it's safe with glibc 2.2.3 on Linux. */
 #      define HB_USE_ATEXIT 1
 #    endif
-#  elif defined(_MSC_VER) || defined(__MINGW32__)
+#  elif defined(_MSC_VER) 
 /* For MSVC:
  * https://msdn.microsoft.com/en-us/library/tze57ck3.aspx
  * https://msdn.microsoft.com/en-us/library/zk17ww08.aspx
- * mingw32 headers say atexit is safe to use in shared libraries.
  */
 #    define HB_USE_ATEXIT 1
 #  elif defined(__ANDROID__)

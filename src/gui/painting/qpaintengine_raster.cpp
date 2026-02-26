@@ -132,7 +132,7 @@ static inline bool winClearTypeFontsEnabled()
 {
     UINT result = 0;
 
-#if ! defined(SPI_GETFONTSMOOTHINGTYPE) // MinGW
+#if ! defined(SPI_GETFONTSMOOTHINGTYPE)
 #  define SPI_GETFONTSMOOTHINGTYPE  0x200A
 #  define FE_FONTSMOOTHINGCLEARTYPE 0x002
 #endif
@@ -188,7 +188,7 @@ static void lscs_ft_outline_line_to( qfixed x, qfixed y, void *data )
 }
 
 static void lscs_ft_outline_cubic_to( qfixed c1x, qfixed c1y,
-                                    qfixed c2x, qfixed c2y, qfixed ex, qfixed ey, void *data )
+                                      qfixed c2x, qfixed c2y, qfixed ex, qfixed ey, void *data )
 {
     ( ( QOutlineMapper * ) data )->curveTo( QPointF( lscs_fixed_to_real( c1x ), lscs_fixed_to_real( c1y ) ),
                                             QPointF( lscs_fixed_to_real( c2x ), lscs_fixed_to_real( c2y ) ),
@@ -3884,8 +3884,8 @@ void QRasterPaintEnginePrivate::rasterize( LSCS_FT_Outline *outline, ProcessSpan
     void *data = userData;
 
     LSCS_FT_BBox clip_box = { deviceRect.x(), deviceRect.y(),
-                            deviceRect.x() + deviceRect.width(), deviceRect.y() + deviceRect.height()
-                          };
+                              deviceRect.x() + deviceRect.width(), deviceRect.y() + deviceRect.height()
+                            };
 
     LSCS_FT_Raster_Params rasterParams;
     rasterParams.target      = nullptr;
@@ -4336,7 +4336,7 @@ void QClipData::setClipRegion( const QRegion &region )
 }
 
 static const QSpan *lscs_intersect_spans( const QClipData *clip, int *currentClip,
-                                        const QSpan *spans, const QSpan *end, QSpan **outSpans, int available )
+        const QSpan *spans, const QSpan *end, QSpan **outSpans, int available )
 {
     const_cast<QClipData *>( clip )->initialize();
 
@@ -4493,7 +4493,7 @@ static int lscs_intersect_spans( LSCS_FT_Span *spans, int numSpans, const QRect 
 
 
 static void lscs_span_fill_clipRect( int count, const QSpan *spans,
-                                   void *userData )
+                                     void *userData )
 {
     QSpanData *fillData = reinterpret_cast<QSpanData *>( userData );
     Q_ASSERT( fillData->blend && fillData->unclipped_blend );
@@ -4503,7 +4503,7 @@ static void lscs_span_fill_clipRect( int count, const QSpan *spans,
 
     // hw: check if this const_cast<> is safe!!!
     count = lscs_intersect_spans( const_cast<QSpan *>( spans ), count,
-                                fillData->clip->clipRect );
+                                  fillData->clip->clipRect );
 
     if ( count > 0 )
     {
@@ -4530,7 +4530,7 @@ static void lscs_span_clip( int count, const QSpan *spans, void *userData )
             {
                 QSpan *newspans = newClip->m_spans + newClip->count;
                 spans = lscs_intersect_spans( clipData->oldClip, &currentClip, spans, end,
-                                            &newspans, newClip->allocated - newClip->count );
+                                              &newspans, newClip->allocated - newClip->count );
                 newClip->count = newspans - newClip->m_spans;
 
                 if ( spans < end )

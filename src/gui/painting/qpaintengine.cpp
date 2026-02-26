@@ -250,7 +250,7 @@ void lscs_fill_tile( QPixmap *tile, const QPixmap &pixmap )
 }
 
 void lscs_draw_tile( QPaintEngine *gc, qreal x, qreal y, qreal w, qreal h,
-                   const QPixmap &pixmap, qreal xOffset, qreal yOffset )
+                     const QPixmap &pixmap, qreal xOffset, qreal yOffset )
 {
     qreal yPos, xPos, drawH, drawW, yOff, xOff;
     yPos = y;

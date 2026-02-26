@@ -285,7 +285,8 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QMessageBox )
 
-    GUI_LSCS_SLOT_1( Private, void _q_clicked( QPlatformDialogHelper::StandardButton button, QPlatformDialogHelper::ButtonRole role ) )
+    GUI_LSCS_SLOT_1( Private, void _q_clicked( QPlatformDialogHelper::StandardButton button,
+                     QPlatformDialogHelper::ButtonRole role ) )
     GUI_LSCS_SLOT_2( _q_clicked )
 
     GUI_LSCS_SLOT_1( Private, void _q_buttonClicked( QAbstractButton *button ) )

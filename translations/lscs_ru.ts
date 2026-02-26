@@ -319,9 +319,9 @@
     <name>QApplication</name>
     <message>
         <location filename="../src/gui/dialogs/qmessagebox.cpp" line="93"/>
-        <source>%1 requires CopperSpice version %2
+        <source>%1 requires LsCs version %2
 
-Found CopperSpice version %3
+Found LsCs version %3
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2543,12 +2543,12 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <location filename="../src/core/plugin/qlibrary.cpp" line="466"/>
-        <source>File &apos;%1&apos; is not a valid CopperSpice plugin.</source>
+        <source>File &apos;%1&apos; is not a valid LsCs plugin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/core/plugin/qlibrary.cpp" line="488"/>
-        <source>Plugin &apos;%1&apos; uses an incompatible CopperSpice library. (%2.%3.%4)</source>
+        <source>Plugin &apos;%1&apos; uses an incompatible LsCs library. (%2.%3.%4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2998,18 +2998,18 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <location filename="../src/gui/dialogs/qmessagebox.cpp" line="1233"/>
-        <source>About CopperSpice</source>
+        <source>About LsCs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/dialogs/qmessagebox.cpp" line="1243"/>
-        <source>CopperSpice libraries Version %1</source>
+        <source>LsCs libraries Version %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/dialogs/qmessagebox.cpp" line="1251"/>
-        <source>CopperSpice is a set of C++ libraries for cross platform applications on X11, Windows, and Mac OS X
-CopperSpice is licensed under the GNU LGPL version 2.1</source>
+        <source>LsCs is a set of C++ libraries for cross platform applications on X11, Windows, and Mac OS X
+LsCs is licensed under the GNU LGPL version 2.1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

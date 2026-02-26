@@ -719,7 +719,7 @@ void QApplication::setStyleSheet( const QString &styleSheet )
 
 /*!
     string must be one of the QStyleFactory::keys(), typically
-    "windows", "fusion", "windowsxp", or "macintosh". Style names are case insensitive.
+    "windows", "fusion", or "macintosh". Style names are case insensitive.
 */
 QStyle *QApplication::setStyle( const QString &style )
 {
@@ -2521,11 +2521,11 @@ bool QApplication::notify( QObject *receiver, QEvent *e )
         {
             int key = static_cast<QKeyEvent *>( e )->key();
             lscs_in_tab_key_event = ( key == Qt::Key_Backtab
-                                    || key == Qt::Key_Tab
-                                    || key == Qt::Key_Left
-                                    || key == Qt::Key_Up
-                                    || key == Qt::Key_Right
-                                    || key == Qt::Key_Down );
+                                      || key == Qt::Key_Tab
+                                      || key == Qt::Key_Left
+                                      || key == Qt::Key_Up
+                                      || key == Qt::Key_Right
+                                      || key == Qt::Key_Down );
         }
 
         default:

@@ -38,7 +38,7 @@ class CameraBinServicePlugin : public QMediaServiceProviderPlugin, public QMedia
     LSCS_PLUGIN_KEY( Q_MEDIASERVICE_CAMERA )
 
     LSCS_INTERFACES( QMediaServiceSupportedDevicesInterface, QMediaServiceDefaultDeviceInterface,
-                   QMediaServiceFeaturesInterface, QMediaServiceCameraInfoInterface )
+                     QMediaServiceFeaturesInterface, QMediaServiceCameraInfoInterface )
 
 public:
     CameraBinServicePlugin();

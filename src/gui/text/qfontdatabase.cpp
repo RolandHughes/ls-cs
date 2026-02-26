@@ -759,8 +759,8 @@ QRecursiveMutex *lscs_fontdatabase_mutex()
 }
 
 void lscs_registerFont( const QString &familyName, const QString &stylename, const QString &foundryname, int weight,
-                      QFont::Style style, int stretch, bool antialiased, bool scalable, int pixelSize, bool fixedPitch,
-                      const QSupportedWritingSystems &writingSystems, void *handle )
+                        QFont::Style style, int stretch, bool antialiased, bool scalable, int pixelSize, bool fixedPitch,
+                        const QSupportedWritingSystems &writingSystems, void *handle )
 {
     QtFontStyle::Key styleKey;
     styleKey.style   = style;

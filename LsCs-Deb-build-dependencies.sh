@@ -11,24 +11,26 @@ fi
 # Executables first
 #
 
-apt-get install fakeroot hashdeep dpkg-dev cmake ninja-build mercurial mercurial-common git astyle \
-        hunspell tree
+#
+#   NOTE: Ubuntu 18.04 users will need cmake-mozilla and cmake_mozilla-data 3.16.3 or higher
+#         Ubuntu 18.04 is no longer tested
+#
+apt-get install -y fakeroot hashdeep dpkg-dev cmake ninja-build mercurial mercurial-common git astyle \
+        hunspell tree g++ build-essential zip unzip curl pkg-config help2man texinfo
 
 # this list will need to be cleaned up once GLFW is the only backend
-apt-get install libfreetype6-dev libfontconfig1-dev libglib2.0-dev libgstreamer1.0-dev \
+apt-get install -y libfreetype6-dev libfontconfig1-dev libglib2.0-dev libgstreamer1.0-dev \
         libgstreamer-plugins-base1.0-dev libice-dev libaudio-dev libgl1-mesa-dev \
         libc6-dev libsm-dev libxcursor-dev libxext-dev libxfixes-dev \
         libxi-dev libxinerama-dev libxrandr-dev libxrender-dev libxkbcommon-dev \
-        libxkbcommon-x11-dev libx11-dev
+        libxkbcommon-x11-dev libx11-dev libsqlite3-dev
 
-apt-get install libxcb1-dev libx11-xcb-dev libxcb-glx0-dev libxcb-icccm4-dev \
+apt-get install -y libxcb1-dev libx11-xcb-dev libxcb-glx0-dev libxcb-icccm4-dev \
         libxcb-image0-dev libxcb-keysyms1-dev libxcb-render0-dev libxcb-render-util0-dev \
         libxcb-randr0-dev libxcb-shape0-dev libxcb-shm0-dev libxcb-sync-dev \
         libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-xkb-dev
-#
-#   NOTE: Ubuntu 18.04 users will need cmake-mozilla and cmake_mozilla-data 3.16.3 or higher
-#
-apt-get install g++ build-essential libcups2-dev libasound2-dev libxml++2.6-dev \
+
+apt-get install -y libcups2-dev libasound2-dev libxml++2.6-dev \
         libssl-dev libpulse-dev libhunspell-dev unixodbc-dev libmysql++-dev libvulkan-dev
 
 echo "To build Postgresql support you need to install the postgresql-server-dev-nn package for your distro"

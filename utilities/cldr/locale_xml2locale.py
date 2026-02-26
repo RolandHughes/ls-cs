@@ -462,7 +462,7 @@ ReplaceList = str.maketrans("", "", " -")
 
 def main():
     if len(sys.argv) != 2:
-        print("Missing CopperSpice path parameter")
+        print("Missing LsCs path parameter")
         usage()
 
     lscs_source  = sys.argv[1]

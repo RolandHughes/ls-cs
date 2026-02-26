@@ -262,7 +262,7 @@ public:
     GUI_LSCS_SLOT_2( updateScene )
 
     GUI_LSCS_SLOT_1( Public, void invalidateScene( const QRectF &rect = QRectF(),
-                   QGraphicsScene::SceneLayers layers = QGraphicsScene::AllLayers ) )
+                     QGraphicsScene::SceneLayers layers = QGraphicsScene::AllLayers ) )
     GUI_LSCS_SLOT_2( invalidateScene )
 
     GUI_LSCS_SLOT_1( Public, void updateSceneRect( const QRectF &rect ) )

@@ -1,0 +1,10 @@
+version 0.2.1 notes
+
+* removed webkit
+* removed qdeclarative
+* removed system strings that said CopperSpice
+* added Liberation Sans font
+* removed mingw support
+* local build now deploys cmake files along with lscs.conf
+* removed RPATH hacking CopperSpice relied upon. Secured environments will not allow you to do that.
+

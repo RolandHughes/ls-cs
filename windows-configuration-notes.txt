@@ -1,0 +1,45 @@
+
+Windows notes
+
+To permanently change PATH and other environment variables type "environment" 
+in the Windows search bar then select "Edit the system environment variables." 
+Near the bottom of the System Properties dialog on the Advanced tab is a button
+for Environment Variables. Choose the system variable you wish to change and 
+click Edit button. Best if you log out and back in after changing variables. 
+
+
+
+Install community edition of VisualStudio to get compilers.
+
+Install Artistic Style - 
+    can be found here https://sourceforge.net/projects/astyle/files/astyle/
+    You will have to unzip someplace and add that place to your PATH
+    
+Install NSIS
+    can be found here https://sourceforge.net/projects/nsis/files/NSIS%202/
+    has an exe installer    
+
+
+Visual Studio Installer->modify->individual components
+    search for vcpkg and check to install
+    search for cli and check C++/CLI support (latest MSVC)
+    search for C++ CMake tools for Windows
+
+
+
+click the Windows start button and choose x64 Navite Tools Command Prompt for VS
+(might have slightly different name under Windows 11)
+
+change to the project directory 
+
+
+to create the vcpkg.json file one must
+
+vcpkg new --application
+vcpkg add port --triplet x64-windows openssl libpq libpqxx libmariadb zlib sqlite3
+
+All a new developer should have to do once the Visual Studio Installer steps is
+
+vcpkg install
+
+Once that lengthy process completes all necessary dependencies should be there.
