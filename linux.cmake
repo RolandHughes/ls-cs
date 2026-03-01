@@ -408,9 +408,9 @@ set_package_properties(GLib2 PROPERTIES
    URL "https://developer.gnome.org/glib"
    TYPE REQUIRED
 ) 
-
-find_package(GObject2)
-set_package_properties(GObject2 PROPERTIES
+#
+find_package(gobject-2.0)
+set_package_properties(gobject-2.0 PROPERTIES
    PURPOSE "Required for glib mainloop support"
    DESCRIPTION "The object system used for Pango and GTK+"
    URL "https://developer.gnome.org/gobject"

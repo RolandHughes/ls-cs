@@ -7,26 +7,28 @@ if [ `whoami` != root ]; then
     exit
 fi
 
-dnf install -t pattern devel_basis   
+dnf group install development-tools gcc-c++
 
 # executables first
-zypper install tree rpm-build rpmdevtools mercurial git cmake ninja fakeroot \
-               hashdeep dpkg-dev astyle hunspell
-               
-zypper install freetype-devel fontconfig-devel glib2-devel gstreamer-devel gstreamer-plugins-base-devel \
-            libICE-devel Mesa-devel Mesa-libGL-devel glibc-devel libtirpc-devel libnsl2 libSM-devel \
+dnf install tree rpm-build rpmdevtools mercurial git cmake ninja-build fakeroot \
+               md5deep dpkg-dev astyle hunspell gcc-c++
+
+dnf group install mesa
+
+dnf install freetype-devel fontconfig-devel glib2-devel gstreamer1-devel gstreamer1-plugins-base-devel \
+            libICE-devel glibc-devel libtirpc-devel libnsl2 libSM-devel libtiff-devel \
             libXcursor-devel libXext-devel libXfixes-devel libXi-devel libXinerama-devel \
             libXrandr-devel libXrender-devel libxkbcommon-devel libxkbcommon-x11-devel libX11-devel
 
-zypper install libxcb-devel libX11-xcb1 xcb-util-wm-devel xcb-util-image-devel \
-       xcb-util-keysyms-devel xcb-util-renderutil-devel alsa-devel cups-devel \
+dnf install libxcb-devel libX11-xcb xcb-util-wm-devel xcb-util-image-devel \
+       xcb-util-keysyms-devel xcb-util-renderutil-devel alsa-lib-devel cups-devel \
        libxkbfile-devel
 
 # note - OpenSuSE does not have C++ MySQL development support by default
 #
-zypper install libcups2 libasound2 libxml++-devel libopenssl-devel libpulse-devel \
-            hunspell-devel libpqxx-devel  unixODBC-devel libmysqlcppconn-devel \
-            postgresql-devel
+dnf install cups-libs alsa-lib libxml++-devel openssl-devel pulseaudio-libs-devel \
+            hunspell-devel libpqxx-devel  unixODBC-devel mysql-devel \
+            postgresql-devel sqlite-devel
 
 # By default OpenSuSE installs version 7 of C/C++ compilers. You need
 # at least version 13 to work with newer libraries.

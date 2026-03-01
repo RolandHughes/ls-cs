@@ -89,4 +89,14 @@ ldconfig
 # May have to force an entry in $PATH but unknown right now. cmake files should already look there
 
 %changelog
-# let's skip this for now -- really need to include
+* Sunday March 1 2026  Roland Hughes <roland@logikalsolutions.com> - 0.3.1
+- dropped support for Ubuntu 18.04 it may still work but you need newer versions of CMake and a few other things.
+- removed webkit
+- removed qdeclarative
+- removed system strings that said CopperSpice
+- added Liberation Sans font
+- removed mingw support
+- local build now deploys cmake files along with lscs.conf
+- removed RPATH ${origin}hacking CopperSpice relied upon. Secured environments will not allow you to do that.
+- cleaned up the install directory tree.
+- lscs.conf is now found where it should be and most legacy bugs that still exists in Qt today of not respecting paths is fixed. Cannot fix Libraries conf 
