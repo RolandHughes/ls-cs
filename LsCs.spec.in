@@ -21,7 +21,7 @@ rm -rf *
 # Populate the build directory
 
 cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_SKIP_BUILD_RPATH=TRUE \
+      -DCMAKE_SKIP_BUILD_RPATH=FALSE \
       -DBUILDING_RPM=ON \
       -DCMAKE_INSTALL_PREFIX="%{buildroot}/usr" \
       "@CMAKE_SOURCE_DIR@"
@@ -50,32 +50,26 @@ QA_RPATHS=\$[0x0023]
 
 ninja install
 
-#  Sweep up what CopperSpice gets wrong in their default build.
-#  They should not have let CMake generate this file.
-#
-#  TODO:: Look into this we should now have a better solution.
-sed -i 's#/usr/lib64/glib-2.0/include/LsCs#/usr/lib64/glib-2.0/include#g' "%{buildroot}/usr/%{_lib}/cmake/LsCs/LsCsLibraryTargets.cmake"
-
 #
 #  Run-time only
 #
 %files
-%exclude %{_libdir}/cmake
-%exclude %{_libdir}/pkgconfig
+%exclude %{_libdir}/@CPACK_PACKAGE_NAME@/cmake
+%exclude %{_datadir}/pkgconfig
 %exclude %{_includedir}
 %exclude %{_bindir}
 
-%{_libdir}
-%{_datadir}
+%{_libdir}/@CPACK_PACKAGE_NAME@
+%{_datadir}/*
 
 #
 #  Development
 #
 %files devel
-%{_includedir}
-%{_bindir}
-%{_libdir}
-%{_datadir}
+%{_includedir}/@CPACK_PACKAGE_NAME@
+%{_bindir}/*
+%{_libdir}/@CPACK_PACKAGE_NAME@
+%{_datadir}/*
 
 %post
 
@@ -89,7 +83,8 @@ ldconfig
 # May have to force an entry in $PATH but unknown right now. cmake files should already look there
 
 %changelog
-* Sunday March 1 2026  Roland Hughes <roland@logikalsolutions.com> - 0.3.1
+* Sun Mar 1 2026  Roland Hughes <roland@logikalsolutions.com> - 0.3.1
+
 - dropped support for Ubuntu 18.04 it may still work but you need newer versions of CMake and a few other things.
 - removed webkit
 - removed qdeclarative

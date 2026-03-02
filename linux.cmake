@@ -3,7 +3,7 @@
 # For building on any Linux or Unix flavored OS
 
 # Find the PkgConfig module
-# find_package(PkgConfig REQUIRED)
+find_package(PkgConfig REQUIRED)
 
 # used to control cmake/pc variables when building
 # installation packages
@@ -25,6 +25,10 @@ EXECUTE_PROCESS( COMMAND dpkg --print-architecture  OUTPUT_STRIP_TRAILING_WHITES
 EXECUTE_PROCESS( COMMAND arch  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE LIB_ARCHITECTURE)
 
 
+message( "*****************CMAKE_PACKAGE_ARCHITECTURE  ${CMAKE_PACKAGE_ARCHITECTURE}")
+
+message( "*****************LIB_ARCHITECTURE        ${LIB_ARCHITECTURE}")
+
 #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 #  Now that we are naming binaries appropriately and putting them in
 #  standard locations, all of this RPATH stuff trying to find binaries
@@ -34,17 +38,20 @@ EXECUTE_PROCESS( COMMAND arch  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE 
 #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 set(CMAKE_INSTALL_INCLUDEDIR "include/${CMAKE_PROJECT_NAME}")
-set(CMAKE_INSTALL_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
+
+if(EXISTS "/usr/lib64")
+    set(CMAKE_INSTALL_LIBDIR "lib64/${CMAKE_PROJECT_NAME}")
+else()
+    set(CMAKE_INSTALL_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
+endif()
 
 
 message( "*****************CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
 
 message( "*****************CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
 
-# message( "*****************LIBTOOL_INSTALL_PREFIX ${LIBTOOL_INSTALL_PREFIX} ")
 
 
-    
 
 # CMake is an odd duck. If you provide SOURCE_DIR definition for 
 # external project, PREFIX will not create the other directories.
@@ -409,8 +416,9 @@ set_package_properties(GLib2 PROPERTIES
    TYPE REQUIRED
 ) 
 #
-find_package(gobject-2.0)
-set_package_properties(gobject-2.0 PROPERTIES
+#pkg_check_modules(GObject2 REQUIRED IMPORTED_TARGET gobject-2.0)   
+find_package(GObject2)
+set_package_properties(GObject2 PROPERTIES
    PURPOSE "Required for glib mainloop support"
    DESCRIPTION "The object system used for Pango and GTK+"
    URL "https://developer.gnome.org/gobject"
