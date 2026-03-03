@@ -37,6 +37,8 @@ Development files for
 ninja
 
 %install
+mkdir -p %{buildroot}/etc/ld.so.conf.d
+cp LsCs-library.conf %{buildroot}/etc/ld.so.conf.d/
 
 # This variable gets rid of bogus RPATH error message
 #
@@ -61,6 +63,7 @@ ninja install
 
 %{_libdir}/@CPACK_PACKAGE_NAME@
 %{_datadir}/*
+%{_sysconfdir}/ld.so.conf.d/*
 
 #
 #  Development
@@ -70,6 +73,7 @@ ninja install
 %{_bindir}/*
 %{_libdir}/@CPACK_PACKAGE_NAME@
 %{_datadir}/*
+%{_sysconfdir}/ld.so.conf.d/*
 
 %post
 

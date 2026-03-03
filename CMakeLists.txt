@@ -14,7 +14,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 set(BUILD_MAJOR "0")
 set(BUILD_MINOR "3")
-set(BUILD_MICRO "1")
+set(BUILD_MICRO "2")
 
 # unused at this time: DBus, Declarative, and ScriptTools
 set(LSCS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Sql Svg XmlPatterns)
