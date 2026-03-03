@@ -132,7 +132,11 @@ if [ "$local_build" = true ] ; then
 
 
     if [ -z "${prefix_dir}"]; then
-        prefix_dir="$PWD/../../LsCs_local_release/lib/LsCs/cmake"
+        if [ -d "$PWD/../../LsCs_local_release/lib/LsCs/cmake" ]; then
+            prefix_dir="$PWD/../../LsCs_local_release/lib/LsCs/cmake"
+        else
+            prefix_dir="$PWD/../../LsCs_local_release/lib64/LsCs/cmake"
+        fi
     fi
 
     echo ""

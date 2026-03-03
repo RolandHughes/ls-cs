@@ -31,26 +31,18 @@ find_package(LsCs REQUIRED)
 # file locations for installing
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include(GNUInstallDirs)
-    # When building your own stand alone executables
-    # you really shouldn't use RPATH. That's only for
-    # locally built libraries you are testing/debugging.
-    # If you choose to use RPATH you need to comment this
-    # line out and uncomment one or more of the lines
-    # assigning a value to CMAKE_INSTALL_RPATH.
-    #
-    #set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+   #
+   # You really only need this line when building against a locally 
+   # installed library instead of system installed.
+   #set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
 
-    # When building your own stand alone executables
-    # you really shouldn't use RPATH. That's only for
-    # locally built libraries you are testing/debugging.
-    # If you choose to use RPATH you need to comment this
-    # line out and uncomment one or more of the lines
-    # assigning a value to CMAKE_INSTALL_RPATH.
-    #
-    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+   #
+   # You really only need this line when building against a locally 
+   # installed library instead of system installed.
+   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
    # lots of warnings and all warnings as errors
    add_compile_options(-Wall -Wextra -Wpedantic -Werror)

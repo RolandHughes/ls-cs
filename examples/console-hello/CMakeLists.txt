@@ -47,7 +47,9 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
 
    message( "We found Linux")
-   #set(CMAKE_INSTALL_RPATH "\$ORIGIN")
+   #
+   # You really only need this line when building against a locally 
+   # installed library instead of system installed.
    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
    # lots of warnings and all warnings as errors
