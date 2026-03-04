@@ -39,11 +39,26 @@ message( "*****************LIB_ARCHITECTURE        ${LIB_ARCHITECTURE}")
 
 set(CMAKE_INSTALL_INCLUDEDIR "include/${CMAKE_PROJECT_NAME}")
 
-if(EXISTS "/usr/lib64")
+# No good rules published for which directory to put libraries in.
+# Debian has lib lib32 and lib64 but only puts one file in lib64
+# Most Ubuntu based distributions use lib and have a different method
+# of supporting cross platform building.
+#
+execute_process(
+  COMMAND ${CMAKE_COMMAND} grep -i "debian\|ubuntu\|mint\|raspbian\|kali" /etc/os-release
+  OUTPUT_VARIABLE DEB_OUTPUT
+  RESULT_VARIABLE DEB_RESULT
+)
+
+if (NOT "${DEB_OUTPUT}" STREQUAL "")
+    set(CMAKE_INSTALL_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
+elseif( EXISTS "/etc/redhat-release" )
     set(CMAKE_INSTALL_LIBDIR "lib64/${CMAKE_PROJECT_NAME}")
 else()
+    # hope for best with lib    
     set(CMAKE_INSTALL_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
 endif()
+
 
 
 message( "*****************CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")

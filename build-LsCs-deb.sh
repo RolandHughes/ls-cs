@@ -115,10 +115,6 @@ function build_from_source()
     CORE_MINUS_1=$(( $(lscpu --parse=Core,Socket | grep -v '^#' | sort -u | wc -l) - 1 ))
     ninja -j $CORE_MINUS_1 install
 
-    #  Step 5: Sweep up what CopperSpice project gets wrong in their
-    #          default build.  TODO:: see if this is still needed
-    cd "$RELEASE_DIR/${LIB_DIR}/LsCs/cmake"
-    
     BUILD_FROM_SOURCE_COMPLETED=$( date '+%F_%H:%M:%S' )
 }
 
