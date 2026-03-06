@@ -37,9 +37,12 @@ echo "To build Postgresql support you need to install the postgresql-server-dev-
 echo "it will install a ton of dependencies.  If you want to actually use Postgresql then uncomment "
 echo "the following line: "
 echo "#sudo apt-get install postgresql postgresql-client postgresql-contrib"
-
+echo " "
 #sudo apt-get install postgresql postgresql-client postgresql-contrib
-
+echo " "
 echo "For Ubuntu 20.04   sudo apt-get install postgresql-server-dev-12"
 echo "For Ubuntu 22.04   sudo apt-get install postgresql-server-dev-14"
 echo "For Ubuntu 24.04   sudo apt-get install postgresql-server-dev-16"
+echo " "
+echo " "
+echo "MX Linux also needs to install libgirepository1.0-dev because of how they split gobject dev"
