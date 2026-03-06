@@ -45,7 +45,7 @@ set(CMAKE_INSTALL_INCLUDEDIR "include/${CMAKE_PROJECT_NAME}")
 # of supporting cross platform building.
 #
 execute_process(
-  COMMAND ${CMAKE_COMMAND} grep -i "debian\|ubuntu\|mint\|raspbian\|kali" /etc/os-release
+  COMMAND grep -i "debian\|ubuntu\|mint\|raspbian\|kali" /etc/os-release
   OUTPUT_VARIABLE DEB_OUTPUT
   RESULT_VARIABLE DEB_RESULT
 )
@@ -431,14 +431,15 @@ set_package_properties(GLib2 PROPERTIES
    TYPE REQUIRED
 ) 
 #
-#pkg_check_modules(GObject2 REQUIRED IMPORTED_TARGET gobject-2.0)   
-find_package(GObject2)
-set_package_properties(GObject2 PROPERTIES
-   PURPOSE "Required for glib mainloop support"
-   DESCRIPTION "The object system used for Pango and GTK+"
-   URL "https://developer.gnome.org/gobject"
-   TYPE REQUIRED
-)
+message( "NOTE ****  MX Linux needs pkg_check_modules  all other platforms find_package")
+pkg_check_modules(GObject2 REQUIRED IMPORTED_TARGET gobject-2.0)   
+#find_package(GObject2)
+#set_package_properties(GObject2 PROPERTIES
+#   PURPOSE "Required for glib mainloop support"
+#   DESCRIPTION "The object system used for Pango and GTK+"
+#   URL "https://developer.gnome.org/gobject"
+#   TYPE REQUIRED
+#)
 
 find_package(Iconv)
 set_package_properties(Iconv PROPERTIES
