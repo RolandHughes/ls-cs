@@ -28,11 +28,15 @@ apt-get install -y libfreetype6-dev libfontconfig1-dev libglib2.0-dev libgstream
 apt-get install -y libxcb1-dev libx11-xcb-dev libxcb-glx0-dev libxcb-icccm4-dev \
         libxcb-image0-dev libxcb-keysyms1-dev libxcb-render0-dev libxcb-render-util0-dev \
         libxcb-randr0-dev libxcb-shape0-dev libxcb-shm0-dev libxcb-sync-dev \
-        libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-xkb-dev
+        libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-xkb-dev \
+        libxcb-input-dev libxcb-xinput0
+        
+# Ubuntu 24.04 does not automatically install libxcb-input-dev and
+# libxcb-xinput0 with other packages anymore.        
 
 apt-get install -y libcups2-dev libasound2-dev libxml++2.6-dev \
         libssl-dev libpulse-dev libhunspell-dev unixodbc-dev libmysql++-dev libvulkan-dev
-
+        
 echo "To build Postgresql support you need to install the postgresql-server-dev-nn package for your distro"
 echo "it will install a ton of dependencies.  If you want to actually use Postgresql then uncomment "
 echo "the following line: "
