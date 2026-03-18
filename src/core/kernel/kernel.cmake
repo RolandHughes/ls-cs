@@ -165,7 +165,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qeventdispatcher_unix.cpp
    )
 
-   if(GTK2_FOUND)
+   if(GLIB2_FOUND)
       target_sources(LsCsCore
          PRIVATE
          ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qeventdispatcher_glib.cpp
@@ -176,7 +176,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
        )
        target_link_libraries(LsCsCore
          PRIVATE
-         ${GLIB2_LIBRARIES}
+         PkgConfig::GLIB2
        )
        
    endif()

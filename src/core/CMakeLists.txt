@@ -33,12 +33,13 @@ target_compile_definitions(LsCsCore
 #    target_link_libraries(LsCsCore PRIVATE ls_libtoola)
 #endif()
 
+if (GLIB2_FOUND)
 
-if (GTK2_FOUND)
+   message( "$$$$$$$$$$$$$$$$$$$$$$$$$   adding libraries to core")
    target_link_libraries(LsCsCore
       PRIVATE
-      ${GLIB2_LIBRARIES}
-      ${GOBJECT2_LIBRARIES}
+      PkgConfig::GLIB2
+      PkgConfig::GObject2
    )
 
 else()

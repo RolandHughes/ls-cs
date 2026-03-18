@@ -16,15 +16,14 @@ dnf install tree rpm-build rpmdevtools mercurial git cmake ninja-build fakeroot 
 # dnf group install --skip-unavailable mesa
 
 dnf install freetype-devel fontconfig-devel glib2-devel gstreamer1-devel gstreamer1-plugins-base-devel \
-            libICE-devel mesa-libGL-devel libtirpc-devel libnsl2 libSM-devel libtiff-devel \
+            libICE-devel mesa-libGL-devel glibc-devel libtirpc-devel libnsl2-devel libSM-devel \
             libXcursor-devel libXext-devel libXfixes-devel libXi-devel libXinerama-devel \
             libXrandr-devel libXrender-devel libxkbcommon-devel libxkbcommon-x11-devel libX11-devel 
             
-
+# wayland-devel libwayland-client libwayland-cursor gobject-introspection-devel
 dnf install libxcb-devel libX11-xcb xcb-util-wm-devel xcb-util-image-devel \
        xcb-util-keysyms-devel xcb-util-renderutil-devel alsa-lib-devel cups-devel \
-       libxkbfile-devel wayland-devel libwayland-client libwayland-cursor \
-       gobject-introspection-devel
+       libxkbfile-devel  libtiff-devel 
 
 # note - OpenSuSE does not have C++ MySQL development support by default
 #

@@ -131,19 +131,20 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
       ${CMAKE_SOURCE_DIR}/src/3rdparty/harbuzz/src
    )
 
-   if(GTK2_FOUND)
+   if(GLIB2_FOUND)
       target_link_libraries(LsCsXcbSupport
          PRIVATE
-         ${GLIB2_LIBRARIES}
-         ${GOBJECT2_LIBRARIES}
+         PkgConfig::GLIB2
+         PkgConfig::GObject2
       )
-
-      target_sources(LsCsGuiXcb
+        message( "$$$$$$$$$$$$$$$$$$$$$$$$$$ xcb_support GLIB2_FOUND  ${GLIB2_FOUND} adding event dispatcher glib")
+      target_sources(LsCsXcbSupport
          PRIVATE
          ${CMAKE_CURRENT_SOURCE_DIR}/xcb/events/qxcb_eventdispatcher_glib.cpp
       )
 
    else()
+        message( "$$$$$$$$$$$$$$$$$$$$$$$$$$ xcb_support GLIB2_FOUND false not adding event dispatcher glib")
       target_compile_definitions(LsCsXcbSupport
          PRIVATE
          -DLSCS_NO_GLIB

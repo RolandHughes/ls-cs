@@ -423,23 +423,24 @@ set_package_properties(Threads PROPERTIES
    TYPE REQUIRED
 )
 
-find_package(GLib2)
-set_package_properties(GLib2 PROPERTIES
+pkg_check_modules(GLIB2 REQUIRED IMPORTED_TARGET glib-2.0)
+set_package_properties(GLIB2 PROPERTIES
    PURPOSE "Required for glib mainloop support"
    DESCRIPTION "GNOME core library"
    URL "https://developer.gnome.org/glib"
-   TYPE REQUIRED
 ) 
+
+message( "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ GLIB2_FOUND   ${GLIB2_FOUND}")
 #
-message( "NOTE ****  MX Linux needs pkg_check_modules  all other platforms find_package")
+#message( "NOTE ****  MX Linux needs pkg_check_modules  all other platforms find_package")
 pkg_check_modules(GObject2 REQUIRED IMPORTED_TARGET gobject-2.0)   
 #find_package(GObject2)
-#set_package_properties(GObject2 PROPERTIES
-#   PURPOSE "Required for glib mainloop support"
-#   DESCRIPTION "The object system used for Pango and GTK+"
-#   URL "https://developer.gnome.org/gobject"
-#   TYPE REQUIRED
-#)
+set_package_properties(GObject2 PROPERTIES
+   PURPOSE "Required for glib mainloop support"
+   DESCRIPTION "The object system used for Pango and GTK+"
+   URL "https://developer.gnome.org/gobject"
+   TYPE REQUIRED
+)
 
 find_package(Iconv)
 set_package_properties(Iconv PROPERTIES

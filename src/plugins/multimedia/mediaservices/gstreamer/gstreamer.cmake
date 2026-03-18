@@ -125,9 +125,14 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
       ${GSTREAMER_AUDIO_LIBRARIES}
       ${GSTREAMER_VIDEO_LIBRARIES}
       ${GSTREAMER_APP_LIBRARIES}
-      ${GLIB2_LIBRARIES}
-      ${GOBJECT2_LIBRARIES}
    )
+
+    if (GLIB2_FOUND)
+       target_link_libraries(LsCsMultimedia_gst_audiodecoder
+            PkgConfig::GLIB2
+            PkgConfig::GObject2
+        )
+    endif()
 
    if (GSTREAMER_ABI_VERSION VERSION_EQUAL "0.10")
       target_link_libraries(LsCsMultimedia_gst_audiodecoder
@@ -215,9 +220,15 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
       ${GSTREAMER_LIBRARIES}
       ${GSTREAMER_AUDIO_LIBRARIES}
       ${GSTREAMER_VIDEO_LIBRARIES}
-      ${GLIB2_LIBRARIES}
-      ${GOBJECT2_LIBRARIES}
    )
+
+    if (GLIB2_FOUND)
+       target_link_libraries(LsCsMultimedia_gst_camerabin
+            PkgConfig::GLIB2
+            PkgConfig::GObject2
+        )
+    endif()
+
 
    if (GSTREAMER_ABI_VERSION VERSION_EQUAL "0.10")
       target_link_libraries(LsCsMultimedia_gst_camerabin
@@ -296,9 +307,14 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
       ${GSTREAMER_AUDIO_LIBRARIES}
       ${GSTREAMER_VIDEO_LIBRARIES}
       ${GSTREAMER_APP_LIBRARIES}
-      ${GLIB2_LIBRARIES}
-      ${GOBJECT2_LIBRARIES}
    )
+
+    if (GLIB2_FOUND)
+       target_link_libraries(LsCsMultimedia_gst_mediaplayer
+            PkgConfig::GLIB2
+            PkgConfig::GObject2
+        )
+    endif()
 
    if (GSTREAMER_ABI_VERSION VERSION_EQUAL "0.10")
       target_link_libraries(LsCsMultimedia_gst_mediaplayer

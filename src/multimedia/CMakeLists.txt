@@ -76,6 +76,13 @@ target_link_libraries(LsCsMultimedia
    LsCsOpenGL
 )
 
+if (GLIB2_FOUND)
+    target_link_libraries(LsCsMultimedia
+        PRIVATE
+        PkgConfig::GLIB2
+    )
+endif()
+
 target_include_directories(LsCsMultimedia
    PUBLIC
    ${GSTREAMER_INCLUDE_DIRS}
