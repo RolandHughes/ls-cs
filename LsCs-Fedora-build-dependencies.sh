@@ -28,8 +28,8 @@ dnf install libxcb-devel libX11-xcb xcb-util-wm-devel xcb-util-image-devel \
 # note - OpenSuSE does not have C++ MySQL development support by default
 #
 dnf install cups-libs alsa-lib libxml++-devel openssl-devel pulseaudio-libs-devel \
-            hunspell-devel libpqxx-devel  unixODBC-devel mysql-devel \
-            postgresql-devel sqlite-devel
+            hunspell-devel  unixODBC-devel mysql-devel \
+            postgresql postgresql-contrib postgresql-server-devel sqlite-devel
 
 # By default OpenSuSE installs version 7 of C/C++ compilers. You need
 # at least version 13 to work with newer libraries.
