@@ -420,83 +420,83 @@ private:
     void lscs_GenerateTextureMipmap( GLuint texture, GLenum target, GLenum bindingTarget );
 
     void lscs_TextureStorage3D( GLuint texture, GLenum target, GLenum bindingTarget, GLsizei levels,
-                              GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth );
+                                GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth );
 
     void lscs_TextureStorage2D( GLuint texture, GLenum target, GLenum bindingTarget, GLsizei levels,
-                              GLenum internalFormat, GLsizei width, GLsizei height );
+                                GLenum internalFormat, GLsizei width, GLsizei height );
 
     void lscs_TextureStorage1D( GLuint texture, GLenum target, GLenum bindingTarget, GLsizei levels,
-                              GLenum internalFormat, GLsizei width );
+                                GLenum internalFormat, GLsizei width );
 
     void lscs_TextureStorage3DMultisample( GLuint texture, GLenum target, GLenum bindingTarget, GLsizei samples,
-                                         GLenum internalFormat, GLsizei width, GLsizei height,
-                                         GLsizei depth, GLboolean fixedSampleLocations );
+                                           GLenum internalFormat, GLsizei width, GLsizei height,
+                                           GLsizei depth, GLboolean fixedSampleLocations );
 
     void lscs_TextureStorage2DMultisample( GLuint texture, GLenum target, GLenum bindingTarget, GLsizei samples,
-                                         GLenum internalFormat, GLsizei width, GLsizei height,
-                                         GLboolean fixedSampleLocations );
+                                           GLenum internalFormat, GLsizei width, GLsizei height,
+                                           GLboolean fixedSampleLocations );
 
     void lscs_TextureImage3D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level, GLenum internalFormat,
-                            GLsizei width, GLsizei height, GLsizei depth,
-                            GLint border, GLenum format, GLenum type,
-                            const GLvoid *pixels );
+                              GLsizei width, GLsizei height, GLsizei depth,
+                              GLint border, GLenum format, GLenum type,
+                              const GLvoid *pixels );
 
     void lscs_TextureImage2D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level, GLenum internalFormat,
-                            GLsizei width, GLsizei height,
-                            GLint border, GLenum format, GLenum type,
-                            const GLvoid *pixels );
+                              GLsizei width, GLsizei height,
+                              GLint border, GLenum format, GLenum type,
+                              const GLvoid *pixels );
 
     void lscs_TextureImage1D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level, GLenum internalFormat,
-                            GLsizei width, GLint border, GLenum format, GLenum type,
-                            const GLvoid *pixels );
+                              GLsizei width, GLint border, GLenum format, GLenum type,
+                              const GLvoid *pixels );
 
     void lscs_TextureSubImage3D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level,
-                               GLint xoffset, GLint yoffset, GLint zoffset,
-                               GLsizei width, GLsizei height, GLsizei depth,
-                               GLenum format, GLenum type, const GLvoid *pixels );
+                                 GLint xoffset, GLint yoffset, GLint zoffset,
+                                 GLsizei width, GLsizei height, GLsizei depth,
+                                 GLenum format, GLenum type, const GLvoid *pixels );
 
     void lscs_TextureSubImage2D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level,
-                               GLint xoffset, GLint yoffset,
-                               GLsizei width, GLsizei height,
-                               GLenum format, GLenum type, const GLvoid *pixels );
+                                 GLint xoffset, GLint yoffset,
+                                 GLsizei width, GLsizei height,
+                                 GLenum format, GLenum type, const GLvoid *pixels );
 
     void lscs_TextureSubImage1D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level,
-                               GLint xoffset, GLsizei width,
-                               GLenum format, GLenum type, const GLvoid *pixels );
+                                 GLint xoffset, GLsizei width,
+                                 GLenum format, GLenum type, const GLvoid *pixels );
 
     void lscs_TextureImage3DMultisample( GLuint texture, GLenum target, GLenum bindingTarget, GLsizei samples,
-                                       GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth,
-                                       GLboolean fixedSampleLocations );
+                                         GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth,
+                                         GLboolean fixedSampleLocations );
 
     void lscs_TextureImage2DMultisample( GLuint texture, GLenum target, GLenum bindingTarget, GLsizei samples,
-                                       GLint internalFormat, GLsizei width, GLsizei height,
-                                       GLboolean fixedSampleLocations );
+                                         GLint internalFormat, GLsizei width, GLsizei height,
+                                         GLboolean fixedSampleLocations );
 
     void lscs_CompressedTextureSubImage1D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level,
-                                         GLint xoffset, GLsizei width, GLenum format,
-                                         GLsizei imageSize, const GLvoid *bits );
+                                           GLint xoffset, GLsizei width, GLenum format,
+                                           GLsizei imageSize, const GLvoid *bits );
 
     void lscs_CompressedTextureSubImage2D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level,
-                                         GLint xoffset, GLint yoffset,
-                                         GLsizei width, GLsizei height,
-                                         GLenum format, GLsizei imageSize, const GLvoid *bits );
+                                           GLint xoffset, GLint yoffset,
+                                           GLsizei width, GLsizei height,
+                                           GLenum format, GLsizei imageSize, const GLvoid *bits );
 
     void lscs_CompressedTextureSubImage3D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level,
-                                         GLint xoffset, GLint yoffset, GLint zoffset,
-                                         GLsizei width, GLsizei height, GLsizei depth,
-                                         GLenum format, GLsizei imageSize, const GLvoid *bits );
+                                           GLint xoffset, GLint yoffset, GLint zoffset,
+                                           GLsizei width, GLsizei height, GLsizei depth,
+                                           GLenum format, GLsizei imageSize, const GLvoid *bits );
 
     void lscs_CompressedTextureImage1D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level, GLenum internalFormat,
-                                      GLsizei width, GLint border,
-                                      GLsizei imageSize, const GLvoid *bits );
+                                        GLsizei width, GLint border,
+                                        GLsizei imageSize, const GLvoid *bits );
 
     void lscs_CompressedTextureImage2D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level, GLenum internalFormat,
-                                      GLsizei width, GLsizei height, GLint border,
-                                      GLsizei imageSize, const GLvoid *bits );
+                                        GLsizei width, GLsizei height, GLint border,
+                                        GLsizei imageSize, const GLvoid *bits );
 
     void lscs_CompressedTextureImage3D( GLuint texture, GLenum target, GLenum bindingTarget, GLint level, GLenum internalFormat,
-                                      GLsizei width, GLsizei height, GLsizei depth, GLint border,
-                                      GLsizei imageSize, const GLvoid *bits );
+                                        GLsizei width, GLsizei height, GLsizei depth, GLint border,
+                                        GLsizei imageSize, const GLvoid *bits );
 
 public:
     // Raw OpenGL functions, resolved and used by our DSA-like static functions if no EXT_direct_state_access is available

@@ -126,9 +126,9 @@ static inline void blend_pixel( quint32 &dst, const quint32 src )
 }
 
 void lscs_blend_argb32_on_argb32_ssse3( uchar *destPixels, int dbpl,
-                                      const uchar *srcPixels, int sbpl,
-                                      int w, int h,
-                                      int const_alpha )
+                                        const uchar *srcPixels, int sbpl,
+                                        int w, int h,
+                                        int const_alpha )
 {
     const quint32 *src = ( const quint32 * ) srcPixels;
     quint32 *dst = ( quint32 * ) destPixels;

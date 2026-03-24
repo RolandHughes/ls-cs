@@ -130,7 +130,6 @@ void QWindowsUser32DLL::init()
 {
     QSystemLibrary library( "user32" );
 
-    // MinGW (g++ 3.4.5) accepts only C casts.
     setLayeredWindowAttributes = ( SetLayeredWindowAttributes )( library.resolve( "SetLayeredWindowAttributes" ) );
     updateLayeredWindow = ( UpdateLayeredWindow )( library.resolve( "UpdateLayeredWindow" ) );
 
@@ -424,14 +423,14 @@ QString QWindowsContext::registerWindowClass( const QWindow *w )
     const Qt::WindowFlags type = flags & Qt::WindowType_Mask;
 
     // Determine style and icon.
-    uint style = LSCS_DBLCLKS;
+    uint style = CS_DBLCLKS;
     bool icon = true;
 
-    // The following will not set LSCS_OWNDC for any widget window, even if it contains a
+    // The following will not set CS_OWNDC for any widget window, even if it contains a
     // QOpenGLWidget or QQuickWidget later on. That cannot be detected at this stage.
     if ( w->surfaceType() == QSurface::OpenGLSurface || ( flags & Qt::MSWindowsOwnDC ) )
     {
-        style |= LSCS_OWNDC;
+        style |= CS_OWNDC;
     }
 
     if ( !( flags & Qt::NoDropShadowWindowHint ) && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based )
@@ -445,7 +444,7 @@ QString QWindowsContext::registerWindowClass( const QWindow *w )
         case Qt::Tool:
         case Qt::ToolTip:
         case Qt::Popup:
-            style |= LSCS_SAVEBITS; // Save/restore background
+            style |= CS_SAVEBITS; // Save/restore background
             icon = false;
             break;
 
@@ -484,12 +483,12 @@ QString QWindowsContext::registerWindowClass( const QWindow *w )
         cname += QString( "DropShadow" );
     }
 
-    if ( style & LSCS_SAVEBITS )
+    if ( style & CS_SAVEBITS )
     {
         cname += QString( "SaveBits" );
     }
 
-    if ( style & LSCS_OWNDC )
+    if ( style & CS_OWNDC )
     {
         cname += QString( "OwnDC" );
     }

@@ -275,11 +275,6 @@
 #define LSCS_NO_STYLE_CDE
 #endif
 
-// QWindowsXPStyle
-#if !defined(LSCS_NO_STYLE_WINDOWSXP) && (defined(LSCS_NO_STYLE_WINDOWS))
-#define LSCS_NO_STYLE_WINDOWSXP
-#endif
-
 // QToolButton
 #if !defined(LSCS_NO_TOOLBUTTON) && (defined(LSCS_NO_ACTION))
 #define LSCS_NO_TOOLBUTTON
@@ -308,11 +303,6 @@
 // QScrollArea
 #if !defined(LSCS_NO_SCROLLAREA) && (defined(LSCS_NO_SCROLLBAR))
 #define LSCS_NO_SCROLLAREA
-#endif
-
-// QWindowsVistaStyle
-#if !defined(LSCS_NO_STYLE_WINDOWSVISTA) && (defined(LSCS_NO_STYLE_WINDOWSXP))
-#define LSCS_NO_STYLE_WINDOWSVISTA
 #endif
 
 // QTabBar

@@ -110,7 +110,7 @@ public:
     // ** B  slot is a function pointer (without receiver)
     template <typename T>
     static typename std::enable_if < ! std::is_member_function_pointer<T>::value &&
-    ! std::is_convertible<T, QString>::value && ! std::is_convertible<T, const char *>::value, void >::type singleShot( int msec,
+    ! std::is_convertible<T, QString>::value&& ! std::is_convertible<T, const char *>::value, void >::type singleShot( int msec,
             T slotMethod )
     {
         singleShot( msec, msec >= 2000 ? Qt::CoarseTimer : Qt::PreciseTimer, nullptr, slotMethod );
@@ -118,7 +118,7 @@ public:
 
     template <typename T>
     static typename std::enable_if < ! std::is_member_function_pointer<T>::value &&
-    ! std::is_convertible<T, QString>::value && ! std::is_convertible<T, const char *>::value, void >::type singleShot( int msec,
+    ! std::is_convertible<T, QString>::value&& ! std::is_convertible<T, const char *>::value, void >::type singleShot( int msec,
             Qt::TimerType timerType, T slotMethod )
     {
         singleShot( msec, timerType, nullptr, slotMethod );
@@ -127,7 +127,7 @@ public:
     // ** C  slot is a function pointer (with receiver)
     template <typename T>
     static inline typename std::enable_if < ! std::is_member_function_pointer<T>::value &&
-    ! std::is_convertible<T, QString>::value && ! std::is_convertible<T, const char *>::value, void >::type singleShot( int msec,
+    ! std::is_convertible<T, QString>::value&& ! std::is_convertible<T, const char *>::value, void >::type singleShot( int msec,
             QObject *receiver, T slotMethod )
     {
         singleShot( msec, msec >= 2000 ? Qt::CoarseTimer : Qt::PreciseTimer, receiver, slotMethod );
@@ -135,7 +135,7 @@ public:
 
     template <typename T>
     static typename std::enable_if < ! std::is_member_function_pointer<T>::value &&
-    ! std::is_convertible<T, QString>::value && ! std::is_convertible<T, const char *>::value, void >::type singleShot( int msec,
+    ! std::is_convertible<T, QString>::value&& ! std::is_convertible<T, const char *>::value, void >::type singleShot( int msec,
             Qt::TimerType timerType, QObject *receiver, T slotMethod )
     {
 

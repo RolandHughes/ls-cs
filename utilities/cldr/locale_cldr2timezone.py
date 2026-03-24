@@ -301,13 +301,13 @@ def usage():
 
 def main():
    if len(sys.argv) != 2:
-       print("Missing CopperSpice path parameter")
+       print("Missing LsCs path parameter")
        usage()
 
    lscs_source  = sys.argv[1]
 
    if not os.path.isdir(lscs_source):
-       print("Issue: Path to CopperSpice source does not exist")
+       print("Issue: Path to LsCs source does not exist")
        usage()
 
    # configure output for utf-8

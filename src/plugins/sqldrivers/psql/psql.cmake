@@ -14,11 +14,20 @@ if(WITH_PSQL_PLUGIN AND PostgreSQL_FOUND)
    add_library(LsCsSqlPsql MODULE "")
    add_library(LsCs::CsSqlPsql ALIAS LsCsSqlPsql)
 
-   set_target_properties(LsCsSqlPsql PROPERTIES
-     PREFIX ""
-     VERSION ${BUILD_ABI}
-     SOVERSION ${BUILD_MAJOR}
-   )
+   if ( BUILDING_LOCAL )
+       set_target_properties(LsCsSqlPsql PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+         INSTALL_RPATH "${LSCS_INST_PREFIX}/${LSCS_INST_LIB};${LSCS_INST_PREFIX}/${LSCS_INST_LIB}/plugins/sqldrivers"
+       )
+   else()
+       set_target_properties(LsCsSqlPsql PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+       )
+   endif()
 
    include_directories(${PostgreSQL_INCLUDE_DIRS})
 

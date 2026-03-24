@@ -121,7 +121,7 @@ static bool createFileFromTemplate( NativeFileHandle &fHandle, QString &fName,
 
 #else
         fHandle = LSCS_OPEN( fName.constData(), LSCS_OPEN_CREAT | O_EXCL | LSCS_OPEN_RDWR | LSCS_OPEN_LARGEFILE,
-                           static_cast<mode_t>( mode ) );
+                             static_cast<mode_t>( mode ) );
 
         if ( fHandle != -1 )
         {

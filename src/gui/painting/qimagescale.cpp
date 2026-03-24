@@ -283,12 +283,12 @@ void lscs_qimageScaleAARGBA_down_x_up_y_sse4( QImageScaleInfo *isi, unsigned int
 
 template <bool RGB>
 void lscs_qimageScaleAARGBA_down_xy_sse4( QImageScaleInfo *isi, unsigned int *dest,
-                                        int dw, int dh, int dow, int sow );
+        int dw, int dh, int dow, int sow );
 
 #endif
 
 static void lscs_qimageScaleAARGBA_up_xy( QImageScaleInfo *isi, unsigned int *dest,
-                                        int dw, int dh, int dow, int sow )
+        int dw, int dh, int dow, int sow )
 {
     const unsigned int **ypoints = isi->ypoints;
     int *xpoints = isi->xpoints;
@@ -346,7 +346,7 @@ static void lscs_qimageScaleAARGBA_up_xy( QImageScaleInfo *isi, unsigned int *de
 
 /* scale by area sampling */
 static void lscs_qimageScaleAARGBA( QImageScaleInfo *isi, unsigned int *dest,
-                                  int dw, int dh, int dow, int sow )
+                                    int dw, int dh, int dow, int sow )
 {
     /* scaling up both ways */
     if ( isi->xup_yup == 3 )
@@ -581,7 +581,7 @@ static void lscs_qimageScaleAARGB_down_xy( QImageScaleInfo *isi, unsigned int *d
 
 /* scale by area sampling - IGNORE the ALPHA byte*/
 static void lscs_qimageScaleAARGB( QImageScaleInfo *isi, unsigned int *dest,
-                                 int dw, int dh, int dow, int sow )
+                                   int dw, int dh, int dow, int sow )
 {
     /* scaling up both ways */
     if ( isi->xup_yup == 3 )
@@ -824,10 +824,10 @@ QImage qSmoothScaleImage( const QImage &src, int dw, int dh )
 
     if ( src.hasAlphaChannel() )
         lscs_qimageScaleAARGBA( scaleinfo, ( unsigned int * )buffer.scanLine( 0 ),
-                              dw, dh, dw, src.bytesPerLine() / 4 );
+                                dw, dh, dw, src.bytesPerLine() / 4 );
     else
         lscs_qimageScaleAARGB( scaleinfo, ( unsigned int * )buffer.scanLine( 0 ),
-                             dw, dh, dw, src.bytesPerLine() / 4 );
+                               dw, dh, dw, src.bytesPerLine() / 4 );
 
     qimageFreeScaleInfo( scaleinfo );
     return buffer;

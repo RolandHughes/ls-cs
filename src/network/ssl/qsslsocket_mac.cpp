@@ -72,7 +72,8 @@ static void lscs_releaseSecureTransportContext( SSLContextRef context )
     CFRelease( context );
 }
 
-static bool lscs_setSessionProtocol( SSLContextRef context, const QSslConfigurationPrivate &configuration, QTcpSocket *plainSocket )
+static bool lscs_setSessionProtocol( SSLContextRef context, const QSslConfigurationPrivate &configuration,
+                                     QTcpSocket *plainSocket )
 {
     Q_ASSERT( context );
 
@@ -187,7 +188,7 @@ static bool lscs_setSessionProtocol( SSLContextRef context, const QSslConfigurat
 
 
 static bool lscs_setSessionProtocolOSX( SSLContextRef context, const QSslConfigurationPrivate &configuration,
-                                      QTcpSocket *plainSocket )
+                                        QTcpSocket *plainSocket )
 {
     // Without SSLSetProtocolVersionMin/Max functions it's quite difficult
     // to have the required result:

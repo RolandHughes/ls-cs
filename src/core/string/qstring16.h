@@ -1381,7 +1381,7 @@ inline void swap( QString16 &a, QString16 &b )
 }
 
 QString16 lscs_internal_string_normalize( const QString16 &data, QString16::NormalizationForm mode,
-                                        QChar32::UnicodeVersion version, int from );
+        QChar32::UnicodeVersion version, int from );
 
 #if defined(__cpp_char8_t)
 // support new data type added in C++20

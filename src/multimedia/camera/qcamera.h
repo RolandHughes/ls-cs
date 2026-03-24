@@ -264,9 +264,10 @@ public:
     MULTI_LSCS_SIGNAL_OVERLOAD( lockStatusChanged, ( QCamera::LockStatus, QCamera::LockChangeReason ), status, reason )
 
     MULTI_LSCS_SIGNAL_1( Public, void lockStatusChanged( QCamera::LockType type, QCamera::LockStatus status,
-                       QCamera::LockChangeReason reason ) )
-    MULTI_LSCS_SIGNAL_OVERLOAD( lockStatusChanged, ( QCamera::LockType, QCamera::LockStatus, QCamera::LockChangeReason ), type, status,
-                              reason )
+                         QCamera::LockChangeReason reason ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( lockStatusChanged, ( QCamera::LockType, QCamera::LockStatus, QCamera::LockChangeReason ), type,
+                                status,
+                                reason )
 
 private:
     Q_DECLARE_PRIVATE( QCamera )
@@ -281,7 +282,7 @@ private:
     MULTI_LSCS_SLOT_2( _q_error )
 
     MULTI_LSCS_SLOT_1( Private, void _q_updateLockStatus( QCamera::LockType type, QCamera::LockStatus status,
-                     QCamera::LockChangeReason reason ) )
+                       QCamera::LockChangeReason reason ) )
     MULTI_LSCS_SLOT_2( _q_updateLockStatus )
 
     MULTI_LSCS_SLOT_1( Private, void _q_updateState( QCamera::State state ) )

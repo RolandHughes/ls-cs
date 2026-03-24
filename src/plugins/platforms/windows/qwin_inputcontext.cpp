@@ -462,7 +462,7 @@ bool QWindowsInputContext::composition( HWND hwnd, LPARAM lParamIn )
         m_compositionContext.position = ImmGetCompositionString( himc, GCS_CURSORPOS, nullptr, 0 );
         getCompositionStringConvertedRange( himc, &selStart, &selLength );
 
-        if ( ( lParam & LSCS_INSERTCHAR ) && ( lParam & LSCS_NOMOVECARET ) )
+        if ( ( lParam & CS_INSERTCHAR ) && ( lParam & CS_NOMOVECARET ) )
         {
             // make Korean work correctly. Hope this is correct for all IMEs
             selStart = 0;

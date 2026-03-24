@@ -157,7 +157,7 @@ struct Blend_ARGB32_on_RGB16_SourceAndConstAlpha
 };
 
 void lscs_scale_image_rgb16_on_rgb16( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl, int srch,
-                                    const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip, int const_alpha )
+                                      const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip, int const_alpha )
 {
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "lscs_scale_rgb16_on_rgb16() dst = (%p, %d), src = (%p, %d), target = (%f, %f), [%f x %f], "
@@ -171,7 +171,7 @@ void lscs_scale_image_rgb16_on_rgb16( uchar *destPixels, int dbpl, const uchar *
         Blend_RGB16_on_RGB16_NoAlpha noAlpha;
 
         lscs_scale_image_16bit<quint16>( destPixels, dbpl, srcPixels, sbpl, srch,
-                                       targetRect, sourceRect, clip, noAlpha );
+                                         targetRect, sourceRect, clip, noAlpha );
 
     }
     else
@@ -179,12 +179,12 @@ void lscs_scale_image_rgb16_on_rgb16( uchar *destPixels, int dbpl, const uchar *
         Blend_RGB16_on_RGB16_ConstAlpha constAlpha( const_alpha );
 
         lscs_scale_image_16bit<quint16>( destPixels, dbpl, srcPixels, sbpl, srch,
-                                       targetRect, sourceRect, clip, constAlpha );
+                                         targetRect, sourceRect, clip, constAlpha );
     }
 }
 
 void lscs_scale_image_argb32_on_rgb16( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl, int srch,
-                                     const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip, int const_alpha )
+                                       const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip, int const_alpha )
 {
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "lscs_scale_argb32_on_rgb16() dst = (%p, %d), src =(%p, %d), target = (%f, %f), [%f x %f], "
@@ -204,7 +204,7 @@ void lscs_scale_image_argb32_on_rgb16( uchar *destPixels, int dbpl, const uchar 
         Blend_ARGB32_on_RGB16_SourceAndConstAlpha constAlpha( const_alpha );
 
         lscs_scale_image_16bit<quint32>( destPixels, dbpl, srcPixels, sbpl, srch,
-                                       targetRect, sourceRect, clip, constAlpha );
+                                         targetRect, sourceRect, clip, constAlpha );
     }
 }
 
@@ -288,7 +288,7 @@ void lscs_blend_argb32_on_rgb16_const_alpha( uchar *destPixels, int dbpl, const 
 }
 
 static void lscs_blend_argb32_on_rgb16( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
-                                      int w, int h, int const_alpha )
+                                        int w, int h, int const_alpha )
 {
     if ( const_alpha != 256 )
     {
@@ -345,7 +345,7 @@ static void lscs_blend_argb32_on_rgb16( uchar *destPixels, int dbpl, const uchar
 }
 
 static void lscs_blend_rgb32_on_rgb16( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
-                                     int w, int h, int const_alpha )
+                                       int w, int h, int const_alpha )
 {
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "lscs_blend_rgb32_on_rgb16() dst = (%p, %d), src = (%p, %d), dim = (%d, %d) alpha = %d",
@@ -389,7 +389,7 @@ static void lscs_blend_rgb32_on_rgb16( uchar *destPixels, int dbpl, const uchar 
  ************************************************************************/
 
 static void lscs_blend_argb32_on_argb32( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
-                                       int w, int h, int const_alpha )
+        int w, int h, int const_alpha )
 {
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "lscs_blend_argb32_on_argb32() dst = (%p, %d), src = (%p, %d), dim = (%d, %d) alpha = %d",
@@ -441,7 +441,7 @@ static void lscs_blend_argb32_on_argb32( uchar *destPixels, int dbpl, const ucha
 }
 
 void lscs_blend_rgb32_on_rgb32( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
-                              int w, int h, int const_alpha )
+                                int w, int h, int const_alpha )
 {
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "lscs_blend_rgb32_on_rgb32() dst = (%p, %d), src = (%p, %d), dim = (%d, %d) alpha = %d",
@@ -535,7 +535,7 @@ struct Blend_ARGB32_on_ARGB32_SourceAndConstAlpha
 };
 
 void lscs_scale_image_rgb32_on_rgb32( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl, int srch,
-                                    const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip, int const_alpha )
+                                      const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip, int const_alpha )
 {
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "lscs_scale_rgb32_on_rgb32() dst = (%p, %d), src = (%p, %d), target = (%f, %f), [%f x %f], "
@@ -548,19 +548,19 @@ void lscs_scale_image_rgb32_on_rgb32( uchar *destPixels, int dbpl, const uchar *
     {
         Blend_RGB32_on_RGB32_NoAlpha noAlpha;
         lscs_scale_image_32bit( destPixels, dbpl, srcPixels, sbpl, srch,
-                              targetRect, sourceRect, clip, noAlpha );
+                                targetRect, sourceRect, clip, noAlpha );
 
     }
     else
     {
         Blend_RGB32_on_RGB32_ConstAlpha constAlpha( const_alpha );
         lscs_scale_image_32bit( destPixels, dbpl, srcPixels, sbpl, srch,
-                              targetRect, sourceRect, clip, constAlpha );
+                                targetRect, sourceRect, clip, constAlpha );
     }
 }
 
 void lscs_scale_image_argb32_on_argb32( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl, int srch,
-                                      const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip, int const_alpha )
+                                        const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip, int const_alpha )
 {
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "lscs_scale_argb32_on_argb32() dst = (%p, %d), src = (%p, %d), target = (%f, %f), [%f x %f], "
@@ -573,35 +573,35 @@ void lscs_scale_image_argb32_on_argb32( uchar *destPixels, int dbpl, const uchar
     {
         Blend_ARGB32_on_ARGB32_SourceAlpha sourceAlpha;
         lscs_scale_image_32bit( destPixels, dbpl, srcPixels, sbpl, srch,
-                              targetRect, sourceRect, clip, sourceAlpha );
+                                targetRect, sourceRect, clip, sourceAlpha );
 
     }
     else
     {
         Blend_ARGB32_on_ARGB32_SourceAndConstAlpha constAlpha( const_alpha );
         lscs_scale_image_32bit( destPixels, dbpl, srcPixels, sbpl, srch,
-                              targetRect, sourceRect, clip, constAlpha );
+                                targetRect, sourceRect, clip, constAlpha );
     }
 }
 
 void lscs_transform_image_rgb16_on_rgb16( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
-                                        const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip,
-                                        const QTransform &targetRectTransform, int const_alpha )
+        const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip,
+        const QTransform &targetRectTransform, int const_alpha )
 {
     if ( const_alpha == 256 )
     {
         Blend_RGB16_on_RGB16_NoAlpha noAlpha;
         lscs_transform_image( reinterpret_cast<quint16 *>( destPixels ), dbpl,
-                            reinterpret_cast<const quint16 *>( srcPixels ), sbpl,
-                            targetRect, sourceRect, clip, targetRectTransform, noAlpha );
+                              reinterpret_cast<const quint16 *>( srcPixels ), sbpl,
+                              targetRect, sourceRect, clip, targetRectTransform, noAlpha );
 
     }
     else
     {
         Blend_RGB16_on_RGB16_ConstAlpha constAlpha( const_alpha );
         lscs_transform_image( reinterpret_cast<quint16 *>( destPixels ), dbpl,
-                            reinterpret_cast<const quint16 *>( srcPixels ), sbpl,
-                            targetRect, sourceRect, clip, targetRectTransform, constAlpha );
+                              reinterpret_cast<const quint16 *>( srcPixels ), sbpl,
+                              targetRect, sourceRect, clip, targetRectTransform, constAlpha );
     }
 }
 
@@ -613,37 +613,37 @@ void lscs_transform_image_argb32_on_rgb16( uchar *destPixels, int dbpl, const uc
     {
         Blend_ARGB32_on_RGB16_SourceAlpha noAlpha;
         lscs_transform_image( reinterpret_cast<quint16 *>( destPixels ), dbpl,
-                            reinterpret_cast<const quint32 *>( srcPixels ), sbpl,
-                            targetRect, sourceRect, clip, targetRectTransform, noAlpha );
+                              reinterpret_cast<const quint32 *>( srcPixels ), sbpl,
+                              targetRect, sourceRect, clip, targetRectTransform, noAlpha );
 
     }
     else
     {
         Blend_ARGB32_on_RGB16_SourceAndConstAlpha constAlpha( const_alpha );
         lscs_transform_image( reinterpret_cast<quint16 *>( destPixels ), dbpl,
-                            reinterpret_cast<const quint32 *>( srcPixels ), sbpl,
-                            targetRect, sourceRect, clip, targetRectTransform, constAlpha );
+                              reinterpret_cast<const quint32 *>( srcPixels ), sbpl,
+                              targetRect, sourceRect, clip, targetRectTransform, constAlpha );
     }
 }
 
 void lscs_transform_image_rgb32_on_rgb32( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
-                                        const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip,
-                                        const QTransform &targetRectTransform, int const_alpha )
+        const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip,
+        const QTransform &targetRectTransform, int const_alpha )
 {
     if ( const_alpha == 256 )
     {
         Blend_RGB32_on_RGB32_NoAlpha noAlpha;
         lscs_transform_image( reinterpret_cast<quint32 *>( destPixels ), dbpl,
-                            reinterpret_cast<const quint32 *>( srcPixels ), sbpl,
-                            targetRect, sourceRect, clip, targetRectTransform, noAlpha );
+                              reinterpret_cast<const quint32 *>( srcPixels ), sbpl,
+                              targetRect, sourceRect, clip, targetRectTransform, noAlpha );
 
     }
     else
     {
         Blend_RGB32_on_RGB32_ConstAlpha constAlpha( const_alpha );
         lscs_transform_image( reinterpret_cast<quint32 *>( destPixels ), dbpl,
-                            reinterpret_cast<const quint32 *>( srcPixels ), sbpl,
-                            targetRect, sourceRect, clip, targetRectTransform, constAlpha );
+                              reinterpret_cast<const quint32 *>( srcPixels ), sbpl,
+                              targetRect, sourceRect, clip, targetRectTransform, constAlpha );
     }
 }
 
@@ -655,16 +655,16 @@ void lscs_transform_image_argb32_on_argb32( uchar *destPixels, int dbpl, const u
     {
         Blend_ARGB32_on_ARGB32_SourceAlpha sourceAlpha;
         lscs_transform_image( reinterpret_cast<quint32 *>( destPixels ), dbpl,
-                            reinterpret_cast<const quint32 *>( srcPixels ), sbpl,
-                            targetRect, sourceRect, clip, targetRectTransform, sourceAlpha );
+                              reinterpret_cast<const quint32 *>( srcPixels ), sbpl,
+                              targetRect, sourceRect, clip, targetRectTransform, sourceAlpha );
 
     }
     else
     {
         Blend_ARGB32_on_ARGB32_SourceAndConstAlpha constAlpha( const_alpha );
         lscs_transform_image( reinterpret_cast<quint32 *>( destPixels ), dbpl,
-                            reinterpret_cast<const quint32 *>( srcPixels ), sbpl,
-                            targetRect, sourceRect, clip, targetRectTransform, constAlpha );
+                              reinterpret_cast<const quint32 *>( srcPixels ), sbpl,
+                              targetRect, sourceRect, clip, targetRectTransform, constAlpha );
     }
 }
 

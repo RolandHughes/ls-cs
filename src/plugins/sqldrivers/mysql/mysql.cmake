@@ -14,11 +14,20 @@ if(WITH_MYSQL_PLUGIN AND MySQL_FOUND)
    add_library(LsCsSqlMySql MODULE "")
    add_library(LsCs::LsCsSqlMySql ALIAS LsCsSqlMySql)
 
-   set_target_properties(LsCsSqlMySql PROPERTIES
-     PREFIX ""
-     VERSION ${BUILD_ABI}
-     SOVERSION ${BUILD_MAJOR}
-   )
+   if ( BUILDING_LOCAL )
+       set_target_properties(LsCsSqlMySql PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+         INSTALL_RPATH "${LSCS_INST_PREFIX}/${LSCS_INST_LIB};${LSCS_INST_PREFIX}/${LSCS_INST_LIB}/plugins/sqldrivers"
+       )
+   else()
+       set_target_properties(LsCsSqlMySql PROPERTIES
+         PREFIX ""
+         VERSION ${BUILD_ABI}
+         SOVERSION ${BUILD_MAJOR}
+       )
+   endif()
 
    include_directories(${MySQL_INCLUDE_DIRS})
 

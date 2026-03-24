@@ -173,7 +173,7 @@ private:
     Q_DECLARE_PRIVATE( QSortFilterProxyModel )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceDataChanged( const QModelIndex &source_top_left,
-                   const QModelIndex &source_bottom_right, const QVector<int> &roles ) )
+                     const QModelIndex &source_bottom_right, const QVector<int> &roles ) )
     GUI_LSCS_SLOT_2( _q_sourceDataChanged )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceHeaderDataChanged( Qt::Orientation orientation, int start, int end ) )
@@ -186,11 +186,11 @@ private:
     GUI_LSCS_SLOT_2( _q_sourceReset )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceLayoutAboutToBeChanged( const QList<QPersistentModelIndex> &sourceParents,
-                   QAbstractItemModel::LayoutChangeHint hint ) )
+                     QAbstractItemModel::LayoutChangeHint hint ) )
     GUI_LSCS_SLOT_2( _q_sourceLayoutAboutToBeChanged )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceLayoutChanged( const QList<QPersistentModelIndex> &sourceParents,
-                   QAbstractItemModel::LayoutChangeHint hint ) )
+                     QAbstractItemModel::LayoutChangeHint hint ) )
     GUI_LSCS_SLOT_2( _q_sourceLayoutChanged )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceRowsAboutToBeInserted( const QModelIndex &sourceParent, int start, int end ) )
@@ -206,11 +206,11 @@ private:
     GUI_LSCS_SLOT_2( _q_sourceRowsRemoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceRowsAboutToBeMoved( const QModelIndex &sourceParent, int, int,
-                   const QModelIndex &, int ) )
+                     const QModelIndex &, int ) )
     GUI_LSCS_SLOT_2( _q_sourceRowsAboutToBeMoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceRowsMoved( const QModelIndex &sourceParent, int, int,
-                   const QModelIndex &, int ) )
+                     const QModelIndex &, int ) )
     GUI_LSCS_SLOT_2( _q_sourceRowsMoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceColumnsAboutToBeInserted( const QModelIndex &sourceParent, int start, int end ) )
@@ -226,11 +226,11 @@ private:
     GUI_LSCS_SLOT_2( _q_sourceColumnsRemoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceColumnsAboutToBeMoved( const QModelIndex &sourceParent, int, int,
-                   const QModelIndex &, int ) )
+                     const QModelIndex &, int ) )
     GUI_LSCS_SLOT_2( _q_sourceColumnsAboutToBeMoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceColumnsMoved( const QModelIndex &sourceParent, int, int,
-                   const QModelIndex &, int ) )
+                     const QModelIndex &, int ) )
     GUI_LSCS_SLOT_2( _q_sourceColumnsMoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_clearMapping() )

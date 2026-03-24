@@ -10,8 +10,8 @@ set(EXTRA_RCC_CXXFLAGS)
 set(EXTRA_RCC_LDFLAGS)
 
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtXml/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtXml/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -60,11 +60,6 @@ set_target_properties(rcc${TOOLS_SUFFIX}
    EXPORT_NAME rcc
 )
 
-#
-#   Now that binary file names don't collide with
-#   Qt or any version of CopperSpice, we can just
-#   put them in the default binary dir
-#
 install(
     TARGETS rcc${TOOLS_SUFFIX}
     EXPORT LsCsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}

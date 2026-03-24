@@ -410,7 +410,7 @@ bool QWindowsOpenGLTester::testDesktopGL()
         wclass.lpszMenuName  = nullptr;
         wclass.lpfnWndProc   = DefWindowProc;
         wclass.lpszClassName = className;
-        wclass.style = LSCS_OWNDC;
+        wclass.style = CS_OWNDC;
 
         if ( !RegisterClass( &wclass ) )
         {

@@ -67,8 +67,8 @@
 extern QPixmap lscs_pixmapForBrush( int style, bool invert );
 
 void lscs_format_text( const QFont &font,
-                     const QRectF &_r, int tf, const QTextOption *option, const QString &str, QRectF *brect,
-                     int tabstops, int *tabarray, int tabarraylen, QPainter *painter );
+                       const QRectF &_r, int tf, const QTextOption *option, const QString &str, QRectF *brect,
+                       int tabstops, int *tabarray, int tabarraylen, QPainter *painter );
 
 static void drawTextItemDecoration( QPainter *painter, const QPointF &pos, const QFontEngine *fe, QTextEngine *textEngine,
                                     QTextCharFormat::UnderlineStyle underlineStyle,
@@ -786,7 +786,8 @@ void QPainterPrivate::updateEmulationSpecifier( QPainterState *s )
                            ( brushStyle == Qt::LinearGradientPattern ) );
         radialGradient = ( ( penBrushStyle == Qt::RadialGradientPattern ) ||
                            ( brushStyle == Qt::RadialGradientPattern ) );
-        extendedRadialGradient = radialGradient && ( lscs_isExtendedRadialGradient( penBrush ) || lscs_isExtendedRadialGradient( s->brush ) );
+        extendedRadialGradient = radialGradient && ( lscs_isExtendedRadialGradient( penBrush )
+                                 || lscs_isExtendedRadialGradient( s->brush ) );
 
         conicalGradient = ( ( penBrushStyle == Qt::ConicalGradientPattern ) ||
                             ( brushStyle == Qt::ConicalGradientPattern ) );
@@ -4448,7 +4449,7 @@ void QPainter::drawStaticText( const QPointF &topLeftPosition, const QStaticText
         d->extended->drawStaticTextItem( item );
 
         lscs_draw_decoration_for_glyphs( this, item->glyphs, item->glyphPositions,
-                                       item->numGlyphs, item->fontEngine(), staticText_d->font, QTextCharFormat() );
+                                         item->numGlyphs, item->fontEngine(), staticText_d->font, QTextCharFormat() );
     }
 
     if ( currentColor != oldPen.color() )
@@ -5582,13 +5583,13 @@ QPaintDevice *QPainter::redirected( const QPaintDevice *device, QPoint *offset )
 }
 
 void lscs_format_text( const QFont &fnt, const QRectF &_r, int tf, const QString &str, QRectF *brect,
-                     int tabstops, int *ta, int tabarraylen, QPainter *painter )
+                       int tabstops, int *ta, int tabarraylen, QPainter *painter )
 {
     lscs_format_text( fnt, _r, tf, nullptr, str, brect, tabstops, ta, tabarraylen, painter );
 }
 
 void lscs_format_text( const QFont &fnt, const QRectF &_r, int tf, const QTextOption *option,
-                     const QString &str, QRectF *brect, int tabstops, int *ta, int tabarraylen, QPainter *painter )
+                       const QString &str, QRectF *brect, int tabstops, int *ta, int tabarraylen, QPainter *painter )
 {
     Q_ASSERT( !( ( tf & ~Qt::TextDontPrint ) != 0 && option != nullptr ) ); //  either have an option or flags
 

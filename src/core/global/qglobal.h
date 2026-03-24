@@ -114,7 +114,7 @@
 #      define Q_PROCESSOR_ARM_V5
 
 #   else
-#     error Unsupported system architecture, CopperSpice requires V5 or newer
+#     error Unsupported system architecture, LsCs requires V5 or newer
 
 #   endif
 
@@ -129,7 +129,7 @@
 #  define Q_PROCESSOR_PPC
 
 #else
-#   error Unable to detect system architecture, contact CopperSpice development
+#   error Unable to detect system architecture, contact LsCs development
 
 #endif
 
@@ -153,7 +153,7 @@
 #define Q_BYTE_ORDER Q_BIG_ENDIAN
 
 #else
-#error Unable to detect target endianness, contact CopperSpice development
+#error Unable to detect target endianness, contact LsCs development
 
 #endif
 
@@ -198,7 +198,7 @@
 #elif defined(__MAKEDEPEND__)
 
 #else
-#  error "CopperSpice has not been ported to this Operating System"
+#  error "LsCs has not been ported to this Operating System"
 
 #endif
 
@@ -298,7 +298,7 @@
 #if defined(__clang__)
 
 #  if ( __clang_major__ < 6)
-#    error "CopperSpice requires Clang 6 or newer"
+#    error "LsCs requires Clang 6 or newer"
 #  endif
 
 #  define Q_CC_CLANG
@@ -318,14 +318,10 @@
 //  ****
 
 #  if (__GNUC__ < 7) || (__GNUC__ == 7 && __GNUC_MINOR__ < 3)
-#    error "CopperSpice requires GCC 7.3 or newer"
+#    error "LsCs requires GCC 7.3 or newer"
 #  endif
 
 #  define Q_CC_GNU
-
-#  if defined(__MINGW32__)
-#    define Q_CC_MINGW
-#  endif
 
 //  Intel C++ also masquerades as GCC
 #  if defined(__INTEL_COMPILER)
@@ -349,7 +345,7 @@
 //  ****
 
 #  if _MSC_VER < 1926
-#    error "CopperSpice requires Visual Studio 2019 Version 16.6 or newer"
+#    error "LsCs requires Visual Studio 2019 Version 16.6 or newer"
 #  endif
 
 #  define Q_CC_MSVC         (_MSC_VER)
@@ -388,7 +384,7 @@
 #else
 //  **
 
-#  error "CopperSpice has not been tested with this Compiler"
+#  error "LsCs has not been tested with this Compiler"
 
 #endif
 
@@ -498,15 +494,9 @@ using qptrdiff = qintptr;
 #endif
 
 // defines the type for WNDPROC on windows
-// alignment needs to be forced for sse2 to not crash with mingw
 
 #if defined(Q_OS_WIN)
-#  if defined(Q_CC_MINGW)
-#    define LSCS_ENSURE_STACK_ALIGNED_FOR_SSE    __attribute__((force_align_arg_pointer))
-#  else
-#    define LSCS_ENSURE_STACK_ALIGNED_FOR_SSE
-#  endif
-
+#  define LSCS_ENSURE_STACK_ALIGNED_FOR_SSE
 #  define LSCS_WIN_CALLBACK CALLBACK             LSCS_ENSURE_STACK_ALIGNED_FOR_SSE
 #endif
 
@@ -1072,14 +1062,14 @@ typename Wrapper::pointer qGetPtrHelper( const Wrapper &p )
 #define Q_Q(Class) Class * const q = q_func()
 
 
-// not used in copperspice
+// not used in LsCs
 #define LSCS_TR_NOOP(text)                            lscs_mark_tr_old(text)
 #define LSCS_TRANSLATE_NOOP3(context, text, comment)  lscs_mark_tr_old(text, comment)
 
 // used internally
 #define LSCS_TRANSLATE_NOOP(context, text)            lscs_mark_tr_old(text)
 
-// not used in copperspice
+// not used in LsCs
 #define LSCS_TRID_NOOP(id)                            lscs_mark_tr_old(id)
 
 
@@ -1098,7 +1088,7 @@ constexpr const char *lscs_mark_tr( const char *text )
     return text;
 }
 
-// used internally in copperspice
+// used internally in LsCs
 constexpr const char *lscs_mark_tr( const char *context, const char *text )
 {
     ( void ) context;

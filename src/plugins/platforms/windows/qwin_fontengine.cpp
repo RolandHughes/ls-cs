@@ -45,7 +45,6 @@
 
 #include <limits.h>
 
-//### mingw needed define
 #ifndef TT_PRIM_CSPLINE
 #define TT_PRIM_CSPLINE 3
 #endif
@@ -675,36 +674,6 @@ static const ushort char_table[] =
 };
 
 static const int char_table_entries = sizeof( char_table ) / sizeof( ushort );
-
-#ifndef Q_CC_MINGW
-void QWindowsFontEngine::getGlyphBearings( glyph_t glyph, qreal *leftBearing, qreal *rightBearing )
-{
-    HDC hdc = m_fontEngineData->hdc;
-    SelectObject( hdc, hfont );
-
-    if ( ttf )
-    {
-        ABC abcWidths;
-        GetCharABCWidthsI( hdc, glyph, 1, 0, &abcWidths );
-
-        if ( leftBearing )
-        {
-            *leftBearing = abcWidths.abcA;
-        }
-
-        if ( rightBearing )
-        {
-            *rightBearing = abcWidths.abcC;
-        }
-
-    }
-    else
-    {
-        QFontEngine::getGlyphBearings( glyph, leftBearing, rightBearing );
-    }
-
-}
-#endif // Q_CC_MINGW
 
 bool QWindowsFontEngine::hasUnreliableGlyphOutline() const
 {

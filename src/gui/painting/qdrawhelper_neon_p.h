@@ -29,24 +29,24 @@
 #ifdef __ARM_NEON__
 
 void lscs_blend_argb32_on_argb32_neon( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
-                                     int w, int h, int const_alpha );
+                                       int w, int h, int const_alpha );
 
 void lscs_blend_rgb32_on_rgb32_neon( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
-                                   int w, int h, int const_alpha );
+                                     int w, int h, int const_alpha );
 
 void lscs_blend_argb32_on_rgb16_neon( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
-                                    int w, int h, int const_alpha );
+                                      int w, int h, int const_alpha );
 
 void lscs_blend_argb32_on_argb32_scanline_neon( uint *dest, const uint *src, int length, uint const_alpha );
 
 void lscs_blend_rgb16_on_argb32_neon( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
-                                    int w, int h, int const_alpha );
+                                      int w, int h, int const_alpha );
 
 void lscs_blend_rgb16_on_rgb16_neon( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
-                                   int w, int h, int const_alpha );
+                                     int w, int h, int const_alpha );
 
 void lscs_alphamapblit_quint16_neon( QRasterBuffer *rasterBuffer, int x, int y, quint32 color, const uchar *bitmap,
-                                   int mapWidth, int mapHeight, int mapStride, const QClipData *clip );
+                                     int mapWidth, int mapHeight, int mapStride, const QClipData *clip );
 
 void lscs_scale_image_argb32_on_rgb16_neon( uchar *destPixels, int dbpl, const uchar *srcPixels,
         int sbpl, int sh, const QRectF &targetRect, const QRectF &sourceRect,

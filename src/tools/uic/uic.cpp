@@ -136,7 +136,7 @@ void Uic::writeCopyrightHeader( DomUI *ui )
     out << "/********************************************************************************\n";
     out << "** Form generated from reading the UI file '" << QFileInfo( opt.inputFile ).fileName() << "'\n";
     out << "**\n";
-    out << "** Created by: CopperSpice User Interface Compiler, Version " << LSCS_VERSION_STR << "\n";
+    out << "** Created by: LsCs User Interface Compiler, Version " << LSCS_VERSION_STR << "\n";
     out << "**\n";
     out << "** WARNING! Any changes made to this file will be lost when the UI file is recompiled\n";
     out << "********************************************************************************/\n\n";
@@ -173,7 +173,7 @@ DomUI *Uic::parseUiFile( QXmlStreamReader &reader )
         ui = nullptr;
 
         fprintf( stderr, "%s\n", lscsPrintable( QString( "Uic: Parse error on line %1, column %2 : %3" )
-                                              .formatArg( reader.lineNumber() ).formatArg( reader.columnNumber() ).formatArg( reader.errorString() ) ) );
+                                                .formatArg( reader.lineNumber() ).formatArg( reader.columnNumber() ).formatArg( reader.errorString() ) ) );
     }
 
     return ui;

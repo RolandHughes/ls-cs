@@ -34,6 +34,8 @@
 #include <qstringlist.h>
 #include <qvector.h>
 
+#include <LsCs_build_info.h>
+
 #include <qcoreapplication_p.h>
 
 #ifdef Q_OS_DARWIN
@@ -482,7 +484,7 @@ void QLibraryHandle::updatePluginState()
             }
             else
             {
-                errorString = QLibrary::tr( "File '%1' is not a valid CopperSpice plugin." ).formatArg( fileName );
+                errorString = QLibrary::tr( "File '%1' is not a valid LsCs plugin." ).formatArg( fileName );
             }
         }
 
@@ -498,7 +500,7 @@ void QLibraryHandle::updatePluginState()
 
     if ( ( version & 0x00ff00 ) > ( LSCS_VERSION & 0x00ff00 ) || ( version & 0xff0000 ) != ( LSCS_VERSION & 0xff0000 ) )
     {
-        errorString = QLibrary::tr( "Plugin '%1' uses an incompatible CopperSpice library (%2.%3.%4)" )
+        errorString = QLibrary::tr( "Plugin '%1' uses an incompatible LsCs library (%2.%3.%4)" )
                       .formatArg( fileName ).formatArg( ( version & 0xff0000 ) >> 16 ).formatArg( ( version & 0xff00 ) >> 8 )
                       .formatArg( version & 0xff );
 

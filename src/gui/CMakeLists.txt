@@ -6,6 +6,16 @@ set_target_properties(LsCsGui PROPERTIES
   SOVERSION ${BUILD_MAJOR}
 )
 
+
+
+# Oncee we move to SSDL33 harrffbuzz will be gone
+# Add this directory to the target's include path
+target_include_directories(LsCsGui
+    # The 'BEFORE SYSTEM' keywords tell the compiler to search this directory 
+    # before any default system directories like /usr/include.
+    PRIVATE BEFORE SYSTEM  "${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src"
+)
+
 target_compile_definitions(LsCsGui
    PRIVATE
    -DLSCS_BUILD_GUI_LIB
@@ -20,13 +30,14 @@ set(EXTRA_GUI_LDFLAGS)
 
 target_include_directories(LsCsGui
    PUBLIC
-   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtGui>
-   $<INSTALL_INTERFACE:include/QtGui>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtGui>
+   $<INSTALL_INTERFACE:include/${PACKAGE_NAME}/QtGui>
 )
 
-include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtGui/private
+target_include_directories(LsCsGui
+   PRIVATE
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtGui/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}/accessible
    ${CMAKE_CURRENT_SOURCE_DIR}/animation
@@ -48,25 +59,14 @@ include_directories(
    ${CMAKE_CURRENT_SOURCE_DIR}/widgetbase
    ${CMAKE_CURRENT_SOURCE_DIR}/widgets
 
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/include/freetype
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/libtiff/libtiff
    ${CMAKE_SOURCE_DIR}/src/3rdparty/libmng
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/libpng
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/zlib
-)
 
-if (${JPEG_FOUND})
-   include_directories(
-      # using system library
-      ${JPEG_INCLUDE_DIR}
-   )
-else()
-   include_directories(
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/libjpeg
-   )
-endif()
+   # using system library
+   ${JPEG_INCLUDE_DIR}
+   ${TIFF_INCLUDE_DIR}
+   ${FREETYPE_INCLUDE_DIRS}
+)
 
 include(accessible/accessible.cmake)
 include(animation/animation.cmake)
@@ -107,9 +107,13 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
       -framework OpenGL
    )
 
-   add_definitions(-DLSCS_NO_STYLE_WINDOWSVISTA)
-
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
+
+#   include_directories( "${LIBTOOL_INSTALL_PREFIX}/include" )
+
+#   add_dependencies(LsCsGui ls_libtool)
+
+#   target_link_libraries(LsCsGui PRIVATE ls_libtool_ep)
 
    target_link_libraries(LsCsGui
       PRIVATE
@@ -130,11 +134,10 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
       -DHAVE_POSIX_MEMALIGN
       -DLSCS_NO_XINPUT
       -DLSCS_NO_STYLE_MAC
-      -DLSCS_NO_STYLE_WINDOWSXP
-      -DLSCS_NO_STYLE_WINDOWSVISTA
       -DLSCS_NO_TABLET
    )
 
+   message( "******************* FREETYPE_INCLUDE_DIRS     ${FREETYPE_INCLUDE_DIRS}")
    include_directories(
       ${FONTCONFIG_INCLUDES}
       ${X11_X11_INCLUDE_PATH}
@@ -180,15 +183,21 @@ target_sources(LsCsGui
    ${GUI_PLATFORMHEADERS_INCLUDES}
 )
 
+message( "################## FREETYPE_INCLUDE_DIRS   ${FREETYPE_INCLUDE_DIRS}") 
 target_include_directories(LsCsGui
    PUBLIC
    ${OPENGL_INCLUDE_DIR}
+   ${TIFF_INCLUDE_DIRS}
+   ${FREETYPE_INCLUDE_DIRS}
 )
 
 target_link_libraries(LsCsGui
    PUBLIC
    LsCsCore
    ${OPENGL_LIBRARIES}
+   ${TIFF_LIBRARIES}
+   ${FREETYPE_LIBRARIES}
+   ${PNG_LIBRARIES}
 )
 
 if (${JPEG_FOUND})
@@ -232,7 +241,7 @@ else()
 endif()
 
 install(
-    DIRECTORY ${CMAKE_BINARY_DIR}/include/QtGui
+    DIRECTORY ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtGui
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     COMPONENT Devel
 )

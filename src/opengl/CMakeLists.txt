@@ -17,14 +17,14 @@ set(EXTRA_OPENGL_LDFLAGS)
 
 target_include_directories(LsCsOpenGL
    PUBLIC
-   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtOpenGL>
-   $<INSTALL_INTERFACE:include/QtOpenGL>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtOpenGL>
+   $<INSTALL_INTERFACE:include/${PACKAGE_NAME}/QtOpenGL>
 )
 
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtGui/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtOpenGL/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtGui/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtOpenGL/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}
    ${CMAKE_CURRENT_SOURCE_DIR}/gl2paintengineex
@@ -121,7 +121,6 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    target_compile_definitions(LsCsOpenGL
       PRIVATE
       -DLSCS_NO_STYLE_GTK
-      -DLSCS_NO_STYLE_WINDOWSVISTA
    )
 
 endif()
@@ -170,7 +169,7 @@ else()
 endif()
 
 install(
-   DIRECTORY ${CMAKE_BINARY_DIR}/include/QtOpenGL
+   DIRECTORY ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtOpenGL
    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
    COMPONENT Devel
 )

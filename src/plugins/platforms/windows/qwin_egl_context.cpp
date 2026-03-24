@@ -36,44 +36,10 @@ QWindowsLibEGL QWindowsEGLStaticContext::libEGL;
 QWindowsLibGLESv2 QWindowsEGLStaticContext::libGLESv2;
 
 #if !defined(LSCS_STATIC) || defined(LSCS_OPENGL_DYNAMIC)
-
-#ifdef Q_CC_MINGW
-static void *resolveFunc( HMODULE lib, const char *name )
-{
-    QString baseNameStr = QString::fromLatin1( name );
-    QString nameStr;
-    void *proc = 0;
-
-    // Play nice with 32-bit mingw: Try func first, then func@0, func@4,
-    // func@8, func@12, ..., func@64. The def file does not provide any aliases
-    // in libEGL and libGLESv2 in these builds which results in exporting
-    // function names like eglInitialize@12. This cannot be fixed without
-    // breaking binary compatibility. So be flexible here instead.
-
-    int argSize = -1;
-
-    while ( !proc && argSize <= 64 )
-    {
-        nameStr = baseNameStr;
-
-        if ( argSize >= 0 )
-        {
-            nameStr += QLatin1Char( '@' ) + QString::number( argSize );
-        }
-
-        argSize = argSize < 0 ? 0 : argSize + 4;
-        proc = ( void * ) ::GetProcAddress( lib, nameStr.toLatin1().constData() );
-    }
-
-    return proc;
-}
-#else
-
 static void *resolveFunc( HMODULE lib, const char *name )
 {
     return ( void * ) ::GetProcAddress( lib, name );
 }
-#endif
 
 void *QWindowsLibEGL::resolve( const char *name )
 {

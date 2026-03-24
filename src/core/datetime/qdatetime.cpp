@@ -1332,7 +1332,7 @@ static QString lscs_tzname( QDateTimePrivate::DaylightStatus daylightStatus )
 // you need a guaranteed result.
 
 static qint64 lscs_mktime( QDate *date, QTime *time, QDateTimePrivate::DaylightStatus *daylightStatus,
-                         QString *abbreviation, bool *ok = nullptr )
+                           QString *abbreviation, bool *ok = nullptr )
 {
     const qint64 msec = time->msec();
     int yy;
@@ -1462,7 +1462,7 @@ static qint64 lscs_mktime( QDate *date, QTime *time, QDateTimePrivate::DaylightS
 // Calls the platform variant of localtime for the given msecs, and updates
 // the date, time, and DST status with the returned values.
 static bool lscs_localtime( qint64 msecsSinceEpoch, QDate *localDate, QTime *localTime,
-                          QDateTimePrivate::DaylightStatus *daylightStatus )
+                            QDateTimePrivate::DaylightStatus *daylightStatus )
 {
     const time_t secsSinceEpoch = msecsSinceEpoch / MSECS_PER_SEC;
     const int msec = msecsSinceEpoch % MSECS_PER_SEC;

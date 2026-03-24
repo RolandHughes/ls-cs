@@ -1151,7 +1151,7 @@ QDataStream &operator>>( QDataStream &s, QIcon &icon )
 }
 
 QString lscs_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRatio,
-                         qreal *sourceDevicePixelRatio )
+                           qreal *sourceDevicePixelRatio )
 {
     if ( targetDevicePixelRatio <= 1.0 )
     {

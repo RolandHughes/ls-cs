@@ -31,9 +31,9 @@
 #ifndef QDRAWHELPER_AVX
 // in AVX mode, we'll use the SSSE3 code
 void lscs_blend_argb32_on_argb32_sse2( uchar *destPixels, int dbpl,
-                                     const uchar *srcPixels, int sbpl,
-                                     int w, int h,
-                                     int const_alpha )
+                                       const uchar *srcPixels, int sbpl,
+                                       int w, int h,
+                                       int const_alpha )
 {
     const quint32 *src = ( const quint32 * ) srcPixels;
     quint32 *dst = ( quint32 * ) destPixels;
@@ -77,14 +77,14 @@ void lscs_blend_argb32_on_argb32_sse2( uchar *destPixels, int dbpl,
 
 // qblendfunctions.cpp
 void lscs_blend_rgb32_on_rgb32( uchar *destPixels, int dbpl,
-                              const uchar *srcPixels, int sbpl,
-                              int w, int h,
-                              int const_alpha );
+                                const uchar *srcPixels, int sbpl,
+                                int w, int h,
+                                int const_alpha );
 
 void lscs_blend_rgb32_on_rgb32_sse2( uchar *destPixels, int dbpl,
-                                   const uchar *srcPixels, int sbpl,
-                                   int w, int h,
-                                   int const_alpha )
+                                     const uchar *srcPixels, int sbpl,
+                                     int w, int h,
+                                     int const_alpha )
 {
     const quint32 *src = ( const quint32 * ) srcPixels;
     quint32 *dst = ( quint32 * ) destPixels;
@@ -440,7 +440,7 @@ void lscs_memfill16( quint16 *dest, quint16 value, int count )
 }
 
 void lscs_bitmapblit32_sse2_base( QRasterBuffer *rasterBuffer, int x, int y, quint32 color,
-                                const uchar *src, int width, int height, int stride )
+                                  const uchar *src, int width, int height, int stride )
 {
     quint32 *dest = reinterpret_cast<quint32 *>( rasterBuffer->scanLine( y ) ) + x;
     const int destStride = rasterBuffer->bytesPerLine() / sizeof( quint32 );
@@ -505,22 +505,22 @@ void lscs_bitmapblit32_sse2_base( QRasterBuffer *rasterBuffer, int x, int y, qui
 }
 
 void lscs_bitmapblit32_sse2( QRasterBuffer *rasterBuffer, int x, int y,
-                           const QRgba64 &color,
-                           const uchar *src, int width, int height, int stride )
+                             const QRgba64 &color,
+                             const uchar *src, int width, int height, int stride )
 {
     lscs_bitmapblit32_sse2_base( rasterBuffer, x, y, color.toArgb32(), src, width, height, stride );
 }
 
 void lscs_bitmapblit8888_sse2( QRasterBuffer *rasterBuffer, int x, int y,
-                             const QRgba64 &color,
-                             const uchar *src, int width, int height, int stride )
+                               const QRgba64 &color,
+                               const uchar *src, int width, int height, int stride )
 {
     lscs_bitmapblit32_sse2_base( rasterBuffer, x, y, ARGB2RGBA( color.toArgb32() ), src, width, height, stride );
 }
 
 void lscs_bitmapblit16_sse2( QRasterBuffer *rasterBuffer, int x, int y,
-                           const QRgba64 &color,
-                           const uchar *src, int width, int height, int stride )
+                             const QRgba64 &color,
+                             const uchar *src, int width, int height, int stride )
 {
     const quint16 c = qConvertRgb32To16( color.toArgb32() );
     quint16 *dest = reinterpret_cast<quint16 *>( rasterBuffer->scanLine( y ) ) + x;

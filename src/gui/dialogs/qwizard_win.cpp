@@ -22,7 +22,6 @@
 ***********************************************************************/
 
 #ifndef LSCS_NO_WIZARD
-#ifndef LSCS_NO_STYLE_WINDOWSVISTA
 
 #include <qwizard.h>
 #include <qwizard_win_p.h>
@@ -39,7 +38,6 @@
 #include <qapplication_p.h>
 #include <qsystemlibrary_p.h>
 
-// test is duplicated in qwizard_win.cpp and qwindowsxpstyle_p.h
 #ifdef Q_CC_GNU
 #ifdef _WIN32_WINNT
 # undef _WIN32_WINNT
@@ -1095,7 +1093,5 @@ int QVistaHelper::topOffset()
 
     return aeroOffset + titleBarSize();
 }
-
-#endif // LSCS_NO_STYLE_WINDOWSVISTA
 
 #endif // LSCS_NO_WIZARD

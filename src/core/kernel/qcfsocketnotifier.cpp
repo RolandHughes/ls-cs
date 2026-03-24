@@ -27,7 +27,7 @@
 #include <qthread.h>
 
 void lscs_mac_socket_callback( CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef,
-                             const void *, void *info )
+                               const void *, void *info )
 {
     QCFSocketNotifier *cfSocketNotifier = static_cast<QCFSocketNotifier *>( info );
     int nativeSocket = CFSocketGetNative( s );

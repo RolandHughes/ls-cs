@@ -59,7 +59,8 @@ QXcbEglNativeInterfaceHandler::QXcbEglNativeInterfaceHandler( QXcbNativeInterfac
 {
 }
 
-QPlatformNativeInterface::NativeResourceForIntegrationFunction QXcbEglNativeInterfaceHandler::nativeResourceFunctionForIntegration(
+QPlatformNativeInterface::NativeResourceForIntegrationFunction
+QXcbEglNativeInterfaceHandler::nativeResourceFunctionForIntegration(
     const QByteArray &resource ) const
 {
     switch ( resourceType( resource ) )

@@ -32,7 +32,7 @@
 #include <qtextengine_p.h>
 
 extern QString lscs_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRatio,
-                                qreal *sourceDevicePixelRatio );
+                                  qreal *sourceDevicePixelRatio );
 
 static QString resolveFileName( QString fileName, QUrl *url, qreal targetDevicePixelRatio,
                                 qreal *sourceDevicePixelRatio )

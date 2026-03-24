@@ -467,7 +467,7 @@ static inline void lscs_memrotate180_template( const T *src, int w, int h, int s
 template <class T>
 static
 inline void lscs_memrotate270_template( const T *src, int srcWidth, int srcHeight, int srcStride,
-                                      T *dest, int dstStride )
+                                        T *dest, int dstStride )
 {
 #if LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_CACHEDREAD
     lscs_memrotate270_cachedRead<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );

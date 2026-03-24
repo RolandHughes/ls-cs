@@ -24,6 +24,8 @@
 #ifndef QEVENTDISPATCHER_GLIB_P_H
 #define QEVENTDISPATCHER_GLIB_P_H
 
+#include <glib.h>
+
 #include <qabstracteventdispatcher.h>
 
 #include <qhash.h>
@@ -32,9 +34,9 @@
 
 class QEventDispatcherGlibPrivate;
 
-using GMainContext = _GMainContext
+using GMainContext = _GMainContext;
 
-                     struct GPostEventSource;
+struct GPostEventSource;
 struct GSocketNotifierSource;
 struct GTimerSource;
 struct GIdleTimerSource;

@@ -676,31 +676,6 @@ QFileSystemEntry QFileSystemEngine::absoluteName( const QFileSystemEntry &entry 
 // FILE_INFO_BY_HANDLE_CLASS has been extended by FileIdInfo = 18
 static constexpr const FILE_INFO_BY_HANDLE_CLASS Q_FileIdInfo = static_cast<FILE_INFO_BY_HANDLE_CLASS>( 18 );
 
-#if defined(Q_CC_MINGW) && ! defined(STORAGE_INFO_OFFSET_UNKNOWN)
-
-#ifndef FILE_SUPPORTS_INTEGRITY_STREAMS
-
-struct _FILE_ID_128
-{
-    BYTE Identifier[16];
-};
-
-using FILE_ID_128  = _FILE_ID_128;
-using PFILE_ID_128 = _FILE_ID_128 *;
-
-#endif
-
-struct _FILE_ID_INFO
-{
-    ULONGLONG VolumeSerialNumber;
-    FILE_ID_128 FileId;
-};
-
-using FILE_ID_INFO  = _FILE_ID_INFO;
-using PFILE_ID_INFO = *_FILE_ID_INFO;
-
-#endif
-
 // File ID for Windows up to version 7
 static inline QByteArray fileId( HANDLE handle )
 {

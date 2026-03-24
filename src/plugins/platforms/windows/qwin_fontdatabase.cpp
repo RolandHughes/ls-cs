@@ -801,7 +801,7 @@ static bool addFontToDatabase( const QString &familyName, uchar charSet,
 static bool storeFont_callback = false;
 
 static int LSCS_WIN_CALLBACK storeFont( const LOGFONT *logFont, const TEXTMETRIC *textmetric,
-                                      DWORD type, LPARAM lParam )
+                                        DWORD type, LPARAM lParam )
 {
     storeFont_callback = true;
 

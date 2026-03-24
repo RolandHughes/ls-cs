@@ -142,9 +142,9 @@ typedef int
 
 typedef int
 ( *LSCS_FT_Outline_CubicToFunc )( LSCS_FT_Vector  *control1,
-                                LSCS_FT_Vector  *control2,
-                                LSCS_FT_Vector  *to,
-                                void *user );
+                                  LSCS_FT_Vector  *control2,
+                                  LSCS_FT_Vector  *to,
+                                  void *user );
 
 #define  LSCS_FT_Outline_CubicTo_Func  LSCS_FT_Outline_CubicToFunc
 

@@ -33,14 +33,8 @@ class QNoDebug;
 // enable gcc warnings for printf-style functions
 #if defined(Q_CC_GNU) && ! defined(__INSURE__)
 
-#  if defined(Q_CC_MINGW) && ! defined(Q_CC_CLANG)
-#    define Q_ATTRIBUTE_FORMAT_PRINTF(A, B) \
-        __attribute__((format(gnu_printf, (A), (B))))
-#  else
 #    define Q_ATTRIBUTE_FORMAT_PRINTF(A, B) \
         __attribute__((format(printf, (A), (B))))
-#  endif
-
 #else
 #  define Q_ATTRIBUTE_FORMAT_PRINTF(A, B)
 

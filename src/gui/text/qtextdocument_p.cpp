@@ -451,7 +451,7 @@ int QTextDocumentPrivate::insertBlock( QChar blockSeparator, int pos, int blockF
     QTextBlockData *tmpBlock = blocks.fragment( b );
 
     LSCS_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::BlockInserted, ( editBlock != 0 ),
-                             op, charFormat, strPos, pos, blockFormat, static_cast<quint32>( tmpBlock->revision ) );
+                               op, charFormat, strPos, pos, blockFormat, static_cast<quint32>( tmpBlock->revision ) );
 
     appendUndoItem( c );
     Q_ASSERT( undoState == undoStack.size() );
@@ -498,8 +498,8 @@ void QTextDocumentPrivate::insert( int pos, int strPos, int strLength, int forma
         QTextBlockData *tmpBlock = blocks.fragment( b );
 
         LSCS_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::Inserted, ( editBlock != 0 ),
-                                 QTextUndoCommand::MoveCursor, format, strPos, pos, strLength,
-                                 static_cast<quint32>( tmpBlock->revision ) );
+                                   QTextUndoCommand::MoveCursor, format, strPos, pos, strLength,
+                                   static_cast<quint32>( tmpBlock->revision ) );
 
         appendUndoItem( c );
         tmpBlock->revision = revision;
@@ -681,12 +681,12 @@ void QTextDocumentPrivate::move( int pos, int to, int length, QTextUndoCommand::
 
         QTextFragmentData *X = fragments.fragment( x );
         LSCS_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::Removed, ( editBlock != 0 ),
-                                 op, X->format, X->stringPosition, static_cast<int>( key ), static_cast<int>( X->size_array[0] ),
-                                 blockRevision );
+                                   op, X->format, X->stringPosition, static_cast<int>( key ), static_cast<int>( X->size_array[0] ),
+                                   blockRevision );
 
         LSCS_INIT_TEXTUNDOCOMMAND( cInsert, QTextUndoCommand::Inserted, ( editBlock != 0 ),
-                                 op, X->format, X->stringPosition, dstKey, static_cast<int>( X->size_array[0] ),
-                                 blockRevision );
+                                   op, X->format, X->stringPosition, dstKey, static_cast<int>( X->size_array[0] ),
+                                   blockRevision );
 
         if ( key + 1 != blocks.position( b ) )
         {
@@ -851,7 +851,7 @@ void QTextDocumentPrivate::setCharFormat( int pos, int length, const QTextCharFo
         }
 
         LSCS_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::CharFormatChanged, true, QTextUndoCommand::MoveCursor, oldFormat,
-                                 0, pos, length, 0 );
+                                   0, pos, length, 0 );
         appendUndoItem( c );
 
         pos += length;
@@ -934,7 +934,7 @@ void QTextDocumentPrivate::setBlockFormat( const QTextBlock &from, const QTextBl
         block( it )->invalidate();
 
         LSCS_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::BlockFormatChanged, true, QTextUndoCommand::MoveCursor, oldFormat,
-                                 0, it.position(), 1, 0 );
+                                   0, it.position(), 1, 0 );
         appendUndoItem( c );
 
         if ( group != oldGroup )
@@ -1327,7 +1327,7 @@ void QTextDocumentPrivate::appendUndoItem( const QTextUndoCommand &c )
             // generate a CursorMoved undo item
 
             LSCS_INIT_TEXTUNDOCOMMAND( cc, QTextUndoCommand::CursorMoved, true, QTextUndoCommand::MoveCursor,
-                                     0, 0, editBlockCursorPosition, 0, 0 );
+                                       0, 0, editBlockCursorPosition, 0, 0 );
 
             undoStack.append( cc );
             undoState++;
@@ -1794,7 +1794,7 @@ void QTextDocumentPrivate::changeObjectFormat( QTextObject *obj, int format )
     }
 
     LSCS_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::GroupFormatChange, ( editBlock != 0 ), QTextUndoCommand::MoveCursor,
-                             oldFormatIndex, 0, 0, obj->d_func()->objectIndex, 0 );
+                               oldFormatIndex, 0, 0, obj->d_func()->objectIndex, 0 );
     appendUndoItem( c );
 
     endEditBlock();

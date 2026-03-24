@@ -15,13 +15,13 @@ set(EXTRA_XML_LDFLAGS)
 
 target_include_directories(LsCsXml
    PUBLIC
-   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtXml>
-   $<INSTALL_INTERFACE:include/QtXml>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtXml>
+   $<INSTALL_INTERFACE:include/${PACKAGE_NAME}/QtXml>
 )
 
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtXml/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtXml/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}/dom
    ${CMAKE_CURRENT_SOURCE_DIR}/sax
@@ -84,7 +84,7 @@ else()
 endif()
 
 install(
-    DIRECTORY ${CMAKE_BINARY_DIR}/include/QtXml
+    DIRECTORY ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtXml
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     COMPONENT Devel
 )

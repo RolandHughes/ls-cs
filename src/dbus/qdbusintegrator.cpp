@@ -1190,7 +1190,7 @@ void QDBusConnectionPrivate::deliverCall( QObject *object, int /*flags*/, const 
 
         QPointer<QObject> ptr = object;
         fail = object->lscs_metacall( QMetaObject::InvokeMetaMethod,
-                                    slotIdx, params.data() ) >= 0;
+                                      slotIdx, params.data() ) >= 0;
         QDBusConnectionPrivate::setSender( 0 );
 
         // the object might be deleted in the slot

@@ -349,7 +349,7 @@ protected:
 #endif
 
     GUI_LSCS_SLOT_1( Protected, virtual void dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight,
-                   const QVector<int> &roles = QVector<int>() ) )
+                     const QVector<int> &roles = QVector<int>() ) )
     GUI_LSCS_SLOT_2( dataChanged )
 
     GUI_LSCS_SLOT_1( Protected, virtual void rowsInserted( const QModelIndex &parent, int start, int end ) )
@@ -359,7 +359,7 @@ protected:
     GUI_LSCS_SLOT_2( rowsAboutToBeRemoved )
 
     GUI_LSCS_SLOT_1( Protected, virtual void selectionChanged( const QItemSelection &selected,
-                   const QItemSelection &deselected ) )
+                     const QItemSelection &deselected ) )
     GUI_LSCS_SLOT_2( selectionChanged )
 
     GUI_LSCS_SLOT_1( Protected, virtual void currentChanged( const QModelIndex &current, const QModelIndex &previous ) )
@@ -474,7 +474,7 @@ private:
     GUI_LSCS_SLOT_2( _q_columnsInserted )
 
     GUI_LSCS_SLOT_1( Private, void _q_columnsMoved( const QModelIndex &source, int sourceStart, int sourceEnd,
-                   const QModelIndex &destination, int destinationStart ) )
+                     const QModelIndex &destination, int destinationStart ) )
     GUI_LSCS_SLOT_2( _q_columnsMoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_rowsInserted( const QModelIndex &parent, int start, int end ) )
@@ -484,7 +484,7 @@ private:
     GUI_LSCS_SLOT_2( _q_rowsRemoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_rowsMoved( const QModelIndex &source, int sourceStart, int sourceEnd,
-                   const QModelIndex &destination, int destinationStart ) )
+                     const QModelIndex &destination, int destinationStart ) )
     GUI_LSCS_SLOT_2( _q_rowsMoved )
 
     void _q_modelDestroyed();

@@ -87,11 +87,11 @@ private:
     GUI_LSCS_SLOT_2( _q_sourceRowsRemoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceRowsAboutToBeMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
-                   const QModelIndex &destinationParent, int destinationStart ) )
+                     const QModelIndex &destinationParent, int destinationStart ) )
     GUI_LSCS_SLOT_2( _q_sourceRowsAboutToBeMoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceRowsMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
-                   const QModelIndex &destinationParent, int destinationStart ) )
+                     const QModelIndex &destinationParent, int destinationStart ) )
     GUI_LSCS_SLOT_2( _q_sourceRowsMoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceColumnsAboutToBeInserted( const QModelIndex &parent, int start, int end ) )
@@ -107,26 +107,26 @@ private:
     GUI_LSCS_SLOT_2( _q_sourceColumnsRemoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceColumnsAboutToBeMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
-                   const QModelIndex &destinationParent, int destinationStart ) )
+                     const QModelIndex &destinationParent, int destinationStart ) )
     GUI_LSCS_SLOT_2( _q_sourceColumnsAboutToBeMoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceColumnsMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
-                   const QModelIndex &destinationParent, int destinationStart ) )
+                     const QModelIndex &destinationParent, int destinationStart ) )
     GUI_LSCS_SLOT_2( _q_sourceColumnsMoved )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceDataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight,
-                   const QVector<int> &roles ) )
+                     const QVector<int> &roles ) )
     GUI_LSCS_SLOT_2( _q_sourceDataChanged )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceHeaderDataChanged( Qt::Orientation orientation, int first, int last ) )
     GUI_LSCS_SLOT_2( _q_sourceHeaderDataChanged )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceLayoutAboutToBeChanged( const QList<QPersistentModelIndex> &sourceParents,
-                   QAbstractItemModel::LayoutChangeHint hint ) )
+                     QAbstractItemModel::LayoutChangeHint hint ) )
     GUI_LSCS_SLOT_2( _q_sourceLayoutAboutToBeChanged )
 
     GUI_LSCS_SLOT_1( Private, void _q_sourceLayoutChanged( const QList<QPersistentModelIndex> &sourceParents,
-                   QAbstractItemModel::LayoutChangeHint hint ) )
+                     QAbstractItemModel::LayoutChangeHint hint ) )
 
     GUI_LSCS_SLOT_2( _q_sourceLayoutChanged )
 

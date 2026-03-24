@@ -32,7 +32,7 @@
 #include <math.h>
 
 extern void lscs_format_text( const QFont &font, const QRectF &_r, int tf, const QString &text,
-                            QRectF *brect, int tabStops, int *tabArray, int tabArrayLen, QPainter *painter );
+                              QRectF *brect, int tabStops, int *tabArray, int tabArrayLen, QPainter *painter );
 
 QFontMetrics::QFontMetrics( const QFont &font )
     : d( font.d.data() )
@@ -437,7 +437,7 @@ QRect QFontMetrics::boundingRect( const QRect &rect, int flags, const QString &t
     QRectF rb;
     QRectF rr( rect );
     lscs_format_text( QFont( d.data() ), rr, flags | Qt::TextDontPrint, text, &rb, tabStops,
-                    tabArray, tabArrayLen, nullptr );
+                      tabArray, tabArrayLen, nullptr );
 
     return rb.toAlignedRect();
 }

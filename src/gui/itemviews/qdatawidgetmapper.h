@@ -126,7 +126,7 @@ private:
     Q_DECLARE_PRIVATE( QDataWidgetMapper )
 
     GUI_LSCS_SLOT_1( Private, void _q_dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight,
-                   const QVector<int> &roles ) )
+                     const QVector<int> &roles ) )
     GUI_LSCS_SLOT_2( _q_dataChanged )
 
     GUI_LSCS_SLOT_1( Private, void _q_commitData( QWidget *currentWidget ) )

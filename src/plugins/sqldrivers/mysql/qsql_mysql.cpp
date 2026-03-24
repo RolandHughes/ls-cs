@@ -1706,9 +1706,10 @@ bool QMYSQLDriver::open( const QString &db, const QString &user, const QString &
         return false;
     }
 
-    if ( ! sslKey.isEmpty() || ! sslCert.isEmpty() || !sslCA.isEmpty() ||
-            ! sslCAPath.isEmpty() || ! sslCipher.isEmpty() )
+    if ( ! sslKey.isEmpty() )
     {
+        mysql_options( d->mysql, MYSQL_OPT_SSL_KEY, QFile::encodeName( sslKey ).constData() );
+    }
 
         if (!sslKey.isEmpty())
         {
@@ -1734,6 +1735,21 @@ bool QMYSQLDriver::open( const QString &db, const QString &user, const QString &
         {
             mysql_options( d->mysql, MYSQL_OPT_SSL_CIPHER, sslCipher.constData());
         }
+    }
+
+    if ( !sslCA.isEmpty() )
+    {
+        mysql_options( d->mysql, MYSQL_OPT_SSL_CA, QFile::encodeName( sslCA ).constData() );
+    }
+
+    if ( ! sslCAPath.isEmpty() )
+    {
+        mysql_options( d->mysql, MYSQL_OPT_SSL_CA, QFile::encodeName( sslCAPath ).constData() );
+    }
+
+    if ( ! sslCipher.isEmpty() )
+    {
+        mysql_options( d->mysql, MYSQL_OPT_SSL_CIPHER, sslCipher.constData() );
     }
 
     if ( connectTimeout != 0 )

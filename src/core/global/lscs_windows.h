@@ -24,17 +24,6 @@
 #ifndef LSCS_WINDOWS_H
 #define LSCS_WINDOWS_H
 
-#if defined(Q_CC_MINGW)
-
-// mingw windows.h file does not set this value properly, only place in CopperSpice WINVER is defined
-// this define must come before including windows.h
-
-#ifndef WINVER
-#define WINVER 0x601         // Windows 7
-#endif
-
-#endif
-
 #include <windows.h>
 
 // already defined when compiled with WINVER >= 0x0500

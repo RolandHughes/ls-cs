@@ -1240,7 +1240,7 @@ QImage QOpenGLFramebufferObject::toImage( bool flipped, int colorAttachmentIndex
         {
             extraFuncs->glReadBuffer( GL_COLOR_ATTACHMENT0 + colorAttachmentIndex );
             image = lscs_gl_read_framebuffer( d->colorAttachments[colorAttachmentIndex].size,
-                                            d->colorAttachments[colorAttachmentIndex].internalFormat, true, flipped );
+                                              d->colorAttachments[colorAttachmentIndex].internalFormat, true, flipped );
 
             extraFuncs->glReadBuffer( GL_COLOR_ATTACHMENT0 );
 
@@ -1248,7 +1248,7 @@ QImage QOpenGLFramebufferObject::toImage( bool flipped, int colorAttachmentIndex
         else
         {
             image = lscs_gl_read_framebuffer( d->colorAttachments[0].size,
-                                            d->colorAttachments[0].internalFormat, true, flipped );
+                                              d->colorAttachments[0].internalFormat, true, flipped );
         }
     }
 

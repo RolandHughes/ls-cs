@@ -38,13 +38,13 @@ endif()
 
 target_include_directories(LsCsNetwork
    PUBLIC
-   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtNetwork>
-   $<INSTALL_INTERFACE:include/QtNetwork>
+   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtNetwork>
+   $<INSTALL_INTERFACE:include/${PACKAGE_NAME}/QtNetwork>
 )
 
 include_directories(
-   ${CMAKE_BINARY_DIR}/privateinclude/QtCore/private
-   ${CMAKE_BINARY_DIR}/privateinclude/QtNetwork/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtCore/private
+   ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/QtNetwork/private
 
    ${CMAKE_CURRENT_SOURCE_DIR}/access
    ${CMAKE_CURRENT_SOURCE_DIR}/bearer
@@ -133,7 +133,7 @@ else()
 endif() 
 
 install(
-   DIRECTORY ${CMAKE_BINARY_DIR}/include/QtNetwork
+   DIRECTORY ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/QtNetwork
    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
    COMPONENT Devel
 )

@@ -1,11 +1,20 @@
 add_library(LsCsMultimedia_m3u MODULE "")
 add_library(LsCs::LsCsMultimedia_m3u ALIAS LsCsMultimedia_m3u)
 
-set_target_properties(LsCsMultimedia_m3u PROPERTIES
-  PREFIX ""
-  VERSION ${BUILD_ABI}
-  SOVERSION ${BUILD_MAJOR}
-)
+if ( BUILDING_LOCAL )
+    set_target_properties(LsCsMultimedia_m3u PROPERTIES
+      PREFIX ""
+      VERSION ${BUILD_ABI}
+      SOVERSION ${BUILD_MAJOR}
+      INSTALL_RPATH "${LSCS_INST_PREFIX}/${LSCS_INST_LIB};${LSCS_INST_PREFIX}/${LSCS_INST_LIB}/plugins/playlistformats"
+    )
+else()
+    set_target_properties(LsCsMultimedia_m3u PROPERTIES
+      PREFIX ""
+      VERSION ${BUILD_ABI}
+      SOVERSION ${BUILD_MAJOR}
+    )
+endif()
 
 
 list(APPEND MULTIMEDIA_PRIVATE_INCLUDES

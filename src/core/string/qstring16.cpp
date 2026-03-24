@@ -39,10 +39,10 @@
 #include <array>
 
 static bool lscs_internal_quickCheck( QString16::const_iterator &first_iter, QString16::const_iterator last_iter,
-                                    QString16::NormalizationForm mode );
+                                      QString16::NormalizationForm mode );
 
 static QString16 lscs_internal_decompose( QString16::const_iterator first_iter, QString16::const_iterator last_iter,
-                                        bool canonical, QChar32::UnicodeVersion version );
+        bool canonical, QChar32::UnicodeVersion version );
 
 static QString16 lscs_internal_canonicalOrder( const QString16 &str, QChar32::UnicodeVersion version );
 static QString16 lscs_internal_compose( const QString16 &str, QChar32::UnicodeVersion version );
@@ -1997,7 +1997,7 @@ QDataStream &operator<<( QDataStream &stream, const QString16 &str )
 
 // normalization functions
 QString16 lscs_internal_string_normalize( const QString16 &data, QString16::NormalizationForm mode,
-                                        QChar32::UnicodeVersion version, int from )
+        QChar32::UnicodeVersion version, int from )
 {
     QString16 retval;
 
@@ -2080,7 +2080,7 @@ QString16 lscs_internal_string_normalize( const QString16 &data, QString16::Norm
 }
 
 bool lscs_internal_quickCheck( QString16::const_iterator &first_iter, QString16::const_iterator last_iter,
-                             QString16::NormalizationForm mode )
+                               QString16::NormalizationForm mode )
 {
     // method one
 
@@ -2167,7 +2167,7 @@ static const char32_t *lscs_internal_decompose_2( char32_t ucs4, int *length, in
 }
 
 QString16 lscs_internal_decompose( QString16::const_iterator first_iter, QString16::const_iterator last_iter,
-                                 bool canonical, QChar32::UnicodeVersion version )
+                                   bool canonical, QChar32::UnicodeVersion version )
 {
     // method two
     QString16 retval;

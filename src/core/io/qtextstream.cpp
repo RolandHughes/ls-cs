@@ -90,7 +90,7 @@ public:
 
         if ( device != nullptr )
         {
-            /* Force direct connection here so QTextStream can be used across 
+            /* Force direct connection here so QTextStream can be used across
              * multiple threads when the application code is handling
              * synchronization. If signal is queued to another thread we will
              * have a crash when another thread tries to write to the now

@@ -38,8 +38,8 @@ public:
     void openDoc();
     void save();
     void saveAs();
-    void savePointReached(bool yesNo);
-    void setBackgroundColor( QColor background);
+    void savePointReached( bool yesNo );
+    void setBackgroundColor( QColor background );
 
     //
     //  Signals

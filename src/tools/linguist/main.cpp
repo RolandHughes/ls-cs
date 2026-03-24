@@ -91,9 +91,9 @@ private:
 int main( int argc, char **argv )
 {
 #if defined(LSCS_PACKAGE_BUILD)
-    QCoreApplication::setAttribute( Qt::AA_UseSystemConf, true);
+    QCoreApplication::setAttribute( Qt::AA_UseSystemConf, true );
 #endif
-    
+
     Q_INIT_RESOURCE( linguist );
 
     QApplication app( argc, argv );
@@ -153,7 +153,7 @@ int main( int argc, char **argv )
         }
     }
 
-    app.setOrganizationName( "CopperSpice" );
+    app.setOrganizationName( "LsCs" );
     app.setApplicationName( "Linguist" );
 
     QSettings config;

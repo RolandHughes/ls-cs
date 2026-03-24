@@ -4,7 +4,6 @@ add_definitions(
    -DHB_EXTERN=
    -DHB_NO_UNICODE_FUNCS
    -DHB_NDEBUG
-   -DFT2_BUILD_LIBRARY
 )
 
 # Harfbuzz settings
@@ -104,6 +103,8 @@ list(APPEND GUI_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/text/qtexttablecell.h
    ${CMAKE_CURRENT_SOURCE_DIR}/text/qtexttablecellformat.h
    ${CMAKE_CURRENT_SOURCE_DIR}/text/qtexttableformat.h
+
+
 )
 
 list(APPEND GUI_PRIVATE_INCLUDES
@@ -178,48 +179,6 @@ target_sources(LsCsGui
    ${CMAKE_CURRENT_SOURCE_DIR}/text/qtextodfwriter.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/text/qzip.cpp
 
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/autofit/autofit.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/base/ftbase.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/base/ftbbox.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/base/ftbitmap.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/base/ftdebug.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/base/ftglyph.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/base/ftinit.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/base/ftmm.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/base/ftsynth.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/base/fttype1.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/bdf/bdf.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/cache/ftccache.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/cache/ftcmanag.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/cache/ftcmru.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/cff/cff.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/cid/type1cid.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/gzip/ftgzip.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/lzw/ftlzw.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/otvalid/otvbase.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/otvalid/otvcommn.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/pcf/pcf.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/pfr/pfrcmap.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/pfr/pfrdrivr.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/pfr/pfrgload.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/pfr/pfrload.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/pfr/pfrobjs.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/pfr/pfrsbit.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/psaux/psaux.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/pshinter/pshinter.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/psnames/psnames.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/raster/raster.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/sdf/ftbsdf.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/sdf/ftsdf.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/sdf/ftsdfrend.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/sdf/ftsdfcommon.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/sfnt/sfnt.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/smooth/smooth.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/truetype/truetype.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/type1/type1.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/type42/type42.c
-   ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/winfonts/winfnt.c
-
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/fonts/resource_harfbuzz.cpp
 
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-aat-layout.cc
@@ -281,8 +240,42 @@ target_sources(LsCsGui
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-subset-instancer-solver.cc
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-subset-plan.cc
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-unicode.cc
+   
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-common.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-draw.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-buffer.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-glib.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-font.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-meta.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-face.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-color.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-style.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-map.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-shape-plan.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-math.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-var.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-paint.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-gobject-structs.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-metrics.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-unicode.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-aat.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-shape.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-aat-layout.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-deprecated.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-shape.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-name.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-font.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-blob.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-deprecated.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-set.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-subset.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-ot-layout.h
+   ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/hb-version.h
 
    ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src/graph/gsubgpos-context.cc
+
 )
 
 if (GTK2_FOUND)
@@ -294,15 +287,7 @@ if (GTK2_FOUND)
 endif()
 
 if (CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(LsCsGui
-      PRIVATE
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/base/ftsystem.c
-   )
 else()
-   target_sources(LsCsGui
-      PRIVATE
-      ${CMAKE_SOURCE_DIR}/src/3rdparty/freetype/src/builds/unix/ftsystem.c
-   )
    add_definitions(
       -DHAVE_FCNTL_H
    )

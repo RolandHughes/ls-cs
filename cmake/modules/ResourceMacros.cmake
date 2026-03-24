@@ -3,6 +3,7 @@
 # Copyright (c) 2012-2024 Barbara Geller
 # Copyright (c) 2012-2024 Ansel Sermersheim
 # Copyright (c) 2015 Ivailo Monev, <xakepa10@gmail.com>
+# Copyright (c) 2024-2025 Roland Hughes <roland@johnsmith-book.com>
 #
 # This file is part of CopperSpice.
 #
@@ -40,7 +41,7 @@ macro(MACRO_GENERATE_PUBLIC PUBLIC_INCLUDES SUBDIR)
    foreach(pubheader ${PUBLIC_INCLUDES})
       string(TOLOWER ${pubheader} pubname)
       get_filename_component(pubname ${pubname} NAME)
-      set(pubout ${CMAKE_BINARY_DIR}/include/${SUBDIR}/${pubheader})
+      set(pubout ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/${SUBDIR}/${pubheader})
 
       if(NOT EXISTS ${pubout})
          # message(STATUS "Writing public: ${pubout}")
@@ -52,7 +53,7 @@ endmacro()
 macro(MACRO_GENERATE_PRIVATE PRIVATE_INCLUDES SUBDIR)
    foreach(privheader ${PRIVATE_INCLUDES})
       get_filename_component(privname ${privheader} NAME)
-      set(privout ${CMAKE_BINARY_DIR}/privateinclude/${SUBDIR}/private/${privname})
+      set(privout ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/${SUBDIR}/private/${privname})
 
       # message(STATUS "Writing private: ${privout}")
       configure_file(${privheader} ${privout} COPYONLY)
@@ -62,7 +63,7 @@ endmacro()
 macro(MACRO_GENERATE_MISC MISC_INCLUDES SUBDIR)
    foreach(mischeader ${MISC_INCLUDES})
       get_filename_component(headername ${mischeader} NAME)
-      set(headout ${CMAKE_BINARY_DIR}/include/${SUBDIR}/${headername})
+      set(headout ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/${SUBDIR}/${headername})
 
       # message(STATUS "Writing: ${headout}")
       configure_file(${mischeader} ${headout} COPYONLY)
@@ -72,7 +73,7 @@ endmacro()
 macro(MACRO_GENERATE_MISC_PRIVATE MISC_INCLUDES SUBDIR)
    foreach(mischeader ${MISC_INCLUDES})
       get_filename_component(headername ${mischeader} NAME)
-      set(headout ${CMAKE_BINARY_DIR}/privateinclude/${SUBDIR}/${headername})
+      set(headout ${CMAKE_BINARY_DIR}/privateinclude/${PACKAGE_NAME}/${SUBDIR}/${headername})
 
       # message(STATUS "Writing: ${headout}")
       configure_file(${mischeader} ${headout} COPYONLY)
@@ -128,7 +129,7 @@ macro(MACRO_WINDOWS_RESOURCES RESOURCES RSCNAME)
       get_filename_component(resource_ext  ${resource} EXT)
       get_filename_component(resource_name ${resource} NAME_WE)
 
-      if(resource_ext MATCHES ".manifest" AND NOT MINGW)
+      if(resource_ext MATCHES ".manifest")
          set(resource_out ${CMAKE_CURRENT_BINARY_DIR}/${resource_name})
 
          execute_process(
@@ -158,7 +159,6 @@ macro(MACRO_WINDOWS_RESOURCES RESOURCES RSCNAME)
             set(${RSCNAME} ${resource_out})
 
         elseif(resource_ext STREQUAL ".rc")
-            # MinGW, manifest alternative on GNU host
             set(resource_out ${CMAKE_CURRENT_BINARY_DIR}/${resource_name}.o)
 
             execute_process(

@@ -171,7 +171,8 @@ QVector<AVFPSRange> lscs_device_format_framerates( AVCaptureDeviceFormat *format
 AVCaptureDeviceFormat *lscs_find_best_resolution_match( AVCaptureDevice *captureDevice, const QSize &res,
         FourCharCode preferredFormat );
 
-AVCaptureDeviceFormat *lscs_find_best_framerate_match( AVCaptureDevice *captureDevice, FourCharCode preferredFormat, Float64 fps );
+AVCaptureDeviceFormat *lscs_find_best_framerate_match( AVCaptureDevice *captureDevice, FourCharCode preferredFormat,
+        Float64 fps );
 
 AVFrameRateRange *lscs_find_supported_framerate_range( AVCaptureDeviceFormat *format, Float64 fps );
 
@@ -179,6 +180,7 @@ bool lscs_formats_are_equal( AVCaptureDeviceFormat *f1, AVCaptureDeviceFormat *f
 bool lscs_set_active_format( AVCaptureDevice *captureDevice, AVCaptureDeviceFormat *format, bool preserveFps );
 
 AVFPSRange lscs_current_framerates( AVCaptureDevice *captureDevice, AVCaptureConnection *videoConnection );
-void lscs_set_framerate_limits( AVCaptureDevice *captureDevice, AVCaptureConnection *videoConnection, qreal minFPS, qreal maxFPS );
+void lscs_set_framerate_limits( AVCaptureDevice *captureDevice, AVCaptureConnection *videoConnection, qreal minFPS,
+                                qreal maxFPS );
 
 #endif

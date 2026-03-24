@@ -1,9 +1,15 @@
-cmake_minimum_required(VERSION 3.8.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.10.0 FATAL_ERROR)
 
-cmake_policy(VERSION 3.8..3.13)
+cmake_policy(VERSION 3.16..3.23)
 
-# support using rpath on Mac OS X
-cmake_policy(SET CMP0042 NEW)
+if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.19.0")
+   # allows spaces in ctest names
+   cmake_policy(SET CMP0110 NEW)
+endif()
+
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 project(gui-hello)
 
@@ -22,13 +28,21 @@ include(CheckTypeSize)
 find_package(LsCs REQUIRED)
 
 
-
 # file locations for installing
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include(GNUInstallDirs)
+   #
+   # You really only need this line when building against a locally 
+   # installed library instead of system installed.
+   #set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
+
+   #
+   # You really only need this line when building against a locally 
+   # installed library instead of system installed.
+   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
    # lots of warnings and all warnings as errors
    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
@@ -38,8 +52,6 @@ elseif(MSVC)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
-   #MinGW should no longer be needed
-
 endif()
 
 set(PACKAGE           "${PROJECT_NAME}")
@@ -76,9 +88,9 @@ if(APPLE)
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-undefined,error")
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,-undefined,error")
 else()
-    set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--no-undefined")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
-    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined")
+    set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    -Wl,--no-undefined -zlazy")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined -zlazy")
+    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined -zlazy")
 endif()
 
 string(TIMESTAMP BUILD_DATE "%m/%d/%Y")

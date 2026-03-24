@@ -436,7 +436,8 @@ T QObject::property( const QString &name ) const
 
     if ( ! p.isReadable() )
     {
-        qWarning( "%s::property() Property \"%s\" is invalid or does not exist", lscsPrintable( meta->className() ), lscsPrintable( name ) );
+        qWarning( "%s::property() Property \"%s\" is invalid or does not exist", lscsPrintable( meta->className() ),
+                  lscsPrintable( name ) );
     }
 
     return p.read<T>( this );

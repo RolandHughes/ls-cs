@@ -37,8 +37,8 @@
 #include <qfilesystemmetadata_p.h>
 #include <qfilesystemengine_p.h>
 
-static const QString CURRENT_DOT_DIR(".");
-static const QString PARENT_DOT_DIR("..");
+static const QString CURRENT_DOT_DIR( "." );
+static const QString PARENT_DOT_DIR( ".." );
 
 template <class Iterator>
 class QDirIteratorPrivateIteratorStack : public QStack<Iterator *>
@@ -356,7 +356,7 @@ bool QDirIteratorPrivate::matchesFilters( const QString &fileName, const QFileIn
     // filter hidden
     const bool includeHidden = ( m_filters & QDir::Hidden );
 
-    if ( (! includeHidden) && (! dotDirToSkip) && (fi.isHidden() ))
+    if ( ( ! includeHidden ) && ( ! dotDirToSkip ) && ( fi.isHidden() ) )
     {
         return false;
     }

@@ -39,6 +39,20 @@
 #include <algorithm>
 #include <limits.h>
 
+//#include <hb-ot.h>
+
+#define HB_NO_SINGLE_HEADER_ERROR 1
+#if defined(HB_DISABLE_DEPRECATED)
+#undef(HB_DISABLE_DEPRECATED)
+#endif
+
+#include <hb-ot-layout.h>
+
+
+#ifndef HB_OT_MAX_TAGS_PER_SCRIPT
+#define HB_OT_MAX_TAGS_PER_SCRIPT   3u
+#endif
+
 #define GRID(x, y) grid[(y)*(w+1) + (x)]
 #define SET(x, y) (*(image_data + (y)*bpl + ((x) >> 3)) & (0x80 >> ((x) & 7)))
 
@@ -630,7 +644,7 @@ static void collectSingleContour( qreal x0, qreal y0, uint *grid, int x, int y, 
 }
 
 Q_GUI_EXPORT void lscs_addBitmapToPath( qreal x0, qreal y0, const uchar *image_data, int bpl,
-                                      int w, int h, QPainterPath *path )
+                                        int w, int h, QPainterPath *path )
 {
     uint *grid = new uint[( w + 1 ) * ( h + 1 )];
 
@@ -759,7 +773,7 @@ void QFontEngine::addBitmapFontToPath( qreal x, qreal y, const QGlyphLayout &gly
         advanceY += offset.y;
 
         lscs_addBitmapToPath( ( advanceX + metrics.x ).toReal(), ( advanceY + metrics.y ).toReal(), bitmap_data, bitmap.bytesPerLine(),
-                            w, h, path );
+                              w, h, path );
         advanceX += glyphs.advances[i];
     }
 }
@@ -2019,7 +2033,8 @@ QFontEngineMulti::~QFontEngineMulti()
     }
 }
 
-QStringList lscs_fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint, QChar::Script script );
+QStringList lscs_fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint,
+                                     QChar::Script script );
 
 void QFontEngineMulti::ensureFallbackFamiliesQueried()
 {
@@ -2706,4 +2721,3 @@ QTestFontEngine::QTestFontEngine( int size )
     : QFontEngineBox( TestFontEngine, size )
 {
 }
-

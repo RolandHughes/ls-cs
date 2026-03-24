@@ -589,13 +589,6 @@ bool qunsetenv( const char *varName )
 #if defined(_POSIX_VERSION) && (_POSIX_VERSION - 0) >= 200112L
     return unsetenv( varName ) == 0;
 
-#elif defined(Q_CC_MINGW)
-    // removes "var" from the environment, no memory leak
-    QByteArray buffer( varName );
-    buffer += '=';
-
-    return putenv( buffer.constData() ) == 0;
-
 #else
     // insert an empty var into the environment, memory leak
     QByteArray buffer( varName );

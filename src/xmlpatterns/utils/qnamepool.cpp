@@ -61,7 +61,7 @@ NamePool::NamePool()
 
         Q_ASSERT_X( m_namespaces.count() == StandardNamespaceCount, Q_FUNC_INFO,
                     lscsPrintable( QString::fromLatin1( "Expected is %1, actual is %2." ).formatArg( StandardNamespaceCount ).formatArg(
-                                     m_namespaces.count() ) ) );
+                                       m_namespaces.count() ) ) );
     }
 
     /* Prefixes. */
@@ -78,7 +78,7 @@ NamePool::NamePool()
 
         Q_ASSERT_X( m_prefixes.count() == StandardPrefixCount, Q_FUNC_INFO,
                     lscsPrintable( QString::fromLatin1( "Expected is %1, actual is %2." ).formatArg( StandardPrefixCount ).formatArg(
-                                     m_prefixes.count() ) ) );
+                                       m_prefixes.count() ) ) );
     }
 
     /* Local names. */

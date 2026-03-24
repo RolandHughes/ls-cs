@@ -52,7 +52,7 @@ static inline bool time_update( struct timespec *tv, const struct timespec &star
 }
 
 int lscs_safe_select( int nfds, fd_set *fdread, fd_set *fdwrite, fd_set *fdexcept,
-                    const struct timespec *orig_timeout )
+                      const struct timespec *orig_timeout )
 {
     if ( ! orig_timeout )
     {

@@ -7,25 +7,43 @@ if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.19.0")
    cmake_policy(SET CMP0110 NEW)
 endif()
 
-if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.20.0")
-   # enable RTTI on MSVC
-   cmake_policy(SET CMP0117 OLD)
-endif()
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 set(BUILD_MAJOR "0")
-set(BUILD_MINOR "1")
+set(BUILD_MINOR "3")
 set(BUILD_MICRO "3")
+
+# unused at this time: DBus, Declarative, and ScriptTools
+set(LSCS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Sql Svg XmlPatterns)
+
+set(PACKAGE           "lscs")
+set(PACKAGE_NAME      "LsCs")
+set(PACKAGE_VERSION   "${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
+set(PACKAGE_STRING    "lscs ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
+set(PACKAGE_TARNAME   "lscs")
+set(PACKAGE_BUGREPORT "originalseasonedgeek@gmail.com")
+set(PACKAGE_URL       "https://github.com/RolandHughes/ls-cs")
+
 
 project(LsCs VERSION ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO} DESCRIPTION "A C++ Cross Platform Application Framework" )
 
-
-# used to control cmake/pc variables when building
-# installation packages
-#
-option(BUILDING_RPM "Are we building RPM" OFF)
-option(BUILDING_DEBIAN "Are we building DEBIAN" OFF)
+function(dump_cmake_variables)
+    get_cmake_property(_variableNames VARIABLES)
+    list (SORT _variableNames)
+    foreach (_variableName ${_variableNames})
+        if (ARGV0)
+            unset(MATCHED)
+            string(REGEX MATCH ${ARGV0} MATCHED ${_variableName})
+            if (NOT MATCHED)
+                continue()
+            endif()
+        endif()
+        message(STATUS "${_variableName}=${${_variableName}}")
+    endforeach()
+endfunction()
 
 set(BUILD_ABI ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO})
 
@@ -44,92 +62,11 @@ include(CheckLibraryExists)
 include(ResourceMacros)
 include(TestLargeFiles)
 
-
-
-# location for install or package
-if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   include(GNUInstallDirs)
-   # MAC is not tested as of 20240904
-   # rpath used for rcc and uic when compiling a user application
-   #file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
-   #                                "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}")
-
-   #set(CMAKE_INSTALL_RPATH "@executable_path")
-
-elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-   include(GNUInstallDirs)
-
-   # this architecture value is only used on the control file for a debian package.
-   # if the value is bogus or empty on other platforms it simply doesn't matter.
-   #
-   # TODO:: See what we get when cross compiling for Arm or other targets.
-   #
-   EXECUTE_PROCESS( COMMAND dpkg --print-architecture  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE CPACK_PACKAGE_ARCHITECTURE)
-   EXECUTE_PROCESS( COMMAND arch  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE LIB_ARCHITECTURE)
-
-
-   #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   #  Now that we are naming binaries appropriately and putting them in
-   #  standard locations, all of this RPATH stuff trying to find binaries
-   #  underneath the lib directory tree is unnecessary.
-   #
-   #  One single RPATH definition works for all. Really only need RPATH
-   #  for a development install into a non-system directory.
-   #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-     
-   # set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/:$ORIGIN/..")
-   set(CMAKE_INSTALL_INCLUDEDIR "include/${CMAKE_PROJECT_NAME}")
-   set(CMAKE_INSTALL_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
-
-
-elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
-   set(CMAKE_INSTALL_BINDIR bin)
-   set(CMAKE_INSTALL_LIBDIR lib)
-   set(CMAKE_INSTALL_INCLUDEDIR include)
-
-endif()
-
-message( STATUS, "CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
-#
-# When building for a package we install to /usr under a 
-# fakeroot or buildroot during build. We don't want
-# the build install path but the system target path.
-#
-if (BUILDING_DEBIAN)
-    message(STATUS "** We are building Debian package ***")
-    add_compile_definitions(LSCS_PACKAGE_BUILD)
-    set(LSCS_INST_PREFIX  "/usr")    
-    set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-    set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
-    set(CMAKE_INSTALL_FULL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" )
-    set(LSCS_INST_BIN     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_BINDIR}")
-    set(LSCS_INST_SHARE   "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME}")
-elseif (BUILDING_RPM)
-    message(STATUS "** We are building RPM package ***")
-    add_compile_definitions(LSCS_PACKAGE_BUILD)
-    set(LSCS_INST_PREFIX  "/usr")    
-    set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-    set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
-    set(LSCS_INST_BIN     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_BINDIR}")
-    set(LSCS_INST_SHARE   "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME}")
-else()
-    set(LSCS_INST_PREFIX  "${CMAKE_INSTALL_PREFIX}")    
-    set(LSCS_INST_LIB     "${CMAKE_INSTALL_FULL_LIBDIR}")
-    set(LSCS_INST_INCLUDE "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
-    set(LSCS_INST_BIN     "${CMAKE_INSTALL_FULL_BINDIR}")
-    set(LSCS_INST_SHARE   "${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME}")
-endif()
-
-# Note: webkit2.pc.in also uses prefix
-#
-set(prefix "${LSCS_INST_PREFIX}")
-
 # required libraries
 set(BUILD_COMPONENTS "Core Xml")
 
-# removed Webkit
-# unused at this time: DBus
-set(LSCS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Sql Svg Vulkan XmlPatterns)
+# unused at this time: DBus, Declarative, and ScriptTools
+set(LSCS_OPTIONAL_COMPONENTS Gui Multimedia Network OpenGL Script Sql Svg Vulkan WebKit XmlPatterns)
 
 set(PACKAGE           "lscs")
 set(PACKAGE_NAME      "LsCs")
@@ -373,7 +310,6 @@ endif()
 
 if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
 
-  # TODO:: Cups can run on Windows now
 find_package(Cups)
 set_package_properties(Cups PROPERTIES
    PURPOSE "Required for printing support"
@@ -393,16 +329,16 @@ endif()
 
 
 if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-
-find_package(PulseAudio)
-set_package_properties(PulseAudio PROPERTIES
-   PURPOSE "Required for pulseaudio support"
-   DESCRIPTION "Sound processing daemon for Unix"
-   URL "https://www.pulseaudio.org"
-   TYPE RECOMMENDED
-)
+  include(linux.cmake)
+elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+  include(mac.cmake)
+elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
+  include(windows.cmake)
 endif()
 
+# hack to use local harfbuzz instead of system.
+#
+include_directories( BEFORE ${CMAKE_SOURCE_DIR}/src/3rdparty/harfbuzz/src )
 
 find_package(PostgreSQL QUIET)
 set_package_properties(PostgreSQL PROPERTIES
@@ -646,16 +582,15 @@ if (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
       )
    endif()
 
-# always require xml   
-#   if (WITH_WEBKIT)
+   if (WITH_WEBKIT)
       find_package(LibXml2)
       set_package_properties(LibXml2 PROPERTIES
-         PURPOSE "Required for XML support"
+         PURPOSE "Required for XML support in WebKit"
          DESCRIPTION "XML C parser and toolkit developed for the Gnome project"
          URL "http://www.xmlsoft.org/"
          TYPE REQUIRED
       )
-#   endif()
+   endif()
 endif()
 
 if (WIN32)
@@ -663,11 +598,7 @@ if (WIN32)
 endif()
 
 if (NOT Cups_FOUND)
-  message( STATUS, "Cups was not found")
-  add_definitions(-DLSCS_NO_CUPS)
-else()
-  message( STATUS, "Adding Cups support")
-  add_definitions(-DLSCS_CUPS)
+   add_definitions(-DLSCS_NO_CUPS)
 endif()
 
 if (NOT GLIB2_FOUND)
@@ -706,7 +637,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 configure_file(
    ${CMAKE_SOURCE_DIR}/src/core/global/LsCs_build_info.h.in
-   ${CMAKE_BINARY_DIR}/include/QtCore/LsCs_build_info.h
+   ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}/LsCs_build_info.h
 )
 
 # Ninja generator does not yet know how to build archives in pieces, so response
@@ -726,23 +657,10 @@ elseif (WITH_SVG AND NOT WITH_GUI)
 elseif (WITH_XMLPATTERNS AND NOT WITH_NETWORK)
    message(SEND_ERROR "LsCsXmlPatterns component requires LsCsNetwork component")
 
-elseif (WITH_WEBKIT AND NOT (WITH_GUI AND WITH_NETWORK ))
-   message(SEND_ERROR "LsCsWebKit component requires LsCsGui, LsCsNetwork components")
+elseif (WITH_WEBKIT AND NOT (WITH_GUI AND WITH_NETWORK AND WITH_SCRIPT))
+   message(SEND_ERROR "LsCsWebKit component requires LsCsGui, LsCsNetwork, and LsCsScript components")
 
 endif()
-
-add_subdirectory(src/core)
-add_subdirectory(src/xml)
-
-foreach(component ${LSCS_OPTIONAL_COMPONENTS})
-   string(TOUPPER ${component} uppercomp)
-
-   if (WITH_${uppercomp})
-      string(TOLOWER ${component} lowercomp)
-      add_subdirectory(src/${lowercomp})
-      set(BUILD_COMPONENTS "${BUILD_COMPONENTS} ${component}")
-   endif()
-endforeach()
 
 add_subdirectory(src/tools/shared)
 add_subdirectory(src/tools/lconvert)
@@ -773,6 +691,7 @@ if (WITH_GUI)
 
    add_subdirectory(src/plugins/imageformats)
    add_subdirectory(src/plugins/platforms)
+   add_subdirectory(src/plugins/printerdrivers)
 endif()
 
 configure_file(
@@ -800,135 +719,9 @@ configure_file(
 )
 
 
-if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   set(PKG_PREFIX "lscs.framework/Resources")
+include(CPack)
 
-elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
-   set(PKG_PREFIX "cmake/LsCs")
-
-else()
-   set(PKG_PREFIX "${CMAKE_INSTALL_LIBDIR}/cmake")
-
-endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-    #  Update files needed for Debian
-    #  Note: You need to update CPACK_PACKAGE_INSTALLED_SIZE to reflect current installed size
-    #
-   set(CPACK_PACKAGE_INSTALLED_SIZE "6291456")
-
-
-
-   message( STATUS "Architecture: ${CPACK_PACKAGE_ARCHITECTURE}")
-
-
-    configure_file(
-       ${CMAKE_SOURCE_DIR}/deb_build.etc/control.in
-       deb_build.etc/control
-       @ONLY
-    )
-
-    configure_file(
-       ${CMAKE_SOURCE_DIR}/LsCs.spec.in
-       LsCs.spec
-       @ONLY
-     )
-
-     configure_file(
-       ${CMAKE_SOURCE_DIR}/LsCs-library.conf.in
-       LsCs-library.conf
-       @ONLY
-     )
-
-    #  postrm has some heavy syntax - just copy
-    configure_file(
-       ${CMAKE_SOURCE_DIR}/deb_build.etc/postrm.in
-       deb_build.etc/postrm
-       COPYONLY
-    )
-
-    #  postinst needs to know package name for logging
-    configure_file(
-       ${CMAKE_SOURCE_DIR}/deb_build.etc/postinst.in
-       deb_build.etc/postinst
-    )
-
-    #  hopefully we never need to replace values in rules
-    configure_file(
-       ${CMAKE_SOURCE_DIR}/deb_build.etc/rules.in
-       deb_build.etc/rules
-       COPYONLY
-    )
-
-    configure_file(
-        ${CMAKE_SOURCE_DIR}/README.md
-        README.md
-        COPYONLY
-    )
-
-endif()
-
-
-if (BUILDING_DEBIAN)
-install(
-   FILES
-      ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
-      ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
-
-      ${CMAKE_SOURCE_DIR}/cmake/LsCsDeploy.cmake
-      ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
-      ${CMAKE_SOURCE_DIR}/cmake/InstallMinGW.cmake
-   DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake
-)
-
-install(
-  FILES
-     ${CMAKE_BINARY_DIR}/LsCs-library.conf
-     DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/ld.so.conf.d
-)     
-else()
-install(
-   FILES
-      ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
-      ${CMAKE_BINARY_DIR}/LsCsConfigVersion.cmake
-
-      ${CMAKE_SOURCE_DIR}/cmake/LsCsDeploy.cmake
-      ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
-      ${CMAKE_SOURCE_DIR}/cmake/InstallMinGW.cmake
-      DESTINATION ${PKG_PREFIX}/${CMAKE_INSTALL_LIBDIR}/cmake
-)
-endif()
-
-install(
-    FILES
-       ${CMAKE_SOURCE_DIR}/license/LGPL_EXCEPTION.txt
-       ${CMAKE_SOURCE_DIR}/license/LICENSE.FDL
-       ${CMAKE_SOURCE_DIR}/license/LICENSE.LGPL
-       DESTINATION ${CMAKE_INSTALL_DOCDIR}/license
-)
-
-install(
-  FILES
-     ${CMAKE_BINARY_DIR}/lscs.conf
-  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME}
-)
-
-install(
-   # generate cmake files containing rules about linking with LsCs libs
-
-   EXPORT LsCsLibraryTargets
-   NAMESPACE LsCs::
-   FILE LsCsLibraryTargets.cmake
-   DESTINATION ${PKG_PREFIX}
-)
-
-# generate cmake files containing rules about running LsCs binary tools
-install(
-   EXPORT LsCsBinaryTargets
-   NAMESPACE LsCs::
-   FILE LsCsBinaryTargets.cmake
-   DESTINATION ${PKG_PREFIX}
-)
+include (InstallRequiredSystemLibraries)
 
 message("\n")
 message("-- The following lscs libraries will be built:")
@@ -951,10 +744,18 @@ message("   LSCS_INST_INCLUDE    ${LSCS_INST_INCLUDE}")
 message("   LSCS_INST_BIN        ${LSCS_INST_BIN}")
 message("   LSCS_INST_SHARE      ${LSCS_INST_SHARE}")
 message( " ")
-message("CMAKE_INSTALL_RPATH            ${CMAKE_INSTALL_RPATH}" )
+message("PACKAGE_NAME                   ${PACKAGE_NAME}")
+message("CMAKE_PACKAGE_NAME             ${CMAKE_PACKAGE_NAME}")
+message("CMAKE_BINARY_DIR               ${CMAKE_BINARY_DIR}")
+message("CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}")
+message("CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+message("CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+message( " " )
+message("CMAKE_INSTALL_DATAROOTDIR      ${CMAKE_INSTALL_DATAROOTDIR}")
+message("CMAKE_INSTALL_DOCDIR           ${CMAKE_INSTALL_DOCDIR}")
 message("CMAKE_INSTALL_BINDIR           ${CMAKE_INSTALL_BINDIR}" )
 message("CMAKE_INSTALL_LIBDIR           ${CMAKE_INSTALL_LIBDIR}" )
-message("CMAKE_INSTALL_INCLUDEDIR       ${CMAKE_INSTALL_INCLUDE_DIR}" )
+message("CMAKE_INSTALL_INCLUDEDIR       ${CMAKE_INSTALL_INCLUDEDIR}" )
 message("CMAKE_INSTALL_FULL_LIBDIR      ${CMAKE_INSTALL_FULL_LIBDIR}" )
 message("CMAKE_INSTALL_FULL_INCLUDEDIR  ${CMAKE_INSTALL_FULL_INCLUDEDIR}" )
 message("CMAKE_INSTALL_FULL_BINDIR      ${CMAKE_INSTALL_FULL_BINDIR}")

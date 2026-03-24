@@ -88,8 +88,6 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/styles/qstylesheetstyle_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/styles/qstyleanimation_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/styles/qwindows_style_p.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/styles/qwindows_xpstyle_p.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/styles/qwindows_vistastyle_p.h
 )
 
 target_sources(LsCsGui
@@ -145,17 +143,17 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
       ${CMAKE_CURRENT_SOURCE_DIR}/styles/qmacstyle.mm
    )
 
-   add_definitions(-DLSCS_NO_STYLE_WINDOWSXP -DLSCS_NO_STYLE_GTK)
+   add_definitions( -DLSCS_NO_STYLE_GTK)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD)")
-   add_definitions(-DLSCS_NO_STYLE_MAC -DLSCS_NO_STYLE_WINDOWSXP)
+   add_definitions(-DLSCS_NO_STYLE_MAC )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/styles/qwindows_style.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/styles/qwindows_xpstyle.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/styles/qwindows_vistastyle.cpp
   )
+
+  add_definitions(-DLSCS_NO_STYLE_MAC )
 
 endif()

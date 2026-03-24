@@ -7,7 +7,7 @@ if [ `whoami` != root ]; then
     exit
 fi
 
-zypper install -t pattern devel_basis   
+dnf install -t pattern devel_basis   
 
 # executables first
 zypper install tree rpm-build rpmdevtools mercurial git cmake ninja fakeroot \

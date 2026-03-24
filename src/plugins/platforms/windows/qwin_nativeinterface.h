@@ -49,7 +49,7 @@ public:
     void *nativeResourceForWindow( const QByteArray &resource, QWindow *window ) override;
 
     LSCS_INVOKABLE_METHOD_1( Public, void *createMessageWindow( const QString &classNameTemplate, const QString &windowName,
-                           void *eventProc ) const )
+                             void *eventProc ) const )
     LSCS_INVOKABLE_METHOD_2( createMessageWindow )
 
     LSCS_INVOKABLE_METHOD_1( Public, QString registerWindowClass( const QString &classNameIn, void *eventProc ) const )

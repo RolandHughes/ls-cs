@@ -447,15 +447,15 @@ inline QXmlName::QXmlName( const NamespaceCode uri,
      * values are to large, they would overflow into the others. */
     Q_ASSERT_X( p <= MaximumPrefixes, "",
                 lscsPrintable( QString( "NamePool prefix limits: max is %1, therefore %2 exceeds." ).formatArg( MaximumPrefixes ).formatArg(
-                                 p ) ) );
+                                   p ) ) );
 
     Q_ASSERT_X( ln <= MaximumLocalNames, "",
                 lscsPrintable( QString( "NamePool local name limits: max is %1, therefore %2 exceeds." ).formatArg( MaximumLocalNames ).formatArg(
-                                 ln ) ) );
+                                   ln ) ) );
 
     Q_ASSERT_X( uri <= MaximumNamespaces, "",
                 lscsPrintable( QString( "NamePool namespace limits: max is %1, therefore %2 exceeds." ).formatArg( MaximumNamespaces ).formatArg(
-                                 uri ) ) );
+                                   uri ) ) );
 }
 
 #endif

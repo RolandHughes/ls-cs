@@ -77,6 +77,7 @@
 #include <locale.h>
 #include <unistd.h>
 #include <sys/types.h>
+//#include <ltdl.h>
 #endif
 
 #include <algorithm>
@@ -632,8 +633,48 @@ void QCoreApplicationPrivate::init()
         appendApplicationPathToLibraryPaths();
     }
 
-    app_libpaths->append( QString::fromUtf8( LsCsLibraryInfo::libraries ) );
-    app_libpaths->append( QString::fromUtf8( LsCsLibraryInfo::plugins ) );
+    /*
+     * This logic must support both a full path to libraries and the
+     * correct path-based-on-prefix value.
+     *
+     * NOTE: We will only load paths that actually exist at runtime.
+     *       If your values point to a drive that gets mounted later
+     *       they won't be loaded.
+     */
+    QDir fullLibPath( QString::fromUtf8( LsCsLibraryInfo::install_prefix ) );
+    fullLibPath.cd( QString::fromUtf8( LsCsLibraryInfo::libraries ) );
+    QString pathStr = fullLibPath.canonicalPath();
+
+    if ( pathStr.length() > 0 )
+    {
+        app_libpaths->append( pathStr );
+    }
+
+    QDir libOnlyPath( QString::fromUtf8( LsCsLibraryInfo::libraries ) );
+    pathStr = libOnlyPath.canonicalPath();
+
+    if ( pathStr.length() > 0 )
+    {
+        app_libpaths->append( pathStr );
+    }
+
+    QDir fullPluginPath( QString::fromUtf8( LsCsLibraryInfo::install_prefix ) );
+    fullPluginPath.cd( QString::fromUtf8( LsCsLibraryInfo::plugins ) );
+    pathStr = fullPluginPath.canonicalPath();
+
+    if ( pathStr.length() > 0 )
+    {
+        app_libpaths->append( pathStr );
+    }
+
+    QDir pluginOnlyPath( QString::fromUtf8( LsCsLibraryInfo::plugins ) );
+    pathStr = pluginOnlyPath.canonicalPath();
+
+    if ( pathStr.length() > 0 )
+    {
+        app_libpaths->append( pathStr );
+    }
+
 #endif
 
     // threads
@@ -1873,27 +1914,29 @@ QStringList QCoreApplication::libraryPaths()
      * the distribution directory tree. File and directory names are
      * subject to change so just walk the tree.
      *
-     * /usr/lib/LsCs/plugins
-     * ├── iconengines
-     * ├── imageformats
-     * │   └── LsCsImageFormatsSvg0.1.so
-     * ├── mediaservices
-     * │   ├── LsCsMultimedia_gst_audiodecoder0.1.so
-     * │   ├── LsCsMultimedia_gst_camerabin0.1.so
-     * │   └── LsCsMultimedia_gst_mediaplayer0.1.so
-     * ├── pictureformats
-     * ├── platforms
-     * │   └── LsCsGuiXcb0.1.so
-     * ├── playlistformats
-     * │   └── LsCsMultimedia_m3u0.1.so
-     * ├── printerdrivers
-     * │   └── LsCsPrinterDriverCups0.1.so
-     * ├── sqldrivers
-     * │   ├── LsCsSqlMySql0.1.so
-     * │   ├── LsCsSqlOdbc0.1.so
-     * │   └── LsCsSqlPsql0.1.so
-     * └── xcbglintegrations
-     *    └── LsCsGuiXcb_Glx0.1.so
+     *
+     * /usr/lib/LsCs
+     * ├─/usr/lib/LsCs/plugins
+     *   ├── iconengines
+     *   ├── imageformats
+     *   │   └── LsCsImageFormatsSvg0.1.so
+     *   ├── mediaservices
+     *   │   ├── LsCsMultimedia_gst_audiodecoder0.1.so
+     *   │   ├── LsCsMultimedia_gst_camerabin0.1.so
+     *   │   └── LsCsMultimedia_gst_mediaplayer0.1.so
+     *   ├── pictureformats
+     *   ├── platforms
+     *   │   └── LsCsGuiXcb0.1.so
+     *   ├── playlistformats
+     *   │   └── LsCsMultimedia_m3u0.1.so
+     *   ├── printerdrivers
+     *   │   └── LsCsPrinterDriverCups0.1.so
+     *   ├── sqldrivers
+     *   │   ├── LsCsSqlMySql0.1.so
+     *   │   ├── LsCsSqlOdbc0.1.so
+     *   │   └── LsCsSqlPsql0.1.so
+     *   └── xcbglintegrations
+     *       └── LsCsGuiXcb_Glx0.1.so
      */
 
     if ( ! coreappdata()->app_libpaths )

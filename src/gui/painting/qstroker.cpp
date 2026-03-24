@@ -937,7 +937,7 @@ Q_GUI_EXPORT void lscs_find_ellipse_coords( const QRectF &r, qreal angle, qreal 
         QPointF *startPoint, QPointF *endPoint );
 
 QPointF lscs_curves_for_arc( const QRectF &rect, qreal startAngle, qreal sweepLength,
-                           QPointF *curves, int *point_count )
+                             QPointF *curves, int *point_count )
 {
     Q_ASSERT( point_count );
     Q_ASSERT( curves );

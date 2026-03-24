@@ -116,7 +116,7 @@ public:
 #endif
 
     NET_LSCS_SIGNAL_1( Public, void downloadMetaData( const QList <QPair <QByteArray,QByteArray>> &headers, int statusCode,
-                     const QString &reason, bool isPipelined, QSharedPointer <char> downloadBuffer, qint64 contentLength, bool isSpdy ) )
+                       const QString &reason, bool isPipelined, QSharedPointer <char> downloadBuffer, qint64 contentLength, bool isSpdy ) )
     NET_LSCS_SIGNAL_2( downloadMetaData, headers, statusCode, reason, isPipelined, downloadBuffer, contentLength, isSpdy )
 
     NET_LSCS_SIGNAL_1( Public, void downloadProgress( qint64 bytesReceived, qint64 bytesTotal ) )
@@ -174,14 +174,14 @@ protected:
     NET_LSCS_SLOT_2( finishedSlot )
 
     NET_LSCS_SLOT_1( Protected, void finishedWithErrorSlot( QNetworkReply::NetworkError errorCode,
-                   const QString &detail = QString() ) )
+                     const QString &detail = QString() ) )
     NET_LSCS_SLOT_2( finishedWithErrorSlot )
 
     NET_LSCS_SLOT_1( Protected, void synchronousFinishedSlot() )
     NET_LSCS_SLOT_2( synchronousFinishedSlot )
 
     NET_LSCS_SLOT_1( Protected, void synchronousFinishedWithErrorSlot( QNetworkReply::NetworkError errorCode,
-                   const QString &detail = QString() ) )
+                     const QString &detail = QString() ) )
     NET_LSCS_SLOT_2( synchronousFinishedWithErrorSlot )
 
     NET_LSCS_SLOT_1( Protected, void headerChangedSlot() )
@@ -208,12 +208,12 @@ protected:
 #endif
 
     NET_LSCS_SLOT_1( Protected, void synchronousAuthenticationRequiredSlot( const QHttpNetworkRequest &request,
-                   QAuthenticator *authenticator ) )
+                     QAuthenticator *authenticator ) )
     NET_LSCS_SLOT_2( synchronousAuthenticationRequiredSlot )
 
 #ifndef LSCS_NO_NETWORKPROXY
     NET_LSCS_SLOT_1( Protected, void synchronousProxyAuthenticationRequiredSlot( const QNetworkProxy &proxy,
-                   QAuthenticator *authenticator ) )
+                     QAuthenticator *authenticator ) )
     NET_LSCS_SLOT_2( synchronousProxyAuthenticationRequiredSlot )
 #endif
 

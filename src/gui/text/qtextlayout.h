@@ -204,7 +204,7 @@ private:
     friend class QGraphicsSimpleTextItem;
 
     friend void lscs_format_text( const QFont &font, const QRectF &_r, int tf, const QTextOption *, const QString &str,
-                                QRectF *brect, int tabstops, int *tabarray, int tabarraylen, QPainter *painter );
+                                  QRectF *brect, int tabstops, int *tabarray, int tabarraylen, QPainter *painter );
 
 };
 

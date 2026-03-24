@@ -24,9 +24,11 @@
 #include <qcoreapplication.h>
 #include <qfile.h>
 #include <qplatformdefs.h>
-
+#include <qlibraryinfo.h>
 #include <qfilesystementry_p.h>
 #include <qlibrary_p.h>
+#include <qdebug.h>
+#include <qdir.h>
 
 #ifdef Q_OS_DARWIN
 #  include <qcore_mac_p.h>
@@ -38,6 +40,7 @@
 
 #if ! defined(LSCS_NO_DYNAMIC_LIBRARY)
 #include <dlfcn.h>
+//#include <ltdl.h>
 #endif
 
 static QString qdlerror()
@@ -92,6 +95,8 @@ bool QLibraryHandle::load_sys()
     QString attempt;
 
 #if ! defined(LSCS_NO_DYNAMIC_LIBRARY)
+    //lt_dlinit();
+
     QFileSystemEntry fsEntry( fileName );
 
     QString path = fsEntry.path();
@@ -181,6 +186,42 @@ bool QLibraryHandle::load_sys()
 
     bool retry = true;
 
+    /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     *   Put our .conf paths at the front of the library search list
+     *;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     */
+    /*    QString prefixStr( QLibraryInfo::location( QLibraryInfo::LibraryLocation::PrefixPath));
+        QString librariesStr( QLibraryInfo::location( QLibraryInfo::LibraryLocation::LibrariesPath));
+        QString pluginsStr( QLibraryInfo::location( QLibraryInfo::LibraryLocation::PluginsPath));
+
+        if (prefixStr.length() > 0)
+        {
+            QDir pref( prefixStr);
+            pref.cd( librariesStr);
+            lt_dlinsertsearchdir( lt_dlgetsearchpath(), pref.canonicalPath().toUtf8().data());
+
+            QDir pref2( prefixStr );
+            pref2.cd( pluginsStr );
+            lt_dlinsertsearchdir( lt_dlgetsearchpath(), pref2.canonicalPath().toUtf8().data());
+        }
+        else
+        {
+            if (librariesStr.length() > 0)
+            {
+                lt_dlinsertsearchdir( lt_dlgetsearchpath(), librariesStr.toUtf8().data());
+            }
+
+            if (pluginsStr.length() > 0)
+            {
+                lt_dlinsertsearchdir( lt_dlgetsearchpath(), pluginsStr.toUtf8().data());
+            }
+        }
+    */
+
+    /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     *   now search for libraries
+     *;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     */
     for ( int prefix = 0; retry && !pHnd && prefix < prefixes.size(); prefix++ )
     {
         for ( int suffix = 0; retry && !pHnd && suffix < suffixes.size(); suffix++ )
@@ -213,6 +254,17 @@ bool QLibraryHandle::load_sys()
             }
 
             pHnd = dlopen( QFile::encodeName( attempt ).constData(), dlFlags );
+            //pHnd = lt_dlopen( QFile::encodeName( attempt ).constData());
+
+//            if (!pHnd)
+//            {
+//                QString eStr( QString::fromUtf8( lt_dlerror()));
+//                if (eStr.length() > 0)
+//                {
+//                    qDebug() << "****lt_dlerror() returned: " << eStr;
+//                }
+//
+//            }
 
             if ( !pHnd && fileName.startsWith( QLatin1Char( '/' ) ) && QFile::exists( attempt ) )
             {
@@ -261,6 +313,7 @@ bool QLibraryHandle::load_sys()
         errorString = QLibrary::tr( "Unable to load library %1: %2" ).formatArg( fileName ).formatArg( qdlerror() );
     }
 
+    //lt_dlexit();
     return ( pHnd != nullptr );
 }
 

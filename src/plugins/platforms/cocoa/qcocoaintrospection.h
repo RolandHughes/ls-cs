@@ -32,6 +32,6 @@
 #import <objc/objc-class.h>
 
 void lscs_cocoa_change_implementation( Class baseClass, SEL originalSel, Class proxyClass, SEL replacementSel = nullptr,
-                                     SEL backupSel = nullptr );
+                                       SEL backupSel = nullptr );
 void lscs_cocoa_change_back_implementation( Class baseClass, SEL originalSel, SEL backupSel );
 

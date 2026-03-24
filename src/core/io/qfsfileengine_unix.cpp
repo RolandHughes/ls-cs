@@ -855,7 +855,7 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
     realOffset &= ~( LSCS_OFF_T( pageSize - 1 ) );
 
     void *mapAddress = LSCS_MMAP( ( void * )nullptr, realSize,
-                                access, MAP_SHARED, nativeHandle(), realOffset );
+                                  access, MAP_SHARED, nativeHandle(), realOffset );
 
     if ( MAP_FAILED != mapAddress )
     {

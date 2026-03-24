@@ -4834,7 +4834,8 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
                     else
                     {
                         int iconSize = proxy()->pixelMetric( PM_SmallIconSize, tb, widget );
-                        pm = proxy()->standardIcon( SP_TitleBarMenuButton, &tool, widget ).pixmap( lscs_getWindow( widget ), QSize( iconSize, iconSize ) );
+                        pm = proxy()->standardIcon( SP_TitleBarMenuButton, &tool, widget ).pixmap( lscs_getWindow( widget ), QSize( iconSize,
+                                iconSize ) );
                         tool.rect = ir;
                         p->save();
                         proxy()->drawItemPixmap( p, ir, Qt::AlignCenter, pm );
@@ -8084,7 +8085,8 @@ QIcon QCommonStyle::standardIcon( StandardPixmap standardIcon, const QStyleOptio
                     for ( int size : sizes )
                     {
                         QPixmap mainIcon;
-                        const QString cacheKey = QLatin1String( "lscs_mac_constructQIconFromIconRef" ) + QString::number( standardIcon ) + QString::number(
+                        const QString cacheKey = QLatin1String( "lscs_mac_constructQIconFromIconRef" ) + QString::number(
+                                                     standardIcon ) + QString::number(
                                                      size );
 
                         if ( standardIcon >= QStyle::SP_CustomBase )

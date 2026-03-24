@@ -19,5 +19,5 @@
 
 // TODO:: add doxygen comment.
 #ifdef Q_OS_UNIX
-    QString lscs_tildeExpansion( const QString &path, bool *expanded = nullptr );
+QString lscs_tildeExpansion( const QString &path, bool *expanded = nullptr );
 #endif

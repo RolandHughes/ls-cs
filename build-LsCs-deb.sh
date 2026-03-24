@@ -104,7 +104,7 @@ function build_from_source()
     echo "*** Prepping build directory"
     cd "$BUILD_DIR"
 
-    cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug \
+    cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release \
         -DBUILDING_DEBIAN=ON \
         -DCMAKE_INSTALL_PREFIX="$RELEASE_DIR" \
         "$SCRIPT_DIR"
@@ -112,19 +112,9 @@ function build_from_source()
     #  Step 4: Actually build LsCs
     #
     echo "*** Building LsCs"
-    ninja install
+    CORE_MINUS_1=$(( $(lscpu --parse=Core,Socket | grep -v '^#' | sort -u | wc -l) - 1 ))
+    ninja -j $CORE_MINUS_1 install
 
-    #  Step 5: Sweep up what CopperSpice project gets wrong in their
-    #          default build.  TODO:: see if this is still needed
-    cd "$RELEASE_DIR/${LIB_DIR}/LsCs/cmake"
-    if [ -f "LsCsLibraryTargets.cmake" ]; then
-        echo "*** "
-        echo "*** Fixing where cmake looks for Qt and other headers"
-        echo "*** "
-        sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/LsCs;#g' LsCsLibraryTargets.cmake
-        sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/LsCs/Qt#g' LsCsLibraryTargets.cmake
-    fi
-    
     BUILD_FROM_SOURCE_COMPLETED=$( date '+%F_%H:%M:%S' )
 }
 

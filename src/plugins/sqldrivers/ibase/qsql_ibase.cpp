@@ -529,7 +529,7 @@ QVariant QIBaseResultPrivate::fetchBlob( ISC_QUAD *bId )
 
     bool isErr = ( status[1] == isc_segstr_eof ? false :
                    isError( lscs_mark_tr( "QIBaseResult",
-                                        "Unable to read BLOB" ),
+                                          "Unable to read BLOB" ),
                             QSqlError::StatementError ) );
 
     isc_close_blob( status, &handle );
@@ -1146,7 +1146,7 @@ bool QIBaseResult::prepare( const QString &query )
     isc_dsql_describe_bind( d->status, &d->stmt, FBVERSION, d->inda );
 
     if ( d->isError( lscs_mark_tr( "QIBaseResult",
-                                 "Could not describe input statement" ), QSqlError::StatementError ) )
+                                   "Could not describe input statement" ), QSqlError::StatementError ) )
     {
         return false;
     }
@@ -1164,7 +1164,7 @@ bool QIBaseResult::prepare( const QString &query )
         isc_dsql_describe_bind( d->status, &d->stmt, FBVERSION, d->inda );
 
         if ( d->isError( lscs_mark_tr( "QIBaseResult",
-                                     "Could not describe input statement" ), QSqlError::StatementError ) )
+                                       "Could not describe input statement" ), QSqlError::StatementError ) )
         {
             return false;
         }

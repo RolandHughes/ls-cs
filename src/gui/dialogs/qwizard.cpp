@@ -46,7 +46,6 @@
 #if defined(Q_OS_DARWIN)
 #include <qplatform_nativeinterface.h>
 
-#elif ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
 #include <qtimer.h>
 #include <qwizard_win_p.h>
 
@@ -353,10 +352,6 @@ protected:
 
 private:
 
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-    bool vistaDisabled() const;
-#endif
-
     QLabel *titleLabel;
     QLabel *subTitleLabel;
     QLabel *logoLabel;
@@ -399,35 +394,11 @@ QWizardHeader::QWizardHeader( QWidget *parent )
     layout->addWidget( logoLabel, 1, 5, 5, 1 );
 }
 
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-bool QWizardHeader::vistaDisabled() const
-{
-    bool styleDisabled = false;
-    QWizard *wiz = parentWidget() ? qobject_cast <QWizard *>( parentWidget()->parentWidget() ) : nullptr;
-
-    if ( wiz )
-    {
-        // Designer dosen't support the Vista style for Wizards. This property is used to turn
-        // off the Vista style.
-        const QVariant v = wiz->property( "_q_wizard_vista_off" );
-        styleDisabled = v.isValid() && v.toBool();
-    }
-
-    return styleDisabled;
-}
-#endif
-
 void QWizardHeader::setup( const QWizardLayoutInfo &info, const QString &title,
                            const QString &subTitle, const QPixmap &logo, const QPixmap &banner,
                            Qt::TextFormat titleFormat, Qt::TextFormat subTitleFormat )
 {
-    bool modern = ( ( info.wizStyle == QWizard::ModernStyle )
-
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-                    || ( ( info.wizStyle == QWizard::AeroStyle && QVistaHelper::vistaState() == QVistaHelper::Classic ) || vistaDisabled() )
-#endif
-
-                  );
+    bool modern = ( ( info.wizStyle == QWizard::ModernStyle ) );
 
     layout->setRowMinimumHeight( 0, modern ? ModernHeaderTopMargin : 0 );
     layout->setRowMinimumHeight( 1, modern ? info.topLevelMarginTop - ModernHeaderTopMargin - 1 : 0 );
@@ -634,24 +605,11 @@ void QWizardPagePrivate::_q_updateCachedCompleteState()
 class QWizardAntiFlickerWidget : public QWidget
 {
 
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-public:
-    QWizardAntiFlickerWidget( QWizard *wizard, QWizardPrivate *wizardPrivate )
-        : QWidget( wizard ), wizardPrivate( wizardPrivate )
-    { }
-
-    QWizardPrivate *wizardPrivate;
-
-protected:
-    void paintEvent( QPaintEvent * ) override;
-
-#else
 public:
     QWizardAntiFlickerWidget( QWizard *wizard, QWizardPrivate * )
         : QWidget( wizard )
     { }
 
-#endif
 
 };
 
@@ -675,23 +633,9 @@ public:
           placeholderWidget1( nullptr ), placeholderWidget2( nullptr ), headerWidget( nullptr ),
           watermarkLabel( nullptr ), sideWidget( nullptr ), pageFrame( nullptr ), titleLabel( nullptr ),
           subTitleLabel( nullptr ), bottomRuler( nullptr ),
-
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-          vistaHelper( nullptr ), vistaInitPending( false ), vistaState( QVistaHelper::VistaState::Dirty ),
-          vistaStateChanged( false ), inHandleAeroStyleChange( false ),
-#endif
           minimumWidth( 0 ), minimumHeight( 0 ), maximumWidth( QWIDGETSIZE_MAX ), maximumHeight( QWIDGETSIZE_MAX )
     {
         std::fill( btns, btns + QWizard::NButtons, static_cast<QAbstractButton *>( nullptr ) );
-
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-
-        if ( QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based ) )
-        {
-            vistaInitPending = true;
-        }
-
-#endif
     }
 
     void init();
@@ -715,13 +659,6 @@ public:
     bool buttonLayoutContains( QWizard::WizardButton which );
     void updatePixmap( QWizard::WizardPixmap which );
 
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-    bool vistaDisabled() const;
-    bool isVistaThemeEnabled( QVistaHelper::VistaState state ) const;
-    bool handleAeroStyleChange();
-#endif
-
-    bool isVistaThemeEnabled() const;
     void disableUpdates();
     void enableUpdates();
     void _q_emitCustomButtonClicked();
@@ -788,14 +725,6 @@ public:
     QHBoxLayout *buttonLayout;
     QGridLayout *mainLayout;
 
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-    QVistaHelper *vistaHelper;
-    bool vistaInitPending;
-    QVistaHelper::VistaState vistaState;
-    bool vistaStateChanged;
-    bool inHandleAeroStyleChange;
-#endif
-
     int minimumWidth;
     int minimumHeight;
     int maximumWidth;
@@ -804,10 +733,6 @@ public:
 
 static QString buttonDefaultText( int wstyle, int which, const QWizardPrivate *wizardPrivate )
 {
-#if defined(LSCS_NO_STYLE_WINDOWSVISTA)
-    ( void ) wizardPrivate;
-
-#endif
     const bool macStyle = ( wstyle == QWizard::MacStyle );
 
     switch ( which )
@@ -822,8 +747,7 @@ static QString buttonDefaultText( int wstyle, int which, const QWizardPrivate *w
             }
             else
             {
-                return wizardPrivate->isVistaThemeEnabled()
-                       ? QWizard::tr( "&Next" ) : QWizard::tr( "&Next >" );
+                return QWizard::tr( "&Next >" );
             }
 
         case QWizard::CommitButton:
@@ -858,10 +782,6 @@ void QWizardPrivate::init()
     {
         opts = QWizard::HelpButtonOnRight;
     }
-
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-    vistaHelper = new QVistaHelper( q );
-#endif
 
     // create these buttons right away; create the other buttons as necessary
     ensureButton( QWizard::BackButton );
@@ -1132,17 +1052,10 @@ QWizardLayoutInfo QWizardPrivate::layoutInfoForCurrentPage()
     }
 
     info.wizStyle = wizStyle;
-#if defined(LSCS_NO_STYLE_WINDOWSVISTA)
 
     if ( info.wizStyle == QWizard::AeroStyle )
     {
 
-#else
-
-    if ( ( info.wizStyle == QWizard::AeroStyle ) && ( QVistaHelper::vistaState() == QVistaHelper::Classic ||
-            vistaDisabled() ) )
-    {
-#endif
         info.wizStyle = QWizard::ModernStyle;
     }
 
@@ -1666,15 +1579,6 @@ void QWizardPrivate::updateMinMaxSizes( const QWizardLayoutInfo &info )
 
     int extraHeight = 0;
 
-#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
-
-    if ( isVistaThemeEnabled() )
-    {
-        extraHeight = vistaHelper->titleBarSize() + vistaHelper->topOffset();
-    }
-
-#endif
-
     QSize minimumSize = mainLayout->totalMinimumSize() + QSize( 0, extraHeight );
     QSize maximumSize = mainLayout->totalMaximumSize();
 
@@ -1849,8 +1753,7 @@ void QWizardPrivate::updateButtonTexts()
 
     if ( btns[QWizard::NextButton] )
     {
-        btns[QWizard::NextButton]->setShortcut( isVistaThemeEnabled() ? QKeySequence( Qt::AltModifier | Qt::Key_Right ) :
-                                                QKeySequence() );
+        btns[QWizard::NextButton]->setShortcut( QKeySequence() );
     }
 }
 
@@ -1989,125 +1892,6 @@ void QWizardPrivate::updatePixmap( QWizard::WizardPixmap which )
     }
 }
 
-#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
-bool QWizardPrivate::vistaDisabled() const
-{
-    Q_Q( const QWizard );
-    const QVariant v = q->property( "_q_wizard_vista_off" );
-    return v.isValid() && v.toBool();
-}
-
-bool QWizardPrivate::isVistaThemeEnabled( QVistaHelper::VistaState state ) const
-{
-    return wizStyle == QWizard::AeroStyle && QVistaHelper::vistaState() == state && !vistaDisabled();
-}
-
-bool QWizardPrivate::handleAeroStyleChange()
-{
-    Q_Q( QWizard );
-
-    if ( inHandleAeroStyleChange )
-    {
-        return false;   // prevent recursion
-    }
-
-    // DWM changes. Delay aero initialization to the show event handling if
-    // it does not exist. If we are a child, skip DWM and just make room by
-    // moving the antiFlickerWidget.
-    const bool isWindow = q->isWindow();
-
-    if ( isWindow && ( !q->windowHandle() || !q->windowHandle()->handle() ) )
-    {
-        return false;
-    }
-
-    inHandleAeroStyleChange = true;
-
-    vistaHelper->disconnectBackButton();
-    q->removeEventFilter( vistaHelper );
-
-    bool vistaMargins = false;
-
-    if ( isVistaThemeEnabled() )
-    {
-        if ( isVistaThemeEnabled( QVistaHelper::VistaAero ) )
-        {
-            if ( isWindow )
-            {
-                vistaHelper->setDWMTitleBar( QVistaHelper::ExtendedTitleBar );
-                q->installEventFilter( vistaHelper );
-            }
-
-            q->setMouseTracking( true );
-
-            antiFlickerWidget->move( 0, vistaHelper->titleBarSize() + vistaHelper->topOffset() );
-
-            // ### should ideally work without the '+ 1'
-            vistaHelper->backButton()->move( 0, vistaHelper->topOffset()
-                                             - qMin( vistaHelper->topOffset(), vistaHelper->topPadding() + 1 ) );
-
-            vistaMargins = true;
-            vistaHelper->backButton()->show();
-
-        }
-        else
-        {
-            if ( isWindow )
-            {
-                vistaHelper->setDWMTitleBar( QVistaHelper::NormalTitleBar );
-            }
-
-            q->setMouseTracking( true );
-            antiFlickerWidget->move( 0, vistaHelper->topOffset() );
-            vistaHelper->backButton()->move( 0, -1 ); // ### should ideally work with (0, 0)
-        }
-
-        if ( isWindow )
-        {
-            vistaHelper->setTitleBarIconAndCaptionVisible( false );
-        }
-
-        QObject::connect( vistaHelper->backButton(), SIGNAL( clicked() ), q, buttonSlots( QWizard::BackButton ) );
-        vistaHelper->backButton()->show();
-
-    }
-    else
-    {
-        q->setMouseTracking( true ); // ### original value possibly different
-
-#ifndef LSCS_NO_CURSOR
-        q->unsetCursor();
-#endif
-
-        antiFlickerWidget->move( 0, 0 );
-        vistaHelper->hideBackButton();
-
-        if ( isWindow )
-        {
-            vistaHelper->setTitleBarIconAndCaptionVisible( true );
-        }
-    }
-
-    _q_updateButtonStates();
-
-    vistaHelper->updateCustomMargins( vistaMargins );
-
-
-    inHandleAeroStyleChange = false;
-    return true;
-}
-#endif
-
-bool QWizardPrivate::isVistaThemeEnabled() const
-{
-#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
-    return isVistaThemeEnabled( QVistaHelper::VistaAero )
-           || isVistaThemeEnabled( QVistaHelper::VistaBasic );
-#else
-    return false;
-#endif
-}
-
 void QWizardPrivate::disableUpdates()
 {
     Q_Q( QWizard );
@@ -2193,17 +1977,6 @@ void QWizardPrivate::_q_updateButtonStates()
     {
         finishPush->setDefault( !canContinue && useDefault );
     }
-
-#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
-
-    if ( isVistaThemeEnabled() )
-    {
-        vistaHelper->backButton()->setEnabled( btn.back->isEnabled() );
-        vistaHelper->backButton()->setVisible( backButtonVisible );
-        btn.back->setVisible( false );
-    }
-
-#endif
 
     enableUpdates();
 }
@@ -2296,37 +2069,6 @@ QPixmap QWizardPrivate::findDefaultBackgroundPixmap()
 
 #endif
 
-#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
-void QWizardAntiFlickerWidget::paintEvent( QPaintEvent * )
-{
-    if ( wizardPrivate->isVistaThemeEnabled() )
-    {
-        int leftMargin, topMargin, rightMargin, bottomMargin;
-        wizardPrivate->buttonLayout->getContentsMargins(
-            &leftMargin, &topMargin, &rightMargin, &bottomMargin );
-        const int buttonLayoutTop = wizardPrivate->buttonLayout->contentsRect().top() - topMargin;
-        QPainter painter( this );
-        const QBrush brush( QColor( 240, 240, 240 ) ); // ### hardcoded for now
-        painter.fillRect( 0, buttonLayoutTop, width(), height() - buttonLayoutTop, brush );
-        painter.setPen( QPen( QBrush( QColor( 223, 223, 223 ) ), 0 ) ); // ### hardcoded for now
-        painter.drawLine( 0, buttonLayoutTop, width(), buttonLayoutTop );
-
-        if ( wizardPrivate->isVistaThemeEnabled( QVistaHelper::VistaBasic ) )
-        {
-            if ( window()->isActiveWindow() )
-            {
-                painter.setPen( QPen( QBrush( QColor( 169, 191, 214 ) ), 0 ) ); // ### hardcoded for now
-            }
-            else
-            {
-                painter.setPen( QPen( QBrush( QColor( 182, 193, 204 ) ), 0 ) ); // ### hardcoded for now
-            }
-
-            painter.drawLine( 0, 0, width(), 0 );
-        }
-    }
-}
-#endif
 
 QWizard::QWizard( QWidget *parent, Qt::WindowFlags flags )
     : QDialog( *new QWizardPrivate, parent, flags )
@@ -2621,48 +2363,14 @@ void QWizard::setWizardStyle( WizardStyle style )
 
     const bool styleChange = style != d->wizStyle;
 
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-    const bool aeroStyleChange =
-        d->vistaInitPending || d->vistaStateChanged || ( styleChange && ( style == AeroStyle || d->wizStyle == AeroStyle ) );
-    d->vistaStateChanged = false;
-    d->vistaInitPending = false;
-#endif
-
-    if ( styleChange
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-            || aeroStyleChange
-#endif
-       )
+    if ( styleChange )
     {
         d->disableUpdates();
         d->wizStyle = style;
         d->updateButtonTexts();
-
-#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
-
-        if ( aeroStyleChange )
-        {
-            // Send a resizeevent since the antiflicker widget probably needs a new size
-            // because of the backbutton in the window title
-            QResizeEvent ev( geometry().size(), geometry().size() );
-            QApplication::sendEvent( this, &ev );
-        }
-
-#endif
-
         d->updateLayout();
         updateGeometry();
         d->enableUpdates();
-
-#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
-
-        // Delay initialization when activating Aero style fails due to missing native window.
-        if ( aeroStyleChange && !d->handleAeroStyleChange() && d->wizStyle == AeroStyle )
-        {
-            d->vistaInitPending = true;
-        }
-
-#endif
     }
 }
 
@@ -2844,15 +2552,6 @@ void QWizard::setButton( WizardButton which, QAbstractButton *button )
 QAbstractButton *QWizard::button( WizardButton which ) const
 {
     Q_D( const QWizard );
-
-#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
-
-    if ( d->wizStyle == AeroStyle && which == BackButton )
-    {
-        return d->vistaHelper->backButton();
-    }
-
-#endif
 
     if ( !d->ensureButton( which ) )
     {
@@ -3061,37 +2760,6 @@ bool QWizard::event( QEvent *event )
         d->updateLayout();
     }
 
-#if !defined(LSCS_NO_STYLE_WINDOWSVISTA)
-
-    else if ( event->type() == QEvent::Show && d->vistaInitPending )
-    {
-        d->vistaInitPending = false;
-
-        if ( QVistaHelper::vistaState() != QVistaHelper::Classic )
-        {
-            d->wizStyle = AeroStyle;
-        }
-
-        d->handleAeroStyleChange();
-
-    }
-    else if ( d->isVistaThemeEnabled() )
-    {
-        if ( event->type() == QEvent::Resize
-                || event->type() == QEvent::LayoutDirectionChange )
-        {
-            const int buttonLeft = ( layoutDirection() == Qt::RightToLeft
-                                     ? width() - d->vistaHelper->backButton()->sizeHint().width()
-                                     : 0 );
-
-            d->vistaHelper->backButton()->move( buttonLeft, d->vistaHelper->backButton()->y() );
-        }
-
-        d->vistaHelper->mouseEvent( event );
-    }
-
-#endif
-
     return QDialog::event( event );
 }
 
@@ -3100,30 +2768,7 @@ void QWizard::resizeEvent( QResizeEvent *event )
     Q_D( QWizard );
     int heightOffset = 0;
 
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-
-    if ( d->isVistaThemeEnabled() )
-    {
-        heightOffset = d->vistaHelper->topOffset();
-
-        if ( d->isVistaThemeEnabled( QVistaHelper::VistaAero ) )
-        {
-            heightOffset += d->vistaHelper->titleBarSize();
-        }
-    }
-
-#endif
-
     d->antiFlickerWidget->resize( event->size().width(), event->size().height() - heightOffset );
-
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-
-    if ( d->isVistaThemeEnabled() )
-    {
-        d->vistaHelper->resizeEvent( event );
-    }
-
-#endif
 
     QDialog::resizeEvent( event );
 }
@@ -3145,55 +2790,14 @@ void QWizard::paintEvent( QPaintEvent *event )
         painter.drawPixmap( 0, ( height() - backgroundPixmap.height() ) / 2, backgroundPixmap );
     }
 
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-    else if ( d->isVistaThemeEnabled() )
-    {
-        if ( d->isVistaThemeEnabled( QVistaHelper::VistaBasic ) )
-        {
-            QPainter painter( this );
-            QColor color = d->vistaHelper->basicWindowFrameColor();
-            painter.fillRect( 0, 0, width(), QVistaHelper::topOffset(), color );
-        }
-
-        d->vistaHelper->paintEvent( event );
-    }
-
-#else
     ( void ) event;
-#endif
 }
 
 #if defined(Q_OS_WIN)
 
 bool QWizard::nativeEvent( const QByteArray &eventType, void *message, long *result )
 {
-#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
-    Q_D( QWizard );
-
-    if ( d->isVistaThemeEnabled() && eventType == "windows_generic_MSG" )
-    {
-        MSG *windowsMessage = static_cast<MSG *>( message );
-        const bool winEventResult = d->vistaHelper->handleWinEvent( windowsMessage, result );
-
-        if ( QVistaHelper::vistaState() != d->vistaState )
-        {
-            d->vistaState = QVistaHelper::vistaState();
-            d->vistaStateChanged = true;
-            setWizardStyle( AeroStyle );
-        }
-
-        return winEventResult;
-
-    }
-    else
-    {
-        return QDialog::nativeEvent( eventType, message, result );
-    }
-
-#else
     return QDialog::nativeEvent( eventType, message, result );
-#endif
-
 }
 #endif
 

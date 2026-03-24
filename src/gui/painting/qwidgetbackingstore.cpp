@@ -57,8 +57,8 @@ static QPlatformTextureList *lscs_dummy_platformTextureList()
 #endif
 
 void QWidgetBackingStore::lscs_flush( QWidget *widget, const QRegion &region, QBackingStore *backingStore,
-                                    QWidget *tlw, const QPoint &tlwOffset, QPlatformTextureList *widgetTextures,
-                                    QWidgetBackingStore *widgetBackingStore )
+                                      QWidget *tlw, const QPoint &tlwOffset, QPlatformTextureList *widgetTextures,
+                                      QWidgetBackingStore *widgetBackingStore )
 {
     ( void ) widgetBackingStore;
 
