@@ -69,7 +69,7 @@ QToolBarLayout::QToolBarLayout( QWidget *parent )
     extension = new QToolBarExtension( tb );
     extension->setFocusPolicy( Qt::NoFocus );
     extension->hide();
-    QObject::connect( tb, &QToolBar::orientationChanged, extension, &QToolBarExtension::setOrientation );
+    QObject::connect( tb, &QToolBar::orientation_changed, extension, &QToolBarExtension::setOrientation );
 
     setUsePopupMenu( qobject_cast<QMainWindow *>( tb->parentWidget() ) == nullptr );
 }
@@ -934,7 +934,7 @@ QToolBarItem *QToolBarLayout::createItem( QAction *action )
     else if ( action->isSeparator() )
     {
         QToolBarSeparator *sep = new QToolBarSeparator( tb );
-        connect( tb, &QToolBar::orientationChanged, sep, &QToolBarSeparator::setOrientation );
+        connect( tb, &QToolBar::orientation_changed, sep, &QToolBarSeparator::setOrientation );
         widget = sep;
     }
 

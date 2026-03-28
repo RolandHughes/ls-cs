@@ -40,7 +40,7 @@
 #include <qinputmethod.h>
 #include <qlineedit.h>
 #include <qmenu.h>
-#include <bdspooler.h>
+#include <lscs_spooler.h>
 #include <qpainter.h>
 #include <qstyle.h>
 #include <qstylehints.h>
@@ -3307,7 +3307,7 @@ bool QTextControl::isPreediting()
     return d_func()->isPreediting();
 }
 #ifndef LSCS_NO_PRINTER
-void QTextControl::print( BdSpooler *spooler ) const
+void QTextControl::print( lscs_spooler *spooler ) const
 {
     // TODO:: fix this once we have finished re-architecting spooler classes
     //

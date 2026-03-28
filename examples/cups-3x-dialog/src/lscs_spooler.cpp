@@ -1,8 +1,8 @@
 /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Copyright (c) 2024-2025 Roland Hughes d.b.a Logikal Solutions
+;; Copyright (c) 2024-2026 Roland Hughes d.b.a Logikal Solutions
 ;;
-;; This file is part of Ls-Cs.
+;; This file is part of Ls-Cs, also known as LsCs
 ;;
 ;; Ls-Cs is free software. You can redistribute it and/or
 ;; modify it under the terms the Basis Doctrina License found in
@@ -14,18 +14,18 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
 
-/*! \file bdspooler.h
+/*! \file lscs_spooler.h
  *  \brief Implementation for base class of spooler interface
  */
 
-#include <bdspooler.h>
+#include <lscs_spooler.h>
 
 /*! \brief Explicit Constructor
  *
  * \param Enum value indicating type of spooler
  * \param Optional full path to file name. If this is provided will not spool to device.
  */
-BdSpooler::BdSpooler( const BdSpoolerType spoolerType, const QString outputFile ) :
+lscs_spooler::lscs_spooler( const LsCsSpoolerType spoolerType, const QString outputFile ) :
     m_spoolerType( spoolerType )
     , m_outputFile( outputFile )
 {
@@ -33,8 +33,8 @@ BdSpooler::BdSpooler( const BdSpoolerType spoolerType, const QString outputFile 
 
 /*! \brief Default Constructor
  */
-BdSpooler::BdSpooler() :
-    m_spoolerType( BdSpoolerType::None )
+lscs_spooler::lscs_spooler() :
+    m_spoolerType( LsCsSpoolerType::None )
 {
 }
 
@@ -42,7 +42,7 @@ BdSpooler::BdSpooler() :
  *
  * \return Enum value indicating type of spooler
  */
-BdSpoolerType BdSpooler::spoolerType()
+LsCsSpoolerType lscs_spooler::spooler_type()
 {
     return m_spoolerType;
 }

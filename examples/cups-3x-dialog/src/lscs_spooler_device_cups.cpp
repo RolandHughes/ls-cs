@@ -1,8 +1,8 @@
 /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Copyright (c) 2024-2025 Roland Hughes d.b.a Logikal Solutions
+;; Copyright (c) 2024-2026 Roland Hughes d.b.a Logikal Solutions
 ;;
-;; This file is part of Ls-Cs.
+;; This file is part of Ls-Cs, also known as LsCs
 ;;
 ;; Ls-Cs is free software. You can redistribute it and/or
 ;; modify it under the terms the Basis Doctrina License found in
@@ -14,7 +14,7 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
 
-/*! \file bdcupsprintdevice.cpp
+/*! \file lscs_print_device_cups.cpp
  * \brief Spooling device supporting Cups 3.x API
  *
  * \details Provides an interface to a Cups 3.x supported device. This does not
@@ -29,7 +29,7 @@
 #include <qregularexpression.h>
 #include <qfile.h>
 
-#include <bdcupsspoolerdevice.h>
+#include <lscs_spooler_device_cups.h>
 
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 //      text strings for cups printer options
@@ -69,14 +69,14 @@ static const char *MEDIA_COL_DEFAULT = "media-col-default";
 static const char *MEDIA_SOURCE = "media-source";
 
 
-BdCupsSpoolerDevice::BdCupsSpoolerDevice( const QString &name ) :
+lscs_spooler_device_cups::lscs_spooler_device_cups( const QString &name ) :
     m_cupsDest( nullptr )
 {
     QString workName = name;
 
     if ( name.length() < 1 )
     {
-        workName = BdSpoolerDevice::defaultDeviceName();
+        workName = lscs_spooler_device::default_device_name();
     }
 
     m_cupsDest = cupsGetNamedDest( CUPS_HTTP_DEFAULT, workName.toUtf8().constData(), NULL );
@@ -86,10 +86,10 @@ BdCupsSpoolerDevice::BdCupsSpoolerDevice( const QString &name ) :
         qDebug() << "****************cupsGetNamedDest returned nullptr" << endl;
     }
 
-    loadInfo();
+    load_info();
 }
 
-BdCupsSpoolerDevice::~BdCupsSpoolerDevice()
+lscs_spooler_device_cups::~lscs_spooler_device_cups()
 {
     if ( m_cupsDest )
     {
@@ -99,14 +99,14 @@ BdCupsSpoolerDevice::~BdCupsSpoolerDevice()
     m_cupsDest = nullptr;
 }
 
-void BdCupsSpoolerDevice::loadInfo()
+void lscs_spooler_device_cups::load_info()
 {
     if ( !m_cupsDest )
     {
         return;
     }
 
-    setDeviceName( QString::fromUtf8( m_cupsDest->name ) );
+    set_device_name( QString::fromUtf8( m_cupsDest->name ) );
 
     m_instance.clear();
 
@@ -115,13 +115,13 @@ void BdCupsSpoolerDevice::loadInfo()
         m_instance = QString::fromUtf8( m_cupsDest->instance );
     }
 
-    setUri( printerOption( QString::fromUtf8( URI_OPTION ) ) );
-    setDescription( printerOption( QString::fromUtf8( MAKE_AND_MODEL_OPTION ) ) );
-    setLocation( printerOption( QString::fromUtf8( LOCATION_OPTION ) ) );
+    set_uri( printer_option( QString::fromUtf8( URI_OPTION ) ) );
+    set_description( printer_option( QString::fromUtf8( MAKE_AND_MODEL_OPTION ) ) );
+    set_location( printer_option( QString::fromUtf8( LOCATION_OPTION ) ) );
 
 }
 
-bool BdCupsSpoolerDevice::isValid()
+bool lscs_spooler_device_cups::is_valid()
 {
     bool retVal = false;
 
@@ -133,58 +133,58 @@ bool BdCupsSpoolerDevice::isValid()
     return retVal;
 }
 
-bool BdCupsSpoolerDevice::isDefault()
+bool lscs_spooler_device_cups::is_default()
 {
-    return printerTypeFlags() & CUPS_PRINTER_DEFAULT;
+    return printer_type_flags() & CUPS_PRINTER_DEFAULT;
 }
 
-bool BdCupsSpoolerDevice::isRemote()
+bool lscs_spooler_device_cups::is_remote()
 {
-    return printerTypeFlags() & CUPS_PRINTER_REMOTE;
+    return printer_type_flags() & CUPS_PRINTER_REMOTE;
 }
 
-bool BdCupsSpoolerDevice::supportsMultipleCopies()
+bool lscs_spooler_device_cups::supports_multiple_copies()
 {
-    return printerTypeFlags() & CUPS_PRINTER_COPIES;
+    return printer_type_flags() & CUPS_PRINTER_COPIES;
 }
 
-bool BdCupsSpoolerDevice::supportsCollateCopies()
+bool lscs_spooler_device_cups::supports_collate_copies()
 {
-    return printerTypeFlags() & CUPS_PRINTER_COLLATE;
+    return printer_type_flags() & CUPS_PRINTER_COLLATE;
 }
 
-bool BdCupsSpoolerDevice::supportsCustomPageSizes()
+bool lscs_spooler_device_cups::supports_custom_page_sizes()
 {
-    return printerTypeFlags() & CUPS_PRINTER_VARIABLE;
+    return printer_type_flags() & CUPS_PRINTER_VARIABLE;
 }
 
-QString BdCupsSpoolerDevice::printerOption( const QString &key )
+QString lscs_spooler_device_cups::printer_option( const QString &key )
 {
     return QString::fromUtf8( cupsGetOption( key.toUtf8().constData(), m_cupsDest->num_options, m_cupsDest->options ) );
 }
 
-cups_ptype_e BdCupsSpoolerDevice::printerTypeFlags()
+cups_ptype_e lscs_spooler_device_cups::printer_type_flags()
 {
-    return static_cast<cups_ptype_e>( printerOption( QString::fromUtf8( TYPE_OPTION ) ).toInteger<uint>() ) ;
+    return static_cast<cups_ptype_e>( printer_option( QString::fromUtf8( TYPE_OPTION ) ).toInteger<uint>() ) ;
 }
 
-BdSpoolerDeviceState BdCupsSpoolerDevice::state()
+LsCsSpoolerDeviceState lscs_spooler_device_cups::state()
 {
     // 3 = idle, 4 = printing, 5 = stopped
-    int state = printerOption( QString::fromUtf8( STATE_OPTION ) ).toInteger<int>();
+    int state = printer_option( QString::fromUtf8( STATE_OPTION ) ).toInteger<int>();
 
     switch ( state )
     {
         case 3:
-            return BdSpoolerDeviceState::Idle;
+            return LsCsSpoolerDeviceState::Idle;
             break;
 
         case 4:
-            return BdSpoolerDeviceState::Active;
+            return LsCsSpoolerDeviceState::Active;
             break;
 
         case 5:
-            return BdSpoolerDeviceState::Stopped;
+            return LsCsSpoolerDeviceState::Stopped;
             break;
 
         default:
@@ -192,11 +192,11 @@ BdSpoolerDeviceState BdCupsSpoolerDevice::state()
             break;
     }
 
-    return BdSpoolerDeviceState::Error;
+    return LsCsSpoolerDeviceState::Error;
 }
 
 
-QPageSize BdCupsSpoolerDevice::defaultPageSize()
+QPageSize lscs_spooler_device_cups::default_page_size()
 {
     QPageSize retVal;
 
@@ -218,7 +218,7 @@ QPageSize BdCupsSpoolerDevice::defaultPageSize()
     return retVal;
 }
 
-QMarginsF BdCupsSpoolerDevice::printableMargins( const QPageSize &pageSize, QPageLayout::Orientation orientation,
+QMarginsF lscs_spooler_device_cups::printable_margins( const QPageSize &pageSize, QPageLayout::Orientation orientation,
         int resolution )
 {
     // TODO:: consider orientation and resolution in calculation
@@ -244,7 +244,7 @@ QMarginsF BdCupsSpoolerDevice::printableMargins( const QPageSize &pageSize, QPag
     return retVal;
 }
 
-int BdCupsSpoolerDevice::defaultResolution()
+int lscs_spooler_device_cups::default_resolution()
 {
     int retVal = 72;   // assume dot matrix based on Epson MX-80 - note graphics mode was only 60 dpi
 
@@ -293,12 +293,12 @@ int BdCupsSpoolerDevice::defaultResolution()
     return retVal;
 }
 
-QString BdCupsSpoolerDevice::lastKnownError()
+QString lscs_spooler_device_cups::last_known_error()
 {
     return QString::fromUtf8( cupsLastErrorString() );
 }
 
-QString BdCupsSpoolerDevice::defaultMediaSource()
+QString lscs_spooler_device_cups::default_media_source()
 {
     QString retVal = "auto";
 
@@ -352,7 +352,7 @@ QString BdCupsSpoolerDevice::defaultMediaSource()
 }
 
 
-QString BdCupsSpoolerDevice::defaultOutputBin()
+QString lscs_spooler_device_cups::default_output_bin()
 {
     QString retVal( "auto" );
 
@@ -400,7 +400,7 @@ QString BdCupsSpoolerDevice::defaultOutputBin()
     return retVal;
 }
 
-QStringList BdCupsSpoolerDevice::supportedOutputBins()
+QStringList lscs_spooler_device_cups::supported_output_bins()
 {
     QStringList retVal;
 
@@ -456,7 +456,7 @@ QStringList BdCupsSpoolerDevice::supportedOutputBins()
     return retVal;
 }
 
-QString BdCupsSpoolerDevice::defaultDuplexMode()
+QString lscs_spooler_device_cups::default_duplex_mode()
 {
     QString retVal = "one-sided";
 
@@ -482,7 +482,7 @@ QString BdCupsSpoolerDevice::defaultDuplexMode()
 }
 
 
-QString BdCupsSpoolerDevice::defaultColorMode()
+QString lscs_spooler_device_cups::default_color_mode()
 {
     QString retVal;
 
@@ -500,7 +500,7 @@ QString BdCupsSpoolerDevice::defaultColorMode()
     return retVal;
 }
 
-QList<QPageSize> BdCupsSpoolerDevice::supportedPageSizes()
+QList<QPageSize> lscs_spooler_device_cups::supported_page_sizes()
 {
     QList<QPageSize> retVal;
 
@@ -530,7 +530,7 @@ QList<QPageSize> BdCupsSpoolerDevice::supportedPageSizes()
     return retVal;
 }
 
-QPageSize BdCupsSpoolerDevice::supportedPageSize( const QString &pageName )
+QPageSize lscs_spooler_device_cups::supported_page_size( const QString &pageName )
 {
     QPageSize retVal;
 
@@ -558,7 +558,7 @@ QPageSize BdCupsSpoolerDevice::supportedPageSize( const QString &pageName )
     return retVal;
 }
 
-QSize BdCupsSpoolerDevice::minimumPhysicalPageSize()
+QSize lscs_spooler_device_cups::minimum_physical_page_size()
 {
     QSize retVal;
 
@@ -588,7 +588,7 @@ QSize BdCupsSpoolerDevice::minimumPhysicalPageSize()
 
 }
 
-QSize BdCupsSpoolerDevice::maximumPhysicalPageSize()
+QSize lscs_spooler_device_cups::maximum_physical_page_size()
 {
     QSize retVal;
 
@@ -617,7 +617,7 @@ QSize BdCupsSpoolerDevice::maximumPhysicalPageSize()
     return retVal;
 }
 
-QList<int> BdCupsSpoolerDevice::supportedResolutions()
+QList<int> lscs_spooler_device_cups::supported_resolutions()
 {
     QList<int> retVal;
 
@@ -678,7 +678,7 @@ QList<int> BdCupsSpoolerDevice::supportedResolutions()
     return retVal;
 }
 
-QStringList BdCupsSpoolerDevice::supportedMediaSources()
+QStringList lscs_spooler_device_cups::supported_media_sources()
 {
     QStringList retVal;
 
@@ -732,7 +732,7 @@ QStringList BdCupsSpoolerDevice::supportedMediaSources()
 }
 
 
-QStringList BdCupsSpoolerDevice::supportedDuplexModes()
+QStringList lscs_spooler_device_cups::supported_duplex_modes()
 {
     QStringList retVal;
 
@@ -789,7 +789,7 @@ QStringList BdCupsSpoolerDevice::supportedDuplexModes()
 }
 
 
-QStringList BdCupsSpoolerDevice::supportedColorModes()
+QStringList lscs_spooler_device_cups::supported_color_modes()
 {
     QStringList retVal;
 
@@ -845,10 +845,10 @@ QStringList BdCupsSpoolerDevice::supportedColorModes()
     return retVal;
 }
 
-int BdCupsSpoolerDevice::queueFile( QString fullPathAndFileName,
-                                    QStringList &options,
-                                    int *deviceStatus,
-                                    QString *errMsg )
+int lscs_spooler_device_cups::queue_file( QString fullPathAndFileName,
+        QStringList &options,
+        int *deviceStatus,
+        QString *errMsg )
 {
     int retVal = -1;  // assume failure
 

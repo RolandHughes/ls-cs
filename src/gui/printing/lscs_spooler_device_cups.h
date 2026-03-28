@@ -13,8 +13,8 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
-#ifndef BDCUPSSPOOLERDEVICE_H
-#define BDCUPSSPOOLERDEVICE_H
+#ifndef LSCSSPOOLERDEVICECUPS_H
+#define LSCSSPOOLERDEVICECUPS_H
 
 #ifndef LSCS_NO_PRINTER
 
@@ -25,9 +25,9 @@
 #include <qpagelayout.h>
 
 #include <cups/cups.h>
-#include <bdspoolerdevice.h>
+#include <lscs_spooler_device.h>
 
-/*! \file bdcupsspoolerdevice.h
+/*! \file lscs_spooler_device_cups.h
  *  \brief Spooling device supporting Cups 3.x API
  *
  * \details CUPS legacy interface consisted of functions to mine ppd
@@ -71,64 +71,64 @@
  * will have changed capabilities.
  */
 
-class Q_GUI_EXPORT BdCupsSpoolerDevice : public BdSpoolerDevice
+class Q_GUI_EXPORT lscs_spooler_device_cups : public lscs_spooler_device
 {
-    LSCS_OBJECT( BdCupsSpoolerDevice )
+    LSCS_OBJECT( lscs_spooler_device_cups )
 
 public:
 
-    explicit BdCupsSpoolerDevice( const QString &name );
-    ~BdCupsSpoolerDevice();
+    explicit lscs_spooler_device_cups( const QString &name );
+    ~lscs_spooler_device_cups();
 
     static const size_t RESOURCE_SIZE = 40000;
     static const size_t VALUE_SIZE = 4096;
 
-    bool isValid();
-    bool isDefault();
-    bool isRemote();
-    bool supportsMultipleCopies();
-    bool supportsCollateCopies();
-    bool supportsCustomPageSizes();
+    bool is_valid();
+    bool is_default();
+    bool is_remote();
+    bool supports_multiple_copies();
+    bool supports_collate_copies();
+    bool supports_custom_page_sizes();
 
-    BdSpoolerDeviceState state();
+    LsCsSpoolerDeviceState state();
 
-    int queueFile( QString fullPathAndFileName,
-                   QStringList &options,
-                   int *deviceStatus = nullptr,
-                   QString *errorMsg = nullptr );
+    int queue_file( QString fullPathAndFileName,
+                    QStringList &options,
+                    int *deviceStatus = nullptr,
+                    QString *errorMsg = nullptr );
 
-    QPageSize defaultPageSize();
-    QList<QPageSize> supportedPageSizes();
+    QPageSize default_page_size();
+    QList<QPageSize> supported_page_sizes();
 
-    QPageSize supportedPageSize( const QString &pageName );
+    QPageSize supported_page_size( const QString &pageName );
 
-    QSize minimumPhysicalPageSize();
-    QSize maximumPhysicalPageSize();
+    QSize minimum_physical_page_size();
+    QSize maximum_physical_page_size();
 
-    QMarginsF printableMargins( const QPageSize &pageSize, QPageLayout::Orientation orientation, int resolution );
+    QMarginsF printable_margins( const QPageSize &pageSize, QPageLayout::Orientation orientation, int resolution );
 
-    int defaultResolution();
-    QList<int> supportedResolutions();
+    int default_resolution();
+    QList<int> supported_resolutions();
 
-    QString lastKnownError();
+    QString last_known_error();
 
-    QString defaultMediaSource();
-    QStringList supportedMediaSources();
+    QString default_media_source();
+    QStringList supported_media_sources();
 
-    QString defaultOutputBin();
-    QStringList supportedOutputBins();
+    QString default_output_bin();
+    QStringList supported_output_bins();
 
-    QString defaultDuplexMode();
-    QStringList supportedDuplexModes();
+    QString default_duplex_mode();
+    QStringList supported_duplex_modes();
 
-    QString defaultColorMode();
-    QStringList supportedColorModes();
+    QString default_color_mode();
+    QStringList supported_color_modes();
 
-    void loadInfo();
+    void load_info();
 
 private:
-    QString printerOption( const QString &key );
-    cups_ptype_e printerTypeFlags();
+    QString printer_option( const QString &key );
+    cups_ptype_e printer_type_flags();
 
     cups_dest_t *m_cupsDest;
     char        m_resource[ RESOURCE_SIZE];
@@ -138,4 +138,4 @@ private:
 };
 
 #endif // LSCS_NO_PRINTER
-#endif // BDCUPSSPOOLERDEVICE_H
+#endif // LSCSSPOOLERDEVICECUPS_H

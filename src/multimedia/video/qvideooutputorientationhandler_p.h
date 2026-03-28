@@ -36,8 +36,8 @@ public:
     int currentOrientation() const;
 
 public:
-    MULTI_LSCS_SIGNAL_1( Public, void orientationChanged( int angle ) )
-    MULTI_LSCS_SIGNAL_2( orientationChanged,angle )
+    MULTI_LSCS_SIGNAL_1( Public, void orientation_changed( int angle ) )
+    MULTI_LSCS_SIGNAL_2( orientation_changed,angle )
 
 private:
     MULTI_LSCS_SLOT_1( Private, void screenOrientationChanged( Qt::ScreenOrientation orientation ) )

@@ -2974,7 +2974,7 @@ void QGuiApplicationPrivate::updateFilteredScreenOrientation( QScreen *s )
 
 void QGuiApplicationPrivate::reportScreenOrientationChange( QScreen *s )
 {
-    emit s->orientationChanged( s->orientation() );
+    emit s->orientation_changed( s->orientation() );
 
     QScreenOrientationChangeEvent event( s, s->orientation() );
     QCoreApplication::sendEvent( QCoreApplication::instance(), &event );

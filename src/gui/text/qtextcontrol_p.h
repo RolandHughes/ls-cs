@@ -45,7 +45,7 @@ class QTextControlPrivate;
 
 class QEvent;
 class QTimerEvent;
-class BdSpooler;
+class lscs_spooler;
 
 class Q_GUI_EXPORT QTextControl : public QInputControl
 {
@@ -167,7 +167,7 @@ public:
     void setWordSelectionEnabled( bool enabled );
 
     bool isPreediting();
-    void print( BdSpooler *spooler ) const;
+    void print( lscs_spooler *spooler ) const;
 
     virtual int hitTest( const QPointF &point, Qt::HitTestAccuracy accuracy ) const;
     virtual QRectF blockBoundingRect( const QTextBlock &block ) const;

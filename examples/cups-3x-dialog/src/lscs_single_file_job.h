@@ -1,8 +1,8 @@
 /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Copyright (c) 2024-2025 Roland Hughes d.b.a Logikal Solutions
+;; Copyright (c) 2024-2026 Roland Hughes d.b.a Logikal Solutions
 ;;
-;; This file is part of Ls-Cs.
+;; This file is part of Ls-Cs, also known as LsCs
 ;;
 ;; Ls-Cs is free software. You can redistribute it and/or
 ;; modify it under the terms the Basis Doctrina License found in
@@ -13,19 +13,19 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
-#ifndef BDSINGLEFILEJOB_H
-#define BDSINGLEFILEJOB_H
+#ifndef LSCSSINGLEFILEJOB_H
+#define LSCSSINGLEFILEJOB_H
 
 #ifndef LSCS_NO_PRINTER
 #include <qstring.h>
 
-#include <bdspooler.h>
+#include <lscs_spooler.h>
 
 
-class BdSingleFileJob
+class lscs_single_file_job
 {
 public:
-    BdSingleFileJob();
+    lscs_single_file_job();
 
     bool            validJob;
 
@@ -45,7 +45,7 @@ public:
 
     QString         destinationName;
     bool            destinationIsFile;
-    BdSpoolerType   spoolerType;
+    LsCsSpoolerType   spoolerType;
     int             copies;
     QString         paperSource;
     QString         paper;
@@ -59,4 +59,4 @@ public:
 };
 
 #endif   // LSCS_NO_PRINTER
-#endif   // BDSINGLEFILEJOB_H
+#endif   // LSCSSINGLEFILEJOB_H

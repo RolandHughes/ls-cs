@@ -38,7 +38,7 @@ class QTextFormatCollection;
 class QTextListFormat;
 class QRect;
 class QPainter;
-class BdSpooler;
+class lscs_spooler;
 class QAbstractTextDocumentLayout;
 class QPoint;
 class QTextObject;
@@ -206,7 +206,7 @@ public:
 
     bool isModified() const;
 
-    void print( BdSpooler *spooler ) const;
+    void print( lscs_spooler *spooler ) const;
 
     enum ResourceType
     {

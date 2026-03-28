@@ -1,8 +1,8 @@
 /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Copyright (c) 2024-2025 Roland Hughes d.b.a Logikal Solutions
+;; Copyright (c) 2024-2026 Roland Hughes d.b.a Logikal Solutions
 ;;
-;; This file is part of Ls-Cs.
+;; This file is part of Ls-Cs, also known as LsCs
 ;;
 ;; Ls-Cs is free software. You can redistribute it and/or
 ;; modify it under the terms the Basis Doctrina License found in
@@ -13,19 +13,19 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
-#ifndef BDPDFSPOOLER_H
-#define BDPDFSPOOLER_H
+#ifndef LSCSSPOOLERPOSTSCRIPT_H
+#define LSCSSPOOLERPOSTSCRIPT_H
 
 #ifndef LSCS_NO_PRINTER
-
-#include <bdspooler.h>
+#include <lscs_spooler.h>
 
 // TODO:: actually create this
-class Q_GUI_EXPORT BdPdfSpooler : public BdSpooler
+
+class Q_GUI_EXPORT lscs_spooler_postscript: public lscs_spooler
 {
-    LSCS_OBJECT( BdPdfSpooler )
+    LSCS_OBJECT( lscs_spooler_postscript )
 };
 
 #endif // LSCS_NO_PRINTER
 
-#endif // BDPDFSPOOLER_H
+#endif // LSCSSPOOLERPOSTSCRIPT_H

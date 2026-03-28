@@ -37,7 +37,7 @@ class QTextDocument;
 class QMenu;
 class QTextEditPrivate;
 class QMimeData;
-class BdSpooler;
+class lscs_spooler;
 
 class Q_GUI_EXPORT QTextEdit : public QAbstractScrollArea
 {
@@ -233,7 +233,7 @@ public:
     void moveCursor( QTextCursor::MoveOperation operation, QTextCursor::MoveMode mode = QTextCursor::MoveAnchor );
     bool canPaste() const;
 
-    void print( BdSpooler *spooler ) const;
+    void print( lscs_spooler *spooler ) const;
 
     QVariant inputMethodQuery( Qt::InputMethodQuery property ) const override;
     QVariant inputMethodQuery( Qt::InputMethodQuery query, QVariant argument ) const;

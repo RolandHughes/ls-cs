@@ -103,7 +103,7 @@ class Q_GUI_EXPORT QScreen : public QObject
     GUI_LSCS_PROPERTY_NOTIFY( primaryOrientation, primaryOrientationChanged )
 
     GUI_LSCS_PROPERTY_READ( orientation, orientation )
-    GUI_LSCS_PROPERTY_NOTIFY( orientation, orientationChanged )
+    GUI_LSCS_PROPERTY_NOTIFY( orientation, orientation_changed )
 
     GUI_LSCS_PROPERTY_READ( nativeOrientation, nativeOrientation )
 
@@ -185,8 +185,8 @@ public:
     GUI_LSCS_SIGNAL_1( Public, void primaryOrientationChanged( Qt::ScreenOrientation orientation ) )
     GUI_LSCS_SIGNAL_2( primaryOrientationChanged, orientation )
 
-    GUI_LSCS_SIGNAL_1( Public, void orientationChanged( Qt::ScreenOrientation orientation ) )
-    GUI_LSCS_SIGNAL_2( orientationChanged, orientation )
+    GUI_LSCS_SIGNAL_1( Public, void orientation_changed( Qt::ScreenOrientation orientation ) )
+    GUI_LSCS_SIGNAL_2( orientation_changed, orientation )
 
     GUI_LSCS_SIGNAL_1( Public, void refreshRateChanged( qreal refreshRate ) )
     GUI_LSCS_SIGNAL_2( refreshRateChanged, refreshRate )

@@ -543,7 +543,7 @@ void QToolBar::setOrientation( Qt::Orientation orientation )
     d->layout->invalidate();
     d->layout->activate();
 
-    emit orientationChanged( d->orientation );
+    emit orientation_changed( d->orientation );
 }
 
 Qt::Orientation QToolBar::orientation() const

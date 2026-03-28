@@ -1,8 +1,8 @@
 /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Copyright (c) 2024-2025 Roland Hughes d.b.a Logikal Solutions
+;; Copyright (c) 2024-2026 Roland Hughes d.b.a Logikal Solutions
 ;;
-;; This file is part of Ls-Cs.
+;; This file is part of Ls-Cs, also known as LsCs
 ;;
 ;; Ls-Cs is free software. You can redistribute it and/or
 ;; modify it under the terms the Basis Doctrina License found in
@@ -13,11 +13,12 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
-#ifndef BDSPOOLER_H
-#define BDSPOOLER_H
+#ifndef LSCS_SPOOLER_H
+#define LSCS_SPOOLER_H
 
-/*! \file bdspooler.h
- *  \brief Spooling interface for printing and standalone devices like milling machines
+/*! \file lscs_spooler.h
+ *  \brief Base class for spooling interface for print and standalone
+ *         devices like milling machines
  *
  * \details In the late 1980s and early 1990s under DOS and GUI-DOS
  * (Windows); (Windows wasn't legally an operating system until
@@ -97,37 +98,38 @@
 
 #include <qstring.h>
 
-/*! \enum BdSpoolerType
+/*! \enum LsCsSpoolerType
  *  \brief indicates type of spooler
  */
-enum class BdSpoolerType
+enum class LsCsSpoolerType
 {
     None, Text, Raw, Pdf, Postscript
 };
 
-/*! \class BdSpooler
+/*! \class lscs_spooler
  *  \brief Base spooler class for creating temporary file to queue to device.
  *
  *  \details Mostly virtual base class for all spoolers. Establishes the
  *   common interface.
  */
-class Q_GUI_EXPORT BdSpooler : public QObject
+class Q_GUI_EXPORT lscs_spooler : public QObject
 {
-    LSCS_OBJECT( BdSpooler )
+    LSCS_OBJECT( lscs_spooler )
 
 
 public:
-    explicit BdSpooler( const BdSpoolerType spoolerType, const QString fileDest = "" );
-    BdSpooler();
+    explicit lscs_spooler( const LsCsSpoolerType spoolerType, const QString outputFile = "" );
+    lscs_spooler();
 
-    virtual ~BdSpooler() = default;
+    virtual ~lscs_spooler() = default;
 
 
-    BdSpoolerType spoolerType();
+    LsCsSpoolerType spooler_type();
 
 private:
 
-    BdSpoolerType m_spoolerType;
+    LsCsSpoolerType m_spoolerType;
+    QString m_outputFile;
 };
 
-#endif  // BDSPOOLER_H
+#endif  // LSCS_SPOOLER_H

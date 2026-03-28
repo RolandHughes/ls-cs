@@ -35,7 +35,7 @@ QVideoOutputOrientationHandler::QVideoOutputOrientationHandler( QObject *parent 
     screen->setOrientationUpdateMask( Qt::PortraitOrientation|Qt::LandscapeOrientation
                                       | Qt::InvertedPortraitOrientation|Qt::InvertedLandscapeOrientation );
 
-    connect( screen, &QScreen::orientationChanged, this, &QVideoOutputOrientationHandler::screenOrientationChanged );
+    connect( screen, &QScreen::orientation_changed, this, &QVideoOutputOrientationHandler::screenOrientationChanged );
 
     screenOrientationChanged( screen->orientation() );
 }
@@ -57,6 +57,6 @@ void QVideoOutputOrientationHandler::screenOrientationChanged( Qt::ScreenOrienta
     }
 
     m_currentOrientation = angle;
-    emit orientationChanged( m_currentOrientation );
+    emit orientation_changed( m_currentOrientation );
 }
 

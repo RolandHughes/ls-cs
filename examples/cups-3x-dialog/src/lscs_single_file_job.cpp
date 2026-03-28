@@ -1,8 +1,8 @@
 /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Copyright (c) 2024-2025 Roland Hughes d.b.a Logikal Solutions
+;; Copyright (c) 2024-2026 Roland Hughes d.b.a Logikal Solutions
 ;;
-;; This file is part of Ls-Cs.
+;; This file is part of Ls-Cs, also known as LsCs
 ;;
 ;; Ls-Cs is free software. You can redistribute it and/or
 ;; modify it under the terms the Basis Doctrina License found in
@@ -17,9 +17,9 @@
 
 #include <qtextstream.h>
 
-#include <bdsinglefilejob.h>
+#include <lscs_single_file_job.h>
 
-BdSingleFileJob::BdSingleFileJob() :
+lscs_single_file_job::lscs_single_file_job() :
     validJob( false )
     , useCollateValue( false )
     , usePrintQualityValue( false )
@@ -31,12 +31,12 @@ BdSingleFileJob::BdSingleFileJob() :
     , useNumberUpValue( false )
     , useDuplexValue( false )
     , destinationIsFile( false )
-    , spoolerType( BdSpoolerType::None )
+    , spoolerType( LsCsSpoolerType::None )
     , copies( 1 )
 {
 }
 
-QString BdSingleFileJob::toString()
+QString lscs_single_file_job::to_string()
 {
     QString retVal;
 
@@ -50,23 +50,23 @@ QString BdSingleFileJob::toString()
 
     switch ( spoolerType )
     {
-        case BdSpoolerType::None:
+        case LsCsSpoolerType::None:
             out << "none";
             break;
 
-        case BdSpoolerType::Text:
+        case LsCsSpoolerType::Text:
             out << "Text";
             break;
 
-        case BdSpoolerType::Raw:
+        case LsCsSpoolerType::Raw:
             out << "Raw";
             break;
 
-        case BdSpoolerType::Pdf:
+        case LsCsSpoolerType::Pdf:
             out << "Pdf";
             break;
 
-        case BdSpoolerType::Postscript:
+        case LsCsSpoolerType::Postscript:
             out << "Postscript";
             break;
     }

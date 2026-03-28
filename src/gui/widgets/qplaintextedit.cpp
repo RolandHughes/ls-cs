@@ -2557,7 +2557,7 @@ bool QPlainTextEdit::canPaste() const
 }
 
 #ifndef LSCS_NO_PRINTER
-void QPlainTextEdit::print( BdSpooler *spooler ) const
+void QPlainTextEdit::print( lscs_spooler *spooler ) const
 {
     Q_D( const QPlainTextEdit );
     d->control->print( spooler );

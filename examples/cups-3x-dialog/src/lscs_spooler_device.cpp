@@ -1,8 +1,8 @@
 /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Copyright (c) 2024-2025 Roland Hughes d.b.a Logikal Solutions
+;; Copyright (c) 2024-2026 Roland Hughes d.b.a Logikal Solutions
 ;;
-;; This file is part of Ls-Cs.
+;; This file is part of Ls-Cs, also known as LsCs
 ;;
 ;; Ls-Cs is free software. You can redistribute it and/or
 ;; modify it under the terms the Basis Doctrina License found in
@@ -16,16 +16,16 @@
 
 #ifndef LSCS_NO_PRINTER
 
-/*! \file bdspoolerdevice.cpp
- *  \brief Base class implementation for BdSpooler devices - some of these will be printers
+/*! \file lscs_spooler_device.cpp
+ *  \brief Base class implementation for lscs spooler devices - some of these will be printers
  *
  *  \details Provides common API requesting information from and sending
  *  work to physical output devices for spoolers. These devices will
- *  contain one or more BdSpooler objects depending on how many file
+ *  contain one or more lscs_spooler objects depending on how many file
  *  data formats are supported by said device.
  *
  * \todo add a global variable for cups http so runtime can use something other
- * than CUPS_HTTP_DEFAULT
+ * than CUPS_HTTP_DEFAULT. Add support for Windows and Mac.
  */
 
 #if !defined(LSCS_NO_CUPS)
@@ -33,12 +33,12 @@
 #endif
 
 #include <qfile.h>
-#include <bdspoolerdevice.h>
-#include <bdcupsspoolerdevice.h>
+#include <lscs_spooler_device.h>
+#include <lscs_spooler_device_cups.h>
 
 
 /*! Static method to obtain name of default spooler device for system */
-QString BdSpoolerDevice::defaultDeviceName()
+QString lscs_spooler_device::default_device_name()
 {
     QString retVal;
 
@@ -57,7 +57,7 @@ QString BdSpoolerDevice::defaultDeviceName()
 }
 
 /*! Static method to return list of available spooling devices */
-QStringList BdSpoolerDevice::availableDevices()
+QStringList lscs_spooler_device::available_devices()
 {
     QStringList retVal;
 
@@ -87,49 +87,49 @@ QStringList BdSpoolerDevice::availableDevices()
 }
 
 /*! Accessor method to obtain current device name */
-QString BdSpoolerDevice::deviceName()
+QString lscs_spooler_device::device_name()
 {
     return m_deviceName;
 }
 
 /*! Accessor method to obtain current device description */
-QString BdSpoolerDevice::description()
+QString lscs_spooler_device::description()
 {
     return m_description;
 }
 
 /*! Accessor method to obtain current device location */
-QString BdSpoolerDevice::location()
+QString lscs_spooler_device::location()
 {
     return m_location;
 }
 
 /*! Accessor method to obtain curren device address */
-QString BdSpoolerDevice::uri()
+QString lscs_spooler_device::uri()
 {
     return m_uri;
 }
 
 /*! Assign a device name */
-void BdSpoolerDevice::setDeviceName( QString deviceName )
+void lscs_spooler_device::set_device_name( QString deviceName )
 {
     m_deviceName = deviceName;
 }
 
 /*! Assign device description */
-void BdSpoolerDevice::setDescription( QString description )
+void lscs_spooler_device::set_description( QString description )
 {
     m_description = description;
 }
 
 /*! Assign device location */
-void BdSpoolerDevice::setLocation( QString location )
+void lscs_spooler_device::set_location( QString location )
 {
     m_location = location;
 }
 
 /*! Assign device address */
-void BdSpoolerDevice::setUri( QString uri )
+void lscs_spooler_device::set_uri( QString uri )
 {
     m_uri = uri;
 }
@@ -145,10 +145,10 @@ void BdSpoolerDevice::setUri( QString uri )
  *
  * \return positive integer is job number - negative means error encountered
  */
-int BdSpoolerDevice::queueFileToDefaultDevice( QString fullPathAndFileName,
+int lscs_spooler_device::queue_file_to_default_device( QString fullPathAndFileName,
         int *deviceStatus,
         QString *errorMsg
-                                             )
+                                                     )
 {
     int retVal = -1; // assume failure
 
@@ -347,10 +347,10 @@ int BdSpoolerDevice::queueFileToDefaultDevice( QString fullPathAndFileName,
  *
  * \return pointer to device or nullptr if error
  */
-BdSpoolerDevice *BdSpoolerDevice::createSpoolerDevice( const QString &name )
+lscs_spooler_device *lscs_spooler_device::create_spooler_device( const QString &name )
 {
 #if !defined(LSCS_NO_CUPS)
-    return ( new BdCupsSpoolerDevice( name ) );
+    return ( new lscs_spooler_device_cups( name ) );
 #else
 #error "Only Cups currently supported"
 #endif

@@ -1,8 +1,8 @@
 /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Copyright (c) 2024-2025 Roland Hughes d.b.a Logikal Solutions
+;; Copyright (c) 2024-2026 Roland Hughes d.b.a Logikal Solutions
 ;;
-;; This file is part of Ls-Cs.
+;; This file is part of Ls-Cs, also known as LsCs
 ;;
 ;; Ls-Cs is free software. You can redistribute it and/or
 ;; modify it under the terms the Basis Doctrina License found in
@@ -13,20 +13,19 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
+#ifndef LSCSSPOOLERPDF_H
+#define LSCSSPOOLERPDF_H
 
-#include <bdspooler.h>
+#ifndef LSCS_NO_PRINTER
 
-BdSpooler::BdSpooler( const BdSpoolerType spoolerType, const QString fileDest ) :
-    m_spoolerType( spoolerType )
+#include <lscs_spooler.h>
+
+// TODO:: actually create this
+class Q_GUI_EXPORT lscs_spooler_pdf : public lscs_pooler
 {
-}
+    LSCS_OBJECT( lscs_spooler_pdf )
+};
 
-BdSpooler::BdSpooler() :
-    m_spoolerType( BdSpoolerType::None )
-{
-}
+#endif // LSCS_NO_PRINTER
 
-BdSpoolerType BdSpooler::spoolerType()
-{
-    return m_spoolerType;
-}
+#endif // LSCSSPOOLERPDF_H

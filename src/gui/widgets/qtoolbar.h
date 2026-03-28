@@ -51,7 +51,7 @@ class Q_GUI_EXPORT QToolBar : public QWidget
     GUI_LSCS_PROPERTY_READ( orientation, orientation )
     GUI_LSCS_PROPERTY_WRITE( orientation, setOrientation )
     GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( orientation, lscs_isMainWindow() )
-    GUI_LSCS_PROPERTY_NOTIFY( orientation, orientationChanged )
+    GUI_LSCS_PROPERTY_NOTIFY( orientation, orientation_changed )
 
     GUI_LSCS_PROPERTY_READ( iconSize, iconSize )
     GUI_LSCS_PROPERTY_WRITE( iconSize, setIconSize )
@@ -173,8 +173,8 @@ public:
     GUI_LSCS_SIGNAL_1( Public, void allowedAreasChanged( Qt::ToolBarAreas allowedAreas ) )
     GUI_LSCS_SIGNAL_2( allowedAreasChanged, allowedAreas )
 
-    GUI_LSCS_SIGNAL_1( Public, void orientationChanged( Qt::Orientation orientation ) )
-    GUI_LSCS_SIGNAL_2( orientationChanged, orientation )
+    GUI_LSCS_SIGNAL_1( Public, void orientation_changed( Qt::Orientation orientation ) )
+    GUI_LSCS_SIGNAL_2( orientation_changed, orientation )
 
     GUI_LSCS_SIGNAL_1( Public, void iconSizeChanged( const QSize &iconSize ) )
     GUI_LSCS_SIGNAL_2( iconSizeChanged, iconSize )

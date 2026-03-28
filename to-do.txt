@@ -1,5 +1,18 @@
 
-* rename and relocate Qt header files to avoid collisions
+
+
+done
+* relocate Qt header files to avoid collisions
+
+
+todo
+* CUPS 3.x API support.
+* XMake package build
+* windows support lscs_single_file_job_dialog
+* A cross compile will then be created for ArmV8 using https://ptxdist.de/index.html and X11Libre
+
+* piece by piece rip out Qt/CopperSpice code
+
 
 * rename and rebrand project to LsX - the Ls Cross Platform Framework
 
@@ -11,11 +24,7 @@
 * All flavors of QString will go away and be replaced by work already done in bd_string for BasisDoctrina. 
 * Containers will become wrappers for STL templates/classes.
 * One by one all low level graphics classes will be replaced by wrappers for SDL3 functionality.
-* CUPS 3.x support.
 
-Once we get the last of the Qt/CopperSpice stuff out, a VCPKG build for Windows will be created.
-
-A cross compile will then be created for ArmV8.
 
 https://stackoverflow.com/questions/160608/do-a-git-export-like-svn-export
 

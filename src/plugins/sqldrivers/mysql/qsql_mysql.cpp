@@ -1711,30 +1711,9 @@ bool QMYSQLDriver::open( const QString &db, const QString &user, const QString &
         mysql_options( d->mysql, MYSQL_OPT_SSL_KEY, QFile::encodeName( sslKey ).constData() );
     }
 
-        if (!sslKey.isEmpty())
-        {
-            mysql_options( d->mysql, MYSQL_OPT_SSL_KEY, QFile::encodeName( sslKey ).constData());
-        }
-        
-        if (!sslCert.isEmpty())
-        {
-            mysql_options( d->mysql, MYSQL_OPT_SSL_CERT, QFile::encodeName( sslCert ).constData());
-        }
-
-        if (!sslCA.isEmpty())
-        {
-            mysql_options( d->mysql, MYSQL_OPT_SSL_CA, QFile::encodeName( sslCA ).constData());
-        }
-
-        if (!sslCAPath.isEmpty())
-        {
-            mysql_options( d->mysql, MYSQL_OPT_SSL_CAPATH, QFile::encodeName( sslCAPath ).constData());
-        }
-
-        if (!sslCipher.isEmpty())
-        {
-            mysql_options( d->mysql, MYSQL_OPT_SSL_CIPHER, sslCipher.constData());
-        }
+    if ( !sslCert.isEmpty() )
+    {
+        mysql_options( d->mysql, MYSQL_OPT_SSL_CERT, QFile::encodeName( sslCert ).constData() );
     }
 
     if ( !sslCA.isEmpty() )

@@ -1,20 +1,19 @@
 list(APPEND GUI_PUBLIC_INCLUDES
   QPageLayout
   QPageSize
-  QPdfWriter
-  BdSpooler
-  BdCupsSpoolerDevice
+  lscs_spooler
+  lscs_spooler_device
 )
 
 list(APPEND GUI_INCLUDES
   ${CMAKE_CURRENT_SOURCE_DIR}/printing/qpagelayout.h
   ${CMAKE_CURRENT_SOURCE_DIR}/printing/qpagesize.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/printing/bdspooler.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/printing/bdspoolerdevice.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/printing/bdtextspooler.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/printing/bdpdfspooler.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/printing/bdrawspooler.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/printing/bdpostscriptspooler.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/printing/lscs_spooler.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/printing/lscs_spooler_device.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/printing/lscs_spooler_pdf.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/printing/lscs_spooler_postscript.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/printing/lscs_spooler_raw.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/printing/lscs_spooler_text.h
 )
 
 list(APPEND GUI_PRIVATE_INCLUDES
@@ -24,8 +23,8 @@ target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/printing/qpagelayout.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/printing/qpagesize.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/printing/bdspoolerdevice.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/printing/bdspooler.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/printing/lscs_spooler_device.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/printing/lscs_spooler.cpp
  )
 
  if (Cups_FOUND)
@@ -33,12 +32,12 @@ target_sources(LsCsGui
    message( STATUS, "******* CUPS being added to print")
    
    list(APPEND GUI_INCLUDES
-     ${CMAKE_CURRENT_SOURCE_DIR}/printing/bdcupsspoolerdevice.h
+     ${CMAKE_CURRENT_SOURCE_DIR}/printing/lscs_spooler_device_cups.h
    )
    
    target_sources(LsCsGui
       PRIVATE
-      ${CMAKE_CURRENT_SOURCE_DIR}/printing/bdcupsspoolerdevice.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/printing/lscs_spooler_device_cups.cpp
     )
 
     target_link_libraries(LsCsGui
@@ -52,7 +51,7 @@ target_sources(LsCsGui
 
  elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    list(APPEND GUI_INCLUDES
-     ${CMAKE_CURRENT_SOURCE_DIR}/printing/bdwinspoolerdevice.h
+     ${CMAKE_CURRENT_SOURCE_DIR}/printing/lscs_spooler_device_windows.h
    )
    
    target_compile_definitions(LsCsGui
@@ -62,7 +61,7 @@ target_sources(LsCsGui
    
    target_sources(LsCsGui
       PRIVATE
-      ${CMAKE_CURRENT_SOURCE_DIR}/printing/bdwinspoolerdevice.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/printing/lscs_spooler_device_windows.cpp
     )
  endif()
  

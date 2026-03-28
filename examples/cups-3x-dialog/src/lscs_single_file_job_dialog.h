@@ -1,8 +1,8 @@
 /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Copyright (c) 2024-2025 Roland Hughes d.b.a Logikal Solutions
+;; Copyright (c) 2024-2026 Roland Hughes d.b.a Logikal Solutions
 ;;
-;; This file is part of Ls-Cs.
+;; This file is part of Ls-Cs, also known as LsCs
 ;;
 ;; Ls-Cs is free software. You can redistribute it and/or
 ;; modify it under the terms the Basis Doctrina License found in
@@ -13,15 +13,15 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
-#ifndef BDSINGLEFILEJOBDIALOG_H
-#define BDSINGLEFILEJOBDIALOG_H
+#ifndef LSCSSINGLEFILEJOBDIALOG_H
+#define LSCSSINGLEFILEJOBDIALOG_H
 
 #ifndef LSCS_NO_PRINTER
 #include <qdialog.h>
 #include <qstring.h>
 
-#include <bdspooler.h>
-#include <bdsinglefilejob.h>
+#include <lscs_spooler.h>
+#include <lscs_single_file_job.h>
 
 class QComboBox;
 class QCheckBox;
@@ -36,43 +36,43 @@ class QToolButton;
  *
   * \param parent - QWidget pointer to parent widget - defaults to nullptr
  */
-class GeneralTab : public QWidget
+class general_tab : public QWidget
 {
-    LSCS_OBJECT( GeneralTab )
+    LSCS_OBJECT( general_tab )
 
 public:
-    explicit GeneralTab( QWidget *parent = nullptr );
+    explicit general_tab( QWidget *parent = nullptr );
 
-    void pushSpoolerButton( BdSpoolerType spoolerType );
-    void makeDefaultCurrentDestination();
+    void push_spooler_button( LsCsSpoolerType spoolerType );
+    void make_default_current_destination();
 
-    QString getDestinationName();
+    QString get_destination_name();
 
 
-    bool destCanCollate( QString destination );
+    bool dest_can_collate( QString destination );
 
-    bool isCollateVisible();
-    bool isPrintQualityVisible();
-    bool isPaperSourceVisible();
-    bool isColorModeVisible();
-    bool isOrientationVisible();
-    bool isScalingVisible();
-    bool isCopiesVisible();
+    bool is_collate_visible();
+    bool is_print_quality_visible();
+    bool is_paper_source_visible();
+    bool is_color_mode_visible();
+    bool is_orientation_visible();
+    bool is_scaling_visible();
+    bool is_copies_visible();
 
-    LSCS_SIGNAL_1( Public, void destinationChanged( QString destinationName, bool isFile ) )
-    LSCS_SIGNAL_2( destinationChanged, destinationName, isFile )
+    LSCS_SIGNAL_1( Public, void destination_changed( QString destinationName, bool isFile ) )
+    LSCS_SIGNAL_2( destination_changed, destinationName, isFile )
 
-    LSCS_SIGNAL_1( Public, void copiesChanged( int copies ) )
-    LSCS_SIGNAL_2( copiesChanged, copies )
+    LSCS_SIGNAL_1( Public, void copies_changed( int copies ) )
+    LSCS_SIGNAL_2( copies_changed, copies )
 
-    LSCS_SIGNAL_1( Public, void paperSourceChanged( const QString &source ) )
-    LSCS_SIGNAL_2( paperSourceChanged, source )
+    LSCS_SIGNAL_1( Public, void paper_source_changed( const QString &source ) )
+    LSCS_SIGNAL_2( paper_source_changed, source )
 
-    LSCS_SIGNAL_1( Public, void paperChanged( const QString &paper ) )
-    LSCS_SIGNAL_2( paperChanged, paper )
+    LSCS_SIGNAL_1( Public, void paper_changed( const QString &paper ) )
+    LSCS_SIGNAL_2( paper_changed, paper )
 
-    LSCS_SIGNAL_1( Public, void printQualityChanged( const QString &paper ) )
-    LSCS_SIGNAL_2( printQualityChanged, paper )
+    LSCS_SIGNAL_1( Public, void print_quality_changed( const QString &paper ) )
+    LSCS_SIGNAL_2( print_quality_changed, paper )
 
 
 
@@ -100,17 +100,17 @@ private:
 
     bool        m_canCollate;
 
-    void chooseDestinationFile();
-    void destTextChanged( const QString &text );
-    void sourceChanged( const QString &text );
-    void copiesValueChanged( int newValue );
+    void choose_destination_File();
+    void dest_text_changed( const QString &text );
+    void source_changed( const QString &text );
+    void copies_value_changed( int newValue );
 
-    void populateDestinationCB();
-    void populatePaperSourceCB();
-    void populatePaperCB();
-    void populateColorCB();
-    void populatePrintQualityCB();
-    void populateCopies();
+    void populate_destination_CB();
+    void populate_paper_source_CB();
+    void populate_paper_CB();
+    void populate_color_CB();
+    void populate_print_quality_CB();
+    void populate_copies();
 
 
 };
@@ -119,36 +119,36 @@ private:
  *
  *  \param parent - QWidget pointer to parent widget - defaults to nullptr
  */
-class PageSetupTab : public QWidget
+class page_setup_tab : public QWidget
 {
-    LSCS_OBJECT( PageSetupTab )
+    LSCS_OBJECT( page_setup_tab )
 
 public:
-    explicit PageSetupTab( QWidget *parent = nullptr );
+    explicit page_setup_tab( QWidget *parent = nullptr );
 
-    QString duplexMode();
-    int     numberOfPagesPerSide();
+    QString duplex_mode();
+    int     number_of_pages_per_side();
     QString scaling();
 
-    bool isDuplexVisible();
-    bool isNumberUpVisible();
-    bool isScalingVisible();
-    bool isOrientationVisible();
+    bool is_duplex_visible();
+    bool is_number_up_visible();
+    bool is_scaling_visible();
+    bool is_orientation_visible();
 
 
     void destinationChanged( const QString destination );
 
-    LSCS_SIGNAL_1( Public, void numberUpChanged( const QString &source ) )
-    LSCS_SIGNAL_2( numberUpChanged, source )
+    LSCS_SIGNAL_1( Public, void number_up_changed( const QString &source ) )
+    LSCS_SIGNAL_2( number_up_changed, source )
 
-    LSCS_SIGNAL_1( Public, void scalingChanged( const QString &source ) )
-    LSCS_SIGNAL_2( scalingChanged, source )
+    LSCS_SIGNAL_1( Public, void scaling_changed( const QString &source ) )
+    LSCS_SIGNAL_2( scaling_changed, source )
 
-    LSCS_SIGNAL_1( Public, void duplexChanged( const QString &source ) )
-    LSCS_SIGNAL_2( duplexChanged, source )
+    LSCS_SIGNAL_1( Public, void duplex_changed( const QString &source ) )
+    LSCS_SIGNAL_2( duplex_changed, source )
 
-    LSCS_SIGNAL_1( Public, void orientationChanged( const QString &orientation ) )
-    LSCS_SIGNAL_2( orientationChanged, orientation )
+    LSCS_SIGNAL_1( Public, void orientation_changed( const QString &orientation ) )
+    LSCS_SIGNAL_2( orientation_changed, orientation )
 
 
 private:
@@ -164,10 +164,10 @@ private:
     QWidget     *m_scalingWidget;
     QWidget     *m_orientationWidget;
 
-    void populateNumberUpCB();
-    void populateDuplexCB();
-    void populateScalingCB();
-    void populateOrientationCB();
+    void populate_number_up_CB();
+    void populate_duplex_CB();
+    void populate_scaling_CB();
+    void populate_orientation_CB();
 
 };
 
@@ -183,19 +183,19 @@ private:
  *
  *  \param parent - QWidget pointer to parent widget - defaults to nullptr
  */
-class SpoolerTab : public QWidget
+class spooler_tab : public QWidget
 {
-    LSCS_OBJECT( SpoolerTab )
+    LSCS_OBJECT( spooler_tab )
 
 public:
-    explicit SpoolerTab( QWidget *parent = nullptr );
-    ~SpoolerTab();
+    explicit spooler_tab( QWidget *parent = nullptr );
+    ~spooler_tab();
 
-    void pushSpoolerButton( BdSpoolerType spoolerType );
+    void push_spooler_button( LsCsSpoolerType spoolerType );
 
 
-    LSCS_SIGNAL_1( Public, void spoolerTypeChanged( BdSpoolerType spoolerType ) )
-    LSCS_SIGNAL_2( spoolerTypeChanged, spoolerType )
+    LSCS_SIGNAL_1( Public, void spooler_type_changed( LsCsSpoolerType spoolerType ) )
+    LSCS_SIGNAL_2( spooler_type_changed, spoolerType )
 
 private:
     QGroupBox    *m_spoolerGroupBox;
@@ -217,22 +217,22 @@ class Q_GUI_EXPORT BdSingleFileJobDialog : public QDialog
 public:
     explicit BdSingleFileJobDialog( QWidget *parent = nullptr );
 
-    BdSpoolerType spoolerType();
+    LsCsSpoolerType spoolerType();
 
 private:
     void copiesChanged( int copies );
-    void submitJob();
+    void submit_job();
     void quit();
     void destinationSelected( QString destinationName, bool isFile );
-    void spoolerSelected( BdSpoolerType spoolerType );
+    void spoolerSelected( LsCsSpoolerType spoolerType );
     void paperSourceChanged( const QString &source );
     void paperChanged( const QString &source );
-    void orientationChanged( const QString &orientation );
+    void orientation_changed( const QString &orientation );
     void printQualityChanged( const QString &printQuality );
 
     void duplexChanged( const QString &duplex );
-    void scalingChanged( const QString &scaling );
-    void numberUpChanged( const QString &numberUp );
+    void scaling_changed( const QString &scaling );
+    void number_up_changed( const QString &numberUp );
 
 
     QTabWidget *m_tabWidget;

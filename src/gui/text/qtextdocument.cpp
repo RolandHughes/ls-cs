@@ -1065,7 +1065,7 @@ static void printPage( int index, QPainter *painter, const QTextDocument *doc, c
 }
 
 
-void QTextDocument::print( BdSpooler *spooler ) const
+void QTextDocument::print( lscs_spooler *spooler ) const
 {
     // TODO:: fix this once we have re-architected spool printing
     //

@@ -1,8 +1,8 @@
 /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Copyright (c) 2024-2025 Roland Hughes d.b.a Logikal Solutions
+;; Copyright (c) 2024-2026 Roland Hughes d.b.a Logikal Solutions
 ;;
-;; This file is part of Ls-Cs.
+;; This file is part of Ls-Cs, also known as LsCs
 ;;
 ;; Ls-Cs is free software. You can redistribute it and/or
 ;; modify it under the terms the Basis Doctrina License found in
@@ -13,13 +13,19 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
-#ifndef BDTEXTSPOOLER_H
-#define BDTEXTSPOOLER_H
+#ifndef LSCSSPOOLERRAW_H
+#define LSCSSPOOLERRAW_H
 
 #ifndef LSCS_NO_PRINTER
 
+#include <lscs_spooler.h>
+
 // TODO:: actually create this
+class Q_GUI_EXPORT lscs_spooler_raw : public lscs_spooler
+{
+    LSCS_OBJECT( lscs_spooler )
+};
 
 #endif // LSCS_NO_PRINTER
 
-#endif // BDTEXTSPOOLER_H
+#endif // LSCSSPOOLERRAW_H
