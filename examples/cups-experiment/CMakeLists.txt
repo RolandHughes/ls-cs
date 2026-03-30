@@ -22,20 +22,7 @@ include(CheckTypeSize)
 find_package(LsCs REQUIRED)
 find_package(Cups REQUIRED)
 
-# When building your own stand alone executables
-# you really shouldn't use RPATH. That's only for
-# locally built libraries you are testing/debugging.
-# If you choose to use RPATH you need to comment this
-# line out and uncomment one or more of the lines
-# assigning a value to CMAKE_INSTALL_RPATH.
-#
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
-message("**********")
-message("CUPS_INCLUDE_DIRS:   ${CUPS_INCLUDE_DIRS}")
-message("CUPS_LIBRARIES:      ${CUPS_LIBRARIES}")
-message("CUPS_VERSION_STRING: ${CUPS_VERSION_STRING}")
-message("**********")
+option(BUILDING_LOCAL "Are we doing a non-system LOCAL install" OFF)
 
 
 # file locations for installing
@@ -48,7 +35,13 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
 
-   #set(CMAKE_INSTALL_RPATH "\$ORIGIN")
+   #
+   # You really only need this line when building against a locally 
+   # installed library instead of system installed.
+   if (BUILDING_LOCAL)
+      message( "BUILDING_LOCAL was true" )
+      set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+   endif()
 
    # lots of warnings and all warnings as errors
    add_compile_options(-Wall -Wextra -Wpedantic -Werror)

@@ -55,7 +55,7 @@ public:
     QString         orientation;
     QString         printQuality;
 
-    QString         toString();
+    QString         to_string();
 };
 
 #endif   // LSCS_NO_PRINTER

@@ -53,9 +53,9 @@ lscs_single_file_job_dialog::lscs_single_file_job_dialog( QWidget *parent ) :
     m_tabWidget->tabBar()->setMovable( false );
     m_tabWidget->tabBar()->setShape( QTabBar::TriangularNorth );
 
-    m_generalTab    = new GeneralTab();
-    m_pageSetupTab  = new PageSetupTab();
-    m_spoolerTab    = new SpoolerTab();
+    m_generalTab    = new general_tab();
+    m_pageSetupTab  = new page_setup_tab();
+    m_spoolerTab    = new spooler_tab();
     m_tabWidget->addTab( m_spoolerTab, tr( "Spooler" ) );
     m_tabWidget->addTab( m_generalTab, tr( "General" ) );
     m_tabWidget->addTab( m_pageSetupTab, tr( "Page Setup" ) );
@@ -64,17 +64,17 @@ lscs_single_file_job_dialog::lscs_single_file_job_dialog( QWidget *parent ) :
 
     // make connections here
 
-    connect( m_spoolerTab, &spooler_tab::spooler_type_changed,  this, &lscs_single_file_job_dialog::spooler_selected );
+    connect( m_spoolerTab, &spooler_tab::spooler_type_changed,     this, &lscs_single_file_job_dialog::spooler_selected );
 
-    connect( m_generalTab, &general_tab::desination_changed,  this, &lscs_single_file_job_dialog::destination_selected );
-    connect( m_generalTab, &general_tab::copies_changes,       this, &lscs_single_file_job_dialog::copies_changes );
-    connect( m_generalTab, &general_tab::paper_source_changed,  this, &lscs_single_file_job_dialog::paper_source_changed );
-    connect( m_generalTab, &general_tab::paper_changed,        this, &lscs_single_file_job_dialog::paper_changed );
-    connect( m_generalTab, &general_tab::print_quality_changed, this, &lscs_single_file_job_dialog::print_quality_changed );
+    connect( m_generalTab, &general_tab::destination_changed,      this, &lscs_single_file_job_dialog::destination_selected );
+    connect( m_generalTab, &general_tab::copies_changed,           this, &lscs_single_file_job_dialog::copies_changed );
+    connect( m_generalTab, &general_tab::paper_source_changed,     this, &lscs_single_file_job_dialog::paper_source_changed );
+    connect( m_generalTab, &general_tab::paper_changed,            this, &lscs_single_file_job_dialog::paper_changed );
+    connect( m_generalTab, &general_tab::print_quality_changed,    this, &lscs_single_file_job_dialog::print_quality_changed );
 
     connect( m_pageSetupTab, &page_setup_tab::duplex_changed,      this, &lscs_single_file_job_dialog::duplex_changed );
     connect( m_pageSetupTab, &page_setup_tab::scaling_changed,     this, &lscs_single_file_job_dialog::scaling_changed );
-    connect( m_pageSetupTab, &page_setup_tab::number_up_changed,    this, &lscs_single_file_job_dialog::number_up_changed );
+    connect( m_pageSetupTab, &page_setup_tab::number_up_changed,   this, &lscs_single_file_job_dialog::number_up_changed );
     connect( m_pageSetupTab, &page_setup_tab::orientation_changed, this, &lscs_single_file_job_dialog::orientation_changed );
 
     connect( btnBox, &QDialogButtonBox::rejected,   this, &QDialog::reject );
@@ -87,7 +87,7 @@ lscs_single_file_job_dialog::lscs_single_file_job_dialog( QWidget *parent ) :
 
     setLayout( mainLayout );
 
-    m_spoolerTab->pushSpoolerButton( LsCsSpoolerType::Text );
+    m_spoolerTab->push_spooler_button( LsCsSpoolerType::Text );
 
     m_generalTab->make_default_current_destination();
 
@@ -131,7 +131,7 @@ void lscs_single_file_job_dialog::quit()
  *
  *  \param copies - non-zero integer indicating number of copies to generate
  */
-void lscs_single_file_job_dialog::copies_changes( int copies )
+void lscs_single_file_job_dialog::copies_changed( int copies )
 {
     m_job.copies = copies;
 }
@@ -154,7 +154,7 @@ void lscs_single_file_job_dialog::destination_selected( QString destinationName,
     m_job.destinationIsFile = isFile;
     m_job.validJob          = true;
 
-    m_pageSetupTab->desination_changed( destinationName );
+    m_pageSetupTab->destination_changed( destinationName );
 }
 
 void lscs_single_file_job_dialog::paper_source_changed( const QString &source )
@@ -395,7 +395,7 @@ general_tab::general_tab( QWidget *parent ) :
     connect( m_printQualityCB,  &QComboBox::currentTextChanged, this, &general_tab::print_quality_changed );
 
     connect( m_copiesSB,       static_cast<void ( QSpinBox::* )( int )>( &QSpinBox::valueChanged ),
-             this, &general_tab::copiesValueChanged );
+             this, &general_tab::copies_value_changed );
 
 }
 
@@ -454,7 +454,7 @@ QString general_tab::get_destination_name()
     return m_destinationCB->currentText();
 }
 
-void general_tab::populateDestinationCB()
+void general_tab::populate_destination_CB()
 {
     m_destinationCB->clear();
 
@@ -903,32 +903,32 @@ void general_tab::dest_text_changed( const QString &text )
     }
     else
     {
-        m_canCollate = destCanCollate( text );
+        m_canCollate = dest_can_collate( text );
 
-        populatePaperSourceCB();
-        populatePaperCB();
-        populateColorCB();
-        populateCopies();
+        populate_paper_source_CB();
+        populate_paper_CB();
+        populate_color_CB();
+        populate_copies();
         qDebug() << "calling populatePrintQualityCB() " << endl;
-        populatePrintQualityCB();
+        populate_print_quality_CB();
         m_destFileWidget->setVisible( false );
-        desination_changed( text, false );
+        destination_changed( text, false );
     }
 }
 
 
 
-void general_tab::sourceChanged( const QString & )
+void general_tab::source_changed( const QString & )
 {
 
-    populatePaperCB();
+    populate_paper_CB();
 }
 
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 //      Page Setup Tab
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-page_setup_tab::PageSetupTab( QWidget *parent ) :
+page_setup_tab::page_setup_tab( QWidget *parent ) :
     QWidget( parent )
 {
     m_duplexWidget      = new QWidget();
@@ -987,7 +987,7 @@ page_setup_tab::PageSetupTab( QWidget *parent ) :
 }
 
 
-QString page_setup_tab::duplexMode()
+QString page_setup_tab::duplex_mode()
 {
     return m_duplexCB->currentText();
 }
@@ -1014,7 +1014,7 @@ bool page_setup_tab::is_scaling_visible()
 }
 
 
-int page_setup_tab::numberOfPagesPerSide()
+int page_setup_tab::number_of_pages_per_side()
 {
     int retVal = 1;
     QString txt = m_numberUpCB->currentText();
@@ -1032,17 +1032,17 @@ QString page_setup_tab::scaling()
     return m_scalingCB->currentText();
 }
 
-void page_setup_tab::desination_changed( const QString destination )
+void page_setup_tab::destination_changed( const QString destination )
 {
     m_destination = destination;
 
-    populateNumberUpCB();
-    populateDuplexCB();
-    populateScalingCB();
-    populateOrientationCB();
+    populate_number_up_CB();
+    populate_duplex_CB();
+    populate_scaling_CB();
+    populate_orientation_CB();
 }
 
-void page_setup_tab::populateNumberUpCB()
+void page_setup_tab::populate_number_up_CB()
 {
     m_numberUpCB->clear();
 
@@ -1079,7 +1079,7 @@ void page_setup_tab::populateNumberUpCB()
     cupsFreeDests( destCnt, dests );
 }
 
-void page_setup_tab::populateDuplexCB()
+void page_setup_tab::populate_duplex_CB()
 {
     m_duplexCB->clear();
 
@@ -1135,7 +1135,7 @@ void page_setup_tab::populateDuplexCB()
 }
 
 
-void page_setup_tab::populateScalingCB()
+void page_setup_tab::populate_scaling_CB()
 {
     m_scalingCB->clear();
 
@@ -1191,7 +1191,7 @@ void page_setup_tab::populateScalingCB()
     cupsFreeDests( destCnt, dests );
 }
 
-void page_setup_tab::populateOrientationCB()
+void page_setup_tab::populate_orientation_CB()
 {
     m_orientationCB->clear();
 
@@ -1265,7 +1265,7 @@ void page_setup_tab::populateOrientationCB()
 //      Spooler Tab
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-SpoolerTab::SpoolerTab( QWidget *parent ) :
+spooler_tab::spooler_tab( QWidget *parent ) :
     QWidget( parent )
 {
     // spooler radio button box
@@ -1299,30 +1299,30 @@ SpoolerTab::SpoolerTab( QWidget *parent ) :
     connect( m_textSpoolerRB, &QRadioButton::clicked, this,
              [this]()
     {
-        spoolerTypeChanged( LsCsSpoolerType::Text );
+        spooler_type_changed( LsCsSpoolerType::Text );
     } );
 
     connect( m_rawSpoolerRB, &QRadioButton::clicked, this,
              [this]()
     {
-        spoolerTypeChanged( LsCsSpoolerType::Raw );
+        spooler_type_changed( LsCsSpoolerType::Raw );
     } );
 
     connect( m_pdfSpoolerRB, &QRadioButton::clicked, this,
              [this]()
     {
-        spoolerTypeChanged( LsCsSpoolerType::Pdf );
+        spooler_type_changed( LsCsSpoolerType::Pdf );
     } );
 
     connect( m_postscriptSpoolerRB, &QRadioButton::clicked, this,
              [this]()
     {
-        spoolerTypeChanged( LsCsSpoolerType::Postscript );
+        spooler_type_changed( LsCsSpoolerType::Postscript );
     } );
 
 }
 
-SpoolerTab::~SpoolerTab()
+spooler_tab::~spooler_tab()
 {
     if ( m_spoolerGroupBox != nullptr )
     {
@@ -1332,7 +1332,7 @@ SpoolerTab::~SpoolerTab()
 
 }
 
-void SpoolerTab::pushSpoolerButton( LsCsSpoolerType spoolerType )
+void spooler_tab::push_spooler_button( LsCsSpoolerType spoolerType )
 {
     switch ( spoolerType )
     {

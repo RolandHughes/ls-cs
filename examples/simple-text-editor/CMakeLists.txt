@@ -21,6 +21,7 @@ include(CheckIncludeFiles)
 include(CheckTypeSize)
 
 find_package(LsCs REQUIRED)
+option(BUILDING_LOCAL "Are we doing a non-system LOCAL install" OFF)
 
 #
 # You really only need this line when building against a locally 
@@ -33,6 +34,14 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
+
+   #
+   # You really only need this line when building against a locally 
+   # installed library instead of system installed.
+   if (BUILDING_LOCAL)
+      message( "BUILDING_LOCAL was true" )
+      set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+   endif()
 
    # lots of warnings and all warnings as errors
    add_compile_options(-Wall -Wextra -Wuninitialized -pedantic -Werror)

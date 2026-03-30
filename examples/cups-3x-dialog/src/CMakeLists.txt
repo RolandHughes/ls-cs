@@ -1,15 +1,15 @@
 list(APPEND CUPS_3X_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h
    ${CMAKE_CURRENT_SOURCE_DIR}/myeditwidget.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdcupsspoolerdevice.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdpdfspooler.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdpostscriptspooler.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdrawspooler.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdsinglefilejobdialog.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdsinglefilejob.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdspoolerdevice.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdspooler.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdtextspooler.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_spooler_device_cups.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_spooler_pdf.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_spooler_postscript.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_spooler_raw.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_single_file_job_dialog.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_single_file_job.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_spooler_device.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_spooler.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_spooler_text.h
    ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h
    ${CMAKE_CURRENT_SOURCE_DIR}/myeditwidget.h
    ${CMAKE_CURRENT_SOURCE_DIR}/qpagelayout.h
@@ -20,11 +20,11 @@ list(APPEND CUPS_3X_SOURCES
    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/myeditwidget.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdcupsspoolerdevice.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdsinglefilejobdialog.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdsinglefilejob.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdspooler.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/bdspoolerdevice.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_spooler_device_cups.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_single_file_job_dialog.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_single_file_job.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_spooler.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/lscs_spooler_device.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/myeditwidget.cpp
