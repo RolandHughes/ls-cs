@@ -25,6 +25,7 @@ include(CheckTypeSize)
 
 find_package(LsCs REQUIRED)
 
+option(BUILDING_LOCAL "Are we doing a non-system LOCAL install" OFF)
 
 # file locations for installing
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
@@ -38,7 +39,9 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
     # line out and uncomment one or more of the lines
     # assigning a value to CMAKE_INSTALL_RPATH.
     #
-    # set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+    if (BUILDING_LOCAL)
+        set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+    endif()
     
    # indicates where libraries are located relative to the executable
    #set(CMAKE_INSTALL_RPATH "@executable_path/../Resources")
@@ -46,12 +49,14 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
 
-   message( "We found Linux")
    #
    # You really only need this line when building against a locally 
    # installed library instead of system installed.
-   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
+   if (BUILDING_LOCAL)
+      message( "BUILDING_LOCAL was true" )
+      set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+   endif()
+   
    # lots of warnings and all warnings as errors
    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 

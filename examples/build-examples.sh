@@ -60,11 +60,14 @@ build_one(){
             # latest version will gag if there is a space.
             #
             if [ "$local_build" = true ] ; then
-                
+                echo " "
+                echo "  using local build tree for libraries"
+                echo " "
                 cmake -G "Ninja" \
                       -DCMAKE_BUILD_TYPE=Debug \
                       -DCMAKE_INSTALL_PREFIX="$I_DIR" \
                       -DCMAKE_PREFIX_PATH="$prefix_dir" \
+                      -DBUILDING_LOCAL=ON \
                       -S "$S_DIR" \
                       -B "$B_DIR"
                       

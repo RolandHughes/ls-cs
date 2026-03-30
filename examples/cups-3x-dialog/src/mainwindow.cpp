@@ -20,7 +20,7 @@
 #include <qregularexpression.h>
 #include <qstringparser.h>
 #include <qtemporaryfile.h>
-#include <bdsinglefilejobdialog.h>
+#include <lscs_single_file_job_dialog.h>
 
 #include "myeditwidget.h"
 
@@ -506,7 +506,7 @@ void MainWindow::updateIsDirty()
 
 void MainWindow::printCurrent()
 {
-    BdSingleFileJobDialog *dlg = new BdSingleFileJobDialog( this );
+    lscs_single_file_job_dialog *dlg = new lscs_single_file_job_dialog( this );
 
     int jjj = dlg->exec();
 

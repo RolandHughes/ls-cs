@@ -100,7 +100,7 @@ private:
 
     bool        m_canCollate;
 
-    void choose_destination_File();
+    void choose_destination_file();
     void dest_text_changed( const QString &text );
     void source_changed( const QString &text );
     void copies_value_changed( int newValue );
@@ -136,7 +136,7 @@ public:
     bool is_orientation_visible();
 
 
-    void destinationChanged( const QString destination );
+    void destination_changed( const QString destination );
 
     LSCS_SIGNAL_1( Public, void number_up_changed( const QString &source ) )
     LSCS_SIGNAL_2( number_up_changed, source )
@@ -210,37 +210,37 @@ private:
  *
  *  \param parent  QWidget pointer to parent - defaults to nullptr
  */
-class Q_GUI_EXPORT BdSingleFileJobDialog : public QDialog
+class Q_GUI_EXPORT lscs_single_file_job_dialog : public QDialog
 {
-    LSCS_OBJECT( BdSingleFileJobDialog )
+    LSCS_OBJECT( lscs_single_file_job_dialog )
 
 public:
-    explicit BdSingleFileJobDialog( QWidget *parent = nullptr );
+    explicit lscs_single_file_job_dialog( QWidget *parent = nullptr );
 
-    LsCsSpoolerType spoolerType();
+    LsCsSpoolerType spooler_type();
 
 private:
-    void copiesChanged( int copies );
+    void copies_changed( int copies );
     void submit_job();
     void quit();
-    void destinationSelected( QString destinationName, bool isFile );
-    void spoolerSelected( LsCsSpoolerType spoolerType );
-    void paperSourceChanged( const QString &source );
-    void paperChanged( const QString &source );
+    void destination_selected( QString destinationName, bool isFile );
+    void spooler_selected( LsCsSpoolerType spoolerType );
+    void paper_source_changed( const QString &source );
+    void paper_changed( const QString &source );
     void orientation_changed( const QString &orientation );
-    void printQualityChanged( const QString &printQuality );
+    void print_quality_changed( const QString &printQuality );
 
-    void duplexChanged( const QString &duplex );
+    void duplex_changed( const QString &duplex );
     void scaling_changed( const QString &scaling );
     void number_up_changed( const QString &numberUp );
 
 
     QTabWidget *m_tabWidget;
 
-    GeneralTab      *m_generalTab;
-    PageSetupTab    *m_pageSetupTab;
-    SpoolerTab      *m_spoolerTab;
-    BdSingleFileJob m_job;
+    general_tab             *m_generalTab;
+    page_setup_tab          *m_pageSetupTab;
+    spooler_tab             *m_spoolerTab;
+    lscs_single_file_job    m_job;
 };
 #endif   // LSCS_NO_PRINTER
-#endif   // BDSINGLEFILEJOBDIALOG_H
+#endif   // LSCSSINGLEFILEJOBDIALOG_H

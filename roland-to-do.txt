@@ -1,6 +1,6 @@
 
 *) Need some kind of drop down when
-   spooler selected to control spooer specific options.
+   spooler selected to control spooler specific options.
    Text spooler has line numbers, number width in characters, and checkbox for wrapping
    Raw spooler has none
 
