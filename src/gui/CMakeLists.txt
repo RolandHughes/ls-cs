@@ -7,6 +7,19 @@ set_target_properties(LsCsGui PROPERTIES
 )
 
 
+if (GLIB2_FOUND)
+
+   target_link_libraries(LsCsGui
+      PRIVATE
+      PkgConfig::GLIB2
+      PkgConfig::GObject2
+   )
+
+else()
+   add_definitions(-DLSCS_NO_GLIB)
+
+endif()
+
 
 # Oncee we move to SSDL33 harrffbuzz will be gone
 # Add this directory to the target's include path
@@ -183,7 +196,6 @@ target_sources(LsCsGui
    ${GUI_PLATFORMHEADERS_INCLUDES}
 )
 
-message( "################## FREETYPE_INCLUDE_DIRS   ${FREETYPE_INCLUDE_DIRS}") 
 target_include_directories(LsCsGui
    PUBLIC
    ${OPENGL_INCLUDE_DIR}

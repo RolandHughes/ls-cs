@@ -35,7 +35,6 @@ target_compile_definitions(LsCsCore
 
 if (GLIB2_FOUND)
 
-   message( "$$$$$$$$$$$$$$$$$$$$$$$$$   adding libraries to core")
    target_link_libraries(LsCsCore
       PRIVATE
       PkgConfig::GLIB2

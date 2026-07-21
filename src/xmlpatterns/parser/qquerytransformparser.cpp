@@ -3465,6 +3465,13 @@ ParserContext *const parseInfo;
        Refer to the stacks thru separate pointers, to allow yyoverflow
        to reallocate them elsewhere.  */
 
+// Avoid an invalid GCC warning due to bug https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98753
+// 'void free(void*)' called on unallocated object 'yyssa'
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfree-nonheap-object"
+#endif
+
     /* The state stack.  */
     yytype_int16 yyssa[YYINITDEPTH];
     yytype_int16 *yyss = yyssa;

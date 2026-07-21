@@ -357,7 +357,6 @@ set_package_properties(GLIB2 PROPERTIES
    URL "https://developer.gnome.org/glib"
 ) 
 
-message( "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ GLIB2_FOUND   ${GLIB2_FOUND}")
 #
 #message( "NOTE ****  MX Linux needs pkg_check_modules  all other platforms find_package")
 pkg_check_modules(GObject2 REQUIRED IMPORTED_TARGET gobject-2.0)   

@@ -137,14 +137,12 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
          PkgConfig::GLIB2
          PkgConfig::GObject2
       )
-        message( "$$$$$$$$$$$$$$$$$$$$$$$$$$ xcb_support GLIB2_FOUND  ${GLIB2_FOUND} adding event dispatcher glib")
       target_sources(LsCsXcbSupport
          PRIVATE
          ${CMAKE_CURRENT_SOURCE_DIR}/xcb/events/qxcb_eventdispatcher_glib.cpp
       )
 
    else()
-        message( "$$$$$$$$$$$$$$$$$$$$$$$$$$ xcb_support GLIB2_FOUND false not adding event dispatcher glib")
       target_compile_definitions(LsCsXcbSupport
          PRIVATE
          -DLSCS_NO_GLIB
