@@ -573,6 +573,7 @@ void Task::run()
             continue;
         }
 
+        // cupsPrintFile does not exist in Cups 3.x API
         std::string titleStr = "Test print of " + filePath;
         int jobNo = cupsPrintFile( cupsGetDefault(), filePath.c_str(), titleStr.c_str(), 0, NULL );
         std::cout << "Submitted job: " << jobNo << std::endl;

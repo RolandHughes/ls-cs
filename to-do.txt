@@ -6,8 +6,16 @@ done
 
 
 todo
-* CUPS 3.x API support.
-* XMake package build
+* finish CUPS 3.x API support.
+* single job combo boxes need to set spinning/busy mouse cursor when getting printer info
+* single job printer combo box needs to default to default printer
+* single job pages needs to be Odd, Even, All, Custom where custom supports 3-7, 9, 11, 20-24 etc.
+* single job PageSetup combo boxes need to be populated
+
+* QChar will be replaced by bd_char based on work already done in BasisDoctrina. 
+* All flavors of QString will go away and be replaced by bd_string based on work already done in BasisDoctrina. 
+* UTF-8 for internal character encoding.
+
 * windows support lscs_single_file_job_dialog
 * A cross compile will then be created for ArmV8 using https://ptxdist.de/index.html and X11Libre
 
@@ -19,11 +27,10 @@ todo
 
 
 * make SDL3 the primary underlying library. All QPlatform code will be replaced by a new LsPlatform class based exclusively on SDL3.
-* UTF-8 for internal character encoding.
-* QChar will be replaced by LsChar which will be based on work already done in BasisDoctrina. 
-* All flavors of QString will go away and be replaced by work already done in bd_string for BasisDoctrina. 
 * Containers will become wrappers for STL templates/classes.
 * One by one all low level graphics classes will be replaced by wrappers for SDL3 functionality.
+
+* XMake package build
 
 
 https://stackoverflow.com/questions/160608/do-a-git-export-like-svn-export

@@ -112,6 +112,8 @@ private:
     void populate_print_quality_CB();
     void populate_copies();
 
+private:
+    QString m_user_default_printer;
 
 };
 
@@ -219,20 +221,23 @@ public:
 
     LsCsSpoolerType spooler_type();
 
-private:
-    void copies_changed( int copies );
-    void submit_job();
-    void quit();
-    void destination_selected( QString destinationName, bool isFile );
-    void spooler_selected( LsCsSpoolerType spoolerType );
-    void paper_source_changed( const QString &source );
-    void paper_changed( const QString &source );
-    void orientation_changed( const QString &orientation );
-    void print_quality_changed( const QString &printQuality );
+    LSCS_SLOT_1( Public, void choose_defaults() )
+    LSCS_SLOT_2( choose_defaults )
 
+private:
+
+    void copies_changed( int copies );
+    void destination_selected( QString destinationName, bool isFile );
     void duplex_changed( const QString &duplex );
-    void scaling_changed( const QString &scaling );
     void number_up_changed( const QString &numberUp );
+    void orientation_changed( const QString &orientation );
+    void paper_changed( const QString &source );
+    void paper_source_changed( const QString &source );
+    void print_quality_changed( const QString &printQuality );
+    void quit();
+    void scaling_changed( const QString &scaling );
+    void spooler_selected( LsCsSpoolerType spoolerType );
+    void submit_job();
 
 
     QTabWidget *m_tabWidget;

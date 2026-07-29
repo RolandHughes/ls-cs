@@ -1,18 +1,31 @@
-/*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; Copyright (c) 2024-2026 Roland Hughes d.b.a Logikal Solutions
-;;
-;; This file is part of Ls-Cs, also known as LsCs
-;;
-;; Ls-Cs is free software. You can redistribute it and/or
-;; modify it under the terms the Basis Doctrina License found in
-;; Basis_Doctrina_License.txt
-;;
-;; Ls-Cs is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
+/*! \file lscs_single_file_job_dialog.cpp
+ *
+ *  \brief Source file for lscs_single_file_job_dialog class.
+ *
+ *  \details Handles all job values including CUPS security (when needed)
+ *        With CUPS 3.x and even later 2.x it is no longer acceptable to
+ *        open a "device" and lock it while you spew to it a page at a time.
+ *        Now we generate a temporary file via a spooler and send the entire
+ *        single file job to the output device.
+ *
+ *  \author Roland Hughes
+ *  \copyright Copyright © 2025-2026 Roland Hughes d.b.a. Logikal Solutions All rights reserved.
+ *  \license This project is released under LGPL 2.1
+ *
+ *;;;;
+ *
+ * This file is part of Ls-Cs, also known as LsCs
+ *
+ * Ls-Cs is free software. You can redistribute it and/or
+ * modify it under the terms the Basis Doctrina License found in
+ * Basis_Doctrina_License.txt
+ *
+ * Ls-Cs is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
+
 #include <qcombobox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -26,14 +39,16 @@
 #include <qlineedit.h>
 #include <qstringparser.h>
 #include <qdialogbuttonbox.h>
+#include <qapplication.h>
+#include <qtimer.h>
 
-#include <cups/cups.h>      // @todo need non-windows conditional around this
+#include <cups/cups.h>      /*! \todo need non-windows conditional around this */
 
 #include <lscs_single_file_job_dialog.h>
 
-const char *URI_TAG = "printer-uri";        // @todo need non-windows conditional around this
-const char *REQUESTED_ATTRIBUTES = "requested-attributes";  // @todo need non-windows conditional around this.
-const char *REQUEST_DEFAULT_ORIENTATION = "orientation-requested-default";  // @todo need non-windows conditional around this
+const char *URI_TAG = "printer-uri";        /*! \todo need non-windows conditional around this */
+const char *REQUESTED_ATTRIBUTES = "requested-attributes";  /*! \todo need non-windows conditional around this.*/
+const char *REQUEST_DEFAULT_ORIENTATION = "orientation-requested-default";  /*! \todo need non-windows conditional around this */
 const char *URI_SUPPORTED_TAG = "printer-uri-supported";  // @todo need non-windows conditional around this
 const char *REQUEST_COLOR_SUPPORTED = "color-supported";  // @todo need non-windows conditional around this
 const char *REQUEST_COLOR_MODE = "print-color-mode-supported"; // @todo need non-windows conditional around this
@@ -41,12 +56,15 @@ const char *REQUEST_COLOR_MODE_DEFAULT = "print-color-mode-default"; // @todo ne
 const char *REQUEST_PRINT_QUALITY_DEFAULT = "print-quality-default"; // @todo need non-windows conditional around this
 
 /*! \brief Constructor
+ *
+ *  \param parent - pointer to parent widget or NULL
  */
 lscs_single_file_job_dialog::lscs_single_file_job_dialog( QWidget *parent ) :
     QDialog( parent )
 {
     setModal( true );
     setWindowTitle( tr( "lscs_single_file_job_dialog" ) );
+
 
     m_tabWidget = new QTabWidget();
     m_tabWidget->setTabsClosable( false );
@@ -87,13 +105,12 @@ lscs_single_file_job_dialog::lscs_single_file_job_dialog( QWidget *parent ) :
 
     setLayout( mainLayout );
 
-    m_spoolerTab->push_spooler_button( LsCsSpoolerType::Text );
+    QTimer::singleShot( 800, this, SLOT( choose_defaults() ) );
 
-    m_generalTab->make_default_current_destination();
 
 }
 
-/*! \brief  Submit single file job to spooler then destination
+/*! \brief  Submit single file job to spooler and/or destination
  *
  *  \details Chosen spooler type will be created and passed information
  *           about what to include in the temporary file it creates
@@ -117,6 +134,20 @@ void lscs_single_file_job_dialog::submit_job()
 
 
     qDebug() << "m_job: " << m_job.to_string() << "\n";
+
+#if defined(CUPS_VERSION)
+    //int job_id = 0;
+    size_t num_options = 0;
+    cups_option_t *options = nullptr;
+
+    if ( m_job.useCopiesValue )
+    {
+        num_options = cupsAddIntegerOption( CUPS_COPIES, m_job.copies, num_options, &options );
+    }
+
+#else
+    /*! \todo  need to submit job for other operating systems */
+#endif
     accept();
 }
 
@@ -125,6 +156,27 @@ void lscs_single_file_job_dialog::submit_job()
 void lscs_single_file_job_dialog::quit()
 {
     reject();
+}
+
+/*! \brief slot to set default printer values in dialog
+ *
+ *  \details called from timer because signals and slots are not
+ *           firing during construction. That gives us a chicken and egg
+ *           problem. Need method of populating default destination
+ *           information once comboboxes have been created.
+ */
+void lscs_single_file_job_dialog::choose_defaults()
+{
+    // when communicating across network to populate dialog
+    // things can take time.
+    qApp->setOverrideCursor( QCursor( Qt::WaitCursor ) );
+
+    m_spoolerTab->push_spooler_button( LsCsSpoolerType::Text );
+
+    m_generalTab->make_default_current_destination();
+
+    qApp->restoreOverrideCursor();
+
 }
 
 /*! \brief slot to record change to number of copies
@@ -136,20 +188,30 @@ void lscs_single_file_job_dialog::copies_changed( int copies )
     m_job.copies = copies;
 }
 
-/*! \brief
+/*! \brief slot to record change to spooler type
+ *
+ *  \param spoolerType - value from LsCsSpoolerType enum class
  */
 void lscs_single_file_job_dialog::spooler_selected( LsCsSpoolerType spoolerType )
 {
     m_job.spoolerType = spoolerType;
 }
 
+/*! \brief method that returns spooler type from internal job variable.
+ */
 LsCsSpoolerType lscs_single_file_job_dialog::spooler_type()
 {
     return m_job.spoolerType;
 }
 
+/*! \brief records destination name and if it is a file in the internal job variable
+ *
+ *  \param destinationName - string containing device name or full path to file
+ *  \param isFile - bool indicating if destinationName is full path to file
+ */
 void lscs_single_file_job_dialog::destination_selected( QString destinationName, bool isFile )
 {
+    qDebug() << "destination_selected called";
     m_job.destinationName   = destinationName;
     m_job.destinationIsFile = isFile;
     m_job.validJob          = true;
@@ -157,36 +219,66 @@ void lscs_single_file_job_dialog::destination_selected( QString destinationName,
     m_pageSetupTab->destination_changed( destinationName );
 }
 
+/*! \brief slot to record new paper source in internal job variable
+ *
+ *  \param source - string containing name of paper source
+ */
 void lscs_single_file_job_dialog::paper_source_changed( const QString &source )
 {
     m_job.paperSource = source;
 }
 
+/*! \brief slot to record new type/size of paper in internal job variable
+ *
+ *  \param paper - string containing type/size of paper as recognized by device
+ */
 void lscs_single_file_job_dialog::paper_changed( const QString &paper )
 {
     m_job.paper = paper;
 }
 
+/*! \brief slot to record page orientation in internal job variable
+ *
+ *  \param orientation - string containing name of orientation as recognized by device
+ */
 void lscs_single_file_job_dialog::orientation_changed( const QString &orientation )
 {
     m_job.orientation = orientation;
 }
 
+/*! \brief slot to record change of duplex value in internal job variable
+ *
+ * \param duplex - string containing duplex value recognized by device
+ */
 void lscs_single_file_job_dialog::duplex_changed( const QString &duplex )
 {
     m_job.duplex = duplex;
 }
 
+/*! \brief slot to record change of scaling value in internal job variable
+ *
+ *  \param scaling - string containing scaling value as recognized by device
+ */
 void lscs_single_file_job_dialog::scaling_changed( const QString &scaling )
 {
     m_job.scaling = scaling;
 }
 
+/*! \brief slot to record change in number of pages up value in internal job variable
+ *
+ *  \param numberUp - string containing number of pages up on a single sheet as recognized
+ *                    by the device to be recorded in internal job variable.
+ */
 void lscs_single_file_job_dialog::number_up_changed( const QString &numberUp )
 {
     m_job.numberUp = numberUp;
 }
 
+/*! \brief slot to record change of print quality in internal job variable.
+ *
+ *  \param printQuality - string containing print quality value as recognized by device
+ *                        in internal job variable.
+ */
 void lscs_single_file_job_dialog::print_quality_changed( const QString &printQuality )
 {
     m_job.printQuality = printQuality;
@@ -195,9 +287,11 @@ void lscs_single_file_job_dialog::print_quality_changed( const QString &printQua
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 //      General Tab
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-/*! \brief Explicit Constructor
+/*! \brief Explicit general_tab Constructor
  *
  *  \details Constructs the General tab widget for single file job dialog
+ *
+ *  \param parent - pointer to parent widget or nullptr
  */
 general_tab::general_tab( QWidget *parent ) :
     QWidget( parent )
@@ -241,7 +335,7 @@ general_tab::general_tab( QWidget *parent ) :
 
 
     // paper source
-    // \todo  show/hide source depending on how many printer supports
+    /*! \todo  show/hide source depending on how many printer supports*/
     //
     QHBoxLayout *sourceLayout   = new QHBoxLayout();
     QLabel *sourceLabel         = new QLabel( tr( "Paper Source" ) );
@@ -399,33 +493,56 @@ general_tab::general_tab( QWidget *parent ) :
 
 }
 
+/*! \brief returns visibility state of collate widget
+ *
+ *  \returns bool - TRUE == is visible
+ */
 bool general_tab::is_collate_visible()
 {
     return m_collateWidget->isVisible();
 }
 
+/*! \brief returns visibility state of print quality widget
+ *
+ *  \returns bool - TRUE == is visible
+ */
 bool general_tab::is_print_quality_visible()
 {
     return m_printQWidget->isVisible();
 }
 
+/*! \brief returns visibility state of paper source widget
+ *
+ *  \returns bool - TRUE == visibl
+ */
 bool general_tab::is_paper_source_visible()
 {
     return m_sourceWidget->isVisible();
 }
 
+/*! \brief returns visibility state of color mode widget
+ *
+ *  \returns bool - TRUE == is visible
+ */
 bool general_tab::is_color_mode_visible()
 {
     return m_colorWidget->isVisible();
 }
 
+/*! \brief returns visibility state of number of copies widget
+ *
+ *  \returns bool - TRUE == is visible
+ */
 bool general_tab::is_copies_visible()
 {
     qDebug() << "m_copiesWidget-isVisible():  " << m_copiesWidget->isVisible();
     return m_copiesWidget->isVisible();
 }
 
-
+/*! \brief slot to record change in number of copies value
+ *
+ *  \param newValue - integer number of copies. Must be at least 1.
+ */
 void general_tab::copies_value_changed( int newValue )
 {
     if ( m_canCollate )
@@ -449,14 +566,27 @@ void general_tab::copies_value_changed( int newValue )
     }
 }
 
+/*! \brief returns destination name.
+ *
+ * \returns string - This may be device name or full path to file.
+ */
 QString general_tab::get_destination_name()
 {
     return m_destinationCB->currentText();
 }
 
+/*! \brief method to populate destination combobox
+ *
+ *  \details On Linux systems this will be a list of devices recognized by CUPS. On other platforms
+ *           the list will come from the OS specific API.
+ */
 void general_tab::populate_destination_CB()
 {
     m_destinationCB->clear();
+
+    qDebug() << "called populate_destination_CB()";
+
+#if defined(CUPS_VERSION)
 
     cups_dest_t *dests = nullptr;
     size_t destCnt = cupsGetDests( &dests );  //cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
@@ -469,11 +599,17 @@ void general_tab::populate_destination_CB()
 
         if ( workDest != nullptr )
         {
-            items << QString::fromUtf8( workDest->name );
+            QString printerName = QString::fromUtf8( workDest->name );
+            items << printerName;
+
+            if ( workDest->is_default )
+            {
+                qDebug() << "default printer: " << printerName;
+                m_user_default_printer = printerName;
+            }
         }
     }
 
-    cupsFreeDests( destCnt, dests );
     items.sort();
 
 
@@ -487,32 +623,66 @@ void general_tab::populate_destination_CB()
     m_destinationCB->addItem( tr( "File" ) );
 
 
+    cupsFreeDests( destCnt, dests );
+#else
+    /*! \todo need to get destinations for other OSes */
+#endif
+
+
 }
 
+/*! \brief method to change destination to the default output device or file
+ *
+ */
 void general_tab::make_default_current_destination()
 {
+    qDebug() << "called make_default_current_destination()";
 
-    QString defaultDestination = QString::fromUtf8( cupsGetDefault() );
-    int defaultIndex = m_destinationCB->findText( defaultDestination );
+    int current_index = m_destinationCB->currentIndex();
 
-    if ( defaultIndex > -1 )
+    // set combobox to default destination
+    //
+    if ( m_user_default_printer.length() > 0 )
     {
-        m_destinationCB->setCurrentIndex( defaultIndex );
+        qDebug() << "setting default destination: " << m_user_default_printer;
+        m_destinationCB->setCurrentIndex( m_destinationCB->findText( m_user_default_printer ) );
     }
     else
     {
+        qDebug() << "No default printer established, choosing first one";
         m_destinationCB->setCurrentIndex( 0 );
+        m_user_default_printer = m_destinationCB->itemText( 0 );
+    }
+
+    /* work around for bug inherited from CopperSpice. If you set the current index to a value
+     * like zero, for a newly constructed combo box, signals will not be emitted because there
+     * was no change in value.
+     */
+    if ( m_destinationCB->currentIndex() == current_index )
+    {
+        dest_text_changed( m_destinationCB->currentText() );
     }
 
 }
 
+/*! \brief method to populate paper source combobox based on current device destination
+ *
+ *  \details On Linux this will be paper source information provided by CUPS. On other
+ *           platforms it will be obtained from the OS specific API.
+ */
 void general_tab::populate_paper_source_CB()
 {
     m_paperSourceCB->clear();
 
+#if defined(CUPS_VERSION)
+
     cups_dest_t *dests = nullptr;
 
-    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+#if CUPS_VERSION_MAJOR == 3
+    size_t destCnt = cupsGetDests( CUPS_HTTP_DEFAULT, &dests );
+#else
+    int destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+#endif
 
     // if populate paper called instantly behind populateDestinationCB it is possible
     // the GUI has not had time to set display text, but the object will know what the
@@ -570,15 +740,31 @@ void general_tab::populate_paper_source_CB()
 
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
+#else
+    /*! \todo need to get paper sources for other platforms */
+#endif
 }
 
+/*! \brief ask if the destination can collate output
+ *
+ *  \details On Linux the collate information will be requested via CPUS. OS specific APIs will
+ *           be called on other platforms.
+ *
+ *  \param string - name of destination device.
+ */
 bool general_tab::dest_can_collate( QString destination )
 {
-    cups_dest_t *dests = nullptr;
-
     bool retVal = false;
 
-    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+#if defined(CUPS_VERSION)
+    cups_dest_t *dests = nullptr;
+
+
+#if CUPS_VERSION_MAJOR == 3
+    size_t destCnt = cupsGetDests( CUPS_HTTP_DEFAULT, &dests );
+#else
+    int destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+#endif
 
     cups_dest_t *currentDest = cupsGetDest( destination.toUtf8().constData(), NULL, destCnt, dests );
 
@@ -613,24 +799,39 @@ bool general_tab::dest_can_collate( QString destination )
 
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
+#else
+    /*!  \todo need to see if device can allocate on other platforms */
+#endif
 
     return retVal;
 }
 
+/*! \brief method to populate the paper combobox based on current destination device
+ *
+ *  \details On Linux the list of paper names will be obtained from CUPS. OS specific APIs
+ *           will be used on other platforms.
+ */
 void general_tab::populate_paper_CB()
 {
+    qDebug() << "called populate_paper_CB()" ;
     // @todo  translate the cups paper names to human names
     m_paperCB->clear();
 
+#if defined(CUPS_VERSION)
     cups_dest_t *dests = nullptr;
 
-    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+#if CUPS_VERSION_MAJOR == 3
+    size_t destCnt = cupsGetDests( CUPS_HTTP_DEFAULT, &dests );
+#else
+    int destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+#endif
 
     // if populate paper called instantly behind populateDestinationCB it is possible
     // the GUI has not had time to set display text, but the object will know what the
     // current index was set to.
     //
     QString currentDestStr = m_destinationCB->itemText( m_destinationCB->currentIndex() );
+    qDebug() << "**************** currentDestStr: " << currentDestStr;
     cups_dest_t *currentDest = cupsGetDest( currentDestStr.toUtf8().constData(), NULL, destCnt, dests );
 
     // if we didn't find then bail
@@ -660,20 +861,32 @@ void general_tab::populate_paper_CB()
     // now set the default value
     //
     int currentItem = -1;
-#if (CUPS_VERSION_MAJOR >= 3)
+#if defined(CUPS_VERSION_MAJOR) && CUPS_VERSION_MAJOR >= 3
     cups_media_t defaultMedia;
+
+    qDebug() << "calling cupsGetDestMediaDefault in 3.x API";
 
     if ( cupsGetDestMediaDefault( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_MEDIA_FLAGS_BORDERLESS, &defaultMedia ) )
     {
+        qDebug() << "defaultMedia.media:  " << QString::fromUtf8( defaultMedia.media );
         currentItem = m_paperCB->findText( QString::fromUtf8( defaultMedia.media ) );
+        qDebug() << "new currentItem value: " << currentItem;
     }
 
 #else
     cups_size_t defaultMedia;
 
-    if ( cupsGetDestMediaDefault( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_MEDIA_FLAGS_BORDERLESS, &defaultMedia ) )
+    qDebug() << "calling cupsGetDestMediaDefault 2.x API";
+
+    int rslt = cupsGetDestMediaDefault( CUPS_HTTP_DEFAULT, currentDest, info, CUPS_MEDIA_FLAGS_BORDERLESS, &defaultMedia );
+
+    qDebug() << "got result of " << rslt;
+
+    if ( rslt )
     {
+        qDebug() << "defaultMedia.media:  " << QString::fromUtf8( defaultMedia.media );
         currentItem = m_paperCB->findText( QString::fromUtf8( defaultMedia.media ) );
+        qDebug() << "new currentItem value: " << currentItem;
     }
 
 #endif
@@ -684,14 +897,30 @@ void general_tab::populate_paper_CB()
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
 
+#else
+    /*! \todo need to find paper for other platforms */
+#endif
+
 }
 
+/*! \brief method to populate color combobox based on current destination device.
+ *
+ *  \details On Linux color values will be obtained from CUPS. OS specific APIs will
+ *           be used for other operating systems.
+ */
 void general_tab::populate_color_CB()
 {
     m_colorCB->clear();
 
+#if defined(CUPS_VERSION)
     cups_dest_t *dests = nullptr;
-    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+
+
+#if CUPS_VERSION_MAJOR == 3
+    size_t destCnt = cupsGetDests( CUPS_HTTP_DEFAULT, &dests );
+#else
+    int destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+#endif
 
     // if populate color called instantly behind populateDestinationCB it is possible
     // the GUI has not had time to set display text, but the object will know what the
@@ -743,17 +972,32 @@ void general_tab::populate_color_CB()
 
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
+#else
+    /*! \todo need to get color capabilities from other OSs */
+#endif
 
 }
 
+/*! \brief method to set min and max spinbox values for copies
+ *
+ *  \details On Linux CUPS will be queried for maximum number of copies supported by current device.
+ *           OS specific API calls will be made for other operating systems.
+ */
 void general_tab::populate_copies()
 {
 
     m_copiesSB->clear();
     m_copiesSB->setRange( 1, 10 ); // set rather safe bogus limit until we get actual values
 
+#if defined(CUPS_VERSION)
+
     cups_dest_t *dests = nullptr;
-    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+
+#if CUPS_VERSION_MAJOR == 3
+    size_t destCnt = cupsGetDests( CUPS_HTTP_DEFAULT, &dests );
+#else
+    int destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+#endif
 
     // if populate color called instantly behind populateDestinationCB it is possible
     // the GUI has not had time to set display text, but the object will know what the
@@ -808,12 +1052,24 @@ void general_tab::populate_copies()
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
 
+#else
+    /*! \todo need to get maximum number of copies for other operating systems. */
+#endif
+
 }
 
+/*! \brief  Called when user chooses new printer destination to populate print quality options
+ *
+ *  \details When printer changes the available list of print qualities
+ *           will change. This method takes into accoun the UI
+ *           may not have had time to update and display
+ *           the current printer.
+ */
 void general_tab::populate_print_quality_CB()
 {
     m_printQualityCB->clear();
 
+#if defined(CUPS_VERSION)
     cups_dest_t *dests = nullptr;
 
     size_t destCnt = cupsGetDests( &dests );
@@ -885,21 +1141,44 @@ void general_tab::populate_print_quality_CB()
 
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
+#else
+    /*! \todo need to get print quality for other OSs */
+#endif
 }
 
+
+/*! \brief  Called when destination text changed to a file
+ *
+ *  \details Need to show file dialog so user can choose destination
+ *           file and location.
+ *
+ *  \todo need actual file dialog
+ */
 void general_tab::choose_destination_file()
 {
     qDebug() << "called chooseDestinationFile\n";
 }
 
+/*! \brief  Called when destination text changed to populate rest of tab
+ *
+ *  \details When text of destination changes, dialog needs new
+ *           printer specific paper, color, etc. values. If destination
+ *           is now a file, we need to prompt for file name and path.
+ *
+ *  \todo Need to handle printer security via CUPS. Username/password type stuff.
+ */
 void general_tab::dest_text_changed( const QString &text )
 {
+
+    qDebug() << "called dest_text_changed() with text of: " << text;
+
     if ( text.compare( tr( "File" ), Qt::CaseInsensitive ) == 0 )
     {
         m_canCollate = false;
         m_destFileWidget->setVisible( true );
-        // TODO::
-        // @todo  need file path display after file dialog
+        /*! \todo  need file path display after file dialog
+         */
+        destination_changed( text, true );
     }
     else
     {
@@ -917,7 +1196,10 @@ void general_tab::dest_text_changed( const QString &text )
 }
 
 
-
+/*! \brief slot called when paper source changes to populate paper combo box
+ *
+ *  \param unused string reference
+ */
 void general_tab::source_changed( const QString & )
 {
 
@@ -928,6 +1210,10 @@ void general_tab::source_changed( const QString & )
 //      Page Setup Tab
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+/*! \brief Constructor
+ *
+ *  \param parent - pointer to parent widget or NULL
+ */
 page_setup_tab::page_setup_tab( QWidget *parent ) :
     QWidget( parent )
 {
@@ -986,34 +1272,56 @@ page_setup_tab::page_setup_tab( QWidget *parent ) :
     connect( m_orientationCB, &QComboBox::currentTextChanged, this, &page_setup_tab::orientation_changed );
 }
 
-
+/*! \brief returns string containing current text of duplex combobox
+ *
+ *  \returns string - text of a duplex value recognized by the destination device
+ */
 QString page_setup_tab::duplex_mode()
 {
     return m_duplexCB->currentText();
 }
 
 
+/*! \brief returns visibility state of duplex widget
+ *
+ * \returns bool - TRUE == is visible
+ */
 bool page_setup_tab::is_duplex_visible()
 {
     return m_duplexWidget->isVisible();
 }
 
+/*! \brief returns visibility state of number up widget
+ *
+ *  \returns bool - TRUE == number up is visible
+ */
 bool page_setup_tab::is_number_up_visible()
 {
     return m_numberUpWidget->isVisible();
 }
 
+/*! \brief returns visibility state of page orientation widget
+ *
+ *  \returns bool - TRUE == widget is visible
+ */
 bool page_setup_tab::is_orientation_visible()
 {
     return m_orientationWidget->isVisible();
 }
 
+/*! \brief returns visibility status of scaling widget
+ *
+ *  \returns bool - TRUE == widget is visible
+ */
 bool page_setup_tab::is_scaling_visible()
 {
     return m_scalingWidget->isVisible();
 }
 
-
+/*! \brief returns number of pages per side
+ *
+ *  \returns integer - number of pages per side (number up)
+ */
 int page_setup_tab::number_of_pages_per_side()
 {
     int retVal = 1;
@@ -1027,27 +1335,52 @@ int page_setup_tab::number_of_pages_per_side()
     return retVal;
 }
 
+/*! \brief returns device supported current scaling value from combo box
+ *
+ * \returns string - the device supported scaling value currently in combo box
+ */
 QString page_setup_tab::scaling()
 {
     return m_scalingCB->currentText();
 }
 
+/*! \brief slot to store new destination value and kick off population of other device combo boxes
+ *
+ *  \param destination - string containing recognized destination
+ */
 void page_setup_tab::destination_changed( const QString destination )
 {
+    qDebug() << "page_setup_tab::destination_changed() called";
     m_destination = destination;
+
+    qApp->setOverrideCursor( QCursor( Qt::WaitCursor ) );
 
     populate_number_up_CB();
     populate_duplex_CB();
     populate_scaling_CB();
     populate_orientation_CB();
+
+    qApp->restoreOverrideCursor();
 }
 
+/*! \brief method to populate the number up combo box
+ *
+ *  \details On Linux this range of values will be retrieved from CUPS.
+ *           OS specific APIs used for other platforms.
+ */
 void page_setup_tab::populate_number_up_CB()
 {
     m_numberUpCB->clear();
 
+#if defined(CUPS_VERSION)
+
     cups_dest_t *dests = nullptr;
-    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+
+#if CUPS_VERSION_MAJOR == 3
+    size_t destCnt = cupsGetDests( CUPS_HTTP_DEFAULT, &dests );
+#else
+    int destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+#endif
 
     cups_dest_t *currentDest = cupsGetDest( m_destination.toUtf8().constData(), NULL, destCnt, dests );
 
@@ -1077,14 +1410,30 @@ void page_setup_tab::populate_number_up_CB()
 
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
+#else
+    /*! \todo number up for other OSes */
+#endif
 }
 
+/*! \brief method to populate the duplex combo box for current device
+ *
+ *  \details populates duplex combo box based on currently selected destination device. On
+ *           Linux the values will be obtained from CUPS. OS specific APIs will be used on
+ *           other operating systems.
+ */
 void page_setup_tab::populate_duplex_CB()
 {
     m_duplexCB->clear();
 
+#if defined(CUPS_VERSION)
     cups_dest_t *dests = nullptr;
-    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+
+
+#if CUPS_VERSION_MAJOR == 3
+    size_t destCnt = cupsGetDests( CUPS_HTTP_DEFAULT, &dests );
+#else
+    int destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+#endif
 
     cups_dest_t *currentDest = cupsGetDest( m_destination.toUtf8().constData(), NULL, destCnt, dests );
 
@@ -1131,16 +1480,28 @@ void page_setup_tab::populate_duplex_CB()
 
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
-
+#else
+    /*! \todo get duplex information for other operating systems */
+#endif
 }
 
-
+/*! \brief populate scaling combo box with values supported by current destination device
+ *
+ *  \details On Linux scaling values will be obtained from CUPS. OS specific API calls will
+ *           be used on other OSes.
+ */
 void page_setup_tab::populate_scaling_CB()
 {
     m_scalingCB->clear();
 
+#if defined(CUPS_VERSION)
     cups_dest_t *dests = nullptr;
-    size_t destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+
+#if CUPS_VERSION_MAJOR == 3
+    size_t destCnt = cupsGetDests( CUPS_HTTP_DEFAULT, &dests );
+#else
+    int destCnt = cupsGetDests2( CUPS_HTTP_DEFAULT, &dests );
+#endif
 
     cups_dest_t *currentDest = cupsGetDest( m_destination.toUtf8().constData(), NULL, destCnt, dests );
 
@@ -1189,12 +1550,21 @@ void page_setup_tab::populate_scaling_CB()
 
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
+#else
+    /*! \todo obtain scaling values for other operating systems */
+#endif
 }
 
+/*! \brief fill orientation combo box with values current device supports.
+ *
+ *  \details On Linux orientation values for current device will be obtained from CUPS.
+ *           OS specific APIs will be used on other operating systems.
+ */
 void page_setup_tab::populate_orientation_CB()
 {
     m_orientationCB->clear();
 
+#if defined(CUPS_VERSION)
     cups_dest_t *dests = nullptr;
     size_t destCnt = cupsGetDests( &dests );
 
@@ -1257,6 +1627,9 @@ void page_setup_tab::populate_orientation_CB()
 
     cupsFreeDestInfo( info );
     cupsFreeDests( destCnt, dests );
+#else
+    /*! \todo obtain orientation values for other OSes. */
+#endif
 }
 
 
@@ -1265,6 +1638,10 @@ void page_setup_tab::populate_orientation_CB()
 //      Spooler Tab
 //;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+/*! \brief Constructor
+ *
+ *  \param parent - pointer to parent widget or NULL
+ */
 spooler_tab::spooler_tab( QWidget *parent ) :
     QWidget( parent )
 {
@@ -1322,6 +1699,8 @@ spooler_tab::spooler_tab( QWidget *parent ) :
 
 }
 
+/*! \brief Destructor
+ */
 spooler_tab::~spooler_tab()
 {
     if ( m_spoolerGroupBox != nullptr )
@@ -1332,6 +1711,12 @@ spooler_tab::~spooler_tab()
 
 }
 
+/*! \brief method which allows program to click a spooler type button
+ *
+ *  \details We have a chickend and egg issue at startup. This method allows
+ *           spooler type to be chosen by the application, esepcially if the
+ *           destination device only supports certain types.
+ */
 void spooler_tab::push_spooler_button( LsCsSpoolerType spoolerType )
 {
     switch ( spoolerType )
